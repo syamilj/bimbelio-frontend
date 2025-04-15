@@ -1,0 +1,292 @@
+'use client';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { api } from '@/trpc/react';
+
+import {
+  ArrowRightIcon,
+  BrainCircuitIcon,
+  CheckCircleIcon,
+  CheckIcon,
+  ClockIcon,
+  FileQuestionIcon,
+  ForwardIcon,
+  ListIcon,
+  PlayIcon,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+export default function ModulPembelajaranSection() {
+  const router = useRouter();
+  const { data: CategoryCard, isLoading } =
+    api.course.getCategoryForCard.useQuery(undefined, {
+      refetchOnWindowFocus: false,
+    });
+  console.log({ CategoryCard });
+  return (
+    <section className="space-y-6 pt-8">
+      <div className="text-center space-y-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+          Modul Belajar
+        </h2>
+        <div className="w-20 h-1 bg-yellow-400 mx-auto mb-4"></div>
+        <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
+          Mau mulai dari mana dulu? Yuk, pilih modul di bawah!
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {CategoryCard?.map((category) => {
+          const getActionButton = () => {
+            if (category.completedChapters === 0) {
+              return (
+                <Link
+                  href={`/user/course/${category.id}`}
+                  className="w-full"
+                >
+                  <Button
+                    size="sm"
+                    className="w-full"
+                  >
+                    <PlayIcon className="w-4 h-4 mr-1" />
+                    Mulai Belajar
+                  </Button>
+                </Link>
+              );
+            } else if (category.completedChapters === category.totalChapters) {
+              return (
+                <Link
+                  href={`/user/course/${category.id}`}
+                  className="w-full"
+                >
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="w-full"
+                  >
+                    <CheckIcon className="w-4 h-4 mr-1" />
+                    Selesai
+                  </Button>
+                </Link>
+              );
+            } else {
+              return (
+                <Link
+                  href={`/user/course/${category.id}`}
+                  className="w-full"
+                >
+                  <Button
+                    size="sm"
+                    className="w-full"
+                    variant="destructive"
+                  >
+                    <ForwardIcon className="w-4 h-4 mr-1" />
+                    Lanjutkan Belajar
+                  </Button>
+                </Link>
+              );
+            }
+          };
+
+          return (
+            <Card
+              key={category.id}
+              className="overflow-hidden shadow-sm"
+            >
+              <CardContent className="p-5 space-y-4">
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-main/10 p-3 rounded-full">
+                      <BrainCircuitIcon className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="font-semibold text-base sm:text-lg">
+                        {category.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Tingkatkan kemampuan berpikir logis dan analitis untuk
+                        soal-soal logika.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Progress */}
+                <Progress
+                  value={category.percentageProgress}
+                  className="h-2 w-full"
+                />
+                <div className="flex justify-between text-sm">
+                  <span>
+                    {category.completedChapters}/{category.totalChapters}{' '}
+                    Chapter
+                  </span>
+                  <span>{category.percentageProgress}% Selesai</span>
+                </div>
+
+                {/* Info */}
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <div className="flex items-center">
+                    <ClockIcon className="w-4 h-4 mr-1" />
+                    <span>
+                      {category.totalSpendTime / 60 < 1
+                        ? `${category.totalSpendTime} Menit`
+                        : `${(category.totalSpendTime / 60).toFixed(2)} Jam`}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <FileQuestionIcon className="w-4 h-4 mr-1" />
+                    <span>{category.totalTryout} Quiz</span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2 pt-2">
+                  {/* Detail Dialog */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-1/3"
+                      >
+                        <ListIcon className="h-4 w-4 mr-1" />
+                        Detail
+                      </Button>
+                    </DialogTrigger>
+
+                    <DialogContent className="sm:max-w-[600px] w-[95%] mx-auto">
+                      <DialogHeader className="space-y-2 pb-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-main/10 rounded-full p-2">
+                              <BrainCircuitIcon className="h-6 w-6" />
+                            </div>
+                            <div>
+                              <DialogTitle className="text-xl">
+                                {category.name}
+                              </DialogTitle>
+                              <DialogDescription className="text-sm">
+                                {category.completedChapters}/
+                                {category.totalChapters} Chapter Selesai
+                              </DialogDescription>
+                            </div>
+                          </div>
+                          <Badge
+                            variant="secondary"
+                            className="px-2 py-1 text-xs"
+                          >
+                            <CheckCircleIcon className="w-3 h-3 mr-1" />
+                            {status}
+                          </Badge>
+                        </div>
+                      </DialogHeader>
+
+                      {/* Body */}
+                      <div className="mt-4 space-y-4">
+                        {/* Progress Detail */}
+                        <div className="space-y-1">
+                          <Progress
+                            value={category.percentageProgress}
+                            className="h-2"
+                          />
+                          <div className="flex justify-between text-xs text-muted-foreground">
+                            <span>{category.percentageProgress}% Selesai</span>
+                            <span>
+                              {category.totalChapters -
+                                category.completedChapters}{' '}
+                              chapter tersisa
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Chapter List */}
+                        <ScrollArea className="h-[300px] pr-3">
+                          {category.CourseChapter.map((chapter, i) => (
+                            <div
+                              key={i}
+                              className="p-2 mb-2 rounded-xl hover:bg-muted/50 transition-colors cursor-pointer"
+                              onClick={() => {
+                                router.push(
+                                  `/user/course/${category.id}?sub=${chapter.CourseSubChapter[0].id}`,
+                                );
+                              }}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="bg-blue-100 rounded-full p-1.5 w-7 h-7 flex items-center justify-center text-blue-700 font-medium text-xs">
+                                  {i + 1}
+                                </div>
+                                <div className="flex-1">
+                                  <h4 className="font-medium text-sm">
+                                    {chapter.title}
+                                  </h4>
+                                  <p className="text-xs text-muted-foreground">
+                                    {chapter.isDone ? (
+                                      <span className="text-green-500">
+                                        Selesai
+                                      </span>
+                                    ) : (
+                                      <span className="text-blue-500">
+                                        Belum Dimulai
+                                      </span>
+                                    )}
+                                  </p>
+                                </div>
+                                {chapter.isDone && (
+                                  <CheckCircleIcon className="w-4 h-4 text-green-500 mr-1" />
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </ScrollArea>
+                      </div>
+
+                      {/* Footer */}
+                      <DialogFooter className="mt-4">
+                        <Button className="w-full text-sm">
+                          Lanjutkan Belajar
+                          <ArrowRightIcon className="w-4 h-4 ml-2" />
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+                  {/* Dynamic Action Button */}
+                  {getActionButton()}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+      {isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {Array.from({ length: 4 }).map((_: any, i: number) => (
+            <Skeleton
+              key={i}
+              className={
+                'h-[160px] mb:h-[200px] md:h-[200px] md2:h-[180px] xl:h-[250px] xxxl:h-[300px]'
+              }
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}

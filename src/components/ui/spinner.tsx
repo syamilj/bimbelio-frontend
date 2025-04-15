@@ -1,0 +1,103 @@
+import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
+import { Dialog, DialogContent } from './dialog';
+
+export function Spinner({ width }: { width?: string }) {
+  return (
+    <Loader2
+      className={` ${width ? `h-[${width}] w-[${width}]` : 'h-5 w-5'} animate-spin`}
+    />
+  );
+}
+
+export function SpinnerPage() {
+  return (
+    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
+      <Spinner />
+    </div>
+  );
+}
+
+export function SpinnerPageCentered({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        'fixed left-0 top-0 z-[1000] flex h-full w-full items-center justify-center bg-white',
+        className,
+      )}
+    >
+      <Spinner />
+    </div>
+  );
+}
+
+export function PageError({
+  className,
+  message,
+}: {
+  className?: string;
+  message?: any;
+}) {
+  return (
+    <div
+      className={cn(
+        'fixed left-0 top-0 z-[1000] flex h-full w-full items-center justify-center bg-white',
+        className,
+      )}
+    >
+      {message ? JSON.stringify(message) : 'Page Error, Please Refresh'}
+    </div>
+  );
+}
+
+export function SpinnerCentered() {
+  return (
+    <div className="flex h-full items-center justify-center">
+      <Spinner />
+    </div>
+  );
+}
+
+export function LoadingPopUp({ title }: { title?: string }) {
+  return (
+    <Dialog open={true}>
+      <DialogContent
+        className="overflow-hidden border-none bg-[#fff0] p-0 shadow-none"
+        classOverlay="bg-[#ffffffe3]"
+        hideClose
+      >
+        <div className="z-[100000000] flex items-center justify-center p-[1.5rem]">
+          <div className="flex flex-col items-center">
+            <Loader2 className="h-[2rem] w-[2rem] animate-spin" />
+            <p className="text-center text-[1.1rem] font-medium">
+              {title ? title : 'Loading...'}{' '}
+            </p>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default function LoadingPageWithText({
+  heading,
+  loading,
+}: {
+  heading?: string;
+  loading: boolean;
+}) {
+  return (
+    <>
+      {loading && (
+        <div className="fixed left-0 top-0 z-[201] flex h-full w-full select-none items-center justify-center bg-[#ffffff52] backdrop-blur-[6px]">
+          <div className="flex flex-col items-center gap-[.5rem] text-center">
+            <Loader2 className="h-[4rem] w-[4rem] animate-spin text-[#464646]" />
+            {heading && (
+              <p className="text-[1.3rem] text-[#464646]">{heading}</p>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

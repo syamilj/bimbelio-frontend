@@ -1,0 +1,79 @@
+'use client';
+
+import { api } from '@/trpc/react';
+import { EyeIcon } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+//
+const Blog = () => {
+  const router = useRouter();
+
+  const { data: blogs } = api.blog.getBlogLandingPage.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+  // const [viewCount, setViewCount] = useState<number>(0);
+
+  return (
+    <div
+      id="blog"
+      className="py-12"
+    >
+      <div className="container mx-auto px-4">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-3xl font-bold md:text-4xl">Blog Terkini</h2>
+          <p className="text-gray-600">
+            Temukan tips, trik, dan panduan terbaru untuk persiapan ujian ASN!
+          </p>
+        </div>
+        <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+          {blogs?.map((blog) => (
+            <Link
+              href={`/blog/${blog.id}`}
+              key={blog.id}
+              className="group"
+            >
+              <article className="shadow-m transform overflow-hidden rounded-xl bg-white transition-transform duration-300 ease-in-out hover:-translate-y-1">
+                <div className="relative h-48">
+                  <Image
+                    src={blog.thumbnail}
+                    alt={blog.title}
+                    layout="fill"
+                    objectFit="cover"
+                    className="transition-opacity duration-300 group-hover:opacity-90"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="mb-1 truncate text-xl font-semibold">
+                    {blog.title}
+                  </h3>
+                  <div className="mb-2 flex items-center space-x-1 text-main-gray-text">
+                    <EyeIcon className="h-4 w-4" />
+                    <span className="text-sm">
+                      {blog.views.toLocaleString()} dilihat
+                    </span>
+                  </div>
+                  <p className="mb-1 line-clamp-3 text-sm text-gray-600">
+                    {blog.description}
+                  </p>
+                </div>
+              </article>
+            </Link>
+          ))}
+        </div>
+        <div className="text-center">
+          <button
+            className="rounded-full border border-gray-300 bg-white px-6 py-2 font-medium text-gray-700 transition duration-300 ease-in-out hover:bg-gray-100"
+            onClick={() => router.push('/blog')}
+          >
+            Lihat semua Blog
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Blog;

@@ -1,0 +1,114 @@
+'use client';
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from '@/components/ui/select';
+import { api } from '@/trpc/react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+interface UrutkanDocsProps {
+  setDocsData: (data: any[]) => void;
+  subCategoryId: string;
+  sort: boolean;
+  setSort: (sort: boolean) => void;
+}
+
+type OptionType = '' | 'ascending' | 'latest' | 'popular';
+
+const OPTIONS = [
+  { value: 'ascending', label: 'A-Z' },
+  { value: 'latest', label: 'Terbaru' },
+  { value: 'popular', label: 'Populer' },
+] as const;
+
+export default function UrutkanDocs({
+  setDocsData,
+  subCategoryId,
+  sort,
+  setSort,
+}: UrutkanDocsProps) {
+  const [option, setOption] = useState<OptionType>('');
+  const params = useParams();
+
+  const { data } = api.document.sortDocumentByCategoryAndSubId.useQuery(
+    {
+      categoryId: `${params?.category}`,
+      subCategoryId: subCategoryId,
+      option,
+    },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      enabled: option !== '',
+    },
+  );
+
+  useEffect(() => {
+    if (data) {
+      setDocsData([...data]);
+    }
+  }, [data, setDocsData]);
+
+  useEffect(() => {
+    setSort(option !== '');
+  }, [option, setSort]);
+
+  const handleValueChange = (value: OptionType) => {
+    if (option === value) {
+      setOption('');
+    } else {
+      setOption(value);
+    }
+  };
+
+  const getDisplayText = () => {
+    if (option === '') return 'Urutkan';
+    const selectedOption = OPTIONS.find((opt) => opt.value === option);
+    return selectedOption ? selectedOption.label : 'Urutkan';
+  };
+
+  return (
+    <div className="relative z-[40]">
+      <Select
+        value={option}
+        onValueChange={handleValueChange}
+      >
+        <SelectTrigger
+          className={`w-full ${
+            option !== ''
+              ? 'bg-main text-white'
+              : 'bg-white text-main-gray-text'
+          } flex items-center justify-between rounded-[.8rem] gap-2 px-[1.5rem] py-[.7rem] border-none focus:ring-0 focus:ring-offset-0`}
+        >
+          <span className="text-sm font-medium">{getDisplayText()}</span>
+          {sort ? (
+            <ChevronUp className="h-5 w-5" />
+          ) : (
+            <ChevronDown className="h-5 w-5" />
+          )}
+        </SelectTrigger>
+        <SelectContent
+          align="end"
+          className="w-full overflow-hidden justify-between rounded-[.5rem] p-0 border-none shadow-md"
+        >
+          {OPTIONS.map(({ value, label }) => (
+            <SelectItem
+              key={value}
+              value={value}
+              className={`cursor-pointer px-[1rem] py-[.5rem] text-start transition-colors hover:bg-main-hover hover:text-white focus:bg-main focus:text-white ${
+                option === value ? 'bg-main text-white' : 'text-main-gray-text'
+              }`}
+            >
+              {label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
