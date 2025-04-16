@@ -1,14 +1,21 @@
 import { toaster } from "@/components/ui/toaster";
 import axiosInstance from "./axios/axiosInstance";
 
-export const responseError = (error: any, showToast?: boolean) => {
+export const responseError = (
+  error: any,
+  showToast?: boolean,
+  toastMessage?: string,
+  toastTitle?: string
+) => {
   console.log({ error });
   if (showToast) {
     toaster({
-      title: "Error",
+      title: toastTitle || "Error",
       condition: "warning",
       description:
-        (error as any).response.data.message || "Internal Server Error",
+        toastMessage ||
+        (error as any).response.data.message ||
+        "Internal Server Error",
     });
   }
   return {
@@ -22,14 +29,16 @@ export const responseError = (error: any, showToast?: boolean) => {
 
 export const response = (
   res: any,
-  showToast?: boolean
+  showToast?: boolean,
+  toastMessage?: string,
+  toastTitle?: string
 ): { message: string; status: number; data?: any } => {
   console.log({ res });
   if (showToast) {
     toaster({
-      title: "Successfully",
+      title: toastTitle || "Successfully",
       condition: "success",
-      description: res.data.message || "Succesfully",
+      description: toastMessage || res.data.message || "Succesfully",
     });
   }
   return res.data;

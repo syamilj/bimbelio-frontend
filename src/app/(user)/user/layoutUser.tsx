@@ -98,6 +98,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   }, []);
 
   useEffect(() => {
+    if (!userSession) return;
     axiosInstance
       .get(`/user/getCurrentLimitation?userId=${userSession?.user.id}`)
       .then((res) => {

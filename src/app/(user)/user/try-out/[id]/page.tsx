@@ -1,23 +1,26 @@
-'use client';
+"use client";
 
-import { use } from 'react';
+import { use } from "react";
 
-import { SpinnerPageCentered } from '@/components/ui/spinner';
-import { api } from '@/trpc/react';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import Header from './_components/header';
-import RestTime from './_components/rest-time';
-import StartTryout from './_components/start-tryout';
-import Tryout from './_components/tryout';
-import TryoutResult from './_components/tryout-result';
+import { SpinnerPageCentered } from "@/components/ui/spinner";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import Header from "./_components/header";
+import RestTime from "./_components/rest-time";
+import StartTryout from "./_components/start-tryout";
+import Tryout from "./_components/tryout";
+import TryoutResult from "./_components/tryout-result";
+import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
+import { useSession } from "@/components/provider/session-provider-auth";
+import { QuestionTypeEnum, TryoutStatusEnum } from "@/types/database";
 
 export interface TryoutPageProps {
   params: Promise<{ id: string }>;
 }
 const TryoutPage = ({ params }: TryoutPageProps) => {
   const pathname = usePathname();
-  const isTesting = pathname?.toLowerCase().includes('testing') || false;
+  const isTesting = pathname?.toLowerCase().includes("testing") || false;
+  const { data: sessionUser } = useSession();
 
   // const { id } = router.query;
   // const searchParams = useSearchParams();
@@ -29,20 +32,53 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   console.log({ tryoutId, params });
 
   const [loading, setLoading] = useState<boolean>(true);
-  const trpc = api.useUtils();
+  // const trpc = api.useUtils();
 
-  const { data: tryoutData, isLoading } = api.tryout.getTryoutById.useQuery(
-    { tryoutId },
-    { refetchOnWindowFocus: false },
-  );
+  // const { data: tryoutData, isLoading } = api.tryout.getTryoutById.useQuery(
+  //   { tryoutId },
+  //   { refetchOnWindowFocus: false }
+  // );
+  const [tryoutData, setTryoutData] = useState<TryoutDataType>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { mutateAsync: FinishTryOutLate } =
-    api.tryoutSession.finishSessionLate.useMutation({
+  const getTryoutById = async () => {
+    if (!sessionUser) return;
+    getGeneral(
+      `/tryout/getTryoutById?userId=${sessionUser?.user.id}&tryoutId=${tryoutId}`,
+      {
+        setData: setTryoutData,
+        setLoading: setIsLoading,
+      }
+    );
+  };
+
+  useEffect(() => {
+    getTryoutById();
+  }, [sessionUser, tryoutId]);
+
+  // const { mutateAsync: FinishTryOutLate } =
+  //   api.tryoutSession.finishSessionLate.useMutation({
+  //     onSuccess() {
+  //       trpc.tryout.getTryoutById.refetch();
+  //       window.location.reload();
+  //     },
+  //   });
+
+  const FinishTryOutLate = async (payload: {
+    userId: string;
+    sessionId: string;
+    answer: any[];
+  }) => {
+    await mutateGeneral(`/tryoutSession/finishSessionLate`, {
+      payload,
+      type: "post",
       onSuccess() {
-        trpc.tryout.getTryoutById.refetch();
+        //       trpc.tryout.getTryoutById.refetch();
+        getTryoutById();
         window.location.reload();
       },
     });
+  };
 
   const getIsTryoutDone = () => {
     let done = true;
@@ -112,8 +148,8 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
                   return {
                     number: item.number,
                     questionId: item.id,
-                    answerId: '',
-                    answer: '',
+                    answerId: "",
+                    answer: "",
                     type: item.type,
                     notSure: false,
                   };
@@ -122,9 +158,10 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
                 await FinishTryOutLate({
                   sessionId: session.id,
                   answer: sessionAnswer,
+                  userId: sessionUser?.user.id || "",
                 });
               }
-            },
+            }
           );
 
           await Promise.all(sessionPromises);
@@ -146,10 +183,10 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     }
   }, [tryoutData]);
 
-  console.log('currentIndexSession', currentIndexSession);
-  console.log('tryoutData', tryoutData);
-  console.log('isSessionDone', isSessionDone);
-  console.log('isTryoutDone', isTryoutDone);
+  console.log("currentIndexSession", currentIndexSession);
+  console.log("tryoutData", tryoutData);
+  console.log("isSessionDone", isSessionDone);
+  console.log("isTryoutDone", isTryoutDone);
 
   // useEffect(() => {
   //   if (tryoutData && getIsTryoutDone()) {
@@ -201,7 +238,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
           createAt: new Date(item.createAt),
           updateAt: new Date(item.updateAt),
         };
-      },
+      }
     );
 
   const sessionData = tryoutData?.TryoutSession.map((session) => ({
@@ -215,7 +252,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       ...session.TryoutSessionParticipant,
     },
   }));
-  console.log('sessionData', sessionData);
+  console.log("sessionData", sessionData);
 
   if (
     !isTryoutDone &&
@@ -237,11 +274,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     }
     return (
       <div className="fixed left-0 top-0 h-full w-full bg-workspace">
-        <Header
-          current={0}
-          total={-1}
-          name={''}
-        />
+        <Header current={0} total={-1} name={""} />
         <div className="absolute left-0 top-[0] flex h-full w-full items-center justify-center pt-[1rem]">
           Kamu Telah mengerjakan sesi ini
         </div>
@@ -289,3 +322,86 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
 };
 
 export default TryoutPage;
+
+type TryoutDataType =
+  | ({
+      TryoutSession: ({
+        TryoutCategory: {
+          id: string;
+          name: string;
+          slug: string;
+          description: string | null;
+          createAt: Date;
+          updateAt: Date;
+          image: string | null;
+        };
+        TryoutSubCategory: {
+          id: string;
+          categoryId: string;
+          name: string;
+        };
+        TryoutQuestion: ({
+          TryoutAnswers: {
+            id: string;
+            questionId: string;
+            answer: string;
+            value: number;
+          }[];
+        } & {
+          number: number;
+          id: string;
+          createAt: Date;
+          updateAt: Date;
+          image: string | null;
+          sessionId: string;
+          question: string;
+          type: QuestionTypeEnum;
+          explanation: string | null;
+          a_discrimination: number | null;
+          b_difficulty: number | null;
+          c_guessing: number | null;
+          subCategory: string | null;
+          subSubCategory: string | null;
+        })[];
+        TryoutSessionParticipant: {
+          id: string;
+          userId: string;
+          sessionId: string;
+          startSession: Date;
+          endSession: Date | null;
+          isDone: boolean;
+        }[];
+      } & {
+        number: number;
+        id: string;
+        tryoutId: string;
+        categoryId: string;
+        subCategoryId: string;
+        documentId: string | null;
+        name: string;
+        slug: string;
+        description: string | null;
+        duration: number;
+        assessmentType: string;
+        thresholdValue: number | null;
+        createAt: Date;
+        updateAt: Date;
+      })[];
+      TryoutRegistration: {
+        id: string;
+        tryoutId: string;
+        userTryOutId: string;
+      }[];
+    } & {
+      id: string;
+      createAt: Date;
+      updateAt: Date;
+      title: string;
+      restTime: number;
+      status: TryoutStatusEnum;
+      startDate: Date;
+      endDate: Date;
+      resultDate: Date;
+      image: string | null;
+    })
+  | null;

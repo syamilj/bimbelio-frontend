@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
+import { useSession } from "@/components/provider/session-provider-auth";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Spinner } from '@/components/ui/spinner';
-import { toaster } from '@/components/ui/toaster';
-import { api } from '@/trpc/react';
-import { useEffect, useState } from 'react';
+} from "@/components/ui/dialog";
+import { Spinner } from "@/components/ui/spinner";
+import { toaster } from "@/components/ui/toaster";
+import { mutateGeneral } from "@/lib/fetch-helper";
+import { useEffect, useState } from "react";
 
 interface SessionAnswer {
   number: number;
@@ -28,47 +29,76 @@ const SubmitTryout = ({
   sessionAnswer: SessionAnswer[];
   sessionId: string;
 }) => {
+  const { data: session } = useSession();
+
   const [open, setOpen] = useState(false);
-  const unAnswered = sessionAnswer?.filter((item) => item.answer === '');
+  const unAnswered = sessionAnswer?.filter((item) => item.answer === "");
   const notSure = sessionAnswer?.filter((item) => item.notSure === true);
 
   const [step, setStep] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
 
-  const trpc = api.useUtils();
-  const { mutate: FinishTryOut } = api.tryoutSession.finishSession.useMutation({
-    onSuccess() {
-      trpc.tryout.getTryoutById.refetch();
-      localStorage.removeItem(`sessionAnswer-${sessionId}`);
-      toaster({
-        title: 'Success',
-        description: 'Tryout berhasil di submit',
-        condition: 'success',
-        duration: 2000,
-      });
-      setLoading(false);
-      setHasSubmitted(false);
-      setOpen(false);
-      window.location.reload();
-    },
-    onError(error) {
-      if (error.message.includes('Session already finished. Skipping...')) {
-        console.log('Double submission skipped, no toast');
-        setOpen(false);
-        return;
-      }
+  // const trpc = api.useUtils();
+  // const { mutate: FinishTryOut } = api.tryoutSession.finishSession.useMutation({
+  //   onSuccess() {
+  //     trpc.tryout.getTryoutById.refetch();
+  //     localStorage.removeItem(`sessionAnswer-${sessionId}`);
+  //     toaster({
+  //       title: "Success",
+  //       description: "Tryout berhasil di submit",
+  //       condition: "success",
+  //       duration: 2000,
+  //     });
+  //     setLoading(false);
+  //     setHasSubmitted(false);
+  //     setOpen(false);
+  //     window.location.reload();
+  //   },
+  //   onError(error) {
+  //     if (error.message.includes("Session already finished. Skipping...")) {
+  //       console.log("Double submission skipped, no toast");
+  //       setOpen(false);
+  //       return;
+  //     }
 
-      toaster({
-        title: 'Upss!',
-        description: 'Error, coba lagi!',
-        condition: 'warning',
-        duration: 2000,
-      });
-      setLoading(false);
-      setHasSubmitted(false);
-    },
-  });
+  //     toaster({
+  //       title: "Upss!",
+  //       description: "Error, coba lagi!",
+  //       condition: "warning",
+  //       duration: 2000,
+  //     });
+  //     setLoading(false);
+  //     setHasSubmitted(false);
+  //   },
+  // });
+
+  const FinishTryOut = async (payload: {
+    userId: string;
+    sessionId: string;
+    answer: any[];
+  }) => {
+    await mutateGeneral("/tryoutSession/finishSession", {
+      payload,
+      type: "post",
+      toast: {
+        successMsg: "Tryout berhasil di submit",
+        errorMsg: "Gagal submit tryout, coba lagi!",
+      },
+      onSuccess() {
+        //       trpc.tryout.getTryoutById.refetch();
+        localStorage.removeItem(`sessionAnswer-${sessionId}`);
+        window.location.reload();
+        setLoading(false);
+        setHasSubmitted(false);
+        setOpen(false);
+      },
+      onError() {
+        setLoading(false);
+        setHasSubmitted(false);
+      },
+    });
+  };
 
   useEffect(() => {
     if (!open) {
@@ -86,15 +116,13 @@ const SubmitTryout = ({
     FinishTryOut({
       sessionId,
       answer: sessionAnswer,
+      userId: session?.user.id || "",
     });
   };
 
   return (
     <div className="flex w-full items-center justify-center text-sm md:justify-center">
-      <Dialog
-        open={loading ? true : open}
-        onOpenChange={setOpen}
-      >
+      <Dialog open={loading ? true : open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <button
             className="rounded-xl bg-main px-4 py-3 text-white duration-300 active:bg-main md:hover:bg-main-hover"
@@ -119,7 +147,7 @@ const SubmitTryout = ({
                       {unAnswered.map((item, i) => (
                         <p key={i}>
                           {item.number}
-                          {i !== unAnswered.length - 1 && ','}
+                          {i !== unAnswered.length - 1 && ","}
                         </p>
                       ))}
                     </div>
@@ -132,7 +160,7 @@ const SubmitTryout = ({
                       {notSure.map((item, i) => (
                         <p key={i}>
                           {item.number}
-                          {i !== notSure.length - 1 && ','}
+                          {i !== notSure.length - 1 && ","}
                         </p>
                       ))}
                     </div>
@@ -152,7 +180,7 @@ const SubmitTryout = ({
                     </button>
                     <button
                       className={`h-full w-full rounded-xl bg-main text-white duration-300 active:bg-main md:hover:bg-main-hover ${
-                        hasSubmitted ? 'cursor-not-allowed opacity-50' : ''
+                        hasSubmitted ? "cursor-not-allowed opacity-50" : ""
                       }`}
                       onClick={() => {
                         if (notSure.length > 0) setStep(2);
@@ -184,7 +212,7 @@ const SubmitTryout = ({
                       {notSure.map((item, i) => (
                         <p key={i}>
                           {item.number}
-                          {i !== notSure.length - 1 && ','}
+                          {i !== notSure.length - 1 && ","}
                         </p>
                       ))}
                     </div>
@@ -199,7 +227,7 @@ const SubmitTryout = ({
                   </button>
                   <button
                     className={`w-full rounded-xl bg-main py-3 text-white duration-300 active:bg-main-hover ${
-                      hasSubmitted ? 'cursor-not-allowed opacity-50' : ''
+                      hasSubmitted ? "cursor-not-allowed opacity-50" : ""
                     }`}
                     onClick={handleSubmit}
                     disabled={hasSubmitted}

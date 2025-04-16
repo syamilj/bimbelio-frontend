@@ -630,13 +630,14 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
   >();
 
   useEffect(() => {
-    getGeneral("/payment/getPaymentInProses", {
+    if (!session) return;
+    getGeneral(`/payment/getPaymentInProses?userId=${session?.user.id}`, {
       setData: setData,
     });
-    getGeneral("/user/getCurrentLimitation", {
+    getGeneral(`/user/getCurrentLimitation?userId=${session?.user.id}`, {
       setData: setLimitaionUsed,
     });
-  }, []);
+  }, [session]);
 
   console.log({ test: data });
 

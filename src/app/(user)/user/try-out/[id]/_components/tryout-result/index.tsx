@@ -1,23 +1,27 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import LoaderEyeAnimation from '@/components/ui/loading/loading-bounce';
-import LoadingPageWithText from '@/components/ui/spinner';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toaster } from '@/components/ui/toaster';
-import { getDateString, getHoursDetail } from '@/lib/utils';
-import { IconDocumentAdmin, IconTabsQuiz, IconTimer2 } from '@/styles/icon';
-import { api } from '@/trpc/react';
-import { TryoutCategory, TryoutQuestion, TryoutSession } from '@prisma/client';
-import { Sparkles } from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import CountdownResult from '../countdown-result';
-import { AnalisisTab } from './_component/analisis-tab';
-import Header from './_component/header';
-import { ReviewTab } from './_component/review-tab';
-import { RingkasanTab } from './_component/ringkasan-tab';
+import { Button } from "@/components/ui/button";
+import LoaderEyeAnimation from "@/components/ui/loading/loading-bounce";
+import LoadingPageWithText from "@/components/ui/spinner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toaster } from "@/components/ui/toaster";
+import { getDateString, getHoursDetail } from "@/lib/utils";
+import { IconDocumentAdmin, IconTabsQuiz, IconTimer2 } from "@/styles/icon";
+import {
+  TryoutCategory,
+  TryoutQuestion,
+  TryoutSession,
+} from "@/types/database";
+import { Sparkles } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import CountdownResult from "../countdown-result";
+import { AnalisisTab } from "./_component/analisis-tab";
+import Header from "./_component/header";
+import { ReviewTab } from "./_component/review-tab";
+import { RingkasanTab } from "./_component/ringkasan-tab";
+import { useSession } from "@/components/provider/session-provider-auth";
+import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
 
 interface SessionProps extends TryoutSession {
   TryoutCategory: TryoutCategory;
@@ -97,7 +101,7 @@ interface ChoiceAnalisis {
   }[];
 }
 
-type TabsProps = 'ringkasan' | 'review' | 'analisis';
+type TabsProps = "ringkasan" | "review" | "analisis";
 
 export default function TryoutResult({
   sessionData,
@@ -106,78 +110,149 @@ export default function TryoutResult({
   resultDate,
 }: Props) {
   const pathname = usePathname();
-  const isTesting = pathname?.toLowerCase().includes('testing') || false;
+  const isTesting = pathname?.toLowerCase().includes("testing") || false;
   const { data: session } = useSession();
   const router = useRouter();
   // const { query } = router;
   // const tab = query.tab as TabsProps;
   const searchParams = useSearchParams();
-  const tab = searchParams?.get('tab') as TabsProps;
+  const tab = searchParams?.get("tab") as TabsProps;
 
   const currentData = new Date();
 
-  const [tabs, setTabs] = useState<TabsProps>('review');
+  const [tabs, setTabs] = useState<TabsProps>("review");
   const [resultIndex, setResultIndex] = useState<number>(0);
 
   const [TestAgainTryoutLoading, setTestAgainTryoutLoading] =
     useState<boolean>(false);
 
   const sessionId =
-    sessionData && sessionData.length > 0 ? sessionData[resultIndex].id : '';
+    sessionData && sessionData.length > 0 ? sessionData[resultIndex].id : "";
 
-  const { mutateAsync: TestAgainTryout } = api.tryout.testAgain.useMutation({
-    onSuccess: async () => {
-      window.location.reload();
-      setTestAgainTryoutLoading(false);
-    },
-    onError() {
-      toaster({
-        title: 'Gagal',
-        condition: 'warning',
-        description: 'Coba Lagi!',
-        duration: 3000,
-      });
-      setTestAgainTryoutLoading(false);
-    },
-  });
+  // const { mutateAsync: TestAgainTryout } = api.tryout.testAgain.useMutation({
+  //   onSuccess: async () => {
+  //     window.location.reload();
+  //     setTestAgainTryoutLoading(false);
+  //   },
+  //   onError() {
+  //     toaster({
+  //       title: "Gagal",
+  //       condition: "warning",
+  //       description: "Coba Lagi!",
+  //       duration: 3000,
+  //     });
+  //     setTestAgainTryoutLoading(false);
+  //   },
+  // });
 
-  const {
-    data: unlockTryoutDbs,
-    isLoading: unlockTryoutIsLoading,
-    isError: unlockTryoutIsError,
-  } = api.tryout.getTryoutUnlockByTryoutId.useQuery(
-    {
-      tryoutId,
-    },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const TestAgainTryout = async (payload: {
+    userId: string;
+    tryoutId: string;
+  }) => {
+    await mutateGeneral("/tryout/testAgain", {
+      payload,
+      type: "post",
+      onSuccess() {
+        setTestAgainTryoutLoading(false);
+      },
+      onError() {
+        setTestAgainTryoutLoading(false);
+      },
+    });
+  };
+
+  // const {
+  //   data: unlockTryoutDbs,
+  //   isLoading: unlockTryoutIsLoading,
+  //   isError: unlockTryoutIsError,
+  // } = api.tryout.getTryoutUnlockByTryoutId.useQuery(
+  //   {
+  //     tryoutId,
+  //   },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //   }
+  // );
+
+  const [unlockTryoutDbs, setUnlockTryoutDbs] = useState<any>();
+  const [unlockTryoutIsLoading, setUnlockTryoutIsLoading] =
+    useState<boolean>(true);
+  const [unlockTryoutIsError, setUnlockTryoutIsError] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    getGeneral(
+      `/tryout/getTryoutUnlockByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}`,
+      {
+        setData: setUnlockTryoutDbs,
+        setLoading: setUnlockTryoutIsLoading,
+        onError() {
+          setUnlockTryoutIsError(true);
+        },
+      }
+    );
+  }, [session, tryoutId]);
 
   const unlockTryout =
-    session && session.user.role !== 'USER' ? true : unlockTryoutDbs || false;
+    session && session.user.role !== "USER" ? true : unlockTryoutDbs || false;
 
   console.log({ unlockTryout, unlockTryoutDbs, session });
 
-  const {
-    data: sessionResult,
-    isLoading: sessionResultIsLoading,
-    isError: sessionResultIsError,
-  } = api.tryoutSession.getTryoutSessionResult.useQuery(
-    { sessionId: sessionId },
-    { refetchOnWindowFocus: false },
-  );
+  // const {
+  //   data: sessionResult,
+  //   isLoading: sessionResultIsLoading,
+  //   isError: sessionResultIsError,
+  // } = api.tryoutSession.getTryoutSessionResult.useQuery(
+  //   { sessionId: sessionId },
+  //   { refetchOnWindowFocus: false }
+  // );
+
+  const [sessionResult, setSessionResult] = useState<any>();
+  const [sessionResultIsLoading, setSessionResultIsLoading] =
+    useState<boolean>(true);
+  const [sessionResultIsError, setSessionResultIsError] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    getGeneral(
+      `/tryoutSession/getTryoutSessionResult?userId=${session?.user.id}&sessionId=${sessionId}`,
+      {
+        setData: setSessionResult,
+        setLoading: setSessionResultIsLoading,
+        onError() {
+          setSessionResultIsError(true);
+        },
+      }
+    );
+  }, [session, sessionId]);
 
   console.log({ sessionResult });
 
-  const {
-    data: ResultData,
-    isLoading: ResultDataIsLoading,
-    isError: ResultDataIsError,
-  } = api.tryout.getAnalisisByTryoutId.useQuery(
-    { tryoutId },
-    { refetchOnWindowFocus: false },
-  );
+  // const {
+  //   data: ResultData,
+  //   isLoading: ResultDataIsLoading,
+  //   isError: ResultDataIsError,
+  // } = api.tryout.getAnalisisByTryoutId.useQuery(
+  //   { tryoutId },
+  //   { refetchOnWindowFocus: false }
+  // );
+
+  const [ResultData, setResultData] = useState<any>();
+  const [ResultDataIsLoading, setResultDataIsLoading] = useState<boolean>(true);
+  const [ResultDataIsError, setResultDataIsError] = useState<boolean>(false);
+
+  useEffect(() => {
+    getGeneral(
+      `/tryout/getAnalisisByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}`,
+      {
+        setData: setResultData,
+        setLoading: setResultDataIsLoading,
+        onError() {
+          setResultDataIsError(true);
+        },
+      }
+    );
+  }, [session, tryoutId]);
 
   useEffect(() => {
     // router.push({
@@ -204,7 +279,7 @@ export default function TryoutResult({
   }
 
   if (ResultDataIsError || sessionResultIsError || unlockTryoutIsError) {
-    return 'Error';
+    return "Error";
   }
 
   if (
@@ -231,36 +306,25 @@ export default function TryoutResult({
         loading={TestAgainTryoutLoading}
         heading="Mereset Data Tryout..."
       />
-      <Header
-        current={0}
-        total={-1}
-        name={''}
-        done
-      />
+      <Header current={0} total={-1} name={""} done />
       {/* <h1 className="text-4xl font-bold mb-6 text-center">
       Hasil Try Out SNBT/UTBK TutorSNBT
     </h1> */}
-      <Tabs
-        value={tabs}
-        className="w-full"
-      >
+      <Tabs value={tabs} className="w-full">
         <div className="flex w-full justify-between mb-8 ">
           <TabsList className="flex w-fit gap-2">
             <TabsTrigger
               value="ringkasan"
               className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              onClick={() => setTabs('ringkasan')}
+              onClick={() => setTabs("ringkasan")}
             >
-              <IconDocumentAdmin
-                active
-                w={15}
-              />
+              <IconDocumentAdmin active w={15} />
               <p>Ringkasan</p>
             </TabsTrigger>
             <TabsTrigger
               value="review"
               className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              onClick={() => setTabs('review')}
+              onClick={() => setTabs("review")}
             >
               <IconTabsQuiz w={15} />
               <p>Review Soal</p>
@@ -268,33 +332,27 @@ export default function TryoutResult({
             <TabsTrigger
               value="analisis"
               className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              onClick={() => setTabs('analisis')}
+              onClick={() => setTabs("analisis")}
             >
               <Sparkles className="mr-2 h-4 w-4" />
               <p>Analisis</p>
             </TabsTrigger>
           </TabsList>
-          {isTesting && session?.user.role === 'ADMIN' && (
+          {isTesting && session?.user.role === "ADMIN" && (
             <Button
               onClick={() => {
                 setTestAgainTryoutLoading(true);
-                TestAgainTryout({ tryoutId });
+                TestAgainTryout({ tryoutId, userId: session.user.id });
               }}
             >
               Test Again
             </Button>
           )}
         </div>
-        <TabsContent
-          value="ringkasan"
-          className="md:px-[1rem]"
-        >
+        <TabsContent value="ringkasan" className="md:px-[1rem]">
           <RingkasanTab ResultData={ResultData} />
         </TabsContent>
-        <TabsContent
-          value="review"
-          className="md:px-[1rem]"
-        >
+        <TabsContent value="review" className="md:px-[1rem]">
           <ReviewTab
             sessionResult={sessionResult}
             setResultIndex={setResultIndex}
@@ -302,10 +360,7 @@ export default function TryoutResult({
             sessionOptions={sessionOptions}
           />
         </TabsContent>
-        <TabsContent
-          value="analisis"
-          className="md:px-[1rem]"
-        >
+        <TabsContent value="analisis" className="md:px-[1rem]">
           <AnalisisTab
             tryoutId={tryoutId}
             ResultData={ResultData}
@@ -324,18 +379,10 @@ interface CoundowntShowResultProps {
 const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
   return (
     <div className="container mx-auto mt-[48px] px-4 py-6 md:mt-[52px]">
-      <Header
-        current={0}
-        total={-1}
-        name={''}
-        done
-      />
+      <Header current={0} total={-1} name={""} done />
       <div className="flex flex-col gap-[1rem] overflow-y-auto px-[1rem] pb-[2rem] pt-[1rem]">
         <div className="flex flex-col items-center gap-[1rem] rounded-[1rem] bg-white py-[1rem]">
-          <IconTimer2
-            className="my-[.5rem] text-main-gray-text"
-            w={62}
-          />
+          <IconTimer2 className="my-[.5rem] text-main-gray-text" w={62} />
           <p className="font-semibold">Penilaian dapat dilihat dalam</p>
           <div className="flex flex-col items-center">
             <p className="text-[1.4rem] font-medium text-orange-500/80">

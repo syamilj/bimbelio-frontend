@@ -1,11 +1,15 @@
-import { toaster } from '@/components/ui/toaster';
-import { api } from '@/trpc/react';
-import { useEffect, useRef, useState } from 'react';
+import { useSession } from "@/components/provider/session-provider-auth";
+import { toaster } from "@/components/ui/toaster";
+import { mutateGeneral } from "@/lib/fetch-helper";
+import { useEffect, useRef, useState } from "react";
 
 const timeFormat = (time: number) => {
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time - minutes * 60);
-  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+    2,
+    "0"
+  )}`;
 };
 
 export default function CountDownRestTime({
@@ -15,30 +19,47 @@ export default function CountDownRestTime({
   seconds: number;
   sessionId: string;
 }) {
+  const { data: session } = useSession();
+
   const [countdown, setCountdown] = useState<number>(seconds);
   const [execute, setExecute] = useState<boolean>(false);
   const timerId = useRef<any>(null);
 
-  const trpc = api.useUtils();
+  // const trpc = api.useUtils();
 
-  const { mutate: createTryoutSessionParticipant } =
-    api.tryoutSession.createTryoutSessionParticipant.useMutation({
+  // const { mutate: createTryoutSessionParticipant } =
+  //   api.tryoutSession.createTryoutSessionParticipant.useMutation({
+  //     onSuccess() {
+  //       trpc.tryout.getTryoutById.refetch();
+  //     },
+  //     onError() {
+  //       // toast({
+  //       //     variant: "destructive",
+  //       //     title: 'Error',
+  //       // });
+  //       toaster({
+  //         title: "Upss!",
+  //         description: "Error",
+  //         condition: "warning",
+  //         duration: 2000,
+  //       });
+  //     },
+  //   });
+
+  const createTryoutSessionParticipant = async (payload: {
+    sessionId: string;
+    userId: string;
+  }) => {
+    await mutateGeneral("/tryoutSession/createTryoutSessionParticipant", {
+      payload,
+      type: "post",
+      toast: { errorMsg: "Error" },
       onSuccess() {
-        trpc.tryout.getTryoutById.refetch();
-      },
-      onError() {
-        // toast({
-        //     variant: "destructive",
-        //     title: 'Error',
-        // });
-        toaster({
-          title: 'Upss!',
-          description: 'Error',
-          condition: 'warning',
-          duration: 2000,
-        });
+        //       trpc.tryout.getTryoutById.refetch();
+        window.location.reload();
       },
     });
+  };
 
   useEffect(() => {
     timerId.current = setInterval(() => {
@@ -57,9 +78,9 @@ export default function CountDownRestTime({
       //     title: 'Waktu istirahat telah selesai!!',
       // });
       toaster({
-        title: 'Upss!',
-        description: 'Waktu istirahat telah selesai!!',
-        condition: 'warning',
+        title: "Upss!",
+        description: "Waktu istirahat telah selesai!!",
+        condition: "warning",
         duration: 2000,
       });
       setExecute(true);
@@ -68,7 +89,10 @@ export default function CountDownRestTime({
 
   useEffect(() => {
     if (execute) {
-      createTryoutSessionParticipant({ sessionId: sessionId });
+      createTryoutSessionParticipant({
+        sessionId: sessionId,
+        userId: session?.user.id || "",
+      });
     }
   }, [execute]);
 

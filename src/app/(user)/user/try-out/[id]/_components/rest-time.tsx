@@ -1,15 +1,16 @@
-'use client';
+"use client";
 
-import ReactMarkdown from '@/components/ui/react-markdown';
-import { SpinnerPageCentered } from '@/components/ui/spinner';
-import { cn, replaceLatexNotation, TncTryout } from '@/lib/utils';
-import { api } from '@/trpc/react';
-import { TryoutCategory, TryoutSession } from '@prisma/client';
-import 'katex/dist/katex.min.css';
-import { Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import CountDownRestTime from './countdown-rest-time';
-import Header from './header';
+import ReactMarkdown from "@/components/ui/react-markdown";
+import { SpinnerPageCentered } from "@/components/ui/spinner";
+import { cn, replaceLatexNotation, TncTryout } from "@/lib/utils";
+import { TryoutCategory, TryoutSession } from "@/types/database";
+import "katex/dist/katex.min.css";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import CountDownRestTime from "./countdown-rest-time";
+import Header from "./header";
+import { mutateGeneral } from "@/lib/fetch-helper";
+import { useSession } from "@/components/provider/session-provider-auth";
 
 interface SessionWithCategory extends TryoutSession {
   TryoutCategory: TryoutCategory;
@@ -29,40 +30,59 @@ const RestTime = ({
   sessionData,
   restTime,
 }: Props) => {
-  const trpc = api.useUtils();
+  const { data: session } = useSession();
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { mutate: createTryoutSessionParticipant } =
-    api.tryoutSession.createTryoutSessionParticipant.useMutation({
+  // const { mutate: createTryoutSessionParticipant } =
+  //   api.tryoutSession.createTryoutSessionParticipant.useMutation({
+  //     onSuccess() {
+  //       trpc.tryout.getTryoutById.refetch();
+  //     },
+  //     onError() {
+  //       setLoading(false);
+  //     },
+  //   });
+  const createTryoutSessionParticipant = async (payload: {
+    sessionId: string;
+    userId: string;
+  }) => {
+    await mutateGeneral("/tryoutSession/createTryoutSessionParticipant", {
+      payload,
+      type: "post",
+      // onSuccess: refresh,
       onSuccess() {
-        trpc.tryout.getTryoutById.refetch();
+        //       trpc.tryout.getTryoutById.refetch();
+        window.location.reload();
       },
       onError() {
         setLoading(false);
       },
     });
-  const [tnc, setTnc] = useState<string>('');
+  };
+
+  const [tnc, setTnc] = useState<string>("");
 
   useEffect(() => {
     if (sessionData) {
       const data = TncTryout.find(
         (item) =>
           item.category ===
-          sessionData[currentIndexSession]?.TryoutCategory.name.toLowerCase(),
+          sessionData[currentIndexSession]?.TryoutCategory.name.toLowerCase()
       );
       if (data) setTnc(data.value);
-      else setTnc('.....');
+      else setTnc(".....");
     }
   }, [sessionData, currentIndexSession]);
 
-  if (!sessionData || sessionData.length === 0 || tnc === '')
+  if (!sessionData || sessionData.length === 0 || tnc === "")
     return <SpinnerPageCentered />;
 
   const handleStart = () => {
     setLoading(true);
     createTryoutSessionParticipant({
       sessionId: sessionData[currentIndexSession].id,
+      userId: session?.user.id || "",
     });
   };
 
@@ -72,7 +92,7 @@ const RestTime = ({
     const dateStart = new Date(
       sessionData[
         currentIndexSession - 1
-      ].TryoutSessionParticipant[0].endSession,
+      ].TryoutSessionParticipant[0].endSession
     ).getTime();
 
     const diffInMilliseconds = dateNow - dateStart;
@@ -83,11 +103,7 @@ const RestTime = ({
 
   return (
     <>
-      <Header
-        current={0}
-        total={-1}
-        name={tryoutName}
-      />
+      <Header current={0} total={-1} name={tryoutName} />
       <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-workspace pt-14 md:pt-4">
         <form
           className="flex h-full w-full flex-col justify-between gap-4 bg-white px-8 py-8 md:h-auto md:max-w-2xl md:justify-start md:rounded-3xl md:shadow-lg"
@@ -127,7 +143,7 @@ const RestTime = ({
                         <p
                           className={cn(
                             i < currentIndexSession &&
-                              'text-main-gray-text line-through',
+                              "text-main-gray-text line-through"
                           )}
                         >
                           {item.TryoutCategory.name}
@@ -154,8 +170,8 @@ const RestTime = ({
             type="submit"
             disabled={loading}
             className={cn(
-              'flex h-10 w-full items-center justify-center rounded-2xl bg-main text-white transition-colors duration-200 md:hover:bg-main-hover',
-              loading && 'cursor-default bg-main-hover',
+              "flex h-10 w-full items-center justify-center rounded-2xl bg-main text-white transition-colors duration-200 md:hover:bg-main-hover",
+              loading && "cursor-default bg-main-hover"
             )}
           >
             {loading ? (

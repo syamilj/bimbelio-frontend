@@ -136,3 +136,5 @@ export type Pricing = {
   updatedAt: Date;
   price: number;
 };
+
+export type QuestionTypeEnum = "OBJECTIVE_5" | "TRUE_FALSE" | "SHORT_ANSWER";
