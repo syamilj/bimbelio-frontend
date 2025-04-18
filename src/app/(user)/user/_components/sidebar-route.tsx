@@ -1,9 +1,10 @@
 //src/pages/user/_components/SidebarRoute.tsx
 
-'use client';
-import { useAppContext } from '@/components/provider/provider-app';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+"use client";
+import AnimatedGradientText from "@/components/magicui/animated-gradient-text";
+import { useAppContext } from "@/components/provider/provider-app";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import {
   IconArrowTwk,
   IconCourse,
@@ -11,17 +12,18 @@ import {
   IconExplore,
   IconHome,
   IconTryOut,
-} from '@/styles/icon';
+} from "@/styles/icon";
 import {
   AlignEndHorizontal,
   BotIcon,
   ChevronDown,
   ChevronUp,
-} from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useMedia } from 'use-media';
+  Sparkles,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useMedia } from "use-media";
 
 const SidebarRoute = ({
   category,
@@ -35,24 +37,21 @@ const SidebarRoute = ({
   const { setSidebarMobile } = useAppContext();
 
   useEffect(() => {
-    if (pathname?.includes('workspace')) {
+    if (pathname?.includes("workspace")) {
       setShowBahanAjar(true);
     }
     // if (pathname?.includes('course')) {
     //   setShowCourse(true);
     // }
   }, []);
-  const isMobile = useMedia({ maxWidth: '768px' });
+  const isMobile = useMedia({ maxWidth: "768px" });
 
   return (
     <div className="relative">
-      <div
-        id="navigasi"
-        className="flex flex-col gap-[.5rem]"
-      >
+      <div id="navigasi" className="flex flex-col gap-[.5rem]">
         <Link
           className="relative"
-          href={'/user/dashboard'}
+          href={"/user/dashboard"}
           passHref
           onClick={() => {
             if (isMobile) {
@@ -60,46 +59,30 @@ const SidebarRoute = ({
             }
           }}
         >
-          {/* <div className="absolute left-[.5rem] right-[.5rem] top-0 h-full rounded-[.5rem] bg-[#b6b9c335]">
-            {!minimizeSidebar && (
-              <div
-                className={cn(
-                  'absolute right-[.5rem] top-1 mx-auto flex items-center gap-1 rounded-full border bg-white p-1 px-[.5rem] text-[.7rem] shadow-md',
-                )}
-              >
-                <Sparkles className="inline-block h-[.7rem] w-[.7rem] fill-current text-yellow-400" />
-                <span className="font-bold text-yellow-400">
-                  <AnimatedGradientText className="animate-gradient bg-gradient-to-r from-[#ffaa40] via-main to-[#ffaa40] text-[.7rem]">
-                    Coming soon!
-                  </AnimatedGradientText>
-                </span>
-              </div>
-            )}
-          </div> */}
           <div
             className={`flex items-center gap-[.8rem] ${
-              pathname?.includes('dashboard') && 'bg-main'
+              pathname?.includes("dashboard") && "bg-main"
             } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
-              minimizeSidebar && 'justify-center'
+              minimizeSidebar && "justify-center"
             } text-main-gray-text ${
-              !pathname?.includes('dashboard') &&
-              'md:hover:bg-main-gray-input md:hover:text-main-gray-text'
+              !pathname?.includes("dashboard") &&
+              "md:hover:bg-main-gray-input md:hover:text-main-gray-text"
             } duration-300`}
           >
             <IconHome
               className={`${
-                pathname?.includes('dashboard')
-                  ? 'font-semibold text-white'
-                  : ' '
+                pathname?.includes("dashboard")
+                  ? "font-semibold text-white"
+                  : " "
               }`}
-              active={pathname?.includes('dashboard') ? true : false}
+              active={pathname?.includes("dashboard") ? true : false}
             />
             {!minimizeSidebar && (
               <span
                 className={`text-sm ${
-                  pathname?.includes('dashboard')
-                    ? 'font-medium text-white'
-                    : 'font-medium'
+                  pathname?.includes("dashboard")
+                    ? "font-medium text-white"
+                    : "font-medium"
                 }`}
               >
                 Dashboard
@@ -107,77 +90,101 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
-        <Link
+        <div
           className="relative"
-          href={'/user/course'}
-          passHref
+          // href={"/user/course"}
+          // passHref
           onClick={() => {
             if (isMobile) {
               setSidebarMobile(false);
             }
           }}
         >
+          <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
           <div
-            className={`flex items-center gap-[.8rem] ${pathname?.includes('course') && 'bg-main'} mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${minimizeSidebar && 'justify-center'} text-main-gray-text ${!pathname?.includes('course') && 'md:hover:bg-main-gray-input md:hover:text-main-gray-text'} duration-300`}
+            className={`flex items-center gap-[.8rem] ${
+              pathname?.includes("course") && "bg-main"
+            } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+              minimizeSidebar && "justify-center"
+            } text-main-gray-text ${
+              !pathname?.includes("course") &&
+              "md:hover:bg-main-gray-input md:hover:text-main-gray-text"
+            } duration-300`}
           >
             {}
             <IconCourse
-              className={`${pathname?.includes('course') ? 'font-semibold text-white' : ' '}`}
-              active={pathname?.includes('course') ? true : false}
+              className={`${
+                pathname?.includes("course") ? "font-semibold text-white" : " "
+              }`}
+              active={pathname?.includes("course") ? true : false}
             />
             {!minimizeSidebar && (
               <span
-                className={`text-sm ${pathname?.includes('course') ? 'font-medium text-white' : 'font-medium'}`}
+                className={`text-sm ${
+                  pathname?.includes("course")
+                    ? "font-medium text-white"
+                    : "font-medium"
+                }`}
               >
                 Belajar
               </span>
             )}
           </div>
-        </Link>
-        <Link
+        </div>
+        <div
           className="relative"
-          href={'/user/explore'}
-          passHref
+          // href={"/user/explore"}
+          // passHref
           onClick={() => {
             if (isMobile) {
               setSidebarMobile(false);
             }
           }}
         >
-          {/* <div className="absolute top-0 left-[.5rem] bg-[#b6b9c39c] right-[.5rem] rounded-[.5rem] h-full">
-            {!minimizeSidebar && (
-              <div className="absolute top-[.5rem] right-[.5rem] text-[.7rem] bg-black rounded-[1rem] text-white px-[.5rem]">
-                Coming soon!
-              </div>
-            )}
-          </div> */}
+          <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
           <div
-            className={`flex items-center gap-[.8rem] ${pathname?.includes('explore') && 'bg-main'} mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${minimizeSidebar && 'justify-center'} text-main-gray-text ${!pathname?.includes('explore') && 'md:hover:bg-main-gray-input md:hover:text-main-gray-text'} duration-300`}
+            className={`flex items-center gap-[.8rem] ${
+              pathname?.includes("explore") && "bg-main"
+            } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+              minimizeSidebar && "justify-center"
+            } text-main-gray-text ${
+              !pathname?.includes("explore") &&
+              "md:hover:bg-main-gray-input md:hover:text-main-gray-text"
+            } duration-300`}
           >
             {}
             <IconExplore
-              className={`${pathname?.includes('explore') ? 'font-semibold text-white' : ' '}`}
-              active={pathname?.includes('explore') ? true : false}
+              className={`${
+                pathname?.includes("explore") ? "font-semibold text-white" : " "
+              }`}
+              active={pathname?.includes("explore") ? true : false}
             />
             {!minimizeSidebar && (
               <span
-                className={`text-sm ${pathname?.includes('explore') ? 'font-medium text-white' : 'font-medium'}`}
+                className={`text-sm ${
+                  pathname?.includes("explore")
+                    ? "font-medium text-white"
+                    : "font-medium"
+                }`}
               >
                 Telusuri
               </span>
             )}
           </div>
-        </Link>
-        <div className={`${minimizeSidebar && 'flex justify-center'} relative`}>
-          {/* <div className="absolute top-0 left-[.5rem] bg-[#b6b9c39c] right-[.5rem] rounded-[.5rem] h-full">
-            {!minimizeSidebar && (
-              <div className="absolute top-[.5rem] right-[.5rem] text-[.7rem] bg-black rounded-[1rem] text-white px-[.5rem]">
-                Coming soon!
-              </div>
-            )}
-          </div> */}
+        </div>
+        <div className={`${minimizeSidebar && "flex justify-center"} relative`}>
+          <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
           <div
-            className={`mx-[.5rem] flex cursor-pointer items-center justify-between rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${minimizeSidebar && pathname?.includes('workspace') && 'bg-main'} ${!minimizeSidebar && pathname?.includes('workspace') ? 'text-main' : 'text-main-gray-text'} ${!pathname?.includes('workspace') && 'md:hover:bg-main-gray-input md:hover:text-main-gray-text'} duration-300`}
+            className={`mx-[.5rem] flex cursor-pointer items-center justify-between rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+              minimizeSidebar && pathname?.includes("workspace") && "bg-main"
+            } ${
+              !minimizeSidebar && pathname?.includes("workspace")
+                ? "text-main"
+                : "text-main-gray-text"
+            } ${
+              !pathname?.includes("workspace") &&
+              "md:hover:bg-main-gray-input md:hover:text-main-gray-text"
+            } duration-300`}
             onClick={() => {
               if (!minimizeSidebar) {
                 setShowBahanAjar(!showBahanAjar);
@@ -190,9 +197,13 @@ const SidebarRoute = ({
             <div className="flex items-center space-x-3">
               {}
               <IconDocument
-                className={`${minimizeSidebar && pathname?.includes('workspace') && 'text-white'} ${!minimizeSidebar && ''}`}
+                className={`${
+                  minimizeSidebar &&
+                  pathname?.includes("workspace") &&
+                  "text-white"
+                } ${!minimizeSidebar && ""}`}
                 active={
-                  minimizeSidebar && pathname?.includes('workspace')
+                  minimizeSidebar && pathname?.includes("workspace")
                     ? true
                     : false
                 }
@@ -215,14 +226,16 @@ const SidebarRoute = ({
         {showBahanAjar && !minimizeSidebar && (
           <div className="mt-[-.5rem] flex w-full flex-col items-end gap-[.2rem]">
             {category?.map((item: any) => (
-              <div
-                key={item.id}
-                className="w-full"
-              >
+              <div key={item.id} className="w-full">
                 <Link
                   key={item.id}
                   href={`/user/workspace/${item.id}`}
-                  className={`ml-[1rem] mr-[.5rem] flex cursor-pointer items-center gap-[1rem] px-4 py-[.5rem] ${pathname?.includes(`workspace/${item.id}`) && 'bg-main'} rounded-[.8rem] text-main-gray-text md:rounded-[.3rem] ${!pathname?.includes(`workspace/${item.id}`) && 'md:hover:bg-main-gray-input md:hover:text-main-gray-text'} duration-300`}
+                  className={`ml-[1rem] mr-[.5rem] flex cursor-pointer items-center gap-[1rem] px-4 py-[.5rem] ${
+                    pathname?.includes(`workspace/${item.id}`) && "bg-main"
+                  } rounded-[.8rem] text-main-gray-text md:rounded-[.3rem] ${
+                    !pathname?.includes(`workspace/${item.id}`) &&
+                    "md:hover:bg-main-gray-input md:hover:text-main-gray-text"
+                  } duration-300`}
                   onClick={() => {
                     if (isMobile) {
                       setSidebarMobile(false);
@@ -231,10 +244,15 @@ const SidebarRoute = ({
                 >
                   <IconArrowTwk
                     w={10}
-                    className={`bx ${pathname?.includes(`workspace/${item.id}`) && 'bxs-layer text-white'}`}
+                    className={`bx ${
+                      pathname?.includes(`workspace/${item.id}`) &&
+                      "bxs-layer text-white"
+                    }`}
                   />
                   <p
-                    className={`text-sm ${pathname?.includes(`workspace/${item.id}`) && 'text-white'} font-medium capitalize duration-300`}
+                    className={`text-sm ${
+                      pathname?.includes(`workspace/${item.id}`) && "text-white"
+                    } font-medium capitalize duration-300`}
                   >
                     {item.name}
                   </p>
@@ -244,7 +262,7 @@ const SidebarRoute = ({
           </div>
         )}
         <Link
-          href={'/user/try-out'}
+          href={"/user/try-out"}
           passHref
           onClick={() => {
             if (isMobile) {
@@ -253,16 +271,29 @@ const SidebarRoute = ({
           }}
         >
           <div
-            className={`flex items-center gap-[.8rem] ${pathname?.includes('try-out') && 'bg-main'} mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${minimizeSidebar && 'justify-center'} text-main-gray-text ${!pathname?.includes('try-out') && 'md:hover:bg-main-gray-input md:hover:text-main-gray-text'} duration-300`}
+            className={`flex items-center gap-[.8rem] ${
+              pathname?.includes("try-out") && "bg-main"
+            } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+              minimizeSidebar && "justify-center"
+            } text-main-gray-text ${
+              !pathname?.includes("try-out") &&
+              "md:hover:bg-main-gray-input md:hover:text-main-gray-text"
+            } duration-300`}
           >
             {}
             <IconTryOut
-              className={`${pathname?.includes('try-out') ? 'font-semibold text-white' : ' '}`}
-              active={pathname?.includes('try-out') ? true : false}
+              className={`${
+                pathname?.includes("try-out") ? "font-semibold text-white" : " "
+              }`}
+              active={pathname?.includes("try-out") ? true : false}
             />
             {!minimizeSidebar && (
               <span
-                className={`text-sm ${pathname?.includes('try-out') ? 'font-medium text-white' : 'font-medium'}`}
+                className={`text-sm ${
+                  pathname?.includes("try-out")
+                    ? "font-medium text-white"
+                    : "font-medium"
+                }`}
               >
                 Try Out
               </span>
@@ -270,7 +301,7 @@ const SidebarRoute = ({
           </div>
         </Link>
         <Link
-          href={'/user/leaderboard'}
+          href={"/user/leaderboard"}
           passHref
           onClick={() => {
             if (isMobile) {
@@ -279,15 +310,30 @@ const SidebarRoute = ({
           }}
         >
           <div
-            className={`flex items-center gap-[.8rem] ${pathname?.includes('leaderboard') && 'bg-main'} mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${minimizeSidebar && 'justify-center'} text-main-gray-text ${!pathname?.includes('leaderboard') && 'md:hover:bg-main-gray-input md:hover:text-main-gray-text'} duration-300`}
+            className={`flex items-center gap-[.8rem] ${
+              pathname?.includes("leaderboard") && "bg-main"
+            } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+              minimizeSidebar && "justify-center"
+            } text-main-gray-text ${
+              !pathname?.includes("leaderboard") &&
+              "md:hover:bg-main-gray-input md:hover:text-main-gray-text"
+            } duration-300`}
           >
             {}
             <AlignEndHorizontal
-              className={`${pathname?.includes('leaderboard') ? ' font-medium text-white' : 'stroke-[1.6] w-5 h-5'}`}
+              className={`${
+                pathname?.includes("leaderboard")
+                  ? " font-medium text-white"
+                  : "stroke-[1.6] w-5 h-5"
+              }`}
             />
             {!minimizeSidebar && (
               <span
-                className={`text-sm ${pathname?.includes('leaderboard') ? 'font-medium text-white' : 'font-medium'}`}
+                className={`text-sm ${
+                  pathname?.includes("leaderboard")
+                    ? "font-medium text-white"
+                    : "font-medium"
+                }`}
               >
                 Peringkat
               </span>
@@ -295,7 +341,7 @@ const SidebarRoute = ({
           </div>
         </Link>
         <Link
-          href={'/user/chat'}
+          href={"/user/chat"}
           passHref
           onClick={() => {
             if (isMobile) {
@@ -304,21 +350,36 @@ const SidebarRoute = ({
           }}
         >
           <div
-            className={`flex items-center gap-[.8rem] ${pathname?.includes('chat') && 'bg-main'} mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${minimizeSidebar && 'justify-center'} text-main-gray-text ${!pathname?.includes('chat') && 'md:hover:bg-main-gray-input md:hover:text-main-gray-text'} duration-300`}
+            className={`flex items-center gap-[.8rem] ${
+              pathname?.includes("chat") && "bg-main"
+            } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+              minimizeSidebar && "justify-center"
+            } text-main-gray-text ${
+              !pathname?.includes("chat") &&
+              "md:hover:bg-main-gray-input md:hover:text-main-gray-text"
+            } duration-300`}
           >
             {}
             <BotIcon
-              className={`${pathname?.includes('chat') ? ' text-white' : 'stroke-[1.6] w-5 h-5'}`}
+              className={`${
+                pathname?.includes("chat")
+                  ? " text-white"
+                  : "stroke-[1.6] w-5 h-5"
+              }`}
             />
             {!minimizeSidebar && (
               <span
-                className={`text-sm ${pathname?.includes('chat') ? 'font-medium text-white' : 'font-medium'}`}
+                className={`text-sm ${
+                  pathname?.includes("chat")
+                    ? "font-medium text-white"
+                    : "font-medium"
+                }`}
               >
                 Chat
                 <Badge
                   variant="secondary"
                   className={cn(
-                    'relative -top-2 -right-1 bg-yellow-400 hover:bg-yellow-400 px-1 py-0 text-xs font-bold text-blue-800',
+                    "relative -top-2 -right-1 bg-yellow-400 hover:bg-yellow-400 px-1 py-0 text-xs font-bold text-blue-800"
                   )}
                 >
                   AI
@@ -327,27 +388,6 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
-        {/* <div
-          className={`flex md:hidden gap-[.8rem] items-center ${pathname?.includes('riwayat') && 'bg-main'} mx-[.5rem] px-[1rem] py-[1rem] md:py-[.8rem] rounded-[1rem] md:rounded-[.5rem] transition-all duration-500 ease-in-out font-semibold cursor-pointer ${minimizeSidebar && 'justify-center'}`}
-          onClick={() => {
-            if (isMobile) {
-              setSidebarMobile(false);
-            }
-          }}
-        >
-          {}
-          <IconClock
-            className={`${pathname?.includes('riwayat') ? 'text-white' : ' text-main-gray-text2'}`}
-            active={pathname?.includes('riwayat') ? true : false}
-          />
-          {!minimizeSidebar && (
-            <span
-              className={`text-sm ${pathname?.includes('riwayat') ? 'text-white font-medium' : 'text-main-gray-text font-medium'}`}
-            >
-              Riwayat
-            </span>
-          )}
-        </div> */}
       </div>
       <div className="mx-[1rem] mt-[1rem] hidden h-[2px] w-[calc(100%-2rem)] bg-main-gray-input md:block" />
     </div>
@@ -355,3 +395,24 @@ const SidebarRoute = ({
 };
 
 export default SidebarRoute;
+
+const ComingSoonBadge = ({ minimizeSidebar }: { minimizeSidebar: boolean }) => {
+  return (
+    <div className="absolute top-0 left-0 w-full h-full bg-gray-600/20">
+      {!minimizeSidebar && (
+        <div
+          className={cn(
+            "absolute right-[.5rem] top-1 mx-auto flex items-center gap-1 rounded-full border bg-white p-1 px-[.5rem] text-[.7rem] shadow-md"
+          )}
+        >
+          <Sparkles className="inline-block h-[.7rem] w-[.7rem] fill-current text-yellow-400" />
+          <span className="font-bold text-yellow-400">
+            <AnimatedGradientText className="animate-gradient bg-gradient-to-r from-[#ffaa40] via-main to-[#ffaa40] text-[.7rem]">
+              Coming soon!
+            </AnimatedGradientText>
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};

@@ -56,7 +56,7 @@ const RegistrationTryOut = ({
   // });
 
   const createUserTo = async (data: any) => {
-    await mutateGeneral("url", {
+    await mutateGeneral("/user/createUserTryOut", {
       payload: data,
       type: "post",
       onSuccess: getUserTryout,

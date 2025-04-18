@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { useSession } from "./session-provider-auth";
 import { signOut } from "@/lib/auth-helper";
+import { mutateGeneral } from "@/lib/fetch-helper";
 
 export default function CheckSubscription({
   children,
@@ -52,59 +53,78 @@ export default function CheckSubscription({
 
   // const CheckSubscription = api.user.checkSubscription.useMutation();
 
-  // useEffect(() => {
-  //   const check = async () => {
-  //     try {
-  //       const res = await CheckSubscription.mutateAsync();
-  //       console.log("Subscription", res);
-  //       if (res?.status == 203) {
-  //         window.location.reload();
-  //       }
-  //       // if (res?.status === 202 || res?.status === 203) {
-  //       //   signOut();
-  //       // }
-  //       return;
-  //     } catch (error) {
-  //       console.log("Failed Check Subscription", error);
-  //       return;
-  //     }
-  //   };
-  //   if (session && checkSubs) {
-  //     check();
-  //     setCheckSubs(false);
-  //   }
-  // }, [session, checkSubs]);
+  const CheckSubscription = async () => {
+    const data = await mutateGeneral("/user/checkSubscription", {
+      payload: { userId: session?.user.id },
+      type: "post",
+      hideToast: true,
+    });
+    return data;
+  };
+
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const res = await CheckSubscription();
+        console.log("Subscription", res);
+        if (res?.status == 203) {
+          window.location.reload();
+        }
+        // if (res?.status === 202 || res?.status === 203) {
+        //   signOut();
+        // }
+        return;
+      } catch (error) {
+        console.log("Failed Check Subscription", error);
+        return;
+      }
+    };
+    if (session && checkSubs) {
+      check();
+      setCheckSubs(false);
+    }
+  }, [session, checkSubs]);
 
   // const checkPayment = api.payment.checkPayment.useMutation();
 
-  // const handleCheckPayment = useCallback(
-  //   async (order_id: string, transaction_status: string) => {
-  //     try {
-  //       const data = await checkPayment.mutateAsync(order_id);
-  //       if (
-  //         data &&
-  //         new Date(data?.expired_time) > new Date() &&
-  //         transaction_status === "settlement"
-  //       ) {
-  //         toaster({
-  //           title: "Pembelian Berhasil",
-  //           condition: "success",
-  //           description: "Pembelian berhasil dilakukan",
-  //         });
-  //         router.push(`${window.location.pathname}`);
-  //       }
-  //     } catch (error) {
-  //       router.push(`${window.location.pathname}`);
-  //     }
-  //   },
-  //   [checkPayment]
-  // );
+  const checkPayment = async (order_id: string) => {
+    const data = await mutateGeneral("/payment/checkPayment", {
+      payload: { order_id },
+      type: "post",
+      hideToast: true,
+      onSuccess() {
+        router.push(`${window.location.pathname}`);
+      },
+      onError() {
+        router.push(`${window.location.pathname}`);
+      },
+    });
+    return data;
+  };
 
-  // useEffect(() => {
-  //   if (order_id && transaction_status) {
-  //     handleCheckPayment(`${order_id}`, `${transaction_status}`);
-  //   }
-  // }, [order_id, transaction_status]);
+  const handleCheckPayment = useCallback(
+    async (order_id: string, transaction_status: string) => {
+      const data = await checkPayment(order_id);
+      if (
+        data &&
+        new Date(data?.expired_time) > new Date() &&
+        transaction_status === "settlement"
+      ) {
+        toaster({
+          title: "Pembelian Berhasil",
+          condition: "success",
+          description: "Pembelian berhasil dilakukan",
+        });
+      }
+    },
+    [checkPayment]
+  );
+
+  useEffect(() => {
+    if (order_id && transaction_status) {
+      handleCheckPayment(`${order_id}`, `${transaction_status}`);
+    }
+  }, [order_id, transaction_status]);
 
   return <>{children}</>;
 }

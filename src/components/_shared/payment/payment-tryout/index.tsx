@@ -7,6 +7,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toaster } from "../../../ui/toaster";
 import { Pricing, Tryout } from "@/types/database";
 import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
+import { useSession } from "@/components/provider/session-provider-auth";
 
 export const PaymentTryout = ({
   tryoutData,
@@ -17,6 +18,7 @@ export const PaymentTryout = ({
   show: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const { data: session } = useSession();
   const { setTransactionHistory } = useAppContext();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -43,14 +45,14 @@ export const PaymentTryout = ({
 
   // const addPayment = api.payment.buyTryoutPremium.useMutation();
 
-  const addPayment = async (payload: any) => {
-    let data: any = null;
-    await mutateGeneral("/payment/buyTryoutPremium", {
-      payload,
+  const addPayment = async (payload: {
+    titleTryout: string;
+    tryoutId: string;
+  }) => {
+    const data = await mutateGeneral("/payment/buyTryoutPremium", {
+      payload: { ...payload, userId: session?.user.id },
       type: "post",
-      onSuccess({ data: resData }) {
-        data = resData;
-      },
+      toast: { hideSuccess: true },
     });
     return data;
   };

@@ -190,10 +190,11 @@ export const mutateGeneral = async (
   if (more.onLoading) more.onLoading();
 
   let showToast = true;
-  if (more.hideToast === true) showToast = false;
+  // if (more.hideToast === true) showToast = false;
 
   try {
     if (more.toast?.hideSuccess === true) showToast = false;
+    else if (more.hideToast === true) showToast = false;
     else showToast = true;
     const res = await axiosInstance[type](url, payload);
     const resData = response(
@@ -205,9 +206,10 @@ export const mutateGeneral = async (
     if (more?.onSuccess) {
       await more.onSuccess(resData);
     }
-    return;
+    return resData.data || null;
   } catch (error) {
     if (more.toast?.hideError === true) showToast = false;
+    else if (more.hideToast === true) showToast = false;
     else showToast = true;
     const errData = responseError(
       error,

@@ -41,6 +41,7 @@ import {
   TryoutSessionParticipant,
 } from "@/types/database";
 import { Calendar, Check, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
@@ -481,21 +482,26 @@ export default function CardTryOut({
               !showDetail.isDone &&
               (showDetail.isActive || isTesting) ? (
               <div className="mt-[1rem] flex w-full items-center justify-center">
-                <div
+                <Link
+                  href={
+                    isTesting
+                      ? `/admin/tryout/testing/try-out/${showDetail.id}`
+                      : `/user/try-out/${showDetail.id}`
+                  }
                   className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white md:hover:bg-main-hover"
-                  onClick={() => {
-                    if (isTesting) {
-                      router.push(
-                        `/admin/tryout/testing/try-out/${showDetail.id}`
-                      );
-                    } else if (!isPrivate) {
-                      router.push(`/user/try-out/${showDetail.id}`);
-                    }
-                  }}
+                  // onClick={() => {
+                  //   if (isTesting) {
+                  //     router.push(
+                  //       `/admin/tryout/testing/try-out/${showDetail.id}`
+                  //     );
+                  //   } else if (!isPrivate) {
+                  //     router.push(`/user/try-out/${showDetail.id}`);
+                  //   }
+                  // }}
                 >
                   Mulai try out
                   <IconTailedArrowUp45 w={15} />
-                </div>
+                </Link>
               </div>
             ) : showDetail.isRegistered &&
               showDetail.isDone &&
