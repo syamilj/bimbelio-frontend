@@ -47,6 +47,7 @@ import { Transaction, UserRoleEnum } from "@/types/database";
 import { response, responseError } from "@/lib/response";
 import axiosInstance from "@/lib/axios/axiosInstance";
 import { getGeneral } from "@/lib/fetch-helper";
+import { signOut } from "@/lib/auth-helper";
 // Main Sidebar Component
 const Sidebar = ({ category }: any) => {
   const { data: session } = useSession();
@@ -303,7 +304,7 @@ const Sidebar = ({ category }: any) => {
                     className="flex cursor-pointer items-center gap-2 px-4 py-2 text-red-600 transition duration-200 hover:bg-red-50"
                     onClick={() => {
                       setOpenMenu(false);
-                      // signOut({ callbackUrl: "/" });
+                      signOut({ callbackUrl: "/" });
                     }}
                   >
                     <i className="bx bx-log-out text-[16px]" />
@@ -517,7 +518,7 @@ const Sidebar = ({ category }: any) => {
                     className="flex cursor-pointer items-center gap-2 px-4 py-2 text-red-600 transition duration-200 hover:bg-red-50"
                     onClick={() => {
                       setOpenMenu(false);
-                      // signOut({ callbackUrl: "/" });
+                      signOut({ callbackUrl: "/" });
                     }}
                   >
                     <i className="bx bx-log-out text-[16px]" />
@@ -630,7 +631,6 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
   >();
 
   useEffect(() => {
-    if (!session) return;
     getGeneral(`/payment/getPaymentInProses?userId=${session?.user.id}`, {
       setData: setData,
     });

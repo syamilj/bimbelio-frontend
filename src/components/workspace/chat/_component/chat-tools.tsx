@@ -1,0 +1,319 @@
+import { useAppContext } from "@/components/provider/provider-app";
+import { useSession } from "@/components/provider/session-provider-auth";
+import { toaster } from "@/components/ui/toaster";
+import { ToolTip } from "@/components/ui/tooltip";
+import { mutateGeneral } from "@/lib/fetch-helper";
+import {
+  IconCopy,
+  IconDislike,
+  IconEdit,
+  IconLike,
+  IconRegenerateMessage,
+  IconSettingMessage,
+} from "@/styles/icon";
+import { usePathname } from "next/navigation";
+
+const ChatTools = ({
+  role,
+  data,
+  index,
+  setEdit,
+  onChangeRegenerate,
+  setTempData,
+}: {
+  role: any;
+  data?: any;
+  index?: any;
+  setEdit?: any;
+  submitRegenerate?: any;
+  onChangeRegenerate?: any;
+  setTempData?: any;
+}) => {
+  const { data: session } = useSession();
+  const pathname = usePathname();
+  const pathnameArray = pathname?.split("/");
+  const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
+
+  const { messageData, setMessageData } = useAppContext();
+
+  // const trpc = api.useUtils();
+
+  // const like = api.message.likeMessage.useMutation({
+  //   onSettled: async () => {
+  //     await trpc.message.getAllByDocIdAndUserId.refetch();
+  //   },
+  //   onMutate() {
+  //     const upData = messageData.filter((_: any, i: any) => i < index);
+  //     const downData = messageData.filter((_: any, i: any) => i > index);
+  //     setMessageData([...upData, { ...data, like: !data.like }, ...downData]);
+  //   },
+  // });
+
+  const like = async (payload: { messageId: string }) => {
+    const type = pathname.includes("chat") ? "chat" : "doc";
+    await mutateGeneral("/message/likeMessage", {
+      payload: {
+        ...payload,
+        userId: session?.user.id,
+        type,
+      },
+      type: "post",
+      onLoading() {
+        const upData = messageData.filter((_: any, i: any) => i < index);
+        const downData = messageData.filter((_: any, i: any) => i > index);
+        setMessageData([...upData, { ...data, like: !data.like }, ...downData]);
+      },
+      onSuccess() {
+        //     await trpc.message.getAllByDocIdAndUserId.refetch();
+      },
+    });
+  };
+
+  // const dislike = api.message.dislikeMessage.useMutation({
+  //   onSettled: async () => {
+  //     await trpc.message.getAllByDocIdAndUserId.refetch();
+  //   },
+  //   onMutate() {
+  //     const upData = messageData.filter((_: any, i: any) => i < index);
+  //     const downData = messageData.filter((_: any, i: any) => i > index);
+  //     setMessageData([
+  //       ...upData,
+  //       { ...data, dislike: !data.dislike },
+  //       ...downData,
+  //     ]);
+  //   },
+  // });
+
+  const dislike = async (payload: { messageId: string }) => {
+    const type = pathname.includes("chat") ? "chat" : "doc";
+    await mutateGeneral("/message/dislikeMessage", {
+      payload: {
+        ...payload,
+        userId: session?.user.id,
+        type,
+      },
+      type: "post",
+      onLoading() {
+        const upData = messageData.filter((_: any, i: any) => i < index);
+        const downData = messageData.filter((_: any, i: any) => i > index);
+        setMessageData([
+          ...upData,
+          { ...data, dislike: !data.dislike },
+          ...downData,
+        ]);
+      },
+      onSuccess() {
+        //     await trpc.message.getAllByDocIdAndUserId.refetch();
+      },
+    });
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(data.content).then(
+      () => {
+        toaster({
+          title: "Disalin",
+          description: "Pesan telah disalin!",
+          duration: 2000,
+        });
+      },
+      () => {
+        toaster({
+          title: "Gagal",
+          description: "Gagal menyalin pesan!",
+          condition: "warning",
+          duration: 2000,
+        });
+      }
+    );
+  };
+
+  const handleEditMessage = () => {
+    setEdit((prev: any) => ({
+      ...prev,
+      bool: true,
+      index: index,
+      value: data.content,
+    }));
+    console.log(data.content);
+    setTimeout(() => {
+      const inputChatEdit = document.getElementById(
+        "editInput"
+      ) as HTMLInputElement;
+      if (inputChatEdit) {
+        console.log(inputChatEdit);
+        inputChatEdit.value = data.content;
+      }
+    }, 100);
+  };
+
+  // const regenerateApi = api.message.regenerateMessage.useMutation({
+  //   onSettled: async () => {},
+  //   onMutate() {},
+  // });
+
+  const regenerateApi = async (payload: {
+    docId: string;
+    messageIndex: number;
+  }) => {
+    await mutateGeneral("/message/regenerateMessage", {
+      payload: {
+        ...payload,
+        userId: session?.user.id,
+      },
+      type: "post",
+    });
+  };
+
+  // const limitation = api.user.limitation.useMutation();
+
+  const limitation = async (payload: {
+    chat?: boolean;
+    vision?: boolean;
+    notes?: boolean;
+    quiz?: boolean;
+  }) => {
+    let sendData: any = null;
+    await mutateGeneral("/user/limitation", {
+      payload: {
+        ...payload,
+        userId: session?.user.id || "",
+      },
+      toast: { hideSuccess: true },
+      type: "post",
+      onSuccess({ data }) {
+        sendData = data;
+      },
+    });
+    return sendData;
+  };
+
+  const regenerateMessage = async () => {
+    try {
+      const data: any = await limitation({ chat: true });
+      if (data && !data.status) {
+        toaster({
+          title: "Uppss",
+          condition: "warning",
+          description: data.message,
+        });
+        return;
+      } else if (data && data.status) {
+        regenerateApi({
+          docId: `${docId}`,
+          messageIndex: index,
+        });
+        const submit = document.getElementById(
+          "editMessage"
+        ) as HTMLButtonElement;
+        const newMessage = messageData.slice(0, -2);
+        const e = {
+          target: {
+            value: messageData[index - 1].content,
+          },
+        };
+        setTempData([...newMessage]);
+        setMessageData([...newMessage]);
+        onChangeRegenerate(e);
+        setTimeout(() => {
+          submit.click();
+        }, 500);
+      }
+    } catch (error) {
+      toaster({
+        title: "Gagal",
+        condition: "warning",
+        description: "Coba lagi nanti!",
+      });
+      return;
+    }
+  };
+
+  return (
+    <>
+      {role === "user" ? (
+        <div className="flex items-center gap-[.5rem] text-[1.2rem]">
+          {}
+          <ToolTip value="Copy text">
+            <div
+              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
+              onClick={() => {
+                handleCopy();
+              }}
+            >
+              <IconCopy w={18} className={""} />
+            </div>
+          </ToolTip>
+          <ToolTip value="Edit message">
+            <div
+              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
+              onClick={() => {
+                handleEditMessage();
+              }}
+            >
+              <IconEdit w={18} className={""} />
+            </div>
+          </ToolTip>
+        </div>
+      ) : (
+        <div className="flex items-center gap-[.2rem] text-[1.2rem]">
+          <ToolTip value="Copy text">
+            <div
+              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
+              onClick={() => {
+                handleCopy();
+              }}
+            >
+              <IconCopy w={18} className={""} />
+            </div>
+          </ToolTip>
+          <ToolTip value="Like message">
+            <div
+              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
+              onClick={() => {
+                like({ messageId: data?.id });
+              }}
+            >
+              {data?.like ? (
+                <IconLike w={18} className={""} active={true} />
+              ) : (
+                <IconLike w={18} className={""} />
+              )}
+            </div>
+          </ToolTip>
+          <ToolTip value="Dislike message">
+            <div
+              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
+              onClick={() => {
+                dislike({ messageId: data?.id });
+              }}
+            >
+              {data?.dislike ? (
+                <IconDislike w={18} className={""} active={true} />
+              ) : (
+                <IconDislike w={18} className={""} />
+              )}
+            </div>
+          </ToolTip>
+          <ToolTip value="Regenerate message">
+            <div className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input">
+              <IconSettingMessage w={18} className={""} />
+            </div>
+          </ToolTip>
+          {messageData.length - 1 === index && (
+            <ToolTip value="Regenerate message">
+              <div
+                className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
+                onClick={() => regenerateMessage()}
+              >
+                <IconRegenerateMessage w={18} className={""} />
+              </div>
+            </ToolTip>
+          )}
+        </div>
+      )}
+    </>
+  );
+};
+
+export default ChatTools;

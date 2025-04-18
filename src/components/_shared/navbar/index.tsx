@@ -17,6 +17,7 @@ import LOGO from "@/_assest/logomark.png";
 import { cn } from "@/lib/utils";
 import { Badge } from "../../ui/badge";
 import { useSession } from "@/components/provider/session-provider-auth";
+import { signOut } from "@/lib/auth-helper";
 
 interface NavbarProps {
   showAuth: { signUp: boolean; login: boolean };
@@ -237,7 +238,7 @@ const MobileNav: React.FC<{
                       <button
                         className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-red-500 px-4 py-2.5 text-white transition-colors duration-300 hover:bg-red-600"
                         onClick={() => {
-                          // signOut({ callbackUrl: "/" });
+                          signOut({ callbackUrl: "/" });
                           setIsSheetOpen(false);
                         }}
                         aria-label="Keluar"

@@ -1,16 +1,57 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
+import { env } from "./env.mjs";
+
+type DecodeData = {
+  id: string;
+  email: string;
+  name: string;
+  image: string;
+  role: string;
+  emailVerified: string;
+  userTryOutId: string;
+  createdAt: string;
+  iat: number;
+  exp: number;
+};
 
 export const middleware = async (req: NextRequest) => {
-  const token = req.cookies.get("token")?.value;
-  const pathname = req.nextUrl.pathname;
+  try {
+    const token = req.cookies.get("token")?.value;
+    const pathname = req.nextUrl.pathname;
 
-  return NextResponse.next();
+    if (!token) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/verifyToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const resData: { status: number; message: string; data?: DecodeData } =
+      await res.json();
+    // console.log({ resData: resData });
+    const { message, status, data } = resData;
+
+    if (status !== 200) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    if (status === 200 && data) {
+    }
+
+    return NextResponse.next();
+  } catch (error) {
+    return NextResponse.next();
+  }
 };
 
 export const config = {
   matcher: [
-    "/",
+    // "/",
     "/auth/login",
     "/auth/signup",
     "/admin/:path*",

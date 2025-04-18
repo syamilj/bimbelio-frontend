@@ -154,6 +154,7 @@ export default function TryoutResult({
       type: "post",
       onSuccess() {
         setTestAgainTryoutLoading(false);
+        router.push("/admin/tryout/testing/try-out");
       },
       onError() {
         setTestAgainTryoutLoading(false);

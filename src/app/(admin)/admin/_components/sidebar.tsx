@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import SidebarRoute from "./sidebar-route";
 import { useSession } from "@/components/provider/session-provider-auth";
+import { signOut } from "@/lib/auth-helper";
 
 const Sidebar = () => {
   const { minimizeSidebar, setMinimizeSidebar } = useAppContext();
@@ -75,7 +76,7 @@ const Sidebar = () => {
           <i
             className="bx bx-log-out cursor-pointer rounded-full p-[.2rem] text-[1.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
             onClick={() => {
-              // signOut({ callbackUrl: "/" });
+              signOut({ callbackUrl: "/" });
             }}
           />
         )}

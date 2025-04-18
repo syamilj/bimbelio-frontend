@@ -19,6 +19,7 @@ export default function Terbaru({ id }: { id: string }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getData = async () => {
+    if (!session) return;
     await getGeneral(`/tryout/getTryOutCard?userId=${session?.user.id}`, {
       setData: setCards,
       setLoading: setIsLoading,
@@ -27,7 +28,7 @@ export default function Terbaru({ id }: { id: string }) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [session]);
 
   if (!cards && !isLoading) {
     return <div>Error</div>;
@@ -42,7 +43,7 @@ export default function Terbaru({ id }: { id: string }) {
       <h1 className="text-[1.4rem] font-semibold">Sedang Berlangsung</h1>
       {!isLoading && cards && cards.length > 0 && (
         <div className="grid grid-cols-1 gap-[1rem] md2:grid-cols-3 xxxl:grid-cols-4">
-          <CardTryOut data={cards} userTryOutId={id} />
+          <CardTryOut data={cards} userTryOutId={id} refresh={getData} />
         </div>
       )}
       {!isLoading && cards?.length === 0 && (

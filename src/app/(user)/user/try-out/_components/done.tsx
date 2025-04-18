@@ -20,6 +20,7 @@ export default function Done({ id }: { id: string }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getData = async () => {
+    if (!session) return;
     await getGeneral(`/tryout/getTryOutCardDone?userId=${session?.user.id}`, {
       setData: setCards,
       setLoading: setIsLoading,
@@ -28,7 +29,7 @@ export default function Done({ id }: { id: string }) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [session]);
 
   if (!cards && !isLoading) {
     return <div>Error</div>;

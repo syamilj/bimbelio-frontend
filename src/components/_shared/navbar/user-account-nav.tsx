@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "@/lib/auth-helper";
 import { motion } from "framer-motion";
 import { LayoutDashboard, LogOut } from "lucide-react";
 // import { User } from "next-auth";
@@ -113,10 +114,10 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
         >
           <DropdownMenuItem
             className="cursor-pointer text-destructive focus:text-destructive"
-            // onSelect={(event) => {
-            //   event.preventDefault();
-            //   signOut({ callbackUrl: "/" });
-            // }}
+            onSelect={(event) => {
+              event.preventDefault();
+              signOut({ callbackUrl: "/" });
+            }}
           >
             <div className="flex w-full items-center gap-2 rounded-xl px-1 py-1 transition-colors hover:bg-destructive/5">
               <LogOut className="h-4 w-4" />

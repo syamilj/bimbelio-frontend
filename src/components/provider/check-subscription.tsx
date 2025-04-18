@@ -6,6 +6,7 @@ import { getDateString, getHours } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { useSession } from "./session-provider-auth";
+import { signOut } from "@/lib/auth-helper";
 
 export default function CheckSubscription({
   children,
@@ -36,7 +37,7 @@ export default function CheckSubscription({
           now: `${getDateString(now)} | ${getHours(now)}`,
         });
         setCheckLog(false);
-        // signOut();
+        signOut();
         console.log("Sudah expire");
       } else if (expires > now) {
         console.log({

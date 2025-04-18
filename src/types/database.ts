@@ -138,3 +138,37 @@ export type Pricing = {
 };
 
 export type QuestionTypeEnum = "OBJECTIVE_5" | "TRUE_FALSE" | "SHORT_ANSWER";
+
+export type Document = {
+  id: string;
+  title: string;
+  description: string | null;
+  createdAt: Date;
+  tags: TagEnum[];
+  url: string;
+  dateTo: Date | null;
+  tokenTo: string | null;
+  dateToUnlock: Date | null;
+  isUploaded: boolean;
+  subCategoryId: string | null;
+  categoryId: string;
+  img: string | null;
+  premium: boolean | null;
+  videoId: string | null;
+};
+
+export type TagEnum = "Document" | "Video";
+
+export type ChatHistory = {
+  id: string;
+  title: string;
+  updatedAt: Date;
+  userId: string;
+};
+
+export type UserDocument = {
+  documentId: string;
+  userId: string;
+  lastAccessed: Date;
+  isVectorised: boolean;
+};

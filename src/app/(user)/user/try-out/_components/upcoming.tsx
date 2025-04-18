@@ -19,6 +19,7 @@ export default function Upcoming({ id }: { id: string }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getData = async () => {
+    if (!session) return;
     await getGeneral(
       `/tryout/getTryOutCardUpcoming?userId=${session?.user.id}`,
       {
@@ -30,7 +31,7 @@ export default function Upcoming({ id }: { id: string }) {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [session]);
 
   if (!cards && !isLoading) {
     return <div>Error</div>;
