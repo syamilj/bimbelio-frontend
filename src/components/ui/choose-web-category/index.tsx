@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HoverDropdown } from "./hover-dropdown";
+import { DialogWebCategory } from "./dialog-web-category";
 import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
 import { getGeneral } from "@/lib/fetch-helper";
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { useAppContext } from "@/components/provider/provider-app";
 
 // Sample data matching the required structure
 const menuItems = [
@@ -50,6 +51,7 @@ const menuItems = [
   },
 ];
 export default function ChooseWebCategory() {
+  const { setMinimizeSidebar } = useAppContext();
   const {
     websiteSubCategory,
     setWebsiteSubCategory,
@@ -58,12 +60,17 @@ export default function ChooseWebCategory() {
   } = useWebsiteSubCategory();
 
   return (
-    <HoverDropdown
+    <DialogWebCategory
       items={webCategoryData}
       value={websiteSubCategory?.id}
       onSelect={(item) => {
+        localStorage.setItem("website_sub_category_id", item?.id);
         setIsLoading(true);
         setWebsiteSubCategory(item);
+        setMinimizeSidebar(true);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       }}
     />
   );

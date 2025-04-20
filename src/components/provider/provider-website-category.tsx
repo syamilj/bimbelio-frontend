@@ -55,12 +55,6 @@ export default function ProviderWebsiteCategory({
     });
   }, []);
 
-  useEffect(() => {
-    if (!websiteSubCategory) return;
-    localStorage.setItem("website_sub_category_id", websiteSubCategory?.id);
-    setIsLoading(false);
-  }, [websiteSubCategory]);
-
   console.log({ websiteSubCategory });
 
   const Context = {
@@ -86,6 +80,7 @@ export default function ProviderWebsiteCategory({
 
   const styles = `
     .bg-main { background-color: ${mainColor}; }
+    .data-\[state\=active\]\:bg-main { background-color: ${mainColor}; }
     .text-main { color: ${mainColor}; }
     .ring-main { --tw-ring-color: ${mainColor}; }
     ${shades
@@ -95,8 +90,8 @@ export default function ProviderWebsiteCategory({
         .bg-main\\/${color} { background-color: ${value}; }
         .hover\\:bg-main\\/${color}:hover { background-color: ${value}; }
         .focus\\:bg-main\\/${color}:focus { background-color: ${value}; }
+        .data-\[state\=active\]\:bg-main\\/${color} { background-color: ${value}; }
 
-        
         .ring-main\\/${color} { 
           --tw-ring-color: ${value};
         }

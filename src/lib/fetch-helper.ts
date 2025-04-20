@@ -239,6 +239,8 @@ export const mutateGeneral = async (
 
 /*
 
+  const {data:session} = useSession()
+  
 const [Data, setData] = useState<any>();
 const [isLoading, setIsLoading] = useState<boolean>(true);
 

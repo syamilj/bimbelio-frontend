@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import * as TabsPrimitive from '@radix-ui/react-tabs';
-import * as React from 'react';
+import { cn } from "@/lib/utils";
+import * as TabsPrimitive from "@radix-ui/react-tabs";
+import * as React from "react";
 
 const Tabs = TabsPrimitive.Root;
 
@@ -13,8 +13,8 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      'inline-flex h-9 items-center justify-center rounded-xl bg-muted/50 p-1 text-muted-foreground',
-      className,
+      "inline-flex h-9 items-center justify-center rounded-xl bg-muted/50 p-1 text-muted-foreground",
+      className
     )}
     {...props}
   />
@@ -24,16 +24,46 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      'inline-flex items-center justify-center whitespace-nowrap rounded-xl px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-main data-[state=active]:text-white data-[state=active]:shadow',
-      className,
-    )}
-    {...props}
-  />
-));
+>(({ className, ...props }, ref) => {
+  const localRef = React.useRef<HTMLElement | null>(null);
+  const combinedRef = (node: HTMLElement | null) => {
+    localRef.current = node;
+    if (typeof ref === "function") ref(node as any);
+    else if (ref)
+      (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+  };
+
+  const [isActive, setIsActive] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = localRef.current;
+    if (!el) return;
+
+    const observer = new MutationObserver(() => {
+      const state = el.getAttribute("data-state");
+      setIsActive(state === "active");
+    });
+
+    observer.observe(el, { attributes: true, attributeFilter: ["data-state"] });
+
+    // Initialize state on mount
+    setIsActive(el.getAttribute("data-state") === "active");
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <TabsPrimitive.Trigger
+      ref={combinedRef}
+      className={cn(
+        "inline-flex items-center justify-center whitespace-nowrap rounded-xl px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-main data-[state=active]:text-white data-[state=active]:shadow",
+        className,
+        isActive && "bg-main"
+      )}
+      {...props}
+    />
+  );
+});
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
 const TabsContent = React.forwardRef<
@@ -43,8 +73,8 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-      className,
+      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      className
     )}
     {...props}
   />

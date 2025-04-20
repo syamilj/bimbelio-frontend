@@ -188,6 +188,8 @@ export type UserDocument = {
 export type WebsiteCategory = {
   id: string;
   name: string;
+  main_color: string;
+  secondary_color: string;
   createdAt: Date;
   updatedAt: Date;
 };

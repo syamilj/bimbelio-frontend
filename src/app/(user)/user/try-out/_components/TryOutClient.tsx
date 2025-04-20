@@ -97,9 +97,9 @@ const Content = () => {
       {tryoutAccount?.userTryOutId ? (
         <div className="flex flex-col gap-[2rem] px-[1rem] md:px-0">
           <OnBoarding open={onBoarding.tryout} type="tryout" />
-          {/* <div className="font-regular flex flex-col gap-[.5rem]">
+          <div className="font-regular flex flex-col gap-[.5rem]">
             <SummaryTryout />
-          </div> */}
+          </div>
 
           <div className="font-regular flex flex-col gap-[.5rem]">
             <Terbaru id={tryoutAccount.userTryOutId} />
