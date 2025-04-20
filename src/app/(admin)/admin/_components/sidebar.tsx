@@ -2,13 +2,13 @@
 
 import LogoMinimize from "@/_assest/logo-minimize.png";
 import test from "@/_assest/logo.png";
-import Logo from "@/_assest/logo.svg";
 import { useAppContext } from "@/components/provider/provider-app";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import SidebarRoute from "./sidebar-route";
 import { useSession } from "@/components/provider/session-provider-auth";
 import { signOut } from "@/lib/auth-helper";
+import Logo from "@/components/ui/logo";
 
 const Sidebar = () => {
   const { minimizeSidebar, setMinimizeSidebar } = useAppContext();
@@ -22,20 +22,7 @@ const Sidebar = () => {
         } items-center`}
       >
         {!minimizeSidebar ? (
-          <>
-            <Image
-              src={Logo}
-              alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-              className="cursor-pointer"
-              onClick={() => {
-                router.push("/user/try-out");
-              }}
-            />
-            <i
-              className="bx bx-chevron-left cursor-pointer text-[1.5rem] text-main-gray-text"
-              onClick={() => setMinimizeSidebar(true)}
-            />
-          </>
+          <Logo href="/user/try-out" />
         ) : (
           <Image
             src={LogoMinimize}

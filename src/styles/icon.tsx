@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface IconProps {
   className?: string;
@@ -1405,20 +1405,14 @@ export const IconFitur1: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_8379_128368"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_8379_128368)">
         <path
@@ -1446,20 +1440,14 @@ export const IconFitur2: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_8379_129271"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="25"
         height="24"
       >
-        <rect
-          x="10.667"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10.667" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_8379_129271)">
         <path
@@ -1493,20 +1481,14 @@ export const IconFitur3: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_8379_129286"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="25"
         height="24"
       >
-        <rect
-          x="10.333"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10.333" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_8379_129286)">
         <path
@@ -1546,20 +1528,14 @@ export const IconRevolusi1: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3731_81302"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3731_81302)">
         <path
@@ -1597,20 +1573,14 @@ export const IconRevolusi2: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3731_81313"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3731_81313)">
         <path
@@ -1652,20 +1622,14 @@ export const IconRevolusi3: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3731_81340"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3731_81340)">
         <path
@@ -1703,20 +1667,14 @@ export const IconRevolusi4: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3731_81372"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3731_81372)">
         <path
@@ -1754,20 +1712,14 @@ export const IconCategoryTWK: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3069_21759"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3069_21759)">
         <path
@@ -1802,20 +1754,14 @@ export const IconCategoryUmum: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3069_3495"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3069_3495)">
         <path
@@ -1853,20 +1799,14 @@ export const IconCategoryTIU: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3069_7233"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3069_7233)">
         <path
@@ -1910,20 +1850,14 @@ export const IconCategoryTKP: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3069_31886"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3069_31886)">
         <path
@@ -1975,20 +1909,14 @@ export const IconCategoryTOEFL: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3108_70604"
-        style={{ maskType: 'alpha' }}
+        style={{ maskType: "alpha" }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect
-          x="10"
-          y="10"
-          width="24"
-          height="24"
-          fill="#D9D9D9"
-        />
+        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_3108_70604)">
         <path
@@ -2368,11 +2296,7 @@ export const IconOpenAI: React.FC<IconProps> = () => {
       </g>
       <defs>
         <clipPath id="clip0_3551_73116">
-          <rect
-            width="59"
-            height="16"
-            fill="white"
-          />
+          <rect width="59" height="16" fill="white" />
         </clipPath>
       </defs>
     </svg>
@@ -2407,17 +2331,10 @@ export const BackgroundHero: React.FC<IconProps> = () => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#E1F7EB" />
-          <stop
-            offset="1"
-            stopColor="#F4F8FB"
-          />
+          <stop offset="1" stopColor="#F4F8FB" />
         </linearGradient>
         <clipPath id="clip0_3542_73050">
-          <rect
-            width="1440"
-            height="200"
-            fill="white"
-          />
+          <rect width="1440" height="200" fill="white" />
         </clipPath>
       </defs>
     </svg>
@@ -2501,85 +2418,7 @@ export const IconPlay: React.FC<IconProps> = ({ className, w }) => {
 
 export const IconDataNotFound: React.FC<IconProps> = ({ className, w }) => {
   return (
-    // <svg
-    //   xmlns="http://www.w3.org/2000/svg"
-    //   width={w ? w : 248}
-    //   height={w ? w : 248}
-    //   className={`${className}`}
-    //   viewBox="0 0 248 248"
-    //   fill="none"
-    // >
-    //   <path
-    //     opacity="0.8"
-    //     d="M208.493 114.573C207.254 112.845 205.623 111.439 203.736 110.47C201.849 109.501 199.76 108.997 197.641 109H184.284V95.5714C184.284 92.01 182.877 88.5943 180.372 86.076C177.867 83.5577 174.469 82.1429 170.927 82.1429H113.049L89.9 64.6857C87.584 62.9499 84.7745 62.0084 81.8858 62H37.357C33.8145 62 30.4171 63.4148 27.9122 65.9331C25.4072 68.4515 24 71.8671 24 75.4286V196.286C24 198.066 24.7036 199.774 25.9561 201.033C27.2085 202.293 28.9072 203 30.6785 203H180.193C181.595 203 182.961 202.557 184.098 201.733C185.236 200.909 186.086 199.746 186.529 198.409L210.313 126.675C210.982 124.657 211.166 122.508 210.849 120.404C210.533 118.301 209.726 116.302 208.493 114.573ZM81.8858 75.4286L106.813 94.2286C107.969 95.1002 109.375 95.5714 110.82 95.5714H170.927V109H62.2093C59.4058 109 56.6733 109.886 54.3989 111.534C52.1245 113.182 50.4235 115.508 49.5369 118.182L37.357 154.909V75.4286H81.8858Z"
-    //     fill="url(#paint0_linear_3742_85910)"
-    //   />
-    //   <g filter="url(#filter0_b_3742_85910)">
-    //     <path
-    //       d="M232.278 184.969L195.52 148.221C206.195 135.422 211.523 119.001 210.396 102.374C209.268 85.7477 201.772 70.1957 189.467 58.9537C177.162 47.7116 160.995 41.6451 144.33 42.0161C127.665 42.3871 111.784 49.1671 99.9915 60.9456C88.1992 72.7241 81.4032 88.5943 81.0174 105.255C80.6315 121.915 86.6855 138.082 97.9199 150.394C109.154 162.705 124.704 170.213 141.334 171.355C157.965 172.496 174.395 167.184 187.208 156.524L223.966 193.279C224.512 193.825 225.16 194.257 225.873 194.553C226.586 194.848 227.351 195 228.122 195C228.894 195 229.659 194.848 230.372 194.553C231.085 194.257 231.733 193.825 232.278 193.279C232.824 192.733 233.257 192.086 233.553 191.373C233.848 190.66 234 189.896 234 189.124C234 188.352 233.848 187.588 233.553 186.875C233.257 186.163 232.824 185.515 232.278 184.969Z"
-    //       fill="url(#paint1_linear_3742_85910)"
-    //       fillOpacity="0.2"
-    //     />
-    //     <path
-    //       d="M232.278 184.969L195.52 148.221C206.195 135.422 211.523 119.001 210.396 102.374C209.268 85.7477 201.772 70.1957 189.467 58.9537C177.162 47.7116 160.995 41.6451 144.33 42.0161C127.665 42.3871 111.784 49.1671 99.9915 60.9456C88.1992 72.7241 81.4032 88.5943 81.0174 105.255C80.6315 121.915 86.6855 138.082 97.9199 150.394C109.154 162.705 124.704 170.213 141.334 171.355C157.965 172.496 174.395 167.184 187.208 156.524L223.966 193.279C224.512 193.825 225.16 194.257 225.873 194.553C226.586 194.848 227.351 195 228.122 195C228.894 195 229.659 194.848 230.372 194.553C231.085 194.257 231.733 193.825 232.278 193.279C232.824 192.733 233.257 192.086 233.553 191.373C233.848 190.66 234 189.896 234 189.124C234 188.352 233.848 187.588 233.553 186.875C233.257 186.163 232.824 185.515 232.278 184.969Z"
-    //       stroke="#E8EBF4"
-    //       strokeOpacity="0.56"
-    //       strokeWidth="1.44"
-    //     />
-    //   </g>
-    //   <path
-    //     d="M139.238 120.395V119.751C139.284 115.548 139.704 112.205 140.499 109.719C141.316 107.234 142.474 105.223 143.973 103.687C145.472 102.151 147.277 100.75 149.389 99.4845C150.752 98.6259 151.978 97.6657 153.068 96.6038C154.158 95.5419 155.021 94.3219 155.657 92.9437C156.293 91.5655 156.611 90.0404 156.611 88.3685C156.611 86.3577 156.134 84.618 155.18 83.1494C154.226 81.6808 152.955 80.5512 151.365 79.7604C149.798 78.947 148.049 78.5403 146.119 78.5403C144.371 78.5403 142.702 78.9018 141.112 79.6248C139.522 80.3478 138.205 81.4775 137.161 83.0138C136.116 84.5276 135.514 86.4819 135.355 88.8769H125C125.159 84.81 126.192 81.3758 128.1 78.5742C130.007 75.75 132.528 73.615 135.662 72.169C138.818 70.723 142.304 70 146.119 70C150.298 70 153.954 70.7795 157.088 72.3384C160.221 73.8748 162.651 76.0325 164.377 78.8115C166.126 81.5679 167 84.7874 167 88.4702C167 91.0006 166.603 93.2826 165.808 95.316C165.013 97.3268 163.878 99.123 162.401 100.705C160.948 102.286 159.2 103.687 157.156 104.907C155.225 106.104 153.659 107.347 152.455 108.635C151.274 109.923 150.411 111.448 149.866 113.21C149.321 114.972 149.026 117.153 148.981 119.751V120.395H139.238ZM144.382 141C142.52 141 140.919 140.345 139.579 139.034C138.239 137.701 137.569 136.097 137.569 134.222C137.569 132.369 138.239 130.788 139.579 129.477C140.919 128.144 142.52 127.478 144.382 127.478C146.221 127.478 147.811 128.144 149.151 129.477C150.513 130.788 151.195 132.369 151.195 134.222C151.195 135.465 150.877 136.606 150.241 137.645C149.628 138.662 148.81 139.475 147.788 140.085C146.766 140.695 145.631 141 144.382 141Z"
-    //     fill="white"
-    //   />
-    //   <defs>
-    //     <filter
-    //       id="filter0_b_3742_85910"
-    //       x="48.2812"
-    //       y="9.27979"
-    //       width="218.438"
-    //       height="218.44"
-    //       filterUnits="userSpaceOnUse"
-    //       colorInterpolationFilters="sRGB"
-    //     >
-    //       <feFlood floodOpacity="0" result="BackgroundImageFix" />
-    //       <feGaussianBlur in="BackgroundImageFix" stdDeviation="16" />
-    //       <feComposite
-    //         in2="SourceAlpha"
-    //         operator="in"
-    //         result="effect1_backgroundBlur_3742_85910"
-    //       />
-    //       <feBlend
-    //         mode="normal"
-    //         in="SourceGraphic"
-    //         in2="effect1_backgroundBlur_3742_85910"
-    //         result="shape"
-    //       />
-    //     </filter>
-    //     <linearGradient
-    //       id="paint0_linear_3742_85910"
-    //       x1="24.5109"
-    //       y1="62"
-    //       x2="225.285"
-    //       y2="95.2955"
-    //       gradientUnits="userSpaceOnUse"
-    //     >
-    //       <stop stopColor="#3ECF8E" />
-    //       <stop offset="1" stopColor="#009647" />
-    //     </linearGradient>
-    //     <linearGradient
-    //       id="paint1_linear_3742_85910"
-    //       x1="81.418"
-    //       y1="42"
-    //       x2="247.607"
-    //       y2="62.7805"
-    //       gradientUnits="userSpaceOnUse"
-    //     >
-    //       <stop stopColor="#3ECF8E" />
-    //       <stop offset="1" stopColor="#009647" />
-    //     </linearGradient>
-    //   </defs>
-    // </svg>
-    (<svg
+    <svg
       xmlns="http://www.w3.org/2000/svg"
       width={w ? w : 248}
       height={w ? w : 248}
@@ -2590,7 +2429,7 @@ export const IconDataNotFound: React.FC<IconProps> = ({ className, w }) => {
       <path
         opacity="0.8"
         d="M208.493 114.573C207.254 112.845 205.623 111.439 203.736 110.47C201.849 109.501 199.76 108.997 197.641 109H184.284V95.5714C184.284 92.01 182.877 88.5943 180.372 86.076C177.867 83.5577 174.469 82.1429 170.927 82.1429H113.049L89.9 64.6857C87.584 62.9499 84.7745 62.0084 81.8858 62H37.357C33.8145 62 30.4171 63.4148 27.9122 65.9331C25.4072 68.4515 24 71.8671 24 75.4286V196.286C24 198.066 24.7036 199.774 25.9561 201.033C27.2085 202.293 28.9072 203 30.6785 203H180.193C181.595 203 182.961 202.557 184.098 201.733C185.236 200.909 186.086 199.746 186.529 198.409L210.313 126.675C210.982 124.657 211.166 122.508 210.849 120.404C210.533 118.301 209.726 116.302 208.493 114.573ZM81.8858 75.4286L106.813 94.2286C107.969 95.1002 109.375 95.5714 110.82 95.5714H170.927V109H62.2093C59.4058 109 56.6733 109.886 54.3989 111.534C52.1245 113.182 50.4235 115.508 49.5369 118.182L37.357 154.909V75.4286H81.8858Z"
-        fill="url(#paint0_linear_3742_85910)"
+        fill="currentColor"
       />
       <g filter="url(#filter0_b_3742_85910)">
         <path
@@ -2619,14 +2458,8 @@ export const IconDataNotFound: React.FC<IconProps> = ({ className, w }) => {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood
-            floodOpacity="0"
-            result="BackgroundImageFix"
-          />
-          <feGaussianBlur
-            in="BackgroundImageFix"
-            stdDeviation="16"
-          />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feGaussianBlur in="BackgroundImageFix" stdDeviation="16" />
           <feComposite
             in2="SourceAlpha"
             operator="in"
@@ -2647,11 +2480,8 @@ export const IconDataNotFound: React.FC<IconProps> = ({ className, w }) => {
           y2="95.2955"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#45B4FF" />
-          <stop
-            offset="1"
-            stopColor="#006CFA"
-          />
+          <stop stopColor="currentColor" />
+          <stop offset="1" stopColor="currentColor" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_3742_85910"
@@ -2661,14 +2491,11 @@ export const IconDataNotFound: React.FC<IconProps> = ({ className, w }) => {
           y2="62.7805"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#45B4FF" />
-          <stop
-            offset="1"
-            stopColor="#006CFA"
-          />
+          <stop stopColor="currentColor" />
+          <stop offset="1" stopColor="currentColor" />
         </linearGradient>
       </defs>
-    </svg>)
+    </svg>
   );
 };
 

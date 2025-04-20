@@ -26,6 +26,9 @@
     display: none; /* Chrome, Safari and Opera */
   }
 }
+/* .hover\:bg-main\/50:hover {
+  background-color: #000;
+} */
 
 @layer base {
   :root {
@@ -550,4 +553,7 @@ video::-webkit-media-controls-panel {
 .wmde-markdown h1 {
   font-size: 2rem !important;
   text-align: center !important;
+}
+.adwaw {
+  border: 1px;
 }

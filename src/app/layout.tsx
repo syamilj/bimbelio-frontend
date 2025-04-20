@@ -7,6 +7,7 @@ import Image from "next/image";
 import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 import "../styles/globals.css";
+import ProviderWebsiteCategory from "@/components/provider/provider-website-category";
 
 export const metadata: Metadata = {
   title: {
@@ -179,7 +180,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           shadow="0 0 10px #0091FF,0 0 5px #0091FF"
         />
         <SessionProviderAuth>
-          <ProviderApp>{children}</ProviderApp>
+          <ProviderApp>
+            <ProviderWebsiteCategory>{children}</ProviderWebsiteCategory>
+          </ProviderApp>
         </SessionProviderAuth>
       </body>
     </html>

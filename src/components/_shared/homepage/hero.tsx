@@ -11,12 +11,15 @@ import PulsatingButton from "../../magicui/pulsating-button";
 import WordRotate from "../../magicui/word-rotate";
 import { AspectRatio } from "../../ui/aspect-ratio";
 import { useSession } from "@/components/provider/session-provider-auth";
+import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
 
 interface HeroSectionProps {
   setShowAuth: (show: { signUp: boolean; login: boolean }) => void;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ setShowAuth }) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
   const { data: session } = useSession();
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -151,7 +154,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setShowAuth }) => {
           <div className="">
             <div className="flex flex-col text-[1.8rem] md:text-[3rem]">
               <WordRotate
-                className="font-bold text-[#0091FF]"
+                className="font-bold"
                 words={[
                   "Sudah Siap Masuk <br /> Universitas Impianmu?",
                   "Takut dengan <br /> Persaingan Ketat SNBT/UTBK?",
@@ -172,8 +175,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ setShowAuth }) => {
               Try out gratis
             </button>
             {/* Tombol "Coba gratis!" dengan navigasi */}
-            <Link href={"/user/explore"}>
-              <PulsatingButton onClick={handlePushToTryOut}>
+            <Link href={"/user/try-out"}>
+              <PulsatingButton
+                onClick={handlePushToTryOut}
+                pulseColor={websiteSubCategory?.main_color}
+              >
                 Coba gratis!
               </PulsatingButton>
             </Link>

@@ -32,7 +32,7 @@ import { User } from "lucide-react";
 
 import male from "@/_assest/default-profile/male.png";
 import LogoMinimize from "@/_assest/logo-minimize.png";
-import Logo from "@/_assest/logo.svg";
+import LogoSvg from "@/_assest/logo.svg";
 import LOGO from "@/_assest/logomark.png";
 
 import ButtonPayment from "@/app/(user)/user/_components/button-payment";
@@ -48,6 +48,7 @@ import { response, responseError } from "@/lib/response";
 import axiosInstance from "@/lib/axios/axiosInstance";
 import { getGeneral } from "@/lib/fetch-helper";
 import { signOut } from "@/lib/auth-helper";
+import Logo from "@/components/ui/logo";
 // Main Sidebar Component
 const Sidebar = ({ category }: any) => {
   const { data: session } = useSession();
@@ -104,16 +105,7 @@ const Sidebar = ({ category }: any) => {
         >
           {!minimizeSidebar ? (
             <>
-              <Link href="/user/try-out" className="cursor-pointer">
-                <div className="flex items-center gap-2">
-                  <Image
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-                    src={LOGO}
-                    width={30}
-                  />
-                  <span className="font-semibold">TutorSNBT</span>
-                </div>
-              </Link>
+              <Logo href="/user/try-out" />
               <div
                 onClick={() => {
                   setMinimizeSidebar(true);
@@ -327,7 +319,10 @@ const Sidebar = ({ category }: any) => {
         >
           {!minimizeSidebar ? (
             <>
-              <Image src={Logo} alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK" />
+              <Image
+                src={LogoSvg}
+                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+              />
               <div
                 onClick={() => {
                   setSidebarMobile(false);

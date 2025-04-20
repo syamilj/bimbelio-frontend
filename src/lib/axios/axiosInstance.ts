@@ -9,4 +9,22 @@ const axiosInstance = axios.create({
   },
 });
 
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const website_sub_category_id = localStorage.getItem(
+      "website_sub_category_id"
+    );
+
+    config.params = {
+      ...config.params,
+      website_sub_category_id,
+    };
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export default axiosInstance;

@@ -9,12 +9,14 @@ export type Tryout = {
   startDate: Date;
   endDate: Date;
   resultDate: Date;
+  website_sub_category_id: string;
 };
 
 export type TryoutRegistration = {
   id: string;
   tryoutId: string;
   userTryOutId: string;
+  website_sub_category_id: string;
 };
 export type TryoutSessionParticipant = {
   id: string;
@@ -23,6 +25,7 @@ export type TryoutSessionParticipant = {
   startSession: Date;
   endSession: Date | null;
   isDone: boolean;
+  website_sub_category_id: string;
 };
 export type TryoutStatusEnum = "PUBLIC" | "PRIVATE" | "DRAFT";
 export type TryoutCategory = {
@@ -33,11 +36,13 @@ export type TryoutCategory = {
   createAt: Date;
   updateAt: Date;
   image: string | null;
+  website_sub_category_id: string;
 };
 export type TryoutSubCategory = {
   id: string;
   name: string;
   categoryId: string;
+  website_sub_category_id: string;
 };
 export type TryoutSession = {
   number: number;
@@ -54,6 +59,7 @@ export type TryoutSession = {
   thresholdValue: number | null;
   createAt: Date;
   updateAt: Date;
+  website_sub_category_id: string;
 };
 
 export type TryoutAnswer = {
@@ -61,6 +67,7 @@ export type TryoutAnswer = {
   value: number;
   answer: string;
   questionId: string;
+  website_sub_category_id: string;
 };
 
 export type TryoutQuestion = {
@@ -78,6 +85,7 @@ export type TryoutQuestion = {
   b_difficulty: number | null;
   c_guessing: number | null;
   subSubCategory: string | null;
+  website_sub_category_id: string;
 };
 export type User = {
   name: string;
@@ -126,6 +134,7 @@ export type Transaction = {
   transaction_time: Date;
   expired_time: Date;
   order_id: string;
+  website_sub_category_id: string;
 };
 
 export type Pricing = {
@@ -155,6 +164,7 @@ export type Document = {
   img: string | null;
   premium: boolean | null;
   videoId: string | null;
+  website_sub_category_id: string;
 };
 
 export type TagEnum = "Document" | "Video";
@@ -164,6 +174,7 @@ export type ChatHistory = {
   title: string;
   updatedAt: Date;
   userId: string;
+  website_sub_category_id: string;
 };
 
 export type UserDocument = {
@@ -171,4 +182,23 @@ export type UserDocument = {
   userId: string;
   lastAccessed: Date;
   isVectorised: boolean;
+  website_sub_category_id: string;
+};
+
+export type WebsiteCategory = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type WebsiteSubCategory = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  main_color: string;
+  secondary_color: string;
+  gradient_color: string;
+  website_category_id: string;
 };

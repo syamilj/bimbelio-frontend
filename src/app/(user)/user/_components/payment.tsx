@@ -42,6 +42,7 @@ import {
 } from "lucide-react";
 import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
 import { Pricing } from "@/types/database";
+import { useSession } from "@/components/provider/session-provider-auth";
 
 type PaymentPremium =
   | "1-month"
@@ -54,7 +55,7 @@ type PaymentPremium =
   | "tryout_unlock";
 
 export function Payment() {
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
   const {
     transactionPopUp,
     setTransactionPopUp,
@@ -68,13 +69,9 @@ export function Payment() {
   // const addPayment = api.payment.addPayment.useMutation();
 
   const addPayment = async (payload: any) => {
-    let data: any = null;
-    await mutateGeneral("/payment/addPayment", {
-      payload,
+    const data = await mutateGeneral("/payment/addPayment", {
+      payload: { ...payload, userId: session?.user.id },
       type: "post",
-      onSuccess({ message, status, data: resData }) {
-        data = resData;
-      },
     });
     return data;
   };

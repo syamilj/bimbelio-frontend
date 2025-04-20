@@ -67,7 +67,7 @@ export default function CheckSubscription({
       try {
         const res = await CheckSubscription();
         console.log("Subscription", res);
-        if (res?.status == 203) {
+        if (res?.status == 201) {
           window.location.reload();
         }
         // if (res?.status === 202 || res?.status === 203) {

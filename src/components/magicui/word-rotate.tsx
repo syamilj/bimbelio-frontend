@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
+import { useWebsiteSubCategory } from "../provider/provider-website-category";
 
 interface WordRotateProps {
   words: string[];
   duration?: number;
-  framerProps?: HTMLMotionProps<'h1'>;
+  framerProps?: HTMLMotionProps<"h1">;
   className?: string;
 }
 
@@ -23,6 +24,7 @@ export default function WordRotate({
   },
   className,
 }: WordRotateProps) {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -40,6 +42,9 @@ export default function WordRotate({
       <AnimatePresence mode="wait">
         <motion.h1
           key={words[index]}
+          style={{
+            color: websiteSubCategory?.main_color,
+          }}
           className={cn(className)}
           {...framerProps}
         >

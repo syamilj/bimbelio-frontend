@@ -87,6 +87,8 @@ const HeadingSessionTryout = ({
     } catch (error) {
       responseError(error, true);
       return [];
+    } finally {
+      setLoading(false);
     }
   };
 

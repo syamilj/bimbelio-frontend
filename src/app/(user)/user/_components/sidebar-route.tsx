@@ -4,6 +4,7 @@
 import AnimatedGradientText from "@/components/magicui/animated-gradient-text";
 import { useAppContext } from "@/components/provider/provider-app";
 import { Badge } from "@/components/ui/badge";
+import ChooseWebCategory from "@/components/ui/choose-web-category";
 import { cn } from "@/lib/utils";
 import {
   IconArrowTwk,
@@ -49,6 +50,9 @@ const SidebarRoute = ({
   return (
     <div className="relative">
       <div id="navigasi" className="flex flex-col gap-[.5rem]">
+        <div className={cn("px-2 w-full", minimizeSidebar && "hidden")}>
+          <ChooseWebCategory />
+        </div>
         <Link
           className="relative"
           href={"/user/dashboard"}

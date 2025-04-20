@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Logo from "@/components/ui/logo";
 
 export const Login = ({ showAuth, setShowAuth }: any) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -174,16 +175,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
         {!forgotPasswordPage && stepLogin === 1 ? (
           <form className="flex flex-col gap-[1.5rem]">
             <div className="flex w-full justify-center">
-              <div className="cursor-pointer">
-                <div className="flex items-center gap-2">
-                  <Image
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-                    src={LOGO}
-                    width={30}
-                  />
-                  <span className="text-[1.2rem] font-semibold">TutorSNBT</span>
-                </div>
-              </div>
+              <Logo className="text-[1.5rem]" imageWidth={40} />
             </div>
             <div className="mt-[1rem] flex flex-col items-center gap-[1.5rem]">
               <h1 className="text-[1.5rem] font-semibold">Masuk</h1>

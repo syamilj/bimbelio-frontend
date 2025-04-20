@@ -1,7 +1,8 @@
 // index.tsx
-import LOGO from '@/_assest/logomark.png';
-import { IconOpenAI } from '@/styles/icon';
-import Image from 'next/image';
+import LOGO from "@/_assest/logomark.png";
+import Logo from "@/components/ui/logo";
+import { IconOpenAI } from "@/styles/icon";
+import Image from "next/image";
 
 export default function Footer() {
   // const ScrollOffsetLink = ({ href, children }: any) => {
@@ -42,17 +43,10 @@ export default function Footer() {
         {/* <div className="">
           <Image src={logo} alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK" />
         </div> */}
-        <div className="flex items-center gap-2">
-          <Image
-            alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-            src={LOGO}
-            width={30}
-          />
-          <span className="text-[1rem] font-semibold text-main">TutorSNBT</span>
-        </div>
+        <Logo />
         <div className="flex items-center gap-[.5rem] text-[1.5rem]">
           <i className="bx bxl-instagram text-main" />
-          <p className="text-[1rem] font-semibold text-main">TutorSNBT</p>
+          <p className="text-[1rem] font-semibold text-main">Bimbelio</p>
         </div>
       </div>
       {/* <div className="grid grid-cols-2 md:flex gap-[2rem] md:gap-[6rem] justify-center w-full py-[2rem] text-center md:text-start">

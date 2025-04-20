@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import AnimatedGradientText from "../../magicui/animated-gradient-text";
 import { Button } from "../../ui/button";
 import { useSession } from "@/components/provider/session-provider-auth";
+import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
 
 // Jika Kamu memilih untuk menggunakan UUID
 // import { v4 as uuidv4 } from 'uuid';
@@ -26,6 +27,7 @@ interface TryoutProps {
 }
 
 const Tryout: React.FC<TryoutProps> = ({ setShowAuth }) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -150,12 +152,29 @@ const Tryout: React.FC<TryoutProps> = ({ setShowAuth }) => {
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <item.icon className="h-4 w-4 flex-shrink-0 text-blue-500" />
+                  <item.icon
+                    className="h-4 w-4 flex-shrink-0"
+                    style={{
+                      color: websiteSubCategory?.main_color,
+                    }}
+                  />
                   <div className="flex flex-1 items-center justify-between">
-                    <span className="text-xs font-semibold text-blue-500">
+                    <span
+                      className="text-xs font-semibold"
+                      style={{
+                        color: websiteSubCategory?.main_color,
+                      }}
+                    >
                       {item.title}
                     </span>
-                    <span className="text-xs text-blue-500">{item.date}</span>
+                    <span
+                      className="text-xs"
+                      style={{
+                        color: websiteSubCategory?.main_color,
+                      }}
+                    >
+                      {item.date}
+                    </span>
                   </div>
                 </motion.div>
               ))}
@@ -167,7 +186,12 @@ const Tryout: React.FC<TryoutProps> = ({ setShowAuth }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
             >
-              <h4 className="mb-2 text-center text-sm font-bold text-blue-700">
+              <h4
+                className="mb-2 text-center text-sm font-bold"
+                style={{
+                  color: websiteSubCategory?.main_color,
+                }}
+              >
                 ✨ Apa yang kamu dapatkan? ✨
               </h4>
               <div className="grid grid-cols-2 gap-2">
@@ -178,8 +202,18 @@ const Tryout: React.FC<TryoutProps> = ({ setShowAuth }) => {
                     whileHover={{ scale: 1.03 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <feature.icon className="h-4 w-4 flex-shrink-0 text-blue-500" />
-                    <span className="text-xs font-medium text-blue-500">
+                    <feature.icon
+                      className="h-4 w-4 flex-shrink-0"
+                      style={{
+                        color: websiteSubCategory?.main_color,
+                      }}
+                    />
+                    <span
+                      className="text-xs font-medium"
+                      style={{
+                        color: websiteSubCategory?.main_color,
+                      }}
+                    >
                       {feature.title}
                     </span>
                   </motion.div>
@@ -188,7 +222,10 @@ const Tryout: React.FC<TryoutProps> = ({ setShowAuth }) => {
             </motion.div>
 
             <Button
-              className="mx-auto flex items-center justify-center rounded-full bg-greenUpgrade py-2 text-sm font-bold text-white shadow-md transition-all duration-300 hover:bg-main hover:text-blue-100"
+              className="mx-auto flex items-center justify-center rounded-full py-2 text-sm font-bold text-white shadow-md transition-all duration-300 hover:bg-main hover:text-blue-100"
+              style={{
+                backgroundColor: `linear-gradient(145deg, ${websiteSubCategory?.secondary_color}, ${websiteSubCategory?.main_color})`,
+              }}
               onClick={handleStartClick}
             >
               Daftar Sekarang!

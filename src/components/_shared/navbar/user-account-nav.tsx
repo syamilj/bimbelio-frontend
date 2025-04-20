@@ -31,7 +31,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-8 w-8 overflow-hidden rounded-full ring-2 ring-main ring-offset-2 ring-offset-background transition-all hover:ring-4 focus:ring-4"
+          className="relative h-8 w-8 overflow-hidden rounded-full ring-2 ring-main/50 ring-offset-2 ring-offset-background transition-all hover:ring-4 focus:ring-4"
         >
           <motion.div
             animate={isOpen ? { scale: 0.9 } : { scale: 1 }}
@@ -58,7 +58,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
           transition={{ duration: 0.2 }}
         >
           <div className="mb-2 flex items-center gap-2 p-2">
-            <Avatar className="h-8 w-8 ring-1 ring-main">
+            <Avatar className="h-8 w-8 ring-1 ring-main/90">
               <AvatarImage src={user.image ?? ""} alt={user.name ?? ""} />
               <AvatarFallback className="text-main-foreground bg-gradient-to-br from-main to-secondary text-sm font-bold">
                 {user.name ? user.name[0].toUpperCase() : "U"}

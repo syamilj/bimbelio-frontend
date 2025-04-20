@@ -73,6 +73,7 @@ export default function AIChatHistoryPage() {
       },
       onSuccess({ message, status, data }) {
         sendData = data;
+        setLoading(false);
       },
     });
     return sendData;
@@ -261,7 +262,7 @@ export default function AIChatHistoryPage() {
               />
               <Button
                 onClick={handleNewChat}
-                className="bg-[#2563EB] hover:bg-blue-700"
+                className="bg-main hover:bg-main/50"
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Mulai Baru
@@ -316,7 +317,7 @@ export default function AIChatHistoryPage() {
                   key={index}
                   className="flex flex-col items-center text-center p-6 border rounded-xl bg-white"
                 >
-                  <div className="text-[#2563EB] mb-4">
+                  <div className="text-main mb-4">
                     <feature.icon className="h-8 w-8" />
                   </div>
                   <h4 className="text-lg font-semibold mb-2">

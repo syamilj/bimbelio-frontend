@@ -1,3 +1,4 @@
+import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
 import { useSession } from "@/components/provider/session-provider-auth";
 import Chat from "@/components/workspace/chat";
 import { env } from "@/env.mjs";
@@ -15,6 +16,7 @@ type PrevChatMessagesType = {
 
 export default function ChatContent({ historyId }: { historyId: string }) {
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
   // const {
   //   data: prevChatMessages,
@@ -52,7 +54,7 @@ export default function ChatContent({ historyId }: { historyId: string }) {
   return (
     <div className="flex h-auto w-full max-w-[800px] mx-auto flex-col gap-2 overflow-hidden md:relative md:left-auto md:top-auto">
       <Chat
-        apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatTutor`}
+        apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatTutor?website_sub_category_id=${websiteSubCategory?.id}`}
         body={{ historyId, userId: session?.user.id }}
         messages={{
           prevChatMessages,
