@@ -169,7 +169,7 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
               >
                 Kebijakan Privasi
               </span>{" "}
-              tutorsnbt.com
+              bimbelio.com
             </p>
           </div>
 

@@ -6,10 +6,10 @@ import LayoutUserClient from "./layoutUser"; // <--- Komponen client
 
 export const metadata: Metadata = {
   title: "Belajar",
-  description: "Siswa belajar di TutorSNBT",
+  description: "Siswa belajar di Bimbelio",
   openGraph: {
     title: "Belajar",
-    description: "Siswa belajar di TutorSNBT",
+    description: "Siswa belajar di Bimbelio",
   },
 };
 

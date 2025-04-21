@@ -7,7 +7,7 @@ export const getMainStyles = (
   const shades = Array.from({ length: 10 }, (_, i) => (i + 1) * 10);
 
   const styles = `
-      .bg-gradient {background: linear-gradient(145deg, ${
+      .bg-gradient {background-image: linear-gradient(145deg, ${
         websiteSubCategory?.secondary_color
       }, ${websiteSubCategory?.main_color});}
       .bg-main { background-color: ${mainColor}; }

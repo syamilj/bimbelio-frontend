@@ -63,7 +63,7 @@ export default function Card({ data, href, noCategory }: card) {
               setShowUpgrade(9999);
             }}
           >
-            {item.premium && session?.user.role === "USER" && (
+            {item.premium && !session?.user.tier && (
               <>
                 <div className="absolute left-0 top-0 z-[2] flex h-full w-full items-center justify-center rounded-xl bg-[#ffffff73]">
                   <IconLock w={60} className="text-[#6e717b9d]" />
@@ -100,7 +100,7 @@ export default function Card({ data, href, noCategory }: card) {
                   layout="responsive"
                   width={500}
                   height={300}
-                  alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                  alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
                 />
               </div>
               <div

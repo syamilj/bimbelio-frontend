@@ -310,7 +310,7 @@ export default function TryoutResult({
       />
       <Header current={0} total={-1} name={""} done />
       {/* <h1 className="text-4xl font-bold mb-6 text-center">
-      Hasil Try Out SNBT/UTBK TutorSNBT
+      Hasil Try Out SNBT/UTBK Bimbelio
     </h1> */}
       <Tabs value={tabs} className="w-full">
         <div className="flex w-full justify-between mb-8 ">

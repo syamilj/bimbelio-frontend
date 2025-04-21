@@ -493,7 +493,7 @@ const RegistrationTryOut = ({
           </div>
           <div className="flex flex-col gap-[.5rem]">
             <p className="text-[.95rem]">
-              Tau TutorSNBT dari mana?<span className="text-red-600">*</span>
+              Tau Bimbelio dari mana?<span className="text-red-600">*</span>
             </p>
             <Select
               value={Channel}

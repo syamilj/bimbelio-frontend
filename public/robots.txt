@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /admin/
 Disallow: /login/
 Allow: /
-Sitemap: https://www.tutorsnbt.com/sitemap.xml
+Sitemap: https://www.bimbelio.com/sitemap.xml

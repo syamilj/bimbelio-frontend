@@ -42,11 +42,11 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
           <div className="hidden items-center justify-center md:flex">
             <div className="flex items-center gap-2">
               <Image
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
                 src={LOGO}
                 width={30}
               />
-              <span className="font-semibold">TutorSNBT</span>
+              <span className="font-semibold">Bimbelio</span>
             </div>
           </div>
           <div className="flex flex-col items-center gap-[1rem] text-center">

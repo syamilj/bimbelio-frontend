@@ -205,7 +205,7 @@ export default function CardTryOutDone({
                   layout="responsive"
                   width={500}
                   height={300}
-                  alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                  alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
                 />
               </div>
               <div

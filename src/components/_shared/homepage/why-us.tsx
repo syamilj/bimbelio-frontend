@@ -92,11 +92,10 @@ const WhyUs = () => {
     >
       <div className="mx-[1rem] md:mx-0">
         <h1 className="mb-[1rem] text-center text-[1.5rem] font-bold text-main md:text-[2.5rem]">
-          <AnimatedGradientText>Mengapa TutorSNBT?</AnimatedGradientText>
+          <AnimatedGradientText>Mengapa Bimbelio?</AnimatedGradientText>
         </h1>
         <p className="font-regular text-center text-main-gray-text sm:mt-[-1rem]">
-          Keunggulan Bimbel TutorSNBT untuk persiapan terbaik menuju
-          kelulusanmu.
+          Keunggulan Bimbel Bimbelio untuk persiapan terbaik menuju kelulusanmu.
         </p>
         <div className="mt-[2rem] flex w-full items-center justify-center sm:mt-[1rem]">
           <div className="flex w-full flex-col items-center gap-[1rem] sm:w-[unset] sm:flex-row">
@@ -121,7 +120,7 @@ const WhyUs = () => {
         <div className="">
           <div className="flex justify-center">
             <p className="w-full max-w-[700px] text-center text-main-gray-text">
-              <span className="font-medium text-main">TutorSNBT</span>{" "}
+              <span className="font-medium text-main">Bimbelio</span>{" "}
               menggunakan GPT-4o yang menunjukkan performa unggul dalam berbagai
               hasil ujian, memastikan hasil belajar yang optimal untuk persiapan
               SNBT/UTBK.
@@ -143,7 +142,7 @@ const WhyUs = () => {
         <div className="">
           <div className="flex justify-center">
             <p className="w-full max-w-[700px] text-center text-main-gray-text">
-              <span className="font-medium text-main">TutorSNBT</span>{" "}
+              <span className="font-medium text-main">Bimbelio</span>{" "}
               menggunakan GPT-4o yang terbukti memiliki tingkat akurasi
               tertinggi dibandingkan model AI lainnya dalam berbagai benchmark
               evaluasi, memastikan pengalaman belajar yang lebih efektif dan
@@ -167,9 +166,9 @@ const WhyUs = () => {
           <div className="w-full min-w-[1024px] px-[1rem] lg:px-0">
             <div className="grid grid-cols-4">
               <div className="block"></div>
-              <div className="flex h-[70px] items-center justify-center gap-[1rem] rounded-t-[1rem] bg-gradientGreen text-center">
+              <div className="flex h-[70px] items-center justify-center gap-[1rem] rounded-t-[1rem] bg-gradient text-center">
                 <h1 className="text-[1.2rem] font-medium text-white">
-                  TutorSNBT
+                  Bimbelio
                 </h1>
               </div>
               <div className="flex h-[70px] items-center justify-center gap-[1rem] rounded-t-[1rem] text-center">

@@ -165,7 +165,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
           <div className="flex flex-col gap-[.5rem]">
             <h1 className="text-[1.5rem] font-bold">
               <AnimatedGradientText>Selamat datang di </AnimatedGradientText>
-              <span className="font-regular text-main">TutorSNBT!</span>
+              <span className="font-regular text-main">Bimbelio!</span>
             </h1>
             <p className="font-regular text-main-gray-text">
               Masuk dengan akunmu
@@ -332,7 +332,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
           <p className="font-regular">Ayo mulai sekarang! </p>
           <p className="font-regular text-center text-[.8rem] text-main-gray-text">
             Dengan melanjutkan, kamu setuju dengan ketentuan Layanan dan
-            Kebijakan Privasi TutorSNBT
+            Kebijakan Privasi Bimbelio
           </p>
         </div>
       </div>

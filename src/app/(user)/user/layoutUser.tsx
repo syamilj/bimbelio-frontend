@@ -167,7 +167,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   }
 
   // Admin/user data
-  const userRole = userSession?.user.role; // mis. 'ADMIN' | 'USER' | 'PREMIUM'
+  const userTier = userSession?.user.tier; // mis. 'ADMIN' | 'USER' | 'PREMIUM'
 
   // UTILS --------------------------------------------------------
   // Render jumlah limit
@@ -176,7 +176,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     used?: number,
     limit?: number
   ) {
-    if (userRole !== "ADMIN") {
+    if (userTier !== "ADMIN") {
       return (
         <p className="text-[.9rem] text-main-gray-text">
           {used}/{limit}
@@ -273,17 +273,22 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                 </div>
 
                 {/* Role-based status or button */}
-                {userRole === "USER" ? (
+                {!userTier ? (
                   <ButtonPayment />
-                ) : userRole === "PREMIUM" ? (
+                ) : userTier === "PREMIUM" ? (
                   <div className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main-yellow px-[1rem] py-[.7rem] text-[.9rem] text-white">
                     <IconCrown className="text-white" />
                     <p>Premium</p>
                   </div>
-                ) : userRole === "ADMIN" ? (
+                ) : userTier === "ADMIN" ? (
                   <div className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main-yellow px-[1rem] py-[.7rem] text-[.9rem] text-white">
                     <IconCrown className="text-white" />
                     <p>Admin</p>
+                  </div>
+                ) : userTier ? (
+                  <div className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main-yellow px-[1rem] py-[.7rem] text-[.9rem] text-white">
+                    <IconCrown className="text-white" />
+                    <p>{userTier}</p>
                   </div>
                 ) : null}
               </div>

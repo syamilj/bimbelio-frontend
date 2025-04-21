@@ -142,7 +142,7 @@ const Sidebar = ({ category }: any) => {
         </div>
 
         {/* History Section */}
-        <div
+        {/* <div
           id="riwayat"
           className="mt-[1rem] flex flex-col gap-[2rem] px-[.5rem]"
         >
@@ -166,12 +166,12 @@ const Sidebar = ({ category }: any) => {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Footer */}
         <div className="absolute bottom-0 left-0 w-full">
           {/* Upgrade Premium (Conditionally Rendered) */}
-          {session?.user.role === "USER" && (
+          {!session?.user.tier && (
             <div
               className={`flex flex-col gap-[.6rem] bg-white ${
                 !minimizeSidebar ? "p-4" : "mb-[1rem] items-center p-0"
@@ -182,12 +182,12 @@ const Sidebar = ({ category }: any) => {
                   <h1 className="font-semibold">Upgrade premium</h1>
                   <p className="text-[.8rem] text-main-gray-text">
                     Upgrade akunmu sekarang untuk meningkatkan akses layanan
-                    terbaik dan terlengkap dari TutorSNBT
+                    terbaik dan terlengkap dari Bimbelio
                   </p>
                 </>
               )}
               <Button
-                className="flex w-fit items-center gap-[.5rem] rounded-[.8rem] bg-greenUpgrade px-[1rem] py-[.7rem] text-white duration-300 active:bg-greenUpgradeHover md:hover:bg-greenUpgradeHover md:active:bg-greenUpgrade"
+                className="flex w-fit items-center gap-[.5rem] rounded-[.8rem] bg-gradient md:hover:opacity-80 px-[1rem] py-[.7rem] text-white duration-300"
                 onClick={() => setTransactionPopUp(true)}
               >
                 <IconCrown />
@@ -216,7 +216,7 @@ const Sidebar = ({ category }: any) => {
                   {userImage && (
                     <Image
                       src={userImage}
-                      alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                      alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
                       width={500}
                       height={300}
                       layout="responsive"
@@ -325,10 +325,7 @@ const Sidebar = ({ category }: any) => {
         >
           {!minimizeSidebar ? (
             <>
-              <Image
-                src={LogoSvg}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-              />
+              <Image src={LogoSvg} alt="Bimbelio - Bimbel AI untuk SNBT/UTBK" />
               <div
                 onClick={() => {
                   setSidebarMobile(false);
@@ -340,7 +337,7 @@ const Sidebar = ({ category }: any) => {
           ) : (
             <Image
               src={LogoMinimize}
-              alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+              alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
               className="w-[40px]"
             />
           )}
@@ -361,7 +358,7 @@ const Sidebar = ({ category }: any) => {
         </div>
 
         {/* History Section */}
-        <div
+        {/* <div
           id="riwayat"
           className="mt-[1rem] flex-col gap-[2rem] px-[.5rem] md:flex"
         >
@@ -386,12 +383,12 @@ const Sidebar = ({ category }: any) => {
               />
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Footer */}
         <div className="absolute bottom-0 left-0 w-full">
           {/* Upgrade Premium (Conditionally Rendered) */}
-          {session?.user.role === "USER" && (
+          {!session?.user.tier && (
             <div
               className={`flex flex-col gap-[.6rem] bg-white ${
                 !minimizeSidebar ? "p-5" : "mb-[1rem] items-center p-0"
@@ -402,7 +399,7 @@ const Sidebar = ({ category }: any) => {
                   <h1 className="font-semibold">Upgrade premium</h1>
                   <p className="text-[.8rem] text-main-gray-text">
                     Upgrade akunmu sekarang untuk meningkatkan akses layanan
-                    terbaik dan terlengkap dari TutorSNBT
+                    terbaik dan terlengkap dari Bimbelio
                   </p>
                 </>
               )}
@@ -438,7 +435,7 @@ const Sidebar = ({ category }: any) => {
                   {userImage && (
                     <Image
                       src={userImage}
-                      alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                      alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
                       width={500}
                       height={300}
                       layout="responsive"
@@ -829,7 +826,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                           {preview !== "" ? (
                             <Image
                               src={preview}
-                              alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                              alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
                               width={500}
                               height={300}
                               layout="responsive"
@@ -837,7 +834,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                           ) : (
                             <Image
                               src={profileImage !== "" ? profileImage : male}
-                              alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                              alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
                               width={500}
                               height={300}
                               layout="responsive"
@@ -845,7 +842,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                           )}
                         </div>
                         <div className="flex h-full flex-col justify-between py-[.2rem]">
-                          <p className="font-medium">{session?.user.name}</p>
+                          <p className="font-medium">{session?.user?.name}</p>
                           <p className="font-regular text-[.9rem] text-main-gray-text">
                             {session?.user.email}
                           </p>
@@ -945,7 +942,9 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                     <div id="heading" className="flex flex-col gap-[.8rem]">
                       <div className="flex items-center gap-[.5rem]">
                         <p className="font-semibold">
-                          {item.item_details[0].name}
+                          {(item.item_details.length > 0 &&
+                            item.item_details[0]?.name) ||
+                            "-"}
                         </p>
                         <IconCrown className="text-main-yellow" />
                       </div>
@@ -1008,7 +1007,9 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                       <div className="flex w-full items-center justify-between">
                         <div className="flex items-center gap-[.5rem]">
                           <p className="font-semibold">
-                            {item.item_details[0].name}
+                            {(item.item_details.length > 0 &&
+                              item.item_details[0]?.name) ||
+                              "-"}
                           </p>
                           <IconCrown className="text-main-yellow" />
                         </div>

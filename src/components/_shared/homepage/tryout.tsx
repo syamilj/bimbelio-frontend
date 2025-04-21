@@ -242,7 +242,7 @@ const Tryout: React.FC<TryoutProps> = ({ setShowAuth }) => {
             key={item.id} // Sekarang menggunakan id yang unik
             className="mx-[1rem] flex flex-col items-center justify-center gap-[1rem] rounded-[2rem] bg-white/50 p-[1rem] text-center md:gap-[1.5rem] lg:mx-[unset]"
           >
-            {item.icon}
+            <div className="text-main">{item.icon}</div>
             <p className="font-bold">{item.text}</p>
             {item.description}
           </div>

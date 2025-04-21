@@ -3,91 +3,72 @@ import {
   IconRevolusi2,
   IconRevolusi3,
   IconRevolusi4,
-} from '@/styles/icon';
-import Image from 'next/image';
+} from "@/styles/icon";
+import Image from "next/image";
 
-import BahanAjar from '@/_assest/homepage/Revolusi/BahanAjar.png';
-import Chat from '@/_assest/homepage/Revolusi/Chat.png';
-import Notes from '@/_assest/homepage/Revolusi/Notes.png';
-import Quiz from '@/_assest/homepage/Revolusi/Quiz.png';
-import AnimatedGradientText from '../../magicui/animated-gradient-text';
+import BahanAjar from "@/_assest/homepage/Revolusi/BahanAjar.svg";
+import Chat from "@/_assest/homepage/Revolusi/Chat.png";
+import Notes from "@/_assest/homepage/Revolusi/Notes.png";
+import Quiz from "@/_assest/homepage/Revolusi/Quiz.png";
+import AnimatedGradientText from "../../magicui/animated-gradient-text";
+import { ImageBahanAjar } from "@/_assest/homepage/Revolusi/BahanAjar";
+import { ImageChatAI } from "@/_assest/homepage/Revolusi/Chat";
+import { ImageNotes } from "@/_assest/homepage/Revolusi/Notes";
+import { ImageQuiz } from "@/_assest/homepage/Revolusi/Quiz";
 
 const LearningRevolutions = () => {
   // <span className="text-main"></span>
   const revolusiBelajar = [
     {
       icon: <IconRevolusi1 />,
-      heading: 'Interactive Materials',
+      heading: "Interactive Materials",
       description: (
         <p className="text-[.95rem] text-main-gray-text">
-          Ingin material interaktif? Dapatkan material{' '}
-          <span className="text-main">materi</span>,{' '}
-          <span className="text-main">soal</span>, dan{' '}
+          Ingin material interaktif? Dapatkan material{" "}
+          <span className="text-main">materi</span>,{" "}
+          <span className="text-main">soal</span>, dan{" "}
           <span className="text-main">video</span> yang bisa kamu tandai dan
           tanyakan sesuai kebutuhan!
         </p>
       ),
-      image: (
-        <Image
-          src={BahanAjar}
-          alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-          className="h-auto w-full"
-        />
-      ),
+      image: <ImageBahanAjar />,
     },
     {
       icon: <IconRevolusi2 />,
-      heading: 'Chat & Vision',
+      heading: "Chat & Vision",
       description: (
         <p className="text-[.95rem] text-main-gray-text">
-          Perlu bantuan langsung?{' '}
-          <span className="text-main">Chat TutorSNBT AI</span> untuk penjelasan
+          Perlu bantuan langsung?{" "}
+          <span className="text-main">Chat Bimbelio AI</span> untuk penjelasan
           dan analisis materi dalam bentuk apapun secara real-time dan teruji!
         </p>
       ),
-      image: (
-        <Image
-          src={Chat}
-          alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-          className="h-auto w-full"
-        />
-      ),
+      image: <ImageChatAI />,
     },
     {
       icon: <IconRevolusi3 />,
-      heading: 'Note Collection',
+      heading: "Note Collection",
       description: (
         <p className="text-[.95rem] text-main-gray-text">
-          Tipe belajar mencatat? Gunakan fitur{' '}
+          Tipe belajar mencatat? Gunakan fitur{" "}
           <span className="text-main">Note</span> yang disertai AI untuk
           membantu perihal catatan dan mengatur informasi pentingmu!
         </p>
       ),
-      image: (
-        <Image
-          src={Notes}
-          alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-          className="h-auto w-full"
-        />
-      ),
+      image: <ImageNotes />,
     },
     {
       icon: <IconRevolusi4 />,
-      heading: 'Generate Quiz',
+      heading: "Generate Quiz",
       description: (
         <p className="text-[.95rem] text-main-gray-text">
-          Ingin menguji pemahamanmu?{' '}
+          Ingin menguji pemahamanmu?{" "}
           <span className="text-main">Generate Quiz</span> pilihan ganda maupun
           esai secara otomatis dari material!
         </p>
       ),
-      image: (
-        <Image
-          src={Quiz}
-          alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-          className="h-auto w-full"
-        />
-      ),
+
+      image: <ImageQuiz />,
     },
   ];
 
@@ -110,11 +91,13 @@ const LearningRevolutions = () => {
             className="grid grid-cols-1 rounded-[.8rem] bg-white p-[1.5rem] md:grid-cols-2  bg-white/50"
           >
             <div className="flex flex-col gap-[1rem]">
-              {item.icon}
+              <div className="text-main">{item.icon}</div>
               <h1 className="text-[1.3rem] font-medium">{item.heading}</h1>
               {item.description}
             </div>
-            <div className="hidden shrink-0 md:block">{item.image}</div>
+            <div className="hidden shrink-0 md:block text-main">
+              {item.image}
+            </div>
           </div>
         ))}
       </div>

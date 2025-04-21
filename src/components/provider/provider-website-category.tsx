@@ -9,12 +9,25 @@ import NextTopLoader from "nextjs-toploader";
 import { createContext, useContext, useEffect, useState } from "react";
 import ChooseWebCategory from "../ui/choose-web-category";
 import { getMainStyles } from "@/styles/main-styles";
+import { usePathname } from "next/navigation";
+import { useSession } from "./session-provider-auth";
+
+const initialValue = {
+  id: "guest",
+  main_color: "#0091FF",
+  secondary_color: "#5aa4dd",
+  name: "guest",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  website_category_id: "guest",
+};
 
 export default function ProviderWebsiteCategory({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { data: session } = useSession();
   const [first, setFirst] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -25,10 +38,11 @@ export default function ProviderWebsiteCategory({
   const [websiteSubCategory, setWebsiteSubCategory] =
     useState<WebsiteSubCategory | null>(null);
 
-  useEffect(() => {
+  const getWebSubCategory = () => {
     const website_sub_category_id = localStorage.getItem(
       "website_sub_category_id"
     );
+    setIsLoading(true);
     if (website_sub_category_id) {
       axiosInstanceRaw
         .get(
@@ -38,17 +52,26 @@ export default function ProviderWebsiteCategory({
           const resData = response(res);
           setWebsiteSubCategory(resData.data);
         })
+        .catch(() => {
+          setFirst(true);
+        })
         .finally(() => {
           setIsLoading(false);
         });
     } else {
-      setFirst(true);
+      if (!session) setWebsiteSubCategory(initialValue);
+      else setFirst(true);
+
       setIsLoading(false);
     }
+  };
+
+  useEffect(() => {
+    getWebSubCategory();
     getGeneral("/website-category/getWebsiteCategory", {
       setData: setWebCategoryData,
     });
-  }, []);
+  }, [session]);
 
   console.log({ websiteSubCategory });
 

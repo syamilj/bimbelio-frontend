@@ -522,7 +522,7 @@ export default TryoutOption;
 //             <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
 //               <Image
 //                 src={previewImage}
-//                 alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+//                 alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
 //                 layout="responsive"
 //                 width={500}
 //                 height={300}
@@ -557,7 +557,7 @@ export default TryoutOption;
 //             <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
 //               <Image
 //                 src={previewImage}
-//                 alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+//                 alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
 //                 layout="responsive"
 //                 width={500}
 //                 height={300}

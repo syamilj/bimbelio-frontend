@@ -1,10 +1,10 @@
 //src/app/(user)/user/chat/_component/loading-chat.tsx
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
-import { TextShimmer } from '@/components/ui/text-shimer';
-import { getDate, getHours } from '@/lib/utils';
-import { BotMessageSquareIcon } from 'lucide-react';
-import ChatTools from './chat-tools';
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import { TextShimmer } from "@/components/ui/text-shimer";
+import { getDate, getHours } from "@/lib/utils";
+import { BotMessageSquareIcon } from "lucide-react";
+import ChatTools from "./chat-tools";
 
 const LoadingChat = () => {
   // const getHours = (date: Date) =>
@@ -22,7 +22,7 @@ const LoadingChat = () => {
           </Avatar>
           <div className="flex flex-col flex-1">
             <div className="relative justify-between items-center mb-2">
-              <p className="font-semibold text-sm">TutorSNBT</p>
+              <p className="font-semibold text-sm">Bimbelio</p>
               <span className="absolute -top-2 left-[-20px] bg-red-500 rounded-full px-[0.35rem] py-1 text-white font-bold text-[0.5rem]">
                 AI
               </span>

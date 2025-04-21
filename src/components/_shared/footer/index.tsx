@@ -41,7 +41,7 @@ export default function Footer() {
     >
       <div className="flex w-full items-center justify-between">
         {/* <div className="">
-          <Image src={logo} alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK" />
+          <Image src={logo} alt="Bimbelio - Bimbel AI untuk SNBT/UTBK" />
         </div> */}
         <Logo />
         <div className="flex items-center gap-[.5rem] text-[1.5rem]">
@@ -101,7 +101,7 @@ export default function Footer() {
           Powered by
           <IconOpenAI />
         </div>
-        <p>by Jutif AI | ©2024 TutorSNBT. All Right Reserved.</p>
+        <p>by Jutif AI | ©2024 Bimbelio. All Right Reserved.</p>
       </div>
     </div>
   );

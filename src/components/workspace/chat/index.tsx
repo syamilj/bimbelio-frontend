@@ -108,7 +108,7 @@ export default function Chat({
     {
       id: "id",
       content:
-        "Selamat datang di **TutorSNBT**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
+        "Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
       role: "assistant",
       createAt: null,
       like: false,
@@ -291,7 +291,7 @@ export default function Chat({
         {
           id: "id",
           content:
-            "Selamat datang di **TutorSNBT**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
+            "Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
           role: "assistant",
           createAt: null,
           like: false,
@@ -303,7 +303,7 @@ export default function Chat({
         {
           id: "id",
           content:
-            "Selamat datang di **TutorSNBT**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
+            "Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
           role: "assistant",
           createAt: null,
           like: false,
@@ -524,7 +524,7 @@ export default function Chat({
                 >
                   <div className="relative justify-between items-center mb-2">
                     <p className="font-semibold text-sm">
-                      {isUser ? session?.user?.name : "TutorSNBT"}
+                      {isUser ? session?.user?.name : "Bimbelio"}
                     </p>
                     {!isUser && (
                       <span className="absolute -top-2 left-[-20px] bg-red-500 rounded-full px-[0.35rem] py-1 text-white font-bold text-[0.5rem]">
@@ -561,7 +561,7 @@ export default function Chat({
                                     "/placeholder.svg"
                               }
                               className="h-auto max-w-full"
-                              alt="TutorSNBT - Bimbel AI"
+                              alt="Bimbelio - Bimbel AI"
                               width={500}
                               height={300}
                             />

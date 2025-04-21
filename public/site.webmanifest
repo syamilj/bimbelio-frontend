@@ -1,10 +1,10 @@
 {
-  "name": "TutorSNBT",
-  "short_name": "TutorSNBT",
+  "name": "Bimbelio",
+  "short_name": "Bimbelio",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "description": "TutorSNBT adalah platform untuk belajar dan berlatih.",
+  "description": "Bimbelio adalah platform untuk belajar dan berlatih.",
   "icons": [
     {
       "src": "favicon.ico",

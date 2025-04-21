@@ -12,12 +12,12 @@ import ProviderWebsiteCategory from "@/components/provider/provider-website-cate
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
-    template: `%s | TutorSNBT`,
+    template: `%s | Bimbelio`,
   },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
   keywords: [
-    "TutorSNBT",
+    "Bimbelio",
     "Bimbel AI",
     "SNBT",
     "UTBK",
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     "Ujian Mandiri",
     "Bimbel Ujian Mandiri",
   ],
-  authors: [{ name: "TutorSNBT", url: "https://www.tutorsnbt.com" }],
-  creator: "TutorSNBT",
+  authors: [{ name: "Bimbelio", url: "https://www.bimbelio.com" }],
+  creator: "Bimbelio",
   openGraph: {
     type: "website",
     locale: "id_ID",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [siteConfig.ogImage],
     card: "summary_large_image",
-    creator: "@TutorSNBT",
+    creator: "@Bimbelio",
   },
   icons: {
     icon: "/favicon.ico",
@@ -132,7 +132,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         />
         <noscript>
           <Image
-            alt="Pixel TutorSNBT"
+            alt="Pixel Bimbelio"
             height="1"
             width="1"
             style={{ display: "none" }}
@@ -149,13 +149,13 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           {
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "TutorSNBT",
-            "url": "https://www.tutorsnbt.com",
-            "logo": "https://www.tutorsnbt.com/logo.png",
+            "name": "Bimbelio",
+            "url": "https://www.bimbelio.com",
+            "logo": "https://www.bimbelio.com/logo.png",
             "sameAs": [
-              "https://www.facebook.com/tutorsnbt",
-              "https://www.twitter.com/tutorsnbt",
-              "https://www.instagram.com/tutorsnbt"
+              "https://www.facebook.com/bimbelio",
+              "https://www.twitter.com/bimbelio",
+              "https://www.instagram.com/bimbelio"
             ],
             "contactPoint": {
               "@type": "ContactPoint",

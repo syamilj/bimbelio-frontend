@@ -439,8 +439,8 @@ export const hideVideoLink = async ({
 };
 
 export function constructMetadata({
-  title = "TutorSNBT - Bimbel AI untuk SNBT/UTBK",
-  description = "TutorSNBT revolutionises the learning experience with active AI-based learning tools for SNBT/UTBK and UTBK preparation.",
+  title = "Bimbelio - Bimbel AI untuk SNBT/UTBK",
+  description = "Bimbelio revolutionises the learning experience with active AI-based learning tools for SNBT/UTBK and UTBK preparation.",
   image = "/logo.png",
   icons = "/favicon.ico",
   noIndex = false,
@@ -451,7 +451,7 @@ export function constructMetadata({
   icons?: string;
   noIndex?: boolean;
 } = {}): Metadata {
-  const baseUrl = "https://www.tutorsnbt.com";
+  const baseUrl = "https://www.bimbelio.com";
   const imageUrl = new URL(image, baseUrl).toString();
   const iconUrl = new URL(icons, baseUrl).toString();
 
@@ -463,13 +463,13 @@ export function constructMetadata({
       url: baseUrl,
       title,
       description,
-      siteName: "TutorSNBT",
+      siteName: "Bimbelio",
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "TutorSNBT Logo",
+          alt: "Bimbelio Logo",
         },
       ],
     },

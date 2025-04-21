@@ -15,7 +15,6 @@ export default function CheckSubscription({
   children: ReactNode;
 }) {
   const [checkSubs, setCheckSubs] = useState<boolean>(true);
-  const [checkLog, setCheckLog] = useState<boolean>(true);
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -24,32 +23,6 @@ export default function CheckSubscription({
 
   //   const { mutateAsync: buyTryoutCheck } =
   //     api.payment.buyTryoutPremiumRedirect.useMutation();
-
-  console.log("session", session);
-
-  useEffect(() => {
-    if (checkLog && session) {
-      const data: any = session;
-      const expires = new Date(data?.user.expire);
-      const now = new Date();
-      if (expires < now) {
-        console.log({
-          expires: `${getDateString(expires)} | ${getHours(expires)}`,
-          now: `${getDateString(now)} | ${getHours(now)}`,
-        });
-        setCheckLog(false);
-        signOut();
-        console.log("Sudah expire");
-      } else if (expires > now) {
-        console.log({
-          expires: `${getDateString(expires)} | ${getHours(expires)}`,
-          now: `${getDateString(now)} | ${getHours(now)}`,
-        });
-        console.log("Belum Expires");
-        setCheckLog(false);
-      }
-    }
-  }, [session, checkLog]);
 
   // const CheckSubscription = api.user.checkSubscription.useMutation();
 

@@ -403,9 +403,7 @@ function PremiumPackageCard({
       <div className="relative flex flex-col h-full">
         <CardHeader className="space-y-2 p-6">
           <CardTitle className="text-2xl font-bold sm:text-3xl">
-            <span
-              className={`bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}
-            >
+            <span className={`bg-gradient bg-clip-text text-transparent`}>
               {title}
             </span>
           </CardTitle>

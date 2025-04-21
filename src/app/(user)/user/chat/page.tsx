@@ -228,7 +228,7 @@ export default function AIChatHistoryPage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Tutor AI</h1>
           <h2 className="text-sm text-gray-600 mb-4">Powered by OpenAI</h2>
           <p className="text-gray-600 mb-8 max-w-2xl">
-            Apa yang ingin Kamu pelajari hari ini? TutorSNBT siap membantu.
+            Apa yang ingin Kamu pelajari hari ini? Bimbelio siap membantu.
           </p>
 
           {/* Action Buttons */}
@@ -309,7 +309,7 @@ export default function AIChatHistoryPage() {
           {/* Features */}
           <div className="mt-16 w-full">
             <h3 className="text-2xl font-bold mb-12 text-center">
-              Keunggulan TutorSNBT
+              Keunggulan Bimbelio
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {features.map((feature, index) => (
@@ -332,7 +332,7 @@ export default function AIChatHistoryPage() {
           {/* Statistics */}
           {/* <div className="mt-16 w-full bg-[#2563EB] rounded-lg p-8 text-white">
             <h3 className="text-2xl font-bold mb-8 text-center">
-              TutorSNBT dalam Angka
+              Bimbelio dalam Angka
             </h3>
             <div className="grid grid-cols-2 gap-8">
               <div className="flex flex-col items-center text-center">
