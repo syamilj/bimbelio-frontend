@@ -1,11 +1,13 @@
-import uploadFileImg from '@/_assest/icon/uploadDokumen.png';
-import { toaster } from '@/components/ui/toaster';
-import { env } from '@/env.mjs';
-import { supabase } from '@/supabaseClient';
-import { api } from '@/trpc/react';
-import Image from 'next/image';
-import React, { SetStateAction, useEffect, useState } from 'react';
-import { Spinner } from '../../ui/spinner';
+import uploadFileImg from "@/_assest/icon/uploadDokumen.png";
+import { toaster } from "@/components/ui/toaster";
+import { env } from "@/env.mjs";
+import { supabase } from "@/supabaseClient";
+
+import Image from "next/image";
+import React, { SetStateAction, useEffect, useState } from "react";
+import { Spinner } from "../../ui/spinner";
+import { mutateGeneral } from "@/lib/fetch-helper";
+import { useSession } from "@/components/provider/session-provider-auth";
 
 const ReportBug = ({
   setIsReportBugOpen,
@@ -14,30 +16,47 @@ const ReportBug = ({
   setIsReportBugOpen: React.Dispatch<SetStateAction<boolean>>;
   isReportBugOpen: boolean;
 }) => {
-  const [category, setCategory] = useState<string>('');
-  const [detail, setDetail] = useState<string>('');
+  const { data: session } = useSession();
+
+  const [category, setCategory] = useState<string>("");
+  const [detail, setDetail] = useState<string>("");
   const [image, setImage] = useState<File | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { mutate: createBugReport } = api.category.reportBug.useMutation({
-    onSuccess() {
-      setIsReportBugOpen(false);
-      toaster({
-        title: 'Success',
-        condition: 'success',
-        description: 'Berhasil mengirim laporan',
-      });
-      setLoading(false);
-    },
-    onError() {
-      toaster({
-        title: 'Failed',
-        condition: 'warning',
-        description: 'Gagal Mengirim Laporan, silahkan coba lagi',
-      });
-      setLoading(false);
-    },
-  });
+  // const { mutate: createBugReport } = api.category.reportBug.useMutation({
+  //   onSuccess() {
+  //     setIsReportBugOpen(false);
+  //     toaster({
+  //       title: "Success",
+  //       condition: "success",
+  //       description: "Berhasil mengirim laporan",
+  //     });
+  //     setLoading(false);
+  //   },
+  //   onError() {
+  //     toaster({
+  //       title: "Failed",
+  //       condition: "warning",
+  //       description: "Gagal Mengirim Laporan, silahkan coba lagi",
+  //     });
+  //     setLoading(false);
+  //   },
+  // });
+
+  const createBugReport = async (payload: {
+    category: string;
+    detail: string;
+    image: string | null;
+  }) => {
+    await mutateGeneral("/category/reportBug", {
+      payload: { ...payload, userId: session?.user.id },
+      type: "post",
+      setLoading: setLoading,
+      onSuccess: () => {
+        setIsReportBugOpen(false);
+      },
+    });
+  };
 
   useEffect(() => {
     console.log({ category, detail, image });
@@ -51,7 +70,7 @@ const ReportBug = ({
       return;
     }
     const upload = await supabase.storage
-      .from('img')
+      .from("img")
       .upload(`${filename}`, image);
     if (upload.data) {
       createBugReport({
@@ -62,8 +81,8 @@ const ReportBug = ({
     }
     if (upload.error) {
       toaster({
-        title: 'Failed',
-        condition: 'warning',
+        title: "Failed",
+        condition: "warning",
         description: `${upload.error.message}`,
       });
       setLoading(false);
@@ -116,7 +135,7 @@ const ReportBug = ({
             </div>
             <div className="flex flex-col gap-[.5rem] text-[.9rem]">
               <p>
-                Foto / screenshot kendala{' '}
+                Foto / screenshot kendala{" "}
                 <span className="text-main-gray-text">(optional)</span>
               </p>
               <UploadImage
@@ -160,12 +179,12 @@ export default ReportBug;
 
 const UploadImage = ({ file, setFile, inputId }: any) => {
   const [previewHover, setPreviewHover] = useState<boolean>(false);
-  const [previewImage, setPreviewImage] = useState<string>('');
+  const [previewImage, setPreviewImage] = useState<string>("");
 
   useEffect(() => {
-    setPreviewImage('');
+    setPreviewImage("");
     if (file) {
-      console.log('ada file');
+      console.log("ada file");
       const reader = new FileReader();
 
       reader.onloadend = () => {
@@ -183,7 +202,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
         id={`${inputId}`}
         type="file"
         onChange={(e: any) => {
-          console.log('awdwad', e.target.files[0]);
+          console.log("awdwad", e.target.files[0]);
           setFile(e.target.files[0]);
         }}
         className="absolute right-0 top-0 h-0 w-0"
@@ -198,7 +217,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
               />
               <p className="text-[.8rem] text-main-gray-text">
                 {!file
-                  ? 'Pilih gambar untuk di-upload (.jpg / .png)'
+                  ? "Pilih gambar untuk di-upload (.jpg / .png)"
                   : `${file.name}`}
               </p>
             </div>
@@ -213,7 +232,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
           </>
         ) : (
           <>
-            <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
+            <div className={`relative ${previewHover ? "z-[4]" : "z-[6]"}`}>
               <Image
                 src={previewImage}
                 alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"

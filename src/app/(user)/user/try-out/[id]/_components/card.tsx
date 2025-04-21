@@ -1,8 +1,8 @@
-import { Input } from '@/components/ui/input';
-import ReactMarkdown from '@/components/ui/react-markdown';
-import { cn, replaceLatexNotation } from '@/lib/utils';
-import { QuestionType } from '@prisma/client';
-import 'katex/dist/katex.min.css';
+import { Input } from "@/components/ui/input";
+import ReactMarkdown from "@/components/ui/react-markdown";
+import { cn, replaceLatexNotation } from "@/lib/utils";
+import { QuestionTypeEnum } from "@/types/database";
+import "katex/dist/katex.min.css";
 
 interface CardProps {
   text: string;
@@ -11,9 +11,9 @@ interface CardProps {
   onInput: (value: string) => void;
   inputValue?: string;
   shortcut: number;
-  status?: 'correct' | 'wrong' | 'none' | 'complete';
+  status?: "correct" | "wrong" | "none" | "complete";
   disabled?: boolean;
-  type: QuestionType;
+  type: QuestionTypeEnum;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -27,31 +27,31 @@ const Card: React.FC<CardProps> = ({
   shortcut,
   status,
 }) => {
-  const isShortAnswer = type === 'SHORT_ANSWER';
+  const isShortAnswer = type === "SHORT_ANSWER";
 
   const cardClasses = cn(
-    'flex items-center gap-4 rounded-xl p-2 text-sm font-medium border',
+    "flex items-center gap-4 rounded-xl p-2 text-sm font-medium border",
     {
-      'bg-main text-white': selected,
-      'bg-white text-gray-700 hover:bg-main/10': !selected && !disabled,
-      'opacity-50 cursor-not-allowed': disabled,
-      'cursor-pointer': !disabled && !isShortAnswer,
-    },
+      "bg-main text-white": selected,
+      "bg-white text-gray-700 hover:bg-main/10": !selected && !disabled,
+      "opacity-50 cursor-not-allowed": disabled,
+      "cursor-pointer": !disabled && !isShortAnswer,
+    }
   );
 
   const shortcutClasses = cn(
-    'flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold',
+    "flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold",
     {
-      'bg-white text-main': selected,
-      'bg-main/10 text-main': !selected,
-    },
+      "bg-white text-main": selected,
+      "bg-main/10 text-main": !selected,
+    }
   );
 
-  const statusClasses = cn('absolute top-2 right-2 w-3 h-3 rounded-full', {
-    'bg-green-500': status === 'correct',
-    'bg-red-500': status === 'wrong',
-    'bg-yellow-500': status === 'none',
-    'bg-blue-500': status === 'complete',
+  const statusClasses = cn("absolute top-2 right-2 w-3 h-3 rounded-full", {
+    "bg-green-500": status === "correct",
+    "bg-red-500": status === "wrong",
+    "bg-yellow-500": status === "none",
+    "bg-blue-500": status === "complete",
   });
 
   return (

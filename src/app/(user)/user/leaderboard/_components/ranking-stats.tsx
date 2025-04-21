@@ -1,18 +1,18 @@
-import { useLeaderboardContext } from '@/app/(user)/user/leaderboard/_components/provider-leaderboard';
+import { useLeaderboardContext } from "@/app/(user)/user/leaderboard/_components/provider-leaderboard";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/ui/chart';
-import { Skeleton } from '@/components/ui/skeleton';
+} from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -20,10 +20,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
-import { IconCircleLoop, IconUserAdmin } from '@/styles/icon';
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import { IconCircleLoop, IconUserAdmin } from "@/styles/icon";
 import {
   Award,
   BarChart2,
@@ -31,8 +31,8 @@ import {
   School,
   TrendingDown,
   TrendingUp,
-} from 'lucide-react';
-import React, { Fragment, useEffect, useState } from 'react';
+} from "lucide-react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -44,39 +44,39 @@ import {
   // Tooltip,
   XAxis,
   YAxis,
-} from 'recharts';
+} from "recharts";
 
 const topSchools = [
-  { name: 'SMA Negeri 1 Jakarta', avgScore: 850 },
-  { name: 'SMA Negeri 3 Bandung', avgScore: 830 },
-  { name: 'SMA Negeri 5 Surabaya', avgScore: 820 },
-  { name: 'SMA Negeri 1 Yogyakarta', avgScore: 810 },
-  { name: 'SMA Negeri 2 Medan', avgScore: 800 },
+  { name: "SMA Negeri 1 Jakarta", avgScore: 850 },
+  { name: "SMA Negeri 3 Bandung", avgScore: 830 },
+  { name: "SMA Negeri 5 Surabaya", avgScore: 820 },
+  { name: "SMA Negeri 1 Yogyakarta", avgScore: 810 },
+  { name: "SMA Negeri 2 Medan", avgScore: 800 },
 ];
 
 interface SummaryProps {
   title: string;
   value: number;
   description: string;
-  icon: JSX.Element;
+  icon: React.JSX.Element;
   bgColor: string;
   textColor: string;
 }
 
 const TabsItem = [
   {
-    title: 'Ringkasan',
-    value: 'summary',
+    title: "Ringkasan",
+    value: "summary",
     icon: <TrendingUp className="h-4 w-4" />,
   },
   {
-    title: 'Statistik',
-    value: 'statistics',
+    title: "Statistik",
+    value: "statistics",
     icon: <BarChart2 className="h-4 w-4" />,
   },
   {
-    title: 'Analisis Tes',
-    value: 'subjects',
+    title: "Analisis Tes",
+    value: "subjects",
     icon: <BookOpen className="h-4 w-4" />,
   },
 ];
@@ -85,10 +85,7 @@ export function RankingStats() {
   const { RankingTryoutIsLoading } = useLeaderboardContext();
 
   return (
-    <Tabs
-      defaultValue="summary"
-      className="mb-6 w-full"
-    >
+    <Tabs defaultValue="summary" className="mb-6 w-full">
       <TabsList className="mb-8 flex w-fit gap-2">
         {TabsItem.map((tab, index) => (
           <React.Fragment key={index}>
@@ -129,10 +126,7 @@ export function RankingStats() {
           <CardContent>
             <ul className="space-y-4">
               {topSchools.map((school, index) => (
-                <li
-                  key={index}
-                  className="flex items-center justify-between"
-                >
+                <li key={index} className="flex items-center justify-between">
                   <span className="flex items-center gap-2 font-medium">
                     <Award className="h-4 w-4 text-yellow-500" />
                     {school.name}
@@ -158,41 +152,36 @@ const Summary = () => {
     if (RankingTryout) {
       setSummary([
         {
-          title: 'Total Peserta',
+          title: "Total Peserta",
           value: RankingTryout.totalParticipants,
-          description: 'Total peserta tryout',
-          icon: (
-            <IconUserAdmin
-              active
-              className="text-current"
-            />
-          ),
-          textColor: 'text-blue-600',
-          bgColor: 'bg-blue-100',
+          description: "Total peserta tryout",
+          icon: <IconUserAdmin active className="text-current" />,
+          textColor: "text-blue-600",
+          bgColor: "bg-blue-100",
         },
         {
-          title: 'Rata-rata Nilai Keseluruhan',
+          title: "Rata-rata Nilai Keseluruhan",
           value: parseFloat(RankingTryout.averageScore.toFixed(2)),
-          description: 'Rata rata nilai keseluruhan',
+          description: "Rata rata nilai keseluruhan",
           icon: <IconCircleLoop className="text-current" />,
-          textColor: 'text-green-600',
-          bgColor: 'bg-green-100',
+          textColor: "text-green-600",
+          bgColor: "bg-green-100",
         },
         {
-          title: 'Nilai Tertinggi',
+          title: "Nilai Tertinggi",
           value: parseFloat(RankingTryout.topScore.toFixed(2)),
-          description: 'Nilai tryout tertinggi',
+          description: "Nilai tryout tertinggi",
           icon: <TrendingUp className="text-current" />,
-          textColor: 'text-yellow-500',
-          bgColor: 'bg-yellow-50',
+          textColor: "text-yellow-500",
+          bgColor: "bg-yellow-50",
         },
         {
-          title: 'Nilai Terendah',
+          title: "Nilai Terendah",
           value: parseFloat(RankingTryout.bottomScore.toFixed(2)),
-          description: 'Nilai tryout terendah',
+          description: "Nilai tryout terendah",
           icon: <TrendingDown className="text-current" />,
-          textColor: 'text-gray-500',
-          bgColor: 'bg-white',
+          textColor: "text-gray-500",
+          bgColor: "bg-white",
         },
       ]);
     }
@@ -204,13 +193,13 @@ const Summary = () => {
           {summary.map((sum, index) => (
             <Card
               key={index}
-              className={cn('bg-green-100 border-none', sum.bgColor)}
+              className={cn("bg-green-100 border-none", sum.bgColor)}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-base font-semibold">
                   {sum.title}
                 </CardTitle>
-                <div className={cn('text-green-600', sum.textColor)}>
+                <div className={cn("text-green-600", sum.textColor)}>
                   {sum.icon}
                 </div>
               </CardHeader>
@@ -226,10 +215,7 @@ const Summary = () => {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
-            <Skeleton
-              key={index}
-              className="h-[136px] w-full"
-            />
+            <Skeleton key={index} className="h-[136px] w-full" />
           ))}
         </div>
       )}
@@ -242,8 +228,8 @@ const Statistics = () => {
 
   const chartConfig = {
     count: {
-      label: 'Jumlah Peserta',
-      color: 'hsl(var(--chart-1))',
+      label: "Jumlah Peserta",
+      color: "hsl(var(--chart-1))",
     },
   };
 
@@ -281,10 +267,7 @@ const Statistics = () => {
                     {RankingTryout?.StatisticsCategory.map((stat, index) => (
                       <Fragment key={index}>
                         <TableRow className="bg-muted/50">
-                          <TableCell
-                            colSpan={8}
-                            className="font-bold"
-                          >
+                          <TableCell colSpan={8} className="font-bold">
                             {index + 1}. {stat.category}
                           </TableCell>
                         </TableRow>
@@ -345,17 +328,10 @@ const Statistics = () => {
                         <ChartTooltip
                           // cursor={false}
                           content={
-                            <ChartTooltipContent
-                              hideLabel
-                              indicator="dot"
-                            />
+                            <ChartTooltipContent hideLabel indicator="dot" />
                           }
                         />
-                        <Bar
-                          dataKey="count"
-                          fill="#0091ff"
-                          radius={8}
-                        >
+                        <Bar dataKey="count" fill="#0091ff" radius={8}>
                           <LabelList
                             position="top"
                             offset={12}
@@ -394,8 +370,8 @@ const AnalysisSubject = () => {
 
   const chartConfig = {
     count: {
-      label: 'Peserta',
-      color: 'hsl(var(--chart-1))',
+      label: "Peserta",
+      color: "hsl(var(--chart-1))",
     },
   } satisfies ChartConfig;
   return (
@@ -428,10 +404,7 @@ const AnalysisSubject = () => {
                     right: 12,
                   }}
                 >
-                  <CartesianGrid
-                    vertical={false}
-                    stroke="#b0bed3"
-                  />
+                  <CartesianGrid vertical={false} stroke="#b0bed3" />
                   <XAxis
                     dataKey="subject"
                     tickLine={false}
@@ -439,11 +412,7 @@ const AnalysisSubject = () => {
                     tickMargin={8}
                     // tickFormatter={(value) => value.slice(0, 3)}
                   />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                  />
+                  <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                   {/* <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent hideLabel hideIndicator />}
@@ -454,16 +423,13 @@ const AnalysisSubject = () => {
                     stroke="#0091ff"
                     strokeWidth={2}
                     dot={{
-                      fill: '#0091ff',
+                      fill: "#0091ff",
                     }}
                     activeDot={{
                       r: 6,
                     }}
                   >
-                    <LabelList
-                      position="top"
-                      offset={12}
-                    />
+                    <LabelList position="top" offset={12} />
                   </Line>
                 </LineChart>
               </ChartContainer>

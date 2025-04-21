@@ -11,6 +11,7 @@ import CountDownRestTime from "./countdown-rest-time";
 import Header from "./header";
 import { mutateGeneral } from "@/lib/fetch-helper";
 import { useSession } from "@/components/provider/session-provider-auth";
+import { TryoutDataType } from "../page";
 
 interface SessionWithCategory extends TryoutSession {
   TryoutCategory: TryoutCategory;
@@ -18,7 +19,7 @@ interface SessionWithCategory extends TryoutSession {
 }
 
 interface Props {
-  sessionData: SessionWithCategory[];
+  sessionData: NonNullable<TryoutDataType>["TryoutSession"];
   tryoutName: string;
   restTime: number;
   currentIndexSession: number;
@@ -89,11 +90,11 @@ const RestTime = ({
   const getDuration = () => {
     const durationInSeconds = restTime * 60;
     const dateNow = new Date().getTime();
-    const dateStart = new Date(
-      sessionData[
-        currentIndexSession - 1
-      ].TryoutSessionParticipant[0].endSession
-    ).getTime();
+    const participant =
+      sessionData[currentIndexSession - 1].TryoutSessionParticipant[0];
+    const dateStart = participant.endSession
+      ? new Date(participant.endSession).getTime()
+      : new Date().getTime();
 
     const diffInMilliseconds = dateNow - dateStart;
     const diffInSeconds = Math.floor(diffInMilliseconds / 1000);

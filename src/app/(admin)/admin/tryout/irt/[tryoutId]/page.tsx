@@ -18,15 +18,25 @@ import {
 import LoadingPageWithText from "@/components/ui/spinner";
 import { toaster } from "@/components/ui/toaster";
 
-import { api } from "@/trpc/react";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { utils, writeFile } from "xlsx";
 import ProcessData from "../_components/ProcessData";
 import ResultsOverview from "../_components/ResultsOverview";
 import Upload3PLData from "../_components/Upload3PLData";
 import UploadParticipantData from "../_components/UploadParticipantData";
 import UploadSummary from "../_components/UploadSummary";
+import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
+import {
+  Tryout,
+  TryoutAnswer,
+  TryoutCategory,
+  TryoutQuestion,
+  TryoutSession,
+  TryoutSessionParticipant,
+  TryoutSubCategory,
+  TryoutUserAnswer,
+} from "@/types/database";
 
 export interface OverallStatsProps {
   totalParticipants: number;
@@ -53,6 +63,19 @@ export interface DataIRTProps {
   }[];
 }
 
+type TryoutDataType = Tryout & {
+  TryoutSession: (TryoutSession & {
+    TryoutSessionParticipant: (TryoutSessionParticipant & {
+      TryoutUserAnswer: (TryoutUserAnswer & {
+        TryoutQuestion: TryoutQuestion;
+        TryoutAnswers: TryoutAnswer;
+      })[];
+    })[];
+    TryoutCategory: TryoutCategory;
+    TryoutSubCategory: TryoutSubCategory;
+  })[];
+};
+
 export default function SNBTProcessor() {
   // const router = useRouter();
   // const { tryoutId } = router.query;
@@ -63,33 +86,51 @@ export default function SNBTProcessor() {
   const [loading, setLoading] = useState<boolean>(false);
   const [sessionIndex, setSessionIndex] = useState<number>(0);
 
-  const { data: TryoutData } = api.irt.getTryoutDataForIrt.useQuery(
-    { tryoutId: tryoutId as string },
-    { refetchOnWindowFocus: false, enabled: !!tryoutId }
-  );
+  // const { data: TryoutData } = api.irt.getTryoutDataForIrt.useQuery(
+  //   { tryoutId: tryoutId as string },
+  //   { refetchOnWindowFocus: false, enabled: !!tryoutId }
+  // );
 
-  const { mutateAsync: saveSessionIRT } = api.irt.saveIrtForSession.useMutation(
-    {
-      onSuccess() {
-        toaster({
-          title: "Berhasil",
-          condition: "success",
-          description: "Berhasil Menyimpan data IRT untuk sesi ini!",
-          duration: 4000,
-        });
-        setLoading(false);
-      },
-      onError() {
-        toaster({
-          title: "Gagal",
-          condition: "warning",
-          description: "Gagal Menyimpan data IRT untuk sesi ini!",
-          duration: 3000,
-        });
-        setLoading(false);
-      },
-    }
-  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [TryoutData, setTryoutData] = useState<TryoutDataType>();
+
+  useEffect(() => {
+    getGeneral(`/irt/getTryoutDataForIrt?tryoutId=${tryoutId}`, {
+      setData: setTryoutData,
+      setLoading: setIsLoading,
+    });
+  }, [tryoutId]);
+
+  // const { mutateAsync: saveSessionIRT } = api.irt.saveIrtForSession.useMutation(
+  //   {
+  //     onSuccess() {
+  //       toaster({
+  //         title: "Berhasil",
+  //         condition: "success",
+  //         description: "Berhasil Menyimpan data IRT untuk sesi ini!",
+  //         duration: 4000,
+  //       });
+  //       setLoading(false);
+  //     },
+  //     onError() {
+  //       toaster({
+  //         title: "Gagal",
+  //         condition: "warning",
+  //         description: "Gagal Menyimpan data IRT untuk sesi ini!",
+  //         duration: 3000,
+  //       });
+  //       setLoading(false);
+  //     },
+  //   }
+  // );
+
+  const saveSessionIRT = async (payload: any) => {
+    await mutateGeneral("url", {
+      payload,
+      type: "post",
+      setLoading: setLoading,
+    });
+  };
 
   const [participantFile, setParticipantFile] = useState<File | null>(null);
   const [threePLFile, setThreePLFile] = useState<File | null>(null);

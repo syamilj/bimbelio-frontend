@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { TryoutAnswer, TryoutQuestion } from '@prisma/client';
-import { useEffect, useState } from 'react';
+import { TryoutAnswer, TryoutQuestion } from "@/types/database";
+import { useEffect, useState } from "react";
 
-import { SpinnerPageCentered } from '@/components/ui/spinner';
-import { cn } from '@/lib/utils';
-import { IconDown, IconTimer, IconUp } from '@/styles/icon';
-import CountDownTryout from './countdown-tryout';
-import Header from './header';
-import SessionQuestion from './session-question';
-import SubmitTryout from './submit-tryout';
+import { SpinnerPageCentered } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
+import { IconDown, IconTimer, IconUp } from "@/styles/icon";
+import CountDownTryout from "./countdown-tryout";
+import Header from "./header";
+import SessionQuestion from "./session-question";
+import SubmitTryout from "./submit-tryout";
 
 interface QuestionWithAnswer extends TryoutQuestion {
   TryoutAnswers: TryoutAnswer[];
@@ -32,12 +32,12 @@ const Tryout: React.FC<Props> = ({
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [sessionAnswer, setSessionAnswer] = useState<any>(null);
-  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [selectedOption, setSelectedOption] = useState<string>("");
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>("");
   const [listQuestionsHeight, setListQuestionsHeight] = useState<number>(0);
   const [showListQuestions, setShowListQuestions] = useState<boolean>(true);
-  const [status] = useState<'none' | 'correct' | 'wrong' | 'complete'>('none');
+  const [status] = useState<"none" | "correct" | "wrong" | "complete">("none");
 
   useEffect(() => {
     const dataString = localStorage.getItem(`sessionAnswer-${sessionId}`);
@@ -47,8 +47,8 @@ const Tryout: React.FC<Props> = ({
       const initialAnswers = questions?.map((item: any) => ({
         number: item.number,
         questionId: item.id,
-        answerId: '',
-        answer: '',
+        answerId: "",
+        answer: "",
         type: item.type,
         notSure: false,
       }));
@@ -60,35 +60,35 @@ const Tryout: React.FC<Props> = ({
     if (sessionAnswer?.length > 0) {
       const currentQuestionData = questions[currentQuestionIndex];
       if (
-        currentQuestionData.type === 'OBJECTIVE_5' ||
-        currentQuestionData.type === 'TRUE_FALSE'
+        currentQuestionData.type === "OBJECTIVE_5" ||
+        currentQuestionData.type === "TRUE_FALSE"
       ) {
         setSelectedOption(sessionAnswer[currentQuestionIndex].answerId);
       } else {
         setSelectedOptions(sessionAnswer[currentQuestionIndex].answer);
       }
-      if (sessionAnswer[currentQuestionIndex].type === 'SHORT_ANSWER') {
+      if (sessionAnswer[currentQuestionIndex].type === "SHORT_ANSWER") {
         setInputValue(sessionAnswer[currentQuestionIndex].answer);
       } else {
-        setInputValue('');
+        setInputValue("");
       }
     }
     if (sessionAnswer)
       localStorage.setItem(
         `sessionAnswer-${sessionId}`,
-        JSON.stringify(sessionAnswer),
+        JSON.stringify(sessionAnswer)
       );
   }, [sessionAnswer, currentQuestionIndex, questions, sessionId]);
 
   const isAnswered = (index: number) => {
-    return sessionAnswer[index].answer !== '';
+    return sessionAnswer[index].answer !== "";
   };
 
   const getDuration = () => {
     const durationInSeconds = sessionData.duration * 60;
     const dateNow = new Date().getTime();
     const dateStart = new Date(
-      sessionData.TryoutSessionParticipant[0].startSession,
+      sessionData.TryoutSessionParticipant[0].startSession
     ).getTime();
 
     const diffInMilliseconds = dateNow - dateStart;
@@ -104,7 +104,7 @@ const Tryout: React.FC<Props> = ({
 
   const toggleListQuestions = () => {
     const div = document.querySelector(
-      '#info #list-questions',
+      "#info #list-questions"
     ) as HTMLDivElement;
     if (div) {
       if (div.clientHeight !== 0) {
@@ -115,9 +115,9 @@ const Tryout: React.FC<Props> = ({
         setShowListQuestions(true);
       }
       div.style.height =
-        div.clientHeight === 0 ? `${listQuestionsHeight}px` : '0px';
-      div.style.overflow = 'hidden';
-      div.style.transition = 'height 0.3s ease';
+        div.clientHeight === 0 ? `${listQuestionsHeight}px` : "0px";
+      div.style.overflow = "hidden";
+      div.style.transition = "height 0.3s ease";
     }
   };
 
@@ -126,7 +126,7 @@ const Tryout: React.FC<Props> = ({
       <Header
         current={currentQuestionIndex}
         total={questions.length}
-        name={sessionData ? sessionData.name : ''}
+        name={sessionData ? sessionData.name : ""}
       />
       <div className="absolute left-0 top-0 h-full w-full flex-1 overflow-y-auto bg-workspace pb-20 pt-14 md:top-16 md:pb-32 md:pt-4">
         <div className="flex flex-col-reverse justify-end md:h-fit md:flex-row md:justify-between">
@@ -161,8 +161,8 @@ const Tryout: React.FC<Props> = ({
             </div>
             <div className="relative flex w-full items-center justify-between">
               <h1 className="w-full text-center font-semibold">
-                Sesi {numberSession} -{' '}
-                {sessionData ? sessionData?.TryoutCategory?.name : ''}
+                Sesi {numberSession} -{" "}
+                {sessionData ? sessionData?.TryoutCategory?.name : ""}
               </h1>
               <div
                 className="absolute right-4 cursor-pointer text-main-gray-text duration-300 md:hover:text-black"
@@ -191,13 +191,15 @@ const Tryout: React.FC<Props> = ({
                 <div
                   key={i}
                   className={cn(
-                    `flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-xl bg-white font-bold text-main-gray-text md:hover:bg-black/5 ${currentQuestionIndex === i && 'bg-black/10'} duration-300`,
+                    `flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-xl bg-white font-bold text-main-gray-text md:hover:bg-black/5 ${
+                      currentQuestionIndex === i && "bg-black/10"
+                    } duration-300`,
                     !isSessionDone &&
                       isAnswered(i) &&
-                      'bg-main text-white md:hover:bg-main-hover',
+                      "bg-main text-white md:hover:bg-main-hover",
                     !isSessionDone &&
                       sessionAnswer[i].notSure &&
-                      'bg-main-yellow text-black md:hover:bg-yellow-400',
+                      "bg-main-yellow text-black md:hover:bg-yellow-400"
                   )}
                   onClick={() => {
                     if (!isSessionDone) {
@@ -206,7 +208,7 @@ const Tryout: React.FC<Props> = ({
                       const scrollTo = (selector: string) => {
                         const element = document.querySelector(selector);
                         if (element) {
-                          element.scrollIntoView({ behavior: 'smooth' });
+                          element.scrollIntoView({ behavior: "smooth" });
                         }
                       };
                       scrollTo(`#question${i + 1}`);

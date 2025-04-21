@@ -263,7 +263,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       return (
         <div className="fixed left-0 top-0 h-full w-full bg-workspace">
           <Tryout
-            questions={question}
+            questions={question as any}
             sessionId={sessionData[currentIndexSession].id}
             sessionData={sessionData[currentIndexSession]}
             isSessionDone={isSessionDone}
@@ -323,7 +323,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
 
 export default TryoutPage;
 
-type TryoutDataType =
+export type TryoutDataType =
   | ({
       TryoutSession: ({
         TryoutCategory: {

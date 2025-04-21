@@ -266,3 +266,12 @@ export type PlanFeature = {
   type: FeatureTypeEnum;
   planSubscriptionId: string;
 };
+
+export type TryoutUserAnswer = {
+  id: string;
+  userId: string;
+  website_sub_category_id: string;
+  questionId: string;
+  answerId: string | null;
+  sessionParticipantId: string;
+};

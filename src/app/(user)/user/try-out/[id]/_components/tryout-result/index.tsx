@@ -22,6 +22,7 @@ import { ReviewTab } from "./_component/review-tab";
 import { RingkasanTab } from "./_component/ringkasan-tab";
 import { useSession } from "@/components/provider/session-provider-auth";
 import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
+import { TryoutDataType } from "../../page";
 
 interface SessionProps extends TryoutSession {
   TryoutCategory: TryoutCategory;
@@ -36,7 +37,7 @@ export interface SessionOptionsProps {
 }
 
 interface Props {
-  sessionData: SessionProps[];
+  sessionData: NonNullable<TryoutDataType>["TryoutSession"];
   tryoutId: string;
   sessionOptions: SessionOptionsProps[];
   resultDate: Date;

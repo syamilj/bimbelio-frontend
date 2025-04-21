@@ -11,13 +11,14 @@ import { useEffect, useState } from "react";
 import Header from "./header";
 import { mutateGeneral } from "@/lib/fetch-helper";
 import { useSession } from "@/components/provider/session-provider-auth";
+import { TryoutDataType } from "../page";
 
 interface SessionWithCategory extends TryoutSession {
   TryoutCategory: TryoutCategory;
 }
 
 interface Props {
-  sessionData: SessionWithCategory[];
+  sessionData: NonNullable<TryoutDataType>["TryoutSession"];
   tryoutName: string;
   restTime: number;
   currentIndexSession: number;
