@@ -1,32 +1,32 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import LoadingPageWithText from '@/components/ui/spinner';
-import { toaster } from '@/components/ui/toaster';
+} from "@/components/ui/select";
+import LoadingPageWithText from "@/components/ui/spinner";
+import { toaster } from "@/components/ui/toaster";
 
-import { api } from '@/trpc/react';
-import { useParams } from 'next/navigation';
-import { useState } from 'react';
-import { utils, writeFile } from 'xlsx';
-import ProcessData from '../_components/ProcessData';
-import ResultsOverview from '../_components/ResultsOverview';
-import Upload3PLData from '../_components/Upload3PLData';
-import UploadParticipantData from '../_components/UploadParticipantData';
-import UploadSummary from '../_components/UploadSummary';
+import { api } from "@/trpc/react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import { utils, writeFile } from "xlsx";
+import ProcessData from "../_components/ProcessData";
+import ResultsOverview from "../_components/ResultsOverview";
+import Upload3PLData from "../_components/Upload3PLData";
+import UploadParticipantData from "../_components/UploadParticipantData";
+import UploadSummary from "../_components/UploadSummary";
 
 export interface OverallStatsProps {
   totalParticipants: number;
@@ -65,36 +65,36 @@ export default function SNBTProcessor() {
 
   const { data: TryoutData } = api.irt.getTryoutDataForIrt.useQuery(
     { tryoutId: tryoutId as string },
-    { refetchOnWindowFocus: false, enabled: !!tryoutId },
+    { refetchOnWindowFocus: false, enabled: !!tryoutId }
   );
 
   const { mutateAsync: saveSessionIRT } = api.irt.saveIrtForSession.useMutation(
     {
       onSuccess() {
         toaster({
-          title: 'Berhasil',
-          condition: 'success',
-          description: 'Berhasil Menyimpan data IRT untuk sesi ini!',
+          title: "Berhasil",
+          condition: "success",
+          description: "Berhasil Menyimpan data IRT untuk sesi ini!",
           duration: 4000,
         });
         setLoading(false);
       },
       onError() {
         toaster({
-          title: 'Gagal',
-          condition: 'warning',
-          description: 'Gagal Menyimpan data IRT untuk sesi ini!',
+          title: "Gagal",
+          condition: "warning",
+          description: "Gagal Menyimpan data IRT untuk sesi ini!",
           duration: 3000,
         });
         setLoading(false);
       },
-    },
+    }
   );
 
   const [participantFile, setParticipantFile] = useState<File | null>(null);
   const [threePLFile, setThreePLFile] = useState<File | null>(null);
   const [overallStats, setOverallStats] = useState<OverallStatsProps | null>(
-    null,
+    null
   );
   const [saveDataIRT, setSaveDataIRT] = useState<DataIRTProps | null>(null);
 
@@ -122,7 +122,7 @@ export default function SNBTProcessor() {
           p: participant.userId,
           question,
         };
-      },
+      }
     ).map((participant) => {
       return {
         p: participant.p,
@@ -138,14 +138,14 @@ export default function SNBTProcessor() {
             correct: number;
           }[];
         },
-        item,
+        item
       ) => {
         const key = item.p;
         const question = item.question;
         acc[key] = [...question];
         return acc;
       },
-      {},
+      {}
     );
 
     const groupingArray = Object.keys(groupingByParticipant)
@@ -157,7 +157,7 @@ export default function SNBTProcessor() {
             acc[key] = item.correct;
             return acc;
           },
-          {},
+          {}
         );
         if (question.length == 0) {
           return null;
@@ -179,7 +179,13 @@ export default function SNBTProcessor() {
   };
 
   const exportData = async (sessionIndex: number) => {
-    const fileName = `${TryoutData?.TryoutSession[sessionIndex]?.TryoutCategory?.name || 'default_category'}_${TryoutData?.TryoutSession[sessionIndex]?.TryoutSubCategory?.name || 'default_subcategory'}`;
+    const fileName = `${
+      TryoutData?.TryoutSession[sessionIndex]?.TryoutCategory?.name ||
+      "default_category"
+    }_${
+      TryoutData?.TryoutSession[sessionIndex]?.TryoutSubCategory?.name ||
+      "default_subcategory"
+    }`;
 
     const downloadData = processDataUserAnswer(sessionIndex) || null;
 
@@ -187,7 +193,7 @@ export default function SNBTProcessor() {
 
     let wb = utils.book_new(),
       ws = utils.json_to_sheet(downloadData);
-    utils.book_append_sheet(wb, ws, 'items');
+    utils.book_append_sheet(wb, ws, "items");
     writeFile(wb, `${fileName}.csv`);
   };
 

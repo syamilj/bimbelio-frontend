@@ -50,27 +50,23 @@ const menuItems = [
     ],
   },
 ];
-export default function ChooseWebCategory() {
-  const { setMinimizeSidebar } = useAppContext();
-  const {
-    websiteSubCategory,
-    setWebsiteSubCategory,
-    setIsLoading,
-    webCategoryData,
-  } = useWebsiteSubCategory();
+export default function ChooseWebCategory({ first }: { first?: boolean }) {
+  const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
 
   return (
     <DialogWebCategory
+      first={first}
       items={webCategoryData}
       value={websiteSubCategory?.id}
       onSelect={(item) => {
         localStorage.setItem("website_sub_category_id", item?.id);
-        setIsLoading(true);
-        setWebsiteSubCategory(item);
-        setMinimizeSidebar(true);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2000);
+        window.location.reload();
+        // setIsLoading(true);
+        // setWebsiteSubCategory(item);
+        // setMinimizeSidebar(true);
+        // setTimeout(() => {
+        //   setIsLoading(false);
+        // }, 2000);
       }}
     />
   );

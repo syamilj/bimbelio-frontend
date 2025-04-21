@@ -233,7 +233,7 @@ export default function AIChatHistoryPage() {
 
           {/* Action Buttons */}
           <div className="w-full max-w-md space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <Button
                 variant="outline"
                 className="w-full py-5 text-gray-700 hover:bg-gray-50"
@@ -242,14 +242,14 @@ export default function AIChatHistoryPage() {
                 <ClockIcon className="mr-2 h-4 w-4" />
                 Lanjutkan Belajar
               </Button>
-              <Button
+              {/* <Button
                 variant="outline"
                 className="w-full py-5 text-gray-700 hover:bg-gray-50"
                 onClick={startDocumentConversation}
               >
                 <FileTextIcon className="mr-2 h-4 w-4" />
                 Eksplorasi Dokumen
-              </Button>
+              </Button> */}
             </div>
 
             {/* New Topic Input */}
@@ -271,7 +271,7 @@ export default function AIChatHistoryPage() {
           </div>
 
           {/* Popular Documents */}
-          <div className="mt-12 w-full max-w-2xl">
+          {/* <div className="mt-12 w-full max-w-2xl">
             <h3 className="text-lg font-semibold mb-4 text-center">
               Dokumen Populer
             </h3>
@@ -304,7 +304,7 @@ export default function AIChatHistoryPage() {
                 Lainnya
               </Button>
             </div>
-          </div>
+          </div> */}
 
           {/* Features */}
           <div className="mt-16 w-full">

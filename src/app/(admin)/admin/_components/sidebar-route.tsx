@@ -21,6 +21,20 @@ const SidebarRoute: FC = () => {
   const routes = [
     {
       icon: (
+        <IconReceipt
+          w={20}
+          className={`text-[1.5rem] ${
+            !pathname?.toLowerCase().includes("website-category")
+              ? "text-main-gray-text2"
+              : "text-white"
+          }`}
+        />
+      ),
+      href: "/admin/website-category",
+      label: "Web Category",
+    },
+    {
+      icon: (
         <IconUserAdmin
           w={20}
           className={`text-[1.5rem] ${
@@ -48,6 +62,21 @@ const SidebarRoute: FC = () => {
       ),
       href: "/admin/pricing",
       label: "Pricing",
+    },
+
+    {
+      icon: (
+        <IconReceipt
+          w={20}
+          className={`text-[1.5rem] ${
+            !pathname?.toLowerCase().includes("plan")
+              ? "text-main-gray-text2"
+              : "text-white"
+          }`}
+        />
+      ),
+      href: "/admin/plan",
+      label: "Plan",
     },
     {
       icon: (

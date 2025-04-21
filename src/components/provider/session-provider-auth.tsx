@@ -47,6 +47,11 @@ export default function SessionProviderAuth({
               emailVerified: userData.emailVerified,
               expire: userData.expire,
               image: userData.image,
+              tier: userData.tier,
+              feature: {
+                document: userData.feature.document,
+                course: userData.feature.course,
+              },
             },
           });
         })
@@ -105,6 +110,8 @@ type SessionProviderType = {
           expire: string;
           userTryOutId: string | null;
           type: string;
+          tier: string;
+          feature: { document: boolean; course: boolean };
         };
         expires: string | undefined;
       }

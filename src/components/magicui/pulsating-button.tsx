@@ -17,25 +17,11 @@ export default function PulsatingButton({
   ...props
 }: PulsatingButtonProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const baseGradient = `linear-gradient(145deg, ${websiteSubCategory?.secondary_color}, ${websiteSubCategory?.main_color})`;
-  const hoverGradient = `linear-gradient(145deg, ${websiteSubCategory?.secondary_color}e0, ${websiteSubCategory?.main_color}e0)`;
-
   return (
     <>
-      <style>{`
-        .pulsating-btn {
-          background: ${baseGradient};
-          transition: background 0.3s ease;
-        }
-        .pulsating-btn:hover,
-        .pulsating-btn:active {
-          background: ${hoverGradient};
-        }
-      `}</style>
-
       <button
         className={cn(
-          "pulsating-btn relative flex cursor-pointer items-center justify-center rounded-[2rem] px-[1.3rem] py-[.8rem] text-center text-white"
+          "bg-gradient md:hover:opacity-80 relative flex cursor-pointer items-center justify-center rounded-[2rem] px-[1.3rem] py-[.8rem] text-center text-white"
         )}
         style={
           {

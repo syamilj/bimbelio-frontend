@@ -240,7 +240,7 @@ export const mutateGeneral = async (
 /*
 
   const {data:session} = useSession()
-  
+
 const [Data, setData] = useState<any>();
 const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -255,6 +255,11 @@ mutateGeneral("url", {
 });
 
 getGeneral("url", {
+    setData: ,
+    setLoading: ,
+});
+
+deleteGeneral("url", {
     setData: ,
     setLoading: ,
 });

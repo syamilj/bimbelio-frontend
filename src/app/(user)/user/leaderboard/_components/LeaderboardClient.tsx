@@ -72,7 +72,10 @@ export default function LeaderboardClient() {
     useState<boolean>(true);
 
   useEffect(() => {
-    if (!selectedTryOut) return;
+    if (!selectedTryOut) {
+      setRankingTryoutIsLoading(false);
+      return;
+    }
     getGeneral(
       `/leaderboard/getTryoutRankingResult?tryoutId=${selectedTryOut}&userId=${session?.user.id}`,
       {

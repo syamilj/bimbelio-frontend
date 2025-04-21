@@ -17,12 +17,9 @@ export default function ButtonPayment({
   return (
     <button
       className={cn(
-        "flex h-fit w-fit items-center gap-[.5rem] rounded-[.8rem] px-[1rem] py-[.7rem] text-[.9rem] text-white duration-300 md:hover:opacity-90",
+        "flex h-fit w-fit items-center gap-[.5rem] rounded-[.8rem] px-[1rem] py-[.7rem] text-[.9rem] text-white duration-300 md:hover:opacity-90 bg-gradient",
         className
       )}
-      style={{
-        background: `linear-gradient(145deg, ${websiteSubCategory?.secondary_color}, ${websiteSubCategory?.main_color})`,
-      }}
       onClick={() => setTransactionPopUp(true)}
     >
       <IconCrown w={15} />

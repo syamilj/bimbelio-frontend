@@ -11,6 +11,29 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const convertDaysToWords = (days: number): string => {
+  if (days > 10000) return "Lifetime";
+  if (days <= 0) return "Hari tidak valid";
+
+  const tahun = Math.floor(days / 360);
+  days %= 360;
+
+  const bulan = Math.floor(days / 30);
+  days %= 30;
+
+  const minggu = Math.floor(days / 7);
+  days %= 7;
+
+  const result = [];
+
+  if (tahun > 0) result.push(`${tahun} Tahun`);
+  if (bulan > 0) result.push(`${bulan} Bulan`);
+  if (minggu > 0) result.push(`${minggu} Minggu`);
+  if (days > 0) result.push(`${days} Hari`);
+
+  return result.join(" ");
+};
+
 export function formatDate(date: Date | string): string {
   // Pastikan kita punya objek Date
   const d = typeof date === "string" ? new Date(date) : date;

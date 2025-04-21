@@ -23,6 +23,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { toaster } from "@/components/ui/toaster";
 import {
+  cn,
   getDateString,
   getHours,
   getHoursDetail,
@@ -116,7 +117,7 @@ const Sidebar = ({ category }: any) => {
             </>
           ) : (
             <div
-              className="mt-[1rem] flex h-[50px] w-full cursor-pointer items-center justify-center rounded-[.5rem] bg-main text-white duration-200 md:hover:bg-main-hover"
+              className="mt-[1rem] flex h-[50px] w-full cursor-pointer items-center justify-center rounded-[.5rem] bg-main text-white duration-200"
               onClick={() => {
                 setMinimizeSidebar(false);
               }}
@@ -127,7 +128,12 @@ const Sidebar = ({ category }: any) => {
         </div>
 
         {/* Sidebar Routes */}
-        <div className="mt-12">
+        <div
+          className={cn(
+            "mt-12 overflow-y-auto pb-[60px]",
+            session?.user.role === "USER" && "pb-[calc(60px+154px)]"
+          )}
+        >
           <SidebarRoute
             category={category}
             minimizeSidebar={minimizeSidebar}
@@ -341,7 +347,12 @@ const Sidebar = ({ category }: any) => {
         </div>
 
         {/* Sidebar Routes */}
-        <div className="mt-12">
+        <div
+          className={cn(
+            "mt-12 overflow-y-auto pb-[60px]",
+            session?.user.role === "USER" && "pb-[calc(60px+154px)]"
+          )}
+        >
           <SidebarRoute
             category={category}
             minimizeSidebar={minimizeSidebar}

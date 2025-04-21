@@ -168,17 +168,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         />
       </head>
       <body className={cn("min-h-screen bg-background font-sans antialiased")}>
-        <NextTopLoader
-          color="#0091FF"
-          initialPosition={0.08}
-          crawlSpeed={200}
-          height={3}
-          crawl={true}
-          showSpinner={false}
-          easing="ease"
-          speed={200}
-          shadow="0 0 10px #0091FF,0 0 5px #0091FF"
-        />
         <SessionProviderAuth>
           <ProviderApp>
             <ProviderWebsiteCategory>{children}</ProviderWebsiteCategory>

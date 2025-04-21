@@ -244,13 +244,10 @@ const MobileNav: React.FC<{
                     </motion.div>
                   ) : (
                     <Button
-                      className="mx-auto flex w-full justify-center rounded-full py-3 text-base font-medium text-white transition-all duration-300"
+                      className="mx-auto flex w-full justify-center rounded-full py-3 text-base font-medium text-white transition-all duration-300 bg-gradient"
                       onClick={() => {
                         setShowAuth({ signUp: false, login: true });
                         setIsSheetOpen(false);
-                      }}
-                      style={{
-                        background: `linear-gradient(145deg, ${websiteSubCategory?.secondary_color}, ${websiteSubCategory?.main_color})`,
                       }}
                     >
                       Daftar/Masuk
@@ -285,11 +282,8 @@ const DesktopNav: React.FC<{
           <UserAccountNav user={session.user} />
         ) : (
           <button
-            className="rounded-full px-4 py-2 text-sm text-white transition-colors duration-300 hover:opacity-85"
+            className="rounded-full px-4 py-2 text-sm text-white transition-colors duration-300 hover:opacity-85 bg-gradient"
             onClick={() => setShowAuth({ signUp: false, login: true })}
-            style={{
-              background: `linear-gradient(145deg, ${websiteSubCategory?.secondary_color}, ${websiteSubCategory?.main_color})`,
-            }}
           >
             Daftar/Masuk
           </button>

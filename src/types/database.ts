@@ -201,6 +201,68 @@ export type WebsiteSubCategory = {
   updatedAt: Date;
   main_color: string;
   secondary_color: string;
-  gradient_color: string;
   website_category_id: string;
+};
+
+export type FeatureTypeEnum = "DOCUMENT" | "COURSE";
+
+export type Subscription = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  planId: string;
+  userId: string;
+  websiteSubCategoryId: string | null;
+  planSlug: string;
+  planName: string;
+  planTier: string;
+  planDescription: string;
+  planPrice: number;
+  planExpire: Date;
+};
+
+export type SubscriptionFeature = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  type: FeatureTypeEnum;
+  subscriptionId: string;
+};
+
+export type Plan = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  slug: string;
+  price: number;
+  description: string;
+  tier: string;
+};
+
+export type PlanLimitation = {
+  id: string;
+  chat: number;
+  notes: number;
+  vision: number;
+  quiz: number;
+  tryout: number;
+  planId: string;
+};
+
+export type PlanSubscription = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  planId: string;
+  expireDays: number;
+  websiteSubCategoryId: string;
+};
+
+export type PlanFeature = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  type: FeatureTypeEnum;
+  planSubscriptionId: string;
 };

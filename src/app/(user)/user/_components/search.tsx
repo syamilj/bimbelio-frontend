@@ -1,9 +1,17 @@
 "use client";
 
 import { useAppContext } from "@/components/provider/provider-app";
+import axiosInstance from "@/lib/axios/axiosInstance";
+import { response } from "@/lib/response";
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+type CategoryType = {
+  name: string;
+  id: string;
+  total: number;
+};
 
 const Search = ({ setDocsSearchData }: any) => {
   const router = useRouter();
@@ -12,44 +20,54 @@ const Search = ({ setDocsSearchData }: any) => {
   const { search, setSearch } = useAppContext();
   // const [search, setSearch] = useState<string>('');
   const [categoryId, setCategoryId] = useState<string>("");
-  const { data: category } = api.category.getAllCategories.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  });
-  const { data: searchData, refetch } = api.document.searchDocs.useQuery(
-    `${search}`,
-    { refetchOnWindowFocus: false }
-  );
+  // const { data: category } = api.category.getAllCategories.useQuery(undefined, {
+  //   refetchOnWindowFocus: false,
+  //   refetchOnMount: false,
+  // });
 
-  const searchDataByCategory = api.document.searchDocsByCategory.useMutation();
+  const [category, setCategory] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    axiosInstance.get("/category/getAllCategories").then((res) => {
+      const resData = response(res);
+      setCategory(resData.data);
+    });
+  }, []);
+
+  // const { data: searchData, refetch } = api.document.searchDocs.useQuery(
+  //   `${search}`,
+  //   { refetchOnWindowFocus: false }
+  // );
+
+  // const searchDataByCategory = api.document.searchDocsByCategory.useMutation();
 
   const handleSearch = async (e: any) => {
     e.preventDefault();
     const value = document.getElementById("searchValue") as HTMLInputElement;
     setSearch(`${value.value}`);
-    refetch();
+    // refetch();
     if (!pathname?.includes("search")) {
       localStorage.setItem("search", `${value.value}`);
       router.push("/user/search");
     }
   };
-  useEffect(() => {
-    console.log("1", { search, categoryId });
-    if (search !== "" && categoryId === "") {
-      setDocsSearchData(searchData);
-    }
-    if (search !== "" && categoryId !== "") {
-      const getData = async () => {
-        const data = await searchDataByCategory.mutateAsync({
-          value: `${search}`,
-          categoryId: categoryId,
-        });
-        setDocsSearchData(data);
-        console.log("data", data);
-      };
-      getData();
-    }
-  }, [search, searchData, categoryId]);
+  // useEffect(() => {
+  //   console.log("1", { search, categoryId });
+  //   if (search !== "" && categoryId === "") {
+  //     setDocsSearchData(searchData);
+  //   }
+  //   if (search !== "" && categoryId !== "") {
+  //     const getData = async () => {
+  //       const data = await searchDataByCategory.mutateAsync({
+  //         value: `${search}`,
+  //         categoryId: categoryId,
+  //       });
+  //       setDocsSearchData(data);
+  //       console.log("data", data);
+  //     };
+  //     getData();
+  //   }
+  // }, [search, searchData, categoryId]);
 
   useEffect(() => {
     const value = localStorage.getItem("search");
@@ -74,8 +92,9 @@ const Search = ({ setDocsSearchData }: any) => {
         <input
           id="searchValue"
           type="text"
-          placeholder="Cari material..."
+          placeholder="Coming Soon..."
           className="w-full rounded-xl px-[1rem] py-[.8rem] text-sm outline-none md:w-[unset] md:rounded-xl md:py-[.5rem]"
+          disabled
         />
         <div className="hidden items-center justify-center gap-[.7rem] pr-[1rem] md:flex">
           <p>di</p>

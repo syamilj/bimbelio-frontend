@@ -2,7 +2,7 @@
 
 import { useAppContext } from "@/components/provider/provider-app";
 import { FeatureLimitation } from "@/config/limitation";
-import { cn } from "@/lib/utils";
+import { cn, convertDaysToWords } from "@/lib/utils";
 import { useEffect, useState, type ReactElement } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -41,7 +41,13 @@ import {
   ZapIcon,
 } from "lucide-react";
 import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
-import { Pricing } from "@/types/database";
+import {
+  Plan,
+  PlanFeature,
+  PlanLimitation,
+  PlanSubscription,
+  Pricing,
+} from "@/types/database";
 import { useSession } from "@/components/provider/session-provider-auth";
 
 type PaymentPremium =
@@ -52,7 +58,8 @@ type PaymentPremium =
   | "limitasi_vision"
   | "limitasi_quiz"
   | "limitasi_all"
-  | "tryout_unlock";
+  | "tryout_unlock"
+  | "plan";
 
 export function Payment() {
   const { data: session } = useSession();
@@ -80,6 +87,7 @@ export function Payment() {
   //   api.pricing.getAllPricing.useQuery(undefined, {
   //     refetchOnWindowFocus: false,
   //   });
+  const [planId, setPlanId] = useState<string | null>(null);
   const [pricing, setPricing] = useState<Pricing[]>([]);
   const [pricingIsLoading, setPricingIsLoading] = useState<any>();
 
@@ -93,7 +101,7 @@ export function Payment() {
   const handlePayment = async (phoneNumber: string) => {
     if (type === "") return;
     try {
-      const data = await addPayment({ telp: phoneNumber, type });
+      const data = await addPayment({ telp: phoneNumber, type, planId });
       window.snap.pay(`${data?.token}`, {
         onClose: () => {
           setTransactionPopUp(false);
@@ -117,7 +125,8 @@ export function Payment() {
       ?.price.toLocaleString("id-ID", { style: "decimal" })}`;
   };
 
-  const handlePackageSelect = () => {
+  const handlePackageSelect = (planId?: string) => {
+    if (planId) setPlanId(planId);
     setTransactionPopUp(false);
     setShowPhoneConfirm(true);
   };
@@ -162,47 +171,11 @@ export function Payment() {
                 </TabsList>
 
                 <TabsContent value="premium" className="space-y-8">
-                  <div className="grid gap-6 lg:grid-cols-2">
-                    <PremiumPackageCard
-                      title="Paket Pro"
-                      price={getPricing("3-month")}
-                      duration="/3 bulan"
-                      features={[
-                        "Unlimited Chat AI",
-                        "Unlimited Notes",
-                        "500 generate Latihan Soal",
-                        "300 aksi Vision",
-                        "Akses semua materi premium",
-                        "Konsultasi dengan tutor",
-                        "Analisis performa AI",
-                      ]}
-                      onSelect={() => {
-                        setType("3-month");
-                        handlePackageSelect();
-                      }}
-                      gradient="from-[#0095FF] to-[#0047AB]"
-                      recommended
-                    />
-                    <PremiumPackageCard
-                      title="Paket Dasar"
-                      price={getPricing("1-month")}
-                      duration="/bulan"
-                      features={[
-                        "500 pertanyaan Chat AI",
-                        "1.000 kata Notes",
-                        "200 generate Latihan Soal",
-                        "100 aksi Vision",
-                        "Akses materi dasar",
-                      ]}
-                      onSelect={() => {
-                        setType("1-month");
-                        handlePackageSelect();
-                      }}
-                      gradient="from-[#FF8C42] to-[#FF5C97]"
-                    />
-                  </div>
-
-                  <FeaturesOverview />
+                  <PlanSection
+                    type={type}
+                    setType={setType}
+                    handlePackageSelect={handlePackageSelect}
+                  />
                 </TabsContent>
 
                 <TabsContent value="limitasi">
@@ -291,6 +264,110 @@ export function Payment() {
     </>
   );
 }
+
+const PlanSection = ({
+  type,
+  setType,
+  handlePackageSelect,
+}: {
+  type: PaymentPremium | "";
+  setType: React.Dispatch<React.SetStateAction<PaymentPremium | "">>;
+  handlePackageSelect: (planId?: string) => void;
+}) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [plans, setPlans] = useState<
+    (Plan & {
+      PlanSubscription?: PlanSubscription & {
+        PlanFeature: PlanFeature[];
+      };
+      PlanLimitation?: PlanLimitation;
+    })[]
+  >([]);
+
+  useEffect(() => {
+    getGeneral("/plan/getAllPlan", {
+      setData: setPlans,
+      setLoading: setIsLoading,
+    });
+  }, []);
+  const getPricing = (pricing: number) => {
+    if (!pricing) return "-";
+    return `Rp${pricing.toLocaleString("id-ID", { style: "decimal" })}`;
+  };
+
+  return (
+    <>
+      <div className="grid gap-6 lg:grid-cols-2">
+        {plans.map((plan, i) => (
+          <PremiumPackageCard
+            key={i}
+            title={plan.name}
+            price={getPricing(plan.price)}
+            duration={
+              plan.PlanSubscription?.expireDays
+                ? `/${convertDaysToWords(plan.PlanSubscription?.expireDays)}`
+                : "-"
+            }
+            features={[
+              "Unlimited Chat AI",
+              "Unlimited Notes",
+              "500 generate Latihan Soal",
+              "300 aksi Vision",
+              "Akses semua materi premium",
+              "Konsultasi dengan tutor",
+              "Analisis performa AI",
+            ]}
+            onSelect={() => {
+              setType("plan");
+              handlePackageSelect(plan.id);
+            }}
+            gradient="from-[#0095FF] to-[#0047AB]"
+            recommended
+          />
+        ))}
+        {/* <PremiumPackageCard
+          title="Paket Pro"
+          price={"10000"}
+          duration="/3 bulan"
+          features={[
+            "Unlimited Chat AI",
+            "Unlimited Notes",
+            "500 generate Latihan Soal",
+            "300 aksi Vision",
+            "Akses semua materi premium",
+            "Konsultasi dengan tutor",
+            "Analisis performa AI",
+          ]}
+          onSelect={() => {
+            // setType("3-month");
+            // handlePackageSelect();
+          }}
+          gradient="from-[#0095FF] to-[#0047AB]"
+          recommended
+        />
+        <PremiumPackageCard
+          title="Paket Dasar"
+          price={"1000"}
+          duration="/bulan"
+          features={[
+            "500 pertanyaan Chat AI",
+            "1.000 kata Notes",
+            "200 generate Latihan Soal",
+            "100 aksi Vision",
+            "Akses materi dasar",
+          ]}
+          onSelect={() => {
+            // setType("1-month");
+            // handlePackageSelect();
+          }}
+          gradient="from-[#FF8C42] to-[#FF5C97]"
+        /> */}
+      </div>
+
+      <FeaturesOverview />
+    </>
+  );
+};
 
 function PremiumPackageCard({
   title,

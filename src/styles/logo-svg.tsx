@@ -18,7 +18,7 @@ const LogoSvg: React.FC<IconProps> = ({ className, w }) => {
       width={w ? w : 20}
       height={w ? w : 20}
       viewBox="20 20 190 190"
-      enable-background="new 20 20 190 190"
+      enableBackground="new 20 20 190 190"
       xmlSpace="preserve"
       className={cn(className)}
     >

@@ -21,14 +21,7 @@ import {
   DialogTrigger,
 } from "../dialog";
 import { IconLeft, IconTailedArrowPrev } from "@/styles/icon";
-
-type SubItem = {
-  id: string;
-  name: string;
-  main_color: string;
-  gradient_color: string;
-  secondary_color: string;
-};
+import { useAppContext } from "@/components/provider/provider-app";
 
 interface Props {
   items: (WebsiteCategory & {
@@ -36,12 +29,13 @@ interface Props {
   })[];
   onSelect?: (subItem: WebsiteSubCategory) => void;
   value?: string;
+  first?: boolean;
 }
 
-export function DialogWebCategory({ items, onSelect, value }: Props) {
+export function DialogWebCategory({ items, onSelect, value, first }: Props) {
+  const { setMinimizeSidebar } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [realValue, setRealValue] = useState<string>("");
-  const [isOpen, setIsOpen] = useState(false);
 
   const [webCatId, setWebCatId] = useState<string>("");
 
@@ -67,19 +61,15 @@ export function DialogWebCategory({ items, onSelect, value }: Props) {
   console.log({ items });
 
   return (
-    <Dialog>
+    <Dialog open={first || undefined}>
       <DialogTrigger asChild>
         <button
           className={cn(
-            "flex items-center justify-between px-6 py-3 rounded-xl text-white font-medium transition-colors bg-blue-500 hover:bg-blue-200 duration-300 w-full"
+            "flex items-center justify-between px-6 py-3 rounded-xl text-white font-medium transition-colors duration-300 w-full bg-main hover:bg-main/80"
           )}
-          style={{
-            backgroundColor: websiteSubCategory?.main_color,
-          }}
-          onClick={() => setIsOpen(true)}
         >
           <span>{subCategory ? subCategory?.name : "Select Option"}</span>
-          <ChevronDown className="ml-2 h-4 w-4" />
+          <ChevronRight className="ml-2 h-4 w-4" />
         </button>
       </DialogTrigger>
       <DialogContent>

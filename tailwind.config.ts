@@ -169,6 +169,7 @@ const config = {
         default2: "0 0 25px #0000001a",
         cardSoft:
           "0 0 0 1px rgba(0,0,0,.03),0 2px 4px rgba(0,0,0,.05),0 12px 24px rgba(0,0,0,.05)",
+        cardSoft2: "0 1px 5px #cfc4c4",
       },
       screens: {
         mi: "401px",
