@@ -1,6 +1,7 @@
 "use client";
 
 import { PaymentTryout } from "@/components/_shared/payment/payment-tryout";
+import { useUserLimitation } from "@/components/provider/provider-limitation";
 import { useSession } from "@/components/provider/session-provider-auth";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -474,6 +475,7 @@ export default function CardTryOut({
                 step={step}
                 setStep={setStep}
                 isLoading={isLoading}
+                setIsLoading={setIsLoading}
                 setShowDetail={setShowDetail}
                 onClick={handleRegistration}
                 showDetail={showDetail}
@@ -546,6 +548,7 @@ const RegisterTryout = ({
   step,
   setStep,
   isLoading,
+  setIsLoading,
   setShowDetail,
   onClick,
   showDetail,
@@ -553,10 +556,12 @@ const RegisterTryout = ({
   step: number;
   setStep: Dispatch<SetStateAction<number>>;
   isLoading: boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
   setShowDetail: Dispatch<SetStateAction<CardTryoutProps | null>>;
   onClick: () => void;
   showDetail: CardTryoutProps | null;
 }) => {
+  const { userLimitation, checkLimitation } = useUserLimitation();
   const { data: session } = useSession();
 
   const [showPayment, setShowPayment] = useState<boolean>(false);
@@ -645,9 +650,21 @@ const RegisterTryout = ({
               isLoading && "bg-main-hover"
             )}
             // onClick={handleRegistration}
-            onClick={() => {
+            onClick={async () => {
+              console.log({ userLimitation });
               if (session?.user.role !== "USER") {
                 onClick();
+              } else if (
+                userLimitation &&
+                userLimitation.tryout < userLimitation.tryoutLimit
+              ) {
+                setIsLoading(true);
+                const check = await checkLimitation({ tryout: true });
+                if (check) {
+                  onClick();
+                } else {
+                  setIsLoading(false);
+                }
               } else {
                 setStep(2);
               }

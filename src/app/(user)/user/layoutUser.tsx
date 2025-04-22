@@ -86,8 +86,6 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   //   { refetchOnWindowFocus: false }
   // );
 
-  const [limitationUsed, setLimitationUsed] = useState<LimitationUsed>();
-
   const [category, setCategory] = useState<CategoryType[]>([]);
 
   useEffect(() => {
@@ -97,6 +95,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     });
   }, []);
 
+  const [limitationUsed, setLimitationUsed] = useState<LimitationUsed>();
   useEffect(() => {
     if (!userSession) return;
     axiosInstance
