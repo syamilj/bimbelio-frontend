@@ -13,6 +13,7 @@ import {
   useState,
 } from "react";
 import useMedia from "use-media";
+import HistoryPayment from "../_shared/account/setting";
 
 interface OnBoardingProps {
   chat: boolean;
@@ -211,6 +212,9 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   );
 
   return (
-    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+    <AppContext.Provider value={contextValue}>
+      {transactionHistory && <HistoryPayment pages={`${pagesSetting}`} />}
+      {children}
+    </AppContext.Provider>
   );
 }

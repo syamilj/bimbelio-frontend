@@ -1,5 +1,5 @@
 // src/app/(admin)/admin/layout.tsx (SERVER layout, no 'use client')
-import AdminClientLayout from './layoutAdmin';
+import AdminClientLayout from "../../../components/layout/layoutAdmin";
 
 export default function AdminLayout({
   children,

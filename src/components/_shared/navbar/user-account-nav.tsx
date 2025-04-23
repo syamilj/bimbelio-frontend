@@ -1,3 +1,4 @@
+import { useAppContext } from "@/components/provider/provider-app";
 import { useSession } from "@/components/provider/session-provider-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/lib/auth-helper";
 import { motion } from "framer-motion";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings } from "lucide-react";
 // import { User } from "next-auth";
 // import { signOut } from "next-auth/react";
 import Link from "next/link";
@@ -24,6 +25,7 @@ interface UserAccountNavProps {
 
 const UserAccountNav = ({ user }: UserAccountNavProps) => {
   const { data: session } = useSession();
+  const { setTransactionHistory } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -105,6 +107,21 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             </DropdownMenuItem>
           </motion.div>
         )}
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+          onClick={() => {
+            setTransactionHistory(true);
+          }}
+        >
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <div className="flex items-center gap-2 rounded-xl px-1 py-1.5 transition-colors hover:bg-main/10">
+              <Settings className="h-4 w-4 text-main" />
+              <span className="text-sm">Setting</span>
+            </div>
+          </DropdownMenuItem>
+        </motion.div>
 
         <DropdownMenuSeparator />
         <motion.div

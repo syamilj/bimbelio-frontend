@@ -23,70 +23,31 @@ interface auth {
 }
 
 export default function Home() {
-  const [showAuth, setShowAuth] = useState<auth>({
-    login: false,
-    signUp: false,
-  });
-
-  useEffect(() => {
-    if (showAuth.login || showAuth.signUp) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [showAuth]);
-
-  // useEffect(() => {
-  //   if (Cookies.get('transaksi') === 'premium') {
-  //     setTimeout(() => {
-  //       toaster({
-  //         title: 'Berhasil upgrade ke premium',
-  //         description: 'Masuk lagi untuk menggunakan fitur premium!',
-  //         condition: 'success',
-  //         duration: 5000,
-  //       });
-  //     }, 100);
-  //     Cookies.remove('transaksi');
-  //   }
-  // }, []);
-
   return (
-    <Fragment>
-      <Navbar showAuth={showAuth} setShowAuth={setShowAuth} />
-      {showAuth.login && (
-        <Login showAuth={showAuth} setShowAuth={setShowAuth} />
-      )}
-      {showAuth.signUp && (
-        <SignUp showAuth={showAuth} setShowAuth={setShowAuth} />
-      )}
-      <div id="homepage" className="relative bg-bg-workspace">
-        <div className="absolute top-0 -z-10 h-full w-full bg-white">
-          <div className="absolute bottom-auto left-auto right-32 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
-        </div>
-        <div className="py-2">
-          <div className="min-h-screen">
-            <div className="flex w-full flex-col gap-[5rem]">
-              <HeroSection setShowAuth={setShowAuth} />
-              <CaraBelajarSection1 />
-              <Tryout setShowAuth={setShowAuth} />
-              {/* <Fitur /> */}
-              <LearningRevolutions />
-              {/* <LearningMaterials /> */}
-              <WhyUs />
-              <Testimoni />
-              {/* <Faq /> */}
-              {/* <Pricing setShowAuth={setShowAuth} /> */}
-              {/* <Blog /> */}
-              {/* <Blog /> */}
-              {/* <Invitation setShowAuth={setShowAuth} /> */}
-              <Footer />
-            </div>
+    <div id="homepage" className="relative bg-bg-workspace">
+      <div className="absolute top-0 -z-10 h-full w-full bg-white">
+        <div className="absolute bottom-auto left-auto right-32 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
+      </div>
+      <div className="py-2">
+        <div className="min-h-screen">
+          <div className="flex w-full flex-col gap-[5rem]">
+            <HeroSection />
+            <CaraBelajarSection1 />
+            <Tryout />
+            {/* <Fitur /> */}
+            <LearningRevolutions />
+            {/* <LearningMaterials /> */}
+            <WhyUs />
+            <Testimoni />
+            {/* <Faq /> */}
+            {/* <Pricing setShowAuth={setShowAuth} /> */}
+            {/* <Blog /> */}
+            {/* <Blog /> */}
+            {/* <Invitation setShowAuth={setShowAuth} /> */}
+            <Footer />
           </div>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 }

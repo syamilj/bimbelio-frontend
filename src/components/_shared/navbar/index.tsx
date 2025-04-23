@@ -34,11 +34,12 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: "#hero", label: "Beranda" },
-  { href: "#materi", label: "Materi" },
-  { href: "#testimoni", label: "Testimoni" },
-  { href: "/blog", label: "Blog", isLink: true },
-  { href: "#tryout", label: "Try Out", separator: true },
+  { href: "/#hero", label: "Beranda", isLink: true },
+  // { href: "#materi", label: "Materi" },
+  // { href: "#testimoni", label: "Testimoni" },
+  // { href: "/blog", label: "Blog", isLink: true },
+  { href: "/price", label: "Pricing", isLink: true },
+  { href: "/#tryout", label: "Try Out", separator: true },
 ];
 
 const GratisBadge: React.FC<{ label: string }> = ({ label }) => {

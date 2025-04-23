@@ -1,8 +1,8 @@
 // src/app/(user)/layout.tsx (SERVER layout)
+import LayoutGuest from "@/components/layout/layoutGuest";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import { ReactNode } from "react";
-import LayoutUserClient from "../../../components/layout/layoutUser"; // <--- Komponen client
 
 export const metadata: Metadata = {
   title: "Belajar",
@@ -14,9 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function LayoutUser({ children }: { children: ReactNode }) {
-  return (
-    <div className={cn("min-h-screen bg-background font-sans antialiased")}>
-      <LayoutUserClient>{children}</LayoutUserClient>
-    </div>
-  );
+  return <LayoutGuest>{children}</LayoutGuest>;
 }

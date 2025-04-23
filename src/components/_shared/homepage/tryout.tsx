@@ -18,15 +18,13 @@ import AnimatedGradientText from "../../magicui/animated-gradient-text";
 import { Button } from "../../ui/button";
 import { useSession } from "@/components/provider/session-provider-auth";
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { useGuest } from "@/components/layout/layoutGuest";
 
 // Jika Kamu memilih untuk menggunakan UUID
 // import { v4 as uuidv4 } from 'uuid';
 
-interface TryoutProps {
-  setShowAuth: (show: { signUp: boolean; login: boolean }) => void;
-}
-
-const Tryout: React.FC<TryoutProps> = ({ setShowAuth }) => {
+const Tryout: React.FC = () => {
+  const { setShowAuth, showAuth } = useGuest();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
   const { data: session } = useSession();

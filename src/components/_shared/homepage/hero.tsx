@@ -12,12 +12,10 @@ import WordRotate from "../../magicui/word-rotate";
 import { AspectRatio } from "../../ui/aspect-ratio";
 import { useSession } from "@/components/provider/session-provider-auth";
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { useGuest } from "@/components/layout/layoutGuest";
 
-interface HeroSectionProps {
-  setShowAuth: (show: { signUp: boolean; login: boolean }) => void;
-}
-
-const HeroSection: React.FC<HeroSectionProps> = ({ setShowAuth }) => {
+const HeroSection: React.FC = () => {
+  const { setShowAuth, showAuth } = useGuest();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const { data: session } = useSession();

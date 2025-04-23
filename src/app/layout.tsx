@@ -170,11 +170,13 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       </head>
       <body className={cn("min-h-screen bg-background font-sans antialiased")}>
         <SessionProviderAuth>
-          <ProviderApp>
+          <ProviderWebsiteCategory>
             <ProviderLimitation>
-              <ProviderWebsiteCategory>{children}</ProviderWebsiteCategory>
+              <ProviderApp>
+                <>{children}</>
+              </ProviderApp>
             </ProviderLimitation>
-          </ProviderApp>
+          </ProviderWebsiteCategory>
         </SessionProviderAuth>
       </body>
     </html>

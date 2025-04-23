@@ -56,7 +56,10 @@ export default function ProviderLimitation({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userLimitation, setUserLimitation] = useState<UserLimitationType>();
   useEffect(() => {
-    if (!session) return;
+    if (!session) {
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(true);
     axiosInstance
       .get(`/user/getCurrentLimitation?userId=${session?.user.id}`)

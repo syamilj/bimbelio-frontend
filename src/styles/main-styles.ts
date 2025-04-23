@@ -14,6 +14,7 @@ export const getMainStyles = (
       .data-\[state\=active\]\:bg-main { background-color: ${mainColor}; }
 
       .text-main { color: ${mainColor}; }
+      .hover\\:text-main\:hover { color: ${mainColor}; }
       
       .border-main { border-color: ${mainColor}; }
 

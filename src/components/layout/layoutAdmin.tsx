@@ -5,8 +5,8 @@ import { useAppContext } from "@/components/provider/provider-app";
 import { cn } from "@/lib/utils";
 import { useParams, usePathname } from "next/navigation";
 import { ReactNode, Suspense, useEffect, useState } from "react";
-import Navbar from "./_components/navbar";
-import Sidebar from "./_components/sidebar";
+import Navbar from "../../app/(admin)/admin/_components/navbar";
+import Sidebar from "../../app/(admin)/admin/_components/sidebar";
 
 interface LayoutAdminProps {
   children: ReactNode;
