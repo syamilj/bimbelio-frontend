@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useAdminWebCategory } from "../page";
+import { useAdminWebCategory } from "../provider";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { deleteGeneral } from "@/lib/fetch-helper";

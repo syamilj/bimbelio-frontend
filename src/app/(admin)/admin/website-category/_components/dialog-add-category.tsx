@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { Loader2 } from "lucide-react";
 import { mutateGeneral } from "@/lib/fetch-helper";
-import { useAdminWebCategory } from "../page";
+import { useAdminWebCategory } from "../provider";
 
 interface Props {
   children: React.ReactNode;

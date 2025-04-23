@@ -10,3 +10,4 @@ export const CreateSubCategorySchema = z.object({
   name: z.string().min(1),
   categoryId: z.string().min(1),
 });
+//
