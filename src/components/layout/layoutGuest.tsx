@@ -47,7 +47,7 @@ export default function LayoutGuest({ children }: LayoutGuestProps) {
 
   return (
     <GuestContext.Provider value={Context}>
-      <Navbar showAuth={showAuth} setShowAuth={setShowAuth} />
+      {/* <Navbar showAuth={showAuth} setShowAuth={setShowAuth} /> */}
       {showAuth.login && (
         <Login showAuth={showAuth} setShowAuth={setShowAuth} />
       )}
