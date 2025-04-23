@@ -25,7 +25,7 @@ interface UserAccountNavProps {
 
 const UserAccountNav = ({ user }: UserAccountNavProps) => {
   const { data: session } = useSession();
-  const { setTransactionHistory } = useAppContext();
+  // const { setTransactionHistory } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -107,7 +107,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             </DropdownMenuItem>
           </motion.div>
         )}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.2, delay: 0.1 }}
@@ -121,7 +121,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
               <span className="text-sm">Setting</span>
             </div>
           </DropdownMenuItem>
-        </motion.div>
+        </motion.div> */}
 
         <DropdownMenuSeparator />
         <motion.div
