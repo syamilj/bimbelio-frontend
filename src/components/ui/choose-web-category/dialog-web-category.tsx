@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Building2,
-  ChevronDown,
-  ChevronRight,
-  Globe,
-  GraduationCap,
-  Languages,
-} from "lucide-react";
+import { ChevronRight, GraduationCap } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
 import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
 import { cn } from "@/lib/utils";
@@ -20,8 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../dialog";
-import { IconLeft, IconTailedArrowPrev } from "@/styles/icon";
-import { useAppContext } from "@/components/provider/provider-app";
+import { IconTailedArrowPrev } from "@/styles/icon";
 
 interface Props {
   items: (WebsiteCategory & {
@@ -33,7 +25,6 @@ interface Props {
 }
 
 export function DialogWebCategory({ items, onSelect, value, first }: Props) {
-  const { setMinimizeSidebar } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [realValue, setRealValue] = useState<string>("");
 
