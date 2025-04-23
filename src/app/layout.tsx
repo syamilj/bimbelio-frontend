@@ -172,9 +172,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <SessionProviderAuth>
           <ProviderWebsiteCategory>
             <ProviderLimitation>
-              <ProviderApp>
-                <>{children}</>
-              </ProviderApp>
+              <ProviderApp>{children}</ProviderApp>
             </ProviderLimitation>
           </ProviderWebsiteCategory>
         </SessionProviderAuth>
