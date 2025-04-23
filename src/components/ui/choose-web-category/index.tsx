@@ -1,11 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { DialogWebCategory } from "./dialog-web-category";
-import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
-import { getGeneral } from "@/lib/fetch-helper";
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { useAppContext } from "@/components/provider/provider-app";
 
 // Sample data matching the required structure
 const menuItems = [
