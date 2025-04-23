@@ -32,22 +32,15 @@ export default function Home() {
         </div>
         <div className="py-2">
           <div className="min-h-screen">
-            <div className="flex w-full flex-col gap-[5rem]">
+            {/* <div className="flex w-full flex-col gap-[5rem]">
               <HeroSection />
               <CaraBelajarSection1 />
               <Tryout />
-              {/* <Fitur /> */}
               <LearningRevolutions />
-              {/* <LearningMaterials /> */}
               <WhyUs />
               <Testimoni />
-              {/* <Faq /> */}
-              {/* <Pricing setShowAuth={setShowAuth} /> */}
-              {/* <Blog /> */}
-              {/* <Blog /> */}
-              {/* <Invitation setShowAuth={setShowAuth} /> */}
               <Footer />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
