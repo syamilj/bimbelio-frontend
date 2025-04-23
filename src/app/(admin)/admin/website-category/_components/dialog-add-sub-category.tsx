@@ -21,9 +21,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ColorPicker } from "@/components/ui/color-picker";
-import { useAdminWebCategory } from "../page";
 import { mutateGeneral } from "@/lib/fetch-helper";
 import { Loader2 } from "lucide-react";
+import { useAdminWebCategory } from "../provider";
 
 type WebsiteCategory = {
   id: string;

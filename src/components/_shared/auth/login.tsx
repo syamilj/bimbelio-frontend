@@ -12,6 +12,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Logo from "@/components/ui/logo";
+import { env } from "@/env.mjs";
 
 export const Login = ({ showAuth, setShowAuth }: any) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,7 +28,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
       const { credential } = googleToken as { credential: string };
       console.log({ credential });
       // Kirim token ke backend
-      const res = await axios.post("http://localhost:4000/auth/google", {
+      const res = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/google`, {
         token: credential,
       });
 
@@ -180,7 +181,9 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
             <div className="mt-[1rem] flex flex-col items-center gap-[1.5rem]">
               <h1 className="text-[1.5rem] font-semibold">Masuk</h1>
               <div className="flex w-full flex-col gap-[1rem]">
-                <GoogleOAuthProvider clientId="1052062304655-rh7puvgaanv9eogf77nn1ac353pt6ruu.apps.googleusercontent.com">
+                <GoogleOAuthProvider
+                  clientId={env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+                >
                   <GoogleLogin
                     onSuccess={handleSubmit}
                     onError={() => console.log("Login Failed")}

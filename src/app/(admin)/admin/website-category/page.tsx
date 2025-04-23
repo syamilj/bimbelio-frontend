@@ -1,6 +1,5 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
 import { PlusCircle, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,63 +8,17 @@ import { DialogAddSubCategory } from "./_components/dialog-add-sub-category";
 import { DialogDelete } from "./_components/dialog-delete";
 import { DialogEditCategory } from "./_components/dialog-edit-category";
 import { DialogEditSubCategory } from "./_components/dialog-edit-sub-category";
-import { getGeneral } from "@/lib/fetch-helper";
-import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
+import Provider, { useAdminWebCategory } from "./provider";
 
 export default function WebsiteCategoriesPage() {
-  const [categories, setCategories] = useState<WebsiteCategory[]>([]);
-
-  const [subCategories, setSubCategories] = useState<WebsiteSubCategory[]>([]);
-
-  const getData = async () => {
-    await getGeneral("/website-category/getWebsiteCategory", {
-      onSuccess({ data }) {
-        const getData: (WebsiteCategory & {
-          WebsiteSubCategory: WebsiteSubCategory[];
-        })[] = data;
-        const category = getData.map((cat) => {
-          return {
-            id: cat.id,
-            name: cat.name,
-            main_color: cat.main_color,
-            secondary_color: cat.secondary_color,
-            createdAt: cat.createdAt,
-            updatedAt: cat.updatedAt,
-          };
-        });
-        const subCategory = getData
-          .map((cat) => {
-            return cat.WebsiteSubCategory.map((sub) => {
-              return {
-                id: sub.id,
-                name: sub.name,
-                main_color: sub.main_color,
-                secondary_color: sub.secondary_color,
-                website_category_id: sub.website_category_id,
-                createdAt: sub.createdAt,
-                updatedAt: sub.updatedAt,
-              };
-            });
-          })
-          .flat(Infinity);
-        setCategories(category);
-        setSubCategories(subCategory as any);
-      },
-    });
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const { categories, subCategories } = useAdminWebCategory();
 
   const getCategoryById = (id: string) => {
     return categories.find((category) => category.id === id);
   };
 
-  console.log({ subCategories });
-
   return (
-    <AdminWebCategoryContext.Provider value={{ getData }}>
+    <Provider>
       <div className="container mx-auto py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card>
@@ -140,13 +93,13 @@ export default function WebsiteCategoriesPage() {
                       </div>
                     </td>
                     {/* <td className="p-3 border-b">
-                      <div
-                        className="w-24 h-8 rounded"
-                        style={{
-                          background: `linear-gradient(to right, ${category.main_color}, ${category.secondary_color})`,
-                        }}
-                      ></div>
-                    </td> */}
+                    <div
+                      className="w-24 h-8 rounded"
+                      style={{
+                        background: `linear-gradient(to right, ${category.main_color}, ${category.secondary_color})`,
+                      }}
+                    ></div>
+                  </td> */}
                     <td className="p-3 border-b">
                       <div className="flex gap-2">
                         <DialogEditCategory category={category}>
@@ -228,13 +181,13 @@ export default function WebsiteCategoriesPage() {
                         </div>
                       </td>
                       {/* <td className="p-3 border-b">
-                        <div
-                          className="w-24 h-8 rounded"
-                          style={{
-                            background: `linear-gradient(to right, ${subCategory.main_color}, ${subCategory.secondary_color})`,
-                          }}
-                        ></div>
-                      </td> */}
+                      <div
+                        className="w-24 h-8 rounded"
+                        style={{
+                          background: `linear-gradient(to right, ${subCategory.main_color}, ${subCategory.secondary_color})`,
+                        }}
+                      ></div>
+                    </td> */}
                       <td className="p-3 border-b">
                         <div className="flex gap-2">
                           <DialogEditSubCategory
@@ -268,44 +221,26 @@ export default function WebsiteCategoriesPage() {
 
         {/* Add Dialogs */}
         {/* <DialogAddCategory
-        open={openCategoryDialog}
-        onOpenChange={setOpenCategoryDialog}
-        onSave={handleSaveCategory}
-      /> */}
+      open={openCategoryDialog}
+      onOpenChange={setOpenCategoryDialog}
+      onSave={handleSaveCategory}
+    /> */}
 
         {/* <DialogAddSubCategory
-          open={openSubCategoryDialog}
-          onOpenChange={setOpenSubCategoryDialog}
-          onSave={handleSaveSubCategory}
-          categories={categories}
-        /> */}
+        open={openSubCategoryDialog}
+        onOpenChange={setOpenSubCategoryDialog}
+        onSave={handleSaveSubCategory}
+        categories={categories}
+      /> */}
 
         {/* Edit Dialogs */}
         {/* <DialogEditCategory
-          open={openEditCategoryDialog}
-          onOpenChange={setOpenEditCategoryDialog}
-          onSave={handleUpdateCategory}
-          category={selectedCategory}
-        /> */}
+        open={openEditCategoryDialog}
+        onOpenChange={setOpenEditCategoryDialog}
+        onSave={handleUpdateCategory}
+        category={selectedCategory}
+      /> */}
       </div>
-    </AdminWebCategoryContext.Provider>
+    </Provider>
   );
 }
-
-type AdminWebCategoryContextType = {
-  getData: () => Promise<void>;
-};
-
-const AdminWebCategoryContext = createContext<
-  AdminWebCategoryContextType | undefined
->(undefined);
-
-export const useAdminWebCategory = () => {
-  const context = useContext(AdminWebCategoryContext);
-  if (!context) {
-    throw new Error(
-      "useAdminWebCategory must be used within an AdminWebCategoryContext"
-    );
-  }
-  return context;
-};
