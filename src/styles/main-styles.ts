@@ -1,5 +1,5 @@
 import { WebsiteSubCategory } from "@/types/database";
-
+//
 export const getMainStyles = (
   websiteSubCategory: WebsiteSubCategory | null
 ) => {
