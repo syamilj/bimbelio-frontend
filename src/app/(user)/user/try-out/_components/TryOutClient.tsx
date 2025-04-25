@@ -53,11 +53,32 @@ const Content = () => {
     userTryOutId: string;
     UserTryout: UserTryout;
   }>();
+
+  const [isHideGeneralSection, setIsHideGeneralSection] =
+    useState<boolean>(false);
+  const [isHideTargetValue, setIsHideTargetValue] = useState<boolean>(false);
+
+  const [univOption, setUnivOption] = useState<string | undefined>();
+
   const getUserTryout = async () => {
-    await getGeneral(`/user/getUserTryOut?userId=${session?.user.id}`, {
-      setData: setTryoutAccount,
-      setLoading: setIsLoading,
-    });
+    const res = await getGeneral(
+      `/user/getUserTryOut?userId=${session?.user.id}`,
+      {
+        setData: setTryoutAccount,
+        setLoading: setIsLoading,
+        onError({ data }) {
+          const getData: {
+            hideGeneral: boolean;
+            hideTargetValue: boolean;
+            universityOption: string | undefined;
+          } = data;
+          console.log({ data });
+          if (getData.hideGeneral) setIsHideGeneralSection(true);
+          if (getData.hideTargetValue) setIsHideTargetValue(true);
+          if (getData.universityOption) setUnivOption(getData.universityOption);
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -145,7 +166,12 @@ const Content = () => {
               </div>
             </div>
           ) : (
-            <RegistrationTryOut getUserTryout={getUserTryout} />
+            <RegistrationTryOut
+              getUserTryout={getUserTryout}
+              isHideGeneralSection={isHideGeneralSection}
+              isHideTargetValue={isHideTargetValue}
+              univOption={univOption}
+            />
           )}
         </div>
       )}

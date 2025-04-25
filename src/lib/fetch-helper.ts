@@ -21,10 +21,12 @@ export const getGeneral = async (
       status,
       message,
       error,
+      data,
     }: {
       status: number;
       message: string;
       error: any;
+      data: any;
     }) => any;
   }
 ) => {
@@ -46,8 +48,9 @@ export const getGeneral = async (
     const errData = responseError(error, true);
     if (more?.onError) {
       await more.onError({
-        status: errData.status,
-        message: errData.message,
+        status: errData.error?.response?.data?.status,
+        message: errData.error?.response?.data?.message,
+        data: errData.error?.response?.data?.data,
         error: errData.error,
       });
     }

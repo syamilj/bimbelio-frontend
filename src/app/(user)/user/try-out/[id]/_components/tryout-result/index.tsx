@@ -23,6 +23,7 @@ import { RingkasanTab } from "./_component/ringkasan-tab";
 import { useSession } from "@/components/provider/session-provider-auth";
 import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
 import { TryoutDataType } from "../../page";
+import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
 
 interface SessionProps extends TryoutSession {
   TryoutCategory: TryoutCategory;
@@ -110,6 +111,7 @@ export default function TryoutResult({
   sessionOptions,
   resultDate,
 }: Props) {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes("testing") || false;
   const { data: session } = useSession();
@@ -331,14 +333,17 @@ export default function TryoutResult({
               <IconTabsQuiz w={15} />
               <p>Review Soal</p>
             </TabsTrigger>
-            <TabsTrigger
-              value="analisis"
-              className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              onClick={() => setTabs("analisis")}
-            >
-              <Sparkles className="mr-2 h-4 w-4" />
-              <p>Analisis</p>
-            </TabsTrigger>
+
+            {websiteSubCategory?.id === "tutor-snbt" && (
+              <TabsTrigger
+                value="analisis"
+                className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
+                onClick={() => setTabs("analisis")}
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                <p>Analisis</p>
+              </TabsTrigger>
+            )}
           </TabsList>
           {isTesting && session?.user.role === "ADMIN" && (
             <Button

@@ -16,14 +16,20 @@ import University from "@/lib/data/university";
 import { mutateGeneral } from "@/lib/fetch-helper";
 import { cn, Provinces } from "@/lib/utils";
 import { IconX } from "@/styles/icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // Hapus import TRPCError karena tidak digunakan di frontend
 // import { TRPCError } from '@trpc/server';
 
 const RegistrationTryOut = ({
   getUserTryout,
+  isHideGeneralSection,
+  isHideTargetValue,
+  univOption,
 }: {
   getUserTryout: () => any;
+  isHideGeneralSection: boolean;
+  isHideTargetValue: boolean;
+  univOption: string | undefined;
 }) => {
   const { data: session } = useSession();
 
@@ -31,29 +37,6 @@ const RegistrationTryOut = ({
 
   const [step, setStep] = useState<number>(2); // Mulai dari step 2
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // const { mutateAsync: createUserTo } = api.user.createUserTryOut.useMutation({
-  //   onSuccess: async (data, variables, context) => {
-  //     console.log({ data, variables, context });
-  //     await trpc.user.getUserTryOut.invalidate();
-  //     setIsLoading(false);
-  //     toaster({
-  //       title: "Sukses",
-  //       condition: "success",
-  //       description: "Berhasil membuat akun try out!",
-  //       duration: 2000,
-  //     });
-  //   },
-  //   onError(error) {
-  //     toaster({
-  //       title: "Upss",
-  //       condition: "warning",
-  //       description: `${error.message}`,
-  //       duration: 2000,
-  //     });
-  //     setIsLoading(false);
-  //   },
-  // });
 
   const createUserTo = async (data: any) => {
     await mutateGeneral("/user/createUserTryOut", {
@@ -104,13 +87,7 @@ const RegistrationTryOut = ({
     }
 
     if (currentStep === 3) {
-      if (
-        !TipeSekolah ||
-        !AsalSekolah ||
-        !Jurusan ||
-        TahunLulus <= 0 ||
-        TargetNilai <= 0
-      ) {
+      if (!TipeSekolah || !AsalSekolah || !Jurusan || TahunLulus <= 0) {
         toaster({
           title: "Error",
           condition: "warning",
@@ -141,7 +118,7 @@ const RegistrationTryOut = ({
         console.log("TahunLulus:", TahunLulus, typeof TahunLulus); // Harus number
         console.log("TargetNilai:", TargetNilai, typeof TargetNilai); // Harus number
 
-        if (Age <= 0) {
+        if (Age <= 0 && !isHideGeneralSection) {
           toaster({
             title: "Error",
             condition: "warning",
@@ -197,6 +174,17 @@ const RegistrationTryOut = ({
     }
   };
 
+  useEffect(() => {
+    if (isHideGeneralSection) {
+      setStep(3);
+    }
+    if (univOption) {
+      setPilihanUniv1(univOption);
+    }
+  }, [isHideGeneralSection, univOption]);
+
+  console.log({ isHideTargetValue });
+
   return (
     <div className="relative w-[calc(100%-2rem)] max-w-[500px] rounded-[1rem] bg-white p-[2rem] shadow-default md:w-full">
       <div
@@ -242,6 +230,7 @@ const RegistrationTryOut = ({
                 Jenis Kelamin<span className="text-red-600">*</span>
               </p>
               <Select
+                required
                 value={Gender}
                 onValueChange={(value) => value && setGender(value)}
               >
@@ -302,7 +291,7 @@ const RegistrationTryOut = ({
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradientGreen px-[2rem] text-white md:hover:bg-gradientGreenHover"
+                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-[2rem] text-white md:hover:opacity-85"
               >
                 Selanjutnya
               </Button>
@@ -325,6 +314,7 @@ const RegistrationTryOut = ({
                 Asal Sekolah?<span className="text-red-600">*</span>
               </p>
               <Select
+                required
                 value={TipeSekolah}
                 onValueChange={(value) =>
                   value &&
@@ -362,6 +352,7 @@ const RegistrationTryOut = ({
                 Jurusan<span className="text-red-600">*</span>
               </p>
               <Select
+                required
                 value={Jurusan}
                 onValueChange={(value) =>
                   value &&
@@ -401,6 +392,7 @@ const RegistrationTryOut = ({
                 Tahun Lulus<span className="text-red-600">*</span>
               </p>
               <Select
+                required
                 value={TahunLulus === 0 ? "" : TahunLulus.toString()}
                 onValueChange={(value) => {
                   if (value.length > 0) {
@@ -427,13 +419,18 @@ const RegistrationTryOut = ({
               </Select>
             </div>
           </div>
-          <InputNumber
-            heading="Target Nilai SNBT/UTBK (0-1000)"
-            placeholder="Target Nilai"
-            value={TargetNilai} // Kirim sebagai number
-            setValue={setTargetNilai} // Fungsi menerima number
-            max={1000}
-          />
+
+          {!isHideTargetValue && (
+            <InputNumber
+              heading="Target Nilai SNBT/UTBK (0-1000)"
+              placeholder="Target Nilai"
+              value={TargetNilai} // Kirim sebagai number
+              setValue={setTargetNilai} // Fungsi menerima number
+              min={0}
+              max={1000}
+            />
+          )}
+
           <div className="flex h-[64px] items-center justify-center">
             {isLoading ? (
               <Spinner />
@@ -464,6 +461,7 @@ const RegistrationTryOut = ({
               value={PilihanUniv1}
               setValue={setPilihanUniv1}
               type="university"
+              disabled={!!univOption}
             />
             <InputOptionUniversity
               heading="Pilihan 1 - Jurusan"
@@ -474,28 +472,31 @@ const RegistrationTryOut = ({
               university={PilihanUniv1}
             />
           </div>
-          <div className="grid grid-cols-2 gap-[1rem]">
-            <InputOptionUniversity
-              heading="Pilihan 2 - Universitas"
-              placeholder="Universitas"
-              value={PilihanUniv2}
-              setValue={setPilihanUniv2}
-              type="university"
-            />
-            <InputOptionUniversity
-              heading="Pilihan 2 - Jurusan"
-              placeholder="Jurusan"
-              value={JurusanUniv2}
-              setValue={setJurusanUniv2}
-              type="studyProgramList"
-              university={PilihanUniv2}
-            />
-          </div>
+          {!univOption && (
+            <div className="grid grid-cols-2 gap-[1rem]">
+              <InputOptionUniversity
+                heading="Pilihan 2 - Universitas"
+                placeholder="Universitas"
+                value={PilihanUniv2}
+                setValue={setPilihanUniv2}
+                type="university"
+              />
+              <InputOptionUniversity
+                heading="Pilihan 2 - Jurusan"
+                placeholder="Jurusan"
+                value={JurusanUniv2}
+                setValue={setJurusanUniv2}
+                type="studyProgramList"
+                university={PilihanUniv2}
+              />
+            </div>
+          )}
           <div className="flex flex-col gap-[.5rem]">
             <p className="text-[.95rem]">
               Tau Bimbelio dari mana?<span className="text-red-600">*</span>
             </p>
             <Select
+              required
               value={Channel}
               onValueChange={(value) => {
                 if (value) {
@@ -762,6 +763,7 @@ export const InputOptionUniversity = ({
   value,
   university,
   type,
+  disabled,
 }: {
   heading: string;
   placeholder: string;
@@ -769,6 +771,7 @@ export const InputOptionUniversity = ({
   value: string;
   university?: string;
   type: "university" | "studyProgramList";
+  disabled?: boolean;
 }) => {
   const [showOption, setShowOption] = useState<boolean>(false);
 
@@ -829,6 +832,7 @@ export const InputOptionUniversity = ({
           }}
           value={value}
           required
+          disabled={disabled}
         />
         {showOption && value.length === 0 ? (
           <div
