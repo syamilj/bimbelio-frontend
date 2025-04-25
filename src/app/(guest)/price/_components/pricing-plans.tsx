@@ -180,18 +180,18 @@ export default function PricingPlans() {
   };
 
   const addPayment = async (payload: any) => {
-    const data = await mutateGeneral("/payment/addPayment", {
+    const res = await mutateGeneral("/payment/addPayment", {
       payload: { ...payload, userId: session?.user.id },
       type: "post",
     });
-    return data;
+    return res;
   };
 
   const handlePayment = async (phoneNumber: string) => {
     if (type === "") return;
     try {
-      const data = await addPayment({ telp: phoneNumber, type, planId });
-      window.snap.pay(`${data?.token}`, {
+      const res = await addPayment({ telp: phoneNumber, type, planId });
+      window.snap.pay(`${res?.data.token}`, {
         onClose: () => {
           setPagesSetting("rt");
           setTransactionHistory(true);

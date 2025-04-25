@@ -15,7 +15,7 @@ export default function PricingPage() {
     <div className="bg-[#f5f9ff] min-h-screen mt-[4rem]">
       <div className="max-w-[1200px] mx-auto px-4 py-16">
         <PricingHeader />
-        {/* <PricingPlans /> */}
+        <PricingPlans />
         <PricingFeatures />
         <PricingFaq />
       </div>
