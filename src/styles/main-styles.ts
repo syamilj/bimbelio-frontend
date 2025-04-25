@@ -29,6 +29,10 @@ export const getMainStyles = (
           .bg-main\\/${color} { background-color: ${value}; }
           .hover\\:bg-main\\/${color}:hover { background-color: ${value}; }
           .focus\\:bg-main\\/${color}:focus { background-color: ${value}; }
+
+          
+          .border-main\\/${color} { border-color: ${value}; }
+          .hover\\:border-main\\/${color}:hover { border-color: ${value}; }
   
           .data-\[state\=active\]\:bg-main\\/${color} { background-color: ${value}; }
           .ring-main\\/${color} { 
@@ -51,7 +55,9 @@ export const getMainStyles = (
   return styles;
 };
 
-const hexToRgba = (hex: string, opacity: number) => {
+export const hexToRgba = (hex?: string, opacityNumber?: number) => {
+  if (!hex) return undefined;
+  const opacity = opacityNumber || 1;
   const sanitizedHex = hex.replace("#", "");
   const bigint = parseInt(sanitizedHex, 16);
   const r = (bigint >> 16) & 255;

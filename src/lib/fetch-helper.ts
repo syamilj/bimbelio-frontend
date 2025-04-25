@@ -41,7 +41,7 @@ export const getGeneral = async (
       await more.onSuccess(resData);
     }
     if (more?.setData) more.setData(resData.data);
-    return resData.data;
+    return resData || null;
   } catch (error) {
     const errData = responseError(error, true);
     if (more?.onError) {
@@ -206,7 +206,7 @@ export const mutateGeneral = async (
     if (more?.onSuccess) {
       await more.onSuccess(resData);
     }
-    return resData.data || null;
+    return resData || null;
   } catch (error) {
     if (more.toast?.hideError === true) showToast = false;
     else if (more.hideToast === true) showToast = false;

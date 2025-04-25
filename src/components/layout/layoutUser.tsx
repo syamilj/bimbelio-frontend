@@ -20,12 +20,14 @@ import {
   IconHamburger,
   IconPen,
   IconTabsQuiz,
+  IconTryOut,
   IconUnlimited,
   IconVision,
 } from "@/styles/icon";
 import { useSession } from "@/components/provider/session-provider-auth";
 import { response } from "@/lib/response";
 import axiosInstance from "@/lib/axios/axiosInstance";
+import { useUserLimitation } from "../provider/provider-limitation";
 
 interface LayoutUserClientProps {
   children: ReactNode;
@@ -75,6 +77,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   const pathname = usePathname();
   const params = useParams();
   const { data: userSession } = useSession();
+  const { userLimitation } = useUserLimitation();
 
   // Queries
   // const { data: category } = api.category.getAllCategories.useQuery(undefined, {
@@ -94,17 +97,6 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
       setCategory(resData.data);
     });
   }, []);
-
-  const [limitationUsed, setLimitationUsed] = useState<LimitationUsed>();
-  useEffect(() => {
-    if (!userSession) return;
-    axiosInstance
-      .get(`/user/getCurrentLimitation?userId=${userSession?.user.id}`)
-      .then((res) => {
-        const resData = response(res);
-        setLimitationUsed(resData.data);
-      });
-  }, [userSession]);
 
   // Global context
   const {
@@ -236,8 +228,8 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                   <IconChat w={18} className="text-main-gray-text" />
                   {renderLimitInfo(
                     <IconChat w={18} />,
-                    limitationUsed?.chat,
-                    limitationUsed?.chatLimit
+                    userLimitation?.chat,
+                    userLimitation?.chatLimit
                   )}
                 </div>
 
@@ -246,8 +238,8 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                   <IconPen w={18} className="text-main-gray-text" />
                   {renderLimitInfo(
                     <IconPen w={18} />,
-                    limitationUsed?.notes,
-                    limitationUsed?.notesLimit
+                    userLimitation?.notes,
+                    userLimitation?.notesLimit
                   )}
                 </div>
 
@@ -256,8 +248,8 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                   <IconTabsQuiz w={18} className="text-main-gray-text" />
                   {renderLimitInfo(
                     <IconTabsQuiz w={18} />,
-                    limitationUsed?.quiz,
-                    limitationUsed?.quizLimit
+                    userLimitation?.quiz,
+                    userLimitation?.quizLimit
                   )}
                 </div>
 
@@ -266,8 +258,18 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                   <IconVision active w={20} className="text-main-gray-text" />
                   {renderLimitInfo(
                     <IconVision w={18} />,
-                    limitationUsed?.vision,
-                    limitationUsed?.visionLimit
+                    userLimitation?.vision,
+                    userLimitation?.visionLimit
+                  )}
+                </div>
+
+                {/* Tryout limit */}
+                <div className="flex items-center gap-[.5rem]">
+                  <IconTryOut active w={20} className="text-main-gray-text" />
+                  {renderLimitInfo(
+                    <IconTryOut w={18} />,
+                    userLimitation?.tryout,
+                    userLimitation?.tryoutLimit
                   )}
                 </div>
 

@@ -101,8 +101,8 @@ export function Payment() {
   const handlePayment = async (phoneNumber: string) => {
     if (type === "") return;
     try {
-      const data = await addPayment({ telp: phoneNumber, type, planId });
-      window.snap.pay(`${data?.token}`, {
+      const res = await addPayment({ telp: phoneNumber, type, planId });
+      window.snap.pay(`${res?.data.token}`, {
         onClose: () => {
           setTransactionPopUp(false);
           setPagesSetting("rt");

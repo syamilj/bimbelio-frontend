@@ -27,19 +27,19 @@ export default function CheckSubscription({
   // const CheckSubscription = api.user.checkSubscription.useMutation();
 
   const CheckSubscription = async () => {
-    const data = await mutateGeneral("/user/checkSubscription", {
+    const res = await mutateGeneral("/user/checkSubscription", {
       payload: { userId: session?.user.id },
       type: "post",
       hideToast: true,
     });
-    return data;
+    return res;
   };
 
   useEffect(() => {
     const check = async () => {
       try {
         const res = await CheckSubscription();
-        console.log("Subscription", res);
+        console.log("Subscription : ", res);
         if (res?.status == 201) {
           window.location.reload();
         }
@@ -61,7 +61,7 @@ export default function CheckSubscription({
   // const checkPayment = api.payment.checkPayment.useMutation();
 
   const checkPayment = async (order_id: string) => {
-    const data = await mutateGeneral("/payment/checkPayment", {
+    const res = await mutateGeneral("/payment/checkPayment", {
       payload: { order_id },
       type: "post",
       hideToast: true,
@@ -72,15 +72,15 @@ export default function CheckSubscription({
         router.push(`${window.location.pathname}`);
       },
     });
-    return data;
+    return res;
   };
 
   const handleCheckPayment = useCallback(
     async (order_id: string, transaction_status: string) => {
-      const data = await checkPayment(order_id);
+      const res = await checkPayment(order_id);
       if (
-        data &&
-        new Date(data?.expired_time) > new Date() &&
+        res &&
+        new Date(res?.data?.expired_time) > new Date() &&
         transaction_status === "settlement"
       ) {
         toaster({

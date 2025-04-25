@@ -16,6 +16,7 @@ import { response } from "@/lib/response";
 import { UserTryout } from "@/types/database";
 import { getGeneral } from "@/lib/fetch-helper";
 import { useSession } from "@/components/provider/session-provider-auth";
+import UpcomingOtherWeb from "./upcoming-other-web";
 
 export default function TryOutClient() {
   const Router = useRouter();
@@ -111,6 +112,10 @@ const Content = () => {
 
           <div className="font-regular flex flex-col gap-[.5rem]">
             <Done id={tryoutAccount.userTryOutId} />
+          </div>
+
+          <div className="font-regular flex flex-col gap-[.5rem]">
+            <UpcomingOtherWeb id={tryoutAccount.userTryOutId} />
           </div>
         </div>
       ) : (

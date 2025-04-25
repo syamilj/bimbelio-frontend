@@ -36,6 +36,7 @@ import {
   IconUserAdmin,
   IconX,
 } from "@/styles/icon";
+import { hexToRgba } from "@/styles/main-styles";
 import {
   Pricing,
   TryoutRegistration,
@@ -43,7 +44,7 @@ import {
 } from "@/types/database";
 import { Calendar, Check, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface CardTryout {
@@ -80,6 +81,15 @@ interface CardTryout {
   _count: {
     TryoutRegistration: number;
   };
+  WebsiteSubCategory?: {
+    id: string;
+    name: string;
+    createdAt: Date;
+    main_color: string;
+    secondary_color: string;
+    updatedAt: Date;
+    website_category_id: string;
+  };
 }
 
 export interface CardTryoutProps extends CardTryout {
@@ -105,6 +115,9 @@ export default function CardTryOut({
 }: card) {
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes("testing") || false;
+
+  const searchParams = useSearchParams();
+  const id = searchParams?.get("id");
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -163,30 +176,6 @@ export default function CardTryOut({
       return { start: false, value: `Mulai dalam ${minutes} menit` };
     }
   };
-
-  // const { mutateAsync: registerTryOut } =
-  //   api.document.registerTryOut.useMutation({
-  //     onSuccess: async () => {
-  //       await trpc.tryout.getTryOutCard.invalidate();
-  //       await trpc.tryout.getTryOutCardUpcoming.invalidate();
-  //       setIsLoading(false);
-  //       toaster({
-  //         title: "Sukses",
-  //         condition: "success",
-  //         description: "Berhasil mendaftar!",
-  //         duration: 3000,
-  //       });
-  //     },
-  //     onError(error) {
-  //       toaster({
-  //         title: "Upss",
-  //         condition: "warning",
-  //         description: `${error.message}`,
-  //         duration: 3000,
-  //       });
-  //       setIsLoading(false);
-  //     },
-  //   });
 
   const registerTryOut = async (payload: {
     tryoutId: string;
@@ -259,14 +248,6 @@ export default function CardTryOut({
       } else {
         data.title = "Selesai";
       }
-      // Jika bisa tryout ketika tryout sudah selesai
-      // if (!item.isRegistered) {
-      //   data.title = 'Daftar Sekarang';
-      // } else if (item.isRegistered && item.isJoin) {
-      //   data.title = 'Lihat Hasil & Pembahasan';
-      // } else {
-      //   data.title = 'Daftar Sekarang';
-      // }
     } else if (item.isRegistered) {
       data.title = "Mulai Tryout";
       if (!item.isActive) {
@@ -280,12 +261,24 @@ export default function CardTryOut({
     return data;
   };
 
+  useEffect(() => {
+    if (!id) return;
+    const findData = data.find((item) => item.id === id);
+    if (!findData) return;
+    setShowDetail(findData);
+  }, [id]);
+
   return (
     <>
       {data?.length > 0 &&
         data?.map((item, i: number) => (
           <Card key={i} className="relative overflow-hidden">
-            <div className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20">
+            <div
+              className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20"
+              style={{
+                color: hexToRgba(item.WebsiteSubCategory?.main_color, 0.2),
+              }}
+            >
               <IconCrown w={180} className="rotate-[-20deg]" />
             </div>
             <Badge
@@ -297,7 +290,12 @@ export default function CardTryOut({
               {getBadgeValue(item)?.title}
             </Badge>
             <CardHeader className="relative z-[2]">
-              <CardTitle className="text-[1.3rem] font-bold text-main">
+              <CardTitle
+                className="text-[1.3rem] font-bold text-main"
+                style={{
+                  color: item.WebsiteSubCategory?.main_color,
+                }}
+              >
                 {item.title}
               </CardTitle>
             </CardHeader>
@@ -401,11 +399,23 @@ export default function CardTryOut({
                   <TooltipTrigger asChild>
                     <Button
                       className={cn(
-                        "w-full bg-gradientGreen text-white md:hover:bg-gradientGreenHover",
+                        "w-full bg-gradient text-white hover:opacity-85",
                         getButtonValue(item)?.className
                       )}
+                      style={{
+                        backgroundImage: `linear-gradient(145deg, ${item.WebsiteSubCategory?.secondary_color}, ${item.WebsiteSubCategory?.main_color})`,
+                      }}
                       onClick={() => {
-                        setShowDetail(item);
+                        if (item.WebsiteSubCategory) {
+                          localStorage.setItem(
+                            "website_sub_category_id",
+                            item.WebsiteSubCategory.id
+                          );
+                          // window.location.href = `${window.location.}${window.location.pathname}?id=${item.id}`;
+                          window.location.href = `${window.location.origin}${window.location.pathname}?id=${item.id}`;
+                        } else {
+                          setShowDetail(item);
+                        }
                       }}
                     >
                       {getButtonValue(item)?.title}
@@ -490,7 +500,7 @@ export default function CardTryOut({
                       ? `/admin/tryout/testing/try-out/${showDetail.id}`
                       : `/user/try-out/${showDetail.id}`
                   }
-                  className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white md:hover:bg-main-hover"
+                  className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white hover:bg-main/80"
                   // onClick={() => {
                   //   if (isTesting) {
                   //     router.push(
@@ -510,7 +520,7 @@ export default function CardTryOut({
               !showDetail.isJoin ? (
               <div className="mt-[1rem] flex w-full items-center justify-center">
                 {/* <div
-                  className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white md:hover:bg-main-hover"
+                  className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white hover:bg-main/80"
                   onClick={() => {
                     if (!isPrivate) router.push(`/try-out/${showDetail.id}`);
                   }}
@@ -523,7 +533,7 @@ export default function CardTryOut({
               showDetail.isRegistered &&
               showDetail.isJoin ? (
               <div
-                className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white md:hover:bg-main-hover"
+                className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white hover:bg-main/80"
                 onClick={() => {
                   if (isTesting) {
                     router.push(
@@ -646,8 +656,8 @@ const RegisterTryout = ({
         <div className="mt-[1rem] flex w-full items-center justify-center">
           <div
             className={cn(
-              "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white md:hover:bg-main-hover",
-              isLoading && "bg-main-hover"
+              "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80",
+              isLoading && "bg-main/80"
             )}
             // onClick={handleRegistration}
             onClick={async () => {
@@ -693,7 +703,7 @@ const RegisterTryout = ({
               "cursor-pointer transition-all hover:shadow-md",
               selectTypeRegistration === "free"
                 ? "border-2 border-main"
-                : "border-2 hover:border-main-hover"
+                : "border-2 hover:border-main/70"
             )}
           >
             <CardHeader>
@@ -721,7 +731,7 @@ const RegisterTryout = ({
               "cursor-pointer transition-all hover:shadow-md",
               selectTypeRegistration === "premium"
                 ? "border-2 border-main"
-                : "border-2 hover:border-main-hover"
+                : "border-2 hover:border-main/70"
             )}
           >
             <CardHeader>
@@ -757,8 +767,8 @@ const RegisterTryout = ({
         <div className="mt-[1rem] flex w-full items-center justify-center">
           <div
             className={cn(
-              "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white md:hover:bg-main-hover",
-              isLoading && "bg-main-hover"
+              "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80",
+              isLoading && "bg-main/80"
             )}
             onClick={() => {
               setStep(3);
@@ -1031,8 +1041,8 @@ const RegisterTryout = ({
           <div className="mt-[1rem] flex w-full items-center justify-center">
             <div
               className={cn(
-                "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white md:hover:bg-main-hover",
-                isLoading && "bg-main-hover"
+                "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80",
+                isLoading && "bg-main/80"
               )}
               onClick={handleRegistration}
             >

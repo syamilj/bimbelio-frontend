@@ -101,11 +101,11 @@ export function AnalisisTab({
     //   university: selectedUniversity,
     //   major: selectedMajor,
     // });
-    const data = await getGeneral(
+    const res = await getGeneral(
       `/tryout/getSimulationDataByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}&university=${selectedUniversity}&major=${selectedMajor}`
     );
-    if (data) {
-      setSelectedData(data);
+    if (res?.data) {
+      setSelectedData(res?.data);
     }
     setSimulationLoad(false);
   };

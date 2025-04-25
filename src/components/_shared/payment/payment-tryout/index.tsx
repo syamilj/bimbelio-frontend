@@ -49,23 +49,23 @@ export const PaymentTryout = ({
     titleTryout: string;
     tryoutId: string;
   }) => {
-    const data = await mutateGeneral("/payment/buyTryoutPremium", {
+    const res = await mutateGeneral("/payment/buyTryoutPremium", {
       payload: { ...payload, userId: session?.user.id },
       type: "post",
       toast: { hideSuccess: true },
     });
-    return data;
+    return res;
   };
 
   const handlePayment = async () => {
     if (!tryoutData) return;
     setLoading(true);
     try {
-      const data = await addPayment({
+      const res = await addPayment({
         titleTryout: tryoutData.title,
         tryoutId: tryoutData.id,
       });
-      window.snap.pay(`${data?.token}`, {
+      window.snap.pay(`${res?.data?.token}`, {
         onClose: () => {
           setShow(false);
           setTransactionHistory(true);

@@ -92,11 +92,12 @@ export default function ProviderLimitation({
         sendData = data;
         if (!userLimitation) return;
         let newUserLimitation = userLimitation;
-        if (chat) newUserLimitation.chat++;
-        if (notes) newUserLimitation.notes++;
-        if (quiz) newUserLimitation.quiz++;
-        if (vision) newUserLimitation.vision++;
-        if (tryout) newUserLimitation.tryout++;
+        if (chat === true) newUserLimitation.chat++;
+        if (notes === true) newUserLimitation.notes++;
+        if (quiz === true) newUserLimitation.quiz++;
+        if (vision === true) newUserLimitation.vision++;
+        if (tryout === true) newUserLimitation.tryout++;
+        setUserLimitation(newUserLimitation);
       },
     });
     return sendData;
