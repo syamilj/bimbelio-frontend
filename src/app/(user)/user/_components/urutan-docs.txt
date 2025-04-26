@@ -100,7 +100,7 @@ export default function UrutkanDocs({
             <SelectItem
               key={value}
               value={value}
-              className={`cursor-pointer px-[1rem] py-[.5rem] text-start transition-colors hover:bg-main-hover hover:text-white focus:bg-main focus:text-white ${
+              className={`cursor-pointer px-[1rem] py-[.5rem] text-start transition-colors hover:bg-main/85 hover:text-white focus:bg-main focus:text-white ${
                 option === value ? 'bg-main text-white' : 'text-main-gray-text'
               }`}
             >

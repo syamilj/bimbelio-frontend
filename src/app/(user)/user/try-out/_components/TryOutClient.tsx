@@ -158,7 +158,7 @@ const Content = () => {
                   Kembali
                 </button>
                 <button
-                  className="font-regular w-[156px] rounded-[.8rem] bg-main py-[.8rem] text-[.85rem] text-white duration-200 md:hover:bg-main-hover"
+                  className="font-regular w-[156px] rounded-[.8rem] bg-main py-[.8rem] text-[.85rem] text-white duration-200 hover:bg-main/85"
                   onClick={() => setStep(2)}
                 >
                   Verifikasi Akun

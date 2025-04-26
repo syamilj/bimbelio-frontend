@@ -1,17 +1,17 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Progress } from '@/components/ui/progress';
-import { Separator } from '@/components/ui/separator';
-import { AlertCircle, Loader2 } from 'lucide-react';
-import React, { useEffect } from 'react';
-import Challenge from './challenge';
-import QuestionBubble from './question-bubble';
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { AlertCircle, Loader2 } from "lucide-react";
+import React, { useEffect } from "react";
+import Challenge from "./challenge";
+import QuestionBubble from "./question-bubble";
 
 interface SessionQuestionProps {
   currentQuestionIndex: number;
@@ -59,9 +59,9 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
     setSessionAnswer((prev: any) =>
       prev.map((item: any, i: number) =>
         i === currentQuestionIndex
-          ? { ...item, answerId: `${answers[0]?.id || ''}`, answer: value }
-          : item,
-      ),
+          ? { ...item, answerId: `${answers[0]?.id || ""}`, answer: value }
+          : item
+      )
     );
   };
 
@@ -86,7 +86,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
   // Pastikan currentQuestionIndex valid
   const safeCurrentQuestionIndex = Math.min(
     currentQuestionIndex,
-    questions.length - 1,
+    questions.length - 1
   );
 
   return (
@@ -102,10 +102,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
             </span>
           </div>
         </div>
-        <Progress
-          value={progress}
-          className="h-2 rounded-full"
-        />
+        <Progress value={progress} className="h-2 rounded-full" />
       </CardHeader>
       <CardContent className="p-6">
         <div className="space-y-6">
@@ -135,8 +132,8 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
                   prev.map((item: any, i: number) =>
                     i === safeCurrentQuestionIndex
                       ? { ...item, notSure: checked }
-                      : item,
-                  ),
+                      : item
+                  )
                 );
               }}
               className="border-yellow-500 text-yellow-500"
@@ -164,7 +161,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
           <span>Soal sebelumnya</span>
         </Button>
         <Button
-          className="w-full sm:w-auto flex items-center justify-center bg-main hover:bg-main-hover space-x-2 rounded-full"
+          className="w-full sm:w-auto flex items-center justify-center bg-main hover:bg-main/85 space-x-2 rounded-full"
           onClick={() => {
             if (safeCurrentQuestionIndex < questions.length - 1)
               setCurrentQuestionIndex(safeCurrentQuestionIndex + 1);

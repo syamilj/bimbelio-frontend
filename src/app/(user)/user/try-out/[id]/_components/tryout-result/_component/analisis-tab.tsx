@@ -1004,7 +1004,7 @@ export function AnalisisTab({
                       <div className="flex w-full justify-start">
                         <Button
                           className={cn(
-                            "h-9 w-30 bg-main duration-300 hover:bg-main-hover",
+                            "h-9 w-30 bg-main duration-300 hover:bg-main/85",
                             !unlockTryout && "cursor-not-allowed"
                           )}
                           disabled={simualationLoad}

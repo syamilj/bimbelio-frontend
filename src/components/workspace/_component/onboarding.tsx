@@ -147,7 +147,7 @@ const ChatAI = () => {
             {index === 0 ? "Tutup" : "Sebelumnya"}
           </button>
           <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 md:hover:bg-main-hover"
+            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
             onClick={() => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
@@ -233,7 +233,7 @@ const Notes = () => {
             {index === 0 ? "Tutup" : "Sebelumnya"}
           </button>
           <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 md:hover:bg-main-hover"
+            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
             onClick={() => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
@@ -324,7 +324,7 @@ const QuizAI = () => {
             {index === 0 ? "Tutup" : "Sebelumnya"}
           </button>
           <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 md:hover:bg-main-hover"
+            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
             onClick={() => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
@@ -422,7 +422,7 @@ const Tryout = () => {
             {index === 0 ? "Tutup" : "Sebelumnya"}
           </button>
           <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 md:hover:bg-main-hover"
+            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
             onClick={() => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);

@@ -275,7 +275,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
                 {/* Role-based status or button */}
                 {!userTier ? (
-                  <ButtonPayment />
+                  <ButtonPayment text="Subscription" />
                 ) : userTier === "PREMIUM" ? (
                   <div className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main-yellow px-[1rem] py-[.7rem] text-[.9rem] text-white">
                     <IconCrown className="text-white" />
