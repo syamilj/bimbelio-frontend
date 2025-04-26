@@ -299,7 +299,7 @@ const TryoutOption = () => {
         <div className="flex items-center justify-between">
           <h1 className="text-[1.1rem] font-medium">Sesi Tryout</h1>
           <div
-            className="cursor-pointer rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-white duration-300 md:hover:bg-main-hover md:active:bg-main"
+            className="cursor-pointer rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-white duration-300  hover:bg-main/85 md:active:bg-main"
             onClick={addSesi}
           >
             Tambah sesi
@@ -451,7 +451,7 @@ const TryoutOption = () => {
       <div className="flex h-[45px] w-full items-center justify-center">
         <button
           type="submit"
-          className="h-full w-full rounded-[.8rem] bg-main text-white duration-300 md:hover:bg-main-hover md:active:bg-main"
+          className="h-full w-full rounded-[.8rem] bg-main text-white duration-300  hover:bg-main/85 md:active:bg-main"
         >
           Edit Tryout
         </button>
@@ -460,7 +460,7 @@ const TryoutOption = () => {
         ) : (
           <button
             type="submit"
-            className="h-full w-full rounded-[.8rem] bg-main text-white duration-300 md:hover:bg-main-hover md:active:bg-main"
+            className="h-full w-full rounded-[.8rem] bg-main text-white duration-300  hover:bg-main/85 md:active:bg-main"
           >
             Edit Tryout
           </button>

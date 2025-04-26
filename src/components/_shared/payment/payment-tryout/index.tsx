@@ -136,8 +136,8 @@ export const PaymentTryout = ({
             ) : (
               <button
                 className={cn(
-                  "flex items-center justify-center rounded-[1rem] bg-main py-[1rem] text-white duration-300 hover:bg-main-hover active:bg-main",
-                  loading && "cursor-pointer bg-main-hover active:bg-main-hover"
+                  "flex items-center justify-center rounded-[1rem] bg-main py-[1rem] text-white duration-300 hover:bg-main/85 active:bg-main",
+                  loading && "cursor-pointer hover:bg-main/85 active:bg-main"
                 )}
                 onClick={() => {
                   if (loading) return;

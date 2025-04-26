@@ -10,7 +10,10 @@ export const getMainStyles = (
       .bg-gradient {background-image: linear-gradient(145deg, ${
         websiteSubCategory?.secondary_color
       }, ${websiteSubCategory?.main_color});}
+
       .bg-main { background-color: ${mainColor}; }
+      .active\\:bg-main\:focus { background-color: ${mainColor}; }
+
       .data-\[state\=active\]\:bg-main { background-color: ${mainColor}; }
 
       .text-main { color: ${mainColor}; }
@@ -29,6 +32,7 @@ export const getMainStyles = (
           .bg-main\\/${color} { background-color: ${value}; }
           .hover\\:bg-main\\/${color}:hover { background-color: ${value}; }
           .focus\\:bg-main\\/${color}:focus { background-color: ${value}; }
+          .active\\:bg-main\\/${color}:active { background-color: ${value}; }
 
           
           .border-main\\/${color} { border-color: ${value}; }

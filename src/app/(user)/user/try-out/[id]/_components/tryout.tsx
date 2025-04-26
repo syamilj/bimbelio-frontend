@@ -196,7 +196,7 @@ const Tryout: React.FC<Props> = ({
                     } duration-300`,
                     !isSessionDone &&
                       isAnswered(i) &&
-                      "bg-main text-white md:hover:bg-main-hover",
+                      "bg-main text-white hover:bg-main/85",
                     !isSessionDone &&
                       sessionAnswer[i].notSure &&
                       "bg-main-yellow text-black md:hover:bg-yellow-400"

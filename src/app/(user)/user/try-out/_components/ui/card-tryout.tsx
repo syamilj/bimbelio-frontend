@@ -46,6 +46,7 @@ import { Calendar, Check, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import ButtonPayment from "../../../_components/button-payment";
 
 interface CardTryout {
   id: string;
@@ -180,6 +181,7 @@ export default function CardTryOut({
   const registerTryOut = async (payload: {
     tryoutId: string;
     userId: string;
+    isPremium?: boolean;
   }) => {
     await mutateGeneral("/tryout/registerTryOut", {
       payload,
@@ -188,13 +190,14 @@ export default function CardTryOut({
     });
   };
 
-  const handleRegistration = async () => {
+  const handleRegistration = async (isPremium?: boolean) => {
     try {
       setIsLoading(true);
       if (showDetail) {
         await registerTryOut({
           tryoutId: showDetail.id,
           userId: session?.user.id || "",
+          isPremium,
         });
         setStep(1);
         setShowDetail(null);
@@ -568,7 +571,7 @@ const RegisterTryout = ({
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   setShowDetail: Dispatch<SetStateAction<CardTryoutProps | null>>;
-  onClick: () => void;
+  onClick: (isPremium?: boolean) => void;
   showDetail: CardTryoutProps | null;
 }) => {
   const { userLimitation, checkLimitation } = useUserLimitation();
@@ -671,11 +674,17 @@ const RegisterTryout = ({
                 setIsLoading(true);
                 const check = await checkLimitation({ tryout: true });
                 if (check) {
-                  onClick();
+                  onClick(true);
                 } else {
                   setIsLoading(false);
                 }
               } else {
+                toaster({
+                  title: "Upss",
+                  condition: "warning",
+                  description: "Coin tryoutmu tidak cukup, coba opsi lain",
+                  duration: 3000,
+                });
                 setStep(2);
               }
             }}
@@ -697,6 +706,10 @@ const RegisterTryout = ({
       <div className="flex w-full flex-col gap-[1rem]">
         <h1 className="text-center font-medium">Pilih Tipe Pendaftaran</h1>
         <div className="flex flex-col gap-[1rem]">
+          <ButtonPayment
+            className="w-full flex justify-center items-center"
+            text="Top up"
+          />
           <Card
             onClick={() => setSelectTypeRegistration("free")}
             className={cn(

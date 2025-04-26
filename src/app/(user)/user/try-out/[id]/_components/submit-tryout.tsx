@@ -125,7 +125,7 @@ const SubmitTryout = ({
       <Dialog open={loading ? true : open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <button
-            className="rounded-xl bg-main px-4 py-3 text-white duration-300 active:bg-main md:hover:bg-main-hover"
+            className="rounded-xl bg-main px-4 py-3 text-white duration-300 active:bg-main hover:bg-main/85"
             disabled={loading || hasSubmitted}
           >
             Kumpulkan
@@ -179,7 +179,7 @@ const SubmitTryout = ({
                       Kembali
                     </button>
                     <button
-                      className={`h-full w-full rounded-xl bg-main text-white duration-300 active:bg-main md:hover:bg-main-hover ${
+                      className={`h-full w-full rounded-xl bg-main text-white duration-300 active:bg-main hover:bg-main/85 ${
                         hasSubmitted ? "cursor-not-allowed opacity-50" : ""
                       }`}
                       onClick={() => {
@@ -226,7 +226,7 @@ const SubmitTryout = ({
                     Kembali
                   </button>
                   <button
-                    className={`w-full rounded-xl bg-main py-3 text-white duration-300 active:bg-main-hover ${
+                    className={`w-full rounded-xl bg-main py-3 text-white duration-300 active:bg-main ${
                       hasSubmitted ? "cursor-not-allowed opacity-50" : ""
                     }`}
                     onClick={handleSubmit}

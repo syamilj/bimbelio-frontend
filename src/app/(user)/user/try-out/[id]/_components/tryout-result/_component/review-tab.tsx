@@ -473,7 +473,7 @@ const Navigation = ({
         <div className="w-full flex justify-end mt-8">
           {sessionResult?.TryoutSession.Document && (
             <Button
-              className="h-[unset] bg-main hover:bg-main-hover py-[.6rem] px-[1rem] rounded-[.6rem]"
+              className="h-[unset] bg-main hover:bg-main/85 py-[.6rem] px-[1rem] rounded-[.6rem]"
               onClick={() =>
                 router.push(
                   `/user/workspace/${

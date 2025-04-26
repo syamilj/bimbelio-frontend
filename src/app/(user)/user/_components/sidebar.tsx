@@ -178,9 +178,9 @@ const Sidebar = ({ category }: any) => {
             >
               {!minimizeSidebar && (
                 <>
-                  <h1 className="font-semibold">Upgrade premium</h1>
+                  <h1 className="font-semibold">Subscription</h1>
                   <p className="text-[.8rem] text-main-gray-text">
-                    Upgrade akunmu sekarang untuk meningkatkan akses layanan
+                    Beli subscription sekarang untuk meningkatkan akses layanan
                     terbaik dan terlengkap dari Bimbelio
                   </p>
                 </>
@@ -191,7 +191,7 @@ const Sidebar = ({ category }: any) => {
               >
                 <IconCrown />
                 {!minimizeSidebar && (
-                  <p className="font-regular">Upgrade akun</p>
+                  <p className="font-regular">Subscription</p>
                 )}
               </Button>
             </div>
@@ -395,7 +395,7 @@ const Sidebar = ({ category }: any) => {
             >
               {!minimizeSidebar && (
                 <>
-                  <h1 className="font-semibold">Upgrade premium</h1>
+                  <h1 className="font-semibold">Subscription</h1>
                   <p className="text-[.8rem] text-main-gray-text">
                     Upgrade akunmu sekarang untuk meningkatkan akses layanan
                     terbaik dan terlengkap dari Bimbelio

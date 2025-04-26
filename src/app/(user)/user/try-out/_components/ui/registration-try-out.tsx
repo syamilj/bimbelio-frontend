@@ -137,6 +137,7 @@ const RegistrationTryOut = ({
 
         // Bungkus data tanpa newUserTryOut
         const dataToSend = {
+          name: Name,
           userId: session?.user.id,
           gender: Gender,
           age: Age,

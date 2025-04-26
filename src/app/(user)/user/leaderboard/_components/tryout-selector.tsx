@@ -88,7 +88,7 @@ export function TryOutSelector() {
             <Button
               key={tryOut.id}
               className={cn(
-                "h-auto w-full justify-start px-4 py-3 text-left bg-white text-black hover:bg-main-hover hover:text-white border rounded-xl",
+                "h-auto w-full justify-start px-4 py-3 text-left bg-white text-black hover:bg-main/85 hover:text-white border rounded-xl",
                 selectedTryOut === tryOut.id && "text-white bg-main"
               )}
               onClick={() => setSelectedTryOut(tryOut.id)}

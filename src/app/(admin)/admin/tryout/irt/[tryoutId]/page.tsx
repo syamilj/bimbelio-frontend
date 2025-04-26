@@ -286,7 +286,7 @@ export default function SNBTProcessor() {
               {TryoutData && (
                 <div className="flex gap-4 items-center">
                   <Button
-                    className="bg-main hover:bg-main-hover w-fit"
+                    className="bg-main hover:bg-main/85 w-fit"
                     onClick={() => {
                       exportData(sessionIndex);
                     }}

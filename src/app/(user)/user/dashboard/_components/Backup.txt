@@ -471,7 +471,7 @@ className="text-center"
 <div className="flex h-full w-full items-center justify-center">
 <Link
 href={`/user/try-out/${tryout.Tryout?.id}`}
-className="rounded-[.5rem] bg-main px-[1rem] py-[.5rem] text-[.8rem] text-white duration-300 md:hover:bg-main-hover"
+className="rounded-[.5rem] bg-main px-[1rem] py-[.5rem] text-[.8rem] text-white duration-300 hover:bg-main/85"
 >
 Lihat Pembahasan
 </Link>
