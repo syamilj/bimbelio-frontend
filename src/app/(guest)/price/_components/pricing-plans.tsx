@@ -213,7 +213,7 @@ export default function PricingPlans() {
         onClose={() => setShowPhoneConfirm(false)}
         onSubmit={handlePayment}
       />
-      {/* <div className="text-center mb-16">
+      <div className="text-center mb-16">
         <div className="inline-block bg-main/10 text-main rounded-full px-4 py-1 text-sm font-medium mb-4">
           Pilih Paket Terbaik
         </div>
@@ -257,7 +257,7 @@ export default function PricingPlans() {
             ))}
           </div>
         </TabsContent>
-      </Tabs> */}
+      </Tabs>
 
       <div className="mt-0">
         <div className="text-center mb-8">

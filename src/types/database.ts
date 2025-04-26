@@ -243,7 +243,6 @@ export type Plan = {
   slug: string;
   price: number;
   description: string;
-  tier: string;
 };
 
 export type PlanLimitation = {
@@ -261,6 +260,7 @@ export type PlanSubscription = {
   createdAt: Date;
   updatedAt: Date;
   planId: string;
+  tier: string;
   expireDays: number;
   websiteSubCategoryId: string;
 };

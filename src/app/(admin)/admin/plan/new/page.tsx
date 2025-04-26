@@ -38,10 +38,6 @@ type LimitRowType = {
   limit: string;
 }[];
 
-type FeatureRowType = {
-  type: FeatureTypeEnum;
-}[];
-
 export default function CreatePlanForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<ActiveTabType>({
@@ -77,7 +73,6 @@ export default function CreatePlanForm() {
     const payload = {
       name,
       description,
-      tier,
       price: parseFloat(price),
       planLimitation: activeTab.limit
         ? {
@@ -90,6 +85,7 @@ export default function CreatePlanForm() {
         : undefined,
       planSubscription: activeTab.feature
         ? {
+            tier,
             expireDays:
               expireType === "days"
                 ? parseInt(duration)
@@ -119,18 +115,18 @@ export default function CreatePlanForm() {
       <div className="space-y-6">
         {/* Basic Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+          <div className="col-span-2">
             <Label htmlFor="name" className="block mb-2">
               Name <span className="text-red-500">*</span>
             </Label>
             <Input name="name" placeholder="Pricing Name" />
           </div>
-          <div>
+          {/* <div>
             <Label htmlFor="tier" className="block mb-2">
               Tier <span className="text-red-500">*</span>
             </Label>
             <Input name="tier" placeholder="Tier" />
-          </div>
+          </div> */}
           <div className="col-span-2">
             <Label htmlFor="slug" className="block mb-2">
               Description <span className="text-red-500">*</span>
@@ -660,6 +656,13 @@ const SectionFeature = ({
                 Materi Premium
               </Label>
             </div>
+          </div>
+
+          <div className="ml-6">
+            <Label htmlFor="tier" className="block mb-2">
+              Tier <span className="text-red-500">*</span>
+            </Label>
+            <Input name="tier" placeholder="Tier" />
           </div>
 
           <div className="ml-6">

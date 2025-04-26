@@ -71,12 +71,12 @@ export default function CreatePlanForm() {
         const data = dat as GetSingleType;
         console.log({ data });
         changeValue("name", data.name);
-        changeValue("tier", data.tier);
         changeValue("description", data.description);
         changeValue("price", data.price.toString());
         if (data.PlanSubscription) {
           setActiveTab((prev) => ({ ...prev, feature: true }));
           changeValue("duration", data.PlanSubscription.expireDays.toString());
+          changeValue("tier", data.PlanSubscription.tier);
           const course = data.PlanSubscription.PlanFeature.find(
             (item) => item.type === "COURSE"
           );
@@ -144,7 +144,6 @@ export default function CreatePlanForm() {
       id,
       name,
       description,
-      tier,
       price: parseFloat(price),
       planLimitation: activeTab.limit
         ? {
@@ -157,6 +156,7 @@ export default function CreatePlanForm() {
         : undefined,
       planSubscription: activeTab.feature
         ? {
+            tier,
             expireDays:
               expireType === "days"
                 ? parseInt(duration)
@@ -191,17 +191,11 @@ export default function CreatePlanForm() {
       <div className="space-y-6">
         {/* Basic Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
+          <div className="col-span-2">
             <Label htmlFor="name" className="block mb-2">
               Name <span className="text-red-500">*</span>
             </Label>
             <Input id="name" name="name" placeholder="Pricing Name" />
-          </div>
-          <div>
-            <Label htmlFor="tier" className="block mb-2">
-              Tier <span className="text-red-500">*</span>
-            </Label>
-            <Input id="tier" name="tier" placeholder="Tier" />
           </div>
           <div className="col-span-2">
             <Label htmlFor="description" className="block mb-2">
@@ -760,6 +754,13 @@ const SectionFeature = ({
                 Materi Premium
               </Label>
             </div>
+          </div>
+
+          <div className="ml-6">
+            <Label htmlFor="tier" className="block mb-2">
+              Tier <span className="text-red-500">*</span>
+            </Label>
+            <Input id="tier" name="tier" placeholder="Tier" />
           </div>
 
           <div className="ml-6">
