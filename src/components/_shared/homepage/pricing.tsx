@@ -81,7 +81,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
               </p>
             </div>
             <button
-              className="font-regular w-full rounded-[2rem] bg-gradientGreen py-[.8rem] text-white md:hover:bg-gradientGreenHover"
+              className="font-regular w-full rounded-[2rem] bg-gradient py-[.8rem] text-white md:hover:opacity-85"
               onClick={() => {
                 if (session) {
                   setTransactionPopUp(true);

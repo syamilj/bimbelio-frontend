@@ -191,11 +191,11 @@ const RegistrationTryOut = ({
       <div
         className="absolute right-4 top-4 cursor-pointer"
         onClick={() => {
-          // Handle tombol close sesuai kebutuhan
-          // Misalnya, tutup modal atau lakukan tindakan lain tanpa merubah step
-          // Contoh: Menutup modal atau navigasi kembali
-          // Di sini saya set step kembali ke 2 untuk tetap menampilkan form
-          setStep(2);
+          if (isHideGeneralSection) {
+            setStep(3);
+          } else {
+            setStep(2);
+          }
         }}
       >
         <IconX className="text-main-gray-text duration-200 md:hover:text-main-gray-text2" />
@@ -438,7 +438,7 @@ const RegistrationTryOut = ({
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradientGreen px-[2rem] text-white md:hover:bg-gradientGreenHover"
+                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-[2rem] text-white md:hover:opacity-85"
               >
                 Selanjutnya
               </Button>
@@ -492,48 +492,50 @@ const RegistrationTryOut = ({
               />
             </div>
           )}
-          <div className="flex flex-col gap-[.5rem]">
-            <p className="text-[.95rem]">
-              Tau Bimbelio dari mana?<span className="text-red-600">*</span>
-            </p>
-            <Select
-              required
-              value={Channel}
-              onValueChange={(value) => {
-                if (value) {
-                  setChannel(value);
-                  console.log("Channel diupdate menjadi:", value);
-                }
-              }}
-            >
-              <SelectTrigger
-                className={cn(
-                  `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
-                  Channel === "" && "text-main-gray-disabled"
-                )}
+          {!isHideGeneralSection && (
+            <div className="flex flex-col gap-[.5rem]">
+              <p className="text-[.95rem]">
+                Tau Bimbelio dari mana?<span className="text-red-600">*</span>
+              </p>
+              <Select
+                required
+                value={Channel}
+                onValueChange={(value) => {
+                  if (value) {
+                    setChannel(value);
+                    console.log("Channel diupdate menjadi:", value);
+                  }
+                }}
               >
-                <SelectValue placeholder="Pilih Channel" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Instagram">Instagram</SelectItem>
-                <SelectItem value="Facebook">Facebook</SelectItem>
-                <SelectItem value="Tiktok">Tiktok</SelectItem>
-                <SelectItem value="Twitter">Twitter</SelectItem>
-                <SelectItem value="Teman">Teman</SelectItem>
-                <SelectItem value="Event">Event</SelectItem>
-                <SelectItem value="Keluarga">Keluarga</SelectItem>
-                <SelectItem value="Google">Google</SelectItem>
-                <SelectItem value="Lainnya">Lainnya</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+                <SelectTrigger
+                  className={cn(
+                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    Channel === "" && "text-main-gray-disabled"
+                  )}
+                >
+                  <SelectValue placeholder="Pilih Channel" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Instagram">Instagram</SelectItem>
+                  <SelectItem value="Facebook">Facebook</SelectItem>
+                  <SelectItem value="Tiktok">Tiktok</SelectItem>
+                  <SelectItem value="Twitter">Twitter</SelectItem>
+                  <SelectItem value="Teman">Teman</SelectItem>
+                  <SelectItem value="Event">Event</SelectItem>
+                  <SelectItem value="Keluarga">Keluarga</SelectItem>
+                  <SelectItem value="Google">Google</SelectItem>
+                  <SelectItem value="Lainnya">Lainnya</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <div className="flex h-[64px] items-center justify-center">
             {isLoading ? (
               <Spinner />
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradientGreen px-[2rem] text-white md:hover:bg-gradientGreenHover"
+                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-[2rem] text-white md:hover:opacity-85"
               >
                 Submit
               </Button>

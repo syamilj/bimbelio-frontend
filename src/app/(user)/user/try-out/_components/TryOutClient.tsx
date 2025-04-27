@@ -66,6 +66,9 @@ const Content = () => {
       {
         setData: setTryoutAccount,
         setLoading: setIsLoading,
+        toast: {
+          hideError: true,
+        },
         onError({ data }) {
           const getData: {
             hideGeneral: boolean;

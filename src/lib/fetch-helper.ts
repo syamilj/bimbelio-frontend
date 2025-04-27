@@ -8,6 +8,15 @@ export const getGeneral = async (
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
     firstLoad?: boolean;
     endLoad?: boolean;
+    hideToast?: boolean;
+    toast?: {
+      hideSuccess?: boolean;
+      hideError?: boolean;
+      successTitle?: string;
+      successMsg?: string;
+      errorTitle?: string;
+      errorMsg?: string;
+    };
     onSuccess?: ({
       message,
       status,
@@ -30,13 +39,14 @@ export const getGeneral = async (
     }) => any;
   }
 ) => {
+  if (
+    more?.setLoading &&
+    (more?.firstLoad == true || !more || more.firstLoad === undefined)
+  ) {
+    more.setLoading(true);
+  }
+  let showToast = true;
   try {
-    if (
-      more?.setLoading &&
-      (more?.firstLoad == true || !more || more.firstLoad === undefined)
-    ) {
-      more.setLoading(true);
-    }
     const res = await axiosInstance.get(url);
     const resData = response(res);
     if (more?.onSuccess) {
@@ -45,7 +55,15 @@ export const getGeneral = async (
     if (more?.setData) more.setData(resData.data);
     return resData || null;
   } catch (error) {
-    const errData = responseError(error, true);
+    if (more?.toast?.hideError === true) showToast = false;
+    else if (more?.hideToast === true) showToast = false;
+    else showToast = true;
+    const errData = responseError(
+      error,
+      showToast,
+      more?.toast?.errorMsg,
+      more?.toast?.errorTitle
+    );
     if (more?.onError) {
       await more.onError({
         status: errData.error?.response?.data?.status,
