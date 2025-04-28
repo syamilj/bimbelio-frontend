@@ -4,6 +4,8 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
 
+import { useSession } from '@/components/provider/session-provider-auth';
+import { getGeneral } from '@/lib/fetch-helper';
 import { UserTryout } from '@/types/database';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -41,21 +43,41 @@ export default function TryOutClient() {
 
 const Content = () => {
   const Router = useRouter();
-  // const { data: session } = useSession();
+  const { data: session } = useSession();
 
   const [step, setStep] = useState<number>(1);
-  const [isLoading] = useState<boolean>(true);
-  const [tryoutAccount] = useState<{
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [tryoutAccount, setTryoutAccount] = useState<{
     userTryOutId: string;
     UserTryout: UserTryout;
   }>();
 
-  const [isHideGeneralSection] = useState<boolean>(false);
-  const [isHideTargetValue] = useState<boolean>(false);
+  const [isHideGeneralSection, setIsHideGeneralSection] =
+    useState<boolean>(false);
+  const [isHideTargetValue, setIsHideTargetValue] = useState<boolean>(false);
 
-  const [univOption] = useState<string | undefined>();
+  const [univOption, setUnivOption] = useState<string | undefined>();
 
-  const getUserTryout = async () => {};
+  const getUserTryout = async () => {
+    getGeneral(`/user/getUserTryOut?userId=${session?.user.id}`, {
+      setData: setTryoutAccount,
+      setLoading: setIsLoading,
+      toast: {
+        hideError: true,
+      },
+      onError({ data }) {
+        const getData: {
+          hideGeneral: boolean;
+          hideTargetValue: boolean;
+          universityOption: string | undefined;
+        } = data;
+        console.log({ data });
+        if (getData.hideGeneral) setIsHideGeneralSection(true);
+        if (getData.hideTargetValue) setIsHideTargetValue(true);
+        if (getData.universityOption) setUnivOption(getData.universityOption);
+      },
+    });
+  };
 
   useEffect(() => {
     getUserTryout();
