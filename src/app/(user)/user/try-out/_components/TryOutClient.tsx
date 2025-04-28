@@ -16,6 +16,7 @@ import { response } from "@/lib/response";
 import { UserTryout } from "@/types/database";
 import { getGeneral } from "@/lib/fetch-helper";
 import { useSession } from "@/components/provider/session-provider-auth";
+import UpcomingOtherWeb from "./upcoming-other-web";
 
 export default function TryOutClient() {
   const Router = useRouter();
@@ -52,11 +53,35 @@ const Content = () => {
     userTryOutId: string;
     UserTryout: UserTryout;
   }>();
+
+  const [isHideGeneralSection, setIsHideGeneralSection] =
+    useState<boolean>(false);
+  const [isHideTargetValue, setIsHideTargetValue] = useState<boolean>(false);
+
+  const [univOption, setUnivOption] = useState<string | undefined>();
+
   const getUserTryout = async () => {
-    await getGeneral(`/user/getUserTryOut?userId=${session?.user.id}`, {
-      setData: setTryoutAccount,
-      setLoading: setIsLoading,
-    });
+    const res = await getGeneral(
+      `/user/getUserTryOut?userId=${session?.user.id}`,
+      {
+        setData: setTryoutAccount,
+        setLoading: setIsLoading,
+        toast: {
+          hideError: true,
+        },
+        onError({ data }) {
+          const getData: {
+            hideGeneral: boolean;
+            hideTargetValue: boolean;
+            universityOption: string | undefined;
+          } = data;
+          console.log({ data });
+          if (getData.hideGeneral) setIsHideGeneralSection(true);
+          if (getData.hideTargetValue) setIsHideTargetValue(true);
+          if (getData.universityOption) setUnivOption(getData.universityOption);
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -112,6 +137,10 @@ const Content = () => {
           <div className="font-regular flex flex-col gap-[.5rem]">
             <Done id={tryoutAccount.userTryOutId} />
           </div>
+
+          <div className="font-regular flex flex-col gap-[.5rem]">
+            <UpcomingOtherWeb id={tryoutAccount.userTryOutId} />
+          </div>
         </div>
       ) : (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -132,7 +161,7 @@ const Content = () => {
                   Kembali
                 </button>
                 <button
-                  className="font-regular w-[156px] rounded-[.8rem] bg-main py-[.8rem] text-[.85rem] text-white duration-200 md:hover:bg-main-hover"
+                  className="font-regular w-[156px] rounded-[.8rem] bg-main py-[.8rem] text-[.85rem] text-white duration-200 hover:bg-main/85"
                   onClick={() => setStep(2)}
                 >
                   Verifikasi Akun
@@ -140,7 +169,12 @@ const Content = () => {
               </div>
             </div>
           ) : (
-            <RegistrationTryOut getUserTryout={getUserTryout} />
+            <RegistrationTryOut
+              getUserTryout={getUserTryout}
+              isHideGeneralSection={isHideGeneralSection}
+              isHideTargetValue={isHideTargetValue}
+              univOption={univOption}
+            />
           )}
         </div>
       )}

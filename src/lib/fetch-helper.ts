@@ -8,6 +8,15 @@ export const getGeneral = async (
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
     firstLoad?: boolean;
     endLoad?: boolean;
+    hideToast?: boolean;
+    toast?: {
+      hideSuccess?: boolean;
+      hideError?: boolean;
+      successTitle?: string;
+      successMsg?: string;
+      errorTitle?: string;
+      errorMsg?: string;
+    };
     onSuccess?: ({
       message,
       status,
@@ -21,33 +30,45 @@ export const getGeneral = async (
       status,
       message,
       error,
+      data,
     }: {
       status: number;
       message: string;
       error: any;
+      data: any;
     }) => any;
   }
 ) => {
+  if (
+    more?.setLoading &&
+    (more?.firstLoad == true || !more || more.firstLoad === undefined)
+  ) {
+    more.setLoading(true);
+  }
+  let showToast = true;
   try {
-    if (
-      more?.setLoading &&
-      (more?.firstLoad == true || !more || more.firstLoad === undefined)
-    ) {
-      more.setLoading(true);
-    }
     const res = await axiosInstance.get(url);
     const resData = response(res);
     if (more?.onSuccess) {
       await more.onSuccess(resData);
     }
     if (more?.setData) more.setData(resData.data);
-    return resData.data;
+    return resData || null;
   } catch (error) {
-    const errData = responseError(error, true);
+    if (more?.toast?.hideError === true) showToast = false;
+    else if (more?.hideToast === true) showToast = false;
+    else showToast = true;
+    const errData = responseError(
+      error,
+      showToast,
+      more?.toast?.errorMsg,
+      more?.toast?.errorTitle
+    );
     if (more?.onError) {
       await more.onError({
-        status: errData.status,
-        message: errData.message,
+        status: errData.error?.response?.data?.status,
+        message: errData.error?.response?.data?.message,
+        data: errData.error?.response?.data?.data,
         error: errData.error,
       });
     }
@@ -206,7 +227,7 @@ export const mutateGeneral = async (
     if (more?.onSuccess) {
       await more.onSuccess(resData);
     }
-    return resData.data || null;
+    return resData || null;
   } catch (error) {
     if (more.toast?.hideError === true) showToast = false;
     else if (more.hideToast === true) showToast = false;

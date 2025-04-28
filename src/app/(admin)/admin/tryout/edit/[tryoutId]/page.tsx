@@ -132,7 +132,7 @@ const NewTryOut = () => {
     try {
       setIsLoadingTryout(true);
       const res = await axiosInstance.get(
-        `/tryout/getTryoutForUpdate/${tryoutId}`
+        `/tryout/getTryoutForUpdate?id=${tryoutId}`
       );
       const resData = response(res);
       return resData.data;

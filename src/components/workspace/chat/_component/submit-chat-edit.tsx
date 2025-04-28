@@ -153,7 +153,7 @@ const SubmitChatEdit = ({
           Batalkan
         </button>
         <button
-          className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main px-[1.2rem] py-[.7rem] text-white duration-100 md:hover:bg-main-hover md:active:bg-main"
+          className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main px-[1.2rem] py-[.7rem] text-white duration-100 hover:bg-main/85 md:active:bg-main"
           onClick={() => {
             handleExecuteEditMessage();
           }}

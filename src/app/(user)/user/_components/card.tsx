@@ -78,7 +78,7 @@ export default function Card({ data, href, noCategory }: card) {
                       </span>{" "}
                       untuk mendapatkan akses material lengkap.
                     </p>
-                    <ButtonPayment text="Upgrade Akun" />
+                    <ButtonPayment text="Subscription" />
                     <div className="absolute bottom-[-8px] left-[2rem] h-[20px] w-[20px] rotate-45 bg-[#1A1E25]" />
                   </div>
                 )}

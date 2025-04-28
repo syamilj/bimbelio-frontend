@@ -171,7 +171,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
             >
               Riwayat transaksi
             </div>
-            <ButtonPayment text={"Beli Sekarang"} />
+            <ButtonPayment text={"Subscription"} />
           </div>
 
           {/* Page Content */}
@@ -280,19 +280,19 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                     {!session?.user.tier && (
                       <div className="font-regular flex flex-col gap-[1rem] text-[.9rem] text-main-gray-text">
                         <p>
-                          Kamu belum premium. Yuk,{" "}
-                          <span className="text-main">upgrade premium</span>{" "}
+                          Kamu belum beli subscription. Yuk,{" "}
+                          <span className="text-main">beli subscription</span>{" "}
                           untuk menikmati layanan terbaik dan lebih lengkap!
                         </p>
                         <Button
-                          className="flex w-fit items-center gap-[.5rem] rounded-[.8rem] bg-main px-[1rem] py-[.7rem] text-white duration-300 hover:bg-main-hover active:bg-main"
+                          className="flex w-fit items-center gap-[.5rem] rounded-[.8rem] bg-main px-[1rem] py-[.7rem] text-white duration-300 hover:bg-main/85 active:bg-main"
                           onClick={() => {
                             setTransactionPopUp(true);
                             setTransactionHistory(false);
                           }}
                         >
                           <IconCrown />
-                          <p className="font-regular">Upgrade akun</p>
+                          <p className="font-regular">Subscription</p>
                         </Button>
                       </div>
                     )}
@@ -347,7 +347,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                     </div>
                     <div id="action" className="flex items-center">
                       <Button
-                        className="active:main rounded-[.8rem] bg-main px-[1.5rem] py-[.8rem] text-[.9rem] text-white duration-300 hover:bg-main-hover"
+                        className="active:main rounded-[.8rem] bg-main px-[1.5rem] py-[.8rem] text-[.9rem] text-white duration-300 hover:bg-main/85"
                         onClick={() => handlePay(item.token)}
                       >
                         Bayar sekarang

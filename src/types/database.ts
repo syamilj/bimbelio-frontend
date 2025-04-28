@@ -108,16 +108,22 @@ export type UserTryout = {
   phone: string;
   kabupaten: string;
   provinsi: string;
-  schoolTipe: string;
-  schoolOrigin: string;
-  schoolStudy: string;
-  schoolGraduated: number;
-  targetValue: number;
-  univChoiceOne: string;
-  univStudyChoiceOne: string;
-  univChoiceTwo: string;
-  univStudyChoiceTwo: string;
   channel: string;
+};
+
+export type UserTryoutData = {
+  website_sub_category_id: string;
+  id: string;
+  userTryOutId: string;
+  schoolTipe: string | null;
+  schoolOrigin: string | null;
+  schoolStudy: string | null;
+  schoolGraduated: number | null;
+  targetValue: number | null;
+  univChoiceOne: string | null;
+  univStudyChoiceOne: string | null;
+  univChoiceTwo: string | null;
+  univStudyChoiceTwo: string | null;
 };
 
 export type GenderEnum = "PRIA" | "WANITA";
@@ -237,7 +243,6 @@ export type Plan = {
   slug: string;
   price: number;
   description: string;
-  tier: string;
 };
 
 export type PlanLimitation = {
@@ -255,6 +260,7 @@ export type PlanSubscription = {
   createdAt: Date;
   updatedAt: Date;
   planId: string;
+  tier: string;
   expireDays: number;
   websiteSubCategoryId: string;
 };

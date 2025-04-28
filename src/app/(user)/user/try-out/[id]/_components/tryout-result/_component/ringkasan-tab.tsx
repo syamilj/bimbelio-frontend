@@ -4,17 +4,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import {
   IconCheckList,
   IconDocumentAdmin,
   IconStar,
   IconTryOut,
   IconX,
-} from '@/styles/icon';
-import { Trophy } from 'lucide-react';
-import { ResultDataProps } from '..';
+} from "@/styles/icon";
+import { Trophy } from "lucide-react";
+import { ResultDataProps } from "..";
 
 interface RingkasanTabProps {
   ResultData: ResultDataProps;
@@ -39,25 +39,19 @@ export function RingkasanTab({ ResultData }: RingkasanTabProps) {
               className="flex flex-col justify-between rounded-[.8rem] border-none bg-main/15 shadow-none"
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">
-                  Skor SNBT/UTBK
-                </CardTitle>
-                <IconStar
-                  active
-                  className="text-main"
-                  w={20}
-                />
+                <CardTitle className="text-sm font-semibold">Skor</CardTitle>
+                <IconStar active className="text-main" w={20} />
               </CardHeader>
               <CardContent className="flex flex-col gap-[.5rem] pb-0">
                 <div className="text-2xl font-bold">{userScore.toFixed(2)}</div>
-                <Progress
+                {/* <Progress
                   value={(userScore / 1000) * 100}
                   className="mb-2 h-1"
                   classNameThumb="bg-blue-400"
-                />
+                /> */}
               </CardContent>
               <CardFooter className="pt-2 text-xs font-medium text-main-gray-text">
-                Datri poin maksimum
+                Rata rata skor
               </CardFooter>
             </Card>
             <Card
@@ -68,11 +62,7 @@ export function RingkasanTab({ ResultData }: RingkasanTabProps) {
                 <CardTitle className="text-sm font-semibold">
                   Ranking Kamu
                 </CardTitle>
-                <IconTryOut
-                  active
-                  className="text-green-600"
-                  w={20}
-                />
+                <IconTryOut active className="text-green-600" w={20} />
               </CardHeader>
               <CardContent className="mt-[.5rem] grid grid-cols-2">
                 <div className="flex flex-col">
@@ -105,11 +95,7 @@ export function RingkasanTab({ ResultData }: RingkasanTabProps) {
                 <CardTitle className="text-sm font-semibold">
                   Ranking Universitas & Jurusan
                 </CardTitle>
-                <IconTryOut
-                  active
-                  className="text-yellow-500"
-                  w={20}
-                />
+                <IconTryOut active className="text-yellow-500" w={20} />
               </CardHeader>
               <CardContent className="mt-[.5rem] grid grid-cols-2">
                 <div className="flex flex-col">
@@ -139,10 +125,7 @@ export function RingkasanTab({ ResultData }: RingkasanTabProps) {
       </div>
 
       {ResultData?.summaryTryout.Result?.map((category, index) => (
-        <div
-          key={index}
-          className="mb-[1rem] flex flex-col gap-2"
-        >
+        <div key={index} className="mb-[1rem] flex flex-col gap-2">
           <h1 className="text-2xl font-semibold">{category.category}</h1>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {category.data.map((subject) => (
@@ -164,27 +147,23 @@ export function RingkasanTab({ ResultData }: RingkasanTabProps) {
                   </div>
                 </div>
                 <Progress
-                  value={(subject.score / 1000) * 100}
+                  value={
+                    (subject.correctAnswers / subject.totalQuestions) * 100
+                  }
                   className="h-1"
                 />
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1 text-xs font-medium text-main-gray-text md:text-sm">
                       {/* <CheckCircle className="h-4 w-4 text-green-600" /> */}
-                      <IconCheckList
-                        w={16}
-                        className="text-green-600"
-                      />
+                      <IconCheckList w={16} className="text-green-600" />
                       <span>
                         {subject.correctAnswers}/{subject.totalQuestions} Benar
                       </span>
                     </div>
                     <div className="flex items-center gap-1 text-xs font-medium text-main-gray-text md:text-sm">
                       {/* <XCircle className="h-4 w-4 text-red-500" /> */}
-                      <IconX
-                        w={16}
-                        className="text-red-500"
-                      />
+                      <IconX w={16} className="text-red-500" />
                       <span>
                         {subject.wrongAnswers}/{subject.totalQuestions} Salah
                       </span>
@@ -193,7 +172,7 @@ export function RingkasanTab({ ResultData }: RingkasanTabProps) {
                   <div className="flex items-center gap-2 text-xs md:text-sm">
                     <Trophy className="h-4 w-4 text-yellow-400" />
                     <span>
-                      Peringkat: {subject.ranking} dari{' '}
+                      Peringkat: {subject.ranking} dari{" "}
                       {subject.totalParticipants}
                     </span>
                     {/* <Button

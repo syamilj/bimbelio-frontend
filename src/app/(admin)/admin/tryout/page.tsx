@@ -98,7 +98,7 @@ export default function Page() {
             </div>
             <Link
               href={"/admin/tryout/new"}
-              className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-[1rem] py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
+              className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-[1rem] py-[.6rem] text-white duration-300 hover:bg-main/85"
             >
               Tambah try out
             </Link>

@@ -180,18 +180,18 @@ export default function PricingPlans() {
   };
 
   const addPayment = async (payload: any) => {
-    const data = await mutateGeneral("/payment/addPayment", {
+    const res = await mutateGeneral("/payment/addPayment", {
       payload: { ...payload, userId: session?.user.id },
       type: "post",
     });
-    return data;
+    return res;
   };
 
   const handlePayment = async (phoneNumber: string) => {
     if (type === "") return;
     try {
-      const data = await addPayment({ telp: phoneNumber, type, planId });
-      window.snap.pay(`${data?.token}`, {
+      const res = await addPayment({ telp: phoneNumber, type, planId });
+      window.snap.pay(`${res?.data.token}`, {
         onClose: () => {
           setPagesSetting("rt");
           setTransactionHistory(true);
@@ -213,6 +213,18 @@ export default function PricingPlans() {
         onClose={() => setShowPhoneConfirm(false)}
         onSubmit={handlePayment}
       />
+      {/* <div className="text-center mb-16">
+        <div className="inline-block bg-main/10 text-main rounded-full px-4 py-1 text-sm font-medium mb-4">
+          Pilih Paket Terbaik
+        </div>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-4 text-[#0a2540]">
+          Sudah Siap Mulai Belajar?
+        </h1>
+        <p className="text-xl text-[#4a5568] max-w-2xl mx-auto">
+          Pilih paket yang sesuai dengan kebutuhanmu dan mulai perjalanan
+          belajar bersama TutorSNBT
+        </p>
+      </div>
       <Tabs defaultValue="bundle" className="w-full">
         <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8 bg-[#e6f0ff] p-1 rounded-full">
           <TabsTrigger value="bundle" className="rounded-full">
@@ -245,9 +257,9 @@ export default function PricingPlans() {
             ))}
           </div>
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
 
-      <div className="mt-20">
+      <div className="mt-0">
         <div className="text-center mb-8">
           <div className="inline-block bg-[#e6f0ff] text-[#0066ff] rounded-full px-4 py-1 text-sm font-medium mb-4">
             Tambah Coin
@@ -275,7 +287,7 @@ export default function PricingPlans() {
         </div>
       </div>
 
-      <div className="mt-16 bg-white rounded-2xl shadow-lg p-8">
+      {/* <div className="mt-16 bg-white rounded-2xl shadow-lg p-8">
         <div className="text-center mb-8">
           <div className="inline-block bg-[#e6f0ff] text-[#0066ff] rounded-full px-4 py-1 text-sm font-medium mb-4">
             Perbandingan
@@ -447,7 +459,7 @@ export default function PricingPlans() {
             </table>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

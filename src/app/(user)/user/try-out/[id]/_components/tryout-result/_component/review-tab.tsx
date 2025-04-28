@@ -193,6 +193,15 @@ export function ReviewTab({
   const accuracy =
     TotalQuestion > 0 ? (correctAnswer() / TotalQuestion) * 100 : 0;
 
+  const getPercentageScore = () => {
+    if (!sessionResult?.TryoutSession.thresholdValue) return null;
+    const value =
+      getTotalScore() / (sessionResult?.TryoutSession.thresholdValue || 0);
+    console.log({ value });
+
+    return value * 100;
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -235,11 +244,13 @@ export function ReviewTab({
             <div className="text-2xl font-bold">
               {getTotalScore().toFixed(2)}
             </div>
-            <Progress
-              value={getTotalScore() / 10}
-              className="mt-2 h-1"
-              classNameThumb="bg-blue-500"
-            />
+            {getPercentageScore() && (
+              <Progress
+                value={getPercentageScore()}
+                className="mt-2 h-1"
+                classNameThumb="bg-blue-500"
+              />
+            )}
             <p className="mt-2 text-xs font-medium text-muted-foreground">
               Poin Keseluruhan
             </p>
@@ -462,7 +473,7 @@ const Navigation = ({
         <div className="w-full flex justify-end mt-8">
           {sessionResult?.TryoutSession.Document && (
             <Button
-              className="h-[unset] bg-main hover:bg-main-hover py-[.6rem] px-[1rem] rounded-[.6rem]"
+              className="h-[unset] bg-main hover:bg-main/85 py-[.6rem] px-[1rem] rounded-[.6rem]"
               onClick={() =>
                 router.push(
                   `/user/workspace/${

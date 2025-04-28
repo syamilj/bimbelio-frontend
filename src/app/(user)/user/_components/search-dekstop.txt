@@ -114,7 +114,7 @@ const SearchDeskstop = ({ setDocsSearchData }: any) => {
         {/* Tombol Submit */}
         <Button
           type="submit"
-          className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-main p-3 text-sm font-semibold text-white hover:bg-main-hover md:px-6"
+          className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-main p-3 text-sm font-semibold text-white  hover:bg-main/85 md:px-6"
         >
           <Search className="h-6 w-6" />
         </Button>

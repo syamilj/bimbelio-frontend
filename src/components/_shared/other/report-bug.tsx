@@ -158,7 +158,7 @@ const ReportBug = ({
                   </div>
                   <button
                     type="submit"
-                    className="h-full w-full rounded-[.8rem] bg-main px-[1rem] text-white duration-300 md:hover:bg-main-hover"
+                    className="h-full w-full rounded-[.8rem] bg-main px-[1rem] text-white duration-300 hover:bg-main/85"
                   >
                     Kirim laporan
                   </button>
@@ -222,7 +222,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
               </p>
             </div>
             <div
-              className="w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
+              className="w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main"
               onClick={() => {
                 document.getElementById(`${inputId}`)?.click();
               }}
