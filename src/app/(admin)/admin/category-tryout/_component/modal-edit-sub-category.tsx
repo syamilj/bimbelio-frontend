@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { SetStateAction, useLayoutEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { SetStateAction, useLayoutEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -20,26 +20,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import FormError from "@/components/ui/form-error";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import FormError from '@/components/ui/form-error';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { CreateSubCategorySchema } from "@/types/tryout";
+} from '@/components/ui/select';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response, responseError } from '@/lib/response';
 import {
   TryoutAnswer,
   TryoutQuestion,
   TryoutSubCategory,
-} from "@/types/database";
-import { Loader2 } from "lucide-react";
-import { CategoryWithSessions } from "./tab";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response, responseError } from "@/lib/response";
+} from '@/types/database';
+import { CreateSubCategorySchema } from '@/types/tryout';
+import { Loader2 } from 'lucide-react';
+import { CategoryWithSessions } from './tab';
 
 interface QuestionWithAnswers extends TryoutQuestion {
   answers: TryoutAnswer[];
@@ -67,7 +67,7 @@ const ModalEditSubCategory = ({
   refresh,
 }: Props) => {
   // const { isOpen, onClose, type, data } = useModal();
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // const isModalOpen = isOpen && type === "editCategory";
 
@@ -83,8 +83,8 @@ const ModalEditSubCategory = ({
 
   useLayoutEffect(() => {
     if (subCategory) {
-      form.setValue("name", subCategory.name);
-      form.setValue("categoryId", subCategory.categoryId || "");
+      form.setValue('name', subCategory.name);
+      form.setValue('categoryId', subCategory.categoryId || '');
     }
   }, [subCategory, form]);
   // const trpc = api.useUtils();
@@ -112,7 +112,7 @@ const ModalEditSubCategory = ({
       setIsLoading(true);
       const res = await axiosInstance.put(
         `/tryoutCategory/updateSubCategory`,
-        data
+        data,
       );
       await refresh();
       return response(res, true);
@@ -124,19 +124,19 @@ const ModalEditSubCategory = ({
   };
 
   function onSubmit(values: z.infer<typeof CreateSubCategorySchema>) {
-    setError("");
+    setError('');
 
     const id = subCategory?.id;
 
     if (!id) {
-      setError("Category id missing!");
+      setError('Category id missing!');
       return null;
     }
     updateCategoryMutate({ values, id });
   }
 
   const handleClose = () => {
-    setError("");
+    setError('');
     form.reset();
     setOpen(false);
   };
@@ -148,7 +148,10 @@ const ModalEditSubCategory = ({
   console.log({ subCategory });
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog
+      open={open}
+      onOpenChange={handleClose}
+    >
       <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Create Category</DialogTitle>
@@ -169,13 +172,19 @@ const ModalEditSubCategory = ({
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <FormControl>
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Pilih Category" />
                       </SelectTrigger>
                       <SelectContent>
                         {categories?.map((item, index) => (
-                          <SelectItem key={index} value={`${item.id}`}>
+                          <SelectItem
+                            key={index}
+                            value={`${item.id}`}
+                          >
                             {item.name}
                           </SelectItem>
                         ))}
@@ -193,7 +202,10 @@ const ModalEditSubCategory = ({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isLoading} />
+                    <Input
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

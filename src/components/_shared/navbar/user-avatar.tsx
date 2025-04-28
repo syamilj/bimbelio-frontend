@@ -1,18 +1,21 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/types/database";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { User } from '@/types/database';
 
-import { AvatarProps } from "@radix-ui/react-avatar";
-import { User as UserIcon } from "lucide-react";
+import { AvatarProps } from '@radix-ui/react-avatar';
+import { User as UserIcon } from 'lucide-react';
 
 interface UserAvatarProps extends AvatarProps {
-  user: Pick<User, "image" | "name">;
+  user: Pick<User, 'image' | 'name'>;
 }
 
 function UserAvatar({ user, ...props }: UserAvatarProps) {
   return (
     <Avatar {...props}>
       {user.image ? (
-        <AvatarImage alt="Picture" src={user.image} />
+        <AvatarImage
+          alt="Picture"
+          src={user.image}
+        />
       ) : (
         <AvatarFallback>
           <span className="sr-only">{user.name}</span>

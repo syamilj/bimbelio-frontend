@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { SetStateAction, useLayoutEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { SetStateAction, useLayoutEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -20,15 +20,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import FormError from "@/components/ui/form-error";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { CreateCategorySchema } from "@/types/tryout";
-import { TryoutAnswer, TryoutCategory, TryoutQuestion } from "@/types/database";
-import { Loader2 } from "lucide-react";
-import { response, responseError } from "@/lib/response";
-import axiosInstance from "@/lib/axios/axiosInstance";
+} from '@/components/ui/form';
+import FormError from '@/components/ui/form-error';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response, responseError } from '@/lib/response';
+import { TryoutAnswer, TryoutCategory, TryoutQuestion } from '@/types/database';
+import { CreateCategorySchema } from '@/types/tryout';
+import { Loader2 } from 'lucide-react';
 
 interface QuestionWithAnswers extends TryoutQuestion {
   answers: TryoutAnswer[];
@@ -49,7 +49,7 @@ interface Props {
 
 const ModalEditCategory = ({ open, setOpen, data, refresh }: Props) => {
   // const { isOpen, onClose, type, data } = useModal();
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // const isModalOpen = isOpen && type === "editCategory";
 
@@ -65,9 +65,9 @@ const ModalEditCategory = ({ open, setOpen, data, refresh }: Props) => {
 
   useLayoutEffect(() => {
     if (category) {
-      form.setValue("name", category.name);
-      form.setValue("description", category.description || "");
-      form.setValue("image", category.image || "");
+      form.setValue('name', category.name);
+      form.setValue('description', category.description || '');
+      form.setValue('image', category.image || '');
     }
   }, [category, form]);
   // const trpc = api.useUtils();
@@ -94,7 +94,7 @@ const ModalEditCategory = ({ open, setOpen, data, refresh }: Props) => {
       setIsLoading(true);
       const res = await axiosInstance.put(
         `/tryoutCategory/updateCategory`,
-        data
+        data,
       );
       await refresh();
       return response(res, true);
@@ -106,19 +106,19 @@ const ModalEditCategory = ({ open, setOpen, data, refresh }: Props) => {
   };
 
   function onSubmit(values: z.infer<typeof CreateCategorySchema>) {
-    setError("");
+    setError('');
 
     const id = category?.id;
 
     if (!id) {
-      setError("Category id missing!");
+      setError('Category id missing!');
       return null;
     }
     updateCategoryMutate({ values, id });
   }
 
   const handleClose = () => {
-    setError("");
+    setError('');
     form.reset();
     setOpen(false);
   };
@@ -128,7 +128,10 @@ const ModalEditCategory = ({ open, setOpen, data, refresh }: Props) => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog
+      open={open}
+      onOpenChange={handleClose}
+    >
       <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Create Category</DialogTitle>
@@ -149,7 +152,10 @@ const ModalEditCategory = ({ open, setOpen, data, refresh }: Props) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isLoading} />
+                    <Input
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,7 +168,10 @@ const ModalEditCategory = ({ open, setOpen, data, refresh }: Props) => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} disabled={isLoading} />
+                    <Textarea
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

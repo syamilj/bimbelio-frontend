@@ -1,14 +1,13 @@
-import ProviderApp from "@/components/provider/provider-app";
-import SessionProviderAuth from "@/components/provider/session-provider-auth";
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
-import Image from "next/image";
-import Script from "next/script";
-import NextTopLoader from "nextjs-toploader";
-import "../styles/globals.css";
-import ProviderWebsiteCategory from "@/components/provider/provider-website-category";
-import ProviderLimitation from "@/components/provider/provider-limitation";
+import ProviderApp from '@/components/provider/provider-app';
+import ProviderLimitation from '@/components/provider/provider-limitation';
+import ProviderWebsiteCategory from '@/components/provider/provider-website-category';
+import SessionProviderAuth from '@/components/provider/session-provider-auth';
+import { siteConfig } from '@/config/site';
+import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import Script from 'next/script';
+import '../styles/globals.css';
 
 export const metadata: Metadata = {
   title: {
@@ -18,20 +17,20 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
   keywords: [
-    "Bimbelio",
-    "Bimbel AI",
-    "SNBT",
-    "UTBK",
-    "Bimbel SNBT",
-    "Bimbel UTBK",
-    "Ujian Mandiri",
-    "Bimbel Ujian Mandiri",
+    'Bimbelio',
+    'Bimbel AI',
+    'SNBT',
+    'UTBK',
+    'Bimbel SNBT',
+    'Bimbel UTBK',
+    'Ujian Mandiri',
+    'Bimbel Ujian Mandiri',
   ],
-  authors: [{ name: "Bimbelio", url: "https://www.bimbelio.com" }],
-  creator: "Bimbelio",
+  authors: [{ name: 'Bimbelio', url: 'https://www.bimbelio.com' }],
+  creator: 'Bimbelio',
   openGraph: {
-    type: "website",
-    locale: "id_ID",
+    type: 'website',
+    locale: 'id_ID',
     url: siteConfig.url,
     siteName: siteConfig.name,
     title: siteConfig.name,
@@ -49,13 +48,13 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    card: "summary_large_image",
-    creator: "@Bimbelio",
+    card: 'summary_large_image',
+    creator: '@Bimbelio',
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/logo.png",
-    apple: "/apple-touch-icon.png",
+    icon: '/favicon.ico',
+    shortcut: '/logo.png',
+    apple: '/apple-touch-icon.png',
   },
   // manifest: `$(siteConfig.url)/manifest.json`,
 };
@@ -72,11 +71,14 @@ declare global {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html
+      lang="id"
+      suppressHydrationWarning
+    >
       <head>
         <Script
           async
-          src={"https://www.googletagmanager.com/gtag/js?id=G-PVEJ5PSRCH"}
+          src={'https://www.googletagmanager.com/gtag/js?id=G-PVEJ5PSRCH'}
         />
         <Script
           id="gtag-init"
@@ -136,7 +138,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             alt="Pixel Bimbelio"
             height="1"
             width="1"
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             src="https://www.facebook.com/tr?id=367763043065117&ev=PageView&noscript=1"
           />
         </noscript>
@@ -168,7 +170,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           }}
         />
       </head>
-      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
+      <body className={cn('min-h-screen bg-background font-sans antialiased')}>
         <SessionProviderAuth>
           <ProviderWebsiteCategory>
             <ProviderLimitation>

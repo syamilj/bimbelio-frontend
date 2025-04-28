@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { LeaderboardContext } from "@/app/(user)/user/leaderboard/_components/provider-leaderboard";
-import { RankingStats } from "@/app/(user)/user/leaderboard/_components/ranking-stats";
-import { RankingTable } from "@/app/(user)/user/leaderboard/_components/ranking-table";
-import { TopWinners } from "@/app/(user)/user/leaderboard/_components/top-winners";
-import { TryOutSelector } from "@/app/(user)/user/leaderboard/_components/tryout-selector";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { getGeneral } from "@/lib/fetch-helper";
-import { useEffect, useState } from "react";
+import { LeaderboardContext } from '@/app/(user)/user/leaderboard/_components/provider-leaderboard';
+import { RankingStats } from '@/app/(user)/user/leaderboard/_components/ranking-stats';
+import { RankingTable } from '@/app/(user)/user/leaderboard/_components/ranking-table';
+import { TopWinners } from '@/app/(user)/user/leaderboard/_components/top-winners';
+import { TryOutSelector } from '@/app/(user)/user/leaderboard/_components/tryout-selector';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { getGeneral } from '@/lib/fetch-helper';
+import { useEffect, useState } from 'react';
 
 export interface RankingTryoutProps {
   topScore: number;
@@ -59,7 +59,7 @@ export interface RankingTryoutProps {
 
 export default function LeaderboardClient() {
   const { data: session } = useSession();
-  const [selectedTryOut, setSelectedTryOut] = useState<string>("");
+  const [selectedTryOut, setSelectedTryOut] = useState<string>('');
 
   // const { data: RankingTryout, isLoading: RankingTryoutIsLoading } =
   //   api.leaderboard.getTryoutRankingResult.useQuery(
@@ -81,7 +81,7 @@ export default function LeaderboardClient() {
       {
         setData: setRankingTryout,
         setLoading: setRankingTryoutIsLoading,
-      }
+      },
     );
   }, [selectedTryOut, session]);
 
@@ -94,7 +94,10 @@ export default function LeaderboardClient() {
         RankingTryoutIsLoading,
       }}
     >
-      <div id="leaderboard" className="mx-auto px-4 py-8 mt-[-3rem]">
+      <div
+        id="leaderboard"
+        className="mx-auto px-4 py-8 mt-[-3rem]"
+      >
         <div className="mb-8 flex flex-col gap-8 md:flex-row">
           <div className="w-full md:w-1/3">
             <TryOutSelector />

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { PlusCircle, Pencil, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DialogAddCategory } from "./_components/dialog-add-category";
-import { DialogAddSubCategory } from "./_components/dialog-add-sub-category";
-import { DialogDelete } from "./_components/dialog-delete";
-import { DialogEditCategory } from "./_components/dialog-edit-category";
-import { DialogEditSubCategory } from "./_components/dialog-edit-sub-category";
-import Provider, { useAdminWebCategory } from "./provider";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
+import { DialogAddCategory } from './_components/dialog-add-category';
+import { DialogAddSubCategory } from './_components/dialog-add-sub-category';
+import { DialogDelete } from './_components/dialog-delete';
+import { DialogEditCategory } from './_components/dialog-edit-category';
+import { DialogEditSubCategory } from './_components/dialog-edit-sub-category';
+import Provider, { useAdminWebCategory } from './provider';
 
 export default function WebsiteCategoriesPage() {
   return (
@@ -107,7 +107,10 @@ const Content = () => {
                   <td className="p-3 border-b">
                     <div className="flex gap-2">
                       <DialogEditCategory category={category}>
-                        <Button variant="ghost" size="icon">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                        >
                           <Pencil className="h-4 w-4 text-gray-500" />
                         </Button>
                       </DialogEditCategory>
@@ -118,7 +121,10 @@ const Content = () => {
                         description="Are you sure you want to delete this category? This will also delete all subcategories associated with it."
                         type="category"
                       >
-                        <Button variant="ghost" size="icon">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                        >
                           <Trash2 className="h-4 w-4 text-red-500" />
                         </Button>
                       </DialogDelete>
@@ -157,7 +163,7 @@ const Content = () => {
             <tbody>
               {subCategories.map((subCategory, index) => {
                 const parentCategory = getCategoryById(
-                  subCategory.website_category_id
+                  subCategory.website_category_id,
                 );
                 return (
                   <tr key={subCategory.id}>
@@ -198,7 +204,10 @@ const Content = () => {
                           categories={categories}
                           subCategory={subCategory}
                         >
-                          <Button variant="ghost" size="icon">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                          >
                             <Pencil className="h-4 w-4 text-gray-500" />
                           </Button>
                         </DialogEditSubCategory>
@@ -209,7 +218,10 @@ const Content = () => {
                           description="Are you sure you want to delete this subcategory?"
                           type="sub-category"
                         >
-                          <Button variant="ghost" size="icon">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                          >
                             <Trash2 className="h-4 w-4 text-red-500" />
                           </Button>
                         </DialogDelete>

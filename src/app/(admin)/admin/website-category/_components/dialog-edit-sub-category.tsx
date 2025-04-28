@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import type React from "react";
+import type React from 'react';
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { ColorPicker } from '@/components/ui/color-picker';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { ColorPicker } from "@/components/ui/color-picker";
-import { useAdminWebCategory } from "../provider";
-import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
-import { mutateGeneral } from "@/lib/fetch-helper";
-import { Loader2 } from "lucide-react";
+} from '@/components/ui/select';
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
+import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useAdminWebCategory } from '../provider';
 
 interface Props {
   children: React.ReactNode;
@@ -42,10 +42,10 @@ export function DialogEditSubCategory({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [name, setName] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [mainColor, setMainColor] = useState("#0062FA");
-  const [secondaryColor, setSecondaryColor] = useState("#0091FF");
+  const [name, setName] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [mainColor, setMainColor] = useState('#0062FA');
+  const [secondaryColor, setSecondaryColor] = useState('#0091FF');
 
   useEffect(() => {
     if (subCategory) {
@@ -68,18 +68,18 @@ export function DialogEditSubCategory({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (subCategory) {
-      await mutateGeneral("/website-category/editSubCategory", {
+      await mutateGeneral('/website-category/editSubCategory', {
         payload: {
           id: subCategory.id,
           name,
           main_color: mainColor,
           secondary_color: secondaryColor,
         },
-        type: "put",
+        type: 'put',
         onSuccess: async () => {
           setOpen(false);
-          setMainColor("#FFFFFF");
-          setSecondaryColor("#FFFFFF");
+          setMainColor('#FFFFFF');
+          setSecondaryColor('#FFFFFF');
           await getData();
         },
         setLoading: setIsLoading,
@@ -88,13 +88,19 @@ export function DialogEditSubCategory({
   };
 
   return (
-    <Dialog open={isLoading ? true : open} onOpenChange={setOpen}>
+    <Dialog
+      open={isLoading ? true : open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Sub Web Category</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid gap-4 py-4"
+        >
           <div className="grid gap-2">
             <Label htmlFor="sub-name">Name</Label>
             <Input
@@ -117,7 +123,10 @@ export function DialogEditSubCategory({
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
+                  <SelectItem
+                    key={category.id}
+                    value={category.id}
+                  >
                     {category.name}
                   </SelectItem>
                 ))}
@@ -126,17 +135,27 @@ export function DialogEditSubCategory({
           </div>
           <div className="grid gap-2">
             <Label htmlFor="sub-main-color">Main Color</Label>
-            <ColorPicker value={mainColor} onChange={setMainColor} />
+            <ColorPicker
+              value={mainColor}
+              onChange={setMainColor}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="sub-secondary-color">Secondary Color</Label>
-            <ColorPicker value={secondaryColor} onChange={setSecondaryColor} />
+            <ColorPicker
+              value={secondaryColor}
+              onChange={setSecondaryColor}
+            />
           </div>
-          <Button type="submit" disabled={isLoading} className="mt-2">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="mt-2"
+          >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              "Save Changes"
+              'Save Changes'
             )}
           </Button>
         </form>

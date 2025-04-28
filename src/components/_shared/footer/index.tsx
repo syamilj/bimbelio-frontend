@@ -1,8 +1,6 @@
 // index.tsx
-import LOGO from "@/_assest/logomark.png";
-import Logo from "@/components/ui/logo";
-import { IconOpenAI } from "@/styles/icon";
-import Image from "next/image";
+import Logo from '@/components/ui/logo';
+import { IconOpenAI } from '@/styles/icon';
 
 export default function Footer() {
   // const ScrollOffsetLink = ({ href, children }: any) => {

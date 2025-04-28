@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { PaymentTryout } from "@/components/_shared/payment/payment-tryout";
-import { useUserLimitation } from "@/components/provider/provider-limitation";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { PaymentTryout } from '@/components/_shared/payment/payment-tryout';
+import { useUserLimitation } from '@/components/provider/provider-limitation';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -12,22 +12,22 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Spinner } from "@/components/ui/spinner";
-import { toaster } from "@/components/ui/toaster";
+} from '@/components/ui/card';
+import { Spinner } from '@/components/ui/spinner';
+import { toaster } from '@/components/ui/toaster';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
+} from '@/components/ui/tooltip';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import {
   cn,
   getDateStringShort,
   getDateTryoutString,
   getHours,
-} from "@/lib/utils";
+} from '@/lib/utils';
 import {
   IconCrown,
   IconQuiz,
@@ -35,18 +35,18 @@ import {
   IconTimer2,
   IconUserAdmin,
   IconX,
-} from "@/styles/icon";
-import { hexToRgba } from "@/styles/main-styles";
+} from '@/styles/icon';
+import { hexToRgba } from '@/styles/main-styles';
 import {
   Pricing,
   TryoutRegistration,
   TryoutSessionParticipant,
-} from "@/types/database";
-import { Calendar, Check, Loader2 } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import ButtonPayment from "../../../_components/button-payment";
+} from '@/types/database';
+import { Calendar, Check, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import ButtonPayment from '../../../_components/button-payment';
 
 interface CardTryout {
   id: string;
@@ -108,17 +108,12 @@ interface card {
   refresh?: () => any;
 }
 
-export default function CardTryOut({
-  data,
-  isPrivate,
-  userTryOutId,
-  refresh,
-}: card) {
+export default function CardTryOut({ data, isPrivate, refresh }: card) {
   const pathname = usePathname();
-  const isTesting = pathname?.toLowerCase().includes("testing") || false;
+  const isTesting = pathname?.toLowerCase().includes('testing') || false;
 
   const searchParams = useSearchParams();
-  const id = searchParams?.get("id");
+  const id = searchParams?.get('id');
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -133,24 +128,24 @@ export default function CardTryOut({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (showDetail) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "auto";
+    if (showDetail) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'auto';
   }, [showDetail]);
 
   const getTimer = (date: any, item: CardTryoutProps): any => {
     const targetDate = new Date(date);
     const now = new Date();
     if (isNaN(targetDate.getTime()) || isNaN(now.getTime())) {
-      return "Tanggal tidak valid";
+      return 'Tanggal tidak valid';
     }
 
     const difference = targetDate.getTime() - now.getTime();
 
     if (difference <= 0) {
       if (item.isDone) {
-        return { start: false, value: "Selesai" };
+        return { start: false, value: 'Selesai' };
       } else {
-        return { start: true, value: "Mulai Tryout" };
+        return { start: true, value: 'Mulai Tryout' };
       }
     }
 
@@ -161,13 +156,13 @@ export default function CardTryOut({
 
     if (days > 7) {
       const options: Intl.DateTimeFormatOptions = {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
       };
       return {
         start: false,
-        value: targetDate.toLocaleDateString("id-ID", options),
+        value: targetDate.toLocaleDateString('id-ID', options),
       };
     } else if (days >= 1) {
       return { start: false, value: `Mulai dalam ${days} hari` };
@@ -183,9 +178,9 @@ export default function CardTryOut({
     userId: string;
     isPremium?: boolean;
   }) => {
-    await mutateGeneral("/tryout/registerTryOut", {
+    await mutateGeneral('/tryout/registerTryOut', {
       payload,
-      type: "post",
+      type: 'post',
       onSuccess: refresh,
     });
   };
@@ -196,7 +191,7 @@ export default function CardTryOut({
       if (showDetail) {
         await registerTryOut({
           tryoutId: showDetail.id,
-          userId: session?.user.id || "",
+          userId: session?.user.id || '',
           isPremium,
         });
         setStep(1);
@@ -211,29 +206,29 @@ export default function CardTryOut({
     }
   };
 
-  console.log("data", data);
+  console.log('data', data);
 
   const getBadgeValue = (item: CardTryoutProps) => {
     let data = null;
     if (item.isDone) {
       data = {
-        className: "bg-main text-white",
-        title: "Sudah Selesai",
+        className: 'bg-main text-white',
+        title: 'Sudah Selesai',
       };
     } else if (item.isNotStarted && item.isRegistered) {
       data = {
-        className: "bg-green-600 text-white",
-        title: "Terdaftar",
+        className: 'bg-green-600 text-white',
+        title: 'Terdaftar',
       };
     } else if (item.isNotStarted && !item.isRegistered) {
       data = {
-        className: "bg-main-yellow text-black",
-        title: "Belum Daftar",
+        className: 'bg-main-yellow text-black',
+        title: 'Belum Daftar',
       };
     } else if (item.isActive) {
       data = {
-        className: "bg-main-red text-white",
-        title: "Sedang Berlangsung",
+        className: 'bg-main-red text-white',
+        title: 'Sedang Berlangsung',
       };
     }
 
@@ -242,23 +237,23 @@ export default function CardTryOut({
 
   const getButtonValue = (item: CardTryoutProps) => {
     let data = {
-      className: "",
-      title: "",
+      className: '',
+      title: '',
     };
     if (item.isDone) {
       if (item.isRegistered && item.isJoin) {
-        data.title = "Lihat Hasil & Pembahasan";
+        data.title = 'Lihat Hasil & Pembahasan';
       } else {
-        data.title = "Selesai";
+        data.title = 'Selesai';
       }
     } else if (item.isRegistered) {
-      data.title = "Mulai Tryout";
+      data.title = 'Mulai Tryout';
       if (!item.isActive) {
         data.className =
-          "bg-gray-400 md:hover:bg-gray-400 cursor-default text-white";
+          'bg-gray-400 md:hover:bg-gray-400 cursor-default text-white';
       }
     } else if (!item.isRegistered) {
-      data.title = "Daftar Sekarang";
+      data.title = 'Daftar Sekarang';
     }
 
     return data;
@@ -275,19 +270,25 @@ export default function CardTryOut({
     <>
       {data?.length > 0 &&
         data?.map((item, i: number) => (
-          <Card key={i} className="relative overflow-hidden">
+          <Card
+            key={i}
+            className="relative overflow-hidden"
+          >
             <div
               className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20"
               style={{
                 color: hexToRgba(item.WebsiteSubCategory?.main_color, 0.2),
               }}
             >
-              <IconCrown w={180} className="rotate-[-20deg]" />
+              <IconCrown
+                w={180}
+                className="rotate-[-20deg]"
+              />
             </div>
             <Badge
               className={cn(
-                "absolute right-4 top-4 bg-main text-white",
-                getBadgeValue(item)?.className
+                'absolute right-4 top-4 bg-main text-white',
+                getBadgeValue(item)?.className,
               )}
             >
               {getBadgeValue(item)?.title}
@@ -316,20 +317,23 @@ export default function CardTryOut({
                       groups[categoryName].push(session);
                       return groups;
                     },
-                    {} as { [key: string]: (typeof item.TryoutSession)[0][] }
+                    {} as { [key: string]: (typeof item.TryoutSession)[0][] },
                   );
 
                   // Mengurutkan kategori sesuai dengan urutan yang diinginkan
                   const orderedCategories = [
-                    "Tes Potensi Skolastik (TPS)",
-                    "Tes Literasi",
-                    "Tes Penalaran Matematika",
+                    'Tes Potensi Skolastik (TPS)',
+                    'Tes Literasi',
+                    'Tes Penalaran Matematika',
                   ];
 
                   return orderedCategories
                     .filter((category) => groupedSessions[category]) // Hanya kategori yang ada
                     .map((categoryName) => (
-                      <div key={categoryName} className="mb-2">
+                      <div
+                        key={categoryName}
+                        className="mb-2"
+                      >
                         {/* Judul Kategori */}
                         <div className="flex items-center mb-2">
                           <h3 className="text-lg font-semibold">
@@ -359,18 +363,24 @@ export default function CardTryOut({
                 {/* Akhir Modifikasi di Sini */}
                 <div className="flex items-center gap-2">
                   {/* <BookOpen className="h-4 w-4 text-main-gray-text" /> */}
-                  <IconQuiz w={16} className="text-black/80" />
+                  <IconQuiz
+                    w={16}
+                    className="text-black/80"
+                  />
                   <span className="text-sm font-semibold">
                     {item.TryoutSession.reduce(
                       (acc, session) => acc + session._count.TryoutQuestion,
-                      0
-                    )}{" "}
+                      0,
+                    )}{' '}
                     Soal
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   {/* <Users className="h-4 w-4 text-main-gray-text" /> */}
-                  <IconUserAdmin w={16} className="text-black/80" />
+                  <IconUserAdmin
+                    w={16}
+                    className="text-black/80"
+                  />
                   <span className="text-sm font-semibold">
                     {item._count.TryoutRegistration} Pendaftar
                   </span>
@@ -379,17 +389,20 @@ export default function CardTryOut({
                   <Calendar className="h-4 w-4 text-main-gray-text" />
                   <span className="text-sm font-semibold">
                     {`${getHours(item.startDate)}, ${getDateStringShort(
-                      item.startDate
-                    )}`}{" "}
-                    -{" "}
+                      item.startDate,
+                    )}`}{' '}
+                    -{' '}
                     {`${getHours(item.endDate)}, ${getDateStringShort(
-                      item.endDate
+                      item.endDate,
                     )}`}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   {/* <Timer className="h-4 w-4 text-main-gray-text" /> */}
-                  <IconTimer2 w={16} className="text-black/80" />
+                  <IconTimer2
+                    w={16}
+                    className="text-black/80"
+                  />
                   <span className="text-sm font-semibold">
                     {getTimer(item.startDate, item)?.value}
                   </span>
@@ -402,8 +415,8 @@ export default function CardTryOut({
                   <TooltipTrigger asChild>
                     <Button
                       className={cn(
-                        "w-full bg-gradient text-white hover:opacity-85",
-                        getButtonValue(item)?.className
+                        'w-full bg-gradient text-white hover:opacity-85',
+                        getButtonValue(item)?.className,
                       )}
                       style={{
                         backgroundImage: `linear-gradient(145deg, ${item.WebsiteSubCategory?.secondary_color}, ${item.WebsiteSubCategory?.main_color})`,
@@ -411,8 +424,8 @@ export default function CardTryOut({
                       onClick={() => {
                         if (item.WebsiteSubCategory) {
                           localStorage.setItem(
-                            "website_sub_category_id",
-                            item.WebsiteSubCategory.id
+                            'website_sub_category_id',
+                            item.WebsiteSubCategory.id,
                           );
                           // window.location.href = `${window.location.}${window.location.pathname}?id=${item.id}`;
                           window.location.href = `${window.location.origin}${window.location.pathname}?id=${item.id}`;
@@ -425,9 +438,9 @@ export default function CardTryOut({
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    {item.status === "ongoing"
-                      ? "Lanjutkan tryout SNBT/UTBK yang sedang berlangsung."
-                      : "Daftar untuk mengikuti tryout SNBT/UTBK ini."}
+                    {item.status === 'ongoing'
+                      ? 'Lanjutkan tryout SNBT/UTBK yang sedang berlangsung.'
+                      : 'Daftar untuk mengikuti tryout SNBT/UTBK ini.'}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -445,8 +458,8 @@ export default function CardTryOut({
           />
           <div
             className={cn(
-              "relative flex w-[calc(100%-2rem)] max-w-[500px] flex-col gap-[1rem] rounded-[1rem] bg-white p-[2rem] shadow-cardSoft md:w-full",
-              step === 3 && "max-w-[400px]"
+              'relative flex w-[calc(100%-2rem)] max-w-[500px] flex-col gap-[1rem] rounded-[1rem] bg-white p-[2rem] shadow-cardSoft md:w-full',
+              step === 3 && 'max-w-[400px]',
             )}
           >
             {step === 1 && (
@@ -466,17 +479,17 @@ export default function CardTryOut({
                       Pelaksanaan
                     </p>
                     <p className="col-span-3">
-                      : {getDateTryoutString(showDetail.startDate)},{" "}
-                      {getHours(showDetail.startDate)} WIB s/d <br />{" "}
-                      <span className="text-transparent">:</span>{" "}
-                      {getDateTryoutString(showDetail.endDate)},{" "}
+                      : {getDateTryoutString(showDetail.startDate)},{' '}
+                      {getHours(showDetail.startDate)} WIB s/d <br />{' '}
+                      <span className="text-transparent">:</span>{' '}
+                      {getDateTryoutString(showDetail.endDate)},{' '}
                       {getHours(showDetail.endDate)} WIB
                     </p>
                     <p className="col-span-2 text-main-gray-text">
                       Periode Penilaian
                     </p>
                     <p className="col-span-3">
-                      : {getDateTryoutString(showDetail.resultDate)},{" "}
+                      : {getDateTryoutString(showDetail.resultDate)},{' '}
                       {getHours(showDetail.resultDate)} WIB
                     </p>
                   </div>
@@ -540,7 +553,7 @@ export default function CardTryOut({
                 onClick={() => {
                   if (isTesting) {
                     router.push(
-                      `/admin/tryout/testing/try-out/${showDetail.id}`
+                      `/admin/tryout/testing/try-out/${showDetail.id}`,
                     );
                   } else if (!isPrivate)
                     router.push(`/user/try-out/${showDetail.id}`);
@@ -580,8 +593,8 @@ const RegisterTryout = ({
   const [showPayment, setShowPayment] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [selectTypeRegistration, setSelectTypeRegistration] = useState<
-    "free" | "premium"
-  >("free");
+    'free' | 'premium'
+  >('free');
 
   const [click, setClick] = useState<{
     instagram: boolean;
@@ -607,7 +620,7 @@ const RegisterTryout = ({
   }>({
     instagram: false,
     whatsapp: false,
-    screenshot: "",
+    screenshot: '',
     tiktok: false,
   });
 
@@ -659,13 +672,13 @@ const RegisterTryout = ({
         <div className="mt-[1rem] flex w-full items-center justify-center">
           <div
             className={cn(
-              "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80",
-              isLoading && "bg-main/80"
+              'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
+              isLoading && 'bg-main/80',
             )}
             // onClick={handleRegistration}
             onClick={async () => {
               console.log({ userLimitation });
-              if (session?.user.role !== "USER") {
+              if (session?.user.role !== 'USER') {
                 onClick();
               } else if (
                 userLimitation &&
@@ -680,9 +693,9 @@ const RegisterTryout = ({
                 }
               } else {
                 toaster({
-                  title: "Upss",
-                  condition: "warning",
-                  description: "Coin tryoutmu tidak cukup, coba opsi lain",
+                  title: 'Upss',
+                  condition: 'warning',
+                  description: 'Coin tryoutmu tidak cukup, coba opsi lain',
                   duration: 3000,
                 });
                 setStep(2);
@@ -711,12 +724,12 @@ const RegisterTryout = ({
             text="Top up"
           />
           <Card
-            onClick={() => setSelectTypeRegistration("free")}
+            onClick={() => setSelectTypeRegistration('free')}
             className={cn(
-              "cursor-pointer transition-all hover:shadow-md",
-              selectTypeRegistration === "free"
-                ? "border-2 border-main"
-                : "border-2 hover:border-main/70"
+              'cursor-pointer transition-all hover:shadow-md',
+              selectTypeRegistration === 'free'
+                ? 'border-2 border-main'
+                : 'border-2 hover:border-main/70',
             )}
           >
             <CardHeader>
@@ -739,12 +752,12 @@ const RegisterTryout = ({
             </CardContent>
           </Card>
           <Card
-            onClick={() => setSelectTypeRegistration("premium")}
+            onClick={() => setSelectTypeRegistration('premium')}
             className={cn(
-              "cursor-pointer transition-all hover:shadow-md",
-              selectTypeRegistration === "premium"
-                ? "border-2 border-main"
-                : "border-2 hover:border-main/70"
+              'cursor-pointer transition-all hover:shadow-md',
+              selectTypeRegistration === 'premium'
+                ? 'border-2 border-main'
+                : 'border-2 hover:border-main/70',
             )}
           >
             <CardHeader>
@@ -756,9 +769,9 @@ const RegisterTryout = ({
                   </div>
                 ) : (
                   <span className="text-sm font-normal text-muted-foreground">
-                    Rp{" "}
-                    {pricing.price.toLocaleString("id-ID", {
-                      style: "decimal",
+                    Rp{' '}
+                    {pricing.price.toLocaleString('id-ID', {
+                      style: 'decimal',
                     })}
                   </span>
                 )}
@@ -780,12 +793,12 @@ const RegisterTryout = ({
         <div className="mt-[1rem] flex w-full items-center justify-center">
           <div
             className={cn(
-              "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80",
-              isLoading && "bg-main/80"
+              'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
+              isLoading && 'bg-main/80',
             )}
             onClick={() => {
               setStep(3);
-              if (selectTypeRegistration === "premium") setShowPayment(true);
+              if (selectTypeRegistration === 'premium') setShowPayment(true);
             }}
           >
             Selanjutnya
@@ -793,7 +806,7 @@ const RegisterTryout = ({
         </div>
       </div>
     );
-  else if (step === 3 && selectTypeRegistration === "free")
+  else if (step === 3 && selectTypeRegistration === 'free')
     return (
       <>
         <div
@@ -840,8 +853,8 @@ const RegisterTryout = ({
             >
               <Button
                 className={cn(
-                  "w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover",
-                  click.instagram && "cursor-default bg-main md:hover:bg-main"
+                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                  click.instagram && 'cursor-default bg-main md:hover:bg-main',
                 )}
                 onClick={() => {
                   setClick((prev) => ({ ...prev, instagramLoad: true }));
@@ -855,7 +868,7 @@ const RegisterTryout = ({
                     {click.instagramLoad ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      "Follow"
+                      'Follow'
                     )}
                   </>
                 ) : (
@@ -900,8 +913,8 @@ const RegisterTryout = ({
             >
               <Button
                 className={cn(
-                  "w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover",
-                  click.tiktok && "cursor-default bg-main md:hover:bg-main"
+                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                  click.tiktok && 'cursor-default bg-main md:hover:bg-main',
                 )}
                 onClick={() => {
                   setClick((prev) => ({ ...prev, tiktokLoad: true }));
@@ -915,7 +928,7 @@ const RegisterTryout = ({
                     {click.tiktokLoad ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      "Follow"
+                      'Follow'
                     )}
                   </>
                 ) : (
@@ -961,8 +974,8 @@ const RegisterTryout = ({
             >
               <Button
                 className={cn(
-                  "w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover",
-                  click.whatsapp && "cursor-default bg-main md:hover:bg-main"
+                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                  click.whatsapp && 'cursor-default bg-main md:hover:bg-main',
                 )}
                 onClick={() => {
                   setClick((prev) => ({ ...prev, whatsappLoad: true }));
@@ -976,7 +989,7 @@ const RegisterTryout = ({
                     {click.whatsappLoad ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      "Follow"
+                      'Follow'
                     )}
                   </>
                 ) : (
@@ -1005,17 +1018,17 @@ const RegisterTryout = ({
                   onChange={(e) => {
                     const value = e.target.files ? e.target.files[0] : null;
                     console.log(value);
-                    if (value && value.type.includes("image")) {
+                    if (value && value.type.includes('image')) {
                       setValidate((prev) => ({
                         ...prev,
                         screenshot: value.name,
                       }));
                     }
-                    if (value && !value.type.includes("image"))
+                    if (value && !value.type.includes('image'))
                       toaster({
-                        title: "Upss",
-                        condition: "warning",
-                        description: "File yang diupload tidak sesuai!!",
+                        title: 'Upss',
+                        condition: 'warning',
+                        description: 'File yang diupload tidak sesuai!!',
                         duration: 3000,
                       });
                   }}
@@ -1029,21 +1042,21 @@ const RegisterTryout = ({
                 <p className="text-[.8rem] text-main-gray-text">
                   {validate.screenshot.length > 0
                     ? `${validate.screenshot.slice(0, 23)}...`
-                    : "Upload bukti share postingan"}
+                    : 'Upload bukti share postingan'}
                 </p>
               </div>
             </div>
             <Button
               className={cn(
-                "w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover",
+                'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
                 validate.screenshot.length > 0 &&
-                  "cursor-default bg-main md:hover:bg-main"
+                  'cursor-default bg-main md:hover:bg-main',
               )}
               onClick={() => {
-                document.getElementById("bukti-share")?.click();
+                document.getElementById('bukti-share')?.click();
               }}
             >
-              {validate.screenshot.length > 0 ? <Check /> : "Upload"}
+              {validate.screenshot.length > 0 ? <Check /> : 'Upload'}
             </Button>
           </div>
         </div>
@@ -1054,8 +1067,8 @@ const RegisterTryout = ({
           <div className="mt-[1rem] flex w-full items-center justify-center">
             <div
               className={cn(
-                "flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80",
-                isLoading && "bg-main/80"
+                'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
+                isLoading && 'bg-main/80',
               )}
               onClick={handleRegistration}
             >
@@ -1072,7 +1085,7 @@ const RegisterTryout = ({
         </div>
       </>
     );
-  else if (step === 3 && selectTypeRegistration === "premium")
+  else if (step === 3 && selectTypeRegistration === 'premium')
     return (
       <PaymentTryout
         tryoutData={showDetail}

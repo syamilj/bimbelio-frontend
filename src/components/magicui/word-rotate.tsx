@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
-import { cn } from "@/lib/utils";
-import { useWebsiteSubCategory } from "../provider/provider-website-category";
+import { cn } from '@/lib/utils';
+import { useWebsiteSubCategory } from '../provider/provider-website-category';
 
 interface WordRotateProps {
   words: string[];
   duration?: number;
-  framerProps?: HTMLMotionProps<"h1">;
+  framerProps?: HTMLMotionProps<'h1'>;
   className?: string;
 }
 

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { cn } from "@/lib/utils";
-import { useWebsiteSubCategory } from "../provider/provider-website-category";
+import { cn } from '@/lib/utils';
+import React from 'react';
+import { useWebsiteSubCategory } from '../provider/provider-website-category';
 
 interface PulsatingButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,21 +12,21 @@ interface PulsatingButtonProps
 
 export default function PulsatingButton({
   children,
-  pulseColor = "#0091FFe0",
-  duration = "1.5s",
+  pulseColor = '#0091FFe0',
+  duration = '1.5s',
   ...props
 }: PulsatingButtonProps) {
-  const { websiteSubCategory } = useWebsiteSubCategory();
+  const {} = useWebsiteSubCategory();
   return (
     <>
       <button
         className={cn(
-          "bg-gradient md:hover:opacity-80 relative flex cursor-pointer items-center justify-center rounded-[2rem] px-[1.3rem] py-[.8rem] text-center text-white"
+          'bg-gradient md:hover:opacity-80 relative flex cursor-pointer items-center justify-center rounded-[2rem] px-[1.3rem] py-[.8rem] text-center text-white',
         )}
         style={
           {
-            "--pulse-color": pulseColor,
-            "--duration": duration,
+            '--pulse-color': pulseColor,
+            '--duration': duration,
           } as React.CSSProperties
         }
         {...props}

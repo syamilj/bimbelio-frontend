@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { EditTryoutContext } from "@/app/(admin)/admin/tryout/_component/provider-edit-tryout";
-import SessionOption from "@/app/(admin)/admin/tryout/edit/[tryoutId]/_components/session-option";
-import TryoutOption from "@/app/(admin)/admin/tryout/edit/[tryoutId]/_components/tryout-option";
-import { useAppContext } from "@/components/provider/provider-app";
-import LoadingPageWithText from "@/components/ui/spinner";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response, responseError } from "@/lib/response";
-import { cn, getDateHourStr } from "@/lib/utils";
-import { TryoutSubCategory } from "@/types/database";
-import "katex/dist/katex.min.css";
-import { Loader2 } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { EditTryoutContext } from '@/app/(admin)/admin/tryout/_component/provider-edit-tryout';
+import SessionOption from '@/app/(admin)/admin/tryout/edit/[tryoutId]/_components/session-option';
+import TryoutOption from '@/app/(admin)/admin/tryout/edit/[tryoutId]/_components/tryout-option';
+import { useAppContext } from '@/components/provider/provider-app';
+import LoadingPageWithText from '@/components/ui/spinner';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response, responseError } from '@/lib/response';
+import { cn, getDateHourStr } from '@/lib/utils';
+import { TryoutSubCategory } from '@/types/database';
+import 'katex/dist/katex.min.css';
+import { Loader2 } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export interface TryoutProps {
   id?: string;
   title?: string;
   restTime?: number;
-  status?: "PUBLIC" | "PRIVATE" | "DRAFT";
+  status?: 'PUBLIC' | 'PRIVATE' | 'DRAFT';
   startDate?: string;
   endDate?: string;
   image?: string | null;
@@ -72,10 +72,10 @@ export interface Category {
 
 const NewTryOut = () => {
   const params = useParams();
-  console.log("params", params);
+  console.log('params', params);
   const tryoutId = Array.isArray(params?.tryoutId)
     ? params.tryoutId[0]
-    : params?.tryoutId ?? "";
+    : (params?.tryoutId ?? '');
   const [showDetailTryout, setShowDetailTryout] = useState<boolean>(true);
 
   const [currentIndexEdit, setCurrentIndexEdit] = useState<number | null>(null);
@@ -84,19 +84,19 @@ const NewTryOut = () => {
   const [tryout, setTryout] = useState<TryoutProps | null>(null);
   const [sessions, setSessions] = useState<SessionProps[]>([]);
 
-  const [startDate, setStartDate] = useState<string>("");
-  const [startDateTime, setStartDateTime] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>('');
+  const [startDateTime, setStartDateTime] = useState<string>('');
 
-  const [endDate, setEndDate] = useState<string>("");
-  const [endDateTime, setEndDateTime] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>('');
+  const [endDateTime, setEndDateTime] = useState<string>('');
 
-  const [resultDate, setResultDate] = useState<string>("");
-  const [resultDateTime, setResultDateTime] = useState<string>("");
+  const [resultDate, setResultDate] = useState<string>('');
+  const [resultDateTime, setResultDateTime] = useState<string>('');
 
   const EditSession =
     currentIndexEdit !== null ? sessions[currentIndexEdit] : null;
 
-  const [assessmentType, setAssesmentType] = useState<string>("");
+  const [assessmentType, setAssesmentType] = useState<string>('');
 
   // const trpc = api.useUtils();
   // const { data: category, isLoading: isLoadingCategory } =
@@ -110,7 +110,7 @@ const NewTryOut = () => {
 
   useEffect(() => {
     axiosInstance
-      .get("/tryoutCategory/getCategory")
+      .get('/tryoutCategory/getCategory')
       .then((res) => {
         const resData = response(res);
         setCategory(resData.data);
@@ -132,7 +132,7 @@ const NewTryOut = () => {
     try {
       setIsLoadingTryout(true);
       const res = await axiosInstance.get(
-        `/tryout/getTryoutForUpdate?id=${tryoutId}`
+        `/tryout/getTryoutForUpdate?id=${tryoutId}`,
       );
       const resData = response(res);
       return resData.data;
@@ -149,10 +149,10 @@ const NewTryOut = () => {
         const tryoutData = data;
         const sessionData = tryoutData.TryoutSession.map((session: any) => {
           const getCategory = category.find(
-            (item) => item.id === session.categoryId
+            (item) => item.id === session.categoryId,
           );
           const getSubCategory = getCategory?.TryoutSubCategory.find(
-            (item) => item.id === session.subCategoryId
+            (item) => item.id === session.subCategoryId,
           );
           return {
             ...session,
@@ -190,9 +190,9 @@ const NewTryOut = () => {
           };
         });
         setSessions([...sessionData]);
-        const startDateArr = getDateHourStr(tryoutData.startDate).split("T");
-        const endDateArr = getDateHourStr(tryoutData.endDate).split("T");
-        const resultDateArr = getDateHourStr(tryoutData.resultDate).split("T");
+        const startDateArr = getDateHourStr(tryoutData.startDate).split('T');
+        const endDateArr = getDateHourStr(tryoutData.endDate).split('T');
+        const resultDateArr = getDateHourStr(tryoutData.resultDate).split('T');
         setTryout({
           id: tryoutData.id,
           title: tryoutData.title,
@@ -209,10 +209,10 @@ const NewTryOut = () => {
         setEndDateTime(endDateArr[1]);
         setResultDate(resultDateArr[0]);
         setResultDateTime(resultDateArr[1]);
-        console.log("status:", tryoutData.status);
-        console.log("startDateArr:", startDateArr);
-        console.log("endDateArr:", endDateArr);
-        console.log("resultDateArr:", resultDateArr);
+        console.log('status:', tryoutData.status);
+        console.log('startDateArr:', startDateArr);
+        console.log('endDateArr:', endDateArr);
+        console.log('resultDateArr:', resultDateArr);
       });
     }
   }, [category]);
@@ -245,7 +245,7 @@ const NewTryOut = () => {
   const { minimizeSidebar } = useAppContext();
 
   useEffect(() => {
-    console.log("===================================");
+    console.log('===================================');
     setTryout((prev) => {
       return {
         ...prev,
@@ -264,41 +264,41 @@ const NewTryOut = () => {
   ]);
 
   useEffect(() => {
-    if (currentIndexEdit !== null && EditSession?.assessmentType !== "") {
+    if (currentIndexEdit !== null && EditSession?.assessmentType !== '') {
       setAssesmentType((prev) =>
-        EditSession?.assessmentType ? EditSession?.assessmentType : prev
+        EditSession?.assessmentType ? EditSession?.assessmentType : prev,
       );
     }
   }, [currentIndexEdit]);
 
   useEffect(() => {
-    console.log("change", assessmentType);
-    if (assessmentType !== "") {
+    console.log('change', assessmentType);
+    if (assessmentType !== '') {
       setSessions((prev) =>
         prev.map((item, i: number) => {
           if (i === currentIndexEdit) {
             return { ...item, assessmentType: assessmentType };
           }
           return { ...item };
-        })
+        }),
       );
     }
   }, [assessmentType]);
 
-  console.log("tryout : ", tryout);
+  console.log('tryout : ', tryout);
   console.log(
-    "sessions : ",
-    currentIndexEdit !== null && sessions[currentIndexEdit]
+    'sessions : ',
+    currentIndexEdit !== null && sessions[currentIndexEdit],
   );
-  console.log("ass : ", assessmentType);
-  console.log("tryout", tryout);
-  console.log("sessions", sessions);
+  console.log('ass : ', assessmentType);
+  console.log('tryout', tryout);
+  console.log('sessions', sessions);
 
   const handleSubmit = () => {
-    console.log("awdwad");
+    console.log('awdwad');
     console.log(sessions.length);
     if (sessions.length === 0) {
-      alert("Buat Minimal 1 Sesi");
+      alert('Buat Minimal 1 Sesi');
       return;
     }
     if (
@@ -312,7 +312,7 @@ const NewTryOut = () => {
     ) {
       const validTryout: {
         id: string;
-        status: "PUBLIC" | "PRIVATE" | "DRAFT";
+        status: 'PUBLIC' | 'PRIVATE' | 'DRAFT';
         title: string;
         restTime: number;
         startDate: string;
@@ -323,30 +323,30 @@ const NewTryOut = () => {
         id: tryout.id,
         title: tryout.title,
         restTime: tryout.restTime ? tryout.restTime : 0,
-        status: tryout.status as "PUBLIC" | "PRIVATE" | "DRAFT",
+        status: tryout.status as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
         startDate: tryout.startDate,
         endDate: tryout.endDate,
-        image: tryout.image || "",
+        image: tryout.image || '',
         resultDate: tryout.resultDate,
       };
 
       const validSessions = sessions.map((session) => ({
-        id: session.id || "new",
-        categoryId: session.categoryId || "defaultCategoryId",
-        subCategoryId: session.subCategoryId || "defaultSubCategoryId",
-        name: session.name || "Default session Name",
+        id: session.id || 'new',
+        categoryId: session.categoryId || 'defaultCategoryId',
+        subCategoryId: session.subCategoryId || 'defaultSubCategoryId',
+        name: session.name || 'Default session Name',
         documentId: session.documentId,
         description: session.description ?? undefined,
         duration:
-          typeof session.duration === "string"
+          typeof session.duration === 'string'
             ? parseFloat(session.duration)
             : session.duration || 0,
         thresholdValue: session.thresholdValue,
-        assessmentType: session.assessmentType || "defaultAssessmentType",
+        assessmentType: session.assessmentType || 'defaultAssessmentType',
         TryoutQuestion:
           session.Questions?.map((question) => {
             return {
-              id: question.id || "new",
+              id: question.id || 'new',
               number: question.number,
               question: question.question,
               image: question.image,
@@ -355,7 +355,7 @@ const NewTryOut = () => {
               subSubCategory: question.subSubCategory,
               TryoutAnswers: question.Answers.map((answer) => {
                 return {
-                  id: answer.id || "new",
+                  id: answer.id || 'new',
                   answer: answer.answer,
                   value: answer.value,
                 };
@@ -366,21 +366,21 @@ const NewTryOut = () => {
       // console.log({ validSessions, sessions });
       // return;
       const checkCategoryId = validSessions.find(
-        (item) => item.categoryId === "defaultCategoryId"
+        (item) => item.categoryId === 'defaultCategoryId',
       );
       const checkSubCategoryId = validSessions.find(
-        (item) => item.categoryId === "defaultSubCategoryId"
+        (item) => item.categoryId === 'defaultSubCategoryId',
       );
       let checkQuestion = false;
-      let checkQuestionValue = { value: false, message: "" };
-      let checkAnswers = { value: false, message: "" };
+      let checkQuestionValue = { value: false, message: '' };
+      let checkAnswers = { value: false, message: '' };
 
       validSessions.forEach((item) => {
         if (item.TryoutQuestion && item.TryoutQuestion.length < 1) {
           checkQuestion = true;
         }
         item.TryoutQuestion.forEach((quest, qIndex) => {
-          if (quest.question === "" || quest.question.length === 0) {
+          if (quest.question === '' || quest.question.length === 0) {
             checkQuestionValue = {
               value: true,
               message: `Soal ${qIndex + 1} masih kosong`,
@@ -388,7 +388,7 @@ const NewTryOut = () => {
             return;
           }
           quest.TryoutAnswers.forEach((answer) => {
-            if (answer.answer === "" || answer.answer.length === 0) {
+            if (answer.answer === '' || answer.answer.length === 0) {
               checkAnswers = {
                 value: true,
                 message: `Jawaban masih ada yang kosong pada soal ${
@@ -408,39 +408,39 @@ const NewTryOut = () => {
         if (item.duration < 5) {
           checkDuration = true;
         }
-        if (item.name === "Default Session Name" || item.name === "") {
+        if (item.name === 'Default Session Name' || item.name === '') {
           checkName = true;
         }
         if (
-          item.assessmentType === "defaultAssessmentType" ||
-          item.assessmentType === ""
+          item.assessmentType === 'defaultAssessmentType' ||
+          item.assessmentType === ''
         ) {
           checkAssestmentType = true;
         }
       });
 
       if (checkCategoryId) {
-        alert("Pilih Tes");
+        alert('Pilih Tes');
         return;
       }
       if (checkSubCategoryId) {
-        alert("Pilih Sub Tes");
+        alert('Pilih Sub Tes');
         return;
       }
       if (checkName) {
-        alert("Masukan Nama Session");
+        alert('Masukan Nama Session');
         return;
       }
       if (checkAssestmentType) {
-        alert("Pilih Penilaian");
+        alert('Pilih Penilaian');
         return;
       }
       if (checkDuration) {
-        alert("Durasi Tryout terlalu singkat");
+        alert('Durasi Tryout terlalu singkat');
         return;
       }
       if (checkQuestion) {
-        alert("Setiap Sesi Harus memiliki Soal");
+        alert('Setiap Sesi Harus memiliki Soal');
         return;
       }
       if (checkQuestionValue.value) {
@@ -455,7 +455,7 @@ const NewTryOut = () => {
       updateTryout({ Tryout: validTryout, TryoutSession: validSessions });
       // alert("Dijalankan")
     } else {
-      console.error("Tryout object is missing required properties");
+      console.error('Tryout object is missing required properties');
     }
   };
 
@@ -531,7 +531,7 @@ const NewTryOut = () => {
   // }, [tryoutData, category]);
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   }, []);
 
   if (isLoadingTryout || isLoadingCategory) {
@@ -574,12 +574,15 @@ const NewTryOut = () => {
 
   return (
     <EditTryoutContext.Provider value={ContextValue}>
-      <LoadingPageWithText loading={isLoading} heading="Menyimpan Tryout..." />
+      <LoadingPageWithText
+        loading={isLoading}
+        heading="Menyimpan Tryout..."
+      />
       <div
         className={cn(
-          "fixed left-0 top-[80px] h-full w-full bg-workspace duration-300",
-          minimizeSidebar && "pl-[calc(73px+1rem)]",
-          !minimizeSidebar && "pl-[calc(254px+1rem)]"
+          'fixed left-0 top-[80px] h-full w-full bg-workspace duration-300',
+          minimizeSidebar && 'pl-[calc(73px+1rem)]',
+          !minimizeSidebar && 'pl-[calc(254px+1rem)]',
         )}
       >
         <form
@@ -592,20 +595,20 @@ const NewTryOut = () => {
         >
           <div
             className={cn(
-              "col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-[1rem] pt-[1rem] duration-300",
-              currentIndexEdit === null && "col-span-5 w-[100%]",
-              currentIndexEdit !== null && !showDetailTryout && "w-0"
+              'col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-[1rem] pt-[1rem] duration-300',
+              currentIndexEdit === null && 'col-span-5 w-[100%]',
+              currentIndexEdit !== null && !showDetailTryout && 'w-0',
             )}
           >
             <TryoutOption />
           </div>
           <div
             className={cn(
-              "relative col-span-3 mt-[1rem] h-[90vh] w-[60%] duration-300",
+              'relative col-span-3 mt-[1rem] h-[90vh] w-[60%] duration-300',
               currentIndexEdit !== null &&
                 !showDetailTryout &&
-                "ml-[-1rem] w-full",
-              currentIndexEdit === null && "w-0"
+                'ml-[-1rem] w-full',
+              currentIndexEdit === null && 'w-0',
             )}
           >
             <SessionOption />

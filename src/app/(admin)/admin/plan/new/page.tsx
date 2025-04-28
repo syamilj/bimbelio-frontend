@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { Loader2, Plus, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { cn } from '@/lib/utils';
 import {
-  FeatureTypeEnum,
+  // FeatureTypeEnum,
   WebsiteCategory,
   WebsiteSubCategory,
-} from "@/types/database";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
+} from '@/types/database';
+import { Loader2, Plus, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
-type LimitType = "chat" | "notes" | "tryout" | "vision" | "quiz";
+type LimitType = 'chat' | 'notes' | 'tryout' | 'vision' | 'quiz';
 
-const listLimit: LimitType[] = ["chat", "notes", "vision", "quiz", "tryout"];
+const listLimit: LimitType[] = ['chat', 'notes', 'vision', 'quiz', 'tryout'];
 
 type ActiveTabType = {
   limit: boolean;
@@ -46,29 +46,32 @@ export default function CreatePlanForm() {
   });
 
   const [limitRows, setLimitRows] = useState<LimitRowType>([
-    { id: 1, type: "chat", limit: "" },
+    { id: 1, type: 'chat', limit: '' },
   ]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const name = formData.get("name") as string;
-    const tier = formData.get("tier") as string;
-    const description = formData.get("description") as string;
-    const price = formData.get("price") as string;
+    const name = formData.get('name') as string;
+    const tier = formData.get('tier') as string;
+    const description = formData.get('description') as string;
+    const price = formData.get('price') as string;
 
-    const course = formData.get("course") as "on" | null;
-    const materiPremium = formData.get("materiPremium") as "on" | null;
+    const course = formData.get('course') as 'on' | null;
+    const materiPremium = formData.get('materiPremium') as 'on' | null;
 
-    const expireType = formData.get("expireType") as string;
-    const duration = formData.get("duration") as string;
-    const websiteSubCategoryId = formData.get("websiteSubCategoryId") as string;
+    const expireType = formData.get('expireType') as string;
+    const duration = formData.get('duration') as string;
+    const websiteSubCategoryId = formData.get('websiteSubCategoryId') as string;
 
-    const limitRowsData = limitRows.reduce((acc, row) => {
-      const key = row.type as string;
-      acc[key] = Number.parseInt(row.limit) || 0;
-      return acc;
-    }, {} as Record<string, number>);
+    const limitRowsData = limitRows.reduce(
+      (acc, row) => {
+        const key = row.type as string;
+        acc[key] = Number.parseInt(row.limit) || 0;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
     const payload = {
       name,
@@ -87,39 +90,48 @@ export default function CreatePlanForm() {
         ? {
             tier,
             expireDays:
-              expireType === "days"
+              expireType === 'days'
                 ? parseInt(duration)
-                : expireType === "month"
-                ? parseInt(duration) * 30
-                : expireType === "month"
-                ? parseInt(duration) * 365
-                : 0,
+                : expireType === 'month'
+                  ? parseInt(duration) * 30
+                  : expireType === 'month'
+                    ? parseInt(duration) * 365
+                    : 0,
             websiteSubCategoryId,
             planfeature: [
-              { type: course ? "COURSE" : null },
-              { type: materiPremium ? "DOCUMENT" : null },
+              { type: course ? 'COURSE' : null },
+              { type: materiPremium ? 'DOCUMENT' : null },
             ].filter((item) => item.type),
           }
         : undefined,
     };
 
-    await mutateGeneral("/plan/createPlan", {
+    await mutateGeneral('/plan/createPlan', {
       payload,
-      type: "post",
+      type: 'post',
       setLoading: setIsLoading,
     });
   };
 
   return (
-    <form className="mx-auto p-4 min-h-screen" onSubmit={handleSubmit}>
+    <form
+      className="mx-auto p-4 min-h-screen"
+      onSubmit={handleSubmit}
+    >
       <div className="space-y-6">
         {/* Basic Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="col-span-2">
-            <Label htmlFor="name" className="block mb-2">
+            <Label
+              htmlFor="name"
+              className="block mb-2"
+            >
               Name <span className="text-red-500">*</span>
             </Label>
-            <Input name="name" placeholder="Pricing Name" />
+            <Input
+              name="name"
+              placeholder="Pricing Name"
+            />
           </div>
           {/* <div>
             <Label htmlFor="tier" className="block mb-2">
@@ -128,10 +140,16 @@ export default function CreatePlanForm() {
             <Input name="tier" placeholder="Tier" />
           </div> */}
           <div className="col-span-2">
-            <Label htmlFor="slug" className="block mb-2">
+            <Label
+              htmlFor="slug"
+              className="block mb-2"
+            >
               Description <span className="text-red-500">*</span>
             </Label>
-            <Textarea name="description" placeholder="Description" />
+            <Textarea
+              name="description"
+              placeholder="Description"
+            />
           </div>
         </div>
 
@@ -153,7 +171,10 @@ export default function CreatePlanForm() {
             />
 
             {/* Features User */}
-            <SectionFeature activeTab={activeTab} setActiveTab={setActiveTab} />
+            <SectionFeature
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
           </CardContent>
         </Card>
 
@@ -166,7 +187,10 @@ export default function CreatePlanForm() {
 
             <div className="space-y-4">
               <div>
-                <Label htmlFor="total" className="block mb-2">
+                <Label
+                  htmlFor="total"
+                  className="block mb-2"
+                >
                   Total
                 </Label>
                 <div className="relative">
@@ -312,11 +336,17 @@ export default function CreatePlanForm() {
 
         {/* Form Actions */}
         <div className="flex justify-end gap-4 mt-6">
-          <Button type="button" variant="outline">
+          <Button
+            type="button"
+            variant="outline"
+          >
             Cancel
           </Button>
-          <Button className="bg-main hover:bg-main/80" disabled={isLoading}>
-            {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : "Save"}
+          <Button
+            className="bg-main hover:bg-main/80"
+            disabled={isLoading}
+          >
+            {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save'}
           </Button>
         </div>
       </div>
@@ -344,12 +374,12 @@ const SectionLimit = ({
     // Find the first available type that's not already selected
     const selectedTypes = limitRows.map((row) => row.type);
     const availableType = listLimit.find(
-      (type) => !selectedTypes.includes(type)
+      (type) => !selectedTypes.includes(type),
     );
 
     if (!availableType) return; // Don't add a row if all types are used
 
-    setLimitRows([...limitRows, { id: newId, type: availableType, limit: "" }]);
+    setLimitRows([...limitRows, { id: newId, type: availableType, limit: '' }]);
   };
 
   const removeLimitRow = (id: number) => {
@@ -359,13 +389,13 @@ const SectionLimit = ({
   const updateLimitType = (id: number, type: LimitType) => {
     // Check if the type is already selected in another row
     const isTypeAlreadySelected = limitRows.some(
-      (row) => row.id !== id && row.type === type
+      (row) => row.id !== id && row.type === type,
     );
 
     // Only update if the type is not already selected elsewhere
     if (!isTypeAlreadySelected) {
       setLimitRows(
-        limitRows.map((row) => (row.id === id ? { ...row, type } : row))
+        limitRows.map((row) => (row.id === id ? { ...row, type } : row)),
       );
     }
   };
@@ -382,7 +412,10 @@ const SectionLimit = ({
             }))
           }
         />
-        <Label htmlFor="limit" className="ml-2 font-medium">
+        <Label
+          htmlFor="limit"
+          className="ml-2 font-medium"
+        >
           Limit
         </Label>
       </div>
@@ -407,19 +440,19 @@ const SectionLimit = ({
                   <div className="flex flex-wrap gap-2">
                     <Button
                       type="button"
-                      variant={row.type === "chat" ? "default" : "outline"}
+                      variant={row.type === 'chat' ? 'default' : 'outline'}
                       size="sm"
                       className={cn(
-                        row.type === "chat" ? "bg-main hover:bg-main/80" : "",
-                        isTypeAlreadySelected("chat") &&
-                          "opacity-50 cursor-not-allowed"
+                        row.type === 'chat' ? 'bg-main hover:bg-main/80' : '',
+                        isTypeAlreadySelected('chat') &&
+                          'opacity-50 cursor-not-allowed',
                       )}
                       onClick={() => {
                         if (
-                          !isTypeAlreadySelected("chat") ||
-                          row.type === "chat"
+                          !isTypeAlreadySelected('chat') ||
+                          row.type === 'chat'
                         ) {
-                          updateLimitType(row.id, "chat");
+                          updateLimitType(row.id, 'chat');
                         }
                       }}
                     >
@@ -427,19 +460,19 @@ const SectionLimit = ({
                     </Button>
                     <Button
                       type="button"
-                      variant={row.type === "notes" ? "default" : "outline"}
+                      variant={row.type === 'notes' ? 'default' : 'outline'}
                       size="sm"
                       className={cn(
-                        row.type === "notes" ? "bg-main hover:bg-main/80" : "",
-                        isTypeAlreadySelected("notes") &&
-                          "opacity-50 cursor-not-allowed"
+                        row.type === 'notes' ? 'bg-main hover:bg-main/80' : '',
+                        isTypeAlreadySelected('notes') &&
+                          'opacity-50 cursor-not-allowed',
                       )}
                       onClick={() => {
                         if (
-                          !isTypeAlreadySelected("notes") ||
-                          row.type === "notes"
+                          !isTypeAlreadySelected('notes') ||
+                          row.type === 'notes'
                         ) {
-                          updateLimitType(row.id, "notes");
+                          updateLimitType(row.id, 'notes');
                         }
                       }}
                     >
@@ -447,19 +480,19 @@ const SectionLimit = ({
                     </Button>
                     <Button
                       type="button"
-                      variant={row.type === "vision" ? "default" : "outline"}
+                      variant={row.type === 'vision' ? 'default' : 'outline'}
                       size="sm"
                       className={cn(
-                        row.type === "vision" ? "bg-main hover:bg-main/80" : "",
-                        isTypeAlreadySelected("vision") &&
-                          "opacity-50 cursor-not-allowed"
+                        row.type === 'vision' ? 'bg-main hover:bg-main/80' : '',
+                        isTypeAlreadySelected('vision') &&
+                          'opacity-50 cursor-not-allowed',
                       )}
                       onClick={() => {
                         if (
-                          !isTypeAlreadySelected("vision") ||
-                          row.type === "vision"
+                          !isTypeAlreadySelected('vision') ||
+                          row.type === 'vision'
                         ) {
-                          updateLimitType(row.id, "vision");
+                          updateLimitType(row.id, 'vision');
                         }
                       }}
                     >
@@ -467,19 +500,19 @@ const SectionLimit = ({
                     </Button>
                     <Button
                       type="button"
-                      variant={row.type === "quiz" ? "default" : "outline"}
+                      variant={row.type === 'quiz' ? 'default' : 'outline'}
                       className={cn(
-                        row.type === "quiz" ? "bg-main hover:bg-main/80" : "",
-                        isTypeAlreadySelected("quiz") &&
-                          "opacity-50 cursor-not-allowed"
+                        row.type === 'quiz' ? 'bg-main hover:bg-main/80' : '',
+                        isTypeAlreadySelected('quiz') &&
+                          'opacity-50 cursor-not-allowed',
                       )}
                       size="sm"
                       onClick={() => {
                         if (
-                          !isTypeAlreadySelected("quiz") ||
-                          row.type === "quiz"
+                          !isTypeAlreadySelected('quiz') ||
+                          row.type === 'quiz'
                         ) {
-                          updateLimitType(row.id, "quiz");
+                          updateLimitType(row.id, 'quiz');
                         }
                       }}
                     >
@@ -487,19 +520,19 @@ const SectionLimit = ({
                     </Button>
                     <Button
                       type="button"
-                      variant={row.type === "tryout" ? "default" : "outline"}
+                      variant={row.type === 'tryout' ? 'default' : 'outline'}
                       className={cn(
-                        row.type === "tryout" ? "bg-main hover:bg-main/80" : "",
-                        isTypeAlreadySelected("tryout") &&
-                          "opacity-50 cursor-not-allowed"
+                        row.type === 'tryout' ? 'bg-main hover:bg-main/80' : '',
+                        isTypeAlreadySelected('tryout') &&
+                          'opacity-50 cursor-not-allowed',
                       )}
                       size="sm"
                       onClick={() => {
                         if (
-                          !isTypeAlreadySelected("tryout") ||
-                          row.type === "tryout"
+                          !isTypeAlreadySelected('tryout') ||
+                          row.type === 'tryout'
                         ) {
-                          updateLimitType(row.id, "tryout");
+                          updateLimitType(row.id, 'tryout');
                         }
                       }}
                     >
@@ -521,8 +554,8 @@ const SectionLimit = ({
                           limitRows.map((r) =>
                             r.id === row.id
                               ? { ...r, limit: e.target.value }
-                              : r
-                          )
+                              : r,
+                          ),
                         );
                       }}
                     />
@@ -569,16 +602,16 @@ const SectionFeature = ({
   setActiveTab: React.Dispatch<React.SetStateAction<ActiveTabType>>;
   activeTab: ActiveTabType;
 }) => {
-  const [expireType, setExpireType] = useState<string>("days");
+  const [expireType, setExpireType] = useState<string>('days');
 
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
 
   const [categories, setCategories] = useState<WebsiteCategory[]>([]);
 
   const [subCategories, setSubCategories] = useState<WebsiteSubCategory[]>([]);
 
   const changeExpireType = (type: string) => {
-    const input = document.getElementById("expireType") as
+    const input = document.getElementById('expireType') as
       | HTMLInputElement
       | undefined;
     if (input) {
@@ -588,7 +621,7 @@ const SectionFeature = ({
   };
 
   useEffect(() => {
-    getGeneral("/website-category/getWebsiteCategory", {
+    getGeneral('/website-category/getWebsiteCategory', {
       onSuccess({ data }) {
         const getData: (WebsiteCategory & {
           WebsiteSubCategory: WebsiteSubCategory[];
@@ -637,7 +670,10 @@ const SectionFeature = ({
             }))
           }
         />
-        <Label htmlFor="features" className="ml-2 font-medium">
+        <Label
+          htmlFor="features"
+          className="ml-2 font-medium"
+        >
           Features User
         </Label>
       </div>
@@ -646,27 +682,42 @@ const SectionFeature = ({
           <div className="ml-6 flex flex-wrap gap-6">
             <div className="flex items-center">
               <Checkbox name="course" />
-              <Label htmlFor="course" className="ml-2">
+              <Label
+                htmlFor="course"
+                className="ml-2"
+              >
                 Course
               </Label>
             </div>
             <div className="flex items-center">
               <Checkbox name="materiPremium" />
-              <Label htmlFor="materiPremium" className="ml-2">
+              <Label
+                htmlFor="materiPremium"
+                className="ml-2"
+              >
                 Materi Premium
               </Label>
             </div>
           </div>
 
           <div className="ml-6">
-            <Label htmlFor="tier" className="block mb-2">
+            <Label
+              htmlFor="tier"
+              className="block mb-2"
+            >
               Tier <span className="text-red-500">*</span>
             </Label>
-            <Input name="tier" placeholder="Tier" />
+            <Input
+              name="tier"
+              placeholder="Tier"
+            />
           </div>
 
           <div className="ml-6">
-            <Label htmlFor="duration" className="block mb-2">
+            <Label
+              htmlFor="duration"
+              className="block mb-2"
+            >
               Duration <span className="text-red-500">*</span>
             </Label>
             <div className="flex gap-2">
@@ -689,10 +740,10 @@ const SectionFeature = ({
                   type="button"
                   variant="outline"
                   className={cn(
-                    "rounded-r-none ",
-                    expireType === "days" && "bg-main text-white"
+                    'rounded-r-none ',
+                    expireType === 'days' && 'bg-main text-white',
                   )}
-                  onClick={() => changeExpireType("days")}
+                  onClick={() => changeExpireType('days')}
                 >
                   days
                 </Button>
@@ -700,10 +751,10 @@ const SectionFeature = ({
                   type="button"
                   variant="outline"
                   className={cn(
-                    "rounded-none border-l-0 border-r-0",
-                    expireType === "month" && "bg-main text-white"
+                    'rounded-none border-l-0 border-r-0',
+                    expireType === 'month' && 'bg-main text-white',
                   )}
-                  onClick={() => changeExpireType("month")}
+                  onClick={() => changeExpireType('month')}
                 >
                   month
                 </Button>
@@ -711,10 +762,10 @@ const SectionFeature = ({
                   type="button"
                   variant="outline"
                   className={cn(
-                    "rounded-l-none",
-                    expireType === "year" && "bg-main text-white"
+                    'rounded-l-none',
+                    expireType === 'year' && 'bg-main text-white',
                   )}
-                  onClick={() => changeExpireType("year")}
+                  onClick={() => changeExpireType('year')}
                 >
                   year
                 </Button>
@@ -724,7 +775,10 @@ const SectionFeature = ({
 
           <div className="ml-6 flex items-center w-full gap-4">
             <div className="w-full">
-              <Label htmlFor="category" className="block mb-2">
+              <Label
+                htmlFor="category"
+                className="block mb-2"
+              >
                 Category <span className="text-red-500">*</span>
               </Label>
               <Select
@@ -736,7 +790,10 @@ const SectionFeature = ({
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
-                    <SelectItem key={cat.id} value={cat.id}>
+                    <SelectItem
+                      key={cat.id}
+                      value={cat.id}
+                    >
                       {cat.name}
                     </SelectItem>
                   ))}
@@ -745,7 +802,10 @@ const SectionFeature = ({
             </div>
             {selectedCategory && (
               <div className="w-full">
-                <Label htmlFor="subcategory" className="block mb-2">
+                <Label
+                  htmlFor="subcategory"
+                  className="block mb-2"
+                >
                   Sub Category <span className="text-red-500">*</span>
                 </Label>
                 <Select name="websiteSubCategoryId">
@@ -755,10 +815,13 @@ const SectionFeature = ({
                   <SelectContent>
                     {subCategories
                       .filter(
-                        (item) => item.website_category_id === selectedCategory
+                        (item) => item.website_category_id === selectedCategory,
                       )
                       .map((sub) => (
-                        <SelectItem key={sub.id} value={sub.id}>
+                        <SelectItem
+                          key={sub.id}
+                          value={sub.id}
+                        >
                           {sub.name}
                         </SelectItem>
                       ))}

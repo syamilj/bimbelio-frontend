@@ -1,40 +1,39 @@
-import { useAppContext } from "@/components/provider/provider-app";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { toaster } from "@/components/ui/toaster";
-import { env } from "@/env.mjs";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { getGeneral } from "@/lib/fetch-helper";
-import { response, responseError } from "@/lib/response";
-import { IconCopy, IconCrown, IconX } from "@/styles/icon";
-import { supabase } from "@/supabaseClient";
-import { Transaction, UserRoleEnum } from "@/types/database";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import male from '@/_assest/default-profile/male.png';
+import ButtonPayment from '@/app/(user)/user/_components/button-payment';
+import { useAppContext } from '@/components/provider/provider-app';
+import { useUserLimitation } from '@/components/provider/provider-limitation';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
+import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { getGeneral } from '@/lib/fetch-helper';
+import { response, responseError } from '@/lib/response';
 import {
   getDateString,
   getHours,
   getHoursDetail,
   imageProfile,
-} from "@/lib/utils";
-import ButtonPayment from "@/app/(user)/user/_components/button-payment";
-import Image from "next/image";
-import male from "@/_assest/default-profile/male.png";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { useUserLimitation } from "@/components/provider/provider-limitation";
+} from '@/lib/utils';
+import { IconCopy, IconCrown, IconX } from '@/styles/icon';
+import { supabase } from '@/supabaseClient';
+import { Transaction } from '@/types/database';
+import Cookies from 'js-cookie';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 // HistoryPayment Component
 const HistoryPayment = ({ pages }: { pages?: string }) => {
   const router = useRouter();
   const { setTransactionPopUp, setTransactionHistory } = useAppContext();
 
-  const [page, setPage] = useState<string>(pages ? pages : "account");
+  const [page, setPage] = useState<string>(pages ? pages : 'account');
   const [loading, setLoading] = useState<boolean>(false);
   const [profile, setProfile] = useState<File | undefined>();
-  const [preview, setPreview] = useState<string>("");
-  const [profileImage, setProfileImage] = useState<string>("");
+  const [preview, setPreview] = useState<string>('');
+  const [profileImage, setProfileImage] = useState<string>('');
 
   const { data: session } = useSession();
 
@@ -53,9 +52,9 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
     window.snap.pay(token, {
       onClose: () => {
         toaster({
-          title: "Gagal",
-          description: "Pembayaran belum selesai!",
-          condition: "warning",
+          title: 'Gagal',
+          description: 'Pembayaran belum selesai!',
+          condition: 'warning',
         });
       },
     });
@@ -82,19 +81,19 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
           env.NEXT_PUBLIC_SUPABASE_URL
         }/storage/v1/object/public/img/${session?.user.id}-${new Date()}`;
         const { data, error } = await supabase.storage
-          .from("img")
+          .from('img')
           .upload(`${session?.user.id}-${new Date()}`, profile);
         if (data) {
           setProfileImage(fileName);
-          Cookies.set("image-profile", fileName);
+          Cookies.set('image-profile', fileName);
           await updateProfileImage({ image: fileName });
           setLoading(false);
         }
         if (error) {
           toaster({
-            title: "Upss",
-            condition: "warning",
-            description: "Gagal upload gambar profil!",
+            title: 'Upss',
+            condition: 'warning',
+            description: 'Gagal upload gambar profil!',
             duration: 3000,
           });
           console.log(error);
@@ -108,7 +107,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
 
   // Preview image when profile changes
   useEffect(() => {
-    setPreview("");
+    setPreview('');
     if (profile) {
       const reader = new FileReader();
 
@@ -123,7 +122,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
 
   // Set initial profile image
   useEffect(() => {
-    if (imageProfile && imageProfile !== "null") {
+    if (imageProfile && imageProfile !== 'null') {
       setProfileImage(imageProfile);
     }
   }, []);
@@ -149,33 +148,33 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
           <div className="flex shrink-0 gap-[.5rem] overflow-auto whitespace-nowrap border-r border-main-gray-input px-[.5rem] py-[1.5rem] md:flex-col">
             <div
               className={`${
-                page === "account" ? "bg-main text-white" : "text-bla"
+                page === 'account' ? 'bg-main text-white' : 'text-bla'
               } w-[210px] cursor-pointer rounded-[.6rem] px-[1rem] py-[.6rem] text-[.9rem]`}
-              onClick={() => setPage("account")}
+              onClick={() => setPage('account')}
             >
               Akun
             </div>
             <div
               className={`${
-                page === "rt" ? "bg-main text-white" : "text-bla"
+                page === 'rt' ? 'bg-main text-white' : 'text-bla'
               } w-[210px] cursor-pointer rounded-[.6rem] px-[1rem] py-[.6rem] text-[.9rem]`}
-              onClick={() => setPage("rt")}
+              onClick={() => setPage('rt')}
             >
               Subscription dan Coin
             </div>
             <div
               className={`${
-                page === "riwayat" ? "bg-main text-white" : "text-bla"
+                page === 'riwayat' ? 'bg-main text-white' : 'text-bla'
               } w-[210px] cursor-pointer rounded-[.6rem] px-[1rem] py-[.6rem] text-[.9rem]`}
-              onClick={() => setPage("riwayat")}
+              onClick={() => setPage('riwayat')}
             >
               Riwayat transaksi
             </div>
-            <ButtonPayment text={"Subscription"} />
+            <ButtonPayment text={'Subscription'} />
           </div>
 
           {/* Page Content */}
-          {page === "account" && (
+          {page === 'account' && (
             <div className="w-full p-[1.5rem]">
               <h1 className="font-regular text-[1.2rem]">Akun</h1>
               <div>
@@ -196,7 +195,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                       />
                       <div className="flex gap-[1rem]">
                         <div className="h-[3.5rem] w-[3.5rem] overflow-hidden rounded-[.5rem]">
-                          {preview !== "" ? (
+                          {preview !== '' ? (
                             <Image
                               src={preview}
                               alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
@@ -206,7 +205,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                             />
                           ) : (
                             <Image
-                              src={profileImage !== "" ? profileImage : male}
+                              src={profileImage !== '' ? profileImage : male}
                               alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
                               width={500}
                               height={300}
@@ -224,7 +223,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                       <Button
                         className="rounded-[.8rem] border border-main-gray-disabled px-[1rem] py-[.5rem] text-[.9rem] font-medium text-main-gray-text duration-200 md:hover:border-main md:hover:bg-main md:hover:text-white"
                         onClick={() => {
-                          document.getElementById("ubahFotoProfile")?.click();
+                          document.getElementById('ubahFotoProfile')?.click();
                         }}
                       >
                         Ubah foto profile
@@ -260,7 +259,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
             </div>
           )}
 
-          {page === "rt" && (
+          {page === 'rt' && (
             <div className="w-full p-[1.5rem]">
               <h1 className="font-regular text-[1.2rem]">
                 Subscription dan Coin
@@ -280,8 +279,8 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                     {!session?.user.tier && (
                       <div className="font-regular flex flex-col gap-[1rem] text-[.9rem] text-main-gray-text">
                         <p>
-                          Kamu belum beli subscription. Yuk,{" "}
-                          <span className="text-main">beli subscription</span>{" "}
+                          Kamu belum beli subscription. Yuk,{' '}
+                          <span className="text-main">beli subscription</span>{' '}
                           untuk menikmati layanan terbaik dan lebih lengkap!
                         </p>
                         <Button
@@ -305,12 +304,15 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                     key={i}
                     className="flex flex-col gap-[1.5rem] rounded-[1.5rem] bg-bg-layout p-[1rem]"
                   >
-                    <div id="heading" className="flex flex-col gap-[.8rem]">
+                    <div
+                      id="heading"
+                      className="flex flex-col gap-[.8rem]"
+                    >
                       <div className="flex items-center gap-[.5rem]">
                         <p className="font-semibold">
                           {(item.item_details.length > 0 &&
                             item.item_details[0]?.name) ||
-                            "-"}
+                            '-'}
                         </p>
                         <IconCrown className="text-main-yellow" />
                       </div>
@@ -323,15 +325,18 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                         </div>
                       </div>
                     </div>
-                    <div id="info" className="grid grid-cols-2">
+                    <div
+                      id="info"
+                      className="grid grid-cols-2"
+                    >
                       <div className="flex flex-col justify-between">
                         <p className="text-[.8rem] text-main-gray-text">
                           Nominal tagihan:
                         </p>
                         <h1 className="text-[1.2rem] font-semibold">
                           {item.transaction_details.gross_amount.toLocaleString(
-                            "id-ID",
-                            { style: "currency", currency: "IDR" }
+                            'id-ID',
+                            { style: 'currency', currency: 'IDR' },
                           )}
                         </h1>
                       </div>
@@ -340,12 +345,15 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                           Batas waktu pembayaran:
                         </p>
                         <h1 className="font-regular text-[1rem]">
-                          {getDateString(item.expired_time)} .{" "}
+                          {getDateString(item.expired_time)} .{' '}
                           {getHoursDetail(item.expired_time)}
                         </h1>
                       </div>
                     </div>
-                    <div id="action" className="flex items-center">
+                    <div
+                      id="action"
+                      className="flex items-center"
+                    >
                       <Button
                         className="active:main rounded-[.8rem] bg-main px-[1.5rem] py-[.8rem] text-[.9rem] text-white duration-300 hover:bg-main/85"
                         onClick={() => handlePay(item.token)}
@@ -359,7 +367,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
             </div>
           )}
 
-          {page === "riwayat" && (
+          {page === 'riwayat' && (
             <div className="w-full p-[1.5rem]">
               <h1 className="font-regular text-[1.2rem]">Riwayat Transaksi</h1>
               <div className="my-[1rem] h-[1px] w-full bg-main-gray-input" />
@@ -369,13 +377,16 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                     key={i}
                     className="flex flex-col gap-[1.5rem] rounded-[1.5rem] bg-bg-layout p-[1rem]"
                   >
-                    <div id="heading" className="flex flex-col gap-[1.5rem]">
+                    <div
+                      id="heading"
+                      className="flex flex-col gap-[1.5rem]"
+                    >
                       <div className="flex w-full items-center justify-between">
                         <div className="flex items-center gap-[.5rem]">
                           <p className="font-semibold">
                             {(item.item_details.length > 0 &&
                               item.item_details[0]?.name) ||
-                              "-"}
+                              '-'}
                           </p>
                           <IconCrown className="text-main-yellow" />
                         </div>
@@ -392,7 +403,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                       <div className="flex w-full items-center justify-between">
                         <div className="text-[.8rem] text-main-gray-text">
                           <p>
-                            {getDateString(item.transaction_time)} .{" "}
+                            {getDateString(item.transaction_time)} .{' '}
                             {getHours(item.transaction_time)}
                           </p>
                         </div>
@@ -427,32 +438,38 @@ const Plans = () => {
   const tier = session?.user.tier;
   return (
     <div className="flex flex-col gap-[1.5rem] rounded-[1.5rem] bg-bg-layout p-[1rem]">
-      <div id="heading" className="flex flex-col">
+      <div
+        id="heading"
+        className="flex flex-col"
+      >
         <div className="flex items-center gap-[.5rem]">
-          <p className="font-semibold">{tier ? tier : "Gratis"}</p>
+          <p className="font-semibold">{tier ? tier : 'Gratis'}</p>
           {tier && <IconCrown className="text-main-yellow" />}
         </div>
       </div>
-      <div id="info" className="grid grid-cols-2 gap-y-[2rem]">
+      <div
+        id="info"
+        className="grid grid-cols-2 gap-y-[2rem]"
+      >
         <div className="flex flex-col gap-[.2rem]">
           <p className="text-[.8rem] text-main-gray-text">Akses bahan ajar</p>
           <h1 className="text-[1rem] font-medium">
-            {!features?.course ? "Terbatas" : "Semua"}
+            {!features?.course ? 'Terbatas' : 'Semua'}
           </h1>
         </div>
         <div className="flex flex-col gap-[.2rem]">
           <p className="text-[.8rem] text-main-gray-text">Akses Document</p>
           <h1 className="text-[1rem] font-medium">
-            {!features?.document ? "Terbatas" : "Semua"}
+            {!features?.document ? 'Terbatas' : 'Semua'}
           </h1>
         </div>
         <div className="flex flex-col gap-[.2rem]">
           <p className="text-[.8rem] text-main-gray-text">Chat AI</p>
           <h1 className="text-[1rem] font-medium">
-            {role === "ADMIN" ? "-" : userLimitation?.chat}/
+            {role === 'ADMIN' ? '-' : userLimitation?.chat}/
             {userLimitation?.chatLimit
               ? userLimitation?.chatLimit
-              : "Unlimited"}{" "}
+              : 'Unlimited'}{' '}
             <span className="font-regular text-[.8rem] text-main-gray-disabled">
               coin
             </span>
@@ -461,10 +478,10 @@ const Plans = () => {
         <div className="flex flex-col gap-[.2rem]">
           <p className="text-[.8rem] text-main-gray-text">Notes</p>
           <h1 className="text-[1rem] font-medium">
-            {role === "ADMIN" ? "-" : userLimitation?.notes}/
+            {role === 'ADMIN' ? '-' : userLimitation?.notes}/
             {userLimitation?.notesLimit
               ? userLimitation?.notesLimit
-              : "Unlimited"}{" "}
+              : 'Unlimited'}{' '}
             <span className="font-regular text-[.8rem] text-main-gray-disabled">
               coin
             </span>
@@ -473,10 +490,10 @@ const Plans = () => {
         <div className="flex flex-col gap-[.2rem]">
           <p className="text-[.8rem] text-main-gray-text">Quiz</p>
           <h1 className="text-[1rem] font-medium">
-            {role === "ADMIN" ? "-" : userLimitation?.quiz}/
+            {role === 'ADMIN' ? '-' : userLimitation?.quiz}/
             {userLimitation?.quizLimit
               ? userLimitation?.quizLimit
-              : "Unlimited"}{" "}
+              : 'Unlimited'}{' '}
             <span className="font-regular text-[.8rem] text-main-gray-disabled">
               coin
             </span>
@@ -485,10 +502,10 @@ const Plans = () => {
         <div className="flex flex-col gap-[.2rem]">
           <p className="text-[.8rem] text-main-gray-text">Tryout</p>
           <h1 className="text-[1rem] font-medium">
-            {role === "ADMIN" ? "-" : userLimitation?.tryout}/
+            {role === 'ADMIN' ? '-' : userLimitation?.tryout}/
             {userLimitation?.tryoutLimit
               ? userLimitation?.tryoutLimit
-              : "Unlimited"}{" "}
+              : 'Unlimited'}{' '}
             <span className="font-regular text-[.8rem] text-main-gray-disabled">
               coin
             </span>
@@ -497,10 +514,10 @@ const Plans = () => {
         <div className="flex flex-col gap-[.2rem]">
           <p className="text-[.8rem] text-main-gray-text">Vision</p>
           <h1 className="text-[1rem] font-medium">
-            {role === "ADMIN" ? "-" : userLimitation?.vision}/
+            {role === 'ADMIN' ? '-' : userLimitation?.vision}/
             {userLimitation?.visionLimit
               ? userLimitation?.visionLimit
-              : "Unlimited"}{" "}
+              : 'Unlimited'}{' '}
             <span className="font-regular text-[.8rem] text-main-gray-disabled">
               coin
             </span>

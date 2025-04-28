@@ -1,18 +1,18 @@
 // utils/axiosInstance.js
-import { env } from "@/env.mjs";
-import axios from "axios";
+import { env } from '@/env.mjs';
+import axios from 'axios';
 
 const axiosInstance = axios.create({
   baseURL: env.NEXT_PUBLIC_API_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const website_sub_category_id = localStorage.getItem(
-      "website_sub_category_id"
+      'website_sub_category_id',
     );
 
     config.params = {
@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

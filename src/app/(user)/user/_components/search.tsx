@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useAppContext } from "@/components/provider/provider-app";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response } from "@/lib/response";
+import { useAppContext } from '@/components/provider/provider-app';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response } from '@/lib/response';
 
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 type CategoryType = {
   name: string;
@@ -13,13 +13,13 @@ type CategoryType = {
   total: number;
 };
 
-const Search = ({ setDocsSearchData }: any) => {
+const Search = ({}: any) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { search, setSearch } = useAppContext();
+  const { setSearch } = useAppContext();
   // const [search, setSearch] = useState<string>('');
-  const [categoryId, setCategoryId] = useState<string>("");
+  const [categoryId, setCategoryId] = useState<string>('');
   // const { data: category } = api.category.getAllCategories.useQuery(undefined, {
   //   refetchOnWindowFocus: false,
   //   refetchOnMount: false,
@@ -28,7 +28,7 @@ const Search = ({ setDocsSearchData }: any) => {
   const [category, setCategory] = useState<CategoryType[]>([]);
 
   useEffect(() => {
-    axiosInstance.get("/category/getAllCategories").then((res) => {
+    axiosInstance.get('/category/getAllCategories').then((res) => {
       const resData = response(res);
       setCategory(resData.data);
     });
@@ -43,12 +43,12 @@ const Search = ({ setDocsSearchData }: any) => {
 
   const handleSearch = async (e: any) => {
     e.preventDefault();
-    const value = document.getElementById("searchValue") as HTMLInputElement;
+    const value = document.getElementById('searchValue') as HTMLInputElement;
     setSearch(`${value.value}`);
     // refetch();
-    if (!pathname?.includes("search")) {
-      localStorage.setItem("search", `${value.value}`);
-      router.push("/user/search");
+    if (!pathname?.includes('search')) {
+      localStorage.setItem('search', `${value.value}`);
+      router.push('/user/search');
     }
   };
   // useEffect(() => {
@@ -70,13 +70,13 @@ const Search = ({ setDocsSearchData }: any) => {
   // }, [search, searchData, categoryId]);
 
   useEffect(() => {
-    const value = localStorage.getItem("search");
-    const input = document.getElementById("searchValue") as HTMLInputElement;
+    const value = localStorage.getItem('search');
+    const input = document.getElementById('searchValue') as HTMLInputElement;
     if (value) {
-      console.log("masuk");
+      console.log('masuk');
       input.value = value;
       setSearch(value);
-      localStorage.removeItem("search");
+      localStorage.removeItem('search');
     }
   }, []);
 
@@ -105,7 +105,10 @@ const Search = ({ setDocsSearchData }: any) => {
             >
               <option value="">Seluruh Kategori</option>
               {category?.map((item, i) => (
-                <option key={i} value={item.id}>
+                <option
+                  key={i}
+                  value={item.id}
+                >
                   {item.name}
                 </option>
               ))}
@@ -113,17 +116,17 @@ const Search = ({ setDocsSearchData }: any) => {
           </div>
         </div>
         <div className="absolute left-0 top-[100%] w-full px-[1rem]">
-          {pathname?.includes("search") && (
+          {pathname?.includes('search') && (
             <div
               id="searchCategoryMobile"
               className="flex items-center justify-start gap-[.7rem] overflow-x-auto bg-bg-workspace pb-[.5rem] md:hidden"
             >
               <div
                 className={`px-[1.5rem] py-[.7rem] ${
-                  categoryId === "" && "bg-main text-white"
+                  categoryId === '' && 'bg-main text-white'
                 } shrink-0 rounded-xl text-main-gray-text`}
                 onClick={() => {
-                  setCategoryId("");
+                  setCategoryId('');
                 }}
               >
                 Semua
@@ -132,7 +135,7 @@ const Search = ({ setDocsSearchData }: any) => {
                 <div
                   key={i}
                   className={`px-[1.5rem] py-[.7rem] ${
-                    categoryId === item.id && "bg-main text-white"
+                    categoryId === item.id && 'bg-main text-white'
                   } shrink-0 rounded-xl text-main-gray-text`}
                   onClick={() => {
                     setCategoryId(item.id);

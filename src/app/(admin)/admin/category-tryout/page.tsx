@@ -1,21 +1,13 @@
-"use client";
+'use client';
 
-import { Loader2 } from "lucide-react";
-import Tab from "./_component/tab";
-import { useEffect, useState } from "react";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response, responseError } from "@/lib/response";
-import { TryoutCategory, TryoutSession } from "@/types/database";
-export default function index() {
-  // const { data: categories, isLoading } =
-  //   api.tryoutCategory.getCategoryWithTryoutSession.useQuery(undefined, {
-  //     refetchOnWindowFocus: false,
-  //   });
-  // const { data: subCategories, isLoading: isLoadingSubCategory } =
-  //   api.tryoutCategory.getSubCategory.useQuery(undefined, {
-  //     refetchOnWindowFocus: false,
-  //   });
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response, responseError } from '@/lib/response';
+import { TryoutCategory, TryoutSession } from '@/types/database';
+import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import Tab from './_component/tab';
 
+export default function CategoryTryoutPage() {
   const [categories, setCategories] = useState<
     (TryoutCategory & {
       TryoutSession: TryoutSession[];
@@ -32,12 +24,12 @@ export default function index() {
     setIsLoadingSubCategory(true);
     try {
       const cat = await axiosInstance.get(
-        "/tryoutCategory/getCategoryWithTryoutSession"
+        '/tryoutCategory/getCategoryWithTryoutSession',
       );
       const resCat = response(cat);
       setCategories(resCat.data);
 
-      const subCat = await axiosInstance.get("/tryoutCategory/getSubCategory");
+      const subCat = await axiosInstance.get('/tryoutCategory/getSubCategory');
       const resSubCat = response(subCat);
       setSubCategories(resSubCat.data);
     } catch (error) {

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,10 +8,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
+} from '@/components/ui/dialog';
+import { useEffect, useState } from 'react';
 
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -19,11 +19,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { toaster } from "@/components/ui/toaster";
-import { Loader2 } from "lucide-react";
-import { Pricing } from "@/types/database";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
+} from '@/components/ui/table';
+// import { toaster } from "@/components/ui/toaster";
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { Pricing } from '@/types/database';
+import { Loader2 } from 'lucide-react';
 
 export default function Page() {
   const [data, setData] = useState<
@@ -60,7 +60,7 @@ export default function Page() {
   const [pricing, setPricing] = useState<Pricing[]>([]);
 
   const getAllPricing = async () => {
-    await getGeneral("/pricing/getAllPricing", {
+    await getGeneral('/pricing/getAllPricing', {
       setData: setPricing,
     });
   };
@@ -75,9 +75,9 @@ export default function Page() {
   const [isLoadingUpdatePricing, setIsLoadingUpdatePricing] =
     useState<boolean>(false);
   const updatePricing = async (payload: any) => {
-    const data = await mutateGeneral("/pricing/updatePricing", {
+    const data = await mutateGeneral('/pricing/updatePricing', {
       payload,
-      type: "put",
+      type: 'put',
       setLoading: setIsLoadingUpdatePricing,
     });
     return data;
@@ -92,7 +92,7 @@ export default function Page() {
   const handleUpdatePrice = (
     productId: string,
     newPrice: number,
-    currentPrice: number
+    currentPrice: number,
   ) => {
     setVerifyModal({ show: true, productId, newPrice, currentPrice });
   };
@@ -142,9 +142,9 @@ export default function Page() {
                 <TableCell>{product.slug}</TableCell>
                 <TableCell>{product.title}</TableCell>
                 <TableCell>
-                  Rp.{" "}
-                  {pricing[index].price.toLocaleString("id-ID", {
-                    style: "decimal",
+                  Rp.{' '}
+                  {pricing[index].price.toLocaleString('id-ID', {
+                    style: 'decimal',
                   })}
                 </TableCell>
                 <TableCell>
@@ -152,15 +152,15 @@ export default function Page() {
                     type="text"
                     value={
                       product.price.toString().length > 0
-                        ? new Intl.NumberFormat("id-ID").format(
+                        ? new Intl.NumberFormat('id-ID').format(
                             parseInt(
-                              product.price.toString().replace(/\D/g, "")
-                            )
+                              product.price.toString().replace(/\D/g, ''),
+                            ),
                           )
-                        : ""
+                        : ''
                     }
                     onChange={(e) => {
-                      const rawValue = e.target.value.replace(/\./g, "");
+                      const rawValue = e.target.value.replace(/\./g, '');
                       const price = parseFloat(rawValue);
                       if (isNaN(price)) {
                         setData((prev) =>
@@ -172,7 +172,7 @@ export default function Page() {
                               };
                             }
                             return item;
-                          })
+                          }),
                         );
                         return;
                       }
@@ -185,7 +185,7 @@ export default function Page() {
                             };
                           }
                           return item;
-                        })
+                        }),
                       );
                     }}
                   />
@@ -198,7 +198,7 @@ export default function Page() {
                       handleUpdatePrice(
                         product.slug,
                         product.price,
-                        pricing[index].price
+                        pricing[index].price,
                       )
                     }
                   >
@@ -224,7 +224,10 @@ export default function Page() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={handleCancelUpdate}>
+            <Button
+              variant="outline"
+              onClick={handleCancelUpdate}
+            >
               Cancel
             </Button>
             <Button
@@ -235,7 +238,7 @@ export default function Page() {
               {isLoadingUpdatePricing ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
-                "Confirm"
+                'Confirm'
               )}
             </Button>
           </DialogFooter>

@@ -1,21 +1,18 @@
-"use client";
+'use client';
 
+import { signOut } from '@/lib/auth-helper';
+import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
+import { responseError } from '@/lib/response';
+import Cookies from 'js-cookie';
+import { Loader2 } from 'lucide-react';
 import {
   createContext,
   ReactNode,
   useContext,
   useEffect,
   useState,
-} from "react";
-import { Toaster } from "react-hot-toast";
-import Cookies from "js-cookie";
-import axios from "axios";
-import { env } from "@/env.mjs";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import axiosInstanceWithToken from "@/lib/axios/axiosInstanceWithToken";
-import { Loader2 } from "lucide-react";
-import { responseError } from "@/lib/response";
-import { signOut } from "@/lib/auth-helper";
+} from 'react';
+import { Toaster } from 'react-hot-toast';
 
 export default function SessionProviderAuth({
   children,
@@ -23,13 +20,13 @@ export default function SessionProviderAuth({
   children: ReactNode;
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [data, setData] = useState<SessionProviderType["data"]>();
+  const [data, setData] = useState<SessionProviderType['data']>();
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token');
     if (token) {
       axiosInstanceWithToken
-        .post("/auth/verifyToken")
+        .post('/auth/verifyToken')
         .then((res) => {
           console.log({ token: res });
           const resData = res.data;
@@ -60,7 +57,7 @@ export default function SessionProviderAuth({
           if (status === 401) {
             signOut();
           }
-          console.error("Token verification failed:", message);
+          console.error('Token verification failed:', message);
         })
         .finally(() => {
           setIsLoading(false);
@@ -103,7 +100,7 @@ type SessionProviderType = {
           id: string;
           name: string;
           email: string;
-          role: "ADMIN" | "PREMIUM" | "USER";
+          role: 'ADMIN' | 'PREMIUM' | 'USER';
           token: string;
           image: string | null;
           emailVerified: Date | null;
@@ -121,7 +118,7 @@ type SessionProviderType = {
 export const useSession = () => {
   const context = useContext(SessionProvider);
   if (!context) {
-    throw Error("useSession must be wrapped in SessionProvider");
+    throw Error('useSession must be wrapped in SessionProvider');
   }
   return context;
 };

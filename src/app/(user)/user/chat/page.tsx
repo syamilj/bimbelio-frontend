@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import { useSession } from "@/components/provider/session-provider-auth";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -12,20 +11,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton";
-import { toaster } from "@/components/ui/toaster";
-import { deleteGeneral, getGeneral, mutateGeneral } from "@/lib/fetch-helper";
-import { getDateString } from "@/lib/utils";
-import { ChatHistory, Document } from "@/types/database";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { deleteGeneral, getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getDateString } from '@/lib/utils';
+import { ChatHistory } from '@/types/database';
 import {
   AwardIcon,
   BarChartIcon,
   BotIcon,
   ClockIcon,
-  FileTextIcon,
   GraduationCapIcon,
   Loader2,
   MessageSquareIcon,
@@ -33,15 +30,15 @@ import {
   Trash2,
   UsersIcon,
   ZapIcon,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react"; // Added ReactElement import
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react'; // Added ReactElement import
 
 export default function AIChatHistoryPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [newChatInput, setNewChatInput] = useState("");
+  const [newChatInput, setNewChatInput] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Mutation untuk membuat chat baru
@@ -59,19 +56,19 @@ export default function AIChatHistoryPage() {
 
   const createNewChat = async (payload: { title: string }) => {
     let sendData: any = null;
-    await mutateGeneral("/chat/createNewChat", {
+    await mutateGeneral('/chat/createNewChat', {
       payload: {
         ...payload,
         userId: session?.user.id,
       },
-      type: "post",
+      type: 'post',
       toast: {
-        errorMsg: "Gagal membuat chat baru",
+        errorMsg: 'Gagal membuat chat baru',
       },
       onError() {
         setLoading(false);
       },
-      onSuccess({ message, status, data }) {
+      onSuccess({ data }) {
         sendData = data;
         setLoading(false);
       },
@@ -110,7 +107,7 @@ export default function AIChatHistoryPage() {
     await deleteGeneral(`/chat/deleteChat?id=${id}`, {
       setLoading: setIsLoadingDeleteChat,
       toast: {
-        errorMsg: "Gagal menghapus chat",
+        errorMsg: 'Gagal menghapus chat',
       },
       onSuccess() {
         refetch();
@@ -151,46 +148,36 @@ export default function AIChatHistoryPage() {
     refetch();
   }, [session]);
 
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [isLoadingDocument, setIsLoadingDocument] = useState<boolean>(true);
-
-  useEffect(() => {
-    getGeneral(`/chat/getAllDocument`, {
-      setData: setDocuments,
-      setLoading: setIsLoadingDocument,
-    });
-  }, []);
-
   const features = [
     {
       icon: ZapIcon,
-      title: "Akses Instan",
-      description: "Dapatkan jawaban dan pengetahuan seketika",
+      title: 'Akses Instan',
+      description: 'Dapatkan jawaban dan pengetahuan seketika',
     },
     {
       icon: ClockIcon,
-      title: "24/7 Siap Membantu",
-      description: "Belajar kapan saja tanpa batas waktu",
+      title: '24/7 Siap Membantu',
+      description: 'Belajar kapan saja tanpa batas waktu',
     },
     {
       icon: UsersIcon,
-      title: "Pendekatan Personal",
-      description: "Pengetahuan disesuaikan dengan kebutuhan",
+      title: 'Pendekatan Personal',
+      description: 'Pengetahuan disesuaikan dengan kebutuhan',
     },
     {
       icon: GraduationCapIcon,
-      title: "Materi Berkualitas",
-      description: "Konten pembelajaran dari pakar terkemuka",
+      title: 'Materi Berkualitas',
+      description: 'Konten pembelajaran dari pakar terkemuka',
     },
     {
       icon: AwardIcon,
-      title: "Sertifikasi",
-      description: "Dapatkan sertifikat untuk setiap pencapaian",
+      title: 'Sertifikasi',
+      description: 'Dapatkan sertifikat untuk setiap pencapaian',
     },
     {
       icon: BarChartIcon,
-      title: "Analisis Kemajuan",
-      description: "Pantau perkembangan belajar secara real-time",
+      title: 'Analisis Kemajuan',
+      description: 'Pantau perkembangan belajar secara real-time',
     },
   ];
 
@@ -203,10 +190,6 @@ export default function AIChatHistoryPage() {
     } else {
       setLoading(false);
     }
-  };
-
-  const startDocumentConversation = () => {
-    router.push("/user/explore");
   };
 
   return (
@@ -350,7 +333,10 @@ export default function AIChatHistoryPage() {
         </div>
 
         {/* Dialog untuk Riwayat Chat */}
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+        >
           <DialogContent className="sm:max-w-[425px] mx-auto w-[90%]">
             <DialogHeader>
               <DialogTitle>Percakapan Sebelumnya</DialogTitle>
@@ -362,7 +348,10 @@ export default function AIChatHistoryPage() {
               <div className="space-y-4">
                 {isLoadingHistory
                   ? Array.from({ length: 5 }).map((_, index) => (
-                      <Skeleton key={index} className="h-[72px] w-full" />
+                      <Skeleton
+                        key={index}
+                        className="h-[72px] w-full"
+                      />
                     ))
                   : chatHistory?.map((chat) => (
                       <div
@@ -428,7 +417,10 @@ const ModalDelete = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -438,7 +430,10 @@ const ModalDelete = ({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setIsOpen(false)}
+          >
             Cancel
           </Button>
           <Button
@@ -448,7 +443,7 @@ const ModalDelete = ({
             }}
             disabled={isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? 'Deleting...' : 'Delete'}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,21 +1,21 @@
-import { cn } from "@/lib/utils";
-import { IconOpenAI } from "@/styles/icon";
-import { motion } from "framer-motion";
-import { PointerIcon, Sparkles } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import AnimatedGradientText from "../../magicui/animated-gradient-text";
-import GridPattern from "../../magicui/animated-grid-pattern";
-import PulsatingButton from "../../magicui/pulsating-button";
-import WordRotate from "../../magicui/word-rotate";
-import { AspectRatio } from "../../ui/aspect-ratio";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { useGuest } from "@/components/layout/layoutGuest";
+import { useGuest } from '@/components/layout/layoutGuest';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { cn } from '@/lib/utils';
+import { IconOpenAI } from '@/styles/icon';
+import { motion } from 'framer-motion';
+import { PointerIcon, Sparkles } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import AnimatedGradientText from '../../magicui/animated-gradient-text';
+import GridPattern from '../../magicui/animated-grid-pattern';
+import PulsatingButton from '../../magicui/pulsating-button';
+import WordRotate from '../../magicui/word-rotate';
+import { AspectRatio } from '../../ui/aspect-ratio';
 
 const HeroSection: React.FC = () => {
-  const { setShowAuth, showAuth } = useGuest();
+  const { setShowAuth } = useGuest();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const { data: session } = useSession();
@@ -31,7 +31,7 @@ const HeroSection: React.FC = () => {
     };
 
     checkMobile();
-    window.addEventListener("resize", checkMobile);
+    window.addEventListener('resize', checkMobile);
 
     if (videoRef.current) {
       videoRef.current.playbackRate = 2;
@@ -41,14 +41,14 @@ const HeroSection: React.FC = () => {
       mobileVideoRef.current.playbackRate = 2; // Untuk mobile
     }
 
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   useEffect(() => {
     if (videoRef.current && videoContainerRef.current) {
       const options = {
         root: null,
-        rootMargin: "0px",
+        rootMargin: '0px',
         threshold: 0.5,
       };
 
@@ -76,7 +76,7 @@ const HeroSection: React.FC = () => {
     if (mobileVideoRef.current && mobileVideoContainerRef.current) {
       const options = {
         root: null,
-        rootMargin: "0px",
+        rootMargin: '0px',
         threshold: 0.5,
       };
 
@@ -102,9 +102,9 @@ const HeroSection: React.FC = () => {
 
   // Handler untuk tombol "Try out gratis" yang melakukan scroll ke #tryout
   const handleScrollToTryout = () => {
-    const element = document.getElementById("tryout");
+    const element = document.getElementById('tryout');
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -121,7 +121,7 @@ const HeroSection: React.FC = () => {
   };
 
   const handleWhatsAppClick = () => {
-    window.open("https://chat.whatsapp.com/LMcwXg3olvX09TAXHhmUbz", "_blank");
+    window.open('https://chat.whatsapp.com/LMcwXg3olvX09TAXHhmUbz', '_blank');
   };
 
   return (
@@ -136,7 +136,7 @@ const HeroSection: React.FC = () => {
             className="mx-auto mb-2 flex rounded-full bg-blue-100/60 px-4 py-2 text-sm font-semibold"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 0.3, yoyo: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 0.3, yoyo: Infinity, ease: 'easeInOut' }}
           >
             <Sparkles className="mr-2 inline-block h-4 w-4 fill-current text-yellow-400" />
             <AnimatedGradientText className="animate-gradient bg-gradient-to-r from-[#ffaa40] via-main to-[#ffaa40]">
@@ -154,8 +154,8 @@ const HeroSection: React.FC = () => {
               <WordRotate
                 className="font-bold"
                 words={[
-                  "Sudah Siap Masuk <br /> Universitas Impianmu?",
-                  "Takut dengan <br /> Persaingan Ketat SNBT/UTBK?",
+                  'Sudah Siap Masuk <br /> Universitas Impianmu?',
+                  'Takut dengan <br /> Persaingan Ketat SNBT/UTBK?',
                 ]}
               />
             </div>
@@ -173,7 +173,7 @@ const HeroSection: React.FC = () => {
               Try out gratis
             </button>
             {/* Tombol "Coba gratis!" dengan navigasi */}
-            <Link href={"/user/try-out"}>
+            <Link href={'/user/try-out'}>
               <PulsatingButton
                 onClick={handlePushToTryOut}
                 pulseColor={websiteSubCategory?.main_color}
@@ -187,8 +187,8 @@ const HeroSection: React.FC = () => {
       {/* Mockup Area */}
       <div
         className={cn(
-          "relative max-w-5xl mx-auto mb-12 mt-12 z-[20]",
-          isMobile ? "w-[320px] h-[568px]" : "w-[1024px] h-[576px]"
+          'relative max-w-5xl mx-auto mb-12 mt-12 z-[20]',
+          isMobile ? 'w-[320px] h-[568px]' : 'w-[1024px] h-[576px]',
         )}
       >
         {isMobile ? (
@@ -238,7 +238,7 @@ const HeroSection: React.FC = () => {
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: 'easeInOut',
               }}
             >
               <PointerIcon
@@ -272,7 +272,7 @@ const HeroSection: React.FC = () => {
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: 'easeInOut',
               }}
             >
               <PointerIcon

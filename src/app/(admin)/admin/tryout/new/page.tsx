@@ -1,20 +1,20 @@
-"use client";
-import { Spinner } from "@/components/ui/spinner";
+'use client';
+import { Spinner } from '@/components/ui/spinner';
 
-import { useAppContext } from "@/components/provider/provider-app";
-import { cn } from "@/lib/utils";
-import "katex/dist/katex.min.css";
-import { useEffect, useState } from "react";
-import SessionOption from "./_component/session-option";
-import TryoutOption from "./_component/tryout-option";
-import { TryoutSubCategory } from "@/types/database";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response, responseError } from "@/lib/response";
+import { useAppContext } from '@/components/provider/provider-app';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response, responseError } from '@/lib/response';
+import { cn } from '@/lib/utils';
+import { TryoutSubCategory } from '@/types/database';
+import 'katex/dist/katex.min.css';
+import { useEffect, useState } from 'react';
+import SessionOption from './_component/session-option';
+import TryoutOption from './_component/tryout-option';
 
 export interface TryoutProps {
   title?: string;
   restTime?: number;
-  status?: "PUBLIC" | "PRIVATE" | "DRAFT";
+  status?: 'PUBLIC' | 'PRIVATE' | 'DRAFT';
   startDate?: string;
   endDate?: string;
   image?: string;
@@ -74,19 +74,19 @@ const NewTryOut = () => {
   const [tryout, setTryout] = useState<TryoutProps | null>(null);
   const [sessions, setSessions] = useState<SessionProps[]>([]);
 
-  const [startDate, setStartDate] = useState<string>("");
-  const [startDateTime, setStartDateTime] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>('');
+  const [startDateTime, setStartDateTime] = useState<string>('');
 
-  const [endDate, setEndDate] = useState<string>("");
-  const [endDateTime, setEndDateTime] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>('');
+  const [endDateTime, setEndDateTime] = useState<string>('');
 
-  const [resultDate, setResultDate] = useState<string>("");
-  const [resultDateTime, setResultDateTime] = useState<string>("");
+  const [resultDate, setResultDate] = useState<string>('');
+  const [resultDateTime, setResultDateTime] = useState<string>('');
 
   const EditSession =
     currentIndexEdit !== null ? sessions[currentIndexEdit] : null;
-  console.log("EditSession", EditSession);
-  const [assessmentType, setAssesmentType] = useState<string>("");
+  console.log('EditSession', EditSession);
+  const [assessmentType, setAssesmentType] = useState<string>('');
 
   // const { mutate: createTryout, isPending: isLoading } =
   //   api.tryout.createTryout.useMutation({
@@ -111,7 +111,7 @@ const NewTryOut = () => {
   const createTryout = async (data: any) => {
     try {
       setIsLoading(true);
-      const res = await axiosInstance.post("/tryout/createTryout", data);
+      const res = await axiosInstance.post('/tryout/createTryout', data);
       return response(res, true);
     } catch (error) {
       return responseError(error, true);
@@ -125,7 +125,7 @@ const NewTryOut = () => {
 
   useEffect(() => {
     axiosInstance
-      .get("/tryoutCategory/getCategory")
+      .get('/tryoutCategory/getCategory')
       .then((res) => {
         const resData = response(res);
         setCategory(resData.data);
@@ -140,14 +140,14 @@ const NewTryOut = () => {
   const resetTryout = () => {
     setTryout(null);
     setSessions([]);
-    setAssesmentType("");
-    setStartDate("");
-    setStartDateTime("");
-    setEndDate("");
-    setEndDateTime("");
-    setResultDate("");
-    setResultDateTime("");
-    localStorage.removeItem("temporary-add-tryout");
+    setAssesmentType('');
+    setStartDate('');
+    setStartDateTime('');
+    setEndDate('');
+    setEndDateTime('');
+    setResultDate('');
+    setResultDateTime('');
+    localStorage.removeItem('temporary-add-tryout');
   };
 
   useEffect(() => {
@@ -169,44 +169,44 @@ const NewTryOut = () => {
   ]);
 
   useEffect(() => {
-    if (currentIndexEdit !== null && EditSession?.assessmentType !== "") {
+    if (currentIndexEdit !== null && EditSession?.assessmentType !== '') {
       setAssesmentType((prev) =>
-        EditSession?.assessmentType ? EditSession?.assessmentType : prev
+        EditSession?.assessmentType ? EditSession?.assessmentType : prev,
       );
     }
   }, [currentIndexEdit]);
 
   useEffect(() => {
-    console.log("change", assessmentType);
-    if (assessmentType !== "") {
+    console.log('change', assessmentType);
+    if (assessmentType !== '') {
       setSessions((prev) =>
         prev.map((item, i: number) => {
           if (i === currentIndexEdit) {
             return { ...item, assessmentType: assessmentType };
           }
           return { ...item };
-        })
+        }),
       );
     }
   }, [assessmentType]);
 
   useEffect(() => {
-    const saveDataString = localStorage.getItem("temporary-add-tryout");
+    const saveDataString = localStorage.getItem('temporary-add-tryout');
     if (saveDataString) {
       const saveData = JSON.parse(saveDataString);
       setTryout({ ...saveData.tryout });
       setSessions([...saveData.sessions]);
-      const startDate = saveData.tryout.startDate.split("T");
+      const startDate = saveData.tryout.startDate.split('T');
       setStartDate(startDate[0]);
       setStartDateTime(startDate[1]);
-      const endDate = saveData.tryout.endDate.split("T");
+      const endDate = saveData.tryout.endDate.split('T');
       setEndDate(endDate[0]);
       setEndDateTime(endDate[1]);
-      const resultDate = saveData.tryout.endDate.split("T");
+      const resultDate = saveData.tryout.endDate.split('T');
       setResultDate(resultDate[0]);
       setResultDateTime(resultDate[1]);
     }
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   }, []);
 
   useEffect(() => {
@@ -215,20 +215,20 @@ const NewTryOut = () => {
       sessions,
     };
     if (tryout) {
-      localStorage.setItem("temporary-add-tryout", JSON.stringify(saveData));
+      localStorage.setItem('temporary-add-tryout', JSON.stringify(saveData));
     }
   }, [tryout, sessions]);
 
-  console.log("tryout : ", tryout);
+  console.log('tryout : ', tryout);
   console.log(
-    "sessions : ",
-    currentIndexEdit !== null && sessions[currentIndexEdit]
+    'sessions : ',
+    currentIndexEdit !== null && sessions[currentIndexEdit],
   );
-  console.log("ass : ", assessmentType);
+  console.log('ass : ', assessmentType);
   // console.log("height2", listQuestionHeight);
 
   const handleSubmit = () => {
-    console.log("awdwad");
+    console.log('awdwad');
     // localStorage.removeItem("temporary-add-tryout")
     console.log(sessions.length);
     if (sessions.length === 0) {
@@ -236,7 +236,7 @@ const NewTryOut = () => {
       //     variant: "success",
       //     title: 'Success',
       // });
-      alert("Buat Minimal 1 Sesi");
+      alert('Buat Minimal 1 Sesi');
       return;
     }
     if (
@@ -248,7 +248,7 @@ const NewTryOut = () => {
       // tryout.image
     ) {
       const validTryout: {
-        status: "PUBLIC" | "PRIVATE" | "DRAFT";
+        status: 'PUBLIC' | 'PRIVATE' | 'DRAFT';
         title: string;
         restTime: number;
         startDate: string;
@@ -256,21 +256,21 @@ const NewTryOut = () => {
         image: string;
         resultDate: string;
       } = {
-        status: tryout.status as "PUBLIC" | "PRIVATE" | "DRAFT",
+        status: tryout.status as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
         title: tryout.title,
         restTime: tryout.restTime ? tryout.restTime : 0,
         startDate: tryout.startDate,
         endDate: tryout.endDate,
-        image: tryout.image || "",
+        image: tryout.image || '',
         resultDate: tryout.resultDate,
       };
 
       const validSessions = sessions.map((session) => ({
-        name: session.name || "Default session Name",
-        categoryId: session.categoryId || "defaultCategoryId",
-        subCategoryId: session.subCategoryId || "defaultSubCategoryId",
+        name: session.name || 'Default session Name',
+        categoryId: session.categoryId || 'defaultCategoryId',
+        subCategoryId: session.subCategoryId || 'defaultSubCategoryId',
         duration:
-          typeof session.duration === "string"
+          typeof session.duration === 'string'
             ? parseFloat(session.duration)
             : session.duration || 0,
         TryoutQuestion:
@@ -285,24 +285,24 @@ const NewTryOut = () => {
             };
           }) || [],
         description: session.description,
-        assessmentType: session.assessmentType || "defaultAssessmentType",
+        assessmentType: session.assessmentType || 'defaultAssessmentType',
         thresholdValue: session.thresholdValue,
       }));
       const checkCategoryId = validSessions.find(
-        (item) => item.categoryId === "defaultCategoryId"
+        (item) => item.categoryId === 'defaultCategoryId',
       );
       const checkSubCategoryId = validSessions.find(
-        (item) => item.categoryId === "defaultSubCategoryId"
+        (item) => item.categoryId === 'defaultSubCategoryId',
       );
       let checkQuestion = false;
-      let checkQuestionValue = { value: false, message: "" };
-      let checkAnswers = { value: false, message: "" };
+      let checkQuestionValue = { value: false, message: '' };
+      let checkAnswers = { value: false, message: '' };
       validSessions.forEach((item) => {
         if (item.TryoutQuestion && item.TryoutQuestion.length < 1) {
           checkQuestion = true;
         }
         item.TryoutQuestion.forEach((quest, qIndex) => {
-          if (quest.question === "" || quest.question.length === 0) {
+          if (quest.question === '' || quest.question.length === 0) {
             checkQuestionValue = {
               value: true,
               message: `Soal ${qIndex + 1} masih kosong`,
@@ -310,7 +310,7 @@ const NewTryOut = () => {
             return;
           }
           quest.TryoutAnswers.forEach((answer) => {
-            if (answer.answer === "" || answer.answer.length === 0) {
+            if (answer.answer === '' || answer.answer.length === 0) {
               checkAnswers = {
                 value: true,
                 message: `Jawaban masih ada yang kosong pada soal ${
@@ -328,38 +328,38 @@ const NewTryOut = () => {
         if (item.duration < 5) {
           checkDuration = true;
         }
-        if (item.name === "Default Session Name" || item.name === "") {
+        if (item.name === 'Default Session Name' || item.name === '') {
           checkName = true;
         }
         if (
-          item.assessmentType === "defaultAssessmentType" ||
-          item.assessmentType === ""
+          item.assessmentType === 'defaultAssessmentType' ||
+          item.assessmentType === ''
         ) {
           checkAssestmentType = true;
         }
       });
       if (checkCategoryId) {
-        alert("Pilih Tes");
+        alert('Pilih Tes');
         return;
       }
       if (checkSubCategoryId) {
-        alert("Pilih Sub Tes");
+        alert('Pilih Sub Tes');
         return;
       }
       if (checkName) {
-        alert("Masukan Nama Session");
+        alert('Masukan Nama Session');
         return;
       }
       if (checkAssestmentType) {
-        alert("Pilih Penilaian");
+        alert('Pilih Penilaian');
         return;
       }
       if (checkDuration) {
-        alert("Durasi Tryout terlalu singkat");
+        alert('Durasi Tryout terlalu singkat');
         return;
       }
       if (checkQuestion) {
-        alert("Setiap Sesi Harus memiliki Soal");
+        alert('Setiap Sesi Harus memiliki Soal');
         return;
       }
       if (checkQuestionValue.value) {
@@ -374,7 +374,7 @@ const NewTryOut = () => {
       createTryout({ Tryout: validTryout, TryoutSession: validSessions });
       // alert("Dijalankan")
     } else {
-      console.error("Tryout object is missing required properties");
+      console.error('Tryout object is missing required properties');
     }
   };
 
@@ -385,9 +385,9 @@ const NewTryOut = () => {
   return (
     <div
       className={cn(
-        "fixed left-0 top-[80px] h-full w-full bg-workspace duration-300",
-        minimizeSidebar && "pl-[calc(73px+1rem)]",
-        !minimizeSidebar && "pl-[calc(254px+1rem)]"
+        'fixed left-0 top-[80px] h-full w-full bg-workspace duration-300',
+        minimizeSidebar && 'pl-[calc(73px+1rem)]',
+        !minimizeSidebar && 'pl-[calc(254px+1rem)]',
       )}
     >
       <form
@@ -400,9 +400,9 @@ const NewTryOut = () => {
       >
         <div
           className={cn(
-            "col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-[1rem] pt-[1rem] duration-300",
-            currentIndexEdit === null && "col-span-5 w-[100%]",
-            currentIndexEdit !== null && !showDetailTryout && "w-0"
+            'col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-[1rem] pt-[1rem] duration-300',
+            currentIndexEdit === null && 'col-span-5 w-[100%]',
+            currentIndexEdit !== null && !showDetailTryout && 'w-0',
           )}
         >
           <TryoutOption
@@ -432,11 +432,11 @@ const NewTryOut = () => {
         </div>
         <div
           className={cn(
-            "relative col-span-3 mt-[1rem] h-[90vh] w-[60%] duration-300",
+            'relative col-span-3 mt-[1rem] h-[90vh] w-[60%] duration-300',
             currentIndexEdit !== null &&
               !showDetailTryout &&
-              "ml-[-1rem] w-full",
-            currentIndexEdit === null && "w-0"
+              'ml-[-1rem] w-full',
+            currentIndexEdit === null && 'w-0',
           )}
         >
           <SessionOption
