@@ -162,6 +162,11 @@
   height: 5px;
 }
 
+#google-button-container > div {
+  width: 100%;
+  border-radius: 0.75rem;
+}
+
 .recharts-text.recharts-cartesian-axis-tick-value tspan {
   transform: rotate(180);
 }

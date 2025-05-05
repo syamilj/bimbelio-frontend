@@ -18,7 +18,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
     setLoading(true);
     try {
       const { credential } = googleToken as { credential: string };
-      console.log({ credential });
+      console.log({ credential, googleToken });
       // Kirim token ke backend
       const res = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/google`, {
         token: credential,
@@ -70,7 +70,10 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
             </div>
             <div className="mt-[1rem] flex flex-col items-center gap-[1.5rem]">
               <h1 className="text-[1.5rem] font-semibold">Masuk</h1>
-              <div className="flex w-full justify-center">
+              <div
+                id="google-button-container"
+                className="flex w-full justify-center rounded-xl"
+              >
                 <GoogleButton handleSubmit={handleSubmit} />
                 {/* <div
                     className="bg-white w-full flex justify-center items-center gap-[.5rem] border rounded-[.5rem] font-semibold text-[.9rem] h-[40px] cursor-pointer duration-300 md:hover:bg-main-gray-input/15"
@@ -129,7 +132,7 @@ const GoogleButton = ({
         onSuccess={handleSubmit}
         onError={() => console.log("Login Failed")}
         text={"signin_with"}
-        width={1000}
+        shape="circle"
       />
     </>
   );
