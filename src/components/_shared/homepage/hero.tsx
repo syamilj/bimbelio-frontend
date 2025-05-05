@@ -1,11 +1,17 @@
 'use client';
 
-import bgHero from '@/_assest/homepage/hero/bg-hero.webp';
 import GridPattern from '@/components/magicui/animated-grid-pattern';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, RotateCw, Search } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  PointerIcon,
+  RotateCw,
+  Search,
+} from 'lucide-react';
 import Image from 'next/image';
+import ImageHero from "@/_assest/homepage/hero/bg-hero.webp";
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -112,7 +118,7 @@ const HeroSection: React.FC = () => {
       <BackgroundElements />
 
       {/* Main Content */}
-      <div className="relative z-[30] mx-auto flex max-w-7xl flex-col items-center px-4 text-center">
+      <div className="relative z-[30] mx-auto flex max-w-7xl flex-col items-center px-4 text-center md:pb-0 pb-12">
         <BrandLogo />
         <HeadingSection headings={HEADINGS} />
         <Subtitle />
@@ -141,15 +147,35 @@ const GlobalStyles: React.FC = () => (
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    @keyframes slideLogos {
+
+    @keyframes marquee {
       0% {
         transform: translateX(0);
       }
       100% {
-        transform: translateX(-100%);
+        transform: translateX(-33.33%);
       }
     }
-    .slider:hover {
+
+    @keyframes marquee-reverse {
+      0% {
+        transform: translateX(-33.33%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    .animate-marquee-slower {
+      animation: marquee 30s linear infinite;
+    }
+
+    .animate-marquee-reverse {
+      animation: marquee-reverse 20s linear infinite;
+    }
+
+    .animate-marquee-slower:hover,
+    .animate-marquee-reverse:hover {
       animation-play-state: paused;
     }
   `}</style>
@@ -171,15 +197,16 @@ const BackgroundElements: React.FC = () => (
     {/* Background Image + Overlay */}
     <div className="absolute inset-0 z-[2]">
       <Image
-        src={bgHero}
+        src={ImageHero}
         alt="University Buildings Background"
         fill
-        className="object-cover object-[75%] transition-all duration-500 md:object-center [mask-image:radial-gradient(white_90%)]"
+        className="object-cover object-[75%] transition-all duration-500 md:object-center [mask-image:radial-gradient(white_90%)] mt-[-15rem]"
         priority
         sizes="100vw"
         loading="eager"
       />
       <div className="absolute inset-0 bg-white/80" />
+      <div className="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-white to-workspace" />
     </div>
   </>
 );
@@ -256,49 +283,63 @@ const LogoSliders: React.FC<{ logos: Logo[]; isMobile: boolean }> = ({
   logos,
   isMobile,
 }) => {
-  const sliderStyle = (duration: string) => ({
-    animation: `slideLogos ${duration} linear infinite`,
-  });
+  // Create two sets of logos for continuous scrolling effect
+  const doubledLogos = [...logos, ...logos, ...logos];
 
   return (
-    <>
-      {['20s', '30s'].map((duration, i) => (
-        <div
-          key={i}
-          className={`${i ? 'hidden md:block' : 'md:hidden'} overflow-hidden scrollbar-hide mb-10`}
-        >
-          <div
-            className="slider flex"
-            style={sliderStyle(duration)}
-          >
-            {[...logos, ...logos].map((logo, j) => (
-              <div
-                key={j}
-                className="flex-shrink-0 mx-3 flex flex-col items-center"
-              >
-                <div
-                  className={`${i ? 'w-28 h-28 p-3' : 'w-20 h-20 p-2'} bg-white rounded-full shadow-md flex items-center justify-center hover:shadow-lg transition`}
-                >
-                  <Image
-                    src={logo.src || '/placeholder.svg'}
-                    alt={logo.alt}
-                    width={i ? 120 : 80}
-                    height={i ? 120 : 80}
-                    className={`${i ? 'w-20 h-20' : 'w-16 h-16'} object-contain`}
-                    loading="lazy"
-                  />
-                </div>
-                <span
-                  className={`${i ? 'text-sm' : 'text-xs'} mt-2 font-medium text-blue-800`}
-                >
-                  {logo.label}
-                </span>
+    <div className="w-full mb-12">
+      {/* Desktop slider - moves from right to left */}
+      <div className="hidden md:block relative overflow-hidden py-4 bg-gradient-to-r from-white/0 via-white/80 to-white/0">
+        <div className="animate-marquee-slower flex">
+          {doubledLogos.map((logo, index) => (
+            <div
+              key={`desktop-${index}`}
+              className="flex-shrink-0 mx-4 flex flex-col items-center group"
+            >
+              <div className="w-28 h-28 p-3 bg-white rounded-full shadow-md flex items-center justify-center group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
+                <Image
+                  src={logo.src || '/placeholder.svg'}
+                  alt={logo.alt}
+                  width={120}
+                  height={120}
+                  className="w-20 h-20 object-contain"
+                  loading="lazy"
+                />
               </div>
-            ))}
-          </div>
+              <span className="text-sm mt-2 font-medium text-blue-800 opacity-80 group-hover:opacity-100">
+                {logo.label}
+              </span>
+            </div>
+          ))}
         </div>
-      ))}
-    </>
+      </div>
+
+      {/* Mobile slider - moves from left to right (opposite direction) */}
+      <div className="md:hidden relative overflow-hidden py-3 bg-gradient-to-r from-white/0 via-white/80 to-white/0">
+        <div className="animate-marquee-reverse flex">
+          {doubledLogos.map((logo, index) => (
+            <div
+              key={`mobile-${index}`}
+              className="flex-shrink-0 mx-3 flex flex-col items-center group"
+            >
+              <div className="w-20 h-20 p-2 bg-white rounded-full shadow-md flex items-center justify-center group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
+                <Image
+                  src={logo.src || '/placeholder.svg'}
+                  alt={logo.alt}
+                  width={80}
+                  height={80}
+                  className="w-16 h-16 object-contain"
+                  loading="lazy"
+                />
+              </div>
+              <span className="text-xs mt-2 font-medium text-blue-800 opacity-80 group-hover:opacity-100">
+                {logo.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -311,7 +352,7 @@ const CTAButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   >
     <button
       onClick={onClick}
-      className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold rounded-full shadow-lg hover:-translate-y-1 transition"
+      className="px-8 py-3 bg-gradient text-white font-bold rounded-full shadow-lg hover:-translate-y-1 transition"
       aria-label="Coba Try Out Sekarang"
     >
       Coba Try Out Sekarang!
@@ -332,7 +373,7 @@ const VideoMockup: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
 
 const MobileVideoMockup: React.FC = () => (
   <div className="relative aspect-[366/729] mx-auto max-w-[366px]">
-    <div className="absolute left-[calc(23/366*100%)] top-[calc(23/729*100%)] h-[calc(686/729*100%)] w-[calc(318/366*100%)] overflow-visible rounded-[calc(38/366*100%)/calc(38/729*100%)]">
+    <div className="absolute z-[-1] left-[calc(23/366*100%)] top-[calc(23/729*100%)] h-[calc(686/729*100%)] w-[calc(318/366*100%)] overflow-visible rounded-[calc(38/366*100%)/calc(38/729*100%)]">
       <video
         src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete//bimbelio-mobile.webm"
         className="w-full h-full object-cover"
@@ -350,7 +391,7 @@ const MobileVideoMockup: React.FC = () => (
       alt="Phone frame"
       width={366}
       height={729}
-      className="object-contain pointer-events-none"
+      className="object-cover pointer-events-none"
       priority
     />
   </div>
@@ -388,5 +429,6 @@ const DesktopVideoMockup: React.FC = () => (
     </div>
   </div>
 );
+
 
 export default HeroSection;

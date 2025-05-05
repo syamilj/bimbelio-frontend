@@ -35,7 +35,7 @@ export default function Home() {
         <div className="min-h-screen">
           <div className="flex w-full flex-col gap-[5rem]">
             <HeroSection />
-            <CaraBelajarSection1 />
+            {/* <CaraBelajarSection1 /> */}
             <Tryout />
             {/* <Fitur /> */}
             <LearningRevolutions />
