@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useLeaderboardContext } from "@/app/(user)/user/leaderboard/_components/provider-leaderboard";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useLeaderboardContext } from '@/app/(user)/user/leaderboard/_components/provider-leaderboard';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Pagination,
   PaginationContent,
@@ -12,8 +12,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import { Skeleton } from "@/components/ui/skeleton";
+} from '@/components/ui/pagination';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -21,10 +21,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-import { ArrowUpDown, Search } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+} from '@/components/ui/table';
+import { cn } from '@/lib/utils';
+import { ArrowUpDown, Search } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -51,42 +51,42 @@ interface Participant {
 // Hanya definisikan field sorting yang valid.
 // Jika Anda punya 3 kategori, maka Anda bisa menambahkannya di sini.
 type SortField =
-  | "rank"
-  | "averageScore"
-  | "category_0"
-  | "category_1"
-  | "category_2";
+  | 'rank'
+  | 'averageScore'
+  | 'category_0'
+  | 'category_1'
+  | 'category_2';
 
-type SortDirection = "asc" | "desc";
+type SortDirection = 'asc' | 'desc';
 
 export function RankingTable() {
   const { RankingTryout, RankingTryoutIsLoading } = useLeaderboardContext();
   const { data: session } = useSession();
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortField, setSortField] = useState<SortField>("rank");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  const [sortField, setSortField] = useState<SortField>('rank');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
   const handleSearch = useCallback(
     (term: string) => {
       setSearchTerm(term);
       setCurrentPage(1);
     },
-    [setSearchTerm, setCurrentPage]
+    [setSearchTerm, setCurrentPage],
   );
 
   const handleSort = useCallback(
     (field: SortField) => {
       if (sortField === field) {
-        setSortDirection((current) => (current === "asc" ? "desc" : "asc"));
+        setSortDirection((current) => (current === 'asc' ? 'desc' : 'asc'));
       } else {
         setSortField(field);
-        setSortDirection("asc");
+        setSortDirection('asc');
       }
       setCurrentPage(1);
     },
-    [sortField]
+    [sortField],
   );
 
   /**
@@ -96,14 +96,14 @@ export function RankingTable() {
    * dari participant berdasarkan sortField yang diinginkan.
    */
   const getValueBySortField = (participant: Participant, field: SortField) => {
-    if (field === "rank") {
+    if (field === 'rank') {
       return participant.rank;
     }
-    if (field === "averageScore") {
+    if (field === 'averageScore') {
       return participant.averageScore;
     }
-    if (field.startsWith("category_")) {
-      const categoryIndex = Number(field.split("_")[1]);
+    if (field.startsWith('category_')) {
+      const categoryIndex = Number(field.split('_')[1]);
       return participant.categoryResult[categoryIndex]?.averageScore ?? 0;
     }
 
@@ -121,7 +121,7 @@ export function RankingTable() {
     if (searchTerm.trim().length > 0) {
       const lowerSearch = searchTerm.toLowerCase();
       processedData = processedData.filter((participant) =>
-        participant.name.toLowerCase().includes(lowerSearch)
+        participant.name.toLowerCase().includes(lowerSearch),
       );
     }
 
@@ -130,8 +130,8 @@ export function RankingTable() {
       const aValue = getValueBySortField(a, sortField);
       const bValue = getValueBySortField(b, sortField);
 
-      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
 
@@ -164,8 +164,8 @@ export function RankingTable() {
       {label}
       <ArrowUpDown
         className={cn(
-          "ml-2 h-4 w-4 transition-transform duration-200",
-          sortField === field && sortDirection === "desc" && "rotate-180"
+          'ml-2 h-4 w-4 transition-transform duration-200',
+          sortField === field && sortDirection === 'desc' && 'rotate-180',
         )}
       />
     </Button>
@@ -183,11 +183,11 @@ export function RankingTable() {
           isActive={currentPage === 1}
           onClick={currentPage === 1 ? undefined : () => setCurrentPage(1)}
           aria-disabled={currentPage === 1}
-          className={cn(currentPage === 1 && "pointer-events-none opacity-50")}
+          className={cn(currentPage === 1 && 'pointer-events-none opacity-50')}
         >
           1
         </PaginationLink>
-      </PaginationItem>
+      </PaginationItem>,
     );
 
     // Ellipsis 1
@@ -195,7 +195,7 @@ export function RankingTable() {
       items.push(
         <PaginationItem key="ellipsis-1">
           <PaginationEllipsis />
-        </PaginationItem>
+        </PaginationItem>,
       );
     }
 
@@ -212,12 +212,12 @@ export function RankingTable() {
             onClick={currentPage === i ? undefined : () => setCurrentPage(i)}
             aria-disabled={currentPage === i}
             className={cn(
-              currentPage === i && "pointer-events-none opacity-50"
+              currentPage === i && 'pointer-events-none opacity-50',
             )}
           >
             {i}
           </PaginationLink>
-        </PaginationItem>
+        </PaginationItem>,
       );
     }
 
@@ -226,7 +226,7 @@ export function RankingTable() {
       items.push(
         <PaginationItem key="ellipsis-2">
           <PaginationEllipsis />
-        </PaginationItem>
+        </PaginationItem>,
       );
     }
 
@@ -243,12 +243,12 @@ export function RankingTable() {
             }
             aria-disabled={currentPage === totalPages}
             className={cn(
-              currentPage === totalPages && "pointer-events-none opacity-50"
+              currentPage === totalPages && 'pointer-events-none opacity-50',
             )}
           >
             {totalPages}
           </PaginationLink>
-        </PaginationItem>
+        </PaginationItem>,
       );
     }
 
@@ -282,22 +282,37 @@ export function RankingTable() {
             <TableHeader>
               <TableRow className="bg-gray-50 hover:bg-gray-50">
                 <TableHead className="w-[80px] font-semibold px-[.5rem] py-[1rem]">
-                  <SortButton field="rank" label="Rank" />
+                  <SortButton
+                    field="rank"
+                    label="Rank"
+                  />
                 </TableHead>
                 <TableHead className="font-semibold">Nama</TableHead>
                 <TableHead className="font-semibold">Sekolah</TableHead>
                 <TableHead className="font-semibold">Target</TableHead>
                 <TableHead className="text-right font-semibold">
-                  <SortButton field="averageScore" label="Rata-rata" />
+                  <SortButton
+                    field="averageScore"
+                    label="Rata-rata"
+                  />
                 </TableHead>
                 <TableHead className="text-right font-semibold">
-                  <SortButton field="category_0" label="TPS" />
+                  <SortButton
+                    field="category_0"
+                    label="TPS"
+                  />
                 </TableHead>
                 <TableHead className="text-right font-semibold">
-                  <SortButton field="category_1" label="Literasi" />
+                  <SortButton
+                    field="category_1"
+                    label="Literasi"
+                  />
                 </TableHead>
                 <TableHead className="text-right font-semibold">
-                  <SortButton field="category_2" label="Matematika" />
+                  <SortButton
+                    field="category_2"
+                    label="Matematika"
+                  />
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -319,8 +334,8 @@ export function RankingTable() {
                     <TableRow
                       key={i}
                       className={cn(
-                        isCurrentUser && "bg-blue-50 hover:bg-blue-100",
-                        "hover:bg-gray-50 transition-colors duration-200"
+                        isCurrentUser && 'bg-blue-50 hover:bg-blue-100',
+                        'hover:bg-gray-50 transition-colors duration-200',
                       )}
                     >
                       <TableCell className="font-medium text-center px-[.5rem] py-[1rem]">
@@ -328,15 +343,15 @@ export function RankingTable() {
                       </TableCell>
                       <TableCell>{participant.name}</TableCell>
                       <TableCell className="max-w-[200px] truncate">
-                        {participant.school || "-"}
+                        {participant.school || '-'}
                       </TableCell>
                       <TableCell className="max-w-[300px] truncate">
                         <i>
                           {participant.univStudyChoice ||
-                            "Jurusan tidak tersedia"}
-                        </i>{" "}
-                        -{" "}
-                        {participant.univChoice || "Universitas tidak tersedia"}
+                            'Jurusan tidak tersedia'}
+                        </i>{' '}
+                        -{' '}
+                        {participant.univChoice || 'Universitas tidak tersedia'}
                       </TableCell>
                       <TableCell className="text-right font-medium tabular-nums">
                         {participant.averageScore.toFixed(2)}
@@ -366,11 +381,11 @@ export function RankingTable() {
         {/* Bagian Info Halaman & Jumlah Data */}
         <div className="text-sm text-muted-foreground text-center md:text-left">
           <p>
-            Menampilkan {(currentPage - 1) * ITEMS_PER_PAGE + 1} -{" "}
+            Menampilkan {(currentPage - 1) * ITEMS_PER_PAGE + 1} -{' '}
             {Math.min(
               currentPage * ITEMS_PER_PAGE,
-              filteredAndSortedData.length
-            )}{" "}
+              filteredAndSortedData.length,
+            )}{' '}
             dari {filteredAndSortedData.length} entri
           </p>
           <p className="text-xs text-gray-500">
@@ -390,8 +405,8 @@ export function RankingTable() {
                 }
                 aria-disabled={currentPage === 1}
                 className={cn(
-                  "transition-colors",
-                  currentPage === 1 && "pointer-events-none opacity-50"
+                  'transition-colors',
+                  currentPage === 1 && 'pointer-events-none opacity-50',
                 )}
               />
             </PaginationItem>
@@ -408,8 +423,9 @@ export function RankingTable() {
                 }
                 aria-disabled={currentPage === totalPages}
                 className={cn(
-                  "transition-colors",
-                  currentPage === totalPages && "pointer-events-none opacity-50"
+                  'transition-colors',
+                  currentPage === totalPages &&
+                    'pointer-events-none opacity-50',
                 )}
               />
             </PaginationItem>

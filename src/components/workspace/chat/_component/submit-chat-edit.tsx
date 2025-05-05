@@ -1,8 +1,8 @@
-import { useAppContext } from "@/components/provider/provider-app";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { toaster } from "@/components/ui/toaster";
-import { mutateGeneral } from "@/lib/fetch-helper";
-import { IconSend } from "@/styles/icon";
+import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { toaster } from '@/components/ui/toaster';
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { IconSend } from '@/styles/icon';
 
 interface Props {
   editMessage: any;
@@ -31,12 +31,12 @@ const SubmitChatEdit = ({
     quiz?: boolean;
   }) => {
     let sendData: any = null;
-    await mutateGeneral("/user/limitation", {
+    await mutateGeneral('/user/limitation', {
       payload: {
         ...payload,
-        userId: session?.user.id || "",
+        userId: session?.user.id || '',
       },
-      type: "post",
+      type: 'post',
       toast: { hideSuccess: true },
       onSuccess({ data }) {
         sendData = data;
@@ -54,12 +54,12 @@ const SubmitChatEdit = ({
     docId: string;
     messageIndex: number;
   }) => {
-    await mutateGeneral("/message/editMessages", {
+    await mutateGeneral('/message/editMessages', {
       payload: {
         ...payload,
         userId: session?.user.id,
       },
-      type: "post",
+      type: 'post',
     });
   };
 
@@ -68,20 +68,20 @@ const SubmitChatEdit = ({
       ...prev,
       bool: false,
       index: 99999,
-      value: "",
+      value: '',
     }));
   };
 
   const handleExecuteEditMessage = async () => {
     try {
       const inputChatEdit = document.getElementById(
-        "editInput"
+        'editInput',
       ) as HTMLInputElement;
       const data: any = await limitation({ chat: true });
       if (data && !data.status) {
         toaster({
-          title: "Uppss",
-          condition: "warning",
+          title: 'Uppss',
+          condition: 'warning',
           description: data.message,
           duration: 5000,
         });
@@ -90,7 +90,7 @@ const SubmitChatEdit = ({
         try {
           resetEdit();
           const newMessage = messageData.filter(
-            (item: any, i: number) => i <= editMessage.index - 1
+            (item: any, i: number) => i <= editMessage.index - 1,
           );
           setTempData([...newMessage]);
           setMessageData(() => [...newMessage]);
@@ -114,9 +114,9 @@ const SubmitChatEdit = ({
       }
     } catch (error) {
       toaster({
-        title: "Gagal",
-        condition: "warning",
-        description: "Coba lagi nanti!",
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
       });
       return;
     }
@@ -129,15 +129,15 @@ const SubmitChatEdit = ({
         placeholder="Edit your chat here..."
         className="h-[100px] w-full resize-none rounded-[1rem] border border-main-gray-input bg-white px-[1rem] py-[.5rem] text-[.9rem] outline-none"
         onChange={(e) => {
-          console.log("inputLengthEdit", e.target.value.length);
+          console.log('inputLengthEdit', e.target.value.length);
           if (e.target.value.length > 1000) {
             e.target.value = e.target.value.slice(0, 1000);
           }
           if (e.target.value.length === 1000) {
             toaster({
-              title: "Upss",
-              condition: "warning",
-              description: "Maksimal 1000 karakter input chat!",
+              title: 'Upss',
+              condition: 'warning',
+              description: 'Maksimal 1000 karakter input chat!',
               duration: 3000,
             });
           }

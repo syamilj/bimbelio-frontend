@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { use } from "react";
+import { use } from 'react';
 
-import { SpinnerPageCentered } from "@/components/ui/spinner";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import Header from "./_components/header";
-import RestTime from "./_components/rest-time";
-import StartTryout from "./_components/start-tryout";
-import Tryout from "./_components/tryout";
-import TryoutResult from "./_components/tryout-result";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { QuestionTypeEnum, TryoutStatusEnum } from "@/types/database";
+import { useSession } from '@/components/provider/session-provider-auth';
+import { SpinnerPageCentered } from '@/components/ui/spinner';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Header from './_components/header';
+import RestTime from './_components/rest-time';
+import StartTryout from './_components/start-tryout';
+import Tryout from './_components/tryout';
+import TryoutResult from './_components/tryout-result';
 
 export interface TryoutPageProps {
   params: Promise<{ id: string }>;
 }
 const TryoutPage = ({ params }: TryoutPageProps) => {
   const pathname = usePathname();
-  const isTesting = pathname?.toLowerCase().includes("testing") || false;
+  const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { data: sessionUser } = useSession();
 
   // const { id } = router.query;
@@ -48,7 +48,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       {
         setData: setTryoutData,
         setLoading: setIsLoading,
-      }
+      },
     );
   };
 
@@ -71,7 +71,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   }) => {
     await mutateGeneral(`/tryoutSession/finishSessionLate`, {
       payload,
-      type: "post",
+      type: 'post',
       onSuccess() {
         //       trpc.tryout.getTryoutById.refetch();
         getTryoutById();
@@ -148,8 +148,8 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
                   return {
                     number: item.number,
                     questionId: item.id,
-                    answerId: "",
-                    answer: "",
+                    answerId: '',
+                    answer: '',
                     type: item.type,
                     notSure: false,
                   };
@@ -158,10 +158,10 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
                 await FinishTryOutLate({
                   sessionId: session.id,
                   answer: sessionAnswer,
-                  userId: sessionUser?.user.id || "",
+                  userId: sessionUser?.user.id || '',
                 });
               }
-            }
+            },
           );
 
           await Promise.all(sessionPromises);
@@ -183,10 +183,10 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     }
   }, [tryoutData]);
 
-  console.log("currentIndexSession", currentIndexSession);
-  console.log("tryoutData", tryoutData);
-  console.log("isSessionDone", isSessionDone);
-  console.log("isTryoutDone", isTryoutDone);
+  console.log('currentIndexSession', currentIndexSession);
+  console.log('tryoutData', tryoutData);
+  console.log('isSessionDone', isSessionDone);
+  console.log('isTryoutDone', isTryoutDone);
 
   // useEffect(() => {
   //   if (tryoutData && getIsTryoutDone()) {
@@ -238,7 +238,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
           createAt: new Date(item.createAt),
           updateAt: new Date(item.updateAt),
         };
-      }
+      },
     );
 
   const sessionData = tryoutData?.TryoutSession.map((session) => ({
@@ -252,7 +252,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       ...session.TryoutSessionParticipant,
     },
   }));
-  console.log("sessionData", sessionData);
+  console.log('sessionData', sessionData);
 
   if (
     !isTryoutDone &&
@@ -274,7 +274,11 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     }
     return (
       <div className="fixed left-0 top-0 h-full w-full bg-workspace">
-        <Header current={0} total={-1} name={""} />
+        <Header
+          current={0}
+          total={-1}
+          name={''}
+        />
         <div className="absolute left-0 top-[0] flex h-full w-full items-center justify-center pt-[1rem]">
           Kamu Telah mengerjakan sesi ini
         </div>

@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { toaster } from "@/components/ui/toaster";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { getGeneral } from "@/lib/fetch-helper";
-import { response } from "@/lib/response";
-import { cn, getDateString, getHours } from "@/lib/utils";
-import { Tryout } from "@/types/database";
+import { toaster } from '@/components/ui/toaster';
+// import axiosInstance from "@/lib/axios/axiosInstance";
+import { getGeneral } from '@/lib/fetch-helper';
+// import { response } from "@/lib/response";
+import { cn, getDateString, getHours } from '@/lib/utils';
+import { Tryout } from '@/types/database';
 // import { api } from '@/trpc/react';
-import { Loader2 } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { utils, writeFile } from "xlsx";
+import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { utils, writeFile } from 'xlsx';
 
 interface TryoutData extends Tryout {
   TryoutSession: {
@@ -39,13 +39,13 @@ export default function Page() {
   const [tryout, setTryout] = useState<TryoutData[] | undefined>();
 
   useEffect(() => {
-    getGeneral("/tryout/getTryout", {
+    getGeneral('/tryout/getTryout', {
       setData: setTryout,
       setLoading: setIsLoading,
     });
   }, []);
 
-  console.log("tryout", tryout);
+  console.log('tryout', tryout);
 
   const exportData = async ({
     downloadData,
@@ -56,7 +56,7 @@ export default function Page() {
   }) => {
     let wb = utils.book_new(),
       ws = utils.json_to_sheet(downloadData);
-    utils.book_append_sheet(wb, ws, "items");
+    utils.book_append_sheet(wb, ws, 'items');
     writeFile(wb, `${fileName}.xlsx`);
   };
 
@@ -76,12 +76,15 @@ export default function Page() {
 
       <div className="flex flex-col gap-[2rem]">
         <Link
-          href={"/admin/tryout/testing/try-out"}
+          href={'/admin/tryout/testing/try-out'}
           className="flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-yellow-400 px-[1rem] py-[.6rem] text-white duration-300 md:hover:bg-yellow-300"
         >
           Test Tryout
         </Link>
-        <div id="head" className="flex items-center justify-between">
+        <div
+          id="head"
+          className="flex items-center justify-between"
+        >
           <div className="flex items-center gap-[1rem]">
             <input
               type="text"
@@ -97,14 +100,17 @@ export default function Page() {
               Export CSV
             </div>
             <Link
-              href={"/admin/tryout/new"}
+              href={'/admin/tryout/new'}
               className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-[1rem] py-[.6rem] text-white duration-300 hover:bg-main/85"
             >
               Tambah try out
             </Link>
           </div>
         </div>
-        <div id="table" className="w-full">
+        <div
+          id="table"
+          className="w-full"
+        >
           <table className="w-full rounded-[.8rem]">
             <thead>
               <tr>
@@ -128,8 +134,8 @@ export default function Page() {
                 <tr key={i}>
                   <td
                     className={cn(
-                      "border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text",
-                      i === tryout.length - 1 && "rounded-bl-[.8rem]"
+                      'border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text',
+                      i === tryout.length - 1 && 'rounded-bl-[.8rem]',
                     )}
                   >
                     {i + 1}
@@ -143,7 +149,7 @@ export default function Page() {
                       onClick={() => {
                         navigator.clipboard.writeText(`${item.id}`);
                         toaster({
-                          title: "Success",
+                          title: 'Success',
                           description: `ID Tryout Berhasil Disalin \n (${item.id})`,
                           duration: 3000,
                         });
@@ -196,8 +202,8 @@ export default function Page() {
                   </td>
                   <td
                     className={cn(
-                      "border-t bg-white text-start text-[.9rem] text-main-gray-text",
-                      i === tryout.length - 1 && "rounded-br-[.8rem]"
+                      'border-t bg-white text-start text-[.9rem] text-main-gray-text',
+                      i === tryout.length - 1 && 'rounded-br-[.8rem]',
                     )}
                   >
                     <div className="flex w-full justify-center gap-[1rem]">

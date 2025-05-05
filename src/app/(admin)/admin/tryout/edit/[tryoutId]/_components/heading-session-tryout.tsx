@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useEditTryoutContext } from "@/app/(admin)/admin/tryout/_component/provider-edit-tryout";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useEditTryoutContext } from '@/app/(admin)/admin/tryout/_component/provider-edit-tryout';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { toaster } from "@/components/ui/toaster";
-import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
-import ModalDeleteSession from "./modal-delete";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response, responseError } from "@/lib/response";
+} from '@/components/ui/select';
+import { toaster } from '@/components/ui/toaster';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response, responseError } from '@/lib/response';
+import { Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import ModalDeleteSession from './modal-delete';
 
 type QuestionProps = {
   number: number;
@@ -67,7 +67,7 @@ const HeadingSessionTryout = () => {
 
   const generateTryout = async (context: string) => {
     try {
-      const res = await axiosInstance.post("/tryout/generateTryout", {
+      const res = await axiosInstance.post('/tryout/generateTryout', {
         context,
       });
       const resData = response(res, true);
@@ -82,13 +82,13 @@ const HeadingSessionTryout = () => {
 
   const handleGenerate = async () => {
     const input = document.getElementById(
-      "context-for-generate-ai-edit"
+      'context-for-generate-ai-edit',
     ) as HTMLTextAreaElement;
     if (input.value.length < 10) {
       toaster({
-        title: "Gagal",
-        condition: "warning",
-        description: "Masukan Conteks untuk generate soal tryout",
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Masukan Conteks untuk generate soal tryout',
         duration: 3000,
       });
       return;
@@ -98,7 +98,7 @@ const HeadingSessionTryout = () => {
     const data = res;
     setSessions((prev) =>
       prev.map((session) => {
-        console.log("=========================", session.assessmentType);
+        console.log('=========================', session.assessmentType);
         return {
           ...session,
           Questions: [
@@ -109,15 +109,15 @@ const HeadingSessionTryout = () => {
                 question: quest.question,
                 Answers: quest.Answers.map((answer) => {
                   let value = 0;
-                  if (session.assessmentType === "1-5") {
+                  if (session.assessmentType === '1-5') {
                     value = answer.value;
-                  } else if (session.assessmentType === "+5/0") {
+                  } else if (session.assessmentType === '+5/0') {
                     if (answer.value === 5) value = 5;
                     else value = 0;
-                  } else if (session.assessmentType === "IRT") {
+                  } else if (session.assessmentType === 'IRT') {
                     if (answer.value === 5) value = 5;
                     else value = 0;
-                  } else if (session.assessmentType === "+4/-1/0") {
+                  } else if (session.assessmentType === '+4/-1/0') {
                     if (answer.value === 5) value = 4;
                     else value = -1;
                   }
@@ -130,28 +130,28 @@ const HeadingSessionTryout = () => {
             }),
           ],
         };
-      })
+      }),
     );
-    console.log("data", data);
+    console.log('data', data);
   };
 
   const onChangeCategory = (value: string) => {
-    if (value === "") {
+    if (value === '') {
       setSessions((prev) =>
         prev.map((item, i: number) => {
           if (i === currentIndexEdit) {
             return {
               ...item,
-              categoryId: "",
-              category: "",
+              categoryId: '',
+              category: '',
             };
           }
           return { ...item };
-        })
+        }),
       );
     }
-    const categoryId = value.split("-")[0];
-    const category = value.split("-")[1];
+    const categoryId = value.split('-')[0];
+    const category = value.split('-')[1];
     setSessions((prev) =>
       prev.map((item, i: number) => {
         if (i === currentIndexEdit) {
@@ -159,32 +159,32 @@ const HeadingSessionTryout = () => {
             ...item,
             categoryId,
             category,
-            subCategory: "",
-            subCategoryId: "",
+            subCategory: '',
+            subCategoryId: '',
           };
         }
         return { ...item };
-      })
+      }),
     );
   };
 
   const onChangeSubCategory = (value: string) => {
-    if (value === "") {
+    if (value === '') {
       setSessions((prev) =>
         prev.map((item, i: number) => {
           if (i === currentIndexEdit) {
             return {
               ...item,
-              subCategoryId: "",
-              subCategory: "",
+              subCategoryId: '',
+              subCategory: '',
             };
           }
           return { ...item };
-        })
+        }),
       );
     }
-    const subCategoryId = value.split("-")[0];
-    const subCategory = value.split("-")[1];
+    const subCategoryId = value.split('-')[0];
+    const subCategory = value.split('-')[1];
     setSessions((prev) =>
       prev.map((item, i: number) => {
         if (i === currentIndexEdit) {
@@ -195,22 +195,22 @@ const HeadingSessionTryout = () => {
           };
         }
         return { ...item };
-      })
+      }),
     );
   };
 
   const onChangeDuration = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "") {
+    if (e.target.value === '') {
       setSessions((prev) =>
         prev.map((item, i: number) => {
           if (i === currentIndexEdit) {
             return {
               ...item,
-              duration: "",
+              duration: '',
             };
           }
           return { ...item };
-        })
+        }),
       );
       return;
     }
@@ -223,14 +223,14 @@ const HeadingSessionTryout = () => {
           };
         }
         return { ...item };
-      })
+      }),
     );
   };
 
   const changeQuestionAssestmentType = (assessmentType: string) => {
     if (EditSession === null) return;
-    if (assessmentType === "1-5") {
-      console.log("jalan 1-5");
+    if (assessmentType === '1-5') {
+      console.log('jalan 1-5');
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (
@@ -246,7 +246,7 @@ const HeadingSessionTryout = () => {
                   return {
                     ...item2,
                     Answers: item2.Answers?.map((answer) => {
-                      if (item.assessmentType === "+4/-1/0") {
+                      if (item.assessmentType === '+4/-1/0') {
                         if (answer.value !== 4) {
                           value = value + 1;
                           return { ...answer, value: value };
@@ -267,11 +267,11 @@ const HeadingSessionTryout = () => {
             };
           }
           return { ...item };
-        })
+        }),
       );
       return;
-    } else if (assessmentType === "+5/0") {
-      console.log("jalan +5/0");
+    } else if (assessmentType === '+5/0') {
+      console.log('jalan +5/0');
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (
@@ -286,7 +286,7 @@ const HeadingSessionTryout = () => {
                   return {
                     ...item2,
                     Answers: item2.Answers?.map((answer) => {
-                      if (item.assessmentType === "+4/-1/0") {
+                      if (item.assessmentType === '+4/-1/0') {
                         if (answer.value !== 4) {
                           return { ...answer, value: 0 };
                         }
@@ -305,11 +305,11 @@ const HeadingSessionTryout = () => {
             };
           }
           return { ...item };
-        })
+        }),
       );
       return;
-    } else if (assessmentType === "IRT") {
-      console.log("jalan IRT");
+    } else if (assessmentType === 'IRT') {
+      console.log('jalan IRT');
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (
@@ -324,7 +324,7 @@ const HeadingSessionTryout = () => {
                   return {
                     ...item2,
                     Answers: item2.Answers?.map((answer) => {
-                      if (item.assessmentType === "+4/-1/0") {
+                      if (item.assessmentType === '+4/-1/0') {
                         if (answer.value !== 4) {
                           return { ...answer, value: 0 };
                         }
@@ -343,11 +343,11 @@ const HeadingSessionTryout = () => {
             };
           }
           return { ...item };
-        })
+        }),
       );
       return;
-    } else if (assessmentType === "+4/-1/0") {
-      console.log("+4/-1/0");
+    } else if (assessmentType === '+4/-1/0') {
+      console.log('+4/-1/0');
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (
@@ -374,7 +374,7 @@ const HeadingSessionTryout = () => {
             };
           }
           return { ...item };
-        })
+        }),
       );
       return;
     }
@@ -383,7 +383,7 @@ const HeadingSessionTryout = () => {
   const deleteSession = () => {
     setCurrentIndexEdit(null);
     setSessions((prev) =>
-      prev.filter((_, i: number) => i !== currentIndexEdit)
+      prev.filter((_, i: number) => i !== currentIndexEdit),
     );
   };
 
@@ -405,7 +405,7 @@ const HeadingSessionTryout = () => {
                 value={
                   EditSession.categoryId
                     ? `${EditSession.categoryId}-${EditSession.category}`
-                    : ""
+                    : ''
                 }
                 required
                 className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
@@ -414,7 +414,7 @@ const HeadingSessionTryout = () => {
                 value={
                   EditSession.categoryId
                     ? `${EditSession.categoryId}-${EditSession.category}`
-                    : "placeholder"
+                    : 'placeholder'
                 }
                 onValueChange={(value) => {
                   onChangeCategory(value);
@@ -424,11 +424,17 @@ const HeadingSessionTryout = () => {
                   <SelectValue placeholder="Tes" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="placeholder" disabled>
+                  <SelectItem
+                    value="placeholder"
+                    disabled
+                  >
                     Tes
                   </SelectItem>
                   {category?.map((item) => (
-                    <SelectItem key={item.id} value={`${item.id}-${item.name}`}>
+                    <SelectItem
+                      key={item.id}
+                      value={`${item.id}-${item.name}`}
+                    >
                       {item.name}
                     </SelectItem>
                   ))}
@@ -442,7 +448,7 @@ const HeadingSessionTryout = () => {
                   value={
                     EditSession.subCategoryId
                       ? `${EditSession.subCategoryId}-${EditSession.subCategory}`
-                      : ""
+                      : ''
                   }
                   required
                   className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
@@ -451,7 +457,7 @@ const HeadingSessionTryout = () => {
                   value={
                     EditSession.subCategoryId
                       ? `${EditSession.subCategoryId}-${EditSession.subCategory}`
-                      : "placeholder"
+                      : 'placeholder'
                   }
                   onValueChange={(value) => {
                     onChangeSubCategory(value);
@@ -461,7 +467,10 @@ const HeadingSessionTryout = () => {
                     <SelectValue placeholder="Sub Tes" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="placeholder" disabled>
+                    <SelectItem
+                      value="placeholder"
+                      disabled
+                    >
                       Sub Tes
                     </SelectItem>
                     {category
@@ -483,20 +492,20 @@ const HeadingSessionTryout = () => {
               placeholder="Durasi waktu"
               className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-100 focus:shadow-default md:hover:shadow-default"
               required
-              value={EditSession.duration === 0 ? "" : EditSession.duration}
+              value={EditSession.duration === 0 ? '' : EditSession.duration}
               onChange={(e) => onChangeDuration(e)}
             />
 
             <div className="w-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
               <input
                 type="text"
-                defaultValue={assessmentType !== "" ? `${assessmentType}` : ""}
+                defaultValue={assessmentType !== '' ? `${assessmentType}` : ''}
                 required
                 className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
               />
               <Select
                 value={
-                  assessmentType !== "" ? `${assessmentType}` : "placeholder"
+                  assessmentType !== '' ? `${assessmentType}` : 'placeholder'
                 }
                 onValueChange={(value) => {
                   setAssesmentType(value);
@@ -507,7 +516,10 @@ const HeadingSessionTryout = () => {
                   <SelectValue placeholder="Kategori" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="placeholder" disabled>
+                  <SelectItem
+                    value="placeholder"
+                    disabled
+                  >
                     Penilain
                   </SelectItem>
                   <SelectItem value="1-5">1-5</SelectItem>
@@ -539,14 +551,14 @@ const HeadingSessionTryout = () => {
                       return { ...item, name: e.target.value };
                     }
                     return { ...item };
-                  })
+                  }),
                 );
               }}
             />
           </div>
           <div className="flex w-full flex-col gap-[.5rem]">
             <p className="font-medium">
-              Ambang batas{" "}
+              Ambang batas{' '}
               <span className="text-main-gray-text2">(optional)</span>
             </p>
             <input
@@ -555,7 +567,7 @@ const HeadingSessionTryout = () => {
               className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               value={
                 EditSession.thresholdValue === 0
-                  ? ""
+                  ? ''
                   : EditSession.thresholdValue
               }
               onChange={(e) => {
@@ -568,7 +580,7 @@ const HeadingSessionTryout = () => {
                       };
                     }
                     return { ...item };
-                  })
+                  }),
                 );
               }}
             />
@@ -576,14 +588,14 @@ const HeadingSessionTryout = () => {
         </div>
         <div className="flex w-full flex-col gap-[.5rem]">
           <p className="font-medium">
-            Document ID untuk pembahasan{" "}
+            Document ID untuk pembahasan{' '}
             <span className="text-main-gray-text2">(optional)</span>
           </p>
           <input
             type="text"
             placeholder="Document ID...."
             className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-            value={EditSession.documentId || ""}
+            value={EditSession.documentId || ''}
             onChange={(e) => {
               setSessions((prev) =>
                 prev.map((item, i) => {
@@ -591,7 +603,7 @@ const HeadingSessionTryout = () => {
                     return { ...item, documentId: e.target.value };
                   }
                   return { ...item };
-                })
+                }),
               );
             }}
           />
@@ -626,7 +638,7 @@ const HeadingSessionTryout = () => {
               <div className="flex flex-col items-center">
                 <Loader2 className="h-[2rem] w-[2rem] animate-spin" />
                 <p className="text-center text-[1.1rem] font-medium">
-                  AI Sedang Generate soal Tryout{" "}
+                  AI Sedang Generate soal Tryout{' '}
                 </p>
               </div>
             </div>

@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import { useSession } from "@/components/provider/session-provider-auth";
+import { useSession } from '@/components/provider/session-provider-auth';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getGeneral } from "@/lib/fetch-helper";
-import { cn } from "@/lib/utils";
-import { IconTabsQuiz, IconTryOut } from "@/styles/icon";
+} from '@/components/ui/chart';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { getGeneral } from '@/lib/fetch-helper';
+import { cn } from '@/lib/utils';
+import { IconTabsQuiz, IconTryOut } from '@/styles/icon';
 // import { api } from '@/trpc/react';
-import { BarChart, TrendingUp, Trophy } from "lucide-react";
-import React, { Fragment, JSX, useEffect, useState } from "react";
+import { BarChart, TrendingUp, Trophy } from 'lucide-react';
+import React, { Fragment, JSX, useEffect, useState } from 'react';
 import {
   CartesianGrid,
   LabelList,
@@ -28,7 +28,7 @@ import {
   LineChart,
   ResponsiveContainer,
   XAxis,
-} from "recharts";
+} from 'recharts';
 
 // const tryoutProgress = [
 //   { name: 'TO #1', score: 620 },
@@ -47,13 +47,13 @@ interface SummaryCardProps {
 
 const TabsItem = [
   {
-    title: "Ringkasan",
-    value: "overview",
+    title: 'Ringkasan',
+    value: 'overview',
     icon: <TrendingUp className="h-4 w-4" />,
   },
   {
-    title: "Detail",
-    value: "details",
+    title: 'Detail',
+    value: 'details',
     icon: <BarChart className="h-4 w-4" />,
   },
 ];
@@ -96,36 +96,46 @@ const SummaryTryout = () => {
     if (Summary) {
       setSummaryCards([
         {
-          title: "Try Out Selesai",
+          title: 'Try Out Selesai',
           value: Summary.TryoutResult || 0,
-          description: "Tryout Diselesaikan",
-          icon: <IconTryOut active className="text-current" />,
-          textColor: "text-blue-600",
-          bgColor: "bg-blue-100",
+          description: 'Tryout Diselesaikan',
+          icon: (
+            <IconTryOut
+              active
+              className="text-current"
+            />
+          ),
+          textColor: 'text-blue-600',
+          bgColor: 'bg-blue-100',
         },
         {
-          title: "Total Soal",
+          title: 'Total Soal',
           value: Summary.TryoutUserAnswer || 0,
-          description: "Soal Dikerjakan",
-          icon: <IconTabsQuiz active className="text-current" />,
-          textColor: "text-green-600",
-          bgColor: "bg-green-100",
+          description: 'Soal Dikerjakan',
+          icon: (
+            <IconTabsQuiz
+              active
+              className="text-current"
+            />
+          ),
+          textColor: 'text-green-600',
+          bgColor: 'bg-green-100',
         },
         {
-          title: "Peringkat",
+          title: 'Peringkat',
           value: `${Summary.LastRanking}`,
-          description: "Peringkat Terakhir",
+          description: 'Peringkat Terakhir',
           icon: <Trophy className="text-current" />,
-          textColor: "text-yellow-500",
-          bgColor: "bg-yellow-50",
+          textColor: 'text-yellow-500',
+          bgColor: 'bg-yellow-50',
         },
         {
-          title: "Rata-rata Skor",
+          title: 'Rata-rata Skor',
           value: `${Summary.AverageScore}`,
           description: `Dari ${Summary.TotalTryout} tryout`,
           icon: <BarChart className="text-current" />,
-          textColor: "text-gray-500",
-          bgColor: "bg-white",
+          textColor: 'text-gray-500',
+          bgColor: 'bg-white',
         },
       ]);
     }
@@ -142,7 +152,10 @@ const SummaryTryout = () => {
           </p>
         </div>
         <CardContent className="p-0 pt-6">
-          <Tabs defaultValue="overview" className="w-full">
+          <Tabs
+            defaultValue="overview"
+            className="w-full"
+          >
             <TabsList className="mb-8 flex w-fit gap-2">
               {TabsItem.map((tab, index) => (
                 <React.Fragment key={index}>
@@ -167,13 +180,13 @@ const SummaryTryout = () => {
                     {summaryCards.map((card, index) => (
                       <Card
                         key={index}
-                        className={cn("bg-green-100 border-none", card.bgColor)}
+                        className={cn('bg-green-100 border-none', card.bgColor)}
                       >
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                           <CardTitle className="text-base font-semibold">
                             {card.title}
                           </CardTitle>
-                          <div className={cn("text-green-600", card.textColor)}>
+                          <div className={cn('text-green-600', card.textColor)}>
                             {card.icon}
                           </div>
                         </CardHeader>
@@ -189,7 +202,10 @@ const SummaryTryout = () => {
                 ) : (
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     {Array.from({ length: 4 }).map((_, index) => (
-                      <Skeleton key={index} className="h-[136px] w-full" />
+                      <Skeleton
+                        key={index}
+                        className="h-[136px] w-full"
+                      />
                     ))}
                   </div>
                 )}
@@ -211,12 +227,15 @@ const SummaryTryout = () => {
                       className="h-full w-full max-h-[400px]"
                       config={{
                         score: {
-                          label: "Skor",
-                          color: "hsl(var(--chart-1))",
+                          label: 'Skor',
+                          color: 'hsl(var(--chart-1))',
                         },
                       }}
                     >
-                      <ResponsiveContainer width="100%" height="100%">
+                      <ResponsiveContainer
+                        width="100%"
+                        height="100%"
+                      >
                         <LineChart
                           data={tryoutProgress}
                           accessibilityLayer

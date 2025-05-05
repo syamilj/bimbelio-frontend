@@ -1,9 +1,9 @@
-import { WebsiteSubCategory } from "@/types/database";
+import { WebsiteSubCategory } from '@/types/database';
 //
 export const getMainStyles = (
-  websiteSubCategory: WebsiteSubCategory | null
+  websiteSubCategory: WebsiteSubCategory | null,
 ) => {
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const shades = Array.from({ length: 10 }, (_, i) => (i + 1) * 10);
 
   const styles = `
@@ -53,7 +53,7 @@ export const getMainStyles = (
             .border-main\\/${color} { border-color: ${value}; }
           `;
         })
-        .join("")}
+        .join('')}
     `;
 
   return styles;
@@ -62,7 +62,7 @@ export const getMainStyles = (
 export const hexToRgba = (hex?: string, opacityNumber?: number) => {
   if (!hex) return undefined;
   const opacity = opacityNumber || 1;
-  const sanitizedHex = hex.replace("#", "");
+  const sanitizedHex = hex.replace('#', '');
   const bigint = parseInt(sanitizedHex, 16);
   const r = (bigint >> 16) & 255;
   const g = (bigint >> 8) & 255;

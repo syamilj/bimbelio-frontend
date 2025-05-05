@@ -1,5 +1,5 @@
-import axiosInstance from "./axios/axiosInstance";
-import { response, responseError } from "./response";
+import axiosInstance from './axios/axiosInstance';
+import { response, responseError } from './response';
 
 export const getGeneral = async (
   url: string,
@@ -37,7 +37,7 @@ export const getGeneral = async (
       error: any;
       data: any;
     }) => any;
-  }
+  },
 ) => {
   if (
     more?.setLoading &&
@@ -62,7 +62,7 @@ export const getGeneral = async (
       error,
       showToast,
       more?.toast?.errorMsg,
-      more?.toast?.errorTitle
+      more?.toast?.errorTitle,
     );
     if (more?.onError) {
       await more.onError({
@@ -114,7 +114,7 @@ export const deleteGeneral = async (
       message: string;
       error: any;
     }) => any;
-  }
+  },
 ) => {
   if (
     more?.setLoading &&
@@ -131,7 +131,7 @@ export const deleteGeneral = async (
       res,
       showToast,
       more?.toast?.successMsg,
-      more?.toast?.successTitle
+      more?.toast?.successTitle,
     );
     if (more?.onSuccess) {
       await more.onSuccess(resData);
@@ -143,7 +143,7 @@ export const deleteGeneral = async (
       error,
       showToast,
       more?.toast?.errorMsg,
-      more?.toast?.errorTitle
+      more?.toast?.errorTitle,
     );
     if (more?.onError) {
       await more.onError({
@@ -166,7 +166,7 @@ export const mutateGeneral = async (
   url: string,
   more: {
     payload: any;
-    type: "post" | "put";
+    type: 'post' | 'put';
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
     firstLoad?: boolean;
     endLoad?: boolean;
@@ -198,7 +198,7 @@ export const mutateGeneral = async (
       message: string;
       error: any;
     }) => any;
-  }
+  },
 ) => {
   const { payload, type, setLoading } = more;
   if (
@@ -222,7 +222,7 @@ export const mutateGeneral = async (
       res,
       showToast,
       more.toast?.successMsg,
-      more.toast?.successTitle
+      more.toast?.successTitle,
     );
     if (more?.onSuccess) {
       await more.onSuccess(resData);
@@ -236,7 +236,7 @@ export const mutateGeneral = async (
       error,
       showToast,
       more.toast?.errorMsg,
-      more.toast?.errorTitle
+      more.toast?.errorTitle,
     );
     if (more?.onError) {
       await more.onError({

@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import ReactMarkdown from "@/components/ui/react-markdown";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import ReactMarkdown from '@/components/ui/react-markdown';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { cn, getDateString, getHoursDetail, getInitials } from "@/lib/utils";
-import { IconCheckList, IconX } from "@/styles/icon";
+} from '@/components/ui/select';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { cn, getDateString, getHoursDetail, getInitials } from '@/lib/utils';
+import { IconCheckList, IconX } from '@/styles/icon';
 import {
   TryoutAnswer,
   TryoutQuestion,
   TryoutSession,
   TryoutSessionParticipant,
   TryoutUserAnswer,
-} from "@/types/database";
+} from '@/types/database';
 import {
   ArrowLeft,
   ArrowRight,
@@ -29,10 +29,10 @@ import {
   Book,
   Clock,
   Target,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { SetStateAction, useState } from "react";
-import { SessionOptionsProps } from "..";
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { SetStateAction, useState } from 'react';
+import { SessionOptionsProps } from '..';
 
 interface QuestionWithAnswers extends TryoutQuestion {
   TryoutAnswers: TryoutAnswer[];
@@ -88,21 +88,21 @@ export function ReviewTab({
       : 0;
 
   const UserAnswers = sessionResult?.TryoutUserAnswer[safeUserAnswerIndex];
-  const AssessmentType = sessionResult?.TryoutSession.assessmentType || "";
+  const AssessmentType = sessionResult?.TryoutSession.assessmentType || '';
   const TotalQuestion = sessionResult?.TryoutUserAnswer.length || 0;
 
   const getCorrectAnswer = () => {
-    if (!UserAnswers) return "....";
-    if (AssessmentType !== "+4/-1/0") {
+    if (!UserAnswers) return '....';
+    if (AssessmentType !== '+4/-1/0') {
       const correct = UserAnswers.TryoutQuestion.TryoutAnswers.find(
-        (item) => item.value === 5
+        (item) => item.value === 5,
       );
-      return correct ? correct.answer : "....";
+      return correct ? correct.answer : '....';
     } else {
       const correct = UserAnswers.TryoutQuestion.TryoutAnswers.find(
-        (item) => item.value === 4
+        (item) => item.value === 4,
       );
-      return correct ? correct.answer : "....";
+      return correct ? correct.answer : '....';
     }
   };
 
@@ -113,15 +113,15 @@ export function ReviewTab({
 
     const value = userAnswer.TryoutAnswers.value;
 
-    if (AssessmentType === "1-5" || AssessmentType === "+5/0") {
+    if (AssessmentType === '1-5' || AssessmentType === '+5/0') {
       return value === 5;
-    } else if (AssessmentType === "IRT") {
+    } else if (AssessmentType === 'IRT') {
       // const weight =
       //   sessionResult.TryoutUserAnswer.find(
       //     (item) => item.TryoutAnswers?.value !== 0,
       //   )?.TryoutAnswers?.value || 0;
       return value === 5;
-    } else if (AssessmentType === "+4/-1/0") {
+    } else if (AssessmentType === '+4/-1/0') {
       return value === 4;
     }
 
@@ -129,15 +129,15 @@ export function ReviewTab({
   };
 
   const getSessionDuration = () => {
-    if (!sessionResult?.endSession) return "Coming Soon";
+    if (!sessionResult?.endSession) return 'Coming Soon';
     const startSession = new Date(sessionResult.startSession);
     const endSession = new Date(sessionResult.endSession);
     console.log(
       `start : ${getDateString(startSession)} | ${getHoursDetail(
-        startSession
+        startSession,
       )} \n end   : ${getDateString(endSession)} | ${getHoursDetail(
-        endSession
-      )}`
+        endSession,
+      )}`,
     );
     const diffInMilliseconds = endSession.getTime() - startSession.getTime();
     const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
@@ -145,21 +145,21 @@ export function ReviewTab({
     const seconds = diffInSeconds % 60;
 
     // Pastikan angka didefinisikan sebelum dipanggil toString
-    return `${minutes.toString().padStart(2, "0")}:${seconds
+    return `${minutes.toString().padStart(2, '0')}:${seconds
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, '0')}`;
   };
 
   const getSecondPerQuestion = () => {
-    if (!sessionResult?.endSession) return "Coming Soon";
+    if (!sessionResult?.endSession) return 'Coming Soon';
     const startSession = new Date(sessionResult.startSession);
     const endSession = new Date(sessionResult.endSession);
     console.log(
       `start : ${getDateString(startSession)} | ${getHoursDetail(
-        startSession
+        startSession,
       )} \n end   : ${getDateString(endSession)} | ${getHoursDetail(
-        endSession
-      )}`
+        endSession,
+      )}`,
     );
     const diffInMilliseconds = endSession.getTime() - startSession.getTime();
     const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
@@ -175,11 +175,11 @@ export function ReviewTab({
     if (!sessionResult) return 0;
     return sessionResult.TryoutUserAnswer.filter((item) => {
       const value = item.TryoutAnswers?.value || 0;
-      if (AssessmentType === "1-5" || AssessmentType === "+5/0") {
+      if (AssessmentType === '1-5' || AssessmentType === '+5/0') {
         return value === 5;
-      } else if (AssessmentType === "IRT") {
+      } else if (AssessmentType === 'IRT') {
         return value === 5;
-      } else if (AssessmentType === "+4/-1/0") {
+      } else if (AssessmentType === '+4/-1/0') {
         return value === 4;
       }
       return false;
@@ -207,7 +207,7 @@ export function ReviewTab({
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Review Soal</h1>
         <Select
-          value={resultIndex != null ? resultIndex.toString() : "0"}
+          value={resultIndex != null ? resultIndex.toString() : '0'}
           onValueChange={(value) => {
             if (value !== undefined && value !== null) {
               const parsedValue = parseInt(value, 10);
@@ -223,9 +223,12 @@ export function ReviewTab({
           <SelectContent>
             {Array.isArray(sessionOptions) && sessionOptions.length > 0 ? (
               sessionOptions.map((subtest, index) => (
-                <SelectItem key={subtest.id} value={`${index}`}>
-                  {getInitials(subtest.TryoutCategory || "")} -{" "}
-                  {subtest.TryoutSubCategory || "Subkategori"}
+                <SelectItem
+                  key={subtest.id}
+                  value={`${index}`}
+                >
+                  {getInitials(subtest.TryoutCategory || '')} -{' '}
+                  {subtest.TryoutSubCategory || 'Subkategori'}
                 </SelectItem>
               ))
             ) : (
@@ -326,23 +329,23 @@ export function ReviewTab({
                           <IconX className="text-red-600" />
                         ) : null}
                         <span className="font-semibold">
-                          Soal {UserAnswers.TryoutQuestion.number || "N/A"}
+                          Soal {UserAnswers.TryoutQuestion.number || 'N/A'}
                         </span>
                       </div>
                       <Badge
                         className={cn(
-                          "bg-white",
-                          !UserAnswers.difficultyQuestion && "hidden",
+                          'bg-white',
+                          !UserAnswers.difficultyQuestion && 'hidden',
                           UserAnswers.difficultyQuestion?.value === 1 &&
-                            "bg-green-100 text-green-600",
+                            'bg-green-100 text-green-600',
                           UserAnswers.difficultyQuestion?.value === 2 &&
-                            "bg-green-200 text-green-600",
+                            'bg-green-200 text-green-600',
                           UserAnswers.difficultyQuestion?.value === 3 &&
-                            "bg-orange-100 text-orange-600",
+                            'bg-orange-100 text-orange-600',
                           UserAnswers.difficultyQuestion?.value === 4 &&
-                            "bg-red-100 text-red-600",
+                            'bg-red-100 text-red-600',
                           UserAnswers.difficultyQuestion?.value === 5 &&
-                            "bg-red-200 text-red-600"
+                            'bg-red-200 text-red-600',
                         )}
                       >
                         {UserAnswers.difficultyQuestion?.message}
@@ -351,7 +354,7 @@ export function ReviewTab({
                     <ReactMarkdown
                       value={
                         UserAnswers.TryoutQuestion.question ||
-                        "Tidak ada pertanyaan."
+                        'Tidak ada pertanyaan.'
                       }
                     />
                     <div className="space-y-2">
@@ -359,7 +362,7 @@ export function ReviewTab({
                       <ReactMarkdown
                         className="rounded-xl bg-muted p-2 text-sm"
                         value={
-                          UserAnswers.TryoutAnswers?.answer || "Tidak Dijawab"
+                          UserAnswers.TryoutAnswers?.answer || 'Tidak Dijawab'
                         }
                       />
                     </div>
@@ -374,7 +377,7 @@ export function ReviewTab({
                       <p className="font-medium">Pembahasan:</p>
                       <ReactMarkdown
                         className="rounded-xl bg-muted p-2 text-sm"
-                        value={UserAnswers.TryoutQuestion.explanation || ""}
+                        value={UserAnswers.TryoutQuestion.explanation || ''}
                       />
                     </div>
                   </div>
@@ -421,7 +424,7 @@ const Navigation = ({
     : 0;
 
   return (
-    <Card className={cn("bg-transparent shadow-none", className)}>
+    <Card className={cn('bg-transparent shadow-none', className)}>
       <CardHeader>
         <CardTitle>Navigasi Soal</CardTitle>
       </CardHeader>
@@ -432,14 +435,14 @@ const Navigation = ({
             return (
               <Button
                 key={index}
-                variant={userAnswerIndex === index ? "default" : "outline"}
+                variant={userAnswerIndex === index ? 'default' : 'outline'}
                 className={cn(
-                  "flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-[.5rem] bg-white font-bold text-main-gray-text hover:bg-white md:hover:bg-black/5",
+                  'flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-[.5rem] bg-white font-bold text-main-gray-text hover:bg-white md:hover:bg-black/5',
                   isCorrect === true &&
-                    "bg-green-100 text-green-800 hover:bg-green-100 md:hover:bg-green-200",
+                    'bg-green-100 text-green-800 hover:bg-green-100 md:hover:bg-green-200',
                   isCorrect === false &&
-                    "bg-red-100 text-red-800 hover:bg-red-100 md:hover:bg-red-200",
-                  isCorrect === null && "bg-white hover:bg-white"
+                    'bg-red-100 text-red-800 hover:bg-red-100 md:hover:bg-red-200',
+                  isCorrect === null && 'bg-white hover:bg-white',
                 )}
                 onClick={() => setUserAnswerIndex(index)}
               >
@@ -461,7 +464,7 @@ const Navigation = ({
             variant="outline"
             onClick={() =>
               setUserAnswerIndex((prev) =>
-                Math.min(totalQuestions - 1, prev + 1)
+                Math.min(totalQuestions - 1, prev + 1),
               )
             }
             disabled={userAnswerIndex === totalQuestions - 1}
@@ -478,7 +481,7 @@ const Navigation = ({
                 router.push(
                   `/user/workspace/${
                     sessionResult?.TryoutSession.Document!.category.id
-                  }/${sessionResult.TryoutSession.Document!.id}`
+                  }/${sessionResult.TryoutSession.Document!.id}`,
                 )
               }
             >

@@ -1,15 +1,14 @@
-"use client";
+'use client';
 
-import { useChatContext } from "@/app/(user)/user/chat/[historyId]/provider";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { toaster } from "@/components/ui/toaster";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
-import { cn, getDateStringShort, getHours } from "@/lib/utils";
-import { ChatHistory } from "@/types/database";
-import "katex/dist/katex.min.css";
+import { useChatContext } from '@/app/(user)/user/chat/[historyId]/provider';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { cn, getDateStringShort, getHours } from '@/lib/utils';
+import { ChatHistory } from '@/types/database';
+import 'katex/dist/katex.min.css';
 import {
   ChevronLeft,
   ChevronRight,
@@ -18,11 +17,11 @@ import {
   Loader2,
   MessageCircle,
   Plus,
-} from "lucide-react";
-import Link from "next/link";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
+} from 'lucide-react';
+import Link from 'next/link';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function SidebarChat() {
   const { data: session } = useSession();
@@ -46,7 +45,7 @@ export default function SidebarChat() {
   }, [session]);
 
   const [loading, setLoading] = useState(false);
-  const [newChatInput, setNewChatInput] = useState("");
+  const [newChatInput, setNewChatInput] = useState('');
   const { isMinimized, setIsMinimized } = useChatContext();
 
   const [chatStates, setChatStates] = useState<{ [key: string]: boolean }>({});
@@ -65,19 +64,19 @@ export default function SidebarChat() {
 
   const createNewChat = async (payload: { title: string }) => {
     let sendData: any = null;
-    await mutateGeneral("/chat/createNewChat", {
+    await mutateGeneral('/chat/createNewChat', {
       payload: {
         ...payload,
         userId: session?.user.id,
       },
-      type: "post",
+      type: 'post',
       toast: {
-        errorMsg: "Gagal membuat chat baru",
+        errorMsg: 'Gagal membuat chat baru',
       },
       onError() {
         setLoading(false);
       },
-      onSuccess({ message, status, data }) {
+      onSuccess({ data }) {
         sendData = data;
       },
     });
@@ -104,12 +103,12 @@ export default function SidebarChat() {
   // });
 
   const editChat = async (payload: { id: String; title: string }) => {
-    await mutateGeneral("/chat/editChat", {
+    await mutateGeneral('/chat/editChat', {
       payload,
-      type: "post",
+      type: 'post',
       toast: {
-        errorMsg: "Gagal mengedit title chat",
-        successMsg: "Berhasil mengedit title chat",
+        errorMsg: 'Gagal mengedit title chat',
+        successMsg: 'Berhasil mengedit title chat',
       },
       onError() {
         setLoading(false);
@@ -130,11 +129,11 @@ export default function SidebarChat() {
 
   const handleEditChat = useDebouncedCallback(
     ({ title }: { title: string }) => {
-      if (historyId && typeof historyId === "string") {
+      if (historyId && typeof historyId === 'string') {
         editChat({ id: historyId, title });
       }
     },
-    500
+    500,
   );
 
   const toggleMinimize = () => {
@@ -144,8 +143,8 @@ export default function SidebarChat() {
     <>
       <div
         className={cn(
-          "w-64 h-auto border-r bg-white absolute left-0 md:left-0 top-[-80px] md:top-0 bottom-0 z-[9999] md:z-[1] md:relative md:block duration-300",
-          isMinimized && "-left-72"
+          'w-64 h-auto border-r bg-white absolute left-0 md:left-0 top-[-80px] md:top-0 bottom-0 z-[9999] md:z-[1] md:relative md:block duration-300',
+          isMinimized && '-left-72',
         )}
       >
         <div className="p-3 border-b flex justify-between items-center">
@@ -189,8 +188,8 @@ export default function SidebarChat() {
                       variant="ghost"
                       className={`w-full justify-start text-left px-3 py-4 h-auto ${
                         pathname?.includes(chat.id)
-                          ? "bg-blue-50 text-blue-600"
-                          : ""
+                          ? 'bg-blue-50 text-blue-600'
+                          : ''
                       }`}
                     >
                       <div className="flex items-start gap-3">
@@ -199,8 +198,8 @@ export default function SidebarChat() {
                           <input
                             id={`chat-history-${index}`}
                             className={cn(
-                              "text-sm font-medium line-clamp-2 bg-transparent w-full focus:text-black",
-                              showEdit && "cursor-pointer"
+                              'text-sm font-medium line-clamp-2 bg-transparent w-full focus:text-black',
+                              showEdit && 'cursor-pointer',
                             )}
                             disabled={!showEdit}
                             defaultValue={chat.title}
@@ -210,7 +209,7 @@ export default function SidebarChat() {
                           />
                           <div className="flex items-center text-xs text-muted-foreground cur">
                             <Clock className="h-3 w-3 mr-1" />
-                            {getDateStringShort(chat.updatedAt)}{" "}
+                            {getDateStringShort(chat.updatedAt)}{' '}
                             {getHours(chat.updatedAt)}
                           </div>
                         </div>
@@ -222,7 +221,7 @@ export default function SidebarChat() {
                       className="absolute right-2 top-2 w-6 h-6 md:hover:bg-gray-300 bg-white p-1 rounded-lg cursor-pointer"
                       onClick={() => {
                         const input = document.getElementById(
-                          `chat-history-${index}`
+                          `chat-history-${index}`,
                         );
                         if (input) {
                           input.focus();
@@ -236,7 +235,10 @@ export default function SidebarChat() {
           </div>
         </ScrollArea>
         <div className="p-3 border-t bg-background absolute bottom-0 left-0 w-full">
-          <form onSubmit={handleNewChat} className="flex gap-2">
+          <form
+            onSubmit={handleNewChat}
+            className="flex gap-2"
+          >
             <Input
               type="text"
               placeholder="Mulai chat baru..."

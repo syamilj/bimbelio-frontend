@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Search, Edit, Trash2, Eye, Plus, Filter } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -12,30 +11,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
+} from '@/components/ui/table';
+import { getGeneral } from '@/lib/fetch-helper';
 import {
   Plan,
   PlanFeature,
   PlanLimitation,
   PlanSubscription,
-} from "@/types/database";
-import { getGeneral } from "@/lib/fetch-helper";
-import { DialogDelete } from "./_components/dialog-delete-plan";
+} from '@/types/database';
+import { Edit, Plus, Search, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { DialogDelete } from './_components/dialog-delete-plan';
 
 // Mock data for plans
 // const mockPlans = [
@@ -145,17 +132,17 @@ import { DialogDelete } from "./_components/dialog-delete-plan";
 
 // Format currency
 const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount);
 };
 
 export default function PlanList() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  // const [categoryFilter, setCategoryFilter] = useState('');
   const [plans, setPlans] = useState<
     (Plan & {
       PlanSubscription?: PlanSubscription & {
@@ -166,7 +153,7 @@ export default function PlanList() {
   >([]);
 
   const getData = async () => {
-    await getGeneral("/plan/getAllPlan", {
+    await getGeneral('/plan/getAllPlan', {
       setData: setPlans,
     });
   };
@@ -187,7 +174,7 @@ export default function PlanList() {
     <div className="mx-auto p-6 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Plan Management</h1>
-        <Link href={"/admin/plan/new"}>
+        <Link href={'/admin/plan/new'}>
           <Button className="bg-main hover:bg-main/80 flex items-center gap-2">
             <Plus className="h-4 w-4" />
             Create New Plan
@@ -251,7 +238,7 @@ export default function PlanList() {
                             >
                               {feat.type}
                             </Badge>
-                          )) || "-"}
+                          )) || '-'}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -272,12 +259,12 @@ export default function PlanList() {
                                       variant="outline"
                                       className="text-xs"
                                     >
-                                      {limit}:{" "}
+                                      {limit}:{' '}
                                       {(plan.PlanLimitation as any)[limit]}
                                     </Badge>
                                   );
                                 })
-                            : "-"}
+                            : '-'}
                         </div>
                       </TableCell>
                       <TableCell>

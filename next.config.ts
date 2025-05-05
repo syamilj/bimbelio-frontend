@@ -5,7 +5,7 @@ const nextConfig = {
 
   // Tambahkan ini untuk hapus console di production
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production",
+    removeConsole: process.env.NODE_ENV === 'production',
     // Jika ingin mengecualikan beberapa jenis console:
     // removeConsole: {
     //   exclude: ['error', 'warn']
@@ -68,8 +68,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**",
+        protocol: 'https',
+        hostname: '**',
       },
     ],
   },

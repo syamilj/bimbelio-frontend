@@ -1,11 +1,10 @@
 // src/pages/client/try-out/[id]/_component/countdown-tryout.tsx
 
-"use client";
+'use client';
 
-import { useSession } from "@/components/provider/session-provider-auth";
-import { toaster } from "@/components/ui/toaster";
-import { mutateGeneral } from "@/lib/fetch-helper";
-import { useEffect, useRef, useState } from "react";
+import { useSession } from '@/components/provider/session-provider-auth';
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { useEffect, useRef, useState } from 'react';
 
 interface SessionAnswer {
   number: number;
@@ -19,9 +18,9 @@ interface SessionAnswer {
 const timeFormat = (time: number) => {
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time - minutes * 60);
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
     2,
-    "0"
+    '0',
   )}`;
 };
 
@@ -78,12 +77,12 @@ export default function CountDownTryout({
     sessionId: string;
     answer: any[];
   }) => {
-    await mutateGeneral("/tryoutSession/finishSession", {
+    await mutateGeneral('/tryoutSession/finishSession', {
       payload,
-      type: "post",
+      type: 'post',
       toast: {
-        successMsg: "Waktumu sudah habis!",
-        errorMsg: "Gagal submit tryout, coba lagi!",
+        successMsg: 'Waktumu sudah habis!',
+        errorMsg: 'Gagal submit tryout, coba lagi!',
       },
       onSuccess() {
         //       trpc.tryout.getTryoutById.refetch();
@@ -120,7 +119,7 @@ export default function CountDownTryout({
       FinishTryOut({
         sessionId,
         answer: sessionAnswer,
-        userId: session?.user.id || "",
+        userId: session?.user.id || '',
       });
     }
   }, [execute, hasSubmitted, FinishTryOut, sessionAnswer, sessionId]);

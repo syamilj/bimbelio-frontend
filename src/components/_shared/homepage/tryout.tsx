@@ -1,8 +1,11 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import { IconFitur1, IconFitur2, IconFitur3 } from "@/styles/icon";
-import { motion } from "framer-motion";
+import { useGuest } from '@/components/layout/layoutGuest';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { cn } from '@/lib/utils';
+import { IconFitur1, IconFitur2, IconFitur3 } from '@/styles/icon';
+import { motion } from 'framer-motion';
 import {
   Award,
   Building2,
@@ -12,19 +15,16 @@ import {
   Sparkles,
   Users,
   Video,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import AnimatedGradientText from "../../magicui/animated-gradient-text";
-import { Button } from "../../ui/button";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { useGuest } from "@/components/layout/layoutGuest";
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import AnimatedGradientText from '../../magicui/animated-gradient-text';
+import { Button } from '../../ui/button';
 
 // Jika Kamu memilih untuk menggunakan UUID
 // import { v4 as uuidv4 } from 'uuid';
 
 const Tryout: React.FC = () => {
-  const { setShowAuth, showAuth } = useGuest();
+  const { setShowAuth } = useGuest();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
   const { data: session } = useSession();
@@ -33,77 +33,80 @@ const Tryout: React.FC = () => {
     if (!session) {
       setShowAuth({ signUp: false, login: true });
     } else {
-      router.push("/user/try-out");
+      router.push('/user/try-out');
     }
   };
 
   const timelineItems = [
     {
-      id: "pendaftaran",
+      id: 'pendaftaran',
       icon: Calendar,
-      title: "Pendaftaran",
-      date: "1-8 Feb",
+      title: 'Pendaftaran',
+      date: '1-8 Feb',
     },
-    { id: "pelaksanaan", icon: Users, title: "Pelaksanaan", date: "9-12 Feb" },
-    { id: "live-class", icon: Clock, title: "Live Class", date: "12 Feb" },
-    { id: "hasil", icon: Award, title: "Hasil", date: "12 Feb" },
+    { id: 'pelaksanaan', icon: Users, title: 'Pelaksanaan', date: '9-12 Feb' },
+    { id: 'live-class', icon: Clock, title: 'Live Class', date: '12 Feb' },
+    { id: 'hasil', icon: Award, title: 'Hasil', date: '12 Feb' },
     // Atau gunakan uuid jika diperlukan
     // { id: uuidv4(), ... }
   ];
 
   const features = [
-    { id: "analisis-360", icon: Sparkles, title: "Analisis 360°" },
-    { id: "soal-standar", icon: FileText, title: "Soal Standar SNBT/UTBK" },
-    { id: "hasil-pembahasan", icon: Building2, title: "Hasil & Pembahasan" },
-    { id: "live-class-zoom", icon: Video, title: "Live Class (Zoom)" },
+    { id: 'analisis-360', icon: Sparkles, title: 'Analisis 360°' },
+    { id: 'soal-standar', icon: FileText, title: 'Soal Standar SNBT/UTBK' },
+    { id: 'hasil-pembahasan', icon: Building2, title: 'Hasil & Pembahasan' },
+    { id: 'live-class-zoom', icon: Video, title: 'Live Class (Zoom)' },
     // Atau gunakan uuid jika diperlukan
     // { id: uuidv4(), ... }
   ];
 
   const fitur = [
     {
-      id: "fitur1",
+      id: 'fitur1',
       icon: <IconFitur1 w={80} />,
-      text: "Pendamping belajar cermat",
+      text: 'Pendamping belajar cermat',
       description: (
         <p className="font-regular mt-[-.5rem] text-[.85rem] text-main-gray-text">
-          Gunakan metode strategi revolusi belajar yang{" "}
-          <span className="font-medium text-main">terpersonalisasi</span>{" "}
+          Gunakan metode strategi revolusi belajar yang{' '}
+          <span className="font-medium text-main">terpersonalisasi</span>{' '}
           berdasarkan kemampuanmu.
         </p>
       ),
     },
     {
-      id: "fitur2",
+      id: 'fitur2',
       icon: <IconFitur2 w={80} />,
-      text: "Pembelajaran aktif dan terarah",
+      text: 'Pembelajaran aktif dan terarah',
       description: (
         <p className="font-regular mt-[-.5rem] text-[.85rem] text-main-gray-text">
-          Manfaatkan teknologi{" "}
+          Manfaatkan teknologi{' '}
           <span className="font-medium text-main">
             Active AI-Based Learning
-          </span>{" "}
+          </span>{' '}
           untuk mendapatkan pendamping belajar yang interaktif dan efektif.
         </p>
       ),
     },
     {
-      id: "fitur3",
+      id: 'fitur3',
       icon: <IconFitur3 w={80} />,
-      text: "Akses materi variatif dan lengkap",
+      text: 'Akses materi variatif dan lengkap',
       description: (
         <p className="font-regular mt-[-.5rem] text-[.85rem] text-main-gray-text">
-          Nikmati akses ke{" "}
-          <span className="font-medium text-main">materi kurasi terbaru</span>{" "}
+          Nikmati akses ke{' '}
+          <span className="font-medium text-main">materi kurasi terbaru</span>{' '}
           yang variatif dan lengkap kapan saja, di mana saja dengan teknologi
-          tertinggi.{" "}
+          tertinggi.{' '}
         </p>
       ),
     },
   ];
 
   return (
-    <div id="tryout" className="relative w-full gap-[5rem] py-8">
+    <div
+      id="tryout"
+      className="relative w-full gap-[5rem] py-8"
+    >
       <h1 className="mb-8 mt-2 text-center text-3xl font-bold">
         <AnimatedGradientText>Inovasi Belajar Berbasis AI</AnimatedGradientText>
       </h1>
@@ -117,7 +120,7 @@ const Tryout: React.FC = () => {
           <div className="relative z-10">
             <div
               className={cn(
-                "absolute -top-6 right-2 mx-auto flex -rotate-12 transform items-center gap-1 rounded-full border border-yellow-200 bg-yellow-100/30 p-1 shadow-md"
+                'absolute -top-6 right-2 mx-auto flex -rotate-12 transform items-center gap-1 rounded-full border border-yellow-200 bg-yellow-100/30 p-1 shadow-md',
               )}
             >
               <Sparkles className="inline-block h-4 w-4 fill-current text-yellow-400" />
@@ -148,7 +151,7 @@ const Tryout: React.FC = () => {
                   key={item.id}
                   className="flex items-center space-x-2 rounded-xl border border-main bg-white p-2"
                   whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                 >
                   <item.icon
                     className="h-4 w-4 flex-shrink-0"
@@ -198,7 +201,7 @@ const Tryout: React.FC = () => {
                     key={feature.id}
                     className="flex items-center space-x-2 rounded-xl border border-main bg-white p-2"
                     whileHover={{ scale: 1.03 }}
-                    transition={{ type: "spring", stiffness: 300 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
                     <feature.icon
                       className="h-4 w-4 flex-shrink-0"

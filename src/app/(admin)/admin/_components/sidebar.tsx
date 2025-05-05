@@ -1,24 +1,22 @@
-"use client";
+'use client';
 
-import LogoMinimize from "@/_assest/logo-minimize.png";
-import test from "@/_assest/logo.png";
-import { useAppContext } from "@/components/provider/provider-app";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import SidebarRoute from "./sidebar-route";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { signOut } from "@/lib/auth-helper";
-import Logo from "@/components/ui/logo";
+import LogoMinimize from '@/_assest/logo-minimize.png';
+import test from '@/_assest/logo.png';
+import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/session-provider-auth';
+import Logo from '@/components/ui/logo';
+import { signOut } from '@/lib/auth-helper';
+import Image from 'next/image';
+import SidebarRoute from './sidebar-route';
 
 const Sidebar = () => {
   const { minimizeSidebar, setMinimizeSidebar } = useAppContext();
-  const router = useRouter();
   const { data } = useSession();
   return (
     <div className="flex h-full flex-col bg-white shadow-xl">
       <div
         className={`flex ${
-          !minimizeSidebar ? "justify-between p-6" : "justify-center p-[1rem]"
+          !minimizeSidebar ? 'justify-between p-6' : 'justify-center p-[1rem]'
         } items-center`}
       >
         {!minimizeSidebar ? (
@@ -41,12 +39,12 @@ const Sidebar = () => {
       >
         <div
           className={`flex items-center gap-[.5rem] ${
-            minimizeSidebar && "w-full justify-center"
+            minimizeSidebar && 'w-full justify-center'
           }`}
         >
           <div
             className={
-              "flex w-[1.8rem] items-center justify-center rounded-full border border-main-gray-input"
+              'flex w-[1.8rem] items-center justify-center rounded-full border border-main-gray-input'
             }
           >
             <Image
@@ -63,7 +61,7 @@ const Sidebar = () => {
           <i
             className="bx bx-log-out cursor-pointer rounded-full p-[.2rem] text-[1.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
             onClick={() => {
-              signOut({ callbackUrl: "/" });
+              signOut({ callbackUrl: '/' });
             }}
           />
         )}
