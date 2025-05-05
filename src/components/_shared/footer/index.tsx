@@ -53,13 +53,13 @@ export default function Footer() {
           <div>
             <p className="text-main text-[.9rem]">Customer Support</p>
             <p className="text-main-gray-text2 text-[.9rem]">
-              tutorsnbt@gmail.com
+              bimbelio@gmail.com
             </p>
           </div>
           <div>
             <p className="text-main text-[.9rem]">IT Support</p>
             <p className="text-main-gray-text2 text-[.9rem]">
-              tutorsnbt@gmail.com
+              bimbelio@gmail.com
             </p>
           </div>
         </div>

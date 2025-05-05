@@ -199,16 +199,16 @@ const HeroSection: React.FC = () => {
           >
             {/* Content Container (behind the frame) */}
             <div className="absolute left-[calc(23/366*100%)] top-[calc(23/729*100%)] h-[calc(686/729*100%)] w-[calc(318/366*100%)] overflow-visible rounded-[calc(38/366*100%)/calc(38/729*100%)] [mask-image:linear-gradient(to_bottom,white_60%,transparent)]">
-              {/* <video
+              <video
                 ref={mobileVideoRef}
-                src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete/tutorsnbt-mobile.webm"
+                src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete//bimbelio-mobile.webm"
                 className="w-full h-full object-cover"
                 muted
                 loop
                 autoPlay
                 playsInline
                 preload="auto"
-              /> */}
+              />
               <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent"></div>
             </div>
             {/* Phone Frame (on top) */}
@@ -283,15 +283,15 @@ const HeroSection: React.FC = () => {
             {/* Container Video */}
             <div className="absolute w-full h-full rounded-3xl shadow-md overflow-hidden">
               <AspectRatio ratio={16 / 9}>
-                {/* <video
+                <video
                   ref={videoRef}
-                  src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete/tutorsnbt.webm"
+                  src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete/bimbelio.webm"
                   loop
                   muted
                   playsInline
                   preload="none"
                   className="w-full h-full object-cover object-top p-1 border-4 border-b-8 border-main rounded-3xl"
-                /> */}
+                />
               </AspectRatio>
             </div>
           </div>

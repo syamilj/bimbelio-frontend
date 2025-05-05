@@ -847,7 +847,7 @@ const RegisterTryout = ({
               </div>
             </div>
             <a
-              href="https://www.instagram.com/tutorsnbt?igsh=MThzd3MzbW45YW5zZQ=="
+              href="https://www.instagram.com/bimbelio.official?igsh=MThzd3MzbW45YW5zZQ=="
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -907,7 +907,7 @@ const RegisterTryout = ({
               </div>
             </div>
             <a
-              href="https://www.tiktok.com/@tutorsnbt?is_from_webapp=1&sender_device=pc"
+              href="https://www.tiktok.com/@bimbelio.official?is_from_webapp=1&sender_device=pc"
               target="_blank"
               rel="noopener noreferrer"
             >
