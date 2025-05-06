@@ -45,7 +45,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
           <div className="hidden items-center justify-center md:flex">
             <div className="flex items-center gap-2">
               <Image
-                alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                 src={LOGO}
                 width={30}
               />

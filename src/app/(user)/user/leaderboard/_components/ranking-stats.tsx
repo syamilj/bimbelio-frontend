@@ -368,7 +368,7 @@ const Statistics = () => {
                   </ResponsiveContainer>
                 </div>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Persebaran Nilai peserta Try Out SNBT
+                  Persebaran Nilai peserta Try Out
                 </p>
               </div>
             </div>

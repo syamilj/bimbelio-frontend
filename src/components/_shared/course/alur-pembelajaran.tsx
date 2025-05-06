@@ -17,9 +17,9 @@ export function AlurPembelajaranSection() {
         {[
           {
             number: '1',
-            title: 'Pengenalan UTBK & SNBT',
+            title: 'Pengenalan Materi',
             description:
-              'Pelajari format, struktur, dan strategi dasar menghadapi ujian SNBT.',
+              'Pelajari format, struktur, dan strategi dasar menghadapi ujian.',
           },
           {
             number: '2',
@@ -48,8 +48,7 @@ export function AlurPembelajaranSection() {
           {
             number: '6',
             title: 'Pengetahuan & Pemahaman Umum',
-            description:
-              'Perluas wawasan sains, sosial, dan isu kontemporer untuk SNBT.',
+            description: 'Perluas wawasan sains, sosial, dan isu kontemporer.',
           },
           {
             number: '7',
@@ -71,7 +70,7 @@ export function AlurPembelajaranSection() {
           },
           {
             number: '10',
-            title: 'Simulasi Tryout SNBT',
+            title: 'Simulasi Tryout',
             description:
               'Uji kesiapanmu dengan simulasi ujian mendekati kondisi real.',
           },
@@ -85,7 +84,7 @@ export function AlurPembelajaranSection() {
             number: '12',
             title: 'Persiapan Akhir',
             description:
-              'Tips final & manajemen waktu untuk menghadapi hari-H SNBT.',
+              'Tips final & manajemen waktu untuk menghadapi hari-H.',
           },
         ].map((item, index) => (
           <LearningPathCard

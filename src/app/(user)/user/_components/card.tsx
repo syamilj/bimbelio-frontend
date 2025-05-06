@@ -103,7 +103,7 @@ export default function Card({ data, href, noCategory }: card) {
                   layout="responsive"
                   width={500}
                   height={300}
-                  alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                  alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                 />
               </div>
               <div

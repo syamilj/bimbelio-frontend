@@ -15,7 +15,6 @@ import {
 import { IconBook, IconChat, IconStar } from '@/styles/icon';
 import { useState } from 'react';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
-import AnimatedGradientText from '../../magicui/animated-gradient-text';
 
 const WhyUs = () => {
   const [active, setActive] = useState<number>(1);
@@ -92,7 +91,7 @@ const WhyUs = () => {
     >
       <div className="mx-[1rem] md:mx-0">
         <h1 className="mb-[1rem] text-center text-[1.5rem] font-bold text-main md:text-[2.5rem]">
-          <AnimatedGradientText>Mengapa Bimbelio?</AnimatedGradientText>
+          Mengapa Bimbelio?
         </h1>
         <p className="font-regular text-center text-main-gray-text sm:mt-[-1rem]">
           Keunggulan Bimbel Bimbelio untuk persiapan terbaik menuju kelulusanmu.
@@ -123,7 +122,7 @@ const WhyUs = () => {
               <span className="font-medium text-main">Bimbelio</span>{' '}
               menggunakan GPT-4o yang menunjukkan performa unggul dalam berbagai
               hasil ujian, memastikan hasil belajar yang optimal untuk persiapan
-              SNBT/UTBK.
+              PTN dan Kedinasan kamu.
             </p>
           </div>
           <div

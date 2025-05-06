@@ -192,7 +192,7 @@ const Sidebar = ({ category }: any) => {
                   {userImage && (
                     <Image
                       src={userImage}
-                      alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                      alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                       width={500}
                       height={300}
                       layout="responsive"
@@ -303,7 +303,7 @@ const Sidebar = ({ category }: any) => {
             <>
               <Image
                 src={LogoSvg}
-                alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               />
               <div
                 onClick={() => {
@@ -316,7 +316,7 @@ const Sidebar = ({ category }: any) => {
           ) : (
             <Image
               src={LogoMinimize}
-              alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+              alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               className="w-[40px]"
             />
           )}
@@ -414,7 +414,7 @@ const Sidebar = ({ category }: any) => {
                   {userImage && (
                     <Image
                       src={userImage}
-                      alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                      alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                       width={500}
                       height={300}
                       layout="responsive"

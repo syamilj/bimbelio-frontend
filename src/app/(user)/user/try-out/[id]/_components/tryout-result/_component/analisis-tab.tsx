@@ -327,7 +327,7 @@ export function AnalisisTab({
         <CardHeader className="px-0">
           <CardTitle className="flex items-center gap-2 text-2xl font-bold">
             <Sparkles className="h-6 w-6" />
-            Analisis Hasil Try Out SNBT/UTBK
+            Analisis Hasil Try Out
           </CardTitle>
           <CardDescription>
             Analisis peluang kelulusan berdasarkan passing grade dan peringkat
@@ -372,7 +372,7 @@ export function AnalisisTab({
                       >
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                           <CardTitle className="text-sm font-semibold">
-                            Skor SNBT/UTBK
+                            Skor
                           </CardTitle>
                           <IconStar
                             active
@@ -619,7 +619,7 @@ export function AnalisisTab({
                       >
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                           <CardTitle className="text-sm font-semibold">
-                            Skor SNBT/UTBK
+                            Skor
                           </CardTitle>
                           <IconStar
                             active

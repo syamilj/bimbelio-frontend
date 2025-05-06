@@ -305,9 +305,6 @@ export default function TryoutResult({
         name={''}
         done
       />
-      {/* <h1 className="text-4xl font-bold mb-6 text-center">
-      Hasil Try Out SNBT/UTBK Bimbelio
-    </h1> */}
       <Tabs
         value={tabs}
         className="w-full"

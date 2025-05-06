@@ -439,8 +439,8 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                   </TooltipTrigger>
                   <TooltipContent>
                     {item.status === 'ongoing'
-                      ? 'Lanjutkan tryout SNBT/UTBK yang sedang berlangsung.'
-                      : 'Daftar untuk mengikuti tryout SNBT/UTBK ini.'}
+                      ? 'Lanjutkan tryout yang sedang berlangsung.'
+                      : 'Daftar untuk mengikuti tryout ini.'}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -745,7 +745,7 @@ const RegisterTryout = ({
             </CardHeader>
             <CardContent>
               <ul className="list-inside list-disc space-y-1 text-sm">
-                <li>Akses ke semua materi Try Out SNBT/UTBK</li>
+                <li>Akses ke semua materi Try Out</li>
                 <li>Hasil dan pembahasan setelah Try Out selesai</li>
                 <li>Peringkat nasional</li>
               </ul>
@@ -785,7 +785,7 @@ const RegisterTryout = ({
                 <li>Semua fitur Gratis</li>
                 <li>Akses prioritas saat Try Out berlangsung</li>
                 <li>Analisis detail performa dan rekomendasi belajar</li>
-                <li>Konsultasi dengan tutor SNBT/UTBK</li>
+                <li>Konsultasi dengan tutor</li>
               </ul>
             </CardContent>
           </Card>

@@ -9,10 +9,8 @@ import { ImageBahanAjar } from '@/_assest/homepage/Revolusi/BahanAjar';
 import { ImageChatAI } from '@/_assest/homepage/Revolusi/Chat';
 import { ImageNotes } from '@/_assest/homepage/Revolusi/Notes';
 import { ImageQuiz } from '@/_assest/homepage/Revolusi/Quiz';
-import AnimatedGradientText from '../../magicui/animated-gradient-text';
 
 const LearningRevolutions = () => {
-  // <span className="text-main"></span>
   const revolusiBelajar = [
     {
       icon: <IconRevolusi1 />,
@@ -62,7 +60,6 @@ const LearningRevolutions = () => {
           esai secara otomatis dari material!
         </p>
       ),
-
       image: <ImageQuiz />,
     },
   ];
@@ -70,28 +67,33 @@ const LearningRevolutions = () => {
   return (
     <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-[4rem]">
       <div className="mx-[1rem] md:mx-0">
-        <h2 className="text-center text-[1.5rem] font-bold md:text-[2.5rem]">
-          <AnimatedGradientText>
-            Revolusi Persiapan SNBT/UTBK dengan AI!
-          </AnimatedGradientText>
+        <h2 className="text-center text-[1.5rem] font-bold md:text-[2.5rem] mb-4">
+          Revolusi Belajar dengan AI!
         </h2>
         <p className="font-regular mt-[-1rem] text-center text-main-gray-text">
-          Bagaimana cara belajar untuk SNBT/UTBK dengan AI membantu Kamu?
+          Bagaimana cara belajar dengan AI membantu Kamu?
         </p>
       </div>
+
       <div className="mx-[1rem] grid grid-cols-1 gap-[1.5rem] md:mx-0 md:grid-cols-2">
         {revolusiBelajar.map((item: any, i: number) => (
           <div
             key={i}
-            className="grid grid-cols-1 rounded-[.8rem] bg-white p-[1.5rem] md:grid-cols-2  bg-white/50"
+            className="relative overflow-hidden rounded-[.8rem] bg-white/50 p-[1.5rem] shadow-sm transition-all hover:shadow-md"
           >
-            <div className="flex flex-col gap-[1rem]">
-              <div className="text-main">{item.icon}</div>
-              <h1 className="text-[1.3rem] font-medium">{item.heading}</h1>
-              {item.description}
-            </div>
-            <div className="hidden shrink-0 md:block text-main">
-              {item.image}
+            {/* Content wrapper */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              {/* Text content */}
+              <div className="flex flex-col gap-[1rem] md:max-w-[50%]">
+                <div className="text-main">{item.icon}</div>
+                <h1 className="text-[1.3rem] font-medium">{item.heading}</h1>
+                {item.description}
+              </div>
+
+              {/* Image - visible on all screen sizes */}
+              <div className="flex justify-center md:justify-end text-main">
+                {item.image}
+              </div>
             </div>
           </div>
         ))}

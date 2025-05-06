@@ -9,7 +9,7 @@ export default function PricingHeader() {
       </h1>
       <p className="text-xl text-[#4a5568] max-w-2xl mx-auto">
         Pilih paket yang sesuai dengan kebutuhanmu dan mulai perjalanan belajar
-        bersama TutorSNBT
+        bersama Bimbelio
       </p>
     </div>
   );

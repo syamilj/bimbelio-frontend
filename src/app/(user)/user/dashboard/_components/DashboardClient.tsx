@@ -391,7 +391,7 @@ export const TryoutHistoryCard: React.FC<{
           </ChartContainer>
           <p className="mt-4 text-sm text-muted-foreground">
             Grafik ini menunjukkan perkembangan nilai total dan peringkat dalam
-            tryout SNBT/UTBK.
+            tryout.
           </p>
         </TabsContent>
       </Tabs>
@@ -491,8 +491,8 @@ export const QuizHistoryCard: React.FC<{ quizHistory: any }> = ({
             </ResponsiveContainer>
           </ChartContainer>
           <p className="mt-4 text-sm text-muted-foreground">
-            Grafik ini menunjukkan perkembangan akurasi dan perubahan dalam quiz
-            SNBT/UTBK.
+            Grafik ini menunjukkan perkembangan akurasi dan perubahan dalam
+            quiz.
           </p>
         </TabsContent>
       </Tabs>

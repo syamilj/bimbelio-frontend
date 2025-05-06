@@ -149,7 +149,7 @@ export function Payment() {
                 <DialogTitle className="text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
                   Tingkatkan Persiapan{' '}
                   <span className="bg-gradient-to-r from-main to-white bg-clip-text text-transparent">
-                    SNBT-mu
+                    kamu
                   </span>
                 </DialogTitle>
                 <DialogDescription className="mx-auto mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
@@ -486,7 +486,7 @@ function FeaturesOverview(): ReactElement {
     {
       icon: BookOpenIcon,
       title: 'Materi Premium',
-      desc: 'Akses ke semua materi SNBT',
+      desc: 'Akses ke semua materi',
       gradient: 'from-purple-500 to-pink-500',
     },
     {

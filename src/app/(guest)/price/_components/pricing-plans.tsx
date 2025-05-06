@@ -212,7 +212,7 @@ export default function PricingPlans() {
         </h1>
         <p className="text-xl text-[#4a5568] max-w-2xl mx-auto">
           Pilih paket yang sesuai dengan kebutuhanmu dan mulai perjalanan
-          belajar bersama TutorSNBT
+          belajar bersama Bimbelio
         </p>
       </div>
       <Tabs defaultValue="bundle" className="w-full">
