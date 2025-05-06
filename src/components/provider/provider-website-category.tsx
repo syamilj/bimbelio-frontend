@@ -1,25 +1,24 @@
-"use client";
+'use client';
 
-import axiosInstanceRaw from "@/lib/axios/axiosInstanceRaw";
-import { getGeneral } from "@/lib/fetch-helper";
-import { response } from "@/lib/response";
-import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
-import { Loader2 } from "lucide-react";
-import NextTopLoader from "nextjs-toploader";
-import { createContext, useContext, useEffect, useState } from "react";
-import ChooseWebCategory from "../ui/choose-web-category";
-import { getMainStyles } from "@/styles/main-styles";
-import { usePathname } from "next/navigation";
-import { useSession } from "./session-provider-auth";
+import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
+import { getGeneral } from '@/lib/fetch-helper';
+import { response } from '@/lib/response';
+import { getMainStyles } from '@/styles/main-styles';
+import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
+import { Loader2 } from 'lucide-react';
+import NextTopLoader from 'nextjs-toploader';
+import { createContext, useContext, useEffect, useState } from 'react';
+import ChooseWebCategory from '../ui/choose-web-category';
+import { useSession } from './session-provider-auth';
 
 const initialValue = {
-  id: "guest",
-  main_color: "#0091FF",
-  secondary_color: "#5aa4dd",
-  name: "guest",
+  id: 'guest',
+  main_color: '#0091FF',
+  secondary_color: '#5aa4dd',
+  name: 'guest',
   createdAt: new Date(),
   updatedAt: new Date(),
-  website_category_id: "guest",
+  website_category_id: 'guest',
 };
 
 export default function ProviderWebsiteCategory({
@@ -40,13 +39,13 @@ export default function ProviderWebsiteCategory({
 
   const getWebSubCategory = () => {
     const website_sub_category_id = localStorage.getItem(
-      "website_sub_category_id"
+      'website_sub_category_id',
     );
     setIsLoading(true);
     if (website_sub_category_id) {
       axiosInstanceRaw
         .get(
-          `/website-category/getSingleWebsiteSubCategory?website_sub_category_id=${website_sub_category_id}`
+          `/website-category/getSingleWebsiteSubCategory?website_sub_category_id=${website_sub_category_id}`,
         )
         .then((res) => {
           const resData = response(res);
@@ -68,7 +67,7 @@ export default function ProviderWebsiteCategory({
 
   useEffect(() => {
     getWebSubCategory();
-    getGeneral("/website-category/getWebsiteCategory", {
+    getGeneral('/website-category/getWebsiteCategory', {
       setData: setWebCategoryData,
     });
   }, [session]);
@@ -144,7 +143,7 @@ export default function ProviderWebsiteCategory({
   return (
     <WebsiteSubCategoryContext.Provider value={Context}>
       <NextTopLoader
-        color={websiteSubCategory?.main_color || "#0091FF"}
+        color={websiteSubCategory?.main_color || '#0091FF'}
         initialPosition={0.08}
         crawlSpeed={200}
         height={3}
@@ -187,18 +186,8 @@ export const useWebsiteSubCategory = () => {
   const context = useContext(WebsiteSubCategoryContext);
   if (!context) {
     throw new Error(
-      "useWebsiteSubCategory must be used within an WebsiteSubCategoryContext"
+      'useWebsiteSubCategory must be used within an WebsiteSubCategoryContext',
     );
   }
   return context;
-};
-
-const hexToRgba = (hex: string, opacity: number) => {
-  const sanitizedHex = hex.replace("#", "");
-  const bigint = parseInt(sanitizedHex, 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-
-  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };

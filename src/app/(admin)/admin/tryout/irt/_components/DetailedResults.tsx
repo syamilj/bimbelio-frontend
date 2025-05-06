@@ -85,7 +85,7 @@ export default function DetailedResults({
       <CardHeader>
         <CardTitle>Hasil Detail</CardTitle>
         <CardDescription>
-          Tabel lengkap hasil analisis SNBT/UTBK per peserta
+          Tabel lengkap hasil analisis per peserta
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -131,7 +131,7 @@ export default function DetailedResults({
         </div>
         <div className="overflow-x-auto">
           <Table>
-            <TableCaption>Hasil Analisis SNBT/UTBK</TableCaption>
+            <TableCaption>Hasil Analisis</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead

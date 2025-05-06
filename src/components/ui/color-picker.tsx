@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import type React from "react";
+import type React from 'react';
 
-import { useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input';
+import { useEffect, useState } from 'react';
 
 interface ColorPickerProps {
   value: string;
@@ -12,10 +12,10 @@ interface ColorPickerProps {
 }
 
 export function ColorPicker({ value, onChange, label }: ColorPickerProps) {
-  const [hexValue, setHexValue] = useState(value || "#000000");
+  const [hexValue, setHexValue] = useState(value || '#000000');
 
   useEffect(() => {
-    setHexValue(value || "#000000");
+    setHexValue(value || '#000000');
   }, [value]);
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {

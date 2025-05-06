@@ -1,6 +1,6 @@
-import { useSession } from "@/components/provider/session-provider-auth";
-import { toaster } from "@/components/ui/toaster";
-import { mutateGeneral } from "@/lib/fetch-helper";
+import { useSession } from '@/components/provider/session-provider-auth';
+import { toaster } from '@/components/ui/toaster';
+import { mutateGeneral } from '@/lib/fetch-helper';
 
 interface Props {
   session: any;
@@ -23,12 +23,12 @@ export default function ThreeQuestions({
     quiz?: boolean;
   }) => {
     let sendData: any = null;
-    await mutateGeneral("/user/limitation", {
+    await mutateGeneral('/user/limitation', {
       payload: {
         ...payload,
-        userId: sessionUser?.user.id || "",
+        userId: sessionUser?.user.id || '',
       },
-      type: "post",
+      type: 'post',
       toast: { hideSuccess: true },
       onSuccess({ data }) {
         sendData = data;
@@ -39,13 +39,13 @@ export default function ThreeQuestions({
 
   const ThirdQuestion = [
     {
-      question: "Tolong buat ringkasan singkat dari dokumen ini!",
+      question: 'Tolong buat ringkasan singkat dari dokumen ini!',
     },
     {
-      question: "Apa informasi kunci yang perlu diketahui dari dokumen ini?",
+      question: 'Apa informasi kunci yang perlu diketahui dari dokumen ini?',
     },
     {
-      question: "Bagaimana dokumen ini relevan dengan kebutuhan?",
+      question: 'Bagaimana dokumen ini relevan dengan kebutuhan?',
     },
   ];
 
@@ -54,8 +54,8 @@ export default function ThreeQuestions({
       const data: any = await limitation({ chat: true });
       if (data && !data.status) {
         toaster({
-          title: "Uppss",
-          condition: "warning",
+          title: 'Uppss',
+          condition: 'warning',
           description: data.message,
           duration: 5000,
         });
@@ -63,7 +63,7 @@ export default function ThreeQuestions({
       } else if (data && data.status) {
         try {
           const submit = document.getElementById(
-            "submitMessages"
+            'submitMessages',
           ) as HTMLButtonElement;
           const e: any = {
             target: {
@@ -83,9 +83,9 @@ export default function ThreeQuestions({
       }
     } catch (error) {
       toaster({
-        title: "Gagal",
-        condition: "warning",
-        description: "Coba lagi nanti!",
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
       });
       return;
     }

@@ -1,9 +1,9 @@
-import LOGO from "@/_assest/logomark.png";
-import { useAppContext } from "@/components/provider/provider-app";
-import { useSession } from "@/components/provider/session-provider-auth";
+import LOGO from '@/_assest/logomark.png';
+import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/session-provider-auth';
 
-import Image from "next/image";
-import { useRouter } from "next/router";
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
   const Router = useRouter();
@@ -14,35 +14,38 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
 
   const data = [
     {
-      heading: "Chat",
-      free: "50 Chat",
-      premium: "2.000 Chat",
+      heading: 'Chat',
+      free: '50 Chat',
+      premium: '2.000 Chat',
     },
     {
-      heading: "Limit Notes",
-      free: "20 Notes",
-      premium: "200 Note",
+      heading: 'Limit Notes',
+      free: '20 Notes',
+      premium: '200 Note',
     },
     {
-      heading: "Limit Quiz",
-      free: "5 Quiz",
-      premium: "50 Quiz",
+      heading: 'Limit Quiz',
+      free: '5 Quiz',
+      premium: '50 Quiz',
     },
     {
-      heading: "Limit Vision",
-      free: "10 Vision",
-      premium: "100 Vision",
+      heading: 'Limit Vision',
+      free: '10 Vision',
+      premium: '100 Vision',
     },
   ];
 
   return (
-    <div id="pricing" className="mx-auto flex w-full max-w-[1280px] flex-col">
+    <div
+      id="pricing"
+      className="mx-auto flex w-full max-w-[1280px] flex-col"
+    >
       <div className="mx-[1rem] rounded-[2rem] bg-white px-[2rem] py-[4rem] md:mx-0">
         <div className="grid grid-cols-2 gap-x-[3rem] md:grid-cols-3">
           <div className="hidden items-center justify-center md:flex">
             <div className="flex items-center gap-2">
               <Image
-                alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                 src={LOGO}
                 width={30}
               />
@@ -62,7 +65,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
             <button
               className="w-full rounded-[2rem] bg-bg-workspace py-[.8rem] font-medium text-main-gray-text"
               onClick={() => {
-                if (session) Router.push("/dashboard");
+                if (session) Router.push('/dashboard');
                 else setShowAuth({ login: true, signUp: false });
               }}
             >
@@ -74,7 +77,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
             <div className="">
               <p className="text-[1.5rem] font-medium">Rp99.000/bulan</p>
               <p className="text-[1rem] font-bold text-main">
-                Diskon 50%{" "}
+                Diskon 50%{' '}
                 <span className="font-regular text-main-gray-text line-through">
                   Rp199.000
                 </span>
@@ -85,7 +88,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
               onClick={() => {
                 if (session) {
                   setTransactionPopUp(true);
-                  Router.push("/user/dashboard");
+                  Router.push('/user/dashboard');
                 } else {
                   setShowAuth({ login: true, signUp: false });
                 }
@@ -107,24 +110,27 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
           </div>
         </div>
         {data?.map((item: any, i: number) => (
-          <div className="grid grid-cols-2 md:grid-cols-3" key={i}>
+          <div
+            className="grid grid-cols-2 md:grid-cols-3"
+            key={i}
+          >
             <div
               className={`${
-                i % 2 === 0 ? "bg-bg-workspace" : "bg-bg-white"
+                i % 2 === 0 ? 'bg-bg-workspace' : 'bg-bg-white'
               } font-regular hidden py-[.8rem] pl-[1rem] text-start text-main-gray-text md:block`}
             >
               {item.heading}
             </div>
             <div
               className={`${
-                i % 2 === 0 ? "bg-bg-workspace" : "bg-bg-white"
+                i % 2 === 0 ? 'bg-bg-workspace' : 'bg-bg-white'
               } font-regular py-[.8rem] text-center text-main-gray-text`}
             >
               {item.free}
             </div>
             <div
               className={`${
-                i % 2 === 0 ? "bg-bg-workspace" : "bg-bg-white"
+                i % 2 === 0 ? 'bg-bg-workspace' : 'bg-bg-white'
               } font-regular py-[.8rem] text-center text-main`}
             >
               {item.premium}

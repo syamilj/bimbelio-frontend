@@ -1,19 +1,22 @@
 // src/app/(user)/layout-user-client.tsx
 
-"use client";
+'use client';
 
-import { useParams, usePathname } from "next/navigation";
-import { ReactNode, Suspense, useEffect, useState } from "react";
-import useMedia from "use-media";
+import { useParams, usePathname } from 'next/navigation';
+import { ReactNode, Suspense, useEffect, useState } from 'react';
+import useMedia from 'use-media';
 
-import ButtonPayment from "@/app/(user)/user/_components/button-payment";
-import Search from "@/app/(user)/user/_components/search";
-import Sidebar from "@/app/(user)/user/_components/sidebar";
-import { useAppContext } from "@/components/provider/provider-app";
+import ButtonPayment from '@/app/(user)/user/_components/button-payment';
+import Search from '@/app/(user)/user/_components/search';
+import Sidebar from '@/app/(user)/user/_components/sidebar';
+import { useAppContext } from '@/components/provider/provider-app';
 
-import AnimatedGradientText from "@/components/magicui/animated-gradient-text";
-import CheckSubscription from "@/components/provider/check-subscription";
-import { cn } from "@/lib/utils";
+import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
+import CheckSubscription from '@/components/provider/check-subscription';
+import { useSession } from '@/components/provider/session-provider-auth';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response } from '@/lib/response';
+import { cn } from '@/lib/utils';
 import {
   IconChat,
   IconCrown,
@@ -23,11 +26,8 @@ import {
   IconTryOut,
   IconUnlimited,
   IconVision,
-} from "@/styles/icon";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { response } from "@/lib/response";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { useUserLimitation } from "../provider/provider-limitation";
+} from '@/styles/icon';
+import { useUserLimitation } from '../provider/provider-limitation';
 
 interface LayoutUserClientProps {
   children: ReactNode;
@@ -37,39 +37,6 @@ type CategoryType = {
   name: string;
   id: string;
   total: number;
-};
-
-type LimitationUsed = {
-  Limit: {
-    chat: number | undefined;
-    notes: number | undefined;
-    quiz: number | undefined;
-    vision: number | undefined;
-    user?:
-      | {
-          id: string;
-          Role: "USER" | "ADMIN";
-        }
-      | undefined;
-    chatLimit?: number | undefined;
-    notesLimit?: number | undefined;
-    visionLimit?: number | undefined;
-    quizLimit?: number | undefined;
-  };
-  user?:
-    | {
-        id: string;
-        Role: "USER" | "ADMIN";
-      }
-    | undefined;
-  chat?: number | undefined;
-  quiz?: number | undefined;
-  notes?: number | undefined;
-  vision?: number | undefined;
-  chatLimit?: number | undefined;
-  notesLimit?: number | undefined;
-  visionLimit?: number | undefined;
-  quizLimit?: number | undefined;
 };
 
 export default function LayoutUserClient({ children }: LayoutUserClientProps) {
@@ -92,7 +59,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   const [category, setCategory] = useState<CategoryType[]>([]);
 
   useEffect(() => {
-    axiosInstance.get("/category/getAllCategories").then((res) => {
+    axiosInstance.get('/category/getAllCategories').then((res) => {
       const resData = response(res);
       setCategory(resData.data);
     });
@@ -110,12 +77,12 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   } = useAppContext();
 
   // State
-  const [componentName, setComponentName] = useState<string>("");
+  const [componentName, setComponentName] = useState<string>('');
   const [hideLayout, setHideLayout] = useState<boolean>(false);
   const [inWorkspace, setInWorkspace] = useState<boolean>(false);
 
   // Responsive check
-  const isMobile = useMedia({ maxWidth: "768px" });
+  const isMobile = useMedia({ maxWidth: '768px' });
 
   // EFFECTS ------------------------------------------------------
 
@@ -123,19 +90,19 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   //    Jika 'docsid' param ada => set componentName 'DocViewerPage'
   useEffect(() => {
     if (params?.docsid) {
-      setComponentName("DocViewerPage");
+      setComponentName('DocViewerPage');
     }
 
     const isWorkspaceRoute =
-      pathname?.includes("workspace") && params?.category && params?.docsid;
-    const isCourseRoute = pathname?.includes("course") && params?.categoryId;
+      pathname?.includes('workspace') && params?.category && params?.docsid;
+    const isCourseRoute = pathname?.includes('course') && params?.categoryId;
 
     if (isWorkspaceRoute || isCourseRoute) {
-      setComponentName("DocViewerPage");
+      setComponentName('DocViewerPage');
       setInWorkspace(true);
     } else {
       setInWorkspace(false);
-      setComponentName("");
+      setComponentName('');
     }
 
     // setInWorkspace(!!(isWorkspaceRoute || isCourseRoute));
@@ -143,7 +110,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
   // 2) Jika route 'try-out/[id]' => hideLayout = true
   useEffect(() => {
-    if (pathname?.includes("try-out") && params?.id) {
+    if (pathname?.includes('try-out') && params?.id) {
       setHideLayout(true);
     } else {
       setHideLayout(false);
@@ -165,9 +132,9 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   function renderLimitInfo(
     icon: React.ReactNode,
     used?: number,
-    limit?: number
+    limit?: number,
   ) {
-    if (userTier !== "ADMIN") {
+    if (userTier !== 'ADMIN') {
       return (
         <p className="text-[.9rem] text-main-gray-text">
           {used}/{limit}
@@ -192,14 +159,14 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
             <div
               id="header"
               className={cn(
-                "fixed inset-y-0 z-[50] flex h-[80px] w-full items-center justify-between gap-[1.5rem] rounded-b-3xl border-main-gray-input bg-bg-layout px-[1.5rem] duration-300 md:gap-0 md:border-b md:bg-white/90 md:px-0 md:pl-[75px] md:pr-[1rem]",
-                !minimizeSidebar && "md:pl-[16rem]"
+                'fixed inset-y-0 z-[50] flex h-[80px] w-full items-center justify-between gap-[1.5rem] rounded-b-3xl border-main-gray-input bg-bg-layout px-[1.5rem] duration-300 md:gap-0 md:border-b md:bg-white/90 md:px-0 md:pl-[75px] md:pr-[1rem]',
+                !minimizeSidebar && 'md:pl-[16rem]',
               )}
             >
               {/* LEFT: Greeting (desktop only) */}
               <div className="hidden items-center justify-center pl-[3rem] md:flex">
                 <span className="text-main-gray">
-                  Selamat Datang,{" "}
+                  Selamat Datang,{' '}
                   <AnimatedGradientText className="animate-gradient bg-gradient-to-r from-[#ffaa40] via-main to-[#ffaa40] font-medium">
                     {userSession?.user.name}
                   </AnimatedGradientText>
@@ -207,8 +174,14 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
               </div>
 
               {/* MOBILE: hamburger button */}
-              <div className="md:hidden" onClick={() => setSidebarMobile(true)}>
-                <IconHamburger w={20} className="text-main-gray-text" />
+              <div
+                className="md:hidden"
+                onClick={() => setSidebarMobile(true)}
+              >
+                <IconHamburger
+                  w={20}
+                  className="text-main-gray-text"
+                />
               </div>
 
               {/* MOBILE: search bar */}
@@ -225,63 +198,80 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
               <div className="hidden items-center gap-[1rem] md:flex">
                 {/* Chat limit */}
                 <div className="flex items-center gap-[.5rem]">
-                  <IconChat w={18} className="text-main-gray-text" />
+                  <IconChat
+                    w={18}
+                    className="text-main-gray-text"
+                  />
                   {renderLimitInfo(
                     <IconChat w={18} />,
                     userLimitation?.chat,
-                    userLimitation?.chatLimit
+                    userLimitation?.chatLimit,
                   )}
                 </div>
 
                 {/* Notes limit */}
                 <div className="flex items-center gap-[.5rem]">
-                  <IconPen w={18} className="text-main-gray-text" />
+                  <IconPen
+                    w={18}
+                    className="text-main-gray-text"
+                  />
                   {renderLimitInfo(
                     <IconPen w={18} />,
                     userLimitation?.notes,
-                    userLimitation?.notesLimit
+                    userLimitation?.notesLimit,
                   )}
                 </div>
 
                 {/* Quiz limit */}
                 <div className="flex items-center gap-[.5rem]">
-                  <IconTabsQuiz w={18} className="text-main-gray-text" />
+                  <IconTabsQuiz
+                    w={18}
+                    className="text-main-gray-text"
+                  />
                   {renderLimitInfo(
                     <IconTabsQuiz w={18} />,
                     userLimitation?.quiz,
-                    userLimitation?.quizLimit
+                    userLimitation?.quizLimit,
                   )}
                 </div>
 
                 {/* Vision limit */}
                 <div className="flex items-center gap-[.5rem]">
-                  <IconVision active w={20} className="text-main-gray-text" />
+                  <IconVision
+                    active
+                    w={20}
+                    className="text-main-gray-text"
+                  />
                   {renderLimitInfo(
                     <IconVision w={18} />,
                     userLimitation?.vision,
-                    userLimitation?.visionLimit
+                    userLimitation?.visionLimit,
                   )}
                 </div>
 
                 {/* Tryout limit */}
                 <div className="flex items-center gap-[.5rem]">
-                  <IconTryOut active w={20} className="text-main-gray-text" />
+                  <IconTryOut
+                    active
+                    w={20}
+                    className="text-main-gray-text"
+                  />
                   {renderLimitInfo(
                     <IconTryOut w={18} />,
                     userLimitation?.tryout,
-                    userLimitation?.tryoutLimit
+                    userLimitation?.tryoutLimit,
                   )}
                 </div>
 
                 {/* Role-based status or button */}
                 {!userTier ? (
                   <ButtonPayment text="Subscription" />
-                ) : userTier === "PREMIUM" ? (
+                ) : userTier === 'PREMIUM' ? (
                   <div className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main-yellow px-[1rem] py-[.7rem] text-[.9rem] text-white">
                     <IconCrown className="text-white" />
                     <p>Premium</p>
                   </div>
-                ) : userTier === "ADMIN" ? (
+                ) : userTier === 'ADMIN' ? (
                   <div className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main-yellow px-[1rem] py-[.7rem] text-[.9rem] text-white">
                     <IconCrown className="text-white" />
                     <p>Admin</p>
@@ -300,9 +290,9 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
           <div
             id="border"
             className={cn(
-              "fixed inset-y-0 hidden h-full w-[75px] flex-col duration-300 md:block",
-              !minimizeSidebar && "w-[16rem]",
-              showSidebar && "z-[50]"
+              'fixed inset-y-0 hidden h-full w-[75px] flex-col duration-300 md:block',
+              !minimizeSidebar && 'w-[16rem]',
+              showSidebar && 'z-[50]',
             )}
             onMouseOver={() => setMinimizeSidebar(false)}
             onMouseLeave={() => setMinimizeSidebar(true)}
@@ -314,7 +304,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
           {isMobile && (
             <div
               className={`fixed top-0 z-[10000] block h-full overflow-hidden duration-200 md:hidden ${
-                sidebarMobile ? "left-0 w-[300px]" : "left-[-310px] w-[300px]"
+                sidebarMobile ? 'left-0 w-[300px]' : 'left-[-310px] w-[300px]'
               }`}
             >
               <Sidebar category={category} />
@@ -331,13 +321,13 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
           {/* MAIN CONTENT */}
           <main
             className={cn(
-              "relative mt-0 pr-0 pt-0 duration-300 md:pl-[75px] min-h-screen",
+              'relative mt-0 pr-0 pt-0 duration-300 md:pl-[75px] min-h-screen',
               // docViewer => full fixed
-              componentName === "DocViewerPage" &&
-                "fixed left-0 top-0 h-full w-full",
+              componentName === 'DocViewerPage' &&
+                'fixed left-0 top-0 h-full w-full',
               // not in workspace => push down margin
               !inWorkspace &&
-                "mt-[80px] pt-[1rem] md:pl-[calc(75px+3rem)] md:pr-10 md:pt-12  min-h-[calc(100vh-80px)]"
+                'mt-[80px] pt-[1rem] md:pl-[calc(75px+3rem)] md:pr-10 md:pt-12  min-h-[calc(100vh-80px)]',
             )}
           >
             {children}

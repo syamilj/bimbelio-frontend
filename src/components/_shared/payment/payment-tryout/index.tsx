@@ -1,13 +1,13 @@
-import { CardTryoutProps } from "@/app/(user)/user/try-out/_components/ui/card-tryout";
-import { useAppContext } from "@/components/provider/provider-app";
-import { cn, getDateTryoutString, getHours } from "@/lib/utils";
-import { IconCrown, IconX } from "@/styles/icon";
-import { Loader2 } from "lucide-react";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { toaster } from "../../../ui/toaster";
-import { Pricing, Tryout } from "@/types/database";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
-import { useSession } from "@/components/provider/session-provider-auth";
+import { CardTryoutProps } from '@/app/(user)/user/try-out/_components/ui/card-tryout';
+import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { cn, getDateTryoutString, getHours } from '@/lib/utils';
+import { IconCrown, IconX } from '@/styles/icon';
+import { Pricing, Tryout } from '@/types/database';
+import { Loader2 } from 'lucide-react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { toaster } from '../../../ui/toaster';
 
 export const PaymentTryout = ({
   tryoutData,
@@ -49,9 +49,9 @@ export const PaymentTryout = ({
     titleTryout: string;
     tryoutId: string;
   }) => {
-    const res = await mutateGeneral("/payment/buyTryoutPremium", {
+    const res = await mutateGeneral('/payment/buyTryoutPremium', {
       payload: { ...payload, userId: session?.user.id },
-      type: "post",
+      type: 'post',
       toast: { hideSuccess: true },
     });
     return res;
@@ -74,9 +74,9 @@ export const PaymentTryout = ({
       setLoading(false);
     } catch (error) {
       toaster({
-        title: "Gagal",
-        condition: "warning",
-        description: "Coba lagi nanti!",
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
       });
       setLoading(false);
       return;
@@ -115,17 +115,17 @@ export const PaymentTryout = ({
               <p className="col-span-3">: {tryoutData?.title} </p>
               <p className="col-span-2 text-main-gray-text">Pelaksanaan</p>
               <p className="col-span-3">
-                : {getDateTryoutString(tryoutData?.startDate)},{" "}
-                {getHours(tryoutData?.startDate)} WIB s/d <br />{" "}
-                <span className="text-transparent">:</span>{" "}
-                {getDateTryoutString(tryoutData?.endDate)},{" "}
+                : {getDateTryoutString(tryoutData?.startDate)},{' '}
+                {getHours(tryoutData?.startDate)} WIB s/d <br />{' '}
+                <span className="text-transparent">:</span>{' '}
+                {getDateTryoutString(tryoutData?.endDate)},{' '}
                 {getHours(tryoutData?.endDate)} WIB
               </p>
               <p className="col-span-2 text-main-gray-text">
                 Periode Penilaian
               </p>
               <p className="col-span-3">
-                : {getDateTryoutString(tryoutData?.resultDate)},{" "}
+                : {getDateTryoutString(tryoutData?.resultDate)},{' '}
                 {getHours(tryoutData?.resultDate)} WIB
               </p>
             </div>
@@ -136,8 +136,8 @@ export const PaymentTryout = ({
             ) : (
               <button
                 className={cn(
-                  "flex items-center justify-center rounded-[1rem] bg-main py-[1rem] text-white duration-300 hover:bg-main/85 active:bg-main",
-                  loading && "cursor-pointer hover:bg-main/85 active:bg-main"
+                  'flex items-center justify-center rounded-[1rem] bg-main py-[1rem] text-white duration-300 hover:bg-main/85 active:bg-main',
+                  loading && 'cursor-pointer hover:bg-main/85 active:bg-main',
                 )}
                 onClick={() => {
                   if (loading) return;
@@ -147,8 +147,8 @@ export const PaymentTryout = ({
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  `Beli Rp. ${pricing.price.toLocaleString("id-ID", {
-                    style: "decimal",
+                  `Beli Rp. ${pricing.price.toLocaleString('id-ID', {
+                    style: 'decimal',
                   })}`
                 )}
               </button>

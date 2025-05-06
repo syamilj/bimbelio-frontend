@@ -31,14 +31,14 @@ const learningSteps = [
       { icon: <ClockIcon className="size-3 mr-1" />, value: '45 menit' },
     ],
     features: [
-      'Penilaian komprehensif UTBK/SNBT',
+      'Penilaian komprehensif PTN dan Kedinasan',
       'Analisis kekuatan dan kelemahan',
       'Rekomendasi materi personal',
     ],
     stat: '15 menit',
     statLabel: 'Waktu rata-rata',
     learningPoints: [
-      'Mengenal tipe soal UTBK/SNBT',
+      'Mengenal tipe soal PTN dan Kedinasan',
       'Mengidentifikasi kekuatan dan kelemahan',
       'Membuat rencana belajar personal',
     ],
@@ -67,12 +67,12 @@ const learningSteps = [
     stat: '1000+',
     statLabel: 'Materi tersedia',
     learningPoints: [
-      'Memahami konsep dasar materi UTBK/SNBT',
+      'Memahami konsep dasar materi PTN dan Kedinasan',
       'Mempelajari materi secara interaktif',
       'Menguji pemahaman melalui quiz',
     ],
     importance:
-      'Untuk membangun pemahaman yang kuat dan komprehensif tentang materi UTBK/SNBT.',
+      'Untuk membangun pemahaman yang kuat dan komprehensif tentang materi PTN dan Kedinasan.',
     users: '2000+',
   },
   {
@@ -147,18 +147,19 @@ const learningSteps = [
     icon: <CheckCircleIcon className="size-6" />,
     title: 'Quiz Akhir',
     badge: 'Evaluasi Kemajuan',
-    description: 'Evaluasi perkembanganmu dengan simulasi UTBK/SNBT lengkap.',
+    description:
+      'Evaluasi perkembanganmu dengan simulasi PTN dan Kedinasan lengkap.',
     stats: [
       { icon: <FileQuestionIcon className="size-3 mr-1" />, value: '100 soal' },
       { icon: <ClockIcon className="size-3 mr-1" />, value: '120 menit' },
     ],
     features: [
-      'Simulasi UTBK/SNBT lengkap',
+      'Simulasi PTN dan Kedinasan lengkap',
       'Analisis detail performa',
       'Rekomendasi langkah selanjutnya',
     ],
     stat: '98%',
-    statLabel: 'Akurasi prediksi skor UTBK',
+    statLabel: 'Akurasi prediksi skor',
     learningPoints: [
       'Menguji pemahaman secara komprehensif',
       'Menganalisis performa dan mengidentifikasi area yang perlu ditingkatkan',
@@ -218,7 +219,7 @@ export default function CaraBelajarSection1() {
           Kami menyediakan metode belajar yang{' '}
           <span className="font-semibold text-main">komprehensif</span> dan{' '}
           <span className="font-semibold text-main">interaktif</span> untuk
-          memaksimalkan potensi belajarmu menuju kesuksesan UTBK/SNBT.
+          memaksimalkan potensi belajarmu menuju kesuksesan PTN dan Kedinasan.
         </p>
       </div>
 

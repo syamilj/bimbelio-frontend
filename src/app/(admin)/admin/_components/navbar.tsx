@@ -1,12 +1,11 @@
-"use client";
+'use client';
 
-import Link from "next/link";
+import Link from 'next/link';
 
-import UserAccountNav from "@/components/_shared/navbar/user-account-nav";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import NextBreadcrumb from "./next-breadcrumb";
-import { useSession } from "@/components/provider/session-provider-auth";
+import UserAccountNav from '@/components/_shared/navbar/user-account-nav';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Button } from '@/components/ui/button';
+import NextBreadcrumb from './next-breadcrumb';
 
 export default function Navbar() {
   // Kita bisa destructuring { data, status } untuk memantau apakah session sedang "loading"

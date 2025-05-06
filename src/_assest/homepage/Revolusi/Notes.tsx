@@ -2,7 +2,7 @@ interface ImageProps {
   className?: string;
   w?: number;
 }
-export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
+export const ImageNotes: React.FC<ImageProps> = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -23,14 +23,19 @@ export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
           ry="106"
           fill="currentColor"
         />
-        <foreignObject x="103.106" y="122.28" width="315.483" height="308.44">
+        <foreignObject
+          x="103.106"
+          y="122.28"
+          width="315.483"
+          height="308.44"
+        >
           <div
             // xmlns="http://www.w3.org/1999/xhtml"
             style={{
-              backdropFilter: "blur(16px)",
-              clipPath: "url(#bgblur_1_371_133447_clip_path)",
-              height: "100%",
-              width: "100%",
+              backdropFilter: 'blur(16px)',
+              clipPath: 'url(#bgblur_1_371_133447_clip_path)',
+              height: '100%',
+              width: '100%',
             }}
           ></div>
         </foreignObject>
@@ -61,7 +66,7 @@ export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
             <mask
               id="mask0_371_133476"
               style={{
-                maskType: "alpha",
+                maskType: 'alpha',
               }}
               maskUnits="userSpaceOnUse"
               x="99"
@@ -103,7 +108,7 @@ export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
             <mask
               id="mask1_371_133476"
               style={{
-                maskType: "alpha",
+                maskType: 'alpha',
               }}
               maskUnits="userSpaceOnUse"
               x="99"
@@ -145,7 +150,7 @@ export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
             <mask
               id="mask2_371_133476"
               style={{
-                maskType: "alpha",
+                maskType: 'alpha',
               }}
               maskUnits="userSpaceOnUse"
               x="99"
@@ -191,7 +196,7 @@ export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
             <mask
               id="mask3_371_133476"
               style={{
-                maskType: "alpha",
+                maskType: 'alpha',
               }}
               maskUnits="userSpaceOnUse"
               x="99"
@@ -255,7 +260,10 @@ export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feFlood
+            floodOpacity="0"
+            result="BackgroundImageFix"
+          />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -323,7 +331,10 @@ export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#45B4FF" />
-          <stop offset="1" stopColor="#006CFA" />
+          <stop
+            offset="1"
+            stopColor="#006CFA"
+          />
         </linearGradient>
         <linearGradient
           id="paint1_linear_371_133476"
@@ -334,7 +345,10 @@ export const ImageNotes: React.FC<ImageProps> = ({ className, w }) => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#45B4FF" />
-          <stop offset="1" stopColor="#006CFA" />
+          <stop
+            offset="1"
+            stopColor="#006CFA"
+          />
         </linearGradient>
         <clipPath id="clip0_371_133476">
           <path

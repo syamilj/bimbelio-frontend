@@ -1,10 +1,11 @@
 //src/pages/client/try-out/[id]/_component/tryout-result/_components/analisis-tab.tsx
-"use client";
+'use client';
 
-import ButtonUpgradeTryout from "@/app/(user)/user/try-out/_components/ui/button-upgrade-tryout";
-import { InputOptionUniversity } from "@/app/(user)/user/try-out/_components/ui/registration-try-out";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import ButtonUpgradeTryout from '@/app/(user)/user/try-out/_components/ui/button-upgrade-tryout';
+import { InputOptionUniversity } from '@/app/(user)/user/try-out/_components/ui/registration-try-out';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -12,12 +13,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import University from "@/lib/data/university";
-import { cn } from "@/lib/utils";
-import { IconStar, IconTryOut } from "@/styles/icon";
+} from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import University from '@/lib/data/university';
+import { getGeneral } from '@/lib/fetch-helper';
+import { cn } from '@/lib/utils';
+import { IconStar, IconTryOut } from '@/styles/icon';
 import {
   CheckCircle,
   Loader2,
@@ -27,8 +29,8 @@ import {
   TrendingDown,
   TrendingUp,
   XCircle,
-} from "lucide-react";
-import { useEffect, useState } from "react";
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -38,10 +40,8 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from "recharts";
-import { ResultDataProps } from "..";
-import { getGeneral } from "@/lib/fetch-helper";
-import { useSession } from "@/components/provider/session-provider-auth";
+} from 'recharts';
+import { ResultDataProps } from '..';
 
 interface Recommendation {
   univ: string;
@@ -67,8 +67,8 @@ export function AnalisisTab({
   const userScore = ResultData?.userScore || 0;
   const totalParticipants = ResultData?.totalParticipants || 0;
 
-  const [selectedUniversity, setSelectedUniversity] = useState<string>("");
-  const [selectedMajor, setSelectedMajor] = useState<string>("");
+  const [selectedUniversity, setSelectedUniversity] = useState<string>('');
+  const [selectedMajor, setSelectedMajor] = useState<string>('');
   const [simualationLoad, setSimulationLoad] = useState<boolean>(false);
   const [selectedData, setSelectedData] = useState<{
     univ: string;
@@ -102,7 +102,7 @@ export function AnalisisTab({
     //   major: selectedMajor,
     // });
     const res = await getGeneral(
-      `/tryout/getSimulationDataByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}&university=${selectedUniversity}&major=${selectedMajor}`
+      `/tryout/getSimulationDataByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}&university=${selectedUniversity}&major=${selectedMajor}`,
     );
     if (res?.data) {
       setSelectedData(res?.data);
@@ -130,16 +130,16 @@ export function AnalisisTab({
     const majorPercentage = data.majorPercentage;
 
     const chartData = [
-      { name: "Skor Kamu", score: userScore, fill: "#3b82f6" },
+      { name: 'Skor Kamu', score: userScore, fill: '#3b82f6' },
       {
-        name: "Passing Grade Universitas",
+        name: 'Passing Grade Universitas',
         score: passingUniv,
-        fill: "#16a34a",
+        fill: '#16a34a',
       },
-      { name: "Passing Grade Jurusan", score: passingMajor, fill: "#ca8a04" },
+      { name: 'Passing Grade Jurusan', score: passingMajor, fill: '#ca8a04' },
     ];
 
-    if (simualationLoad) return "Loading...";
+    if (simualationLoad) return 'Loading...';
 
     return (
       <div className="flex flex-col gap-20">
@@ -178,7 +178,7 @@ export function AnalisisTab({
                     value={(userScore / passingUniv) * 100}
                     className="mb-2 h-1"
                     classNameThumb={cn(
-                      isUnivPass ? "bg-green-600" : "bg-red-600"
+                      isUnivPass ? 'bg-green-600' : 'bg-red-600',
                     )}
                   />
                   <div className="flex items-center justify-end">
@@ -239,7 +239,7 @@ export function AnalisisTab({
                     value={(userScore / passingMajor) * 100}
                     className="mb-2 h-1"
                     classNameThumb={cn(
-                      isMajorPass ? "bg-green-600" : "bg-red-600"
+                      isMajorPass ? 'bg-green-600' : 'bg-red-600',
                     )}
                   />
                   <div className="flex items-center justify-end">
@@ -268,7 +268,10 @@ export function AnalisisTab({
           </Card>
         </div>
         <div>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer
+            width="100%"
+            height={300}
+          >
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -276,7 +279,10 @@ export function AnalisisTab({
               <Tooltip />
               <Bar dataKey="score">
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={entry.fill}
+                  />
                 ))}
               </Bar>
             </BarChart>
@@ -312,7 +318,7 @@ export function AnalisisTab({
   }, [userScore, ResultData]);
 
   useEffect(() => {
-    setSelectedMajor("");
+    setSelectedMajor('');
   }, [selectedUniversity]);
 
   return (
@@ -321,7 +327,7 @@ export function AnalisisTab({
         <CardHeader className="px-0">
           <CardTitle className="flex items-center gap-2 text-2xl font-bold">
             <Sparkles className="h-6 w-6" />
-            Analisis Hasil Try Out SNBT/UTBK
+            Analisis Hasil Try Out
           </CardTitle>
           <CardDescription>
             Analisis peluang kelulusan berdasarkan passing grade dan peringkat
@@ -350,7 +356,10 @@ export function AnalisisTab({
                 Simulasi
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="analisis" className="relative">
+            <TabsContent
+              value="analisis"
+              className="relative"
+            >
               <UpgareLayer unlockTryout={unlockTryout} />
               {!unlockTryout && (
                 <div className="flex flex-col gap-12">
@@ -363,9 +372,13 @@ export function AnalisisTab({
                       >
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                           <CardTitle className="text-sm font-semibold">
-                            Skor SNBT/UTBK
+                            Skor
                           </CardTitle>
-                          <IconStar active className="text-main" w={20} />
+                          <IconStar
+                            active
+                            className="text-main"
+                            w={20}
+                          />
                         </CardHeader>
                         <CardContent className="flex flex-col gap-2 pb-0">
                           <div className="text-2xl font-bold">-</div>
@@ -457,7 +470,10 @@ export function AnalisisTab({
                       const passingMajor = choice.majorAverageScore;
 
                       return (
-                        <Card key={choice.univ} className="mt-6">
+                        <Card
+                          key={choice.univ}
+                          className="mt-6"
+                        >
                           <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-xl md:text-xl">
                               <School className="hidden h-6 w-6 md:block" />
@@ -493,7 +509,7 @@ export function AnalisisTab({
                                       <Progress
                                         value={90}
                                         className="mb-2 h-1"
-                                        classNameThumb={cn("bg-green-600")}
+                                        classNameThumb={cn('bg-green-600')}
                                       />
                                       <div className="flex items-center justify-end">
                                         {getTrendIcon(userScore, passingUniv)}
@@ -552,7 +568,7 @@ export function AnalisisTab({
                                       <Progress
                                         value={80}
                                         className="mb-2 h-1"
-                                        classNameThumb={cn("bg-green-600")}
+                                        classNameThumb={cn('bg-green-600')}
                                       />
                                       <div className="flex items-center justify-end">
                                         {getTrendIcon(userScore, passingMajor)}
@@ -603,9 +619,13 @@ export function AnalisisTab({
                       >
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                           <CardTitle className="text-sm font-semibold">
-                            Skor SNBT/UTBK
+                            Skor
                           </CardTitle>
-                          <IconStar active className="text-main" w={20} />
+                          <IconStar
+                            active
+                            className="text-main"
+                            w={20}
+                          />
                         </CardHeader>
                         <CardContent className="flex flex-col gap-2 pb-0">
                           <div className="text-2xl font-bold">
@@ -649,7 +669,7 @@ export function AnalisisTab({
                           <div className="ml-[-1rem] flex flex-col border-l-2 border-green-400 pl-4">
                             <div className="flex flex-col gap-2 pb-0">
                               <div className="text-2xl font-bold">
-                                Top{" "}
+                                Top{' '}
                                 {ResultData?.choiceAnalisis.tryoutPersentage}%
                               </div>
                             </div>
@@ -717,7 +737,10 @@ export function AnalisisTab({
                       const isMajorPass = passingMajor < userScore;
 
                       return (
-                        <Card key={choice.univ} className="mt-6">
+                        <Card
+                          key={choice.univ}
+                          className="mt-6"
+                        >
                           <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-xl md:text-xl">
                               <School className="hidden h-6 w-6 md:block" />
@@ -765,8 +788,8 @@ export function AnalisisTab({
                                         className="mb-2 h-1"
                                         classNameThumb={cn(
                                           isUnivPass
-                                            ? "bg-green-600"
-                                            : "bg-red-600"
+                                            ? 'bg-green-600'
+                                            : 'bg-red-600',
                                         )}
                                       />
                                       <div className="flex items-center justify-end">
@@ -791,7 +814,7 @@ export function AnalisisTab({
                                             {choice.univPercentage}%
                                           </h1>
                                           <p className="text-xs font-semibold text-muted-foreground">
-                                            Kamu berada di top{" "}
+                                            Kamu berada di top{' '}
                                             {choice.univPercentage}% peserta
                                           </p>
                                         </div>
@@ -839,8 +862,8 @@ export function AnalisisTab({
                                         className="mb-2 h-1"
                                         classNameThumb={cn(
                                           isMajorPass
-                                            ? "bg-green-600"
-                                            : "bg-red-600"
+                                            ? 'bg-green-600'
+                                            : 'bg-red-600',
                                         )}
                                       />
                                       <div className="flex items-center justify-end">
@@ -865,7 +888,7 @@ export function AnalisisTab({
                                             {choice.majorPercentage}%
                                           </h1>
                                           <p className="text-xs font-semibold text-muted-foreground">
-                                            Kamu berada di top{" "}
+                                            Kamu berada di top{' '}
                                             {choice.majorPercentage}% peserta
                                           </p>
                                         </div>
@@ -883,7 +906,10 @@ export function AnalisisTab({
                 </div>
               )}
             </TabsContent>
-            <TabsContent value="rekomendasi" className="relative">
+            <TabsContent
+              value="rekomendasi"
+              className="relative"
+            >
               <UpgareLayer unlockTryout={unlockTryout} />
               {!unlockTryout && (
                 <div className="flex flex-col gap-4">
@@ -906,7 +932,10 @@ export function AnalisisTab({
                               Passing Grade: -
                             </span>
                           </div>
-                          <Progress value={80} className="mb-2" />
+                          <Progress
+                            value={80}
+                            className="mb-2"
+                          />
                           <div className="flex items-center justify-between">
                             <Badge
                               variant="default"
@@ -963,7 +992,10 @@ export function AnalisisTab({
                 </div>
               )}
             </TabsContent>
-            <TabsContent value="simulasi" className="relative">
+            <TabsContent
+              value="simulasi"
+              className="relative"
+            >
               <UpgareLayer unlockTryout={unlockTryout} />
               <Card className="border-none bg-transparent shadow-none">
                 <CardHeader className="px-0">
@@ -1004,15 +1036,15 @@ export function AnalisisTab({
                       <div className="flex w-full justify-start">
                         <Button
                           className={cn(
-                            "h-9 w-30 bg-main duration-300 hover:bg-main/85",
-                            !unlockTryout && "cursor-not-allowed"
+                            'h-9 w-30 bg-main duration-300 hover:bg-main/85',
+                            !unlockTryout && 'cursor-not-allowed',
                           )}
                           disabled={simualationLoad}
                         >
                           {simualationLoad ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            "Submit"
+                            'Submit'
                           )}
                         </Button>
                       </div>

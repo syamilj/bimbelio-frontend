@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Table,
   TableBody,
@@ -13,14 +13,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { getDateString } from "@/lib/utils";
-import { TryoutCategory, TryoutSession } from "@/types/database";
-import { MoreHorizontal } from "lucide-react";
-import { useState } from "react";
-import ModalEditCategory from "./modal-edit-category";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response, responseError } from "@/lib/response";
+} from '@/components/ui/table';
+import axiosInstance from '@/lib/axios/axiosInstance';
+import { response, responseError } from '@/lib/response';
+import { getDateString } from '@/lib/utils';
+import { TryoutCategory, TryoutSession } from '@/types/database';
+import { MoreHorizontal } from 'lucide-react';
+import { useState } from 'react';
+import ModalEditCategory from './modal-edit-category';
 
 interface CategoryWithSessions extends TryoutCategory {
   TryoutSession: TryoutSession[];
@@ -45,12 +45,12 @@ const TabContentCategory = ({ categories, refresh }: Props) => {
   //     },
   //   });
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setIsLoading] = useState<boolean>(false);
   const deleteCategory = async (id: string) => {
     try {
       setIsLoading(true);
       const res = await axiosInstance.delete(
-        `/tryoutCategory/deleteCategory?id=${id}`
+        `/tryoutCategory/deleteCategory?id=${id}`,
       );
       await refresh();
       return response(res, true);
@@ -103,7 +103,11 @@ const TabContentCategory = ({ categories, refresh }: Props) => {
             <TableCell>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button aria-haspopup="true" size="icon" variant="ghost">
+                  <Button
+                    aria-haspopup="true"
+                    size="icon"
+                    variant="ghost"
+                  >
                     <MoreHorizontal className="h-4 w-4" />
                     <span className="sr-only">Toggle menu</span>
                   </Button>

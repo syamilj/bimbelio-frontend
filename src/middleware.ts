@@ -1,6 +1,5 @@
-import axios from "axios";
-import { NextRequest, NextResponse } from "next/server";
-import { env } from "./env.mjs";
+import { NextRequest, NextResponse } from 'next/server';
+import { env } from './env.mjs';
 
 type DecodeData = {
   id: string;
@@ -17,32 +16,32 @@ type DecodeData = {
 
 export const middleware = async (req: NextRequest) => {
   try {
-    const token = req.cookies.get("token")?.value;
+    const token = req.cookies.get('token')?.value;
     const pathname = req.nextUrl.pathname;
 
     if (!token) {
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL('/', req.url));
     }
 
     const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/auth/verifyToken`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     });
     const resData: { status: number; message: string; data?: DecodeData } =
       await res.json();
     // console.log({ resData: resData });
-    const { message, status, data } = resData;
+    const { status, data } = resData;
 
     if (status !== 200) {
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL('/', req.url));
     }
 
     if (status === 200 && data) {
-      if (pathname.includes("admin") && data.role !== "ADMIN") {
-        return NextResponse.redirect(new URL("/", req.url));
+      if (pathname.includes('admin') && data.role !== 'ADMIN') {
+        return NextResponse.redirect(new URL('/', req.url));
       }
     }
 
@@ -55,21 +54,21 @@ export const middleware = async (req: NextRequest) => {
 export const config = {
   matcher: [
     // "/",
-    "/auth/login",
-    "/auth/signup",
-    "/admin/:path*",
-    "/user/explore/:path*",
-    "/user/explore/:path*",
-    "/user/try-out/:path*",
-    "/user/try-out",
-    "/user/workspace/:path*",
-    "/verify/:path*",
-    "/user/search",
-    "/user/leaderboard",
-    "/user/dashboard",
-    "/user/course/:path*",
-    "/user/chat",
-    "/user/chat/:path*",
+    '/auth/login',
+    '/auth/signup',
+    '/admin/:path*',
+    '/user/explore/:path*',
+    '/user/explore/:path*',
+    '/user/try-out/:path*',
+    '/user/try-out',
+    '/user/workspace/:path*',
+    '/verify/:path*',
+    '/user/search',
+    '/user/leaderboard',
+    '/user/dashboard',
+    '/user/course/:path*',
+    '/user/chat',
+    '/user/chat/:path*',
   ],
 };
 

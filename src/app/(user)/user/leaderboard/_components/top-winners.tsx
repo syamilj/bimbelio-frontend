@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useLeaderboardContext } from "@/app/(user)/user/leaderboard/_components/provider-leaderboard";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getGeneral } from "@/lib/fetch-helper";
-import { cn } from "@/lib/utils";
-import { IconCrown } from "@/styles/icon";
+import { useLeaderboardContext } from '@/app/(user)/user/leaderboard/_components/provider-leaderboard';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getGeneral } from '@/lib/fetch-helper';
+import { cn } from '@/lib/utils';
+import { IconCrown } from '@/styles/icon';
 // import { api } from '@/trpc/react';
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
-export type TopWinnersProp = "1" | "2" | "3" | "4";
+export type TopWinnersProp = '1' | '2' | '3' | '4';
 
 type TryoutTop3Type = {
   rank: number;
@@ -54,12 +54,12 @@ export function TopWinners() {
               className={cn(
                 `w-full max-w-[200px] ${
                   winner.rank === 1
-                    ? "order-2"
+                    ? 'order-2'
                     : winner.rank === 2
-                    ? "order-1"
-                    : "order-3"
+                      ? 'order-1'
+                      : 'order-3'
                 }`,
-                winner.rank !== 1 && "mb-[-6rem]"
+                winner.rank !== 1 && 'mb-[-6rem]',
               )}
             >
               <div className="relative mx-auto mb-4 h-16 md:h-20 w-16 md:w-20 rounded-full flex justify-center">
@@ -73,10 +73,10 @@ export function TopWinners() {
                 <div
                   className={`absolute bottom-[-1rem] flex h-10 w-10 items-center justify-center rounded-full font-bold text-white ${
                     winner.rank === 1
-                      ? "bg-yellow-500"
+                      ? 'bg-yellow-500'
                       : winner.rank === 2
-                      ? "bg-blue-500"
-                      : "bg-red-500"
+                        ? 'bg-blue-500'
+                        : 'bg-red-500'
                   }`}
                 >
                   {winner.rank}
@@ -100,7 +100,10 @@ export function TopWinners() {
           ))}
           {TryoutTop3IsLoading &&
             Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="flex flex-col items-center gap-4">
+              <div
+                key={index}
+                className="flex flex-col items-center gap-4"
+              >
                 <Skeleton className="h-[40px] w-[40px] rounded-[50%]" />
                 <Skeleton className="mt-[-.5rem] h-[80px] w-[80px] rounded-[50%]" />
                 <Skeleton className="h-[12px] w-[80px]" />

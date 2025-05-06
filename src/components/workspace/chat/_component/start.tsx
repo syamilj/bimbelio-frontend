@@ -1,6 +1,6 @@
-import { useSession } from "@/components/provider/session-provider-auth";
-import { Spinner } from "@/components/ui/spinner";
-import { IconDocument } from "@/styles/icon";
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Spinner } from '@/components/ui/spinner';
+import { IconDocument } from '@/styles/icon';
 
 interface Props {
   isLoading: boolean;
@@ -19,7 +19,7 @@ export default function Start({ isLoading, onClick }: Props) {
         </h1>
         <div
           className={`flex items-center gap-[.5rem] rounded-[1rem] bg-white p-[1.5rem] duration-200 ${
-            !isLoading && "cursor-pointer hover:shadow-xl"
+            !isLoading && 'cursor-pointer hover:shadow-xl'
           } font-medium text-main-gray-text`}
           onClick={onClick}
         >

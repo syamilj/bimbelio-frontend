@@ -1,9 +1,9 @@
-import CardNotFound from "@/app/(user)/user/_components/card-not-found";
-import { Skeleton } from "@/components/ui/skeleton";
-import CardTryOut, { CardTryoutProps } from "./ui/card-tryout";
-import { useEffect, useState } from "react";
-import { getGeneral } from "@/lib/fetch-helper";
-import { useSession } from "@/components/provider/session-provider-auth";
+import CardNotFound from '@/app/(user)/user/_components/card-not-found';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getGeneral } from '@/lib/fetch-helper';
+import { useEffect, useState } from 'react';
+import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
 
 export default function UpcomingOtherWeb({ id }: { id: string }) {
   const { data: session } = useSession();
@@ -25,9 +25,9 @@ export default function UpcomingOtherWeb({ id }: { id: string }) {
       {
         setData: setCards,
         setLoading: setIsLoading,
-      }
+      },
     );
-    console.log("Cardd Up : ", res);
+    console.log('Cardd Up : ', res);
   };
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function UpcomingOtherWeb({ id }: { id: string }) {
             <Skeleton
               key={i}
               className={
-                "h-[160px] mb:h-[200px] md:h-[200px] md2:h-[180px] xl:h-[250px] xxxl:h-[300px]"
+                'h-[160px] mb:h-[200px] md:h-[200px] md2:h-[180px] xl:h-[250px] xxxl:h-[300px]'
               }
             />
           ))}

@@ -1,11 +1,11 @@
-import ButtonPayment from "@/app/(user)/user/_components/button-payment";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { env } from "@/env.mjs";
-import { getDateString, getHours } from "@/lib/utils";
-import { IconLock } from "@/styles/icon";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import ButtonPayment from '@/app/(user)/user/_components/button-payment';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { env } from '@/env.mjs';
+import { getDateString, getHours } from '@/lib/utils';
+import { IconLock } from '@/styles/icon';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface card {
   data: any;
@@ -40,7 +40,7 @@ export default function CardTryOutDone({
 
   const handleClick = (id: string, category: string, premium: boolean) => {
     if (premium) {
-      if (session?.user.role !== "USER") {
+      if (session?.user.role !== 'USER') {
         if (noCategory) {
           router.push(`/user/workspace/${category}/${id}?tab=chat`);
         } else {
@@ -73,7 +73,10 @@ export default function CardTryOutDone({
             {!item.unlock && (
               <>
                 <div className="absolute left-0 top-0 z-[2] flex h-full w-full items-center justify-center rounded-[20px] bg-[#ffffff73]">
-                  <IconLock w={60} className="text-[#6e717b9d]" />
+                  <IconLock
+                    w={60}
+                    className="text-[#6e717b9d]"
+                  />
                 </div>
 
                 {showUpgrade === i && (
@@ -82,30 +85,30 @@ export default function CardTryOutDone({
                       <>
                         <h1 className="font-regular text-white">Upcoming</h1>
                         <p className="mt-[-.5rem] text-[.9rem]">
-                          Try Out akan dilaksanakan pada tanggal{" "}
+                          Try Out akan dilaksanakan pada tanggal{' '}
                           <span className="font-regular text-main">
                             {getDateString(item.dateTo)}
-                          </span>{" "}
+                          </span>{' '}
                         </p>
                       </>
                     ) : done ? (
                       <>
                         <h1 className="font-regular text-white">Selesai</h1>
                         <p className="mt-[-.5rem] text-[.9rem]">
-                          Try Out sudah dilaksanakan pada tanggal{" "}
+                          Try Out sudah dilaksanakan pada tanggal{' '}
                           <span className="font-regular text-main">
                             {getDateString(item.dateTo)}
-                          </span>{" "}
+                          </span>{' '}
                         </p>
                         <p className="mt-[-.5rem] text-[.9rem]">
-                          Pembahasan akan dibuka tanggal{" "}
+                          Pembahasan akan dibuka tanggal{' '}
                           <span className="font-regular text-main">
                             {getDateString(item.dateToUnlock)}
-                          </span>{" "}
-                          pada jam{" "}
+                          </span>{' '}
+                          pada jam{' '}
                           <span className="font-regular text-main">
                             {getHours(item.dateToUnlock)}
-                          </span>{" "}
+                          </span>{' '}
                         </p>
                       </>
                     ) : (
@@ -114,20 +117,20 @@ export default function CardTryOutDone({
                           Belum Dibuka
                         </h1>
                         <p className="mt-[-.5rem] text-[.9rem]">
-                          Try Out dilaksanakan pada tanggal{" "}
+                          Try Out dilaksanakan pada tanggal{' '}
                           <span className="font-regular text-main">
                             {getDateString(item.dateTo)}
-                          </span>{" "}
+                          </span>{' '}
                         </p>
                         <p className="mt-[-.5rem] text-[.9rem]">
-                          Pembahasan akan dibuka tanggal{" "}
+                          Pembahasan akan dibuka tanggal{' '}
                           <span className="font-regular text-main">
                             {getDateString(item.dateToUnlock)}
-                          </span>{" "}
-                          pada jam{" "}
+                          </span>{' '}
+                          pada jam{' '}
                           <span className="font-regular text-main">
                             {getHours(item.dateToUnlock)}
-                          </span>{" "}
+                          </span>{' '}
                         </p>
                       </>
                     )}
@@ -135,10 +138,13 @@ export default function CardTryOutDone({
                 )}
               </>
             )}
-            {!item.registration && session?.user.role === "USER" && (
+            {!item.registration && session?.user.role === 'USER' && (
               <>
                 <div className="absolute left-0 top-0 z-[2] flex h-full w-full items-center justify-center rounded-[20px] bg-[#ffffff73]">
-                  <IconLock w={60} className="text-[#6e717b9d]" />
+                  <IconLock
+                    w={60}
+                    className="text-[#6e717b9d]"
+                  />
                 </div>
 
                 {showUpgrade === i && (
@@ -159,19 +165,22 @@ export default function CardTryOutDone({
                 )}
               </>
             )}
-            {item.unlock && item.premium && session?.user.role === "USER" && (
+            {item.unlock && item.premium && session?.user.role === 'USER' && (
               <>
                 <div className="absolute left-0 top-0 z-[2] flex h-full w-full items-center justify-center rounded-[20px] bg-[#ffffff73]">
-                  <IconLock w={60} className="text-[#6e717b9d]" />
+                  <IconLock
+                    w={60}
+                    className="text-[#6e717b9d]"
+                  />
                 </div>
                 {showUpgrade === i && (
                   <div className="absolute bottom-[50%] left-[50%] z-[10] flex w-[250px] flex-col gap-[1rem] rounded-[1rem] bg-[#1A1E25] p-[1rem] text-main-gray-text2">
                     <h1 className="font-regular text-white">Limit material</h1>
                     <p className="mt-[-.5rem] text-[.9rem]">
-                      Limit kamu terbatas.{" "}
+                      Limit kamu terbatas.{' '}
                       <span className="font-regular text-main">
                         Upgrade akun
-                      </span>{" "}
+                      </span>{' '}
                       untuk mendapatkan akses material lengkap.
                     </p>
                     <ButtonPayment text="Subscription" />
@@ -183,16 +192,16 @@ export default function CardTryOutDone({
             <div
               id="card"
               className={
-                "relative flex h-[160px] cursor-pointer flex-col items-center justify-start overflow-hidden rounded-[20px] border border-main-gray-input bg-white duration-300 hover:shadow-inner mb:h-[200px] md:h-[200px] md:hover:scale-105 md:active:scale-100 md2:h-[180px] xl:h-[250px] xxxl:h-[300px]"
+                'relative flex h-[160px] cursor-pointer flex-col items-center justify-start overflow-hidden rounded-[20px] border border-main-gray-input bg-white duration-300 hover:shadow-inner mb:h-[200px] md:h-[200px] md:hover:scale-105 md:active:scale-100 md2:h-[180px] xl:h-[250px] xxxl:h-[300px]'
               }
               onClick={() => {
-                if (session?.user.role === "USER") {
+                if (session?.user.role === 'USER') {
                   if (item.unlock && item.registration) {
                     handleClick(item.id, item.categoryId, item.premium);
                   }
                 } else if (
-                  session?.user.role === "ADMIN" ||
-                  session?.user.role === "PREMIUM"
+                  session?.user.role === 'ADMIN' ||
+                  session?.user.role === 'PREMIUM'
                 ) {
                   handleClick(item.id, item.categoryId, item.premium);
                 }
@@ -205,7 +214,7 @@ export default function CardTryOutDone({
                   layout="responsive"
                   width={500}
                   height={300}
-                  alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                  alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                 />
               </div>
               <div
@@ -220,7 +229,7 @@ export default function CardTryOutDone({
                     item.title.length > 50
                       ? `${item.title.slice(0, 50)}...`
                       : item.title
-                  }`}{" "}
+                  }`}{' '}
                 </p>
                 <div className="flex items-center justify-between gap-[.5rem]">
                   <div className="flex items-center gap-[.5rem]">

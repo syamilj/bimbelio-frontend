@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { env } from "@/env.mjs";
-import { usePathname } from "next/navigation";
+import { env } from '@/env.mjs';
+import { usePathname } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -11,9 +11,9 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react";
-import useMedia from "use-media";
-import HistoryPayment from "../_shared/account/setting";
+} from 'react';
+import useMedia from 'use-media';
+import HistoryPayment from '../_shared/account/setting';
 
 interface OnBoardingProps {
   chat: boolean;
@@ -67,14 +67,14 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const useAppContext = () => {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error("useAppContext must be used within an AppProvider");
+    throw new Error('useAppContext must be used within an AppProvider');
   }
   return context;
 };
 
 export default function ProviderApp({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const isDekstop = useMedia({ minWidth: "768px" });
+  const isDekstop = useMedia({ minWidth: '768px' });
 
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(false);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
@@ -85,21 +85,21 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   });
 
   const [vision, setVision] = useState<boolean>(false);
-  const [zoomValue, setZoomValue] = useState<string>("page-width");
-  const [normalSize, setNormalSize] = useState<string>("1.00");
+  const [zoomValue, setZoomValue] = useState<string>('page-width');
+  const [normalSize, setNormalSize] = useState<string>('1.00');
   const [transactionPopUp, setTransactionPopUp] = useState<boolean>(false);
   const [transactionHistory, setTransactionHistory] = useState<boolean>(false);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>('');
 
   // Change Note
   const [change, setChange] = useState<boolean>(false);
-  const [mobileScreen, setMobileScreen] = useState<string>("minimize");
+  const [mobileScreen, setMobileScreen] = useState<string>('minimize');
   const [sidebarMobile, setSidebarMobile] = useState<boolean>(false);
 
   // Search Data
   const [docsSearchData, setDocsSearchData] = useState<any>([]);
 
-  const [pagesSetting, setPagesSetting] = useState<string>("account");
+  const [pagesSetting, setPagesSetting] = useState<string>('account');
 
   const [onBoarding, setOnBoarding] = useState<OnBoardingProps>({
     chat: false,
@@ -115,12 +115,12 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   // Fungsi global untuk scroll ke halaman
   // Sesuaikan container (#VisionOff atau #VisionOn) jika vision = true/false
   const scrollToPdfPage = (pageNum: number) => {
-    const containerId = vision ? "VisionOn" : "VisionOff";
+    const containerId = vision ? 'VisionOn' : 'VisionOff';
     const selector = `#${containerId} #pdf-page-${pageNum}`;
     const pageElement = document.querySelector(selector);
 
     if (pageElement) {
-      pageElement.scrollIntoView({ behavior: "smooth" });
+      pageElement.scrollIntoView({ behavior: 'smooth' });
       setCurrentPage(pageNum);
     } else {
       console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
@@ -139,9 +139,9 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   useEffect(() => {
     const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
     const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
-    const script = document.createElement("script");
+    const script = document.createElement('script');
     script.src = snapScriptUrl;
-    script.setAttribute("data-client-key", clientKey);
+    script.setAttribute('data-client-key', clientKey);
     script.async = true;
     document.body.appendChild(script);
     return () => {
@@ -208,7 +208,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       onBoarding,
       currentPage,
       scrollToPdfPage,
-    ]
+    ],
   );
 
   return (

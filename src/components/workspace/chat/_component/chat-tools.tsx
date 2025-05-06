@@ -1,8 +1,8 @@
-import { useAppContext } from "@/components/provider/provider-app";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { toaster } from "@/components/ui/toaster";
-import { ToolTip } from "@/components/ui/tooltip";
-import { mutateGeneral } from "@/lib/fetch-helper";
+import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { toaster } from '@/components/ui/toaster';
+import { ToolTip } from '@/components/ui/tooltip';
+import { mutateGeneral } from '@/lib/fetch-helper';
 import {
   IconCopy,
   IconDislike,
@@ -10,8 +10,8 @@ import {
   IconLike,
   IconRegenerateMessage,
   IconSettingMessage,
-} from "@/styles/icon";
-import { usePathname } from "next/navigation";
+} from '@/styles/icon';
+import { usePathname } from 'next/navigation';
 
 const ChatTools = ({
   role,
@@ -31,7 +31,7 @@ const ChatTools = ({
 }) => {
   const { data: session } = useSession();
   const pathname = usePathname();
-  const pathnameArray = pathname?.split("/");
+  const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
 
   const { messageData, setMessageData } = useAppContext();
@@ -50,14 +50,14 @@ const ChatTools = ({
   // });
 
   const like = async (payload: { messageId: string }) => {
-    const type = pathname.includes("chat") ? "chat" : "doc";
-    await mutateGeneral("/message/likeMessage", {
+    const type = pathname.includes('chat') ? 'chat' : 'doc';
+    await mutateGeneral('/message/likeMessage', {
       payload: {
         ...payload,
         userId: session?.user.id,
         type,
       },
-      type: "post",
+      type: 'post',
       onLoading() {
         const upData = messageData.filter((_: any, i: any) => i < index);
         const downData = messageData.filter((_: any, i: any) => i > index);
@@ -85,14 +85,14 @@ const ChatTools = ({
   // });
 
   const dislike = async (payload: { messageId: string }) => {
-    const type = pathname.includes("chat") ? "chat" : "doc";
-    await mutateGeneral("/message/dislikeMessage", {
+    const type = pathname.includes('chat') ? 'chat' : 'doc';
+    await mutateGeneral('/message/dislikeMessage', {
       payload: {
         ...payload,
         userId: session?.user.id,
         type,
       },
-      type: "post",
+      type: 'post',
       onLoading() {
         const upData = messageData.filter((_: any, i: any) => i < index);
         const downData = messageData.filter((_: any, i: any) => i > index);
@@ -112,19 +112,19 @@ const ChatTools = ({
     navigator.clipboard.writeText(data.content).then(
       () => {
         toaster({
-          title: "Disalin",
-          description: "Pesan telah disalin!",
+          title: 'Disalin',
+          description: 'Pesan telah disalin!',
           duration: 2000,
         });
       },
       () => {
         toaster({
-          title: "Gagal",
-          description: "Gagal menyalin pesan!",
-          condition: "warning",
+          title: 'Gagal',
+          description: 'Gagal menyalin pesan!',
+          condition: 'warning',
           duration: 2000,
         });
-      }
+      },
     );
   };
 
@@ -138,7 +138,7 @@ const ChatTools = ({
     console.log(data.content);
     setTimeout(() => {
       const inputChatEdit = document.getElementById(
-        "editInput"
+        'editInput',
       ) as HTMLInputElement;
       if (inputChatEdit) {
         console.log(inputChatEdit);
@@ -156,12 +156,12 @@ const ChatTools = ({
     docId: string;
     messageIndex: number;
   }) => {
-    await mutateGeneral("/message/regenerateMessage", {
+    await mutateGeneral('/message/regenerateMessage', {
       payload: {
         ...payload,
         userId: session?.user.id,
       },
-      type: "post",
+      type: 'post',
     });
   };
 
@@ -174,13 +174,13 @@ const ChatTools = ({
     quiz?: boolean;
   }) => {
     let sendData: any = null;
-    await mutateGeneral("/user/limitation", {
+    await mutateGeneral('/user/limitation', {
       payload: {
         ...payload,
-        userId: session?.user.id || "",
+        userId: session?.user.id || '',
       },
       toast: { hideSuccess: true },
-      type: "post",
+      type: 'post',
       onSuccess({ data }) {
         sendData = data;
       },
@@ -193,8 +193,8 @@ const ChatTools = ({
       const data: any = await limitation({ chat: true });
       if (data && !data.status) {
         toaster({
-          title: "Uppss",
-          condition: "warning",
+          title: 'Uppss',
+          condition: 'warning',
           description: data.message,
         });
         return;
@@ -204,7 +204,7 @@ const ChatTools = ({
           messageIndex: index,
         });
         const submit = document.getElementById(
-          "editMessage"
+          'editMessage',
         ) as HTMLButtonElement;
         const newMessage = messageData.slice(0, -2);
         const e = {
@@ -221,9 +221,9 @@ const ChatTools = ({
       }
     } catch (error) {
       toaster({
-        title: "Gagal",
-        condition: "warning",
-        description: "Coba lagi nanti!",
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
       });
       return;
     }
@@ -231,7 +231,7 @@ const ChatTools = ({
 
   return (
     <>
-      {role === "user" ? (
+      {role === 'user' ? (
         <div className="flex items-center gap-[.5rem] text-[1.2rem]">
           {}
           <ToolTip value="Copy text">
@@ -241,7 +241,10 @@ const ChatTools = ({
                 handleCopy();
               }}
             >
-              <IconCopy w={18} className={""} />
+              <IconCopy
+                w={18}
+                className={''}
+              />
             </div>
           </ToolTip>
           <ToolTip value="Edit message">
@@ -251,7 +254,10 @@ const ChatTools = ({
                 handleEditMessage();
               }}
             >
-              <IconEdit w={18} className={""} />
+              <IconEdit
+                w={18}
+                className={''}
+              />
             </div>
           </ToolTip>
         </div>
@@ -264,7 +270,10 @@ const ChatTools = ({
                 handleCopy();
               }}
             >
-              <IconCopy w={18} className={""} />
+              <IconCopy
+                w={18}
+                className={''}
+              />
             </div>
           </ToolTip>
           <ToolTip value="Like message">
@@ -275,9 +284,16 @@ const ChatTools = ({
               }}
             >
               {data?.like ? (
-                <IconLike w={18} className={""} active={true} />
+                <IconLike
+                  w={18}
+                  className={''}
+                  active={true}
+                />
               ) : (
-                <IconLike w={18} className={""} />
+                <IconLike
+                  w={18}
+                  className={''}
+                />
               )}
             </div>
           </ToolTip>
@@ -289,15 +305,25 @@ const ChatTools = ({
               }}
             >
               {data?.dislike ? (
-                <IconDislike w={18} className={""} active={true} />
+                <IconDislike
+                  w={18}
+                  className={''}
+                  active={true}
+                />
               ) : (
-                <IconDislike w={18} className={""} />
+                <IconDislike
+                  w={18}
+                  className={''}
+                />
               )}
             </div>
           </ToolTip>
           <ToolTip value="Regenerate message">
             <div className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input">
-              <IconSettingMessage w={18} className={""} />
+              <IconSettingMessage
+                w={18}
+                className={''}
+              />
             </div>
           </ToolTip>
           {messageData.length - 1 === index && (
@@ -306,7 +332,10 @@ const ChatTools = ({
                 className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
                 onClick={() => regenerateMessage()}
               >
-                <IconRegenerateMessage w={18} className={""} />
+                <IconRegenerateMessage
+                  w={18}
+                  className={''}
+                />
               </div>
             </ToolTip>
           )}

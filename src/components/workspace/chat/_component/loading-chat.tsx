@@ -1,10 +1,10 @@
 //src/app/(user)/user/chat/_component/loading-chat.tsx
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
-import { TextShimmer } from "@/components/ui/text-shimer";
-import { getDate, getHours } from "@/lib/utils";
-import { BotMessageSquareIcon } from "lucide-react";
-import ChatTools from "./chat-tools";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { TextShimmer } from '@/components/ui/text-shimer';
+import { getDate, getHours } from '@/lib/utils';
+import { BotMessageSquareIcon } from 'lucide-react';
+import ChatTools from './chat-tools';
 
 const LoadingChat = () => {
   // const getHours = (date: Date) =>

@@ -1,17 +1,16 @@
-"use client";
+'use client';
 
-import { useSession } from "@/components/provider/session-provider-auth";
+import { useSession } from '@/components/provider/session-provider-auth';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Spinner } from "@/components/ui/spinner";
-import { toaster } from "@/components/ui/toaster";
-import { mutateGeneral } from "@/lib/fetch-helper";
-import { useEffect, useState } from "react";
+} from '@/components/ui/dialog';
+import { Spinner } from '@/components/ui/spinner';
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { useEffect, useState } from 'react';
 
 interface SessionAnswer {
   number: number;
@@ -32,7 +31,7 @@ const SubmitTryout = ({
   const { data: session } = useSession();
 
   const [open, setOpen] = useState(false);
-  const unAnswered = sessionAnswer?.filter((item) => item.answer === "");
+  const unAnswered = sessionAnswer?.filter((item) => item.answer === '');
   const notSure = sessionAnswer?.filter((item) => item.notSure === true);
 
   const [step, setStep] = useState<number>(1);
@@ -78,12 +77,12 @@ const SubmitTryout = ({
     sessionId: string;
     answer: any[];
   }) => {
-    await mutateGeneral("/tryoutSession/finishSession", {
+    await mutateGeneral('/tryoutSession/finishSession', {
       payload,
-      type: "post",
+      type: 'post',
       toast: {
-        successMsg: "Tryout berhasil di submit",
-        errorMsg: "Gagal submit tryout, coba lagi!",
+        successMsg: 'Tryout berhasil di submit',
+        errorMsg: 'Gagal submit tryout, coba lagi!',
       },
       onSuccess() {
         //       trpc.tryout.getTryoutById.refetch();
@@ -116,13 +115,16 @@ const SubmitTryout = ({
     FinishTryOut({
       sessionId,
       answer: sessionAnswer,
-      userId: session?.user.id || "",
+      userId: session?.user.id || '',
     });
   };
 
   return (
     <div className="flex w-full items-center justify-center text-sm md:justify-center">
-      <Dialog open={loading ? true : open} onOpenChange={setOpen}>
+      <Dialog
+        open={loading ? true : open}
+        onOpenChange={setOpen}
+      >
         <DialogTrigger asChild>
           <button
             className="rounded-xl bg-main px-4 py-3 text-white duration-300 active:bg-main hover:bg-main/85"
@@ -147,7 +149,7 @@ const SubmitTryout = ({
                       {unAnswered.map((item, i) => (
                         <p key={i}>
                           {item.number}
-                          {i !== unAnswered.length - 1 && ","}
+                          {i !== unAnswered.length - 1 && ','}
                         </p>
                       ))}
                     </div>
@@ -160,7 +162,7 @@ const SubmitTryout = ({
                       {notSure.map((item, i) => (
                         <p key={i}>
                           {item.number}
-                          {i !== notSure.length - 1 && ","}
+                          {i !== notSure.length - 1 && ','}
                         </p>
                       ))}
                     </div>
@@ -180,7 +182,7 @@ const SubmitTryout = ({
                     </button>
                     <button
                       className={`h-full w-full rounded-xl bg-main text-white duration-300 active:bg-main hover:bg-main/85 ${
-                        hasSubmitted ? "cursor-not-allowed opacity-50" : ""
+                        hasSubmitted ? 'cursor-not-allowed opacity-50' : ''
                       }`}
                       onClick={() => {
                         if (notSure.length > 0) setStep(2);
@@ -212,7 +214,7 @@ const SubmitTryout = ({
                       {notSure.map((item, i) => (
                         <p key={i}>
                           {item.number}
-                          {i !== notSure.length - 1 && ","}
+                          {i !== notSure.length - 1 && ','}
                         </p>
                       ))}
                     </div>
@@ -227,7 +229,7 @@ const SubmitTryout = ({
                   </button>
                   <button
                     className={`w-full rounded-xl bg-main py-3 text-white duration-300 active:bg-main ${
-                      hasSubmitted ? "cursor-not-allowed opacity-50" : ""
+                      hasSubmitted ? 'cursor-not-allowed opacity-50' : ''
                     }`}
                     onClick={handleSubmit}
                     disabled={hasSubmitted}

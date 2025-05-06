@@ -1,63 +1,63 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { MessageSquare, FileText, PenTool, BookOpen, Eye } from "lucide-react";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { BookOpen, Eye, FileText, MessageSquare, PenTool } from 'lucide-react';
 
 export default function PricingFeatures() {
   // oi mill angkek telpon ambo taek
   const coinColors = {
-    Notes: "#3385ff",
-    Chat: "#0066ff",
-    Quiz: "#0099ff",
-    Tryout: "#0052cc",
-    Vision: "#00b8ff",
+    Notes: '#3385ff',
+    Chat: '#0066ff',
+    Quiz: '#0099ff',
+    Tryout: '#0052cc',
+    Vision: '#00b8ff',
   };
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const features = [
     {
       icon: <MessageSquare className="h-6 w-6 text-main" />,
-      title: "Chat Coin",
+      title: 'Chat Coin',
       description:
-        "Gunakan untuk mengakses fitur chat dengan AI Tutor yang siap menjawab pertanyaanmu",
+        'Gunakan untuk mengakses fitur chat dengan AI Tutor yang siap menjawab pertanyaanmu',
       color: coinColors.Chat,
-      usage: "1 coin per chat",
+      usage: '1 coin per chat',
       gradient: `linear-gradient(135deg, ${coinColors.Chat}, ${coinColors.Chat}dd)`,
     },
     {
       icon: <FileText className="h-6 w-6 text-main" />,
-      title: "Tryout Coin",
+      title: 'Tryout Coin',
       description:
-        "Gunakan untuk mengakses tryout dengan format yang sama dengan ujian SNBT/UTBK",
+        'Gunakan untuk mengakses tryout dengan format yang sama dengan ujian',
       color: coinColors.Tryout,
-      usage: "1 coin per tryout",
+      usage: '1 coin per tryout',
       gradient: `linear-gradient(135deg, ${coinColors.Tryout}, ${coinColors.Tryout}dd)`,
     },
     {
       icon: <PenTool className="h-6 w-6 text-main" />,
-      title: "Notes Coin",
+      title: 'Notes Coin',
       description:
-        "Gunakan untuk membuat catatan belajar dengan fitur AI yang membantu mengorganisir materi",
+        'Gunakan untuk membuat catatan belajar dengan fitur AI yang membantu mengorganisir materi',
       color: coinColors.Notes,
-      usage: "1 coin per notes",
+      usage: '1 coin per notes',
       gradient: `linear-gradient(135deg, ${coinColors.Notes}, ${coinColors.Notes}dd)`,
     },
     {
       icon: <BookOpen className="h-6 w-6 text-main" />,
-      title: "Quiz Coin",
+      title: 'Quiz Coin',
       description:
-        "Gunakan untuk mengakses quiz interaktif yang disesuaikan dengan kemampuanmu",
+        'Gunakan untuk mengakses quiz interaktif yang disesuaikan dengan kemampuanmu',
       color: coinColors.Quiz,
-      usage: "1 coin per quiz",
+      usage: '1 coin per quiz',
       gradient: `linear-gradient(135deg, ${coinColors.Quiz}, ${coinColors.Quiz}dd)`,
     },
     {
       icon: <Eye className="h-6 w-6 text-main" />,
-      title: "Vision Coin",
+      title: 'Vision Coin',
       description:
-        "Gunakan untuk mengakses fitur AI Vision yang membantu menyelesaikan soal dari gambar",
+        'Gunakan untuk mengakses fitur AI Vision yang membantu menyelesaikan soal dari gambar',
       color: coinColors.Vision,
-      usage: "1 coin per penggunaan",
+      usage: '1 coin per penggunaan',
       gradient: `linear-gradient(135deg, ${coinColors.Vision}, ${coinColors.Vision}dd)`,
     },
   ];
@@ -72,7 +72,7 @@ export default function PricingFeatures() {
           5 Jenis Coin untuk Fitur Berbeda
         </h2>
         <p className="text-[#4a5568] max-w-2xl mx-auto">
-          TutorSNBT menggunakan 5 jenis coin berbeda untuk mengakses fitur-fitur
+          Bimbelio menggunakan 5 jenis coin berbeda untuk mengakses fitur-fitur
           interaktif yang akan membantu persiapan ujianmu
         </p>
       </div>
@@ -142,7 +142,7 @@ export default function PricingFeatures() {
           className="absolute top-0 right-0 w-64 h-64 opacity-5"
           style={{
             background: `radial-gradient(circle, #0066ff 0%, transparent 70%)`,
-            transform: "translate(20%, -30%)",
+            transform: 'translate(20%, -30%)',
           }}
         ></div>
         <h3 className="text-2xl font-bold mb-6 text-[#0a2540]">
@@ -155,12 +155,15 @@ export default function PricingFeatures() {
             </h4>
             <ul className="space-y-4">
               {[
-                "Setiap fitur memerlukan jenis coin tertentu untuk digunakan",
-                "Semakin tinggi paket berlangganan, semakin sedikit coin yang diperlukan",
-                "Semua jenis coin akan tidak memiliki expire dan akan tereset kembali jika mencapai limit",
-                "Coin tambahan dapat dibeli kapan saja",
+                'Setiap fitur memerlukan jenis coin tertentu untuk digunakan',
+                'Semakin tinggi paket berlangganan, semakin sedikit coin yang diperlukan',
+                'Semua jenis coin akan tidak memiliki expire dan akan tereset kembali jika mencapai limit',
+                'Coin tambahan dapat dibeli kapan saja',
               ].map((item, index) => (
-                <li key={index} className="flex items-start">
+                <li
+                  key={index}
+                  className="flex items-start"
+                >
                   <div className="h-6 w-6 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 shadow-sm bg-gradient">
                     <svg
                       width="12"

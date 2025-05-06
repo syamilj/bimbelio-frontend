@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { SetStateAction, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { SetStateAction, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -20,16 +20,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import FormError from "@/components/ui/form-error";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/form';
+import FormError from '@/components/ui/form-error';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 // import { api } from "@/trpc/react";
-import { CreateCategorySchema } from "@/types/tryout";
-import { Loader2 } from "lucide-react";
-import { response, responseError } from "@/lib/response";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { mutateGeneral } from "@/lib/fetch-helper";
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { CreateCategorySchema } from '@/types/tryout';
+import { Loader2 } from 'lucide-react';
 
 const CreateCategoryModal = ({
   open,
@@ -41,7 +39,7 @@ const CreateCategoryModal = ({
   refresh: () => Promise<void>;
 }) => {
   // const { isOpen, onClose, type } = useModal();
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // const isModalOpen = isOpen && type === "createCategory";
   // const trpc = api.useUtils();
@@ -65,9 +63,9 @@ const CreateCategoryModal = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const createCategoryMutate = async (data: any) => {
-    mutateGeneral("/tryoutCategory/createCategory", {
+    mutateGeneral('/tryoutCategory/createCategory', {
       payload: data,
-      type: "post",
+      type: 'post',
       setLoading: setIsLoading,
       onSuccess: refresh,
       onError({ message }) {
@@ -81,20 +79,23 @@ const CreateCategoryModal = ({
   });
 
   function onSubmit(values: z.infer<typeof CreateCategorySchema>) {
-    console.log("values", values);
-    setError("");
+    console.log('values', values);
+    setError('');
 
     createCategoryMutate({ values: values });
   }
 
   const handleClose = () => {
-    setError("");
+    setError('');
     form.reset();
     setOpen(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog
+      open={open}
+      onOpenChange={handleClose}
+    >
       <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Create Category</DialogTitle>
@@ -115,7 +116,10 @@ const CreateCategoryModal = ({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled={isLoading} />
+                    <Input
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,7 +132,10 @@ const CreateCategoryModal = ({
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} disabled={isLoading} />
+                    <Textarea
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,7 +158,11 @@ const CreateCategoryModal = ({
                             )}
                         /> */}
             <FormError message={error} />
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full"
+            >
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (

@@ -26,7 +26,7 @@ export default function ResultsTable({ results }: { results: any[] | null }) {
   return (
     <div className="overflow-x-auto">
       <Table>
-        <TableCaption>Hasil Analisis SNBT/UTBK</TableCaption>
+        <TableCaption>Hasil Analisis</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Respondent</TableHead>

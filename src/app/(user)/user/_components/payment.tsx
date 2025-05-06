@@ -1,32 +1,41 @@
-"use client";
+'use client';
 
-import { useAppContext } from "@/components/provider/provider-app";
-import { FeatureLimitation } from "@/config/limitation";
-import { cn, convertDaysToWords } from "@/lib/utils";
-import { useEffect, useState, type ReactElement } from "react";
+import { useAppContext } from '@/components/provider/provider-app';
+import { FeatureLimitation } from '@/config/limitation';
+import { cn, convertDaysToWords } from '@/lib/utils';
+import { useEffect, useState, type ReactElement } from 'react';
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Card3D } from "@/components/ui/card-3d";
+} from '@/components/ui/card';
+import { Card3D } from '@/components/ui/card-3d';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toaster } from "@/components/ui/toaster";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toaster } from '@/components/ui/toaster';
 
+import { useSession } from '@/components/provider/session-provider-auth';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import {
+  Plan,
+  PlanFeature,
+  PlanLimitation,
+  PlanSubscription,
+  Pricing,
+} from '@/types/database';
 import {
   BarChart2Icon,
   BookOpenIcon,
@@ -39,27 +48,18 @@ import {
   UsersIcon,
   VideoIcon,
   ZapIcon,
-} from "lucide-react";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
-import {
-  Plan,
-  PlanFeature,
-  PlanLimitation,
-  PlanSubscription,
-  Pricing,
-} from "@/types/database";
-import { useSession } from "@/components/provider/session-provider-auth";
+} from 'lucide-react';
 
 type PaymentPremium =
-  | "1-month"
-  | "3-month"
-  | "limitasi_chat"
-  | "limitasi_notes"
-  | "limitasi_vision"
-  | "limitasi_quiz"
-  | "limitasi_all"
-  | "tryout_unlock"
-  | "plan";
+  | '1-month'
+  | '3-month'
+  | 'limitasi_chat'
+  | 'limitasi_notes'
+  | 'limitasi_vision'
+  | 'limitasi_quiz'
+  | 'limitasi_all'
+  | 'tryout_unlock'
+  | 'plan';
 
 export function Payment() {
   const { data: session } = useSession();
@@ -70,15 +70,15 @@ export function Payment() {
     setTransactionHistory,
   } = useAppContext();
 
-  const [type, setType] = useState<PaymentPremium | "">("");
+  const [type, setType] = useState<PaymentPremium | ''>('');
   const [showPhoneConfirm, setShowPhoneConfirm] = useState(false);
 
   // const addPayment = api.payment.addPayment.useMutation();
 
   const addPayment = async (payload: any) => {
-    const data = await mutateGeneral("/payment/addPayment", {
+    const data = await mutateGeneral('/payment/addPayment', {
       payload: { ...payload, userId: session?.user.id },
-      type: "post",
+      type: 'post',
     });
     return data;
   };
@@ -92,37 +92,37 @@ export function Payment() {
   const [pricingIsLoading, setPricingIsLoading] = useState<any>();
 
   useEffect(() => {
-    getGeneral("/pricing/getAllPricing", {
+    getGeneral('/pricing/getAllPricing', {
       setData: setPricing,
       setLoading: setPricingIsLoading,
     });
   }, []);
 
   const handlePayment = async (phoneNumber: string) => {
-    if (type === "") return;
+    if (type === '') return;
     try {
       const res = await addPayment({ telp: phoneNumber, type, planId });
       window.snap.pay(`${res?.data.token}`, {
         onClose: () => {
           setTransactionPopUp(false);
-          setPagesSetting("rt");
+          setPagesSetting('rt');
           setTransactionHistory(true);
         },
       });
     } catch (error) {
       toaster({
-        title: "Gagal",
-        condition: "warning",
-        description: "Coba lagi nanti!",
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
       });
     }
   };
 
   const getPricing = (slug: string) => {
-    if (!pricing) return "-";
+    if (!pricing) return '-';
     return `Rp${pricing
       .find((item) => item.slug === slug)
-      ?.price.toLocaleString("id-ID", { style: "decimal" })}`;
+      ?.price.toLocaleString('id-ID', { style: 'decimal' })}`;
   };
 
   const handlePackageSelect = (planId?: string) => {
@@ -133,7 +133,10 @@ export function Payment() {
 
   return (
     <>
-      <Dialog open={transactionPopUp} onOpenChange={setTransactionPopUp}>
+      <Dialog
+        open={transactionPopUp}
+        onOpenChange={setTransactionPopUp}
+      >
         <DialogContent className="max-w-[95vw] sm:max-w-[800px] p-0">
           {pricingIsLoading && (
             <div className="absolute inset-0 z-50 grid place-items-center bg-white/80 backdrop-blur-sm">
@@ -144,9 +147,9 @@ export function Payment() {
             <div className="space-y-8 p-6 sm:p-8">
               <DialogHeader>
                 <DialogTitle className="text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
-                  Tingkatkan Persiapan{" "}
+                  Tingkatkan Persiapan{' '}
                   <span className="bg-gradient-to-r from-main to-white bg-clip-text text-transparent">
-                    SNBT-mu
+                    kamu
                   </span>
                 </DialogTitle>
                 <DialogDescription className="mx-auto mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
@@ -154,7 +157,10 @@ export function Payment() {
                 </DialogDescription>
               </DialogHeader>
 
-              <Tabs defaultValue="premium" className="w-full">
+              <Tabs
+                defaultValue="premium"
+                className="w-full"
+              >
                 <TabsList className="mx-auto mb-8 grid w-full max-w-md grid-cols-2">
                   <TabsTrigger
                     value="premium"
@@ -170,7 +176,10 @@ export function Payment() {
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="premium" className="space-y-8">
+                <TabsContent
+                  value="premium"
+                  className="space-y-8"
+                >
                   <PlanSection
                     type={type}
                     setType={setType}
@@ -183,26 +192,26 @@ export function Payment() {
                     {[
                       {
                         icon: BrainIcon,
-                        title: "Chat AI",
-                        type: "limitasi_chat",
+                        title: 'Chat AI',
+                        type: 'limitasi_chat',
                         amount: FeatureLimitation.premium.chat,
                       },
                       {
                         icon: EyeIcon,
-                        title: "Vision",
-                        type: "limitasi_vision",
+                        title: 'Vision',
+                        type: 'limitasi_vision',
                         amount: FeatureLimitation.premium.vision,
                       },
                       {
                         icon: BookOpenIcon,
-                        title: "Notes",
-                        type: "limitasi_notes",
+                        title: 'Notes',
+                        type: 'limitasi_notes',
                         amount: FeatureLimitation.premium.notes,
                       },
                       {
                         icon: BarChart2Icon,
-                        title: "Quiz",
-                        type: "limitasi_quiz",
+                        title: 'Quiz',
+                        type: 'limitasi_quiz',
                         amount: FeatureLimitation.premium.quiz,
                       },
                     ].map((item, i) => (
@@ -221,31 +230,31 @@ export function Payment() {
                   </div>
 
                   <BundlePackageCard
-                    price={getPricing("limitasi_all")}
+                    price={getPricing('limitasi_all')}
                     features={[
                       {
                         amount: FeatureLimitation.premium.chat,
-                        title: "Chat AI",
+                        title: 'Chat AI',
                         icon: BrainIcon,
                       },
                       {
                         amount: FeatureLimitation.premium.notes,
-                        title: "Notes",
+                        title: 'Notes',
                         icon: BookOpenIcon,
                       },
                       {
                         amount: FeatureLimitation.premium.quiz,
-                        title: "Latihan Soal",
+                        title: 'Latihan Soal',
                         icon: BarChart2Icon,
                       },
                       {
                         amount: FeatureLimitation.premium.vision,
-                        title: "Vision",
+                        title: 'Vision',
                         icon: EyeIcon,
                       },
                     ]}
                     onSelect={() => {
-                      setType("limitasi_all");
+                      setType('limitasi_all');
                       handlePackageSelect();
                     }}
                   />
@@ -266,12 +275,12 @@ export function Payment() {
 }
 
 const PlanSection = ({
-  type,
+  // type,
   setType,
   handlePackageSelect,
 }: {
-  type: PaymentPremium | "";
-  setType: React.Dispatch<React.SetStateAction<PaymentPremium | "">>;
+  type: PaymentPremium | '';
+  setType: React.Dispatch<React.SetStateAction<PaymentPremium | ''>>;
   handlePackageSelect: (planId?: string) => void;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -285,14 +294,22 @@ const PlanSection = ({
   >([]);
 
   useEffect(() => {
-    getGeneral("/plan/getAllPlan", {
+    getGeneral('/plan/getAllPlan', {
       setData: setPlans,
       setLoading: setIsLoading,
     });
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-10">
+        <Loader2Icon className="h-8 w-8 animate-spin text-main" />
+      </div>
+    );
+  }
   const getPricing = (pricing: number) => {
-    if (!pricing) return "-";
-    return `Rp${pricing.toLocaleString("id-ID", { style: "decimal" })}`;
+    if (!pricing) return '-';
+    return `Rp${pricing.toLocaleString('id-ID', { style: 'decimal' })}`;
   };
 
   return (
@@ -306,19 +323,19 @@ const PlanSection = ({
             duration={
               plan.PlanSubscription?.expireDays
                 ? `/${convertDaysToWords(plan.PlanSubscription?.expireDays)}`
-                : "-"
+                : '-'
             }
             features={[
-              "Unlimited Chat AI",
-              "Unlimited Notes",
-              "500 generate Latihan Soal",
-              "300 aksi Vision",
-              "Akses semua materi premium",
-              "Konsultasi dengan tutor",
-              "Analisis performa AI",
+              'Unlimited Chat AI',
+              'Unlimited Notes',
+              '500 generate Latihan Soal',
+              '300 aksi Vision',
+              'Akses semua materi premium',
+              'Konsultasi dengan tutor',
+              'Analisis performa AI',
             ]}
             onSelect={() => {
-              setType("plan");
+              setType('plan');
               handlePackageSelect(plan.id);
             }}
             gradient="from-[#0095FF] to-[#0047AB]"
@@ -389,10 +406,10 @@ function PremiumPackageCard({
   return (
     <Card3D
       className={cn(
-        "group relative h-full overflow-hidden rounded-2xl border-2 transition-colors",
+        'group relative h-full overflow-hidden rounded-2xl border-2 transition-colors',
         recommended
-          ? "border-main shadow-lg"
-          : "border-border hover:border-main/50"
+          ? 'border-main shadow-lg'
+          : 'border-border hover:border-main/50',
       )}
     >
       {recommended && (
@@ -413,7 +430,10 @@ function PremiumPackageCard({
             </span>
             <span className="text-base text-muted-foreground">{duration}</span>
             {recommended && (
-              <Badge variant="secondary" className="ml-2 bg-main/10 text-main">
+              <Badge
+                variant="secondary"
+                className="ml-2 bg-main/10 text-main"
+              >
                 Hemat 20%
               </Badge>
             )}
@@ -422,7 +442,10 @@ function PremiumPackageCard({
         <CardContent className="flex-grow space-y-4 p-6 pt-0">
           <ul className="space-y-3">
             {features.map((feature, i) => (
-              <li key={i} className="flex items-start gap-3">
+              <li
+                key={i}
+                className="flex items-start gap-3"
+              >
                 {recommended ? (
                   <StarIcon className="mt-0.5 h-5 w-5 shrink-0 text-main" />
                 ) : (
@@ -437,10 +460,10 @@ function PremiumPackageCard({
           <Button
             size="lg"
             className={cn(
-              "w-full text-base font-medium",
+              'w-full text-base font-medium',
               recommended
-                ? "bg-main text-white hover:bg-main/90"
-                : `bg-gradient-to-r ${gradient} text-white hover:opacity-90`
+                ? 'bg-main text-white hover:bg-main/90'
+                : `bg-gradient-to-r ${gradient} text-white hover:opacity-90`,
             )}
             onClick={onSelect}
           >
@@ -456,39 +479,39 @@ function FeaturesOverview(): ReactElement {
   const features = [
     {
       icon: BrainIcon,
-      title: "AI Learning Assistant",
-      desc: "Belajar dengan bantuan AI 24/7",
-      gradient: "from-blue-500 to-indigo-500",
+      title: 'AI Learning Assistant',
+      desc: 'Belajar dengan bantuan AI 24/7',
+      gradient: 'from-blue-500 to-indigo-500',
     },
     {
       icon: BookOpenIcon,
-      title: "Materi Premium",
-      desc: "Akses ke semua materi SNBT",
-      gradient: "from-purple-500 to-pink-500",
+      title: 'Materi Premium',
+      desc: 'Akses ke semua materi',
+      gradient: 'from-purple-500 to-pink-500',
     },
     {
       icon: VideoIcon,
-      title: "Video Pembelajaran",
-      desc: "Video penjelasan detail",
-      gradient: "from-orange-500 to-red-500",
+      title: 'Video Pembelajaran',
+      desc: 'Video penjelasan detail',
+      gradient: 'from-orange-500 to-red-500',
     },
     {
       icon: UsersIcon,
-      title: "Konsultasi Tutor",
-      desc: "Tanya jawab dengan ahli",
-      gradient: "from-green-500 to-emerald-500",
+      title: 'Konsultasi Tutor',
+      desc: 'Tanya jawab dengan ahli',
+      gradient: 'from-green-500 to-emerald-500',
     },
     {
       icon: BarChart2Icon,
-      title: "Analisis Performa",
-      desc: "Pantau perkembanganmu",
-      gradient: "from-cyan-500 to-blue-500",
+      title: 'Analisis Performa',
+      desc: 'Pantau perkembanganmu',
+      gradient: 'from-cyan-500 to-blue-500',
     },
     {
       icon: ZapIcon,
-      title: "Latihan Interaktif",
-      desc: "Latihan soal adaptif",
-      gradient: "from-amber-500 to-orange-500",
+      title: 'Latihan Interaktif',
+      desc: 'Latihan soal adaptif',
+      gradient: 'from-amber-500 to-orange-500',
     },
   ];
 
@@ -504,8 +527,8 @@ function FeaturesOverview(): ReactElement {
             <CardContent className="p-4 text-center">
               <div
                 className={cn(
-                  "mx-auto mb-4 w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center text-white transition-transform group-hover:scale-110",
-                  item.gradient
+                  'mx-auto mb-4 w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center text-white transition-transform group-hover:scale-110',
+                  item.gradient,
                 )}
               >
                 <item.icon className="h-6 w-6" />
@@ -582,7 +605,10 @@ function BundlePackageCard({
       <CardContent className="p-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
           {features.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm">
+            <div
+              key={i}
+              className="flex items-center gap-2 text-sm"
+            >
               <div className="p-1 rounded-md bg-main/10 shrink-0">
                 <item.icon className="h-4 w-4 text-main" />
               </div>
@@ -613,7 +639,7 @@ function ConfirmPhoneDialog({
   onSubmit: (phoneNumber: string) => Promise<void>;
 }): ReactElement {
   const [loading, setLoading] = useState(false);
-  const [telp, setTelp] = useState("");
+  const [telp, setTelp] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -624,7 +650,10 @@ function ConfirmPhoneDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={onClose}
+    >
       <DialogContent className="sm:max-w-[425px] w-[95vw]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
@@ -634,7 +663,10 @@ function ConfirmPhoneDialog({
             Harap isi nomor teleponmu untuk melanjutkan ke laman pembayaran.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
           <div className="space-y-2">
             <Input
               type="tel"
@@ -656,7 +688,7 @@ function ConfirmPhoneDialog({
             {loading ? (
               <Loader2Icon className="h-4 w-4 animate-spin mr-2" />
             ) : null}
-            {loading ? "Memproses..." : "Bayar"}
+            {loading ? 'Memproses...' : 'Bayar'}
           </Button>
         </form>
       </DialogContent>

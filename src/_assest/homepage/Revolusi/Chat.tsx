@@ -2,7 +2,7 @@ interface ImageProps {
   className?: string;
   w?: number;
 }
-export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
+export const ImageChatAI: React.FC<ImageProps> = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -23,14 +23,19 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           r="106"
           fill="url(#paint0_linear_371_133447)"
         />
-        <foreignObject x="49.28" y="133.28" width="296.832" height="297.44">
+        <foreignObject
+          x="49.28"
+          y="133.28"
+          width="296.832"
+          height="297.44"
+        >
           <div
             // xmlns="http://www.w3.org/1999/xhtml"
             style={{
-              backdropFilter: "blur(16px)",
-              clipPath: "url(#bgblur_1_371_133447_clip_path)",
-              height: "100%",
-              width: "100%",
+              backdropFilter: 'blur(16px)',
+              clipPath: 'url(#bgblur_1_371_133447_clip_path)',
+              height: '100%',
+              width: '100%',
             }}
           ></div>
         </foreignObject>
@@ -89,7 +94,7 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
         <mask
           id="mask0_371_133447"
           style={{
-            maskType: "alpha",
+            maskType: 'alpha',
           }}
           maskUnits="userSpaceOnUse"
           x="51"
@@ -97,7 +102,13 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           width="17"
           height="17"
         >
-          <rect x="51.2" y="131.6" width="16" height="16" fill="#D9D9D9" />
+          <rect
+            x="51.2"
+            y="131.6"
+            width="16"
+            height="16"
+            fill="#D9D9D9"
+          />
         </mask>
         <g mask="url(#mask0_371_133447)">
           <path
@@ -110,7 +121,7 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
         <mask
           id="mask1_371_133447"
           style={{
-            maskType: "alpha",
+            maskType: 'alpha',
           }}
           maskUnits="userSpaceOnUse"
           x="73"
@@ -118,7 +129,13 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           width="17"
           height="17"
         >
-          <rect x="73.6" y="131.6" width="16" height="16" fill="#D9D9D9" />
+          <rect
+            x="73.6"
+            y="131.6"
+            width="16"
+            height="16"
+            fill="#D9D9D9"
+          />
         </mask>
         <g mask="url(#mask1_371_133447)">
           <path
@@ -131,7 +148,7 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
         <mask
           id="mask2_371_133447"
           style={{
-            maskType: "alpha",
+            maskType: 'alpha',
           }}
           maskUnits="userSpaceOnUse"
           x="96"
@@ -139,7 +156,13 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           width="16"
           height="17"
         >
-          <rect x="96" y="131.6" width="16" height="16" fill="#D9D9D9" />
+          <rect
+            x="96"
+            y="131.6"
+            width="16"
+            height="16"
+            fill="#D9D9D9"
+          />
         </mask>
         <g mask="url(#mask2_371_133447)">
           <path
@@ -152,7 +175,7 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
         <mask
           id="mask3_371_133447"
           style={{
-            maskType: "alpha",
+            maskType: 'alpha',
           }}
           maskUnits="userSpaceOnUse"
           x="118"
@@ -160,7 +183,13 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           width="17"
           height="17"
         >
-          <rect x="118.4" y="131.6" width="16" height="16" fill="#D9D9D9" />
+          <rect
+            x="118.4"
+            y="131.6"
+            width="16"
+            height="16"
+            fill="#D9D9D9"
+          />
         </mask>
         <g mask="url(#mask3_371_133447)">
           <path
@@ -173,7 +202,7 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
         <mask
           id="mask4_371_133447"
           style={{
-            maskType: "alpha",
+            maskType: 'alpha',
           }}
           maskUnits="userSpaceOnUse"
           x="140"
@@ -181,7 +210,13 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           width="17"
           height="17"
         >
-          <rect x="140.8" y="131.6" width="16" height="16" fill="#D9D9D9" />
+          <rect
+            x="140.8"
+            y="131.6"
+            width="16"
+            height="16"
+            fill="#D9D9D9"
+          />
         </mask>
         <g mask="url(#mask4_371_133447)">
           <path
@@ -210,7 +245,10 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           width="1"
           height="1"
         >
-          <use xlinkHref="#image0_371_133447" transform="scale(0.0015625)" />
+          <use
+            xlinkHref="#image0_371_133447"
+            transform="scale(0.0015625)"
+          />
         </pattern>
         <pattern
           id="pattern1_371_133447"
@@ -218,7 +256,10 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           width="1"
           height="1"
         >
-          <use xlinkHref="#image1_371_133447" transform="scale(0.0015625)" />
+          <use
+            xlinkHref="#image1_371_133447"
+            transform="scale(0.0015625)"
+          />
         </pattern>
         <linearGradient
           id="paint0_linear_371_133447"
@@ -229,7 +270,10 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="currentColor" />
-          <stop offset="1" stopColor="currentColor" />
+          <stop
+            offset="1"
+            stopColor="currentColor"
+          />
         </linearGradient>
         <linearGradient
           id="paint1_linear_371_133447"
@@ -240,7 +284,10 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="currentColor" />
-          <stop offset="1" stopColor="currentColor" />
+          <stop
+            offset="1"
+            stopColor="currentColor"
+          />
         </linearGradient>
         <linearGradient
           id="paint2_linear_371_133447"
@@ -251,7 +298,10 @@ export const ImageChatAI: React.FC<ImageProps> = ({ className, w }) => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="currentColor" />
-          <stop offset="1" stopColor="currentColor" />
+          <stop
+            offset="1"
+            stopColor="currentColor"
+          />
         </linearGradient>
         <clipPath id="clip0_371_133447">
           <path

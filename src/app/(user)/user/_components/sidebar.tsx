@@ -1,55 +1,32 @@
-"use client";
+'use client';
 
-import Cookies from "js-cookie";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { Fragment, useEffect, useState } from "react";
-
-import { env } from "@/env.mjs";
-import { supabase } from "@/supabaseClient";
+// import Cookies from "js-cookie";
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Fragment, useEffect, useState } from 'react';
 
 import {
-  IconClock,
-  IconCopy,
   IconCrown,
   // IconHistoryTransaction,
   IconMinimizeSidebar,
   IconSetting,
-  // IconUser,
-  IconX,
-} from "@/styles/icon";
+} from '@/styles/icon';
 
-import { Spinner } from "@/components/ui/spinner";
-import { toaster } from "@/components/ui/toaster";
-import {
-  cn,
-  getDateString,
-  getHours,
-  getHoursDetail,
-  imageProfile,
-} from "@/lib/utils";
-import { User } from "lucide-react";
+import { cn } from '@/lib/utils';
+import { User } from 'lucide-react';
 
-import male from "@/_assest/default-profile/male.png";
-import LogoMinimize from "@/_assest/logo-minimize.png";
-import LogoSvg from "@/_assest/logo.svg";
-import LOGO from "@/_assest/logomark.png";
+import LogoMinimize from '@/_assest/logo-minimize.png';
+import LogoSvg from '@/_assest/logo.svg';
 
-import ButtonPayment from "@/app/(user)/user/_components/button-payment";
-import SidebarRoute from "@/app/(user)/user/_components/sidebar-route";
-import AnimatedGradientText from "@/components/magicui/animated-gradient-text";
-import { useAppContext } from "@/components/provider/provider-app";
-import { Button } from "@/components/ui/button";
+import SidebarRoute from '@/app/(user)/user/_components/sidebar-route';
+import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
+import { useAppContext } from '@/components/provider/provider-app';
+import { Button } from '@/components/ui/button';
 
-import { Payment } from "./payment";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { Transaction, UserRoleEnum } from "@/types/database";
-import { response, responseError } from "@/lib/response";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { getGeneral } from "@/lib/fetch-helper";
-import { signOut } from "@/lib/auth-helper";
-import Logo from "@/components/ui/logo";
+import { useSession } from '@/components/provider/session-provider-auth';
+import Logo from '@/components/ui/logo';
+import { signOut } from '@/lib/auth-helper';
+import { Payment } from './payment';
 // Main Sidebar Component
 const Sidebar = ({ category }: any) => {
   const { data: session } = useSession();
@@ -68,7 +45,7 @@ const Sidebar = ({ category }: any) => {
     transactionHistory,
     setTransactionHistory,
     setSidebarMobile,
-    pagesSetting,
+    // pagesSetting,
     setPagesSetting,
   } = useAppContext();
 
@@ -77,9 +54,9 @@ const Sidebar = ({ category }: any) => {
   // Handle body overflow based on pop-ups
   useEffect(() => {
     if (transactionPopUp || transactionHistory) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
     }
   }, [transactionPopUp, transactionHistory]);
 
@@ -88,7 +65,7 @@ const Sidebar = ({ category }: any) => {
   //   refetchOnWindowFocus: false,
   //   refetchOnMount: false,
   // });
-  const riwayat: any = undefined;
+  // const riwayat: any = undefined;
 
   return (
     <Fragment>
@@ -99,8 +76,8 @@ const Sidebar = ({ category }: any) => {
         <div
           className={`flex ${
             !minimizeSidebar
-              ? "justify-between p-6"
-              : "justify-center px-[.5rem] py-[0]"
+              ? 'justify-between p-6'
+              : 'justify-center px-[.5rem] py-[0]'
           } items-center`}
         >
           {!minimizeSidebar ? (
@@ -129,8 +106,8 @@ const Sidebar = ({ category }: any) => {
         {/* Sidebar Routes */}
         <div
           className={cn(
-            "mt-12 overflow-y-auto pb-[60px]",
-            session?.user.role === "USER" && "pb-[calc(60px+154px)]"
+            'mt-12 overflow-y-auto pb-[60px]',
+            session?.user.role === 'USER' && 'pb-[calc(60px+154px)]',
           )}
         >
           <SidebarRoute
@@ -173,7 +150,7 @@ const Sidebar = ({ category }: any) => {
           {!session?.user.tier && (
             <div
               className={`flex flex-col gap-[.6rem] bg-white ${
-                !minimizeSidebar ? "p-4" : "mb-[1rem] items-center p-0"
+                !minimizeSidebar ? 'p-4' : 'mb-[1rem] items-center p-0'
               }`}
             >
               {!minimizeSidebar && (
@@ -202,12 +179,12 @@ const Sidebar = ({ category }: any) => {
           <div
             id="logout"
             className={`${
-              session?.user.role !== "USER" && "border-t"
+              session?.user.role !== 'USER' && 'border-t'
             } relative flex items-center justify-between gap-[.5rem] border-main-gray-input bg-white p-4`}
           >
             <div
               className={`flex items-center gap-[.5rem] ${
-                minimizeSidebar && "w-full justify-center"
+                minimizeSidebar && 'w-full justify-center'
               }`}
             >
               <div className="flex w-[1.8rem] items-center justify-center rounded-full">
@@ -215,7 +192,7 @@ const Sidebar = ({ category }: any) => {
                   {userImage && (
                     <Image
                       src={userImage}
-                      alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                      alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                       width={500}
                       height={300}
                       layout="responsive"
@@ -251,7 +228,7 @@ const Sidebar = ({ category }: any) => {
 
                 <div className="absolute bottom-[100%] right-[.5rem] w-[14rem] overflow-hidden rounded-xl border bg-[#ffffffea] text-sm font-medium shadow-lg backdrop-blur-[10px]">
                   {/* Admin Section (Jika role user adalah ADMIN) */}
-                  {session?.user.role === "ADMIN" && (
+                  {session?.user.role === 'ADMIN' && (
                     <>
                       <div className="flex items-center justify-center gap-2 px-4 py-2 text-gray-700">
                         <AnimatedGradientText className="font-semibold">
@@ -265,13 +242,13 @@ const Sidebar = ({ category }: any) => {
                   <div className="border-t border-gray-200" />
 
                   {/* Admin Section (Jika role user adalah ADMIN) */}
-                  {session?.user.role === "ADMIN" && (
+                  {session?.user.role === 'ADMIN' && (
                     <>
                       <div
                         className="flex cursor-pointer items-center gap-2 px-4 py-2 text-gray-700 transition duration-200 hover:bg-gray-100"
                         onClick={() => {
                           setOpenMenu(false);
-                          router.push("/admin");
+                          router.push('/admin');
                         }}
                       >
                         <User className="h-4 w-4 text-sm font-medium text-foreground" />
@@ -285,7 +262,7 @@ const Sidebar = ({ category }: any) => {
                     className="flex cursor-pointer items-center gap-2 px-4 py-2 text-gray-700 transition duration-200 hover:bg-gray-100"
                     onClick={() => {
                       setOpenMenu(false);
-                      setPagesSetting("account");
+                      setPagesSetting('account');
                       setTransactionHistory(true);
                     }}
                   >
@@ -301,7 +278,7 @@ const Sidebar = ({ category }: any) => {
                     className="flex cursor-pointer items-center gap-2 px-4 py-2 text-red-600 transition duration-200 hover:bg-red-50"
                     onClick={() => {
                       setOpenMenu(false);
-                      signOut({ callbackUrl: "/" });
+                      signOut({ callbackUrl: '/' });
                     }}
                   >
                     <i className="bx bx-log-out text-[16px]" />
@@ -319,12 +296,15 @@ const Sidebar = ({ category }: any) => {
         {/* Header */}
         <div
           className={`flex ${
-            !minimizeSidebar ? "justify-between p-6" : "justify-center p-[1rem]"
+            !minimizeSidebar ? 'justify-between p-6' : 'justify-center p-[1rem]'
           } items-center`}
         >
           {!minimizeSidebar ? (
             <>
-              <Image src={LogoSvg} alt="Bimbelio - Bimbel AI untuk SNBT/UTBK" />
+              <Image
+                src={LogoSvg}
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
+              />
               <div
                 onClick={() => {
                   setSidebarMobile(false);
@@ -336,7 +316,7 @@ const Sidebar = ({ category }: any) => {
           ) : (
             <Image
               src={LogoMinimize}
-              alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+              alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               className="w-[40px]"
             />
           )}
@@ -345,8 +325,8 @@ const Sidebar = ({ category }: any) => {
         {/* Sidebar Routes */}
         <div
           className={cn(
-            "mt-12 overflow-y-auto pb-[60px]",
-            session?.user.role === "USER" && "pb-[calc(60px+154px)]"
+            'mt-12 overflow-y-auto pb-[60px]',
+            session?.user.role === 'USER' && 'pb-[calc(60px+154px)]',
           )}
         >
           <SidebarRoute
@@ -390,7 +370,7 @@ const Sidebar = ({ category }: any) => {
           {!session?.user.tier && (
             <div
               className={`flex flex-col gap-[.6rem] bg-white ${
-                !minimizeSidebar ? "p-5" : "mb-[1rem] items-center p-0"
+                !minimizeSidebar ? 'p-5' : 'mb-[1rem] items-center p-0'
               }`}
             >
               {!minimizeSidebar && (
@@ -421,12 +401,12 @@ const Sidebar = ({ category }: any) => {
           <div
             id="logout"
             className={`${
-              session?.user.role !== "USER" && "border-t"
+              session?.user.role !== 'USER' && 'border-t'
             } relative flex items-center justify-between gap-[.5rem] border-main-gray-input bg-white p-5`}
           >
             <div
               className={`flex items-center gap-[.5rem] ${
-                minimizeSidebar && "w-full justify-center"
+                minimizeSidebar && 'w-full justify-center'
               }`}
             >
               <div className="flex w-[1.8rem] items-center justify-center rounded-full">
@@ -434,7 +414,7 @@ const Sidebar = ({ category }: any) => {
                   {userImage && (
                     <Image
                       src={userImage}
-                      alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                      alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                       width={500}
                       height={300}
                       layout="responsive"
@@ -470,7 +450,7 @@ const Sidebar = ({ category }: any) => {
 
                 <div className="absolute bottom-[100%] right-[.5rem] w-[14rem] overflow-hidden rounded-xl border bg-[#ffffffea] text-sm font-medium shadow-lg backdrop-blur-[10px]">
                   {/* Admin Section (Jika role user adalah ADMIN) */}
-                  {session?.user.role === "ADMIN" && (
+                  {session?.user.role === 'ADMIN' && (
                     <>
                       <div className="flex items-center justify-center gap-2 px-4 py-2 text-gray-700">
                         <AnimatedGradientText className="font-semibold">
@@ -484,13 +464,13 @@ const Sidebar = ({ category }: any) => {
                   <div className="border-t border-gray-200" />
 
                   {/* Admin Section (Jika role user adalah ADMIN) */}
-                  {session?.user.role === "ADMIN" && (
+                  {session?.user.role === 'ADMIN' && (
                     <>
                       <div
                         className="flex cursor-pointer items-center gap-2 px-4 py-2 text-gray-700 transition duration-200 hover:bg-gray-100"
                         onClick={() => {
                           setOpenMenu(false);
-                          router.push("/admin");
+                          router.push('/admin');
                         }}
                       >
                         <User className="h-4 w-4 text-sm font-medium text-foreground" />
@@ -504,7 +484,7 @@ const Sidebar = ({ category }: any) => {
                     className="flex cursor-pointer items-center gap-2 px-4 py-2 text-gray-700 transition duration-200 hover:bg-gray-100"
                     onClick={() => {
                       setOpenMenu(false);
-                      setPagesSetting("account");
+                      setPagesSetting('account');
                       setTransactionHistory(true);
                     }}
                   >
@@ -520,7 +500,7 @@ const Sidebar = ({ category }: any) => {
                     className="flex cursor-pointer items-center gap-2 px-4 py-2 text-red-600 transition duration-200 hover:bg-red-50"
                     onClick={() => {
                       setOpenMenu(false);
-                      signOut({ callbackUrl: "/" });
+                      signOut({ callbackUrl: '/' });
                     }}
                   >
                     <i className="bx bx-log-out text-[16px]" />
@@ -539,49 +519,49 @@ const Sidebar = ({ category }: any) => {
 export default Sidebar;
 
 // ButtonRiwayat Component
-const ButtonRiwayat = ({ data, heading, lastAccessed }: any) => {
-  const pathname = usePathname();
-  const [docId, setDocId] = useState<any>([]);
+// const ButtonRiwayat = ({ data, heading, lastAccessed }: any) => {
+//   const pathname = usePathname();
+//   const [docId, setDocId] = useState<any>([]);
 
-  useEffect(() => {
-    if (pathname?.includes("workspace")) {
-      const dataPath = pathname.split("/");
-      const documentId = dataPath[dataPath.length - 1];
-      setDocId(documentId);
-    }
-  }, [pathname]);
+//   useEffect(() => {
+//     if (pathname?.includes('workspace')) {
+//       const dataPath = pathname.split('/');
+//       const documentId = dataPath[dataPath.length - 1];
+//       setDocId(documentId);
+//     }
+//   }, [pathname]);
 
-  return (
-    <>
-      <h1 className="pl-[.5rem] text-[.9rem] text-main-gray-text">{heading}</h1>
-      {lastAccessed ? (
-        <Link
-          href={`/user/workspace/${data.document.categoryId}/${data.document.id}?tab=chat`}
-          className={`cursor-pointer ${
-            docId === data.document.id
-              ? "bg-main text-white"
-              : "bg-transparent active:bg-main md:hover:bg-main-gray-input md:hover:text-main-gray-text"
-          } overflow-x-hidden text-ellipsis whitespace-nowrap rounded-[.5rem] px-[.8rem] py-[.5rem] text-[.9rem]`}
-        >
-          {data.document.title}
-        </Link>
-      ) : (
-        <>
-          {data?.map((item: any) => (
-            <Link
-              key={item.document.id} // Add key prop here
-              href={`/user/workspace/${item.document.categoryId}/${item.document.id}?tab=chat`}
-              className={`cursor-pointer ${
-                docId === item.document.id
-                  ? "bg-main text-white"
-                  : "bg-transparent active:bg-main md:hover:bg-main-gray-input md:hover:text-main-gray-text"
-              } overflow-x-hidden text-ellipsis whitespace-nowrap rounded-[.5rem] px-[.8rem] py-[.5rem] text-[.9rem]`}
-            >
-              {item.document.title}
-            </Link>
-          ))}
-        </>
-      )}
-    </>
-  );
-};
+//   return (
+//     <>
+//       <h1 className="pl-[.5rem] text-[.9rem] text-main-gray-text">{heading}</h1>
+//       {lastAccessed ? (
+//         <Link
+//           href={`/user/workspace/${data.document.categoryId}/${data.document.id}?tab=chat`}
+//           className={`cursor-pointer ${
+//             docId === data.document.id
+//               ? 'bg-main text-white'
+//               : 'bg-transparent active:bg-main md:hover:bg-main-gray-input md:hover:text-main-gray-text'
+//           } overflow-x-hidden text-ellipsis whitespace-nowrap rounded-[.5rem] px-[.8rem] py-[.5rem] text-[.9rem]`}
+//         >
+//           {data.document.title}
+//         </Link>
+//       ) : (
+//         <>
+//           {data?.map((item: any) => (
+//             <Link
+//               key={item.document.id} // Add key prop here
+//               href={`/user/workspace/${item.document.categoryId}/${item.document.id}?tab=chat`}
+//               className={`cursor-pointer ${
+//                 docId === item.document.id
+//                   ? 'bg-main text-white'
+//                   : 'bg-transparent active:bg-main md:hover:bg-main-gray-input md:hover:text-main-gray-text'
+//               } overflow-x-hidden text-ellipsis whitespace-nowrap rounded-[.5rem] px-[.8rem] py-[.5rem] text-[.9rem]`}
+//             >
+//               {item.document.title}
+//             </Link>
+//           ))}
+//         </>
+//       )}
+//     </>
+//   );
+// };

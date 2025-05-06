@@ -1,8 +1,6 @@
 // index.tsx
-import LOGO from "@/_assest/logomark.png";
-import Logo from "@/components/ui/logo";
-import { IconOpenAI } from "@/styles/icon";
-import Image from "next/image";
+import Logo from '@/components/ui/logo';
+import { IconOpenAI } from '@/styles/icon';
 
 export default function Footer() {
   // const ScrollOffsetLink = ({ href, children }: any) => {
@@ -41,7 +39,7 @@ export default function Footer() {
     >
       <div className="flex w-full items-center justify-between">
         {/* <div className="">
-          <Image src={logo} alt="Bimbelio - Bimbel AI untuk SNBT/UTBK" />
+          <Image src={logo} alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan" />
         </div> */}
         <Logo />
         <div className="flex items-center gap-[.5rem] text-[1.5rem]">
@@ -55,13 +53,13 @@ export default function Footer() {
           <div>
             <p className="text-main text-[.9rem]">Customer Support</p>
             <p className="text-main-gray-text2 text-[.9rem]">
-              tutorsnbt@gmail.com
+              bimbelio@gmail.com
             </p>
           </div>
           <div>
             <p className="text-main text-[.9rem]">IT Support</p>
             <p className="text-main-gray-text2 text-[.9rem]">
-              tutorsnbt@gmail.com
+              bimbelio@gmail.com
             </p>
           </div>
         </div>

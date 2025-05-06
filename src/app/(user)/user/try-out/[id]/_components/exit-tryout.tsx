@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
-import React, { SetStateAction } from "react";
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useRouter } from 'next/navigation';
+import React, { SetStateAction } from 'react';
 
 interface ExitTryoutProps {
   open: boolean;
@@ -14,7 +14,10 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({ open, setOpen, done }) => {
   const router = useRouter();
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+    >
       <DialogContent className="max-w-md">
         <div className="flex flex-col items-center justify-center text-center">
           <div className="flex flex-col gap-2">
@@ -27,7 +30,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({ open, setOpen, done }) => {
                 <p className="text-main-gray-text">
                   <span className="text-red-700">
                     Waktu akan tetap berjalan.
-                  </span>{" "}
+                  </span>{' '}
                   Namun tak perlu khawatir, progressmu akan tetap tersimpan.
                 </p>
               </>
@@ -45,10 +48,10 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({ open, setOpen, done }) => {
               <button
                 className="w-full shrink-0 cursor-pointer rounded-xl py-3 font-medium text-main-gray-text transition-colors duration-300 hover:text-black"
                 onClick={() => {
-                  router.push("/user/try-out");
+                  router.push('/user/try-out');
                 }}
               >
-                {!done ? "Keluar tryout" : "Keluar"}
+                {!done ? 'Keluar tryout' : 'Keluar'}
               </button>
               <button
                 className="w-full shrink-0 cursor-pointer rounded-xl bg-main py-3 font-medium text-white transition-colors duration-300 hover:bg-main/85 active:bg-main"

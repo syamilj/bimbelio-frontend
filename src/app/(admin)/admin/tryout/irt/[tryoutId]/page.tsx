@@ -1,32 +1,23 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import LoadingPageWithText from "@/components/ui/spinner";
-import { toaster } from "@/components/ui/toaster";
+} from '@/components/ui/select';
+import LoadingPageWithText from '@/components/ui/spinner';
 
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { utils, writeFile } from "xlsx";
-import ProcessData from "../_components/ProcessData";
-import ResultsOverview from "../_components/ResultsOverview";
-import Upload3PLData from "../_components/Upload3PLData";
-import UploadParticipantData from "../_components/UploadParticipantData";
-import UploadSummary from "../_components/UploadSummary";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import {
   Tryout,
   TryoutAnswer,
@@ -36,7 +27,15 @@ import {
   TryoutSessionParticipant,
   TryoutSubCategory,
   TryoutUserAnswer,
-} from "@/types/database";
+} from '@/types/database';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { utils, writeFile } from 'xlsx';
+import ProcessData from '../_components/ProcessData';
+import ResultsOverview from '../_components/ResultsOverview';
+import Upload3PLData from '../_components/Upload3PLData';
+import UploadParticipantData from '../_components/UploadParticipantData';
+import UploadSummary from '../_components/UploadSummary';
 
 export interface OverallStatsProps {
   totalParticipants: number;
@@ -91,7 +90,7 @@ export default function SNBTProcessor() {
   //   { refetchOnWindowFocus: false, enabled: !!tryoutId }
   // );
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setIsLoading] = useState<boolean>(false);
   const [TryoutData, setTryoutData] = useState<TryoutDataType>();
 
   useEffect(() => {
@@ -125,9 +124,9 @@ export default function SNBTProcessor() {
   // );
 
   const saveSessionIRT = async (payload: any) => {
-    await mutateGeneral("url", {
+    await mutateGeneral('url', {
       payload,
-      type: "post",
+      type: 'post',
       setLoading: setLoading,
     });
   };
@@ -135,7 +134,7 @@ export default function SNBTProcessor() {
   const [participantFile, setParticipantFile] = useState<File | null>(null);
   const [threePLFile, setThreePLFile] = useState<File | null>(null);
   const [overallStats, setOverallStats] = useState<OverallStatsProps | null>(
-    null
+    null,
   );
   const [saveDataIRT, setSaveDataIRT] = useState<DataIRTProps | null>(null);
 
@@ -163,7 +162,7 @@ export default function SNBTProcessor() {
           p: participant.userId,
           question,
         };
-      }
+      },
     ).map((participant) => {
       return {
         p: participant.p,
@@ -179,14 +178,14 @@ export default function SNBTProcessor() {
             correct: number;
           }[];
         },
-        item
+        item,
       ) => {
         const key = item.p;
         const question = item.question;
         acc[key] = [...question];
         return acc;
       },
-      {}
+      {},
     );
 
     const groupingArray = Object.keys(groupingByParticipant)
@@ -198,7 +197,7 @@ export default function SNBTProcessor() {
             acc[key] = item.correct;
             return acc;
           },
-          {}
+          {},
         );
         if (question.length == 0) {
           return null;
@@ -222,10 +221,10 @@ export default function SNBTProcessor() {
   const exportData = async (sessionIndex: number) => {
     const fileName = `${
       TryoutData?.TryoutSession[sessionIndex]?.TryoutCategory?.name ||
-      "default_category"
+      'default_category'
     }_${
       TryoutData?.TryoutSession[sessionIndex]?.TryoutSubCategory?.name ||
-      "default_subcategory"
+      'default_subcategory'
     }`;
 
     const downloadData = processDataUserAnswer(sessionIndex) || null;
@@ -234,7 +233,7 @@ export default function SNBTProcessor() {
 
     let wb = utils.book_new(),
       ws = utils.json_to_sheet(downloadData);
-    utils.book_append_sheet(wb, ws, "items");
+    utils.book_append_sheet(wb, ws, 'items');
     writeFile(wb, `${fileName}.csv`);
   };
 
@@ -248,11 +247,9 @@ export default function SNBTProcessor() {
       />
       <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
         <CardHeader>
-          <CardTitle className="text-4xl font-bold">
-            SNBT/UTBK Processor
-          </CardTitle>
+          <CardTitle className="text-4xl font-bold">Processor</CardTitle>
           <CardDescription className="text-xl text-gray-100">
-            Analisis komprehensif data SNBT/UTBK dalam 6 langkah mudah
+            Analisis komprehensif data dalam 6 langkah mudah
           </CardDescription>
         </CardHeader>
       </Card>

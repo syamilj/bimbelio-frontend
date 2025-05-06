@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { getGeneral } from "@/lib/fetch-helper";
-import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
+import { getGeneral } from '@/lib/fetch-helper';
+import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
 import {
   createContext,
   Dispatch,
@@ -9,7 +9,7 @@ import {
   useContext,
   useEffect,
   useState,
-} from "react";
+} from 'react';
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [categories, setCategories] = useState<WebsiteCategory[]>([]);
@@ -17,7 +17,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   const [subCategories, setSubCategories] = useState<WebsiteSubCategory[]>([]);
 
   const getData = async () => {
-    await getGeneral("/website-category/getWebsiteCategory", {
+    await getGeneral('/website-category/getWebsiteCategory', {
       onSuccess({ data }) {
         const getData: (WebsiteCategory & {
           WebsiteSubCategory: WebsiteSubCategory[];
@@ -88,7 +88,7 @@ export const useAdminWebCategory = () => {
   const context = useContext(AdminWebCategoryContext);
   if (!context) {
     throw new Error(
-      "useAdminWebCategory must be used within an AdminWebCategoryContext"
+      'useAdminWebCategory must be used within an AdminWebCategoryContext',
     );
   }
   return context;

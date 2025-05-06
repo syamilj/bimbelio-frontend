@@ -1,39 +1,37 @@
-"use client";
+'use client';
 
-import { useAppContext } from "@/components/provider/provider-app";
-import { toaster } from "@/components/ui/toaster";
-import OnBoarding from "@/components/workspace/_component/onboarding";
+import { useAppContext } from '@/components/provider/provider-app';
+import { toaster } from '@/components/ui/toaster';
+import OnBoarding from '@/components/workspace/_component/onboarding';
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import Done from "./done";
-import Terbaru from "./terbaru";
-import RegistrationTryOut from "./ui/registration-try-out";
-import SummaryTryout from "./ui/summary-tryout";
-import Upcoming from "./upcoming";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response } from "@/lib/response";
-import { UserTryout } from "@/types/database";
-import { getGeneral } from "@/lib/fetch-helper";
-import { useSession } from "@/components/provider/session-provider-auth";
-import UpcomingOtherWeb from "./upcoming-other-web";
+import { useSession } from '@/components/provider/session-provider-auth';
+import { getGeneral } from '@/lib/fetch-helper';
+import { UserTryout } from '@/types/database';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import Done from './done';
+import Terbaru from './terbaru';
+import RegistrationTryOut from './ui/registration-try-out';
+import SummaryTryout from './ui/summary-tryout';
+import Upcoming from './upcoming';
+import UpcomingOtherWeb from './upcoming-other-web';
 
 export default function TryOutClient() {
   const Router = useRouter();
   const pathname = usePathname();
-  const isTesting = pathname?.toLowerCase().includes("testing") || false;
+  const isTesting = pathname?.toLowerCase().includes('testing') || false;
   // const { query } = Router;
   const searchParams = useSearchParams();
-  const payment = searchParams?.get("payment");
+  const payment = searchParams?.get('payment');
 
   useEffect(() => {
-    if (payment === "success") {
+    if (payment === 'success') {
       toaster({
-        title: "Success",
-        description: "Pembelian Berhasil",
-        condition: "success",
+        title: 'Success',
+        description: 'Pembelian Berhasil',
+        condition: 'success',
       });
-      Router.push("/user/try-out");
+      Router.push('/user/try-out');
     }
   }, [payment]);
 
@@ -61,27 +59,24 @@ const Content = () => {
   const [univOption, setUnivOption] = useState<string | undefined>();
 
   const getUserTryout = async () => {
-    const res = await getGeneral(
-      `/user/getUserTryOut?userId=${session?.user.id}`,
-      {
-        setData: setTryoutAccount,
-        setLoading: setIsLoading,
-        toast: {
-          hideError: true,
-        },
-        onError({ data }) {
-          const getData: {
-            hideGeneral: boolean;
-            hideTargetValue: boolean;
-            universityOption: string | undefined;
-          } = data;
-          console.log({ data });
-          if (getData.hideGeneral) setIsHideGeneralSection(true);
-          if (getData.hideTargetValue) setIsHideTargetValue(true);
-          if (getData.universityOption) setUnivOption(getData.universityOption);
-        },
-      }
-    );
+    getGeneral(`/user/getUserTryOut?userId=${session?.user.id}`, {
+      setData: setTryoutAccount,
+      setLoading: setIsLoading,
+      toast: {
+        hideError: true,
+      },
+      onError({ data }) {
+        const getData: {
+          hideGeneral: boolean;
+          hideTargetValue: boolean;
+          universityOption: string | undefined;
+        } = data;
+        console.log({ data });
+        if (getData.hideGeneral) setIsHideGeneralSection(true);
+        if (getData.hideTargetValue) setIsHideTargetValue(true);
+        if (getData.universityOption) setUnivOption(getData.universityOption);
+      },
+    });
   };
 
   useEffect(() => {
@@ -91,7 +86,7 @@ const Content = () => {
   const { onBoarding, setOnBoarding } = useAppContext();
 
   useEffect(() => {
-    const getOnboarding = localStorage.getItem("on-boarding");
+    const getOnboarding = localStorage.getItem('on-boarding');
     const onBoarding = {
       chat: true,
       notes: true,
@@ -99,20 +94,20 @@ const Content = () => {
       tryout: true,
     };
     if (!getOnboarding) {
-      localStorage.setItem("on-boarding", JSON.stringify(onBoarding));
+      localStorage.setItem('on-boarding', JSON.stringify(onBoarding));
     } else {
       const data = JSON.parse(getOnboarding);
       const isValid =
         data &&
-        typeof data.chat === "boolean" &&
-        typeof data.notes === "boolean" &&
-        typeof data.quiz === "boolean" &&
-        typeof data.tryout === "boolean";
+        typeof data.chat === 'boolean' &&
+        typeof data.notes === 'boolean' &&
+        typeof data.quiz === 'boolean' &&
+        typeof data.tryout === 'boolean';
       if (isValid) {
         setOnBoarding({ ...data });
       }
     }
-    console.log("getOnboarding", getOnboarding);
+    console.log('getOnboarding', getOnboarding);
   }, []);
 
   if (isLoading) return null;
@@ -121,7 +116,10 @@ const Content = () => {
     <div className="relative">
       {tryoutAccount?.userTryOutId ? (
         <div className="flex flex-col gap-[2rem] px-[1rem] md:px-0">
-          <OnBoarding open={onBoarding.tryout} type="tryout" />
+          <OnBoarding
+            open={onBoarding.tryout}
+            type="tryout"
+          />
           <div className="font-regular flex flex-col gap-[.5rem]">
             <SummaryTryout />
           </div>

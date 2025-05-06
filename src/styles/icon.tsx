@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface IconProps {
   className?: string;
@@ -1406,14 +1406,20 @@ export const IconFitur1: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_8379_128368"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_8379_128368)">
         <path
@@ -1442,14 +1448,20 @@ export const IconFitur2: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_8379_129271"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="25"
         height="24"
       >
-        <rect x="10.667" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10.667"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_8379_129271)">
         <path
@@ -1484,14 +1496,20 @@ export const IconFitur3: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_8379_129286"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="25"
         height="24"
       >
-        <rect x="10.333" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10.333"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_8379_129286)">
         <path
@@ -1532,14 +1550,20 @@ export const IconRevolusi1: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3731_81302"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3731_81302)">
         <path
@@ -1578,14 +1602,20 @@ export const IconRevolusi2: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3731_81313"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3731_81313)">
         <path
@@ -1628,14 +1658,20 @@ export const IconRevolusi3: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3731_81340"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3731_81340)">
         <path
@@ -1674,14 +1710,20 @@ export const IconRevolusi4: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3731_81372"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3731_81372)">
         <path
@@ -1719,14 +1761,20 @@ export const IconCategoryTWK: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3069_21759"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3069_21759)">
         <path
@@ -1761,14 +1809,20 @@ export const IconCategoryUmum: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3069_3495"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3069_3495)">
         <path
@@ -1806,14 +1860,20 @@ export const IconCategoryTIU: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3069_7233"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3069_7233)">
         <path
@@ -1857,14 +1917,20 @@ export const IconCategoryTKP: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3069_31886"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3069_31886)">
         <path
@@ -1916,14 +1982,20 @@ export const IconCategoryTOEFL: React.FC<IconProps> = ({ className, w }) => {
       />
       <mask
         id="mask0_3108_70604"
-        style={{ maskType: "alpha" }}
+        style={{ maskType: 'alpha' }}
         maskUnits="userSpaceOnUse"
         x="10"
         y="10"
         width="24"
         height="24"
       >
-        <rect x="10" y="10" width="24" height="24" fill="#D9D9D9" />
+        <rect
+          x="10"
+          y="10"
+          width="24"
+          height="24"
+          fill="#D9D9D9"
+        />
       </mask>
       <g mask="url(#mask0_3108_70604)">
         <path
@@ -2303,7 +2375,11 @@ export const IconOpenAI: React.FC<IconProps> = () => {
       </g>
       <defs>
         <clipPath id="clip0_3551_73116">
-          <rect width="59" height="16" fill="white" />
+          <rect
+            width="59"
+            height="16"
+            fill="white"
+          />
         </clipPath>
       </defs>
     </svg>
@@ -2338,10 +2414,17 @@ export const BackgroundHero: React.FC<IconProps> = () => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#E1F7EB" />
-          <stop offset="1" stopColor="#F4F8FB" />
+          <stop
+            offset="1"
+            stopColor="#F4F8FB"
+          />
         </linearGradient>
         <clipPath id="clip0_3542_73050">
-          <rect width="1440" height="200" fill="white" />
+          <rect
+            width="1440"
+            height="200"
+            fill="white"
+          />
         </clipPath>
       </defs>
     </svg>
@@ -2465,8 +2548,14 @@ export const IconDataNotFound: React.FC<IconProps> = ({ className, w }) => {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feGaussianBlur in="BackgroundImageFix" stdDeviation="16" />
+          <feFlood
+            floodOpacity="0"
+            result="BackgroundImageFix"
+          />
+          <feGaussianBlur
+            in="BackgroundImageFix"
+            stdDeviation="16"
+          />
           <feComposite
             in2="SourceAlpha"
             operator="in"
@@ -2488,7 +2577,10 @@ export const IconDataNotFound: React.FC<IconProps> = ({ className, w }) => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="currentColor" />
-          <stop offset="1" stopColor="currentColor" />
+          <stop
+            offset="1"
+            stopColor="currentColor"
+          />
         </linearGradient>
         <linearGradient
           id="paint1_linear_3742_85910"
@@ -2499,7 +2591,10 @@ export const IconDataNotFound: React.FC<IconProps> = ({ className, w }) => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="currentColor" />
-          <stop offset="1" stopColor="currentColor" />
+          <stop
+            offset="1"
+            stopColor="currentColor"
+          />
         </linearGradient>
       </defs>
     </svg>

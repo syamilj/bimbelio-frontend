@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Select,
@@ -6,16 +6,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   IconDown,
   IconFullscreen,
   IconMinimizeScreen,
   IconUp,
-} from "@/styles/icon";
-import { Loader2 } from "lucide-react";
-import React, { SetStateAction, useEffect, useState } from "react";
-import { SessionProps, TryoutProps } from "../page";
+} from '@/styles/icon';
+import { Loader2 } from 'lucide-react';
+import React, { SetStateAction, useEffect, useState } from 'react';
+import { SessionProps, TryoutProps } from '../page';
 // import Image from 'next/image';
 // import { env } from '@/env.mjs';
 // import { supabase } from '@/servers/supabase/supabaseClient';
@@ -73,19 +73,19 @@ const TryoutOption = ({
   const [showDateTryout, setShowDateTryout] = useState<boolean>(true);
   const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
   // const [thumbnail, setThumbnail] = useState<File | undefined>();
-  const [thumbnailName, setThumbnailName] = useState<string>("");
+  const [thumbnailName, setThumbnailName] = useState<string>('');
 
   const addSesi = () => {
     setSessions((prev) => {
       return [
         ...prev,
         {
-          categoryId: "",
-          name: "",
-          description: "",
+          categoryId: '',
+          name: '',
+          description: '',
           duration: 0,
           thresholdValue: 0,
-          assessmentType: "1-5",
+          assessmentType: '1-5',
           Questions: [],
         },
       ];
@@ -116,11 +116,11 @@ const TryoutOption = ({
   // }, [thumbnail]);
 
   useEffect(() => {
-    console.log("thumbnailName11", tryout?.image);
+    console.log('thumbnailName11', tryout?.image);
     if (tryout && tryout.image) setThumbnailName(tryout.image);
   }, [tryout]);
 
-  console.log("thumbnailName", thumbnailName);
+  console.log('thumbnailName', thumbnailName);
 
   return (
     <div className="flex w-full flex-col gap-[1rem] p-[1rem] text-[.9rem]">
@@ -154,10 +154,10 @@ const TryoutOption = ({
           className="cursor-pointer text-main-gray-text duration-300 md:hover:text-black"
           onClick={() => {
             const div = document.querySelector(
-              "#tryout-admin #date"
+              '#tryout-admin #date',
             ) as HTMLDivElement;
             if (div) {
-              console.log("height", div.clientHeight);
+              console.log('height', div.clientHeight);
               if (div.clientHeight !== 0) {
                 div.style.height = `${div.clientHeight}px`;
                 setDateTryoutHeight(div.clientHeight);
@@ -166,16 +166,19 @@ const TryoutOption = ({
                 setShowDateTryout(true);
               }
               div.style.height =
-                div.clientHeight === 0 ? `${dateTryoutHeight}px` : "0px";
-              div.style.overflow = "hidden";
-              div.style.transition = "height 0.3s ease";
+                div.clientHeight === 0 ? `${dateTryoutHeight}px` : '0px';
+              div.style.overflow = 'hidden';
+              div.style.transition = 'height 0.3s ease';
             }
           }}
         >
           {showDateTryout ? <IconUp /> : <IconDown />}
         </div>
       </div>
-      <div id="date" className="flex flex-col gap-[1rem]">
+      <div
+        id="date"
+        className="flex flex-col gap-[1rem]"
+      >
         <div className="flex flex-col gap-[.5rem]">
           <p className="font-medium">Judul tryout</p>
           <input
@@ -183,7 +186,7 @@ const TryoutOption = ({
             placeholder="Judul try out"
             className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
             required
-            value={tryout?.title ? tryout?.title : ""}
+            value={tryout?.title ? tryout?.title : ''}
             onChange={(e) => {
               setTryout((prev) => ({ ...prev, title: e.target.value }));
             }}
@@ -276,7 +279,10 @@ const TryoutOption = ({
         />
       </div> */}
       <div className="my-[1rem] h-[1px] w-full bg-main-gray-disabled/60" />
-      <div id="session" className="flex flex-col gap-[.5rem]">
+      <div
+        id="session"
+        className="flex flex-col gap-[.5rem]"
+      >
         <div className="flex items-center justify-between">
           <h1 className="text-[1.1rem] font-medium">Sesi Tryout</h1>
           <div
@@ -287,7 +293,10 @@ const TryoutOption = ({
           </div>
         </div>
         {sessions?.map((item, sessionIndex: number) => (
-          <div key={sessionIndex} className="flex w-full gap-[1rem]">
+          <div
+            key={sessionIndex}
+            className="flex w-full gap-[1rem]"
+          >
             <div className="overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
               <input
                 type="text"
@@ -304,7 +313,7 @@ const TryoutOption = ({
 
                   const [movedSession] = currentSessions.splice(
                     sessionIndex,
-                    1
+                    1,
                   );
                   console.log(currentSessions, movedSession);
 
@@ -317,11 +326,17 @@ const TryoutOption = ({
                   <SelectValue placeholder="Kategori" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="placeholder" disabled>
+                  <SelectItem
+                    value="placeholder"
+                    disabled
+                  >
                     Urutan Sesi
                   </SelectItem>
                   {Array.from({ length: sessions.length }).map((_, index) => (
-                    <SelectItem key={index} value={`${index + 1}`}>
+                    <SelectItem
+                      key={index}
+                      value={`${index + 1}`}
+                    >
                       {index + 1}
                     </SelectItem>
                   ))}
@@ -329,14 +344,14 @@ const TryoutOption = ({
               </Select>
             </div>
             <div className="flex w-full items-center justify-between rounded-[.8rem] bg-white px-[1rem] py-[.8rem]">
-              {item.categoryId !== "" ? (
+              {item.categoryId !== '' ? (
                 <div className="flex items-center">
                   <div className="rounded-[1rem] bg-main px-[.5rem] py-[.2rem] text-[.8rem] text-white">
                     <p>
-                      {item.category === "Tes Potensi Skolastik (TPS)" && "TPS"}
-                      {item.category === "Tes Literasi Bahasa" && "Literasi"}
-                      {item.category === "Tes Penalaran Matematika" &&
-                        "Matematika"}
+                      {item.category === 'Tes Potensi Skolastik (TPS)' && 'TPS'}
+                      {item.category === 'Tes Literasi Bahasa' && 'Literasi'}
+                      {item.category === 'Tes Penalaran Matematika' &&
+                        'Matematika'}
                     </p>
                   </div>
                   <div className="rounded-[1rem] bg-main-gray-input2 px-[.5rem] py-[.2rem] text-[.8rem] text-black ml-2">
@@ -347,7 +362,7 @@ const TryoutOption = ({
                 <p>.....</p>
               )}
               <p>{item.Questions ? item.Questions.length : 0} soal</p>
-              <p>{item.duration === "" ? 0 : item.duration} menit</p>
+              <p>{item.duration === '' ? 0 : item.duration} menit</p>
             </div>
             <div
               className="shrink-0 cursor-pointer px-[1rem] py-[.8rem] text-main-gray-text duration-300 md:hover:text-black"
@@ -369,7 +384,7 @@ const TryoutOption = ({
             type="number"
             placeholder="Durasi istirahat"
             className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-            value={tryout?.restTime ? tryout?.restTime : ""}
+            value={tryout?.restTime ? tryout?.restTime : ''}
             onChange={(e) => {
               setTryout((prev) => ({
                 ...prev,
@@ -392,16 +407,16 @@ const TryoutOption = ({
         <div className="relative w-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
           <input
             type="text"
-            defaultValue={tryout?.status ? `${tryout?.status}` : ""}
+            defaultValue={tryout?.status ? `${tryout?.status}` : ''}
             required
             className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
           />
           <Select
-            value={tryout?.status ? `${tryout?.status}` : "placeholder"}
+            value={tryout?.status ? `${tryout?.status}` : 'placeholder'}
             onValueChange={(value) => {
               setTryout((prev) => ({
                 ...prev,
-                status: value as "PUBLIC" | "PRIVATE" | "DRAFT",
+                status: value as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
               }));
             }}
           >
@@ -409,7 +424,10 @@ const TryoutOption = ({
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="placeholder" disabled>
+              <SelectItem
+                value="placeholder"
+                disabled
+              >
                 Status
               </SelectItem>
               <SelectItem value="PUBLIC">PUBLIC</SelectItem>
@@ -487,7 +505,7 @@ export default TryoutOption;
 //             <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
 //               <Image
 //                 src={previewImage}
-//                 alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+//                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
 //                 layout="responsive"
 //                 width={500}
 //                 height={300}
@@ -522,7 +540,7 @@ export default TryoutOption;
 //             <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
 //               <Image
 //                 src={previewImage}
-//                 alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+//                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
 //                 layout="responsive"
 //                 width={500}
 //                 height={300}

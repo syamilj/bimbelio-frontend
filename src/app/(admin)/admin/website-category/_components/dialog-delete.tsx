@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,18 +9,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useAdminWebCategory } from "../provider";
-import { useState } from "react";
-import { Loader2 } from "lucide-react";
-import { deleteGeneral } from "@/lib/fetch-helper";
+} from '@/components/ui/dialog';
+import { deleteGeneral } from '@/lib/fetch-helper';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useAdminWebCategory } from '../provider';
 
 interface Props {
   children: React.ReactNode;
   id: string;
   title: string;
   description: string;
-  type: "category" | "sub-category";
+  type: 'category' | 'sub-category';
 }
 
 export function DialogDelete({
@@ -37,7 +37,7 @@ export function DialogDelete({
   const handleConfirm = async () => {
     await deleteGeneral(
       `/website-category/${
-        type === "category" ? "deleteCategory" : "deleteSubCategory"
+        type === 'category' ? 'deleteCategory' : 'deleteSubCategory'
       }?id=${id}`,
       {
         setLoading: setIsLoading,
@@ -45,12 +45,15 @@ export function DialogDelete({
           setOpen(false);
           await getData();
         },
-      }
+      },
     );
   };
 
   return (
-    <Dialog open={isLoading ? true : open} onOpenChange={setOpen}>
+    <Dialog
+      open={isLoading ? true : open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -58,7 +61,10 @@ export function DialogDelete({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex flex-row justify-end gap-2 pt-4">
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+          >
             Cancel
           </Button>
           <Button
@@ -69,7 +75,7 @@ export function DialogDelete({
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              "Delete"
+              'Delete'
             )}
           </Button>
         </DialogFooter>

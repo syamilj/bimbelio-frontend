@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useLeaderboardContext } from "@/app/(user)/user/leaderboard/_components/provider-leaderboard";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getGeneral } from "@/lib/fetch-helper";
-import { cn, getDateStringShort } from "@/lib/utils";
-import { IconTimer2, IconUserAdmin } from "@/styles/icon";
-import { useEffect, useState } from "react";
+import { useLeaderboardContext } from '@/app/(user)/user/leaderboard/_components/provider-leaderboard';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getGeneral } from '@/lib/fetch-helper';
+import { cn, getDateStringShort } from '@/lib/utils';
+import { IconTimer2, IconUserAdmin } from '@/styles/icon';
+import { useEffect, useState } from 'react';
 
 type TryoutListType = {
   id: string;
@@ -51,18 +51,18 @@ export function TryOutSelector() {
 
   useEffect(() => {
     if (Array.isArray(TryoutList) && TryoutList.length > 0 && firstLoad === 0) {
-      console.log("TryoutList:", TryoutList);
+      console.log('TryoutList:', TryoutList);
       let selectedId: string | undefined;
 
       if (TryoutList.length > 1) {
         selectedId = TryoutList[1]?.id;
         console.log(
-          `Setting selectedTryOut to TryoutList[1].id: ${selectedId}`
+          `Setting selectedTryOut to TryoutList[1].id: ${selectedId}`,
         );
       } else {
         selectedId = TryoutList[0]?.id;
         console.log(
-          `Setting selectedTryOut to TryoutList[0].id: ${selectedId}`
+          `Setting selectedTryOut to TryoutList[0].id: ${selectedId}`,
         );
       }
 
@@ -70,7 +70,7 @@ export function TryOutSelector() {
         setSelectedTryOut(selectedId);
         setFirstLoad(1);
       } else {
-        console.warn("Selected TryOut ID is undefined.");
+        console.warn('Selected TryOut ID is undefined.');
       }
     }
   }, [TryoutList, firstLoad, setSelectedTryOut]);
@@ -88,8 +88,8 @@ export function TryOutSelector() {
             <Button
               key={tryOut.id}
               className={cn(
-                "h-auto w-full justify-start px-4 py-3 text-left bg-white text-black hover:bg-main/85 hover:text-white border rounded-xl",
-                selectedTryOut === tryOut.id && "text-white bg-main"
+                'h-auto w-full justify-start px-4 py-3 text-left bg-white text-black hover:bg-main/85 hover:text-white border rounded-xl',
+                selectedTryOut === tryOut.id && 'text-white bg-main',
               )}
               onClick={() => setSelectedTryOut(tryOut.id)}
             >
@@ -97,8 +97,8 @@ export function TryOutSelector() {
                 <span className="font-medium">{tryOut.title}</span>
                 <div
                   className={cn(
-                    "flex items-center gap-4 text-xs text-muted-foreground",
-                    selectedTryOut === tryOut.id && "text-white"
+                    'flex items-center gap-4 text-xs text-muted-foreground',
+                    selectedTryOut === tryOut.id && 'text-white',
                   )}
                 >
                   <div className="flex items-center gap-1">
@@ -115,7 +115,10 @@ export function TryOutSelector() {
           ))}
           {TryoutListIsLoading &&
             Array.from({ length: 8 }).map((_, index) => (
-              <Skeleton key={index} className="h-[60px] w-full" />
+              <Skeleton
+                key={index}
+                className="h-[60px] w-full"
+              />
             ))}
         </div>
       </CardContent>

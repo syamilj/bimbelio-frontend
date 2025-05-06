@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import LoadingPage from "@/components/ui/Loading-Page";
-import { toaster } from "@/components/ui/toaster";
+import LoadingPage from '@/components/ui/Loading-Page';
 // import { api } from '@/trpc/react';
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export const SignUp = ({ showAuth, setShowAuth }: any) => {
   const router = useRouter();
@@ -45,10 +44,10 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
   //   },
   // });
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [loading] = useState<boolean>(false);
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleSubmit = async (e: any) => {
@@ -116,7 +115,10 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
           className="flex flex-col gap-[1.5rem]"
           onSubmit={(e: any) => handleSubmit(e)}
         >
-          <div id="nama" className="">
+          <div
+            id="nama"
+            className=""
+          >
             <input
               type="text"
               placeholder="Nama Lengkap..."
@@ -126,7 +128,10 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
             />
           </div>
 
-          <div id="email" className="">
+          <div
+            id="email"
+            className=""
+          >
             <input
               type="email"
               placeholder="Email..."
@@ -136,9 +141,12 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
             />
           </div>
 
-          <div id="password" className="relative flex items-center">
+          <div
+            id="password"
+            className="relative flex items-center"
+          >
             <input
-              type={`${showPassword ? "text" : "password"}`}
+              type={`${showPassword ? 'text' : 'password'}`}
               placeholder="Kata sandi..."
               className="w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.8rem] text-[.9rem] outline-none"
               onChange={(e) => setPassword(e.target.value)}
@@ -146,29 +154,33 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
             />
             <i
               className={`bx ${
-                !showPassword ? "bxs-hide" : "bxs-show"
+                !showPassword ? 'bxs-hide' : 'bxs-show'
               } absolute right-[1rem] cursor-pointer text-[1.5rem] text-[#5A5D66]`}
               onClick={() => setShowPassword(!showPassword)}
             />
           </div>
 
           <div className="flex items-start gap-[.5rem] px-[.2rem]">
-            <input type="checkbox" className="mt-[.3rem]" required />
+            <input
+              type="checkbox"
+              className="mt-[.3rem]"
+              required
+            />
             <p className="text-[.9rem]">
-              Saya telah membaca dan setuju dengan{" "}
+              Saya telah membaca dan setuju dengan{' '}
               <span
                 className="cursor-pointer text-main underline"
-                onClick={() => router.push("/terms-of-service")}
+                onClick={() => router.push('/terms-of-service')}
               >
                 Ketentuan Layanan
-              </span>{" "}
-              dan{" "}
+              </span>{' '}
+              dan{' '}
               <span
                 className="cursor-pointer text-main underline"
-                onClick={() => router.push("/privacy-policy")}
+                onClick={() => router.push('/privacy-policy')}
               >
                 Kebijakan Privasi
-              </span>{" "}
+              </span>{' '}
               bimbelio.com
             </p>
           </div>
@@ -180,7 +192,7 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
 
         <div className="flex flex-col items-center gap-[1rem]">
           <p className="font-regular">
-            Sudah punya akun?{" "}
+            Sudah punya akun?{' '}
             <span
               className="cursor-pointer text-main underline"
               onClick={() =>
@@ -192,7 +204,7 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
           </p>
           <p className="font-regular text-center text-[.8rem]">
             Dengan melanjutkan, kamu setuju dengan ketentuan Layanan dan
-            Kebijakan Privasi Tutor SNBT/UTBK
+            Kebijakan Privasi kami.
           </p>
         </div>
       </div>

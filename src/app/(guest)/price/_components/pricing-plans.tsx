@@ -1,47 +1,37 @@
-"use client";
+'use client';
 
-import { ReactElement, useEffect, useState } from "react";
-import { Check, HelpCircle, Loader2Icon, Sparkles, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PenTool, MessageSquare, BookOpen, FileText, Eye } from "lucide-react";
-import {
-  Plan,
-  PlanFeature,
-  PlanLimitation,
-  PlanSubscription,
-} from "@/types/database";
-import { getGeneral, mutateGeneral } from "@/lib/fetch-helper";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { useGuest } from "@/components/layout/layoutGuest";
-import { useAppContext } from "@/components/provider/provider-app";
-import { toaster } from "@/components/ui/toaster";
+} from '@/components/ui/card';
+import { Loader2Icon, Sparkles } from 'lucide-react';
+import { ReactElement, useEffect, useState } from 'react';
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip";
+import { useGuest } from '@/components/layout/layoutGuest';
+import { useAppContext } from '@/components/provider/provider-app';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { toaster } from '@/components/ui/toaster';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { BookOpen, Eye, FileText, MessageSquare, PenTool } from 'lucide-react';
 
 // type PlanType = {
 //   name: string;
@@ -102,47 +92,47 @@ type PlanType = {
   };
   popular: boolean;
   buttonText: string;
-  buttonVariant: "outline";
+  buttonVariant: 'outline';
   color: string;
   gradient: string;
 };
 
-const coinColors = {
-  Notes: "#3385ff",
-  Chat: "#0066ff",
-  Quiz: "#0099ff",
-  Tryout: "#0052cc",
-  Vision: "#00b8ff",
-};
+// const coinColors = {
+//   Notes: '#3385ff',
+//   Chat: '#0066ff',
+//   Quiz: '#0099ff',
+//   Tryout: '#0052cc',
+//   Vision: '#00b8ff',
+// };
 
 const formatPrice = (price: number) => {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
     maximumFractionDigits: 0,
   }).format(price);
 };
 
-type PaymentPremium =
-  | "1-month"
-  | "3-month"
-  | "limitasi_chat"
-  | "limitasi_notes"
-  | "limitasi_vision"
-  | "limitasi_quiz"
-  | "limitasi_all"
-  | "tryout_unlock"
-  | "plan";
+// type PaymentPremium =
+//   | '1-month'
+//   | '3-month'
+//   | 'limitasi_chat'
+//   | 'limitasi_notes'
+//   | 'limitasi_vision'
+//   | 'limitasi_quiz'
+//   | 'limitasi_all'
+//   | 'tryout_unlock'
+//   | 'plan';
 
 export default function PricingPlans() {
   const { setShowAuth } = useGuest();
   const { data: session } = useSession();
 
-  const [subscription, setSubscription] = useState<PlanType[]>([]);
-  const [bundles, setBundles] = useState<PlanType[]>([]);
+  const [, setSubscription] = useState<PlanType[]>([]);
+  const [, setBundles] = useState<PlanType[]>([]);
   const [topping, setTopping] = useState<PlanType[]>([]);
 
-  const [productCompare, setProductCompare] = useState<{
+  const [, setProductCompare] = useState<{
     subscription: PlanType[];
     bundles: PlanType[];
     listCompare: string[];
@@ -151,8 +141,8 @@ export default function PricingPlans() {
   const { setPagesSetting, setTransactionHistory } = useAppContext();
 
   const getData = async () => {
-    await getGeneral("/plan/getAllPlanForPricingPage", {
-      onSuccess({ message, status, data }) {
+    await getGeneral('/plan/getAllPlanForPricingPage', {
+      onSuccess({ data }) {
         setSubscription(data.subscriptions);
         setBundles(data.bundles);
         setTopping(data.topping);
@@ -166,7 +156,7 @@ export default function PricingPlans() {
   }, []);
 
   const [planId, setPlanId] = useState<string | null>(null);
-  const [type, setType] = useState<"limit" | "plan" | "">("");
+  const [type, setType] = useState<'limit' | 'plan' | ''>('');
 
   const [showPhoneConfirm, setShowPhoneConfirm] = useState(false);
 
@@ -180,28 +170,28 @@ export default function PricingPlans() {
   };
 
   const addPayment = async (payload: any) => {
-    const res = await mutateGeneral("/payment/addPayment", {
+    const res = await mutateGeneral('/payment/addPayment', {
       payload: { ...payload, userId: session?.user.id },
-      type: "post",
+      type: 'post',
     });
     return res;
   };
 
   const handlePayment = async (phoneNumber: string) => {
-    if (type === "") return;
+    if (type === '') return;
     try {
       const res = await addPayment({ telp: phoneNumber, type, planId });
       window.snap.pay(`${res?.data.token}`, {
         onClose: () => {
-          setPagesSetting("rt");
+          setPagesSetting('rt');
           setTransactionHistory(true);
         },
       });
     } catch (error) {
       toaster({
-        title: "Gagal",
-        condition: "warning",
-        description: "Coba lagi nanti!",
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
       });
     }
   };
@@ -222,7 +212,7 @@ export default function PricingPlans() {
         </h1>
         <p className="text-xl text-[#4a5568] max-w-2xl mx-auto">
           Pilih paket yang sesuai dengan kebutuhanmu dan mulai perjalanan
-          belajar bersama TutorSNBT
+          belajar bersama Bimbelio
         </p>
       </div>
       <Tabs defaultValue="bundle" className="w-full">
@@ -279,7 +269,7 @@ export default function PricingPlans() {
               data={pack}
               key={pack.name}
               onSelect={() => {
-                setType("plan");
+                setType('plan');
                 handlePackageSelect(pack.id);
               }}
             />
@@ -469,127 +459,13 @@ type CardProps = {
   onSelect?: () => void;
 };
 
-const CardPricing = ({ data, onSelect }: CardProps) => {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  return (
-    <Card
-      key={data.name}
-      className={`flex w-full max-w-[340px] min-w-[300px] flex-col rounded-2xl overflow-hidden border-0 shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
-        data.popular ? "shadow-xl ring-2 ring-[#0066ff]" : ""
-      }`}
-    >
-      {data.popular && (
-        <div className="absolute top-0 right-0 transform translate-x-0 -translate-y-0 z-10">
-          <Badge className="bg-[#0066ff] text-white font-medium px-3 py-1 shadow-md">
-            <Sparkles className="h-3.5 w-3.5 mr-1" /> Populer
-          </Badge>
-        </div>
-      )}
-      <div className="h-3 bg-gradient"></div>
-      <CardHeader className="pb-0 pt-6">
-        <CardTitle className="text-[#0a2540] text-2xl">{data.name}</CardTitle>
-        <CardDescription className="text-[#64748b]">
-          {data.description}
-        </CardDescription>
-        <div className="mt-4">
-          <span className="text-4xl font-bold text-[#0a2540]">
-            {formatPrice(data.price)}
-          </span>
-          <span className="text-[#64748b] ml-1">/{data.timeline}</span>
-          {/* {billingCycle === "yearly" && (
-          <div className="text-sm text-[#64748b] mt-1">
-            Ditagih {formatPrice(data.price.yearly)} per tahun
-          </div>
-        )} */}
-        </div>
-      </CardHeader>
-      <CardContent className="flex-1 pt-6">
-        {data.coins && (
-          <div
-            className="mb-6 p-5 rounded-xl relative overflow-hidden"
-            style={{
-              background: `linear-gradient(to right, ${websiteSubCategory?.main_color}08, ${websiteSubCategory?.main_color}15)`,
-              boxShadow: `0 4px 12px ${websiteSubCategory?.main_color}10`,
-            }}
-          >
-            <div
-              className="absolute top-0 right-0 w-24 h-24 opacity-10"
-              style={{
-                background: `radial-gradient(circle, ${websiteSubCategory?.main_color} 0%, transparent 70%)`,
-                transform: "translate(30%, -30%)",
-              }}
-            ></div>
-            <div className="mb-3">
-              <span className="text-sm font-medium text-main">Bonus Coin</span>
-            </div>{" "}
-            <div className="grid grid-cols-5 gap-2">
-              {data.coins.map((coin) => {
-                const item = {
-                  icon:
-                    coin?.name === "chat"
-                      ? MessageSquare
-                      : coin?.name === "notes"
-                      ? PenTool
-                      : coin?.name === "quiz"
-                      ? BookOpen
-                      : coin?.name === "tryout"
-                      ? FileText
-                      : coin?.name === "vision"
-                      ? Eye
-                      : PenTool,
-                };
-                return (
-                  <div className="flex flex-col items-center" key={coin?.name}>
-                    <item.icon className="h-5 w-5 mb-1 text-main" />
-                    <span className="text-xs text-[#4a5568] font-medium">
-                      {coin?.name}
-                    </span>
-                    <span className="text-sm font-bold text-main">
-                      {coin?.total}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        <ul className="space-y-3 px-1">
-          {data.features?.map((feature) => (
-            <li key={feature} className="flex items-start">
-              <div
-                className="h-5 w-5 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 bg-gradient"
-                style={{
-                  boxShadow: `0 2px 4px ${websiteSubCategory?.main_color}30`,
-                }}
-              >
-                <Check className="h-3 w-3 text-white" />
-              </div>
-              <span className="text-[#4a5568] text-sm">{feature}</span>
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-      <CardFooter className="pt-2 pb-6">
-        <Button
-          variant={data.buttonVariant}
-          className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient text-white hover:text-white hover:opacity-85"
-          onClick={() => onSelect && onSelect()}
-        >
-          {data.buttonText}
-        </Button>
-      </CardFooter>
-    </Card>
-  );
-};
-
 const CardTopping = ({ data, onSelect }: CardProps) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   return (
     <Card
       key={data.name}
       className={`rounded-2xl w-full max-w-[285px] overflow-hidden border-0 shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
-        data.popular ? "shadow-xl ring-2 ring-[#0066ff]" : ""
+        data.popular ? 'shadow-xl ring-2 ring-[#0066ff]' : ''
       }`}
     >
       {data.popular && (
@@ -610,8 +486,19 @@ const CardTopping = ({ data, onSelect }: CardProps) => {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" />
-              <circle cx="12" cy="12" r="6" fill="white" />
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="white"
+                strokeWidth="2"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="6"
+                fill="white"
+              />
             </svg>
           </div>
           {data.name}
@@ -628,20 +515,23 @@ const CardTopping = ({ data, onSelect }: CardProps) => {
               {data.coins.map((coin) => {
                 const item = {
                   icon:
-                    coin?.name === "chat"
+                    coin?.name === 'chat'
                       ? MessageSquare
-                      : coin?.name === "notes"
-                      ? PenTool
-                      : coin?.name === "quiz"
-                      ? BookOpen
-                      : coin?.name === "tryout"
-                      ? FileText
-                      : coin?.name === "vision"
-                      ? Eye
-                      : PenTool,
+                      : coin?.name === 'notes'
+                        ? PenTool
+                        : coin?.name === 'quiz'
+                          ? BookOpen
+                          : coin?.name === 'tryout'
+                            ? FileText
+                            : coin?.name === 'vision'
+                              ? Eye
+                              : PenTool,
                 };
                 return (
-                  <div className="flex flex-col items-center" key={coin?.name}>
+                  <div
+                    className="flex flex-col items-center"
+                    key={coin?.name}
+                  >
                     <item.icon className="h-5 w-5 mb-1 text-main" />
                     <span className="text-xs text-[#4a5568] font-medium">
                       {coin?.name}
@@ -685,7 +575,7 @@ function ConfirmPhoneDialog({
   onSubmit: (phoneNumber: string) => Promise<void>;
 }): ReactElement {
   const [loading, setLoading] = useState(false);
-  const [telp, setTelp] = useState("");
+  const [telp, setTelp] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -696,7 +586,10 @@ function ConfirmPhoneDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={onClose}
+    >
       <DialogContent className="sm:max-w-[425px] w-[95vw]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
@@ -706,7 +599,10 @@ function ConfirmPhoneDialog({
             Harap isi nomor teleponmu untuk melanjutkan ke laman pembayaran.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
           <div className="space-y-2">
             <Input
               type="tel"
@@ -728,7 +624,7 @@ function ConfirmPhoneDialog({
             {loading ? (
               <Loader2Icon className="h-4 w-4 animate-spin mr-2" />
             ) : null}
-            {loading ? "Memproses..." : "Bayar"}
+            {loading ? 'Memproses...' : 'Bayar'}
           </Button>
         </form>
       </DialogContent>

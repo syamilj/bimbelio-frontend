@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import type React from "react";
+import type React from 'react';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { ColorPicker } from '@/components/ui/color-picker';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ColorPicker } from "@/components/ui/color-picker";
-import { Loader2 } from "lucide-react";
-import { mutateGeneral } from "@/lib/fetch-helper";
-import { useAdminWebCategory } from "../provider";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useAdminWebCategory } from '../provider';
 
 interface Props {
   children: React.ReactNode;
@@ -28,23 +28,23 @@ export function DialogAddCategory({ children }: Props) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [name, setName] = useState("");
-  const [mainColor, setMainColor] = useState("#FFFFFF");
-  const [secondaryColor, setSecondaryColor] = useState("#FFFFFF");
+  const [name, setName] = useState('');
+  const [mainColor, setMainColor] = useState('#FFFFFF');
+  const [secondaryColor, setSecondaryColor] = useState('#FFFFFF');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await mutateGeneral("/website-category/createCategory", {
+    await mutateGeneral('/website-category/createCategory', {
       payload: {
         name,
         main_color: mainColor,
         secondary_color: secondaryColor,
       },
-      type: "post",
+      type: 'post',
       onSuccess: async () => {
         setOpen(false);
-        setMainColor("#FFFFFF");
-        setSecondaryColor("#FFFFFF");
+        setMainColor('#FFFFFF');
+        setSecondaryColor('#FFFFFF');
         await getData();
       },
       setLoading: setIsLoading,
@@ -52,13 +52,19 @@ export function DialogAddCategory({ children }: Props) {
   };
 
   return (
-    <Dialog open={isLoading ? true : open} onOpenChange={setOpen}>
+    <Dialog
+      open={isLoading ? true : open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Web Category</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid gap-4 py-4"
+        >
           <div className="grid gap-2">
             <Label htmlFor="name">Name</Label>
             <Input
@@ -72,17 +78,27 @@ export function DialogAddCategory({ children }: Props) {
           <div className="grid gap-2">
             <Label htmlFor="main-color">Main Color</Label>
 
-            <ColorPicker value={mainColor} onChange={setMainColor} />
+            <ColorPicker
+              value={mainColor}
+              onChange={setMainColor}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="secondary-color">Secondary Color</Label>
-            <ColorPicker value={secondaryColor} onChange={setSecondaryColor} />
+            <ColorPicker
+              value={secondaryColor}
+              onChange={setSecondaryColor}
+            />
           </div>
-          <Button type="submit" disabled={isLoading} className="mt-2">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="mt-2"
+          >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              "Save Category"
+              'Save Category'
             )}
           </Button>
         </form>

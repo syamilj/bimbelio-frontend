@@ -1,15 +1,13 @@
-"use client";
+'use client';
 
-import AnimatedGradientText from "@/components/magicui/animated-gradient-text";
-import LoadingPage from "@/components/ui/Loading-Page";
-import { toaster } from "@/components/ui/toaster";
-import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import Logo from "@/components/ui/logo";
-import { env } from "@/env.mjs";
+import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
+import LoadingPage from '@/components/ui/Loading-Page';
+import Logo from '@/components/ui/logo';
+import { env } from '@/env.mjs';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useState } from 'react';
 
 export const Login = ({ showAuth, setShowAuth }: any) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,14 +16,14 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
     setLoading(true);
     try {
       const { credential } = googleToken as { credential: string };
-      console.log({ credential });
+      console.log({ credential, googleToken });
       // Kirim token ke backend
       const res = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/google`, {
         token: credential,
       });
 
       console.log(res.data);
-      Cookies.set("token", res.data.data.token);
+      Cookies.set('token', res.data.data.token);
       window.location.reload();
     } catch (error) {
       setLoading(false);
@@ -66,11 +64,17 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
           )}
           <form className="flex flex-col gap-[1.5rem]">
             <div className="flex w-full justify-center">
-              <Logo className="text-[1.5rem]" imageWidth={40} />
+              <Logo
+                className="text-[1.5rem]"
+                imageWidth={40}
+              />
             </div>
             <div className="mt-[1rem] flex flex-col items-center gap-[1.5rem]">
               <h1 className="text-[1.5rem] font-semibold">Masuk</h1>
-              <div className="flex w-full justify-center">
+              <div
+                id="google-button-container"
+                className="flex w-full justify-center rounded-xl"
+              >
                 <GoogleButton handleSubmit={handleSubmit} />
                 {/* <div
                     className="bg-white w-full flex justify-center items-center gap-[.5rem] border rounded-[.5rem] font-semibold text-[.9rem] h-[40px] cursor-pointer duration-300 md:hover:bg-main-gray-input/15"
@@ -99,25 +103,6 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
 
 export default Login;
 
-const Timer = ({ initialSeconds, onTimeout }: any) => {
-  const [seconds, setSeconds] = useState<number>(initialSeconds);
-
-  useEffect(() => {
-    if (seconds > 0) {
-      const timerId = setTimeout(() => setSeconds(seconds - 1), 1000);
-      return () => clearTimeout(timerId);
-    } else if (seconds === 0) {
-      onTimeout();
-    }
-  }, [seconds, onTimeout]);
-
-  return (
-    <div>
-      <p>Expired in : {seconds} seconds</p>
-    </div>
-  );
-};
-
 const GoogleButton = ({
   handleSubmit,
 }: {
@@ -129,7 +114,7 @@ const GoogleButton = ({
         onSuccess={handleSubmit}
         onError={() => console.log("Login Failed")}
         text={"signin_with"}
-        width={1000}
+        shape="circle"
       />
     </>
   );

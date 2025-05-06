@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import React, { useCallback, useEffect, useState } from "react";
+import Link from 'next/link';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // Komponen UI
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-import { LoadingRetro } from "@/components/ui/loading-retro";
-import { Progress } from "@/components/ui/progress";
+} from '@/components/ui/chart';
+import { LoadingRetro } from '@/components/ui/loading-retro';
+import { Progress } from '@/components/ui/progress';
 import {
   Table,
   TableBody,
@@ -27,11 +27,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Utilitas dan API
-import { cn, getDateString, getHours } from "@/lib/utils";
+import { cn, getDateString, getHours } from '@/lib/utils';
 
 // Icon dari lucide-react
 import {
@@ -50,9 +50,12 @@ import {
   Target,
   TrendingUp,
   Users,
-} from "lucide-react";
+} from 'lucide-react';
 
 // Komponen Chart dari recharts
+import { useSession } from '@/components/provider/session-provider-auth';
+import { getGeneral } from '@/lib/fetch-helper';
+import { TryoutStatusEnum, UserRoleEnum } from '@/types/database';
 import {
   Bar,
   BarChart,
@@ -62,24 +65,19 @@ import {
   ResponsiveContainer,
   XAxis,
   YAxis,
-} from "recharts";
-import axiosInstance from "@/lib/axios/axiosInstance";
-import { response, responseError } from "@/lib/response";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { TryoutStatusEnum, UserRoleEnum } from "@/types/database";
-import { getGeneral } from "@/lib/fetch-helper";
+} from 'recharts';
 
 // =====================================================================
 // CONSTANTS & INTERFACES
 // =====================================================================
 
 const defaultChartConfig = {
-  documentsRead: { label: "Dokumen Dibaca", color: "var(--chart-1)" },
-  notesCreated: { label: "Catatan Dibuat", color: "var(--chart-2)" },
-  highlightsMade: { label: "Highlight Dibuat", color: "var(--chart-3)" },
-  quizStudied: { label: "Quiz Dibuat", color: "var(--chart-4)" },
-  NilaiTotal: { label: "Nilai Total", color: "var(--chart-5)" },
-  peringkat: { label: "Peringkat", color: "var(--chart-2)" },
+  documentsRead: { label: 'Dokumen Dibaca', color: 'var(--chart-1)' },
+  notesCreated: { label: 'Catatan Dibuat', color: 'var(--chart-2)' },
+  highlightsMade: { label: 'Highlight Dibuat', color: 'var(--chart-3)' },
+  quizStudied: { label: 'Quiz Dibuat', color: 'var(--chart-4)' },
+  NilaiTotal: { label: 'Nilai Total', color: 'var(--chart-5)' },
+  peringkat: { label: 'Peringkat', color: 'var(--chart-2)' },
 };
 
 interface StatCardProps {
@@ -149,7 +147,7 @@ export const StatCard: React.FC<StatCardProps> = ({
   changeLabel,
   bgColour,
 }) => (
-  <Card className={cn("overflow-hidden flex flex-col", bgColour)}>
+  <Card className={cn('overflow-hidden flex flex-col', bgColour)}>
     <CardHeader className="flex flex-row items-center justify-between pb-2">
       <CardTitle className="text-base font-semibold">{title}</CardTitle>
       <div className="bg-white p-2 rounded-full shadow-sm">{icon}</div>
@@ -159,7 +157,7 @@ export const StatCard: React.FC<StatCardProps> = ({
       <div className="mt-2 flex items-center text-sm">
         <ChevronUp className="mr-1 h-4 w-4 text-green-500" />
         <span className="font-medium text-green-500">
-          +{change} {changeLabel || ""}
+          +{change} {changeLabel || ''}
         </span>
         {changePercentage !== undefined && (
           <span className="ml-1 text-gray-500">
@@ -192,9 +190,9 @@ export const ActivitySummary: React.FC<ActivitySummaryProps> = ({
     <p className="mt-2 text-2xl font-bold">{value}</p>
     <p className="text-sm text-muted-foreground">{label}</p>
     <p
-      className={`text-xs ${increase >= 0 ? "text-green-500" : "text-red-500"}`}
+      className={`text-xs ${increase >= 0 ? 'text-green-500' : 'text-red-500'}`}
     >
-      {increase >= 0 ? "+" : ""}
+      {increase >= 0 ? '+' : ''}
       {increase}%
     </p>
   </div>
@@ -275,7 +273,10 @@ export const TryoutHistoryCard: React.FC<{
                   <TableHead>Tanggal</TableHead>
                   <TableHead>Nilai Total</TableHead>
                   {tryoutCategory?.map((category: any, index: number) => (
-                    <TableHead key={index} className="text-center">
+                    <TableHead
+                      key={index}
+                      className="text-center"
+                    >
                       {category.name}
                     </TableHead>
                   ))}
@@ -290,36 +291,45 @@ export const TryoutHistoryCard: React.FC<{
                       {tryout.Tryout.title}
                     </TableCell>
                     <TableCell>
-                      {getDateString(tryout.startTryout)},{" "}
+                      {getDateString(tryout.startTryout)},{' '}
                       {getHours(tryout.startTryout)}
                     </TableCell>
                     <TableCell>
-                      {tryout.show ? `${tryout.totalScore} poin` : "...?"}
+                      {tryout.show ? `${tryout.totalScore} poin` : '...?'}
                     </TableCell>
                     {tryoutCategory?.map((category: any, idx: number) => {
                       const thisSession = tryout.TryoutSessionResult.find(
-                        (item: any) => item.categoryId === category.id
+                        (item: any) => item.categoryId === category.id,
                       );
                       if (!tryout.show) {
                         return (
-                          <TableCell key={idx} className="text-center">
+                          <TableCell
+                            key={idx}
+                            className="text-center"
+                          >
                             ...?
                           </TableCell>
                         );
                       }
                       return (
-                        <TableCell key={idx} className="text-center">
-                          {thisSession?.totalScore || "-"}{" "}
-                          {thisSession && " / "}
+                        <TableCell
+                          key={idx}
+                          className="text-center"
+                        >
+                          {thisSession?.totalScore || '-'}{' '}
+                          {thisSession && ' / '}
                           {thisSession?.TryoutSession.thresholdValue}
                         </TableCell>
                       );
                     })}
                     <TableCell className="text-center">
-                      {tryout.show ? tryout.rank : "...?"}
+                      {tryout.show ? tryout.rank : '...?'}
                     </TableCell>
                     <TableCell className="text-center">
-                      <Button asChild size="sm">
+                      <Button
+                        asChild
+                        size="sm"
+                      >
                         <Link href={`/user/try-out/${tryout.Tryout?.id}`}>
                           Lihat Pembahasan
                         </Link>
@@ -336,19 +346,30 @@ export const TryoutHistoryCard: React.FC<{
             config={defaultChartConfig}
             className="min-h-[200px] w-full"
           >
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer
+              width="100%"
+              height={400}
+            >
               <LineChart data={tryoutHistory?.chart}>
                 <XAxis
                   dataKey="tanggal"
                   tickFormatter={(value) =>
-                    new Date(value).toLocaleDateString("id-ID", {
-                      day: "numeric",
-                      month: "short",
+                    new Date(value).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'short',
                     })
                   }
                 />
-                <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
-                <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+                <YAxis
+                  yAxisId="left"
+                  orientation="left"
+                  stroke="#8884d8"
+                />
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  stroke="#82ca9d"
+                />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend />
                 <Line
@@ -370,7 +391,7 @@ export const TryoutHistoryCard: React.FC<{
           </ChartContainer>
           <p className="mt-4 text-sm text-muted-foreground">
             Grafik ini menunjukkan perkembangan nilai total dan peringkat dalam
-            tryout SNBT/UTBK.
+            tryout.
           </p>
         </TabsContent>
       </Tabs>
@@ -426,19 +447,30 @@ export const QuizHistoryCard: React.FC<{ quizHistory: any }> = ({
             config={defaultChartConfig}
             className="min-h-[200px] w-full"
           >
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer
+              width="100%"
+              height={400}
+            >
               <LineChart data={quizHistory?.chart}>
                 <XAxis
                   dataKey="tanggal"
                   tickFormatter={(value) =>
-                    new Date(value).toLocaleDateString("id-ID", {
-                      day: "numeric",
-                      month: "short",
+                    new Date(value).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'short',
                     })
                   }
                 />
-                <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
-                <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+                <YAxis
+                  yAxisId="left"
+                  orientation="left"
+                  stroke="#8884d8"
+                />
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  stroke="#82ca9d"
+                />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend />
                 <Line
@@ -459,8 +491,8 @@ export const QuizHistoryCard: React.FC<{ quizHistory: any }> = ({
             </ResponsiveContainer>
           </ChartContainer>
           <p className="mt-4 text-sm text-muted-foreground">
-            Grafik ini menunjukkan perkembangan akurasi dan perubahan dalam quiz
-            SNBT/UTBK.
+            Grafik ini menunjukkan perkembangan akurasi dan perubahan dalam
+            quiz.
           </p>
         </TabsContent>
       </Tabs>
@@ -483,7 +515,7 @@ export const TestAnalysisCard: React.FC<{
       </CardDescription>
     </CardHeader>
     <CardContent className="overflow-hidden">
-      <Tabs defaultValue={tryoutCategory?.[0]?.name || ""}>
+      <Tabs defaultValue={tryoutCategory?.[0]?.name || ''}>
         <div className="w-full overflow-x-auto pb-2">
           <TabsList className="mb-4 inline-flex w-max">
             {tryoutCategory?.map((category: any, index: number) => (
@@ -499,19 +531,29 @@ export const TestAnalysisCard: React.FC<{
         </div>
         {analysisByCategoryTryout?.map((category: any, index: number) =>
           category.data.length === 0 ? (
-            <TabsContent key={index} value={category.category}>
+            <TabsContent
+              key={index}
+              value={category.category}
+            >
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <ChartContainer
                     config={defaultChartConfig}
                     className="min-h-[200px] w-full"
                   >
-                    <ResponsiveContainer width="100%" height={300}>
+                    <ResponsiveContainer
+                      width="100%"
+                      height={300}
+                    >
                       <BarChart data={category.data}>
                         <XAxis dataKey="subCategory" />
                         <YAxis />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="accuracy" fill="#8884d8" name="Akurasi" />
+                        <Bar
+                          dataKey="accuracy"
+                          fill="#8884d8"
+                          name="Akurasi"
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
@@ -539,19 +581,29 @@ export const TestAnalysisCard: React.FC<{
               </div>
             </TabsContent>
           ) : (
-            <TabsContent key={index} value={category.category}>
+            <TabsContent
+              key={index}
+              value={category.category}
+            >
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
                   <ChartContainer
                     config={defaultChartConfig}
                     className="min-h-[200px] w-full"
                   >
-                    <ResponsiveContainer width="100%" height={300}>
+                    <ResponsiveContainer
+                      width="100%"
+                      height={300}
+                    >
                       <BarChart data={category.data}>
                         <XAxis dataKey="subCategory" />
                         <YAxis />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="accuracy" fill="#8884d8" name="Akurasi" />
+                        <Bar
+                          dataKey="accuracy"
+                          fill="#8884d8"
+                          name="Akurasi"
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
@@ -574,11 +626,11 @@ export const TestAnalysisCard: React.FC<{
                             <Badge
                               className={
                                 item.accuracy >= 80
-                                  ? "bg-green-500"
-                                  : "bg-yellow-500"
+                                  ? 'bg-green-500'
+                                  : 'bg-yellow-500'
                               }
                             >
-                              {item.accuracy >= 80 ? "Sangat Baik" : "Baik"}
+                              {item.accuracy >= 80 ? 'Sangat Baik' : 'Baik'}
                             </Badge>
                           </TableCell>
                         </TableRow>
@@ -588,7 +640,7 @@ export const TestAnalysisCard: React.FC<{
                 </div>
               </div>
             </TabsContent>
-          )
+          ),
         )}
       </Tabs>
     </CardContent>
@@ -614,7 +666,10 @@ export const ScoreDevelopmentCard: React.FC<{
         config={defaultChartConfig}
         className="min-h-[200px] w-full"
       >
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer
+          width="100%"
+          height={400}
+        >
           <LineChart data={scoreDevelopmentData}>
             <XAxis dataKey="date" />
             <YAxis />
@@ -626,7 +681,7 @@ export const ScoreDevelopmentCard: React.FC<{
                 type="monotone"
                 dataKey={category.name.toUpperCase()}
                 stroke={
-                  index === 0 ? "#8884d8" : index === 1 ? "#82ca9d" : "#ffc658"
+                  index === 0 ? '#8884d8' : index === 1 ? '#82ca9d' : '#ffc658'
                 }
                 name={category.name}
               />
@@ -719,10 +774,10 @@ export const LearningConsistencyCard: React.FC<{ data: LearningData }> = ({
           <div
             key={index}
             className={`aspect-square w-full rounded-sm ${
-              day.completed ? "bg-green-500" : "bg-gray-200"
+              day.completed ? 'bg-green-500' : 'bg-gray-200'
             }`}
             title={`${day.date}: ${
-              day.completed ? "Completed" : "Not completed"
+              day.completed ? 'Completed' : 'Not completed'
             }`}
           />
         ))}
@@ -749,15 +804,18 @@ export const WeeklyProgressCard: React.FC<{ data: LearningData }> = ({
         config={defaultChartConfig}
         className="min-h-[200px] w-full"
       >
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer
+          width="100%"
+          height={400}
+        >
           <LineChart data={[...data.weeklyProgress]}>
             <XAxis
               dataKey="date"
               tickFormatter={(date) => {
                 const parsedDate = new Date(date);
-                return new Intl.DateTimeFormat("id", {
-                  day: "numeric",
-                  month: "short",
+                return new Intl.DateTimeFormat('id', {
+                  day: 'numeric',
+                  month: 'short',
                 }).format(parsedDate);
               }}
             />
@@ -808,7 +866,10 @@ export const RecentDocumentsCard: React.FC<{ data: LearningData }> = ({
     <CardContent>
       <ul className="space-y-2">
         {data.recentDocuments.map((doc, index) => (
-          <li key={index} className="flex items-center justify-between">
+          <li
+            key={index}
+            className="flex items-center justify-between"
+          >
             <span>{doc.title}</span>
             <span className="text-sm text-muted-foreground">
               {new Date(doc.lastAccessed).toLocaleDateString()}
@@ -833,12 +894,18 @@ export const MostActiveCard: React.FC<{ data: LearningData }> = ({ data }) => (
         config={defaultChartConfig}
         className="min-h-[200px] w-full"
       >
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer
+          width="100%"
+          height={400}
+        >
           <BarChart data={data.mostActiveHours}>
             <XAxis dataKey="hour" />
             <YAxis />
             <ChartTooltip content={<ChartTooltipContent />} />
-            <Bar dataKey="activity" fill="#8884d8" />
+            <Bar
+              dataKey="activity"
+              fill="#8884d8"
+            />
           </BarChart>
         </ResponsiveContainer>
       </ChartContainer>
@@ -881,13 +948,19 @@ export const StudyHabitsCard: React.FC<{ studyHabits: any }> = ({
       <div className="mt-6 space-y-2">
         <div className="text-sm text-muted-foreground">
           Hari paling produktif:
-          <Badge variant="outline" className="ml-2">
+          <Badge
+            variant="outline"
+            className="ml-2"
+          >
             {studyHabits.mostProductiveDay}
           </Badge>
         </div>
         <div className="text-sm text-muted-foreground">
           Waktu belajar paling efektif:
-          <Badge variant="outline" className="ml-2">
+          <Badge
+            variant="outline"
+            className="ml-2"
+          >
             {studyHabits.mostEffectiveTime}
           </Badge>
         </div>
@@ -901,18 +974,18 @@ export const StudyHabitsCard: React.FC<{ studyHabits: any }> = ({
 // =====================================================================
 
 const calendarViews: CalendarView[] = [
-  { value: "schedule", label: "Jadwal" },
-  { value: "week", label: "Mingguan" },
-  { value: "month", label: "Bulanan" },
+  { value: 'schedule', label: 'Jadwal' },
+  { value: 'week', label: 'Mingguan' },
+  { value: 'month', label: 'Bulanan' },
 ];
 
 export const CalendarComponent: React.FC = () => {
   const generateCalendarUrl = useCallback((view: string) => {
     let mode = view.toUpperCase();
-    if (view === "schedule") mode = "AGENDA";
-    const today = new Date().toISOString().split("T")[0].replace(/-/g, "");
-    return `https://calendar.google.com/calendar/embed?src=admin%40tutorsnbt.com&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FJakarta&hl=id&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=1&mode=${mode}${
-      view === "agenda" ? `&dates=${today}%2F${today}` : ""
+    if (view === 'schedule') mode = 'AGENDA';
+    const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
+    return `https://calendar.google.com/calendar/embed?src=admin%40bimbelio.com&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FJakarta&hl=id&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=1&mode=${mode}${
+      view === 'agenda' ? `&dates=${today}%2F${today}` : ''
     }`;
   }, []);
 
@@ -931,13 +1004,19 @@ export const CalendarComponent: React.FC = () => {
         <Tabs defaultValue="schedule">
           <TabsList>
             {calendarViews.map(({ value, label }) => (
-              <TabsTrigger key={value} value={value}>
+              <TabsTrigger
+                key={value}
+                value={value}
+              >
                 {label}
               </TabsTrigger>
             ))}
           </TabsList>
           {calendarViews.map(({ value }) => (
-            <TabsContent key={value} value={value}>
+            <TabsContent
+              key={value}
+              value={value}
+            >
               <iframe
                 src={generateCalendarUrl(value)}
                 className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] border-0 rounded-lg"
@@ -993,7 +1072,7 @@ export default function DashboardClient() {
   //   });
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [reportData, setReportData] = useState<ReportDataType | undefined>();
 
   const [isLoadingLearningData, setIsLoadingLearningData] =

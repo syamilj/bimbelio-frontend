@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import type React from "react";
+import type React from 'react';
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { ColorPicker } from '@/components/ui/color-picker';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ColorPicker } from "@/components/ui/color-picker";
-import { useAdminWebCategory } from "../provider";
-import { mutateGeneral } from "@/lib/fetch-helper";
-import { Loader2 } from "lucide-react";
-import { WebsiteCategory } from "@/types/database";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { WebsiteCategory } from '@/types/database';
+import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useAdminWebCategory } from '../provider';
 
 interface Props {
   children: React.ReactNode;
@@ -30,9 +30,9 @@ export function DialogEditCategory({ children, category }: Props) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [name, setName] = useState("");
-  const [mainColor, setMainColor] = useState("#0062FA");
-  const [secondaryColor, setSecondaryColor] = useState("#0091FF");
+  const [name, setName] = useState('');
+  const [mainColor, setMainColor] = useState('#0062FA');
+  const [secondaryColor, setSecondaryColor] = useState('#0091FF');
 
   useEffect(() => {
     if (category) {
@@ -45,18 +45,18 @@ export function DialogEditCategory({ children, category }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (category) {
-      await mutateGeneral("/website-category/editCategory", {
+      await mutateGeneral('/website-category/editCategory', {
         payload: {
           id: category.id,
           name,
           main_color: mainColor,
           secondary_color: secondaryColor,
         },
-        type: "put",
+        type: 'put',
         onSuccess: async () => {
           setOpen(false);
-          setMainColor("#FFFFFF");
-          setSecondaryColor("#FFFFFF");
+          setMainColor('#FFFFFF');
+          setSecondaryColor('#FFFFFF');
           await getData();
         },
         setLoading: setIsLoading,
@@ -65,13 +65,19 @@ export function DialogEditCategory({ children, category }: Props) {
   };
 
   return (
-    <Dialog open={isLoading ? true : open} onOpenChange={setOpen}>
+    <Dialog
+      open={isLoading ? true : open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Web Category</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid gap-4 py-4"
+        >
           <div className="grid gap-2">
             <Label htmlFor="name">Name</Label>
             <Input
@@ -84,17 +90,27 @@ export function DialogEditCategory({ children, category }: Props) {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="main-color">Main Color</Label>
-            <ColorPicker value={mainColor} onChange={setMainColor} />
+            <ColorPicker
+              value={mainColor}
+              onChange={setMainColor}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="secondary-color">Secondary Color</Label>
-            <ColorPicker value={secondaryColor} onChange={setSecondaryColor} />
+            <ColorPicker
+              value={secondaryColor}
+              onChange={setSecondaryColor}
+            />
           </div>
-          <Button type="submit" disabled={isLoading} className="mt-2">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="mt-2"
+          >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              "Save Changes"
+              'Save Changes'
             )}
           </Button>
         </form>
