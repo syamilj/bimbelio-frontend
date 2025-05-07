@@ -220,6 +220,135 @@ const FeaturedTryOutCard = ({
   }, [tryOut, tryoutId, session]);
 
   return (
+    <motion.div
+      whileHover={{ y: -5, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
+      className="group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300"
+    >
+      {/* Header */}
+      <div className="relative h-[200px] w-full overflow-hidden">
+        <Image
+          src={
+            `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${tryOut.image}` ||
+            'placeholder.svg'
+          }
+          alt={tryOut.title}
+          fill
+          className="object-cover transition-transform object-[90%_20%] duration-500 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-600/50 via-blue-600/30 to-blue-600/20" />
+
+        {/* Price */}
+        <div className="absolute left-4 top-4 z-10">
+          <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-blue-600 shadow-md">
+            Gratis!
+          </span>
+        </div>
+
+        {/* Popular / New */}
+        {/* <div className="absolute right-4 top-4 z-10 flex flex-col gap-2">
+          {tryOut.isPopular && (
+            <span className="rounded-full bg-yellow-400 px-3 py-1 text-sm font-bold text-blue-800 shadow-md">
+              POPULER
+            </span>
+          )}
+          {tryOut.isNew && (
+            <span className="rounded-full bg-blue-500 px-3 py-1 text-sm font-bold text-white shadow-md">
+              BARU
+            </span>
+          )}
+        </div> */}
+
+        {/* Category & Title */}
+        <div className="absolute bottom-0 left-0 w-full p-4 text-center">
+          <span className="mb-2 inline-block rounded-full bg-yellow-400 px-4 py-1 text-sm font-bold text-blue-900">
+            {tryOut.WebsiteSubCategory.name}
+          </span>
+          <h3 className="text-xl font-bold text-white md:text-2xl">
+            {tryOut.title}
+          </h3>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="p-4">
+        {/* <p className="mb-4 text-sm text-gray-600">{tryOut.description}</p> */}
+
+        <div className="mb-4 grid grid-cols-3 gap-2">
+          <div className="rounded-xl bg-blue-50 p-2 text-center">
+            <div className="text-xs text-gray-600">Durasi</div>
+            <div className="text-sm font-bold text-blue-600">
+              {tryOut.TryoutSession.reduce(
+                (acc, item) => acc + item.duration,
+                0,
+              )}
+            </div>
+          </div>
+          <div className="rounded-xl bg-blue-50 p-2 text-center">
+            <div className="text-xs text-gray-600">Soal</div>
+            <div className="text-sm font-bold text-blue-600">
+              {tryOut.TryoutSession.reduce(
+                (acc, session) => acc + session._count.TryoutQuestion,
+                0,
+              )}
+            </div>
+          </div>
+          <div className="rounded-xl bg-blue-50 p-2 text-center">
+            <div className="text-xs text-gray-600">Peserta</div>
+            <div className="text-sm font-bold text-blue-600">
+              {tryOut._count.TryoutRegistration}
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-4 flex items-center justify-center flex-wrap gap-1">
+          {['tryout'].map((tag, idx) => (
+            <span
+              key={idx}
+              className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-600"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="mb-4 grid grid-cols-2 gap-2">
+          <div className="flex items-center gap-1 rounded-lg bg-blue-50 p-2 text-xs">
+            <Calendar className="h-3 w-3 text-blue-600" />
+            <span className="font-medium text-gray-700">
+              Mulai: {getDateString(tryOut.startDate)}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 rounded-lg bg-blue-50 p-2 text-xs">
+            <Calendar className="h-3 w-3 text-blue-600" />
+            <span className="font-medium text-gray-700">
+              Selesai: {getDateString(tryOut.endDate)}
+            </span>
+          </div>
+        </div>
+
+        <button
+          onClick={() => {
+            if (!session) {
+              setShowAuth((prev) => ({ ...prev, login: true }));
+              router.push(`${window.location.pathname}?tryoutId=${tryOut.id}`);
+              return;
+            }
+            router.push(
+              `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryOut.id}`,
+            );
+          }}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-default px-4 py-2 text-sm font-bold text-white transition-colors hover:opacity-85"
+        >
+          Daftar Sekarang
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+    </motion.div>
+  );
+
+  return (
     // Card biasa tetap sama seperti sebelumnya
     <motion.div
       whileHover={{ y: -5 }}
