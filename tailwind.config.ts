@@ -31,6 +31,8 @@ const config = {
         'main-gray-disabled-hover': '#a4a7af',
         'main-yellow': '#FCB930',
         // main: "#0091FF",
+        'main-default': '#0091FF',
+        'secondary-default': '#5aa4dd',
         'main-hover': '#0091FF9a',
         'main-border': '#dadde7',
         'main-red': '#da2850',
@@ -163,6 +165,7 @@ const config = {
         gradient: 'linear-gradient(to right, #8bcdff, #0091FF)',
         fadeMateri: 'linear-gradient(to bottom, transparent, #f4f8fb)',
         flascardResult: 'linear-gradient(to bottom, #FFFFFF, #F4F8FB)',
+        'gradient-default': 'linear-gradient(145deg, #0091FF, #5aa4dd)',
       },
       boxShadow: {
         default: '0 0 10px #6f6a6a45',

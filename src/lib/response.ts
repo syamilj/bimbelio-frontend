@@ -16,6 +16,7 @@ export const responseError = (
         toastMessage ||
         (error as any).response.data.message ||
         'Internal Server Error',
+        duration: 2500
     });
   }
   return {
@@ -39,6 +40,7 @@ export const response = (
       title: toastTitle || 'Successfully',
       condition: 'success',
       description: toastMessage || res.data.message || 'Succesfully',
+      duration: 2500
     });
   }
   return res.data;

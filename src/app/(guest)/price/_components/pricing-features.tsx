@@ -16,7 +16,7 @@ export default function PricingFeatures() {
 
   const features = [
     {
-      icon: <MessageSquare className="h-6 w-6 text-main" />,
+      icon: <MessageSquare className="h-6 w-6 text-main-default" />,
       title: 'Chat Coin',
       description:
         'Gunakan untuk mengakses fitur chat dengan AI Tutor yang siap menjawab pertanyaanmu',
@@ -25,7 +25,7 @@ export default function PricingFeatures() {
       gradient: `linear-gradient(135deg, ${coinColors.Chat}, ${coinColors.Chat}dd)`,
     },
     {
-      icon: <FileText className="h-6 w-6 text-main" />,
+      icon: <FileText className="h-6 w-6 text-main-default" />,
       title: 'Tryout Coin',
       description:
         'Gunakan untuk mengakses tryout dengan format yang sama dengan ujian',
@@ -34,7 +34,7 @@ export default function PricingFeatures() {
       gradient: `linear-gradient(135deg, ${coinColors.Tryout}, ${coinColors.Tryout}dd)`,
     },
     {
-      icon: <PenTool className="h-6 w-6 text-main" />,
+      icon: <PenTool className="h-6 w-6 text-main-default" />,
       title: 'Notes Coin',
       description:
         'Gunakan untuk membuat catatan belajar dengan fitur AI yang membantu mengorganisir materi',
@@ -43,7 +43,7 @@ export default function PricingFeatures() {
       gradient: `linear-gradient(135deg, ${coinColors.Notes}, ${coinColors.Notes}dd)`,
     },
     {
-      icon: <BookOpen className="h-6 w-6 text-main" />,
+      icon: <BookOpen className="h-6 w-6 text-main-default" />,
       title: 'Quiz Coin',
       description:
         'Gunakan untuk mengakses quiz interaktif yang disesuaikan dengan kemampuanmu',
@@ -52,7 +52,7 @@ export default function PricingFeatures() {
       gradient: `linear-gradient(135deg, ${coinColors.Quiz}, ${coinColors.Quiz}dd)`,
     },
     {
-      icon: <Eye className="h-6 w-6 text-main" />,
+      icon: <Eye className="h-6 w-6 text-main-default" />,
       title: 'Vision Coin',
       description:
         'Gunakan untuk mengakses fitur AI Vision yang membantu menyelesaikan soal dari gambar',
@@ -65,7 +65,7 @@ export default function PricingFeatures() {
   return (
     <div className="mt-20">
       <div className="text-center mb-12">
-        <div className="inline-block bg-main/10 text-main rounded-full px-4 py-1 text-sm font-medium mb-4">
+        <div className="inline-block bg-main-default/10 text-main-default rounded-full px-4 py-1 text-sm font-medium mb-4">
           Jenis Coin
         </div>
         <h2 className="text-3xl font-bold text-[#0a2540] mb-4">
@@ -98,7 +98,7 @@ export default function PricingFeatures() {
                   backgroundColor: `${websiteSubCategory?.main_color}10`,
                 }}
               >
-                <div className="flex items-center">
+                <div className="flex items-center text-main-default">
                   <svg
                     width="24"
                     height="24"
@@ -111,24 +111,21 @@ export default function PricingFeatures() {
                       cx="12"
                       cy="12"
                       r="10"
-                      stroke={websiteSubCategory?.main_color}
+                      stroke={'currentColor'}
                       strokeWidth="2"
                     />
                     <circle
                       cx="12"
                       cy="12"
                       r="6"
-                      fill={websiteSubCategory?.main_color}
+                      fill={'currentColor'}
                     />
                   </svg>
-                  <span className="text-sm font-medium text-main">
+                  <span className="text-sm font-medium text-main-default">
                     Biaya penggunaan
                   </span>
                 </div>
-                <span
-                  className="font-medium text-lg"
-                  style={{ color: websiteSubCategory?.main_color }}
-                >
+                <span className="font-medium text-lg text-main-default">
                   {feature.usage}
                 </span>
               </div>
@@ -164,7 +161,7 @@ export default function PricingFeatures() {
                   key={index}
                   className="flex items-start"
                 >
-                  <div className="h-6 w-6 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 shadow-sm bg-gradient">
+                  <div className="h-6 w-6 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 shadow-sm bg-gradient-default">
                     <svg
                       width="12"
                       height="12"
@@ -194,70 +191,70 @@ export default function PricingFeatures() {
               <div className="flex items-center justify-between p-3 bg-[#f8fafc] rounded-xl shadow-sm border border-[#e2e8f0]">
                 <div className="flex items-center">
                   <MessageSquare
-                    className="h-5 w-5 mr-3 text-main"
+                    className="h-5 w-5 mr-3 text-main-default"
                     // style={{ color: coinColors.Chat }}
                   />
                   <span className="text-[#0a2540] font-medium">
                     1x Chat dengan AI Tutor
                   </span>
                 </div>
-                <span className="font-medium text-main bg-main/10 px-3 py-1 rounded-lg">
+                <span className="font-medium text-main-default bg-main-default/10 px-3 py-1 rounded-lg">
                   1 chat coin
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-[#f8fafc] rounded-xl shadow-sm border border-[#e2e8f0]">
                 <div className="flex items-center">
                   <FileText
-                    className="h-5 w-5 mr-3 text-main"
+                    className="h-5 w-5 mr-3 text-main-default"
                     // style={{ color: coinColors.Tryout }}
                   />
                   <span className="text-[#0a2540] font-medium">
                     1x Tryout Lengkap
                   </span>
                 </div>
-                <span className="font-medium text-main bg-main/10 px-3 py-1 rounded-lg">
+                <span className="font-medium text-main-default bg-main-default/10 px-3 py-1 rounded-lg">
                   1 tryout coin
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-[#f8fafc] rounded-xl shadow-sm border border-[#e2e8f0]">
                 <div className="flex items-center">
                   <PenTool
-                    className="h-5 w-5 mr-3 text-main"
+                    className="h-5 w-5 mr-3 text-main-default"
                     // style={{ color: coinColors.Notes }}
                   />
                   <span className="text-[#0a2540] font-medium">
                     1x Notes AI
                   </span>
                 </div>
-                <span className="font-medium text-main bg-main/10 px-3 py-1 rounded-lg">
+                <span className="font-medium text-main-default bg-main-default/10 px-3 py-1 rounded-lg">
                   1 notes coin
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-[#f8fafc] rounded-xl shadow-sm border border-[#e2e8f0]">
                 <div className="flex items-center">
                   <BookOpen
-                    className="h-5 w-5 mr-3 text-main"
+                    className="h-5 w-5 mr-3 text-main-default"
                     // style={{ color: coinColors.Quiz }}
                   />
                   <span className="text-[#0a2540] font-medium">
                     1x Quiz Latihan
                   </span>
                 </div>
-                <span className="font-medium text-main bg-main/10 px-3 py-1 rounded-lg">
+                <span className="font-medium text-main-default bg-main-default/10 px-3 py-1 rounded-lg">
                   1 quiz coin
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-[#f8fafc] rounded-xl shadow-sm border border-[#e2e8f0]">
                 <div className="flex items-center">
                   <Eye
-                    className="h-5 w-5 mr-3 text-main"
+                    className="h-5 w-5 mr-3 text-main-default"
                     // style={{ color: coinColors.Vision }}
                   />
                   <span className="text-[#0a2540] font-medium">
                     1x Penggunaan Vision AI
                   </span>
                 </div>
-                <span className="font-medium text-main bg-main/10 px-3 py-1 rounded-lg">
+                <span className="font-medium text-main-default bg-main-default/10 px-3 py-1 rounded-lg">
                   1 vision coin
                 </span>
               </div>

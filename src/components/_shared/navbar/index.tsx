@@ -15,6 +15,7 @@ import { LayoutDashboard, LogOut, Menu } from 'lucide-react';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useSession } from '@/components/provider/session-provider-auth';
 import Logo from '@/components/ui/logo';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { cn } from '@/lib/utils';
 import { Badge } from '../../ui/badge';
@@ -37,7 +38,7 @@ const navItems: NavItem[] = [
   // { href: "#testimoni", label: "Testimoni" },
   // { href: "/blog", label: "Blog", isLink: true },
   { href: '/price', label: 'Pricing', isLink: true },
-  { href: '/#tryout', label: 'Try Out', separator: true },
+  { href: '#tryout', label: 'Try Out' },
 ];
 
 const GratisBadge: React.FC<{ label: string }> = ({ label }) => {
@@ -88,9 +89,9 @@ const ScrollOffsetLink: React.FC<{
 
   return (
     <a
-      href={href}
+      href={pathname === '/' ? href : `/${href}`}
       onClick={handleClick}
-      className="relative text-main duration-300 hover:underline"
+      className="relative text-main-default duration-300 hover:underline"
       aria-label={`Scroll to ${children}`}
     >
       {children}
@@ -108,7 +109,7 @@ const NavLink: React.FC<{
   onClick?: () => void;
 }> = ({ item, onClick }) => {
   const linkClasses = cn(
-    'relative text-main transition-colors duration-300 hover:underline',
+    'relative text-main-default transition-colors duration-300 hover:underline',
     item.separator && 'ml-4 border-l border-gray-900 pl-4',
   );
 
@@ -143,11 +144,14 @@ const MobileNav: React.FC<{
   session: any;
   setShowAuth: NavbarProps['setShowAuth'];
 }> = ({ navItems, isSheetOpen, setIsSheetOpen, session, setShowAuth }) => {
-  useWebsiteSubCategory();
+  const { websiteSubCategory } = useWebsiteSubCategory();
   return (
     <div className="fixed left-0 top-0 z-50 w-full rounded-b-3xl bg-white/70">
       <div className="mx-auto flex items-center justify-between px-4 py-3">
-        <Logo href="/" />
+        <Logo
+          href="/"
+          className="text-main-default"
+        />
 
         {/* Tombol Menu */}
         <Sheet
@@ -156,7 +160,7 @@ const MobileNav: React.FC<{
         >
           <SheetTrigger asChild>
             <button
-              className="rounded-xl p-2 text-main transition-colors duration-300s"
+              className="rounded-xl p-2 text-main-default transition-colors duration-300s"
               aria-label="Open menu"
             >
               <Menu size={28} />
@@ -231,12 +235,12 @@ const MobileNav: React.FC<{
                       </div>
                       <div className="flex items-center justify-between gap-3 pt-2">
                         <Link
-                          href="/user/try-out"
+                          href={`/${website_sub_category_id}/user/try-out`}
                           className="flex flex-1 items-center justify-center gap-2 rounded-3xl border-2 border-blue-500 bg-white px-4 py-2.5 text-blue-500 transition-colors duration-300 hover:bg-blue-50"
                           onClick={() => setIsSheetOpen(false)}
                         >
                           <LayoutDashboard className="h-5 w-5" />
-                          <span className="font-medium">Dashboard</span>
+                          <span className="font-medium">Dashboard2</span>
                         </Link>
                         <button
                           className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-red-500 px-4 py-2.5 text-white transition-colors duration-300 hover:bg-red-600"
@@ -253,7 +257,7 @@ const MobileNav: React.FC<{
                     </motion.div>
                   ) : (
                     <Button
-                      className="mx-auto flex w-full justify-center rounded-full py-3 text-base font-medium text-white transition-all duration-300 bg-gradient"
+                      className="mx-auto flex w-full justify-center rounded-full py-3 text-base font-medium text-white transition-all duration-300 bg-gradient-default"
                       onClick={() => {
                         setShowAuth({ signUp: false, login: true });
                         setIsSheetOpen(false);
@@ -281,7 +285,10 @@ const DesktopNav: React.FC<{
   return (
     <div className="fixed left-0 top-4 z-50 w-full bg-transparent">
       <div className="mx-auto flex max-w-4xl items-center justify-between rounded-3xl bg-white/80 p-2 shadow-sm backdrop-blur-sm">
-        <Logo href="/" />
+        <Logo
+          href="/"
+          className="text-main-default"
+        />
         <nav className="flex items-center justify-center gap-4 text-sm font-medium">
           {navItems.map((item) => (
             <NavLink
@@ -294,7 +301,7 @@ const DesktopNav: React.FC<{
           <UserAccountNav user={session.user} />
         ) : (
           <button
-            className="rounded-full px-4 py-2 text-sm text-white transition-colors duration-300 hover:opacity-85 bg-gradient"
+            className="rounded-full px-4 py-2 text-sm text-white transition-colors duration-300 hover:opacity-85 bg-gradient-default"
             onClick={() => setShowAuth({ signUp: false, login: true })}
           >
             Daftar/Masuk

@@ -10,6 +10,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { createContext, useContext, useEffect, useState } from 'react';
 import ChooseWebCategory from '../ui/choose-web-category';
 import { useSession } from './session-provider-auth';
+import { useParams } from 'next/navigation';
 
 const initialValue = {
   id: 'guest',
@@ -27,6 +28,7 @@ export default function ProviderWebsiteCategory({
   children: React.ReactNode;
 }) {
   const { data: session } = useSession();
+  const { web_sub_category } = useParams<{ web_sub_category: string }>();
   const [first, setFirst] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -72,9 +74,26 @@ export default function ProviderWebsiteCategory({
     });
   }, [session]);
 
+  useEffect(() => {
+    if (webCategoryData.length === 0 || !web_sub_category) return
+    console.log(web_sub_category)
+    const find = webCategoryData.find(item => item.WebsiteSubCategory.find(item2 => item2.id === web_sub_category))
+    console.log({ find })
+    console.log({ length: webCategoryData.length })
+    if (find) {
+      localStorage.setItem("website_sub_category_id", web_sub_category)
+      setWebsiteSubCategory(find.WebsiteSubCategory.find(item2 => item2.id === web_sub_category) || null)
+    } else {
+      localStorage.removeItem("website_sub_category_id")
+      setWebsiteSubCategory(null)
+      setFirst(true);
+    }
+  }, [web_sub_category, webCategoryData])
+
   console.log({ websiteSubCategory });
 
   const Context = {
+    id: websiteSubCategory?.id,
     websiteSubCategory,
     setWebsiteSubCategory,
     isLoading,
@@ -160,6 +179,7 @@ export default function ProviderWebsiteCategory({
 }
 
 interface WebsiteSubCategoryContextType {
+  id: string | undefined;
   websiteSubCategory: WebsiteSubCategory | null;
   setWebsiteSubCategory: React.Dispatch<
     React.SetStateAction<WebsiteSubCategory | null>

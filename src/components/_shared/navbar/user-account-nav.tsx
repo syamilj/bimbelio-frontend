@@ -1,4 +1,5 @@
 // import { useAppContext } from "@/components/provider/provider-app";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { signOut } from '@/lib/auth-helper';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { motion } from 'framer-motion';
 import { LayoutDashboard, LogOut } from 'lucide-react';
 // import { User } from "next-auth";
@@ -27,6 +29,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
   const { data: session } = useSession();
   // const { setTransactionHistory } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
+  const {websiteSubCategory} = useWebsiteSubCategory()
 
   return (
     <DropdownMenu
@@ -94,7 +97,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             className="cursor-pointer"
           >
             <Link
-              href="/user/try-out"
+              href={`/${website_sub_category_id}/user/try-out`}
               className="flex items-center gap-2 rounded-xl px-1 py-1.5 transition-colors hover:bg-main/10"
             >
               <LayoutDashboard className="h-4 w-4 text-main" />
@@ -113,7 +116,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
               className="cursor-pointer"
             >
               <Link
-                href="/admin"
+                href={`/${website_sub_category_id}/admin`}
                 className="flex items-center gap-2 rounded-xl px-1 py-1.5 transition-colors hover:bg-main/10"
               >
                 <LayoutDashboard className="h-4 w-4 text-main" />

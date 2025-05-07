@@ -103,7 +103,7 @@ const WhyUs = () => {
                 key={i}
                 className={`flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[2rem] py-[.7rem] text-[.9rem] sm:w-[unset] sm:px-[1rem] ${
                   active === 1 + i
-                    ? 'border border-transparent bg-gradient text-white md:hover:opacity-80'
+                    ? 'border border-transparent bg-gradient-default text-white md:hover:opacity-80'
                     : 'border border-main-gray-input bg-transparent text-main-gray-text md:hover:bg-main-gray-disabled'
                 } duration-300`}
                 onClick={() => setActive(1 + i)}
@@ -174,7 +174,7 @@ const WhyUs = () => {
           <div className="w-full min-w-[1024px] px-[1rem] lg:px-0">
             <div className="grid grid-cols-4">
               <div className="block"></div>
-              <div className="flex h-[70px] items-center justify-center gap-[1rem] rounded-t-[1rem] bg-gradient text-center">
+              <div className="flex h-[70px] items-center justify-center gap-[1rem] rounded-t-[1rem] bg-gradient-default text-center">
                 <h1 className="text-[1.2rem] font-medium text-white">
                   Bimbelio
                 </h1>
@@ -205,7 +205,7 @@ const WhyUs = () => {
                 <div
                   className={`${
                     i % 2 !== 0 ? 'bg-bg-workspace' : 'bg-white'
-                  } flex h-[80px] items-center justify-center border-l border-r border-main px-[1rem] text-center font-medium text-[#006426] ${
+                  } flex h-[80px] items-center justify-center border-l border-r border-main-default px-[1rem] text-center font-medium text-main-default ${
                     i === data.length - 1 && 'rounded-b-[1rem] border-b'
                   }`}
                 >

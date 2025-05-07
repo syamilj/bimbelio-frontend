@@ -6,9 +6,9 @@ import { useParams, usePathname } from 'next/navigation';
 import { ReactNode, Suspense, useEffect, useState } from 'react';
 import useMedia from 'use-media';
 
-import ButtonPayment from '@/app/(user)/user/_components/button-payment';
-import Search from '@/app/(user)/user/_components/search';
-import Sidebar from '@/app/(user)/user/_components/sidebar';
+import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
+import Search from '@/app/[web_sub_category]/(user)/user/_components/search';
+import Sidebar from '@/app/[web_sub_category]/(user)/user/_components/sidebar';
 import { useAppContext } from '@/components/provider/provider-app';
 
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';

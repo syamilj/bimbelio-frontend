@@ -41,10 +41,12 @@ export default function Footer() {
         {/* <div className="">
           <Image src={logo} alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan" />
         </div> */}
-        <Logo />
+        <Logo className="text-main-default" />
         <div className="flex items-center gap-[.5rem] text-[1.5rem]">
-          <i className="bx bxl-instagram text-main" />
-          <p className="text-[1rem] font-semibold text-main">Bimbelio</p>
+          <i className="bx bxl-instagram text-main-default" />
+          <p className="text-[1rem] font-semibold text-main-default">
+            Bimbelio
+          </p>
         </div>
       </div>
       {/* <div className="grid grid-cols-2 md:flex gap-[2rem] md:gap-[6rem] justify-center w-full py-[2rem] text-center md:text-start">
