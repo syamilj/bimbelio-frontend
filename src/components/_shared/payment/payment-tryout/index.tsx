@@ -1,4 +1,4 @@
-import { CardTryoutProps } from '@/app/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';

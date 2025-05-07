@@ -12,7 +12,7 @@ import { ImageQuiz } from '@/_assest/homepage/Revolusi/Quiz';
 import AnimatedGradientText from '../../magicui/animated-gradient-text';
 
 const LearningRevolutions = () => {
-  // <span className="text-main"></span>
+  // <span className="text-main-default"></span>
   const revolusiBelajar = [
     {
       icon: <IconRevolusi1 />,
@@ -20,10 +20,10 @@ const LearningRevolutions = () => {
       description: (
         <p className="text-[.95rem] text-main-gray-text">
           Ingin material interaktif? Dapatkan material{' '}
-          <span className="text-main">materi</span>,{' '}
-          <span className="text-main">soal</span>, dan{' '}
-          <span className="text-main">video</span> yang bisa kamu tandai dan
-          tanyakan sesuai kebutuhan!
+          <span className="text-main-default">materi</span>,{' '}
+          <span className="text-main-default">soal</span>, dan{' '}
+          <span className="text-main-default">video</span> yang bisa kamu tandai
+          dan tanyakan sesuai kebutuhan!
         </p>
       ),
       image: <ImageBahanAjar />,
@@ -34,8 +34,9 @@ const LearningRevolutions = () => {
       description: (
         <p className="text-[.95rem] text-main-gray-text">
           Perlu bantuan langsung?{' '}
-          <span className="text-main">Chat Bimbelio AI</span> untuk penjelasan
-          dan analisis materi dalam bentuk apapun secara real-time dan teruji!
+          <span className="text-main-default">Chat Bimbelio AI</span> untuk
+          penjelasan dan analisis materi dalam bentuk apapun secara real-time
+          dan teruji!
         </p>
       ),
       image: <ImageChatAI />,
@@ -46,7 +47,7 @@ const LearningRevolutions = () => {
       description: (
         <p className="text-[.95rem] text-main-gray-text">
           Tipe belajar mencatat? Gunakan fitur{' '}
-          <span className="text-main">Note</span> yang disertai AI untuk
+          <span className="text-main-default">Note</span> yang disertai AI untuk
           membantu perihal catatan dan mengatur informasi pentingmu!
         </p>
       ),
@@ -58,8 +59,8 @@ const LearningRevolutions = () => {
       description: (
         <p className="text-[.95rem] text-main-gray-text">
           Ingin menguji pemahamanmu?{' '}
-          <span className="text-main">Generate Quiz</span> pilihan ganda maupun
-          esai secara otomatis dari material!
+          <span className="text-main-default">Generate Quiz</span> pilihan ganda
+          maupun esai secara otomatis dari material!
         </p>
       ),
 
@@ -86,11 +87,11 @@ const LearningRevolutions = () => {
             className="grid grid-cols-1 rounded-[.8rem] bg-white p-[1.5rem] md:grid-cols-2  bg-white/50"
           >
             <div className="flex flex-col gap-[1rem]">
-              <div className="text-main">{item.icon}</div>
+              <div className="text-main-default">{item.icon}</div>
               <h1 className="text-[1.3rem] font-medium">{item.heading}</h1>
               {item.description}
             </div>
-            <div className="hidden shrink-0 md:block text-main">
+            <div className="hidden shrink-0 md:block text-main-default">
               {item.image}
             </div>
           </div>

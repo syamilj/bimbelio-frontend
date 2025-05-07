@@ -475,10 +475,10 @@ const CardTopping = ({ data, onSelect }: CardProps) => {
           </Badge>
         </div>
       )}
-      <div className="h-3 bg-gradient"></div>
+      <div className="h-3 bg-gradient-default"></div>
       <CardHeader className="pt-6">
         <CardTitle className="text-xl text-[#0a2540] flex items-center">
-          <div className="h-8 w-8 rounded-full mr-2 flex items-center justify-center shadow-sm bg-gradient">
+          <div className="h-8 w-8 rounded-full mr-2 flex items-center justify-center shadow-sm bg-gradient-default">
             <svg
               width="16"
               height="16"
@@ -505,7 +505,7 @@ const CardTopping = ({ data, onSelect }: CardProps) => {
         </CardTitle>
         {data.coins && (
           <div
-            className="mt-4 p-4 rounded-xl border border-main/10"
+            className="mt-4 p-4 rounded-xl border border-main-default/10"
             style={{
               background: `linear-gradient(to right, ${websiteSubCategory?.main_color}08, ${websiteSubCategory?.main_color}15)`,
               boxShadow: `0 4px 12px ${websiteSubCategory?.main_color}10`,
@@ -532,11 +532,11 @@ const CardTopping = ({ data, onSelect }: CardProps) => {
                     className="flex flex-col items-center"
                     key={coin?.name}
                   >
-                    <item.icon className="h-5 w-5 mb-1 text-main" />
+                    <item.icon className="h-5 w-5 mb-1 text-main-default" />
                     <span className="text-xs text-[#4a5568] font-medium">
                       {coin?.name}
                     </span>
-                    <span className="text-sm font-bold text-main">
+                    <span className="text-sm font-bold text-main-default">
                       {coin?.total}
                     </span>
                   </div>
@@ -555,7 +555,7 @@ const CardTopping = ({ data, onSelect }: CardProps) => {
       <CardFooter className="pb-6">
         <Button
           variant="outline"
-          className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient text-white hover:text-white hover:opacity-85"
+          className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient-default text-white hover:text-white hover:opacity-85"
           onClick={() => onSelect && onSelect()}
         >
           Beli Sekarang

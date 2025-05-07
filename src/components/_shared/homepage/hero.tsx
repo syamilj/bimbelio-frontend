@@ -1,17 +1,11 @@
 'use client';
 
+import ImageHero from '@/_assest/homepage/hero/bg-hero.webp';
 import GridPattern from '@/components/magicui/animated-grid-pattern';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import {
-  ChevronLeft,
-  ChevronRight,
-  PointerIcon,
-  RotateCw,
-  Search,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, RotateCw, Search } from 'lucide-react';
 import Image from 'next/image';
-import ImageHero from "@/_assest/homepage/hero/bg-hero.webp";
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -352,7 +346,7 @@ const CTAButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   >
     <button
       onClick={onClick}
-      className="px-8 py-3 bg-gradient text-white font-bold rounded-full shadow-lg hover:-translate-y-1 transition"
+      className="px-8 py-3 bg-gradient-default text-white font-bold rounded-full shadow-lg hover:-translate-y-1 transition"
       aria-label="Coba Try Out Sekarang"
     >
       Coba Try Out Sekarang!
@@ -429,6 +423,5 @@ const DesktopVideoMockup: React.FC = () => (
     </div>
   </div>
 );
-
 
 export default HeroSection;

@@ -1,6 +1,7 @@
 import LOGO from '@/_assest/logomark.png';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/session-provider-auth';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -65,7 +66,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
             <button
               className="w-full rounded-[2rem] bg-bg-workspace py-[.8rem] font-medium text-main-gray-text"
               onClick={() => {
-                if (session) Router.push('/dashboard');
+                if (session) Router.push(`/${website_sub_category_id}/dashboard`);
                 else setShowAuth({ login: true, signUp: false });
               }}
             >
@@ -88,7 +89,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
               onClick={() => {
                 if (session) {
                   setTransactionPopUp(true);
-                  Router.push('/user/dashboard');
+                  Router.push(`/${website_sub_category_id}/user/dashboard`);
                 } else {
                   setShowAuth({ login: true, signUp: false });
                 }

@@ -1,4 +1,4 @@
-import ButtonPayment from '@/app/(user)/user/_components/button-payment';
+import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/session-provider-auth';
