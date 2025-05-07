@@ -123,7 +123,7 @@ export default function ResultsOverview({
                 <CardTitle className="text-2xl font-bold">
                   {overallStats.averageScores.toFixed(2)}
                 </CardTitle>
-                <CardDescription>Rata-rata Skor SNBT/UTBK</CardDescription>
+                <CardDescription>Rata-rata Skor</CardDescription>
               </CardHeader>
             </Card>
             <Card>

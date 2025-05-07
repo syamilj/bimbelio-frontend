@@ -10,7 +10,6 @@ import Tryout from '@/components/_shared/homepage/tryout';
 // import LearningMaterials from '@/components/homepage/learning-materials';
 // import Login from "@/components/_shared/auth/login";
 // import SignUp from "@/components/_shared/auth/sign-up";
-import CaraBelajarSection1 from '@/components/_shared/homepage/cara-belajar';
 import Testimoni from '@/components/_shared/homepage/testimoni';
 import WhyUs from '@/components/_shared/homepage/why-us';
 // import Pricing from '@/components/homepage/pricing';
@@ -31,24 +30,22 @@ export default function Home() {
       <div className="absolute top-0 -z-10 h-full w-full bg-white">
         <div className="absolute bottom-auto left-auto right-32 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
       </div>
-      <div className="py-2">
-        <div className="min-h-screen">
-          <div className="flex w-full flex-col gap-[5rem]">
-            <HeroSection />
-            {/* <CaraBelajarSection1 /> */}
-            <Tryout />
-            {/* <Fitur /> */}
-            <LearningRevolutions />
-            {/* <LearningMaterials /> */}
-            <WhyUs />
-            <Testimoni />
-            {/* <Faq /> */}
-            {/* <Pricing setShowAuth={setShowAuth} /> */}
-            {/* <Blog /> */}
-            {/* <Blog /> */}
-            {/* <Invitation setShowAuth={setShowAuth} /> */}
-            <Footer />
-          </div>
+      <div className="min-h-screen">
+        <div className="flex w-full flex-col gap-[5rem]">
+          <HeroSection />
+          {/* <CaraBelajarSection1 /> */}
+          <Tryout />
+          {/* <Fitur /> */}
+          <LearningRevolutions />
+          {/* <LearningMaterials /> */}
+          <WhyUs />
+          <Testimoni />
+          {/* <Faq /> */}
+          {/* <Pricing setShowAuth={setShowAuth} /> */}
+          {/* <Blog /> */}
+          {/* <Blog /> */}
+          {/* <Invitation setShowAuth={setShowAuth} /> */}
+          <Footer />
         </div>
       </div>
     </div>

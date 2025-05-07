@@ -279,12 +279,25 @@ const FeaturedTryOutCard = ({
         {/* Difficulty Badge */}
         {/* <div className="absolute bottom-4 right-4">
           <span
-            className={cn(
-              "inline-block rounded-full px-2 py-0.5 text-xs font-medium md:px-3 md:py-1",
-              difficultyColors[tryOut.difficulty],
-            )}
+            key={idx}
+            className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-600"
           >
-            {tryOut.difficulty}
+            #{tag}
+          </span>
+        ))}
+      </div>
+
+      <div className="mb-4 grid grid-cols-2 gap-2">
+        <div className="flex items-center gap-1 rounded-lg bg-blue-50 p-2 text-xs">
+          <Calendar className="h-3 w-3 text-blue-600" />
+          <span className="font-medium text-gray-700">
+            Mulai: {tryOut.startDate}
+          </span>
+        </div>
+        <div className="flex items-center gap-1 rounded-lg bg-blue-50 p-2 text-xs">
+          <Calendar className="h-3 w-3 text-blue-600" />
+          <span className="font-medium text-gray-700">
+            Selesai: {tryOut.endDate}
           </span>
         </div> */}
       </div>

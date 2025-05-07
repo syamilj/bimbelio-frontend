@@ -26,7 +26,7 @@ const Sidebar = () => {
         ) : (
           <Image
             src={LogoMinimize}
-            alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+            alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
             className="w-[40px] cursor-pointer"
             onClick={() => setMinimizeSidebar(false)}
           />
@@ -51,7 +51,7 @@ const Sidebar = () => {
           >
             <Image
               src={test}
-              alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+              alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               className="w-full"
             />
           </div>

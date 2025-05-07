@@ -39,7 +39,7 @@ export default function Footer() {
     >
       <div className="flex w-full items-center justify-between">
         {/* <div className="">
-          <Image src={logo} alt="Bimbelio - Bimbel AI untuk SNBT/UTBK" />
+          <Image src={logo} alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan" />
         </div> */}
         <Logo className="text-main-default" />
         <div className="flex items-center gap-[.5rem] text-[1.5rem]">

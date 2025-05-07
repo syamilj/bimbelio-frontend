@@ -204,7 +204,7 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
           </p>
           <p className="font-regular text-center text-[.8rem]">
             Dengan melanjutkan, kamu setuju dengan ketentuan Layanan dan
-            Kebijakan Privasi Tutor SNBT/UTBK
+            Kebijakan Privasi kami.
           </p>
         </div>
       </div>

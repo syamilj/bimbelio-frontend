@@ -16,10 +16,10 @@ export const METADATA_USER = {
   //TODO - Course Page
   course: {
     title: `Belajar ${siteName}`,
-    description: 'Pelajari materi belajar SNBT dan UTBK secara online',
+    description: 'Pelajari materi belajar PTN dan Kedinasan secara online',
     openGraph: {
       title: `Belajar ${siteName}`,
-      description: 'Pelajari materi belajar SNBT dan UTBK secara online',
+      description: 'Pelajari materi belajar PTN dan Kedinasan secara online',
     },
   },
 
@@ -36,10 +36,10 @@ export const METADATA_USER = {
   //TODO - Try Out Page
   tryOut: {
     title: `Try Out ${siteName}`,
-    description: 'Uji kemampuanmu dengan Try Out SNBT dan UTBK terbaru',
+    description: 'Uji kemampuanmu dengan Try Out PTN dan Kedinasan terbaru',
     openGraph: {
       title: `Try Out ${siteName}`,
-      description: 'Uji kemampuanmu dengan Try Out SNBT dan UTBK terbaru',
+      description: 'Uji kemampuanmu dengan Try Out PTN dan Kedinasan terbaru',
     },
   },
 
@@ -47,11 +47,11 @@ export const METADATA_USER = {
   leaderboard: {
     title: `Peringkat ${siteName}`,
     description:
-      'Lihat peringkatmu dan teman-temanmu dalam belajar SNBT dan UTBK',
+      'Lihat peringkatmu dan teman-temanmu dalam belajar PTN dan Kedinasan',
     openGraph: {
       title: `Leaderboard ${siteName}`,
       description:
-        'Lihat peringkatmu dan teman-temanmu dalam belajar SNBT dan UTBK',
+        'Lihat peringkatmu dan teman-temanmu dalam belajar PTN dan Kedinasan',
     },
   },
 };
@@ -72,11 +72,12 @@ export const METADATA_ADMIN = {
   //TODO - Blog Page
   blog: {
     title: `Blog ${siteName}`,
-    description: 'Baca artikel terbaru seputar SNBT, UTBK, dan belajar online',
+    description:
+      'Baca artikel terbaru seputar PTN, Kedinasan, dan belajar online',
     openGraph: {
       title: `Blog ${siteName}`,
       description:
-        'Baca artikel terbaru seputar SNBT, UTBK, dan belajar online',
+        'Baca artikel terbaru seputar PTN, Kedinasan, dan belajar online',
     },
   },
 
@@ -84,18 +85,18 @@ export const METADATA_ADMIN = {
   leaderboard: {
     title: `Leaderboard ${siteName}`,
     description:
-      'Lihat peringkatmu dan teman-temanmu dalam belajar SNBT dan UTBK',
+      'Lihat peringkatmu dan teman-temanmu dalam belajar PTN dan Kedinasan',
     openGraph: {
       title: `Leaderboard ${siteName}`,
       description:
-        'Lihat peringkatmu dan teman-temanmu dalam belajar SNBT dan UTBK',
+        'Lihat peringkatmu dan teman-temanmu dalam belajar PTN dan Kedinasan',
     },
   },
 
   //TODO - Try Out Page
   tryOut: {
     title: `Try Out ${siteName}`,
-    description: 'Uji kemampuanmu dengan Try Out SNBT dan UTBK terbaru',
+    description: 'Uji kemampuanmu dengan Try Out PTN dan Kedinasan terbaru',
   },
 
   //TODO - Explore Page
@@ -113,11 +114,12 @@ export const METADATA_GUEST = {
   //TODO - Blog Page
   blog: {
     title: `Blog`,
-    description: 'Baca artikel terbaru seputar SNBT, UTBK, dan belajar online',
+    description:
+      'Baca artikel terbaru seputar PTN, Kedinasan, dan belajar online',
     openGraph: {
       title: `Blog`,
       description:
-        'Baca artikel terbaru seputar SNBT, UTBK, dan belajar online',
+        'Baca artikel terbaru seputar PTN, Kedinasan, dan belajar online',
     },
   },
 

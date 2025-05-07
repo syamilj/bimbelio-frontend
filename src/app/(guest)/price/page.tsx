@@ -5,9 +5,9 @@ import PricingPlans from './_components/pricing-plans';
 import PricingFeatures from './_components/pricing-features';
 
 export const metadata: Metadata = {
-  title: 'Pricing - TutorSNBT',
+  title: 'Pricing - Bimbelio',
   description:
-    'Choose the perfect plan for your learning journey with TutorSNBT',
+    'Choose the perfect plan for your learning journey with Bimbelio',
 };
 
 export default function PricingPage() {

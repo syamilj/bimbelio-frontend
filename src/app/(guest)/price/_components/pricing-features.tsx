@@ -28,7 +28,7 @@ export default function PricingFeatures() {
       icon: <FileText className="h-6 w-6 text-main-default" />,
       title: 'Tryout Coin',
       description:
-        'Gunakan untuk mengakses tryout dengan format yang sama dengan ujian SNBT/UTBK',
+        'Gunakan untuk mengakses tryout dengan format yang sama dengan ujian',
       color: coinColors.Tryout,
       usage: '1 coin per tryout',
       gradient: `linear-gradient(135deg, ${coinColors.Tryout}, ${coinColors.Tryout}dd)`,
@@ -72,7 +72,7 @@ export default function PricingFeatures() {
           5 Jenis Coin untuk Fitur Berbeda
         </h2>
         <p className="text-[#4a5568] max-w-2xl mx-auto">
-          TutorSNBT menggunakan 5 jenis coin berbeda untuk mengakses fitur-fitur
+          Bimbelio menggunakan 5 jenis coin berbeda untuk mengakses fitur-fitur
           interaktif yang akan membantu persiapan ujianmu
         </p>
       </div>

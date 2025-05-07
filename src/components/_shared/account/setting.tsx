@@ -198,7 +198,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                           {preview !== '' ? (
                             <Image
                               src={preview}
-                              alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                              alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                               width={500}
                               height={300}
                               layout="responsive"
@@ -206,7 +206,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                           ) : (
                             <Image
                               src={profileImage !== '' ? profileImage : male}
-                              alt="Bimbelio - Bimbel AI untuk SNBT/UTBK"
+                              alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                               width={500}
                               height={300}
                               layout="responsive"

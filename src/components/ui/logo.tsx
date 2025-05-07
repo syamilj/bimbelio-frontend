@@ -22,7 +22,7 @@ export default function Logo({
           )}
         >
           <LogoSvg w={imageWidth ? imageWidth : 30} />
-          <span className="font-semibold">Bimbelio</span>
+          <span className="font-semibold text-xl sm:text-3xl">Bimbelio</span>
         </div>
       </div>
     );
@@ -33,7 +33,7 @@ export default function Logo({
         className={cn('relative flex items-center gap-1 text-main', className)}
       >
         <LogoSvg w={imageWidth ? imageWidth : 30} />
-        <span className="font-semibold">Bimbelio</span>
+        <span className="font-semibold text-3xl md:text-2xl">Bimbelio</span>
       </div>
     </Link>
   );

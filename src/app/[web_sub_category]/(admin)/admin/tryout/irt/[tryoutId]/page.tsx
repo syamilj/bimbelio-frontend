@@ -247,11 +247,9 @@ export default function SNBTProcessor() {
       />
       <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
         <CardHeader>
-          <CardTitle className="text-4xl font-bold">
-            SNBT/UTBK Processor
-          </CardTitle>
+          <CardTitle className="text-4xl font-bold">Processor</CardTitle>
           <CardDescription className="text-xl text-gray-100">
-            Analisis komprehensif data SNBT/UTBK dalam 6 langkah mudah
+            Analisis komprehensif data dalam 6 langkah mudah
           </CardDescription>
         </CardHeader>
       </Card>

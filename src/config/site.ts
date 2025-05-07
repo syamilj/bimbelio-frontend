@@ -1,13 +1,13 @@
 export const siteConfig = {
-  name: 'Bimbel AI untuk SNBT/UTBK | Bimbelio',
+  name: 'Bimbel AI untuk PTN dan Kedinasan | Bimbelio',
   url: 'https://www.bimbelio.com',
   ogImage: 'https://https://www.bimbelio.com/logo.png',
   description:
-    'Bimbelio merevolusi pengalaman belajar dengan alat pembelajaran aktif berbasis AI untuk persiapan SNBT dan UTBK. Bimbel AI untuk suksesmu!',
+    'Bimbelio merevolusi pengalaman belajar dengan alat pembelajaran aktif berbasis AI untuk persiapan PTN dan Kedinasan. Bimbel AI untuk suksesmu!',
   links: {
-    twitter: 'https://twitter.com/bimbelio',
-    instagram: 'https://www.instagram.com/bimbelio/',
-    tiktok: 'https://www.tiktok.com/@bimbelio',
+    twitter: 'https://twitter.com/bimbelio.official',
+    instagram: 'https://www.instagram.com/bimbelio.official',
+    tiktok: 'https://www.tiktok.com/@bimbelio.official',
   },
 };
 

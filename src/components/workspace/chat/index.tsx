@@ -108,7 +108,7 @@ export default function Chat({
     {
       id: 'id',
       content:
-        'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!',
+        'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
       role: 'assistant',
       createAt: null,
       like: false,
@@ -291,7 +291,7 @@ export default function Chat({
         {
           id: 'id',
           content:
-            'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!',
+            'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
           role: 'assistant',
           createAt: null,
           like: false,
@@ -303,7 +303,7 @@ export default function Chat({
         {
           id: 'id',
           content:
-            'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!',
+            'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
           role: 'assistant',
           createAt: null,
           like: false,

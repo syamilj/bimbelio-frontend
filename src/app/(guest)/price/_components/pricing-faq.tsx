@@ -10,14 +10,14 @@ import {
 export default function PricingFaq() {
   const faqs = [
     {
-      question: 'Apa itu sistem coin di TutorSNBT?',
+      question: 'Apa itu sistem coin di Bimbelio?',
       answer:
-        'TutorSNBT menggunakan 5 jenis coin berbeda (Notes Coin, Chat Coin, Quiz Coin, Tryout Coin, dan Vision Coin) sebagai metode pembayaran internal untuk mengakses fitur-fitur interaktif. Setiap paket berlangganan memberikan jumlah coin bulanan yang berbeda untuk masing-masing jenis, dan Anda dapat membeli coin tambahan jika diperlukan.',
+        'Bimbelio menggunakan 5 jenis coin berbeda (Notes Coin, Chat Coin, Quiz Coin, Tryout Coin, dan Vision Coin) sebagai metode pembayaran internal untuk mengakses fitur-fitur interaktif. Setiap paket berlangganan memberikan jumlah coin bulanan yang berbeda untuk masing-masing jenis, dan Anda dapat membeli coin tambahan jika diperlukan.',
     },
     {
       question: 'Apa perbedaan antara kelima jenis coin?',
       answer:
-        'Setiap jenis coin digunakan untuk fitur yang berbeda: Notes Coin untuk membuat catatan belajar, Chat Coin untuk berkomunikasi dengan AI Tutor, Quiz Coin untuk mengakses quiz interaktif, Tryout Coin untuk mengikuti tryout SNBT/UTBK, dan Vision Coin untuk menggunakan fitur AI Vision yang membantu menyelesaikan soal dari gambar.',
+        'Setiap jenis coin digunakan untuk fitur yang berbeda: Notes Coin untuk membuat catatan belajar, Chat Coin untuk berkomunikasi dengan AI Tutor, Quiz Coin untuk mengakses quiz interaktif, Tryout Coin untuk mengikuti tryout, dan Vision Coin untuk menggunakan fitur AI Vision yang membantu menyelesaikan soal dari gambar.',
     },
     {
       question: 'Bagaimana cara menggunakan coin?',
@@ -35,7 +35,7 @@ export default function PricingFaq() {
         'Paket berlangganan memberikan akses ke course dan dokumen dengan jumlah tertentu, serta bonus coin bulanan. Paket bundle dirancang untuk kebutuhan spesifik, seperti fokus pada persiapan ujian atau pembelajaran, dengan biaya coin yang lebih rendah untuk fitur-fitur tertentu.',
     },
     {
-      question: 'Bagaimana cara berlangganan paket di TutorSNBT?',
+      question: 'Bagaimana cara berlangganan paket di Bimbelio?',
       answer:
         "Anda dapat berlangganan dengan memilih paket yang sesuai, mengklik tombol 'Berlangganan Sekarang', dan mengikuti petunjuk pembayaran. Kami menerima berbagai metode pembayaran termasuk kartu kredit, transfer bank, dan e-wallet.",
     },

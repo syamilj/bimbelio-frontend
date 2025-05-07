@@ -1,17 +1,26 @@
 'use client';
 
 import ImageHero from '@/_assest/homepage/hero/bg-hero.webp';
+import LogoIPDN from '@/_assest/homepage/hero/LOGO_KEDINASAN_IPDN.webp';
+import LogoSTAN from '@/_assest/homepage/hero/LOGO_KEDINASAN_STAN.webp';
+import LogoSTIS from '@/_assest/homepage/hero/LOGO_KEDINASAN_STIS.webp';
+import LogoITB from '@/_assest/homepage/hero/LOGO_PTN_ITB.webp';
+import LogoITS from '@/_assest/homepage/hero/LOGO_PTN_ITS.webp';
+import LogoUGM from '@/_assest/homepage/hero/LOGO_PTN_UGM.webp';
+import LogoUI from '@/_assest/homepage/hero/LOGO_PTN_UI.webp';
 import GridPattern from '@/components/magicui/animated-grid-pattern';
+import PulsatingButton from '@/components/magicui/pulsating-button';
 import { cn } from '@/lib/utils';
+import { IconOpenAI } from '@/styles/icon';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, RotateCw, Search } from 'lucide-react';
+import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
-// Types
-interface Logo {
-  src: string;
+export interface Logo {
+  src: string | StaticImageData;
   alt: string;
   label: string;
 }
@@ -29,41 +38,13 @@ interface HeadingItem {
 
 // Constants
 const LOGOS: Logo[] = [
-  {
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LOGO_PTN_ITB_9_11zon_6_11zon-UetSeUbMn5OcJXcWqqbdZprLLoEZWO.webp',
-    alt: 'Logo ITB',
-    label: 'ITB',
-  },
-  {
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LOGO_KEDINASAN_STIS_5_11zon_5_11zon-t7SeKw0UFSI5x6BaVzNWispgKZBcK0.webp',
-    alt: 'Logo STIS',
-    label: 'STIS',
-  },
-  {
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LOGO_PTN_ITS_7_11zon_7_11zon-riXxE7jk8wiam6ARkDFhhStbDJL8aR.webp',
-    alt: 'Logo ITS',
-    label: 'ITS',
-  },
-  {
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LOGO_KEDINASAN_IPDN_4_11zon_3_11zon-X8FcsV3aF3ahBfmE24lDKzj83iBdOT.webp',
-    alt: 'Logo IPDN',
-    label: 'IPDN',
-  },
-  {
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LOGO_KEDINASAN_STAN_1_11zon_4_11zon-ZZE1PJyZGA91YuPkafMB4aqLXY3OtS.webp',
-    alt: 'Logo STAN',
-    label: 'STAN',
-  },
-  {
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LOGO_PTN_UGM_10_11zon_8_11zon-DxmAgHmVdw9kRgJiJmrNrBnFioZU7V.webp',
-    alt: 'Logo UGM',
-    label: 'UGM',
-  },
-  {
-    src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LOGO_PTN_UI.svg_11_11zon_9_11zon-pSHV8QVTjWSfMwcWAGbPIjHNflbGRL.webp',
-    alt: 'Logo UI',
-    label: 'UI',
-  },
+  { src: LogoITB, alt: 'Logo ITB', label: 'ITB' },
+  { src: LogoSTIS, alt: 'Logo STIS', label: 'STIS' },
+  { src: LogoITS, alt: 'Logo ITS', label: 'ITS' },
+  { src: LogoIPDN, alt: 'Logo IPDN', label: 'IPDN' },
+  { src: LogoSTAN, alt: 'Logo STAN', label: 'STAN' },
+  { src: LogoUGM, alt: 'Logo UGM', label: 'UGM' },
+  { src: LogoUI, alt: 'Logo UI', label: 'UI' },
 ];
 
 const STATS: Stat[] = [
@@ -205,23 +186,47 @@ const BackgroundElements: React.FC = () => (
   </>
 );
 
-const BrandLogo: React.FC = () => (
-  <motion.div
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="mb-6 flex items-center rounded-full bg-white px-4 py-2 md:px-6 shadow-md"
-  >
-    <Image
-      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo%20landscape-lQuFJmR6FlX0I6gogGjIUEIxYWyqKO.png"
-      alt="Bimbelio Logo"
-      width={120}
-      height={30}
-      className="h-8 w-auto"
-      priority
-    />
-  </motion.div>
-);
+const BrandLogo: React.FC = () => {
+  return (
+    <div className="flex mt-6 mb-6 flex-col items-center">
+      {/* Badge tanpa “Powered by” */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-2 flex items-center justify-center"
+      >
+        <div className="flex items-center gap-1.5 rounded-full bg-white border px-3 py-1.5 shadow-sm">
+          {/* Logo Bimbelio */}
+          <div className="relative h-6 w-6 flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Bimbelio Logo"
+              width={24}
+              height={24}
+              className="object-contain"
+            />
+          </div>
+          {/* Teks badge */}
+          <span className="text-blue-500 font-medium text-xs sm:text-sm">
+            Bimbel AI untuk PTN dan Kedinasan
+          </span>
+        </div>
+      </motion.div>
+
+      {/* “Powered by OpenAI” */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex items-center gap-1 text-gray-600 text-xs mt-2"
+      >
+        <span>Powered by</span>
+        <IconOpenAI className="h-3 w-3" />
+      </motion.div>
+    </div>
+  );
+};
 
 const HeadingSection: React.FC<{ headings: HeadingItem[] }> = ({
   headings,
@@ -277,25 +282,28 @@ const LogoSliders: React.FC<{ logos: Logo[]; isMobile: boolean }> = ({
   logos,
   isMobile,
 }) => {
-  // Create two sets of logos for continuous scrolling effect
-  const doubledLogos = [...logos, ...logos, ...logos];
+  // triple array untuk efek continuous scroll
+  const doubled = [...logos, ...logos, ...logos];
 
   return (
     <div className="w-full mb-12">
-      {/* Desktop slider - moves from right to left */}
-      <div className="hidden md:block relative overflow-hidden py-4 bg-gradient-to-r from-white/0 via-white/80 to-white/0">
+      {/* desktop: scroll kanan→kiri */}
+      <div className="hidden md:block relative overflow-hidden py-4 rounded-full">
         <div className="animate-marquee-slower flex">
-          {doubledLogos.map((logo, index) => (
+          {doubled.map((logo, i) => (
             <div
-              key={`desktop-${index}`}
+              key={i}
               className="flex-shrink-0 mx-4 flex flex-col items-center group"
             >
-              <div className="w-28 h-28 p-3 bg-white rounded-full shadow-md flex items-center justify-center group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
+              <div
+                className="w-28 h-28 p-1 bg-white rounded-full shadow-md flex items-center justify-center
+                              group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
+              >
                 <Image
-                  src={logo.src || '/placeholder.svg'}
+                  src={logo.src}
                   alt={logo.alt}
-                  width={120}
-                  height={120}
+                  width={100}
+                  height={100}
                   className="w-20 h-20 object-contain"
                   loading="lazy"
                 />
@@ -308,17 +316,20 @@ const LogoSliders: React.FC<{ logos: Logo[]; isMobile: boolean }> = ({
         </div>
       </div>
 
-      {/* Mobile slider - moves from left to right (opposite direction) */}
-      <div className="md:hidden relative overflow-hidden py-3 bg-gradient-to-r from-white/0 via-white/80 to-white/0">
+      {/* mobile: scroll kiri→kanan */}
+      <div className="md:hidden relative overflow-hidden py-3 rounded-full">
         <div className="animate-marquee-reverse flex">
-          {doubledLogos.map((logo, index) => (
+          {doubled.map((logo, i) => (
             <div
-              key={`mobile-${index}`}
+              key={i}
               className="flex-shrink-0 mx-3 flex flex-col items-center group"
             >
-              <div className="w-20 h-20 p-2 bg-white rounded-full shadow-md flex items-center justify-center group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
+              <div
+                className="w-20 h-20 p-2 bg-white rounded-full shadow-md flex items-center justify-center
+                              group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
+              >
                 <Image
-                  src={logo.src || '/placeholder.svg'}
+                  src={logo.src}
                   alt={logo.alt}
                   width={80}
                   height={80}
@@ -336,21 +347,28 @@ const LogoSliders: React.FC<{ logos: Logo[]; isMobile: boolean }> = ({
     </div>
   );
 };
+const handleClick = () => {
+  const el = document.getElementById('tryout');
+  if (el) {
+    const top = el.getBoundingClientRect().top + window.pageYOffset - 100;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+};
 
-const CTAButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
+const CTAButton: React.FC<{ onClick?: () => void }> = () => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay: 0.7 }}
-    className="w-full flex justify-center mb-8"
+    className="w-full flex justify-center mb-6"
   >
-    <button
-      onClick={onClick}
-      className="px-8 py-3 bg-gradient-default text-white font-bold rounded-full shadow-lg hover:-translate-y-1 transition"
+    <PulsatingButton
+      onClick={handleClick}
       aria-label="Coba Try Out Sekarang"
+      tabIndex={0}
     >
       Coba Try Out Sekarang!
-    </button>
+    </PulsatingButton>
   </motion.div>
 );
 

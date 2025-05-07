@@ -68,9 +68,7 @@ export default function ProcessData({
     <Card>
       <CardHeader>
         <CardTitle>Proses Data</CardTitle>
-        <CardDescription>
-          Analisis data SNBT/UTBK menggunakan metode IRT
-        </CardDescription>
+        <CardDescription>Analisis data menggunakan metode IRT</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <Progress
