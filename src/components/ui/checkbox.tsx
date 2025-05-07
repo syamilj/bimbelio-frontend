@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { CheckIcon } from "@radix-ui/react-icons";
-import * as React from "react";
+import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
+import { CheckIcon } from '@radix-ui/react-icons';
+import * as React from 'react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
@@ -13,7 +13,7 @@ const Checkbox = React.forwardRef<
   const localRef = React.useRef<HTMLElement | null>(null);
   const combinedRef = (node: HTMLElement | null) => {
     localRef.current = node;
-    if (typeof ref === "function") ref(node as any);
+    if (typeof ref === 'function') ref(node as any);
     else if (ref)
       (ref as React.MutableRefObject<HTMLElement | null>).current = node;
   };
@@ -25,14 +25,14 @@ const Checkbox = React.forwardRef<
     if (!el) return;
 
     const observer = new MutationObserver(() => {
-      const state = el.getAttribute("data-state");
-      setIsChecked(state === "checked");
+      const state = el.getAttribute('data-state');
+      setIsChecked(state === 'checked');
     });
 
-    observer.observe(el, { attributes: true, attributeFilter: ["data-state"] });
+    observer.observe(el, { attributes: true, attributeFilter: ['data-state'] });
 
     // Initialize state on mount
-    setIsChecked(el.getAttribute("data-state") === "checked");
+    setIsChecked(el.getAttribute('data-state') === 'checked');
 
     return () => observer.disconnect();
   }, []);
@@ -43,14 +43,14 @@ const Checkbox = React.forwardRef<
     <CheckboxPrimitive.Root
       ref={combinedRef}
       className={cn(
-        "peer h-5 w-5 shrink-0 rounded-md border border-main shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-primary-foreground",
+        'peer h-5 w-5 shrink-0 rounded-md border border-main shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-primary-foreground',
         className,
-        isChecked && "bg-main"
+        isChecked && 'bg-main',
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        className={cn("flex items-center justify-center text-current")}
+        className={cn('flex items-center justify-center text-current')}
       >
         <CheckIcon className="h-4 w-4" />
       </CheckboxPrimitive.Indicator>

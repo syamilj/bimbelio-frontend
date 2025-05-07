@@ -1,13 +1,11 @@
-"use client";
+'use client';
 
-import { toaster } from "@/components/ui/toaster";
-import { getDateString, getHours } from "@/lib/utils";
+import { toaster } from '@/components/ui/toaster';
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { ReactNode, useCallback, useEffect, useState } from "react";
-import { useSession } from "./session-provider-auth";
-import { signOut } from "@/lib/auth-helper";
-import { mutateGeneral } from "@/lib/fetch-helper";
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { useSession } from './session-provider-auth';
 
 export default function CheckSubscription({
   children,
@@ -18,8 +16,8 @@ export default function CheckSubscription({
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const order_id = searchParams?.get("order_id");
-  const transaction_status = searchParams?.get("transaction_status");
+  const order_id = searchParams?.get('order_id');
+  const transaction_status = searchParams?.get('transaction_status');
 
   //   const { mutateAsync: buyTryoutCheck } =
   //     api.payment.buyTryoutPremiumRedirect.useMutation();
@@ -27,9 +25,9 @@ export default function CheckSubscription({
   // const CheckSubscription = api.user.checkSubscription.useMutation();
 
   const CheckSubscription = async () => {
-    const res = await mutateGeneral("/user/checkSubscription", {
+    const res = await mutateGeneral('/user/checkSubscription', {
       payload: { userId: session?.user.id },
-      type: "post",
+      type: 'post',
       hideToast: true,
     });
     return res;
@@ -39,7 +37,7 @@ export default function CheckSubscription({
     const check = async () => {
       try {
         const res = await CheckSubscription();
-        console.log("Subscription : ", res);
+        console.log('Subscription : ', res);
         if (res?.status == 201) {
           window.location.reload();
         }
@@ -48,7 +46,7 @@ export default function CheckSubscription({
         // }
         return;
       } catch (error) {
-        console.log("Failed Check Subscription", error);
+        console.log('Failed Check Subscription', error);
         return;
       }
     };
@@ -61,9 +59,9 @@ export default function CheckSubscription({
   // const checkPayment = api.payment.checkPayment.useMutation();
 
   const checkPayment = async (order_id: string) => {
-    const res = await mutateGeneral("/payment/checkPayment", {
+    const res = await mutateGeneral('/payment/checkPayment', {
       payload: { order_id },
-      type: "post",
+      type: 'post',
       hideToast: true,
       onSuccess() {
         router.push(`${window.location.pathname}`);
@@ -81,16 +79,16 @@ export default function CheckSubscription({
       if (
         res &&
         new Date(res?.data?.expired_time) > new Date() &&
-        transaction_status === "settlement"
+        transaction_status === 'settlement'
       ) {
         toaster({
-          title: "Pembelian Berhasil",
-          condition: "success",
-          description: "Pembelian berhasil dilakukan",
+          title: 'Pembelian Berhasil',
+          condition: 'success',
+          description: 'Pembelian berhasil dilakukan',
         });
       }
     },
-    [checkPayment]
+    [checkPayment],
   );
 
   useEffect(() => {

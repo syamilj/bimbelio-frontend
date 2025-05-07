@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from '@/components/ui/card';
 
 export function AlurPembelajaranSection() {
   return (
@@ -16,79 +16,81 @@ export function AlurPembelajaranSection() {
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[
           {
-            number: "1",
-            title: "Pengenalan UTBK & SNBT",
+            number: '1',
+            title: 'Pengenalan Materi',
             description:
-              "Pelajari format, struktur, dan strategi dasar menghadapi ujian SNBT.",
+              'Pelajari format, struktur, dan strategi dasar menghadapi ujian.',
           },
           {
-            number: "2",
-            title: "Fondasi Penalaran Umum",
+            number: '2',
+            title: 'Fondasi Penalaran Umum',
             description:
-              "Kuasai konsep logika & analisis sebagai landasan berpikir kritis.",
+              'Kuasai konsep logika & analisis sebagai landasan berpikir kritis.',
           },
           {
-            number: "3",
-            title: "Teknik Membaca Efektif",
+            number: '3',
+            title: 'Teknik Membaca Efektif',
             description:
-              "Tingkatkan kecepatan dan pemahaman baca untuk teks kompleks.",
+              'Tingkatkan kecepatan dan pemahaman baca untuk teks kompleks.',
           },
           {
-            number: "4",
-            title: "Strategi Penalaran Kuantitatif",
+            number: '4',
+            title: 'Strategi Penalaran Kuantitatif',
             description:
-              "Selesaikan soal matematika & kuantitatif dengan cepat dan tepat.",
+              'Selesaikan soal matematika & kuantitatif dengan cepat dan tepat.',
           },
           {
-            number: "5",
-            title: "Pemahaman Bacaan Kritis",
+            number: '5',
+            title: 'Pemahaman Bacaan Kritis',
             description:
-              "Asah kemampuan menelaah & mengevaluasi berbagai tipe teks.",
+              'Asah kemampuan menelaah & mengevaluasi berbagai tipe teks.',
           },
           {
-            number: "6",
-            title: "Pengetahuan & Pemahaman Umum",
-            description:
-              "Perluas wawasan sains, sosial, dan isu kontemporer untuk SNBT.",
+            number: '6',
+            title: 'Pengetahuan & Pemahaman Umum',
+            description: 'Perluas wawasan sains, sosial, dan isu kontemporer.',
           },
           {
-            number: "7",
-            title: "Literasi Bahasa Indonesia",
+            number: '7',
+            title: 'Literasi Bahasa Indonesia',
             description:
-              "Dalami analisis teks & tata bahasa Indonesia yang sering keluar.",
+              'Dalami analisis teks & tata bahasa Indonesia yang sering keluar.',
           },
           {
-            number: "8",
-            title: "Literasi Bahasa Inggris",
+            number: '8',
+            title: 'Literasi Bahasa Inggris',
             description:
-              "Tingkatkan kemampuan membaca teks dan pemahaman grammar.",
+              'Tingkatkan kemampuan membaca teks dan pemahaman grammar.',
           },
           {
-            number: "9",
-            title: "Latihan Soal Terpadu",
+            number: '9',
+            title: 'Latihan Soal Terpadu',
             description:
-              "Kombinasi soal logika, matematika, dan literasi dalam satu sesi.",
+              'Kombinasi soal logika, matematika, dan literasi dalam satu sesi.',
           },
           {
-            number: "10",
-            title: "Simulasi Tryout SNBT",
+            number: '10',
+            title: 'Simulasi Tryout',
             description:
-              "Uji kesiapanmu dengan simulasi ujian mendekati kondisi real.",
+              'Uji kesiapanmu dengan simulasi ujian mendekati kondisi real.',
           },
           {
-            number: "11",
-            title: "Review & Analisis Hasil",
+            number: '11',
+            title: 'Review & Analisis Hasil',
             description:
-              "Identifikasi kelemahan & perkuat area yang masih perlu peningkatan.",
+              'Identifikasi kelemahan & perkuat area yang masih perlu peningkatan.',
           },
           {
-            number: "12",
-            title: "Persiapan Akhir",
+            number: '12',
+            title: 'Persiapan Akhir',
             description:
-              "Tips final & manajemen waktu untuk menghadapi hari-H SNBT.",
+              'Tips final & manajemen waktu untuk menghadapi hari-H.',
           },
         ].map((item, index) => (
-          <LearningPathCard key={index} {...item} />
+          <LearningPathCard
+            key={index}
+            {...item}
+          />
         ))}
       </div>
     </section>

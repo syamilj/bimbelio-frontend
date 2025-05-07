@@ -1,13 +1,13 @@
-import ButtonPayment from "@/app/(user)/user/_components/button-payment";
-import AnimatedGradientText from "@/components/magicui/animated-gradient-text";
-import { useAppContext } from "@/components/provider/provider-app";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { toaster } from "@/components/ui/toaster";
-import { mutateGeneral } from "@/lib/fetch-helper";
-import { IconLock, IconSend, IconUnlimited } from "@/styles/icon";
-import { BanIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import TextareaAutosize from "react-textarea-autosize";
+import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
+import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
+import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { toaster } from '@/components/ui/toaster';
+import { mutateGeneral } from '@/lib/fetch-helper';
+import { IconLock, IconSend, IconUnlimited } from '@/styles/icon';
+import { BanIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 
 interface Props {
   prevChatMessages: any;
@@ -42,12 +42,12 @@ const SubmitChat = ({
     quiz?: boolean;
   }) => {
     let sendData: any = null;
-    await mutateGeneral("/user/limitation", {
+    await mutateGeneral('/user/limitation', {
       payload: {
         ...payload,
-        userId: session?.user.id || "",
+        userId: session?.user.id || '',
       },
-      type: "post",
+      type: 'post',
       toast: { hideSuccess: true },
       onSuccess({ data }) {
         sendData = data;
@@ -61,11 +61,11 @@ const SubmitChat = ({
 
   const handleSubmitChatDefault = async () => {
     try {
-      console.log("Func");
+      console.log('Func');
       const data: any = await limitation({ chat: true });
-      console.log("data", data);
+      console.log('data', data);
       const inputChat = document.getElementById(
-        "inputChat"
+        'inputChat',
       ) as HTMLTextAreaElement;
       const e = {
         target: {
@@ -74,8 +74,8 @@ const SubmitChat = ({
       };
       if (data && !data.status) {
         toaster({
-          title: "Uppss",
-          condition: "warning",
+          title: 'Uppss',
+          condition: 'warning',
           description: data.message,
           duration: 5000,
         });
@@ -90,9 +90,9 @@ const SubmitChat = ({
       }
     } catch (error) {
       toaster({
-        title: "Gagal",
-        condition: "warning",
-        description: "Coba lagi nanti!",
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
       });
       return;
     }
@@ -100,11 +100,11 @@ const SubmitChat = ({
 
   useEffect(() => {
     const inputChat = document.getElementById(
-      "inputChat"
+      'inputChat',
     ) as HTMLTextAreaElement;
     if (input.length > 0) {
       handleSubmit();
-      inputChat.value = "";
+      inputChat.value = '';
     }
   }, [input]);
 
@@ -112,20 +112,20 @@ const SubmitChat = ({
     <form
       id="chatAI"
       onSubmit={(e) => {
-        console.log("Masuk");
+        console.log('Masuk');
         handleSubmitChatDefault();
         e.preventDefault();
       }}
     >
       <div className="mb-2 mt-1 flex w-full">
         <div className="relative flex w-full items-center px-[1.5rem] py-[.5rem]">
-          {limitaionUsed?.user.Role !== "ADMIN" &&
+          {limitaionUsed?.user.Role !== 'ADMIN' &&
           limitaionUsed?.chat >= limitaionUsed?.Limit?.chat ? (
             <p className="absolute bottom-[90%] left-0 w-full bg-bg-workspace pl-[1.5rem] text-[.9rem] text-main-gray-text">
-              Limit chat tercapai.{" "}
+              Limit chat tercapai.{' '}
               <AnimatedGradientText className="cursor-pointer md:hover:underline">
                 Upgrade akunmu
-              </AnimatedGradientText>{" "}
+              </AnimatedGradientText>{' '}
               untuk lanjut
             </p>
           ) : limitaionUsed?.chat < limitaionUsed?.Limit?.chat ? (
@@ -134,7 +134,7 @@ const SubmitChat = ({
                 {limitaionUsed?.chat}/
                 {limitaionUsed?.Limit && limitaionUsed?.Limit.chat} chat
                 tersisa.
-              </span>{" "}
+              </span>{' '}
               <AnimatedGradientText
                 className="cursor-pointer md:hover:underline"
                 onClick={() => {
@@ -142,11 +142,11 @@ const SubmitChat = ({
                 }}
               >
                 Upgrade akunmu
-              </AnimatedGradientText>{" "}
+              </AnimatedGradientText>{' '}
               untuk akses lebih banyak
             </p>
           ) : null}
-          {limitaionUsed?.user.Role === "ADMIN" && (
+          {limitaionUsed?.user.Role === 'ADMIN' && (
             <div className="absolute bottom-[90%] left-0 flex w-full flex-wrap items-center gap-[.3rem] bg-bg-workspace pl-[1.5rem] text-[.9rem] text-main-gray-text">
               <div className="flex items-center gap-[.3rem] text-[#F9791F]">
                 <div className="flex items-center">
@@ -175,26 +175,26 @@ const SubmitChat = ({
             placeholder="Ajukan pertanyaan"
             className="max-h-[52px] w-full flex-1 resize-none rounded-[.6rem] border border-main py-[.8rem] pl-[1rem] pr-[4rem] text-[.8rem] font-normal outline-none md:max-h-[unset]"
             onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey && !isLoading) {
+              if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
                 e.preventDefault();
                 handleSubmitChatDefault();
-                console.log("Masuk2");
-              } else if (e.key === "Enter" && !e.shiftKey) {
+                console.log('Masuk2');
+              } else if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                console.log("Masuk3");
+                console.log('Masuk3');
               }
             }}
             onChange={(e) => {
-              console.log("inputLength", e.target.value.length);
+              console.log('inputLength', e.target.value.length);
               if (e.target.value.length > 0) setSend(true);
               else setSend(false);
               if (e.target.value.length > 1000)
                 e.target.value = e.target.value.slice(0, 1000);
               if (e.target.value.length === 1000)
                 toaster({
-                  title: "Upss",
-                  condition: "warning",
-                  description: "Maksimal 1000 karakter input chat!",
+                  title: 'Upss',
+                  condition: 'warning',
+                  description: 'Maksimal 1000 karakter input chat!',
                   duration: 3000,
                 });
             }}
@@ -221,8 +221,8 @@ const SubmitChat = ({
                     Limit material
                   </p>
                   <p className="mt-[-.5rem] text-[.9rem]">
-                    Limit kamu terbatas.{" "}
-                    <span className="font-regular text-main">Upgrade akun</span>{" "}
+                    Limit kamu terbatas.{' '}
+                    <span className="font-regular text-main">Upgrade akun</span>{' '}
                     untuk mendapatkan akses material lengkap.
                   </p>
                   <ButtonPayment text="Subscription" />
@@ -234,7 +234,11 @@ const SubmitChat = ({
             <>
               {isLoading ? (
                 <button className="w-fit px-2">
-                  <BanIcon size={24} className="text-red-500" onClick={stop} />
+                  <BanIcon
+                    size={24}
+                    className="text-red-500"
+                    onClick={stop}
+                  />
                 </button>
               ) : (
                 <>

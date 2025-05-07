@@ -1,35 +1,41 @@
 // import { useAppContext } from "@/components/provider/provider-app";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { useSession } from '@/components/provider/session-provider-auth';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { signOut } from "@/lib/auth-helper";
-import { motion } from "framer-motion";
-import { LayoutDashboard, LogOut, Settings } from "lucide-react";
+} from '@/components/ui/dropdown-menu';
+import { signOut } from '@/lib/auth-helper';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { motion } from 'framer-motion';
+import { LayoutDashboard, LogOut } from 'lucide-react';
 // import { User } from "next-auth";
 // import { signOut } from "next-auth/react";
-import Link from "next/link";
-import { useState } from "react";
+import Link from 'next/link';
+import { useState } from 'react';
 
 type User = any;
 
 interface UserAccountNavProps {
-  user: Pick<User, "name" | "image" | "email">;
+  user: Pick<User, 'name' | 'image' | 'email'>;
 }
 
 const UserAccountNav = ({ user }: UserAccountNavProps) => {
   const { data: session } = useSession();
   // const { setTransactionHistory } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
+  const {websiteSubCategory} = useWebsiteSubCategory()
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+    <DropdownMenu
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -40,9 +46,12 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             transition={{ duration: 0.2 }}
           >
             <Avatar className="h-8 w-8">
-              <AvatarImage src={user.image || ""} alt={user.name || ""} />
+              <AvatarImage
+                src={user.image || ''}
+                alt={user.name || ''}
+              />
               <AvatarFallback className="text-main-foreground bg-gradient-to-br from-main to-secondary text-sm font-bold">
-                {user.name ? user.name[0].toUpperCase() : "U"}
+                {user.name ? user.name[0].toUpperCase() : 'U'}
               </AvatarFallback>
             </Avatar>
           </motion.div>
@@ -61,9 +70,12 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
         >
           <div className="mb-2 flex items-center gap-2 p-2">
             <Avatar className="h-8 w-8 ring-1 ring-main/90">
-              <AvatarImage src={user.image ?? ""} alt={user.name ?? ""} />
+              <AvatarImage
+                src={user.image ?? ''}
+                alt={user.name ?? ''}
+              />
               <AvatarFallback className="text-main-foreground bg-gradient-to-br from-main to-secondary text-sm font-bold">
-                {user.name ? user.name[0].toUpperCase() : "U"}
+                {user.name ? user.name[0].toUpperCase() : 'U'}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
@@ -80,9 +92,12 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.2, delay: 0.1 }}
         >
-          <DropdownMenuItem asChild className="cursor-pointer">
+          <DropdownMenuItem
+            asChild
+            className="cursor-pointer"
+          >
             <Link
-              href="/user/try-out"
+              href={`/${website_sub_category_id}/user/try-out`}
               className="flex items-center gap-2 rounded-xl px-1 py-1.5 transition-colors hover:bg-main/10"
             >
               <LayoutDashboard className="h-4 w-4 text-main" />
@@ -90,15 +105,18 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             </Link>
           </DropdownMenuItem>
         </motion.div>
-        {session?.user?.role == "ADMIN" && (
+        {session?.user?.role == 'ADMIN' && (
           <motion.div
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.2, delay: 0.1 }}
           >
-            <DropdownMenuItem asChild className="cursor-pointer">
+            <DropdownMenuItem
+              asChild
+              className="cursor-pointer"
+            >
               <Link
-                href="/admin"
+                href={`/${website_sub_category_id}/admin`}
                 className="flex items-center gap-2 rounded-xl px-1 py-1.5 transition-colors hover:bg-main/10"
               >
                 <LayoutDashboard className="h-4 w-4 text-main" />
@@ -133,7 +151,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             className="cursor-pointer text-destructive focus:text-destructive"
             onSelect={(event) => {
               event.preventDefault();
-              signOut({ callbackUrl: "/" });
+              signOut({ callbackUrl: '/' });
             }}
           >
             <div className="flex w-full items-center gap-2 rounded-xl px-1 py-1 transition-colors hover:bg-destructive/5">

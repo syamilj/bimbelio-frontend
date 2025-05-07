@@ -1,52 +1,12 @@
-"use client";
+'use client';
 
-import { DialogWebCategory } from "./dialog-web-category";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { DialogWebCategory } from './dialog-web-category';
+import { useParams } from 'next/navigation';
 
 // Sample data matching the required structure
-const menuItems = [
-  {
-    id: "snbt",
-    name: "SNBT",
-    sub: [
-      {
-        id: "matematika",
-        name: "Matematika",
-        main_color: "#0066FF",
-        gradient_color: "#0099FF",
-        secondary_color: "#E6F3FF",
-      },
-      {
-        id: "bahasa-indonesia",
-        name: "Bahasa Indonesia",
-        main_color: "#FF3366",
-        gradient_color: "#FF6699",
-        secondary_color: "#FFE6EE",
-      },
-    ],
-  },
-  {
-    id: "utbk",
-    name: "UTBK",
-    sub: [
-      {
-        id: "penalaran-umum",
-        name: "Penalaran Umum",
-        main_color: "#9933CC",
-        gradient_color: "#CC66FF",
-        secondary_color: "#F5E6FF",
-      },
-      {
-        id: "literasi",
-        name: "Literasi",
-        main_color: "#FF9900",
-        gradient_color: "#FFCC00",
-        secondary_color: "#FFF9E6",
-      },
-    ],
-  },
-];
 export default function ChooseWebCategory({ first }: { first?: boolean }) {
+  const { web_sub_category } = useParams<{ web_sub_category: string }>();
   const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
 
   return (
@@ -55,14 +15,16 @@ export default function ChooseWebCategory({ first }: { first?: boolean }) {
       items={webCategoryData}
       value={websiteSubCategory?.id}
       onSelect={(item) => {
-        localStorage.setItem("website_sub_category_id", item?.id);
-        window.location.reload();
-        // setIsLoading(true);
-        // setWebsiteSubCategory(item);
-        // setMinimizeSidebar(true);
-        // setTimeout(() => {
-        //   setIsLoading(false);
-        // }, 2000);
+        localStorage.setItem('website_sub_category_id', item?.id);
+        const pathname = window.location.pathname
+        const pathnameArray = pathname.split("/")
+        let newPathname = ""
+        pathnameArray.forEach((pItem, index) => {
+          if(index > 1){
+            newPathname += `/${pItem}`
+          }
+        })
+        window.location.pathname = `/${item.id}/${newPathname}`
       }}
     />
   );

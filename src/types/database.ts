@@ -27,7 +27,7 @@ export type TryoutSessionParticipant = {
   isDone: boolean;
   website_sub_category_id: string;
 };
-export type TryoutStatusEnum = "PUBLIC" | "PRIVATE" | "DRAFT";
+export type TryoutStatusEnum = 'PUBLIC' | 'PRIVATE' | 'DRAFT';
 export type TryoutCategory = {
   name: string;
   id: string;
@@ -73,7 +73,7 @@ export type TryoutAnswer = {
 export type TryoutQuestion = {
   number: number;
   id: string;
-  type: "OBJECTIVE_5" | "TRUE_FALSE" | "SHORT_ANSWER";
+  type: 'OBJECTIVE_5' | 'TRUE_FALSE' | 'SHORT_ANSWER';
   question: string;
   createAt: Date;
   updateAt: Date;
@@ -99,7 +99,7 @@ export type User = {
   Role: UserRoleEnum;
 };
 
-export type UserRoleEnum = "ADMIN" | "USER" | "PREMIUM";
+export type UserRoleEnum = 'ADMIN' | 'USER' | 'PREMIUM';
 
 export type UserTryout = {
   id: string;
@@ -126,7 +126,7 @@ export type UserTryoutData = {
   univStudyChoiceTwo: string | null;
 };
 
-export type GenderEnum = "PRIA" | "WANITA";
+export type GenderEnum = 'PRIA' | 'WANITA';
 
 export type Transaction = {
   id: string;
@@ -152,7 +152,7 @@ export type Pricing = {
   price: number;
 };
 
-export type QuestionTypeEnum = "OBJECTIVE_5" | "TRUE_FALSE" | "SHORT_ANSWER";
+export type QuestionTypeEnum = 'OBJECTIVE_5' | 'TRUE_FALSE' | 'SHORT_ANSWER';
 
 export type Document = {
   id: string;
@@ -173,7 +173,7 @@ export type Document = {
   website_sub_category_id: string;
 };
 
-export type TagEnum = "Document" | "Video";
+export type TagEnum = 'Document' | 'Video';
 
 export type ChatHistory = {
   id: string;
@@ -210,7 +210,7 @@ export type WebsiteSubCategory = {
   website_category_id: string;
 };
 
-export type FeatureTypeEnum = "DOCUMENT" | "COURSE";
+export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE';
 
 export type Subscription = {
   id: string;

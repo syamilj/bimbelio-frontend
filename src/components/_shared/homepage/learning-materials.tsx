@@ -60,7 +60,7 @@ const LearningMaterials = () => {
           Materi Apa yang Kamu Butuhkan?
         </h1>
         <p className="font-regular mt-[-1rem] text-center text-main-gray-text">
-          Uji tingkat kesiapanmu dengan Quiz di setiap materi SNBT/UTBK!
+          Uji tingkat kesiapanmu dengan Quiz di setiap materi!
         </p>
       </div>
       <div className="gap-[1.5rem]">

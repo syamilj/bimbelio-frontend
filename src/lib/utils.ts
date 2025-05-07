@@ -1,19 +1,20 @@
 // utils.ts
-import { clsx, type ClassValue } from "clsx";
-import Cookies from "js-cookie";
-import { Metadata } from "next";
-import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from 'clsx';
+import Cookies from 'js-cookie';
+import { Metadata } from 'next';
+import { twMerge } from 'tailwind-merge';
 
-import { toaster } from "@/components/ui/toaster";
-import { env } from "@/env.mjs";
+import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+
 export const convertDaysToWords = (days: number): string => {
-  if (days > 10000) return "Lifetime";
-  if (days <= 0) return "Hari tidak valid";
+  if (days > 10000) return 'Lifetime';
+  if (days <= 0) return 'Hari tidak valid';
 
   const tahun = Math.floor(days / 360);
   days %= 360;
@@ -31,23 +32,23 @@ export const convertDaysToWords = (days: number): string => {
   if (minggu > 0) result.push(`${minggu} Minggu`);
   if (days > 0) result.push(`${days} Hari`);
 
-  return result.join(" ");
+  return result.join(' ');
 };
 
 export function formatDate(date: Date | string): string {
   // Pastikan kita punya objek Date
-  const d = typeof date === "string" ? new Date(date) : date;
+  const d = typeof date === 'string' ? new Date(date) : date;
   if (isNaN(d.getTime())) {
     // Jika invalid date
-    return "-";
+    return '-';
   }
 
   // Contoh: format dd MMM yyyy (05 Jan 2025)
   // Boleh ganti 'id-ID' jika mau format bahasa Indonesia
-  return new Intl.DateTimeFormat("id-ID", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
+  return new Intl.DateTimeFormat('id-ID', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
   }).format(d);
 }
 
@@ -55,13 +56,13 @@ export const copyTextToClipboard = (text: string | undefined) => {
   if (text) {
     navigator.clipboard.writeText(text);
     toaster({
-      title: "Disalin",
+      title: 'Disalin',
     });
   }
 };
 
 export const DateTimeWithZone = (date: any) => {
-  if (env.NODE_ENV === "production") {
+  if (env.NODE_ENV === 'production') {
     // // Buat objek Date dari string ISO 8601
     const dateObj = new Date(date);
 
@@ -98,22 +99,22 @@ export const getInitials = (input: string): string => {
   // Map each word to its first letter and convert to uppercase
   console.log({ words });
   const initials = words
-    .filter((word) => !word.includes("("))
+    .filter((word) => !word.includes('('))
     .map((word) => word.charAt(0).toUpperCase());
 
   // Join the initials into a single string
-  return initials.join("");
+  return initials.join('');
 };
 
 export function formatPhoneNumber(phone: string): string {
   // Remove any non-digit characters
-  const cleaned = phone.replace(/\D/g, "");
+  const cleaned = phone.replace(/\D/g, '');
 
   // Remove leading zeros if present
-  const withoutLeadingZero = cleaned.replace(/^0+/, "");
+  const withoutLeadingZero = cleaned.replace(/^0+/, '');
 
   // Add +62 prefix if not present
-  const withPrefix = withoutLeadingZero.startsWith("62")
+  const withPrefix = withoutLeadingZero.startsWith('62')
     ? withoutLeadingZero
     : `62${withoutLeadingZero}`;
 
@@ -121,22 +122,22 @@ export function formatPhoneNumber(phone: string): string {
 }
 
 export function formatSchoolName(school: string): string {
-  if (!school) return "";
+  if (!school) return '';
 
   // Remove extra spaces and convert to uppercase for processing
   let name = school.trim().toUpperCase();
 
   // Standardize school type abbreviations
   const typeMap: Record<string, string> = {
-    SMAN: "SMAN",
-    "SMA N": "SMAN",
-    SMKN: "SMKN",
-    "SMK N": "SMKN",
-    MAN: "MAN",
-    MA: "MA",
-    SMK: "SMK",
-    SMA: "SMA",
-    SMAS: "SMA",
+    SMAN: 'SMAN',
+    'SMA N': 'SMAN',
+    SMKN: 'SMKN',
+    'SMK N': 'SMKN',
+    MAN: 'MAN',
+    MA: 'MA',
+    SMK: 'SMK',
+    SMA: 'SMA',
+    SMAS: 'SMA',
   };
 
   // Replace known abbreviations
@@ -148,22 +149,22 @@ export function formatSchoolName(school: string): string {
   }
 
   // Special handling for Islamic schools
-  if (name.includes("AL-") || name.includes("AL ")) {
-    name = name.replace(/AL-?/g, "Al-");
+  if (name.includes('AL-') || name.includes('AL ')) {
+    name = name.replace(/AL-?/g, 'Al-');
   }
 
   // Convert to title case for location names (after the school type)
-  const parts = name.split(" ");
+  const parts = name.split(' ');
   const schoolType = parts[0];
   const rest = parts
     .slice(1)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
+    .join(' ');
 
   return `${schoolType} ${rest}`.trim();
 }
 
-export const imageProfile = Cookies.get("image-profile");
+export const imageProfile = Cookies.get('image-profile');
 
 export const getDate = (date: any) => {
   const Dates = new Date(date);
@@ -195,11 +196,11 @@ export const getDateHourStr = (date: any) => {
   const dateData = new Date(date);
   const dates = `${dateData.getFullYear()}-${(dateData.getMonth() + 1)
     .toString()
-    .padStart(2, "0")}-${dateData.getDate().toString().padStart(2, "0")}`;
-  const hour = `${dateData.getHours().toString().padStart(2, "0")}:${dateData
+    .padStart(2, '0')}-${dateData.getDate().toString().padStart(2, '0')}`;
+  const hour = `${dateData.getHours().toString().padStart(2, '0')}:${dateData
     .getMinutes()
     .toString()
-    .padStart(2, "0")}`;
+    .padStart(2, '0')}`;
   return `${dates}T${hour}`;
 };
 export const getDateString = (date: any) => {
@@ -209,18 +210,18 @@ export const getDateString = (date: any) => {
   const year = Dates.getFullYear();
 
   const monthNames = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
   ];
 
   return `${day < 10 ? `0${day}` : day} ${monthNames[month]} ${year}`;
@@ -233,26 +234,26 @@ export const getDateStringShort = (date: any) => {
   const year = Dates.getFullYear();
 
   const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "Mei",
-    "Jun",
-    "Jul",
-    "Agus",
-    "Sep",
-    "Okt",
-    "Nov",
-    "Des",
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Agus',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des',
   ];
 
   return `${day < 10 ? `0${day}` : day} ${monthNames[month]} ${year}`;
 };
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from 'react';
 
-export const getError = (error: any, message?: string) => {
+export const getError = (error: any) => {
   // if (error instanceof TRPCError) {
   //   if (error.code === "CLIENT_CLOSED_REQUEST") {
   //     throw new TRPCError({
@@ -367,18 +368,18 @@ export const getDateTryoutString = (date: any) => {
   const month = Dates.getMonth();
 
   const monthNames = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
   ];
 
   return `${day < 10 ? `0${day}` : day} ${monthNames[month]}`;
@@ -387,21 +388,21 @@ export const getDateForInput = (dateStr: any) => {
   const date = new Date(dateStr);
 
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
 };
 export const replaceLatexNotation = (content: string) => {
   if (content) {
     return content
-      .replace(/\\\[(.*?)\\\]/g, "$$$$ $1 $$$$") // Block math
-      .replace(/\\\((.*?)\\\)/g, "$ $1 $"); // Inline math
+      .replace(/\\\[(.*?)\\\]/g, '$$$$ $1 $$$$') // Block math
+      .replace(/\\\((.*?)\\\)/g, '$ $1 $'); // Inline math
   }
-  return "";
+  return '';
 };
 export const base64ToFile = (base64: any, filename: any) => {
-  const arr = base64.split(",");
+  const arr = base64.split(',');
   const mime = arr[0].match(/:(.*?);/)[1];
   const bstr = atob(arr[1]);
   let n = bstr.length;
@@ -424,8 +425,8 @@ export const hideVideoLink = async ({
 }) => {
   try {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", link);
-    xhr.responseType = "arraybuffer";
+    xhr.open('GET', link);
+    xhr.responseType = 'arraybuffer';
     xhr.onload = () => {
       const blob = new Blob([xhr.response]);
       const url = URL.createObjectURL(blob);
@@ -439,10 +440,10 @@ export const hideVideoLink = async ({
 };
 
 export function constructMetadata({
-  title = "Bimbelio - Bimbel AI untuk SNBT/UTBK",
-  description = "Bimbelio revolutionises the learning experience with active AI-based learning tools for SNBT/UTBK and UTBK preparation.",
-  image = "/logo.png",
-  icons = "/favicon.ico",
+  title = 'Bimbelio - Bimbel AI untuk PTN dan Kedinasan',
+  description = 'Bimbelio revolutionises the learning experience with active AI-based learning tools.',
+  image = '/logo.png',
+  icons = '/favicon.ico',
   noIndex = false,
 }: {
   title?: string;
@@ -451,7 +452,7 @@ export function constructMetadata({
   icons?: string;
   noIndex?: boolean;
 } = {}): Metadata {
-  const baseUrl = "https://www.bimbelio.com";
+  const baseUrl = 'https://www.bimbelio.com';
   const imageUrl = new URL(image, baseUrl).toString();
   const iconUrl = new URL(icons, baseUrl).toString();
 
@@ -459,26 +460,26 @@ export function constructMetadata({
     title,
     description,
     openGraph: {
-      type: "website",
+      type: 'website',
       url: baseUrl,
       title,
       description,
-      siteName: "Bimbelio",
+      siteName: 'Bimbelio',
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "Bimbelio Logo",
+          alt: 'Bimbelio Logo',
         },
       ],
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title,
       description,
       images: [imageUrl],
-      creator: "@syamiljihad",
+      creator: '@syamiljihad',
     },
     icons: {
       icon: [
@@ -488,7 +489,7 @@ export function constructMetadata({
       ],
     },
     metadataBase: new URL(baseUrl),
-    themeColor: "#FFF",
+    themeColor: '#FFF',
     ...(noIndex && {
       robots: {
         index: false,
@@ -500,676 +501,676 @@ export function constructMetadata({
 
 export const TncTryout = [
   {
-    category: "twk",
+    category: 'twk',
     value:
-      "- TWK\n- Jumlah Soal: 30\n- Penilaian: Benar 5, Salah 0\n- Materi: Pancasila, UUD 1945, NKRI, Bhinneka Tunggal Ika, Sejarah Perjuangan Bangsa\n- Passing Grade: 65\n- Tujuan: Mengukur wawasan kebangsaan, nasionalisme, dan pemahaman terhadap ideologi negara",
+      '- TWK\n- Jumlah Soal: 30\n- Penilaian: Benar 5, Salah 0\n- Materi: Pancasila, UUD 1945, NKRI, Bhinneka Tunggal Ika, Sejarah Perjuangan Bangsa\n- Passing Grade: 65\n- Tujuan: Mengukur wawasan kebangsaan, nasionalisme, dan pemahaman terhadap ideologi negara',
   },
   {
-    category: "tiu",
+    category: 'tiu',
     value:
-      "- TIU\n- Jumlah Soal: 35\n- Penilaian: Benar 5, Salah 0\n- Materi: Kemampuan Verbal (sinonim, antonim, analogi), Kemampuan Numerik (aritmetika, seri angka), Kemampuan Logika (penalaran, silogisme)\n- Passing Grade: 80\n- Tujuan: Mengukur kemampuan berpikir logis, numerik, dan verbal",
+      '- TIU\n- Jumlah Soal: 35\n- Penilaian: Benar 5, Salah 0\n- Materi: Kemampuan Verbal (sinonim, antonim, analogi), Kemampuan Numerik (aritmetika, seri angka), Kemampuan Logika (penalaran, silogisme)\n- Passing Grade: 80\n- Tujuan: Mengukur kemampuan berpikir logis, numerik, dan verbal',
   },
   {
-    category: "tkp",
+    category: 'tkp',
     value:
-      "- TKP\n- Jumlah Soal: 45\n- Penilaian: Skor 1-5 per jawaban (Tidak ada jawaban bernilai 0)\n- Materi: Integritas, Adaptasi, Pelayanan Publik, Kerjasama, Kepemimpinan, Pengendalian Diri\n- Passing Grade: 166\n- Tujuan: Mengukur karakteristik pribadi peserta terkait integritas, etika kerja, dan kemampuan sosial",
+      '- TKP\n- Jumlah Soal: 45\n- Penilaian: Skor 1-5 per jawaban (Tidak ada jawaban bernilai 0)\n- Materi: Integritas, Adaptasi, Pelayanan Publik, Kerjasama, Kepemimpinan, Pengendalian Diri\n- Passing Grade: 166\n- Tujuan: Mengukur karakteristik pribadi peserta terkait integritas, etika kerja, dan kemampuan sosial',
   },
 ];
 
 export const Provinces = [
   {
-    province: "Aceh",
+    province: 'Aceh',
     district: [
-      { regency: "Banda Aceh" },
-      { regency: "Langsa" },
-      { regency: "Sabang" },
-      { regency: "Lhokseumawe" },
-      { regency: "Aceh Besar" },
-      { regency: "Aceh Barat" },
-      { regency: "Aceh Barat Daya" },
-      { regency: "Aceh Jaya" },
-      { regency: "Aceh Selatan" },
-      { regency: "Aceh Singkil" },
-      { regency: "Aceh Tamiang" },
-      { regency: "Aceh Tengah" },
-      { regency: "Aceh Tenggara" },
-      { regency: "Aceh Timur" },
-      { regency: "Aceh Utara" },
-      { regency: "Bener Meriah" },
-      { regency: "Bireuen" },
-      { regency: "Gayo Lues" },
-      { regency: "Nagan Raya" },
-      { regency: "Pidie" },
-      { regency: "Pidie Jaya" },
-      { regency: "Simeulue" },
+      { regency: 'Banda Aceh' },
+      { regency: 'Langsa' },
+      { regency: 'Sabang' },
+      { regency: 'Lhokseumawe' },
+      { regency: 'Aceh Besar' },
+      { regency: 'Aceh Barat' },
+      { regency: 'Aceh Barat Daya' },
+      { regency: 'Aceh Jaya' },
+      { regency: 'Aceh Selatan' },
+      { regency: 'Aceh Singkil' },
+      { regency: 'Aceh Tamiang' },
+      { regency: 'Aceh Tengah' },
+      { regency: 'Aceh Tenggara' },
+      { regency: 'Aceh Timur' },
+      { regency: 'Aceh Utara' },
+      { regency: 'Bener Meriah' },
+      { regency: 'Bireuen' },
+      { regency: 'Gayo Lues' },
+      { regency: 'Nagan Raya' },
+      { regency: 'Pidie' },
+      { regency: 'Pidie Jaya' },
+      { regency: 'Simeulue' },
     ],
   },
   {
-    province: "Bali",
+    province: 'Bali',
     district: [
-      { regency: "Denpasar" },
-      { regency: "Badung" },
-      { regency: "Bangli" },
-      { regency: "Buleleng" },
-      { regency: "Gianyar" },
-      { regency: "Jembrana" },
-      { regency: "Karangasem" },
-      { regency: "Klungkung" },
-      { regency: "Tabanan" },
+      { regency: 'Denpasar' },
+      { regency: 'Badung' },
+      { regency: 'Bangli' },
+      { regency: 'Buleleng' },
+      { regency: 'Gianyar' },
+      { regency: 'Jembrana' },
+      { regency: 'Karangasem' },
+      { regency: 'Klungkung' },
+      { regency: 'Tabanan' },
     ],
   },
   {
-    province: "Bangka Belitung",
+    province: 'Bangka Belitung',
     district: [
-      { regency: "Bangka" },
-      { regency: "Belitung" },
-      { regency: "Pangkal Pinang" },
-      { regency: "Belitung Timur" },
-      { regency: "Bangka Barat" },
-      { regency: "Bangka Tengah" },
-      { regency: "Bangka Selatan" },
+      { regency: 'Bangka' },
+      { regency: 'Belitung' },
+      { regency: 'Pangkal Pinang' },
+      { regency: 'Belitung Timur' },
+      { regency: 'Bangka Barat' },
+      { regency: 'Bangka Tengah' },
+      { regency: 'Bangka Selatan' },
     ],
   },
   {
-    province: "Banten",
+    province: 'Banten',
     district: [
-      { regency: "Cilegon" },
-      { regency: "Lebak" },
-      { regency: "Pandeglang" },
-      { regency: "Serang" },
-      { regency: "Tangerang" },
-      { regency: "Tangerang Selatan" },
+      { regency: 'Cilegon' },
+      { regency: 'Lebak' },
+      { regency: 'Pandeglang' },
+      { regency: 'Serang' },
+      { regency: 'Tangerang' },
+      { regency: 'Tangerang Selatan' },
     ],
   },
   {
-    province: "Bengkulu",
+    province: 'Bengkulu',
     district: [
-      { regency: "Bengkulu" },
-      { regency: "Bengkulu Selatan" },
-      { regency: "Bengkulu Tengah" },
-      { regency: "Bengkulu Utara" },
-      { regency: "Kaur" },
-      { regency: "Kepahiang" },
-      { regency: "Lebong" },
-      { regency: "Mukomuko" },
-      { regency: "Rejang Lebong" },
-      { regency: "Seluma" },
+      { regency: 'Bengkulu' },
+      { regency: 'Bengkulu Selatan' },
+      { regency: 'Bengkulu Tengah' },
+      { regency: 'Bengkulu Utara' },
+      { regency: 'Kaur' },
+      { regency: 'Kepahiang' },
+      { regency: 'Lebong' },
+      { regency: 'Mukomuko' },
+      { regency: 'Rejang Lebong' },
+      { regency: 'Seluma' },
     ],
   },
   {
-    province: "DKI Jakarta",
+    province: 'DKI Jakarta',
     district: [
-      { regency: "Jakarta Barat" },
-      { regency: "Jakarta Pusat" },
-      { regency: "Jakarta Selatan" },
-      { regency: "Jakarta Timur" },
-      { regency: "Jakarta Utara" },
-      { regency: "Kepulauan Seribu" },
+      { regency: 'Jakarta Barat' },
+      { regency: 'Jakarta Pusat' },
+      { regency: 'Jakarta Selatan' },
+      { regency: 'Jakarta Timur' },
+      { regency: 'Jakarta Utara' },
+      { regency: 'Kepulauan Seribu' },
     ],
   },
   {
-    province: "DI Yogyakarta",
+    province: 'DI Yogyakarta',
     district: [
-      { regency: "Bantul" },
-      { regency: "Gunungkidul" },
-      { regency: "Kulon Progo" },
-      { regency: "Sleman" },
-      { regency: "Yogyakarta" },
+      { regency: 'Bantul' },
+      { regency: 'Gunungkidul' },
+      { regency: 'Kulon Progo' },
+      { regency: 'Sleman' },
+      { regency: 'Yogyakarta' },
     ],
   },
   {
-    province: "Gorontalo",
+    province: 'Gorontalo',
     district: [
-      { regency: "Boalemo" },
-      { regency: "Bone Bolango" },
-      { regency: "Gorontalo" },
-      { regency: "Gorontalo Utara" },
-      { regency: "Pohuwato" },
+      { regency: 'Boalemo' },
+      { regency: 'Bone Bolango' },
+      { regency: 'Gorontalo' },
+      { regency: 'Gorontalo Utara' },
+      { regency: 'Pohuwato' },
     ],
   },
   {
-    province: "Jambi",
+    province: 'Jambi',
     district: [
-      { regency: "Batanghari" },
-      { regency: "Bungo" },
-      { regency: "Jambi" },
-      { regency: "Kerinci" },
-      { regency: "Merangin" },
-      { regency: "Muaro Jambi" },
-      { regency: "Sarolangun" },
-      { regency: "Tanjung Jabung Barat" },
-      { regency: "Tanjung Jabung Timur" },
-      { regency: "Tebo" },
+      { regency: 'Batanghari' },
+      { regency: 'Bungo' },
+      { regency: 'Jambi' },
+      { regency: 'Kerinci' },
+      { regency: 'Merangin' },
+      { regency: 'Muaro Jambi' },
+      { regency: 'Sarolangun' },
+      { regency: 'Tanjung Jabung Barat' },
+      { regency: 'Tanjung Jabung Timur' },
+      { regency: 'Tebo' },
     ],
   },
   {
-    province: "Jawa Barat",
+    province: 'Jawa Barat',
     district: [
-      { regency: "Bandung" },
-      { regency: "Bandung Barat" },
-      { regency: "Bekasi" },
-      { regency: "Bogor" },
-      { regency: "Ciamis" },
-      { regency: "Cianjur" },
-      { regency: "Cimahi" },
-      { regency: "Cirebon" },
-      { regency: "Depok" },
-      { regency: "Garut" },
-      { regency: "Indramayu" },
-      { regency: "Karawang" },
-      { regency: "Kuningan" },
-      { regency: "Majalengka" },
-      { regency: "Pangandaran" },
-      { regency: "Purwakarta" },
-      { regency: "Subang" },
-      { regency: "Sukabumi" },
-      { regency: "Sumedang" },
-      { regency: "Tasikmalaya" },
+      { regency: 'Bandung' },
+      { regency: 'Bandung Barat' },
+      { regency: 'Bekasi' },
+      { regency: 'Bogor' },
+      { regency: 'Ciamis' },
+      { regency: 'Cianjur' },
+      { regency: 'Cimahi' },
+      { regency: 'Cirebon' },
+      { regency: 'Depok' },
+      { regency: 'Garut' },
+      { regency: 'Indramayu' },
+      { regency: 'Karawang' },
+      { regency: 'Kuningan' },
+      { regency: 'Majalengka' },
+      { regency: 'Pangandaran' },
+      { regency: 'Purwakarta' },
+      { regency: 'Subang' },
+      { regency: 'Sukabumi' },
+      { regency: 'Sumedang' },
+      { regency: 'Tasikmalaya' },
     ],
   },
   {
-    province: "Jawa Tengah",
+    province: 'Jawa Tengah',
     district: [
-      { regency: "Banjarnegara" },
-      { regency: "Banyumas" },
-      { regency: "Batang" },
-      { regency: "Blora" },
-      { regency: "Boyolali" },
-      { regency: "Brebes" },
-      { regency: "Cilacap" },
-      { regency: "Demak" },
-      { regency: "Grobogan" },
-      { regency: "Jepara" },
-      { regency: "Karanganyar" },
-      { regency: "Kebumen" },
-      { regency: "Kendal" },
-      { regency: "Klaten" },
-      { regency: "Kudus" },
-      { regency: "Magelang" },
-      { regency: "Pati" },
-      { regency: "Pekalongan" },
-      { regency: "Pemalang" },
-      { regency: "Purbalingga" },
-      { regency: "Purworejo" },
-      { regency: "Rembang" },
-      { regency: "Salatiga" },
-      { regency: "Semarang" },
-      { regency: "Sragen" },
-      { regency: "Sukoharjo" },
-      { regency: "Surakarta" },
-      { regency: "Tegal" },
-      { regency: "Temanggung" },
-      { regency: "Wonogiri" },
-      { regency: "Wonosobo" },
+      { regency: 'Banjarnegara' },
+      { regency: 'Banyumas' },
+      { regency: 'Batang' },
+      { regency: 'Blora' },
+      { regency: 'Boyolali' },
+      { regency: 'Brebes' },
+      { regency: 'Cilacap' },
+      { regency: 'Demak' },
+      { regency: 'Grobogan' },
+      { regency: 'Jepara' },
+      { regency: 'Karanganyar' },
+      { regency: 'Kebumen' },
+      { regency: 'Kendal' },
+      { regency: 'Klaten' },
+      { regency: 'Kudus' },
+      { regency: 'Magelang' },
+      { regency: 'Pati' },
+      { regency: 'Pekalongan' },
+      { regency: 'Pemalang' },
+      { regency: 'Purbalingga' },
+      { regency: 'Purworejo' },
+      { regency: 'Rembang' },
+      { regency: 'Salatiga' },
+      { regency: 'Semarang' },
+      { regency: 'Sragen' },
+      { regency: 'Sukoharjo' },
+      { regency: 'Surakarta' },
+      { regency: 'Tegal' },
+      { regency: 'Temanggung' },
+      { regency: 'Wonogiri' },
+      { regency: 'Wonosobo' },
     ],
   },
   {
-    province: "Jawa Timur",
+    province: 'Jawa Timur',
     district: [
-      { regency: "Bangkalan" },
-      { regency: "Banyuwangi" },
-      { regency: "Blitar" },
-      { regency: "Bojonegoro" },
-      { regency: "Bondowoso" },
-      { regency: "Gresik" },
-      { regency: "Jember" },
-      { regency: "Jombang" },
-      { regency: "Kediri" },
-      { regency: "Lamongan" },
-      { regency: "Lumajang" },
-      { regency: "Madiun" },
-      { regency: "Magetan" },
-      { regency: "Malang" },
-      { regency: "Mojokerto" },
-      { regency: "Nganjuk" },
-      { regency: "Ngawi" },
-      { regency: "Pacitan" },
-      { regency: "Pamekasan" },
-      { regency: "Pasuruan" },
-      { regency: "Ponorogo" },
-      { regency: "Probolinggo" },
-      { regency: "Sampang" },
-      { regency: "Sidoarjo" },
-      { regency: "Situbondo" },
-      { regency: "Sumenep" },
-      { regency: "Surabaya" },
-      { regency: "Trenggalek" },
-      { regency: "Tuban" },
-      { regency: "Tulungagung" },
+      { regency: 'Bangkalan' },
+      { regency: 'Banyuwangi' },
+      { regency: 'Blitar' },
+      { regency: 'Bojonegoro' },
+      { regency: 'Bondowoso' },
+      { regency: 'Gresik' },
+      { regency: 'Jember' },
+      { regency: 'Jombang' },
+      { regency: 'Kediri' },
+      { regency: 'Lamongan' },
+      { regency: 'Lumajang' },
+      { regency: 'Madiun' },
+      { regency: 'Magetan' },
+      { regency: 'Malang' },
+      { regency: 'Mojokerto' },
+      { regency: 'Nganjuk' },
+      { regency: 'Ngawi' },
+      { regency: 'Pacitan' },
+      { regency: 'Pamekasan' },
+      { regency: 'Pasuruan' },
+      { regency: 'Ponorogo' },
+      { regency: 'Probolinggo' },
+      { regency: 'Sampang' },
+      { regency: 'Sidoarjo' },
+      { regency: 'Situbondo' },
+      { regency: 'Sumenep' },
+      { regency: 'Surabaya' },
+      { regency: 'Trenggalek' },
+      { regency: 'Tuban' },
+      { regency: 'Tulungagung' },
     ],
   },
   {
-    province: "Kalimantan Barat",
+    province: 'Kalimantan Barat',
     district: [
-      { regency: "Bengkayang" },
-      { regency: "Kapuas Hulu" },
-      { regency: "Kayong Utara" },
-      { regency: "Ketapang" },
-      { regency: "Kubu Raya" },
-      { regency: "Landak" },
-      { regency: "Melawi" },
-      { regency: "Mempawah" },
-      { regency: "Pontianak" },
-      { regency: "Sambas" },
-      { regency: "Sanggau" },
-      { regency: "Sekadau" },
-      { regency: "Sintang" },
-      { regency: "Singkawang" },
+      { regency: 'Bengkayang' },
+      { regency: 'Kapuas Hulu' },
+      { regency: 'Kayong Utara' },
+      { regency: 'Ketapang' },
+      { regency: 'Kubu Raya' },
+      { regency: 'Landak' },
+      { regency: 'Melawi' },
+      { regency: 'Mempawah' },
+      { regency: 'Pontianak' },
+      { regency: 'Sambas' },
+      { regency: 'Sanggau' },
+      { regency: 'Sekadau' },
+      { regency: 'Sintang' },
+      { regency: 'Singkawang' },
     ],
   },
   {
-    province: "Kalimantan Selatan",
+    province: 'Kalimantan Selatan',
     district: [
-      { regency: "Banjar" },
-      { regency: "Banjarbaru" },
-      { regency: "Banjarmasin" },
-      { regency: "Barito Kuala" },
-      { regency: "Hulu Sungai Selatan" },
-      { regency: "Hulu Sungai Tengah" },
-      { regency: "Hulu Sungai Utara" },
-      { regency: "Kotabaru" },
-      { regency: "Tabalong" },
-      { regency: "Tanah Bumbu" },
-      { regency: "Tanah Laut" },
-      { regency: "Tapin" },
+      { regency: 'Banjar' },
+      { regency: 'Banjarbaru' },
+      { regency: 'Banjarmasin' },
+      { regency: 'Barito Kuala' },
+      { regency: 'Hulu Sungai Selatan' },
+      { regency: 'Hulu Sungai Tengah' },
+      { regency: 'Hulu Sungai Utara' },
+      { regency: 'Kotabaru' },
+      { regency: 'Tabalong' },
+      { regency: 'Tanah Bumbu' },
+      { regency: 'Tanah Laut' },
+      { regency: 'Tapin' },
     ],
   },
   {
-    province: "Kalimantan Tengah",
+    province: 'Kalimantan Tengah',
     district: [
-      { regency: "Barito Selatan" },
-      { regency: "Barito Timur" },
-      { regency: "Barito Utara" },
-      { regency: "Gunung Mas" },
-      { regency: "Kapuas" },
-      { regency: "Katingan" },
-      { regency: "Kotawaringin Barat" },
-      { regency: "Kotawaringin Timur" },
-      { regency: "Lamandau" },
-      { regency: "Murung Raya" },
-      { regency: "Palangka Raya" },
-      { regency: "Pulang Pisau" },
-      { regency: "Sukamara" },
-      { regency: "Seruyan" },
+      { regency: 'Barito Selatan' },
+      { regency: 'Barito Timur' },
+      { regency: 'Barito Utara' },
+      { regency: 'Gunung Mas' },
+      { regency: 'Kapuas' },
+      { regency: 'Katingan' },
+      { regency: 'Kotawaringin Barat' },
+      { regency: 'Kotawaringin Timur' },
+      { regency: 'Lamandau' },
+      { regency: 'Murung Raya' },
+      { regency: 'Palangka Raya' },
+      { regency: 'Pulang Pisau' },
+      { regency: 'Sukamara' },
+      { regency: 'Seruyan' },
     ],
   },
   {
-    province: "Kalimantan Timur",
+    province: 'Kalimantan Timur',
     district: [
-      { regency: "Balikpapan" },
-      { regency: "Berau" },
-      { regency: "Bontang" },
-      { regency: "Kutai Barat" },
-      { regency: "Kutai Kartanegara" },
-      { regency: "Kutai Timur" },
-      { regency: "Mahakam Ulu" },
-      { regency: "Paser" },
-      { regency: "Penajam Paser Utara" },
-      { regency: "Samarinda" },
+      { regency: 'Balikpapan' },
+      { regency: 'Berau' },
+      { regency: 'Bontang' },
+      { regency: 'Kutai Barat' },
+      { regency: 'Kutai Kartanegara' },
+      { regency: 'Kutai Timur' },
+      { regency: 'Mahakam Ulu' },
+      { regency: 'Paser' },
+      { regency: 'Penajam Paser Utara' },
+      { regency: 'Samarinda' },
     ],
   },
   {
-    province: "Kalimantan Utara",
+    province: 'Kalimantan Utara',
     district: [
-      { regency: "Bulungan" },
-      { regency: "Malinau" },
-      { regency: "Nunukan" },
-      { regency: "Tana Tidung" },
-      { regency: "Tarakan" },
+      { regency: 'Bulungan' },
+      { regency: 'Malinau' },
+      { regency: 'Nunukan' },
+      { regency: 'Tana Tidung' },
+      { regency: 'Tarakan' },
     ],
   },
   {
-    province: "Kepulauan Riau",
+    province: 'Kepulauan Riau',
     district: [
-      { regency: "Bintan" },
-      { regency: "Karimun" },
-      { regency: "Kepulauan Anambas" },
-      { regency: "Lingga" },
-      { regency: "Natuna" },
-      { regency: "Batam" },
-      { regency: "Tanjung Pinang" },
+      { regency: 'Bintan' },
+      { regency: 'Karimun' },
+      { regency: 'Kepulauan Anambas' },
+      { regency: 'Lingga' },
+      { regency: 'Natuna' },
+      { regency: 'Batam' },
+      { regency: 'Tanjung Pinang' },
     ],
   },
   {
-    province: "Lampung",
+    province: 'Lampung',
     district: [
-      { regency: "Bandar Lampung" },
-      { regency: "Lampung Barat" },
-      { regency: "Lampung Selatan" },
-      { regency: "Lampung Tengah" },
-      { regency: "Lampung Timur" },
-      { regency: "Lampung Utara" },
-      { regency: "Mesuji" },
-      { regency: "Metro" },
-      { regency: "Pesawaran" },
-      { regency: "Pesisir Barat" },
-      { regency: "Pringsewu" },
-      { regency: "Tanggamus" },
-      { regency: "Tulang Bawang" },
-      { regency: "Tulang Bawang Barat" },
-      { regency: "Way Kanan" },
+      { regency: 'Bandar Lampung' },
+      { regency: 'Lampung Barat' },
+      { regency: 'Lampung Selatan' },
+      { regency: 'Lampung Tengah' },
+      { regency: 'Lampung Timur' },
+      { regency: 'Lampung Utara' },
+      { regency: 'Mesuji' },
+      { regency: 'Metro' },
+      { regency: 'Pesawaran' },
+      { regency: 'Pesisir Barat' },
+      { regency: 'Pringsewu' },
+      { regency: 'Tanggamus' },
+      { regency: 'Tulang Bawang' },
+      { regency: 'Tulang Bawang Barat' },
+      { regency: 'Way Kanan' },
     ],
   },
   {
-    province: "Maluku",
+    province: 'Maluku',
     district: [
-      { regency: "Ambon" },
-      { regency: "Buru" },
-      { regency: "Buru Selatan" },
-      { regency: "Kepulauan Aru" },
-      { regency: "Maluku Barat Daya" },
-      { regency: "Maluku Tengah" },
-      { regency: "Maluku Tenggara" },
-      { regency: "Seram Bagian Barat" },
-      { regency: "Seram Bagian Timur" },
+      { regency: 'Ambon' },
+      { regency: 'Buru' },
+      { regency: 'Buru Selatan' },
+      { regency: 'Kepulauan Aru' },
+      { regency: 'Maluku Barat Daya' },
+      { regency: 'Maluku Tengah' },
+      { regency: 'Maluku Tenggara' },
+      { regency: 'Seram Bagian Barat' },
+      { regency: 'Seram Bagian Timur' },
     ],
   },
   {
-    province: "Maluku Utara",
+    province: 'Maluku Utara',
     district: [
-      { regency: "Halmahera Barat" },
-      { regency: "Halmahera Selatan" },
-      { regency: "Halmahera Tengah" },
-      { regency: "Halmahera Timur" },
-      { regency: "Halmahera Utara" },
-      { regency: "Kepulauan Sula" },
-      { regency: "Pulau Morotai" },
-      { regency: "Pulau Taliabu" },
-      { regency: "Ternate" },
-      { regency: "Tidore Kepulauan" },
+      { regency: 'Halmahera Barat' },
+      { regency: 'Halmahera Selatan' },
+      { regency: 'Halmahera Tengah' },
+      { regency: 'Halmahera Timur' },
+      { regency: 'Halmahera Utara' },
+      { regency: 'Kepulauan Sula' },
+      { regency: 'Pulau Morotai' },
+      { regency: 'Pulau Taliabu' },
+      { regency: 'Ternate' },
+      { regency: 'Tidore Kepulauan' },
     ],
   },
   {
-    province: "Nusa Tenggara Barat",
+    province: 'Nusa Tenggara Barat',
     district: [
-      { regency: "Bima" },
-      { regency: "Dompu" },
-      { regency: "Kota Bima" },
-      { regency: "Kota Mataram" },
-      { regency: "Lombok Barat" },
-      { regency: "Lombok Tengah" },
-      { regency: "Lombok Timur" },
-      { regency: "Lombok Utara" },
-      { regency: "Sumbawa" },
-      { regency: "Sumbawa Barat" },
+      { regency: 'Bima' },
+      { regency: 'Dompu' },
+      { regency: 'Kota Bima' },
+      { regency: 'Kota Mataram' },
+      { regency: 'Lombok Barat' },
+      { regency: 'Lombok Tengah' },
+      { regency: 'Lombok Timur' },
+      { regency: 'Lombok Utara' },
+      { regency: 'Sumbawa' },
+      { regency: 'Sumbawa Barat' },
     ],
   },
   {
-    province: "Nusa Tenggara Timur",
+    province: 'Nusa Tenggara Timur',
     district: [
-      { regency: "Alor" },
-      { regency: "Belu" },
-      { regency: "Ende" },
-      { regency: "Flores Timur" },
-      { regency: "Kupang" },
-      { regency: "Lembata" },
-      { regency: "Malaka" },
-      { regency: "Manggarai" },
-      { regency: "Manggarai Barat" },
-      { regency: "Manggarai Timur" },
-      { regency: "Nagekeo" },
-      { regency: "Ngada" },
-      { regency: "Rote Ndao" },
-      { regency: "Sabu Raijua" },
-      { regency: "Sikka" },
-      { regency: "Sumba Barat" },
-      { regency: "Sumba Barat Daya" },
-      { regency: "Sumba Tengah" },
-      { regency: "Sumba Timur" },
-      { regency: "Timor Tengah Selatan" },
-      { regency: "Timor Tengah Utara" },
+      { regency: 'Alor' },
+      { regency: 'Belu' },
+      { regency: 'Ende' },
+      { regency: 'Flores Timur' },
+      { regency: 'Kupang' },
+      { regency: 'Lembata' },
+      { regency: 'Malaka' },
+      { regency: 'Manggarai' },
+      { regency: 'Manggarai Barat' },
+      { regency: 'Manggarai Timur' },
+      { regency: 'Nagekeo' },
+      { regency: 'Ngada' },
+      { regency: 'Rote Ndao' },
+      { regency: 'Sabu Raijua' },
+      { regency: 'Sikka' },
+      { regency: 'Sumba Barat' },
+      { regency: 'Sumba Barat Daya' },
+      { regency: 'Sumba Tengah' },
+      { regency: 'Sumba Timur' },
+      { regency: 'Timor Tengah Selatan' },
+      { regency: 'Timor Tengah Utara' },
     ],
   },
   {
-    province: "Papua",
+    province: 'Papua',
     district: [
-      { regency: "Asmat" },
-      { regency: "Biak Numfor" },
-      { regency: "Jayapura" },
-      { regency: "Jayawijaya" },
-      { regency: "Keerom" },
-      { regency: "Mamberamo Raya" },
-      { regency: "Mamberamo Tengah" },
-      { regency: "Merauke" },
-      { regency: "Mimika" },
-      { regency: "Nabire" },
-      { regency: "Paniai" },
-      { regency: "Pegunungan Bintang" },
-      { regency: "Sarmi" },
-      { regency: "Supiori" },
-      { regency: "Waropen" },
-      { regency: "Yahukimo" },
-      { regency: "Yalimo" },
+      { regency: 'Asmat' },
+      { regency: 'Biak Numfor' },
+      { regency: 'Jayapura' },
+      { regency: 'Jayawijaya' },
+      { regency: 'Keerom' },
+      { regency: 'Mamberamo Raya' },
+      { regency: 'Mamberamo Tengah' },
+      { regency: 'Merauke' },
+      { regency: 'Mimika' },
+      { regency: 'Nabire' },
+      { regency: 'Paniai' },
+      { regency: 'Pegunungan Bintang' },
+      { regency: 'Sarmi' },
+      { regency: 'Supiori' },
+      { regency: 'Waropen' },
+      { regency: 'Yahukimo' },
+      { regency: 'Yalimo' },
     ],
   },
   {
-    province: "Papua Barat",
+    province: 'Papua Barat',
     district: [
-      { regency: "Fakfak" },
-      { regency: "Kaimana" },
-      { regency: "Manokwari" },
-      { regency: "Manokwari Selatan" },
-      { regency: "Pegunungan Arfak" },
-      { regency: "Sorong" },
-      { regency: "Sorong Selatan" },
-      { regency: "Tambrauw" },
-      { regency: "Teluk Bintuni" },
-      { regency: "Teluk Wondama" },
+      { regency: 'Fakfak' },
+      { regency: 'Kaimana' },
+      { regency: 'Manokwari' },
+      { regency: 'Manokwari Selatan' },
+      { regency: 'Pegunungan Arfak' },
+      { regency: 'Sorong' },
+      { regency: 'Sorong Selatan' },
+      { regency: 'Tambrauw' },
+      { regency: 'Teluk Bintuni' },
+      { regency: 'Teluk Wondama' },
     ],
   },
   {
-    province: "Papua Barat Daya",
-    district: [{ regency: "Sorong" }, { regency: "Tambrauw" }],
+    province: 'Papua Barat Daya',
+    district: [{ regency: 'Sorong' }, { regency: 'Tambrauw' }],
   },
   {
-    province: "Papua Pegunungan",
+    province: 'Papua Pegunungan',
     district: [
-      { regency: "Jayawijaya" },
-      { regency: "Lanny Jaya" },
-      { regency: "Nduga" },
+      { regency: 'Jayawijaya' },
+      { regency: 'Lanny Jaya' },
+      { regency: 'Nduga' },
     ],
   },
   {
-    province: "Papua Selatan",
-    district: [{ regency: "Merauke" }, { regency: "Asmat" }],
+    province: 'Papua Selatan',
+    district: [{ regency: 'Merauke' }, { regency: 'Asmat' }],
   },
   {
-    province: "Papua Tengah",
-    district: [{ regency: "Puncak Jaya" }, { regency: "Deiyai" }],
+    province: 'Papua Tengah',
+    district: [{ regency: 'Puncak Jaya' }, { regency: 'Deiyai' }],
   },
   {
-    province: "Riau",
+    province: 'Riau',
     district: [
-      { regency: "Bengkalis" },
-      { regency: "Dumai" },
-      { regency: "Indragiri Hilir" },
-      { regency: "Indragiri Hulu" },
-      { regency: "Kampar" },
-      { regency: "Kepulauan Meranti" },
-      { regency: "Kuantan Singingi" },
-      { regency: "Pekanbaru" },
-      { regency: "Pelalawan" },
-      { regency: "Rokan Hilir" },
-      { regency: "Rokan Hulu" },
-      { regency: "Siak" },
+      { regency: 'Bengkalis' },
+      { regency: 'Dumai' },
+      { regency: 'Indragiri Hilir' },
+      { regency: 'Indragiri Hulu' },
+      { regency: 'Kampar' },
+      { regency: 'Kepulauan Meranti' },
+      { regency: 'Kuantan Singingi' },
+      { regency: 'Pekanbaru' },
+      { regency: 'Pelalawan' },
+      { regency: 'Rokan Hilir' },
+      { regency: 'Rokan Hulu' },
+      { regency: 'Siak' },
     ],
   },
   {
-    province: "Sulawesi Barat",
+    province: 'Sulawesi Barat',
     district: [
-      { regency: "Majene" },
-      { regency: "Mamasa" },
-      { regency: "Mamuju" },
-      { regency: "Mamuju Tengah" },
-      { regency: "Pasangkayu" },
+      { regency: 'Majene' },
+      { regency: 'Mamasa' },
+      { regency: 'Mamuju' },
+      { regency: 'Mamuju Tengah' },
+      { regency: 'Pasangkayu' },
     ],
   },
   {
-    province: "Sulawesi Selatan",
+    province: 'Sulawesi Selatan',
     district: [
-      { regency: "Bantaeng" },
-      { regency: "Barru" },
-      { regency: "Bone" },
-      { regency: "Bulukumba" },
-      { regency: "Enrekang" },
-      { regency: "Gowa" },
-      { regency: "Jeneponto" },
-      { regency: "Luwu" },
-      { regency: "Luwu Timur" },
-      { regency: "Luwu Utara" },
-      { regency: "Makassar" },
-      { regency: "Maros" },
-      { regency: "Palopo" },
-      { regency: "Parepare" },
-      { regency: "Pinrang" },
-      { regency: "Selayar" },
-      { regency: "Sidenreng Rappang" },
-      { regency: "Sinjai" },
-      { regency: "Soppeng" },
-      { regency: "Takalar" },
-      { regency: "Tana Toraja" },
-      { regency: "Toraja Utara" },
-      { regency: "Wajo" },
+      { regency: 'Bantaeng' },
+      { regency: 'Barru' },
+      { regency: 'Bone' },
+      { regency: 'Bulukumba' },
+      { regency: 'Enrekang' },
+      { regency: 'Gowa' },
+      { regency: 'Jeneponto' },
+      { regency: 'Luwu' },
+      { regency: 'Luwu Timur' },
+      { regency: 'Luwu Utara' },
+      { regency: 'Makassar' },
+      { regency: 'Maros' },
+      { regency: 'Palopo' },
+      { regency: 'Parepare' },
+      { regency: 'Pinrang' },
+      { regency: 'Selayar' },
+      { regency: 'Sidenreng Rappang' },
+      { regency: 'Sinjai' },
+      { regency: 'Soppeng' },
+      { regency: 'Takalar' },
+      { regency: 'Tana Toraja' },
+      { regency: 'Toraja Utara' },
+      { regency: 'Wajo' },
     ],
   },
   {
-    province: "Sulawesi Tengah",
+    province: 'Sulawesi Tengah',
     district: [
-      { regency: "Banggai" },
-      { regency: "Banggai Kepulauan" },
-      { regency: "Banggai Laut" },
-      { regency: "Buol" },
-      { regency: "Donggala" },
-      { regency: "Morowali" },
-      { regency: "Morowali Utara" },
-      { regency: "Palu" },
-      { regency: "Parigi Moutong" },
-      { regency: "Poso" },
-      { regency: "Sigi" },
-      { regency: "Tojo Una-Una" },
-      { regency: "Toli-Toli" },
+      { regency: 'Banggai' },
+      { regency: 'Banggai Kepulauan' },
+      { regency: 'Banggai Laut' },
+      { regency: 'Buol' },
+      { regency: 'Donggala' },
+      { regency: 'Morowali' },
+      { regency: 'Morowali Utara' },
+      { regency: 'Palu' },
+      { regency: 'Parigi Moutong' },
+      { regency: 'Poso' },
+      { regency: 'Sigi' },
+      { regency: 'Tojo Una-Una' },
+      { regency: 'Toli-Toli' },
     ],
   },
   {
-    province: "Sulawesi Tenggara",
+    province: 'Sulawesi Tenggara',
     district: [
-      { regency: "Bau-Bau" },
-      { regency: "Bombana" },
-      { regency: "Buton" },
-      { regency: "Buton Selatan" },
-      { regency: "Buton Tengah" },
-      { regency: "Buton Utara" },
-      { regency: "Kendari" },
-      { regency: "Kolaka" },
-      { regency: "Kolaka Timur" },
-      { regency: "Kolaka Utara" },
-      { regency: "Konawe" },
-      { regency: "Konawe Kepulauan" },
-      { regency: "Konawe Selatan" },
-      { regency: "Konawe Utara" },
-      { regency: "Muna" },
-      { regency: "Muna Barat" },
-      { regency: "Wakatobi" },
+      { regency: 'Bau-Bau' },
+      { regency: 'Bombana' },
+      { regency: 'Buton' },
+      { regency: 'Buton Selatan' },
+      { regency: 'Buton Tengah' },
+      { regency: 'Buton Utara' },
+      { regency: 'Kendari' },
+      { regency: 'Kolaka' },
+      { regency: 'Kolaka Timur' },
+      { regency: 'Kolaka Utara' },
+      { regency: 'Konawe' },
+      { regency: 'Konawe Kepulauan' },
+      { regency: 'Konawe Selatan' },
+      { regency: 'Konawe Utara' },
+      { regency: 'Muna' },
+      { regency: 'Muna Barat' },
+      { regency: 'Wakatobi' },
     ],
   },
   {
-    province: "Sulawesi Utara",
+    province: 'Sulawesi Utara',
     district: [
-      { regency: "Bitung" },
-      { regency: "Bolaang Mongondow" },
-      { regency: "Bolaang Mongondow Selatan" },
-      { regency: "Bolaang Mongondow Timur" },
-      { regency: "Bolaang Mongondow Utara" },
-      { regency: "Kepulauan Sangihe" },
-      { regency: "Kepulauan Siau Tagulandang Biaro" },
-      { regency: "Kepulauan Talaud" },
-      { regency: "Kotamobagu" },
-      { regency: "Manado" },
-      { regency: "Minahasa" },
-      { regency: "Minahasa Selatan" },
-      { regency: "Minahasa Tenggara" },
-      { regency: "Minahasa Utara" },
-      { regency: "Tomohon" },
+      { regency: 'Bitung' },
+      { regency: 'Bolaang Mongondow' },
+      { regency: 'Bolaang Mongondow Selatan' },
+      { regency: 'Bolaang Mongondow Timur' },
+      { regency: 'Bolaang Mongondow Utara' },
+      { regency: 'Kepulauan Sangihe' },
+      { regency: 'Kepulauan Siau Tagulandang Biaro' },
+      { regency: 'Kepulauan Talaud' },
+      { regency: 'Kotamobagu' },
+      { regency: 'Manado' },
+      { regency: 'Minahasa' },
+      { regency: 'Minahasa Selatan' },
+      { regency: 'Minahasa Tenggara' },
+      { regency: 'Minahasa Utara' },
+      { regency: 'Tomohon' },
     ],
   },
   {
-    province: "Sumatra Barat",
+    province: 'Sumatra Barat',
     district: [
-      { regency: "Agam" },
-      { regency: "Bukittinggi" },
-      { regency: "Dharmasraya" },
-      { regency: "Kepulauan Mentawai" },
-      { regency: "Lima Puluh Kota" },
-      { regency: "Padang" },
-      { regency: "Padang Panjang" },
-      { regency: "Padang Pariaman" },
-      { regency: "Pariaman" },
-      { regency: "Pasaman" },
-      { regency: "Pasaman Barat" },
-      { regency: "Payakumbuh" },
-      { regency: "Pesisir Selatan" },
-      { regency: "Sawahlunto" },
-      { regency: "Sijunjung" },
-      { regency: "Solok" },
-      { regency: "Solok Selatan" },
-      { regency: "Tanah Datar" },
+      { regency: 'Agam' },
+      { regency: 'Bukittinggi' },
+      { regency: 'Dharmasraya' },
+      { regency: 'Kepulauan Mentawai' },
+      { regency: 'Lima Puluh Kota' },
+      { regency: 'Padang' },
+      { regency: 'Padang Panjang' },
+      { regency: 'Padang Pariaman' },
+      { regency: 'Pariaman' },
+      { regency: 'Pasaman' },
+      { regency: 'Pasaman Barat' },
+      { regency: 'Payakumbuh' },
+      { regency: 'Pesisir Selatan' },
+      { regency: 'Sawahlunto' },
+      { regency: 'Sijunjung' },
+      { regency: 'Solok' },
+      { regency: 'Solok Selatan' },
+      { regency: 'Tanah Datar' },
     ],
   },
   {
-    province: "Sumatra Selatan",
+    province: 'Sumatra Selatan',
     district: [
-      { regency: "Banyuasin" },
-      { regency: "Empat Lawang" },
-      { regency: "Lahat" },
-      { regency: "Lubuklinggau" },
-      { regency: "Muara Enim" },
-      { regency: "Musi Banyuasin" },
-      { regency: "Musi Rawas" },
-      { regency: "Musi Rawas Utara" },
-      { regency: "Ogan Ilir" },
-      { regency: "Ogan Komering Ilir" },
-      { regency: "Ogan Komering Ulu" },
-      { regency: "Ogan Komering Ulu Selatan" },
-      { regency: "Ogan Komering Ulu Timur" },
-      { regency: "Pagar Alam" },
-      { regency: "Palembang" },
-      { regency: "Prabumulih" },
+      { regency: 'Banyuasin' },
+      { regency: 'Empat Lawang' },
+      { regency: 'Lahat' },
+      { regency: 'Lubuklinggau' },
+      { regency: 'Muara Enim' },
+      { regency: 'Musi Banyuasin' },
+      { regency: 'Musi Rawas' },
+      { regency: 'Musi Rawas Utara' },
+      { regency: 'Ogan Ilir' },
+      { regency: 'Ogan Komering Ilir' },
+      { regency: 'Ogan Komering Ulu' },
+      { regency: 'Ogan Komering Ulu Selatan' },
+      { regency: 'Ogan Komering Ulu Timur' },
+      { regency: 'Pagar Alam' },
+      { regency: 'Palembang' },
+      { regency: 'Prabumulih' },
     ],
   },
   {
-    province: "Sumatra Utara",
+    province: 'Sumatra Utara',
     district: [
-      { regency: "Asahan" },
-      { regency: "Batu Bara" },
-      { regency: "Binjai" },
-      { regency: "Dairi" },
-      { regency: "Deli Serdang" },
-      { regency: "Gunungsitoli" },
-      { regency: "Humbang Hasundutan" },
-      { regency: "Karo" },
-      { regency: "Labuhanbatu" },
-      { regency: "Labuhanbatu Selatan" },
-      { regency: "Labuhanbatu Utara" },
-      { regency: "Langkat" },
-      { regency: "Mandailing Natal" },
-      { regency: "Medan" },
-      { regency: "Nias" },
-      { regency: "Nias Barat" },
-      { regency: "Nias Selatan" },
-      { regency: "Nias Utara" },
-      { regency: "Padang Lawas" },
-      { regency: "Padang Lawas Utara" },
-      { regency: "Pematang Siantar" },
-      { regency: "Samosir" },
-      { regency: "Serdang Bedagai" },
-      { regency: "Sibolga" },
-      { regency: "Simalungun" },
-      { regency: "Tanjung Balai" },
-      { regency: "Tapanuli Selatan" },
-      { regency: "Tapanuli Tengah" },
-      { regency: "Tapanuli Utara" },
-      { regency: "Tebing Tinggi" },
-      { regency: "Toba" },
+      { regency: 'Asahan' },
+      { regency: 'Batu Bara' },
+      { regency: 'Binjai' },
+      { regency: 'Dairi' },
+      { regency: 'Deli Serdang' },
+      { regency: 'Gunungsitoli' },
+      { regency: 'Humbang Hasundutan' },
+      { regency: 'Karo' },
+      { regency: 'Labuhanbatu' },
+      { regency: 'Labuhanbatu Selatan' },
+      { regency: 'Labuhanbatu Utara' },
+      { regency: 'Langkat' },
+      { regency: 'Mandailing Natal' },
+      { regency: 'Medan' },
+      { regency: 'Nias' },
+      { regency: 'Nias Barat' },
+      { regency: 'Nias Selatan' },
+      { regency: 'Nias Utara' },
+      { regency: 'Padang Lawas' },
+      { regency: 'Padang Lawas Utara' },
+      { regency: 'Pematang Siantar' },
+      { regency: 'Samosir' },
+      { regency: 'Serdang Bedagai' },
+      { regency: 'Sibolga' },
+      { regency: 'Simalungun' },
+      { regency: 'Tanjung Balai' },
+      { regency: 'Tapanuli Selatan' },
+      { regency: 'Tapanuli Tengah' },
+      { regency: 'Tapanuli Utara' },
+      { regency: 'Tebing Tinggi' },
+      { regency: 'Toba' },
     ],
   },
 ];

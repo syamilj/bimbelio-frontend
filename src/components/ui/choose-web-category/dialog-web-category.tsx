@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { ChevronRight, GraduationCap } from "lucide-react";
-import { useDebouncedCallback } from "use-debounce";
-import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
-import { cn } from "@/lib/utils";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { cn } from '@/lib/utils';
+import { IconTailedArrowPrev } from '@/styles/icon';
+import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
+import { ChevronRight, GraduationCap } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../dialog";
-import { IconTailedArrowPrev } from "@/styles/icon";
+} from '../dialog';
 
 interface Props {
   items: (WebsiteCategory & {
@@ -25,10 +25,10 @@ interface Props {
 }
 
 export function DialogWebCategory({ items, onSelect, value, first }: Props) {
-  const { websiteSubCategory } = useWebsiteSubCategory();
-  const [realValue, setRealValue] = useState<string>("");
+  useWebsiteSubCategory();
+  const [realValue, setRealValue] = useState<string>('');
 
-  const [webCatId, setWebCatId] = useState<string>("");
+  const [webCatId, setWebCatId] = useState<string>('');
 
   const handleValueChange = useDebouncedCallback((value: string) => {
     setRealValue(value);
@@ -40,7 +40,7 @@ export function DialogWebCategory({ items, onSelect, value, first }: Props) {
   }, [value]);
 
   const category = items.find((item) =>
-    item.WebsiteSubCategory.find((item2) => item2.id == realValue)
+    item.WebsiteSubCategory.find((item2) => item2.id == realValue),
   );
 
   const subCategory = category
@@ -56,10 +56,10 @@ export function DialogWebCategory({ items, onSelect, value, first }: Props) {
       <DialogTrigger asChild>
         <button
           className={cn(
-            "flex items-center justify-between px-6 py-3 rounded-xl text-white font-medium transition-colors duration-300 w-full bg-main hover:bg-main/80"
+            'flex items-center justify-between px-6 py-3 rounded-xl text-white font-medium transition-colors duration-300 w-full bg-main hover:bg-main/80',
           )}
         >
-          <span>{subCategory ? subCategory?.name : "Select Option"}</span>
+          <span>{subCategory ? subCategory?.name : 'Select Option'}</span>
           <ChevronRight className="ml-2 h-4 w-4" />
         </button>
       </DialogTrigger>
@@ -68,14 +68,14 @@ export function DialogWebCategory({ items, onSelect, value, first }: Props) {
           <DialogTitle className="text-center font-bold text-xl">
             <div
               className={cn(
-                "flex w-full justify-center",
-                selectedCategory && "justify-start gap-4 items-center"
+                'flex w-full justify-center',
+                selectedCategory && 'justify-start gap-4 items-center',
               )}
             >
               {selectedCategory && (
                 <div
                   className="hover:-translate-x-1 duration-200 cursor-pointer"
-                  onClick={() => setWebCatId("")}
+                  onClick={() => setWebCatId('')}
                 >
                   <IconTailedArrowPrev />
                 </div>
@@ -83,7 +83,7 @@ export function DialogWebCategory({ items, onSelect, value, first }: Props) {
               <p>
                 {selectedCategory
                   ? selectedCategory.name
-                  : "Pilih Kategori Bimbelio"}
+                  : 'Pilih Kategori Bimbelio'}
               </p>
             </div>
           </DialogTitle>
@@ -101,7 +101,7 @@ export function DialogWebCategory({ items, onSelect, value, first }: Props) {
                 <button
                   key={cat.id}
                   className={cn(
-                    "flex items-center justify-between px-6 py-6 rounded-3xl text-white"
+                    'flex items-center justify-between px-6 py-6 rounded-3xl text-white',
                   )}
                   onClick={() => setWebCatId(cat.id)}
                   style={{
@@ -122,7 +122,7 @@ export function DialogWebCategory({ items, onSelect, value, first }: Props) {
                 <button
                   key={sub.id}
                   className={cn(
-                    "flex items-center justify-between px-6 py-6 rounded-3xl text-white "
+                    'flex items-center justify-between px-6 py-6 rounded-3xl text-white ',
                   )}
                   onClick={() => {
                     setRealValue(sub.id);

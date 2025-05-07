@@ -1,6 +1,5 @@
-import { cn } from "@/lib/utils";
-import { MouseEventHandler, ReactNode } from "react";
-import { useWebsiteSubCategory } from "../provider/provider-website-category";
+import { cn } from '@/lib/utils';
+import { MouseEventHandler, ReactNode } from 'react';
 
 interface AnimatedGradientTextProps {
   children: ReactNode;
@@ -13,20 +12,19 @@ export default function AnimatedGradientText({
   className,
   onClick,
 }: AnimatedGradientTextProps) {
-  const { websiteSubCategory } = useWebsiteSubCategory();
   return (
     <span
       className={cn(
-        "relative inline-block animate-gradient cursor-pointer bg-clip-text text-transparent",
-        className
+        'relative inline-block animate-gradient cursor-pointer bg-clip-text text-transparent bg-gradient-to-r from-main-default to-secondary-default',
+        className,
       )}
       onClick={onClick}
       style={{
-        backgroundImage: `linear-gradient(to right, ${websiteSubCategory?.secondary_color}, ${websiteSubCategory?.main_color}, ${websiteSubCategory?.main_color})`,
-        backgroundSize: "200% 200%",
-        backgroundClip: "text",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
+        // backgroundImage: `linear-gradient(to right, ${websiteSubCategory?.secondary_color}, ${websiteSubCategory?.main_color}, ${websiteSubCategory?.main_color})`,
+        backgroundSize: '200% 200%',
+        backgroundClip: 'text',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
       }}
     >
       {children}

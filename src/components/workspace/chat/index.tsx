@@ -1,42 +1,42 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // index.tsx
-import { useAppContext } from "@/components/provider/provider-app";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
-import { SpinnerCentered } from "@/components/ui/spinner";
-import { toaster } from "@/components/ui/toaster";
+import { useAppContext } from '@/components/provider/provider-app';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { SpinnerCentered } from '@/components/ui/spinner';
+import { toaster } from '@/components/ui/toaster';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { env } from "@/env.mjs";
+} from '@/components/ui/tooltip';
+import { env } from '@/env.mjs';
 // import { useChatStore } from "@/lib/store";
-import { cn, getDate, getHours } from "@/lib/utils";
-import { IconTailedArrowNext } from "@/styles/icon";
-import { Document, User, UserDocument, UserRoleEnum } from "@/types/database";
-import { useChat } from "ai/react";
-import "katex/dist/katex.min.css";
-import { BotMessageSquareIcon, Loader2, User2Icon } from "lucide-react";
+import { cn, getDate, getHours } from '@/lib/utils';
+import { IconTailedArrowNext } from '@/styles/icon';
+import { Document, User, UserDocument, UserRoleEnum } from '@/types/database';
+import { useChat } from 'ai/react';
+import 'katex/dist/katex.min.css';
+import { BotMessageSquareIcon, Loader2, User2Icon } from 'lucide-react';
 
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { VariableSizeList as List } from "react-window";
-import rehypeKatex from "rehype-katex";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
-import ChatTools from "./_component/chat-tools";
-import LoadingChat from "./_component/loading-chat";
-import Start from "./_component/start";
-import SubmitChat from "./_component/submit-chat";
-import SubmitChatEdit from "./_component/submit-chat-edit";
-import ThreeQuestions from "./_component/three-questions";
-import { useSession } from "@/components/provider/session-provider-auth";
-import { getGeneral } from "@/lib/fetch-helper";
+import { useSession } from '@/components/provider/session-provider-auth';
+import { getGeneral } from '@/lib/fetch-helper';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { VariableSizeList as List } from 'react-window';
+import rehypeKatex from 'rehype-katex';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import ChatTools from './_component/chat-tools';
+import LoadingChat from './_component/loading-chat';
+import Start from './_component/start';
+import SubmitChat from './_component/submit-chat';
+import SubmitChatEdit from './_component/submit-chat-edit';
+import ThreeQuestions from './_component/three-questions';
 
 interface Props {
   apiChat: string;
@@ -89,7 +89,7 @@ export default function Chat({
 
   const { data: session } = useSession();
   const pathname = usePathname();
-  const pathnameArray = pathname?.split("/");
+  const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
   const userId = session?.user?.id;
 
@@ -102,14 +102,14 @@ export default function Chat({
   const [editMessage, setEditMessage] = useState<any>({
     bool: false,
     index: 99999,
-    value: "111",
+    value: '111',
   });
   const [tempData, setTempData] = useState<any>([
     {
-      id: "id",
+      id: 'id',
       content:
-        "Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
-      role: "assistant",
+        'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+      role: 'assistant',
       createAt: null,
       like: false,
       dislike: false,
@@ -158,18 +158,18 @@ export default function Chat({
   } = useChat({
     api: apiChat,
     body,
-    streamProtocol: "text",
+    streamProtocol: 'text',
     onError: (error: any) => {
-      console.log("error", error);
+      console.log('error', error);
       toaster({
-        title: "Gagal",
-        description: "Terjadi kesalahan2!",
-        condition: "warning",
+        title: 'Gagal',
+        description: 'Terjadi kesalahan2!',
+        condition: 'warning',
         duration: 3000,
       });
     },
     onFinish: () => {
-      console.log("Finish1");
+      console.log('Finish1');
       setFirstMessage(false);
       // await trpc.message.getAllByDocIdAndUserId.refetch();
       fetchMessages();
@@ -185,17 +185,17 @@ export default function Chat({
   } = useChat({
     api: apiChat,
     body,
-    streamProtocol: "text",
+    streamProtocol: 'text',
     onError: (error) => {
       toaster({
-        title: "Gagal",
-        description: error?.message ?? "Terjadi kesalahan!",
-        condition: "warning",
+        title: 'Gagal',
+        description: error?.message ?? 'Terjadi kesalahan!',
+        condition: 'warning',
         duration: 3000,
       });
     },
     onFinish: () => {
-      console.log("Finish2");
+      console.log('Finish2');
       // await trpc.message.getAllByDocIdAndUserId.refetch();
       fetchMessages();
     },
@@ -246,19 +246,19 @@ export default function Chat({
   // );
 
   useEffect(() => {
-    const input = document.getElementById("editInput");
+    const input = document.getElementById('editInput');
 
     const handleInputChange = (e: any) => {
       setEditMessage((prev: any) => ({ ...prev, value: e.target.value }));
     };
 
     if (input) {
-      input.addEventListener("input", handleInputChange);
+      input.addEventListener('input', handleInputChange);
     }
 
     return () => {
       if (input) {
-        input.removeEventListener("input", handleInputChange);
+        input.removeEventListener('input', handleInputChange);
       }
     };
   }, []);
@@ -279,7 +279,7 @@ export default function Chat({
   useEffect(() => {
     if (edit.length > 0) {
       const submit = document.getElementById(
-        "editMessage"
+        'editMessage',
       ) as HTMLButtonElement;
       submit.click();
     }
@@ -289,10 +289,10 @@ export default function Chat({
     if (prevChatMessages && prevChatMessages?.length > 0 && !firstMessage) {
       setTempData([
         {
-          id: "id",
+          id: 'id',
           content:
-            "Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
-          role: "assistant",
+            'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+          role: 'assistant',
           createAt: null,
           like: false,
           dislike: false,
@@ -301,10 +301,10 @@ export default function Chat({
       ]);
       setMessageData([
         {
-          id: "id",
+          id: 'id',
           content:
-            "Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang SNBT/UTBK. Mari kita maksimalkan pembelajaran Kamu!",
-          role: "assistant",
+            'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+          role: 'assistant',
           createAt: null,
           like: false,
           dislike: false,
@@ -355,7 +355,7 @@ export default function Chat({
     rowHeights.current = { ...rowHeights.current, [index]: size };
   };
   const scrollToBottom = () => {
-    listRef.current?.scrollToItem(messageData.length - 1, "end");
+    listRef.current?.scrollToItem(messageData.length - 1, 'end');
   };
 
   const handleScroll = ({ scrollOffset, scrollHeight, clientHeight }: any) => {
@@ -377,7 +377,7 @@ export default function Chat({
   }) => {
     const rowRef = useRef<HTMLDivElement>(null);
     const isBase64Image = messageData[index]?.content?.startsWith(
-      env.NEXT_PUBLIC_SUPABASE_URL
+      env.NEXT_PUBLIC_SUPABASE_URL,
     );
 
     // Scroll down when new messages come in
@@ -410,17 +410,17 @@ export default function Chat({
     // ========== Markdown Helpers =========== //
     const replaceLatexNotation = (content: string) => {
       return content
-        .replace(/\\\[/g, "$$$") // Replace \[ -> $$
-        .replace(/\\\]/g, "$$$") // Replace \] -> $$
-        .replace(/\\\(/g, "$$$") // Replace \( -> $$
-        .replace(/\\\)/g, "$$$"); // Replace \) -> $$
+        .replace(/\\\[/g, '$$$') // Replace \[ -> $$
+        .replace(/\\\]/g, '$$$') // Replace \] -> $$
+        .replace(/\\\(/g, '$$$') // Replace \( -> $$
+        .replace(/\\\)/g, '$$$'); // Replace \) -> $$
     };
 
     const formatMessage = (content: string) => {
       // Hanya contoh: Memastikan <PAGE#(x)>
       return content.replace(
         /<PAGE#(\d+)>/g,
-        (_match, pageNum) => `<PAGE#${pageNum}>`
+        (_match, pageNum) => `<PAGE#${pageNum}>`,
       );
     };
 
@@ -430,17 +430,17 @@ export default function Chat({
 
     // Tag <PAGE#x> => tombol scroll PDF
     const processPageTags = (content: React.ReactNode): React.ReactNode => {
-      if (typeof content !== "string") {
+      if (typeof content !== 'string') {
         // Rekursif ke child
         return React.Children.map(content, (child) =>
-          typeof child === "string" ? processPageTags(child) : child
+          typeof child === 'string' ? processPageTags(child) : child,
         );
       }
 
       const parts = content.split(/(<PAGE#\d+>)/g);
       return parts.map((part, idx) => {
         if (part.match(/<PAGE#\d+>/)) {
-          const pageNum = part.match(/\d+/)?.[0] ?? "";
+          const pageNum = part.match(/\d+/)?.[0] ?? '';
           return (
             <TooltipProvider key={idx}>
               <Tooltip>
@@ -468,8 +468,8 @@ export default function Chat({
       });
     };
 
-    const isAssistant = messageData[index].role === "assistant";
-    const isUser = messageData[index].role === "user";
+    const isAssistant = messageData[index].role === 'assistant';
+    const isUser = messageData[index].role === 'user';
     // ========== Row JSX =========== //
     const isAlignedLeft =
       index === messageData.length - 1 && isLoading && isUser;
@@ -478,35 +478,35 @@ export default function Chat({
       <div
         style={{
           ...style,
-          overflow: "hidden",
-          paddingRight: "1rem",
-          paddingBottom: "1rem",
-          paddingTop: "1rem",
+          overflow: 'hidden',
+          paddingRight: '1rem',
+          paddingBottom: '1rem',
+          paddingTop: '1rem',
         }}
       >
         <div
           ref={rowRef}
-          className={cn("text-left flex flex-col w-full", "max-w-[95%]")}
+          className={cn('text-left flex flex-col w-full', 'max-w-[95%]')}
         >
           {/* Jika loading dan index terakhir adalah user, maka tampilkan <LoadingChat/> */}
 
           <Card
             className={cn(
-              "rounded-xl shadow-none bg-transparent",
-              isUser ? "bg-white ml-auto" : "mr-auto"
+              'rounded-xl shadow-none bg-transparent',
+              isUser ? 'bg-white ml-auto' : 'mr-auto',
             )}
           >
             <div className="p-4">
               <div
                 className={cn(
-                  "flex items-start gap-2",
-                  isUser && "justify-start flex-row-reverse"
+                  'flex items-start gap-2',
+                  isUser && 'justify-start flex-row-reverse',
                 )}
               >
                 <Avatar className="h-8 w-8">
                   <AvatarFallback
                     className={cn(
-                      isUser ? "bg-green-50 border" : "bg-blue-50 border"
+                      isUser ? 'bg-green-50 border' : 'bg-blue-50 border',
                     )}
                   >
                     {isUser ? (
@@ -518,13 +518,13 @@ export default function Chat({
                 </Avatar>
                 <div
                   className={cn(
-                    "flex flex-col flex-1",
-                    isUser && "flex-none text-end"
+                    'flex flex-col flex-1',
+                    isUser && 'flex-none text-end',
                   )}
                 >
                   <div className="relative justify-between items-center mb-2">
                     <p className="font-semibold text-sm">
-                      {isUser ? session?.user?.name : "Bimbelio"}
+                      {isUser ? session?.user?.name : 'Bimbelio'}
                     </p>
                     {!isUser && (
                       <span className="absolute -top-2 left-[-20px] bg-red-500 rounded-full px-[0.35rem] py-1 text-white font-bold text-[0.5rem]">
@@ -533,7 +533,7 @@ export default function Chat({
                     )}
                     {messageData[index].createdAt && (
                       <p className="text-xs text-muted-foreground">
-                        {getHours(messageData[index].createdAt)} |{" "}
+                        {getHours(messageData[index].createdAt)} |{' '}
                         {getDate(messageData[index].createdAt)}
                       </p>
                     )}
@@ -553,12 +553,12 @@ export default function Chat({
                             <Image
                               src={
                                 messageData[index].content.includes(
-                                  "data:image/png;base64"
+                                  'data:image/png;base64',
                                 )
-                                  ? messageData[index].content.split("=")[0] ||
-                                    "/placeholder.svg"
+                                  ? messageData[index].content.split('=')[0] ||
+                                    '/placeholder.svg'
                                   : messageData[index].content ||
-                                    "/placeholder.svg"
+                                    '/placeholder.svg'
                               }
                               className="h-auto max-w-full"
                               alt="Bimbelio - Bimbel AI"
@@ -582,23 +582,23 @@ export default function Chat({
                           components={{
                             p: ({ node, children, ...props }) => {
                               const hasBlockChild = React.Children.toArray(
-                                children
+                                children,
                               ).some(
                                 (child: any) =>
-                                  typeof child !== "string" &&
+                                  typeof child !== 'string' &&
                                   [
-                                    "h1",
-                                    "h2",
-                                    "h3",
-                                    "h4",
-                                    "h5",
-                                    "h6",
-                                    "ul",
-                                    "ol",
-                                    "li",
-                                    "blockquote",
-                                    "div",
-                                  ].includes(child?.type)
+                                    'h1',
+                                    'h2',
+                                    'h3',
+                                    'h4',
+                                    'h5',
+                                    'h6',
+                                    'ul',
+                                    'ol',
+                                    'li',
+                                    'blockquote',
+                                    'div',
+                                  ].includes(child?.type),
                               );
 
                               if (hasBlockChild) {
@@ -644,7 +644,7 @@ export default function Chat({
                           }}
                         >
                           {formatMessage(
-                            replaceLatexNotation(messageData[index].content)
+                            replaceLatexNotation(messageData[index].content),
                           )}
                         </ReactMarkdown>
                       ) : (
@@ -662,8 +662,8 @@ export default function Chat({
                   {!editMessage.bool && (
                     <div
                       className={cn(
-                        "mt-4 flex justify-between items-center text-sm text-muted-foreground",
-                        isUser && "justify-end"
+                        'mt-4 flex justify-between items-center text-sm text-muted-foreground',
+                        isUser && 'justify-end',
                       )}
                     >
                       <ChatTools
@@ -683,10 +683,10 @@ export default function Chat({
           </Card>
           {index === messageData.length - 1 &&
             isLoading &&
-            messageData[index].role === "user" && <LoadingChat />}
+            messageData[index].role === 'user' && <LoadingChat />}
           {index === messageData.length - 1 &&
             isLoadingEditMessage &&
-            messageData[index].role === "user" && <LoadingChat />}
+            messageData[index].role === 'user' && <LoadingChat />}
         </div>
       </div>
     );
@@ -695,7 +695,7 @@ export default function Chat({
   // ======== End- Render Chat ========== //
   useEffect(() => {
     if (isLoading) {
-      console.log("messageData", messageData);
+      console.log('messageData', messageData);
     }
   }, [messageData, isLoading]);
   if (isUserDocLoading) {
@@ -730,7 +730,11 @@ export default function Chat({
           submitEdit(e);
         }}
       >
-        <input type="text" value={edit} onChange={() => {}} />
+        <input
+          type="text"
+          value={edit}
+          onChange={() => {}}
+        />
         <button id="editMessage">submit</button>
       </form>
 

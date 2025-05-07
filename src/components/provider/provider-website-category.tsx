@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import axiosInstanceRaw from "@/lib/axios/axiosInstanceRaw";
-import { getGeneral } from "@/lib/fetch-helper";
-import { response } from "@/lib/response";
-import { WebsiteCategory, WebsiteSubCategory } from "@/types/database";
-import { Loader2 } from "lucide-react";
-import NextTopLoader from "nextjs-toploader";
-import { createContext, useContext, useEffect, useState } from "react";
-import ChooseWebCategory from "../ui/choose-web-category";
-import { getMainStyles } from "@/styles/main-styles";
-import { usePathname } from "next/navigation";
-import { useSession } from "./session-provider-auth";
+import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
+import { getGeneral } from '@/lib/fetch-helper';
+import { response } from '@/lib/response';
+import { getMainStyles } from '@/styles/main-styles';
+import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
+import { Loader2 } from 'lucide-react';
+import NextTopLoader from 'nextjs-toploader';
+import { createContext, useContext, useEffect, useState } from 'react';
+import ChooseWebCategory from '../ui/choose-web-category';
+import { useSession } from './session-provider-auth';
+import { useParams } from 'next/navigation';
 
 const initialValue = {
-  id: "guest",
-  main_color: "#0091FF",
-  secondary_color: "#5aa4dd",
-  name: "guest",
+  id: 'guest',
+  main_color: '#0091FF',
+  secondary_color: '#5aa4dd',
+  name: 'guest',
   createdAt: new Date(),
   updatedAt: new Date(),
-  website_category_id: "guest",
+  website_category_id: 'guest',
 };
 
 export default function ProviderWebsiteCategory({
@@ -28,6 +28,7 @@ export default function ProviderWebsiteCategory({
   children: React.ReactNode;
 }) {
   const { data: session } = useSession();
+  const { web_sub_category } = useParams<{ web_sub_category: string }>();
   const [first, setFirst] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -40,13 +41,13 @@ export default function ProviderWebsiteCategory({
 
   const getWebSubCategory = () => {
     const website_sub_category_id = localStorage.getItem(
-      "website_sub_category_id"
+      'website_sub_category_id',
     );
     setIsLoading(true);
     if (website_sub_category_id) {
       axiosInstanceRaw
         .get(
-          `/website-category/getSingleWebsiteSubCategory?website_sub_category_id=${website_sub_category_id}`
+          `/website-category/getSingleWebsiteSubCategory?website_sub_category_id=${website_sub_category_id}`,
         )
         .then((res) => {
           const resData = response(res);
@@ -68,14 +69,31 @@ export default function ProviderWebsiteCategory({
 
   useEffect(() => {
     getWebSubCategory();
-    getGeneral("/website-category/getWebsiteCategory", {
+    getGeneral('/website-category/getWebsiteCategory', {
       setData: setWebCategoryData,
     });
   }, [session]);
 
+  useEffect(() => {
+    if (webCategoryData.length === 0 || !web_sub_category) return
+    console.log(web_sub_category)
+    const find = webCategoryData.find(item => item.WebsiteSubCategory.find(item2 => item2.id === web_sub_category))
+    console.log({ find })
+    console.log({ length: webCategoryData.length })
+    if (find) {
+      localStorage.setItem("website_sub_category_id", web_sub_category)
+      setWebsiteSubCategory(find.WebsiteSubCategory.find(item2 => item2.id === web_sub_category) || null)
+    } else {
+      localStorage.removeItem("website_sub_category_id")
+      setWebsiteSubCategory(null)
+      setFirst(true);
+    }
+  }, [web_sub_category, webCategoryData])
+
   console.log({ websiteSubCategory });
 
   const Context = {
+    id: websiteSubCategory?.id,
     websiteSubCategory,
     setWebsiteSubCategory,
     isLoading,
@@ -144,7 +162,7 @@ export default function ProviderWebsiteCategory({
   return (
     <WebsiteSubCategoryContext.Provider value={Context}>
       <NextTopLoader
-        color={websiteSubCategory?.main_color || "#0091FF"}
+        color={websiteSubCategory?.main_color || '#0091FF'}
         initialPosition={0.08}
         crawlSpeed={200}
         height={3}
@@ -161,6 +179,7 @@ export default function ProviderWebsiteCategory({
 }
 
 interface WebsiteSubCategoryContextType {
+  id: string | undefined;
   websiteSubCategory: WebsiteSubCategory | null;
   setWebsiteSubCategory: React.Dispatch<
     React.SetStateAction<WebsiteSubCategory | null>
@@ -187,18 +206,8 @@ export const useWebsiteSubCategory = () => {
   const context = useContext(WebsiteSubCategoryContext);
   if (!context) {
     throw new Error(
-      "useWebsiteSubCategory must be used within an WebsiteSubCategoryContext"
+      'useWebsiteSubCategory must be used within an WebsiteSubCategoryContext',
     );
   }
   return context;
-};
-
-const hexToRgba = (hex: string, opacity: number) => {
-  const sanitizedHex = hex.replace("#", "");
-  const bigint = parseInt(sanitizedHex, 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-
-  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 };

@@ -1,7 +1,7 @@
 import {
   DataIRTProps,
   OverallStatsProps,
-} from '@/app/(admin)/admin/tryout/irt/[tryoutId]/page';
+} from '@/app/[web_sub_category]/(admin)/admin/tryout/irt/[tryoutId]/page';
 import Papa from 'papaparse';
 import { SetStateAction } from 'react';
 

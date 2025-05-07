@@ -1,56 +1,56 @@
-import OpeningChat from "@/_assest/onboarding/chat/1-opening.png";
-import Chat from "@/_assest/onboarding/chat/2-chat.png";
-import Vision1 from "@/_assest/onboarding/chat/3-vision.png";
-import Vision2 from "@/_assest/onboarding/chat/4-vision.png";
-import OpeningNotes from "@/_assest/onboarding/notes/1-opening.png";
-import Notes1 from "@/_assest/onboarding/notes/2-notes.png";
-import Notes2 from "@/_assest/onboarding/notes/3-notes.png";
-import OpeningQuiz from "@/_assest/onboarding/quiz/1-opening.png";
-import Quiz1 from "@/_assest/onboarding/quiz/2-quiz.png";
-import Quiz2 from "@/_assest/onboarding/quiz/3-quiz.png";
-import Quiz3 from "@/_assest/onboarding/quiz/4-quiz.png";
-import OpeningTryout from "@/_assest/onboarding/tryout/1-opening.png";
-import Tryout1 from "@/_assest/onboarding/tryout/2-tryout.png";
-import Tryout2 from "@/_assest/onboarding/tryout/3-tryout.png";
-import Tryout3 from "@/_assest/onboarding/tryout/4-tryout.png";
-import Tryout4 from "@/_assest/onboarding/tryout/5-tryout.png";
-import { useAppContext } from "@/components/provider/provider-app";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import Image from "next/image";
-import { useState } from "react";
+import OpeningChat from '@/_assest/onboarding/chat/1-opening.png';
+import Chat from '@/_assest/onboarding/chat/2-chat.png';
+import Vision1 from '@/_assest/onboarding/chat/3-vision.png';
+import Vision2 from '@/_assest/onboarding/chat/4-vision.png';
+import OpeningNotes from '@/_assest/onboarding/notes/1-opening.png';
+import Notes1 from '@/_assest/onboarding/notes/2-notes.png';
+import Notes2 from '@/_assest/onboarding/notes/3-notes.png';
+import OpeningQuiz from '@/_assest/onboarding/quiz/1-opening.png';
+import Quiz1 from '@/_assest/onboarding/quiz/2-quiz.png';
+import Quiz2 from '@/_assest/onboarding/quiz/3-quiz.png';
+import Quiz3 from '@/_assest/onboarding/quiz/4-quiz.png';
+import OpeningTryout from '@/_assest/onboarding/tryout/1-opening.png';
+import Tryout1 from '@/_assest/onboarding/tryout/2-tryout.png';
+import Tryout2 from '@/_assest/onboarding/tryout/3-tryout.png';
+import Tryout3 from '@/_assest/onboarding/tryout/4-tryout.png';
+import Tryout4 from '@/_assest/onboarding/tryout/5-tryout.png';
+import { useAppContext } from '@/components/provider/provider-app';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface Props {
   open: boolean;
-  type: "chat" | "notes" | "quiz" | "tryout";
+  type: 'chat' | 'notes' | 'quiz' | 'tryout';
 }
 
 const OnBoarding = ({ open, type }: Props) => {
   const { setOnBoarding, onBoarding } = useAppContext();
 
   const handleClose = () => {
-    if (type === "chat") {
+    if (type === 'chat') {
       setOnBoarding((prev: any) => ({ ...prev, chat: false }));
       localStorage.setItem(
-        "on-boarding",
-        JSON.stringify({ ...onBoarding, chat: false })
+        'on-boarding',
+        JSON.stringify({ ...onBoarding, chat: false }),
       );
-    } else if (type === "notes") {
+    } else if (type === 'notes') {
       setOnBoarding((prev: any) => ({ ...prev, notes: false }));
       localStorage.setItem(
-        "on-boarding",
-        JSON.stringify({ ...onBoarding, notes: false })
+        'on-boarding',
+        JSON.stringify({ ...onBoarding, notes: false }),
       );
-    } else if (type === "quiz") {
+    } else if (type === 'quiz') {
       setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
       localStorage.setItem(
-        "on-boarding",
-        JSON.stringify({ ...onBoarding, quiz: false })
+        'on-boarding',
+        JSON.stringify({ ...onBoarding, quiz: false }),
       );
-    } else if (type === "tryout") {
+    } else if (type === 'tryout') {
       setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
       localStorage.setItem(
-        "on-boarding",
-        JSON.stringify({ ...onBoarding, tryout: false })
+        'on-boarding',
+        JSON.stringify({ ...onBoarding, tryout: false }),
       );
     }
   };
@@ -63,13 +63,13 @@ const OnBoarding = ({ open, type }: Props) => {
       }}
     >
       <DialogContent className="w-[90%] max-w-[690px] md:w-full">
-        {type === "chat" ? (
+        {type === 'chat' ? (
           <ChatAI />
-        ) : type === "notes" ? (
+        ) : type === 'notes' ? (
           <Notes />
-        ) : type === "quiz" ? (
+        ) : type === 'quiz' ? (
           <QuizAI />
-        ) : type === "tryout" ? (
+        ) : type === 'tryout' ? (
           <Tryout />
         ) : null}
       </DialogContent>
@@ -86,32 +86,52 @@ const ChatAI = () => {
 
   const data = [
     {
-      image: <Image src={OpeningChat} alt="" />,
-      heading: "Selamat Datang di Chat AI",
+      image: (
+        <Image
+          src={OpeningChat}
+          alt=""
+        />
+      ),
+      heading: 'Selamat Datang di Chat AI',
       content:
-        "Dengan Chat AI, kamu dapat bertanya seputar soal atau materi yang kurang dipahami, dan langsung mendapatkan jawaban secara real-time.",
-      plus: "Ingin pelajari fitur ini lebih lanjut?",
+        'Dengan Chat AI, kamu dapat bertanya seputar soal atau materi yang kurang dipahami, dan langsung mendapatkan jawaban secara real-time.',
+      plus: 'Ingin pelajari fitur ini lebih lanjut?',
     },
     {
-      image: <Image src={Chat} alt="" />,
-      heading: "Bertanya Langsung ke AI",
+      image: (
+        <Image
+          src={Chat}
+          alt=""
+        />
+      ),
+      heading: 'Bertanya Langsung ke AI',
       content:
-        "Kamu bisa langsung mengetik pertanyaan atau soal yang kamu ingin tanyakan kepada Chat AI, dan AI akan memberikan penjelasan yang kamu butuhkan.",
+        'Kamu bisa langsung mengetik pertanyaan atau soal yang kamu ingin tanyakan kepada Chat AI, dan AI akan memberikan penjelasan yang kamu butuhkan.',
       plus: null,
     },
     {
-      image: <Image src={Vision1} alt="" />,
-      heading: "Pakai Vision AI (1/2)",
+      image: (
+        <Image
+          src={Vision1}
+          alt=""
+        />
+      ),
+      heading: 'Pakai Vision AI (1/2)',
       content:
-        "Dengan Vision AI, kamu bisa menganalisis gambar atau soal yang muncul di layar. Klik ikon Vision untuk memulai.",
+        'Dengan Vision AI, kamu bisa menganalisis gambar atau soal yang muncul di layar. Klik ikon Vision untuk memulai.',
       plus: null,
     },
     {
-      image: <Image src={Vision2} alt="" />,
-      heading: "Pakai Vision AI (2/2)",
+      image: (
+        <Image
+          src={Vision2}
+          alt=""
+        />
+      ),
+      heading: 'Pakai Vision AI (2/2)',
       content:
-        "Kamu bisa memilih bagian dari dokumen atau soal yang ingin kamu tanyakan. Setelah memilih area, tooltip akan muncul dengan opsi untuk meminta bantuan lebih lanjut.",
-      plus: "Mulai fitur Chat AI?",
+        'Kamu bisa memilih bagian dari dokumen atau soal yang ingin kamu tanyakan. Setelah memilih area, tooltip akan muncul dengan opsi untuk meminta bantuan lebih lanjut.',
+      plus: 'Mulai fitur Chat AI?',
     },
   ];
   return (
@@ -138,13 +158,13 @@ const ChatAI = () => {
               } else if (index === 0) {
                 setOnBoarding((prev: any) => ({ ...prev, chat: false }));
                 localStorage.setItem(
-                  "on-boarding",
-                  JSON.stringify({ ...onBoarding, chat: false })
+                  'on-boarding',
+                  JSON.stringify({ ...onBoarding, chat: false }),
                 );
               }
             }}
           >
-            {index === 0 ? "Tutup" : "Sebelumnya"}
+            {index === 0 ? 'Tutup' : 'Sebelumnya'}
           </button>
           <button
             className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
@@ -154,17 +174,17 @@ const ChatAI = () => {
               } else if (index === data.length - 1) {
                 setOnBoarding((prev: any) => ({ ...prev, chat: false }));
                 localStorage.setItem(
-                  "on-boarding",
-                  JSON.stringify({ ...onBoarding, chat: false })
+                  'on-boarding',
+                  JSON.stringify({ ...onBoarding, chat: false }),
                 );
               }
             }}
           >
             {index === 0
-              ? "Lihat Panduan"
+              ? 'Lihat Panduan'
               : index === data.length - 1
-              ? "Mulai"
-              : "Berikutnya"}
+                ? 'Mulai'
+                : 'Berikutnya'}
           </button>
         </div>
       </div>
@@ -179,24 +199,39 @@ const Notes = () => {
 
   const data = [
     {
-      image: <Image src={OpeningNotes} alt="" />,
-      heading: "Selamat Datang di Notes",
+      image: (
+        <Image
+          src={OpeningNotes}
+          alt=""
+        />
+      ),
+      heading: 'Selamat Datang di Notes',
       content:
-        "Dengan Notes, kamu bisa membuat catatan pribadi untuk menyimpan poin-poin penting selama belajar.",
-      plus: "Ingin pelajari fitur ini lebih lanjut?",
+        'Dengan Notes, kamu bisa membuat catatan pribadi untuk menyimpan poin-poin penting selama belajar.',
+      plus: 'Ingin pelajari fitur ini lebih lanjut?',
     },
     {
-      image: <Image src={Notes1} alt="" />,
-      heading: "Catatan Terstruktur",
+      image: (
+        <Image
+          src={Notes1}
+          alt=""
+        />
+      ),
+      heading: 'Catatan Terstruktur',
       content:
-        "Kamu bisa mengetik garis miring ‘/’ di awal paragraf untuk menampilkan berbagai opsi seperti heading, tabel, daftar, blok kutipan, dan elemen lainnya sesuai kebutuhanmu.",
+        'Kamu bisa mengetik garis miring ‘/’ di awal paragraf untuk menampilkan berbagai opsi seperti heading, tabel, daftar, blok kutipan, dan elemen lainnya sesuai kebutuhanmu.',
       plus: null,
     },
     {
-      image: <Image src={Notes2} alt="" />,
-      heading: "AI dalam Catatan",
+      image: (
+        <Image
+          src={Notes2}
+          alt=""
+        />
+      ),
+      heading: 'AI dalam Catatan',
       content:
-        "Gunakan fitur AI untuk membantu kamu memahami atau menyempurnakan catatan yang sudah dibuat. Klik pada catatanmu, lalu pilih opsi AI untuk merangkum atau memperjelas isi catatan.",
+        'Gunakan fitur AI untuk membantu kamu memahami atau menyempurnakan catatan yang sudah dibuat. Klik pada catatanmu, lalu pilih opsi AI untuk merangkum atau memperjelas isi catatan.',
       plus: null,
     },
   ];
@@ -224,13 +259,13 @@ const Notes = () => {
               } else if (index === 0) {
                 setOnBoarding((prev: any) => ({ ...prev, notes: false }));
                 localStorage.setItem(
-                  "on-boarding",
-                  JSON.stringify({ ...onBoarding, notes: false })
+                  'on-boarding',
+                  JSON.stringify({ ...onBoarding, notes: false }),
                 );
               }
             }}
           >
-            {index === 0 ? "Tutup" : "Sebelumnya"}
+            {index === 0 ? 'Tutup' : 'Sebelumnya'}
           </button>
           <button
             className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
@@ -240,17 +275,17 @@ const Notes = () => {
               } else if (index === data.length - 1) {
                 setOnBoarding((prev: any) => ({ ...prev, notes: false }));
                 localStorage.setItem(
-                  "on-boarding",
-                  JSON.stringify({ ...onBoarding, notes: false })
+                  'on-boarding',
+                  JSON.stringify({ ...onBoarding, notes: false }),
                 );
               }
             }}
           >
             {index === 0
-              ? "Lihat Panduan"
+              ? 'Lihat Panduan'
               : index === data.length - 1
-              ? "Mulai"
-              : "Berikutnya"}
+                ? 'Mulai'
+                : 'Berikutnya'}
           </button>
         </div>
       </div>
@@ -263,32 +298,52 @@ const QuizAI = () => {
   const [index, setIndex] = useState<number>(0);
   const data = [
     {
-      image: <Image src={OpeningQuiz} alt="" />,
-      heading: "Selamat Datang di Quiz",
+      image: (
+        <Image
+          src={OpeningQuiz}
+          alt=""
+        />
+      ),
+      heading: 'Selamat Datang di Quiz',
       content:
-        "Dengan Quiz AI, kamu bisa mengerjakan soal-soal pilihan ganda atau esai secara interaktif. Hasil quiz kamu akan dinilai secara otomatis oleh sistem.",
-      plus: "Ingin pelajari fitur ini lebih lanjut?",
+        'Dengan Quiz AI, kamu bisa mengerjakan soal-soal pilihan ganda atau esai secara interaktif. Hasil quiz kamu akan dinilai secara otomatis oleh sistem.',
+      plus: 'Ingin pelajari fitur ini lebih lanjut?',
     },
     {
-      image: <Image src={Quiz1} alt="" />,
-      heading: "Pilih Tipe Soal",
+      image: (
+        <Image
+          src={Quiz1}
+          alt=""
+        />
+      ),
+      heading: 'Pilih Tipe Soal',
       content:
-        "Pilih tipe soal pilihan ganda atau jawaban singkat, sesuai dengan kebutuhanmu.",
+        'Pilih tipe soal pilihan ganda atau jawaban singkat, sesuai dengan kebutuhanmu.',
       plus: null,
     },
     {
-      image: <Image src={Quiz2} alt="" />,
-      heading: "Pilih Halaman",
+      image: (
+        <Image
+          src={Quiz2}
+          alt=""
+        />
+      ),
+      heading: 'Pilih Halaman',
       content:
-        "Pilih halaman material yang ingin dijadikan quiz. Topik dan isi quiz akan dibuat berdasarkan konten dari halaman tersebut.",
+        'Pilih halaman material yang ingin dijadikan quiz. Topik dan isi quiz akan dibuat berdasarkan konten dari halaman tersebut.',
       plus: null,
     },
     {
-      image: <Image src={Quiz3} alt="" />,
-      heading: "Kerjakan dan Lihat Hasil",
+      image: (
+        <Image
+          src={Quiz3}
+          alt=""
+        />
+      ),
+      heading: 'Kerjakan dan Lihat Hasil',
       content:
-        "Setelah memilih soal dan halaman, kamu bisa langsung menjawab. Sistem akan memberi umpan balik setelah kamu menjawab soal.",
-      plus: "Mulai fitur Quiz?",
+        'Setelah memilih soal dan halaman, kamu bisa langsung menjawab. Sistem akan memberi umpan balik setelah kamu menjawab soal.',
+      plus: 'Mulai fitur Quiz?',
     },
   ];
   return (
@@ -315,13 +370,13 @@ const QuizAI = () => {
               } else if (index === 0) {
                 setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
                 localStorage.setItem(
-                  "on-boarding",
-                  JSON.stringify({ ...onBoarding, quiz: false })
+                  'on-boarding',
+                  JSON.stringify({ ...onBoarding, quiz: false }),
                 );
               }
             }}
           >
-            {index === 0 ? "Tutup" : "Sebelumnya"}
+            {index === 0 ? 'Tutup' : 'Sebelumnya'}
           </button>
           <button
             className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
@@ -331,17 +386,17 @@ const QuizAI = () => {
               } else if (index === data.length - 1) {
                 setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
                 localStorage.setItem(
-                  "on-boarding",
-                  JSON.stringify({ ...onBoarding, quiz: false })
+                  'on-boarding',
+                  JSON.stringify({ ...onBoarding, quiz: false }),
                 );
               }
             }}
           >
             {index === 0
-              ? "Lihat Panduan"
+              ? 'Lihat Panduan'
               : index === data.length - 1
-              ? "Mulai"
-              : "Berikutnya"}
+                ? 'Mulai'
+                : 'Berikutnya'}
           </button>
         </div>
       </div>
@@ -354,39 +409,64 @@ const Tryout = () => {
   const [index, setIndex] = useState<number>(0);
   const data = [
     {
-      image: <Image src={OpeningTryout} alt="" />,
-      heading: "Selamat Datang di Try Out",
+      image: (
+        <Image
+          src={OpeningTryout}
+          alt=""
+        />
+      ),
+      heading: 'Selamat Datang di Try Out',
       content:
-        "Dengan Try Out, kamu dapat menguji pemahamanmu melalui simulasi ujian secara online.",
-      plus: "Ingin pelajari fitur ini lebih lanjut?",
+        'Dengan Try Out, kamu dapat menguji pemahamanmu melalui simulasi ujian secara online.',
+      plus: 'Ingin pelajari fitur ini lebih lanjut?',
     },
     {
-      image: <Image src={Tryout1} alt="" />,
-      heading: "Daftar Try Out",
+      image: (
+        <Image
+          src={Tryout1}
+          alt=""
+        />
+      ),
+      heading: 'Daftar Try Out',
       content:
-        "Sebelum mulai, kamu perlu klik “Daftar” pada Try Out yang ingin kamu ikuti.",
+        'Sebelum mulai, kamu perlu klik “Daftar” pada Try Out yang ingin kamu ikuti.',
       plus: null,
     },
     {
-      image: <Image src={Tryout2} alt="" />,
-      heading: "Mulai Try Out",
+      image: (
+        <Image
+          src={Tryout2}
+          alt=""
+        />
+      ),
+      heading: 'Mulai Try Out',
       content:
-        "Pada hari H, klik “Mulai try out” pada Try Out yang sudah kamu daftarkan untuk mulai mengerjakan.",
+        'Pada hari H, klik “Mulai try out” pada Try Out yang sudah kamu daftarkan untuk mulai mengerjakan.',
       plus: null,
     },
     {
-      image: <Image src={Tryout3} alt="" />,
-      heading: "Kerjakan Try Out",
+      image: (
+        <Image
+          src={Tryout3}
+          alt=""
+        />
+      ),
+      heading: 'Kerjakan Try Out',
       content:
-        "Kerjakan Try Out dengan memilih jawaban pada pilihan ganda dan submit seluruh jawabanmu. Jika waktu habis, seluruh jawabanmu akan di-submit otomatis.",
+        'Kerjakan Try Out dengan memilih jawaban pada pilihan ganda dan submit seluruh jawabanmu. Jika waktu habis, seluruh jawabanmu akan di-submit otomatis.',
       plus: null,
     },
     {
-      image: <Image src={Tryout4} alt="" />,
-      heading: "Lihat Hasil",
+      image: (
+        <Image
+          src={Tryout4}
+          alt=""
+        />
+      ),
+      heading: 'Lihat Hasil',
       content:
-        "Setelah menyelesaikan Try Out, tunggu pengumuman dan lihat hasil tesmu!",
-      plus: "Mulai Try Out??",
+        'Setelah menyelesaikan Try Out, tunggu pengumuman dan lihat hasil tesmu!',
+      plus: 'Mulai Try Out??',
     },
   ];
   return (
@@ -413,13 +493,13 @@ const Tryout = () => {
               } else if (index === 0) {
                 setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
                 localStorage.setItem(
-                  "on-boarding",
-                  JSON.stringify({ ...onBoarding, tryout: false })
+                  'on-boarding',
+                  JSON.stringify({ ...onBoarding, tryout: false }),
                 );
               }
             }}
           >
-            {index === 0 ? "Tutup" : "Sebelumnya"}
+            {index === 0 ? 'Tutup' : 'Sebelumnya'}
           </button>
           <button
             className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 hover:bg-main/85"
@@ -429,17 +509,17 @@ const Tryout = () => {
               } else if (index === data.length - 1) {
                 setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
                 localStorage.setItem(
-                  "on-boarding",
-                  JSON.stringify({ ...onBoarding, tryout: false })
+                  'on-boarding',
+                  JSON.stringify({ ...onBoarding, tryout: false }),
                 );
               }
             }}
           >
             {index === 0
-              ? "Lihat Panduan"
+              ? 'Lihat Panduan'
               : index === data.length - 1
-              ? "Mulai"
-              : "Berikutnya"}
+                ? 'Mulai'
+                : 'Berikutnya'}
           </button>
         </div>
       </div>

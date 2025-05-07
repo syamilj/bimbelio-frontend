@@ -1,8 +1,6 @@
 // index.tsx
-import LOGO from "@/_assest/logomark.png";
-import Logo from "@/components/ui/logo";
-import { IconOpenAI } from "@/styles/icon";
-import Image from "next/image";
+import Logo from '@/components/ui/logo';
+import { IconOpenAI } from '@/styles/icon';
 
 export default function Footer() {
   // const ScrollOffsetLink = ({ href, children }: any) => {
@@ -41,12 +39,14 @@ export default function Footer() {
     >
       <div className="flex w-full items-center justify-between">
         {/* <div className="">
-          <Image src={logo} alt="Bimbelio - Bimbel AI untuk SNBT/UTBK" />
+          <Image src={logo} alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan" />
         </div> */}
-        <Logo />
+        <Logo className="text-main-default" />
         <div className="flex items-center gap-[.5rem] text-[1.5rem]">
-          <i className="bx bxl-instagram text-main" />
-          <p className="text-[1rem] font-semibold text-main">Bimbelio</p>
+          <i className="bx bxl-instagram text-main-default" />
+          <p className="text-[1rem] font-semibold text-main-default">
+            Bimbelio
+          </p>
         </div>
       </div>
       {/* <div className="grid grid-cols-2 md:flex gap-[2rem] md:gap-[6rem] justify-center w-full py-[2rem] text-center md:text-start">
@@ -55,13 +55,13 @@ export default function Footer() {
           <div>
             <p className="text-main text-[.9rem]">Customer Support</p>
             <p className="text-main-gray-text2 text-[.9rem]">
-              tutorsnbt@gmail.com
+              bimbelio@gmail.com
             </p>
           </div>
           <div>
             <p className="text-main text-[.9rem]">IT Support</p>
             <p className="text-main-gray-text2 text-[.9rem]">
-              tutorsnbt@gmail.com
+              bimbelio@gmail.com
             </p>
           </div>
         </div>
