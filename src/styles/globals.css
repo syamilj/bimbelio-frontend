@@ -168,7 +168,8 @@
 #google-button-container .S9gUrf-YoZ4jf {
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 #google-button-container > div > div > div {
