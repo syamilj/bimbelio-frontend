@@ -24,7 +24,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
 
       console.log(res.data);
       Cookies.set('token', res.data.data.token);
-      window.location.reload();
+      window.location.pathname = '/';
     } catch (error) {
       setLoading(false);
       return;
