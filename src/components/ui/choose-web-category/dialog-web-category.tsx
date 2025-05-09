@@ -1,19 +1,13 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { IconTailedArrowPrev } from '@/styles/icon';
-import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
-import { ChevronRight, GraduationCap } from 'lucide-react';
+import type { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
+import { ChevronRight, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../dialog';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../dialog';
 
 interface Props {
   items: (WebsiteCategory & {
@@ -27,8 +21,8 @@ interface Props {
 export function DialogWebCategory({ items, onSelect, value, first }: Props) {
   useWebsiteSubCategory();
   const [realValue, setRealValue] = useState<string>('');
-
-  const [webCatId, setWebCatId] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isOpen, setIsOpen] = useState<boolean>(!!first);
 
   const handleValueChange = useDebouncedCallback((value: string) => {
     setRealValue(value);
@@ -37,109 +31,130 @@ export function DialogWebCategory({ items, onSelect, value, first }: Props) {
   useEffect(() => {
     if (!value) return;
     handleValueChange(value);
-  }, [value]);
+  }, [value, handleValueChange]);
 
   const category = items.find((item) =>
-    item.WebsiteSubCategory.find((item2) => item2.id == realValue),
+    item.WebsiteSubCategory.find((item2) => item2.id === realValue),
   );
-
   const subCategory = category
-    ? category.WebsiteSubCategory.find((item) => item.id == realValue)
+    ? category.WebsiteSubCategory.find((item) => item.id === realValue)
     : null;
 
-  const selectedCategory = items.find((item) => item.id === webCatId);
-
-  console.log({ items });
+  // Filter categories and subcategories based on search query
+  const filteredItems = items
+    .map((cat) => ({
+      ...cat,
+      WebsiteSubCategory: cat.WebsiteSubCategory.filter((sub) =>
+        sub.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    }))
+    .filter(
+      (cat) =>
+        cat.WebsiteSubCategory.length > 0 ||
+        cat.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
 
   return (
-    <Dialog open={first || undefined}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <DialogTrigger asChild>
         <button
           className={cn(
-            'flex items-center justify-between px-6 py-3 rounded-xl text-white font-medium transition-colors duration-300 w-full bg-main hover:bg-main/80',
+            'flex items-center justify-between px-6 py-3 rounded-xl text-white font-medium transition-all duration-300 w-full bg-main hover:bg-main/90 shadow-md hover:shadow-lg',
           )}
         >
-          <span>{subCategory ? subCategory?.name : 'Select Option'}</span>
-          <ChevronRight className="ml-2 h-4 w-4" />
+          <span className="truncate">
+            {subCategory ? subCategory?.name : 'Pilih Kategori Bimbelio'}
+          </span>
+          <ChevronRight className="ml-2 h-4 w-4 flex-shrink-0" />
         </button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="text-center font-bold text-xl">
-            <div
-              className={cn(
-                'flex w-full justify-center',
-                selectedCategory && 'justify-start gap-4 items-center',
-              )}
-            >
-              {selectedCategory && (
-                <div
-                  className="hover:-translate-x-1 duration-200 cursor-pointer"
-                  onClick={() => setWebCatId('')}
-                >
-                  <IconTailedArrowPrev />
-                </div>
-              )}
-              <p>
-                {selectedCategory
-                  ? selectedCategory.name
-                  : 'Pilih Kategori Bimbelio'}
-              </p>
-            </div>
+      <DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden rounded-3xl">
+        {/* Header */}
+        <div className="p-6 pb-4 space-y-3 relative border-b">
+          {/* Using DialogTitle for accessibility */}
+          <DialogTitle className="text-center font-bold text-xl pt-2">
+            Pilih Kategori Bimbelio
           </DialogTitle>
-          {!selectedCategory && (
-            <p className="text-center text-muted-foreground text-sm px-4">
-              Silahkan pilih kategori bimbel yang kamu minati, jangan khawatir
-              ini bisa diubah sewaktu-waktu
-            </p>
-          )}
-        </DialogHeader>
-        <div className="flex flex-col gap-3 mt-2">
-          {webCatId.length === 0 &&
-            items.map((cat) => {
-              return (
-                <button
+          <p className="text-center text-muted-foreground text-sm px-4">
+            Silahkan pilih kategori bimbel yang kamu minati, jangan khawatir ini
+            bisa diubah sewaktu-waktu
+          </p>
+        </div>
+
+        {/* Search */}
+        <div className="px-6 py-4 border-b">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Cari kategori atau subkategori..."
+              className="pl-10 bg-muted/30 rounded-full border-0 h-12"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Categories and Subcategories */}
+        <div className="max-h-[60vh] overflow-y-auto">
+          {filteredItems.length > 0 ? (
+            <div className="divide-y">
+              {filteredItems.map((cat) => (
+                <div
                   key={cat.id}
-                  className={cn(
-                    'flex items-center justify-between px-6 py-6 rounded-3xl text-white',
-                  )}
-                  onClick={() => setWebCatId(cat.id)}
-                  style={{
-                    background: `linear-gradient(145deg, ${cat?.secondary_color}, ${cat?.main_color})`,
-                  }}
+                  className="py-5 px-6"
                 >
-                  <div className="flex items-center gap-3">
-                    <GraduationCap className="h-5 w-5" />
-                    <span className="font-medium">{cat.name}</span>
+                  <h3 className="text-lg font-bold mb-4 flex items-center">
+                    <div
+                      className="w-2 h-6 rounded-full mr-2"
+                      style={{ backgroundColor: cat.main_color || '#0096FF' }}
+                    ></div>
+                    {cat.name}
+                  </h3>
+
+                  <div className="flex flex-wrap gap-3">
+                    {cat.WebsiteSubCategory.map((sub) => {
+                      // Use the subcategory's colors directly from the data
+                      const gradientStyle = {
+                        background: sub.secondary_color
+                          ? `linear-gradient(135deg, ${sub.main_color}, ${sub.secondary_color})`
+                          : sub.main_color,
+                      };
+
+                      return (
+                        <button
+                          key={sub.id}
+                          onClick={() => {
+                            setRealValue(sub.id);
+                            if (onSelect) {
+                              onSelect(sub);
+                              setIsOpen(false);
+                            }
+                          }}
+                          className="relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-md group"
+                          style={gradientStyle}
+                        >
+                          <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                          <div className="px-4 py-3 flex items-center justify-center">
+                            <span className="font-medium text-white text-center text-sm">
+                              {sub.name.toUpperCase()}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-              );
-            })}
-          {webCatId.length > 0 &&
-            selectedCategory?.WebsiteSubCategory.map((sub) => {
-              return (
-                <button
-                  key={sub.id}
-                  className={cn(
-                    'flex items-center justify-between px-6 py-6 rounded-3xl text-white ',
-                  )}
-                  onClick={() => {
-                    setRealValue(sub.id);
-                    if (onSelect) onSelect(sub);
-                  }}
-                  style={{
-                    background: `linear-gradient(145deg, ${sub?.secondary_color}, ${sub?.main_color})`,
-                  }}
-                >
-                  <div className="flex items-center gap-3">
-                    <GraduationCap className="h-5 w-5" />
-                    <span className="font-medium">{sub.name}</span>
-                  </div>
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-              );
-            })}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              Tidak ada kategori atau subkategori yang sesuai dengan pencarian
+              Anda
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

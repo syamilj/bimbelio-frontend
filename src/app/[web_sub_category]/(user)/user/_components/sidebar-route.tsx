@@ -3,26 +3,12 @@
 'use client';
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useAppContext } from '@/components/provider/provider-app';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import ChooseWebCategory from '@/components/ui/choose-web-category';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
-import {
-  IconArrowTwk,
-  IconCourse,
-  IconDocument,
-  IconExplore,
-  IconHome,
-  IconTryOut,
-} from '@/styles/icon';
-import {
-  AlignEndHorizontal,
-  BotIcon,
-  ChevronDown,
-  ChevronUp,
-  Sparkles,
-} from 'lucide-react';
+import { IconHome, IconTryOut } from '@/styles/icon';
+import { AlignEndHorizontal, BotIcon, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -99,7 +85,7 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
-        <div
+        {/* <div
           className="relative"
           // href={"/user/course"}
           // passHref
@@ -272,7 +258,7 @@ const SidebarRoute = ({
               </div>
             ))}
           </div>
-        )}
+        )} */}
         <Link
           href={`/${website_sub_category_id}/user/try-out`}
           passHref

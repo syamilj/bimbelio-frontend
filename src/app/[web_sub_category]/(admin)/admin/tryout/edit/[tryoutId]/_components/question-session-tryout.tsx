@@ -42,7 +42,7 @@ const QuestionSessionTryout = () => {
     if (EditSession.Questions[questionIndex].image) {
       const title = EditSession.Questions[questionIndex].image;
       const deleteImage = await supabase?.storage
-        .from('to_question')
+        .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {
         setSessions((prev) =>
@@ -121,7 +121,7 @@ const QuestionSessionTryout = () => {
       console.log(EditSession.Questions[questionIndex].image);
       const title = EditSession.Questions[questionIndex].image;
       const deleteImage = await supabase?.storage
-        .from('to_question')
+        .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {
         setSessions((prev) =>
@@ -270,7 +270,7 @@ const QuestionSessionTryout = () => {
     if (image && EditSession.Questions && EditSession.Questions[index].image) {
       const filename = `${EditSession.Questions[index].image}`;
       const upload = await supabase?.storage
-        .from('to_question')
+        .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
         console.log('berhasil upload', upload.data);
@@ -280,7 +280,7 @@ const QuestionSessionTryout = () => {
         console.log('gagal upload', upload.error.message);
         if (upload.error.message === 'The resource already exists') {
           const update = await supabase?.storage
-            .from('to_question')
+            .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
             console.log('berhasil update', update.data);
@@ -315,7 +315,7 @@ const QuestionSessionTryout = () => {
     if (image) {
       const filename = `${crypto.randomUUID()}-${index + 1}`;
       const upload = await supabase?.storage
-        .from('to_question')
+        .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
         console.log('berhasil upload', upload.data);
@@ -325,7 +325,7 @@ const QuestionSessionTryout = () => {
         console.log('gagal upload', upload.error.message);
         if (upload.error.message === 'The resource already exists') {
           const update = await supabase?.storage
-            .from('to_question')
+            .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
             console.log('berhasil update', update.data);
