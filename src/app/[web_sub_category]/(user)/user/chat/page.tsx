@@ -187,7 +187,9 @@ export default function AIChatHistoryPage() {
     setLoading(true);
     if (newChatInput.trim()) {
       const res = await createNewChat({ title: newChatInput.slice(0, 20) });
-      router.push(`/${website_sub_category_id}/user/chat/${res.id}?new=${newChatInput}`);
+      router.push(
+        `/${website_sub_category_id}/user/chat/${res.id}?new=${newChatInput}`,
+      );
     } else {
       setLoading(false);
     }
@@ -209,7 +211,7 @@ export default function AIChatHistoryPage() {
           <div className="bg-main text-white rounded-full p-6 mb-6 w-24 h-24 flex items-center justify-center">
             <BotIcon className="h-12 w-12" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Tutor AI</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Bimbo AI</h1>
           <h2 className="text-sm text-gray-600 mb-4">Powered by OpenAI</h2>
           <p className="text-gray-600 mb-8 max-w-2xl">
             Apa yang ingin Kamu pelajari hari ini? Bimbelio siap membantu.
@@ -361,7 +363,9 @@ export default function AIChatHistoryPage() {
                       >
                         <button
                           onClick={() => {
-                            router.push(`/${website_sub_category_id}/user/chat/${chat.id}`);
+                            router.push(
+                              `/${website_sub_category_id}/user/chat/${chat.id}`,
+                            );
                             setIsDialogOpen(false);
                           }}
                           className="flex items-start flex-1 text-left"
