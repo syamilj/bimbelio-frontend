@@ -164,7 +164,16 @@
 
 #google-button-container > div {
   width: 100%;
-  border-radius: 0.75rem;
+}
+#google-button-container .S9gUrf-YoZ4jf {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#google-button-container > div > div > div {
+  width: 100%;
 }
 
 .recharts-text.recharts-cartesian-axis-tick-value tspan {

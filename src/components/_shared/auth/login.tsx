@@ -24,7 +24,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
 
       console.log(res.data);
       Cookies.set('token', res.data.data.token);
-      window.location.reload();
+      window.location.pathname = '/';
     } catch (error) {
       setLoading(false);
       return;
@@ -65,7 +65,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
           <form className="flex flex-col gap-[1.5rem]">
             <div className="flex w-full justify-center">
               <Logo
-                className="text-[1.5rem]"
+                className="text-[1.5rem] text-main-default"
                 imageWidth={40}
               />
             </div>
@@ -112,8 +112,8 @@ const GoogleButton = ({
     <>
       <GoogleLogin
         onSuccess={handleSubmit}
-        onError={() => console.log("Login Failed")}
-        text={"signin_with"}
+        onError={() => console.log('Login Failed')}
+        text={'signin_with'}
         shape="circle"
       />
     </>
