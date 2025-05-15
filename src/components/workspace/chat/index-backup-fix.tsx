@@ -104,9 +104,24 @@ export default function Chat({
     index: 99999,
     value: '111',
   });
-
+  // const [tempData, setTempData] = useState<any>([
+  //   {
+  //     id: 'id',
+  //     content:
+  //       'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+  //     role: 'assistant',
+  //     createAt: null,
+  //     like: false,
+  //     dislike: false,
+  //   },
+  // ]);
   const [firstMessage, setFirstMessage] = useState<boolean>(false);
   const [first, setFirst] = useState<boolean>(true);
+
+  // const { data: limitaionUsed }: any = api.user.getCurrentLimitation.useQuery(
+  //   undefined,
+  //   { refetchOnWindowFocus: false }
+  // );
 
   type LimitationUsedType = {
     user: {
@@ -156,6 +171,7 @@ export default function Chat({
     onFinish: () => {
       console.log('Finish1');
       setFirstMessage(false);
+      // await trpc.message.getAllByDocIdAndUserId.refetch();
       fetchMessages();
     },
   });
@@ -180,9 +196,54 @@ export default function Chat({
     },
     onFinish: () => {
       console.log('Finish2');
+      // await trpc.message.getAllByDocIdAndUserId.refetch();
       fetchMessages();
     },
   });
+
+  // const { data: prevChatMessages, isLoading: isLoadingPrevMessage } =
+  //   api.message.getAllByDocIdAndUserId.useQuery(
+  //     {
+  //       documentId: docId as string,
+  //     },
+  //     { refetchOnWindowFocus: false },
+  //   );
+
+  // const { mutate: vectoriseDocMutation, isPending: isVectorising } =
+  //   api.document.vectorise.useMutation({
+  //     onSettled: async () => {
+  //       await trpc.document.getHistoryByUser.refetch();
+  //       await trpc.document.getDocumentTotalPage.refetch();
+  //     },
+  //     onSuccess: () => {
+  //       toaster({
+  //         title: 'Sukses',
+  //         description: 'Semangat belajarnya!',
+  //         duration: 3000,
+  //       });
+  //       refetchUserDocData();
+  //     },
+  //     onError: (err: any) => {
+  //       toaster({
+  //         title: 'Gagal',
+  //         description: err.message ?? 'Terjadi kesalahan!',
+  //         condition: 'warning',
+  //         duration: 3000,
+  //       });
+  //     },
+  //   });
+
+  // const {
+  //   data: userDocData,
+  //   isLoading: isUserDocLoading,
+  //   refetch: refetchUserDocData,
+  // } = api.document.getUserDocData.useQuery(
+  //   {
+  //     userId: userId!,
+  //     documentId: docId as string,
+  //   },
+  //   { refetchOnWindowFocus: false },
+  // );
 
   useEffect(() => {
     const input = document.getElementById('editInput');
@@ -202,6 +263,19 @@ export default function Chat({
     };
   }, []);
 
+  // const { setSendMessage } = useChatStore();
+  // useEffect(() => {
+  //   const sendMessage = (message: string) => {
+  //     append({
+  //       id: crypto.randomUUID(),
+  //       content: message,
+  //       role: 'user',
+  //       createdAt: new Date(),
+  //     });
+  //   };
+  //   setSendMessage(sendMessage);
+  // }, []);
+
   useEffect(() => {
     if (edit.length > 0) {
       const submit = document.getElementById(
@@ -213,6 +287,18 @@ export default function Chat({
 
   useEffect(() => {
     if (prevChatMessages && prevChatMessages?.length > 0 && !firstMessage) {
+      // setTempData([
+      //   {
+      //     id: 'id',
+      //     content:
+      //       'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+      //     role: 'assistant',
+      //     createAt: null,
+      //     like: false,
+      //     dislike: false,
+      //   },
+      //   ...prevChatMessages,
+      // ]);
       setMessageData([
         {
           id: 'id',
@@ -230,43 +316,51 @@ export default function Chat({
 
   useEffect(() => {
     if (isLoading) {
-      if (prevChatMessages) {
-        const data = [
-          {
-            id: 'id',
-            content:
-              'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
-            role: 'assistant',
-            createAt: null,
-            like: false,
-            dislike: false,
-          },
-          ...prevChatMessages,
-          ...messages,
-        ];
-        setMessageData(() => [...data]);
-      }
+      // if (messages.length % 2 == 0) {
+      //   const data = [...tempData, ...messages.slice(-2)];
+      //   setMessageData(() => [...data]);
+      // }
+      // if (messages.length % 2 !== 0) {
+      //   const data = [...tempData, ...messages.slice(-1)];
+      //   setMessageData(() => [...data]);
+      // }
+      setMessageData([
+        {
+          id: 'id',
+          content:
+            'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+          role: 'assistant',
+          createAt: null,
+          like: false,
+          dislike: false,
+        },
+        ...messages,
+      ]);
     }
   }, [messages]);
 
   useEffect(() => {
     if (isLoadingEditMessage) {
-      if (prevChatMessages) {
-        const data = [
-          {
-            id: 'id',
-            content:
-              'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
-            role: 'assistant',
-            createAt: null,
-            like: false,
-            dislike: false,
-          },
-          ...prevChatMessages,
-          ...messages,
-        ];
-        setMessageData(() => [...data]);
-      }
+      // if (messageEdit.length % 2 == 0) {
+      //   const data = [...tempData, ...messageEdit.slice(-2)];
+      //   setMessageData(() => [...data]);
+      // }
+      // if (messageEdit.length % 2 !== 0) {
+      //   const data = [...tempData, ...messageEdit.slice(-1)];
+      //   setMessageData(() => [...data]);
+      // }
+      setMessageData([
+        {
+          id: 'id',
+          content:
+            'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+          role: 'assistant',
+          createAt: null,
+          like: false,
+          dislike: false,
+        },
+        ...messageEdit,
+      ]);
     }
   }, [messageEdit]);
 

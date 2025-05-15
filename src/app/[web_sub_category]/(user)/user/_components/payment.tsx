@@ -1,13 +1,13 @@
 'use client';
 
 import { useAppContext } from '@/components/provider/provider-app';
-import { FeatureLimitation } from '@/config/limitation';
 import { cn, convertDaysToWords } from '@/lib/utils';
 import { useEffect, useState, type ReactElement } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
+  Card,
   CardContent,
   CardDescription,
   CardFooter,
@@ -27,6 +27,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import {
@@ -38,12 +39,17 @@ import {
 } from '@/types/database';
 import {
   BarChart2Icon,
+  BookOpen,
   BookOpenIcon,
   BrainIcon,
   CheckIcon,
-  EyeIcon,
+  Eye,
+  FileText,
   Loader2Icon,
+  MessageSquare,
+  PenTool,
   RocketIcon,
+  Sparkles,
   StarIcon,
   UsersIcon,
   VideoIcon,
@@ -60,6 +66,34 @@ type PaymentPremium =
   | 'limitasi_all'
   | 'tryout_unlock'
   | 'plan';
+
+type PlanType = {
+  id: string;
+  tier: string;
+  name: string;
+  description: string;
+  price: number;
+  features: string[] | undefined;
+  timeline: string | null;
+  coins:
+    | ({
+        name: string;
+        total: number;
+      } | null)[]
+    | undefined;
+  limitations: {
+    Notes: string | null;
+    Chat: string | null;
+    Tryout: string | null;
+    Quiz: string | null;
+    Vision: string | null;
+  };
+  popular: boolean;
+  buttonText: string;
+  buttonVariant: 'outline';
+  color: string;
+  gradient: string;
+};
 
 export function Payment() {
   const { data: session } = useSession();
@@ -91,11 +125,24 @@ export function Payment() {
   const [pricing, setPricing] = useState<Pricing[]>([]);
   const [pricingIsLoading, setPricingIsLoading] = useState<any>();
 
-  useEffect(() => {
-    getGeneral('/pricing/getAllPricing', {
-      setData: setPricing,
-      setLoading: setPricingIsLoading,
+  const [topping, setTopping] = useState<PlanType[]>([]);
+
+  const getData = async () => {
+    console.log('123132123');
+    await getGeneral('/plan/getAllPlanForPricingPage', {
+      onSuccess({ data }) {
+        console.log({ data });
+        setTopping(data.topping);
+      },
     });
+  };
+
+  useEffect(() => {
+    // getGeneral('/pricing/getAllPricing', {
+    //   setData: setPricing,
+    //   setLoading: setPricingIsLoading,
+    // });
+    getData();
   }, []);
 
   const handlePayment = async (phoneNumber: string) => {
@@ -116,13 +163,6 @@ export function Payment() {
         description: 'Coba lagi nanti!',
       });
     }
-  };
-
-  const getPricing = (slug: string) => {
-    if (!pricing) return '-';
-    return `Rp${pricing
-      .find((item) => item.slug === slug)
-      ?.price.toLocaleString('id-ID', { style: 'decimal' })}`;
   };
 
   const handlePackageSelect = (planId?: string) => {
@@ -148,7 +188,7 @@ export function Payment() {
               <DialogHeader>
                 <DialogTitle className="text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
                   Tingkatkan Persiapan{' '}
-                  <span className="bg-gradient-to-r from-main to-white bg-clip-text text-transparent">
+                  <span className="bg-gradient bg-clip-text text-transparent">
                     kamu
                   </span>
                 </DialogTitle>
@@ -158,16 +198,16 @@ export function Payment() {
               </DialogHeader>
 
               <Tabs
-                defaultValue="premium"
+                defaultValue="limitasi"
                 className="w-full"
               >
-                <TabsList className="mx-auto mb-8 grid w-full max-w-md grid-cols-2">
-                  <TabsTrigger
+                <TabsList className="mx-auto mb-8 grid w-full max-w-md grid-cols-1">
+                  {/* <TabsTrigger
                     value="premium"
                     className="text-sm font-medium sm:text-base"
                   >
                     Paket Premium
-                  </TabsTrigger>
+                  </TabsTrigger> */}
                   <TabsTrigger
                     value="limitasi"
                     className="text-sm font-medium sm:text-base"
@@ -188,76 +228,18 @@ export function Payment() {
                 </TabsContent>
 
                 <TabsContent value="limitasi">
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    {[
-                      {
-                        icon: BrainIcon,
-                        title: 'Chat AI',
-                        type: 'limitasi_chat',
-                        amount: FeatureLimitation.premium.chat,
-                      },
-                      {
-                        icon: EyeIcon,
-                        title: 'Vision',
-                        type: 'limitasi_vision',
-                        amount: FeatureLimitation.premium.vision,
-                      },
-                      {
-                        icon: BookOpenIcon,
-                        title: 'Notes',
-                        type: 'limitasi_notes',
-                        amount: FeatureLimitation.premium.notes,
-                      },
-                      {
-                        icon: BarChart2Icon,
-                        title: 'Quiz',
-                        type: 'limitasi_quiz',
-                        amount: FeatureLimitation.premium.quiz,
-                      },
-                    ].map((item, i) => (
-                      <TopUpFeatureCard
-                        key={i}
-                        icon={item.icon}
-                        title={item.title}
-                        amount={`+ ${item.amount}`}
-                        price={getPricing(item.type)}
-                        onClick={() => {
-                          setType(item.type as PaymentPremium);
-                          handlePackageSelect();
+                  <div className="flex justify-center gap-4 mx-auto">
+                    {topping.map((pack) => (
+                      <CardTopping
+                        data={pack}
+                        key={pack.name}
+                        onSelect={() => {
+                          setType('plan');
+                          handlePackageSelect(pack.id);
                         }}
                       />
                     ))}
                   </div>
-
-                  <BundlePackageCard
-                    price={getPricing('limitasi_all')}
-                    features={[
-                      {
-                        amount: FeatureLimitation.premium.chat,
-                        title: 'Chat AI',
-                        icon: BrainIcon,
-                      },
-                      {
-                        amount: FeatureLimitation.premium.notes,
-                        title: 'Notes',
-                        icon: BookOpenIcon,
-                      },
-                      {
-                        amount: FeatureLimitation.premium.quiz,
-                        title: 'Latihan Soal',
-                        icon: BarChart2Icon,
-                      },
-                      {
-                        amount: FeatureLimitation.premium.vision,
-                        title: 'Vision',
-                        icon: EyeIcon,
-                      },
-                    ]}
-                    onSelect={() => {
-                      setType('limitasi_all');
-                      handlePackageSelect();
-                    }}
-                  />
                 </TabsContent>
               </Tabs>
             </div>
@@ -695,3 +677,122 @@ function ConfirmPhoneDialog({
     </Dialog>
   );
 }
+
+type CardProps = {
+  data: PlanType;
+  onSelect?: () => void;
+};
+
+const CardTopping = ({ data, onSelect }: CardProps) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  return (
+    <Card
+      key={data.name}
+      className={`rounded-2xl w-full max-w-[285px] overflow-hidden border-0 shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+        data.popular ? 'shadow-xl ring-2 ring-[#0066ff]' : ''
+      }`}
+    >
+      {data.popular && (
+        <div className="absolute top-0 right-0 transform translate-x-0 -translate-y-0 z-10">
+          <Badge className="bg-[#0066ff] text-white font-medium px-3 py-1 shadow-md">
+            <Sparkles className="h-3.5 w-3.5 mr-1" /> Best Value
+          </Badge>
+        </div>
+      )}
+      <div className="h-3 bg-gradient-default"></div>
+      <CardHeader className="pt-6">
+        <CardTitle className="text-xl text-[#0a2540] flex items-center">
+          <div className="h-8 w-8 rounded-full mr-2 flex items-center justify-center shadow-sm bg-gradient-default">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="white"
+                strokeWidth="2"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="6"
+                fill="white"
+              />
+            </svg>
+          </div>
+          {data.name}
+        </CardTitle>
+        {data.coins && (
+          <div
+            className="mt-4 p-4 rounded-xl border border-main-default/10"
+            style={{
+              background: `linear-gradient(to right, ${websiteSubCategory?.main_color}08, ${websiteSubCategory?.main_color}15)`,
+              boxShadow: `0 4px 12px ${websiteSubCategory?.main_color}10`,
+            }}
+          >
+            <div className="grid grid-cols-5 gap-2">
+              {data.coins.map((coin) => {
+                const item = {
+                  icon:
+                    coin?.name === 'chat'
+                      ? MessageSquare
+                      : coin?.name === 'notes'
+                        ? PenTool
+                        : coin?.name === 'quiz'
+                          ? BookOpen
+                          : coin?.name === 'tryout'
+                            ? FileText
+                            : coin?.name === 'vision'
+                              ? Eye
+                              : PenTool,
+                };
+                return (
+                  <div
+                    className="flex flex-col items-center"
+                    key={coin?.name}
+                  >
+                    <item.icon className="h-5 w-5 mb-1 text-main-default" />
+                    <span className="text-xs text-[#4a5568] font-medium">
+                      {coin?.name}
+                    </span>
+                    <span className="text-sm font-bold text-main-default">
+                      {coin?.total}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold text-[#0a2540]">
+          {formatPrice(data.price)}
+        </div>
+        <p className="text-[#64748b] mt-1">Sekali bayar</p>
+      </CardContent>
+      <CardFooter className="pb-6">
+        <Button
+          variant="outline"
+          className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient-default text-white hover:text-white hover:opacity-85"
+          onClick={() => onSelect && onSelect()}
+        >
+          Beli Sekarang
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0,
+  }).format(price);
+};
