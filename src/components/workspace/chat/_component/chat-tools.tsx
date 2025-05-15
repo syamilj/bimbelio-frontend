@@ -247,7 +247,7 @@ const ChatTools = ({
           </ToolTip>
           <ToolTip value="Edit message">
             <div
-              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
+              className="hidden rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
               onClick={() => {
                 handleEditMessage();
               }}
