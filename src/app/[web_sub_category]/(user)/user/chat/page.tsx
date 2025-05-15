@@ -247,6 +247,7 @@ export default function AIChatHistoryPage() {
                 className="flex-grow"
               />
               <Button
+                disabled={newChatInput.length === 0}
                 onClick={handleNewChat}
                 className="bg-main hover:bg-main/50"
               >
