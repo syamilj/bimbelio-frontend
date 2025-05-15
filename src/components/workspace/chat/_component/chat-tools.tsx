@@ -19,7 +19,6 @@ const ChatTools = ({
   index,
   setEdit,
   onChangeRegenerate,
-  setTempData,
 }: {
   role: any;
   data?: any;
@@ -27,7 +26,6 @@ const ChatTools = ({
   setEdit?: any;
   submitRegenerate?: any;
   onChangeRegenerate?: any;
-  setTempData?: any;
 }) => {
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -212,7 +210,7 @@ const ChatTools = ({
             value: messageData[index - 1].content,
           },
         };
-        setTempData([...newMessage]);
+        // setTempData([...newMessage]);
         setMessageData([...newMessage]);
         onChangeRegenerate(e);
         setTimeout(() => {

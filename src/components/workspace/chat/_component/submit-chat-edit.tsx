@@ -7,7 +7,6 @@ import { IconSend } from '@/styles/icon';
 interface Props {
   editMessage: any;
   setEditMessage: any;
-  setTempData: any;
   editOnChange: any;
   docId: string;
 }
@@ -15,7 +14,6 @@ interface Props {
 const SubmitChatEdit = ({
   setEditMessage,
   editMessage,
-  setTempData,
   editOnChange,
   docId,
 }: Props) => {
@@ -92,7 +90,7 @@ const SubmitChatEdit = ({
           const newMessage = messageData.filter(
             (item: any, i: number) => i <= editMessage.index - 1,
           );
-          setTempData([...newMessage]);
+          // setTempData([...newMessage]);
           setMessageData(() => [...newMessage]);
           const e: any = {
             target: {

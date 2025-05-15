@@ -101,7 +101,8 @@ export default function AIChatHistoryPage() {
   //     },
   //   });
 
-  const [isLoadingDeleteChat, setIsLoadingDeleteChat] = useState<boolean>(true);
+  const [isLoadingDeleteChat, setIsLoadingDeleteChat] =
+    useState<boolean>(false);
 
   const deleteChat = async ({ id }: { id: string }) => {
     let sendData: any = null;
@@ -239,7 +240,10 @@ export default function AIChatHistoryPage() {
             </div>
 
             {/* New Topic Input */}
-            <div className="flex space-x-2">
+            <form
+              onSubmit={handleNewChat}
+              className="flex space-x-2"
+            >
               <Input
                 placeholder="Topik baru yang ingin dipelajari"
                 value={newChatInput}
@@ -248,13 +252,12 @@ export default function AIChatHistoryPage() {
               />
               <Button
                 disabled={newChatInput.length === 0}
-                onClick={handleNewChat}
                 className="bg-main hover:bg-main/50"
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Mulai Baru
               </Button>
-            </div>
+            </form>
           </div>
 
           {/* Popular Documents */}
