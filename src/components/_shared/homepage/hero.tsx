@@ -10,6 +10,7 @@ import LogoUGM from '@/_assest/homepage/hero/LOGO_PTN_UGM.webp';
 import LogoUI from '@/_assest/homepage/hero/LOGO_PTN_UI.webp';
 import GridPattern from '@/components/magicui/animated-grid-pattern';
 import PulsatingButton from '@/components/magicui/pulsating-button';
+import { IPhoneFrame } from '@/components/ui/iphone-frame';
 import { cn } from '@/lib/utils';
 import { IconOpenAI } from '@/styles/icon';
 import { motion } from 'framer-motion';
@@ -384,8 +385,8 @@ const VideoMockup: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
 );
 
 const MobileVideoMockup: React.FC = () => (
-  <div className="relative aspect-[366/729] mx-auto max-w-[366px]">
-    <div className="absolute z-[-1] left-[calc(23/366*100%)] top-[calc(23/729*100%)] h-[calc(686/729*100%)] w-[calc(318/366*100%)] overflow-visible rounded-[calc(38/366*100%)/calc(38/729*100%)]">
+  <IPhoneFrame>
+    <div className="relative w-full h-full">
       <video
         src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete//bimbelio-mobile.webm"
         className="w-full h-full object-cover"
@@ -398,15 +399,7 @@ const MobileVideoMockup: React.FC = () => (
       />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
     </div>
-    <Image
-      src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete/iphone-frame.svg"
-      alt="Phone frame"
-      width={366}
-      height={729}
-      className="object-cover pointer-events-none"
-      priority
-    />
-  </div>
+  </IPhoneFrame>
 );
 
 const DesktopVideoMockup: React.FC = () => (

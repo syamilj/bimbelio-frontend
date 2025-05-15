@@ -37,7 +37,7 @@ const navItems: NavItem[] = [
   // { href: "#materi", label: "Materi" },
   // { href: "#testimoni", label: "Testimoni" },
   // { href: "/blog", label: "Blog", isLink: true },
-  { href: '/price', label: 'Pricing', isLink: true },
+  { href: '/price', label: 'Paket', isLink: true },
   { href: '#tryout', label: 'Try Out' },
 ];
 

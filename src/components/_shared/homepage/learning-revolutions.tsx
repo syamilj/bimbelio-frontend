@@ -73,11 +73,11 @@ const LearningRevolutions = () => {
       <div className="mx-[1rem] md:mx-0">
         <h2 className="text-center text-[1.5rem] font-bold md:text-[2.5rem]">
           <AnimatedGradientText>
-            Revolusi Persiapan SNBT/UTBK dengan AI!
+            Revolusi Persiapan Belajar dengan AI!
           </AnimatedGradientText>
         </h2>
         <p className="font-regular mt-[-1rem] text-center text-main-gray-text">
-          Bagaimana cara belajar untuk SNBT/UTBK dengan AI membantu Kamu?
+          Bagaimana cara belajar dengan AI membantu Kamu?
         </p>
       </div>
       <div className="mx-[1rem] grid grid-cols-1 gap-[1.5rem] md:mx-0 md:grid-cols-2">
