@@ -1,18 +1,10 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useSession } from '@/components/provider/session-provider-auth';
 import Chat from '@/components/workspace/chat';
+import { MessageDataType } from '@/components/workspace/chat/provider';
 import { env } from '@/env.mjs';
 import { getGeneral } from '@/lib/fetch-helper';
 import { useEffect, useState } from 'react';
-
-type PrevChatMessagesType = {
-  id: any;
-  content: any;
-  role: string;
-  createdAt: any;
-  like: any;
-  dislike: any;
-};
 
 export default function ChatContent({ historyId }: { historyId: string }) {
   const { data: session } = useSession();
@@ -27,9 +19,9 @@ export default function ChatContent({ historyId }: { historyId: string }) {
   //   { refetchOnWindowFocus: false }
   // );
 
-  const [prevChatMessages, setPrevChatMessages] = useState<
-    PrevChatMessagesType[]
-  >([]);
+  const [prevChatMessages, setPrevChatMessages] = useState<MessageDataType[]>(
+    [],
+  );
   const [isLoadingPrevMessage, setIsLoadingPrevMessage] =
     useState<boolean>(true);
   const [messageError, setMessageError] = useState<string | null>(null);

@@ -10,60 +10,29 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { useDebouncedCallback } from 'use-debounce';
+import { useProvider } from '../provider';
 
-interface Props {
-  prevChatMessages: any;
-  handleInputChange: any;
-  setFirstMessage: any;
-  limitaionUsed: any;
-  isLoading: boolean;
-  setShowUpgrade: any;
-  showUpgrade: any;
-  handleSubmit: any;
-  input: any;
-}
+const SubmitChat = () => {
+  const { prevChatMessages } = useProvider();
 
-const SubmitChat = ({
-  prevChatMessages,
-  handleInputChange,
-  setFirstMessage,
-  limitaionUsed,
-  isLoading,
-  setShowUpgrade,
-  showUpgrade,
-  handleSubmit,
-  input,
-}: Props) => {
   const router = useRouter();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const newChat = searchParams.get('new');
-  // const limitation = api.user.limitation.useMutation();
 
-  // const limitation = async (payload: {
-  //   chat?: boolean;
-  //   vision?: boolean;
-  //   notes?: boolean;
-  //   quiz?: boolean;
-  // }) => {
-  //   let sendData: any = null;
-  //   await mutateGeneral('/user/limitation', {
-  //     payload: {
-  //       ...payload,
-  //       userId: session?.user.id || '',
-  //     },
-  //     type: 'post',
-  //     toast: { hideSuccess: true },
-  //     onSuccess({ data }) {
-  //       sendData = data;
-  //     },
-  //   });
-  //   return sendData;
-  // };
-
+  const {
+    useMessages: {
+      handleInputChangeMessages,
+      inputMessages,
+      isLoadingMessages,
+      handleSubmitMessages,
+    },
+    setFirstMessage,
+  } = useProvider();
   const { userLimitation, checkLimitation } = useUserLimitation();
 
   const [send, setSend] = useState<boolean>(false);
+  const [showUpgrade, setShowUpgrade] = useState<boolean>(false);
   const { setTransactionPopUp } = useAppContext();
 
   const handleSubmitChatDefault = async () => {
@@ -90,9 +59,9 @@ const SubmitChat = ({
       } else if (data && data.status) {
         if (prevChatMessages?.length === 0) {
           setFirstMessage(true);
-          handleInputChange(e);
+          handleInputChangeMessages(e as any);
         } else {
-          handleInputChange(e);
+          handleInputChangeMessages(e as any);
         }
       }
     } catch (error) {
@@ -109,11 +78,11 @@ const SubmitChat = ({
     const inputChat = document.getElementById(
       'inputChat',
     ) as HTMLTextAreaElement;
-    if (input.length > 0) {
-      handleSubmit();
+    if (inputMessages.length > 0) {
+      handleSubmitMessages();
       inputChat.value = '';
     }
-  }, [input]);
+  }, [inputMessages]);
 
   const handleNewChat = useDebouncedCallback(async () => {
     console.log({ newChat });
@@ -142,8 +111,9 @@ const SubmitChat = ({
     >
       <div className="mb-2 mt-1 flex w-full">
         <div className="relative flex w-full items-center px-[1.5rem] py-[.5rem]">
-          {limitaionUsed?.user.Role !== 'ADMIN' &&
-          limitaionUsed?.chat >= limitaionUsed?.Limit?.chat ? (
+          {session?.user.role !== 'ADMIN' &&
+          userLimitation &&
+          userLimitation?.chat >= userLimitation?.Limit?.chat ? (
             <p className="absolute bottom-[90%] left-0 w-full bg-bg-workspace pl-[1.5rem] text-[.9rem] text-main-gray-text">
               Limit chat tercapai.{' '}
               <AnimatedGradientText className="cursor-pointer md:hover:underline">
@@ -151,7 +121,8 @@ const SubmitChat = ({
               </AnimatedGradientText>{' '}
               untuk lanjut
             </p>
-          ) : limitaionUsed?.chat < limitaionUsed?.Limit?.chat ? (
+          ) : userLimitation &&
+            userLimitation?.chat < userLimitation?.chatLimit ? (
             <p className="absolute bottom-[90%] left-0 w-full bg-bg-workspace pl-[1.5rem] text-[.9rem] text-main-gray-text">
               <span className="text-[#F9791F]">
                 {userLimitation?.chat}/{userLimitation?.chatLimit} chat tersisa.
@@ -167,7 +138,7 @@ const SubmitChat = ({
               untuk akses lebih banyak
             </p>
           ) : null}
-          {limitaionUsed?.user.Role === 'ADMIN' && (
+          {session?.user.role === 'ADMIN' && (
             <div className="absolute bottom-[90%] left-0 flex w-full flex-wrap items-center gap-[.3rem] bg-bg-workspace pl-[1.5rem] text-[.9rem] text-main-gray-text">
               <div className="flex items-center gap-[.3rem] text-[#F9791F]">
                 <div className="flex items-center">
@@ -196,7 +167,7 @@ const SubmitChat = ({
             placeholder="Ajukan pertanyaan"
             className="max-h-[52px] w-full flex-1 resize-none rounded-[.6rem] border border-main py-[.8rem] pl-[1rem] pr-[4rem] text-[.8rem] font-normal outline-none md:max-h-[unset]"
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
+              if (e.key === 'Enter' && !e.shiftKey && !isLoadingMessages) {
                 e.preventDefault();
                 handleSubmitChatDefault();
                 console.log('Masuk2');
@@ -222,7 +193,8 @@ const SubmitChat = ({
             autoFocus
             maxRows={4}
           />
-          {limitaionUsed?.chat >= limitaionUsed?.Limit?.chat ? (
+          {userLimitation &&
+          userLimitation?.chat >= userLimitation?.chatLimit ? (
             <button
               className="relative w-fit px-2"
               onMouseOver={() => {
@@ -253,7 +225,7 @@ const SubmitChat = ({
             </button>
           ) : (
             <>
-              {isLoading ? (
+              {isLoadingMessages ? (
                 <button className="w-fit px-2">
                   <BanIcon
                     size={24}

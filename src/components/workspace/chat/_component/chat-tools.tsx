@@ -1,4 +1,4 @@
-import { useAppContext } from '@/components/provider/provider-app';
+import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { toaster } from '@/components/ui/toaster';
 import { ToolTip } from '@/components/ui/tooltip';
@@ -12,40 +12,29 @@ import {
   IconSettingMessage,
 } from '@/styles/icon';
 import { usePathname } from 'next/navigation';
+import { useProvider } from '../provider';
 
-const ChatTools = ({
-  role,
-  data,
-  index,
-  setEdit,
-  onChangeRegenerate,
-}: {
-  role: any;
-  data?: any;
-  index?: any;
-  setEdit?: any;
-  submitRegenerate?: any;
-  onChangeRegenerate?: any;
-}) => {
+type Props = {
+  messageIndex: number;
+};
+
+const ChatTools = ({ messageIndex }: Props) => {
   const { data: session } = useSession();
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
 
-  const { messageData, setMessageData } = useAppContext();
+  const {
+    messageData,
+    setMessageData,
+    useMessagesEdit: { handleInputChangeMessagesEdit },
+    setEditMessage,
+  } = useProvider();
 
-  // const trpc = api.useUtils();
+  const { checkLimitation } = useUserLimitation();
 
-  // const like = api.message.likeMessage.useMutation({
-  //   onSettled: async () => {
-  //     await trpc.message.getAllByDocIdAndUserId.refetch();
-  //   },
-  //   onMutate() {
-  //     const upData = messageData.filter((_: any, i: any) => i < index);
-  //     const downData = messageData.filter((_: any, i: any) => i > index);
-  //     setMessageData([...upData, { ...data, like: !data.like }, ...downData]);
-  //   },
-  // });
+  const data = messageData[messageIndex];
+  const role = messageData[messageIndex].role;
 
   const like = async (payload: { messageId: string }) => {
     const type = pathname.includes('chat') ? 'chat' : 'doc';
@@ -57,8 +46,8 @@ const ChatTools = ({
       },
       type: 'post',
       onLoading() {
-        const upData = messageData.filter((_: any, i: any) => i < index);
-        const downData = messageData.filter((_: any, i: any) => i > index);
+        const upData = messageData.filter((_, i) => i < messageIndex);
+        const downData = messageData.filter((_, i) => i > messageIndex);
         setMessageData([...upData, { ...data, like: !data.like }, ...downData]);
       },
       onSuccess() {
@@ -66,21 +55,6 @@ const ChatTools = ({
       },
     });
   };
-
-  // const dislike = api.message.dislikeMessage.useMutation({
-  //   onSettled: async () => {
-  //     await trpc.message.getAllByDocIdAndUserId.refetch();
-  //   },
-  //   onMutate() {
-  //     const upData = messageData.filter((_: any, i: any) => i < index);
-  //     const downData = messageData.filter((_: any, i: any) => i > index);
-  //     setMessageData([
-  //       ...upData,
-  //       { ...data, dislike: !data.dislike },
-  //       ...downData,
-  //     ]);
-  //   },
-  // });
 
   const dislike = async (payload: { messageId: string }) => {
     const type = pathname.includes('chat') ? 'chat' : 'doc';
@@ -92,8 +66,8 @@ const ChatTools = ({
       },
       type: 'post',
       onLoading() {
-        const upData = messageData.filter((_: any, i: any) => i < index);
-        const downData = messageData.filter((_: any, i: any) => i > index);
+        const upData = messageData.filter((_, i) => i < messageIndex);
+        const downData = messageData.filter((_, i) => i > messageIndex);
         setMessageData([
           ...upData,
           { ...data, dislike: !data.dislike },
@@ -127,10 +101,10 @@ const ChatTools = ({
   };
 
   const handleEditMessage = () => {
-    setEdit((prev: any) => ({
+    setEditMessage((prev) => ({
       ...prev,
       bool: true,
-      index: index,
+      index: messageIndex,
       value: data.content,
     }));
     console.log(data.content);
@@ -145,11 +119,6 @@ const ChatTools = ({
     }, 100);
   };
 
-  // const regenerateApi = api.message.regenerateMessage.useMutation({
-  //   onSettled: async () => {},
-  //   onMutate() {},
-  // });
-
   const regenerateApi = async (payload: {
     docId: string;
     messageIndex: number;
@@ -163,32 +132,9 @@ const ChatTools = ({
     });
   };
 
-  // const limitation = api.user.limitation.useMutation();
-
-  const limitation = async (payload: {
-    chat?: boolean;
-    vision?: boolean;
-    notes?: boolean;
-    quiz?: boolean;
-  }) => {
-    let sendData: any = null;
-    await mutateGeneral('/user/limitation', {
-      payload: {
-        ...payload,
-        userId: session?.user.id || '',
-      },
-      toast: { hideSuccess: true },
-      type: 'post',
-      onSuccess({ data }) {
-        sendData = data;
-      },
-    });
-    return sendData;
-  };
-
   const regenerateMessage = async () => {
     try {
-      const data: any = await limitation({ chat: true });
+      const data = await checkLimitation({ chat: true });
       if (data && !data.status) {
         toaster({
           title: 'Uppss',
@@ -199,20 +145,20 @@ const ChatTools = ({
       } else if (data && data.status) {
         regenerateApi({
           docId: `${docId}`,
-          messageIndex: index,
+          messageIndex: messageIndex,
         });
         const submit = document.getElementById(
           'editMessage',
         ) as HTMLButtonElement;
         const newMessage = messageData.slice(0, -2);
-        const e = {
+        const e: any = {
           target: {
-            value: messageData[index - 1].content,
+            value: messageData[messageIndex - 1].content,
           },
         };
         // setTempData([...newMessage]);
         setMessageData([...newMessage]);
-        onChangeRegenerate(e);
+        handleInputChangeMessagesEdit(e);
         setTimeout(() => {
           submit.click();
         }, 500);
@@ -324,7 +270,7 @@ const ChatTools = ({
               />
             </div>
           </ToolTip>
-          {messageData.length - 1 === index && (
+          {messageData.length - 1 === messageIndex && (
             <ToolTip value="Regenerate message">
               <div
                 className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"

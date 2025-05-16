@@ -27,10 +27,6 @@ interface AppContextType {
   setMinimizeSidebar: Dispatch<SetStateAction<boolean>>;
   showSidebar: boolean;
   setShowSidebar: Dispatch<SetStateAction<boolean>>;
-  imageMessageLoading: any;
-  setImageMessageLoading: Dispatch<any>;
-  messageData: any;
-  setMessageData: Dispatch<any>;
   normalSize: string;
   setNormalSize: Dispatch<SetStateAction<string>>;
   zoomValue: string;
@@ -55,11 +51,6 @@ interface AppContextType {
   setSearch: Dispatch<SetStateAction<string>>;
   onBoarding: OnBoardingProps;
   setOnBoarding: Dispatch<SetStateAction<OnBoardingProps>>;
-
-  // Tambahan baru
-  currentPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
-  scrollToPdfPage: (pageNum: number) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -78,11 +69,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
 
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(false);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
-  const [messageData, setMessageData] = useState<any>([]);
-  const [imageMessageLoading, setImageMessageLoading] = useState<any>({
-    index: 99999,
-    value: true,
-  });
 
   const [vision, setVision] = useState<boolean>(false);
   const [zoomValue, setZoomValue] = useState<string>('page-width');
@@ -108,30 +94,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     tryout: false,
   });
 
-  // >>> Tambahan Baru <<<
-  // Untuk tracking halaman PDF saat ini
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
-  // Fungsi global untuk scroll ke halaman
-  // Sesuaikan container (#VisionOff atau #VisionOn) jika vision = true/false
-  const scrollToPdfPage = (pageNum: number) => {
-    const containerId = vision ? 'VisionOn' : 'VisionOff';
-    const selector = `#${containerId} #pdf-page-${pageNum}`;
-    const pageElement = document.querySelector(selector);
-
-    if (pageElement) {
-      pageElement.scrollIntoView({ behavior: 'smooth' });
-      setCurrentPage(pageNum);
-    } else {
-      console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
-    }
-  };
-  // >>> End of Tambahan Baru <<<
-
-  useEffect(() => {
-    setMessageData([]);
-  }, [pathname]);
-
   useEffect(() => {
     if (isDekstop) setMinimizeSidebar(true);
   }, [isDekstop]);
@@ -155,10 +117,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       setMinimizeSidebar,
       showSidebar,
       setShowSidebar,
-      imageMessageLoading,
-      setImageMessageLoading,
-      messageData,
-      setMessageData,
+
       normalSize,
       setNormalSize,
       zoomValue,
@@ -183,17 +142,10 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       setSearch,
       onBoarding,
       setOnBoarding,
-
-      // Tambahan baru
-      currentPage,
-      setCurrentPage,
-      scrollToPdfPage,
     }),
     [
       minimizeSidebar,
       showSidebar,
-      imageMessageLoading,
-      messageData,
       normalSize,
       zoomValue,
       vision,
@@ -206,8 +158,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       pagesSetting,
       search,
       onBoarding,
-      currentPage,
-      scrollToPdfPage,
     ],
   );
 

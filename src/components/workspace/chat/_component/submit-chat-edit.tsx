@@ -1,23 +1,21 @@
-import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper';
 import { IconSend } from '@/styles/icon';
+import { usePathname } from 'next/navigation';
+import { useProvider } from '../provider';
 
-interface Props {
-  editMessage: any;
-  setEditMessage: any;
-  editOnChange: any;
-  docId: string;
-}
-
-const SubmitChatEdit = ({
-  setEditMessage,
-  editMessage,
-  editOnChange,
-  docId,
-}: Props) => {
-  const { messageData, setMessageData } = useAppContext();
+const SubmitChatEdit = () => {
+  const pathname = usePathname();
+  const pathnameArray = pathname?.split('/');
+  const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
+  const {
+    messageData,
+    setMessageData,
+    setEditMessage,
+    editMessage,
+    useMessagesEdit: { handleInputChangeMessagesEdit },
+  } = useProvider();
 
   const { data: session } = useSession();
   // const limitation = api.user.limitation.useMutation();
@@ -101,7 +99,7 @@ const SubmitChatEdit = ({
             ...prev,
             value: e.target.value,
           }));
-          editOnChange(e);
+          handleInputChangeMessagesEdit(e);
           editMessageApi({
             docId: `${docId}`,
             messageIndex: editMessage.index,

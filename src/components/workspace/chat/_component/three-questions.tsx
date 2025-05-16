@@ -1,19 +1,16 @@
 import { useSession } from '@/components/provider/session-provider-auth';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper';
+import { useProvider } from '../provider';
 
-interface Props {
-  session: any;
-  handleInputChange: any;
-  setFirstMessage: any;
-}
+export default function ThreeQuestions() {
+  const {
+    useMessages: { handleInputChangeMessages },
+    setFirstMessage,
+  } = useProvider();
 
-export default function ThreeQuestions({
-  session,
-  handleInputChange,
-  setFirstMessage,
-}: Props) {
-  const { data: sessionUser } = useSession();
+  const { data: session } = useSession();
+
   // const limitation = api.user.limitation.useMutation();
 
   const limitation = async (payload: {
@@ -26,7 +23,7 @@ export default function ThreeQuestions({
     await mutateGeneral('/user/limitation', {
       payload: {
         ...payload,
-        userId: sessionUser?.user.id || '',
+        userId: session?.user.id || '',
       },
       type: 'post',
       toast: { hideSuccess: true },
@@ -70,7 +67,7 @@ export default function ThreeQuestions({
               value,
             },
           };
-          handleInputChange(e);
+          handleInputChangeMessages(e);
           setFirstMessage(true);
           setTimeout(async () => {
             if (submit) {
