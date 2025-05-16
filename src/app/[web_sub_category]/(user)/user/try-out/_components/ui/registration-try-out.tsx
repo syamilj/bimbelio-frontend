@@ -189,7 +189,7 @@ const RegistrationTryOut = ({
 
   useEffect(() => {
     if (isHideGeneralSection) {
-      setStep(3);
+      setStep(4);
     }
     if (univOption) {
       setPilihanUniv1(univOption);

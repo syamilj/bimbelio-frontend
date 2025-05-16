@@ -21,6 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import {
   cn,
@@ -47,7 +48,6 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import ButtonPayment from '../../../_components/button-payment';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 interface CardTryout {
   id: string;
@@ -429,7 +429,7 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                             item.WebsiteSubCategory.id,
                           );
                           // window.location.href = `${window.location.}${window.location.pathname}?id=${item.id}`;
-                          window.location.href = `${window.location.origin}${window.location.pathname}?id=${item.id}`;
+                          window.location.href = `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`;
                         } else {
                           setShowDetail(item);
                         }
@@ -557,7 +557,9 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                       `/${website_sub_category_id}/admin/tryout/testing/try-out/${showDetail.id}`,
                     );
                   } else if (!isPrivate)
-                    router.push(`/${website_sub_category_id}/user/try-out/${showDetail.id}`);
+                    router.push(
+                      `/${website_sub_category_id}/user/try-out/${showDetail.id}`,
+                    );
                 }}
               >
                 Lihat Hasil

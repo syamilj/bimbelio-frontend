@@ -1,13 +1,15 @@
 import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useAppContext } from '@/components/provider/provider-app';
+import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { toaster } from '@/components/ui/toaster';
-import { mutateGeneral } from '@/lib/fetch-helper';
 import { IconLock, IconSend, IconUnlimited } from '@/styles/icon';
 import { BanIcon } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface Props {
   prevChatMessages: any;
@@ -32,29 +34,34 @@ const SubmitChat = ({
   handleSubmit,
   input,
 }: Props) => {
+  const router = useRouter();
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const newChat = searchParams.get('new');
   // const limitation = api.user.limitation.useMutation();
 
-  const limitation = async (payload: {
-    chat?: boolean;
-    vision?: boolean;
-    notes?: boolean;
-    quiz?: boolean;
-  }) => {
-    let sendData: any = null;
-    await mutateGeneral('/user/limitation', {
-      payload: {
-        ...payload,
-        userId: session?.user.id || '',
-      },
-      type: 'post',
-      toast: { hideSuccess: true },
-      onSuccess({ data }) {
-        sendData = data;
-      },
-    });
-    return sendData;
-  };
+  // const limitation = async (payload: {
+  //   chat?: boolean;
+  //   vision?: boolean;
+  //   notes?: boolean;
+  //   quiz?: boolean;
+  // }) => {
+  //   let sendData: any = null;
+  //   await mutateGeneral('/user/limitation', {
+  //     payload: {
+  //       ...payload,
+  //       userId: session?.user.id || '',
+  //     },
+  //     type: 'post',
+  //     toast: { hideSuccess: true },
+  //     onSuccess({ data }) {
+  //       sendData = data;
+  //     },
+  //   });
+  //   return sendData;
+  // };
+
+  const { userLimitation, checkLimitation } = useUserLimitation();
 
   const [send, setSend] = useState<boolean>(false);
   const { setTransactionPopUp } = useAppContext();
@@ -62,7 +69,7 @@ const SubmitChat = ({
   const handleSubmitChatDefault = async () => {
     try {
       console.log('Func');
-      const data: any = await limitation({ chat: true });
+      const data: any = await checkLimitation({ chat: true });
       console.log('data', data);
       const inputChat = document.getElementById(
         'inputChat',
@@ -108,6 +115,22 @@ const SubmitChat = ({
     }
   }, [input]);
 
+  const handleNewChat = useDebouncedCallback(async () => {
+    console.log({ newChat });
+    const inputChat = document.getElementById('inputChat') as
+      | HTMLTextAreaElement
+      | undefined;
+    if (inputChat) {
+      inputChat.value = newChat || '';
+      await handleSubmitChatDefault();
+      router.push(`${window.location.pathname}`);
+    }
+  }, 1000);
+
+  useEffect(() => {
+    handleNewChat();
+  }, [newChat]);
+
   return (
     <form
       id="chatAI"
@@ -131,9 +154,7 @@ const SubmitChat = ({
           ) : limitaionUsed?.chat < limitaionUsed?.Limit?.chat ? (
             <p className="absolute bottom-[90%] left-0 w-full bg-bg-workspace pl-[1.5rem] text-[.9rem] text-main-gray-text">
               <span className="text-[#F9791F]">
-                {limitaionUsed?.chat}/
-                {limitaionUsed?.Limit && limitaionUsed?.Limit.chat} chat
-                tersisa.
+                {userLimitation?.chat}/{userLimitation?.chatLimit} chat tersisa.
               </span>{' '}
               <AnimatedGradientText
                 className="cursor-pointer md:hover:underline"
