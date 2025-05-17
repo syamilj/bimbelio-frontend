@@ -188,6 +188,14 @@ export type Document = {
   website_sub_category_id: string;
 };
 
+export type Video = {
+  website_sub_category_id: string;
+  id: string;
+  url: string;
+  title: string;
+  createdAt: Date;
+};
+
 export type TagEnum = 'Document' | 'Video';
 
 export type ChatHistory = {

@@ -49,14 +49,26 @@ export default function Table() {
   const [deleteData, setDeleteData] = useState({
     id: '',
     title: '',
+    videoTitle: '',
   });
 
-  const deleteDocument = async (id: string) => {
-    await deleteGeneral(`/document/deleteDocument?id=${id}`, {
+  const deleteDocument = async () => {
+    await deleteGeneral(`/document/deleteDocument?id=${deleteData.id}`, {
       setLoading: setLoading,
-      onSuccess() {
+      async onSuccess() {
         fetchDocument();
-        setDeleteData({ id: '', title: '' });
+        setDeleteData({ id: '', title: '', videoTitle: '' });
+        await supabase.storage
+          .from('pdf')
+          .remove([`document/${deleteData.title}`]);
+        await supabase.storage
+          .from('img')
+          .remove([`document/${deleteData.title}`]);
+        if (deleteData.videoTitle.length > 0) {
+          await supabase.storage
+            .from('video')
+            .remove([`document/${deleteData.videoTitle}`]);
+        }
       },
     });
   };
@@ -65,21 +77,7 @@ export default function Table() {
     try {
       setDeleteConfirmation(false);
       setLoading(true);
-      const { data: pdf, error: pdfError } = await supabase.storage
-        .from('pdf')
-        .remove([`${deleteData.title}`]);
-      const { data: img, error: imgError } = await supabase.storage
-        .from('img')
-        .remove([`${deleteData.title}`]);
-      if (pdf && img) {
-        await deleteDocument(deleteData.id);
-      }
-      if (pdfError) {
-        alert(pdfError.message);
-      }
-      if (imgError) {
-        alert(imgError.message);
-      }
+      await deleteDocument();
       setLoading(false);
       return;
     } catch (error) {
@@ -226,6 +224,7 @@ export default function Table() {
                       <HapusDokumen
                         id={item.id}
                         title={item.title}
+                        videoTitle={item.video?.title || ''}
                         setDeleteConfirmation={setDeleteConfirmation}
                         setDeleteData={setDeleteData}
                         loading={loading}

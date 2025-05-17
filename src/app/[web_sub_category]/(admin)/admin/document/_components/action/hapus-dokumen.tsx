@@ -4,12 +4,14 @@ import { Dispatch, SetStateAction } from 'react';
 type Props = {
   id: string;
   title: string;
+  videoTitle: string;
   setDeleteConfirmation: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
   setDeleteData: Dispatch<
     SetStateAction<{
       id: string;
       title: string;
+      videoTitle: string;
     }>
   >;
 };
@@ -17,6 +19,7 @@ type Props = {
 export default function HapusDokumen({
   id,
   title,
+  videoTitle,
   setDeleteConfirmation,
   loading,
   setDeleteData,
@@ -35,6 +38,7 @@ export default function HapusDokumen({
           setDeleteData({
             id,
             title,
+            videoTitle,
           });
         }}
       >
