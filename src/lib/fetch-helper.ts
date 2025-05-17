@@ -6,6 +6,8 @@ export const getGeneral = async (
   more?: {
     setData?: React.Dispatch<React.SetStateAction<any>>;
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+    setPage?: React.Dispatch<React.SetStateAction<any>>;
+    setTotalPages?: React.Dispatch<React.SetStateAction<any>>;
     firstLoad?: boolean;
     endLoad?: boolean;
     hideToast?: boolean;
@@ -37,6 +39,7 @@ export const getGeneral = async (
       error: any;
       data: any;
     }) => any;
+    params?: object;
   },
 ) => {
   if (
@@ -47,12 +50,18 @@ export const getGeneral = async (
   }
   let showToast = true;
   try {
-    const res = await axiosInstance.get(url);
+    const res = await axiosInstance.get(url, {
+      params: more?.params,
+    });
     const resData = response(res);
     if (more?.onSuccess) {
       await more.onSuccess(resData);
     }
     if (more?.setData) more.setData(resData.data);
+    if (resData.total_pages && resData.page) {
+      if (more?.setPage) more.setPage(resData.page);
+      if (more?.setTotalPages) more.setTotalPages(resData.total_pages);
+    }
     return resData || null;
   } catch (error) {
     if (more?.toast?.hideError === true) showToast = false;
@@ -137,6 +146,7 @@ export const deleteGeneral = async (
       await more.onSuccess(resData);
     }
     if (more?.setData) more.setData(resData.data);
+
     return resData || null;
   } catch (error) {
     const errData = responseError(
