@@ -137,7 +137,7 @@ export const deleteGeneral = async (
       await more.onSuccess(resData);
     }
     if (more?.setData) more.setData(resData.data);
-    return resData.data;
+    return resData || null;
   } catch (error) {
     const errData = responseError(
       error,

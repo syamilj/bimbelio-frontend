@@ -1,3 +1,18 @@
+export type Category = {
+  website_sub_category_id: string;
+  id: string;
+  name: string;
+  nomor: number;
+  to: boolean;
+};
+
+export type Subcategory = {
+  website_sub_category_id: string;
+  id: string;
+  name: string;
+  categoryId: string;
+};
+
 export type Tryout = {
   status: TryoutStatusEnum;
   id: string;
