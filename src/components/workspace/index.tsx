@@ -11,7 +11,7 @@ import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import { IconHamburger, IconSetting } from '@/styles/icon';
 import { Cordinate, Message, Video } from '@/types/database';
 import { Loader2 } from 'lucide-react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import useMedia from 'use-media';
 import DocViewer from '../pdf-reader';
@@ -41,6 +41,7 @@ export type DocDataType = {
 
 const DocViewerPage = () => {
   const pathname = usePathname();
+  const router = useRouter();
   // const { query } = router;
   // const tab = query.tab as string;
   const searchParams = useSearchParams();
@@ -51,18 +52,6 @@ const DocViewerPage = () => {
   const userId = session?.user.id;
 
   console.log('tab', tab);
-
-  // const {
-  //   data: doc,
-  //   isLoading,
-  //   isError,
-  // } = api.document.getDocData.useQuery(
-  //   { docId: docId || '', userId: userId || '' },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     refetchOnMount: false,
-  //   },
-  // );
 
   const [doc, setDoc] = useState<DocDataType>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -82,18 +71,15 @@ const DocViewerPage = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (!tab) {
+      router.push(`${pathname}?tab=chat`);
+    }
+  }, [tab]);
+
   const { mobileScreen, setSidebarMobile } = useAppContext();
 
-  // const trpc = api.useUtils();
-
   const [isHistoryUpdated, setIsHistoryUpdated] = useState(false);
-
-  // const updateHistory = api.document.updateHistory.useMutation({
-  //   onSettled: async () => {
-  //     await trpc.document.getHistoryByUser.refetch();
-  //     await trpc.document.getDocumentTotalPage.refetch();
-  //   },
-  // });
 
   const updateHistory = async (payload: { documentId: string }) => {
     await mutateGeneral('/document/updateHistory', {

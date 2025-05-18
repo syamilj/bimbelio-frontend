@@ -91,7 +91,7 @@ const ReportBug = ({
 
   if (isReportBugOpen) {
     return (
-      <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+      <div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black bg-opacity-50">
         <form
           className="mx-[1rem] w-full max-w-[500px] rounded-[2rem] bg-white p-[3rem]"
           onSubmit={(e) => {

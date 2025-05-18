@@ -8,6 +8,7 @@ import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { deleteGeneral, getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { cn } from '@/lib/utils';
 import {
   IconFullscreen,
   IconMinimizeScreen,
@@ -19,6 +20,7 @@ import {
 } from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
 import { Document, User, UserDocument } from '@/types/database';
+import { Loader2 } from 'lucide-react';
 import { useMedia } from 'use-media';
 import ReportBug from '../_shared/other/report-bug';
 import { useSession } from '../provider/session-provider-auth';
@@ -75,10 +77,12 @@ const Sidebar = ({
   const searchParams = useSearchParams();
   const tab = searchParams?.get('tab');
   // const docId = searchParams?.get('docId');
-  const [headerTab, setHeaderTab] = useState<string>(tab ? tab : '');
+  const [headerTab, setHeaderTab] = useState<string>('chat');
   const [documentId, setDocumentId] = useState(initialDocId || docId || '');
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [isReportBugOpen, setIsReportBugOpen] = useState(false);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // const resetChat = api.message.resetMessage.useMutation({
   //   onSettled: async () => {},
@@ -97,7 +101,9 @@ const Sidebar = ({
   // });
 
   const getNameImage = async () => {
-    const res = await getGeneral('/message/getNameImage');
+    const res = await getGeneral('/message/getNameImage', {
+      params: { userId: session?.user.id },
+    });
     return res?.data;
   };
 
@@ -183,6 +189,7 @@ const Sidebar = ({
   // }, [onBoarding])
 
   const handleResetChat = async () => {
+    setIsLoading(true);
     try {
       const res = await getNameImage();
       if (res.length > 0) {
@@ -192,7 +199,7 @@ const Sidebar = ({
 
         if (data) {
           await resetChat();
-          router.refresh();
+          window.location.reload();
         }
         if (error) {
           console.log('errror', error);
@@ -206,10 +213,11 @@ const Sidebar = ({
         }
       } else {
         await resetChat();
-        router.refresh();
+        window.location.reload();
       }
     } catch (error) {
-      error;
+      setIsLoading(false);
+      return error;
     }
   };
 
@@ -231,8 +239,8 @@ const Sidebar = ({
           type="quiz"
         />
       ) : null}
-      {isResetModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      {(isLoading ? true : isResetModalOpen) && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50">
           <div className="flex w-[380px] flex-col items-center rounded-[1.5rem] bg-white p-[2rem] text-center shadow-lg">
             <div className="flex flex-col gap-[1rem]">
               {tab === 'chat' ? (
@@ -251,6 +259,7 @@ const Sidebar = ({
             <div className="mt-4 flex gap-4">
               <button
                 className="w-[156px] rounded-[.7rem] bg-red-100 py-2 text-[.85rem] font-medium text-main-red duration-200 hover:bg-red-200"
+                disabled={isLoading}
                 onClick={async () => {
                   if (tab === 'chat') {
                     handleResetConfirmation();
@@ -260,14 +269,21 @@ const Sidebar = ({
                   }
                 }}
               >
-                {tab === 'chat'
-                  ? 'Hapus Chat'
-                  : tab === 'quiz'
-                    ? 'Hapus Quiz'
-                    : null}
+                {isLoading ? (
+                  <Loader2 className="animate-spin w-4 h-4 text-main-red mx-auto" />
+                ) : (
+                  <>
+                    {tab === 'chat'
+                      ? 'Hapus Chat'
+                      : tab === 'quiz'
+                        ? 'Hapus Quiz'
+                        : null}
+                  </>
+                )}
               </button>
               <button
                 className="w-[156px] rounded-[.7rem] py-2 text-[.85rem] font-medium text-main-gray-text duration-200 md:hover:text-main-gray-text2"
+                disabled={isLoading}
                 onClick={() => {
                   setIsResetModalOpen(false);
                   setShowSidebar(true);
@@ -322,11 +338,18 @@ const Sidebar = ({
                 <CustomTooltip content={item.tooltip}>
                   <TabsTrigger
                     value={item.value}
-                    className={`font-regular relative mr-[.5rem] flex items-center rounded-[.7rem] border border-main-gray-input2 bg-transparent px-3 py-[.5rem] text-[.95rem] capitalize text-main-gray-text data-[state=active]:border-main data-[state=active]:bg-main data-[state=active]:text-white ${headerTab === item.value ? 'gap-[.5rem]' : 'gap-0 md:gap-[.5rem]'} duration-300 hover:bg-main-gray-input2`}
+                    className={cn(
+                      'font-regular relative mr-[.5rem] flex items-center rounded-[.7rem] border border-main-gray-input2 bg-transparent px-3 py-[.5rem] text-[.95rem] capitalize text-main-gray-text data-[state=active]:border-main data-[state=active]:bg-main data-[state=active]:text-white  duration-300 hover:bg-main-gray-input2 gap-0 md:gap-[.5rem]',
+                      headerTab === item.value &&
+                        'gap-[.5rem] bg-main text-white hover:bg-main',
+                    )}
                   >
                     {item.icon}
                     <p
-                      className={`${headerTab === item.value ? 'w-fit' : 'w-0 md:w-fit'} overflow-hidden`}
+                      className={cn(
+                        'overflow-hidden w-0 md:w-fit',
+                        headerTab === item.value && 'w-fit',
+                      )}
                     >
                       {item.title}
                     </p>
