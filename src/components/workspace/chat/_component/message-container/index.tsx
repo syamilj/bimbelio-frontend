@@ -1,4 +1,3 @@
-import { useAppContext } from '@/components/provider/provider-app';
 import { IconTailedArrowNext } from '@/styles/icon';
 import { useRef, useState } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -8,7 +7,6 @@ import Row from './row';
 
 export default function MessageContainer() {
   const { messageData } = useProvider();
-  const { visionLoading } = useAppContext();
 
   const [showButtonScroll, setShowButtonScroll] = useState<boolean>(true);
   const [firstRender, setFirstRender] = useState<boolean>(true);
@@ -55,9 +53,7 @@ export default function MessageContainer() {
           <List
             className="List messageContainer relative"
             height={height - 74}
-            itemCount={
-              visionLoading ? messageData.length + 1 : messageData.length
-            }
+            itemCount={messageData.length}
             itemSize={getRowHeight}
             ref={listRef}
             width={width}

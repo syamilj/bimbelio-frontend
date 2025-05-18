@@ -57,8 +57,20 @@ const HeaderPdf = ({
     setVision,
     mobileScreen,
     setMobileScreen,
-    scrollToPdfPage,
   } = useAppContext();
+
+  const scrollToPdfPage = (pageNum: number) => {
+    const containerId = vision ? 'VisionOn' : 'VisionOff';
+    const selector = `#${containerId} #pdf-page-${pageNum}`;
+    const pageElement = document.querySelector(selector);
+
+    if (pageElement) {
+      pageElement.scrollIntoView({ behavior: 'smooth' });
+      setCurrentPage(pageNum);
+    } else {
+      console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
+    }
+  };
 
   // const { data: totalPage } = api.document.getDocumentTotalPage.useQuery(
   //   {

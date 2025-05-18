@@ -47,8 +47,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     tryout: false,
   });
 
-  const [visionLoading, setVisionLoading] = useState<boolean>(false);
-
   useEffect(() => {
     if (isDekstop) setMinimizeSidebar(true);
   }, [isDekstop]);
@@ -99,8 +97,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       sendMessage,
       setSendMessage,
     },
-    visionLoading,
-    setVisionLoading,
   };
 
   return (
@@ -154,8 +150,6 @@ interface AppContextType {
     sendMessage: string | null;
     setSendMessage: Dispatch<SetStateAction<string | null>>;
   };
-  visionLoading: boolean;
-  setVisionLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 interface OnBoardingProps {

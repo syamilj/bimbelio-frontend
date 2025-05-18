@@ -1,11 +1,10 @@
-import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import ReactMarkdownChatAI from '@/components/ui/react-markdown-chat-ai';
 import { env } from '@/env.mjs';
 import { cn, getDate, getHours } from '@/lib/utils';
-import { BotMessageSquareIcon, Loader2, User2Icon } from 'lucide-react';
+import { BotMessageSquareIcon, User2Icon } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { useProvider } from '../../provider';
@@ -47,9 +46,7 @@ export default function Row({
     setEditMessage,
   } = useProvider();
 
-  const currentMessage = messageData[index] || null;
-
-  const { visionLoading } = useAppContext();
+  const currentMessage = messageData[index];
 
   const rowRef = useRef<HTMLDivElement>(null);
   const isBase64Image = currentMessage?.content?.startsWith(
@@ -162,19 +159,13 @@ export default function Row({
                       AI
                     </span>
                   )}
-                  {currentMessage?.createdAt && (
+                  {currentMessage.createdAt && (
                     <p className="text-xs text-muted-foreground">
                       {getHours(currentMessage.createdAt)} |{' '}
                       {getDate(currentMessage.createdAt)}
                     </p>
                   )}
                 </div>
-
-                {!currentMessage && (
-                  <div className="min-h-[200px] w-fit min-w-[300px] rounded-lg bg-muted animate-pulse flex justify-center items-center">
-                    <Loader2 className="animate-spin h-12 w-12 text-main" />
-                  </div>
-                )}
 
                 {isBase64Image && currentMessage && (
                   <div>

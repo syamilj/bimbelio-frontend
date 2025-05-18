@@ -12,6 +12,7 @@ import {
   ClipboardCopy,
   Highlighter,
   Lightbulb,
+  Loader2,
 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useLayoutEffect, useState } from 'react';
@@ -92,12 +93,12 @@ const TextSelectionPopover = ({
   const { data: session } = useSession();
   const {
     useSendMessage: { setSendMessage: sendMessage },
-    setVisionLoading,
+    setVision,
   } = useAppContext();
 
   const { checkLimitation, userLimitation } = useUserLimitation();
 
-  const { setVision } = useAppContext();
+  const [visionLoading, setVisionLoading] = useState(false);
 
   const switchSidebarTabToChat = () => {
     // router.push({
@@ -115,7 +116,6 @@ const TextSelectionPopover = ({
 
   const handleContentImage = async () => {
     setVisionLoading(true);
-    hideTipAndSelection();
     try {
       const data = await checkLimitation({
         vision: true,
@@ -152,6 +152,7 @@ const TextSelectionPopover = ({
       });
       return;
     } finally {
+      hideTipAndSelection();
       setVisionLoading(false);
     }
   };
@@ -263,18 +264,25 @@ const TextSelectionPopover = ({
             >
               <CustomTooltip content={option.tooltip}>
                 {option.title === 'Salin' ? (
-                  <div className="flex items-center gap-[.5rem]">
+                  <div className="flex items-center gap-[.5rem] justify-center">
                     <option.icon className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
                     <p className="w-fit whitespace-nowrap text-white">
                       {option.title}
                     </p>
                   </div>
                 ) : option.title === 'Analisis' ? (
-                  <div className="flex items-center gap-[.5rem]">
-                    <option.icon className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-                    <p className="w-fit whitespace-nowrap text-white">
-                      {option.title}
-                    </p>
+                  <div className="flex items-center gap-[.5rem] justify-center">
+                    {!visionLoading && (
+                      <>
+                        <option.icon className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
+                        <p className="w-fit whitespace-nowrap text-white">
+                          {option.title}
+                        </p>
+                      </>
+                    )}
+                    {visionLoading && (
+                      <Loader2 className="animate-spin w-4 h-4 text-gray-300" />
+                    )}
                   </div>
                 ) : (
                   <p className="w-fit whitespace-nowrap text-white">

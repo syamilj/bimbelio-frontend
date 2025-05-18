@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // index.tsx
-import { SpinnerCentered } from '@/components/ui/spinner';
 // import { useChatStore } from "@/lib/store";
 import { Document, User, UserDocument } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Loader2 } from 'lucide-react';
 
+import { SpinnerCentered } from '@/components/ui/spinner';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import MessageContainer from './_component/message-container';
@@ -113,10 +113,6 @@ const MainContent = () => {
     }
   }, [messageEdit]);
 
-  if (isUserDocLoading) {
-    return <SpinnerCentered />;
-  }
-
   const isVectorised = userDocData?.isVectorised || false;
 
   if (!isVectorised && userDoc) {
@@ -140,6 +136,10 @@ const MainContent = () => {
   const isMessages = messageData?.length !== 0;
   const isNoMessages =
     messageData?.length === 0 && prevChatMessages?.length === 0 && !newChat;
+
+  if (isUserDocLoading) {
+    return <SpinnerCentered />;
+  }
 
   return (
     <div className="absolute left-0 top-0 flex h-full w-full flex-col gap-2 overflow-hidden md:relative md:left-[unset] md:top-[unset]">

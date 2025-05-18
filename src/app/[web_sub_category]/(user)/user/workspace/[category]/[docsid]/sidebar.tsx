@@ -195,6 +195,8 @@ const Sidebar = ({
     setIsLoading(true);
     try {
       const res = await getNameImage();
+      console.log({ getName: res });
+      return;
       if (res.length > 0) {
         const { data, error } = await supabase.storage
           .from('img')
