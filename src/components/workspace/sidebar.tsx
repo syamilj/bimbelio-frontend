@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { deleteGeneral, getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import {
   IconFullscreen,
@@ -485,7 +487,11 @@ const ChatContent = () => {
   const [messageError, setMessageError] = useState<string | null>(null);
 
   const getMessages = async () => {
-    await getGeneral(`/message/getAllByDocIdAndUserId?documentId=${docId}`, {
+    await getGeneral(`/message/getAllByDocIdAndUserId`, {
+      params: {
+        docId,
+        userId: session?.user.id,
+      },
       setData: setPrevChatMessages,
       setLoading: setIsLoadingPrevMessage,
       onSuccess({ message, status, data }) {
@@ -536,29 +542,6 @@ const ChatContent = () => {
     fetchUserDocData();
   }, []);
 
-  // const { mutate: vectoriseDocMutation, isPending: isVectorising } =
-  //   api.document.vectorise.useMutation({
-  //     onSettled: async () => {
-  //       await trpc.document.getHistoryByUser.refetch();
-  //       await trpc.document.getDocumentTotalPage.refetch();
-  //     },
-  //     onSuccess: () => {
-  //       toaster({
-  //         title: 'Sukses',
-  //         description: 'Semangat belajarnya!',
-  //         duration: 3000,
-  //       });
-  //       refetchUserDocData();
-  //     },
-  //     onError: (err: any) => {
-  //       toaster({
-  //         title: 'Gagal',
-  //         description: err.message ?? 'Terjadi kesalahan!',
-  //         condition: 'warning',
-  //         duration: 3000,
-  //       });
-  //     },
-  //   });
   const [isVectorising, setIsVectorising] = useState<boolean>(false);
 
   const vectoriseDocMutation = async () => {
@@ -583,8 +566,9 @@ const ChatContent = () => {
 
   return (
     <Chat
-      apiChat="/api/chat"
-      body={{ docId: docId as string }}
+      // apiChat="/api/chat"
+      apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatWorkspace?website_sub_category_id=${website_sub_category_id}`}
+      body={{ docId, userId }}
       messages={{
         prevChatMessages,
         isLoadingPrevMessage,

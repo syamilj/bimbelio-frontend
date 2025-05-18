@@ -9,7 +9,6 @@ import {
   IconEdit,
   IconLike,
   IconRegenerateMessage,
-  IconSettingMessage,
 } from '@/styles/icon';
 import { usePathname } from 'next/navigation';
 import { useProvider } from '../provider';
@@ -262,18 +261,18 @@ const ChatTools = ({ messageIndex }: Props) => {
               )}
             </div>
           </ToolTip>
-          <ToolTip value="Regenerate message">
+          {/* <ToolTip value="Regenerate message">
             <div className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input">
               <IconSettingMessage
                 w={18}
                 className={''}
               />
             </div>
-          </ToolTip>
+          </ToolTip> */}
           {messageData.length - 1 === messageIndex && (
             <ToolTip value="Regenerate message">
               <div
-                className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
+                className="hidden rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
                 onClick={() => regenerateMessage()}
               >
                 <IconRegenerateMessage

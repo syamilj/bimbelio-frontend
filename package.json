@@ -12,9 +12,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@blocknote/core": "^0.22.0",
-    "@blocknote/mantine": "^0.22.0",
-    "@blocknote/react": "^0.22.0",
+    "@blocknote/core": "^0.30.0",
+    "@blocknote/mantine": "^0.30.0",
+    "@blocknote/react": "^0.30.0",
     "@eslint/compat": "^1.2.8",
     "@hookform/resolvers": "^5.0.1",
     "@paralleldrive/cuid2": "^2.2.2",

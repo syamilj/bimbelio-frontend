@@ -97,7 +97,13 @@ const DocViewerPage = () => {
 
   const updateHistory = async (payload: { documentId: string }) => {
     await mutateGeneral('/document/updateHistory', {
-      payload,
+      payload: {
+        ...payload,
+        userId: session?.user.id,
+      },
+      toast: {
+        hideSuccess: true,
+      },
       type: 'put',
       onSuccess: () => {
         //     await trpc.document.getHistoryByUser.refetch();

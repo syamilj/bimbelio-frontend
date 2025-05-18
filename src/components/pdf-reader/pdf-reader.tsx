@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 //   PdfLoader,
 //   Popup,
 // } from 'react-pdf-highlighter';
+import { env } from '@/env.mjs';
 import { mutateGeneral } from '@/lib/fetch-helper';
 import { Cordinate, HighlightTypeEnum } from '@/types/database';
 import { Loader2 } from 'lucide-react';
@@ -218,9 +219,12 @@ function PdfReader({
 
   useEffect(() => {
     const fetchPdf = async () => {
-      const response = await fetch(`/api/pdf?title=${docUrl}`, {
-        method: 'POST',
-      });
+      const response = await fetch(
+        `${env.NEXT_PUBLIC_API_URL}/document/pdf?title=${docUrl}`,
+        {
+          method: 'POST',
+        },
+      );
       if (response.ok) {
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);

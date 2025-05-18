@@ -72,6 +72,9 @@ const HeaderPdf = ({
     if (!docId) return;
     getGeneral('/document/getDocumentTotalPage', {
       setData: setTotalPage,
+      params: {
+        docId,
+      },
     });
   }, [docId]);
 

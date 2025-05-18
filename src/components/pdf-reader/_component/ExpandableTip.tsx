@@ -640,6 +640,8 @@ const TextSelectionPopover = ({
   };
   const OPTIONS = getOptions();
 
+  console.log({ OPTIONS, content, tab, sendMessage });
+
   return (
     <div className="relative rounded-xl bg-black">
       <div className="absolute -bottom-[10px] left-[50%] h-0 w-0 -translate-x-[50%] border-l-[10px] border-r-[10px] border-t-[10px] border-solid border-black border-l-transparent border-r-transparent" />
