@@ -17,6 +17,7 @@ import useMedia from 'use-media';
 import { DocDataType } from '@/components/pdf-reader';
 import { useSession } from '@/components/provider/session-provider-auth';
 import dynamic from 'next/dynamic';
+import { useDebouncedCallback } from 'use-debounce';
 import Sidebar from './sidebar';
 
 const DocViewer = dynamic(() => import('@/components/pdf-reader'), {
@@ -82,17 +83,15 @@ const DocViewerPage = () => {
     });
   };
 
+  const test = useDebouncedCallback(() => {
+    updateHistory({
+      documentId: docId as string,
+    });
+  }, 1000);
+
   useEffect(() => {
-    if (docId && !isHistoryUpdated) {
-      const Run = async () => {
-        await updateHistory({
-          documentId: docId as string,
-        });
-        setIsHistoryUpdated(true);
-      };
-      Run();
-    }
-  }, [isHistoryUpdated]);
+    test();
+  }, []);
 
   const isMobile = useMedia({ maxWidth: '768px' });
 

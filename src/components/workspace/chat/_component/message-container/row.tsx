@@ -145,7 +145,7 @@ export default function Row({
                   {isUser ? (
                     <User2Icon className="h-5 w-5 text-gray-300" />
                   ) : (
-                    <BotMessageSquareIcon className="h-5 w-5 text-blue-500" />
+                    <BotMessageSquareIcon className="h-5 w-5 text-main" />
                   )}
                 </AvatarFallback>
               </Avatar>

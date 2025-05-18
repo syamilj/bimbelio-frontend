@@ -196,7 +196,6 @@ const Sidebar = ({
     try {
       const res = await getNameImage();
       console.log({ getName: res });
-      return;
       if (res.length > 0) {
         const { data, error } = await supabase.storage
           .from('img')
@@ -206,6 +205,7 @@ const Sidebar = ({
           await resetChat();
           window.location.reload();
         }
+        console.log({ data, error });
         if (error) {
           console.log('errror', error);
           toaster({

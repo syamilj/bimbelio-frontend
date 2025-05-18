@@ -115,18 +115,6 @@ const MainContent = () => {
 
   const isVectorised = userDocData?.isVectorised || false;
 
-  if (!isVectorised && userDoc) {
-    return (
-      <Start
-        isLoading={isVectorising || false}
-        onClick={() => {
-          if (!vectoriseDocMutation) return;
-          vectoriseDocMutation({ documentId: docId as string });
-        }}
-      />
-    );
-  }
-
   if (isLoadingPrevMessage) {
     <div className="flex justify-center items-center h-full w-full">
       <Loader2 className="w-4 h-4 animate-spin" />
@@ -139,6 +127,18 @@ const MainContent = () => {
 
   if (isUserDocLoading) {
     return <SpinnerCentered />;
+  }
+
+  if (!isVectorised && userDoc) {
+    return (
+      <Start
+        isLoading={isVectorising || false}
+        onClick={() => {
+          if (!vectoriseDocMutation) return;
+          vectoriseDocMutation({ documentId: docId as string });
+        }}
+      />
+    );
   }
 
   return (

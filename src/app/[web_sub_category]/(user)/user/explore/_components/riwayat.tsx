@@ -1,14 +1,17 @@
 'use client';
 
+import { useSession } from '@/components/provider/session-provider-auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper';
+import { Category, Subcategory } from '@/types/database';
 import { useEffect, useState } from 'react';
 import Card from '../../_components/card';
 import CardNotFound from '../../_components/card-not-found';
 
 export default function Riwayat() {
   const [riwayat, setRiwayat] = useState<any>([]);
+  const { data: session } = useSession();
 
   // const { data: document, isLoading } = api.document.getHistoryByUser.useQuery(
   //   undefined,
@@ -19,13 +22,24 @@ export default function Riwayat() {
   // );
 
   const [datas, setDatas] = useState<{
-    today: any;
-    yesterday: any;
+    today: {
+      document: Document & {
+        category: Category;
+        subCategory: Subcategory;
+      };
+    }[];
+    yesterday: {
+      document: Document & {
+        category: Category;
+        subCategory: Subcategory;
+      };
+    }[];
   }>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getGeneral('/document/getHistoryByUser', {
+      params: { userId: session?.user.id },
       setData: setDatas,
       setLoading: setIsLoading,
     });
@@ -37,12 +51,12 @@ export default function Riwayat() {
 
   useEffect(() => {
     if (datas) {
-      const today = datas?.today.map((item: any) => {
+      const today = datas?.today.map((item) => {
         return {
           ...item.document,
         };
       });
-      const yesterday = datas?.yesterday.map((item: any) => {
+      const yesterday = datas?.yesterday.map((item) => {
         return {
           ...item.document,
         };
@@ -50,7 +64,7 @@ export default function Riwayat() {
       const riwayatData = [...today, ...yesterday];
       setRiwayat([...riwayatData]);
     }
-  }, [document]);
+  }, [datas]);
 
   return (
     <>

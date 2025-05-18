@@ -15,6 +15,9 @@ import { getGeneral } from '@/lib/fetch-helper';
 import { Category } from '@/types/database';
 import SearchDeskstop from '../../_components/search-dekstop';
 import Free from './free';
+import Riwayat from './riwayat';
+import Terbaru from './terbaru';
+import Trending from './trending';
 // import iklan from '../../_assest/Iklan/test.png';
 
 export default function ExploreClient() {
@@ -55,15 +58,15 @@ export default function ExploreClient() {
       </div>
 
       <div className="font-regular flex flex-col gap-[.5rem]">
-        {/* <Terbaru /> */}
+        <Terbaru />
       </div>
 
       <div className="font-regular flex flex-col gap-[.5rem]">
-        {/* <Trending /> */}
+        <Trending />
       </div>
 
       <div className="font-regular flex flex-col gap-[.5rem]">
-        {/* <Riwayat /> */}
+        <Riwayat />
       </div>
     </div>
   );
