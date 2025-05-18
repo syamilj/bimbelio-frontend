@@ -1,34 +1,48 @@
 'use client';
 
-import Card from '@/app/(user)/user/_components/card';
-import CardNotFound from '@/app/(user)/user/_components/card-not-found';
 import { Skeleton } from '@/components/ui/skeleton';
-import { api } from '@/trpc/react';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { getGeneral } from '@/lib/fetch-helper';
 import { useEffect, useState } from 'react';
+import Card from '../../_components/card';
+import CardNotFound from '../../_components/card-not-found';
 
 export default function Riwayat() {
   const [riwayat, setRiwayat] = useState<any>([]);
 
-  const { data: document, isLoading } = api.document.getHistoryByUser.useQuery(
-    undefined,
-    {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  );
+  // const { data: document, isLoading } = api.document.getHistoryByUser.useQuery(
+  //   undefined,
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     refetchOnMount: false,
+  //   },
+  // );
 
-  if (document) {
-    console.log(document);
+  const [datas, setDatas] = useState<{
+    today: any;
+    yesterday: any;
+  }>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    getGeneral('/document/getHistoryByUser', {
+      setData: setDatas,
+      setLoading: setIsLoading,
+    });
+  }, []);
+
+  if (datas) {
+    console.log(datas);
   }
 
   useEffect(() => {
-    if (document) {
-      const today = document.today.map((item: any) => {
+    if (datas) {
+      const today = datas?.today.map((item: any) => {
         return {
           ...item.document,
         };
       });
-      const yesterday = document.yesterday.map((item: any) => {
+      const yesterday = datas?.yesterday.map((item: any) => {
         return {
           ...item.document,
         };
@@ -45,7 +59,7 @@ export default function Riwayat() {
         <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
           <Card
             data={riwayat}
-            href={'/user/workspace'}
+            href={`${website_sub_category_id}/user/workspace`}
             noCategory={true}
           />
         </div>

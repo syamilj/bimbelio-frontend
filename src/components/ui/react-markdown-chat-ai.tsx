@@ -1,5 +1,6 @@
 // File: src/components/ui/react-markdown.tsx
 
+import { cn } from '@/lib/utils';
 import 'katex/dist/katex.min.css';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -24,6 +25,7 @@ export default function ReactMarkdownChatAI({
   value,
   onClickPageNumber,
   scrollToPdfPage,
+  className,
 }: ReactMarkdownProps) {
   const remarkMathOptions = {
     singleDollarTextMath: false,
@@ -88,7 +90,7 @@ export default function ReactMarkdownChatAI({
     <ReactMarkdown
       remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
       rehypePlugins={[rehypeKatex]}
-      className="prose max-w-none break-words ReactMarkdown"
+      className={cn('prose break-words ReactMarkdown', className)}
       components={{
         p: ({ node, children, ...props }) => {
           const hasBlockChild = React.Children.toArray(children).some(

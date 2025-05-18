@@ -13,19 +13,23 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useProvider } from '../provider';
 
 const SubmitChat = () => {
-  const { prevChatMessages } = useProvider();
-
   const router = useRouter();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const newChat = searchParams.get('new');
 
   const {
+    useSendMessage: { sendMessage, setSendMessage },
+  } = useAppContext();
+
+  const {
+    prevChatMessages,
     useMessages: {
       handleInputChangeMessages,
       inputMessages,
       isLoadingMessages,
       handleSubmitMessages,
+      appendMessages,
     },
     setFirstMessage,
   } = useProvider();
@@ -38,7 +42,7 @@ const SubmitChat = () => {
   const handleSubmitChatDefault = async () => {
     try {
       console.log('Func');
-      const data: any = await checkLimitation({ chat: true });
+      const data = await checkLimitation({ chat: true });
       console.log('data', data);
       const inputChat = document.getElementById(
         'inputChat',
@@ -85,20 +89,35 @@ const SubmitChat = () => {
   }, [inputMessages]);
 
   const handleNewChat = useDebouncedCallback(async () => {
-    console.log({ newChat });
-    const inputChat = document.getElementById('inputChat') as
-      | HTMLTextAreaElement
-      | undefined;
-    if (inputChat) {
-      inputChat.value = newChat || '';
-      await handleSubmitChatDefault();
-      router.push(`${window.location.pathname}`);
-    }
+    if (!newChat) return;
+    appendMessages({
+      id: crypto.randomUUID(),
+      content: newChat,
+      role: 'user',
+      createdAt: new Date(),
+    });
+    router.push(`${window.location.pathname}`);
   }, 1000);
 
   useEffect(() => {
     handleNewChat();
   }, [newChat]);
+
+  const handleMessageFromPdf = async () => {
+    if (!sendMessage) return;
+    appendMessages({
+      id: crypto.randomUUID(),
+      content: sendMessage,
+      role: 'user',
+      createdAt: new Date(),
+    });
+
+    setSendMessage(null);
+  };
+
+  useEffect(() => {
+    handleMessageFromPdf();
+  }, [sendMessage]);
 
   return (
     <form

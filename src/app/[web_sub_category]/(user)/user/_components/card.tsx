@@ -6,6 +6,7 @@ import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { IconLock } from '@/styles/icon';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -33,17 +34,18 @@ export default function Card({ data, href, noCategory }: card) {
   // };
 
   const handleClick = (id: string, category: string, premium: boolean) => {
+    const LinkButton = document.getElementById('hrefLink') as HTMLButtonElement;
     if (premium) {
       if (session?.user.role !== 'USER') {
         if (noCategory) {
-          router.push(`/${website_sub_category_id}/user/workspace/${category}/${id}?tab=chat`);
+          LinkButton.click();
         } else {
           router.push(`${href}/${id}?tab=chat`);
         }
       }
     } else {
       if (noCategory) {
-        router.push(`/${website_sub_category_id}/user/workspace/${category}/${id}?tab=chat`);
+        LinkButton.click();
       } else {
         router.push(`${href}/${id}?tab=chat`);
       }
@@ -88,6 +90,11 @@ export default function Card({ data, href, noCategory }: card) {
                 )}
               </>
             )}
+            <Link
+              id="hrefLink"
+              href={`/${website_sub_category_id}/user/workspace/${item.categoryId}/${item.id}?tab=chat`}
+              className="hidden"
+            />
             <div
               id="card"
               className={
@@ -99,7 +106,7 @@ export default function Card({ data, href, noCategory }: card) {
             >
               <div className="h-auto w-full bg-[#E8EBF4] p-[1.5rem]">
                 <Image
-                  src={`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${item.img}`}
+                  src={`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/document/${item.img}`}
                   className="h-auto w-full rounded-xl"
                   layout="responsive"
                   width={500}

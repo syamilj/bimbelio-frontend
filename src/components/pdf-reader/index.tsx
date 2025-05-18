@@ -1,4 +1,5 @@
-// index.tsx
+'use client';
+
 import HeaderPdf from '@/components/pdf-reader/_component/header-pdf';
 import PdfReader from '@/components/pdf-reader/pdf-reader';
 import { useAppContext } from '@/components/provider/provider-app';
@@ -9,14 +10,34 @@ import { hideVideoLink } from '@/lib/utils';
 import { IconDislike, IconLike } from '@/styles/icon';
 
 import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper';
-import { Cordinate, HighlightTypeEnum } from '@/types/database';
+import { Cordinate, HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
 import { createId } from '@paralleldrive/cuid2';
 import { useEffect, useState } from 'react';
 import { GhostHighlight } from 'react-pdf-highlighter-extended';
 import { useSession } from '../provider/session-provider-auth';
 import { ToolTip } from '../ui/tooltip';
-import { DocDataType } from '../workspace';
+
+export type DocDataType = {
+  id: string;
+  website_sub_category_id: string;
+  title: string;
+  highlights: {
+    id: string;
+    position: {
+      boundingRect?: Cordinate;
+      rects: Cordinate[];
+      pageNumber: number | null;
+    };
+  }[];
+  message: Message[];
+  premium: boolean;
+  url: string;
+  video: Video | null;
+  userPermissions: {
+    canEdit: boolean;
+  };
+};
 
 type HighlightTypeData = {
   id: string;

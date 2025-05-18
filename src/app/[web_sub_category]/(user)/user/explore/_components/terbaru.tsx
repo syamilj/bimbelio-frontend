@@ -1,48 +1,61 @@
 'use client';
 
-import Card from '@/app/(user)/user/_components/card';
-import CardNotFound from '@/app/(user)/user/_components/card-not-found';
 import { Skeleton } from '@/components/ui/skeleton';
-import { api } from '@/trpc/react';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { getGeneral } from '@/lib/fetch-helper';
+import { Category, Subcategory } from '@/types/database';
+import { useEffect, useState } from 'react';
+import Card from '../../_components/card';
+import CardNotFound from '../../_components/card-not-found';
 
 export default function Terbaru() {
-  const {
-    data: dokumen,
-    isLoading,
-    error,
-  } = api.document.getDocumentTerbaru.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  });
+  // const {
+  //   data: dokumen,
+  //   isLoading,
+  //   error,
+  // } = api.document.getDocumentTerbaru.useQuery(undefined, {
+  //   refetchOnWindowFocus: false,
+  //   refetchOnMount: false,
+  // });
 
-  if (error)
-    return (
-      // <div className='flex justify-center items-center h-screen mt-[-80px]'>
-      //   {error.message}
-      // </div>
-      <>
-        <h1 className="text-[1.4rem] font-medium">Terbaru</h1>
-        <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
-          <CardNotFound />
-        </div>
-      </>
-    );
+  const [datas, setDatas] = useState<
+    (Document & {
+      category: Category;
+      subCategory: Subcategory;
+    })[]
+  >([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // console.log('dokumen', dokumen)
+  useEffect(() => {
+    getGeneral('/document/getDocumentTerbaru', {
+      setData: setDatas,
+      setLoading: setIsLoading,
+    });
+  }, []);
+
+  // if (error)
+  //   return (
+  //     <>
+  //       <h1 className="text-[1.4rem] font-medium">Terbaru</h1>
+  //       <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
+  //         <CardNotFound />
+  //       </div>
+  //     </>
+  //   );
 
   return (
     <>
       <h1 className="text-[1.4rem] font-medium">Terbaru</h1>
-      {!isLoading && dokumen?.length > 0 && (
+      {!isLoading && datas?.length > 0 && (
         <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
           <Card
-            data={dokumen}
-            href={'/user/workspace'}
+            data={datas}
+            href={`${website_sub_category_id}/user/workspace`}
             noCategory={true}
           />
         </div>
       )}
-      {!isLoading && dokumen?.length === 0 && (
+      {!isLoading && datas?.length === 0 && (
         <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
           <CardNotFound />
         </div>

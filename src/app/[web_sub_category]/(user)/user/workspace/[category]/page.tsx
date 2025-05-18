@@ -1,5 +1,3 @@
-// index.tsx
-
 'use client';
 
 import { Fragment, useState } from 'react';

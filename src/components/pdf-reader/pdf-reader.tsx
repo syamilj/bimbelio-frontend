@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+'use client';
+
 import { useChatStore } from '@/lib/store';
 
 import { useEffect, useRef, useState } from 'react';

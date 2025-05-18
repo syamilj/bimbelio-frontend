@@ -1,11 +1,10 @@
 'use client';
 
-import Card from '@/app/(user)/user/_components/card';
-import CardNotFound from '@/app/(user)/user/_components/card-not-found';
-import { api } from '@/trpc/react';
 import { Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Card from '../../../_components/card';
+import CardNotFound from '../../../_components/card-not-found';
 
 export default function DocumentByCategory({
   subCategoryId,
@@ -15,26 +14,31 @@ export default function DocumentByCategory({
 }: any) {
   const params = useParams();
 
-  // const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { data: documentByCategory, isLoading } =
-    api.document.getDocumentByCategoryId.useQuery(`${params?.category}`, {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    });
+  const [documentByCategory, setDocumentByCategory] = useState<any>();
+  const [
+    documentByCategoryAndSubcategory,
+    setDocumentByCategoryAndSubcategory,
+  ] = useState<any>();
 
-  const { data: documentByCategoryAndSubcategory, refetch }: any =
-    api.document.getDocumentByCategoryAndSubId.useQuery(
-      {
-        categoryId: `${params?.category}`,
-        subCategoryId: subCategoryId,
-      },
-      { refetchOnWindowFocus: false },
-    );
+  // const { data: documentByCategory, isLoading } =
+  //   api.document.getDocumentByCategoryId.useQuery(`${params?.category}`, {
+  //     refetchOnWindowFocus: false,
+  //     refetchOnMount: false,
+  //   });
+
+  // const { data: documentByCategoryAndSubcategory, refetch }: any =
+  //   api.document.getDocumentByCategoryAndSubId.useQuery(
+  //     {
+  //       categoryId: `${params?.category}`,
+  //       subCategoryId: subCategoryId,
+  //     },
+  //     { refetchOnWindowFocus: false },
+  //   );
 
   useEffect(() => {
-    // setLoading(true);
-    refetch();
+    // refetch();
   }, [subCategoryId]);
 
   useEffect(() => {

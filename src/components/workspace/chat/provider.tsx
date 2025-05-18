@@ -1,7 +1,11 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
 import { Document, User, UserDocument } from '@/types/database';
-import type { ChatRequestOptions } from '@ai-sdk/ui-utils';
+import type {
+  ChatRequestOptions,
+  CreateMessage,
+  Message,
+} from '@ai-sdk/ui-utils';
 import { useChat } from 'ai/react';
 import { usePathname } from 'next/navigation';
 import {
@@ -57,11 +61,6 @@ export default function Provider({
     value: '111',
   });
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [imageMessageLoading, setImageMessageLoading] =
-    useState<ImageMessageLoadingType>({
-      index: 99999,
-      value: true,
-    });
   const [messageData, setMessageData] = useState<MessageDataType[]>([]);
   const [firstMessage, setFirstMessage] = useState<boolean>(false);
 
@@ -84,8 +83,7 @@ export default function Provider({
     handleInputChange: handleInputChangeMessages,
     handleSubmit: handleSubmitMessages,
     isLoading: isLoadingMessages,
-    error,
-    append,
+    append: appendMessages,
   } = useChat({
     api: apiChat,
     body,
@@ -112,6 +110,7 @@ export default function Provider({
     handleInputChange: handleInputChangeMessagesEdit,
     handleSubmit: handleSubmitMessagesEdit,
     isLoading: isLoadingMessagesEdit,
+    append: appendMessagesEdit,
   } = useChat({
     api: apiChat,
     body,
@@ -136,6 +135,7 @@ export default function Provider({
     handleInputChangeMessages,
     handleSubmitMessages,
     isLoadingMessages,
+    appendMessages,
   };
 
   const useMessagesEdit = {
@@ -144,6 +144,7 @@ export default function Provider({
     handleInputChangeMessagesEdit,
     handleSubmitMessagesEdit,
     isLoadingMessagesEdit,
+    appendMessagesEdit,
   };
 
   useEffect(() => {
@@ -151,8 +152,6 @@ export default function Provider({
   }, [pathname]);
 
   const Context = {
-    imageMessageLoading,
-    setImageMessageLoading,
     messageData,
     setMessageData,
     scrollToPdfPage,
@@ -189,8 +188,6 @@ export const useProvider = () => {
 };
 
 type ProviderType = {
-  imageMessageLoading: ImageMessageLoadingType;
-  setImageMessageLoading: Dispatch<SetStateAction<ImageMessageLoadingType>>;
   messageData: MessageDataType[];
   setMessageData: Dispatch<SetStateAction<MessageDataType[]>>;
   scrollToPdfPage: (pageNum: number) => void;
@@ -209,6 +206,10 @@ type ProviderType = {
       chatRequestOptions?: ChatRequestOptions,
     ) => void;
     isLoadingMessages: boolean;
+    appendMessages: (
+      message: Message | CreateMessage,
+      chatRequestOptions?: ChatRequestOptions,
+    ) => Promise<string | null | undefined>;
   };
   useMessagesEdit: {
     messageEdit: MessageDataType[];
@@ -225,6 +226,10 @@ type ProviderType = {
       chatRequestOptions?: ChatRequestOptions,
     ) => void;
     isLoadingMessagesEdit: boolean;
+    appendMessagesEdit: (
+      message: Message | CreateMessage,
+      chatRequestOptions?: ChatRequestOptions,
+    ) => Promise<string | null | undefined>;
   };
   firstMessage: boolean;
   setFirstMessage: Dispatch<SetStateAction<boolean>>;

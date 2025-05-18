@@ -1,8 +1,7 @@
 'use client';
 
-import UrutkanDocs from '@/app/(user)/user/_components/urutan-docs';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { api } from '@/trpc/react';
+import { getGeneral } from '@/lib/fetch-helper';
 
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -26,18 +25,30 @@ export default function HeadingBahanAjar({
   const pathname = usePathname();
 
   const [subCategoryData, setSubCategoryData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { data: subCategory, isLoading } =
-    api.subcategory.getAllSubcategoryByCategoryId.useQuery(
-      `${params?.category}`,
-      { refetchOnWindowFocus: false },
-    );
+  // const { data: subCategory, isLoading } =
+  //   api.subcategory.getAllSubcategoryByCategoryId.useQuery(
+  //     `${params?.category}`,
+  //     { refetchOnWindowFocus: false },
+  //   );
+
+  // useEffect(() => {
+  //   if (subCategory) {
+  //     setSubCategoryData(subCategory);
+  //   }
+  // }, [subCategory]);
 
   useEffect(() => {
-    if (subCategory) {
-      setSubCategoryData(subCategory);
-    }
-  }, [subCategory]);
+    if (!params?.category) return;
+    getGeneral(
+      `/category/getAllSubcategoryByCategoryId?categoryId=${params?.category}`,
+      {
+        setData: setSubCategoryData,
+        setLoading: setIsLoading,
+      },
+    );
+  }, [params]);
 
   useEffect(() => {
     setSubCategoryId('');
@@ -80,12 +91,12 @@ export default function HeadingBahanAjar({
         </div>
       </Tabs>
       <div className="flex h-full w-full items-center justify-end gap-2 md:w-auto">
-        <UrutkanDocs
+        {/* <UrutkanDocs
           setDocsData={setDocsData}
           subCategoryId={subCategoryId}
           sort={sort}
           setSort={setSort}
-        />
+        /> */}
       </div>
     </div>
   );

@@ -9,35 +9,14 @@ import {
 import { SpinnerPage } from '@/components/ui/spinner';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import { IconHamburger, IconSetting } from '@/styles/icon';
-import { Cordinate, Message, Video } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import useMedia from 'use-media';
-import DocViewer from '../pdf-reader';
-import { useSession } from '../provider/session-provider-auth';
-import Sidebar from './sidebar';
 
-export type DocDataType = {
-  id: string;
-  website_sub_category_id: string;
-  title: string;
-  highlights: {
-    id: string;
-    position: {
-      boundingRect?: Cordinate;
-      rects: Cordinate[];
-      pageNumber: number | null;
-    };
-  }[];
-  message: Message[];
-  premium: boolean;
-  url: string;
-  video: Video | null;
-  userPermissions: {
-    canEdit: boolean;
-  };
-};
+import DocViewer, { DocDataType } from '@/components/pdf-reader';
+import { useSession } from '@/components/provider/session-provider-auth';
+import Sidebar from './sidebar';
 
 const DocViewerPage = () => {
   const pathname = usePathname();

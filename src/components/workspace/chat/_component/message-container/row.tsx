@@ -1,10 +1,11 @@
+import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import ReactMarkdownChatAI from '@/components/ui/react-markdown-chat-ai';
 import { env } from '@/env.mjs';
 import { cn, getDate, getHours } from '@/lib/utils';
-import { BotMessageSquareIcon, User2Icon } from 'lucide-react';
+import { BotMessageSquareIcon, Loader2, User2Icon } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { useProvider } from '../../provider';
@@ -42,13 +43,16 @@ export default function Row({
     useMessagesEdit: { isLoadingMessagesEdit },
     editMessage,
     scrollToPdfPage,
-    imageMessageLoading,
     onClickPageNumber,
     setEditMessage,
   } = useProvider();
 
+  const currentMessage = messageData[index] || null;
+
+  const { visionLoading } = useAppContext();
+
   const rowRef = useRef<HTMLDivElement>(null);
-  const isBase64Image = messageData[index]?.content?.startsWith(
+  const isBase64Image = currentMessage?.content?.startsWith(
     env.NEXT_PUBLIC_SUPABASE_URL,
   );
 
@@ -60,7 +64,7 @@ export default function Row({
     const input = document.getElementById('editInput');
 
     const handleInputChange = (e: any) => {
-      setEditMessage((prev: any) => ({ ...prev, value: e.target.value }));
+      setEditMessage((prev) => ({ ...prev, value: e.target.value }));
     };
 
     if (input) {
@@ -102,7 +106,7 @@ export default function Row({
     }
   }, [rowRef.current?.clientHeight]);
 
-  const isUser = messageData[index].role === 'user';
+  const isUser = currentMessage?.role === 'user' || currentMessage === null;
 
   return (
     <div
@@ -116,7 +120,11 @@ export default function Row({
     >
       <div
         ref={rowRef}
-        className={cn('text-left flex flex-col w-full', 'max-w-[95%]')}
+        className={cn(
+          'text-left flex flex-col w-full',
+          'max-w-[95%]',
+          isUser && 'ml-4',
+        )}
       >
         <Card
           className={cn(
@@ -144,12 +152,7 @@ export default function Row({
                   )}
                 </AvatarFallback>
               </Avatar>
-              <div
-                className={cn(
-                  'flex flex-col flex-1',
-                  isUser && 'flex-none text-end',
-                )}
-              >
+              <div className={cn('flex flex-col flex-1', isUser && 'text-end')}>
                 <div className="relative justify-between items-center mb-2">
                   <p className="font-semibold text-sm">
                     {isUser ? session?.user?.name : 'Bimbelio'}
@@ -159,50 +162,49 @@ export default function Row({
                       AI
                     </span>
                   )}
-                  {messageData[index].createdAt && (
+                  {currentMessage?.createdAt && (
                     <p className="text-xs text-muted-foreground">
-                      {getHours(messageData[index].createdAt)} |{' '}
-                      {getDate(messageData[index].createdAt)}
+                      {getHours(currentMessage.createdAt)} |{' '}
+                      {getDate(currentMessage.createdAt)}
                     </p>
                   )}
                 </div>
 
-                {isBase64Image && (
-                  <div>
-                    {imageMessageLoading.value &&
-                    imageMessageLoading.index === index ? (
-                      <div className="min-h-[200px] w-fit min-w-[300px] rounded-lg bg-muted animate-pulse" />
-                    ) : (
-                      messageData[index].content && (
-                        <div className="w-fit rounded-lg overflow-hidden">
-                          <Image
-                            src={
-                              messageData[index].content.includes(
-                                'data:image/png;base64',
-                              )
-                                ? messageData[index].content.split('=')[0] ||
-                                  '/placeholder.svg'
-                                : messageData[index].content ||
-                                  '/placeholder.svg'
-                            }
-                            className="h-auto max-w-full"
-                            alt="Bimbelio - Bimbel AI"
-                            width={500}
-                            height={300}
-                          />
-                        </div>
-                      )
-                    )}
+                {!currentMessage && (
+                  <div className="min-h-[200px] w-fit min-w-[300px] rounded-lg bg-muted animate-pulse flex justify-center items-center">
+                    <Loader2 className="animate-spin h-12 w-12 text-main" />
                   </div>
                 )}
 
-                {!isBase64Image && (
+                {isBase64Image && currentMessage && (
+                  <div>
+                    <div className="w-fit rounded-lg overflow-hidden">
+                      <Image
+                        src={
+                          currentMessage.content.includes(
+                            'data:image/png;base64',
+                          )
+                            ? currentMessage.content.split('=')[0] ||
+                              '/placeholder.svg'
+                            : currentMessage.content || '/placeholder.svg'
+                        }
+                        className="h-auto max-w-full"
+                        alt="Bimbelio - Bimbel AI"
+                        width={500}
+                        height={300}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {!isBase64Image && currentMessage && (
                   <>
                     {editMessage.index !== index ? (
                       <ReactMarkdownChatAI
-                        value={messageData[index].content}
+                        value={currentMessage?.content}
                         onClickPageNumber={onClickPageNumber}
                         scrollToPdfPage={scrollToPdfPage}
+                        className={cn(isUser && 'text-start')}
                       />
                     ) : (
                       <SubmitChatEdit />
@@ -210,7 +212,7 @@ export default function Row({
                   </>
                 )}
 
-                {!editMessage.bool && (
+                {!editMessage.bool && currentMessage && (
                   <div
                     className={cn(
                       'mt-4 flex justify-between items-center text-sm text-muted-foreground',
@@ -226,10 +228,10 @@ export default function Row({
         </Card>
         {index === messageData.length - 1 &&
           isLoadingMessages &&
-          messageData[index].role === 'user' && <LoadingChat />}
+          currentMessage.role === 'user' && <LoadingChat />}
         {index === messageData.length - 1 &&
           isLoadingMessagesEdit &&
-          messageData[index].role === 'user' && <LoadingChat />}
+          currentMessage.role === 'user' && <LoadingChat />}
       </div>
     </div>
   );

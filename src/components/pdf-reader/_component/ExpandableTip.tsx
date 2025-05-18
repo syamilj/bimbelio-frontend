@@ -69,7 +69,7 @@ const TextSelectionPopover = ({
   content,
   hideTipAndSelection,
   addHighlight,
-  sendMessage,
+  // sendMessage,
 }: {
   // position: any;
   addHighlight: () => void;
@@ -90,10 +90,14 @@ const TextSelectionPopover = ({
   // const pathnameArray = pathname?.split('/');
   // const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
   const { data: session } = useSession();
+  const {
+    useSendMessage: { setSendMessage: sendMessage },
+    setVisionLoading,
+  } = useAppContext();
 
   const { checkLimitation, userLimitation } = useUserLimitation();
 
-  const { setImageMessageLoading, messageData, setVision } = useAppContext();
+  const { setVision } = useAppContext();
 
   const switchSidebarTabToChat = () => {
     // router.push({
@@ -109,530 +113,129 @@ const TextSelectionPopover = ({
     }
   };
 
+  const handleContentImage = async () => {
+    setVisionLoading(true);
+    hideTipAndSelection();
+    try {
+      const data = await checkLimitation({
+        vision: true,
+      });
+      if (data && !data.status) {
+        switchSidebarTabToChat();
+        setVision(false);
+        toaster({
+          title: 'Uppss',
+          condition: 'warning',
+          description: data.message,
+          duration: 5000,
+        });
+        return;
+      } else if (data && data.status) {
+        const file = base64ToFile(content.image, `${crypto.randomUUID()}`);
+        const { data, error } = await supabase.storage
+          .from('img')
+          .upload(`chat-ai/${file.name}`, file);
+        if (data && sendMessage) {
+          sendMessage(
+            `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/img/chat-ai/${file.name}=${content.image}`,
+          );
+        }
+        if (error) {
+          alert('Error');
+        }
+      }
+    } catch (error) {
+      toaster({
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
+      });
+      return;
+    } finally {
+      setVisionLoading(false);
+    }
+  };
+
+  const handleOptionChat = async (message: string) => {
+    sendMessage(message);
+    switchSidebarTabToChat();
+    hideTipAndSelection();
+  };
+
+  const OptionImage = [
+    {
+      onClick: () => {
+        handleContentImage();
+      },
+      icon: IconMagicWand,
+      tooltip: 'Analyze',
+      title: 'Analisis',
+    },
+  ];
+
+  const OptionText = [
+    {
+      onClick: () => {
+        copyTextToClipboard(content.text);
+        hideTipAndSelection();
+      },
+      icon: ClipboardCopy,
+      tooltip: 'Copy the text',
+      title: 'Salin',
+    },
+    {
+      onClick: () => {
+        addHighlight();
+        hideTipAndSelection();
+        router.push(`${window.location.pathname}?tab=notes`);
+      },
+      icon: Highlighter,
+      tooltip: 'Highlight',
+      title: 'Highlight',
+    },
+    {
+      onClick: () => {
+        handleOptionChat('**Analysis**: ' + content.text);
+      },
+      icon: Lightbulb,
+      tooltip: 'Analysis the text',
+      title: 'Analisis',
+    },
+    {
+      onClick: () => {
+        handleOptionChat('**Explain**: ' + content.text);
+      },
+      icon: Lightbulb,
+      tooltip: 'Explain the text',
+      title: 'Jelaskan',
+    },
+    {
+      onClick: () => {
+        handleOptionChat('**Summarise**: ' + content.text);
+      },
+      icon: BookOpenCheck,
+      tooltip: 'Summarise the text',
+      title: 'Ringkas',
+    },
+  ];
+
   const getOptions = () => {
     const options = [];
-    if (content.text) {
-      options.push({
-        onClick: () => {
-          copyTextToClipboard(content.text);
-          hideTipAndSelection();
-        },
-        icon: (
-          <ClipboardCopy className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-        ),
-        tooltip: 'Copy the text',
-        title: 'Salin',
-      });
-      if (session?.user.role !== 'ADMIN') {
-        if (
-          userLimitation &&
-          userLimitation?.chat >= userLimitation?.chatLimit
-        ) {
-          options.push({
-            onClick: () => {},
-            icon: null,
-            tooltip: 'Limit Tercapai',
-            title: (
-              <span className="cursor-default">
-                Limit tercapai.{' '}
-                <span className="text-green-500">Upgrade akun</span> untuk
-                lanjut
-              </span>
-            ),
-          });
-        }
-      }
+    if (content.image) {
+      options.push(...OptionImage);
     }
-    if (content.text && tab === 'chat') {
-      if (sendMessage) {
-        if (session?.user.role !== 'ADMIN') {
-          if (
-            userLimitation &&
-            userLimitation?.chat < userLimitation?.chatLimit
-          ) {
-            options.push(
-              {
-                onClick: () => {
-                  sendMessage('**Analysis**: ' + content.text);
-                  switchSidebarTabToChat();
-                  hideTipAndSelection();
-                },
-                icon: (
-                  <Lightbulb className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-                ),
-                tooltip: 'Analysis the text',
-                title: 'Analisis',
-              },
-              {
-                onClick: () => {
-                  sendMessage('**Explain**: ' + content.text);
-                  switchSidebarTabToChat();
-                  hideTipAndSelection();
-                },
-                icon: (
-                  <Lightbulb className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-                ),
-                tooltip: 'Explain the text',
-                title: 'Jelaskan',
-              },
-              {
-                onClick: () => {
-                  sendMessage('**Summarise**: ' + content.text);
-                  switchSidebarTabToChat();
-                  hideTipAndSelection();
-                },
-                icon: (
-                  <BookOpenCheck className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-                ),
-                tooltip: 'Summarise the text',
-                title: 'Ringkas',
-              },
-            );
-          }
-        }
-        if (session?.user.role === 'ADMIN') {
-          options.push(
-            {
-              onClick: () => {
-                sendMessage('**Analysis**: ' + content.text);
-                switchSidebarTabToChat();
-                hideTipAndSelection();
-              },
-              icon: (
-                <Lightbulb className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-              ),
-              tooltip: 'Analysis the text',
-              title: 'Analisis',
-            },
-            {
-              onClick: () => {
-                sendMessage('**Explain**: ' + content.text);
-                switchSidebarTabToChat();
-                hideTipAndSelection();
-              },
-              icon: (
-                <Lightbulb className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-              ),
-              tooltip: 'Explain the text',
-              title: 'Jelaskan',
-            },
-            {
-              onClick: () => {
-                sendMessage('**Summarise**: ' + content.text);
-                switchSidebarTabToChat();
-                hideTipAndSelection();
-              },
-              icon: (
-                <BookOpenCheck className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-              ),
-              tooltip: 'Summarise the text',
-              title: 'Ringkas',
-            },
-          );
-        }
-      }
+    if (content.text) {
+      options.push(OptionText.find((item) => item.title === 'Salin'));
     }
     if (content.text && tab === 'notes') {
-      if (session?.user.role !== 'ADMIN') {
-        if (
-          userLimitation &&
-          userLimitation?.chat < userLimitation?.chatLimit
-        ) {
-          options.push({
-            onClick: () => {
-              addHighlight();
-              hideTipAndSelection();
-              // router.push(
-              //   { query: { ...router.query, tab: 'notes' } },
-              //   undefined,
-              //   { shallow: true },
-              // );
-
-              router.push(`${window.location.pathname}?tab=notes`);
-            },
-            icon: (
-              <Highlighter className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-            ),
-            tooltip: 'Highlight',
-            title: 'Highlight',
-          });
-        }
-      }
-      if (session?.user.role === 'ADMIN') {
-        options.push({
-          onClick: () => {
-            addHighlight();
-            hideTipAndSelection();
-            // router.push(
-            //   { query: { ...router.query, tab: 'notes' } },
-            //   undefined,
-            //   { shallow: true },
-            // );
-            router.push(`${window.location.pathname}?tab=notes`);
-          },
-          icon: (
-            <Highlighter className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
-          ),
-          tooltip: 'Highlight',
-          title: 'Highlight',
-        });
-      }
+      options.push(OptionText.find((item) => item.title === 'Highlight'));
     }
-    if (content.image) {
-      if (session?.user.role !== 'ADMIN') {
-        if (
-          userLimitation &&
-          userLimitation?.vision < userLimitation?.visionLimit
-        ) {
-          options.push(
-            {
-              onClick: async () => {
-                try {
-                  const data = await checkLimitation({
-                    vision: true,
-                  });
-                  if (data && !data.status) {
-                    switchSidebarTabToChat();
-                    setVision(false);
-                    toaster({
-                      title: 'Uppss',
-                      condition: 'warning',
-                      description: data.message,
-                      duration: 5000,
-                    });
-                    return;
-                  } else if (data && data.status) {
-                    setImageMessageLoading({
-                      value: true,
-                      index: messageData.length - 1,
-                    });
-                    const file = base64ToFile(
-                      content.image,
-                      `${crypto.randomUUID()}`,
-                    );
-                    hideTipAndSelection();
-                    const { data, error } = await supabase.storage
-                      .from('img')
-                      .upload(`${file.name}`, file);
-                    if (data && sendMessage) {
-                      sendMessage(
-                        `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/img/${file.name}=${content.image}`,
-                      );
-                      setImageMessageLoading({
-                        value: false,
-                        index: 9999,
-                      });
-                    }
-                    if (error) {
-                      alert('Error');
-                    }
-                  }
-                } catch (error) {
-                  toaster({
-                    title: 'Gagal',
-                    condition: 'warning',
-                    description: 'Coba lagi nanti!',
-                  });
-                  return;
-                }
-              },
-              icon: <IconMagicWand className="text-white" />,
-              tooltip: 'Analyze',
-              title: 'Analisis',
-            },
-            {
-              onClick: async () => {
-                try {
-                  const data = await checkLimitation({
-                    vision: true,
-                  });
-                  if (data && !data.status) {
-                    switchSidebarTabToChat();
-                    setVision(false);
-                    toaster({
-                      title: 'Uppss',
-                      condition: 'warning',
-                      description: data.message,
-                      duration: 5000,
-                    });
-                    return;
-                  } else if (data && data.status) {
-                    setImageMessageLoading({
-                      value: true,
-                      index: messageData.length - 1,
-                    });
-                    const file = base64ToFile(
-                      content.image,
-                      `${crypto.randomUUID()}`,
-                    );
-                    hideTipAndSelection();
-                    const { data, error } = await supabase.storage
-                      .from('img')
-                      .upload(`${file.name}`, file);
-                    if (data && sendMessage) {
-                      sendMessage(
-                        `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/img/${file.name}=${content.image}`,
-                      );
-                      setImageMessageLoading({
-                        value: false,
-                        index: 9999,
-                      });
-                    }
-                    if (error) {
-                      alert('Error');
-                    }
-                  }
-                } catch (error) {
-                  toaster({
-                    title: 'Gagal',
-                    condition: 'warning',
-                    description: 'Coba lagi nanti!',
-                  });
-                  return;
-                }
-              },
-              icon: <IconMagicWand className="text-white" />,
-              tooltip: 'Explain',
-              title: 'Jelaskan',
-            },
-            {
-              onClick: async () => {
-                try {
-                  const data = await checkLimitation({
-                    vision: true,
-                  });
-                  if (data && !data.status) {
-                    switchSidebarTabToChat();
-                    setVision(false);
-                    toaster({
-                      title: 'Uppss',
-                      condition: 'warning',
-                      description: data.message,
-                      duration: 5000,
-                    });
-                    return;
-                  } else if (data && data.status) {
-                    setImageMessageLoading({
-                      value: true,
-                      index: messageData.length - 1,
-                    });
-                    const file = base64ToFile(
-                      content.image,
-                      `${crypto.randomUUID()}`,
-                    );
-                    hideTipAndSelection();
-                    const { data, error } = await supabase.storage
-                      .from('img')
-                      .upload(`${file.name}`, file);
-                    if (data && sendMessage) {
-                      sendMessage(
-                        `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/img/${file.name}=${content.image}`,
-                      );
-                      setImageMessageLoading({
-                        value: false,
-                        index: 9999,
-                      });
-                    }
-                    if (error) {
-                      alert('Error');
-                    }
-                  }
-                } catch (error) {
-                  toaster({
-                    title: 'Gagal',
-                    condition: 'warning',
-                    description: 'Coba lagi nanti!',
-                  });
-                  return;
-                }
-              },
-              icon: <IconMagicWand className="text-white" />,
-              tooltip: 'Summarise',
-              title: 'Ringkas',
-            },
-          );
-        } else {
-          options.push({
-            onClick: () => {},
-            icon: null,
-            tooltip: 'Limit Tercapai',
-            title: (
-              <span className="cursor-default">
-                Limit tercapai.{' '}
-                <span className="text-green-500">Upgrade akun</span> untuk
-                lanjut
-              </span>
-            ),
-          });
-        }
-      }
-      if (session?.user.role === 'ADMIN') {
+    if (content.text && tab === 'chat') {
+      if (!!sendMessage) {
         options.push(
-          {
-            onClick: async () => {
-              try {
-                const data = await checkLimitation({
-                  vision: true,
-                });
-                if (data && !data.status) {
-                  toaster({
-                    title: 'Uppss',
-                    condition: 'warning',
-                    description: data.message,
-                    duration: 5000,
-                  });
-                  return;
-                } else if (data && data.status) {
-                  switchSidebarTabToChat();
-                  setVision(false);
-                  setImageMessageLoading({
-                    value: true,
-                    index: messageData.length - 1,
-                  });
-                  const file = base64ToFile(
-                    content.image,
-                    `${crypto.randomUUID()}`,
-                  );
-                  hideTipAndSelection();
-                  const { data, error } = await supabase.storage
-                    .from('img')
-                    .upload(`${file.name}`, file);
-                  if (data && sendMessage) {
-                    sendMessage(
-                      `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/img/${file.name}=${content.image}`,
-                    );
-                    setImageMessageLoading({
-                      value: false,
-                      index: 9999,
-                    });
-                  }
-                  if (error) {
-                    alert('Error');
-                  }
-                }
-              } catch (error) {
-                toaster({
-                  title: 'Gagal',
-                  condition: 'warning',
-                  description: 'Coba lagi nanti!',
-                });
-                return;
-              }
-            },
-            icon: <IconMagicWand className="text-white" />,
-            tooltip: 'Analyze',
-            title: 'Analisis',
-          },
-          {
-            onClick: async () => {
-              try {
-                const data = await checkLimitation({
-                  vision: true,
-                });
-                if (data && !data.status) {
-                  switchSidebarTabToChat();
-                  setVision(false);
-                  toaster({
-                    title: 'Uppss',
-                    condition: 'warning',
-                    description: data.message,
-                    duration: 5000,
-                  });
-                  return;
-                } else if (data && data.status) {
-                  setImageMessageLoading({
-                    value: true,
-                    index: messageData.length - 1,
-                  });
-                  const file = base64ToFile(
-                    content.image,
-                    `${crypto.randomUUID()}`,
-                  );
-                  hideTipAndSelection();
-                  const { data, error } = await supabase.storage
-                    .from('img')
-                    .upload(`${file.name}`, file);
-                  if (data && sendMessage) {
-                    sendMessage(
-                      `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/img/${file.name}=${content.image}`,
-                    );
-                    setImageMessageLoading({
-                      value: false,
-                      index: 9999,
-                    });
-                  }
-                  if (error) {
-                    alert('Error');
-                  }
-                }
-              } catch (error) {
-                toaster({
-                  title: 'Gagal',
-                  condition: 'warning',
-                  description: 'Coba lagi nanti!',
-                });
-                return;
-              }
-            },
-            icon: <IconMagicWand className="text-white" />,
-            tooltip: 'Explain',
-            title: 'Jelaskan',
-          },
-          {
-            onClick: async () => {
-              try {
-                const data = await checkLimitation({
-                  vision: true,
-                });
-                if (data && !data.status) {
-                  switchSidebarTabToChat();
-                  setVision(false);
-                  toaster({
-                    title: 'Uppss',
-                    condition: 'warning',
-                    description: data.message,
-                    duration: 5000,
-                  });
-                  return;
-                } else if (data && data.status) {
-                  setImageMessageLoading({
-                    value: true,
-                    index: messageData.length - 1,
-                  });
-                  const file = base64ToFile(
-                    content.image,
-                    `${crypto.randomUUID()}`,
-                  );
-                  hideTipAndSelection();
-                  const { data, error } = await supabase.storage
-                    .from('img')
-                    .upload(`${file.name}`, file);
-                  if (data && sendMessage) {
-                    sendMessage(
-                      `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/img/${file.name}=${content.image}`,
-                    );
-                    setImageMessageLoading({
-                      value: false,
-                      index: 9999,
-                    });
-                  }
-                  if (error) {
-                    alert('Error');
-                  }
-                }
-              } catch (error) {
-                toaster({
-                  title: 'Gagal',
-                  condition: 'warning',
-                  description: 'Coba lagi nanti!',
-                });
-                return;
-              }
-            },
-            icon: <IconMagicWand className="text-white" />,
-            tooltip: 'Summarise',
-            title: 'Ringkas',
-          },
+          ...OptionText.filter(
+            (item) => item.title !== 'Highlight' && item.title !== 'Salin',
+          ),
         );
       }
     }
@@ -640,7 +243,7 @@ const TextSelectionPopover = ({
   };
   const OPTIONS = getOptions();
 
-  console.log({ OPTIONS, content, tab, sendMessage });
+  // console.log({ OPTIONS, content, tab, sendMessage });
 
   return (
     <div className="relative rounded-xl bg-black">
@@ -661,14 +264,14 @@ const TextSelectionPopover = ({
               <CustomTooltip content={option.tooltip}>
                 {option.title === 'Salin' ? (
                   <div className="flex items-center gap-[.5rem]">
-                    <>{option.icon}</>
+                    <option.icon className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
                     <p className="w-fit whitespace-nowrap text-white">
                       {option.title}
                     </p>
                   </div>
                 ) : option.title === 'Analisis' ? (
                   <div className="flex items-center gap-[.5rem]">
-                    <>{option.icon}</>
+                    <option.icon className="h-5 w-5 text-gray-300 group-hover:text-gray-50" />
                     <p className="w-fit whitespace-nowrap text-white">
                       {option.title}
                     </p>

@@ -6,7 +6,7 @@ import { Document, User, UserDocument } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Loader2 } from 'lucide-react';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import MessageContainer from './_component/message-container';
 import Start from './_component/start';
@@ -65,6 +65,8 @@ export default function Chat({
 }
 
 const MainContent = () => {
+  const searchParams = useSearchParams();
+  const newChat = searchParams.get('new');
   const {
     messageData,
     setMessageData,
@@ -135,6 +137,10 @@ const MainContent = () => {
     </div>;
   }
 
+  const isMessages = messageData?.length !== 0;
+  const isNoMessages =
+    messageData?.length === 0 && prevChatMessages?.length === 0 && !newChat;
+
   return (
     <div className="absolute left-0 top-0 flex h-full w-full flex-col gap-2 overflow-hidden md:relative md:left-[unset] md:top-[unset]">
       <FormMessageEdit />
@@ -142,13 +148,23 @@ const MainContent = () => {
         id="chatAI"
         className="mt-[calc(60px+5px)] flex flex-1 flex-col gap-[3rem] overflow-hidden px-[1rem] pb-[1rem] md:mt-[unset]"
       >
-        {messageData?.length !== 0 ? (
+        {isMessages ? (
           <MessageContainer />
-        ) : messageData?.length === 0 && prevChatMessages?.length === 0 ? (
+        ) : isNoMessages ? (
           <ThreeQuestions />
-        ) : null}
+        ) : (
+          <LoadingMessages />
+        )}
       </div>
       <SubmitChat />
+    </div>
+  );
+};
+
+const LoadingMessages = () => {
+  return (
+    <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+      <Loader2 className="animate-spin w-4 h-4" />
     </div>
   );
 };
