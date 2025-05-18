@@ -105,6 +105,7 @@ export const deleteGeneral = async (
       errorTitle?: string;
       errorMsg?: string;
     };
+    onLoading?: () => any;
     onSuccess?: ({
       message,
       status,
@@ -123,6 +124,7 @@ export const deleteGeneral = async (
       message: string;
       error: any;
     }) => any;
+    params?: object;
   },
 ) => {
   if (
@@ -132,10 +134,14 @@ export const deleteGeneral = async (
     more.setLoading(true);
   }
 
+  if (more?.onLoading) more.onLoading();
+
   let showToast = true;
   if (more?.toast && more.toast.hide) showToast = false;
   try {
-    const res = await axiosInstance.delete(url);
+    const res = await axiosInstance.delete(url, {
+      params: more?.params,
+    });
     const resData = response(
       res,
       showToast,

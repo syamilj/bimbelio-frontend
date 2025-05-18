@@ -7,8 +7,20 @@ import { Badge } from '@/components/ui/badge';
 import ChooseWebCategory from '@/components/ui/choose-web-category';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
-import { IconHome, IconTryOut } from '@/styles/icon';
-import { AlignEndHorizontal, BotIcon, Sparkles } from 'lucide-react';
+import {
+  IconArrowTwk,
+  IconDocument,
+  IconExplore,
+  IconHome,
+  IconTryOut,
+} from '@/styles/icon';
+import {
+  AlignEndHorizontal,
+  BotIcon,
+  ChevronDown,
+  ChevronUp,
+  Sparkles,
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -125,18 +137,18 @@ const SidebarRoute = ({
               </span>
             )}
           </div>
-        </div>
-        <div
+        </div> */}
+        <Link
           className="relative"
-          // href={"/user/explore"}
-          // passHref
+          href={`/${website_sub_category_id}/user/explore`}
+          passHref
           onClick={() => {
             if (isMobile) {
               setSidebarMobile(false);
             }
           }}
         >
-          <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
+          {/* <ComingSoonBadge minimizeSidebar={minimizeSidebar} /> */}
           <div
             className={`flex items-center gap-[.8rem] ${
               pathname?.includes('explore') && 'bg-main'
@@ -166,7 +178,7 @@ const SidebarRoute = ({
               </span>
             )}
           </div>
-        </div>
+        </Link>
         <div className={`${minimizeSidebar && 'flex justify-center'} relative`}>
           <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
           <div
@@ -258,7 +270,7 @@ const SidebarRoute = ({
               </div>
             ))}
           </div>
-        )} */}
+        )}
         <Link
           href={`/${website_sub_category_id}/user/try-out`}
           passHref
