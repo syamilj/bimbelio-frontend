@@ -60,7 +60,7 @@ const TABS = [
 
 const tabNames = TABS.map((tab) => tab.value);
 
-const Sidebar = ({
+export function Sidebar({
   canEdit,
   userId,
   docId: initialDocId,
@@ -68,7 +68,7 @@ const Sidebar = ({
   canEdit: boolean;
   userId: string;
   docId: string;
-}) => {
+}) {
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
@@ -486,9 +486,7 @@ const Sidebar = ({
       </Tabs>
     </div>
   );
-};
-
-export default Sidebar;
+}
 
 const ChatContent = () => {
   const pathname = usePathname();

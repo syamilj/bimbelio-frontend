@@ -31,6 +31,8 @@ export default function Trending() {
     });
   }, []);
 
+  console.log({ trending: datas });
+
   return (
     <>
       <h1 className="text-[1.4rem] font-medium">Trending</h1>

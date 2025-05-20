@@ -1,14 +1,15 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { Button } from '@/components/ui/button';
 import LoaderEyeAnimation from '@/components/ui/loading/loading-bounce';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import { getDateString, getHoursDetail } from '@/lib/utils';
 import { IconDocumentAdmin, IconTabsQuiz, IconTimer2 } from '@/styles/icon';
+import { GenderEnum } from '@/types/database';
 import { Sparkles } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -18,7 +19,6 @@ import { AnalisisTab } from './_component/analisis-tab';
 import Header from './_component/header';
 import { ReviewTab } from './_component/review-tab';
 import { RingkasanTab } from './_component/ringkasan-tab';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 export interface SessionOptionsProps {
   id: string;
@@ -95,13 +95,31 @@ interface ChoiceAnalisis {
 
 type TabsProps = 'ringkasan' | 'review' | 'analisis';
 
+export type TryoutAccountType =
+  | {
+      gender: GenderEnum;
+      age: number;
+      phone: string;
+      kabupaten: string;
+      provinsi: string;
+      channel: string;
+      website_sub_category_id: string;
+      id: string;
+      userTryOutId: string;
+      targetValue: number | null;
+      univChoiceOne: string | null;
+      univStudyChoiceOne: string | null;
+      univChoiceTwo: string | null;
+      univStudyChoiceTwo: string | null;
+    }
+  | undefined;
+
 export default function TryoutResult({
   sessionData,
   tryoutId,
   sessionOptions,
   resultDate,
 }: Props) {
-  const { websiteSubCategory } = useWebsiteSubCategory();
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { data: session } = useSession();
@@ -122,22 +140,6 @@ export default function TryoutResult({
   const sessionId =
     sessionData && sessionData.length > 0 ? sessionData[resultIndex].id : '';
 
-  // const { mutateAsync: TestAgainTryout } = api.tryout.testAgain.useMutation({
-  //   onSuccess: async () => {
-  //     window.location.reload();
-  //     setTestAgainTryoutLoading(false);
-  //   },
-  //   onError() {
-  //     toaster({
-  //       title: "Gagal",
-  //       condition: "warning",
-  //       description: "Coba Lagi!",
-  //       duration: 3000,
-  //     });
-  //     setTestAgainTryoutLoading(false);
-  //   },
-  // });
-
   const TestAgainTryout = async (payload: {
     userId: string;
     tryoutId: string;
@@ -154,19 +156,6 @@ export default function TryoutResult({
       },
     });
   };
-
-  // const {
-  //   data: unlockTryoutDbs,
-  //   isLoading: unlockTryoutIsLoading,
-  //   isError: unlockTryoutIsError,
-  // } = api.tryout.getTryoutUnlockByTryoutId.useQuery(
-  //   {
-  //     tryoutId,
-  //   },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //   }
-  // );
 
   const [unlockTryoutDbs, setUnlockTryoutDbs] = useState<any>();
   const [unlockTryoutIsLoading, setUnlockTryoutIsLoading] =
@@ -192,15 +181,6 @@ export default function TryoutResult({
 
   console.log({ unlockTryout, unlockTryoutDbs, session });
 
-  // const {
-  //   data: sessionResult,
-  //   isLoading: sessionResultIsLoading,
-  //   isError: sessionResultIsError,
-  // } = api.tryoutSession.getTryoutSessionResult.useQuery(
-  //   { sessionId: sessionId },
-  //   { refetchOnWindowFocus: false }
-  // );
-
   const [sessionResult, setSessionResult] = useState<any>();
   const [sessionResultIsLoading, setSessionResultIsLoading] =
     useState<boolean>(true);
@@ -222,15 +202,6 @@ export default function TryoutResult({
 
   console.log({ sessionResult });
 
-  // const {
-  //   data: ResultData,
-  //   isLoading: ResultDataIsLoading,
-  //   isError: ResultDataIsError,
-  // } = api.tryout.getAnalisisByTryoutId.useQuery(
-  //   { tryoutId },
-  //   { refetchOnWindowFocus: false }
-  // );
-
   const [ResultData, setResultData] = useState<any>();
   const [ResultDataIsLoading, setResultDataIsLoading] = useState<boolean>(true);
   const [ResultDataIsError, setResultDataIsError] = useState<boolean>(false);
@@ -249,16 +220,14 @@ export default function TryoutResult({
   }, [session, tryoutId]);
 
   useEffect(() => {
-    // router.push({
-    //   query: {
-    //     ...router.query,
-    //     tab: tabs,
-    //   },
-    // });
     if (!isTesting) {
-      router.push(`/${website_sub_category_id}/user/try-out/${tryoutId}?tab=${tabs}`);
+      router.push(
+        `/${website_sub_category_id}/user/try-out/${tryoutId}?tab=${tabs}`,
+      );
     } else {
-      router.push(`/${website_sub_category_id}/admin/tryout/testing/try-out/${tryoutId}?tab=${tabs}`);
+      router.push(
+        `/${website_sub_category_id}/admin/tryout/testing/try-out/${tryoutId}?tab=${tabs}`,
+      );
     }
   }, [tabs]);
 
@@ -268,9 +237,21 @@ export default function TryoutResult({
     }
   }, []);
 
-  console.log({bool:currentDate < resultDate})
-  console.log({currentDate: getDateString(currentDate)})
-  console.log({resultDate: getDateString(resultDate)})
+  const [tryoutAccount, setTryoutAccount] = useState<TryoutAccountType>();
+
+  const getUserTryout = async () => {
+    getGeneral(`/user/getUserTryOut?userId=${session?.user.id}`, {
+      setData: setTryoutAccount,
+    });
+  };
+
+  useEffect(() => {
+    getUserTryout();
+  }, []);
+
+  console.log({ bool: currentDate < resultDate });
+  console.log({ currentDate: getDateString(currentDate) });
+  console.log({ resultDate: getDateString(resultDate) });
 
   if (currentDate < resultDate && !isTesting) {
     return <CoundowntShowResult resultDate={resultDate} />;
@@ -291,7 +272,6 @@ export default function TryoutResult({
     return (
       <div className="fixed flex h-full w-full items-center justify-center">
         <div className="flex flex-col items-center gap-2">
-          {/* <span className="loader" /> */}
           <LoaderEyeAnimation />
           <p className="text-lg">Loading...</p>
         </div>
@@ -336,16 +316,14 @@ export default function TryoutResult({
               <p>Review Soal</p>
             </TabsTrigger>
 
-            {websiteSubCategory?.id === 'tutor-snbt' && (
-              <TabsTrigger
-                value="analisis"
-                className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-                onClick={() => setTabs('analisis')}
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                <p>Analisis</p>
-              </TabsTrigger>
-            )}
+            <TabsTrigger
+              value="analisis"
+              className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
+              onClick={() => setTabs('analisis')}
+            >
+              <Sparkles className="mr-2 h-4 w-4" />
+              <p>Analisis</p>
+            </TabsTrigger>
           </TabsList>
           {isTesting && session?.user.role === 'ADMIN' && (
             <Button
@@ -362,7 +340,10 @@ export default function TryoutResult({
           value="ringkasan"
           className="md:px-[1rem]"
         >
-          <RingkasanTab ResultData={ResultData} />
+          <RingkasanTab
+            ResultData={ResultData}
+            unlockTryout={unlockTryout}
+          />
         </TabsContent>
         <TabsContent
           value="review"
@@ -383,6 +364,7 @@ export default function TryoutResult({
             tryoutId={tryoutId}
             ResultData={ResultData}
             unlockTryout={unlockTryout}
+            tryoutAccount={tryoutAccount}
           />
         </TabsContent>
       </Tabs>

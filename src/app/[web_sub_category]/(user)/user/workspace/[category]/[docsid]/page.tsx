@@ -18,7 +18,7 @@ import { DocDataType } from '@/components/pdf-reader';
 import { useSession } from '@/components/provider/session-provider-auth';
 import dynamic from 'next/dynamic';
 import { useDebouncedCallback } from 'use-debounce';
-import Sidebar from './sidebar';
+import { Sidebar } from './_components/sidebar';
 
 const DocViewer = dynamic(() => import('@/components/pdf-reader'), {
   ssr: false,
@@ -63,8 +63,6 @@ const DocViewerPage = () => {
   }, [tab]);
 
   const { mobileScreen, setSidebarMobile } = useAppContext();
-
-  const [isHistoryUpdated, setIsHistoryUpdated] = useState(false);
 
   const updateHistory = async (payload: { documentId: string }) => {
     await mutateGeneral('/document/updateHistory', {
@@ -169,7 +167,7 @@ const DocViewerPage = () => {
           className="relative z-[42] h-full w-[.5px] rounded-full bg-main-gray-input duration-300 after:w-[1px] data-[panel-group-direction=vertical]:h-[1px]"
           withHandle
         />
-        <div className="absolute z-[41] ml-[-.2px] h-[6px] w-[100px] rounded-[2rem] bg-main-gray-input md:h-[100px] md:w-[6px]"></div>
+        <div className="absolute z-[41] ml-[-.2px] h-[6px] w-[100px] rounded-[2rem] bg-main-gray-input md:h-[100px] md:w-[6px]" />
       </div>
       <ResizablePanel
         defaultSize={50}

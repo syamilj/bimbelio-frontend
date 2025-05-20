@@ -12,11 +12,12 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
-import University from '@/lib/data/university';
+// import University from '@/lib/data/university';
 import { mutateGeneral } from '@/lib/fetch-helper';
 import { cn, Provinces } from '@/lib/utils';
 import { IconX } from '@/styles/icon';
 import { useEffect, useState } from 'react';
+import { useProvider } from '../../provider';
 // Hapus import TRPCError karena tidak digunakan di frontend
 // import { TRPCError } from '@trpc/server';
 
@@ -797,9 +798,10 @@ export const InputOptionUniversity = ({
   type: 'university' | 'studyProgramList';
   disabled?: boolean;
 }) => {
+  const { UniversityOptions } = useProvider();
   const [showOption, setShowOption] = useState<boolean>(false);
 
-  const universities = University;
+  const universities = UniversityOptions;
 
   const getData = () => {
     if (type === 'university') {

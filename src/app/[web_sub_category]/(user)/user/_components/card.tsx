@@ -123,7 +123,7 @@ export default function Card({ data, href, noCategory }: card) {
                   className="overflow-hidden text-ellipsis whitespace-nowrap font-medium text-black"
                 >
                   {`${
-                    item.title.length > 50
+                    item.title?.length > 50
                       ? `${item.title.slice(0, 50)}...`
                       : item.title
                   }`}{' '}

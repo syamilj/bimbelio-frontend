@@ -16,7 +16,8 @@ import {
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import University from '@/lib/data/university';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+// import University from '@/lib/data/university';
 import { getGeneral } from '@/lib/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconStar, IconTryOut } from '@/styles/icon';
@@ -41,7 +42,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { ResultDataProps } from '..';
+import { ResultDataProps, TryoutAccountType } from '..';
+import { useProvider } from '../../../../provider';
 
 interface Recommendation {
   univ: string;
@@ -53,12 +55,16 @@ export function AnalisisTab({
   tryoutId,
   ResultData,
   unlockTryout,
+  tryoutAccount,
 }: {
   tryoutId: string;
   ResultData: ResultDataProps;
   unlockTryout: boolean;
+  tryoutAccount: TryoutAccountType;
 }) {
   const { data: session } = useSession();
+  const { UniversityOptions } = useProvider();
+
   // const { mutateAsync: SimulationData } =
   //   api.tryout.getSimulationDataByTryoutId.useMutation();
 
@@ -112,22 +118,22 @@ export function AnalisisTab({
 
   const renderAnalysisSimulasi = () => {
     const data = selectedData;
-    if (!data) return null;
+    // if (!data) return null;
 
-    const univTotalApplicants = data.univTotalAplicants;
-    const majorTotalApplicants = data.majorTotalAplicants;
+    const univTotalApplicants = data?.univTotalAplicants;
+    const majorTotalApplicants = data?.majorTotalAplicants;
 
-    const passingUniv = data.univAverageScore;
-    const passingMajor = data.majorAverageScore;
+    const passingUniv = data?.univAverageScore;
+    const passingMajor = data?.majorAverageScore;
 
-    const isUnivPass = userScore > passingUniv;
-    const isMajorPass = userScore > passingMajor;
+    const isUnivPass = passingUniv ? userScore > passingUniv : true;
+    const isMajorPass = passingMajor ? userScore > passingMajor : true;
 
-    const uniRank = data.univRanking;
-    const majorRank = data.majorRanking;
+    const uniRank = data?.univRanking;
+    const majorRank = data?.majorRanking;
 
-    const univPercentage = data.univPercentage;
-    const majorPercentage = data.majorPercentage;
+    const univPercentage = data?.univPercentage;
+    const majorPercentage = data?.majorPercentage;
 
     const chartData = [
       { name: 'Skor Kamu', score: userScore, fill: '#3b82f6' },
@@ -139,7 +145,12 @@ export function AnalisisTab({
       { name: 'Passing Grade Jurusan', score: passingMajor, fill: '#ca8a04' },
     ];
 
-    if (simualationLoad) return 'Loading...';
+    if (simualationLoad)
+      return (
+        <div className="flex w-full justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-main" />
+        </div>
+      );
 
     return (
       <div className="flex flex-col gap-20">
@@ -168,36 +179,41 @@ export function AnalisisTab({
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-semibold">
-                      Skormu: {userScore}
+                      Skor Kamu: {unlockTryout ? userScore : '-'}
                     </span>
                     <span className="text-sm font-semibold">
-                      Passing Grade: {passingUniv}
+                      Passing Grade: {unlockTryout ? passingMajor : '-'}
                     </span>
                   </div>
                   <Progress
-                    value={(userScore / passingUniv) * 100}
+                    value={passingUniv ? (userScore / passingUniv) * 100 : 30}
                     className="mb-2 h-1"
                     classNameThumb={cn(
                       isUnivPass ? 'bg-green-600' : 'bg-red-600',
                     )}
                   />
                   <div className="flex items-center justify-end">
-                    {getTrendIcon(userScore, passingUniv)}
+                    {getTrendIcon(userScore, passingUniv ? passingUniv : 1000)}
                   </div>
                 </div>
                 <div>
                   <h1 className="mb-4 text-sm font-semibold">Peringkatmu:</h1>
                   <div className="grid grid-cols-2">
                     <div className="flex flex-col gap-2">
-                      <h1 className="text-xl font-bold">{uniRank}</h1>
+                      <h1 className="text-xl font-bold">
+                        {unlockTryout ? majorRank : '-'}
+                      </h1>
                       <p className="text-xs font-semibold text-muted-foreground">
-                        dari {univTotalApplicants} peserta
+                        dari {unlockTryout ? majorTotalApplicants : '-'} peserta
                       </p>
                     </div>
                     <div className="ml-[-1rem] flex flex-col gap-2 border-l pl-4">
-                      <h1 className="text-xl font-bold">{univPercentage}%</h1>
+                      <h1 className="text-xl font-bold">
+                        {unlockTryout ? majorPercentage : '-'}%
+                      </h1>
                       <p className="text-xs font-semibold text-muted-foreground">
-                        Kamu berada di top {univPercentage}% peserta
+                        Kamu berada di top{' '}
+                        {unlockTryout ? majorPercentage : '-'}% peserta
                       </p>
                     </div>
                   </div>
@@ -229,36 +245,44 @@ export function AnalisisTab({
                 <div>
                   <div className="mb-2 flex items-center justify-between">
                     <span className="text-sm font-semibold">
-                      Skor Kamu: {userScore}
+                      Skor Kamu: {unlockTryout ? userScore : '-'}
                     </span>
                     <span className="text-sm font-semibold">
-                      Passing Grade: {passingMajor}
+                      Passing Grade: {unlockTryout ? passingMajor : '-'}
                     </span>
                   </div>
                   <Progress
-                    value={(userScore / passingMajor) * 100}
+                    value={passingMajor ? (userScore / passingMajor) * 100 : 30}
                     className="mb-2 h-1"
                     classNameThumb={cn(
                       isMajorPass ? 'bg-green-600' : 'bg-red-600',
                     )}
                   />
                   <div className="flex items-center justify-end">
-                    {getTrendIcon(userScore, passingMajor)}
+                    {getTrendIcon(
+                      userScore,
+                      passingMajor ? passingMajor : 1000,
+                    )}
                   </div>
                 </div>
                 <div>
                   <h4 className="mb-2 text-sm font-semibold">Peringkatmu</h4>
                   <div className="grid grid-cols-2">
                     <div className="flex flex-col gap-2">
-                      <h1 className="text-xl font-bold">{majorRank}</h1>
+                      <h1 className="text-xl font-bold">
+                        {unlockTryout ? majorRank : '-'}
+                      </h1>
                       <p className="text-xs font-semibold text-muted-foreground">
-                        dari {majorTotalApplicants} peserta
+                        dari {unlockTryout ? majorTotalApplicants : '-'} peserta
                       </p>
                     </div>
                     <div className="ml-[-1rem] flex flex-col gap-2 border-l pl-4">
-                      <h1 className="text-xl font-bold">{majorPercentage}%</h1>
+                      <h1 className="text-xl font-bold">
+                        {unlockTryout ? majorPercentage : '-'}%
+                      </h1>
                       <p className="text-xs font-semibold text-muted-foreground">
-                        Kamu berada di top {majorPercentage}% peserta
+                        Kamu berada di top{' '}
+                        {unlockTryout ? majorPercentage : '-'}% peserta
                       </p>
                     </div>
                   </div>
@@ -292,8 +316,40 @@ export function AnalisisTab({
     );
   };
 
+  const handleUnivChoice = () => {
+    if (website_sub_category_id !== 'tutor-snbt') {
+      console.log({ tryoutAccount });
+      setSimulationLoad(true);
+      setSelectedUniversity(tryoutAccount?.univChoiceOne || '');
+      setTimeout(() => {
+        setSelectedMajor(tryoutAccount?.univStudyChoiceOne || '');
+      }, 1000);
+    }
+  };
+
+  console.log({
+    selectedMajor,
+    selectedUniversity,
+  });
+
   useEffect(() => {
-    const findUniv = University.filter((univ) => univ.averageScore < userScore);
+    handleUnivChoice();
+  }, [tryoutAccount]);
+
+  useEffect(() => {
+    if (
+      website_sub_category_id !== 'tutor-snbt' &&
+      selectedUniversity.length > 0 &&
+      selectedMajor.length > 0
+    ) {
+      getSimulationData();
+    }
+  }, [tryoutAccount, selectedUniversity, selectedMajor]);
+
+  useEffect(() => {
+    const findUniv = UniversityOptions.filter(
+      (univ) => univ.averageScore < userScore,
+    );
     const recomendationsData = findUniv
       .map((univ) => {
         const recomendationsMajor = univ.studyProgramList
@@ -343,12 +399,14 @@ export function AnalisisTab({
               >
                 Analisis Pilihan
               </TabsTrigger>
-              <TabsTrigger
-                value="rekomendasi"
-                className="flex flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              >
-                Rekomendasi
-              </TabsTrigger>
+              {website_sub_category_id === 'tutor-snbt' && (
+                <TabsTrigger
+                  value="rekomendasi"
+                  className="flex flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm data-[state=active]:bg-main data-[state=active]:text-white"
+                >
+                  Rekomendasi
+                </TabsTrigger>
+              )}
               <TabsTrigger
                 value="simulasi"
                 className="flex flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm data-[state=active]:bg-main data-[state=active]:text-white"
@@ -1023,6 +1081,7 @@ export function AnalisisTab({
                           value={selectedUniversity}
                           setValue={setSelectedUniversity}
                           type="university"
+                          disabled={website_sub_category_id !== 'tutor-snbt'}
                         />
                         <InputOptionUniversity
                           heading="Pilihan 1 - Jurusan"
@@ -1031,23 +1090,26 @@ export function AnalisisTab({
                           setValue={setSelectedMajor}
                           type="studyProgramList"
                           university={selectedUniversity}
+                          disabled={website_sub_category_id !== 'tutor-snbt'}
                         />
                       </div>
-                      <div className="flex w-full justify-start">
-                        <Button
-                          className={cn(
-                            'h-9 w-30 bg-main duration-300 hover:bg-main/85',
-                            !unlockTryout && 'cursor-not-allowed',
-                          )}
-                          disabled={simualationLoad}
-                        >
-                          {simualationLoad ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            'Submit'
-                          )}
-                        </Button>
-                      </div>
+                      {website_sub_category_id === 'tutor-snbt' && (
+                        <div className="flex w-full justify-start">
+                          <Button
+                            className={cn(
+                              'h-9 w-30 bg-main duration-300 hover:bg-main/85',
+                              !unlockTryout && 'cursor-not-allowed',
+                            )}
+                            disabled={simualationLoad}
+                          >
+                            {simualationLoad ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              'Submit'
+                            )}
+                          </Button>
+                        </div>
+                      )}
                     </form>
                     <div>{renderAnalysisSimulasi()}</div>
                   </div>
@@ -1066,7 +1128,7 @@ export default AnalisisTab;
 const UpgareLayer = ({ unlockTryout }: { unlockTryout: boolean }) => {
   if (unlockTryout) return null;
   return (
-    <div className="absolute -top-4 -left-4 -bottom-4 -right-4 rounded-xl bg-white/80 z-[1] flex justify-center pt-[5rem]">
+    <div className="absolute -top-4 -left-4 -bottom-4 -right-4 rounded-xl bg-white/70 z-[1] flex justify-end pt-4 pr-4">
       <ButtonUpgradeTryout />
     </div>
   );
