@@ -137,55 +137,55 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
         return endDate < currentDate;
       };
 
-      const isDone = getIsDone(tryoutData);
+      setLoading(false);
+      // const isDone = getIsDone(tryoutData);
+      // if (isDone) {
+      //   const check = async () => {
+      //     const sessionPromises = tryoutData.TryoutSession.map(
+      //       async (session) => {
+      //         if (session.TryoutSessionParticipant.length < 1) {
+      //           const sessionAnswer = session.TryoutQuestion?.map((item) => {
+      //             return {
+      //               number: item.number,
+      //               questionId: item.id,
+      //               answerId: '',
+      //               answer: '',
+      //               type: item.type,
+      //               notSure: false,
+      //             };
+      //           });
 
-      if (isDone) {
-        const check = async () => {
-          const sessionPromises = tryoutData.TryoutSession.map(
-            async (session) => {
-              if (session.TryoutSessionParticipant.length < 1) {
-                const sessionAnswer = session.TryoutQuestion?.map((item) => {
-                  return {
-                    number: item.number,
-                    questionId: item.id,
-                    answerId: '',
-                    answer: '',
-                    type: item.type,
-                    notSure: false,
-                  };
-                });
+      //           await FinishTryOutLate({
+      //             sessionId: session.id,
+      //             answer: sessionAnswer,
+      //             userId: sessionUser?.user.id || '',
+      //           });
+      //         }
+      //       },
+      //     );
 
-                await FinishTryOutLate({
-                  sessionId: session.id,
-                  answer: sessionAnswer,
-                  userId: sessionUser?.user.id || '',
-                });
-              }
-            },
-          );
+      //     await Promise.all(sessionPromises);
+      //     let count = 0;
+      //     tryoutData.TryoutSession.forEach((session) => {
+      //       if (session.TryoutSessionParticipant.length > 0) {
+      //         count = count + 1;
+      //       }
+      //     });
+      //     if (count === tryoutData.TryoutSession.length) {
+      //       setLoading(false);
+      //     }
+      //   };
 
-          await Promise.all(sessionPromises);
-          let count = 0;
-          tryoutData.TryoutSession.forEach((session) => {
-            if (session.TryoutSessionParticipant.length > 0) {
-              count = count + 1;
-            }
-          });
-          if (count === tryoutData.TryoutSession.length) {
-            setLoading(false);
-          }
-        };
-
-        check();
-      } else {
-        setLoading(false);
-      }
+      //   check();
+      // } else {
+      //   setLoading(false);
+      // }
     }
   }, [tryoutData]);
 
   console.log('currentIndexSession', currentIndexSession);
   console.log('sessionLength', sessionLength);
-  
+
   console.log('tryoutData', tryoutData);
   console.log('isSessionDone', isSessionDone);
   console.log('isTryoutDone', isTryoutDone);

@@ -6,6 +6,8 @@ export const getGeneral = async (
   more?: {
     setData?: React.Dispatch<React.SetStateAction<any>>;
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+    setPage?: React.Dispatch<React.SetStateAction<any>>;
+    setTotalPages?: React.Dispatch<React.SetStateAction<any>>;
     firstLoad?: boolean;
     endLoad?: boolean;
     hideToast?: boolean;
@@ -37,6 +39,7 @@ export const getGeneral = async (
       error: any;
       data: any;
     }) => any;
+    params?: object;
   },
 ) => {
   if (
@@ -47,12 +50,18 @@ export const getGeneral = async (
   }
   let showToast = true;
   try {
-    const res = await axiosInstance.get(url);
+    const res = await axiosInstance.get(url, {
+      params: more?.params,
+    });
     const resData = response(res);
     if (more?.onSuccess) {
       await more.onSuccess(resData);
     }
     if (more?.setData) more.setData(resData.data);
+    if (resData.total_pages && resData.page) {
+      if (more?.setPage) more.setPage(resData.page);
+      if (more?.setTotalPages) more.setTotalPages(resData.total_pages);
+    }
     return resData || null;
   } catch (error) {
     if (more?.toast?.hideError === true) showToast = false;
@@ -96,6 +105,7 @@ export const deleteGeneral = async (
       errorTitle?: string;
       errorMsg?: string;
     };
+    onLoading?: () => any;
     onSuccess?: ({
       message,
       status,
@@ -114,6 +124,7 @@ export const deleteGeneral = async (
       message: string;
       error: any;
     }) => any;
+    params?: object;
   },
 ) => {
   if (
@@ -123,10 +134,14 @@ export const deleteGeneral = async (
     more.setLoading(true);
   }
 
+  if (more?.onLoading) more.onLoading();
+
   let showToast = true;
   if (more?.toast && more.toast.hide) showToast = false;
   try {
-    const res = await axiosInstance.delete(url);
+    const res = await axiosInstance.delete(url, {
+      params: more?.params,
+    });
     const resData = response(
       res,
       showToast,
@@ -137,7 +152,8 @@ export const deleteGeneral = async (
       await more.onSuccess(resData);
     }
     if (more?.setData) more.setData(resData.data);
-    return resData.data;
+
+    return resData || null;
   } catch (error) {
     const errData = responseError(
       error,

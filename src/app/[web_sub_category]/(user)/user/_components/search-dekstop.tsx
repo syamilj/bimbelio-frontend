@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppContext } from '@/components/provider/provider-app';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -8,36 +9,82 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { api } from '@/trpc/react';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { getGeneral } from '@/lib/fetch-helper';
+import { Category, Subcategory } from '@/types/database';
 import { Search } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const SearchDeskstop = ({ setDocsSearchData }: any) => {
+const SearchDeskstop = () => {
+  const { setDocsSearchData } = useAppContext();
   const router = useRouter();
   const pathname = usePathname();
 
   const [search, setSearch] = useState<string>('');
   const [categoryId, setCategoryId] = useState<string>('');
-  const { data: category } = api.category.getAllCategories.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-  });
-  const { data: searchData, refetch } = api.document.searchDocs.useQuery(
-    `${search}`,
-    { refetchOnWindowFocus: false },
-  );
 
-  const searchDataByCategory = api.document.searchDocsByCategory.useMutation();
+  // const { data: category } = api.category.getAllCategories.useQuery(undefined, {
+  //   refetchOnWindowFocus: false,
+  //   refetchOnMount: false,
+  // });
+
+  const [category, setCategory] = useState<
+    Omit<Category, 'to' | 'website_sub_category_id'>[]
+  >([]);
+
+  const fetchCategory = async () => {
+    await getGeneral('/category/getAllCategories', {
+      setData: setCategory,
+    });
+  };
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  // const { data: searchData, refetch } = api.document.searchDocs.useQuery(
+  //   `${search}`,
+  //   { refetchOnWindowFocus: false },
+  // );
+
+  const [searchData, setSearchData] = useState<
+    (Document & { category: Category; subCategory: Subcategory })[]
+  >([]);
+
+  const fetchSearchData = async () => {
+    await getGeneral(`/document/searchDocs?search=${search}`, {
+      setData: setSearchData,
+    });
+  };
+
+  // useEffect(() => {
+  //   fetchSearchData();
+  // }, [search]);
+
+  // const searchDataByCategory = api.document.searchDocsByCategory.useMutation();
+
+  const fetchSearchDataByCategory = async (params: {
+    value: string;
+    categoryId: string;
+  }) => {
+    const res = await getGeneral(
+      `/document/searchDocsByCategory?search=${search}`,
+      {
+        params,
+      },
+    );
+    return res?.data;
+  };
 
   const handleSearch = async (e: any) => {
     e.preventDefault();
     const value = document.getElementById('searchValue2') as HTMLInputElement;
     setSearch(`${value.value}`);
-    refetch();
+    fetchSearchData();
     if (!pathname?.includes('search')) {
       localStorage.setItem('search2', `${value.value}`);
-      router.push('/user/search');
+      router.push(`${website_sub_category_id}/user/search`);
     }
   };
   useEffect(() => {
@@ -47,7 +94,7 @@ const SearchDeskstop = ({ setDocsSearchData }: any) => {
     }
     if (search !== '' && categoryId !== '') {
       const getData = async () => {
-        const data = await searchDataByCategory.mutateAsync({
+        const data = await fetchSearchDataByCategory({
           value: `${search}`,
           categoryId: categoryId,
         });
@@ -114,7 +161,7 @@ const SearchDeskstop = ({ setDocsSearchData }: any) => {
         {/* Tombol Submit */}
         <Button
           type="submit"
-          className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-main p-3 text-sm font-semibold text-white  hover:bg-main/85 md:px-6"
+          className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-main p-3 text-sm font-semibold text-white hover:bg-main-hover md:px-6"
         >
           <Search className="h-6 w-6" />
         </Button>

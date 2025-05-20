@@ -6,9 +6,13 @@ import { getGeneral } from '@/lib/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconCrown } from '@/styles/icon';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { cloneElement, isValidElement, useEffect, useState } from 'react';
 
-export default function ButtonUpgradeTryout() {
+export default function ButtonUpgradeTryout({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
   const params = useParams();
   console.log({ params });
   const { data: session } = useSession();
@@ -31,6 +35,9 @@ export default function ButtonUpgradeTryout() {
   }, [params, session]);
 
   console.log({ tryout });
+  const handleClick = () => {
+    setShow(true);
+  };
   return (
     <>
       <PaymentTryout
@@ -38,15 +45,26 @@ export default function ButtonUpgradeTryout() {
         setShow={setShow}
         tryoutData={tryout === undefined ? null : tryout}
       />
-      <button
-        className={cn(
-          'flex h-fit w-fit items-center gap-[.5rem] rounded-[.8rem] bg-greenUpgrade px-[1rem] py-[.7rem] text-[.9rem] text-white duration-300 active:bg-greenUpgradeHover md:hover:bg-greenUpgradeHover md:active:bg-greenUpgrade',
-        )}
-        onClick={() => setShow(true)}
-      >
-        <IconCrown w={15} />
-        <p className="font-regular">Buy tryout</p>
-      </button>
+      {children && isValidElement(children) ? (
+        cloneElement(
+          children as React.ReactElement<{ onClick?: React.MouseEventHandler }>,
+          {
+            onClick: () => {
+              handleClick();
+            },
+          },
+        )
+      ) : (
+        <button
+          className={cn(
+            'flex h-fit w-fit items-center gap-[.5rem] rounded-[.8rem] bg-gradient px-[1rem] py-[.7rem] text-[.9rem] text-white duration-300 hover:opacity-85',
+          )}
+          onClick={() => setShow(true)}
+        >
+          <IconCrown w={15} />
+          <p className="font-regular">Buy tryout</p>
+        </button>
+      )}
     </>
   );
 }

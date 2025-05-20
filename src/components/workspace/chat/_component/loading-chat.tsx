@@ -32,7 +32,7 @@ const LoadingChat = () => {
             </div>
             <TextShimmer>Thinking...</TextShimmer>
             <div className="mt-4 flex justify-between items-center text-sm text-muted-foreground">
-              <ChatTools role="assistant" />
+              <ChatTools messageIndex={0} />
             </div>
           </div>
         </div>

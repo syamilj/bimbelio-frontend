@@ -211,17 +211,33 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
 
   const getBadgeValue = (item: CardTryoutProps) => {
     let data = null;
-    if (item.isDone) {
-      data = {
-        className: 'bg-main text-white',
-        title: 'Sudah Selesai',
-      };
-    } else if (item.isNotStarted && item.isRegistered) {
+    // if (item.isDone) {
+    //   data = {
+    //     className: 'bg-main text-white',
+    //     title: 'Sudah Selesai',
+    //   };
+    // } else if (item.isNotStarted && item.isRegistered) {
+    //   data = {
+    //     className: 'bg-green-600 text-white',
+    //     title: 'Terdaftar',
+    //   };
+    // } else if (item.isNotStarted && !item.isRegistered) {
+    //   data = {
+    //     className: 'bg-main-yellow text-black',
+    //     title: 'Belum Daftar',
+    //   };
+    // } else if (item.isActive) {
+    //   data = {
+    //     className: 'bg-main-red text-white',
+    //     title: 'Sedang Berlangsung',
+    //   };
+    // }
+    if (item.isRegistered) {
       data = {
         className: 'bg-green-600 text-white',
         title: 'Terdaftar',
       };
-    } else if (item.isNotStarted && !item.isRegistered) {
+    } else if (!item.isRegistered) {
       data = {
         className: 'bg-main-yellow text-black',
         title: 'Belum Daftar',
@@ -241,18 +257,30 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
       className: '',
       title: '',
     };
-    if (item.isDone) {
-      if (item.isRegistered && item.isJoin) {
-        data.title = 'Lihat Hasil & Pembahasan';
-      } else {
-        data.title = 'Selesai';
-      }
+    // if (item.isDone) {
+    //   if (item.isRegistered && item.isJoin) {
+    //     data.title = 'Lihat Hasil & Pembahasan';
+    //   } else {
+    //     data.title = 'Selesai';
+    //   }
+    // } else if (item.isRegistered) {
+    //   data.title = 'Mulai Tryout';
+    //   if (!item.isActive) {
+    //     data.className =
+    //       'bg-gray-400 md:hover:bg-gray-400 cursor-default text-white';
+    //   }
+    // } else if (!item.isRegistered) {
+    //   data.title = 'Daftar Sekarang';
+    // }
+
+    if (item.isRegistered && item.isJoin && item.isDone) {
+      data.title = 'Lihat Hasil & Pembahasan';
     } else if (item.isRegistered) {
       data.title = 'Mulai Tryout';
-      if (!item.isActive) {
-        data.className =
-          'bg-gray-400 md:hover:bg-gray-400 cursor-default text-white';
-      }
+      // if (!item.isActive) {
+      //   data.className =
+      //     'bg-gray-400 md:hover:bg-gray-400 cursor-default text-white';
+      // }
     } else if (!item.isRegistered) {
       data.title = 'Daftar Sekarang';
     }
@@ -497,7 +525,7 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                 </div>
               </React.Fragment>
             )}
-            {!showDetail.isRegistered && !showDetail.isDone ? (
+            {!showDetail.isRegistered ? (
               <RegisterTryout
                 step={step}
                 setStep={setStep}
@@ -507,9 +535,7 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                 onClick={handleRegistration}
                 showDetail={showDetail}
               />
-            ) : showDetail.isRegistered &&
-              !showDetail.isDone &&
-              (showDetail.isActive || isTesting) ? (
+            ) : showDetail.isRegistered ? (
               <div className="mt-[1rem] flex w-full items-center justify-center">
                 <Link
                   href={
@@ -689,7 +715,7 @@ const RegisterTryout = ({
               ) {
                 setIsLoading(true);
                 const check = await checkLimitation({ tryout: true });
-                if (check) {
+                if (check && check.status) {
                   onClick(true);
                 } else {
                   setIsLoading(false);
@@ -722,38 +748,49 @@ const RegisterTryout = ({
       <div className="flex w-full flex-col gap-[1rem]">
         <h1 className="text-center font-medium">Pilih Tipe Pendaftaran</h1>
         <div className="flex flex-col gap-[1rem]">
-          <ButtonPayment
-            className="w-full flex justify-center items-center"
-            text="Top up"
-          />
-          <Card
-            onClick={() => setSelectTypeRegistration('free')}
-            className={cn(
-              'cursor-pointer transition-all hover:shadow-md',
-              selectTypeRegistration === 'free'
-                ? 'border-2 border-main'
-                : 'border-2 hover:border-main/70',
-            )}
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              setShowDetail(null);
+            }}
           >
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Gratis
-                <span className="text-sm font-normal text-muted-foreground">
-                  Rp 0
-                </span>
-              </CardTitle>
-              <CardDescription>
-                Daftar dengan mengikuti sosial media dan membagikan info Try Out
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-inside list-disc space-y-1 text-sm">
-                <li>Akses ke semua materi Try Out</li>
-                <li>Hasil dan pembahasan setelah Try Out selesai</li>
-                <li>Peringkat nasional</li>
-              </ul>
-            </CardContent>
-          </Card>
+            <ButtonPayment
+              className="w-full flex justify-center items-center"
+              text="Top up"
+              type="modal"
+            />
+          </div>
+          {!showDetail?.isDone && (
+            <Card
+              onClick={() => setSelectTypeRegistration('free')}
+              className={cn(
+                'cursor-pointer transition-all hover:shadow-md',
+                selectTypeRegistration === 'free'
+                  ? 'border-2 border-main'
+                  : 'border-2 hover:border-main/70',
+              )}
+            >
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  Gratis
+                  <span className="text-sm font-normal text-muted-foreground">
+                    Rp 0
+                  </span>
+                </CardTitle>
+                <CardDescription>
+                  Daftar dengan mengikuti sosial media dan membagikan info Try
+                  Out
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-inside list-disc space-y-1 text-sm">
+                  <li>Akses ke semua materi Try Out</li>
+                  <li>Hasil dan pembahasan setelah Try Out selesai</li>
+                  <li>Peringkat nasional</li>
+                </ul>
+              </CardContent>
+            </Card>
+          )}
           <Card
             onClick={() => setSelectTypeRegistration('premium')}
             className={cn(

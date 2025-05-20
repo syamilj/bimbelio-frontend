@@ -6,7 +6,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/select';
-import { api } from '@/trpc/react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';

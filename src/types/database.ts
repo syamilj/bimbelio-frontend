@@ -1,3 +1,59 @@
+export type Category = {
+  website_sub_category_id: string;
+  id: string;
+  name: string;
+  nomor: number;
+  to: boolean;
+};
+
+export type Subcategory = {
+  website_sub_category_id: string;
+  id: string;
+  name: string;
+  categoryId: string;
+};
+
+export type Highlight = {
+  userId: string;
+  id: string;
+  createdAt: Date;
+  website_sub_category_id: string;
+  documentId: string;
+  pageNumber: number | null;
+  type: HighlightTypeEnum;
+  noteId: string | null;
+};
+
+export type HighlightTypeEnum = 'TEXT' | 'IMAGE';
+
+export type Cordinate = {
+  id: string;
+  website_sub_category_id: string;
+  pageNumber: number | null;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  width: number;
+  height: number;
+  markerId: string | null;
+  highlightedRectangleId: string | null;
+  highlightedBoundingRectangleId: string | null;
+};
+
+export type Message = {
+  userId: string | null;
+  id: string;
+  createdAt: Date;
+  website_sub_category_id: string;
+  documentId: string | null;
+  text: string;
+  courseCategoryId: string | null;
+  isUserMessage: boolean;
+  dislike: boolean;
+  like: boolean;
+};
+
 export type Tryout = {
   status: TryoutStatusEnum;
   id: string;
@@ -171,6 +227,14 @@ export type Document = {
   premium: boolean | null;
   videoId: string | null;
   website_sub_category_id: string;
+};
+
+export type Video = {
+  website_sub_category_id: string;
+  id: string;
+  url: string;
+  title: string;
+  createdAt: Date;
 };
 
 export type TagEnum = 'Document' | 'Video';
