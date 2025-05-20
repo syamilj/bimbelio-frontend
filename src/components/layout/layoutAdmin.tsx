@@ -1,7 +1,7 @@
 'use client';
 
-import CheckSubscription from '@/components/provider/check-subscription';
 import { useAppContext } from '@/components/provider/provider-app';
+import CheckSubscription from '@/components/provider/provider-check-subscription';
 import { cn } from '@/lib/utils';
 import { useParams, usePathname } from 'next/navigation';
 import { ReactNode, Suspense, useEffect, useState } from 'react';

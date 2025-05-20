@@ -2,7 +2,7 @@
 
 import { use } from 'react';
 
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';

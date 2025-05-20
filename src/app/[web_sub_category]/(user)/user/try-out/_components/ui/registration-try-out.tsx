@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import {
   Command,

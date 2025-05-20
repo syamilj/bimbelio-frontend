@@ -11,7 +11,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useSession } from './session-provider-auth';
+import { useSession } from './provider-session-auth';
 
 type UserLimitationType = {
   Limit: {

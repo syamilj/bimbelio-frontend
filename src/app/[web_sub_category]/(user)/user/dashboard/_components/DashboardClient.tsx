@@ -53,7 +53,8 @@ import {
 } from 'lucide-react';
 
 // Komponen Chart dari recharts
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper';
 import { TryoutStatusEnum, UserRoleEnum } from '@/types/database';
 import {
@@ -66,7 +67,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 // =====================================================================
 // CONSTANTS & INTERFACES
@@ -331,7 +331,9 @@ export const TryoutHistoryCard: React.FC<{
                         asChild
                         size="sm"
                       >
-                        <Link href={`/${website_sub_category_id}/user/try-out/${tryout.Tryout?.id}`}>
+                        <Link
+                          href={`/${website_sub_category_id}/user/try-out/${tryout.Tryout?.id}`}
+                        >
                           Lihat Pembahasan
                         </Link>
                       </Button>

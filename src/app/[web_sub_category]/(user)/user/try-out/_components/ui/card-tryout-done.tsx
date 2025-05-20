@@ -1,5 +1,5 @@
 import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getDateString, getHours } from '@/lib/utils';
@@ -43,14 +43,18 @@ export default function CardTryOutDone({
     if (premium) {
       if (session?.user.role !== 'USER') {
         if (noCategory) {
-          router.push(`/${website_sub_category_id}/user/workspace/${category}/${id}?tab=chat`);
+          router.push(
+            `/${website_sub_category_id}/user/workspace/${category}/${id}?tab=chat`,
+          );
         } else {
           router.push(`${href}/${id}?tab=chat`);
         }
       }
     } else {
       if (noCategory) {
-        router.push(`/${website_sub_category_id}/user/workspace/${category}/${id}?tab=chat`);
+        router.push(
+          `/${website_sub_category_id}/user/workspace/${category}/${id}?tab=chat`,
+        );
       } else {
         router.push(`${href}/${id}?tab=chat`);
       }

@@ -2,7 +2,7 @@ import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/butt
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { IconLock, IconSend, IconUnlimited } from '@/styles/icon';
 import { BanIcon } from 'lucide-react';

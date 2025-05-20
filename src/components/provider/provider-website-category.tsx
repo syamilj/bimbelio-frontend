@@ -10,7 +10,7 @@ import { useParams, usePathname } from 'next/navigation';
 import NextTopLoader from 'nextjs-toploader';
 import { createContext, useContext, useEffect, useState } from 'react';
 import ChooseWebCategory from '../ui/choose-web-category';
-import { useSession } from './session-provider-auth';
+import { useSession } from './provider-session-auth';
 
 const initialValue = {
   id: 'guest',

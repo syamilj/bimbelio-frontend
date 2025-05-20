@@ -1,6 +1,6 @@
 // import { useAppContext } from "@/components/provider/provider-app";
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { useSession } from '@/components/provider/session-provider-auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,8 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { signOut } from '@/lib/auth-helper';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { signOut } from '@/lib/auth-helper';
 import { motion } from 'framer-motion';
 import { LayoutDashboard, LogOut } from 'lucide-react';
 // import { User } from "next-auth";
@@ -29,7 +29,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
   const { data: session } = useSession();
   // const { setTransactionHistory } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
-  const {websiteSubCategory} = useWebsiteSubCategory()
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
   return (
     <DropdownMenu

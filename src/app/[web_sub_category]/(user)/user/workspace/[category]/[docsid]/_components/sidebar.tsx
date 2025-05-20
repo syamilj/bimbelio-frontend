@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 import ReportBug from '@/components/_shared/other/report-bug';
 import { useAppContext } from '@/components/provider/provider-app';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
 import Chat from '@/components/workspace/chat';

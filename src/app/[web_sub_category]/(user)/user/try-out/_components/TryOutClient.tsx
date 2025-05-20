@@ -4,7 +4,8 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
 
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper';
 import { UserTryout } from '@/types/database';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -15,7 +16,6 @@ import RegistrationTryOut from './ui/registration-try-out';
 import SummaryTryout from './ui/summary-tryout';
 import Upcoming from './upcoming';
 import UpcomingOtherWeb from './upcoming-other-web';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 export default function TryOutClient() {
   const Router = useRouter();

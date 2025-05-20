@@ -23,12 +23,11 @@ import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useAppContext } from '@/components/provider/provider-app';
 import { Button } from '@/components/ui/button';
 
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import Logo from '@/components/ui/logo';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { Payment } from './payment';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 // Main Sidebar Component
 const Sidebar = ({ category }: any) => {
   const { data: session } = useSession();

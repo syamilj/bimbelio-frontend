@@ -15,7 +15,7 @@ import { insertOrUpdateBlock } from '@blocknote/core';
 import { createId } from '@paralleldrive/cuid2';
 import { useEffect, useState } from 'react';
 import { GhostHighlight } from 'react-pdf-highlighter-extended';
-import { useSession } from '../provider/session-provider-auth';
+import { useSession } from '../provider/provider-session-auth';
 import { ToolTip } from '../ui/tooltip';
 
 export type DocDataType = {

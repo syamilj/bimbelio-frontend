@@ -3,13 +3,12 @@
 import LogoMinimize from '@/_assest/logo-minimize.png';
 import test from '@/_assest/logo.png';
 import { useAppContext } from '@/components/provider/provider-app';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import Logo from '@/components/ui/logo';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import Image from 'next/image';
 import SidebarRoute from './sidebar-route';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 const Sidebar = () => {
   const { minimizeSidebar, setMinimizeSidebar } = useAppContext();

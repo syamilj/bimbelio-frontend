@@ -27,8 +27,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { useSession } from '@/components/provider/session-provider-auth';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import {
   Plan,

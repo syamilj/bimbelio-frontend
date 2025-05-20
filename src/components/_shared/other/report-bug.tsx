@@ -3,7 +3,7 @@ import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { supabase } from '@/supabaseClient';
 
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { mutateGeneral } from '@/lib/fetch-helper';
 import Image from 'next/image';
 import React, { SetStateAction, useEffect, useState } from 'react';

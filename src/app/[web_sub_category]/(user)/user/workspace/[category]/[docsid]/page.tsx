@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import useMedia from 'use-media';
 
 import { DocDataType } from '@/components/pdf-reader';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import dynamic from 'next/dynamic';
 import { useDebouncedCallback } from 'use-debounce';
 import { Sidebar } from './_components/sidebar';

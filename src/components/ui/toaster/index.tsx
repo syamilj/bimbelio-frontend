@@ -65,11 +65,11 @@ const Toasts = ({
         <div className="flex items-center">
           <div className="flex w-[30px] justify-start">
             {condition === 'success' ? (
-              <IconCheckList className={'text-blue-600'} />
+              <IconCheckList className={'text-green-600'} />
             ) : condition === 'warning' ? (
               <IconWrong className={'text-red-600'} />
             ) : null}
-            {!condition && <IconCheckList className={'text-blue-600'} />}
+            {!condition && <IconCheckList className={'text-green-600'} />}
           </div>
           <p className="font-medium">{title}</p>
         </div>

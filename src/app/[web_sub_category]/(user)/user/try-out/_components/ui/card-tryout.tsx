@@ -2,7 +2,7 @@
 
 import { PaymentTryout } from '@/components/_shared/payment/payment-tryout';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {

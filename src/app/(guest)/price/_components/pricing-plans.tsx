@@ -18,8 +18,8 @@ import { ReactElement, useEffect, useState } from 'react';
 // } from "@/components/ui/tooltip";
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { useSession } from '@/components/provider/session-provider-auth';
 import { Badge } from '@/components/ui/badge';
 import {
   Dialog,

@@ -2,7 +2,7 @@ import male from '@/_assest/default-profile/male.png';
 import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';

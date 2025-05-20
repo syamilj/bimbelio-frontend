@@ -1,7 +1,7 @@
 'use client';
 
 import { PaymentTryout } from '@/components/_shared/payment/payment-tryout';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { getGeneral } from '@/lib/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconCrown } from '@/styles/icon';

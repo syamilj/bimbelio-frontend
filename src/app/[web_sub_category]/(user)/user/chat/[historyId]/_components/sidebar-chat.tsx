@@ -1,8 +1,7 @@
 'use client';
 
 import { useChatContext } from '@/app/[web_sub_category]/(user)/user/chat/[historyId]/provider';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -185,7 +184,9 @@ export default function SidebarChat() {
                     }))
                   }
                 >
-                  <Link href={`/${website_sub_category_id}/user/chat/${chat.id}`}>
+                  <Link
+                    href={`/${website_sub_category_id}/user/chat/${chat.id}`}
+                  >
                     <Button
                       variant="ghost"
                       className={`w-full justify-start text-left px-3 py-4 h-auto ${
