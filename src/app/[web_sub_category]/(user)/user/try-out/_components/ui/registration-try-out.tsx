@@ -1,8 +1,22 @@
-//src/pages/client/try-out/_component/registration-try-out.tsx
 'use client';
+
+import type React from 'react';
 
 import { useSession } from '@/components/provider/session-provider-auth';
 import { Button } from '@/components/ui/button';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -12,14 +26,11 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
-// import University from '@/lib/data/university';
 import { mutateGeneral } from '@/lib/fetch-helper';
 import { cn, Provinces } from '@/lib/utils';
-import { IconX } from '@/styles/icon';
+import { Check, ChevronsUpDown, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../../provider';
-// Hapus import TRPCError karena tidak digunakan di frontend
-// import { TRPCError } from '@trpc/server';
 
 const RegistrationTryOut = ({
   getUserTryout,
@@ -33,6 +44,7 @@ const RegistrationTryOut = ({
   univOption: string | undefined;
 }) => {
   const { data: session } = useSession();
+  const { UniversityOptions } = useProvider();
 
   const currentYear = new Date().getFullYear() + 1 + 4;
 
@@ -185,8 +197,6 @@ const RegistrationTryOut = ({
     }
   }, [isHideGeneralSection, univOption]);
 
-  console.log({ isHideTargetValue });
-
   return (
     <div className="relative w-[calc(100%-2rem)] max-w-[500px] rounded-[1rem] bg-white p-[2rem] shadow-default md:w-full">
       <div
@@ -199,7 +209,7 @@ const RegistrationTryOut = ({
           }
         }}
       >
-        <IconX className="text-main-gray-text duration-200 md:hover:text-main-gray-text2" />
+        <X className="text-main-gray-text duration-200 md:hover:text-main-gray-text2" />
       </div>
       <p className="mb-[2rem] text-center text-[1.2rem] font-semibold">
         Verifikasi Akun
@@ -274,20 +284,30 @@ const RegistrationTryOut = ({
             </div>
           </div>
           <div className="grid grid-cols-2 gap-[1rem]">
-            <InputOptionProvince
+            <ComboboxSelect
               heading="Provinsi"
               placeholder="Provinsi"
               value={Provinsi}
               setValue={setProvinsi}
-              type="province"
+              options={Provinces.map((item) => ({
+                label: item.province,
+                value: item.province,
+              }))}
             />
-            <InputOptionProvince
+            <ComboboxSelect
               heading="Kota/Kabupaten"
               placeholder="Kota/Kabupaten"
               value={Kabupaten}
               setValue={setKabupaten}
-              type="regency"
-              province={Provinsi}
+              options={
+                Provinces.find(
+                  (item) => item.province === Provinsi,
+                )?.district.map((regency) => ({
+                  label: regency.regency,
+                  value: regency.regency,
+                })) || []
+              }
+              disabled={!Provinsi}
             />
           </div>
           <div className="flex h-[64px] items-center justify-center">
@@ -407,7 +427,7 @@ const RegistrationTryOut = ({
                 value={TahunLulus === 0 ? '' : TahunLulus.toString()}
                 onValueChange={(value) => {
                   if (value.length > 0) {
-                    setTahunLulus(parseInt(value, 10));
+                    setTahunLulus(Number.parseInt(value, 10));
                     console.log('Tahun Lulus diupdate menjadi:', value);
                   }
                 }}
@@ -434,17 +454,6 @@ const RegistrationTryOut = ({
             </div>
           </div>
 
-          {!isHideTargetValue && (
-            <InputNumber
-              heading="Target Nilai SNBT/UTBK (0-1000)"
-              placeholder="Target Nilai"
-              value={TargetNilai} // Kirim sebagai number
-              setValue={setTargetNilai} // Fungsi menerima number
-              min={0}
-              max={1000}
-            />
-          )}
-
           <div className="flex h-[64px] items-center justify-center">
             {isLoading ? (
               <Spinner />
@@ -469,41 +478,76 @@ const RegistrationTryOut = ({
           }}
         >
           <div className="grid grid-cols-2 gap-[1rem]">
-            <InputOptionUniversity
+            <ComboboxSelect
               heading="Pilihan 1 - Universitas"
               placeholder="Universitas"
               value={PilihanUniv1}
               setValue={setPilihanUniv1}
-              type="university"
+              options={UniversityOptions.map((item) => ({
+                label: item.university,
+                value: item.university,
+              }))}
               disabled={!!univOption}
+              isUniversity={true}
             />
-            <InputOptionUniversity
+            <ComboboxSelect
               heading="Pilihan 1 - Jurusan"
               placeholder="Jurusan"
               value={JurusanUniv1}
               setValue={setJurusanUniv1}
-              type="studyProgramList"
-              university={PilihanUniv1}
+              options={
+                UniversityOptions.find(
+                  (item) => item.university === PilihanUniv1,
+                )?.studyProgramList.map((program) => ({
+                  label: program.study,
+                  value: program.study,
+                })) || []
+              }
+              disabled={!PilihanUniv1}
+              isUniversity={true}
             />
           </div>
           {!univOption && (
             <div className="grid grid-cols-2 gap-[1rem]">
-              <InputOptionUniversity
+              <ComboboxSelect
                 heading="Pilihan 2 - Universitas"
                 placeholder="Universitas"
                 value={PilihanUniv2}
                 setValue={setPilihanUniv2}
-                type="university"
+                options={UniversityOptions.map((item) => ({
+                  label: item.university,
+                  value: item.university,
+                }))}
+                isUniversity={true}
               />
-              <InputOptionUniversity
+              <ComboboxSelect
                 heading="Pilihan 2 - Jurusan"
                 placeholder="Jurusan"
                 value={JurusanUniv2}
                 setValue={setJurusanUniv2}
-                type="studyProgramList"
-                university={PilihanUniv2}
+                options={
+                  UniversityOptions.find(
+                    (item) => item.university === PilihanUniv2,
+                  )?.studyProgramList.map((program) => ({
+                    label: program.study,
+                    value: program.study,
+                  })) || []
+                }
+                disabled={!PilihanUniv2}
+                isUniversity={true}
               />
             </div>
+          )}
+
+          {!isHideTargetValue && (
+            <InputNumber
+              heading="Target Nilai SNBT/UTBK (0-1000)"
+              placeholder="Target Nilai"
+              value={TargetNilai} // Kirim sebagai number
+              setValue={setTargetNilai} // Fungsi menerima number
+              min={0}
+              max={1000}
+            />
           )}
           {!isHideGeneralSection && (
             <div className="flex flex-col gap-[.5rem]">
@@ -626,7 +670,7 @@ const InputNumber = ({
         setValue(0); // Atur ke 0 atau nilai default lainnya
         return;
       }
-      const num = parseInt(inputValue, 10);
+      const num = Number.parseInt(inputValue, 10);
       // Validasi min dan max jika diperlukan
       if (
         (min !== undefined && num < min) ||
@@ -663,257 +707,96 @@ const InputNumber = ({
   );
 };
 
-// Komponen InputOptionProvince
-const InputOptionProvince = ({
+// Combobox component for select with search
+interface ComboboxOption {
+  label: string;
+  value: string;
+}
+
+const ComboboxSelect = ({
   heading,
   placeholder,
-  setValue,
   value,
-  province,
-  type,
+  setValue,
+  options,
+  disabled = false,
+  isUniversity = false,
 }: {
   heading: string;
   placeholder: string;
-  setValue: (val: string) => void; // Required
   value: string;
-  province?: string;
-  type: 'province' | 'regency';
-}) => {
-  const [showOption, setShowOption] = useState<boolean>(false);
-
-  const provinces = Provinces;
-
-  const getData = () => {
-    if (type === 'province') {
-      return provinces.map((item) => ({ value: item.province }));
-    } else if (type === 'regency') {
-      return (
-        provinces
-          .find((item) => item.province === province)
-          ?.district.map((regency) => ({ value: regency.regency })) || []
-      );
-    }
-    return provinces.map((item) => ({ value: item.province }));
-  };
-
-  const search = () => {
-    return getData()?.filter((item) =>
-      item.value.toLowerCase().includes(value.toLowerCase()),
-    );
-  };
-
-  console.log('search :', value);
-  console.log('getData :', getData());
-  console.log('search :', search());
-
-  return (
-    <div
-      id="name-file"
-      className="flex flex-col gap-[.5rem]"
-    >
-      <p className="text-[.9rem]">
-        {heading}
-        <span className="text-red-600">*</span>
-      </p>
-      <div className="relative">
-        <input
-          id="inputOptionProvince"
-          type="text"
-          className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
-          placeholder={`${placeholder}`}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          onFocus={() => setShowOption(true)}
-          onBlur={() => {
-            setTimeout(() => {
-              setShowOption(false);
-            }, 200);
-          }}
-          value={value}
-          required
-        />
-        {showOption && value.length === 0 ? (
-          <div className="absolute left-0 top-[calc(100%+.5rem)] w-full overflow-hidden rounded-[.5rem] bg-white py-[.5rem] shadow-default">
-            <div className="max-h-[200px] w-full overflow-y-auto text-[.9rem]">
-              {getData()?.map((item, i) => (
-                <div
-                  key={i}
-                  className="cursor-pointer px-[1rem] py-[.2rem] duration-300 md:hover:bg-main md:hover:text-white"
-                  onClick={() => {
-                    setValue(item.value);
-                    console.log(`${heading} dipilih:`, item.value);
-                  }}
-                >
-                  {item.value}
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : showOption && value.length > 0 ? (
-          <div className="absolute left-0 top-[calc(100%+.5rem)] w-full overflow-hidden rounded-[.5rem] bg-white py-[.5rem] shadow-default">
-            <div className="max-h-[200px] w-full overflow-y-auto text-[.9rem]">
-              {search()?.map((item, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    'cursor-pointer px-[1rem] py-[.2rem] text-[.9rem] duration-300 md:hover:bg-main md:hover:text-white',
-                  )}
-                  onClick={() => {
-                    setValue(item.value);
-                    console.log(`${heading} dipilih:`, item.value);
-                  }}
-                >
-                  {item.value}
-                </div>
-              ))}
-              {search()?.length === 0 && (
-                <div className="px-[1rem] py-[.2rem] text-[.9rem] text-main-gray-text duration-300">
-                  Jika tidak ada, tulis sendiri
-                </div>
-              )}
-            </div>
-          </div>
-        ) : null}
-      </div>
-    </div>
-  );
-};
-
-// Komponen InputOptionUniversity
-export const InputOptionUniversity = ({
-  heading,
-  placeholder,
-  setValue,
-  value,
-  university,
-  type,
-  disabled,
-}: {
-  heading: string;
-  placeholder: string;
-  setValue: (val: string) => void; // Required
-  value: string;
-  university?: string;
-  type: 'university' | 'studyProgramList';
+  setValue: (val: string) => void;
+  options: ComboboxOption[];
   disabled?: boolean;
+  isUniversity?: boolean;
 }) => {
-  const { UniversityOptions } = useProvider();
-  const [showOption, setShowOption] = useState<boolean>(false);
-
-  const universities = UniversityOptions;
-
-  const getData = () => {
-    if (type === 'university') {
-      return universities.map((item) => ({
-        value: item.university,
-        initials: item.initials,
-      }));
-    } else if (type === 'studyProgramList') {
-      const findData = universities.find(
-        (item) => item.university === university,
-      );
-      if (!findData) return [];
-      return findData.studyProgramList.map((sProgram) => ({
-        value: sProgram.study,
-        initials: '-',
-      }));
-    }
-    return universities.map((item) => ({
-      value: item.university,
-      initials: item.initials,
-    }));
-  };
-
-  const search = () => {
-    return getData()?.filter(
-      (item) =>
-        item.value.toLowerCase().includes(value.toLowerCase()) ||
-        item.initials.toLowerCase().includes(value.toLowerCase()),
-    );
-  };
-
-  console.log(getData().length);
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <div
-      id="name-file"
-      className="flex flex-col gap-[.5rem]"
-    >
+    <div className="flex flex-col gap-[.5rem]">
       <p className="text-[.9rem]">
         {heading}
         <span className="text-red-600">*</span>
       </p>
-      <div className="relative">
-        <input
-          id="inputOptionProvince"
-          type="text"
-          className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
-          placeholder={`${placeholder}`}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          onFocus={() => setShowOption(true)}
-          onBlur={() => {
-            setTimeout(() => {
-              setShowOption(false);
-            }, 200);
-          }}
-          value={value}
-          required
-          disabled={disabled}
-        />
-        {showOption && value.length === 0 ? (
-          <div
+      <Popover
+        open={open}
+        onOpenChange={setOpen}
+      >
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            disabled={disabled}
             className={cn(
-              'absolute left-0 top-[calc(100%+.5rem)] z-[999] w-full overflow-hidden rounded-[.5rem] bg-white py-[.5rem] shadow-default',
+              'w-full justify-between rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-left text-[.9rem] font-normal',
+              !value && 'text-main-gray-disabled',
+              disabled && 'opacity-50 cursor-not-allowed',
             )}
           >
-            <div className="max-h-[200px] w-full overflow-y-auto text-[.9rem]">
-              {getData()?.map((item, i) => (
-                <div
-                  key={i}
-                  className="cursor-pointer px-[1rem] py-[.2rem] duration-300 md:hover:bg-main md:hover:text-white"
-                  onClick={() => {
-                    setValue(item.value);
-                    console.log(`${heading} dipilih:`, item.value);
-                  }}
-                >
-                  {item.value}
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : showOption && value.length > 0 ? (
-          <div
-            className={cn(
-              'absolute left-0 top-[calc(100%+.5rem)] z-[999] w-full overflow-hidden rounded-[.5rem] bg-white py-[.5rem] shadow-default',
-            )}
-          >
-            <div className="max-h-[200px] w-full overflow-y-auto text-[.9rem]">
-              {search()?.map((item, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    'cursor-pointer px-[1rem] py-[.2rem] text-[.9rem] duration-300 md:hover:bg-main md:hover:text-white',
-                  )}
-                  onClick={() => {
-                    setValue(item.value);
-                    console.log(`${heading} dipilih:`, item.value);
-                  }}
-                >
-                  {item.value}
-                </div>
-              ))}
-              {search()?.length === 0 && (
-                <div className="px-[1rem] py-[.2rem] text-[.9rem] text-main-gray-text duration-300">
-                  Jika tidak ada, tulis sendiri
-                </div>
-              )}
-            </div>
-          </div>
-        ) : null}
-      </div>
+            <span className={isUniversity ? 'line-clamp-1' : 'truncate'}>
+              {value
+                ? options.find((option) => option.value === value)?.label ||
+                  value
+                : placeholder}
+            </span>
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+          <Command>
+            <CommandInput
+              placeholder={`Search ${heading.toLowerCase()}...`}
+              className="h-9"
+            />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup className="max-h-[200px] overflow-y-auto">
+                {options.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    value={option.value}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue);
+                      setOpen(false);
+                      console.log(`${heading} dipilih:`, currentValue);
+                    }}
+                    className={isUniversity ? 'py-2' : ''}
+                  >
+                    <div className="w-full text-left">{option.label}</div>
+                    <Check
+                      className={cn(
+                        'ml-auto h-4 w-4 flex-shrink-0',
+                        value === option.value ? 'opacity-100' : 'opacity-0',
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

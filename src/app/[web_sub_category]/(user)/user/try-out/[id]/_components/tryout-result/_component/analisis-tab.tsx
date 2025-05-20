@@ -2,7 +2,7 @@
 'use client';
 
 import ButtonUpgradeTryout from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/button-upgrade-tryout';
-import { InputOptionUniversity } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/registration-try-out';
+// import { InputOptionUniversity } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/registration-try-out';
 import { useSession } from '@/components/provider/session-provider-auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,7 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 // import University from '@/lib/data/university';
+import { ComboboxSelect } from '@/components/ui/combobox-select';
 import { getGeneral } from '@/lib/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconStar, IconTryOut } from '@/styles/icon';
@@ -119,6 +120,9 @@ export function AnalisisTab({
   const renderAnalysisSimulasi = () => {
     const data = selectedData;
     // if (!data) return null;
+
+    if (selectedUniversity.length === 0 || selectedMajor.length === 0)
+      return null;
 
     const univTotalApplicants = data?.univTotalAplicants;
     const majorTotalApplicants = data?.majorTotalAplicants;
@@ -326,6 +330,11 @@ export function AnalisisTab({
       }, 1000);
     }
   };
+
+  const UnivChoice =
+    selectedUniversity.length > 0
+      ? UniversityOptions.find((item) => item.university === selectedUniversity)
+      : null;
 
   console.log({
     selectedMajor,
@@ -1075,7 +1084,7 @@ export function AnalisisTab({
                       }}
                     >
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <InputOptionUniversity
+                        {/* <InputOptionUniversity
                           heading="Pilihan 1 - Universitas"
                           placeholder="Universitas"
                           value={selectedUniversity}
@@ -1091,6 +1100,37 @@ export function AnalisisTab({
                           type="studyProgramList"
                           university={selectedUniversity}
                           disabled={website_sub_category_id !== 'tutor-snbt'}
+                        /> */}
+                        <ComboboxSelect
+                          heading="Pilihan 1 - Universitas"
+                          placeholder="Universitas"
+                          value={selectedUniversity}
+                          setValue={setSelectedUniversity}
+                          isUniversity={true}
+                          options={UniversityOptions.map((item) => ({
+                            label: item.university,
+                            value: item.university,
+                          }))}
+                          disabled={website_sub_category_id !== 'tutor-snbt'}
+                        />
+                        <ComboboxSelect
+                          heading="Pilihan 1 - Jurusan"
+                          placeholder="Jurusan"
+                          value={selectedMajor}
+                          setValue={setSelectedMajor}
+                          options={(UnivChoice?.studyProgramList || [])
+                            .map((item) => {
+                              return {
+                                label: item.study,
+                                value: item.study,
+                              };
+                            })
+                            .filter((item) => item !== null)
+                            .flat(Infinity)}
+                          disabled={
+                            website_sub_category_id !== 'tutor-snbt' ||
+                            !UnivChoice
+                          }
                         />
                       </div>
                       {website_sub_category_id === 'tutor-snbt' && (
