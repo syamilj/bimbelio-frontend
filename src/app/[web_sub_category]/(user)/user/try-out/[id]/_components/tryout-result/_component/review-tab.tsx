@@ -1,10 +1,10 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
+import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import ReactMarkdown from '@/components/ui/react-markdown';
 import {
   Select,
   SelectContent,
@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn, getDateString, getHoursDetail, getInitials } from '@/lib/utils';
 import { IconCheckList, IconX } from '@/styles/icon';
 import {
@@ -33,7 +34,6 @@ import {
 import { useRouter } from 'next/navigation';
 import React, { SetStateAction, useState } from 'react';
 import { SessionOptionsProps } from '..';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 interface QuestionWithAnswers extends TryoutQuestion {
   TryoutAnswers: TryoutAnswer[];
@@ -352,33 +352,34 @@ export function ReviewTab({
                         {UserAnswers.difficultyQuestion?.message}
                       </Badge>
                     </div>
-                    <ReactMarkdown
+                    <BlocknoteEditor
                       value={
                         UserAnswers.TryoutQuestion.question ||
                         'Tidak ada pertanyaan.'
                       }
+                      viewOnly
                     />
                     <div className="space-y-2">
                       <p className="font-medium">Jawaban Kamu:</p>
-                      <ReactMarkdown
-                        className="rounded-xl bg-muted p-2 text-sm"
+                      <BlocknoteEditor
                         value={
                           UserAnswers.TryoutAnswers?.answer || 'Tidak Dijawab'
                         }
+                        viewOnly
                       />
                     </div>
                     <div className="space-y-2">
                       <p className="font-medium">Jawaban Benar:</p>
-                      <ReactMarkdown
-                        className="rounded-xl bg-muted p-2 text-sm"
+                      <BlocknoteEditor
                         value={getCorrectAnswer()}
+                        viewOnly
                       />
                     </div>
                     <div className="space-y-2">
                       <p className="font-medium">Pembahasan:</p>
-                      <ReactMarkdown
-                        className="rounded-xl bg-muted p-2 text-sm"
+                      <BlocknoteEditor
                         value={UserAnswers.TryoutQuestion.explanation || ''}
+                        viewOnly
                       />
                     </div>
                   </div>

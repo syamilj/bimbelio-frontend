@@ -8,14 +8,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { env } from '@/env.mjs';
-import { cn, replaceLatexNotation } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
 import { CircleCheck, CircleX } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 // import ReactMarkdown from 'react-markdown';
 import { useEditTryoutContext } from '@/app/[web_sub_category]/(admin)/admin/tryout/_component/provider-edit-tryout';
-import ReactMarkdown from '@/components/ui/react-markdown';
+import BlocknoteEditor from '@/components/ui/blocknote-editor';
 
 const QuestionSessionTryout = () => {
   const {
@@ -206,10 +206,7 @@ const QuestionSessionTryout = () => {
     });
   };
 
-  const onChangeExplanation = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    questionIndex: number,
-  ) => {
+  const onChangeExplanation = (value: string, questionIndex: number) => {
     setSessions((prev) => {
       return prev.map((item, sessionIndex) => {
         if (
@@ -221,7 +218,7 @@ const QuestionSessionTryout = () => {
             ...item,
             Questions: item.Questions.map((item2, qIndex) => {
               if (qIndex === questionIndex) {
-                return { ...item2, explanation: e.target.value };
+                return { ...item2, explanation: value };
               }
               return item2;
             }),
@@ -233,8 +230,8 @@ const QuestionSessionTryout = () => {
   };
 
   const onChangeQuestion = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>, index: number) => {
-      const newQuestionValue = e.target.value;
+    (value: string, index: number) => {
+      const newQuestionValue = value;
       setSessions((prev) => {
         return prev.map((item, sessionIndex) => {
           if (
@@ -575,7 +572,7 @@ const QuestionSessionTryout = () => {
           </div>
         </div>
         <div className="relative mt-[-.5rem]">
-          {showPreview === questionIndex ? (
+          {/* {showPreview === questionIndex ? (
             <>
               <div className="absolute top-[calc(100%-2.5rem)] z-[1] h-[250px] w-full overflow-y-auto rounded-[.8rem] border bg-white p-[.5rem] text-[.9rem] shadow-default">
                 <ReactMarkdown
@@ -627,7 +624,15 @@ const QuestionSessionTryout = () => {
                 }
               />
             </div>
-          )}
+          )} */}
+          <div className="relative z-1 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
+            <BlocknoteEditor
+              value={EditSession.Questions[questionIndex].question}
+              onValueChange={(value) => {
+                onChangeQuestion(value, questionIndex);
+              }}
+            />
+          </div>
           {EditSession?.Questions[questionIndex].image ? (
             <div className="flex w-full gap-[1rem]">
               <div
@@ -725,7 +730,7 @@ const QuestionSessionTryout = () => {
                   </Select>
                 </div>
                 <div className="relative w-full">
-                  {showAnswerPreview === answerIndex ? (
+                  {/* {showAnswerPreview === answerIndex ? (
                     <>
                       <div className="absolute top-[100%] z-[1] h-[250px] w-full overflow-y-auto rounded-[.8rem] border bg-white p-[.5rem] shadow-default">
                         <ReactMarkdown
@@ -775,8 +780,15 @@ const QuestionSessionTryout = () => {
                         }
                       />
                     </div>
-                  )}
-                  {/* <textarea placeholder="Jawaban" className="outline-none rounded-[.8rem] px-[1rem] py-[.8rem] h-[50px] w-full border border-transparent focus:shadow-default md:hover:shadow-default " required value={item2.answer} onChange={(e) => { onChangeAnswer(e.target.value, questionIndex, answerIndex) }} onFocus={() => setShowAnswerPreview(answerIndex)} onBlur={() => setShowAnswerPreview(9999)} /> */}
+                  )} */}
+                  <div className="relative z-1 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none focus:shadow-default md:hover:shadow-default">
+                    <BlocknoteEditor
+                      value={item2.answer}
+                      onValueChange={(value) => {
+                        onChangeAnswer(value, questionIndex, answerIndex);
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="flex h-full items-center gap-[.5rem]">
                   {Array.from({
@@ -869,7 +881,7 @@ const QuestionSessionTryout = () => {
             ),
           )}
         </div>
-        {showExplanationPreview === questionIndex ? (
+        {/* {showExplanationPreview === questionIndex ? (
           <textarea
             id={`explanation-${questionIndex}`}
             placeholder="Explanation.."
@@ -936,7 +948,15 @@ const QuestionSessionTryout = () => {
               }
             />
           </div>
-        )}
+        )} */}
+        {/* <div className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
+          <BlocknoteEditor
+            value={EditSession.Questions[questionIndex].explanation}
+            onValueChange={(value) => {
+              onChangeExplanation(value, questionIndex);
+            }}
+          />
+        </div> */}
       </div>
     </div>
   );

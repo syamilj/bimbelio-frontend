@@ -1,6 +1,6 @@
+import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Input } from '@/components/ui/input';
-import ReactMarkdown from '@/components/ui/react-markdown';
-import { cn, replaceLatexNotation } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { QuestionTypeEnum } from '@/types/database';
 import 'katex/dist/katex.min.css';
 
@@ -63,9 +63,9 @@ const Card: React.FC<CardProps> = ({
         <>
           <div className={shortcutClasses}>{shortcut}</div>
           <div className="flex-grow">
-            <ReactMarkdown
-              className="text-inherit"
-              value={replaceLatexNotation(text)}
+            <BlocknoteEditor
+              value={text}
+              viewOnly
             />
           </div>
           {status && <div className={statusClasses} />}
