@@ -1,5 +1,6 @@
 'use client';
 
+import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import {
   Select,
   SelectContent,
@@ -8,17 +9,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { env } from '@/env.mjs';
-import { cn, replaceLatexNotation } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
 import { CircleCheck, CircleX } from 'lucide-react';
-import Image from 'next/image';
 import React, { SetStateAction, useCallback, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import rehypeKatex from 'rehype-katex';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
 import { SessionProps } from '../page';
 
 interface Props {
@@ -193,8 +188,8 @@ const QuestionSessionTryout = ({
   };
 
   const onChangeQuestion = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>, index: number) => {
-      const newQuestionValue = e.target.value;
+    (value: string, index: number) => {
+      const newQuestionValue = value;
       setSessions((prev) => {
         return prev.map((item, sessionIndex) => {
           if (
@@ -521,148 +516,14 @@ const QuestionSessionTryout = ({
           </div>
         </div>
         <div className="relative mt-[-.5rem]">
-          {showPreview === questionIndex ? (
-            <>
-              <div className="absolute top-[calc(100%-2.5rem)] z-[1] h-[250px] w-full overflow-y-auto rounded-[.8rem] border bg-white p-[.5rem] shadow-default">
-                <ReactMarkdown
-                  className="ReactMarkdown prose bg-transparent text-[.9rem]"
-                  remarkPlugins={[remarkGfm, remarkMath]}
-                  rehypePlugins={[rehypeKatex, rehypeRaw]}
-                  components={{
-                    code({ className, children, ...props }) {
-                      return (
-                        <code
-                          className={className}
-                          {...props}
-                        >
-                          {children}
-                        </code>
-                      );
-                    },
-                    img({ ...props }) {
-                      console.log('props', props);
-                      return (
-                        <div
-                          className={cn(
-                            'my-[1rem]',
-                            !props.title && 'w-[5rem]',
-                            props.title && `w-[${props.title}]`,
-                          )}
-                        >
-                          <Image
-                            style={{ maxWidth: '100%' }}
-                            alt={props.alt || 'Image'}
-                            src={props.src as string}
-                            layout="responsive"
-                            width={props.width ? Number(props.width) : 200}
-                            height={props.height ? Number(props.height) : 200}
-                          />
-                        </div>
-                      );
-                    },
-                    a({ ...props }) {
-                      return (
-                        <a
-                          target="_blank"
-                          style={{ color: 'blue' }}
-                          {...props}
-                        />
-                      );
-                    },
-                  }}
-                >
-                  {replaceLatexNotation(
-                    EditSession.Questions[questionIndex].question,
-                  )}
-                </ReactMarkdown>
-              </div>
-              <textarea
-                id={`question-${questionIndex}`}
-                placeholder="Soal"
-                className="relative z-0 h-[200px] w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-                required
-                value={EditSession.Questions[questionIndex].question}
-                onChange={(e) => {
-                  onChangeQuestion(e, questionIndex);
-                }}
-                onFocus={() => setShowPreview(questionIndex)}
-                onBlur={() => {
-                  setShowPreview(99999);
-                }}
-              />
-            </>
-          ) : (
-            <div
-              className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              onClick={() => {
-                setShowPreview(questionIndex);
-                setTimeout(() => {
-                  document.getElementById(`question-${questionIndex}`)?.focus();
-                }, 200);
+          <div className="relative z-1 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
+            <BlocknoteEditor
+              value={EditSession.Questions[questionIndex].question}
+              onValueChange={(value) => {
+                onChangeQuestion(value, questionIndex);
               }}
-            >
-              <input
-                type="text"
-                defaultValue={EditSession.Questions[questionIndex].question}
-                required
-                className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
-              />
-              <ReactMarkdown
-                className="ReactMarkdown prose bg-transparent text-[.9rem]"
-                remarkPlugins={[remarkGfm, remarkMath]}
-                rehypePlugins={[rehypeKatex, rehypeRaw]}
-                components={{
-                  code({ className, children, ...props }) {
-                    return (
-                      <code
-                        className={className}
-                        {...props}
-                      >
-                        {children}
-                      </code>
-                    );
-                  },
-                  img({ ...props }) {
-                    return (
-                      <div
-                        className={cn(
-                          'my-[1rem]',
-                          !props.title && 'w-[5rem]',
-                          props.title && `w-[${props.title}]`,
-                        )}
-                      >
-                        <Image
-                          style={{ maxWidth: '100%' }}
-                          alt={props.alt || 'Image'}
-                          src={props.src as string}
-                          layout="responsive"
-                          width={props.width ? Number(props.width) : 200}
-                          height={props.height ? Number(props.height) : 200}
-                        />
-                      </div>
-                    );
-                  },
-                  a({ ...props }) {
-                    return (
-                      <a
-                        target="_blank"
-                        style={{ color: 'blue' }}
-                        {...props}
-                      />
-                    );
-                  },
-                }}
-              >
-                {replaceLatexNotation(
-                  EditSession.Questions[questionIndex].question,
-                ).length > 0
-                  ? replaceLatexNotation(
-                      EditSession.Questions[questionIndex].question,
-                    )
-                  : '.....'}
-              </ReactMarkdown>
-            </div>
-          )}
+            />
+          </div>
           {EditSession.Questions[questionIndex].image ? (
             <div className="flex w-full gap-[1rem]">
               <div
@@ -760,155 +621,14 @@ const QuestionSessionTryout = ({
                   </Select>
                 </div>
                 <div className="relative w-full">
-                  {showAnswerPreview === answerIndex ? (
-                    <>
-                      <div className="absolute top-[100%] z-[1] h-[250px] w-full overflow-y-auto rounded-[.8rem] border bg-white p-[.5rem] shadow-default">
-                        <ReactMarkdown
-                          className="ReactMarkdown prose bg-transparent text-[.9rem]"
-                          remarkPlugins={[remarkGfm, remarkMath]}
-                          rehypePlugins={[rehypeKatex, rehypeRaw]}
-                          components={{
-                            code({ className, children, ...props }) {
-                              return (
-                                <code
-                                  className={className}
-                                  {...props}
-                                >
-                                  {children}
-                                </code>
-                              );
-                            },
-                            img({ ...props }) {
-                              console.log('props', props);
-                              return (
-                                <div
-                                  className={cn(
-                                    'my-[1rem]',
-                                    !props.title && 'w-[5rem]',
-                                    props.title && `w-[${props.title}]`,
-                                  )}
-                                >
-                                  <Image
-                                    style={{ maxWidth: '100%' }}
-                                    alt={props.alt || 'Image'}
-                                    src={props.src as string}
-                                    layout="responsive"
-                                    width={
-                                      props.width ? Number(props.width) : 200
-                                    }
-                                    height={
-                                      props.height ? Number(props.height) : 200
-                                    }
-                                  />
-                                </div>
-                              );
-                            },
-                            a({ ...props }) {
-                              return (
-                                <a
-                                  target="_blank"
-                                  style={{ color: 'blue' }}
-                                  {...props}
-                                />
-                              );
-                            },
-                          }}
-                        >
-                          {replaceLatexNotation(item2.answer)}
-                        </ReactMarkdown>
-                      </div>
-                      <textarea
-                        id={`answer-${answerIndex}`}
-                        placeholder="Jawaban"
-                        className="h-[50px] w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none focus:shadow-default md:hover:shadow-default"
-                        required
-                        value={item2.answer}
-                        onChange={(e) => {
-                          onChangeAnswer(
-                            e.target.value,
-                            questionIndex,
-                            answerIndex,
-                          );
-                        }}
-                        onFocus={() => setShowAnswerPreview(answerIndex)}
-                        onBlur={() => setShowAnswerPreview(9999)}
-                      />
-                    </>
-                  ) : (
-                    <div
-                      className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none focus:shadow-default md:hover:shadow-default"
-                      onClick={() => {
-                        setShowAnswerPreview(answerIndex);
-                        setTimeout(() => {
-                          document
-                            .getElementById(`answer-${answerIndex}`)
-                            ?.focus();
-                        }, 200);
+                  <div className="relative z-1 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none focus:shadow-default md:hover:shadow-default">
+                    <BlocknoteEditor
+                      value={item2.answer}
+                      onValueChange={(value) => {
+                        onChangeAnswer(value, questionIndex, answerIndex);
                       }}
-                    >
-                      <input
-                        type="text"
-                        defaultValue={item2.answer}
-                        required
-                        className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
-                      />
-                      <ReactMarkdown
-                        className="ReactMarkdown prose bg-transparent text-[.9rem]"
-                        remarkPlugins={[remarkGfm, remarkMath]}
-                        rehypePlugins={[rehypeKatex, rehypeRaw]}
-                        components={{
-                          code({ className, children, ...props }) {
-                            return (
-                              <code
-                                className={className}
-                                {...props}
-                              >
-                                {children}
-                              </code>
-                            );
-                          },
-                          img({ ...props }) {
-                            return (
-                              <div
-                                className={cn(
-                                  'my-[1rem]',
-                                  !props.title && 'w-[5rem]',
-                                  props.title && `w-[${props.title}]`,
-                                )}
-                              >
-                                <Image
-                                  style={{ maxWidth: '100%' }}
-                                  alt={props.alt || 'Image'}
-                                  src={props.src as string}
-                                  layout="responsive"
-                                  width={
-                                    props.width ? Number(props.width) : 200
-                                  }
-                                  height={
-                                    props.height ? Number(props.height) : 200
-                                  }
-                                />
-                              </div>
-                            );
-                          },
-                          a({ ...props }) {
-                            return (
-                              <a
-                                target="_blank"
-                                style={{ color: 'blue' }}
-                                {...props}
-                              />
-                            );
-                          },
-                        }}
-                      >
-                        {replaceLatexNotation(item2.answer).length > 0
-                          ? replaceLatexNotation(item2.answer)
-                          : '.....'}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                  {/* <textarea placeholder="Jawaban" className="outline-none rounded-[.8rem] px-[1rem] py-[.8rem] h-[50px] w-full border border-transparent focus:shadow-default md:hover:shadow-default " required value={item2.answer} onChange={(e) => { onChangeAnswer(e.target.value, questionIndex, answerIndex) }} onFocus={() => setShowAnswerPreview(answerIndex)} onBlur={() => setShowAnswerPreview(9999)} /> */}
+                    />
+                  </div>
                 </div>
                 <div className="flex h-full items-center gap-[.5rem]">
                   {Array.from({

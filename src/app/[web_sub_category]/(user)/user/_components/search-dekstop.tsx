@@ -43,6 +43,7 @@ const SearchDeskstop = () => {
   };
 
   useEffect(() => {
+    if (!pathname.includes('search')) return;
     handleSearch();
   }, [categoryId]);
 

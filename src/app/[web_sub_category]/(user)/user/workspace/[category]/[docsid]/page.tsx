@@ -175,11 +175,7 @@ const DocViewerPage = () => {
         className="chatAIContainer relative"
       >
         {userId ? (
-          <Sidebar
-            canEdit={doc.userPermissions.canEdit}
-            userId={userId}
-            docId={docId}
-          />
+          <Sidebar docId={docId} />
         ) : (
           <div className="flex justify-center items-center h-full w-full">
             <Loader2 className="w-4 h-4 animate-spin" />

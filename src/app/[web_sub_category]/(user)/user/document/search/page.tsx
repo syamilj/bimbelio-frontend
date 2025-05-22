@@ -2,6 +2,7 @@
 
 import { getGeneral } from '@/lib/fetch-helper';
 import { Category, Subcategory } from '@/types/database';
+import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Card from '../../_components/card';
@@ -12,6 +13,7 @@ export default function DocumentSearch() {
   const searchParams = useSearchParams();
   const search = searchParams.get('search');
   const categoryId = searchParams.get('categoryId');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [searchDatas, setSearchDatas] = useState<
     (Document & { category: Category; subCategory: Subcategory })[]
@@ -24,6 +26,7 @@ export default function DocumentSearch() {
         search,
         categoryId,
       },
+      setLoading: setIsLoading,
       setData: setSearchDatas,
     });
   };
@@ -52,10 +55,18 @@ export default function DocumentSearch() {
         </div>
       ) : (
         <>
-          {searchDatas.length === 0 && (
-            <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
-              <CardNotFound title="Document Not Found" />
+          {isLoading ? (
+            <div className="flex justify-center items-center h-full w-full">
+              <Loader2 className="w-4 h-4 animate-spin" />
             </div>
+          ) : (
+            <>
+              {searchDatas?.length === 0 && (
+                <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
+                  <CardNotFound title="Document Not Found" />
+                </div>
+              )}
+            </>
           )}
         </>
       )}
