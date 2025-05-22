@@ -147,8 +147,8 @@ const StartTryout = ({
             type="submit"
             disabled={loading}
             className={cn(
-              'flex h-10 w-full items-center justify-center rounded-2xl bg-main text-white transition-colors duration-200 hover:bg-main/85',
-              loading && 'cursor-default hover:bg-main/85',
+              'flex h-10 w-full items-center justify-center rounded-2xl bg-main-default text-white transition-colors duration-200 hover:bg-main-default/85',
+              loading && 'cursor-default hover:bg-main-default/85',
             )}
           >
             {loading ? (

@@ -18,3 +18,7 @@
   border-radius: 8px;
   margin-right: 0.5rem;
 }
+
+.bn-container.text-white .bn-block-content {
+  color: white;
+}

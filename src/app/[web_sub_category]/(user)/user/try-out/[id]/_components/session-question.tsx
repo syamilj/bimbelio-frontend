@@ -67,7 +67,9 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
 
   const progress =
     questions.length > 0
-      ? ((currentQuestionIndex + 1) / questions.length) * 100
+      ? (sessionAnswer.filter((item: any) => item.answerId).length /
+          questions.length) *
+        100
       : 0;
 
   // Jika questions masih kosong, tampilkan pesan atau loader
@@ -105,6 +107,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
         <Progress
           value={progress}
           className="h-2 rounded-full"
+          classNameThumb="bg-main-default"
         />
       </CardHeader>
       <CardContent className="p-6">
@@ -164,7 +167,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
           <span>Soal sebelumnya</span>
         </Button>
         <Button
-          className="w-full sm:w-auto flex items-center justify-center bg-main hover:bg-main/85 space-x-2 rounded-full"
+          className="w-full sm:w-auto flex items-center justify-center bg-main-default hover:bg-main-default/85 space-x-2 rounded-full"
           onClick={() => {
             if (safeCurrentQuestionIndex < questions.length - 1)
               setCurrentQuestionIndex(safeCurrentQuestionIndex + 1);

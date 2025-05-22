@@ -22,10 +22,12 @@ function BlocknoteEditor({
   value,
   onValueChange,
   viewOnly,
+  className,
 }: {
   value?: string;
   onValueChange?: (value: string) => void;
   viewOnly?: boolean;
+  className?: string;
 }) {
   const id = crypto.randomUUID();
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -87,7 +89,7 @@ function BlocknoteEditor({
     >
       <BlockNoteView
         id={id}
-        className={cn(viewOnly && 'viewOnly')}
+        className={cn(viewOnly && 'viewOnly', className && className)}
         editor={editor}
         theme={'light'}
         onChange={async () => {
