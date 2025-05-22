@@ -22,3 +22,8 @@
 .bn-container.text-white .bn-block-content {
   color: white;
 }
+
+.bn-block-content[data-content-type='image'] {
+  resize: none;
+  width: 200px;
+}

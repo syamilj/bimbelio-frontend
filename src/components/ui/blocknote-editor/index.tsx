@@ -51,6 +51,7 @@ function BlocknoteEditor({
     if (!onValueChange) return;
 
     const value = await editor.blocksToMarkdownLossy(editor.document);
+    console.log({ blocksToMarkdownLossy: value });
     onValueChange(value);
   }, 1000);
 
@@ -81,6 +82,12 @@ function BlocknoteEditor({
       }
     };
   }, [editor]);
+
+  // useEffect(() => {
+  //   editor.
+  // }, [editor]);
+
+  console.log({ editor: editor.document });
 
   return (
     <Latex

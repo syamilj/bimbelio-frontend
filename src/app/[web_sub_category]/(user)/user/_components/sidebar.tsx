@@ -29,7 +29,7 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { Payment } from './payment';
 // Main Sidebar Component
-const Sidebar = ({ category }: any) => {
+const Sidebar = ({ category }: { category: any }) => {
   const { data: session } = useSession();
   const userImage = session?.user.image || null;
   const router = useRouter();

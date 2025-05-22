@@ -180,7 +180,7 @@ const SidebarRoute = ({
           </div>
         </Link>
         <div className={`${minimizeSidebar && 'flex justify-center'} relative`}>
-          <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
+          {/* <ComingSoonBadge minimizeSidebar={minimizeSidebar} /> */}
           <div
             className={`mx-[.5rem] flex cursor-pointer items-center justify-between rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
               minimizeSidebar && pathname?.includes('workspace') && 'bg-main'
