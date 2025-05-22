@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import {
   Dialog,
   DialogContent,
@@ -127,7 +127,7 @@ const SubmitTryout = ({
       >
         <DialogTrigger asChild>
           <button
-            className="rounded-xl bg-main px-4 py-3 text-white duration-300 active:bg-main hover:bg-main/85"
+            className="rounded-xl bg-main-default px-4 py-3 text-white duration-300 active:bg-main-default hover:bg-main-default/85"
             disabled={loading || hasSubmitted}
           >
             Kumpulkan
@@ -181,7 +181,7 @@ const SubmitTryout = ({
                       Kembali
                     </button>
                     <button
-                      className={`h-full w-full rounded-xl bg-main text-white duration-300 active:bg-main hover:bg-main/85 ${
+                      className={`h-full w-full rounded-xl bg-main-default text-white duration-300 active:bg-main-default hover:bg-main-default/85 ${
                         hasSubmitted ? 'cursor-not-allowed opacity-50' : ''
                       }`}
                       onClick={() => {
@@ -228,7 +228,7 @@ const SubmitTryout = ({
                     Kembali
                   </button>
                   <button
-                    className={`w-full rounded-xl bg-main py-3 text-white duration-300 active:bg-main ${
+                    className={`w-full rounded-xl bg-main-default py-3 text-white duration-300 active:bg-main-default ${
                       hasSubmitted ? 'cursor-not-allowed opacity-50' : ''
                     }`}
                     onClick={handleSubmit}

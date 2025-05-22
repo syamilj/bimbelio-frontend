@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import ReactMarkdown from '@/components/ui/react-markdown';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { mutateGeneral } from '@/lib/fetch-helper';

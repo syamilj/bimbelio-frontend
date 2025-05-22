@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 import ReportBug from '@/components/_shared/other/report-bug';
 import { useAppContext } from '@/components/provider/provider-app';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
 import Chat from '@/components/workspace/chat';
@@ -21,8 +21,6 @@ import {
   IconMinimizeScreen,
   IconRegenerateMessage,
   IconTabsChat,
-  IconTabsNotes,
-  IconTabsQuiz,
   IconWarning,
 } from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
@@ -35,13 +33,13 @@ import { useMedia } from 'use-media';
 // import Editor from './editor';
 
 const TABS = [
-  {
-    value: 'notes',
-    title: 'Notes',
-    tooltip: 'Take notes',
-    icon: <IconTabsNotes w={18} />,
-    isNew: false,
-  },
+  // {
+  //   value: 'notes',
+  //   title: 'Notes',
+  //   tooltip: 'Take notes',
+  //   icon: <IconTabsNotes w={18} />,
+  //   isNew: false,
+  // },
   {
     value: 'chat',
     title: 'Chat AI',
@@ -49,26 +47,18 @@ const TABS = [
     icon: <IconTabsChat w={18} />,
     isNew: false,
   },
-  {
-    value: 'quiz',
-    title: 'Quiz',
-    tooltip: 'Generate Quiz with the document',
-    icon: <IconTabsQuiz w={18} />,
-    isNew: false,
-  },
+  // {
+  //   value: 'quiz',
+  //   title: 'Quiz',
+  //   tooltip: 'Generate Quiz with the document',
+  //   icon: <IconTabsQuiz w={18} />,
+  //   isNew: false,
+  // },
 ];
 
 const tabNames = TABS.map((tab) => tab.value);
 
-export function Sidebar({
-  canEdit,
-  userId,
-  docId: initialDocId,
-}: {
-  canEdit: boolean;
-  userId: string;
-  docId: string;
-}) {
+export function Sidebar({ docId: initialDocId }: { docId: string }) {
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];

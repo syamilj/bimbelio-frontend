@@ -1,5 +1,5 @@
 import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import ReactMarkdown from '@/components/ui/react-markdown';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import {

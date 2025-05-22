@@ -1,4 +1,4 @@
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { MouseEvent } from 'react';
 import {
   AreaHighlight,

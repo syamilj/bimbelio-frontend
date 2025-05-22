@@ -1,6 +1,6 @@
 import LOGO from '@/_assest/logomark.png';
 import { useAppContext } from '@/components/provider/provider-app';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 import Image from 'next/image';
@@ -66,7 +66,8 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
             <button
               className="w-full rounded-[2rem] bg-bg-workspace py-[.8rem] font-medium text-main-gray-text"
               onClick={() => {
-                if (session) Router.push(`/${website_sub_category_id}/dashboard`);
+                if (session)
+                  Router.push(`/${website_sub_category_id}/dashboard`);
                 else setShowAuth({ login: true, signUp: false });
               }}
             >

@@ -12,8 +12,8 @@ import Sidebar from '@/app/[web_sub_category]/(user)/user/_components/sidebar';
 import { useAppContext } from '@/components/provider/provider-app';
 
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
-import CheckSubscription from '@/components/provider/check-subscription';
-import { useSession } from '@/components/provider/session-provider-auth';
+import ProviderCheckSubscription from '@/components/provider/provider-check-subscription';
+import { useSession } from '@/components/provider/provider-session-auth';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response } from '@/lib/response';
 import { cn } from '@/lib/utils';
@@ -152,7 +152,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   // MAIN LAYOUT --------------------------------------------------
   return (
     <Suspense>
-      <CheckSubscription>
+      <ProviderCheckSubscription>
         <div className="h-full min-h-[100vh] overflow-x-hidden bg-bg-layout pb-0">
           {/* HEADER */}
           {!inWorkspace && (
@@ -333,7 +333,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
             {children}
           </main>
         </div>
-      </CheckSubscription>
+      </ProviderCheckSubscription>
     </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { CustomTooltip } from '@/components/ui/tooltip';
 import { env } from '@/env.mjs';

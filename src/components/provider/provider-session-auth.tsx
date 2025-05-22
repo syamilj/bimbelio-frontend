@@ -14,7 +14,7 @@ import {
 } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-export default function SessionProviderAuth({
+export default function ProviderSessionAuth({
   children,
 }: {
   children: ReactNode;

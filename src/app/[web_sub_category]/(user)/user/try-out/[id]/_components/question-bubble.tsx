@@ -1,5 +1,4 @@
-import ReactMarkdown from '@/components/ui/react-markdown';
-import { replaceLatexNotation } from '@/lib/utils';
+import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import 'katex/dist/katex.min.css';
 
 interface QuestionBubbleProps {
@@ -9,9 +8,9 @@ interface QuestionBubbleProps {
 const QuestionBubble = ({ question }: QuestionBubbleProps) => {
   return (
     <div className="mb-6 flex items-center gap-x-4 text-[1rem]">
-      <ReactMarkdown
-        className="ReactMarkdown prose bg-transparent"
-        value={replaceLatexNotation(question)}
+      <BlocknoteEditor
+        value={question}
+        viewOnly
       />
     </div>
   );

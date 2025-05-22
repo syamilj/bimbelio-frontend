@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import UserAccountNav from '@/components/_shared/navbar/user-account-nav';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import NextBreadcrumb from './next-breadcrumb';
 

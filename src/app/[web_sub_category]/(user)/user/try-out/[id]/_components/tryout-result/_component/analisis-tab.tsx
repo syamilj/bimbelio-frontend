@@ -3,7 +3,7 @@
 
 import ButtonUpgradeTryout from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/button-upgrade-tryout';
 // import { InputOptionUniversity } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/registration-try-out';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {

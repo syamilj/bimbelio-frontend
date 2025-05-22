@@ -1,5 +1,5 @@
 import CardNotFound from '@/app/[web_sub_category]/(user)/user/_components/card-not-found';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper';
 import { useEffect, useState } from 'react';

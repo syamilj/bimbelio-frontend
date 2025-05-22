@@ -8,3 +8,5 @@ export default function AdminLayout({
 }) {
   return <AdminClientLayout>{children}</AdminClientLayout>;
 }
+
+//

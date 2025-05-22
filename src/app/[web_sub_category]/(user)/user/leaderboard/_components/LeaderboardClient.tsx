@@ -5,7 +5,7 @@ import { RankingStats } from '@/app/[web_sub_category]/(user)/user/leaderboard/_
 import { RankingTable } from '@/app/[web_sub_category]/(user)/user/leaderboard/_components/ranking-table';
 import { TopWinners } from '@/app/[web_sub_category]/(user)/user/leaderboard/_components/top-winners';
 import { TryOutSelector } from '@/app/[web_sub_category]/(user)/user/leaderboard/_components/tryout-selector';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { getGeneral } from '@/lib/fetch-helper';
 import { useEffect, useState } from 'react';
 
@@ -84,7 +84,6 @@ export default function LeaderboardClient() {
       },
     );
   }, [selectedTryOut, session]);
-  
 
   return (
     <LeaderboardContext.Provider

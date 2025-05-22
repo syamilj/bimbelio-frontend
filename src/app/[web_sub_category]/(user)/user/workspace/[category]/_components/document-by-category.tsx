@@ -1,5 +1,6 @@
 'use client';
 
+import { getGeneral } from '@/lib/fetch-helper';
 import { Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -14,7 +15,9 @@ export default function DocumentByCategory({
 }: any) {
   const params = useParams();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const categoryId = params?.category as string | undefined;
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [documentByCategory, setDocumentByCategory] = useState<any>();
   const [
@@ -39,19 +42,38 @@ export default function DocumentByCategory({
 
   useEffect(() => {
     // refetch();
-  }, [subCategoryId]);
+    if (!categoryId) return;
+    getGeneral('/document/getDocumentByCategoryAndSubId', {
+      setData: setDocsData,
+      setLoading: setIsLoading,
+      params: {
+        categoryId,
+        subCategoryId: subCategoryId.length > 0 ? subCategoryId : undefined,
+      },
+    });
+  }, [subCategoryId, categoryId]);
 
-  useEffect(() => {
-    if (!sort) {
-      if (subCategoryId) {
-        setDocsData(documentByCategoryAndSubcategory);
-        // setLoading(false);
-      } else {
-        setDocsData(documentByCategory);
-        // setLoading(false);
-      }
-    }
-  }, [documentByCategory, documentByCategoryAndSubcategory, sort]);
+  // useEffect(() => {
+  //   if (!categoryId) return;
+  //   getGeneral('/document/getDocumentByCategoryId', {
+  //     setData: setDocumentByCategory,
+  //     params: {
+  //       categoryId,
+  //     },
+  //   });
+  // }, [categoryId]);
+
+  // useEffect(() => {
+  //   if (!sort) {
+  //     if (subCategoryId) {
+  //       setDocsData(documentByCategoryAndSubcategory);
+  //       // setLoading(false);
+  //     } else {
+  //       setDocsData(documentByCategory);
+  //       // setLoading(false);
+  //     }
+  //   }
+  // }, [documentByCategory, documentByCategoryAndSubcategory, sort]);
 
   return (
     <>
@@ -72,7 +94,7 @@ export default function DocumentByCategory({
             <>
               {docsData?.length === 0 && (
                 <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
-                  <CardNotFound />
+                  <CardNotFound title="Document Not Found" />
                 </div>
               )}
             </>

@@ -2,9 +2,10 @@
 
 'use client';
 
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { mutateGeneral } from '@/lib/fetch-helper';
 import { useEffect, useRef, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface SessionAnswer {
   number: number;
@@ -72,28 +73,27 @@ export default function CountDownTryout({
   //   },
   // });
 
-  const FinishTryOut = async (payload: {
-    userId: string;
-    sessionId: string;
-    answer: any[];
-  }) => {
-    await mutateGeneral('/tryoutSession/finishSession', {
-      payload,
-      type: 'post',
-      toast: {
-        successMsg: 'Waktumu sudah habis!',
-        errorMsg: 'Gagal submit tryout, coba lagi!',
-      },
-      onSuccess() {
-        //       trpc.tryout.getTryoutById.refetch();
-        localStorage.removeItem(`sessionAnswer-${sessionId}`);
-        window.location.reload();
-      },
-      onError() {
-        setHasSubmitted(false);
-      },
-    });
-  };
+  const FinishTryOut = useDebouncedCallback(
+    async (payload: { userId: string; sessionId: string; answer: any[] }) => {
+      await mutateGeneral('/tryoutSession/finishSession', {
+        payload,
+        type: 'post',
+        toast: {
+          successMsg: 'Waktumu sudah habis!',
+          errorMsg: 'Gagal submit tryout, coba lagi!',
+        },
+        onSuccess() {
+          //       trpc.tryout.getTryoutById.refetch();
+          localStorage.removeItem(`sessionAnswer-${sessionId}`);
+          window.location.reload();
+        },
+        onError() {
+          setHasSubmitted(false);
+        },
+      });
+    },
+    1000,
+  );
 
   useEffect(() => {
     timerId.current = window.setInterval(() => {
@@ -112,7 +112,6 @@ export default function CountDownTryout({
     };
   }, []);
 
-  // Jika waktu habis dan belum pernah submit, langsung submit
   useEffect(() => {
     if (execute && !hasSubmitted) {
       setHasSubmitted(true);
@@ -122,7 +121,7 @@ export default function CountDownTryout({
         userId: session?.user.id || '',
       });
     }
-  }, [execute, hasSubmitted, FinishTryOut, sessionAnswer, sessionId]);
+  }, [execute, hasSubmitted, sessionAnswer, sessionId]);
 
   return <span>{timeFormat(countdown)}</span>;
 }

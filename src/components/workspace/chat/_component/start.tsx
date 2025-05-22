@@ -1,4 +1,4 @@
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Spinner } from '@/components/ui/spinner';
 import { IconDocument } from '@/styles/icon';
 

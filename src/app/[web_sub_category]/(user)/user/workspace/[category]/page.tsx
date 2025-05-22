@@ -2,7 +2,7 @@
 
 import { Fragment, useState } from 'react';
 import SearchDeskstop from '../../_components/search-dekstop';
-import DocumentByCategory from './_components/DocumentByCategory';
+import DocumentByCategory from './_components/document-by-category';
 import HeadingBahanAjar from './_components/heading';
 
 export default function BahanAjarByCategory() {
