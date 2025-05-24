@@ -1,22 +1,22 @@
 'use client';
 
-import HeaderPdf from '@/components/pdf-reader/_component/header-pdf';
+import HeaderPdf from '@/components/pdf-reader/_components/header-pdf';
 import PdfReader from '@/components/pdf-reader/pdf-reader';
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
-import { useBlocknoteEditorStore } from '@/lib/store';
 import { hideVideoLink } from '@/lib/utils';
 import { IconDislike, IconLike } from '@/styles/icon';
 
 import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper';
-import { Cordinate, HighlightTypeEnum, Message, Video } from '@/types/database';
+import { HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
 import { createId } from '@paralleldrive/cuid2';
-import { useEffect, useState } from 'react';
-import { GhostHighlight } from 'react-pdf-highlighter-extended';
+import { useEffect } from 'react';
+import { GhostHighlight, Scaled } from 'react-pdf-highlighter-extended';
 import { useSession } from '../provider/provider-session-auth';
 import { ToolTip } from '../ui/tooltip';
+import Provider, { useProvider } from './_provider';
 
 export type DocDataType = {
   id: string;
@@ -25,8 +25,8 @@ export type DocDataType = {
   highlights: {
     id: string;
     position: {
-      boundingRect?: Cordinate;
-      rects: Cordinate[];
+      boundingRect?: Scaled;
+      rects: Scaled[];
       pageNumber: number | null;
     };
   }[];
@@ -42,8 +42,8 @@ export type DocDataType = {
 type HighlightTypeData = {
   id: string;
   position: {
-    boundingRect?: Cordinate;
-    rects: Cordinate[];
+    boundingRect?: Scaled;
+    rects: Scaled[];
     pageNumber: number | null;
   };
 };
@@ -80,17 +80,27 @@ export type deleteHighlightMutationType = {
   userId: string;
 };
 
-const DocViewer = ({
-  canEdit,
-  doc,
-  userId,
-  isCourseDone,
-}: {
+type Props = {
   canEdit: boolean;
   doc: DocDataType;
   userId: string;
   isCourseDone?: boolean;
-}) => {
+};
+
+const DocViewer = ({ canEdit, doc, userId, isCourseDone }: Props) => {
+  return (
+    <Provider doc={doc}>
+      <MainContent
+        canEdit={canEdit}
+        doc={doc}
+        userId={userId}
+        isCourseDone={isCourseDone}
+      />
+    </Provider>
+  );
+};
+
+const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
   // const { isReady } = useRouter();
 
   const { data: session } = useSession();
@@ -102,57 +112,37 @@ const DocViewer = ({
   // const utils = api.useContext();
   // const trpc = api.useUtils();
 
-  const { editor } = useBlocknoteEditorStore();
+  console.log({ Highlight: doc?.highlights });
 
-  const { normalSize, setNormalSize, zoomValue, setZoomValue, vision } =
-    useAppContext();
+  // const { editor } = useBlocknoteEditorStore();
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [searchPdf, setSearchPdf] = useState<string>('');
-  const [videoUrl, setVideoUrl] = useState<string>('');
-  const [hideVideo, setHideVideo] = useState<boolean>(false);
-  const [editPage, setEditPage] = useState<boolean>(false);
+  const {
+    useEditor: { editor },
+  } = useAppContext();
+
+  const {
+    useHeaderPdf: { setNormalSize, setZoomValue, vision, setCurrentPage },
+    useVideo: { hideVideo, setHideVideo, videoUrl, setVideoUrl },
+    useHighlights: { setHighlights },
+  } = useProvider();
 
   const addHighlightMutation = async (payload: addHighlightMutationType) => {
-    await mutateGeneral('/highlight/add', {
+    await mutateGeneral('/highlight/addHighlight', {
       payload,
       type: 'post',
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
         //     utils.document.getDocData.invalidate();
         //     trpc.notes.getNotes.refetch();
-      },
-      onLoading() {
-        //     await utils.document.getDocData.cancel();
-        //     const prevData = utils.document.getDocData.getData();
-        //     utils.document.getDocData.setData(
-        //       { docId: docId as string, userId: userId as string },
-        //       (old: any) => {
-        //         if (!old) return null;
-        //         return {
-        //           ...old,
-        //           highlights: [
-        //             ...old.highlights,
-        //             {
-        //               id: newHighlight.id,
-        //               position: {
-        //                 boundingRect: newHighlight.boundingRect,
-        //                 rects: newHighlight.rects,
-        //                 pageNumber: newHighlight.pageNumber,
-        //               },
-        //             },
-        //           ],
-        //         };
-        //       },
-        //     );
-        //     return { prevData };
+        setHighlights(data);
       },
     });
   };
 
   const deleteHighlightMutation = async (
-    payload: deleteHighlightMutationType,
+    params: deleteHighlightMutationType,
   ) => {
-    await deleteGeneral('/highlight/delete', {
+    await deleteGeneral('/highlight/deleteHighlight', {
+      params,
       onLoading() {
         //     await utils.document.getDocData.cancel();
         //     const prevData = utils.document.getDocData.getData();
@@ -171,7 +161,8 @@ const DocViewer = ({
         //     );
         //     return { prevData };
       },
-      onSuccess() {
+      onSuccess({ data }) {
+        setHighlights(data);
         //     utils.document.getDocData.invalidate();
       },
     });
@@ -343,12 +334,6 @@ const DocViewer = ({
     >
       <HeaderPdf
         doc={doc}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        editPage={editPage}
-        setEditPage={setEditPage}
-        searchPdf={searchPdf}
-        setSearchPdf={setSearchPdf}
         isCourseDone={isCourseDone}
       />
       <div className={`flex h-full flex-col ${!hideVideo && 'gap-[0]'}`}>
@@ -410,14 +395,6 @@ const DocViewer = ({
               docUrl={url}
               getHighlightById={getHighlightById}
               addHighlight={addHighlight}
-              highlights={doc.highlights ?? []}
-              vision={vision}
-              zoomValue={zoomValue}
-              normalSize={normalSize}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              editPage={editPage}
-              setEditPage={setEditPage}
             />
             {hideVideo && doc?.video && (
               <button

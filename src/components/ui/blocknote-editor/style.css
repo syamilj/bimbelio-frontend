@@ -24,6 +24,9 @@
 }
 
 .bn-block-content[data-content-type='image'] {
-  resize: none;
   width: 200px;
 }
+
+/* .bn-block-content[data-content-type='image'] .bn-resize-handle {
+  display: none;
+} */

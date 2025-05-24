@@ -1,4 +1,5 @@
-import { useSession } from '@/components/provider/provider-session-auth';
+'use client';
+
 import { MouseEvent } from 'react';
 import {
   AreaHighlight,
@@ -21,6 +22,7 @@ interface HighlightContainerProps {
   docId: string;
   updateAreaHighlight: (payload: updateAreaHighlightType) => any;
   deleteHighlight: (id: string) => void;
+  userId: string;
 }
 
 const HighlightContainer = ({
@@ -28,8 +30,8 @@ const HighlightContainer = ({
   docId,
   updateAreaHighlight,
   deleteHighlight,
+  userId,
 }: HighlightContainerProps) => {
-  const { data: session } = useSession();
   const {
     highlight,
     viewportToScaled,
@@ -49,6 +51,7 @@ const HighlightContainer = ({
 
   console.log(
     'test===========================================================================3',
+    highlight,
   );
   const { toggleEditInProgress } = usePdfHighlighterContext();
 
@@ -73,7 +76,7 @@ const HighlightContainer = ({
         updateAreaHighlight({
           id: highlight.id,
           boundingRect: viewportToScaled(boundingRect),
-          userId: session?.user.id || '',
+          userId,
           type: 'IMAGE',
           documentId: docId as string,
           pageNumber: boundingRect.pageNumber,

@@ -1,4 +1,5 @@
-import { useSession } from '@/components/provider/provider-session-auth';
+'use client';
+
 import { TrashIcon } from 'lucide-react';
 // import type {
 //   Highlight,
@@ -17,7 +18,6 @@ const HighlightPopup = ({
   deleteHighlight: (id: string) => void;
   // hideTip: () => void;
 }) => {
-  const { data: session } = useSession();
   const OPTIONS = [
     {
       onClick: () => {
