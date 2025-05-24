@@ -53,6 +53,7 @@ const DocViewerPage = () => {
     await getGeneral('/document/getDocData', {
       setData: setDoc,
       setLoading: setIsLoading,
+      toast: { hideError: true },
       params: {
         docId: docId,
         userId: userId,
