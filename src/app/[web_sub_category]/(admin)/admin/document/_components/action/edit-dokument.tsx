@@ -9,6 +9,7 @@ import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
 import { getDateForInput, getHours } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import { Category, Subcategory } from '@/types/database';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../../provider';
@@ -244,6 +245,10 @@ export default function EditDocument() {
             `${env.NEXT_PUBLIC_API_URL}/document/pdf?title=${editData?.title}`,
             {
               method: 'POST',
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+                'Content-Type': 'application/json',
+              },
             },
           );
           console.log({ response });
