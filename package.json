@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@ai-sdk/ui-utils": "^1.2.11",
     "@blocknote/core": "^0.30.0",
     "@blocknote/mantine": "^0.30.0",
     "@blocknote/react": "^0.30.0",
