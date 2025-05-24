@@ -10,23 +10,23 @@ import { cloneElement, isValidElement, useEffect, useState } from 'react';
 
 export default function ButtonUpgradeTryout({
   children,
+  tryoutId: id,
 }: {
   children?: React.ReactNode;
+  tryoutId?: string;
 }) {
   const params = useParams();
   console.log({ params });
   const { data: session } = useSession();
   const [show, setShow] = useState<boolean>(false);
-  // const { data: tryout } = api.tryout.getTryoutDataById.useQuery(
-  //   { tryoutId: (params?.id as string) || "" },
-  //   { refetchOnWindowFocus: false, enabled: !!params }
-  // );
+
+  const tryoutId = id ? id : params?.id;
 
   const [tryout, setTryout] = useState<any>();
   useEffect(() => {
     getGeneral(
       `/tryout/getTryoutDataById?userId=${session?.user.id}&tryoutId=${
-        (params?.id as string) || ''
+        (tryoutId as string) || ''
       }`,
       {
         setData: setTryout,

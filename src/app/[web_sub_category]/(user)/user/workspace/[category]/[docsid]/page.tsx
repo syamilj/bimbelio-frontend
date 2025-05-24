@@ -14,9 +14,14 @@ import useMedia from 'use-media';
 
 import { DocDataType } from '@/components/pdf-reader';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { CrownIcon, LockIcon, PlayIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
+import ButtonUpgradeTryout from '../../../try-out/_components/ui/button-upgrade-tryout';
 import LeftComponent from './_components/left-component';
 import { RightComponent } from './_components/right-component';
 
@@ -40,20 +45,36 @@ const DocViewerPage = () => {
 
   const [doc, setDoc] = useState<DocDataType>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [tryoutId, setTryoutId] = useState<string | null>(null);
+  const [tryoutLink, setTryoutLink] = useState<string | null>(null);
 
-  useEffect(() => {
-    getGeneral('/document/getDocData', {
+  const fetchDocData = useDebouncedCallback(async () => {
+    await getGeneral('/document/getDocData', {
       setData: setDoc,
       setLoading: setIsLoading,
+      toast: { hideError: true },
       params: {
         docId: docId,
         userId: userId,
       },
-      onError() {
-        setIsError(true);
+      onError({ data: resData, message }) {
+        const data = resData as {
+          tryoutId: string;
+          website_sub_category_id: string;
+        };
+        // const
+        setError(message);
+        setTryoutId(data.tryoutId);
+        setTryoutLink(
+          `/${data.website_sub_category_id}/user/try-out?id=${data.tryoutId}`,
+        );
       },
     });
+  }, 500);
+
+  useEffect(() => {
+    fetchDocData();
   }, []);
 
   useEffect(() => {
@@ -97,16 +118,52 @@ const DocViewerPage = () => {
     return <p>Document ID not found in the URL.</p>;
   }
 
-  if (isError) {
-    return <p>Error loading the document.</p>;
+  if (error) {
+    return (
+      <div className="flex justify-center items-center w-full h-full min-h-[90vh]">
+        <Card className="mb-8 bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-400 rounded-3xl">
+          <CardContent className="p-8 text-center">
+            <div className="flex items-center justify-center mb-6">
+              <div className="bg-yellow-100 p-4 rounded-full">
+                <LockIcon className="h-12 w-12 text-yellow-600" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">{error}</h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Dapatkan akses penuh ke pembahasan detail, analisis skor mendalam,
+              dan fitur premium lainnya
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <ButtonUpgradeTryout tryoutId={tryoutId || ''}>
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-8 py-3"
+                  >
+                    <CrownIcon className="mr-2 h-5 w-5" />
+                    Beli Tryout
+                  </Button>
+                </ButtonUpgradeTryout>
+                <Link href={tryoutLink || ''}>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-yellow-300 text-yellow-700 hover:bg-yellow-50 px-8 py-3"
+                  >
+                    <PlayIcon className="mr-2 h-5 w-5" />
+                    Ikut Tryout
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   if (isLoading || !doc) {
     return <SpinnerPage />;
-  }
-
-  if (doc?.premium && session?.user.role === 'USER') {
-    return <p>Upgrade to Premium</p>;
   }
 
   // console.log('doc', doc)
