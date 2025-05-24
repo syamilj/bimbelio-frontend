@@ -1,3 +1,5 @@
+'use client';
+
 import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';

@@ -39,7 +39,8 @@ function BlocknoteEditor({
   const getValue = async (value?: string) => {
     if (value === undefined) return;
     if (!isFocused) {
-      const markdownValue = await editor.tryParseMarkdownToBlocks(value);
+      // const markdownValue = await editor.tryParseMarkdownToBlocks(value);
+      const markdownValue = await editor.tryParseHTMLToBlocks(value);
       console.log({ value, markdownValue, editor: editor.document });
       const ids = editor.document.map((item) => item.id);
       editor.replaceBlocks(ids, markdownValue);
@@ -50,9 +51,11 @@ function BlocknoteEditor({
   const handleOnChange = useDebouncedCallback(async () => {
     if (!onValueChange) return;
 
-    const value = await editor.blocksToMarkdownLossy(editor.document);
+    // const value = await editor.blocksToMarkdownLossy(editor.document);
+    const FullHtml = await editor.blocksToFullHTML(editor.document);
     console.log({ blocksToMarkdownLossy: value });
-    onValueChange(value);
+    console.log({ FullHtml });
+    onValueChange(FullHtml);
   }, 1000);
 
   useEffect(() => {

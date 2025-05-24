@@ -1,6 +1,7 @@
 // utils/axiosInstance.js
 import { env } from '@/env.mjs';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
   baseURL: env.NEXT_PUBLIC_API_URL,
@@ -19,6 +20,11 @@ axiosInstance.interceptors.request.use(
       ...config.params,
       website_sub_category_id,
     };
+
+    const token = Cookies.get('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
     return config;
   },

@@ -16,6 +16,7 @@ import React, { useCallback, useState } from 'react';
 // import ReactMarkdown from 'react-markdown';
 import { useEditTryoutContext } from '@/app/[web_sub_category]/(admin)/admin/tryout/_component/provider-edit-tryout';
 import BlocknoteEditor from '@/components/ui/blocknote-editor';
+import { BlockNoteImageHtml } from '@/components/ui/blocknote-editor/latex';
 
 const QuestionSessionTryout = () => {
   const {
@@ -641,8 +642,11 @@ const QuestionSessionTryout = () => {
                   if (!EditSession?.Questions) {
                     return;
                   }
-                  const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession?.Questions[questionIndex].image} "")`;
-                  navigator.clipboard.writeText(image);
+                  // const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession?.Questions[questionIndex].image} "")`;
+                  // navigator.clipboard.writeText(image);
+                  const image = BlockNoteImageHtml(
+                    `${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession?.Questions[questionIndex].image}`,
+                  );
                   addImageToQuestion(image, questionIndex);
                 }}
               >

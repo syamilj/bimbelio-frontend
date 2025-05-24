@@ -34,7 +34,9 @@ export default function Card({ data, href, noCategory }: card) {
   // };
 
   const handleClick = (id: string, category: string, premium: boolean) => {
-    const LinkButton = document.getElementById('hrefLink') as HTMLButtonElement;
+    const LinkButton = document.getElementById(
+      `hrefLink-${id}`,
+    ) as HTMLButtonElement;
     if (premium) {
       if (session?.user.role !== 'USER') {
         if (noCategory) {
@@ -91,7 +93,7 @@ export default function Card({ data, href, noCategory }: card) {
               </>
             )}
             <Link
-              id="hrefLink"
+              id={`hrefLink-${item.id}`}
               href={`/${website_sub_category_id}/user/workspace/${item.categoryId}/${item.id}?tab=chat`}
               className="hidden"
             />
