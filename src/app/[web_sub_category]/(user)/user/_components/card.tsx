@@ -1,10 +1,8 @@
 'use client';
 
-import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { IconLock } from '@/styles/icon';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -38,12 +36,10 @@ export default function Card({ data, href, noCategory }: card) {
       `hrefLink-${id}`,
     ) as HTMLButtonElement;
     if (premium) {
-      if (session?.user.role !== 'USER') {
-        if (noCategory) {
-          LinkButton.click();
-        } else {
-          router.push(`${href}/${id}?tab=chat`);
-        }
+      if (noCategory) {
+        LinkButton.click();
+      } else {
+        router.push(`${href}/${id}?tab=chat`);
       }
     } else {
       if (noCategory) {
@@ -68,7 +64,7 @@ export default function Card({ data, href, noCategory }: card) {
               setShowUpgrade(9999);
             }}
           >
-            {item.premium && !session?.user.tier && (
+            {/* {item.premium && !session?.user.tier && (
               <>
                 <div className="absolute left-0 top-0 z-[2] flex h-full w-full items-center justify-center rounded-xl bg-[#ffffff73]">
                   <IconLock
@@ -91,7 +87,7 @@ export default function Card({ data, href, noCategory }: card) {
                   </div>
                 )}
               </>
-            )}
+            )} */}
             <Link
               id={`hrefLink-${item.id}`}
               href={`/${website_sub_category_id}/user/workspace/${item.categoryId}/${item.id}?tab=chat`}
