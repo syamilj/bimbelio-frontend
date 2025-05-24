@@ -1,7 +1,11 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
 import { Document, User, UserDocument } from '@/types/database';
-import type { ChatRequestOptions, CreateMessage, Message } from 'ai';
+import type {
+  ChatRequestOptions,
+  CreateMessage,
+  Message,
+} from '@ai-sdk/ui-utils';
 import { useChat } from 'ai/react';
 import { usePathname } from 'next/navigation';
 import {
