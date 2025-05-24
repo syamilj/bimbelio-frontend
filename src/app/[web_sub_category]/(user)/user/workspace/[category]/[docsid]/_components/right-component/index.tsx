@@ -7,14 +7,10 @@ import { useEffect, useState } from 'react';
 
 import ReportBug from '@/components/_shared/other/report-bug';
 import { useAppContext } from '@/components/provider/provider-app';
-import { useSession } from '@/components/provider/session-provider-auth';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
-import Chat from '@/components/workspace/chat';
-import { MessageDataType } from '@/components/workspace/chat/provider';
-import { env } from '@/env.mjs';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { deleteGeneral, getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral, getGeneral } from '@/lib/fetch-helper';
 import { cn } from '@/lib/utils';
 import {
   IconFullscreen,
@@ -22,17 +18,13 @@ import {
   IconRegenerateMessage,
   IconTabsChat,
   IconTabsNotes,
-  IconTabsQuiz,
   IconWarning,
 } from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
-import { Document, User, UserDocument } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useMedia } from 'use-media';
-
-// import Editor from './editor';
-// import Quiz from './quiz';
-// import Editor from './editor';
+import ChatContent from './_components/chat-content';
+import NotesContent from './_components/notes-content';
 
 const TABS = [
   {
@@ -49,37 +41,26 @@ const TABS = [
     icon: <IconTabsChat w={18} />,
     isNew: false,
   },
-  {
-    value: 'quiz',
-    title: 'Quiz',
-    tooltip: 'Generate Quiz with the document',
-    icon: <IconTabsQuiz w={18} />,
-    isNew: false,
-  },
+  // {
+  //   value: 'quiz',
+  //   title: 'Quiz',
+  //   tooltip: 'Generate Quiz with the document',
+  //   icon: <IconTabsQuiz w={18} />,
+  //   isNew: false,
+  // },
 ];
 
 const tabNames = TABS.map((tab) => tab.value);
 
-const Sidebar = ({
-  canEdit,
-  userId,
-  docId: initialDocId,
-}: {
-  canEdit: boolean;
-  userId: string;
-  docId: string;
-}) => {
+export function RightComponent({ docId: initialDocId }: { docId: string }) {
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
   const { data: session } = useSession();
+  const userId = session?.user.id;
 
-  // const { query, push, asPath } = useRouter();
-  // const { query, push, asPath } = useRouter();
-  // const tab = query.tab as string;
   const searchParams = useSearchParams();
   const tab = searchParams?.get('tab');
-  // const docId = searchParams?.get('docId');
   const [headerTab, setHeaderTab] = useState<string>('chat');
   const [documentId, setDocumentId] = useState(initialDocId || docId || '');
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
@@ -87,21 +68,11 @@ const Sidebar = ({
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // const resetChat = api.message.resetMessage.useMutation({
-  //   onSettled: async () => {},
-  //   onMutate() {},
-  // });
-
   const resetChat = async () => {
     deleteGeneral('/message/resetMessage', {
       params: { docId, userId: session?.user.id },
     });
   };
-
-  // const getNameImage = api.message.getNameImage.useMutation({
-  //   onSettled: async () => {},
-  //   onMutate() {},
-  // });
 
   const getNameImage = async () => {
     const res = await getGeneral('/message/getNameImage', {
@@ -121,21 +92,16 @@ const Sidebar = ({
   } = useAppContext();
 
   const isMobile = useMedia({ maxWidth: '768px' });
-  const [activeIndex, setActiveIndex] = useState(
-    tab && tabNames.includes(tab) ? tab : 'notes',
-  );
-
-  console.log('onBoarding', onBoarding);
-
-  // const deleteQuiz = api.quiz.deleteQuiz.useMutation();
+  const [activeIndex, setActiveIndex] = useState(tab || 'chat');
 
   const deleteQuiz = async () => {
     deleteGeneral('/quiz/deleteQuiz');
   };
 
   useEffect(() => {
-    if (tab && tabNames.includes(tab)) {
+    if (tab) {
       setActiveIndex(tab);
+      setHeaderTab(tab);
     }
   }, [tab]);
 
@@ -143,15 +109,6 @@ const Sidebar = ({
     setIsResetModalOpen(false);
     await handleResetChat();
   };
-
-  // useEffect(() => {
-  //   const parts = asPath.split('/');
-  //   const documentIndex = parts.findIndex((part) => part === 'document');
-  //   if (documentIndex !== -1 && documentIndex + 1 < parts.length) {
-  //     const nextSegment = parts[documentIndex + 1].split('?')[0];
-  //     setDocumentId(nextSegment);
-  //   }
-  // }, [asPath, tab]);
 
   useEffect(() => {
     if (docId) {
@@ -184,17 +141,11 @@ const Sidebar = ({
     console.log('getOnboarding', getOnboarding);
   }, []);
 
-  // useEffect(() => {
-  //   const isValid = onBoarding && typeof onBoarding.chat === "boolean" && typeof onBoarding.notes === "boolean" && typeof onBoarding.quiz === "boolean";
-  //   if (isValid) {
-  //     localStorage.setItem("on-boarding", JSON.stringify(onBoarding))
-  //   }
-  // }, [onBoarding])
-
   const handleResetChat = async () => {
     setIsLoading(true);
     try {
       const res = await getNameImage();
+      console.log({ getName: res });
       if (res.length > 0) {
         const { data, error } = await supabase.storage
           .from('img')
@@ -204,6 +155,7 @@ const Sidebar = ({
           await resetChat();
           window.location.reload();
         }
+        console.log({ data, error });
         if (error) {
           console.log('errror', error);
           toaster({
@@ -223,6 +175,14 @@ const Sidebar = ({
       return error;
     }
   };
+
+  if (!userId) {
+    return (
+      <div className="flex justify-center items-center h-full w-full">
+        <Loader2 className="w-4 h-4 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="absolute left-0 top-0 h-full w-full bg-bg-workspace md:relative">
@@ -448,14 +408,7 @@ const Sidebar = ({
           {
             value: 'notes',
             tw: 'flex-1 bg-bg-workspace px-0 pr-[.5rem] overflow-auto sm:shadow-lg  w-full absolute md:relative top-[60px] md:top-[unset] left-0 md:left-[unset] h-[calc(100%-60px)] md:h-[calc(100vh-3.5rem)]',
-            children: (
-              // <Editor
-              //   canEdit={canEdit}
-              //   userId={userId}
-              //   docId={documentId}
-              // />
-              <></>
-            ),
+            children: <NotesContent docId={docId} />,
           },
           {
             value: 'chat',
@@ -484,130 +437,4 @@ const Sidebar = ({
       </Tabs>
     </div>
   );
-};
-
-export default Sidebar;
-
-const ChatContent = () => {
-  const pathname = usePathname();
-  const pathnameArray = pathname?.split('/');
-  const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
-
-  // const trpc = api.useUtils();
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
-
-  // const { data: prevChatMessages, isLoading: isLoadingPrevMessage } =
-  //   api.message.getAllByDocIdAndUserId.useQuery(
-  //     {
-  //       documentId: docId as string,
-  //     },
-  //     { refetchOnWindowFocus: false },
-  //   );
-
-  const [prevChatMessages, setPrevChatMessages] = useState<MessageDataType[]>(
-    [],
-  );
-  const [isLoadingPrevMessage, setIsLoadingPrevMessage] =
-    useState<boolean>(true);
-  const [messageError, setMessageError] = useState<string | null>(null);
-
-  const getMessages = async () => {
-    await getGeneral(`/message/getAllByDocIdAndUserId`, {
-      params: {
-        docId,
-        userId: session?.user.id,
-      },
-      setData: setPrevChatMessages,
-      setLoading: setIsLoadingPrevMessage,
-      onSuccess({ message, status, data }) {
-        console.log({ data });
-      },
-      onError({ message }) {
-        setMessageError(message);
-      },
-    });
-  };
-
-  // const {
-  //   data: userDocData,
-  //   isLoading: isUserDocLoading,
-  //   refetch: refetchUserDocData,
-  // } = api.document.getUserDocData.useQuery(
-  //   {
-  //     userId: userId!,
-  //     documentId: docId as string,
-  //   },
-  //   { refetchOnWindowFocus: false },
-  // );
-
-  const [userDocData, setUserDocData] = useState<
-    UserDocument & {
-      document: Document;
-      user: User;
-    }
-  >();
-  const [isUserDocLoading, setIsUserDocLoading] = useState<boolean>(true);
-
-  const fetchUserDocData = async () => {
-    await getGeneral(`/document/getUserDocData`, {
-      params: {
-        documentId: docId,
-        userId: session?.user.id,
-      },
-      setData: setUserDocData,
-      setLoading: setIsUserDocLoading,
-      onError({ message }) {
-        setMessageError(message);
-      },
-    });
-  };
-
-  useEffect(() => {
-    getMessages();
-    fetchUserDocData();
-  }, []);
-
-  const [isVectorising, setIsVectorising] = useState<boolean>(false);
-
-  const vectoriseDocMutation = async () => {
-    await mutateGeneral('/document/vectorise', {
-      payload: {
-        documentId: docId,
-        userId: session?.user.id,
-      },
-      type: 'post',
-      setLoading: setIsVectorising,
-      onSuccess: async () => {
-        //       await trpc.document.getHistoryByUser.refetch();
-        //       await trpc.document.getDocumentTotalPage.refetch();
-        fetchUserDocData();
-      },
-    });
-  };
-
-  if (messageError) {
-    return <div>{messageError}</div>;
-  }
-
-  return (
-    <Chat
-      // apiChat="/api/chat"
-      apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatWorkspace?website_sub_category_id=${website_sub_category_id}`}
-      body={{ docId, userId }}
-      messages={{
-        prevChatMessages,
-        isLoadingPrevMessage,
-      }}
-      vectorize={{
-        isVectorising,
-        vectoriseDocMutation,
-      }}
-      userDoc={{
-        isUserDocLoading,
-        userDocData,
-      }}
-      fetchMessages={getMessages}
-    />
-  );
-};
+}

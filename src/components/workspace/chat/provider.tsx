@@ -270,10 +270,6 @@ type ProviderType = {
   >;
 };
 
-type ImageMessageLoadingType = {
-  index: number;
-  value: boolean;
-};
 export type MessageDataType = {
   id: string;
   createdAt?: string | null | Date;

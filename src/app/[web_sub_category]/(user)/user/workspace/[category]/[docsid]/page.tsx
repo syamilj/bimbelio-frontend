@@ -8,17 +8,17 @@ import {
 } from '@/components/ui/resizable';
 import { SpinnerPage } from '@/components/ui/spinner';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
-import { IconHamburger, IconSetting } from '@/styles/icon';
-import { Loader2 } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import useMedia from 'use-media';
 
 import { DocDataType } from '@/components/pdf-reader';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { cn } from '@/lib/utils';
 import dynamic from 'next/dynamic';
 import { useDebouncedCallback } from 'use-debounce';
-import { Sidebar } from './_components/sidebar';
+import LeftComponent from './_components/left-component';
+import { RightComponent } from './_components/right-component';
 
 const DocViewer = dynamic(() => import('@/components/pdf-reader'), {
   ssr: false,
@@ -121,69 +121,41 @@ const DocViewerPage = () => {
       <ResizablePanel
         defaultSize={50}
         minSize={0}
-        className={`DocumentContainer relative ${mobileScreen === 'minimize' && 'pt-[68px] md:pt-0'} border-b`}
+        className={cn(
+          `DocumentContainer relative border-b`,
+          mobileScreen === 'minimize' && 'pt-[68px] md:pt-0',
+        )}
       >
-        {mobileScreen === 'minimize' && (
-          <div className="absolute left-0 top-0 z-[50] flex w-full items-center justify-between bg-bg-workspace p-[1.5rem] md:hidden">
-            <div
-              onClick={() => {
-                setSidebarMobile(true);
-              }}
-            >
-              <IconHamburger
-                w={20}
-                className="text-main-gray-text"
-              />
-            </div>
-            <p className="absolute left-[4rem]">
-              {doc.title.length > 20
-                ? `${doc.title.slice(0, 20)}...`
-                : doc.title}
-            </p>
-            <div>
-              <IconSetting
-                w={20}
-                className="text-main-gray-text"
-              />
-            </div>
-          </div>
-        )}
-        {userId ? (
-          <DocViewer
-            doc={doc}
-            userId={userId}
-            canEdit={true}
-          />
-        ) : (
-          <div className="flex justify-center items-center h-full w-full">
-            <Loader2 className="w-4 h-4 animate-spin" />
-          </div>
-        )}
+        <LeftComponent doc={doc} />
       </ResizablePanel>
-      <div
-        className={`relative ${mobileScreen === 'minimize' ? 'flex' : 'h-0 w-0 overflow-hidden p-0'} items-center justify-center`}
-      >
-        <ResizableHandle
-          className="relative z-[42] h-full w-[.5px] rounded-full bg-main-gray-input duration-300 after:w-[1px] data-[panel-group-direction=vertical]:h-[1px]"
-          withHandle
-        />
-        <div className="absolute z-[41] ml-[-.2px] h-[6px] w-[100px] rounded-[2rem] bg-main-gray-input md:h-[100px] md:w-[6px]" />
-      </div>
+      <ResizableHandleComponent />
       <ResizablePanel
         defaultSize={50}
         minSize={0}
         className="chatAIContainer relative"
       >
-        {userId ? (
-          <Sidebar docId={docId} />
-        ) : (
-          <div className="flex justify-center items-center h-full w-full">
-            <Loader2 className="w-4 h-4 animate-spin" />
-          </div>
-        )}
+        <RightComponent docId={docId} />
       </ResizablePanel>
     </ResizablePanelGroup>
   );
 };
 
 export default DocViewerPage;
+
+const ResizableHandleComponent = () => {
+  const { mobileScreen } = useAppContext();
+  return (
+    <div
+      className={cn(
+        `relative items-center justify-center`,
+        mobileScreen === 'minimize' ? 'flex' : 'h-0 w-0 overflow-hidden p-0',
+      )}
+    >
+      <ResizableHandle
+        className="relative z-[42] h-full w-[.5px] rounded-full bg-main-gray-input duration-300 after:w-[1px] data-[panel-group-direction=vertical]:h-[1px]"
+        withHandle
+      />
+      <div className="absolute z-[41] ml-[-.2px] h-[6px] w-[100px] rounded-[2rem] bg-main-gray-input md:h-[100px] md:w-[6px]" />
+    </div>
+  );
+};

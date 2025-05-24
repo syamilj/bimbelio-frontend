@@ -1,3 +1,5 @@
+'use client';
+
 import { useAppContext } from '@/components/provider/provider-app';
 import { buttonVariants } from '@/components/ui/button';
 import { ToolTip } from '@/components/ui/tooltip';
@@ -18,28 +20,14 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useMedia } from 'use-media';
+import { useProvider } from '../_provider';
 
 interface Props {
   doc: any;
-  currentPage: any;
-  setCurrentPage: any;
-  editPage: any;
-  setEditPage: any;
-  searchPdf: any;
-  setSearchPdf: any;
   isCourseDone?: boolean;
 }
 
-const HeaderPdf = ({
-  doc,
-  currentPage,
-  setCurrentPage,
-  editPage,
-  setEditPage,
-  searchPdf,
-  setSearchPdf,
-  isCourseDone,
-}: Props) => {
+const HeaderPdf = ({ doc, isCourseDone }: Props) => {
   const docId = doc?.id;
   const id = doc?.id;
   const [onSearchPdf, setOnSearchPdf] = useState<boolean>(false);
@@ -50,14 +38,22 @@ const HeaderPdf = ({
 
   const isMobile = useMedia({ maxWidth: '768px' });
 
+  const { mobileScreen, setMobileScreen } = useAppContext();
+
   const {
-    zoomValue,
-    setZoomValue,
-    vision,
-    setVision,
-    mobileScreen,
-    setMobileScreen,
-  } = useAppContext();
+    useHeaderPdf: {
+      currentPage,
+      setCurrentPage,
+      editPage,
+      setEditPage,
+      searchPdf,
+      setSearchPdf,
+      zoomValue,
+      setZoomValue,
+      vision,
+      setVision,
+    },
+  } = useProvider();
 
   const scrollToPdfPage = (pageNum: number) => {
     const containerId = vision ? 'VisionOn' : 'VisionOff';

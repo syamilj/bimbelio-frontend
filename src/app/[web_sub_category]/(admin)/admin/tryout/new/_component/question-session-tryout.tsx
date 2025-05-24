@@ -1,6 +1,7 @@
 'use client';
 
 import BlocknoteEditor from '@/components/ui/blocknote-editor';
+import { BlockNoteImageHtml } from '@/components/ui/blocknote-editor/latex';
 import {
   Select,
   SelectContent,
@@ -532,8 +533,11 @@ const QuestionSessionTryout = ({
                   if (!EditSession.Questions) {
                     return;
                   }
-                  const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession.Questions[questionIndex].image} "")`;
-                  navigator.clipboard.writeText(image);
+                  // const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession.Questions[questionIndex].image} "")`;
+                  // navigator.clipboard.writeText(image);
+                  const image = BlockNoteImageHtml(
+                    `${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession?.Questions[questionIndex].image}`,
+                  );
                   addImageToQuestion(image, questionIndex);
                 }}
               >

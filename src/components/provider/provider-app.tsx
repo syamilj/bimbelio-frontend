@@ -1,7 +1,6 @@
 'use client';
 
 import { env } from '@/env.mjs';
-import { usePathname } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -13,9 +12,9 @@ import {
 } from 'react';
 import useMedia from 'use-media';
 import HistoryPayment from '../_shared/account/setting';
+import { BlocknoteEditorType } from '../workspace/editor/provider';
 
 export default function ProviderApp({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
   const isDekstop = useMedia({ minWidth: '768px' });
 
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(false);
@@ -36,7 +35,11 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   // Search Data
   const [docsSearchData, setDocsSearchData] = useState<any>([]);
 
+  // Chat
   const [sendMessage, setSendMessage] = useState<string | null>(null);
+
+  // Editor
+  const [editor, setEditor] = useState<BlocknoteEditorType | null>(null);
 
   const [pagesSetting, setPagesSetting] = useState<string>('account');
 
@@ -97,6 +100,10 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       sendMessage,
       setSendMessage,
     },
+    useEditor: {
+      editor,
+      setEditor,
+    },
   };
 
   return (
@@ -149,6 +156,10 @@ interface AppContextType {
   useSendMessage: {
     sendMessage: string | null;
     setSendMessage: Dispatch<SetStateAction<string | null>>;
+  };
+  useEditor: {
+    editor: BlocknoteEditorType | null;
+    setEditor: Dispatch<SetStateAction<BlocknoteEditorType | null>>;
   };
 }
 
