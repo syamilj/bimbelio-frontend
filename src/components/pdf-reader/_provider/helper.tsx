@@ -53,7 +53,6 @@ export const addHighlightToNotes = async (
 
   if (type === 'TEXT') {
     if (!content || !highlightId) return;
-    console.log('jalan1');
     insertOrUpdateBlock(editor, {
       content,
       props: {
@@ -66,7 +65,6 @@ export const addHighlightToNotes = async (
     if (!content || !highlightId) return;
 
     try {
-      console.log('jalan2');
       insertOrUpdateBlock(editor, {
         props: {
           url: content,
@@ -137,7 +135,6 @@ export const PdfHelper = () => {
       });
 
       const handleScrollChangePage = () => {
-        // console.log('====');
         const pageNumber =
           highlighterUtilsRef.current?.getViewer()?._currentPageNumber || 1;
         setCurrentPage(pageNumber);
@@ -168,7 +165,6 @@ export const PdfHelper = () => {
       ) as HTMLDivElement;
 
       const handleScrollOff = () => {
-        console.log('2222222');
         VisionOn.scrollTop = VisionOff.scrollTop;
         VisionOn.scrollLeft = VisionOff.scrollLeft;
         if (ContainerCourse) {
@@ -177,7 +173,6 @@ export const PdfHelper = () => {
         }
       };
       const handleScrollOn = () => {
-        // console.log('3333333');
         VisionOff.scrollTop = VisionOn.scrollTop;
         VisionOff.scrollLeft = VisionOn.scrollLeft;
       };

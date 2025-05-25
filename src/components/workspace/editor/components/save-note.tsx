@@ -33,7 +33,6 @@ export function SaveNote() {
         if (item.content[0]) length = item.content[0].text.length;
       });
       const data = await editor.blocksToFullHTML(editor.document);
-      console.log({ data });
       if (length < 25000) {
         localStorage.removeItem(`notes-${docId}-${session?.user}`);
         await saveNoteMutation({
@@ -50,7 +49,6 @@ export function SaveNote() {
         });
       }
     } catch (error) {
-      console.log({ error });
       return;
     }
   }, 1000);

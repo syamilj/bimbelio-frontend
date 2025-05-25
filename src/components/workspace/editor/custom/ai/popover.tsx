@@ -58,7 +58,6 @@ const AiPopover = () => {
       inputRef.current?.focus();
     },
     onError: (error) => {
-      console.log(' NOTEAI ', error);
       toaster({
         title: 'Gagal',
         description: 'Terjadi kesalahan dengan pembuatan teks!',

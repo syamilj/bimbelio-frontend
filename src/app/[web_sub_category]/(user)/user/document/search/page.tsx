@@ -35,8 +35,6 @@ export default function DocumentSearch() {
     fetchSearchData();
   }, [search, categoryId]);
 
-  console.log('searchDatas', searchDatas);
-
   return (
     <div className="flex flex-col gap-[1rem] px-[1rem] md:gap-[2rem] md:p-0">
       <div className="hidden w-full justify-center md:flex">

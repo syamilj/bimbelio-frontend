@@ -129,8 +129,6 @@ const SessionOption = ({
     return null;
   }
 
-  console.log('setQuestionIndex', questionIndex);
-
   return (
     <div className="absolute left-0 top-0 flex h-full w-full flex-col gap-[1rem] overflow-y-auto border-l p-[1rem] pb-[100px] text-[.9rem]">
       <div className="flex items-center justify-between">
@@ -171,7 +169,6 @@ const SessionOption = ({
                 '#tryout-admin #heading',
               ) as HTMLDivElement;
               if (div) {
-                console.log('height', div.clientHeight);
                 if (div.clientHeight !== 0) {
                   div.style.height = `${div.clientHeight}px`;
                   setHeadingSessionHeight(div.clientHeight);
@@ -210,7 +207,6 @@ const SessionOption = ({
               '#tryout-admin #numberList',
             ) as HTMLDivElement;
             if (div) {
-              console.log('height', div.clientHeight);
               if (div.clientHeight !== 0) {
                 div.style.height = `${div.clientHeight}px`;
                 setListQuestionHeight(div.clientHeight);

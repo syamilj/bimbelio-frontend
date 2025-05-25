@@ -35,7 +35,6 @@ export default function ProviderCheckSubscription({
     const check = async () => {
       try {
         const res = await CheckSubscription();
-        console.log('Subscription : ', res);
         if (res?.status == 201) {
           window.location.reload();
         }
@@ -44,7 +43,6 @@ export default function ProviderCheckSubscription({
         // }
         return;
       } catch (error) {
-        console.log('Failed Check Subscription', error);
         return;
       }
     };

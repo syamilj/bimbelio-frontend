@@ -74,7 +74,6 @@ export interface Category {
 
 const NewTryOut = () => {
   const params = useParams();
-  console.log('params', params);
   const tryoutId = Array.isArray(params?.tryoutId)
     ? params.tryoutId[0]
     : (params?.tryoutId ?? '');
@@ -213,10 +212,6 @@ const NewTryOut = () => {
         setEndDateTime(endDateArr[1]);
         setResultDate(resultDateArr[0]);
         setResultDateTime(resultDateArr[1]);
-        console.log('status:', tryoutData.status);
-        console.log('startDateArr:', startDateArr);
-        console.log('endDateArr:', endDateArr);
-        console.log('resultDateArr:', resultDateArr);
       });
     }
   }, [category]);
@@ -228,7 +223,6 @@ const NewTryOut = () => {
   //       trpc.tryout.getTryoutForUpdate.refetch();
   //     },
   //     onError(error, variables) {
-  //       console.log(error, variables);
   //       alert(`${error.message}`);
   //     },
   //   });
@@ -249,7 +243,6 @@ const NewTryOut = () => {
   const { minimizeSidebar } = useAppContext();
 
   useEffect(() => {
-    console.log('===================================');
     setTryout((prev) => {
       return {
         ...prev,
@@ -276,7 +269,6 @@ const NewTryOut = () => {
   }, [currentIndexEdit]);
 
   useEffect(() => {
-    console.log('change', assessmentType);
     if (assessmentType !== '') {
       setSessions((prev) =>
         prev.map((item, i: number) => {
@@ -289,18 +281,7 @@ const NewTryOut = () => {
     }
   }, [assessmentType]);
 
-  console.log('tryout : ', tryout);
-  console.log(
-    'sessions : ',
-    currentIndexEdit !== null && sessions[currentIndexEdit],
-  );
-  console.log('ass : ', assessmentType);
-  console.log('tryout', tryout);
-  console.log('sessions', sessions);
-
   const handleSubmit = () => {
-    console.log('awdwad');
-    console.log(sessions.length);
     if (sessions.length === 0) {
       alert('Buat Minimal 1 Sesi');
       return;
@@ -360,7 +341,6 @@ const NewTryOut = () => {
             };
           }) || [],
       }));
-      // console.log({ validSessions, sessions });
       // return;
       const checkCategoryId = validSessions.find(
         (item) => item.categoryId === 'defaultCategoryId',
@@ -520,10 +500,6 @@ const NewTryOut = () => {
   //     setEndDateTime(endDateArr[1]);
   //     setResultDate(resultDateArr[0]);
   //     setResultDateTime(resultDateArr[1]);
-  //     console.log("status:", tryoutData.status);
-  //     console.log("startDateArr:", startDateArr);
-  //     console.log("endDateArr:", endDateArr);
-  //     console.log("resultDateArr:", resultDateArr);
   //   }
   // }, [tryoutData, category]);
 

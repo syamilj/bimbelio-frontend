@@ -130,12 +130,7 @@ const processLatexInBlock = (
     if (hasChanges) {
       try {
         if (block.id) {
-          console.log({ newContent });
           editor.updateBlock({ id: block.id }, { content: newContent });
-          console.log('Updated block:', editor.document);
-          // editor.blocksToMarkdownLossy().then((markdown) => {
-          //   console.log('Updated block content:', markdown);
-          // });
         }
 
         return true;

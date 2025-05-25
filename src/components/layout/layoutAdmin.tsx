@@ -19,8 +19,6 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
 
   const [hideLayout, setHideLayout] = useState<boolean>(false);
 
-  console.log({ params });
-
   useEffect(() => {
     if (pathname?.includes('try-out') && params && params.id) {
       setHideLayout(true);

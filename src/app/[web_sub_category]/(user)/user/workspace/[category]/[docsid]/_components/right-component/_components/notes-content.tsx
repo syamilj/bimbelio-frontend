@@ -34,7 +34,6 @@ export default function NotesContent({ docId }: Props) {
 
   useEffect(() => {
     if (!editor) return;
-    console.log({ getNotesQuery });
     if (getNotesQuery) {
       const HtmlContent = getNotesQuery.content;
       setValue(HtmlContent);

@@ -144,7 +144,6 @@ export function RankingTable() {
     const endIndex = startIndex + ITEMS_PER_PAGE;
     return filteredAndSortedData.slice(startIndex, endIndex);
   }, [filteredAndSortedData, currentPage]);
-  console.log(paginatedData);
 
   const totalPages = Math.ceil(filteredAndSortedData.length / ITEMS_PER_PAGE);
 

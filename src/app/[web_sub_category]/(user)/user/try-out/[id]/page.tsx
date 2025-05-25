@@ -29,8 +29,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   // const tryoutId = params.id || '';
   const { id: tryoutId } = use(params);
 
-  console.log({ tryoutId, params });
-
   const [loading, setLoading] = useState<boolean>(true);
   // const trpc = api.useUtils();
 
@@ -183,13 +181,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     }
   }, [tryoutData]);
 
-  console.log('currentIndexSession', currentIndexSession);
-  console.log('sessionLength', sessionLength);
-
-  console.log('tryoutData', tryoutData);
-  console.log('isSessionDone', isSessionDone);
-  console.log('isTryoutDone', isTryoutDone);
-
   // useEffect(() => {
   //   if (tryoutData && isTryoutDone) {
   //     setCurrentIndexSession(sessionLength + 1)
@@ -254,7 +245,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       ...session.TryoutSessionParticipant,
     },
   }));
-  console.log('sessionData', sessionData);
 
   if (
     !isTryoutDone &&

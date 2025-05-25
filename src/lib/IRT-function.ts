@@ -171,7 +171,6 @@ export const processData = async (
       parseFloat(row.b),
       parseFloat(row.c),
     ]);
-    console.log({ parameterIrtRows, parameterIrt });
 
     setProgress(30);
     setCurrentStep('Membaca file respons peserta');
@@ -184,7 +183,6 @@ export const processData = async (
       return value;
     });
 
-    console.log({ participantAnswerRows, participants, participantAnswer });
     // if (responsesData[0].length !== 155) {
     //   throw new Error(
     //     `Incorrect number of questions. Expected 155 questions, but found ${responsesData[0].length} questions.`,
@@ -238,15 +236,6 @@ export const processData = async (
       };
     });
 
-    console.log({
-      participantTheta,
-      participantScore,
-      score_min,
-      score_max,
-      theta_min,
-      theta_max,
-    });
-
     setProgress(90);
     setCurrentStep('Mengkalkulasi statistik keseluruhan');
 
@@ -288,7 +277,6 @@ export const processData = async (
       }),
       participants: participantScore,
     });
-    console.log({ participantScore });
     return { overallStats };
   } catch (error) {
     console.error('Error in processData:', error);

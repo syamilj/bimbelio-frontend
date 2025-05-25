@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { cn, getDateString, getHoursDetail, getInitials } from '@/lib/utils';
+import { cn, getInitials } from '@/lib/utils';
 import { IconCheckList, IconX } from '@/styles/icon';
 import {
   TryoutAnswer,
@@ -76,8 +76,6 @@ export function ReviewTab({
   resultIndex,
   sessionOptions,
 }: Props) {
-  console.log({ sessionResult, resultIndex, sessionOptions });
-
   const [userAnswerIndex, setUserAnswerIndex] = useState<number>(0);
 
   // Safeguard: Pastikan userAnswerIndex dalam rentang yang valid
@@ -133,13 +131,7 @@ export function ReviewTab({
     if (!sessionResult?.endSession) return 'Coming Soon';
     const startSession = new Date(sessionResult.startSession);
     const endSession = new Date(sessionResult.endSession);
-    console.log(
-      `start : ${getDateString(startSession)} | ${getHoursDetail(
-        startSession,
-      )} \n end   : ${getDateString(endSession)} | ${getHoursDetail(
-        endSession,
-      )}`,
-    );
+
     const diffInMilliseconds = endSession.getTime() - startSession.getTime();
     const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
     const minutes = Math.floor(diffInSeconds / 60);
@@ -155,13 +147,7 @@ export function ReviewTab({
     if (!sessionResult?.endSession) return 'Coming Soon';
     const startSession = new Date(sessionResult.startSession);
     const endSession = new Date(sessionResult.endSession);
-    console.log(
-      `start : ${getDateString(startSession)} | ${getHoursDetail(
-        startSession,
-      )} \n end   : ${getDateString(endSession)} | ${getHoursDetail(
-        endSession,
-      )}`,
-    );
+
     const diffInMilliseconds = endSession.getTime() - startSession.getTime();
     const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
     const questPerSecond =
@@ -198,7 +184,6 @@ export function ReviewTab({
     if (!sessionResult?.TryoutSession.thresholdValue) return null;
     const value =
       getTotalScore() / (sessionResult?.TryoutSession.thresholdValue || 0);
-    console.log({ value });
 
     return value * 100;
   };

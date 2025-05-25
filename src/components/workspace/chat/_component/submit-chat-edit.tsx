@@ -125,7 +125,6 @@ const SubmitChatEdit = () => {
         placeholder="Edit your chat here..."
         className="h-[100px] w-full resize-none rounded-[1rem] border border-main-gray-input bg-white px-[1rem] py-[.5rem] text-[.9rem] outline-none"
         onChange={(e) => {
-          console.log('inputLengthEdit', e.target.value.length);
           if (e.target.value.length > 1000) {
             e.target.value = e.target.value.slice(0, 1000);
           }

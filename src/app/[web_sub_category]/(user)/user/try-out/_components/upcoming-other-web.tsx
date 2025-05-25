@@ -27,7 +27,6 @@ export default function UpcomingOtherWeb({ id }: { id: string }) {
         setLoading: setIsLoading,
       },
     );
-    console.log('Cardd Up : ', res);
   };
 
   useEffect(() => {

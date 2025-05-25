@@ -96,7 +96,6 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
             description: 'Gagal upload gambar profil!',
             duration: 3000,
           });
-          console.log(error);
           setLoading(false);
         }
       }

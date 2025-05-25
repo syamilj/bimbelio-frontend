@@ -45,10 +45,6 @@ export default function Riwayat() {
     });
   }, []);
 
-  if (datas) {
-    console.log(datas);
-  }
-
   useEffect(() => {
     if (datas) {
       const today = datas?.today.map((item) => {

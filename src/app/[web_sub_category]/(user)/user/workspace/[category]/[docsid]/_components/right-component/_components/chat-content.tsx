@@ -40,9 +40,7 @@ export default function ChatContent() {
       },
       setData: setPrevChatMessages,
       setLoading: setIsLoadingPrevMessage,
-      onSuccess({ message, status, data }) {
-        console.log({ data });
-      },
+
       onError({ message }) {
         setMessageError(message);
       },

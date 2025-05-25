@@ -55,9 +55,8 @@ export default function TambahDokumen() {
     );
   };
 
-  if (subCategoryData) {
-    console.log('Sub:', subCategoryData);
-  }
+  // if (subCategoryData) {
+  // }
   useEffect(() => {
     if (category.length === 0) return;
     fetchSubCategories(category);
@@ -109,8 +108,6 @@ export default function TambahDokumen() {
           await supabase.storage
             .from('img')
             .remove([`document/${documentFileName}`]);
-
-          console.log({ sPdf });
         }
       },
     });
@@ -368,7 +365,6 @@ export default function TambahDokumen() {
             description: `${pdfError?.message}`,
             condition: 'warning',
           });
-          console.log('error :', pdfError);
           setLoading(false);
         }
         if (imgError) {
@@ -377,7 +373,6 @@ export default function TambahDokumen() {
             description: `${imgError?.message}`,
             condition: 'warning',
           });
-          console.log('error :', imgError);
           setLoading(false);
         }
       }
@@ -386,7 +381,6 @@ export default function TambahDokumen() {
         const { data: pdf, error: pdfError } = await supabase.storage
           .from('pdf')
           .upload(`document/${documentFileName}`, file);
-        console.log('pdf');
         const { data: img, error: imgError } = await supabase.storage
           .from('img')
           .upload(`document/${documentFileName}`, thumbnail);
@@ -433,7 +427,6 @@ export default function TambahDokumen() {
             description: `${pdfError?.message}`,
             condition: 'warning',
           });
-          console.log('error :', pdfError);
           setLoading(false);
         }
         if (imgError) {
@@ -442,7 +435,6 @@ export default function TambahDokumen() {
             description: `${imgError?.message}`,
             condition: 'warning',
           });
-          console.log('error :', imgError);
           setLoading(false);
         }
         if (videoSaveError) {
@@ -451,11 +443,9 @@ export default function TambahDokumen() {
             description: `${videoSaveError?.message}`,
             condition: 'warning',
           });
-          console.log('error :', videoSaveError);
           setLoading(false);
         }
 
-        console.log('video21');
         setLoading(false);
       }
       return;
@@ -464,8 +454,6 @@ export default function TambahDokumen() {
       return;
     }
   };
-
-  console.log('categoryAndSubCategory', categoryAndSubCategory);
 
   return (
     <>
@@ -887,8 +875,6 @@ const InputDateAndTime = ({
   value: string;
   warning: string;
 }) => {
-  console.log('datevalue', new Date(value));
-
   const [date, setDate] = useState<string | null>(null);
   const [time, setTime] = useState<string | null>(null);
 

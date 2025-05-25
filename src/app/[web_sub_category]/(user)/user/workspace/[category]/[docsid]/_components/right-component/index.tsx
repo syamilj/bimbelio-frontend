@@ -138,14 +138,12 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
         setOnBoarding({ ...data });
       }
     }
-    console.log('getOnboarding', getOnboarding);
   }, []);
 
   const handleResetChat = async () => {
     setIsLoading(true);
     try {
       const res = await getNameImage();
-      console.log({ getName: res });
       if (res.length > 0) {
         const { data, error } = await supabase.storage
           .from('img')
@@ -155,9 +153,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
           await resetChat();
           window.location.reload();
         }
-        console.log({ data, error });
         if (error) {
-          console.log('errror', error);
           toaster({
             title: 'Upss',
             description: 'Gagal hapus pesan, coba lagi!',

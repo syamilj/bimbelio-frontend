@@ -78,8 +78,6 @@ export default function Provider({ children }: Props) {
     fetchDocument();
   }, [filterDocument, page]);
 
-  console.log({ documentData });
-
   // == Context Value ===================================================
   const Context = {
     showAddDocument,

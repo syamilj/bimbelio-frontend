@@ -28,7 +28,6 @@ export default function ProviderSessionAuth({
       axiosInstanceWithToken
         .post('/auth/verifyToken')
         .then((res) => {
-          console.log({ token: res });
           const resData = res.data;
           const userData = resData.data;
           setData({
@@ -66,8 +65,6 @@ export default function ProviderSessionAuth({
       setIsLoading(false);
     }
   }, []);
-
-  console.log({ session: data });
 
   const Context = {
     data,

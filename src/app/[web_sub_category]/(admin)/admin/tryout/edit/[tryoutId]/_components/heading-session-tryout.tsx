@@ -98,7 +98,6 @@ const HeadingSessionTryout = () => {
     const data = res;
     setSessions((prev) =>
       prev.map((session) => {
-        console.log('=========================', session.assessmentType);
         return {
           ...session,
           Questions: [
@@ -132,7 +131,6 @@ const HeadingSessionTryout = () => {
         };
       }),
     );
-    console.log('data', data);
   };
 
   const onChangeCategory = (value: string) => {
@@ -230,7 +228,6 @@ const HeadingSessionTryout = () => {
   const changeQuestionAssestmentType = (assessmentType: string) => {
     if (EditSession === null) return;
     if (assessmentType === '1-5') {
-      console.log('jalan 1-5');
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (
@@ -271,7 +268,6 @@ const HeadingSessionTryout = () => {
       );
       return;
     } else if (assessmentType === '+5/0') {
-      console.log('jalan +5/0');
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (
@@ -309,7 +305,6 @@ const HeadingSessionTryout = () => {
       );
       return;
     } else if (assessmentType === 'IRT') {
-      console.log('jalan IRT');
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (
@@ -347,7 +342,6 @@ const HeadingSessionTryout = () => {
       );
       return;
     } else if (assessmentType === '+4/-1/0') {
-      console.log('+4/-1/0');
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (

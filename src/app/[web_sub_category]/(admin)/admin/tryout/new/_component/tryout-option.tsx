@@ -119,11 +119,8 @@ const TryoutOption = ({
   // }, [thumbnail]);
 
   useEffect(() => {
-    console.log('thumbnailName11', tryout?.image);
     if (tryout && tryout.image) setThumbnailName(tryout.image);
   }, [tryout]);
-
-  console.log('thumbnailName', thumbnailName);
 
   return (
     <div className="flex w-full flex-col gap-[1rem] p-[1rem] text-[.9rem]">
@@ -160,7 +157,6 @@ const TryoutOption = ({
               '#tryout-admin #date',
             ) as HTMLDivElement;
             if (div) {
-              console.log('height', div.clientHeight);
               if (div.clientHeight !== 0) {
                 div.style.height = `${div.clientHeight}px`;
                 setDateTryoutHeight(div.clientHeight);
@@ -215,20 +211,15 @@ const TryoutOption = ({
                 // .upload(`tryout/${filename}`, image);
 
                 if (upload?.data) {
-                  console.log('berhasil upload', upload.data);
                 }
                 if (upload?.error) {
-                  console.log('gagal upload', upload.error);
-                  console.log('gagal upload', upload.error.message);
                   if (upload.error.message === 'The resource already exists') {
                     const update = await supabase?.storage
                       .from('img')
                       .update(`tryout/${filename}`, image);
                     if (update?.data) {
-                      console.log('berhasil update', update.data);
                     }
                     if (update?.error) {
-                      console.log('gagal update', update.error);
                     }
                   }
                 }
@@ -399,7 +390,6 @@ const TryoutOption = ({
                     sessionIndex,
                     1,
                   );
-                  console.log(currentSessions, movedSession);
 
                   currentSessions.splice(fixValue, 0, movedSession);
 
@@ -546,7 +536,6 @@ export default TryoutOption;
 //   useEffect(() => {
 //     setPreviewImage('');
 //     if (file) {
-//       console.log('ada file');
 //       const reader = new FileReader();
 
 //       reader.onloadend = () => {
@@ -556,11 +545,9 @@ export default TryoutOption;
 
 //       reader.readAsDataURL(file);
 //     } else {
-//       console.log('tidak ada file');
 //       setPreviewImage(`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${fileName}`);
 //     }
 //   }, [file, fileName]);
-//   console.log(previewImage);
 
 //   return (
 //     <div className="relative">
@@ -570,7 +557,6 @@ export default TryoutOption;
 //           id={`${inputId}`}
 //           type="file"
 //           onChange={(e: any) => {
-//             console.log('awdwad', e.target.files[0]);
 //             setFile(e.target.files[0]);
 //           }}
 //           className="border-transparent p-0 w-0 h-0 bg-transparent text-transparent"

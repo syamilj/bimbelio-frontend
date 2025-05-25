@@ -41,8 +41,6 @@ const DocViewerPage = () => {
   const { data: session } = useSession();
   const userId = session?.user.id;
 
-  console.log('tab', tab);
-
   const [doc, setDoc] = useState<DocDataType>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -165,8 +163,6 @@ const DocViewerPage = () => {
   if (isLoading || !doc) {
     return <SpinnerPage />;
   }
-
-  // console.log('doc', doc)
 
   return (
     <ResizablePanelGroup

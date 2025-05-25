@@ -120,17 +120,6 @@ const RegistrationTryOut = ({
       try {
         setIsLoading(true);
 
-        console.log('Age:', Age, typeof Age); // Harus number
-        console.log('Phone:', Phone, typeof Phone); // Harus string
-        console.log('Gender:', Gender, typeof Gender); // Harus string
-        console.log('Kabupaten:', Kabupaten, typeof Kabupaten); // Harus string
-        console.log('Provinsi:', Provinsi, typeof Provinsi); // Harus string
-        console.log('TipeSekolah:', TipeSekolah, typeof TipeSekolah); // Harus string
-        console.log('AsalSekolah:', AsalSekolah, typeof AsalSekolah); // Harus string
-        console.log('Jurusan:', Jurusan, typeof Jurusan); // Harus string
-        console.log('TahunLulus:', TahunLulus, typeof TahunLulus); // Harus number
-        console.log('TargetNilai:', TargetNilai, typeof TargetNilai); // Harus number
-
         if (Age <= 0 && !isHideGeneralSection) {
           toaster({
             title: 'Error',
@@ -141,12 +130,6 @@ const RegistrationTryOut = ({
           setIsLoading(false);
           return;
         }
-
-        console.log(
-          'TargetNilai sebelum dikirim:',
-          TargetNilai,
-          typeof TargetNilai,
-        );
 
         // Bungkus data tanpa newUserTryOut
         const dataToSend = {
@@ -169,13 +152,10 @@ const RegistrationTryOut = ({
           channel: Channel,
         };
 
-        console.log('Data yang dikirim ke backend:', dataToSend);
-
         // Gunakan Non-Null Assertion jika perlu
         await createUserTo!(dataToSend);
         setIsLoading(false);
       } catch (error: any) {
-        console.log(error);
         toaster({
           title: 'Upss',
           condition: 'warning',
@@ -276,7 +256,6 @@ const RegistrationTryOut = ({
                 placeholder={'No. Hp'}
                 onChange={(e) => {
                   setPhone(e.target.value);
-                  console.log('Phone diupdate menjadi:', e.target.value);
                 }}
                 value={Phone}
                 required
@@ -428,7 +407,6 @@ const RegistrationTryOut = ({
                 onValueChange={(value) => {
                   if (value.length > 0) {
                     setTahunLulus(Number.parseInt(value, 10));
-                    console.log('Tahun Lulus diupdate menjadi:', value);
                   }
                 }}
               >
@@ -560,7 +538,6 @@ const RegistrationTryOut = ({
                 onValueChange={(value) => {
                   if (value) {
                     setChannel(value);
-                    console.log('Channel diupdate menjadi:', value);
                   }
                 }}
               >
@@ -635,7 +612,6 @@ const InputText = ({
         placeholder={`${placeholder}`}
         onChange={(e) => {
           setValue(e.target.value);
-          console.log(`${heading} diupdate menjadi:`, e.target.value);
         }}
         value={value}
         required
@@ -680,7 +656,6 @@ const InputNumber = ({
         return;
       }
       setValue(num); // Simpan sebagai number
-      console.log(`${heading} diupdate menjadi:`, num);
     }
   };
 
@@ -779,7 +754,6 @@ const ComboboxSelect = ({
                     onSelect={(currentValue) => {
                       setValue(currentValue);
                       setOpen(false);
-                      console.log(`${heading} dipilih:`, currentValue);
                     }}
                     className={isUniversity ? 'py-2' : ''}
                   >

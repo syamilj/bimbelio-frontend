@@ -30,8 +30,6 @@ export default function Table() {
         .from('pdf')
         .download(`document/${fileName}`);
 
-      console.log({ data, error });
-
       if (data) {
         const blob = new Blob([data], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);

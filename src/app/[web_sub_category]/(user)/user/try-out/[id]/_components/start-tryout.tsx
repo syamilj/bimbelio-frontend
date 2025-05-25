@@ -75,15 +75,12 @@ const StartTryout = ({
     });
   };
 
-  console.log('sessionData', sessionData);
-
   useEffect(() => {
     if (sessionData) {
       const data = TncTryout.find(
         (item) =>
           item.category === sessionData[0]?.TryoutCategory.name.toLowerCase(),
       );
-      console.log('ketentuan', data);
       if (data) setTnc(data?.value);
       else setTnc('.....');
     }

@@ -128,10 +128,8 @@ export function Payment() {
   const [topping, setTopping] = useState<PlanType[]>([]);
 
   const getData = async () => {
-    console.log('123132123');
     await getGeneral('/plan/getAllPlanForPricingPage', {
       onSuccess({ data }) {
-        console.log({ data });
         setTopping(data.topping);
       },
     });

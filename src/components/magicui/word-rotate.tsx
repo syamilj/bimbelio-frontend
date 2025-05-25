@@ -35,7 +35,6 @@ export default function WordRotate({
     // Clean up interval on unmount
     return () => clearInterval(interval);
   }, [words, duration]);
-  // console.log(index, words[index]);
 
   return (
     <div className="overflow-hidden">

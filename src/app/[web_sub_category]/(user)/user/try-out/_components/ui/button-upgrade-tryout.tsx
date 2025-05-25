@@ -16,7 +16,6 @@ export default function ButtonUpgradeTryout({
   tryoutId?: string;
 }) {
   const params = useParams();
-  console.log({ params });
   const { data: session } = useSession();
   const [show, setShow] = useState<boolean>(false);
 
@@ -34,7 +33,6 @@ export default function ButtonUpgradeTryout({
     );
   }, [params, session]);
 
-  console.log({ tryout });
   const handleClick = () => {
     setShow(true);
   };

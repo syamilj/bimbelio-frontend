@@ -69,8 +69,6 @@ export function AnalisisTab({
   // const { mutateAsync: SimulationData } =
   //   api.tryout.getSimulationDataByTryoutId.useMutation();
 
-  console.log({ ResultData });
-
   const userScore = ResultData?.userScore || 0;
   const totalParticipants = ResultData?.totalParticipants || 0;
 
@@ -322,7 +320,6 @@ export function AnalisisTab({
 
   const handleUnivChoice = () => {
     if (website_sub_category_id !== 'snbt') {
-      console.log({ tryoutAccount });
       setSimulationLoad(true);
       setSelectedUniversity(tryoutAccount?.univChoiceOne || '');
       setTimeout(() => {
@@ -335,11 +332,6 @@ export function AnalisisTab({
     selectedUniversity.length > 0
       ? UniversityOptions.find((item) => item.university === selectedUniversity)
       : null;
-
-  console.log({
-    selectedMajor,
-    selectedUniversity,
-  });
 
   useEffect(() => {
     handleUnivChoice();

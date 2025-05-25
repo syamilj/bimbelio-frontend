@@ -14,7 +14,6 @@ export default function Trending() {
   //     refetchOnWindowFocus: false,
   //     refetchOnMount: false,
   //   });
-  // console.log('dokumen', dokumen)
 
   const [datas, setDatas] = useState<
     (Document & {
@@ -30,8 +29,6 @@ export default function Trending() {
       setLoading: setIsLoading,
     });
   }, []);
-
-  console.log({ trending: datas });
 
   return (
     <>

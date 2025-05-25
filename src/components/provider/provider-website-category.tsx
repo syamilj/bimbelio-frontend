@@ -63,7 +63,6 @@ export default function ProviderWebsiteCategory({
           setIsLoading(false);
         });
     } else {
-      console.log('2222');
       if (!session) setWebsiteSubCategory(initialValue);
       else if (pathname.includes('user') || pathname.includes('admin')) {
         setFirst(true);
@@ -82,12 +81,9 @@ export default function ProviderWebsiteCategory({
 
   useEffect(() => {
     if (webCategoryData.length === 0 || !web_sub_category) return;
-    console.log('1111');
     const find = webCategoryData.find((item) =>
       item.WebsiteSubCategory.find((item2) => item2.id === web_sub_category),
     );
-    console.log({ find });
-    console.log({ length: webCategoryData.length });
     if (find) {
       localStorage.setItem('website_sub_category_id', web_sub_category);
       setWebsiteSubCategory(
@@ -101,8 +97,6 @@ export default function ProviderWebsiteCategory({
       setFirst(true);
     }
   }, [web_sub_category, webCategoryData]);
-
-  console.log({ websiteSubCategory });
 
   const Context = {
     id: websiteSubCategory?.id,

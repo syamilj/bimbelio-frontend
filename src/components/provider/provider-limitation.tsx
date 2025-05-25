@@ -103,8 +103,6 @@ export default function ProviderLimitation({
     return sendData;
   };
 
-  console.log({ userLimitation });
-
   const Context = {
     userLimitation,
     setUserLimitation,

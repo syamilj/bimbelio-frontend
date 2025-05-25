@@ -36,7 +36,6 @@ export function HandleEditor() {
     const allBlockIds = editor.document.map((block: any) => ({
       id: block.id,
     }));
-    console.log('allBlockIds', allBlockIds);
 
     if (allBlockIds.length > 0) {
       try {
@@ -72,7 +71,6 @@ export function HandleEditor() {
   //   if (!editor) return;
   //   // setEditor(editor);
   //   // const localNote = localStorage.getItem(`notes-${docId}-${session?.user}`);
-  //   // console.log('localNote', localNote);
   //   // setTimeout(() => {
   //   //   if (getNotesQuery) {
   //   //     if (localNote) {
@@ -82,9 +80,6 @@ export function HandleEditor() {
   //   //       const localNoteJson = JSON.parse(localNote).filter(
   //   //         (item: any) => item.content.length > 0,
   //   //       );
-  //   //       console.log('localNote', localNoteJson);
-  //   //       // console.log('dbNote', getNotesQuery.content);
-  //   //       console.log('idBlock', editor.document[0]?.id);
   //   //       try {
   //   //         editor.insertBlocks(
   //   //           localNoteJson,
@@ -100,7 +95,6 @@ export function HandleEditor() {
   //   //       setChange(false);
   //   //       handleDeleteAllBlocks();
   //   //       setChange(false);
-  //   //       // console.log('dbNote', getNotesQuery.content);
   //   //       const data: any = getNotesQuery;
   //   //       try {
   //   //         editor.insertBlocks(
@@ -109,7 +103,6 @@ export function HandleEditor() {
   //   //           'before',
   //   //         );
   //   //       } catch (error) {
-  //   //         console.log('Error inserting blocks:', error);
   //   //       }
   //   //       setChange(false);
   //   //     }
@@ -120,9 +113,6 @@ export function HandleEditor() {
   //   //     const localNoteJson = JSON.parse(localNote).filter(
   //   //       (item: any) => item.content.length > 0,
   //   //     );
-  //   //     console.log('localNote', localNoteJson);
-  //   //     // console.log('dbNote', getNotesQuery.content);
-  //   //     console.log('idBlock', editor.document[0]?.id);
   //   //     try {
   //   //       editor.insertBlocks(
   //   //         localNoteJson,
@@ -135,7 +125,6 @@ export function HandleEditor() {
   //   //   }
   //   // }, 500);
 
-  //   console.log({ getNotesQuery });
   //   if (getNotesQuery) {
   //     const HtmlContent = getNotesQuery.content;
   //     getValue(HtmlContent);

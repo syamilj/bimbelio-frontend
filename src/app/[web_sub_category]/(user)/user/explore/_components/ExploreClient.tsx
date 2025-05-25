@@ -43,10 +43,6 @@ export default function ExploreClient() {
     fetchCategory();
   }, []);
 
-  if (category) {
-    console.log('category', category);
-  }
-
   return (
     <div className="flex flex-col gap-[2rem] px-[1rem] md:px-0">
       <div className="hidden w-full justify-center md:flex">

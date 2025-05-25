@@ -44,8 +44,6 @@ export default function HeadingTools() {
     fetchCategory();
   }, []);
 
-  console.log('category', category);
-
   const handleFilter = () => {
     if (!filter) {
       // toaster({

@@ -106,13 +106,11 @@ const ChatTools = ({ messageIndex }: Props) => {
       index: messageIndex,
       value: data.content,
     }));
-    console.log(data.content);
     setTimeout(() => {
       const inputChatEdit = document.getElementById(
         'editInput',
       ) as HTMLInputElement;
       if (inputChatEdit) {
-        console.log(inputChatEdit);
         inputChatEdit.value = data.content;
       }
     }, 100);

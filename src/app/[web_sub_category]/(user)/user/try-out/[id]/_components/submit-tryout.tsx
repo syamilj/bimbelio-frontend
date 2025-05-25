@@ -56,7 +56,6 @@ const SubmitTryout = ({
   //   },
   //   onError(error) {
   //     if (error.message.includes("Session already finished. Skipping...")) {
-  //       console.log("Double submission skipped, no toast");
   //       setOpen(false);
   //       return;
   //     }

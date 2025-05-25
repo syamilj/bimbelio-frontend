@@ -179,8 +179,6 @@ export default function TryoutResult({
   const unlockTryout =
     session && session.user.role !== 'USER' ? true : unlockTryoutDbs || false;
 
-  console.log({ unlockTryout, unlockTryoutDbs, session });
-
   const [sessionResult, setSessionResult] = useState<any>();
   const [sessionResultIsLoading, setSessionResultIsLoading] =
     useState<boolean>(true);
@@ -199,8 +197,6 @@ export default function TryoutResult({
       },
     );
   }, [session, sessionId]);
-
-  console.log({ sessionResult });
 
   const [ResultData, setResultData] = useState<any>();
   const [ResultDataIsLoading, setResultDataIsLoading] = useState<boolean>(true);
@@ -248,10 +244,6 @@ export default function TryoutResult({
   useEffect(() => {
     getUserTryout();
   }, []);
-
-  console.log({ bool: currentDate < resultDate });
-  console.log({ currentDate: getDateString(currentDate) });
-  console.log({ resultDate: getDateString(resultDate) });
 
   if (currentDate < resultDate && !isTesting) {
     return <CoundowntShowResult resultDate={resultDate} />;

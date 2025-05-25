@@ -49,10 +49,6 @@ const HighlightContainer = ({
   //   });
   // };
 
-  console.log(
-    'test===========================================================================3',
-    highlight,
-  );
   const { toggleEditInProgress } = usePdfHighlighterContext();
 
   // const isTextHighlight = !Boolean(

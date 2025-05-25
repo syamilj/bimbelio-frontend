@@ -69,7 +69,6 @@ export default function Provider({ children, docId, editor, value }: Props) {
 
   // useEffect(() => {
   //   if (!editor) return;
-  //   console.log({ getNotesQuery });
   //   if (getNotesQuery) {
   //     const HtmlContent = getNotesQuery.content;
   //     getValue(HtmlContent);
@@ -85,7 +84,6 @@ export default function Provider({ children, docId, editor, value }: Props) {
   const getValue = async (value: string) => {
     if (!editor) return;
     const HtmlValue = await editor.tryParseHTMLToBlocks(value);
-    console.log({ HtmlValue });
     const ids = editor.document.map((item) => item.id);
     editor.replaceBlocks(ids, HtmlValue);
   };

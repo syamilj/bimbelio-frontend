@@ -16,13 +16,11 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
     setLoading(true);
     try {
       const { credential } = googleToken as { credential: string };
-      console.log({ credential, googleToken });
       // Kirim token ke backend
       const res = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/google`, {
         token: credential,
       });
 
-      console.log(res.data);
       Cookies.set('token', res.data.data.token);
       window.location.pathname = '/';
     } catch (error) {

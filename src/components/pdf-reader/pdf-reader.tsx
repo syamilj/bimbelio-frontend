@@ -158,7 +158,6 @@ function PdfReader({
     if (response.ok) {
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
-      // console.log(url, docUrl)
       setPdfUrl(url);
     } else {
       console.error('Error fetching PDF');

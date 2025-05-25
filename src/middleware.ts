@@ -32,7 +32,6 @@ export const middleware = async (req: NextRequest) => {
     });
     const resData: { status: number; message: string; data?: DecodeData } =
       await res.json();
-    // console.log({ resData: resData });
     const { status, data } = resData;
 
     if (status !== 200) {
@@ -91,13 +90,10 @@ export const middleware = async (req: NextRequest) => {
     );
 
     const data = await res.json();
-    console.log(res);
-    console.log("✅ Token check result:", data);
   } catch (error) {
     console.error("❌ Error in middleware fetch:", error);
   }
 
-  console.log("✅ token : ", token);
   return NextResponse.next();
 };
 

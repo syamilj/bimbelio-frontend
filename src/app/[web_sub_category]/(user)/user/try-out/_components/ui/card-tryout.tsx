@@ -121,8 +121,6 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
   const router = useRouter();
   const { data: session } = useSession();
 
-  console.log({ isTesting });
-
   // const [showUpgrade, setShowUpgrade] = useState<number>(99999);
   const [showDetail, setShowDetail] = useState<CardTryoutProps | null>(null);
 
@@ -203,13 +201,10 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
       setIsLoading(false);
       return;
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
       return;
     }
   };
-
-  console.log('data', data);
 
   const getBadgeValue = (item: CardTryoutProps) => {
     let data = null;
@@ -666,8 +661,6 @@ const RegisterTryout = ({
     joinGrupWhatsappLoad: false,
   });
 
-  console.log({ showDetail });
-
   const [validate, setValidate] = useState<{
     followTiktok: boolean;
     followInstagram: boolean;
@@ -767,7 +760,6 @@ const RegisterTryout = ({
             )}
             // onClick={handleRegistration}
             onClick={async () => {
-              console.log({ userLimitation });
               if (session?.user.role !== 'USER') {
                 onClick();
               } else if (
@@ -1131,7 +1123,6 @@ const RegisterTryout = ({
                     className="absolute left-0 top-0 h-0 w-0 p-0"
                     onChange={(e) => {
                       const value = e.target.files ? e.target.files[0] : null;
-                      console.log(value);
                       if (value && value.type.includes('image')) {
                         setClick((prev) => ({
                           ...prev,
@@ -1197,7 +1188,6 @@ const RegisterTryout = ({
                   className="absolute left-0 top-0 h-0 w-0 p-0"
                   onChange={(e) => {
                     const value = e.target.files ? e.target.files[0] : null;
-                    console.log(value);
                     if (value && value.type.includes('image')) {
                       setClick((prev) => ({
                         ...prev,

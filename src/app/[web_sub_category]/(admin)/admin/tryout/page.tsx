@@ -1,6 +1,5 @@
 'use client';
 
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 // import axiosInstance from "@/lib/axios/axiosInstance";
@@ -46,8 +45,6 @@ export default function Page() {
       setLoading: setIsLoading,
     });
   }, []);
-
-  console.log('tryout', tryout);
 
   const exportData = async ({
     downloadData,
@@ -190,7 +187,6 @@ export default function Page() {
                                 };
                               });
                               exportData({ downloadData: data, fileName });
-                              console.log(item2);
                             }}
                           >
                             {item2.TryoutCategory?.name}
@@ -209,9 +205,17 @@ export default function Page() {
                     )}
                   >
                     <div className="flex w-full justify-center gap-[1rem]">
-                      <Link href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}>Edit</Link>
+                      <Link
+                        href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
+                      >
+                        Edit
+                      </Link>
                       {item.irt && (
-                        <Link href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}>IRT</Link>
+                        <Link
+                          href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}
+                        >
+                          IRT
+                        </Link>
                       )}
                       {/* {item.irt && (
                         <button

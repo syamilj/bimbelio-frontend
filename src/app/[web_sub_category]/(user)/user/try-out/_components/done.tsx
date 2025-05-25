@@ -34,8 +34,6 @@ export default function Done({ id }: { id: string }) {
     return <div>Error</div>;
   }
 
-  console.log('cards', cards);
-
   if (cards?.length === 0 && !isLoading) return null;
 
   return (

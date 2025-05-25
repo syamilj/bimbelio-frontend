@@ -65,8 +65,6 @@ const TabContentSubCategory = ({
     }
   };
 
-  console.log(subCategories, editData);
-
   return (
     <Table>
       {editData && (

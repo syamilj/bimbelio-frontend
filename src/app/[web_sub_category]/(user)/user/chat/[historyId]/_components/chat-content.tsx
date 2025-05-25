@@ -30,9 +30,6 @@ export default function ChatContent({ historyId }: { historyId: string }) {
     await getGeneral(`/chat/getAllMessageByHistoryId?historyId=${historyId}`, {
       setData: setPrevChatMessages,
       setLoading: setIsLoadingPrevMessage,
-      onSuccess({ message, status, data }) {
-        console.log({ data });
-      },
       onError({ message }) {
         setMessageError(message);
       },

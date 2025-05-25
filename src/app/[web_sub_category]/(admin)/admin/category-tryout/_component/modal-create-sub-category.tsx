@@ -87,7 +87,6 @@ const CreateSubCategoryModal = ({
   });
 
   function onSubmit(values: z.infer<typeof CreateSubCategorySchema>) {
-    console.log('values', values);
     setError('');
 
     createSubCategoryMutate({ values: values });

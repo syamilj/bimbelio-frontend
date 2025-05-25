@@ -59,7 +59,6 @@ export default function CountDownTryout({
   //   },
   //   onError(error) {
   //     if (error.message.includes("Session already finished. Skipping...")) {
-  //       console.log("Double submission skipped, no toast");
   //       return;
   //     }
 

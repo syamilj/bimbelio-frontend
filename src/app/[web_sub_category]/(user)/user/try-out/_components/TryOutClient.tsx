@@ -72,7 +72,6 @@ const Content = () => {
           hideTargetValue: boolean;
           universityOption: string | undefined;
         } = data;
-        console.log({ data });
         if (getData.hideGeneral) setIsHideGeneralSection(true);
         if (getData.hideTargetValue) setIsHideTargetValue(true);
         if (getData.universityOption) setUnivOption(getData.universityOption);
@@ -108,7 +107,6 @@ const Content = () => {
         setOnBoarding({ ...data });
       }
     }
-    console.log('getOnboarding', getOnboarding);
   }, []);
 
   if (isLoading) return null;

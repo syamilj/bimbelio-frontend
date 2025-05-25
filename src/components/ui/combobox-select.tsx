@@ -87,7 +87,6 @@ const ComboboxSelect = ({
                     onSelect={(currentValue) => {
                       setValue(currentValue);
                       setOpen(false);
-                      console.log(`${heading} dipilih:`, currentValue);
                     }}
                     className={isUniversity ? 'py-2' : ''}
                   >
