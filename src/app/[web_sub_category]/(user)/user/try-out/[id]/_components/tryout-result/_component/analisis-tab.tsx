@@ -321,7 +321,7 @@ export function AnalisisTab({
   };
 
   const handleUnivChoice = () => {
-    if (website_sub_category_id !== 'tutor-snbt') {
+    if (website_sub_category_id !== 'snbt') {
       console.log({ tryoutAccount });
       setSimulationLoad(true);
       setSelectedUniversity(tryoutAccount?.univChoiceOne || '');
@@ -347,7 +347,7 @@ export function AnalisisTab({
 
   useEffect(() => {
     if (
-      website_sub_category_id !== 'tutor-snbt' &&
+      website_sub_category_id !== 'snbt' &&
       selectedUniversity.length > 0 &&
       selectedMajor.length > 0
     ) {
@@ -408,7 +408,7 @@ export function AnalisisTab({
               >
                 Analisis Pilihan
               </TabsTrigger>
-              {website_sub_category_id === 'tutor-snbt' && (
+              {website_sub_category_id === 'snbt' && (
                 <TabsTrigger
                   value="rekomendasi"
                   className="flex flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm data-[state=active]:bg-main data-[state=active]:text-white"
@@ -1090,7 +1090,7 @@ export function AnalisisTab({
                           value={selectedUniversity}
                           setValue={setSelectedUniversity}
                           type="university"
-                          disabled={website_sub_category_id !== 'tutor-snbt'}
+                          disabled={website_sub_category_id !== 'snbt'}
                         />
                         <InputOptionUniversity
                           heading="Pilihan 1 - Jurusan"
@@ -1099,7 +1099,7 @@ export function AnalisisTab({
                           setValue={setSelectedMajor}
                           type="studyProgramList"
                           university={selectedUniversity}
-                          disabled={website_sub_category_id !== 'tutor-snbt'}
+                          disabled={website_sub_category_id !== 'snbt'}
                         /> */}
                         <ComboboxSelect
                           heading="Pilihan 1 - Universitas"
@@ -1111,7 +1111,7 @@ export function AnalisisTab({
                             label: item.university,
                             value: item.university,
                           }))}
-                          disabled={website_sub_category_id !== 'tutor-snbt'}
+                          disabled={website_sub_category_id !== 'snbt'}
                         />
                         <ComboboxSelect
                           heading="Pilihan 1 - Jurusan"
@@ -1128,12 +1128,11 @@ export function AnalisisTab({
                             .filter((item) => item !== null)
                             .flat(Infinity)}
                           disabled={
-                            website_sub_category_id !== 'tutor-snbt' ||
-                            !UnivChoice
+                            website_sub_category_id !== 'snbt' || !UnivChoice
                           }
                         />
                       </div>
-                      {website_sub_category_id === 'tutor-snbt' && (
+                      {website_sub_category_id === 'snbt' && (
                         <div className="flex w-full justify-start">
                           <Button
                             className={cn(
