@@ -5,12 +5,12 @@ import { useAppContext } from '@/components/provider/provider-app';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/supabaseClient';
 import { TryoutSubCategory } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { useEffect, useState } from 'react';
 import SessionOption from './_component/session-option';
 import TryoutOption from './_component/tryout-option';
-import { supabase } from '@/supabaseClient';
 
 export interface TryoutProps {
   title?: string;
@@ -20,6 +20,8 @@ export interface TryoutProps {
   endDate?: string;
   image?: string;
   resultDate?: string;
+  instagram?: string;
+  tiktok?: string;
 }
 
 interface AnswerProps {
@@ -41,6 +43,7 @@ export interface SessionProps {
   category?: string;
   subCategoryId?: string;
   subCategory?: string;
+  documentId?: string | null;
   name?: string;
   description?: string;
   duration?: number | string;
@@ -139,8 +142,7 @@ const NewTryOut = () => {
 
   const { minimizeSidebar } = useAppContext();
 
-  const resetTryout = async() => {
-    
+  const resetTryout = async () => {
     await supabase.storage.from('img').remove([`tryout/${tryout?.image}`]);
     setTryout(null);
     setSessions([]);
@@ -251,15 +253,7 @@ const NewTryOut = () => {
       tryout.resultDate
       // tryout.image
     ) {
-      const validTryout: {
-        status: 'PUBLIC' | 'PRIVATE' | 'DRAFT';
-        title: string;
-        restTime: number;
-        startDate: string;
-        endDate: string;
-        image: string;
-        resultDate: string;
-      } = {
+      const validTryout: TryoutProps = {
         status: tryout.status as 'PUBLIC' | 'PRIVATE' | 'DRAFT',
         title: tryout.title,
         restTime: tryout.restTime ? tryout.restTime : 0,
@@ -267,12 +261,15 @@ const NewTryOut = () => {
         endDate: tryout.endDate,
         image: tryout.image || '',
         resultDate: tryout.resultDate,
+        instagram: tryout.instagram,
+        tiktok: tryout.tiktok,
       };
 
       const validSessions = sessions.map((session) => ({
         name: session.name || 'Default session Name',
         categoryId: session.categoryId || 'defaultCategoryId',
         subCategoryId: session.subCategoryId || 'defaultSubCategoryId',
+        documentId: session.documentId,
         duration:
           typeof session.duration === 'string'
             ? parseFloat(session.duration)
