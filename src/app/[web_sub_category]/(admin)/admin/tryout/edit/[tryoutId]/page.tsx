@@ -97,6 +97,9 @@ const NewTryOut = () => {
   const EditSession =
     currentIndexEdit !== null ? sessions[currentIndexEdit] : null;
 
+  console.log({ EditSession });
+  console.log({ sessions });
+
   const [assessmentType, setAssesmentType] = useState<string>('');
 
   // const trpc = api.useUtils();
