@@ -56,6 +56,8 @@ interface CardTryout {
   status: string;
   startDate: Date;
   image?: string | null;
+  instagram?: string | null;
+  tiktok?: string | null;
   endDate: Date;
   resultDate: Date;
   createAt: Date;
@@ -481,14 +483,17 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
           <div
             className="absolute left-0 top-0 z-[-1] h-full w-full bg-transparent"
             onClick={() => {
-              setShowDetail(null);
-              setStep(1);
+              if (step !== 3) {
+                setShowDetail(null);
+                setStep(1);
+              }
             }}
           />
           <div
+            id="register-tryout-modal"
             className={cn(
-              'relative flex w-[calc(100%-2rem)] max-w-[500px] flex-col gap-[1rem] rounded-[1rem] bg-white p-[2rem] shadow-cardSoft md:w-full',
-              step === 3 && 'max-w-[400px]',
+              'relative flex w-[calc(100%-2rem)] max-w-[500px] flex-col gap-[1rem] rounded-[1rem] bg-white p-[2rem] shadow-cardSoft md:w-full max-h-[90vh] overflow-y-auto',
+              step === 3 && 'max-w-[600px]',
             )}
           >
             {step === 1 && (
@@ -626,31 +631,69 @@ const RegisterTryout = ({
   >('free');
 
   const [click, setClick] = useState<{
-    instagram: boolean;
-    instagramLoad: boolean;
-    whatsapp: boolean;
-    whatsappLoad: boolean;
-    tiktok: boolean;
-    tiktokLoad: boolean;
+    followTiktok: boolean;
+    followTiktokLoad: boolean;
+    followInstagram: boolean;
+    followInstagramLoad: boolean;
+    postinganInstagram: boolean;
+    postinganInstagramLoad: boolean;
+    tagInstagram: boolean;
+    storyInstagram: boolean;
+    grupWhatsapp: {
+      checked: boolean;
+      grup1: boolean;
+      grup2: boolean;
+      grup3: boolean;
+    };
+    joinGrupWhatsapp: boolean;
+    joinGrupWhatsappLoad: boolean;
   }>({
-    instagram: false,
-    instagramLoad: false,
-    whatsapp: false,
-    whatsappLoad: false,
-    tiktok: false,
-    tiktokLoad: false,
+    followTiktok: false,
+    followTiktokLoad: false,
+    followInstagram: false,
+    followInstagramLoad: false,
+    postinganInstagram: false,
+    postinganInstagramLoad: false,
+    tagInstagram: false,
+    storyInstagram: false,
+    grupWhatsapp: {
+      checked: false,
+      grup1: false,
+      grup2: false,
+      grup3: false,
+    },
+    joinGrupWhatsapp: false,
+    joinGrupWhatsappLoad: false,
   });
 
+  console.log({ showDetail });
+
   const [validate, setValidate] = useState<{
-    instagram: boolean;
-    whatsapp: boolean;
-    tiktok: boolean;
-    screenshot: string;
+    followTiktok: boolean;
+    followInstagram: boolean;
+    postinganInstagram: boolean;
+    tagInstagram: boolean;
+    storyInstagram: boolean;
+    grupWhatsapp: {
+      checked: boolean;
+      grup1: boolean;
+      grup2: boolean;
+      grup3: boolean;
+    };
+    joinGrupWhatsapp: boolean;
   }>({
-    instagram: false,
-    whatsapp: false,
-    screenshot: '',
-    tiktok: false,
+    followTiktok: false,
+    followInstagram: false,
+    postinganInstagram: false,
+    tagInstagram: false,
+    storyInstagram: false,
+    grupWhatsapp: {
+      checked: false,
+      grup1: false,
+      grup2: false,
+      grup3: false,
+    },
+    joinGrupWhatsapp: false,
   });
 
   // const { data: pricing, isLoading: pricingIsLoading } =
@@ -675,9 +718,12 @@ const RegisterTryout = ({
 
   const handleRegistration = () => {
     if (
-      !validate.instagram ||
-      !validate.tiktok ||
-      validate.screenshot.length === 0
+      !validate.followTiktok ||
+      !validate.followInstagram ||
+      !validate.postinganInstagram ||
+      !validate.tagInstagram ||
+      !validate.storyInstagram ||
+      !validate.joinGrupWhatsapp
     ) {
       setError(true);
       return;
@@ -691,6 +737,21 @@ const RegisterTryout = ({
       setStep(1);
     }
   }, [showPayment]);
+
+  useEffect(() => {
+    const container = document.getElementById('register-tryout-modal') as
+      | HTMLDivElement
+      | undefined;
+    if (container && selectTypeRegistration === 'premium' && step === 3) {
+      container.classList.remove('shadow-cardSoft');
+      container.classList.remove('bg-white');
+      container.classList.add('bg-transparent');
+    } else if (container) {
+      container.classList.remove('bg-transparent');
+      container.classList.add('shadow-cardSoft');
+      container.classList.add('bg-white');
+    }
+  }, [selectTypeRegistration, step]);
 
   if (step === 1)
     return (
@@ -858,72 +919,12 @@ const RegisterTryout = ({
         <div className="flex w-full flex-col gap-[1rem]">
           <h1 className="text-center font-medium">Bukti Pendaftaran</h1>
           <div
-            id="follow-instagram"
-            className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
-          >
-            {!validate.instagram && error && (
-              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Follow Instagram...!
-              </div>
-            )}
-            <div className="flex flex-col items-start gap-[.5rem]">
-              <p>Follow Instagram</p>
-              <div className="flex items-center gap-[.5rem]">
-                <input
-                  type="checkbox"
-                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  disabled={!click.instagram ? true : false}
-                  checked={validate.instagram}
-                  onChange={(e) => {
-                    setValidate((prev) => ({
-                      ...prev,
-                      instagram: e.target.checked,
-                    }));
-                  }}
-                />
-                <p className="text-[.8rem] text-main-gray-text">
-                  Saya sudah follow instagram
-                </p>
-              </div>
-            </div>
-            <a
-              href="https://www.instagram.com/bimbelio.official?igsh=MThzd3MzbW45YW5zZQ=="
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                className={cn(
-                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.instagram && 'cursor-default bg-main md:hover:bg-main',
-                )}
-                onClick={() => {
-                  setClick((prev) => ({ ...prev, instagramLoad: true }));
-                  setTimeout(() => {
-                    setClick((prev) => ({ ...prev, instagram: true }));
-                  }, 6000);
-                }}
-              >
-                {!click.instagram ? (
-                  <>
-                    {click.instagramLoad ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      'Follow'
-                    )}
-                  </>
-                ) : (
-                  <Check />
-                )}
-              </Button>
-            </a>
-          </div>
-          <div
             id="follow-tiktok"
             className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
           >
-            {!validate.tiktok && error && (
+            {!validate.followTiktok && error && (
               <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Follow Tiktok...!
+                Checklist box diatas
               </div>
             )}
             <div className="flex flex-col items-start gap-[.5rem]">
@@ -932,12 +933,12 @@ const RegisterTryout = ({
                 <input
                   type="checkbox"
                   className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  checked={validate.tiktok}
-                  disabled={!click.tiktok ? true : false}
+                  checked={validate.followTiktok}
+                  disabled={!click.followTiktok ? true : false}
                   onChange={(e) => {
                     setValidate((prev) => ({
                       ...prev,
-                      tiktok: e.target.checked,
+                      followTiktok: e.target.checked,
                     }));
                   }}
                 />
@@ -954,18 +955,19 @@ const RegisterTryout = ({
               <Button
                 className={cn(
                   'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.tiktok && 'cursor-default bg-main md:hover:bg-main',
+                  click.followTiktok &&
+                    'cursor-default bg-main md:hover:bg-main',
                 )}
                 onClick={() => {
-                  setClick((prev) => ({ ...prev, tiktokLoad: true }));
+                  setClick((prev) => ({ ...prev, followTiktokLoad: true }));
                   setTimeout(() => {
-                    setClick((prev) => ({ ...prev, tiktok: true }));
+                    setClick((prev) => ({ ...prev, followTiktok: true }));
                   }, 6000);
                 }}
               >
-                {!click.tiktok ? (
+                {!click.followTiktok ? (
                   <>
-                    {click.tiktokLoad ? (
+                    {click.followTiktokLoad ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       'Follow'
@@ -977,14 +979,430 @@ const RegisterTryout = ({
               </Button>
             </a>
           </div>
+          <div
+            id="follow-instagram"
+            className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
+          >
+            {!validate.followInstagram && error && (
+              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
+                Checklist box diatas
+              </div>
+            )}
+            <div className="flex flex-col items-start gap-[.5rem]">
+              <p>Follow Instagram</p>
+              <div className="flex items-center gap-[.5rem]">
+                <input
+                  type="checkbox"
+                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
+                  disabled={!click.followInstagram ? true : false}
+                  checked={validate.followInstagram}
+                  onChange={(e) => {
+                    setValidate((prev) => ({
+                      ...prev,
+                      followInstagram: e.target.checked,
+                    }));
+                  }}
+                />
+                <p className="text-[.8rem] text-main-gray-text">
+                  Saya sudah follow instagram
+                </p>
+              </div>
+            </div>
+            <a
+              href="https://www.instagram.com/bimbelio.official?igsh=MThzd3MzbW45YW5zZQ=="
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                className={cn(
+                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                  click.followInstagram &&
+                    'cursor-default bg-main md:hover:bg-main',
+                )}
+                onClick={() => {
+                  setClick((prev) => ({
+                    ...prev,
+                    followInstagram: true,
+                  }));
+                  setTimeout(() => {
+                    setClick((prev) => ({ ...prev, followInstagram: true }));
+                  }, 6000);
+                }}
+              >
+                {!click.followInstagram ? (
+                  <>
+                    {click.followInstagram ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      'Follow'
+                    )}
+                  </>
+                ) : (
+                  <Check />
+                )}
+              </Button>
+            </a>
+          </div>
+          {showDetail?.instagram && (
+            <div
+              id="like-instagram"
+              className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
+            >
+              {!validate.postinganInstagram && error && (
+                <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
+                  Checklist box diatas
+                </div>
+              )}
+              <div className="flex flex-col items-start gap-[.5rem]">
+                <p>Like Postingan Instagram</p>
+                <div className="flex items-center gap-[.5rem]">
+                  <input
+                    type="checkbox"
+                    className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
+                    disabled={!click.postinganInstagram ? true : false}
+                    checked={validate.postinganInstagram}
+                    onChange={(e) => {
+                      setValidate((prev) => ({
+                        ...prev,
+                        postinganInstagram: e.target.checked,
+                      }));
+                    }}
+                  />
+                  <p className="text-[.8rem] text-main-gray-text">
+                    Saya sudah like postingan instagram
+                  </p>
+                </div>
+              </div>
+              <a
+                href={showDetail.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  className={cn(
+                    'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                    click.postinganInstagram &&
+                      'cursor-default bg-main md:hover:bg-main',
+                  )}
+                  onClick={() => {
+                    setClick((prev) => ({
+                      ...prev,
+                      postinganInstagramLoad: true,
+                    }));
+                    setTimeout(() => {
+                      setClick((prev) => ({
+                        ...prev,
+                        postinganInstagram: true,
+                      }));
+                    }, 6000);
+                  }}
+                >
+                  {!click.postinganInstagram ? (
+                    <>
+                      {click.postinganInstagramLoad ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        'Like'
+                      )}
+                    </>
+                  ) : (
+                    <Check />
+                  )}
+                </Button>
+              </a>
+            </div>
+          )}
+          {showDetail?.instagram && (
+            <div
+              id="like-instagram"
+              className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
+            >
+              {!validate.tagInstagram && error && (
+                <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
+                  Checklist box diatas
+                </div>
+              )}
+              <div className="flex flex-col items-start gap-[.5rem]">
+                <p>Tag 3 Teman Postingan Instagram</p>
+                <div className="relative flex items-center gap-[.5rem]">
+                  <input
+                    id="tag-instagram"
+                    type="file"
+                    className="absolute left-0 top-0 h-0 w-0 p-0"
+                    onChange={(e) => {
+                      const value = e.target.files ? e.target.files[0] : null;
+                      console.log(value);
+                      if (value && value.type.includes('image')) {
+                        setClick((prev) => ({
+                          ...prev,
+                          tagInstagram: true,
+                        }));
+                      }
+                      if (value && !value.type.includes('image'))
+                        toaster({
+                          title: 'Upss',
+                          condition: 'warning',
+                          description: 'File yang diupload tidak sesuai!!',
+                          duration: 3000,
+                        });
+                    }}
+                  />
+                  <input
+                    type="checkbox"
+                    className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
+                    disabled={!click.tagInstagram ? true : false}
+                    checked={validate.tagInstagram}
+                    onChange={(e) => {
+                      setValidate((prev) => ({
+                        ...prev,
+                        tagInstagram: e.target.checked,
+                      }));
+                    }}
+                  />
+                  <p className="text-[.8rem] text-main-gray-text">
+                    Saya sudah upload
+                  </p>
+                </div>
+              </div>
+              <Button
+                className={cn(
+                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                  click.tagInstagram &&
+                    'cursor-default bg-main md:hover:bg-main',
+                )}
+                onClick={() => {
+                  document.getElementById('tag-instagram')?.click();
+                }}
+              >
+                {click.tagInstagram ? <Check /> : 'Upload'}
+              </Button>
+            </div>
+          )}
+
+          <div
+            id="share-story"
+            className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
+          >
+            {!validate.storyInstagram && error && (
+              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
+                Checklist box diatas
+              </div>
+            )}
+            <div className="flex flex-col items-start gap-[.5rem]">
+              <p>Share ke Story Instagram</p>
+              <div className="relative flex items-center gap-[.5rem]">
+                <input
+                  id="story-instagram"
+                  type="file"
+                  className="absolute left-0 top-0 h-0 w-0 p-0"
+                  onChange={(e) => {
+                    const value = e.target.files ? e.target.files[0] : null;
+                    console.log(value);
+                    if (value && value.type.includes('image')) {
+                      setClick((prev) => ({
+                        ...prev,
+                        storyInstagram: true,
+                      }));
+                    }
+                    if (value && !value.type.includes('image'))
+                      toaster({
+                        title: 'Upss',
+                        condition: 'warning',
+                        description: 'File yang diupload tidak sesuai!!',
+                        duration: 3000,
+                      });
+                  }}
+                />
+                <input
+                  type="checkbox"
+                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
+                  disabled={!click.storyInstagram ? true : false}
+                  checked={validate.storyInstagram}
+                  onChange={(e) => {
+                    setValidate((prev) => ({
+                      ...prev,
+                      storyInstagram: e.target.checked,
+                    }));
+                  }}
+                />
+                <p className="text-[.8rem] text-main-gray-text">
+                  Saya sudah upload bukti share
+                </p>
+              </div>
+            </div>
+            <Button
+              className={cn(
+                'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                click.storyInstagram &&
+                  'cursor-default bg-main md:hover:bg-main',
+              )}
+              onClick={() => {
+                document.getElementById('story-instagram')?.click();
+              }}
+            >
+              {click.storyInstagram ? <Check /> : 'Upload'}
+            </Button>
+          </div>
+          <div
+            id="share-grup-whatsapp"
+            className="relative mb-[1rem] flex items-start justify-between gap-[2rem] w-full"
+          >
+            {!validate.grupWhatsapp && error && (
+              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
+                Checklist box diatas
+              </div>
+            )}
+            <div className="flex flex-col items-start gap-[.5rem] w-full">
+              <p>Share ke 3 Grup Whatsapp</p>
+              <div className="relative flex items-center gap-[.5rem]">
+                <input
+                  id="grup-whatsapp1"
+                  type="file"
+                  className="absolute left-0 top-0 h-0 w-0 p-0"
+                  onChange={(e) => {
+                    const value = e.target.files ? e.target.files[0] : null;
+
+                    if (value && value.type.includes('image')) {
+                      setClick((prev) => ({
+                        ...prev,
+                        grupWhatsapp: {
+                          ...prev.grupWhatsapp,
+                          grup1: true,
+                        },
+                      }));
+                    }
+                    if (value && !value.type.includes('image'))
+                      toaster({
+                        title: 'Upss',
+                        condition: 'warning',
+                        description: 'File yang diupload tidak sesuai!!',
+                        duration: 3000,
+                      });
+                  }}
+                />
+                <input
+                  id="grup-whatsapp2"
+                  type="file"
+                  className="absolute left-0 top-0 h-0 w-0 p-0"
+                  onChange={(e) => {
+                    const value = e.target.files ? e.target.files[0] : null;
+
+                    if (value && value.type.includes('image')) {
+                      setClick((prev) => ({
+                        ...prev,
+                        grupWhatsapp: {
+                          ...prev.grupWhatsapp,
+                          grup2: true,
+                        },
+                      }));
+                    }
+                    if (value && !value.type.includes('image'))
+                      toaster({
+                        title: 'Upss',
+                        condition: 'warning',
+                        description: 'File yang diupload tidak sesuai!!',
+                        duration: 3000,
+                      });
+                  }}
+                />
+                <input
+                  id="grup-whatsapp3"
+                  type="file"
+                  className="absolute left-0 top-0 h-0 w-0 p-0"
+                  onChange={(e) => {
+                    const value = e.target.files ? e.target.files[0] : null;
+
+                    if (value && value.type.includes('image')) {
+                      setClick((prev) => ({
+                        ...prev,
+                        grupWhatsapp: {
+                          ...prev.grupWhatsapp,
+                          grup3: true,
+                        },
+                      }));
+                    }
+                    if (value && !value.type.includes('image'))
+                      toaster({
+                        title: 'Upss',
+                        condition: 'warning',
+                        description: 'File yang diupload tidak sesuai!!',
+                        duration: 3000,
+                      });
+                  }}
+                />
+                <input
+                  type="checkbox"
+                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
+                  disabled={
+                    !click.grupWhatsapp.grup1 ||
+                    !click.grupWhatsapp.grup2 ||
+                    !click.grupWhatsapp.grup3
+                      ? true
+                      : false
+                  }
+                  checked={validate.grupWhatsapp.checked}
+                  onChange={(e) => {
+                    setValidate((prev) => ({
+                      ...prev,
+                      grupWhatsapp: {
+                        ...prev.grupWhatsapp,
+                        checked: e.target.checked,
+                      },
+                    }));
+                  }}
+                />
+                <p className="text-[.8rem] text-main-gray-text">
+                  Saya sudah upload bukti share
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Button
+                className={cn(
+                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                  click.grupWhatsapp.grup1 &&
+                    'cursor-default bg-main md:hover:bg-main',
+                )}
+                onClick={() => {
+                  document.getElementById('grup-whatsapp1')?.click();
+                }}
+              >
+                {click.grupWhatsapp.grup1 ? <Check /> : 'Grup 1'}
+              </Button>
+              <Button
+                className={cn(
+                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                  click.grupWhatsapp.grup2 &&
+                    'cursor-default bg-main md:hover:bg-main',
+                )}
+                onClick={() => {
+                  document.getElementById('grup-whatsapp2')?.click();
+                }}
+              >
+                {click.grupWhatsapp.grup2 ? <Check /> : 'Grup 2'}
+              </Button>
+              <Button
+                className={cn(
+                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                  click.grupWhatsapp.grup3 &&
+                    'cursor-default bg-main md:hover:bg-main',
+                )}
+                onClick={() => {
+                  document.getElementById('grup-whatsapp3')?.click();
+                }}
+              >
+                {click.grupWhatsapp.grup3 ? <Check /> : 'Grup 3'}
+              </Button>
+            </div>
+          </div>
 
           <div
             id="join-whatsapp"
             className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
           >
-            {!validate.instagram && error && (
+            {!validate.joinGrupWhatsapp && error && (
               <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Join Grup Belajar...!
+                Checklist box diatas
               </div>
             )}
             <div className="flex flex-col items-start gap-[.5rem]">
@@ -993,12 +1411,12 @@ const RegisterTryout = ({
                 <input
                   type="checkbox"
                   className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  disabled={!click.whatsapp ? true : false}
-                  checked={validate.whatsapp}
+                  disabled={!click.joinGrupWhatsapp ? true : false}
+                  checked={validate.joinGrupWhatsapp}
                   onChange={(e) => {
                     setValidate((prev) => ({
                       ...prev,
-                      whatsapp: e.target.checked,
+                      joinGrupWhatsapp: e.target.checked,
                     }));
                   }}
                 />
@@ -1015,18 +1433,19 @@ const RegisterTryout = ({
               <Button
                 className={cn(
                   'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.whatsapp && 'cursor-default bg-main md:hover:bg-main',
+                  click.joinGrupWhatsapp &&
+                    'cursor-default bg-main md:hover:bg-main',
                 )}
                 onClick={() => {
-                  setClick((prev) => ({ ...prev, whatsappLoad: true }));
+                  setClick((prev) => ({ ...prev, joinGrupWhatsappLoad: true }));
                   setTimeout(() => {
-                    setClick((prev) => ({ ...prev, whatsapp: true }));
+                    setClick((prev) => ({ ...prev, joinGrupWhatsapp: true }));
                   }, 6000);
                 }}
               >
-                {!click.whatsapp ? (
+                {!click.joinGrupWhatsapp ? (
                   <>
-                    {click.whatsappLoad ? (
+                    {click.joinGrupWhatsappLoad ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       'Follow'
@@ -1037,67 +1456,6 @@ const RegisterTryout = ({
                 )}
               </Button>
             </a>
-          </div>
-
-          <div
-            id="screenshot"
-            className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
-          >
-            {validate.screenshot.length === 0 && error && (
-              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Upload screenshot...!
-              </div>
-            )}
-            <div className="flex flex-col items-start gap-[.5rem]">
-              <p>Bukti Share Postingan Tryout</p>
-              <div className="relative flex items-center gap-[.5rem]">
-                <input
-                  id="bukti-share"
-                  type="file"
-                  className="absolute left-0 top-0 h-0 w-0 p-0"
-                  onChange={(e) => {
-                    const value = e.target.files ? e.target.files[0] : null;
-                    console.log(value);
-                    if (value && value.type.includes('image')) {
-                      setValidate((prev) => ({
-                        ...prev,
-                        screenshot: value.name,
-                      }));
-                    }
-                    if (value && !value.type.includes('image'))
-                      toaster({
-                        title: 'Upss',
-                        condition: 'warning',
-                        description: 'File yang diupload tidak sesuai!!',
-                        duration: 3000,
-                      });
-                  }}
-                />
-                <input
-                  type="checkbox"
-                  disabled
-                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  checked={validate.screenshot.length > 0 ? true : false}
-                />
-                <p className="text-[.8rem] text-main-gray-text">
-                  {validate.screenshot.length > 0
-                    ? `${validate.screenshot.slice(0, 23)}...`
-                    : 'Upload bukti share postingan'}
-                </p>
-              </div>
-            </div>
-            <Button
-              className={cn(
-                'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                validate.screenshot.length > 0 &&
-                  'cursor-default bg-main md:hover:bg-main',
-              )}
-              onClick={() => {
-                document.getElementById('bukti-share')?.click();
-              }}
-            >
-              {validate.screenshot.length > 0 ? <Check /> : 'Upload'}
-            </Button>
           </div>
         </div>
         <div>

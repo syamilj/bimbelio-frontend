@@ -1,6 +1,7 @@
 'use client';
 
 import { useEditTryoutContext } from '@/app/[web_sub_category]/(admin)/admin/tryout/_component/provider-edit-tryout';
+import { InputImage } from '@/components/ui/input-image';
 import {
   Select,
   SelectContent,
@@ -8,6 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { env } from '@/env.mjs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { cn } from '@/lib/utils';
@@ -17,13 +20,10 @@ import {
   IconMinimizeScreen,
   IconUp,
 } from '@/styles/icon';
+import { supabase } from '@/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ModalDeleteTryout from './modal-delete-tryout';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { supabase } from '@/supabaseClient';
-import { InputImage } from '@/components/ui/input-image';
-import { env } from '@/env.mjs';
 // import Image from 'next/image';
 // import { env } from '@/env.mjs';
 // import { supabase } from '@/servers/supabase/supabaseClient';
@@ -216,43 +216,86 @@ const TryoutOption = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Thumbnail</p>
-          <InputImage preview={tryout?.image && tryout.image !== "" ? `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${tryout?.image}` : undefined}  onChange={async (image) => {
-            const imageNow = tryout?.image
-            if (!image) return
-            const filename = `tryout-${crypto.randomUUID()}`;
-            const upload = await supabase?.storage
-              .from('img')
-              .upload(`tryout/${filename}`, image);
-
-            // .upload(`tryout/${filename}`, image);
-
-            if (upload?.data) {
-              console.log('berhasil upload', upload.data);
-            }
-            if (upload?.error) {
-              console.log('gagal upload', upload.error);
-              console.log('gagal upload', upload.error.message);
-              if (upload.error.message === 'The resource already exists') {
-                const update = await supabase?.storage
-                  .from('img')
-                  .update(`tryout/${filename}`, image);
-                if (update?.data) {
-                  console.log('berhasil update', update.data);
-                }
-                if (update?.error) {
-                  console.log('gagal update', update.error);
-                }
+        <div className="flex gap-8">
+          <div className="flex flex-col gap-[.5rem]">
+            <p className="font-medium">Thumbnail</p>
+            <InputImage
+              preview={
+                tryout?.image && tryout.image !== ''
+                  ? `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${tryout?.image}`
+                  : undefined
               }
-            }
+              onChange={async (image) => {
+                const imageNow = tryout?.image;
+                if (!image) return;
+                const filename = `tryout-${crypto.randomUUID()}`;
+                const upload = await supabase?.storage
+                  .from('img')
+                  .upload(`tryout/${filename}`, image);
 
-            if (imageNow) {
-              await supabase.storage.from('img').remove([`tryout/${imageNow}`]);
-            }
+                // .upload(`tryout/${filename}`, image);
 
-            setTryout((prev) => ({ ...prev, image: filename }));
-          }} />
+                if (upload?.data) {
+                  console.log('berhasil upload', upload.data);
+                }
+                if (upload?.error) {
+                  console.log('gagal upload', upload.error);
+                  console.log('gagal upload', upload.error.message);
+                  if (upload.error.message === 'The resource already exists') {
+                    const update = await supabase?.storage
+                      .from('img')
+                      .update(`tryout/${filename}`, image);
+                    if (update?.data) {
+                      console.log('berhasil update', update.data);
+                    }
+                    if (update?.error) {
+                      console.log('gagal update', update.error);
+                    }
+                  }
+                }
+
+                if (imageNow) {
+                  await supabase.storage
+                    .from('img')
+                    .remove([`tryout/${imageNow}`]);
+                }
+
+                setTryout((prev) => ({ ...prev, image: filename }));
+              }}
+            />
+          </div>
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col gap-[.5rem]">
+              <p className="font-medium">
+                Postingan Instagram{' '}
+                <span className="text-gray-500">(optional)</span>
+              </p>
+              <input
+                type="text"
+                placeholder="Link postingan instagram"
+                className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+                value={tryout?.instagram ? tryout?.instagram : ''}
+                onChange={(e) => {
+                  setTryout((prev) => ({ ...prev, instagram: e.target.value }));
+                }}
+              />
+            </div>
+            {/* <div className="flex flex-col gap-[.5rem]">
+              <p className="font-medium">
+                Postingan Tiktok{' '}
+                <span className="text-gray-500">(optional)</span>
+              </p>
+              <input
+                type="text"
+                placeholder="Link postingan tiktok"
+                className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+                value={tryout?.tiktok ? tryout?.tiktok : ''}
+                onChange={(e) => {
+                  setTryout((prev) => ({ ...prev, tiktok: e.target.value }));
+                }}
+              />
+            </div> */}
+          </div>
         </div>
         <div className="flex flex-col gap-[.5rem]">
           <p className="font-medium">Waktu mulai tryout</p>

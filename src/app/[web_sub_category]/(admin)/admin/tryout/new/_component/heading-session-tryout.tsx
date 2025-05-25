@@ -595,6 +595,28 @@ const HeadingSessionTryout = ({
             />
           </div>
         </div>
+        <div className="flex w-full flex-col gap-[.5rem]">
+          <p className="font-medium">
+            Document ID untuk pembahasan{' '}
+            <span className="text-main-gray-text2">(optional)</span>
+          </p>
+          <input
+            type="text"
+            placeholder="Document ID...."
+            className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+            value={EditSession.documentId || ''}
+            onChange={(e) => {
+              setSessions((prev) =>
+                prev.map((item, i) => {
+                  if (i === currentIndexEdit) {
+                    return { ...item, documentId: e.target.value };
+                  }
+                  return { ...item };
+                }),
+              );
+            }}
+          />
+        </div>
         <div className="flex w-full flex-col gap-[.5rem] pb-[.8rem]">
           <div className="flex w-full items-center justify-between">
             <p className="font-medium">Generate soal</p>

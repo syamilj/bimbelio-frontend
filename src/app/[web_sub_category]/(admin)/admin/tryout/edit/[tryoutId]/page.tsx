@@ -23,6 +23,8 @@ export interface TryoutProps {
   endDate?: string;
   image?: string | null;
   resultDate?: string;
+  instagram?: string;
+  tiktok?: string;
 }
 
 interface AnswerProps {
@@ -202,6 +204,8 @@ const NewTryOut = () => {
           endDate: `${endDateArr[0]}T${endDateArr[1]}`,
           image: tryoutData.image,
           resultDate: `${resultDateArr[0]}T${resultDateArr[1]}`,
+          instagram: tryoutData.instagram,
+          tiktok: tryoutData.tiktok,
         });
         setStartDate(startDateArr[0]);
         setStartDateTime(startDateArr[1]);
@@ -310,16 +314,7 @@ const NewTryOut = () => {
       tryout.resultDate
       // tryout.image
     ) {
-      const validTryout: {
-        id: string;
-        status: 'PUBLIC' | 'PRIVATE' | 'DRAFT';
-        title: string;
-        restTime: number;
-        startDate: string;
-        endDate: string;
-        image: string;
-        resultDate: string;
-      } = {
+      const validTryout: TryoutProps = {
         id: tryout.id,
         title: tryout.title,
         restTime: tryout.restTime ? tryout.restTime : 0,
@@ -328,13 +323,15 @@ const NewTryOut = () => {
         endDate: tryout.endDate,
         image: tryout.image || '',
         resultDate: tryout.resultDate,
+        instagram: tryout.instagram,
+        tiktok: tryout.tiktok,
       };
 
       const validSessions = sessions.map((session) => ({
         id: session.id || 'new',
+        name: session.name || 'Default session Name',
         categoryId: session.categoryId || 'defaultCategoryId',
         subCategoryId: session.subCategoryId || 'defaultSubCategoryId',
-        name: session.name || 'Default session Name',
         documentId: session.documentId,
         description: session.description ?? undefined,
         duration:
