@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
-import { UploadIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { cn } from '@/lib/utils';
+import { UploadIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 type InputImageProps = {
   onChange?: (image: File | undefined) => void;
@@ -29,8 +29,6 @@ export function InputImage({
     if (preview) setPreviewImg(preview);
   }, [preview]);
 
-  console.log({PreviewImg})
-
   return (
     <div
       className="relative cursor-pointer w-fit"
@@ -44,10 +42,10 @@ export function InputImage({
       <input
         id={`${inputId}`}
         type="file"
-        className={cn("sr-only", "top-0 bottom-0")}
+        className={cn('sr-only', 'top-0 bottom-0')}
         onChange={(e) => {
           const file = (e.target.files && e.target.files[0]) || undefined;
-          if(onChange) onChange(file);
+          if (onChange) onChange(file);
           if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -61,32 +59,35 @@ export function InputImage({
       />
       <div
         className={cn(
-          "w-[200px] h-[120px] border rounded-[1rem] p-[1rem] bg-gray-100 flex justify-center items-center relative overflow-hidden",
-          PreviewImg && "w-fit h-fit max-w-[200px]"
+          'w-[200px] h-[120px] border rounded-[1rem] p-[1rem] bg-gray-100 flex justify-center items-center relative overflow-hidden',
+          PreviewImg && 'w-fit h-fit max-w-[200px]',
         )}
       >
         {isHover && (
           <div
             className={cn(
-              "absolute top-0 left-0 w-full h-full flex justify-center items-center bg-white/80",
-              !PreviewImg && "bg-gray-200"
+              'absolute top-0 left-0 w-full h-full flex justify-center items-center bg-white/80',
+              !PreviewImg && 'bg-gray-200',
             )}
           >
             <div className="flex flex-col gap-[.5rem] items-center">
               <UploadIcon className="text-gray-400" />
               <p className="text-gray-500/80 font-[500]">
-                {title ? title : "Upload Foto"}
+                {title ? title : 'Upload Foto'}
               </p>
             </div>
           </div>
         )}
         {PreviewImg ? (
-          <img src={PreviewImg} alt="" />
+          <img
+            src={PreviewImg}
+            alt=""
+          />
         ) : (
           <div className="flex flex-col gap-[.5rem] items-center">
             <UploadIcon className="text-gray-400" />
             <p className="text-gray-500/80 font-[500]">
-              {title ? title : "Upload Foto"}
+              {title ? title : 'Upload Foto'}
             </p>
           </div>
         )}

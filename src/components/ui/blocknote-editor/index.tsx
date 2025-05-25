@@ -13,7 +13,6 @@ import './style.css';
 
 async function uploadFile(file: File) {
   //   const convertedFile = await convertFileToBase64(file);
-  console.log({ file });
 
   return file;
 }
@@ -41,7 +40,6 @@ function BlocknoteEditor({
     if (!isFocused) {
       // const markdownValue = await editor.tryParseMarkdownToBlocks(value);
       const markdownValue = await editor.tryParseHTMLToBlocks(value);
-      console.log({ value, markdownValue, editor: editor.document });
       const ids = editor.document.map((item) => item.id);
       editor.replaceBlocks(ids, markdownValue);
       processAllLatex(editor);
@@ -53,8 +51,6 @@ function BlocknoteEditor({
 
     // const value = await editor.blocksToMarkdownLossy(editor.document);
     const FullHtml = await editor.blocksToFullHTML(editor.document);
-    console.log({ blocksToMarkdownLossy: value });
-    console.log({ FullHtml });
     onValueChange(FullHtml);
   }, 1000);
 
@@ -89,8 +85,6 @@ function BlocknoteEditor({
   // useEffect(() => {
   //   editor.
   // }, [editor]);
-
-  console.log({ editor: editor.document });
 
   return (
     <Latex

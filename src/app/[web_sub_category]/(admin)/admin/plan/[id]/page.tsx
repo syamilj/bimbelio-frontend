@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import {
   // FeatureTypeEnum,
@@ -69,7 +69,6 @@ export default function CreatePlanForm() {
     await getGeneral(`/plan/getSinglePlan?id=${id}`, {
       onSuccess({ data: dat }) {
         const data = dat as GetSingleType;
-        console.log({ data });
         changeValue('name', data.name);
         changeValue('description', data.description);
         changeValue('price', data.price.toString());
@@ -83,7 +82,6 @@ export default function CreatePlanForm() {
           const materiPremium = data.PlanSubscription.PlanFeature.find(
             (item) => item.type === 'DOCUMENT',
           );
-          console.log({ course });
           if (course) changeValue('course', 'on');
           if (materiPremium) changeValue('materiPremium', 'on');
           setInitialWebSubCategoryId(
@@ -746,8 +744,6 @@ const SectionFeature = ({
       }
     }
   }, [initialWebSubCategoryId, subCategories, categories]);
-
-  console.log({ initialWebSubCategoryId, selectedCategory });
 
   return (
     <div className="rounded-xl shadow-cardSoft2 p-4">

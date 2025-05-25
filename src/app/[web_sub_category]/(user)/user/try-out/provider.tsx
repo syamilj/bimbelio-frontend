@@ -1,6 +1,6 @@
 'use client';
 
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 type Props = {

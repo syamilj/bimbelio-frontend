@@ -390,7 +390,6 @@ const AnalysisSubject = () => {
       avgTheta: parseFloat(item.avgTheta.toFixed(2)),
     };
   });
-  console.log({ subjectAnalysis });
 
   const chartConfig = {
     count: {

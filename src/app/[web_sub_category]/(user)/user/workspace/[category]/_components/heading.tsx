@@ -1,7 +1,7 @@
 'use client';
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { useParams, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';

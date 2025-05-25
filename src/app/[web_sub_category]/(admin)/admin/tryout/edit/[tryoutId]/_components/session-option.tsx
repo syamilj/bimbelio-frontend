@@ -158,7 +158,6 @@ const SessionOption = () => {
                 '#tryout-admin #heading',
               ) as HTMLDivElement;
               if (div) {
-                console.log('height', div.clientHeight);
                 if (div.clientHeight !== 0) {
                   div.style.height = `${div.clientHeight}px`;
                   setHeadingSessionHeight(div.clientHeight);
@@ -189,7 +188,6 @@ const SessionOption = () => {
               '#tryout-admin #numberList',
             ) as HTMLDivElement;
             if (div) {
-              console.log('height', div.clientHeight);
               if (div.clientHeight !== 0) {
                 div.style.height = `${div.clientHeight}px`;
                 setListQuestionHeight(div.clientHeight);

@@ -37,7 +37,6 @@ export default function ModulPembelajaranSection() {
     api.course.getCategoryForCard.useQuery(undefined, {
       refetchOnWindowFocus: false,
     });
-  console.log({ CategoryCard });
   return (
     <section className="space-y-6 pt-8">
       <div className="text-center space-y-2">

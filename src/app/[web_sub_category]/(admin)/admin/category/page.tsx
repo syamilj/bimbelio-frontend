@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { deleteGeneral, getGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral, getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category, Subcategory } from '@/types/database';
 import { Edit, Loader2, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';

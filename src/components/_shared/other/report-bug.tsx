@@ -4,7 +4,7 @@ import { env } from '@/env.mjs';
 import { supabase } from '@/supabaseClient';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import Image from 'next/image';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { Spinner } from '../../ui/spinner';
@@ -57,10 +57,6 @@ const ReportBug = ({
       },
     });
   };
-
-  useEffect(() => {
-    console.log({ category, detail, image });
-  }, [category, detail, image]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -184,7 +180,6 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
   useEffect(() => {
     setPreviewImage('');
     if (file) {
-      console.log('ada file');
       const reader = new FileReader();
 
       reader.onloadend = () => {
@@ -202,7 +197,6 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
         id={`${inputId}`}
         type="file"
         onChange={(e: any) => {
-          console.log('awdwad', e.target.files[0]);
           setFile(e.target.files[0]);
         }}
         className="absolute right-0 top-0 h-0 w-0"

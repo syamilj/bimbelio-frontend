@@ -78,7 +78,6 @@ export default function Row({
   // Scroll down when new messages come in
   useEffect(() => {
     if (isLoadingMessages || isLoadingMessagesEdit) {
-      console.log('scroll');
       scrollToBottom();
       setTimeout(() => scrollToBottom(), 100);
     }

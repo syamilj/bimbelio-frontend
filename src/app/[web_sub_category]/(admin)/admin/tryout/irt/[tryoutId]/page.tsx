@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import LoadingPageWithText from '@/components/ui/spinner';
 
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   Tryout,
   TryoutAnswer,
@@ -80,7 +80,6 @@ export default function SNBTProcessor() {
   // const { tryoutId } = router.query;
   const params = useParams();
   const tryoutId = params?.tryoutId as string;
-  console.log({ tryoutId });
 
   const [loading, setLoading] = useState<boolean>(false);
   const [sessionIndex, setSessionIndex] = useState<number>(0);
@@ -145,7 +144,6 @@ export default function SNBTProcessor() {
     // const dummyData = data2;
     const dummyData = TryoutData;
     const SessionOne = dummyData.TryoutSession[sessionIndex];
-    console.log({ SessionOne });
     const filterData = SessionOne.TryoutSessionParticipant.map(
       (participant) => {
         const question = participant.TryoutUserAnswer.map((uAnswer) => {
@@ -209,7 +207,6 @@ export default function SNBTProcessor() {
       })
       .filter((item) => item);
 
-    console.log({ groupingByParticipant, groupingArray });
     return groupingArray.map((item) => {
       return {
         ...item,
@@ -236,8 +233,6 @@ export default function SNBTProcessor() {
     utils.book_append_sheet(wb, ws, 'items');
     writeFile(wb, `${fileName}.csv`);
   };
-
-  console.log({ saveDataIRT });
 
   return (
     <div className="container mx-auto p-4 space-y-8">

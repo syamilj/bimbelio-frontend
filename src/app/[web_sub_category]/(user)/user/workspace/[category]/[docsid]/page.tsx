@@ -7,7 +7,7 @@ import {
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import { SpinnerPage } from '@/components/ui/spinner';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import useMedia from 'use-media';
@@ -40,8 +40,6 @@ const DocViewerPage = () => {
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
   const { data: session } = useSession();
   const userId = session?.user.id;
-
-  console.log('tab', tab);
 
   const [doc, setDoc] = useState<DocDataType>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -165,8 +163,6 @@ const DocViewerPage = () => {
   if (isLoading || !doc) {
     return <SpinnerPage />;
   }
-
-  // console.log('doc', doc)
 
   return (
     <ResizablePanelGroup

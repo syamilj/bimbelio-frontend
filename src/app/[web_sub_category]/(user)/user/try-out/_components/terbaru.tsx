@@ -1,7 +1,7 @@
 import CardNotFound from '@/app/[web_sub_category]/(user)/user/_components/card-not-found';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useState } from 'react';
 import CardTryOut, { CardTryoutProps } from './ui/card-tryout';
 
@@ -33,8 +33,6 @@ export default function Terbaru({ id }: { id: string }) {
   if (!cards && !isLoading) {
     return <div>Error</div>;
   }
-
-  console.log('cards', cards);
 
   if (cards?.length === 0 && !isLoading) return null;
 

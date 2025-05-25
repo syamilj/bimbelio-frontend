@@ -44,10 +44,8 @@ export default function Upload3PLData({
       skipEmptyLines: true,
       complete: function (results: any) {
         const data: any[] = results.data;
-        console.log('data', data);
         data.forEach((item) => {
           const keys = Object.keys(item);
-          console.log({ keys });
           if (!item.question) {
             error = {
               value: true,
@@ -75,7 +73,6 @@ export default function Upload3PLData({
             };
           }
         });
-        console.log({ error });
         if (error.value) {
           setError(error.message);
           return;

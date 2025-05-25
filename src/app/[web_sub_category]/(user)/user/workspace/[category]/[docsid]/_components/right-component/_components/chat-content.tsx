@@ -3,7 +3,7 @@ import Chat from '@/components/workspace/chat';
 import { MessageDataType } from '@/components/workspace/chat/provider';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Document, User, UserDocument } from '@/types/database';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -40,9 +40,7 @@ export default function ChatContent() {
       },
       setData: setPrevChatMessages,
       setLoading: setIsLoadingPrevMessage,
-      onSuccess({ message, status, data }) {
-        console.log({ data });
-      },
+
       onError({ message }) {
         setMessageError(message);
       },

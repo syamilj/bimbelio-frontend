@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useState } from 'react';
 
 interface SessionAnswer {
@@ -56,7 +56,6 @@ const SubmitTryout = ({
   //   },
   //   onError(error) {
   //     if (error.message.includes("Session already finished. Skipping...")) {
-  //       console.log("Double submission skipped, no toast");
   //       setOpen(false);
   //       return;
   //     }

@@ -90,8 +90,6 @@ export default function Dokumen() {
 //     fetchCategory();
 //   }, []);
 
-//   console.log('category', category);
-
 //   const handleFilter = () => {
 //     if (!filter) {
 //       // toaster({
@@ -282,8 +280,6 @@ export default function Dokumen() {
 //       const { data, error } = await supabase.storage
 //         .from('pdf')
 //         .download(`${fileName}`);
-
-//       console.log({ data, error });
 
 //       if (data) {
 //         const blob = new Blob([data], { type: 'application/pdf' });

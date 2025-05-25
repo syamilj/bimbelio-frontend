@@ -2,7 +2,7 @@ import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { ToolTip } from '@/components/ui/tooltip';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   IconCopy,
   IconDislike,
@@ -106,13 +106,11 @@ const ChatTools = ({ messageIndex }: Props) => {
       index: messageIndex,
       value: data.content,
     }));
-    console.log(data.content);
     setTimeout(() => {
       const inputChatEdit = document.getElementById(
         'editInput',
       ) as HTMLInputElement;
       if (inputChatEdit) {
-        console.log(inputChatEdit);
         inputChatEdit.value = data.content;
       }
     }, 100);

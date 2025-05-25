@@ -89,7 +89,6 @@ export default function Provider({
     body,
     streamProtocol: 'text',
     onError: (error: any) => {
-      console.log('error', error);
       toaster({
         title: 'Gagal',
         description: 'Terjadi kesalahan2!',
@@ -98,7 +97,6 @@ export default function Provider({
       });
     },
     onFinish: () => {
-      console.log('Finish1');
       setFirstMessage(false);
       fetchMessages();
     },
@@ -124,7 +122,6 @@ export default function Provider({
       });
     },
     onFinish: () => {
-      console.log('Finish2');
       fetchMessages();
     },
   });

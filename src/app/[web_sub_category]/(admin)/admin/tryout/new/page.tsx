@@ -89,7 +89,6 @@ const NewTryOut = () => {
 
   const EditSession =
     currentIndexEdit !== null ? sessions[currentIndexEdit] : null;
-  console.log('EditSession', EditSession);
   const [assessmentType, setAssesmentType] = useState<string>('');
 
   // const { mutate: createTryout, isPending: isLoading } =
@@ -97,11 +96,8 @@ const NewTryOut = () => {
   //     onSuccess(data, variables) {
   //       alert("Success");
   //       resetTryout();
-  //       console.log("data", data);
-  //       console.log("variables", variables);
   //     },
   //     onError(error, variables) {
-  //       console.log(error, variables);
   //       alert(`${error.message}`);
   //     },
   //   });
@@ -183,7 +179,6 @@ const NewTryOut = () => {
   }, [currentIndexEdit]);
 
   useEffect(() => {
-    console.log('change', assessmentType);
     if (assessmentType !== '') {
       setSessions((prev) =>
         prev.map((item, i: number) => {
@@ -225,18 +220,8 @@ const NewTryOut = () => {
     }
   }, [tryout, sessions]);
 
-  console.log('tryout : ', tryout);
-  console.log(
-    'sessions : ',
-    currentIndexEdit !== null && sessions[currentIndexEdit],
-  );
-  console.log('ass : ', assessmentType);
-  // console.log("height2", listQuestionHeight);
-
   const handleSubmit = () => {
-    console.log('awdwad');
     // localStorage.removeItem("temporary-add-tryout")
-    console.log(sessions.length);
     if (sessions.length === 0) {
       // toast({
       //     variant: "success",

@@ -44,10 +44,8 @@ export default function UploadParticipantData({
       skipEmptyLines: true,
       complete: function (results: any) {
         const data: any[] = results.data;
-        console.log('data', data);
         data.forEach((item, index) => {
           const keys = Object.keys(item);
-          console.log({ keys });
           if (index === 0 && keys[0] !== 'p') {
             error = {
               value: true,
@@ -67,7 +65,6 @@ export default function UploadParticipantData({
             });
           }
         });
-        console.log({ error });
         if (error.value) {
           setError(error.message);
           return;

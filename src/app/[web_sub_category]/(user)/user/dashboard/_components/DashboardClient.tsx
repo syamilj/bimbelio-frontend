@@ -55,7 +55,7 @@ import {
 // Komponen Chart dari recharts
 import { useSession } from '@/components/provider/provider-session-auth';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { TryoutStatusEnum, UserRoleEnum } from '@/types/database';
 import {
   Bar,

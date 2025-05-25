@@ -1,6 +1,6 @@
 'use client';
 
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
 import {
   createContext,

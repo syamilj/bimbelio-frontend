@@ -8,7 +8,7 @@ import { env } from '@/env.mjs';
 import { hideVideoLink } from '@/lib/utils';
 import { IconDislike, IconLike } from '@/styles/icon';
 
-import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
 import { createId } from '@paralleldrive/cuid2';
@@ -112,8 +112,6 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
   // const utils = api.useContext();
   // const trpc = api.useUtils();
 
-  console.log({ Highlight: doc?.highlights });
-
   // const { editor } = useBlocknoteEditorStore();
 
   const {
@@ -195,7 +193,6 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
 
     if (type === 'TEXT') {
       if (!content || !highlightId) return;
-      console.log('jalan1');
       insertOrUpdateBlock(editor, {
         content,
         props: {
@@ -208,7 +205,6 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
       if (!content || !highlightId) return;
 
       try {
-        console.log('jalan2');
         insertOrUpdateBlock(editor, {
           props: {
             url: content,
@@ -270,7 +266,6 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
         highlightId: id,
         userId: session?.user.id || '',
       });
-      console.log('id : ', id);
       const data = editor?.document
         .map((item: any) => {
           if (item.type === 'highlight') {
@@ -280,8 +275,6 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
           }
         })
         .filter((item: any) => item)[0];
-      console.log('data : ', editor?.document);
-      console.log('data2 : ', data?.id);
       editor?.removeBlocks([data?.id]);
     } catch (error) {
       toaster({

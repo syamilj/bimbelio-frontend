@@ -3,7 +3,7 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -59,7 +59,6 @@ export default function CountDownTryout({
   //   },
   //   onError(error) {
   //     if (error.message.includes("Session already finished. Skipping...")) {
-  //       console.log("Double submission skipped, no toast");
   //       return;
   //     }
 

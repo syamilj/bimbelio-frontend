@@ -1,5 +1,5 @@
 import { deleteHighlightMutationType } from '@/components/pdf-reader';
-import { deleteGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { RemoveBlockItem } from '@blocknote/react';
 
@@ -47,7 +47,6 @@ export function DeleteNote({ props }: { props: any }) {
       onClick={() => {
         const data: any = props;
         const id = data.block.props.highlightId;
-        console.log(data.block.props.highlightId);
         if (id) {
           deleteHighlightMutation({
             documentId: docId as string,

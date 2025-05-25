@@ -4,7 +4,7 @@ import uploadFileImg from '@/_assest/icon/uploadDokumen.png';
 import LoadingPage from '@/components/ui/Loading-Page';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { getDateForInput, getHours } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
@@ -26,8 +26,6 @@ export default function EditDocument() {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log('editData2', editData);
-
   const [file, setFile] = useState<File | undefined>();
   const [fileName, setFileName] = useState<string>('');
   const [category, setCategory] = useState<string>('');
@@ -35,7 +33,6 @@ export default function EditDocument() {
   const [premium, setPremium] = useState<boolean>(false);
   const [to, setTo] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<File | undefined>();
-  console.log('thumbnail', thumbnail);
 
   // Try-out
   const [description, setDescription] = useState<string>('');
@@ -56,9 +53,8 @@ export default function EditDocument() {
     );
   };
 
-  if (subCategoryData) {
-    console.log('Sub:', subCategoryData);
-  }
+  // if (subCategoryData) {
+  // }
   useEffect(() => {
     if (category.length === 0) return;
     fetchSubCategories(category);
@@ -251,14 +247,12 @@ export default function EditDocument() {
               },
             },
           );
-          console.log({ response });
           if (!response.ok) {
             toaster({
               title: 'Gagal',
               description: `${response?.statusText}`,
               condition: 'warning',
             });
-            console.log('error :', response);
             setLoading(false);
             return;
           }
@@ -275,13 +269,10 @@ export default function EditDocument() {
             description: `${response2?.statusText}`,
             condition: 'warning',
           });
-          console.log('error :', response2);
           setLoading(false);
           return;
         }
         const imgData = await response2.blob();
-        console.log('response', response, fileData);
-        console.log('response2', response2, imgData);
         const { data: saveNewPdf, error: errorSaveNewPdf } =
           await supabase.storage.from('pdf').upload(fileName, fileData);
         const { data: saveNewImg, error: errorSaveNewImg } =
@@ -325,7 +316,6 @@ export default function EditDocument() {
             description: `${errorSaveNewPdf?.message}`,
             condition: 'warning',
           });
-          console.log('error :', errorSaveNewPdf);
           setLoading(false);
         }
         if (errorSaveNewImg) {
@@ -334,7 +324,6 @@ export default function EditDocument() {
             description: `${errorSaveNewPdf?.message}`,
             condition: 'warning',
           });
-          console.log('error :', errorSaveNewPdf);
           setLoading(false);
         }
       } else {
@@ -451,10 +440,6 @@ export default function EditDocument() {
       return;
     }
   };
-
-  console.log('dateTo 1 :', editData?.dateTo);
-  console.log('dateTo 2 :', dateTo);
-  console.log('file', file);
 
   return (
     <>
@@ -663,7 +648,6 @@ const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
   useEffect(() => {
     setPreviewImage('');
     if (file) {
-      console.log('ada file');
       const reader = new FileReader();
 
       reader.onloadend = () => {
@@ -673,7 +657,6 @@ const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
 
       reader.readAsDataURL(file);
     } else {
-      console.log('tidak ada file');
       setPreviewImage(`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${fileName}`);
     }
   }, [file]);
@@ -687,7 +670,6 @@ const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
         id={`${inputId}`}
         type="file"
         onChange={(e: any) => {
-          console.log('awdwad', e.target.files[0]);
           setFile(e.target.files[0]);
         }}
         className="absolute right-0 top-0 h-0 w-0"
@@ -932,8 +914,6 @@ const InputDateAndTime = ({
   value: string;
   warning: string;
 }) => {
-  console.log('datevalue', new Date(value));
-
   const [date, setDate] = useState<string | null>(null);
   const [time, setTime] = useState<string | null>(null);
 

@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 // import University from '@/lib/data/university';
 import { ComboboxSelect } from '@/components/ui/combobox-select';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconStar, IconTryOut } from '@/styles/icon';
 import {
@@ -68,8 +68,6 @@ export function AnalisisTab({
 
   // const { mutateAsync: SimulationData } =
   //   api.tryout.getSimulationDataByTryoutId.useMutation();
-
-  console.log({ ResultData });
 
   const userScore = ResultData?.userScore || 0;
   const totalParticipants = ResultData?.totalParticipants || 0;
@@ -322,7 +320,6 @@ export function AnalisisTab({
 
   const handleUnivChoice = () => {
     if (website_sub_category_id !== 'snbt') {
-      console.log({ tryoutAccount });
       setSimulationLoad(true);
       setSelectedUniversity(tryoutAccount?.univChoiceOne || '');
       setTimeout(() => {
@@ -335,11 +332,6 @@ export function AnalisisTab({
     selectedUniversity.length > 0
       ? UniversityOptions.find((item) => item.university === selectedUniversity)
       : null;
-
-  console.log({
-    selectedMajor,
-    selectedUniversity,
-  });
 
   useEffect(() => {
     handleUnivChoice();

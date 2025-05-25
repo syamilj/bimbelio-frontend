@@ -29,7 +29,7 @@ import { toaster } from '@/components/ui/toaster';
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   Plan,
   PlanFeature,
@@ -128,10 +128,8 @@ export function Payment() {
   const [topping, setTopping] = useState<PlanType[]>([]);
 
   const getData = async () => {
-    console.log('123132123');
     await getGeneral('/plan/getAllPlanForPricingPage', {
       onSuccess({ data }) {
-        console.log({ data });
         setTopping(data.topping);
       },
     });

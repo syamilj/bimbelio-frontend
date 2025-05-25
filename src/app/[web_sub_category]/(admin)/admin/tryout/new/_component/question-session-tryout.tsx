@@ -126,7 +126,6 @@ const QuestionSessionTryout = ({
 
   const deleteImageQuestion = async (questionIndex: number) => {
     if (EditSession?.Questions && EditSession.Questions[questionIndex].image) {
-      console.log(EditSession.Questions[questionIndex].image);
       const title = EditSession.Questions[questionIndex].image;
       const deleteImage = await supabase?.storage
         .from('to-question')
@@ -221,28 +220,21 @@ const QuestionSessionTryout = ({
   ) => {
     if (EditSession === null) return;
     const image = e.target.files ? e.target.files[0] : null;
-    // console.log(supabase, newQuestionValue)
-    // console.log("awd", process.env.NEXT_PUBLIC_SUPABASE_URL)
     if (image && EditSession.Questions && EditSession.Questions[index].image) {
       const filename = `${EditSession.Questions[index].image}`;
       const upload = await supabase?.storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
-        console.log('berhasil upload', upload.data);
       }
       if (upload?.error) {
-        console.log('gagal upload', upload.error);
-        console.log('gagal upload', upload.error.message);
         if (upload.error.message === 'The resource already exists') {
           const update = await supabase?.storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
-            console.log('berhasil update', update.data);
           }
           if (update?.error) {
-            console.log('gagal update', update.error);
           }
         }
       }
@@ -274,20 +266,15 @@ const QuestionSessionTryout = ({
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
-        console.log('berhasil upload', upload.data);
       }
       if (upload?.error) {
-        console.log('gagal upload', upload.error);
-        console.log('gagal upload', upload.error.message);
         if (upload.error.message === 'The resource already exists') {
           const update = await supabase?.storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
-            console.log('berhasil update', update.data);
           }
           if (update?.error) {
-            console.log('gagal update', update.error);
           }
         }
       }
@@ -321,7 +308,6 @@ const QuestionSessionTryout = ({
     answerIndex: number,
     prevValue: number,
   ) => {
-    console.log({ value, questionIndex, answerIndex, prevValue });
     setSessions((prev) =>
       prev.map((item, sessionIndex: number) => {
         if (
@@ -406,7 +392,6 @@ const QuestionSessionTryout = ({
     const currentAnswers = [...EditSession.Questions[questionIndex].Answers];
 
     const [movedAnswer] = currentAnswers.splice(answerIndex, 1);
-    console.log(currentAnswers, movedAnswer);
 
     currentAnswers.splice(fixValue, 0, movedAnswer);
 
@@ -438,7 +423,6 @@ const QuestionSessionTryout = ({
     const currentQuestions = [...EditSession.Questions];
 
     const [movedQuestion] = currentQuestions.splice(questionIndex, 1);
-    console.log({ currentQuestions, movedQuestion });
 
     currentQuestions.splice(fixValue, 0, movedQuestion);
 

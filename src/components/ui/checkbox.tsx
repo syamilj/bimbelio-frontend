@@ -37,8 +37,6 @@ const Checkbox = React.forwardRef<
     return () => observer.disconnect();
   }, []);
 
-  console.log({ isChecked });
-
   return (
     <CheckboxPrimitive.Root
       ref={combinedRef}
