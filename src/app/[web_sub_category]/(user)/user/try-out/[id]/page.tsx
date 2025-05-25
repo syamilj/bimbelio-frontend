@@ -4,7 +4,7 @@ import { use } from 'react';
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -28,8 +28,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
 
   // const tryoutId = params.id || '';
   const { id: tryoutId } = use(params);
-
-  console.log({ tryoutId, params });
 
   const [loading, setLoading] = useState<boolean>(true);
   // const trpc = api.useUtils();
@@ -183,13 +181,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     }
   }, [tryoutData]);
 
-  console.log('currentIndexSession', currentIndexSession);
-  console.log('sessionLength', sessionLength);
-
-  console.log('tryoutData', tryoutData);
-  console.log('isSessionDone', isSessionDone);
-  console.log('isTryoutDone', isTryoutDone);
-
   // useEffect(() => {
   //   if (tryoutData && isTryoutDone) {
   //     setCurrentIndexSession(sessionLength + 1)
@@ -254,7 +245,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       ...session.TryoutSessionParticipant,
     },
   }));
-  console.log('sessionData', sessionData);
 
   if (
     !isTryoutDone &&

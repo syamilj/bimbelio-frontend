@@ -2,7 +2,7 @@
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category, Subcategory } from '@/types/database';
 import { useEffect, useState } from 'react';
 import Card from '../../_components/card';
@@ -14,7 +14,6 @@ export default function Trending() {
   //     refetchOnWindowFocus: false,
   //     refetchOnMount: false,
   //   });
-  // console.log('dokumen', dokumen)
 
   const [datas, setDatas] = useState<
     (Document & {
@@ -30,8 +29,6 @@ export default function Trending() {
       setLoading: setIsLoading,
     });
   }, []);
-
-  console.log({ trending: datas });
 
   return (
     <>

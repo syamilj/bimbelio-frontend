@@ -7,7 +7,6 @@ export const responseError = (
   toastMessage?: string,
   toastTitle?: string,
 ) => {
-  console.log({ error });
   if (showToast) {
     toaster({
       title: toastTitle || 'Error',
@@ -40,7 +39,6 @@ export const response = (
   page?: number;
   total_pages?: number;
 } => {
-  console.log({ res });
   if (showToast) {
     toaster({
       title: toastTitle || 'Successfully',

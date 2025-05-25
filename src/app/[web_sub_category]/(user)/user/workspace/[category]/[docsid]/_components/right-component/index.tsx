@@ -10,7 +10,7 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
-import { deleteGeneral, getGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral, getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import {
   IconFullscreen,
@@ -138,14 +138,12 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
         setOnBoarding({ ...data });
       }
     }
-    console.log('getOnboarding', getOnboarding);
   }, []);
 
   const handleResetChat = async () => {
     setIsLoading(true);
     try {
       const res = await getNameImage();
-      console.log({ getName: res });
       if (res.length > 0) {
         const { data, error } = await supabase.storage
           .from('img')
@@ -155,9 +153,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
           await resetChat();
           window.location.reload();
         }
-        console.log({ data, error });
         if (error) {
-          console.log('errror', error);
           toaster({
             title: 'Upss',
             description: 'Gagal hapus pesan, coba lagi!',

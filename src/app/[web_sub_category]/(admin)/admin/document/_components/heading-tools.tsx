@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconRegenerateMessage, IconTailedArrowNext } from '@/styles/icon';
 import { useEffect, useState } from 'react';
@@ -43,8 +43,6 @@ export default function HeadingTools() {
   useEffect(() => {
     fetchCategory();
   }, []);
-
-  console.log('category', category);
 
   const handleFilter = () => {
     if (!filter) {

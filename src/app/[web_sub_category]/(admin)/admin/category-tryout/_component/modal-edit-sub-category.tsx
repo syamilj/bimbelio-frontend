@@ -145,8 +145,6 @@ const ModalEditSubCategory = ({
     return null;
   }
 
-  console.log({ subCategory });
-
   return (
     <Dialog
       open={open}

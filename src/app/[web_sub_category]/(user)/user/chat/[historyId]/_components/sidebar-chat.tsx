@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateStringShort, getHours } from '@/lib/utils';
 import { ChatHistory } from '@/types/database';
 import 'katex/dist/katex.min.css';

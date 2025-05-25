@@ -6,7 +6,7 @@ import OnBoarding from '@/components/workspace/_component/onboarding';
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { UserTryout } from '@/types/database';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -72,7 +72,6 @@ const Content = () => {
           hideTargetValue: boolean;
           universityOption: string | undefined;
         } = data;
-        console.log({ data });
         if (getData.hideGeneral) setIsHideGeneralSection(true);
         if (getData.hideTargetValue) setIsHideTargetValue(true);
         if (getData.universityOption) setUnivOption(getData.universityOption);
@@ -108,7 +107,6 @@ const Content = () => {
         setOnBoarding({ ...data });
       }
     }
-    console.log('getOnboarding', getOnboarding);
   }, []);
 
   if (isLoading) return null;

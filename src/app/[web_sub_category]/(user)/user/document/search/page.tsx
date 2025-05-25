@@ -1,6 +1,6 @@
 'use client';
 
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category, Subcategory } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
@@ -34,8 +34,6 @@ export default function DocumentSearch() {
   useEffect(() => {
     fetchSearchData();
   }, [search, categoryId]);
-
-  console.log('searchDatas', searchDatas);
 
   return (
     <div className="flex flex-col gap-[1rem] px-[1rem] md:gap-[2rem] md:p-0">

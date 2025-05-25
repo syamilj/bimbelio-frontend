@@ -3,7 +3,7 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { buttonVariants } from '@/components/ui/button';
 import { ToolTip } from '@/components/ui/tooltip';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import {
   IconCheckList,

@@ -6,7 +6,7 @@ import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateString } from '@/lib/utils';
 import { WebsiteSubCategory } from '@/types/database';
 import { motion, useAnimation, useInView } from 'framer-motion';

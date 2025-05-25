@@ -41,9 +41,7 @@ const SubmitChat = () => {
 
   const handleSubmitChatDefault = async () => {
     try {
-      console.log('Func');
       const data = await checkLimitation({ chat: true });
-      console.log('data', data);
       const inputChat = document.getElementById(
         'inputChat',
       ) as HTMLTextAreaElement;
@@ -123,7 +121,6 @@ const SubmitChat = () => {
     <form
       id="chatAI"
       onSubmit={(e) => {
-        console.log('Masuk');
         handleSubmitChatDefault();
         e.preventDefault();
       }}
@@ -189,14 +186,11 @@ const SubmitChat = () => {
               if (e.key === 'Enter' && !e.shiftKey && !isLoadingMessages) {
                 e.preventDefault();
                 handleSubmitChatDefault();
-                console.log('Masuk2');
               } else if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
-                console.log('Masuk3');
               }
             }}
             onChange={(e) => {
-              console.log('inputLength', e.target.value.length);
               if (e.target.value.length > 0) setSend(true);
               else setSend(false);
               if (e.target.value.length > 1000)

@@ -1,5 +1,5 @@
 'use client';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category, Document, Subcategory, Video } from '@/types/database';
 import {
   createContext,
@@ -77,8 +77,6 @@ export default function Provider({ children }: Props) {
   useEffect(() => {
     fetchDocument();
   }, [filterDocument, page]);
-
-  console.log({ documentData });
 
   // == Context Value ===================================================
   const Context = {

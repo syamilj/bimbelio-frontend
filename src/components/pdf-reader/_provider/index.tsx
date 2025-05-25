@@ -113,7 +113,6 @@ export default function Provider({ children, doc }: Props) {
         },
         setHighlights,
       );
-      console.log('id : ', id);
       const data = editor?.document
         .map((item: any) => {
           if (item.type === 'highlight') {
@@ -123,8 +122,6 @@ export default function Provider({ children, doc }: Props) {
           }
         })
         .filter((item: any) => item)[0];
-      console.log('data : ', editor?.document);
-      console.log('data2 : ', data?.id);
       editor?.removeBlocks([data?.id]);
     } catch (error) {
       toaster({
@@ -137,7 +134,6 @@ export default function Provider({ children, doc }: Props) {
   };
 
   const scrollToHighlightById = (highlightId: string) => {
-    console.log('jalan');
     const highlight = getHighlightById(highlightId);
     if (
       highlight &&
@@ -160,7 +156,6 @@ export default function Provider({ children, doc }: Props) {
   useEffect(() => {
     const updateHash = () => {
       const currentHash = window.location.hash.slice(1);
-      console.log({ currentHash });
       scrollToHighlightById(currentHash);
       history.replaceState(
         null,

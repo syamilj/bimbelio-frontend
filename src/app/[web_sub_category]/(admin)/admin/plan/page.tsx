@@ -12,7 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { getGeneral } from '@/lib/fetch-helper';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   Plan,
   PlanFeature,
@@ -23,8 +24,6 @@ import { Edit, Plus, Search, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { DialogDelete } from './_components/dialog-delete-plan';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 // Mock data for plans
 // const mockPlans = [
@@ -309,7 +308,9 @@ export default function PlanList() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center gap-2">
-                          <Link href={`/${website_sub_category_id}/admin/plan/${plan.id}`}>
+                          <Link
+                            href={`/${website_sub_category_id}/admin/plan/${plan.id}`}
+                          >
                             <Button
                               variant="outline"
                               size="sm"

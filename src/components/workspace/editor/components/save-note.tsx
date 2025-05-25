@@ -1,6 +1,6 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useProvider } from '../provider';
@@ -33,7 +33,6 @@ export function SaveNote() {
         if (item.content[0]) length = item.content[0].text.length;
       });
       const data = await editor.blocksToFullHTML(editor.document);
-      console.log({ data });
       if (length < 25000) {
         localStorage.removeItem(`notes-${docId}-${session?.user}`);
         await saveNoteMutation({
@@ -50,7 +49,6 @@ export function SaveNote() {
         });
       }
     } catch (error) {
-      console.log({ error });
       return;
     }
   }, 1000);

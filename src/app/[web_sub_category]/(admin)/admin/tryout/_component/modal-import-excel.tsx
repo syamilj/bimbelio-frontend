@@ -36,7 +36,6 @@ const ModalImportCSV = ({
         skipEmptyLines: true,
         complete: function (results: any) {
           const data: any[] = results.data;
-          console.log('data', data);
 
           // Validasi dan transformasi data
           let isAssesmentTypeValid = {
@@ -57,7 +56,6 @@ const ModalImportCSV = ({
                 };
               }
             });
-            console.log({ Questions });
             if (!isAssesmentTypeValid.value) {
               toaster({
                 title: `Number ${isAssesmentTypeValid.number}`,
@@ -148,7 +146,6 @@ const ModalImportCSV = ({
               Answers: transformedAnswers,
             };
           });
-          console.log('fixData', fixData);
 
           if (!isValid) {
             toaster({
@@ -261,7 +258,6 @@ const ModalImportCSV = ({
 export default ModalImportCSV;
 
 const handleGenerateIRT = (data: any[]) => {
-  console.log('data - IRT', data);
   const fixData: QuestionProps[] = data.map((quest: any) => {
     const Correct = (quest.Correct as string).toLowerCase();
     const getAnswers = [

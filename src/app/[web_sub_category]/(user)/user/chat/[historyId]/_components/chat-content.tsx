@@ -3,7 +3,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import Chat from '@/components/workspace/chat';
 import { MessageDataType } from '@/components/workspace/chat/provider';
 import { env } from '@/env.mjs';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useState } from 'react';
 
 export default function ChatContent({ historyId }: { historyId: string }) {
@@ -30,9 +30,6 @@ export default function ChatContent({ historyId }: { historyId: string }) {
     await getGeneral(`/chat/getAllMessageByHistoryId?historyId=${historyId}`, {
       setData: setPrevChatMessages,
       setLoading: setIsLoadingPrevMessage,
-      onSuccess({ message, status, data }) {
-        console.log({ data });
-      },
       onError({ message }) {
         setMessageError(message);
       },

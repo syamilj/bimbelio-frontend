@@ -5,7 +5,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateStringShort } from '@/lib/utils';
 import { IconTimer2, IconUserAdmin } from '@/styles/icon';
 import { useEffect, useState } from 'react';
@@ -51,19 +51,12 @@ export function TryOutSelector() {
 
   useEffect(() => {
     if (Array.isArray(TryoutList) && TryoutList.length > 0 && firstLoad === 0) {
-      console.log('TryoutList:', TryoutList);
       let selectedId: string | undefined;
 
       if (TryoutList.length > 1) {
         selectedId = TryoutList[1]?.id;
-        console.log(
-          `Setting selectedTryOut to TryoutList[1].id: ${selectedId}`,
-        );
       } else {
         selectedId = TryoutList[0]?.id;
-        console.log(
-          `Setting selectedTryOut to TryoutList[0].id: ${selectedId}`,
-        );
       }
 
       if (selectedId) {

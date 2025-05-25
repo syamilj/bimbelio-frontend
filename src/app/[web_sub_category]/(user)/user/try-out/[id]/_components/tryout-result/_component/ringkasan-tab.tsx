@@ -24,7 +24,6 @@ interface RingkasanTabProps {
 }
 
 export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
-  console.log({ ResultData });
   const userScore = ResultData?.userScore || 0;
   // const userScore = 750;
   const totalParticipants = ResultData?.totalParticipants || 0;

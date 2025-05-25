@@ -1,6 +1,6 @@
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
-import { deleteGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { IconTailedArrowNext, IconTailedArrowPrev } from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
 import { Download, Link } from 'lucide-react';
@@ -29,8 +29,6 @@ export default function Table() {
       const { data, error } = await supabase.storage
         .from('pdf')
         .download(`document/${fileName}`);
-
-      console.log({ data, error });
 
       if (data) {
         const blob = new Blob([data], { type: 'application/pdf' });

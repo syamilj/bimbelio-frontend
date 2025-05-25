@@ -21,8 +21,6 @@ export default function Card({ data, href, noCategory }: card) {
 
   // const [docData, setDocData] = useState<any>([]);
 
-  // console.log('data', data)
-
   const [showUpgrade, setShowUpgrade] = useState<number>(99999);
 
   // const getDate = (date: any) => {

@@ -1,9 +1,9 @@
 'use client';
 
 import { useAppContext } from '@/components/provider/provider-app';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response } from '@/lib/response';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -53,7 +53,6 @@ const Search = ({}: any) => {
     }
   };
   // useEffect(() => {
-  //   console.log("1", { search, categoryId });
   //   if (search !== "" && categoryId === "") {
   //     setDocsSearchData(searchData);
   //   }
@@ -64,7 +63,6 @@ const Search = ({}: any) => {
   //         categoryId: categoryId,
   //       });
   //       setDocsSearchData(data);
-  //       console.log("data", data);
   //     };
   //     getData();
   //   }
@@ -74,7 +72,6 @@ const Search = ({}: any) => {
     const value = localStorage.getItem('search');
     const input = document.getElementById('searchValue') as HTMLInputElement;
     if (value) {
-      console.log('masuk');
       input.value = value;
       setSearch(value);
       localStorage.removeItem('search');

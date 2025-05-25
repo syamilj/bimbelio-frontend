@@ -19,7 +19,6 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
   //     }
   //   },
   //   onSuccess(data, variables, context) {
-  //     console.log({ data, variables, context });
   //     // toaster({
   //     //   title: 'Verifikasi email Kamu untuk login',
   //     //   description: 'Periksa email Kamu!',
@@ -81,7 +80,6 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
     //   if (data && data.data.id) {
     //     router.push(`/send-verify?id=${data.data.id}`);
     //   }
-    //   console.log({ data });
     //   setLoading(false);
     // } catch (error: any) {
     //   setLoading(false);

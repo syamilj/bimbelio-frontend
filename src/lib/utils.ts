@@ -11,7 +11,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-
 export const convertDaysToWords = (days: number): string => {
   if (days > 10000) return 'Lifetime';
   if (days <= 0) return 'Hari tidak valid';
@@ -72,7 +71,6 @@ export const DateTimeWithZone = (date: any) => {
     // Format ulang ke ISO 8601 untuk pengiriman
     const send = dateObj.toISOString().slice(0, 16); // Mengambil bagian 'YYYY-MM-DDTHH:MM'
 
-    console.log({ originalDate: date, newDate: send });
     return send;
   } else {
     return date;
@@ -97,7 +95,6 @@ export const getInitials = (input: string): string => {
   const words = input.trim().split(/\s+/);
 
   // Map each word to its first letter and convert to uppercase
-  console.log({ words });
   const initials = words
     .filter((word) => !word.includes('('))
     .map((word) => word.charAt(0).toUpperCase());

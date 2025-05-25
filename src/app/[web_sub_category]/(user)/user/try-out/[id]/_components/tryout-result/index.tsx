@@ -6,7 +6,7 @@ import LoaderEyeAnimation from '@/components/ui/loading/loading-bounce';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { getDateString, getHoursDetail } from '@/lib/utils';
 import { IconDocumentAdmin, IconTabsQuiz, IconTimer2 } from '@/styles/icon';
 import { GenderEnum } from '@/types/database';
@@ -179,8 +179,6 @@ export default function TryoutResult({
   const unlockTryout =
     session && session.user.role !== 'USER' ? true : unlockTryoutDbs || false;
 
-  console.log({ unlockTryout, unlockTryoutDbs, session });
-
   const [sessionResult, setSessionResult] = useState<any>();
   const [sessionResultIsLoading, setSessionResultIsLoading] =
     useState<boolean>(true);
@@ -199,8 +197,6 @@ export default function TryoutResult({
       },
     );
   }, [session, sessionId]);
-
-  console.log({ sessionResult });
 
   const [ResultData, setResultData] = useState<any>();
   const [ResultDataIsLoading, setResultDataIsLoading] = useState<boolean>(true);
@@ -248,10 +244,6 @@ export default function TryoutResult({
   useEffect(() => {
     getUserTryout();
   }, []);
-
-  console.log({ bool: currentDate < resultDate });
-  console.log({ currentDate: getDateString(currentDate) });
-  console.log({ resultDate: getDateString(resultDate) });
 
   if (currentDate < resultDate && !isTesting) {
     return <CoundowntShowResult resultDate={resultDate} />;

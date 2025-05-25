@@ -61,8 +61,6 @@ const TabContentCategory = ({ categories, refresh }: Props) => {
     }
   };
 
-  console.log(categories, editData);
-
   return (
     <Table>
       {editData && (

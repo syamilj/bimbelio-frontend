@@ -25,7 +25,7 @@ import FormError from '@/components/ui/form-error';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 // import { api } from "@/trpc/react";
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { CreateCategorySchema } from '@/types/tryout';
 import { Loader2 } from 'lucide-react';
 
@@ -79,7 +79,6 @@ const CreateCategoryModal = ({
   });
 
   function onSubmit(values: z.infer<typeof CreateCategorySchema>) {
-    console.log('values', values);
     setError('');
 
     createCategoryMutate({ values: values });

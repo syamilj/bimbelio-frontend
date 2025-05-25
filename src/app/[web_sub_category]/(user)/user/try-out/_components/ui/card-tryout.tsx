@@ -22,7 +22,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   cn,
   getDateStringShort,
@@ -121,8 +121,6 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
   const router = useRouter();
   const { data: session } = useSession();
 
-  console.log({ isTesting });
-
   // const [showUpgrade, setShowUpgrade] = useState<number>(99999);
   const [showDetail, setShowDetail] = useState<CardTryoutProps | null>(null);
 
@@ -203,13 +201,10 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
       setIsLoading(false);
       return;
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
       return;
     }
   };
-
-  console.log('data', data);
 
   const getBadgeValue = (item: CardTryoutProps) => {
     let data = null;
@@ -666,8 +661,6 @@ const RegisterTryout = ({
     joinGrupWhatsappLoad: false,
   });
 
-  console.log({ showDetail });
-
   const [validate, setValidate] = useState<{
     followTiktok: boolean;
     followInstagram: boolean;
@@ -720,10 +713,16 @@ const RegisterTryout = ({
     if (
       !validate.followTiktok ||
       !validate.followInstagram ||
-      !validate.postinganInstagram ||
-      !validate.tagInstagram ||
-      !validate.storyInstagram ||
       !validate.joinGrupWhatsapp
+    ) {
+      setError(true);
+      return;
+    }
+    if (
+      showDetail?.instagram &&
+      (!validate.postinganInstagram ||
+        !validate.tagInstagram ||
+        !validate.storyInstagram)
     ) {
       setError(true);
       return;
@@ -767,7 +766,6 @@ const RegisterTryout = ({
             )}
             // onClick={handleRegistration}
             onClick={async () => {
-              console.log({ userLimitation });
               if (session?.user.role !== 'USER') {
                 onClick();
               } else if (
@@ -1131,7 +1129,6 @@ const RegisterTryout = ({
                     className="absolute left-0 top-0 h-0 w-0 p-0"
                     onChange={(e) => {
                       const value = e.target.files ? e.target.files[0] : null;
-                      console.log(value);
                       if (value && value.type.includes('image')) {
                         setClick((prev) => ({
                           ...prev,
@@ -1179,222 +1176,225 @@ const RegisterTryout = ({
             </div>
           )}
 
-          <div
-            id="share-story"
-            className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
-          >
-            {!validate.storyInstagram && error && (
-              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Checklist box diatas
-              </div>
-            )}
-            <div className="flex flex-col items-start gap-[.5rem]">
-              <p>Share ke Story Instagram</p>
-              <div className="relative flex items-center gap-[.5rem]">
-                <input
-                  id="story-instagram"
-                  type="file"
-                  className="absolute left-0 top-0 h-0 w-0 p-0"
-                  onChange={(e) => {
-                    const value = e.target.files ? e.target.files[0] : null;
-                    console.log(value);
-                    if (value && value.type.includes('image')) {
-                      setClick((prev) => ({
-                        ...prev,
-                        storyInstagram: true,
-                      }));
-                    }
-                    if (value && !value.type.includes('image'))
-                      toaster({
-                        title: 'Upss',
-                        condition: 'warning',
-                        description: 'File yang diupload tidak sesuai!!',
-                        duration: 3000,
-                      });
-                  }}
-                />
-                <input
-                  type="checkbox"
-                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  disabled={!click.storyInstagram ? true : false}
-                  checked={validate.storyInstagram}
-                  onChange={(e) => {
-                    setValidate((prev) => ({
-                      ...prev,
-                      storyInstagram: e.target.checked,
-                    }));
-                  }}
-                />
-                <p className="text-[.8rem] text-main-gray-text">
-                  Saya sudah upload bukti share
-                </p>
-              </div>
-            </div>
-            <Button
-              className={cn(
-                'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                click.storyInstagram &&
-                  'cursor-default bg-main md:hover:bg-main',
-              )}
-              onClick={() => {
-                document.getElementById('story-instagram')?.click();
-              }}
+          {showDetail?.instagram && (
+            <div
+              id="share-story"
+              className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
             >
-              {click.storyInstagram ? <Check /> : 'Upload'}
-            </Button>
-          </div>
-          <div
-            id="share-grup-whatsapp"
-            className="relative mb-[1rem] flex items-start justify-between gap-[2rem] w-full"
-          >
-            {!validate.grupWhatsapp && error && (
-              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Checklist box diatas
+              {!validate.storyInstagram && error && (
+                <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
+                  Checklist box diatas
+                </div>
+              )}
+              <div className="flex flex-col items-start gap-[.5rem]">
+                <p>Share ke Story Instagram</p>
+                <div className="relative flex items-center gap-[.5rem]">
+                  <input
+                    id="story-instagram"
+                    type="file"
+                    className="absolute left-0 top-0 h-0 w-0 p-0"
+                    onChange={(e) => {
+                      const value = e.target.files ? e.target.files[0] : null;
+                      if (value && value.type.includes('image')) {
+                        setClick((prev) => ({
+                          ...prev,
+                          storyInstagram: true,
+                        }));
+                      }
+                      if (value && !value.type.includes('image'))
+                        toaster({
+                          title: 'Upss',
+                          condition: 'warning',
+                          description: 'File yang diupload tidak sesuai!!',
+                          duration: 3000,
+                        });
+                    }}
+                  />
+                  <input
+                    type="checkbox"
+                    className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
+                    disabled={!click.storyInstagram ? true : false}
+                    checked={validate.storyInstagram}
+                    onChange={(e) => {
+                      setValidate((prev) => ({
+                        ...prev,
+                        storyInstagram: e.target.checked,
+                      }));
+                    }}
+                  />
+                  <p className="text-[.8rem] text-main-gray-text">
+                    Saya sudah upload bukti share
+                  </p>
+                </div>
               </div>
-            )}
-            <div className="flex flex-col items-start gap-[.5rem] w-full">
-              <p>Share ke 3 Grup Whatsapp</p>
-              <div className="relative flex items-center gap-[.5rem]">
-                <input
-                  id="grup-whatsapp1"
-                  type="file"
-                  className="absolute left-0 top-0 h-0 w-0 p-0"
-                  onChange={(e) => {
-                    const value = e.target.files ? e.target.files[0] : null;
-
-                    if (value && value.type.includes('image')) {
-                      setClick((prev) => ({
-                        ...prev,
-                        grupWhatsapp: {
-                          ...prev.grupWhatsapp,
-                          grup1: true,
-                        },
-                      }));
-                    }
-                    if (value && !value.type.includes('image'))
-                      toaster({
-                        title: 'Upss',
-                        condition: 'warning',
-                        description: 'File yang diupload tidak sesuai!!',
-                        duration: 3000,
-                      });
-                  }}
-                />
-                <input
-                  id="grup-whatsapp2"
-                  type="file"
-                  className="absolute left-0 top-0 h-0 w-0 p-0"
-                  onChange={(e) => {
-                    const value = e.target.files ? e.target.files[0] : null;
-
-                    if (value && value.type.includes('image')) {
-                      setClick((prev) => ({
-                        ...prev,
-                        grupWhatsapp: {
-                          ...prev.grupWhatsapp,
-                          grup2: true,
-                        },
-                      }));
-                    }
-                    if (value && !value.type.includes('image'))
-                      toaster({
-                        title: 'Upss',
-                        condition: 'warning',
-                        description: 'File yang diupload tidak sesuai!!',
-                        duration: 3000,
-                      });
-                  }}
-                />
-                <input
-                  id="grup-whatsapp3"
-                  type="file"
-                  className="absolute left-0 top-0 h-0 w-0 p-0"
-                  onChange={(e) => {
-                    const value = e.target.files ? e.target.files[0] : null;
-
-                    if (value && value.type.includes('image')) {
-                      setClick((prev) => ({
-                        ...prev,
-                        grupWhatsapp: {
-                          ...prev.grupWhatsapp,
-                          grup3: true,
-                        },
-                      }));
-                    }
-                    if (value && !value.type.includes('image'))
-                      toaster({
-                        title: 'Upss',
-                        condition: 'warning',
-                        description: 'File yang diupload tidak sesuai!!',
-                        duration: 3000,
-                      });
-                  }}
-                />
-                <input
-                  type="checkbox"
-                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  disabled={
-                    !click.grupWhatsapp.grup1 ||
-                    !click.grupWhatsapp.grup2 ||
-                    !click.grupWhatsapp.grup3
-                      ? true
-                      : false
-                  }
-                  checked={validate.grupWhatsapp.checked}
-                  onChange={(e) => {
-                    setValidate((prev) => ({
-                      ...prev,
-                      grupWhatsapp: {
-                        ...prev.grupWhatsapp,
-                        checked: e.target.checked,
-                      },
-                    }));
-                  }}
-                />
-                <p className="text-[.8rem] text-main-gray-text">
-                  Saya sudah upload bukti share
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
               <Button
                 className={cn(
                   'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.grupWhatsapp.grup1 &&
+                  click.storyInstagram &&
                     'cursor-default bg-main md:hover:bg-main',
                 )}
                 onClick={() => {
-                  document.getElementById('grup-whatsapp1')?.click();
+                  document.getElementById('story-instagram')?.click();
                 }}
               >
-                {click.grupWhatsapp.grup1 ? <Check /> : 'Grup 1'}
-              </Button>
-              <Button
-                className={cn(
-                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.grupWhatsapp.grup2 &&
-                    'cursor-default bg-main md:hover:bg-main',
-                )}
-                onClick={() => {
-                  document.getElementById('grup-whatsapp2')?.click();
-                }}
-              >
-                {click.grupWhatsapp.grup2 ? <Check /> : 'Grup 2'}
-              </Button>
-              <Button
-                className={cn(
-                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.grupWhatsapp.grup3 &&
-                    'cursor-default bg-main md:hover:bg-main',
-                )}
-                onClick={() => {
-                  document.getElementById('grup-whatsapp3')?.click();
-                }}
-              >
-                {click.grupWhatsapp.grup3 ? <Check /> : 'Grup 3'}
+                {click.storyInstagram ? <Check /> : 'Upload'}
               </Button>
             </div>
-          </div>
+          )}
+          {showDetail?.instagram && (
+            <div
+              id="share-grup-whatsapp"
+              className="relative mb-[1rem] flex items-start justify-between gap-[2rem] w-full"
+            >
+              {!validate.grupWhatsapp.checked && error && (
+                <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
+                  Checklist box diatas
+                </div>
+              )}
+              <div className="flex flex-col items-start gap-[.5rem] w-full">
+                <p>Share ke 3 Grup Whatsapp</p>
+                <div className="relative flex items-center gap-[.5rem]">
+                  <input
+                    id="grup-whatsapp1"
+                    type="file"
+                    className="absolute left-0 top-0 h-0 w-0 p-0"
+                    onChange={(e) => {
+                      const value = e.target.files ? e.target.files[0] : null;
+
+                      if (value && value.type.includes('image')) {
+                        setClick((prev) => ({
+                          ...prev,
+                          grupWhatsapp: {
+                            ...prev.grupWhatsapp,
+                            grup1: true,
+                          },
+                        }));
+                      }
+                      if (value && !value.type.includes('image'))
+                        toaster({
+                          title: 'Upss',
+                          condition: 'warning',
+                          description: 'File yang diupload tidak sesuai!!',
+                          duration: 3000,
+                        });
+                    }}
+                  />
+                  <input
+                    id="grup-whatsapp2"
+                    type="file"
+                    className="absolute left-0 top-0 h-0 w-0 p-0"
+                    onChange={(e) => {
+                      const value = e.target.files ? e.target.files[0] : null;
+
+                      if (value && value.type.includes('image')) {
+                        setClick((prev) => ({
+                          ...prev,
+                          grupWhatsapp: {
+                            ...prev.grupWhatsapp,
+                            grup2: true,
+                          },
+                        }));
+                      }
+                      if (value && !value.type.includes('image'))
+                        toaster({
+                          title: 'Upss',
+                          condition: 'warning',
+                          description: 'File yang diupload tidak sesuai!!',
+                          duration: 3000,
+                        });
+                    }}
+                  />
+                  <input
+                    id="grup-whatsapp3"
+                    type="file"
+                    className="absolute left-0 top-0 h-0 w-0 p-0"
+                    onChange={(e) => {
+                      const value = e.target.files ? e.target.files[0] : null;
+
+                      if (value && value.type.includes('image')) {
+                        setClick((prev) => ({
+                          ...prev,
+                          grupWhatsapp: {
+                            ...prev.grupWhatsapp,
+                            grup3: true,
+                          },
+                        }));
+                      }
+                      if (value && !value.type.includes('image'))
+                        toaster({
+                          title: 'Upss',
+                          condition: 'warning',
+                          description: 'File yang diupload tidak sesuai!!',
+                          duration: 3000,
+                        });
+                    }}
+                  />
+                  <input
+                    type="checkbox"
+                    className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
+                    disabled={
+                      !click.grupWhatsapp.grup1 ||
+                      !click.grupWhatsapp.grup2 ||
+                      !click.grupWhatsapp.grup3
+                        ? true
+                        : false
+                    }
+                    checked={validate.grupWhatsapp.checked}
+                    onChange={(e) => {
+                      setValidate((prev) => ({
+                        ...prev,
+                        grupWhatsapp: {
+                          ...prev.grupWhatsapp,
+                          checked: e.target.checked,
+                        },
+                      }));
+                    }}
+                  />
+                  <p className="text-[.8rem] text-main-gray-text">
+                    Saya sudah upload bukti share
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Button
+                  className={cn(
+                    'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                    click.grupWhatsapp.grup1 &&
+                      'cursor-default bg-main md:hover:bg-main',
+                  )}
+                  onClick={() => {
+                    document.getElementById('grup-whatsapp1')?.click();
+                  }}
+                >
+                  {click.grupWhatsapp.grup1 ? <Check /> : 'Grup 1'}
+                </Button>
+                <Button
+                  className={cn(
+                    'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                    click.grupWhatsapp.grup2 &&
+                      'cursor-default bg-main md:hover:bg-main',
+                  )}
+                  onClick={() => {
+                    document.getElementById('grup-whatsapp2')?.click();
+                  }}
+                >
+                  {click.grupWhatsapp.grup2 ? <Check /> : 'Grup 2'}
+                </Button>
+                <Button
+                  className={cn(
+                    'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
+                    click.grupWhatsapp.grup3 &&
+                      'cursor-default bg-main md:hover:bg-main',
+                  )}
+                  onClick={() => {
+                    document.getElementById('grup-whatsapp3')?.click();
+                  }}
+                >
+                  {click.grupWhatsapp.grup3 ? <Check /> : 'Grup 3'}
+                </Button>
+              </div>
+            </div>
+          )}
 
           <div
             id="join-whatsapp"

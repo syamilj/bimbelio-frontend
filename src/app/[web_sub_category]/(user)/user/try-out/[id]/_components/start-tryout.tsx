@@ -3,7 +3,7 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import ReactMarkdown from '@/components/ui/react-markdown';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, replaceLatexNotation, TncTryout } from '@/lib/utils';
 import 'katex/dist/katex.min.css';
 import { Loader2 } from 'lucide-react';
@@ -75,15 +75,12 @@ const StartTryout = ({
     });
   };
 
-  console.log('sessionData', sessionData);
-
   useEffect(() => {
     if (sessionData) {
       const data = TncTryout.find(
         (item) =>
           item.category === sessionData[0]?.TryoutCategory.name.toLowerCase(),
       );
-      console.log('ketentuan', data);
       if (data) setTnc(data?.value);
       else setTnc('.....');
     }

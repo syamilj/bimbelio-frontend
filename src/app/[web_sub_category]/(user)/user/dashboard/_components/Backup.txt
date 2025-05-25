@@ -217,17 +217,7 @@ dataScoreDistribution,
 analysisByCategoryTryout,
 } = reportData            ;
 
-console.log({
-userHeader,
-studyHabits,
-learningReport,
-tryoutCategory,
-tryoutHistory,
-quizHistory,
-scoreDevelopmentData,
-dataScoreDistribution,
-analysisByCategoryTryout,
-})                        ;
+                      ;
 
 return (
 <div className="min-h-screen bg-gray-100">
