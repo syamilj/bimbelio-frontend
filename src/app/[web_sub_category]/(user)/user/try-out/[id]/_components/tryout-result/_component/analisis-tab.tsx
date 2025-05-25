@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 // import University from '@/lib/data/university';
 import { ComboboxSelect } from '@/components/ui/combobox-select';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconStar, IconTryOut } from '@/styles/icon';
 import {

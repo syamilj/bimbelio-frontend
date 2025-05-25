@@ -1,5 +1,5 @@
-import axiosInstance from './axios/axiosInstance';
-import { response, responseError } from './response';
+import axiosInstance from '../axios/axiosInstance';
+import { response, responseError } from '../response';
 
 export const getGeneral = async (
   url: string,

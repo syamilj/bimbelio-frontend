@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import {
   // FeatureTypeEnum,

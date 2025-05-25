@@ -1,5 +1,5 @@
 import { deleteHighlightMutationType } from '@/components/pdf-reader';
-import { deleteGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { RemoveBlockItem } from '@blocknote/react';
 

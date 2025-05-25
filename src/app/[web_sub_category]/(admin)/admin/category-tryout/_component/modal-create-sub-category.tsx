@@ -30,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { CreateSubCategorySchema } from '@/types/tryout';
 import { Loader2 } from 'lucide-react';
 import { CategoryWithSessions } from './tab';

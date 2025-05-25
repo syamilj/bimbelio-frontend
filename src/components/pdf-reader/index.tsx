@@ -8,7 +8,7 @@ import { env } from '@/env.mjs';
 import { hideVideoLink } from '@/lib/utils';
 import { IconDislike, IconLike } from '@/styles/icon';
 
-import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
 import { createId } from '@paralleldrive/cuid2';

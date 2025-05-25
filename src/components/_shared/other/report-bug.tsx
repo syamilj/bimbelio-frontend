@@ -4,7 +4,7 @@ import { env } from '@/env.mjs';
 import { supabase } from '@/supabaseClient';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import Image from 'next/image';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { Spinner } from '../../ui/spinner';

@@ -5,7 +5,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateStringShort } from '@/lib/utils';
 import { IconTimer2, IconUserAdmin } from '@/styles/icon';
 import { useEffect, useState } from 'react';

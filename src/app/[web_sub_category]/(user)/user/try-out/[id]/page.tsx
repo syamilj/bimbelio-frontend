@@ -4,7 +4,7 @@ import { use } from 'react';
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';

@@ -4,7 +4,7 @@ import uploadFile from '@/_assest/icon/uploadDokumen.png';
 import { useSession } from '@/components/provider/provider-session-auth';
 import LoadingPage from '@/components/ui/Loading-Page';
 import { toaster } from '@/components/ui/toaster';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { getDateForInput, getHours } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';

@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 // import TWK from '../../_assest/category/TWK.png';
 // import Umum from '../../_assest/category/Umum.png';
 
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category } from '@/types/database';
 import SearchDeskstop from '../../_components/search-dekstop';
 import Free from './free';

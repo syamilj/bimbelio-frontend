@@ -1,7 +1,7 @@
 import { CardTryoutProps } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateTryoutString, getHours } from '@/lib/utils';
 import { IconCrown, IconX } from '@/styles/icon';
 import { Pricing, Tryout } from '@/types/database';

@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category } from '@/types/database';
 import { Search } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';

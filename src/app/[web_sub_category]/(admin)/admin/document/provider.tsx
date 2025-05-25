@@ -1,5 +1,5 @@
 'use client';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category, Document, Subcategory, Video } from '@/types/database';
 import {
   createContext,

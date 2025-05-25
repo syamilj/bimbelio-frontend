@@ -1,6 +1,6 @@
 'use client';
 
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category, Subcategory } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';

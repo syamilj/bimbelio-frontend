@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useAdminWebCategory } from '../provider';

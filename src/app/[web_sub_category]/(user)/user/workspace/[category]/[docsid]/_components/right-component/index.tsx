@@ -10,7 +10,7 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
-import { deleteGeneral, getGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral, getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import {
   IconFullscreen,

@@ -1,6 +1,6 @@
 import { toaster } from '@/components/ui/toaster';
 import { BlocknoteEditorType } from '@/components/workspace/editor/provider';
-import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { HighlightTypeEnum } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
 import { Dispatch, SetStateAction, useEffect } from 'react';

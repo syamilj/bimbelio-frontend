@@ -1,6 +1,6 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useProvider } from '../provider';

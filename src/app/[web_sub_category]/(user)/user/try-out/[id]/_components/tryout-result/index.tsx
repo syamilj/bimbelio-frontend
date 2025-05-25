@@ -6,7 +6,7 @@ import LoaderEyeAnimation from '@/components/ui/loading/loading-bounce';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { getDateString, getHoursDetail } from '@/lib/utils';
 import { IconDocumentAdmin, IconTabsQuiz, IconTimer2 } from '@/styles/icon';
 import { GenderEnum } from '@/types/database';

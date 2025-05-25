@@ -1,7 +1,7 @@
 'use client';
 
 import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
 import { getMainStyles } from '@/styles/main-styles';
 import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';

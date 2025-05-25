@@ -7,7 +7,7 @@ import {
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import { SpinnerPage } from '@/components/ui/spinner';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import useMedia from 'use-media';

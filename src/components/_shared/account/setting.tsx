@@ -8,7 +8,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import axiosInstance from '@/lib/axios/axiosInstance';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response, responseError } from '@/lib/response';
 import {
   getDateString,

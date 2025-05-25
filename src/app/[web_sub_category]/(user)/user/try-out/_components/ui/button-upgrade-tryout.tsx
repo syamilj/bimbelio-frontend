@@ -2,7 +2,7 @@
 
 import { PaymentTryout } from '@/components/_shared/payment/payment-tryout';
 import { useSession } from '@/components/provider/provider-session-auth';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconCrown } from '@/styles/icon';
 import { useParams } from 'next/navigation';

@@ -21,7 +21,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 // import { toaster } from "@/components/ui/toaster";
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Pricing } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 

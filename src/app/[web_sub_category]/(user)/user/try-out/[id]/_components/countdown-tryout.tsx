@@ -3,7 +3,7 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { mutateGeneral } from '@/lib/fetch-helper';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 

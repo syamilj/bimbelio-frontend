@@ -3,7 +3,7 @@
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 // import axiosInstance from "@/lib/axios/axiosInstance";
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 // import { response } from "@/lib/response";
 import { cn, getDateString, getHours } from '@/lib/utils';
 import { Tryout } from '@/types/database';

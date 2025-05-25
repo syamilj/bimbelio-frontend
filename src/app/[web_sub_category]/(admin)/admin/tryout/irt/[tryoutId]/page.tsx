@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import LoadingPageWithText from '@/components/ui/spinner';
 
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   Tryout,
   TryoutAnswer,

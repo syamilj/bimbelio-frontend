@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { toaster } from '@/components/ui/toaster';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { BookOpen, Eye, FileText, MessageSquare, PenTool } from 'lucide-react';
 
 // type PlanType = {

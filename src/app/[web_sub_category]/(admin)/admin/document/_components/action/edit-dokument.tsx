@@ -4,7 +4,7 @@ import uploadFileImg from '@/_assest/icon/uploadDokumen.png';
 import LoadingPage from '@/components/ui/Loading-Page';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { getDateForInput, getHours } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';

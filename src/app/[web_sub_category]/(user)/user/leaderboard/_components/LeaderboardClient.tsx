@@ -6,7 +6,7 @@ import { RankingTable } from '@/app/[web_sub_category]/(user)/user/leaderboard/_
 import { TopWinners } from '@/app/[web_sub_category]/(user)/user/leaderboard/_components/top-winners';
 import { TryOutSelector } from '@/app/[web_sub_category]/(user)/user/leaderboard/_components/tryout-selector';
 import { useSession } from '@/components/provider/provider-session-auth';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useState } from 'react';
 
 export interface RankingTryoutProps {

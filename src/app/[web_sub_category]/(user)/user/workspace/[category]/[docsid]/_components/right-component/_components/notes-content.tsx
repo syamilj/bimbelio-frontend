@@ -1,7 +1,7 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import Editor from '@/components/workspace/editor';
-import { getGeneral } from '@/lib/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useState } from 'react';
 
 type Props = {
