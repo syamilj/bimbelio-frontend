@@ -870,82 +870,14 @@ const QuestionSessionTryout = () => {
             ),
           )}
         </div>
-        {/* {showExplanationPreview === questionIndex ? (
-          <textarea
-            id={`explanation-${questionIndex}`}
-            placeholder="Explanation.."
-            className="relative z-0 h-[200px] w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-            required
-            value={EditSession?.Questions[questionIndex].explanation}
-            onChange={(e) => {
-              onChangeExplanation(e, questionIndex);
-            }}
-            onFocus={() => setShowExplanationPreview(questionIndex)}
-            onBlur={() => {
-              setShowExplanationPreview(99999);
-            }}
-          />
-        ) : (
-          <div
-            className=""
-            onClick={() => {
-              setShowExplanationPreview(questionIndex);
-              setTimeout(() => {
-                const input = document.getElementById(
-                  `explanation-${questionIndex}`,
-                );
-                input?.focus();
-              }, 200);
-            }}
-          >
-            <ReactMarkdown
-              value={
-                replaceLatexNotation(
-                  EditSession?.Questions[questionIndex].explanation as string,
-                ).length > 0
-                  ? replaceLatexNotation(
-                      EditSession?.Questions[questionIndex]
-                        .explanation as string,
-                    )
-                  : '.....'
-              }
-            />
-          </div>
-        )}
-        {showExplanationPreview === questionIndex && (
-          <div
-            className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-            onClick={() => {
-              setShowExplanationPreview(questionIndex);
-              setTimeout(() => {
-                document
-                  .getElementById(`explanation-${questionIndex}`)
-                  ?.focus();
-              }, 200);
-            }}
-          >
-            <ReactMarkdown
-              value={
-                replaceLatexNotation(
-                  EditSession?.Questions[questionIndex].explanation as string,
-                ).length > 0
-                  ? replaceLatexNotation(
-                      EditSession?.Questions[questionIndex]
-                        .explanation as string,
-                    )
-                  : '.....'
-              }
-            />
-          </div>
-        )} */}
-        {/* <div className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
+        <div className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
           <BlocknoteEditor
             value={EditSession.Questions[questionIndex].explanation}
             onValueChange={(value) => {
               onChangeExplanation(value, questionIndex);
             }}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
