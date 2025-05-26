@@ -210,7 +210,7 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
             instruction: 'Klik ❤️ di postingan',
             icon: <Heart className="h-5 w-5" />,
             link: showDetail.instagram,
-            points: 2,
+            points: 5,
             required: true,
             step: 3,
             completed: false,
