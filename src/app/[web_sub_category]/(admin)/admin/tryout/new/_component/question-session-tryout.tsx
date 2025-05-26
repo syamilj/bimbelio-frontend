@@ -187,6 +187,29 @@ const QuestionSessionTryout = ({
     });
   };
 
+  const onChangeExplanation = (value: string, questionIndex: number) => {
+    setSessions((prev) => {
+      return prev.map((item, sessionIndex) => {
+        if (
+          sessionIndex === currentIndexEdit &&
+          item.Questions &&
+          item.Questions.length > 0
+        ) {
+          return {
+            ...item,
+            Questions: item.Questions.map((item2, qIndex) => {
+              if (qIndex === questionIndex) {
+                return { ...item2, explanation: value };
+              }
+              return item2;
+            }),
+          };
+        }
+        return item;
+      });
+    });
+  };
+
   const onChangeQuestion = useCallback(
     (value: string, index: number) => {
       const newQuestionValue = value;
@@ -708,6 +731,14 @@ const QuestionSessionTryout = ({
               </div>
             ),
           )}
+        </div>
+        <div className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
+          <BlocknoteEditor
+            value={EditSession.Questions[questionIndex].explanation}
+            onValueChange={(value) => {
+              onChangeExplanation(value, questionIndex);
+            }}
+          />
         </div>
       </div>
     </div>
