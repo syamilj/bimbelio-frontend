@@ -2,6 +2,8 @@
 
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { toaster } from '@/components/ui/toaster';
+import { BlockNoteEditor } from '@blocknote/core';
+import { useCreateBlockNote } from '@blocknote/react';
 import Papa from 'papaparse';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { QuestionProps, SessionProps } from '../new/page';
@@ -15,6 +17,7 @@ const ModalImportCSV = ({
   currentIndexEdit: number | null;
   assessmentType: string;
 }) => {
+  const editor = useCreateBlockNote();
   const [open, setOpen] = useState<boolean>(false);
   const [file, setFile] = useState<File | undefined>();
 
@@ -34,7 +37,7 @@ const ModalImportCSV = ({
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
-        complete: function (results: any) {
+        complete: async function (results: any) {
           const data: any[] = results.data;
 
           // Validasi dan transformasi data
@@ -56,6 +59,27 @@ const ModalImportCSV = ({
                 };
               }
             });
+
+            const ParseQuestions = await Promise.all(
+              Questions.map(async (item) => {
+                return {
+                  ...item,
+                  question: await ParseMarkdownToHTML(item.question, editor),
+                  Answers: await Promise.all(
+                    item.Answers.map(async (aItem) => {
+                      return {
+                        ...aItem,
+                        answer: await ParseMarkdownToHTML(aItem.answer, editor),
+                      };
+                    }),
+                  ),
+                  explanation: await ParseMarkdownToHTML(
+                    item.explanation || '',
+                    editor,
+                  ),
+                };
+              }),
+            );
             if (!isAssesmentTypeValid.value) {
               toaster({
                 title: `Number ${isAssesmentTypeValid.number}`,
@@ -70,7 +94,7 @@ const ModalImportCSV = ({
                 if (sessionId === currentIndexEdit) {
                   return {
                     ...session,
-                    Questions,
+                    Questions: ParseQuestions,
                   };
                 }
                 return { ...session };
@@ -286,4 +310,18 @@ const handleGenerateIRT = (data: any[]) => {
     };
   });
   return fixData;
+};
+
+const ParseMarkdownToHTML = async (
+  markdownValue: string,
+  editor: BlockNoteEditor,
+) => {
+  const rawQuestion = markdownValue;
+  const parseQuestionToBlocks =
+    await editor.tryParseMarkdownToBlocks(rawQuestion);
+  const parseQuestionBlockToHTML = await editor.blocksToFullHTML(
+    parseQuestionToBlocks,
+  );
+
+  return parseQuestionBlockToHTML;
 };
