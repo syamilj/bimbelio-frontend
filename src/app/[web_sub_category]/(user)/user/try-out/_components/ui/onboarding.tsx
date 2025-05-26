@@ -57,7 +57,10 @@ const OnBoarding = ({ open, type }: Props) => {
         handleClose();
       }}
     >
-      <DialogContent className="w-[90%] max-w-[690px] md:w-full">
+      <DialogContent
+        className="w-[90%] max-w-[690px] md:w-full"
+        classOverlay="z-[10000]"
+      >
         {type === 'chat' ? (
           <ChatAI />
         ) : type === 'notes' ? (
@@ -474,10 +477,10 @@ const Tryout = () => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
               } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
+                setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
                 localStorage.setItem(
                   'on-boarding',
-                  JSON.stringify({ ...onBoarding, quiz: false }),
+                  JSON.stringify({ ...onBoarding, tryout: false }),
                 );
               }
             }}
@@ -490,10 +493,10 @@ const Tryout = () => {
               if (index < data.length - 1) {
                 setIndex((prev) => prev + 1);
               } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
+                setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
                 localStorage.setItem(
                   'on-boarding',
-                  JSON.stringify({ ...onBoarding, quiz: false }),
+                  JSON.stringify({ ...onBoarding, tryout: false }),
                 );
               }
             }}
