@@ -387,7 +387,7 @@ const AnalysisSubject = () => {
   const subjectAnalysis = RankingTryout?.analisisCategory.map((item) => {
     return {
       subject: item.category,
-      avgTheta: parseFloat(item.avgTheta.toFixed(2)),
+      avgTheta: parseFloat(item.avgTheta?.toFixed(2)),
     };
   });
 

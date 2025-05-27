@@ -7,7 +7,14 @@ const processLatexInBlock = (
   editor: BlocknoteEditorType,
 ) => {
   try {
-    if (block.type !== 'paragraph') return false;
+    if (
+      block.type !== 'paragraph' &&
+      block.type !== 'numberedListItem' &&
+      block.type !== 'bulletListItem' &&
+      block.type !== 'checkListItem'
+    ) {
+      return false;
+    }
 
     const content = block.content || [];
     if (!Array.isArray(content)) return false;
@@ -167,7 +174,12 @@ export const processAllLatex = (editor: BlocknoteEditorType) => {
     let processedCount = 0;
 
     blocks.forEach((block) => {
-      if (block.type === 'paragraph') {
+      if (
+        block.type === 'paragraph' ||
+        block.type === 'numberedListItem' ||
+        block.type === 'bulletListItem' ||
+        block.type === 'checkListItem'
+      ) {
         const isTextItem = (
           item: unknown,
         ): item is { type: 'text'; text: string; styles?: any } =>

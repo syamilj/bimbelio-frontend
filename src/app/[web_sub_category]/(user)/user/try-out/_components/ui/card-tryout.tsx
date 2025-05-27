@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import {
@@ -21,33 +22,61 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import {
-  cn,
-  getDateStringShort,
-  getDateTryoutString,
-  getHours,
-} from '@/lib/utils';
-import {
-  IconCrown,
-  IconQuiz,
-  IconTailedArrowUp45,
-  IconTimer2,
-  IconUserAdmin,
-  IconX,
-} from '@/styles/icon';
+import { cn, getDateString, getDateTryoutString, getHours } from '@/lib/utils';
+import { IconTailedArrowUp45, IconX } from '@/styles/icon';
 import { hexToRgba } from '@/styles/main-styles';
-import {
+import type {
   Pricing,
   TryoutRegistration,
   TryoutSessionParticipant,
 } from '@/types/database';
-import { Calendar, Check, Loader2 } from 'lucide-react';
+import {
+  ArrowUp,
+  Award,
+  BookOpen,
+  Calendar,
+  Check,
+  Clock,
+  ExternalLink,
+  Heart,
+  Instagram,
+  Loader2,
+  MessageCircle,
+  Share2,
+  Tag,
+  Trophy,
+  Users,
+} from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from 'react';
 import ButtonPayment from '../../../_components/button-payment';
+
+interface ProofItem {
+  id: string;
+  title: string;
+  instruction: string;
+  icon: ReactNode;
+  link: string;
+  points: number;
+  required: boolean;
+  step: number;
+  completed: boolean;
+  uploaded: boolean;
+  loading: boolean;
+  fileName: string;
+  uploadType?: 'action' | 'file';
+}
 
 interface CardTryout {
   id: string;
@@ -109,9 +138,15 @@ interface card {
   isPrivate?: boolean;
   userTryOutId: string;
   refresh?: () => any;
+  reloadHref?: boolean;
 }
 
-export default function CardTryOut({ data, isPrivate, refresh }: card) {
+export default function CardTryOut({
+  data,
+  isPrivate,
+  refresh,
+  reloadHref,
+}: card) {
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
 
@@ -121,16 +156,138 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
   const router = useRouter();
   const { data: session } = useSession();
 
-  // const [showUpgrade, setShowUpgrade] = useState<number>(99999);
   const [showDetail, setShowDetail] = useState<CardTryoutProps | null>(null);
-
   const [step, setStep] = useState<number>(1);
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Proof items state
+  const [proofItems, setProofItems] = useState<ProofItem[]>([]);
+
   useEffect(() => {
-    if (showDetail) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = 'auto';
+    if (showDetail) {
+      document.body.style.overflow = 'hidden';
+
+      // Generate proof items based on your specification
+      const items: ProofItem[] = [
+        {
+          id: 'instagram_follow',
+          title: 'Follow Instagram',
+          instruction: 'Klik Follow di profil Instagram',
+          icon: <Instagram className="h-5 w-5" />,
+          link: 'https://www.instagram.com/bimbelio.official',
+          points: 10,
+          required: true,
+          step: 1,
+          completed: false,
+          uploaded: false,
+          loading: false,
+          fileName: '',
+          uploadType: 'file', // Changed from "action" to "file"
+        },
+        {
+          id: 'tiktok_follow',
+          title: 'Follow TikTok',
+          instruction: 'Klik Follow di profil TikTok',
+          icon: <MessageCircle className="h-5 w-5" />,
+          link: 'https://www.tiktok.com/@bimbelio.official',
+          points: 10,
+          required: true,
+          step: 2,
+          completed: false,
+          uploaded: false,
+          loading: false,
+          fileName: '',
+          uploadType: 'file', // Changed from "action" to "file"
+        },
+      ];
+
+      // Add Instagram-specific tasks if instagram link exists
+      if (showDetail.instagram) {
+        items.push(
+          {
+            id: 'like_post',
+            title: 'Like Postingan',
+            instruction: 'Klik ❤️ di postingan',
+            icon: <Heart className="h-5 w-5" />,
+            link: showDetail.instagram,
+            points: 5,
+            required: true,
+            step: 3,
+            completed: false,
+            uploaded: false,
+            loading: false,
+            fileName: '',
+            uploadType: 'file', // Changed from "action" to "file"
+          },
+          {
+            id: 'tag_friends',
+            title: 'Tag 3 Teman',
+            instruction: 'Tulis komentar dan tag 3 teman dengan @username',
+            icon: <Users className="h-5 w-5" />,
+            link: showDetail.instagram,
+            points: 20,
+            required: true,
+            step: 4,
+            completed: false,
+            uploaded: false,
+            loading: false,
+            fileName: '',
+            uploadType: 'file',
+          },
+          {
+            id: 'share_story',
+            title: 'Share ke Story',
+            instruction: 'Klik Share → Add to Story',
+            icon: <Share2 className="h-5 w-5" />,
+            link: showDetail.instagram,
+            points: 15,
+            required: true,
+            step: 5,
+            completed: false,
+            uploaded: false,
+            loading: false,
+            fileName: '',
+            uploadType: 'file',
+          },
+          {
+            id: 'share_groups',
+            title: 'Share ke 3 Grup WA',
+            instruction: 'Copy link dan kirim ke 3 grup WhatsApp',
+            icon: <Share2 className="h-5 w-5" />,
+            link: showDetail.instagram,
+            points: 25,
+            required: true,
+            step: 6,
+            completed: false,
+            uploaded: false,
+            loading: false,
+            fileName: '',
+            uploadType: 'file',
+          },
+        );
+      }
+
+      // Add WhatsApp group join task
+      items.push({
+        id: 'telegram_join',
+        title: 'Join Grup Belajar',
+        instruction: 'Klik Join Group di Telegram',
+        icon: <Users className="h-5 w-5" />,
+        link: 'https://t.me/bimbelio',
+        points: 15,
+        required: true,
+        step: items.length + 1,
+        completed: false,
+        uploaded: false,
+        loading: false,
+        fileName: '',
+        uploadType: 'file', // Changed from "action" to "file"
+      });
+
+      setProofItems(items);
+    } else {
+      document.body.style.overflow = 'auto';
+    }
   }, [showDetail]);
 
   const getTimer = (date: any, item: CardTryoutProps): any => {
@@ -195,6 +352,7 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
           userId: session?.user.id || '',
           isPremium,
         });
+        router.push(`${pathname}?register_tryout=success`);
         setStep(1);
         setShowDetail(null);
       }
@@ -208,27 +366,6 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
 
   const getBadgeValue = (item: CardTryoutProps) => {
     let data = null;
-    // if (item.isDone) {
-    //   data = {
-    //     className: 'bg-main text-white',
-    //     title: 'Sudah Selesai',
-    //   };
-    // } else if (item.isNotStarted && item.isRegistered) {
-    //   data = {
-    //     className: 'bg-green-600 text-white',
-    //     title: 'Terdaftar',
-    //   };
-    // } else if (item.isNotStarted && !item.isRegistered) {
-    //   data = {
-    //     className: 'bg-main-yellow text-black',
-    //     title: 'Belum Daftar',
-    //   };
-    // } else if (item.isActive) {
-    //   data = {
-    //     className: 'bg-main-red text-white',
-    //     title: 'Sedang Berlangsung',
-    //   };
-    // }
     if (item.isRegistered) {
       data = {
         className: 'bg-green-600 text-white',
@@ -250,39 +387,128 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
   };
 
   const getButtonValue = (item: CardTryoutProps) => {
-    let data = {
+    const data = {
       className: '',
       title: '',
     };
-    // if (item.isDone) {
-    //   if (item.isRegistered && item.isJoin) {
-    //     data.title = 'Lihat Hasil & Pembahasan';
-    //   } else {
-    //     data.title = 'Selesai';
-    //   }
-    // } else if (item.isRegistered) {
-    //   data.title = 'Mulai Tryout';
-    //   if (!item.isActive) {
-    //     data.className =
-    //       'bg-gray-400 md:hover:bg-gray-400 cursor-default text-white';
-    //   }
-    // } else if (!item.isRegistered) {
-    //   data.title = 'Daftar Sekarang';
-    // }
 
     if (item.isRegistered && item.isJoin && item.isDone) {
       data.title = 'Lihat Hasil & Pembahasan';
     } else if (item.isRegistered) {
       data.title = 'Mulai Tryout';
-      // if (!item.isActive) {
-      //   data.className =
-      //     'bg-gray-400 md:hover:bg-gray-400 cursor-default text-white';
-      // }
     } else if (!item.isRegistered) {
       data.title = 'Daftar Sekarang';
     }
 
     return data;
+  };
+
+  // Proof items handlers
+  const totalPoints = proofItems.reduce((sum, i) => sum + i.points, 0);
+  const earnedPoints = proofItems.reduce(
+    (sum, i) => sum + (i.uploaded ? i.points : 0),
+    0,
+  );
+  const completedCount = proofItems.filter((i) => i.uploaded).length;
+  const progress =
+    proofItems.length > 0 ? (completedCount / proofItems.length) * 100 : 0;
+
+  const handleAction = (id: string) => {
+    const item = proofItems.find((i) => i.id === id);
+    if (!item) return;
+
+    if (!item.completed) {
+      window.open(item.link, '_blank');
+      setProofItems((prev) =>
+        prev.map((i) => (i.id === id ? { ...i, loading: true } : i)),
+      );
+      setTimeout(
+        () =>
+          setProofItems((prev) =>
+            prev.map((i) =>
+              i.id === id ? { ...i, completed: true, loading: false } : i,
+            ),
+          ),
+        3000,
+      );
+    } else if (!item.uploaded) {
+      // All items now require file upload
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file?.type.includes('image'))
+          setProofItems((prev) =>
+            prev.map((i) =>
+              i.id === id ? { ...i, uploaded: true, fileName: file.name } : i,
+            ),
+          );
+        else if (file)
+          toaster({
+            title: 'Error',
+            condition: 'warning',
+            description: 'File harus berupa gambar!',
+            duration: 3000,
+          });
+      };
+      input.click();
+    }
+  };
+
+  const handleSubmitProof = async () => {
+    if (earnedPoints !== totalPoints) {
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: `Total poin harus ${totalPoints}, sekarang ${earnedPoints}`,
+        duration: 3000,
+      });
+      return;
+    }
+    const missing = proofItems.filter((i) => !i.uploaded);
+    if (missing.length) {
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: 'Lengkapi semua tugas terlebih dahulu!',
+        duration: 3000,
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    await handleRegistration(false);
+  };
+
+  const renderButton = (item: ProofItem) => {
+    if (item.loading)
+      return (
+        <>
+          <Loader2 className="animate-spin h-4 w-4 mr-2" />
+          <span>Tunggu...</span>
+        </>
+      );
+    if (item.uploaded)
+      return (
+        <>
+          <Check className="h-4 w-4 mr-2" />
+          <span>Selesai</span>
+        </>
+      );
+    if (item.completed)
+      return (
+        <>
+          <ArrowUp className="h-4 w-4 mr-2" />
+          <span>Upload</span>
+        </>
+      );
+    return (
+      <>
+        <ExternalLink className="h-4 w-4 mr-2" />
+        <span>Lakukan</span>
+      </>
+    );
   };
 
   useEffect(() => {
@@ -300,8 +526,8 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
             key={i}
             className="relative overflow-hidden"
           >
-            <div
-              className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20"
+            {/* <div
+              className="absolute bottom-[2rem] right-[-2rem] z-[10] text-main/20"
               style={{
                 color: hexToRgba(item.WebsiteSubCategory?.main_color, 0.2),
               }}
@@ -310,16 +536,16 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                 w={180}
                 className="rotate-[-20deg]"
               />
-            </div>
+            </div> */}
             <Badge
               className={cn(
-                'absolute right-4 top-4 bg-main text-white',
+                'absolute right-4 top-4 bg-main text-white z-[11]',
                 getBadgeValue(item)?.className,
               )}
             >
               {getBadgeValue(item)?.title}
             </Badge>
-            <CardHeader className="relative z-[2]">
+            {/* <CardHeader className="relative z-[2]">
               <CardTitle
                 className="text-[1.3rem] font-bold text-main"
                 style={{
@@ -328,110 +554,169 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
               >
                 {item.title}
               </CardTitle>
-            </CardHeader>
-            <CardContent className="relative z-[2]">
-              <div className="grid gap-2">
-                {/* Mulai Modifikasi di Sini */}
-                {(() => {
-                  // Mengelompokkan sesi berdasarkan kategori
-                  const groupedSessions = item.TryoutSession.reduce(
-                    (groups, session) => {
-                      const categoryName = session.TryoutCategory.name;
-                      if (!groups[categoryName]) {
-                        groups[categoryName] = [];
-                      }
-                      groups[categoryName].push(session);
-                      return groups;
+            </CardHeader> */}
+            <CardContent className="relative z-[2] p-0">
+              {/* Header */}
+              <div className="relative h-[200px] w-full overflow-hidden">
+                {item.image && (
+                  <Image
+                    src={
+                      `${env.NEXT_PUBLIC_SUPABASE_IMG_URL || '/placeholder.svg'}/tryout/${item.image}` ||
+                      'placeholder.svg'
+                    }
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform object-[90%_20%] duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                )}
+
+                <div
+                  className="absolute inset-0 "
+                  style={{
+                    background: `linear-gradient(to top, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.5)}, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.3)}, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.2)})`,
+                  }}
+                />
+
+                {/* Price */}
+                <div className="absolute left-4 top-4 z-10">
+                  <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-blue-600 shadow-md flex items-center gap-1.5">
+                    <Award className="h-3.5 w-3.5 text-yellow-500" />
+                    Gratis!
+                  </span>
+                </div>
+
+                {/* Category & Title */}
+                <div className="absolute bottom-0 left-0 w-full p-4 text-center">
+                  <span className="mb-2 inline-block rounded-full bg-yellow-400 px-4 py-1 text-sm font-bold text-blue-900">
+                    {/* {item.WebsiteSubCategory.name} */}
+                  </span>
+                  <h3 className="text-xl font-bold text-white md:text-2xl">
+                    {item.title}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="p-4">
+                <div className="mb-4 grid grid-cols-3 gap-2">
+                  {[
+                    {
+                      title: 'Durasi',
+                      icon: Clock,
+                      total: item.TryoutSession.reduce(
+                        (acc, item) => acc + item.duration,
+                        0,
+                      ),
                     },
-                    {} as { [key: string]: (typeof item.TryoutSession)[0][] },
-                  );
-
-                  // Mengurutkan kategori sesuai dengan urutan yang diinginkan
-                  const orderedCategories = [
-                    'Tes Potensi Skolastik (TPS)',
-                    'Tes Literasi',
-                    'Tes Penalaran Matematika',
-                  ];
-
-                  return orderedCategories
-                    .filter((category) => groupedSessions[category]) // Hanya kategori yang ada
-                    .map((categoryName) => (
-                      <div
-                        key={categoryName}
-                        className="mb-2"
-                      >
-                        {/* Judul Kategori */}
-                        <div className="flex items-center mb-2">
-                          <h3 className="text-lg font-semibold">
-                            {categoryName}:
-                          </h3>
-                        </div>
-
-                        {/* Daftar Subkategori */}
-                        {groupedSessions[categoryName].map((session, index) => (
-                          <div
-                            key={session.id || index} // Pastikan setiap sesi memiliki id unik
-                            className="flex justify-between items-center mb-2"
-                          >
-                            <div className="flex items-center ml-2">
-                              <span className="text-sm">
-                                - {session.TryoutSubCategory.name}
-                              </span>
-                            </div>
-                            <span className="text-sm text-gray-500">
-                              {session.duration} menit
-                            </span>
-                          </div>
-                        ))}
+                    {
+                      title: 'Soal',
+                      icon: BookOpen,
+                      total: item.TryoutSession.reduce(
+                        (acc, session) => acc + session._count.TryoutQuestion,
+                        0,
+                      ),
+                    },
+                    {
+                      title: 'Peserta',
+                      icon: Users,
+                      total: item._count.TryoutRegistration,
+                    },
+                  ].map((cItem, cIndex) => (
+                    <div
+                      key={cIndex}
+                      className="rounded-xl bg-main p-2 text-center flex flex-col items-center"
+                      style={{
+                        backgroundColor: hexToRgba(
+                          item.WebsiteSubCategory?.main_color,
+                          0.1,
+                        ),
+                      }}
+                    >
+                      <div className="text-xs text-gray-600 flex items-center gap-1">
+                        <cItem.icon
+                          className="h-3.5 w-3.5 text-main"
+                          style={{
+                            color: item.WebsiteSubCategory?.main_color,
+                          }}
+                        />
+                        {cItem.title}
                       </div>
-                    ));
-                })()}
-                {/* Akhir Modifikasi di Sini */}
-                <div className="flex items-center gap-2">
-                  {/* <BookOpen className="h-4 w-4 text-main-gray-text" /> */}
-                  <IconQuiz
-                    w={16}
-                    className="text-black/80"
-                  />
-                  <span className="text-sm font-semibold">
-                    {item.TryoutSession.reduce(
-                      (acc, session) => acc + session._count.TryoutQuestion,
-                      0,
-                    )}{' '}
-                    Soal
-                  </span>
+                      <div
+                        className="text-sm font-bold text-main"
+                        style={{
+                          color: item.WebsiteSubCategory?.main_color,
+                        }}
+                      >
+                        {cItem.total}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex items-center gap-2">
-                  {/* <Users className="h-4 w-4 text-main-gray-text" /> */}
-                  <IconUserAdmin
-                    w={16}
-                    className="text-black/80"
-                  />
-                  <span className="text-sm font-semibold">
-                    {item._count.TryoutRegistration} Pendaftar
-                  </span>
+
+                <div className="mb-4 flex items-center justify-center flex-wrap gap-1.5">
+                  {['tryout'].map((tag, idx) => (
+                    <span
+                      key={idx}
+                      className="rounded-full bg-main/10 px-2 py-0.5 text-xs font-medium text-main flex items-center gap-1"
+                      style={{
+                        backgroundColor: hexToRgba(
+                          item.WebsiteSubCategory?.main_color,
+                          0.1,
+                        ),
+                        color: item.WebsiteSubCategory?.main_color,
+                      }}
+                    >
+                      <Tag className="h-2.5 w-2.5" />
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-main-gray-text" />
-                  <span className="text-sm font-semibold">
-                    {`${getHours(item.startDate)}, ${getDateStringShort(
-                      item.startDate,
-                    )}`}{' '}
-                    -{' '}
-                    {`${getHours(item.endDate)}, ${getDateStringShort(
-                      item.endDate,
-                    )}`}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {/* <Timer className="h-4 w-4 text-main-gray-text" /> */}
-                  <IconTimer2
-                    w={16}
-                    className="text-black/80"
-                  />
-                  <span className="text-sm font-semibold">
-                    {getTimer(item.startDate, item)?.value}
-                  </span>
+
+                <div className="mb-4 grid grid-cols-2 gap-2">
+                  {[
+                    {
+                      icon: Calendar,
+                      title: 'Mulai',
+                      date: item.startDate,
+                    },
+                    {
+                      icon: Calendar,
+                      title: 'Selesai',
+                      date: item.endDate,
+                    },
+                  ].map((cItem, cIndex) => (
+                    <div
+                      key={cIndex}
+                      className="flex flex-col items-center rounded-lg bg-main/10 p-2 text-xs"
+                      style={{
+                        backgroundColor: hexToRgba(
+                          item.WebsiteSubCategory?.main_color,
+                          0.1,
+                        ),
+                      }}
+                    >
+                      <div className="flex items-center gap-1">
+                        <cItem.icon
+                          className="h-3.5 w-3.5 text-main"
+                          style={{
+                            color: item.WebsiteSubCategory?.main_color,
+                          }}
+                        />
+                        <span className="font-medium text-gray-700">
+                          {cItem.title}
+                        </span>
+                      </div>
+                      <span
+                        className="mt-1 text-sm font-bold text-main"
+                        style={{
+                          color: item.WebsiteSubCategory?.main_color,
+                        }}
+                      >
+                        {getDateString(cItem.date)}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </CardContent>
@@ -448,13 +733,15 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                         backgroundImage: `linear-gradient(145deg, ${item.WebsiteSubCategory?.secondary_color}, ${item.WebsiteSubCategory?.main_color})`,
                       }}
                       onClick={() => {
-                        if (item.WebsiteSubCategory) {
+                        if (reloadHref && item.WebsiteSubCategory) {
                           localStorage.setItem(
                             'website_sub_category_id',
                             item.WebsiteSubCategory.id,
                           );
-                          // window.location.href = `${window.location.}${window.location.pathname}?id=${item.id}`;
-                          window.location.href = `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`;
+                          // window.location.href = `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`;
+                          router.push(
+                            `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`,
+                          );
                         } else {
                           setShowDetail(item);
                         }
@@ -534,6 +821,14 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                 setShowDetail={setShowDetail}
                 onClick={handleRegistration}
                 showDetail={showDetail}
+                proofItems={proofItems}
+                handleAction={handleAction}
+                handleSubmitProof={handleSubmitProof}
+                renderButton={renderButton}
+                totalPoints={totalPoints}
+                earnedPoints={earnedPoints}
+                completedCount={completedCount}
+                progress={progress}
               />
             ) : showDetail.isRegistered ? (
               <div className="mt-[1rem] flex w-full items-center justify-center">
@@ -544,15 +839,6 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                       : `/${website_sub_category_id}/user/try-out/${showDetail.id}`
                   }
                   className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white hover:bg-main/80"
-                  // onClick={() => {
-                  //   if (isTesting) {
-                  //     router.push(
-                  //       `/admin/tryout/testing/try-out/${showDetail.id}`
-                  //     );
-                  //   } else if (!isPrivate) {
-                  //     router.push(`/user/try-out/${showDetail.id}`);
-                  //   }
-                  // }}
                 >
                   Mulai try out
                   <IconTailedArrowUp45 w={15} />
@@ -561,17 +847,7 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
             ) : showDetail.isRegistered &&
               showDetail.isDone &&
               !showDetail.isJoin ? (
-              <div className="mt-[1rem] flex w-full items-center justify-center">
-                {/* <div
-                  className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white hover:bg-main/80"
-                  onClick={() => {
-                    if (!isPrivate) router.push(`/try-out/${showDetail.id}`);
-                  }}
-                >
-                  Lanjutkan try out
-                  <IconTailedArrowUp45 w={15} />
-                </div> */}
-              </div>
+              <div className="mt-[1rem] flex w-full items-center justify-center"></div>
             ) : showDetail.isDone &&
               showDetail.isRegistered &&
               showDetail.isJoin ? (
@@ -607,6 +883,14 @@ const RegisterTryout = ({
   setShowDetail,
   onClick,
   showDetail,
+  proofItems,
+  handleAction,
+  handleSubmitProof,
+  renderButton,
+  totalPoints,
+  earnedPoints,
+  completedCount,
+  progress,
 }: {
   step: number;
   setStep: Dispatch<SetStateAction<number>>;
@@ -615,6 +899,14 @@ const RegisterTryout = ({
   setShowDetail: Dispatch<SetStateAction<CardTryoutProps | null>>;
   onClick: (isPremium?: boolean) => void;
   showDetail: CardTryoutProps | null;
+  proofItems: ProofItem[];
+  handleAction: (id: string) => void;
+  handleSubmitProof: () => void;
+  renderButton: (item: ProofItem) => ReactNode;
+  totalPoints: number;
+  earnedPoints: number;
+  completedCount: number;
+  progress: number;
 }) => {
   const { userLimitation, checkLimitation } = useUserLimitation();
   const { data: session } = useSession();
@@ -689,16 +981,6 @@ const RegisterTryout = ({
     joinGrupWhatsapp: false,
   });
 
-  // const { data: pricing, isLoading: pricingIsLoading } =
-  //   api.pricing.getPricingBySlug.useQuery(
-  //     {
-  //       slug: "tryout_unlock",
-  //     },
-  //     {
-  //       refetchOnWindowFocus: false,
-  //     }
-  //   );
-
   const [pricing, setPricing] = useState<Pricing>();
   const [pricingIsLoading, setPricingIsLoading] = useState<boolean>(true);
 
@@ -764,7 +1046,6 @@ const RegisterTryout = ({
               'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
               isLoading && 'bg-main/80',
             )}
-            // onClick={handleRegistration}
             onClick={async () => {
               if (session?.user.role !== 'USER') {
                 onClick();
@@ -915,571 +1196,78 @@ const RegisterTryout = ({
           <IconX className="cursor-pointer text-main-gray-text duration-200 md:hover:text-main-gray-text2" />
         </div>
         <div className="flex w-full flex-col gap-[1rem]">
-          <h1 className="text-center font-medium">Bukti Pendaftaran</h1>
-          <div
-            id="follow-tiktok"
-            className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
+          <h1 className="text-center font-medium">Bukti Pendaftaran Try Out</h1>
+          <Progress
+            value={progress}
+            className="h-2 mb-3"
+          />
+          <div className="flex justify-between text-sm text-gray-500 mb-4">
+            <span>
+              {completedCount}/{proofItems.length} selesai
+            </span>
+            <span>{Math.round(progress)}%</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            {proofItems.map((item) => (
+              <div
+                key={item.id}
+                className={cn(
+                  'border rounded-lg p-4 flex flex-col justify-between',
+                  item.uploaded
+                    ? 'border-green-300 bg-green-50'
+                    : item.completed
+                      ? 'border-blue-300 bg-blue-50'
+                      : 'border-gray-200',
+                )}
+              >
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="p-2 rounded-full bg-gray-100">
+                      {item.icon}
+                    </div>
+                    <Badge className="text-xs">+{item.points} poin</Badge>
+                  </div>
+                  <h3 className="font-semibold mb-1">{item.title}</h3>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {item.instruction}
+                  </p>
+                  {item.completed && !item.uploaded && (
+                    <p className="text-blue-600 text-sm mb-2">
+                      Siap upload bukti screenshot
+                    </p>
+                  )}
+                  {item.uploaded && (
+                    <p className="text-green-600 text-sm mb-2">
+                      {item.fileName
+                        ? `Bukti terupload: ${item.fileName}`
+                        : 'Tugas selesai'}
+                    </p>
+                  )}
+                </div>
+                <Button
+                  className="mt-2 w-full"
+                  onClick={() => handleAction(item.id)}
+                  disabled={item.loading || item.uploaded}
+                >
+                  {renderButton(item)}
+                </Button>
+              </div>
+            ))}
+          </div>
+          <Button
+            className="w-full py-2 bg-main hover:bg-main/80 text-white"
+            onClick={handleSubmitProof}
+            disabled={isLoading}
           >
-            {!validate.followTiktok && error && (
-              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Checklist box diatas
-              </div>
+            {isLoading ? (
+              <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
+            ) : (
+              <Trophy className="h-5 w-5 mr-2 inline" />
             )}
-            <div className="flex flex-col items-start gap-[.5rem]">
-              <p>Follow TikTok</p>
-              <div className="flex items-center gap-[.5rem]">
-                <input
-                  type="checkbox"
-                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  checked={validate.followTiktok}
-                  disabled={!click.followTiktok ? true : false}
-                  onChange={(e) => {
-                    setValidate((prev) => ({
-                      ...prev,
-                      followTiktok: e.target.checked,
-                    }));
-                  }}
-                />
-                <p className="text-[.8rem] text-main-gray-text">
-                  Saya sudah follow tiktok
-                </p>
-              </div>
-            </div>
-            <a
-              href="https://www.tiktok.com/@bimbelio.official?is_from_webapp=1&sender_device=pc"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                className={cn(
-                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.followTiktok &&
-                    'cursor-default bg-main md:hover:bg-main',
-                )}
-                onClick={() => {
-                  setClick((prev) => ({ ...prev, followTiktokLoad: true }));
-                  setTimeout(() => {
-                    setClick((prev) => ({ ...prev, followTiktok: true }));
-                  }, 6000);
-                }}
-              >
-                {!click.followTiktok ? (
-                  <>
-                    {click.followTiktokLoad ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      'Follow'
-                    )}
-                  </>
-                ) : (
-                  <Check />
-                )}
-              </Button>
-            </a>
-          </div>
-          <div
-            id="follow-instagram"
-            className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
-          >
-            {!validate.followInstagram && error && (
-              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Checklist box diatas
-              </div>
-            )}
-            <div className="flex flex-col items-start gap-[.5rem]">
-              <p>Follow Instagram</p>
-              <div className="flex items-center gap-[.5rem]">
-                <input
-                  type="checkbox"
-                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  disabled={!click.followInstagram ? true : false}
-                  checked={validate.followInstagram}
-                  onChange={(e) => {
-                    setValidate((prev) => ({
-                      ...prev,
-                      followInstagram: e.target.checked,
-                    }));
-                  }}
-                />
-                <p className="text-[.8rem] text-main-gray-text">
-                  Saya sudah follow instagram
-                </p>
-              </div>
-            </div>
-            <a
-              href="https://www.instagram.com/bimbelio.official?igsh=MThzd3MzbW45YW5zZQ=="
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                className={cn(
-                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.followInstagram &&
-                    'cursor-default bg-main md:hover:bg-main',
-                )}
-                onClick={() => {
-                  setClick((prev) => ({
-                    ...prev,
-                    followInstagram: true,
-                  }));
-                  setTimeout(() => {
-                    setClick((prev) => ({ ...prev, followInstagram: true }));
-                  }, 6000);
-                }}
-              >
-                {!click.followInstagram ? (
-                  <>
-                    {click.followInstagram ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      'Follow'
-                    )}
-                  </>
-                ) : (
-                  <Check />
-                )}
-              </Button>
-            </a>
-          </div>
-          {showDetail?.instagram && (
-            <div
-              id="like-instagram"
-              className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
-            >
-              {!validate.postinganInstagram && error && (
-                <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                  Checklist box diatas
-                </div>
-              )}
-              <div className="flex flex-col items-start gap-[.5rem]">
-                <p>Like Postingan Instagram</p>
-                <div className="flex items-center gap-[.5rem]">
-                  <input
-                    type="checkbox"
-                    className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                    disabled={!click.postinganInstagram ? true : false}
-                    checked={validate.postinganInstagram}
-                    onChange={(e) => {
-                      setValidate((prev) => ({
-                        ...prev,
-                        postinganInstagram: e.target.checked,
-                      }));
-                    }}
-                  />
-                  <p className="text-[.8rem] text-main-gray-text">
-                    Saya sudah like postingan instagram
-                  </p>
-                </div>
-              </div>
-              <a
-                href={showDetail.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button
-                  className={cn(
-                    'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                    click.postinganInstagram &&
-                      'cursor-default bg-main md:hover:bg-main',
-                  )}
-                  onClick={() => {
-                    setClick((prev) => ({
-                      ...prev,
-                      postinganInstagramLoad: true,
-                    }));
-                    setTimeout(() => {
-                      setClick((prev) => ({
-                        ...prev,
-                        postinganInstagram: true,
-                      }));
-                    }, 6000);
-                  }}
-                >
-                  {!click.postinganInstagram ? (
-                    <>
-                      {click.postinganInstagramLoad ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        'Like'
-                      )}
-                    </>
-                  ) : (
-                    <Check />
-                  )}
-                </Button>
-              </a>
-            </div>
-          )}
-          {showDetail?.instagram && (
-            <div
-              id="like-instagram"
-              className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
-            >
-              {!validate.tagInstagram && error && (
-                <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                  Checklist box diatas
-                </div>
-              )}
-              <div className="flex flex-col items-start gap-[.5rem]">
-                <p>Tag 3 Teman Postingan Instagram</p>
-                <div className="relative flex items-center gap-[.5rem]">
-                  <input
-                    id="tag-instagram"
-                    type="file"
-                    className="absolute left-0 top-0 h-0 w-0 p-0"
-                    onChange={(e) => {
-                      const value = e.target.files ? e.target.files[0] : null;
-                      if (value && value.type.includes('image')) {
-                        setClick((prev) => ({
-                          ...prev,
-                          tagInstagram: true,
-                        }));
-                      }
-                      if (value && !value.type.includes('image'))
-                        toaster({
-                          title: 'Upss',
-                          condition: 'warning',
-                          description: 'File yang diupload tidak sesuai!!',
-                          duration: 3000,
-                        });
-                    }}
-                  />
-                  <input
-                    type="checkbox"
-                    className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                    disabled={!click.tagInstagram ? true : false}
-                    checked={validate.tagInstagram}
-                    onChange={(e) => {
-                      setValidate((prev) => ({
-                        ...prev,
-                        tagInstagram: e.target.checked,
-                      }));
-                    }}
-                  />
-                  <p className="text-[.8rem] text-main-gray-text">
-                    Saya sudah upload
-                  </p>
-                </div>
-              </div>
-              <Button
-                className={cn(
-                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.tagInstagram &&
-                    'cursor-default bg-main md:hover:bg-main',
-                )}
-                onClick={() => {
-                  document.getElementById('tag-instagram')?.click();
-                }}
-              >
-                {click.tagInstagram ? <Check /> : 'Upload'}
-              </Button>
-            </div>
-          )}
-
-          {showDetail?.instagram && (
-            <div
-              id="share-story"
-              className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
-            >
-              {!validate.storyInstagram && error && (
-                <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                  Checklist box diatas
-                </div>
-              )}
-              <div className="flex flex-col items-start gap-[.5rem]">
-                <p>Share ke Story Instagram</p>
-                <div className="relative flex items-center gap-[.5rem]">
-                  <input
-                    id="story-instagram"
-                    type="file"
-                    className="absolute left-0 top-0 h-0 w-0 p-0"
-                    onChange={(e) => {
-                      const value = e.target.files ? e.target.files[0] : null;
-                      if (value && value.type.includes('image')) {
-                        setClick((prev) => ({
-                          ...prev,
-                          storyInstagram: true,
-                        }));
-                      }
-                      if (value && !value.type.includes('image'))
-                        toaster({
-                          title: 'Upss',
-                          condition: 'warning',
-                          description: 'File yang diupload tidak sesuai!!',
-                          duration: 3000,
-                        });
-                    }}
-                  />
-                  <input
-                    type="checkbox"
-                    className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                    disabled={!click.storyInstagram ? true : false}
-                    checked={validate.storyInstagram}
-                    onChange={(e) => {
-                      setValidate((prev) => ({
-                        ...prev,
-                        storyInstagram: e.target.checked,
-                      }));
-                    }}
-                  />
-                  <p className="text-[.8rem] text-main-gray-text">
-                    Saya sudah upload bukti share
-                  </p>
-                </div>
-              </div>
-              <Button
-                className={cn(
-                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.storyInstagram &&
-                    'cursor-default bg-main md:hover:bg-main',
-                )}
-                onClick={() => {
-                  document.getElementById('story-instagram')?.click();
-                }}
-              >
-                {click.storyInstagram ? <Check /> : 'Upload'}
-              </Button>
-            </div>
-          )}
-          {showDetail?.instagram && (
-            <div
-              id="share-grup-whatsapp"
-              className="relative mb-[1rem] flex items-start justify-between gap-[2rem] w-full"
-            >
-              {!validate.grupWhatsapp.checked && error && (
-                <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                  Checklist box diatas
-                </div>
-              )}
-              <div className="flex flex-col items-start gap-[.5rem] w-full">
-                <p>Share ke 3 Grup Whatsapp</p>
-                <div className="relative flex items-center gap-[.5rem]">
-                  <input
-                    id="grup-whatsapp1"
-                    type="file"
-                    className="absolute left-0 top-0 h-0 w-0 p-0"
-                    onChange={(e) => {
-                      const value = e.target.files ? e.target.files[0] : null;
-
-                      if (value && value.type.includes('image')) {
-                        setClick((prev) => ({
-                          ...prev,
-                          grupWhatsapp: {
-                            ...prev.grupWhatsapp,
-                            grup1: true,
-                          },
-                        }));
-                      }
-                      if (value && !value.type.includes('image'))
-                        toaster({
-                          title: 'Upss',
-                          condition: 'warning',
-                          description: 'File yang diupload tidak sesuai!!',
-                          duration: 3000,
-                        });
-                    }}
-                  />
-                  <input
-                    id="grup-whatsapp2"
-                    type="file"
-                    className="absolute left-0 top-0 h-0 w-0 p-0"
-                    onChange={(e) => {
-                      const value = e.target.files ? e.target.files[0] : null;
-
-                      if (value && value.type.includes('image')) {
-                        setClick((prev) => ({
-                          ...prev,
-                          grupWhatsapp: {
-                            ...prev.grupWhatsapp,
-                            grup2: true,
-                          },
-                        }));
-                      }
-                      if (value && !value.type.includes('image'))
-                        toaster({
-                          title: 'Upss',
-                          condition: 'warning',
-                          description: 'File yang diupload tidak sesuai!!',
-                          duration: 3000,
-                        });
-                    }}
-                  />
-                  <input
-                    id="grup-whatsapp3"
-                    type="file"
-                    className="absolute left-0 top-0 h-0 w-0 p-0"
-                    onChange={(e) => {
-                      const value = e.target.files ? e.target.files[0] : null;
-
-                      if (value && value.type.includes('image')) {
-                        setClick((prev) => ({
-                          ...prev,
-                          grupWhatsapp: {
-                            ...prev.grupWhatsapp,
-                            grup3: true,
-                          },
-                        }));
-                      }
-                      if (value && !value.type.includes('image'))
-                        toaster({
-                          title: 'Upss',
-                          condition: 'warning',
-                          description: 'File yang diupload tidak sesuai!!',
-                          duration: 3000,
-                        });
-                    }}
-                  />
-                  <input
-                    type="checkbox"
-                    className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                    disabled={
-                      !click.grupWhatsapp.grup1 ||
-                      !click.grupWhatsapp.grup2 ||
-                      !click.grupWhatsapp.grup3
-                        ? true
-                        : false
-                    }
-                    checked={validate.grupWhatsapp.checked}
-                    onChange={(e) => {
-                      setValidate((prev) => ({
-                        ...prev,
-                        grupWhatsapp: {
-                          ...prev.grupWhatsapp,
-                          checked: e.target.checked,
-                        },
-                      }));
-                    }}
-                  />
-                  <p className="text-[.8rem] text-main-gray-text">
-                    Saya sudah upload bukti share
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Button
-                  className={cn(
-                    'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                    click.grupWhatsapp.grup1 &&
-                      'cursor-default bg-main md:hover:bg-main',
-                  )}
-                  onClick={() => {
-                    document.getElementById('grup-whatsapp1')?.click();
-                  }}
-                >
-                  {click.grupWhatsapp.grup1 ? <Check /> : 'Grup 1'}
-                </Button>
-                <Button
-                  className={cn(
-                    'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                    click.grupWhatsapp.grup2 &&
-                      'cursor-default bg-main md:hover:bg-main',
-                  )}
-                  onClick={() => {
-                    document.getElementById('grup-whatsapp2')?.click();
-                  }}
-                >
-                  {click.grupWhatsapp.grup2 ? <Check /> : 'Grup 2'}
-                </Button>
-                <Button
-                  className={cn(
-                    'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                    click.grupWhatsapp.grup3 &&
-                      'cursor-default bg-main md:hover:bg-main',
-                  )}
-                  onClick={() => {
-                    document.getElementById('grup-whatsapp3')?.click();
-                  }}
-                >
-                  {click.grupWhatsapp.grup3 ? <Check /> : 'Grup 3'}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          <div
-            id="join-whatsapp"
-            className="relative mb-[1rem] flex items-center justify-between gap-[2rem]"
-          >
-            {!validate.joinGrupWhatsapp && error && (
-              <div className="absolute left-0 top-[100%] text-[.75rem] text-red-600">
-                Checklist box diatas
-              </div>
-            )}
-            <div className="flex flex-col items-start gap-[.5rem]">
-              <p>Join Grup Belajar</p>
-              <div className="flex items-center gap-[.5rem]">
-                <input
-                  type="checkbox"
-                  className="ml-[.2rem] h-[1rem] w-[1rem] appearance-none rounded border-[1.8px] border-blue-600 bg-gray-100 ring-2 ring-blue-500 ring-offset-0 duration-300 checked:border-transparent checked:bg-blue-400 checked:ring-2 checked:ring-blue-500 checked:ring-offset-2 hover:cursor-pointer hover:ring-offset-2"
-                  disabled={!click.joinGrupWhatsapp ? true : false}
-                  checked={validate.joinGrupWhatsapp}
-                  onChange={(e) => {
-                    setValidate((prev) => ({
-                      ...prev,
-                      joinGrupWhatsapp: e.target.checked,
-                    }));
-                  }}
-                />
-                <p className="text-[.8rem] text-main-gray-text">
-                  Saya sudah join Grup Belajar
-                </p>
-              </div>
-            </div>
-            <a
-              href="https://chat.whatsapp.com/LMcwXg3olvX09TAXHhmUbz"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                className={cn(
-                  'w-[108px] rounded-[.6rem] bg-main-gray-disabled duration-300 md:hover:bg-main-gray-disabled-hover',
-                  click.joinGrupWhatsapp &&
-                    'cursor-default bg-main md:hover:bg-main',
-                )}
-                onClick={() => {
-                  setClick((prev) => ({ ...prev, joinGrupWhatsappLoad: true }));
-                  setTimeout(() => {
-                    setClick((prev) => ({ ...prev, joinGrupWhatsapp: true }));
-                  }, 6000);
-                }}
-              >
-                {!click.joinGrupWhatsapp ? (
-                  <>
-                    {click.joinGrupWhatsappLoad ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      'Follow'
-                    )}
-                  </>
-                ) : (
-                  <Check />
-                )}
-              </Button>
-            </a>
-          </div>
-        </div>
-        <div>
-          <p className="pt-[1rem] text-start text-[.9rem] text-main-gray-text">
-            👆🏼 Pastikan kamu telah mencentang semua kotak kecil di sebelah kiri.
-          </p>
-          <div className="mt-[1rem] flex w-full items-center justify-center">
-            <div
-              className={cn(
-                'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
-                isLoading && 'bg-main/80',
-              )}
-              onClick={handleRegistration}
-            >
-              {isLoading ? (
-                <Spinner />
-              ) : (
-                <>
-                  Daftar try out
-                  <IconTailedArrowUp45 w={15} />
-                </>
-              )}
-            </div>
-          </div>
+            {isLoading
+              ? 'Memproses...'
+              : `Daftar Try Out (${earnedPoints} poin)`}
+          </Button>
         </div>
       </>
     );

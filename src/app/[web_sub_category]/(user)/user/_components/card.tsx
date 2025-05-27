@@ -33,19 +33,21 @@ export default function Card({ data, href, noCategory }: card) {
     const LinkButton = document.getElementById(
       `hrefLink-${id}`,
     ) as HTMLButtonElement;
-    if (premium) {
-      if (noCategory) {
-        LinkButton.click();
-      } else {
-        router.push(`${href}/${id}?tab=chat`);
-      }
-    } else {
-      if (noCategory) {
-        LinkButton.click();
-      } else {
-        router.push(`${href}/${id}?tab=chat`);
-      }
-    }
+
+    LinkButton.click();
+    // if (premium) {
+    //   if (noCategory) {
+    //     LinkButton.click();
+    //   } else {
+    //     router.push(`${href}/${id}?tab=chat`);
+    //   }
+    // } else {
+    //   if (noCategory) {
+    //     LinkButton.click();
+    //   } else {
+    //     router.push(`${href}/${id}?tab=chat`);
+    //   }
+    // }
   };
 
   return (

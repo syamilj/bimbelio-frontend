@@ -10,6 +10,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Done from './_components/done';
 import Terbaru from './_components/terbaru';
+import DialogRecomendation from './_components/ui/dialog-recomendation';
 import OnBoarding from './_components/ui/onboarding';
 import RegistrationTryOut from './_components/ui/registration-try-out';
 import SummaryTryout from './_components/ui/summary-tryout';
@@ -50,6 +51,11 @@ export default function TryOutPage() {
 }
 
 const Content = () => {
+  const searchParams = useSearchParams();
+  const order_id = searchParams?.get('order_id');
+  const transaction_status = searchParams?.get('transaction_status');
+  const register_tryout = searchParams?.get('register_tryout');
+
   const Router = useRouter();
   const { data: session } = useSession();
   const { onBoarding, setOnBoarding } = useAppContext();
@@ -115,12 +121,24 @@ const Content = () => {
     }
   }, []);
 
+  const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (register_tryout === 'success' || (order_id && transaction_status)) {
+      setOpen(true);
+    }
+  }, [register_tryout, order_id, transaction_status]);
+
   if (isLoading) return null;
 
   return (
     <div className="relative">
       {tryoutAccount?.userTryOutId ? (
         <div className="flex flex-col gap-[2rem] px-[1rem] md:px-0">
+          <DialogRecomendation
+            openExternal={open}
+            setOpenExternal={setOpen}
+          />
           <OnBoarding
             open={onBoarding.tryout}
             type="tryout"
