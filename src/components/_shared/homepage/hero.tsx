@@ -8,6 +8,9 @@ import LogoITB from '@/_assest/homepage/hero/LOGO_PTN_ITB.webp';
 import LogoITS from '@/_assest/homepage/hero/LOGO_PTN_ITS.webp';
 import LogoUGM from '@/_assest/homepage/hero/LOGO_PTN_UGM.webp';
 import LogoUI from '@/_assest/homepage/hero/LOGO_PTN_UI.webp';
+// Add these imports after the existing logo imports
+import MobilePoster from '@/_assest/homepage/hero/bimbelio-mobile.webp';
+import DesktopPoster from '@/_assest/homepage/hero/bimbelio.webp';
 import GridPattern from '@/components/magicui/animated-grid-pattern';
 import PulsatingButton from '@/components/magicui/pulsating-button';
 import { IPhoneFrame } from '@/components/ui/iphone-frame';
@@ -18,7 +21,7 @@ import { ChevronLeft, ChevronRight, RotateCw, Search } from 'lucide-react';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export interface Logo {
   src: string | StaticImageData;
@@ -173,7 +176,7 @@ const BackgroundElements: React.FC = () => (
     {/* Background Image + Overlay */}
     <div className="absolute inset-0 z-[2]">
       <Image
-        src={ImageHero}
+        src={ImageHero || '/placeholder.svg'}
         alt="University Buildings Background"
         fill
         className="object-cover object-[75%] transition-all duration-500 md:object-center [mask-image:radial-gradient(white_90%)] mt-[-15rem]"
@@ -301,7 +304,7 @@ const LogoSliders: React.FC<{ logos: Logo[]; isMobile: boolean }> = ({
                               group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
               >
                 <Image
-                  src={logo.src}
+                  src={logo.src || '/placeholder.svg'}
                   alt={logo.alt}
                   width={100}
                   height={100}
@@ -330,7 +333,7 @@ const LogoSliders: React.FC<{ logos: Logo[]; isMobile: boolean }> = ({
                               group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
               >
                 <Image
-                  src={logo.src}
+                  src={logo.src || '/placeholder.svg'}
                   alt={logo.alt}
                   width={80}
                   height={80}
@@ -384,55 +387,143 @@ const VideoMockup: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
   </div>
 );
 
-const MobileVideoMockup: React.FC = () => (
-  <IPhoneFrame>
-    <div className="relative w-full h-full">
-      <video
-        src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete//bimbelio-mobile.webm"
-        className="w-full h-full object-cover"
-        muted
-        loop
-        autoPlay
-        playsInline
-        preload="auto"
-        aria-label="Bimbelio mobile app demonstration"
-      />
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
-    </div>
-  </IPhoneFrame>
-);
+const MobileVideoMockup: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
-const DesktopVideoMockup: React.FC = () => (
-  <div className="relative w-full h-full rounded-xl shadow-xl overflow-hidden">
-    <div className="flex flex-col w-full h-full bg-white rounded-xl overflow-hidden border border-gray-200">
-      <div className="flex items-center bg-gray-100 px-4 py-2 border-b border-gray-200">
-        <div className="flex space-x-2 mr-4">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-        </div>
-        <div className="flex space-x-2 mr-4 text-gray-500">
-          <ChevronLeft className="w-4 h-4" />
-          <ChevronRight className="w-4 h-4" />
-          <RotateCw className="w-4 h-4" />
-        </div>
-        <div className="flex-1 flex items-center bg-gray-200 rounded-md px-3 py-1 text-sm text-gray-600">
-          <Search className="w-3.5 h-3.5 mr-2 text-gray-500" />
-          <span>bimbelio.com</span>
-        </div>
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' },
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current && isInView && !isLoaded) {
+      const video = videoRef.current;
+      video.load();
+      setIsLoaded(true);
+
+      const handleCanPlay = () => {
+        video.playbackRate = 2;
+        video.play().catch(console.error);
+      };
+
+      video.addEventListener('canplay', handleCanPlay, { once: true });
+    }
+  }, [isInView, isLoaded]);
+
+  return (
+    <IPhoneFrame>
+      <div className="relative w-full h-full">
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover"
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster={MobilePoster.src}
+          aria-label="Bimbelio mobile app demonstration"
+        >
+          <source
+            src="/hero/bimbelio-mobile.webm"
+            type="video/webm"
+          />
+        </video>
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </div>
-      <video
-        src="https://tklsekuymvxxcvnkifbx.supabase.co/storage/v1/object/public/dont-delete/bimbelio.webm"
-        className="w-full h-full object-cover"
-        loop
-        muted
-        playsInline
-        autoPlay
-        preload="auto"
-        aria-label="Bimbelio desktop website demonstration"
-      />
+    </IPhoneFrame>
+  );
+};
+
+const DesktopVideoMockup: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '50px' },
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current && isInView && !isLoaded) {
+      const video = videoRef.current;
+      video.load();
+      setIsLoaded(true);
+
+      const handleCanPlay = () => {
+        video.playbackRate = 2;
+        video.play().catch(console.error);
+      };
+
+      video.addEventListener('canplay', handleCanPlay, { once: true });
+    }
+  }, [isInView, isLoaded]);
+
+  return (
+    <div className="relative w-full h-full rounded-xl shadow-xl overflow-hidden">
+      <div className="flex flex-col w-full h-full bg-white rounded-xl overflow-hidden border border-gray-200">
+        <div className="flex items-center bg-gray-100 px-4 py-2 border-b border-gray-200">
+          <div className="flex space-x-2 mr-4">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          </div>
+          <div className="flex space-x-2 mr-4 text-gray-500">
+            <ChevronLeft className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" />
+            <RotateCw className="w-4 h-4" />
+          </div>
+          <div className="flex-1 flex items-center bg-gray-200 rounded-md px-3 py-1 text-sm text-gray-600">
+            <Search className="w-3.5 h-3.5 mr-2 text-gray-500" />
+            <span>bimbelio.com</span>
+          </div>
+        </div>
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover"
+          loop
+          muted
+          playsInline
+          preload="none"
+          poster={DesktopPoster.src}
+          aria-label="Bimbelio desktop website demonstration"
+        >
+          <source
+            src="/hero/bimbelio.webm"
+            type="video/webm"
+          />
+        </video>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default HeroSection;

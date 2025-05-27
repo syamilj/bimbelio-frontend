@@ -173,8 +173,6 @@ export const processAllLatex = (editor: BlocknoteEditorType) => {
     const blocks = editor.topLevelBlocks;
     let processedCount = 0;
 
-    console.log({ blocks });
-
     blocks.forEach((block) => {
       if (
         block.type === 'paragraph' ||

@@ -148,8 +148,6 @@ export function RankingTable() {
     return filteredAndSortedData.slice(startIndex, endIndex);
   }, [filteredAndSortedData, currentPage]);
 
-  console.log({ paginatedData });
-
   const totalPages = Math.ceil(filteredAndSortedData.length / ITEMS_PER_PAGE);
 
   // Komponen SortButton untuk memicu sorting

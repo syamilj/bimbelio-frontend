@@ -3,6 +3,7 @@
 import TryoutPage, {
   TryoutPageProps,
 } from '@/app/[web_sub_category]/(user)/user/try-out/[id]/page';
+import Provider from '@/app/[web_sub_category]/(user)/user/try-out/provider';
 
 export default function TestingTryoutPage({ params }: TryoutPageProps) {
   // const { setHideLayout } = useAppContext();
@@ -11,5 +12,9 @@ export default function TestingTryoutPage({ params }: TryoutPageProps) {
   //   setHideLayout(true);
   // }, []);
 
-  return <TryoutPage params={params} />;
+  return (
+    <Provider>
+      <TryoutPage params={params} />
+    </Provider>
+  );
 }

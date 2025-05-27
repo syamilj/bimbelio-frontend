@@ -162,13 +162,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             "url": "https://www.bimbelio.com",
             "logo": "https://www.bimbelio.com/logo.png",
             "sameAs": [
-              "https://www.facebook.com/bimbelio",
-              "https://www.twitter.com/bimbelio",
-              "https://www.instagram.com/bimbelio"
+              "https://www.facebook.com/bimbelio.official",
+              "https://www.twitter.com/bimbelio.official",
+              "https://www.instagram.com/bimbelio.official",
+              "https://www.tiktok.com/bimbelio.official"
             ],
             "contactPoint": {
               "@type": "ContactPoint",
-              "telephone": "+62-21-12345678",
+              "telephone": "+6285161112223",
               "contactType": "Customer Service"
             }
           }

@@ -19,7 +19,6 @@ export const middleware = async (req: NextRequest) => {
     const token = req.cookies.get('token')?.value;
     const pathname = req.nextUrl.pathname;
 
-    console.log({ token });
     if (!token) {
       return NextResponse.redirect(new URL('/', req.url));
     }
@@ -34,7 +33,6 @@ export const middleware = async (req: NextRequest) => {
     const resData: { status: number; message: string; data?: DecodeData } =
       await res.json();
     const { status, data } = resData;
-    console.log({ resData });
 
     if (status !== 200) {
       return NextResponse.redirect(new URL('/', req.url));
