@@ -19,6 +19,7 @@ export const middleware = async (req: NextRequest) => {
     const token = req.cookies.get('token')?.value;
     const pathname = req.nextUrl.pathname;
 
+    console.log({ token });
     if (!token) {
       return NextResponse.redirect(new URL('/', req.url));
     }
@@ -33,6 +34,7 @@ export const middleware = async (req: NextRequest) => {
     const resData: { status: number; message: string; data?: DecodeData } =
       await res.json();
     const { status, data } = resData;
+    console.log({ resData });
 
     if (status !== 200) {
       return NextResponse.redirect(new URL('/', req.url));
@@ -53,21 +55,21 @@ export const middleware = async (req: NextRequest) => {
 export const config = {
   matcher: [
     // "/",
-    '/auth/login',
-    '/auth/signup',
-    '/admin/:path*',
-    '/user/explore/:path*',
-    '/user/explore/:path*',
-    '/user/try-out/:path*',
-    '/user/try-out',
-    '/user/workspace/:path*',
-    '/verify/:path*',
-    '/user/search',
-    '/user/leaderboard',
-    '/user/dashboard',
-    '/user/course/:path*',
-    '/user/chat',
-    '/user/chat/:path*',
+    '/:path*/auth/login',
+    '/:path*/auth/signup',
+    '/:path*/admin/:path*',
+    '/:path*/user/explore/:path*',
+    '/:path*/user/explore/:path*',
+    '/:path*/user/try-out/:path*',
+    '/:path*/user/try-out',
+    '/:path*/user/workspace/:path*',
+    '/:path*/verify/:path*',
+    '/:path*/user/search',
+    '/:path*/user/leaderboard',
+    '/:path*/user/dashboard',
+    '/:path*/user/course/:path*',
+    '/:path*/user/chat',
+    '/:path*/user/chat/:path*',
   ],
 };
 

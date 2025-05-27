@@ -25,6 +25,7 @@ import {
 import { cn } from '@/lib/utils';
 import { ArrowUpDown, Search } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
+import ButtonUpgradeTryout from '../../try-out/_components/ui/button-upgrade-tryout';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -32,7 +33,9 @@ const ITEMS_PER_PAGE = 20;
 // sehingga kita bisa melakukan indexing dengan aman.
 // Sesuaikan dengan struktur data aktual Anda.
 interface CategoryResult {
+  category: string;
   averageScore: number;
+  isUnlocked: boolean;
 }
 
 interface Participant {
@@ -144,6 +147,8 @@ export function RankingTable() {
     const endIndex = startIndex + ITEMS_PER_PAGE;
     return filteredAndSortedData.slice(startIndex, endIndex);
   }, [filteredAndSortedData, currentPage]);
+
+  console.log({ paginatedData });
 
   const totalPages = Math.ceil(filteredAndSortedData.length / ITEMS_PER_PAGE);
 
@@ -295,7 +300,7 @@ export function RankingTable() {
                     label="Rata-rata"
                   />
                 </TableHead>
-                <TableHead className="text-right font-semibold">
+                {/* <TableHead className="text-right font-semibold">
                   <SortButton
                     field="category_0"
                     label="TPS"
@@ -312,7 +317,16 @@ export function RankingTable() {
                     field="category_2"
                     label="Matematika"
                   />
-                </TableHead>
+                </TableHead> */}
+                {paginatedData.length > 0 &&
+                  paginatedData[0].categoryResult.map((item, index) => (
+                    <TableCell
+                      key={index}
+                      className="text-right tabular-nums"
+                    >
+                      {item.category}
+                    </TableCell>
+                  ))}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -360,7 +374,17 @@ export function RankingTable() {
                           key={index}
                           className="text-right tabular-nums"
                         >
-                          {item.averageScore.toFixed(2)}
+                          {item.isUnlocked ? (
+                            item.averageScore.toFixed(2)
+                          ) : (
+                            <ButtonUpgradeTryout
+                              tryoutId={RankingTryout?.tryoutId}
+                            >
+                              <span className="text-yellow-500 underline cursor-pointer">
+                                Unlock this
+                              </span>
+                            </ButtonUpgradeTryout>
+                          )}
                         </TableCell>
                       ))}
                     </TableRow>

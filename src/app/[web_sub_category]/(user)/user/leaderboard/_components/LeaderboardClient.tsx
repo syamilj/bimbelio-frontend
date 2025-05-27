@@ -10,6 +10,7 @@ import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useState } from 'react';
 
 export interface RankingTryoutProps {
+  tryoutId: string;
   topScore: number;
   bottomScore: number;
   averageScore: number;
@@ -28,6 +29,7 @@ export interface RankingTryoutProps {
       category: string;
       totalScore: number;
       averageScore: number;
+      isUnlocked: boolean;
     }[];
   }[];
   analisisCategory: {

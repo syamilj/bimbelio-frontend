@@ -61,6 +61,7 @@ export const getGeneralAdvanced = <T,>(
       error: any;
       data: any;
     }) => any;
+    useEffectDependencies?: any[];
   },
 ): FetchReturnType => {
   const [data, setData] = useState<T | null>(null);
@@ -88,7 +89,7 @@ export const getGeneralAdvanced = <T,>(
 
   useEffect(() => {
     initialFetch();
-  }, []);
+  }, more?.useEffectDependencies || []);
 
   return {
     data: data,
