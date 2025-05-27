@@ -1,5 +1,6 @@
 'use client';
 
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Category, Subcategory } from '@/types/database';
 import { Loader2 } from 'lucide-react';
@@ -48,7 +49,7 @@ export default function DocumentSearch() {
         <div className="grid grid-cols-2 gap-[1rem] font-semibold md2:grid-cols-4">
           <Card
             data={searchDatas}
-            href="#"
+            href={`${website_sub_category_id}/user/workspace`}
           />
         </div>
       ) : (
