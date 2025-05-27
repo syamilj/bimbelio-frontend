@@ -27,6 +27,7 @@ export interface TryoutProps {
 interface AnswerProps {
   answer: string;
   value: number;
+  image?: string | null;
 }
 
 export interface QuestionProps {

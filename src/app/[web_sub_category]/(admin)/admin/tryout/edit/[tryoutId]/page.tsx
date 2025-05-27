@@ -31,6 +31,7 @@ interface AnswerProps {
   id?: string;
   answer: string;
   value: number;
+  image?: string | null;
 }
 
 export interface QuestionProps {
@@ -98,6 +99,8 @@ const NewTryOut = () => {
     currentIndexEdit !== null ? sessions[currentIndexEdit] : null;
 
   const [assessmentType, setAssesmentType] = useState<string>('');
+
+  console.log({ sessions });
 
   // const trpc = api.useUtils();
   // const { data: category, isLoading: isLoadingCategory } =
