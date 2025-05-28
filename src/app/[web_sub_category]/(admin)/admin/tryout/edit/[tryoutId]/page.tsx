@@ -4,6 +4,7 @@ import { EditTryoutContext } from '@/app/[web_sub_category]/(admin)/admin/tryout
 import SessionOption from '@/app/[web_sub_category]/(admin)/admin/tryout/edit/[tryoutId]/_components/session-option';
 import TryoutOption from '@/app/[web_sub_category]/(admin)/admin/tryout/edit/[tryoutId]/_components/tryout-option';
 import { useAppContext } from '@/components/provider/provider-app';
+import { Button } from '@/components/ui/button';
 import LoadingPageWithText from '@/components/ui/spinner';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
@@ -25,6 +26,7 @@ export interface TryoutProps {
   resultDate?: string;
   instagram?: string;
   tiktok?: string;
+  updateAt?: string;
 }
 
 interface AnswerProps {
@@ -100,7 +102,17 @@ const NewTryOut = () => {
 
   const [assessmentType, setAssesmentType] = useState<string>('');
 
-  console.log({ sessions });
+  const [isTryoutUpdated, setIsTryoutUpdated] = useState<{
+    value: boolean;
+    dbs: any;
+    temporary: any;
+  }>({
+    value: false,
+    dbs: null,
+    temporary: null,
+  });
+
+  console.log({ sessions, tryout });
 
   // const trpc = api.useUtils();
   // const { data: category, isLoading: isLoadingCategory } =
@@ -147,77 +159,151 @@ const NewTryOut = () => {
     }
   };
 
-  useEffect(() => {
-    if (category) {
-      getTryoutForUpdate().then((data) => {
-        const tryoutData = data;
-        const sessionData = tryoutData.TryoutSession.map((session: any) => {
-          const getCategory = category.find(
-            (item) => item.id === session.categoryId,
-          );
-          const getSubCategory = getCategory?.TryoutSubCategory.find(
-            (item) => item.id === session.subCategoryId,
-          );
+  const getTryoutFromDbs = (tryoutData: any) => {
+    if (!tryoutData) return;
+    const sessionData = tryoutData.TryoutSession.map((session: any) => {
+      const getCategory = category.find(
+        (item) => item.id === session.categoryId,
+      );
+      const getSubCategory = getCategory?.TryoutSubCategory.find(
+        (item) => item.id === session.subCategoryId,
+      );
+      return {
+        ...session,
+        id: session.id,
+        tryoutId: session.tryoutId,
+        categoryId: session.categoryId,
+        category: getCategory?.name,
+        subCategoryId: session.subCategoryId,
+        subCategory: getSubCategory?.name,
+        documentId: session.documentId,
+        name: session.name,
+        slug: session.slug,
+        description: session.description ?? undefined,
+        duration: session.duration,
+        thresholdValue: session.thresholdValue ?? undefined,
+        assessmentType: session.assessmentType,
+        Questions: session.TryoutQuestion.map((question: any) => {
           return {
-            ...session,
-            id: session.id,
-            tryoutId: session.tryoutId,
-            categoryId: session.categoryId,
-            category: getCategory?.name,
-            subCategoryId: session.subCategoryId,
-            subCategory: getSubCategory?.name,
-            documentId: session.documentId,
-            name: session.name,
-            slug: session.slug,
-            description: session.description ?? undefined,
-            duration: session.duration,
-            thresholdValue: session.thresholdValue ?? undefined,
-            assessmentType: session.assessmentType,
-            Questions: session.TryoutQuestion.map((question: any) => {
+            id: question.id,
+            number: question.number,
+            question: question.question,
+            image: question.image,
+            explanation: question.explanation ?? undefined,
+            subCategory: question.subCategory ?? undefined,
+            subSubCategory: question.subSubCategory ?? undefined,
+            Answers: question.TryoutAnswers.map((item: any) => {
               return {
-                id: question.id,
-                number: question.number,
-                question: question.question,
-                image: question.image,
-                explanation: question.explanation ?? undefined,
-                subCategory: question.subCategory ?? undefined,
-                subSubCategory: question.subSubCategory ?? undefined,
-                Answers: question.TryoutAnswers.map((item: any) => {
-                  return {
-                    id: item.id,
-                    answer: item.answer,
-                    value: item.value,
-                  };
-                }),
+                id: item.id,
+                answer: item.answer,
+                value: item.value,
+                image: item.image,
               };
             }),
           };
+        }),
+      };
+    });
+    setSessions([...sessionData]);
+    const startDateArr = getDateHourStr(tryoutData.startDate).split('T');
+    const endDateArr = getDateHourStr(tryoutData.endDate).split('T');
+    const resultDateArr = getDateHourStr(tryoutData.resultDate).split('T');
+    setTryout({
+      id: tryoutData.id,
+      title: tryoutData.title,
+      restTime: tryoutData.restTime,
+      status: tryoutData.status,
+      startDate: `${startDateArr[0]}T${startDateArr[1]}`,
+      endDate: `${endDateArr[0]}T${endDateArr[1]}`,
+      image: tryoutData.image,
+      resultDate: `${resultDateArr[0]}T${resultDateArr[1]}`,
+      instagram: tryoutData.instagram,
+      tiktok: tryoutData.tiktok,
+      updateAt: tryoutData.updateAt,
+    });
+    setStartDate(startDateArr[0]);
+    setStartDateTime(startDateArr[1]);
+    setEndDate(endDateArr[0]);
+    setEndDateTime(endDateArr[1]);
+    setResultDate(resultDateArr[0]);
+    setResultDateTime(resultDateArr[1]);
+    setIsTryoutUpdated({ value: false, dbs: null, temporary: null });
+  };
+
+  const getTryoutFromTemporary = (saveData: any) => {
+    if (!tryoutId) return;
+    if (!saveData) return;
+    setTryout({ ...saveData.tryout });
+    setSessions([...saveData.sessions]);
+    const startDate = saveData.tryout.startDate.split('T');
+    setStartDate(startDate[0]);
+    setStartDateTime(startDate[1]);
+    const endDate = saveData.tryout.endDate.split('T');
+    setEndDate(endDate[0]);
+    setEndDateTime(endDate[1]);
+    const resultDate = saveData.tryout.endDate.split('T');
+    setResultDate(resultDate[0]);
+    setResultDateTime(resultDate[1]);
+    setIsTryoutUpdated({ value: false, dbs: null, temporary: null });
+    // const saveDataString = localStorage.getItem(
+    //   `temporary-edit-tryout-${tryoutId}`,
+    // );
+    // if (saveDataString) {
+    //   const saveData = JSON.parse(saveDataString);
+    //   setTryout({ ...saveData.tryout });
+    //   setSessions([...saveData.sessions]);
+    //   const startDate = saveData.tryout.startDate.split('T');
+    //   setStartDate(startDate[0]);
+    //   setStartDateTime(startDate[1]);
+    //   const endDate = saveData.tryout.endDate.split('T');
+    //   setEndDate(endDate[0]);
+    //   setEndDateTime(endDate[1]);
+    //   const resultDate = saveData.tryout.endDate.split('T');
+    //   setResultDate(resultDate[0]);
+    //   setResultDateTime(resultDate[1]);
+    // }
+  };
+
+  useEffect(() => {
+    if (category.length > 0) {
+      getTryoutForUpdate()
+        .then((data) => {
+          const saveDataString = localStorage.getItem(
+            `temporary-edit-tryout-${tryoutId}`,
+          );
+          const tryoutData = data;
+          console.log({ tryoutData });
+          if (!saveDataString) {
+            getTryoutFromDbs(tryoutData);
+          } else {
+            const saveData = JSON.parse(saveDataString);
+            const updatedAtDbs = new Date(tryoutData.updateAt);
+            const updatedAtTemporary = new Date(saveData.tryout.updateAt);
+            updatedAtTemporary.setMinutes(updatedAtTemporary.getMinutes() + 1);
+            const isUpdatedAtTemporaryWins = updatedAtTemporary > updatedAtDbs;
+            if (isUpdatedAtTemporaryWins) {
+              localStorage.removeItem(`temporary-edit-tryout-${tryoutId}`);
+              getTryoutFromTemporary(saveData);
+            } else {
+              setIsTryoutUpdated({
+                value: true,
+                dbs: tryoutData,
+                temporary: saveData,
+              });
+            }
+            // if (isUpdatedAtTemporaryWins) {
+            //   getTryoutFromTemporary(saveData);
+            // } else {
+            //   localStorage.removeItem(`temporary-edit-tryout-${tryoutId}`);
+            //   getTryoutFromDbs(tryoutData);
+            // }
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
-        setSessions([...sessionData]);
-        const startDateArr = getDateHourStr(tryoutData.startDate).split('T');
-        const endDateArr = getDateHourStr(tryoutData.endDate).split('T');
-        const resultDateArr = getDateHourStr(tryoutData.resultDate).split('T');
-        setTryout({
-          id: tryoutData.id,
-          title: tryoutData.title,
-          restTime: tryoutData.restTime,
-          status: tryoutData.status,
-          startDate: `${startDateArr[0]}T${startDateArr[1]}`,
-          endDate: `${endDateArr[0]}T${endDateArr[1]}`,
-          image: tryoutData.image,
-          resultDate: `${resultDateArr[0]}T${resultDateArr[1]}`,
-          instagram: tryoutData.instagram,
-          tiktok: tryoutData.tiktok,
-        });
-        setStartDate(startDateArr[0]);
-        setStartDateTime(startDateArr[1]);
-        setEndDate(endDateArr[0]);
-        setEndDateTime(endDateArr[1]);
-        setResultDate(resultDateArr[0]);
-        setResultDateTime(resultDateArr[1]);
-      });
     }
-  }, [category]);
+  }, [category, tryoutId]);
 
   // const { mutate: updateTryout, isPending: isLoading } =
   //   api.tryout.updateTryout.useMutation({
@@ -239,6 +325,7 @@ const NewTryOut = () => {
     } catch (error) {
       return responseError(error, true);
     } finally {
+      localStorage.removeItem(`temporary-edit-tryout-${tryoutId}`);
       setIsLoading(false);
     }
   };
@@ -283,6 +370,41 @@ const NewTryOut = () => {
       );
     }
   }, [assessmentType]);
+
+  // useEffect(() => {
+  //   if (!tryoutId) return;
+  //   const saveDataString = localStorage.getItem(
+  //     `temporary-edit-tryout-${tryoutId}`,
+  //   );
+  //   if (saveDataString) {
+  //     const saveData = JSON.parse(saveDataString);
+  //     setTryout({ ...saveData.tryout });
+  //     setSessions([...saveData.sessions]);
+  //     const startDate = saveData.tryout.startDate.split('T');
+  //     setStartDate(startDate[0]);
+  //     setStartDateTime(startDate[1]);
+  //     const endDate = saveData.tryout.endDate.split('T');
+  //     setEndDate(endDate[0]);
+  //     setEndDateTime(endDate[1]);
+  //     const resultDate = saveData.tryout.endDate.split('T');
+  //     setResultDate(resultDate[0]);
+  //     setResultDateTime(resultDate[1]);
+  //   }
+  //   document.body.style.overflow = 'hidden';
+  // }, [tryoutId]);
+
+  useEffect(() => {
+    const saveData = {
+      tryout,
+      sessions,
+    };
+    if (tryout && tryout.id) {
+      localStorage.setItem(
+        `temporary-edit-tryout-${tryout.id}`,
+        JSON.stringify(saveData),
+      );
+    }
+  }, [tryout, sessions]);
 
   const handleSubmit = () => {
     if (sessions.length === 0) {
@@ -514,6 +636,34 @@ const NewTryOut = () => {
     return (
       <div className="flex justify-center items-center h-full w-full">
         <Loader2 className="w-4 h-4 animate-spin" />
+      </div>
+    );
+  }
+
+  if (isTryoutUpdated.value) {
+    return (
+      <div className="flex flex-col gap-4 justify-center items-center h-full w-full">
+        <h1 className="text-xl font-medium">
+          There is an update from this tryout
+        </h1>
+        <div className="flex gap-4 items-center justify-center w-full">
+          <Button
+            onClick={() => {
+              localStorage.removeItem(`temporary-edit-tryout-${tryoutId}`);
+              getTryoutFromDbs(isTryoutUpdated.dbs);
+            }}
+          >
+            Use Data From Database
+          </Button>
+          <Button
+            className="bg-yellow-500 hover:bg-yellow-400"
+            onClick={() => {
+              getTryoutFromTemporary(isTryoutUpdated.temporary);
+            }}
+          >
+            Use Data From Temporary
+          </Button>
+        </div>
       </div>
     );
   }

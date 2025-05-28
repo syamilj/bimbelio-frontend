@@ -59,18 +59,10 @@ const TryoutOption = () => {
   const [dateTryoutHeight, setDateTryoutHeight] = useState<number>(0);
   const [showDateTryout, setShowDateTryout] = useState<boolean>(true);
   const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
-  // const [thumbnail, setThumbnail] = useState<File | undefined>();
-  // const [thumbnailName, setThumbnailName] = useState<string>('');
-
-  // const { mutate: deleteTryout, isPending: loadingDeleteTryout } =
-  //   api.tryout.deleteTryout.useMutation({
-  //     onSuccess() {
-  //       router.push("/admin/try-out");
-  //     },
-  //   });
 
   const [loadingDeleteTryout, setIsLoadingDeleteTryout] =
     useState<boolean>(false);
+
   const deleteTryout = async ({ id }: { id: string }) => {
     try {
       setIsLoadingDeleteTryout(true);
@@ -100,33 +92,6 @@ const TryoutOption = () => {
       ];
     });
   };
-
-  // const saveImage = async (filename: string, file: File) => {
-  //   let isSaved = false;
-  //   while (!isSaved) {
-  //     if (tryout?.image) {
-  //       await supabase.storage.from('img').remove([`tryout/${tryout.image}`]);
-  //     }
-  //     const save = await supabase.storage
-  //       .from('img')
-  //       .upload(`tryout/${filename}`, file);
-  //     if (save.data) isSaved = true;
-  //     if (save.error) isSaved = false;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (thumbnail) {
-  //     const name = `tryout-${crypto.randomUUID()}`;
-  //     saveImage(name, thumbnail);
-  //     setThumbnailName(name);
-  //     setTryout(prev => ({ ...prev, image: name }));
-  //   }
-  // }, [thumbnail]);
-
-  // useEffect(() => {
-  //   if (tryout && tryout.image) setThumbnailName(tryout.image);
-  // }, [tryout?.image]);
 
   const handleDeleteTryout = () => {
     if (tryout?.id) {
@@ -489,6 +454,19 @@ const TryoutOption = () => {
         </div>
       </div>
       <div className="my-[1rem] h-[1px] w-full bg-main-gray-disabled/60" />
+      <button
+        type="button"
+        className={cn(
+          'flex w-full shrink-0 cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100',
+          loadingDeleteTryout && 'cursor-default md:hover:bg-red-100',
+        )}
+        onClick={() => {
+          localStorage.removeItem(`temporary-edit-tryout-${tryout?.id}`);
+          window.location.reload();
+        }}
+      >
+        Reset Temporary Data
+      </button>
       <div className="grid w-full grid-cols-2 gap-[1rem]">
         <div
           className={cn(
