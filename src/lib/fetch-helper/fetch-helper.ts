@@ -19,6 +19,7 @@ export const getGeneral = async (
       errorTitle?: string;
       errorMsg?: string;
     };
+    onLoading?: () => any;
     onSuccess?: ({
       message,
       status,
@@ -48,7 +49,11 @@ export const getGeneral = async (
   ) {
     more.setLoading(true);
   }
+
+  if (more?.onLoading) more.onLoading();
+
   let showToast = true;
+
   try {
     const res = await axiosInstance.get(url, {
       params: more?.params,
@@ -181,8 +186,9 @@ export const deleteGeneral = async (
 export const mutateGeneral = async (
   url: string,
   more: {
-    payload: any;
-    type: 'post' | 'put';
+    params?: object;
+    payload?: any;
+    type: 'post' | 'put' | 'delete';
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
     firstLoad?: boolean;
     endLoad?: boolean;
@@ -209,10 +215,12 @@ export const mutateGeneral = async (
       status,
       message,
       error,
+      data,
     }: {
       status: number;
       message: string;
       error: any;
+      data: any;
     }) => any;
   },
 ) => {
@@ -256,8 +264,9 @@ export const mutateGeneral = async (
     );
     if (more?.onError) {
       await more.onError({
-        status: errData.status,
-        message: errData.message,
+        status: errData.error?.response?.data?.status,
+        message: errData.error?.response?.data?.message,
+        data: errData.error?.response?.data?.data,
         error: errData.error,
       });
     }
