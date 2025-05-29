@@ -1,7 +1,6 @@
 'use client';
 
 import uploadFile from '@/_assest/icon/uploadDokumen.png';
-import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -37,13 +36,11 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-// const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
-//   ssr: false,
-// });
+import BlogEditor from '../../_components/blog-editor';
 
 const EditBlogAdmin = () => {
   const params = useParams();
+
   const blogId = Array.isArray(params?.blogId)
     ? params.blogId[0]
     : (params?.blogId ?? '');
@@ -55,14 +52,13 @@ const EditBlogAdmin = () => {
   //   { refetchOnWindowFocus: false },
   // );
 
-  const {
-    data: blog,
-    isLoading,
-    refetch,
-  }: UseGetDataType<BlogPost> = useGet('/blog/getBlogByIdAdmin', {
-    params: { id: blogId },
-    useEffectDependencies: [blogId],
-  });
+  const { data: blog, refetch }: UseGetDataType<BlogPost> = useGet(
+    '/blog/getBlogByIdAdmin',
+    {
+      params: { id: blogId },
+      useEffectDependencies: [blogId],
+    },
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
@@ -214,22 +210,6 @@ const EditBlogAdmin = () => {
       },
     });
   };
-
-  const replaceLatexNotation = (content: string) => {
-    return content
-      .replace(/\\\[/g, '$$$')
-      .replace(/\\\]/g, '$$$')
-      .replace(/\\\(/g, '$$$')
-      .replace(/\\\)/g, '$$$');
-  };
-
-  const remarkMathOptions = {
-    singleDollarTextMath: false,
-  };
-
-  console.log('searchTag', searchTag);
-  console.log('tags', tags);
-  console.log('tagValue', tagValue);
 
   return (
     <div
@@ -443,26 +423,14 @@ const EditBlogAdmin = () => {
           </div>
         </div>
       </div>
-      {/* <MDEditor
+
+      <BlogEditor
         value={value}
-        height={'70vh'}
-        onChange={(val) => {
-          const processedValue = replaceLatexNotation(val ?? '');
-          setValue(processedValue);
-        }}
-        previewOptions={{
-          remarkPlugins: [[remarkMath, remarkMathOptions], remarkGfm],
-          rehypePlugins: [rehypeKatex, rehypeRaw],
-          className: 'ReactMarkdown',
-        }}
-      /> */}
-      <BlocknoteEditor
-        className="border rounded-lg p-8"
-        value={value}
-        onValueChange={(value) => {
+        onChange={(value) => {
           setValue(value);
         }}
       />
+
       <div className="h-[50px] w-full">
         {loading ? (
           <div className="flex h-[50px] w-full items-center justify-center rounded-[.8rem] bg-main-hover">

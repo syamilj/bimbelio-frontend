@@ -1,6 +1,5 @@
 'use client';
 
-import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -35,6 +34,7 @@ import { BlogStatusEnum, BlogTags } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import BlogEditor from '../_components/blog-editor';
 
 const AddBlogAdmin = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -163,21 +163,6 @@ const AddBlogAdmin = () => {
       return showToast('Thumbnail', 'Gagal Upload Thumbnail....');
     }
   };
-
-  const replaceLatexNotation = (content: any) => {
-    return content
-      .replace(/\\\[/g, '$$$')
-      .replace(/\\\]/g, '$$$')
-      .replace(/\\\(/g, '$$$')
-      .replace(/\\\)/g, '$$$');
-  };
-
-  const remarkMathOptions = {
-    singleDollarTextMath: false,
-  };
-
-  console.log('searchTag', searchTag);
-  console.log('tags', tags);
 
   return (
     <div
@@ -389,23 +374,9 @@ const AddBlogAdmin = () => {
           </div>
         </div>
       </div>
-      {/* <MDEditor
+      <BlogEditor
         value={value}
-        height={'70vh'}
-        onChange={(val) => {
-          const processedValue = replaceLatexNotation(val ?? '');
-          setValue(processedValue);
-        }}
-        previewOptions={{
-          remarkPlugins: [[remarkMath, remarkMathOptions], remarkGfm],
-          rehypePlugins: [rehypeKatex, rehypeRaw],
-          className: 'ReactMarkdown',
-        }}
-      /> */}
-      <BlocknoteEditor
-        className="border rounded-lg p-8"
-        value={value}
-        onValueChange={(value) => {
+        onChange={(value) => {
           setValue(value);
         }}
       />
