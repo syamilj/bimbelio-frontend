@@ -7,6 +7,7 @@ import type {
   Message,
 } from '@ai-sdk/ui-utils';
 import { useChat } from 'ai/react';
+import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import {
   createContext,
@@ -86,6 +87,10 @@ export default function Provider({
     append: appendMessages,
   } = useChat({
     api: apiChat,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
     body,
     streamProtocol: 'text',
     onError: (error: any) => {
@@ -111,6 +116,10 @@ export default function Provider({
     append: appendMessagesEdit,
   } = useChat({
     api: apiChat,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
     body,
     streamProtocol: 'text',
     onError: (error) => {
