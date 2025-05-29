@@ -3,7 +3,7 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getGeneralAdvanced } from '@/lib/fetch-helper/fetch-helper-advanced';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { Sparkles, Star, Trophy } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction } from 'react';
@@ -24,13 +24,14 @@ export default function DialogRecomendation({
   const router = useRouter();
   const { data: session } = useSession();
 
-  const { data, isLoading, fetchData } = getGeneralAdvanced(
-    '/tryout/getTryOutCardUpcomingAnotherWeb',
-    {
-      params: { userId: session?.user.id },
-      useEffectDependencies: [session],
-    },
-  );
+  const {
+    data,
+    isLoading,
+    refetch: fetchData,
+  } = useGet('/tryout/getTryOutCardUpcomingAnotherWeb', {
+    params: { userId: session?.user.id },
+    useEffectDependencies: [session],
+  });
 
   return (
     <Dialog

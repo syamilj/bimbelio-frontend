@@ -1,3 +1,30 @@
+export type BlogPost = {
+  website_sub_category_id: string;
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  value: string;
+  thumbnail: string;
+  createdAt: Date;
+  publishedAt: Date | null;
+  status: BlogStatusEnum;
+  tags: string[];
+  updatedAt: Date;
+  views: number;
+  isEditorPick: boolean | null;
+};
+
+export type BlogStatusEnum = 'DRAFT' | 'SCHEDULED' | 'PUBLISH';
+
+export type BlogTags = {
+  website_sub_category_id: string;
+  id: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type Category = {
   website_sub_category_id: string;
   id: string;
