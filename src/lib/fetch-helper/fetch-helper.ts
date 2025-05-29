@@ -224,7 +224,7 @@ export const mutateGeneral = async (
     }) => any;
   },
 ) => {
-  const { payload, type, setLoading } = more;
+  const { payload, params, type, setLoading } = more;
   if (
     setLoading &&
     (more?.firstLoad == true || !more || more.firstLoad === undefined)
@@ -241,7 +241,13 @@ export const mutateGeneral = async (
     if (more.toast?.hideSuccess === true) showToast = false;
     else if (more.hideToast === true) showToast = false;
     else showToast = true;
-    const res = await axiosInstance[type](url, payload);
+    let res;
+    if (type === 'post' || type === 'put') {
+      res = await axiosInstance[type](url, payload);
+    } else {
+      res = await axiosInstance.delete(url, { params });
+    }
+    // const res = await axiosInstance[type](url, payload);
     const resData = response(
       res,
       showToast,

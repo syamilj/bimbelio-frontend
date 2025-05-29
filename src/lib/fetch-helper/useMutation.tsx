@@ -22,13 +22,23 @@ export const useMutation = <T,>(
   type: 'post' | 'put' | 'delete',
   more?: MoreProps,
 ): FetchReturnType => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ErrorType | null>(null);
   const [success, setSuccess] = useState<SuccessType | null>(null);
 
-  const mutate = async () => {
+  const mutate = async (optional?: { payload?: any; params?: object }) => {
     const res = await mutateGeneral(url, {
       ...more,
+      payload: {
+        testPayload: 'awd',
+        ...more?.payload,
+        ...optional?.payload,
+      },
+      params: {
+        testParams: 'awd',
+        ...more?.params,
+        ...optional?.params,
+      },
       type,
       setLoading: setIsLoading,
       onLoading() {
@@ -98,7 +108,7 @@ type SuccessType = {
 };
 
 type FetchReturnType = {
-  mutate: () => Promise<
+  mutate: (optional?: { payload?: any; params?: object }) => Promise<
     | {
         message: string;
         status: number;
