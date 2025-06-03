@@ -122,6 +122,8 @@ export function ReviewTab({
       return value === 5;
     } else if (AssessmentType === '+4/-1/0') {
       return value === 4;
+    } else if (AssessmentType === '+1/0') {
+      return value === 1;
     }
 
     return null;

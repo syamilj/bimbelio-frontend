@@ -671,11 +671,13 @@ const QuestionSessionTryout = () => {
                         ? 5
                         : assessmentType === '+5/0'
                           ? 2
-                          : assessmentType === 'IRT'
+                          : assessmentType === '+1/0'
                             ? 2
-                            : assessmentType === '+4/-1/0'
+                            : assessmentType === 'IRT'
                               ? 2
-                              : 0,
+                              : assessmentType === '+4/-1/0'
+                                ? 2
+                                : 0,
                   }).map((_: any, i: number) => (
                     <div
                       key={i}
@@ -686,6 +688,9 @@ const QuestionSessionTryout = () => {
                           'bg-main text-white md:hover:bg-main',
                         assessmentType === '+5/0' &&
                           i * 5 === item2.value &&
+                          'bg-main text-white md:hover:bg-main',
+                        assessmentType === '+1/0' &&
+                          i * 1 === item2.value &&
                           'bg-main text-white md:hover:bg-main',
                         assessmentType === 'IRT' &&
                           i * 5 === item2.value &&
@@ -709,6 +714,13 @@ const QuestionSessionTryout = () => {
                             answerIndex,
                             item2.value,
                           );
+                        } else if (assessmentType === '+1/0') {
+                          onChangeAnswerValue(
+                            i * 1,
+                            questionIndex,
+                            answerIndex,
+                            item2.value,
+                          );
                         } else if (assessmentType === 'IRT') {
                           onChangeAnswerValue(
                             i * 5,
@@ -723,20 +735,23 @@ const QuestionSessionTryout = () => {
                             answerIndex,
                             item2.value,
                           );
-                        } else {
-                          onChangeAnswerValue(
-                            i + 1,
-                            questionIndex,
-                            answerIndex,
-                            item2.value,
-                          );
                         }
+                        // else {
+                        //   onChangeAnswerValue(
+                        //     i + 1,
+                        //     questionIndex,
+                        //     answerIndex,
+                        //     item2.value,
+                        //   );
+                        // }
                       }}
                     >
                       {assessmentType === '1-5' ? (
                         <>{i + 1}</>
                       ) : assessmentType === '+5/0' ? (
                         <>{i * 5}</>
+                      ) : assessmentType === '+1/0' ? (
+                        <>{i * 1}</>
                       ) : assessmentType === 'IRT' && i == 0 ? (
                         <CircleX />
                       ) : assessmentType === 'IRT' && i == 1 ? (

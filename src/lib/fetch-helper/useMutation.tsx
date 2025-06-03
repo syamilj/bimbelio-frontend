@@ -1,30 +1,30 @@
 import { useState } from 'react';
 import { mutateGeneral } from './fetch-helper';
 
-export type UseMutationDataType<Data, ErrorData = any> = Omit<
-  FetchReturnType,
-  'data' | 'error'
-> & {
-  success:
-    | (Omit<SuccessType, 'data'> & {
-        data?: Data | null;
-      })
-    | null;
-  error:
-    | (Omit<ErrorType, 'data'> & {
-        data: ErrorData | null;
-      })
-    | null;
-};
+// export type UseMutationDataType<Data, ErrorData = any> = Omit<
+//   FetchReturnType,
+//   'data' | 'error'
+// > & {
+//   success:
+//     | (Omit<SuccessType, 'data'> & {
+//         data?: Data | null;
+//       })
+//     | null;
+//   error:
+//     | (Omit<ErrorType, 'data'> & {
+//         data: ErrorData | null;
+//       })
+//     | null;
+// };
 
-export const useMutation = <T,>(
+export function useMutation<Data = any, ErrorData = any>(
   url: string,
   type: 'post' | 'put' | 'delete',
   more?: MoreProps,
-): FetchReturnType => {
+): FetchReturnType<Data, ErrorData> {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<ErrorType | null>(null);
-  const [success, setSuccess] = useState<SuccessType | null>(null);
+  const [error, setError] = useState<ErrorType<ErrorData> | null>(null);
+  const [success, setSuccess] = useState<SuccessType<Data> | null>(null);
 
   const mutate = async (optional?: { payload?: any; params?: object }) => {
     const res = await mutateGeneral(url, {
@@ -60,7 +60,7 @@ export const useMutation = <T,>(
     success,
     error,
   };
-};
+}
 
 type MoreProps = {
   params?: object;
@@ -98,14 +98,19 @@ type MoreProps = {
   }) => any;
 };
 
-type ErrorType = { data: any; error: any; message: string; status: number };
-type SuccessType = {
+type ErrorType<Data = any> = {
+  data: Data;
+  error: any;
   message: string;
   status: number;
-  data?: any;
+};
+type SuccessType<Data = any> = {
+  message: string;
+  status: number;
+  data?: Data;
 };
 
-type FetchReturnType = {
+type FetchReturnType<Data, ErrorData> = {
   mutate: (optional?: { payload?: any; params?: object }) => Promise<
     | {
         message: string;
@@ -117,6 +122,6 @@ type FetchReturnType = {
     | undefined
   >;
   isLoading: boolean;
-  success: SuccessType | null;
-  error: ErrorType | null;
+  error: ErrorType<ErrorData> | null;
+  success: SuccessType<Data> | null;
 };

@@ -384,10 +384,12 @@ const Statistics = () => {
 const AnalysisSubject = () => {
   const { RankingTryout, RankingTryoutIsLoading } = useLeaderboardContext();
 
-  const subjectAnalysis = RankingTryout?.analisisCategory.map((item) => {
+  const subjectAnalysis = RankingTryout?.AnalisisCategory.map((item) => {
     return {
-      subject: item.category,
+      subject: item.name,
       avgTheta: parseFloat(item.avgTheta?.toFixed(2)),
+      avgScore: parseFloat(item.avgScore?.toFixed(2)),
+      totalScore: parseFloat(item.totalScore?.toFixed(2)),
     };
   });
 
@@ -424,7 +426,8 @@ const AnalysisSubject = () => {
                   data={subjectAnalysis}
                   margin={{
                     left: 12,
-                    right: 12,
+                    right: 24,
+                    top: 24,
                   }}
                 >
                   <CartesianGrid
@@ -448,7 +451,7 @@ const AnalysisSubject = () => {
                     content={<ChartTooltipContent hideLabel hideIndicator />}
                   /> */}
                   <Line
-                    dataKey="avgTheta"
+                    dataKey="avgScore"
                     type="natural"
                     stroke="#0091ff"
                     strokeWidth={2}

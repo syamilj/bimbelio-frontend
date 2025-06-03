@@ -41,8 +41,8 @@ export interface RankingTryoutProps {
       maxScore: number;
     }[];
   }[];
-  analisisCategory: {
-    category: string;
+  AnalisisCategory: {
+    name: string;
     totalScore: number;
     totalTheta: number;
     avgScore: number;

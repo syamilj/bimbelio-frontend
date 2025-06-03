@@ -356,7 +356,7 @@ export function RankingTable() {
                       {participant.sessionResult.map((item, index) => (
                         <TableCell
                           key={index}
-                          className="text-right tabular-nums"
+                          className="text-right tabular-nums whitespace-nowrap"
                         >
                           {item.isUnlocked ? (
                             <>
