@@ -94,7 +94,7 @@ export function TopWinners() {
                 {winner.school}
               </p>
               <div className="text-center text-lg font-bold">
-                {winner.averageScore.toFixed(2)}
+                {winner.totalScore.toFixed(2)}
               </div>
             </div>
           ))}

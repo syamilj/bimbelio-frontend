@@ -36,6 +36,7 @@ interface CategoryResult {
   category: string;
   averageScore: number;
   isUnlocked: boolean;
+  totalScore: number;
 }
 
 interface Participant {
@@ -295,7 +296,7 @@ export function RankingTable() {
                 <TableHead className="text-right font-semibold">
                   <SortButton
                     field="averageScore"
-                    label="Rata-rata"
+                    label="Total Score"
                   />
                 </TableHead>
                 {/* <TableHead className="text-right font-semibold">
@@ -365,7 +366,7 @@ export function RankingTable() {
                         {participant.univChoice || 'Universitas tidak tersedia'}
                       </TableCell>
                       <TableCell className="text-right font-medium tabular-nums">
-                        {participant.averageScore.toFixed(2)}
+                        {participant.totalScore.toFixed(2)}
                       </TableCell>
                       {participant.categoryResult.map((item, index) => (
                         <TableCell
@@ -373,7 +374,7 @@ export function RankingTable() {
                           className="text-right tabular-nums"
                         >
                           {item.isUnlocked ? (
-                            item.averageScore.toFixed(2)
+                            item.totalScore.toFixed(2)
                           ) : (
                             <ButtonUpgradeTryout
                               tryoutId={RankingTryout?.tryoutId}

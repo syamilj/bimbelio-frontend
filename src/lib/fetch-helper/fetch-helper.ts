@@ -19,6 +19,7 @@ export const getGeneral = async (
       errorTitle?: string;
       errorMsg?: string;
     };
+    onLoading?: () => any;
     onSuccess?: ({
       message,
       status,
@@ -48,7 +49,11 @@ export const getGeneral = async (
   ) {
     more.setLoading(true);
   }
+
+  if (more?.onLoading) more.onLoading();
+
   let showToast = true;
+
   try {
     const res = await axiosInstance.get(url, {
       params: more?.params,
@@ -181,8 +186,9 @@ export const deleteGeneral = async (
 export const mutateGeneral = async (
   url: string,
   more: {
-    payload: any;
-    type: 'post' | 'put';
+    params?: object;
+    payload?: any;
+    type: 'post' | 'put' | 'delete';
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
     firstLoad?: boolean;
     endLoad?: boolean;
@@ -209,14 +215,16 @@ export const mutateGeneral = async (
       status,
       message,
       error,
+      data,
     }: {
       status: number;
       message: string;
       error: any;
+      data: any;
     }) => any;
   },
 ) => {
-  const { payload, type, setLoading } = more;
+  const { payload, params, type, setLoading } = more;
   if (
     setLoading &&
     (more?.firstLoad == true || !more || more.firstLoad === undefined)
@@ -233,7 +241,13 @@ export const mutateGeneral = async (
     if (more.toast?.hideSuccess === true) showToast = false;
     else if (more.hideToast === true) showToast = false;
     else showToast = true;
-    const res = await axiosInstance[type](url, payload);
+    let res;
+    if (type === 'post' || type === 'put') {
+      res = await axiosInstance[type](url, payload);
+    } else {
+      res = await axiosInstance.delete(url, { params });
+    }
+    // const res = await axiosInstance[type](url, payload);
     const resData = response(
       res,
       showToast,
@@ -256,8 +270,9 @@ export const mutateGeneral = async (
     );
     if (more?.onError) {
       await more.onError({
-        status: errData.status,
-        message: errData.message,
+        status: errData.error?.response?.data?.status,
+        message: errData.error?.response?.data?.message,
+        data: errData.error?.response?.data?.data,
         error: errData.error,
       });
     }

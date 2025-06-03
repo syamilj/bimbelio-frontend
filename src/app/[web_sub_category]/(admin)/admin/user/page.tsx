@@ -34,10 +34,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  getGeneralAdvanced,
-  SetDataType,
-} from '@/lib/fetch-helper/fetch-helper-advanced';
+import { useGet } from '@/lib/fetch-helper/useGet';
 
 import { formatPhoneNumber, formatSchoolName } from '@/lib/utils';
 import { UserRoleEnum } from '@/types/database';
@@ -85,13 +82,15 @@ export default function UserManagementDashboard() {
     data: usersData,
     isLoading,
     error,
-  }: SetDataType<UserDataType[]> = getGeneralAdvanced('/user/getAllUsers');
+  } = useGet<UserDataType[]>('/user/getAllUsers');
 
-  const { data: channelData }: SetDataType<ChannelDataType[]> =
-    getGeneralAdvanced('/user/getChannelAnalytics');
+  const { data: channelData } = useGet<ChannelDataType[]>(
+    '/user/getChannelAnalytics',
+  );
 
-  const { data: regionalData }: SetDataType<RegionalDataType[]> =
-    getGeneralAdvanced('/user/getRegionalAnalytics');
+  const { data: regionalData } = useGet<RegionalDataType[]>(
+    '/user/getRegionalAnalytics',
+  );
 
   useEffect(() => {
     if (usersData) {
