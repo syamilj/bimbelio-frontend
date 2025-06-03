@@ -244,7 +244,7 @@ export default function ProviderMaintenance({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <a
-                    href="t.me/bimbelio"
+                    href="https://t.me/bimbelio"
                     className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
                   >
                     <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
