@@ -101,10 +101,10 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
-        <Link
+        <div
           className="relative"
-          href={`/${website_sub_category_id}/user/course`}
-          passHref
+          // href={`/${website_sub_category_id}/user/course`}
+          // passHref
           onClick={() => {
             if (isMobile) {
               setSidebarMobile(false);
@@ -141,7 +141,7 @@ const SidebarRoute = ({
               </span>
             )}
           </div>
-        </Link>
+        </div>
         <Link
           className="relative"
           href={`/${website_sub_category_id}/user/explore`}
@@ -354,48 +354,49 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
-        {website_sub_category_id_params === 'simak-ui' && (
-          <Link
-            href={`/${website_sub_category_id}/user/prediction`}
-            passHref
-            onClick={() => {
-              if (isMobile) {
-                setSidebarMobile(false);
-              }
-            }}
-          >
-            <div
-              className={`flex items-center gap-[.8rem] ${
-                pathname?.includes('prediction') && 'bg-main'
-              } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
-                minimizeSidebar && 'justify-center'
-              } text-main-gray-text ${
-                !pathname?.includes('prediction') &&
-                'md:hover:bg-main-gray-input md:hover:text-main-gray-text'
-              } duration-300`}
+        {website_sub_category_id_params === 'simak-ui' &&
+          pathname.includes('localhost') && (
+            <Link
+              href={`/${website_sub_category_id}/user/prediction`}
+              passHref
+              onClick={() => {
+                if (isMobile) {
+                  setSidebarMobile(false);
+                }
+              }}
             >
-              {}
-              <AlignEndHorizontal
-                className={`${
-                  pathname?.includes('prediction')
-                    ? ' font-medium text-white'
-                    : 'stroke-[1.6] w-5 h-5'
-                }`}
-              />
-              {!minimizeSidebar && (
-                <span
-                  className={`text-sm ${
+              <div
+                className={`flex items-center gap-[.8rem] ${
+                  pathname?.includes('prediction') && 'bg-main'
+                } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+                  minimizeSidebar && 'justify-center'
+                } text-main-gray-text ${
+                  !pathname?.includes('prediction') &&
+                  'md:hover:bg-main-gray-input md:hover:text-main-gray-text'
+                } duration-300`}
+              >
+                {}
+                <AlignEndHorizontal
+                  className={`${
                     pathname?.includes('prediction')
-                      ? 'font-medium text-white'
-                      : 'font-medium'
+                      ? ' font-medium text-white'
+                      : 'stroke-[1.6] w-5 h-5'
                   }`}
-                >
-                  Prediction
-                </span>
-              )}
-            </div>
-          </Link>
-        )}
+                />
+                {!minimizeSidebar && (
+                  <span
+                    className={`text-sm ${
+                      pathname?.includes('prediction')
+                        ? 'font-medium text-white'
+                        : 'font-medium'
+                    }`}
+                  >
+                    Prediction
+                  </span>
+                )}
+              </div>
+            </Link>
+          )}
         <Link
           href={`/${website_sub_category_id}/user/chat`}
           passHref
