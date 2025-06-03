@@ -28,7 +28,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { useGet, UseGetDataType } from '@/lib/fetch-helper/useGet';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { getDateString } from '@/lib/utils';
 import { BlogStatusEnum } from '@/types/database';
 import {
@@ -88,7 +88,7 @@ export default function BlogClient() {
     data: blogs,
     isLoading,
     refetch,
-  }: UseGetDataType<BlogPost[]> = useGet('/blog/getBlog');
+  } = useGet<BlogPost[]>('/blog/getBlog');
 
   useEffect(() => {
     document.body.style.overflow =

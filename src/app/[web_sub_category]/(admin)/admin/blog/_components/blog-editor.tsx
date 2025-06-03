@@ -1,14 +1,11 @@
 import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Button } from '@/components/ui/button';
+import ReactMarkdownBlog from '@/components/ui/react-markdown-blog';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 import 'katex/dist/katex.min.css';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
-import rehypeKatex from 'rehype-katex';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
 
 const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
   ssr: false,
@@ -88,7 +85,7 @@ export default function BlogEditor({ value, onChange }: Props) {
 
       <div
         ref={previewRef}
-        className={cn('h-[70vh] overflow-y-auto', isFullscreen && 'h-full')}
+        className={cn('h-[70vh] overflow-y-auto p-8', isFullscreen && 'h-full')}
         onScroll={() => {
           if (!editorRef.current || !previewRef.current) return;
 
@@ -102,7 +99,7 @@ export default function BlogEditor({ value, onChange }: Props) {
             scrollRatio * (editor.scrollHeight - editor.clientHeight);
         }}
       >
-        <MarkdownPreview
+        {/* <MarkdownPreview
           source={value}
           remarkPlugins={[
             [
@@ -116,7 +113,8 @@ export default function BlogEditor({ value, onChange }: Props) {
           rehypePlugins={[rehypeKatex, rehypeRaw]}
           wrapperElement={{ 'data-color-mode': 'light' }}
           className="ReactMarkdown max-w-none break-words leading-7 text-main-black p-4 "
-        />
+        /> */}
+        <ReactMarkdownBlog value={value || ''} />
       </div>
     </div>
   );

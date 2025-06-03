@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useGet, UseGetDataType } from '@/lib/fetch-helper/useGet';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { BlogTags } from '@/types/database';
 import { Trash2 } from 'lucide-react';
@@ -35,7 +35,7 @@ export default function BlogTag() {
     data: tags,
     isLoading: isTagsLoading,
     refetch: refetchTags,
-  }: UseGetDataType<BlogTags[]> = useGet('/blog/getTags');
+  } = useGet<BlogTags[]>('/blog/getTags');
 
   // const deleteTagMutation = api.blog.deleteTag.useMutation();
 

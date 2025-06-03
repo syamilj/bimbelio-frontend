@@ -3,7 +3,7 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { useGet, UseGetDataType } from '@/lib/fetch-helper/useGet';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 
 import { cn, getDateString } from '@/lib/utils';
@@ -17,7 +17,7 @@ const BlogAdmin = () => {
     data: blogs,
     isLoading,
     refetch,
-  }: UseGetDataType<BlogPost[]> = useGet('/blog/getBlogsAdmin');
+  } = useGet<BlogPost[]>('/blog/getBlogsAdmin');
 
   const [open, setOpen] = useState<boolean>(false);
   const [blogId, setBlogId] = useState<string>('');

@@ -22,11 +22,13 @@ function BlocknoteEditor({
   onValueChange,
   viewOnly,
   className,
+  isMarkdown,
 }: {
   value?: string;
   onValueChange?: (value: string) => void;
   viewOnly?: boolean;
   className?: string;
+  isMarkdown?: boolean;
 }) {
   const id = crypto.randomUUID();
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -38,10 +40,14 @@ function BlocknoteEditor({
   const getValue = async (value?: string) => {
     if (value === undefined) return;
     if (!isFocused) {
-      // const markdownValue = await editor.tryParseMarkdownToBlocks(value);
-      const markdownValue = await editor.tryParseHTMLToBlocks(value);
+      let initialValue;
+      if (isMarkdown) {
+        initialValue = await editor.tryParseMarkdownToBlocks(value);
+      } else {
+        initialValue = await editor.tryParseHTMLToBlocks(value);
+      }
       const ids = editor.document.map((item) => item.id);
-      editor.replaceBlocks(ids, markdownValue);
+      editor.replaceBlocks(ids, initialValue);
       processAllLatex(editor);
     }
   };
@@ -49,9 +55,13 @@ function BlocknoteEditor({
   const handleOnChange = useDebouncedCallback(async () => {
     if (!onValueChange) return;
 
-    // const value = await editor.blocksToMarkdownLossy(editor.document);
-    const FullHtml = await editor.blocksToFullHTML(editor.document);
-    onValueChange(FullHtml);
+    let newValue;
+    if (isMarkdown) {
+      newValue = await editor.blocksToMarkdownLossy(editor.document);
+    } else {
+      newValue = await editor.blocksToFullHTML(editor.document);
+    }
+    onValueChange(newValue);
   }, 1000);
 
   useEffect(() => {

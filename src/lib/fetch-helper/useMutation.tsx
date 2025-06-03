@@ -30,12 +30,10 @@ export const useMutation = <T,>(
     const res = await mutateGeneral(url, {
       ...more,
       payload: {
-        testPayload: 'awd',
         ...more?.payload,
         ...optional?.payload,
       },
       params: {
-        testParams: 'awd',
         ...more?.params,
         ...optional?.params,
       },
