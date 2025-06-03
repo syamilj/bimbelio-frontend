@@ -26,34 +26,10 @@ import { cn } from '@/lib/utils';
 import { ArrowUpDown, Search } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import ButtonUpgradeTryout from '../../try-out/_components/ui/button-upgrade-tryout';
+import { RankingTryoutProps } from './LeaderboardClient';
 
 const ITEMS_PER_PAGE = 20;
 
-// Pastikan type data participant jelas,
-// sehingga kita bisa melakukan indexing dengan aman.
-// Sesuaikan dengan struktur data aktual Anda.
-interface CategoryResult {
-  category: string;
-  averageScore: number;
-  isUnlocked: boolean;
-  totalScore: number;
-}
-
-interface Participant {
-  rank: number;
-  totalScore: number;
-  averageScore: number;
-  name: string;
-  userId: string;
-  school?: string;
-  univChoice?: string;
-  univStudyChoice?: string;
-  image: string | null;
-  categoryResult: CategoryResult[];
-}
-
-// Hanya definisikan field sorting yang valid.
-// Jika Anda punya 3 kategori, maka Anda bisa menambahkannya di sini.
 type SortField =
   | 'rank'
   | 'averageScore'
@@ -62,6 +38,8 @@ type SortField =
   | 'category_2';
 
 type SortDirection = 'asc' | 'desc';
+
+type Participant = RankingTryoutProps['rankingData'][0];
 
 export function RankingTable() {
   const { RankingTryout, RankingTryoutIsLoading } = useLeaderboardContext();
@@ -108,7 +86,7 @@ export function RankingTable() {
     }
     if (field.startsWith('category_')) {
       const categoryIndex = Number(field.split('_')[1]);
-      return participant.categoryResult[categoryIndex]?.averageScore ?? 0;
+      return participant.sessionResult[categoryIndex]?.totalScore ?? 0;
     }
 
     // Fallback (seharusnya tidak pernah terjadi jika type sudah ketat)
@@ -258,6 +236,8 @@ export function RankingTable() {
     return items;
   };
 
+  console.log({ RankingTryout });
+
   return (
     <div className="space-y-4">
       {/* Bagian Pencarian */}
@@ -318,12 +298,12 @@ export function RankingTable() {
                   />
                 </TableHead> */}
                 {paginatedData.length > 0 &&
-                  paginatedData[0].categoryResult.map((item, index) => (
+                  paginatedData[0].sessionResult.map((item, index) => (
                     <TableCell
                       key={index}
-                      className="text-right tabular-nums"
+                      className="text-right tabular-nums whitespace-nowrap"
                     >
-                      {item.category}
+                      {item.subCategory}
                     </TableCell>
                   ))}
               </TableRow>
@@ -365,16 +345,28 @@ export function RankingTable() {
                         -{' '}
                         {participant.univChoice || 'Universitas tidak tersedia'}
                       </TableCell>
-                      <TableCell className="text-right font-medium tabular-nums">
-                        {participant.totalScore.toFixed(2)}
+                      <TableCell className="font-medium text-right tabular-nums">
+                        <span className="text-green-600">
+                          {participant.totalScore.toFixed(2)}
+                        </span>{' '}
+                        <span className="text-gray-600">
+                          /{participant.maxScore}
+                        </span>
                       </TableCell>
-                      {participant.categoryResult.map((item, index) => (
+                      {participant.sessionResult.map((item, index) => (
                         <TableCell
                           key={index}
                           className="text-right tabular-nums"
                         >
                           {item.isUnlocked ? (
-                            item.totalScore.toFixed(2)
+                            <>
+                              <span className="text-green-600">
+                                {item.totalScore.toFixed(2)}
+                              </span>{' '}
+                              <span className="text-gray-600">
+                                /{item.maxScore}
+                              </span>
+                            </>
                           ) : (
                             <ButtonUpgradeTryout
                               tryoutId={RankingTryout?.tryoutId}

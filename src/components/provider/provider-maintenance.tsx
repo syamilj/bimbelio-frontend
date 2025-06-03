@@ -9,7 +9,7 @@ import {
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
-const isMaintenance = true; // Set to true to show maintenance page
+const isMaintenance = false;
 
 export default function ProviderMaintenance({
   children,
