@@ -1133,7 +1133,7 @@ export function AnalisisTab({
                             )}
                             disabled={simualationLoad}
                           >
-                            {simualationLoad ? (
+                            {simualationLoad && unlockTryout ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
                               'Submit'
@@ -1142,7 +1142,7 @@ export function AnalisisTab({
                         </div>
                       )}
                     </form>
-                    <div>{renderAnalysisSimulasi()}</div>
+                    <div>{unlockTryout && renderAnalysisSimulasi()}</div>
                   </div>
                 </CardContent>
               </Card>
