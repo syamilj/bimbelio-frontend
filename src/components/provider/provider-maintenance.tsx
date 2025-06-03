@@ -245,6 +245,7 @@ export default function ProviderMaintenance({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <a
                     href="https://t.me/bimbelio"
+                    target="_blank"
                     className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
                   >
                     <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
@@ -261,6 +262,7 @@ export default function ProviderMaintenance({
 
                   <a
                     href="https://www.instagram.com/bimbelio.official?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                    target="_blank"
                     className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-pink-300 hover:shadow-lg transition-all duration-300"
                   >
                     <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-purple-100 rounded-xl flex items-center justify-center group-hover:from-pink-200 group-hover:to-purple-200 transition-all">
