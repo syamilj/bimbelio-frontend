@@ -25,7 +25,7 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
-import { useGet, UseGetDataType } from '@/lib/fetch-helper/useGet';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn, getDateForInput } from '@/lib/utils';
 import { IconPlus } from '@/styles/icon';
@@ -52,13 +52,10 @@ const EditBlogAdmin = () => {
   //   { refetchOnWindowFocus: false },
   // );
 
-  const { data: blog, refetch }: UseGetDataType<BlogPost> = useGet(
-    '/blog/getBlogByIdAdmin',
-    {
-      params: { id: blogId },
-      useEffectDependencies: [blogId],
-    },
-  );
+  const { data: blog, refetch } = useGet<BlogPost>('/blog/getBlogByIdAdmin', {
+    params: { id: blogId },
+    useEffectDependencies: [blogId],
+  });
 
   const [loading, setLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
@@ -124,8 +121,7 @@ const EditBlogAdmin = () => {
   //   refetchOnMount: false,
   // });
 
-  const { data: tagsData }: UseGetDataType<BlogTags[]> =
-    useGet('/blog/getTags');
+  const { data: tagsData } = useGet<BlogTags[]>('/blog/getTags');
 
   useEffect(() => {
     if (blog) {

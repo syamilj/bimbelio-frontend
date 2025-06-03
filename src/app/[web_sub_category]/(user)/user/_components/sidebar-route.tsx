@@ -5,10 +5,14 @@ import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useAppContext } from '@/components/provider/provider-app';
 import { Badge } from '@/components/ui/badge';
 import ChooseWebCategory from '@/components/ui/choose-web-category';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import {
+  website_sub_category_id,
+  website_sub_category_id_params,
+} from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
   IconArrowTwk,
+  IconCourse,
   IconDocument,
   IconExplore,
   IconHome,
@@ -97,10 +101,10 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
-        {/* <div
+        <Link
           className="relative"
-          // href={"/user/course"}
-          // passHref
+          href={`/${website_sub_category_id}/user/course`}
+          passHref
           onClick={() => {
             if (isMobile) {
               setSidebarMobile(false);
@@ -137,7 +141,7 @@ const SidebarRoute = ({
               </span>
             )}
           </div>
-        </div> */}
+        </Link>
         <Link
           className="relative"
           href={`/${website_sub_category_id}/user/explore`}
@@ -350,6 +354,48 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
+        {website_sub_category_id_params === 'simak-ui' && (
+          <Link
+            href={`/${website_sub_category_id}/user/prediction`}
+            passHref
+            onClick={() => {
+              if (isMobile) {
+                setSidebarMobile(false);
+              }
+            }}
+          >
+            <div
+              className={`flex items-center gap-[.8rem] ${
+                pathname?.includes('prediction') && 'bg-main'
+              } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+                minimizeSidebar && 'justify-center'
+              } text-main-gray-text ${
+                !pathname?.includes('prediction') &&
+                'md:hover:bg-main-gray-input md:hover:text-main-gray-text'
+              } duration-300`}
+            >
+              {}
+              <AlignEndHorizontal
+                className={`${
+                  pathname?.includes('prediction')
+                    ? ' font-medium text-white'
+                    : 'stroke-[1.6] w-5 h-5'
+                }`}
+              />
+              {!minimizeSidebar && (
+                <span
+                  className={`text-sm ${
+                    pathname?.includes('prediction')
+                      ? 'font-medium text-white'
+                      : 'font-medium'
+                  }`}
+                >
+                  Prediction
+                </span>
+              )}
+            </div>
+          </Link>
+        )}
         <Link
           href={`/${website_sub_category_id}/user/chat`}
           passHref

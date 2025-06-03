@@ -2,28 +2,31 @@ import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { getGeneral } from './fetch-helper';
 
-export type UseGetDataType<Data, ErrorData = any> = Omit<
-  FetchReturnType,
-  'data' | 'error'
-> & {
-  data: Data | null;
-  success:
-    | (Omit<SuccessType, 'data'> & {
-        data?: Data | null;
-      })
-    | null;
-  error:
-    | (Omit<ErrorType, 'data'> & {
-        data: ErrorData | null;
-      })
-    | null;
-};
+// export type UseGetDataType<Data, ErrorData = any> = Omit<
+//   FetchReturnType<any>,
+//   'data' | 'error'
+// > & {
+//   data: Data | null;
+//   success:
+//     | (Omit<SuccessType, 'data'> & {
+//         data?: Data | null;
+//       })
+//     | null;
+//   error:
+//     | (Omit<ErrorType, 'data'> & {
+//         data: ErrorData | null;
+//       })
+//     | null;
+// };
 
-export const useGet = <T,>(url: string, more?: MoreProps): FetchReturnType => {
-  const [data, setData] = useState<T | null>(null);
+export function useGet<Data = any, ErrorData = any>(
+  url: string,
+  more?: MoreProps,
+): FetchReturnType<Data, ErrorData> {
+  const [data, setData] = useState<Data | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<ErrorType | null>(null);
-  const [success, setSuccess] = useState<SuccessType | null>(null);
+  const [error, setError] = useState<ErrorType<ErrorData> | null>(null);
+  const [success, setSuccess] = useState<SuccessType<Data> | null>(null);
 
   const [page, setPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -35,6 +38,9 @@ export const useGet = <T,>(url: string, more?: MoreProps): FetchReturnType => {
       setData: setData,
       setPage: setPage,
       setTotalPages: setTotalPages,
+      onSuccess(successData) {
+        setSuccess(successData);
+      },
       onError(errorData) {
         setError(errorData);
       },
@@ -57,7 +63,7 @@ export const useGet = <T,>(url: string, more?: MoreProps): FetchReturnType => {
     page,
     totalPages,
   };
-};
+}
 
 type MoreProps = {
   params?: object;
@@ -82,18 +88,23 @@ type MoreProps = {
   useEffectDependencies?: any[];
 };
 
-type ErrorType = { data: any; error: any; message: string; status: number };
-type SuccessType = {
+type ErrorType<Data = any> = {
+  data: Data;
+  error: any;
   message: string;
   status: number;
-  data?: any;
+};
+type SuccessType<Data = any> = {
+  message: string;
+  status: number;
+  data?: Data;
 };
 
-type FetchReturnType = {
-  data: any;
+type FetchReturnType<Data, ErrorData> = {
+  data: Data | null;
   isLoading: boolean;
-  error: ErrorType | null;
-  success: SuccessType | null;
+  error: ErrorType<ErrorData> | null;
+  success: SuccessType<Data> | null;
   refetch: () => Promise<
     | {
         message: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import BlogClient from '@/app/(guest)/blog/_components/BlogContent';
-import { useGet, UseGetDataType } from '@/lib/fetch-helper/useGet';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { BlogPost } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
@@ -54,13 +54,10 @@ import { Fragment } from 'react';
 // 4) page.tsx
 export default function BlogServerPage() {
   const params = useParams();
-  const { data: blog, isLoading }: UseGetDataType<BlogPost> = useGet(
-    '/blog/getBlogBySlug',
-    {
-      params: { slug: params.slug },
-      useEffectDependencies: [params],
-    },
-  );
+  const { data: blog, isLoading } = useGet<BlogPost>('/blog/getBlogBySlug', {
+    params: { slug: params.slug },
+    useEffectDependencies: [params],
+  });
 
   // const params = await props.params;
   // const blog = await getBlogBySlug(params.slug);

@@ -1,3 +1,5 @@
+export type TypeCourseEnum = 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI';
+
 export type BlogPost = {
   website_sub_category_id: string;
   id: string;

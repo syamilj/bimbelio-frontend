@@ -34,7 +34,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { UseGetDataType, useGet } from '@/lib/fetch-helper/useGet';
+import { useGet } from '@/lib/fetch-helper/useGet';
 
 import { formatPhoneNumber, formatSchoolName } from '@/lib/utils';
 import { UserRoleEnum } from '@/types/database';
@@ -82,13 +82,13 @@ export default function UserManagementDashboard() {
     data: usersData,
     isLoading,
     error,
-  }: UseGetDataType<UserDataType[]> = useGet('/user/getAllUsers');
+  } = useGet<UserDataType[]>('/user/getAllUsers');
 
-  const { data: channelData }: UseGetDataType<ChannelDataType[]> = useGet(
+  const { data: channelData } = useGet<ChannelDataType[]>(
     '/user/getChannelAnalytics',
   );
 
-  const { data: regionalData }: UseGetDataType<RegionalDataType[]> = useGet(
+  const { data: regionalData } = useGet<RegionalDataType[]>(
     '/user/getRegionalAnalytics',
   );
 

@@ -10,10 +10,11 @@ import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { useGet, UseGetDataType } from '@/lib/fetch-helper/useGet';
+import ReactMarkdownBlog from '@/components/ui/react-markdown-blog';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
-import { ParseHTMLtoMarkdown, ParseMarkdownToHTML } from '@/lib/utils/editor';
+import { ParseHTMLtoMarkdown } from '@/lib/utils/editor';
 import {
   addIdsToHeadings,
   extractHeadings,
@@ -23,10 +24,6 @@ import {
 import { IconLeft } from '@/styles/icon';
 import { useCreateBlockNote } from '@blocknote/react';
 import 'katex/dist/katex.min.css';
-import rehypeKatex from 'rehype-katex';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
 
 import {
   CalendarIcon,
@@ -82,7 +79,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
   //   refetchOnWindowFocus: false,
   //   refetchOnMount: false,
   // });
-  const { data: blogs }: UseGetDataType<BlogPost[]> = useGet('/blog/getBlog');
+  const { data: blogs } = useGet<BlogPost[]>('/blog/getBlog');
 
   // const incrementViewsMutation = api.blog.incrementViews.useMutation();
 
@@ -143,8 +140,12 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
     const extracted = extractHeadings(contentWithIds);
     setHeadings(extracted.filter((heading) => heading.level === 2));
     const cleanContent = removeIdsFromContent(contentWithIds);
-    const convertToHtml = await ParseMarkdownToHTML(cleanContent, editor);
-    setProcessedContent(convertToHtml);
+    // const convertToHtml = await ParseMarkdownToHTML(cleanContent, editor);
+    setProcessedContent(blog.value);
+
+    // console.log({ default: blog.value });
+    // console.log({ contentWithIds });
+    // console.log({ cleanContent });
     setViewCount(blog.views);
 
     // Increment view count
@@ -378,7 +379,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
             </header>
 
             {/* Markdown Preview */}
-            <MarkdownPreview
+            {/* <MarkdownPreview
               source={processedContent}
               remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
               rehypePlugins={[rehypeKatex, rehypeRaw]}
@@ -390,7 +391,9 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 leading-7
                 text-main-black
               "
-            />
+            /> */}
+
+            <ReactMarkdownBlog value={processedContent} />
             {/* <BlocknoteEditor
               value={processedContent}
               viewOnly
