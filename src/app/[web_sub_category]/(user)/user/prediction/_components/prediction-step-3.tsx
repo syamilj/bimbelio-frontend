@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, BookOpen, Target } from 'lucide-react';
-import { useProvider } from '../_provider';
 import { validateSubtest } from '../_provider/helper';
+import { useProvider } from '../_provider/provider';
 import ScoreCard from './_components/score-card';
 import SimpleBarChart from './_components/simple-bar-chart';
 
@@ -12,7 +12,7 @@ export default function PredictionStep3() {
   const {
     simakScores,
     setSIMAKScores,
-    useScoreSimak: { simakAvg, simakPercentage, simakRawScore },
+    useScoreSimak: { simakAvgSNBT, simakPercentageRAW, simakScoreRAW },
   } = useProvider();
 
   const updateSIMAKScore = (
@@ -270,17 +270,17 @@ export default function PredictionStep3() {
           <div className="space-y-4">
             <ScoreCard
               title="Skor Mentah"
-              value={simakRawScore.toString()}
+              value={simakScoreRAW.toString()}
               color="blue"
             />
             <ScoreCard
               title="Persentase"
-              value={`${simakPercentage.toFixed(1)}%`}
+              value={`${simakPercentageRAW.toFixed(1)}%`}
               color="green"
             />
             <ScoreCard
               title="Rata-rata IRT"
-              value={simakAvg.toFixed(1)}
+              value={simakAvgSNBT.toFixed(1)}
               color="purple"
             />
           </div>

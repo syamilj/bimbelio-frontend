@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { AlertCircle, Info } from 'lucide-react';
-import { useProvider } from '../_provider';
+import { useProvider } from '../_provider/provider';
 import ScoreCard from './_components/score-card';
 import SimpleBarChart from './_components/simple-bar-chart';
 
@@ -49,16 +49,24 @@ export default function PredictionStep2() {
   //     score: 0,
   //   },
   // ]);
-  const { utbkScores, setUtbkScores } = useProvider();
-  const results = {
-    total: utbkScores.reduce((acc, item) => {
-      return acc + item.score;
-    }, 0),
-    percentage:
-      utbkScores.reduce((acc, item) => {
-        return acc + item.score;
-      }, 0) / 1000,
-  };
+  const {
+    utbkScores,
+    setUtbkScores,
+    useScoreUtbk: { utbkAvg, utbkPercentage },
+  } = useProvider();
+  // const results = {
+  //   total: utbkScores.reduce((acc, item) => {
+  //     return acc + item.score;
+  //   }, 0),
+  //   average:
+  //     utbkScores.reduce((acc, item) => {
+  //       return acc + item.score;
+  //     }, 0) / utbkScores.length,
+  //   percentage:
+  //     utbkScores.reduce((acc, item) => {
+  //       return acc + item.score;
+  //     }, 0) / 1000,
+  // };
 
   return (
     <div className="space-y-8">
@@ -149,12 +157,12 @@ export default function PredictionStep2() {
           <div className="grid grid-cols-2 gap-4">
             <ScoreCard
               title="Rata-rata"
-              value={results.total.toString()}
+              value={utbkAvg.toFixed(2)}
               color="blue"
             />
             <ScoreCard
               title="Persentase"
-              value={`${results.percentage.toFixed(1)}%`}
+              value={`${utbkPercentage.toFixed(1)}%`}
               color="green"
             />
           </div>
