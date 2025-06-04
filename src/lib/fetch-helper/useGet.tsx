@@ -50,9 +50,14 @@ export function useGet<Data = any, ErrorData = any>(
 
   const initialFetch = useDebouncedCallback(refetch);
 
+  const Dependencies = more?.useEffectDependencies || [];
+  const Enabled = more?.enabled !== undefined ? more.enabled : true;
+
   useEffect(() => {
-    initialFetch();
-  }, more?.useEffectDependencies || []);
+    if (Enabled) {
+      initialFetch();
+    }
+  }, [...Dependencies, Enabled]);
 
   return {
     data: data,
@@ -66,6 +71,7 @@ export function useGet<Data = any, ErrorData = any>(
 }
 
 type MoreProps = {
+  enabled?: boolean;
   params?: object;
   firstLoad?: boolean;
   endLoad?: boolean;

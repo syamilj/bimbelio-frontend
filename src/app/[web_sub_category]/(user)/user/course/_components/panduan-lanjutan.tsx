@@ -1,0 +1,138 @@
+'use client';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { getDateStringShort } from '@/lib/utils';
+import { BlogPost } from '@/types/database';
+import { BookOpenIcon, ChevronRightIcon, ClockIcon } from 'lucide-react';
+import Link from 'next/link';
+
+export default function PanduanLanjutanSection() {
+  // const { data: blogs } = api.blog.getBlogLandingPage.useQuery(undefined, {
+  //   refetchOnWindowFocus: false,
+  // });
+
+  const { data: blogs } = useGet<BlogPost[]>('/blog/getBlogLandingPage');
+
+  return (
+    <section className="space-y-6 pt-8">
+      {/* Kiri */}
+      <div className="space-y-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-foreground">
+          Ingin belajar lebih dalam?
+        </h2>
+        <div className="w-20 h-1 bg-yellow-400 mx-auto mb-4"></div>
+        <p className="text-sm sm:text-base text-center text-muted-foreground">
+          Pelajari panduan lengkap dan tingkatkan pemahaman kamu
+        </p>
+      </div>
+
+      {/* Scrollable Cards */}
+      <ScrollArea className="w-full rounded-xl">
+        <div className="flex gap-6 pb-6">
+          {blogs?.map((guide, index) => (
+            <Card
+              key={index}
+              className="w-[300px] sm:w-[320px] shrink-0 transition-all hover:shadow-sm hover:-translate-y-1"
+            >
+              <CardContent className="p-5 space-y-4 bg-gradient-to-br from-card/50 to-card border-main/5 h-full flex items-center justify-center flex-col rounded-xl">
+                <div className="space-y-2 flex-1 justify-center text-center">
+                  <div className="flex items-center justify-center">
+                    <div className="size-10 rounded-xl bg-main/10 flex items-center text-center justify-center">
+                      <BookOpenIcon className="size-5 text-main" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Badge
+                      variant="outline"
+                      className="bg-muted"
+                    >
+                      {guide.tags}
+                    </Badge>
+                  </div>
+
+                  <h3 className="font-semibold text-base sm:text-lg leading-tight">
+                    {guide.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {guide.description}
+                  </p>
+                  <div>
+                    <Badge
+                      variant="secondary"
+                      className="bg-main/10 text-main hover:bg-main/20"
+                    >
+                      <ClockIcon className="size-3 mr-1" />{' '}
+                      {getDateStringShort(guide.publishedAt)}
+                    </Badge>
+                  </div>
+                </div>
+                <Link href={`/blog/${guide.slug}`}>
+                  <Button
+                    variant="ghost"
+                    className="w-full mt-auto group"
+                  >
+                    Baca Blog
+                    <ChevronRightIcon className="size-4 ml-2 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+
+      {/* <Button
+          variant="outline"
+          className="w-full md:hidden"
+        >
+          Lihat Semua Panduan
+        </Button> */}
+    </section>
+  );
+}
+
+// const guides = [
+//   {
+//     icon: <BrainCircuitIcon className="size-5 text-main" />,
+//     title: 'Teknik Eliminasi TPU',
+//     category: 'Teknik & Strategi',
+//     description:
+//       'Pelajari cara eliminasi jawaban dengan cepat dan akurat untuk soal TPU',
+//     time: '15 menit',
+//   },
+//   {
+//     icon: <BookIcon className="size-5 text-main" />,
+//     title: 'Konsep Matematika SNBT',
+//     category: 'Matematika',
+//     description:
+//       'Pahami konsep-konsep kunci matematika yang sering muncul di SNBT',
+//     time: '20 menit',
+//   },
+//   {
+//     icon: <TimerIcon className="size-5 text-main" />,
+//     title: 'Speed Reading',
+//     category: 'Teknik Membaca',
+//     description: 'Tingkatkan kecepatan membaca tanpa mengurangi pemahaman',
+//     time: '10 menit',
+//   },
+//   {
+//     icon: <TargetIcon className="size-5 text-main" />,
+//     title: 'Strategi Penalaran',
+//     category: 'Teknik & Strategi',
+//     description: 'Kuasai cara menganalisis dan memecahkan soal penalaran',
+//     time: '25 menit',
+//   },
+//   {
+//     icon: <BookOpenIcon className="size-5 text-main" />,
+//     title: 'Persiapan Mental',
+//     category: 'Persiapan Ujian',
+//     description: 'Tips mengelola stres dan anxiety menjelang ujian',
+//     time: '15 menit',
+//   },
+// ];

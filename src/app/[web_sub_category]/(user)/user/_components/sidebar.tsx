@@ -16,7 +16,6 @@ import { cn } from '@/lib/utils';
 import { User } from 'lucide-react';
 
 import LogoMinimize from '@/_assest/logo-minimize.png';
-import LogoSvg from '@/_assest/logo.svg';
 
 import SidebarRoute from '@/app/[web_sub_category]/(user)/user/_components/sidebar-route';
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
@@ -302,10 +301,7 @@ const Sidebar = ({ category }: { category: any }) => {
         >
           {!minimizeSidebar ? (
             <>
-              <Image
-                src={LogoSvg}
-                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-              />
+              <Logo href={`/${website_sub_category_id}/user/try-out`} />
               <div
                 onClick={() => {
                   setSidebarMobile(false);
@@ -384,7 +380,7 @@ const Sidebar = ({ category }: { category: any }) => {
                 </>
               )}
               <Button
-                className="flex w-fit items-center gap-[.5rem] rounded-[.8rem] bg-greenUpgrade px-[1rem] py-[.7rem] text-white duration-300 active:bg-greenUpgradeHover md:hover:bg-greenUpgradeHover md:active:bg-greenUpgrade"
+                className="flex w-fit items-center gap-[.5rem] rounded-[.8rem] bg-gradient px-[1rem] py-[.7rem] text-white duration-300 hover:opacity-85"
                 onClick={() => setTransactionPopUp(true)}
               >
                 <IconCrown />
