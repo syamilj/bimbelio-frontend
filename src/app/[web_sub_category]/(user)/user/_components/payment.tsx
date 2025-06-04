@@ -175,7 +175,10 @@ export function Payment() {
         open={transactionPopUp}
         onOpenChange={setTransactionPopUp}
       >
-        <DialogContent className="max-w-[95vw] sm:max-w-[800px] p-0">
+        <DialogContent
+          className="max-w-[95vw] sm:max-w-[800px] p-0"
+          classOverlay="z-[10000]"
+        >
           {pricingIsLoading && (
             <div className="absolute inset-0 z-50 grid place-items-center bg-white/80 backdrop-blur-sm">
               <Loader2Icon className="h-8 w-8 animate-spin text-main" />
@@ -226,7 +229,7 @@ export function Payment() {
                 </TabsContent>
 
                 <TabsContent value="limitasi">
-                  <div className="flex justify-center gap-4 mx-auto">
+                  <div className="flex flex-col md:flex-row items-center md:justify-center gap-4 mx-auto">
                     {topping.map((pack) => (
                       <CardTopping
                         data={pack}

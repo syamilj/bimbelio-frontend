@@ -7,8 +7,8 @@ import {
   School,
   Target,
 } from 'lucide-react';
-import { useProvider } from '../../_provider';
 import { validateSubtest } from '../../_provider/helper';
+import { useProvider } from '../../_provider/provider';
 
 export default function Navigation() {
   const {

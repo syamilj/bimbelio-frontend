@@ -3,35 +3,9 @@
 import { Badge } from '@/components/ui/badge';
 import { ComboboxSelect } from '@/components/ui/combobox-select';
 import { Label } from '@/components/ui/label';
-import { useProvider } from '../_provider';
-
-type UniversityType = {
-  university: string;
-  initials: string;
-  averageScore: number;
-  referensi: string | null;
-  studyProgramList: {
-    study: string;
-    averageScore: number | null;
-    passingGrade?: number;
-  }[];
-};
+import { useProvider } from '../_provider/provider';
 
 export default function PredictionStep1() {
-  // const [selectedPrograms, setSelectedPrograms] =
-  //   useState<UniversityType['studyProgramList'][0]>();
-
-  // const { data: University }: UseGetDataType<UniversityType> = useGet(
-  //   '/universitas/single',
-  //   {
-  //     params: { name: 'ui' },
-  //   },
-  // );
-
-  // const studyChoices = University?.studyProgramList || [];
-
-  // console.log({ University, studyChoices });
-
   const { selectedPrograms, setSelectedPrograms, studyChoices } = useProvider();
 
   return (

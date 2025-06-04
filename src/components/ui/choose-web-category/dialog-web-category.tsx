@@ -71,7 +71,10 @@ export function DialogWebCategory({ items, onSelect, value, first }: Props) {
           <ChevronRight className="ml-2 h-4 w-4 flex-shrink-0" />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden rounded-3xl">
+      <DialogContent
+        className="max-w-[calc(100%-1rem)] sm:max-w-md p-0 gap-0 overflow-hidden rounded-3xl"
+        classOverlay="z-[1000000]"
+      >
         {/* Header */}
         <div className="p-6 pb-4 space-y-3 relative border-b">
           {/* Using DialogTitle for accessibility */}

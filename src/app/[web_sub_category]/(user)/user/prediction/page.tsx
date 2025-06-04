@@ -17,7 +17,7 @@ import PredictionStep1 from './_components/prediction-step-1';
 import PredictionStep2 from './_components/prediction-step-2';
 import PredictionStep3 from './_components/prediction-step-3';
 import PredictionStep4 from './_components/prediction-step-4';
-import { useProvider } from './_provider';
+import { useProvider } from './_provider/provider';
 
 export default function UTBKSIMAKPredictor() {
   const { currentStep, setCurrentStep } = useProvider();

@@ -1,3 +1,51 @@
+export type CourseChapter = {
+  number: number;
+  id: string;
+  website_sub_category_id: string;
+  categoryId: string;
+  title: string;
+  status: CourseStatusEnum;
+};
+
+export type CourseStatusEnum = 'PRIVATE' | 'PUBLIC';
+
+export type CourseSubChapter = {
+  number: number;
+  id: string;
+  website_sub_category_id: string;
+  title: string;
+  document: string | null;
+  description: string;
+  premium: boolean;
+  video: string | null;
+  courseChapterId: string;
+  spendTime: number;
+  type: TypeCourseEnum;
+  tryoutSessionId: string | null;
+  materi: string | null;
+};
+
+export type CourseProgress = {
+  userId: string;
+  id: string;
+  createdAt: Date;
+  website_sub_category_id: string;
+  courseSubChapterId: string;
+  totalScore: number | null;
+};
+
+export type TryoutSessionResult = {
+  id: string;
+  website_sub_category_id: string;
+  categoryId: string;
+  totalScore: number;
+  tryoutResultId: string;
+  sessionId: string;
+  startSession: Date;
+  endSession: Date;
+  theta: number | null;
+};
+
 export type TypeCourseEnum = 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI';
 
 export type BlogPost = {
