@@ -355,7 +355,7 @@ const SidebarRoute = ({
           </div>
         </Link>
         {website_sub_category_id_params === 'simak-ui' &&
-          pathname.includes('localhost') && (
+          window.location.origin.includes('localhost') && (
             <Link
               href={`/${website_sub_category_id}/user/prediction`}
               passHref

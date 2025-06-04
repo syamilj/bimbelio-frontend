@@ -6,6 +6,7 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import { calculateSubtestScore } from './helper';
@@ -30,27 +31,69 @@ export default function Provider({ children }: Props) {
 
   const studyChoices = University?.studyProgramList || [];
 
+  useEffect(() => {
+    if (selectedPrograms) {
+      localStorage.setItem(
+        'selectedPrograms',
+        JSON.stringify(selectedPrograms),
+      );
+    }
+    if (!utbkScores.every((item) => item.score === 0)) {
+      localStorage.setItem('utbkScores', JSON.stringify(utbkScores));
+    }
+    if (
+      !simakScores.every(
+        (item) =>
+          item.value.benar === 0 &&
+          item.value.salah === 0 &&
+          item.value.kosong === 0,
+      )
+    ) {
+      localStorage.setItem('simakScores', JSON.stringify(simakScores));
+    }
+  }, [utbkScores, simakScores, selectedPrograms]);
+
+  useEffect(() => {
+    const utbkScoresSaved = localStorage.getItem('utbkScores');
+    const simakScoresSaved = localStorage.getItem('simakScores');
+    const selectedProgramsSaved = localStorage.getItem('selectedPrograms');
+    if (utbkScoresSaved) {
+      const data = JSON.parse(utbkScoresSaved);
+      setUtbkScores(data);
+    }
+    if (simakScoresSaved) {
+      const data = JSON.parse(simakScoresSaved);
+      setSIMAKScores(data);
+    }
+    if (selectedProgramsSaved) {
+      const data = JSON.parse(selectedProgramsSaved);
+      setSelectedPrograms(data);
+    }
+  }, []);
+
   // UTBK SCORE
   const utbkScore = utbkScores.reduce((acc, item) => acc + item.score, 0);
   const utbkAvg = utbkScore / utbkScores.length;
   const utbkPercentage = (utbkAvg / 1000) * 100;
 
-  // SIMAK SCORE
-  const simakScore = simakScores.reduce(
-    (acc, item) => acc + calculateSubtestScore(item.value),
-    0,
-  );
-  const simakRawScore = simakScores.reduce((acc, item) => {
+  // SIMAK SCORE RAW
+  const simakScoreRAW = simakScores.reduce((acc, item) => {
     const benar = item.value.benar * 4;
     const salah = -item.value.salah;
     return acc + (benar + salah);
   }, 0);
-  const simakAvg = simakScore / 6;
-  const simakPercentage = (simakRawScore / 540) * 100;
+  const simakPercentageRAW = (simakScoreRAW / 540) * 100;
+
+  // SIMAK SCORE SNBT
+  const simakScoreSNBT = simakScores.reduce(
+    (acc, item) => acc + calculateSubtestScore(item.value),
+    0,
+  );
+  const simakAvgSNBT = simakScoreSNBT / 6;
 
   // FINAL
-  const finalScore = (utbkAvg + simakAvg) / 2;
-  const finalPercentage = ((utbkAvg / 1000 + simakRawScore / 540) / 2) * 100;
+  const finalScore = (utbkAvg + simakAvgSNBT) / 2;
+  const finalPercentage = ((utbkAvg / 1000 + simakScoreRAW / 540) / 2) * 100;
 
   const Context = {
     selectedPrograms,
@@ -64,10 +107,10 @@ export default function Provider({ children }: Props) {
     simakScores,
     setSIMAKScores,
     useScoreSimak: {
-      simakRawScore,
-      simakScore,
-      simakAvg,
-      simakPercentage,
+      simakScoreRAW,
+      simakPercentageRAW,
+      simakScoreSNBT,
+      simakAvgSNBT,
     },
     useScoreUtbk: {
       utbkScore,
@@ -98,29 +141,12 @@ export const useProvider = () => {
 };
 
 type ProviderType = {
-  selectedPrograms:
-    | {
-        study: string;
-        averageScore: number | null;
-        passingGrade?: number;
-      }
-    | undefined;
+  selectedPrograms: UniversityType['studyProgramList'][0] | undefined;
   setSelectedPrograms: Dispatch<
-    SetStateAction<
-      | {
-          study: string;
-          averageScore: number | null;
-          passingGrade?: number;
-        }
-      | undefined
-    >
+    SetStateAction<UniversityType['studyProgramList'][0] | undefined>
   >;
   University: UniversityType | null;
-  studyChoices: {
-    study: string;
-    averageScore: number | null;
-    passingGrade?: number;
-  }[];
+  studyChoices: UniversityType['studyProgramList'];
   currentStep: number;
   setCurrentStep: Dispatch<SetStateAction<number>>;
   utbkScores: {
@@ -140,10 +166,10 @@ type ProviderType = {
   simakScores: SubTest[];
   setSIMAKScores: Dispatch<SetStateAction<SubTest[]>>;
   useScoreSimak: {
-    simakRawScore: number;
-    simakScore: number;
-    simakAvg: number;
-    simakPercentage: number;
+    simakScoreRAW: number;
+    simakPercentageRAW: number;
+    simakScoreSNBT: number;
+    simakAvgSNBT: number;
   };
   useScoreUtbk: {
     utbkScore: number;
@@ -156,7 +182,7 @@ type ProviderType = {
   };
 };
 
-type UniversityType = {
+export type UniversityType = {
   university: string;
   initials: string;
   averageScore: number;
@@ -164,7 +190,14 @@ type UniversityType = {
   studyProgramList: {
     study: string;
     averageScore: number | null;
-    passingGrade?: number;
+    passingGrade?: {
+      sumber?: {
+        name: string;
+        url: string;
+      };
+      tipe: 'SCORE' | 'PERCENTAGE';
+      value: number;
+    }[];
   }[];
 };
 
