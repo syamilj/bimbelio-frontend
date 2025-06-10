@@ -1,3 +1,4 @@
+import ReactMarkdownBlog from '@/components/ui/react-markdown-blog';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { env } from '@/env.mjs';
 import { hideVideoLink } from '@/lib/utils';
@@ -6,32 +7,19 @@ import 'katex/dist/katex.min.css';
 import { ClockIcon, Loader } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import rehypeKatex from 'rehype-katex';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import { Data } from '../../page';
-import EmojiRating from '../emoji-rating';
-import SubmitCourse from '../submit-course';
+import { useProvider } from '../../../../_provider/provider';
+import EmojiRating from '../../../z_other/emoji-rating';
+import SubmitCourse from '../../../z_other/submit-course';
 
 const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
   ssr: false,
   loading: () => <SpinnerPageCentered />,
 });
 
-const VideoType = ({
-  data,
-  CourseProgress,
-}: {
-  data: Data;
-  CourseProgress:
-    | {
-        totalSubChapter: number;
-        finishedSubChapter: number;
-        percentageProgress: number;
-      }
-    | undefined;
-}) => {
+const VideoType = () => {
+  const {
+    useData: { CourseData, CourseProgress },
+  } = useProvider();
   const [videoUrl, setVideoUrl] = useState<string>('');
 
   useEffect(() => {
@@ -54,12 +42,14 @@ const VideoType = ({
 
   useEffect(() => {
     hideVideoLink({
-      link: `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${data.video}`,
+      link: `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${CourseData?.video}`,
       setUrl: setVideoUrl,
     });
   }, []);
 
-  const isDone = data.CourseProgress.length > 0 ? true : false;
+  const isDone =
+    CourseData && CourseData.CourseProgress.length > 0 ? true : false;
+
   const remarkMathOptions = {
     singleDollarTextMath: false,
   };
@@ -92,7 +82,7 @@ const VideoType = ({
           {/* Bagian estimasi waktu atau durasi */}
           <div className="flex items-center gap-2 text-gray-600">
             <ClockIcon className="h-4 w-4" />
-            <span>{data.spendTime ?? 0} Menit</span>
+            <span>{CourseData?.spendTime ?? 0} Menit</span>
           </div>
 
           {/* Penanda Selesai */}
@@ -104,7 +94,7 @@ const VideoType = ({
       )}
       {!isDone && (
         <div className="flex w-full justify-end">
-          <SubmitCourse subCourseId={data.id} />
+          <SubmitCourse subCourseId={CourseData?.id || ''} />
         </div>
       )}
       {videoUrl.length > 0 && (
@@ -124,16 +114,21 @@ const VideoType = ({
           </video>
         </div>
       )}
-      <h2 className="text-2xl">{data.title}</h2>
-      {/* <p className="">{data.description}</p> */}
-      <MarkdownPreview
-        source={data.description}
+      <h2 className="text-2xl">{CourseData?.title}</h2>
+      {/* <p className="">{CourseData?.description}</p> */}
+      {/* <MarkdownPreview
+        source={CourseData?.description}
         remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
         rehypePlugins={[rehypeKatex, rehypeRaw]}
         wrapperElement={{
           'data-color-mode': 'light',
         }}
         className="ReactMarkdown course select-none pb-[5rem]"
+      /> */}
+
+      <ReactMarkdownBlog
+        value={CourseData?.description || ''}
+        className="pt-4 pb-12"
       />
       <div className="w-full flex justify-center pb-[7rem]">
         <EmojiRating />

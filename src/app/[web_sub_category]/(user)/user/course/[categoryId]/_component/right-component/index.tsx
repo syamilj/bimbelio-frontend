@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 
 import ReportBug from '@/components/_shared/other/report-bug';
 import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/provider-session-auth';
+import { ResizablePanel } from '@/components/ui/resizable';
 import { toaster } from '@/components/ui/toaster';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
@@ -19,8 +21,13 @@ import {
   IconX2,
 } from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
+import { motion } from 'framer-motion';
+import { BotMessageSquare, Loader2 } from 'lucide-react';
 import { useMedia } from 'use-media';
-import OnBoarding from './_component/onboarding';
+import { useProvider } from '../../_provider/provider';
+import OnBoarding from '../z_other/onboarding';
+import ChatContent from './_components/chat-content';
+import NotesContent from './_components/notes-content';
 // import Editor from './editor';
 
 const TABS = [
@@ -49,23 +56,88 @@ const TABS = [
 
 const tabNames = TABS.map((tab) => tab.value);
 
+export default function RightComponent() {
+  const {
+    useData: { CourseData },
+    useOther: { setShowAI, showAI },
+  } = useProvider();
+  const isDekstop = useMedia({ minWidth: '768px' });
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+
+  if (CourseData?.type === 'TRYOUT' || CourseData?.type === 'MATERI') {
+    return null;
+  }
+  return (
+    <>
+      {isDekstop ? (
+        <ResizablePanel
+          defaultSize={50}
+          minSize={0}
+          className="chatAIContainer relative"
+        >
+          {userId ? (
+            <Sidebar />
+          ) : (
+            <div className="flex items-center justify-center h-[80vh] w-full">
+              <Loader2 className="w-4 h-4 animate-spin" />
+            </div>
+          )}
+        </ResizablePanel>
+      ) : (
+        <>
+          <motion.div
+            className="fixed bottom-6 right-4 bg-main shadow-default p-2 rounded-full z-[102]"
+            onClick={() => setShowAI((prev) => !prev)}
+            whileTap={{ scale: 1.2 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            {/* Icon */}
+            <BotMessageSquare
+              className="text-white w-8 h-8 transform scale-x-[-1]"
+              strokeWidth={2.1}
+            />
+
+            {/* Pangkat AI */}
+            <span className="absolute -top-1 left-[-4px] bg-red-500 rounded-full px-[0.35rem] py-1 text-white font-bold text-xs">
+              AI
+            </span>
+          </motion.div>
+          {userId ? (
+            <Sidebar
+              onClose={() => {
+                setShowAI(false);
+              }}
+              className={cn(
+                'fixed z-[999] left-0 w-full h-full top-[130%] duration-300',
+                showAI && 'top-0',
+              )}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-[80vh] w-full">
+              <Loader2 className="w-4 h-4 animate-spin" />
+            </div>
+          )}
+        </>
+      )}
+    </>
+  );
+}
+
 const Sidebar = ({
-  canEdit,
-  userId,
-  docId,
-  courseType,
   className,
   onClose,
 }: {
-  canEdit: boolean;
-  userId: string;
-  docId: string;
-  courseType: 'DOCUMENT' | 'VIDEO' | 'MATERI' | 'TRYOUT';
   className?: string;
   onClose?: () => void;
 }) => {
-  // const { query, push, asPath } = useRouter();
-  // const tab = query.tab as string;
+  const { data: session } = useSession();
+  const {
+    useData: { CourseData },
+    useDoc: { docId },
+  } = useProvider();
+
+  const courseType = CourseData?.type;
 
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
@@ -79,21 +151,8 @@ const Sidebar = ({
   const [headerTab, setHeaderTab] = useState<string>(tab ? tab : '');
   const [documentId] = useState(docId || '');
 
-  // const params = useParams();
-  // const categoryId = Array.isArray(params?.categoryId)
-  //   ? params.categoryId[0]
-  //   : params?.categoryId || null;
-
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [isReportBugOpen, setIsReportBugOpen] = useState(false);
-  // const resetChat = api.message.resetMessage.useMutation({
-  //   onSettled: async () => {},
-  //   onMutate() {},
-  // });
-  // const getNameImage = api.message.getNameImage.useMutation({
-  //   onSettled: async () => {},
-  //   onMutate() {},
-  // });
 
   const { mutate: resetChat } = useMutation('/message/resetMessage', 'delete', {
     payload: { docId: `${documentId}` },
@@ -120,8 +179,6 @@ const Sidebar = ({
 
   console.log('onBoarding', onBoarding);
 
-  // const deleteQuiz = api.quiz.deleteQuizCourse.useMutation();
-
   const { mutate: deleteQuiz } = useMutation(
     '/quiz/deleteQuizCourse',
     'delete',
@@ -142,21 +199,6 @@ const Sidebar = ({
     setIsResetModalOpen(false);
     await handleResetChat();
   };
-
-  // useEffect(() => {
-  //   const parts = asPath.split('/');
-  //   const documentIndex = parts.findIndex((part) => part === 'document');
-  //   if (documentIndex !== -1 && documentIndex + 1 < parts.length) {
-  //     const nextSegment = parts[documentIndex + 1].split('?')[0];
-  //     setDocumentId(nextSegment);
-  //   }
-  // }, [asPath, tab]);
-
-  // useEffect(() => {
-  //   if (docId) {
-  //     setDocumentId(docId);
-  //   }
-  // }, [docId]);
 
   useEffect(() => {
     const getOnboarding = localStorage.getItem('on-boarding');
@@ -182,13 +224,6 @@ const Sidebar = ({
     }
     console.log('getOnboarding', getOnboarding);
   }, []);
-
-  // useEffect(() => {
-  //   const isValid = onBoarding && typeof onBoarding.chat === "boolean" && typeof onBoarding.notes === "boolean" && typeof onBoarding.quiz === "boolean";
-  //   if (isValid) {
-  //     localStorage.setItem("on-boarding", JSON.stringify(onBoarding))
-  //   }
-  // }, [onBoarding])
 
   const handleResetChat = async () => {
     try {
@@ -493,24 +528,16 @@ const Sidebar = ({
           {
             value: 'notes',
             tw: 'flex-1 bg-white px-0 pr-[.5rem] overflow-auto sm:shadow-lg  w-full absolute md:relative top-[60px] md:top-[unset] left-0 md:left-[unset] h-[calc(100%-60px)] md:h-[calc(100vh-10rem)]',
-            children: (
-              // <Editor
-              //   canEdit={canEdit}
-              //   userId={userId}
-              //   docId={documentId}
-              // />
-              <></>
-            ),
+            children: <NotesContent docId={docId} />,
           },
           {
             value: 'chat',
             tw: ' p-2 pb-0 break-words bg-white px-0 pr-[.5rem] sm:shadow-lg h-[calc(100vh-10rem)] w-full',
             children: (
-              // <ChatContent
-              //   docId={docId}
-              //   onClose={onClose}
-              // />
-              <></>
+              <ChatContent
+                docId={docId}
+                onClose={onClose}
+              />
             ),
           },
           {
@@ -547,4 +574,3 @@ const Sidebar = ({
     </div>
   );
 };
-export default Sidebar;

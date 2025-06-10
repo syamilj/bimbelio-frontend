@@ -47,10 +47,11 @@ export default function ChatContent({
   }
   return (
     <Chat
-      apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatWorkspace?website_sub_category_id=${website_sub_category_id}`}
+      apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatCourse?website_sub_category_id=${website_sub_category_id}`}
       body={{
         docId: docId as string,
         courseCategoryId: categoryId as string,
+        userId,
       }}
       messages={{
         prevChatMessages,

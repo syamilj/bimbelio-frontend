@@ -45,46 +45,29 @@ import {
   List,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pie, PieChart } from 'recharts';
 import useMedia from 'use-media';
-import ButtonPayment from '../../../_components/button-payment';
-import { CourseType, Data } from '../page';
+import ButtonPayment from '../../../../_components/button-payment';
+import { useProvider } from '../../_provider/provider';
 
 export default function HeaderCourse({
-  setShowList,
-  showList,
-  data,
-  CourseProgress,
-  Course,
-  categoryId,
-  setIndexChapter,
   className,
   onlyMobile,
 }: {
-  setShowList: Dispatch<SetStateAction<boolean>>;
-  showList: boolean;
-  data: Data;
-  CourseProgress:
-    | {
-        totalSubChapter: number;
-        finishedSubChapter: number;
-        percentageProgress: number;
-      }
-    | undefined;
-  Course: CourseType | null;
-  categoryId: string | null;
-  setIndexChapter: Dispatch<SetStateAction<number>>;
   className?: string;
   onlyMobile?: true;
 }) {
-  const searchParams = useSearchParams();
-  const sub = searchParams?.get('sub');
-  const { setSidebarMobile, setTransactionPopUp } = useAppContext();
   const { data: session } = useSession();
   const isMobile = useMedia({ maxWidth: '768px' });
-  const userRole = session?.user.role; // mis. 'ADMIN' | 'USER' | 'PREMIUM'
+  const userRole = session?.user.role;
+
+  const {
+    useParams: { sub, categoryId },
+    useData: { Course, setIndexChapter, CourseProgress, CourseData },
+    useOther: { setShowList, showList },
+  } = useProvider();
+  const { setSidebarMobile, setTransactionPopUp } = useAppContext();
 
   const isHide = (premium: boolean) => {
     return premium && userRole === 'USER';
@@ -412,16 +395,18 @@ export default function HeaderCourse({
                 <BookAIcon className="text-main" />
               </div>
               <div className="text-start text-nowrap">
-                <p>{sub === 'report' ? 'Report' : data.chapterTitle}</p>
+                <p>{sub === 'report' ? 'Report' : CourseData?.chapterTitle}</p>
                 <p className="text-main-gray-text">
-                  {sub === 'report' ? 'Report untuk course ini' : data.title}
+                  {sub === 'report'
+                    ? 'Report untuk course ini'
+                    : CourseData?.title}
                 </p>
               </div>
             </div>
             <div className="flex items-center text-sm">
               <div className="text-end hidden md:block">
                 <p className="text-[#a8a8a8] font-normal">
-                  {CourseProgress?.percentageProgress.toFixed(2)}%
+                  {CourseProgress?.percentageProgress?.toFixed(2)}%
                 </p>
                 <p className="text-[#a8a8a8] font-normal">
                   {CourseProgress?.finishedSubChapter}/
@@ -496,10 +481,10 @@ export default function HeaderCourse({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p className="truncate">{data.chapterTitle}</p>
+                      <p className="truncate">{CourseData?.chapterTitle}</p>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>{data.chapterTitle}</p>
+                      <p>{CourseData?.chapterTitle}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -507,11 +492,11 @@ export default function HeaderCourse({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <p className="text-muted-foreground truncate">
-                        {data.title}
+                        {CourseData?.title}
                       </p>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>{data.title}</p>
+                      <p>{CourseData?.title}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

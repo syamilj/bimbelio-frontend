@@ -29,7 +29,8 @@ export default function Provider({ children }: Props) {
     params: { name: 'ui' },
   });
 
-  const studyChoices = University?.studyProgramList || [];
+  const studyChoices =
+    University?.studyProgramList.filter((item) => item.passingGrade) || [];
 
   useEffect(() => {
     if (selectedPrograms) {
@@ -83,6 +84,7 @@ export default function Provider({ children }: Props) {
     return acc + (benar + salah);
   }, 0);
   const simakPercentageRAW = (simakScoreRAW / 540) * 100;
+  const simakMaxScoreRAW = 500;
 
   // SIMAK SCORE SNBT
   const simakScoreSNBT = simakScores.reduce(
@@ -108,6 +110,7 @@ export default function Provider({ children }: Props) {
     setSIMAKScores,
     useScoreSimak: {
       simakScoreRAW,
+      simakMaxScoreRAW,
       simakPercentageRAW,
       simakScoreSNBT,
       simakAvgSNBT,
@@ -167,6 +170,7 @@ type ProviderType = {
   setSIMAKScores: Dispatch<SetStateAction<SubTest[]>>;
   useScoreSimak: {
     simakScoreRAW: number;
+    simakMaxScoreRAW: number;
     simakPercentageRAW: number;
     simakScoreSNBT: number;
     simakAvgSNBT: number;
@@ -189,9 +193,11 @@ export type UniversityType = {
   referensi: string | null;
   studyProgramList: {
     study: string;
+    fakultas?: string;
+    fakultasInitials?: string;
     averageScore: number | null;
     passingGrade?: {
-      sumber?: {
+      sumber: {
         name: string;
         url: string;
       };

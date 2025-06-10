@@ -34,7 +34,7 @@ import { BlogStatusEnum, BlogTags } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import BlogEditor from '../_components/blog-editor';
+import BlogEditor from '../../../../../../components/ui/blog-editor';
 
 const AddBlogAdmin = () => {
   const [loading, setLoading] = useState<boolean>(false);

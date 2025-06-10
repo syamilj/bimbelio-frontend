@@ -12,7 +12,12 @@ export default function PredictionStep3() {
   const {
     simakScores,
     setSIMAKScores,
-    useScoreSimak: { simakAvgSNBT, simakPercentageRAW, simakScoreRAW },
+    useScoreSimak: {
+      simakAvgSNBT,
+      simakScoreSNBT,
+      simakScoreRAW,
+      simakMaxScoreRAW,
+    },
   } = useProvider();
 
   const updateSIMAKScore = (
@@ -23,11 +28,15 @@ export default function PredictionStep3() {
     setSIMAKScores((prev) =>
       prev.map((utbk) => {
         if (utbk.name === subTestName) {
+          const benar = type === 'benar' ? value : utbk.value.benar;
+          const salah = type === 'salah' ? value : utbk.value.salah;
+          const kosong = utbk.total_question - (benar + salah);
           return {
             ...utbk,
             value: {
               ...utbk.value,
               [type]: value,
+              kosong: kosong >= 0 ? kosong : utbk.value.kosong,
             },
           };
         }
@@ -35,6 +44,20 @@ export default function PredictionStep3() {
       }),
     );
   };
+
+  // useEffect(() => {
+  //   setSIMAKScores((prev) =>
+  //     prev.map((item) => {
+  //       return {
+  //         ...item,
+  //         value: {
+  //           ...item.value,
+  //           kosong: item.total_question - item.value.benar + item.value.salah,
+  //         },
+  //       };
+  //     }),
+  //   );
+  // }, [simakScores]);
 
   return (
     <div className="space-y-8">
@@ -120,6 +143,7 @@ export default function PredictionStep3() {
                             type="number"
                             max={item.total_question}
                             value={item.value.kosong}
+                            disabled
                             onChange={(e) =>
                               updateSIMAKScore(
                                 item.name,
@@ -220,6 +244,7 @@ export default function PredictionStep3() {
                             type="number"
                             max={item.total_question}
                             value={item.value.kosong}
+                            disabled
                             onChange={(e) =>
                               updateSIMAKScore(
                                 item.name,
@@ -268,7 +293,7 @@ export default function PredictionStep3() {
           </Card>
 
           <div className="space-y-4">
-            <ScoreCard
+            {/* <ScoreCard
               title="Skor Mentah"
               value={simakScoreRAW.toString()}
               color="blue"
@@ -282,6 +307,18 @@ export default function PredictionStep3() {
               title="Rata-rata IRT"
               value={simakAvgSNBT.toFixed(1)}
               color="purple"
+            /> */}
+            <ScoreCard
+              title="Skor Mentah"
+              value={simakScoreRAW.toString()}
+              subtitle={`dari ${simakMaxScoreRAW} maksimal`}
+              color="purple"
+            />
+            <ScoreCard
+              title="Konversi SNBT"
+              value={simakAvgSNBT.toFixed(1)}
+              subtitle="Skala 200-800"
+              color="green"
             />
           </div>
         </div>

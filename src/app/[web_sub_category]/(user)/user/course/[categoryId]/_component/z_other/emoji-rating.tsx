@@ -23,6 +23,7 @@ export default function EmojiRating() {
     '/course/getUserRatingBySubChapterId',
     {
       params: { subChapterId: sub as string },
+      enabled: !!sub,
       useEffectDependencies: [sub],
     },
   );

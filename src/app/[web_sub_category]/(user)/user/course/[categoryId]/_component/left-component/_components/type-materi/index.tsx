@@ -1,37 +1,26 @@
 //src/components/workspace-course/_component/type-materi/index.tsx
 
+import ReactMarkdownBlog from '@/components/ui/react-markdown-blog';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { IconCheckList } from '@/styles/icon';
 import 'katex/dist/katex.min.css';
 import { ClockIcon, Loader } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
-import rehypeKatex from 'rehype-katex';
-import rehypeRaw from 'rehype-raw';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import { Data } from '../../page';
-import EmojiRating from '../emoji-rating';
-import SubmitCourse from '../submit-course';
+import { useProvider } from '../../../../_provider/provider';
+import EmojiRating from '../../../z_other/emoji-rating';
+import SubmitCourse from '../../../z_other/submit-course';
 // MarkdownPreview (SSG) pakai dynamic import
 const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
   ssr: false,
   loading: () => <SpinnerPageCentered />,
 });
 
-export default function MateriType({
-  data,
-  CourseProgress,
-}: {
-  data: Data;
-  CourseProgress:
-    | {
-        totalSubChapter: number;
-        finishedSubChapter: number;
-        percentageProgress: number;
-      }
-    | undefined;
-}) {
+export default function MateriType() {
+  const {
+    useData: { CourseData, CourseProgress },
+  } = useProvider();
+
   useEffect(() => {
     const materi = document.getElementById('course-materi') as HTMLDivElement;
     if (materi) {
@@ -51,15 +40,15 @@ export default function MateriType({
   }, []);
 
   // Jika sub-chapter ini sudah pernah disubmit, CourseProgress akan terisi -> isDone = true
-  const isDone = data.CourseProgress.length > 0;
+  const isDone = CourseData && CourseData.CourseProgress.length > 0;
 
   // Markdown setting
   const remarkMathOptions = {
     singleDollarTextMath: false,
   };
 
-  // Jika belum ada data materi, jangan render apapun
-  if (!data.materi) return null;
+  // Jika belum ada CourseData? materi, jangan render apapun
+  if (!CourseData?.materi) return null;
 
   return (
     <div
@@ -76,7 +65,7 @@ export default function MateriType({
         {/* Bagian estimasi waktu atau durasi */}
         <div className="flex items-center gap-2 text-gray-600">
           <ClockIcon className="h-4 w-4" />
-          <span>{data.spendTime ?? 0} Menit</span>
+          <span>{CourseData.spendTime ?? 0} Menit</span>
         </div>
         {isDone && (
           // Penanda Selesai
@@ -93,23 +82,25 @@ export default function MateriType({
           {/* Estimasi waktu baca atau durasi di sini juga */}
           <div className="flex items-center gap-2 text-gray-600">
             <ClockIcon className="h-4 w-4" />
-            <span>{data.spendTime ?? 0} Menit</span>
+            <span>{CourseData.spendTime ?? 0} Menit</span>
           </div>
 
           {/* Tombol Submit jika belum selesai */}
-          <SubmitCourse subCourseId={data.id} />
+          <SubmitCourse subCourseId={CourseData.id} />
         </div>
       )}
 
       {/* Konten materi (Markdown) */}
-      <MarkdownPreview
-        source={data.materi}
-        remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
-        rehypePlugins={[rehypeKatex, rehypeRaw]}
-        wrapperElement={{
-          'data-color-mode': 'light',
-        }}
-        className="ReactMarkdown course select-none pb-[5rem]"
+
+      {/* <BlocknoteEditor
+        value={CourseData.materi}
+        viewOnly
+        className="pt-4 pb-12"
+      /> */}
+
+      <ReactMarkdownBlog
+        value={CourseData.materi}
+        className="pt-4 pb-12"
       />
       <div className="w-full flex justify-center pb-[7rem]">
         <EmojiRating />
