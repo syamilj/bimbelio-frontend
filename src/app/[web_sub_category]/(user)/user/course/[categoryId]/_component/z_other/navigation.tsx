@@ -141,7 +141,7 @@ const NavigationButtons = () => {
           heading="Menyimpan Progress..."
         />
       )}
-      <div className="flex w-full justify-between items-center gap-6">
+      <div className="flex w-fit justify-between items-center gap-6">
         {prevLink ? (
           <Link href={prevLink}>
             <Button className="px-4 py-2 bg-main-gray-disabled text-white rounded-full hover:bg-main-gray-disabled/95">

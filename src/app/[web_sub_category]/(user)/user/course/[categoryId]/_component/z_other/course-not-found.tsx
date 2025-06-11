@@ -3,10 +3,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { BookOpen, MessageCircle, Trophy } from 'lucide-react';
 import Link from 'next/link';
+import HeaderCourse from './header';
 
 export default function CourseNotFound() {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col absolute top-0 left-0 w-full h-full md:pl-[75px] overflow-y-auto">
+      <HeaderCourse className="flex md:hidden" />
       <header className="bg-white border-b border-gray-200 px-8 py-6">
         <div className="flex items-center justify-between">
           <div>

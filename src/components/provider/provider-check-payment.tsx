@@ -1,4 +1,5 @@
 'use client';
+import { Payment } from '@/app/[web_sub_category]/(user)/user/_components/payment';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
@@ -52,5 +53,10 @@ export default function ProviderCheckPayment({
       handleCheckPayment(`${order_id}`, `${transaction_status}`);
     }
   }, [order_id, transaction_status]);
-  return <>{children}</>;
+  return (
+    <>
+      <Payment />
+      {children}
+    </>
+  );
 }

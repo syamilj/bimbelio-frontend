@@ -86,7 +86,7 @@ export default function MateriType() {
           </div>
 
           {/* Tombol Submit jika belum selesai */}
-          <SubmitCourse subCourseId={CourseData.id} />
+          <SubmitCourse />
         </div>
       )}
 

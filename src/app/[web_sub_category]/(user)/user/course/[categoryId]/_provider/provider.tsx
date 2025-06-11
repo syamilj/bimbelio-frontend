@@ -59,7 +59,7 @@ export default function Provider({ children }: Props) {
 
   useEffect(() => {
     if (!tab && sub) {
-      router.push(`${window.location.pathname}?sub=${sub}&tab=chat`);
+      router.push(`${window.location.pathname}?sub=${sub}&tab=notes`);
     }
   }, [tab, sub]);
 
@@ -72,15 +72,22 @@ export default function Provider({ children }: Props) {
   const [CourseData, setCourseData] = useState<Data | null>(null);
   const [indexChapter, setIndexChapter] = useState<number>(0);
 
-  const { data: Course, isLoading: CourseLoading } = useGet<CourseType>(
-    '/course/getCourseUserByCategoryId',
-    { params: { categoryId }, useEffectDependencies: [categoryId] },
-  );
-
-  const { data: CourseProgress } = useGet('/course/getProgressByCategory', {
+  const {
+    data: Course,
+    isLoading: CourseLoading,
+    refetch: CourseRefetch,
+  } = useGet<CourseType>('/course/getCourseUserByCategoryId', {
     params: { categoryId },
     useEffectDependencies: [categoryId],
   });
+
+  const { data: CourseProgress, refetch: CourseProgressRefetch } = useGet(
+    '/course/getProgressByCategory',
+    {
+      params: { categoryId },
+      useEffectDependencies: [categoryId],
+    },
+  );
 
   useEffect(() => {
     setCourseData(null);
@@ -153,7 +160,7 @@ export default function Provider({ children }: Props) {
             CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
           });
           router.push(
-            `${window.location.pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`,
+            `${window.location.pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=notes`,
           );
         } else {
           setCourseData(null);
@@ -205,13 +212,19 @@ export default function Provider({ children }: Props) {
   const [showList, setShowList] = useState<boolean>(false);
   const [showAI, setShowAI] = useState<boolean>(false);
 
+  const isLocked =
+    (CourseData?.premium && !session?.user.feature.course) || false;
+
   const Context = {
+    isLocked,
     useParams: {
       tab,
       sub,
       categoryId,
     },
     useData: {
+      CourseProgressRefetch,
+      CourseRefetch,
       CourseProgress,
       Course,
       CourseLoading,
@@ -252,12 +265,33 @@ export const useProvider = () => {
 };
 
 type ProviderType = {
+  isLocked: boolean;
   useParams: {
     tab: string | null;
     sub: string | null;
     categoryId: string | null;
   };
   useData: {
+    CourseProgressRefetch: () => Promise<
+      | {
+          message: string;
+          status: number;
+          data?: any;
+          page?: number;
+          total_pages?: number;
+        }
+      | undefined
+    >;
+    CourseRefetch: () => Promise<
+      | {
+          message: string;
+          status: number;
+          data?: any;
+          page?: number;
+          total_pages?: number;
+        }
+      | undefined
+    >;
     CourseProgress: any;
     Course: CourseType | null;
     CourseLoading: boolean;

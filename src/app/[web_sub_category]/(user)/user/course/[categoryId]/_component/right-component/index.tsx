@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CustomTooltip, ToolTip } from '@/components/ui/tooltip';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import ReportBug from '@/components/_shared/other/report-bug';
@@ -65,7 +65,13 @@ export default function RightComponent() {
   const { data: session } = useSession();
   const userId = session?.user.id;
 
-  if (CourseData?.type === 'TRYOUT' || CourseData?.type === 'MATERI') {
+  const isLocked = CourseData?.premium && !session?.user.feature.course;
+
+  if (
+    CourseData?.type === 'TRYOUT' ||
+    CourseData?.type === 'MATERI' ||
+    isLocked
+  ) {
     return null;
   }
   return (
@@ -135,32 +141,23 @@ const Sidebar = ({
   const {
     useData: { CourseData },
     useDoc: { docId },
+    useParams: { sub, tab, categoryId },
   } = useProvider();
 
   const courseType = CourseData?.type;
 
-  const pathname = usePathname();
-  const pathnameArray = pathname?.split('/');
-  const categoryId =
-    (pathnameArray && pathnameArray[pathnameArray?.length - 1]) || null;
-
-  const searchParams = useSearchParams();
-  const sub = searchParams?.get('sub');
-  const tab = searchParams?.get('tab');
-
-  const [headerTab, setHeaderTab] = useState<string>(tab ? tab : '');
-  const [documentId] = useState(docId || '');
+  const [headerTab, setHeaderTab] = useState<string>('notes');
 
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [isReportBugOpen, setIsReportBugOpen] = useState(false);
 
   const { mutate: resetChat } = useMutation('/message/resetMessage', 'delete', {
-    payload: { docId: `${documentId}` },
+    payload: { docId },
   });
   const { mutate: getNameImage } = useMutation(
     '/message/getNameImage',
     'post',
-    { payload: { docId: `${documentId}` } },
+    { payload: { docId } },
   );
   const router = useRouter();
 
@@ -173,9 +170,7 @@ const Sidebar = ({
   } = useAppContext();
 
   const isMobile = useMedia({ maxWidth: '768px' });
-  const [activeIndex, setActiveIndex] = useState(
-    tab && tabNames.includes(tab) ? tab : 'notes',
-  );
+  const [activeIndex, setActiveIndex] = useState(tab || 'notes');
 
   console.log('onBoarding', onBoarding);
 
@@ -190,8 +185,9 @@ const Sidebar = ({
   );
 
   useEffect(() => {
-    if (tab && tabNames.includes(tab)) {
+    if (tab) {
       setActiveIndex(tab);
+      setHeaderTab(tab);
     }
   }, [tab]);
 
@@ -409,14 +405,16 @@ const Sidebar = ({
                     value={item.value}
                     className={cn(
                       `font-regular relative mr-[.5rem] flex items-center rounded-[.7rem] border border-main-gray-input2 bg-transparent px-3 py-[.5rem] text-[.95rem] capitalize text-main-gray-text data-[state=active]:border-main data-[state=active]:bg-main data-[state=active]:text-white gap-0 md:gap-[.5rem] duration-300 md:hover:bg-main-gray-input2`,
-                      activeIndex === item.value &&
-                        'bg-main text-white md:hover:bg-main border-main',
-                      headerTab === item.value && 'gap-[.5rem]',
+                      headerTab === item.value &&
+                        'gap-[.5rem] bg-gradient text-white hover:bg-main',
                     )}
                   >
                     {item.icon}
                     <p
-                      className={`${headerTab === item.value ? 'w-fit' : 'w-0 md:w-fit'} overflow-hidden`}
+                      className={cn(
+                        'overflow-hidden w-0 md:w-fit',
+                        headerTab === item.value && 'w-fit',
+                      )}
                     >
                       {item.title}
                     </p>
@@ -555,7 +553,7 @@ const Sidebar = ({
             else if (courseType === 'TRYOUT') return false;
             else if (courseType === 'VIDEO') {
               if (item.value === 'notes') return true;
-              else if (item.value === 'chat') return true;
+              else if (item.value === 'chat') return false;
               else if (item.value === 'quiz') return false;
             } else return false;
           })

@@ -26,7 +26,6 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import Logo from '@/components/ui/logo';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
-import { Payment } from './payment';
 // Main Sidebar Component
 const Sidebar = ({ category }: { category: any }) => {
   const { data: session } = useSession();
@@ -69,7 +68,6 @@ const Sidebar = ({ category }: { category: any }) => {
 
   return (
     <Fragment>
-      <Payment />
       {/* Desktop Sidebar */}
       <div className="relative hidden h-full flex-col bg-white shadow-xl md:flex">
         {/* Header */}

@@ -138,14 +138,14 @@ const WorkspaceCourse = () => {
     return <CourseNotFound />;
   }
 
-  // if (data.premium && !session?.user.feature.course) {
+  // if (CourseData?.premium && !session?.user.feature.course) {
   //   return (
-  //     <div className="flex justify-center items-center h-screen text-xl font-bold">
-  //       Course Terkunci
-  //     </div>
+  //     <Fragment>
+  //       <HeaderCourse className="hidden md:flex" />
+  //       <CourseLocked />
+  //     </Fragment>
   //   );
   // }
-
   return (
     <Fragment>
       <HeaderCourse className="hidden md:flex" />

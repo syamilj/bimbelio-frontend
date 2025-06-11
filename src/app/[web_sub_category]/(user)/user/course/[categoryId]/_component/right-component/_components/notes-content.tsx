@@ -1,5 +1,6 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { toaster } from '@/components/ui/toaster';
 import Editor from '@/components/workspace/editor';
 import { BlocknoteEditorType } from '@/components/workspace/editor/provider';
 import { useGet } from '@/lib/fetch-helper/useGet';
@@ -26,6 +27,17 @@ export default function NotesContent({ docId }: Props) {
 
   const { data: getNotesQuery } = useGet('/notes/getNotesForCourse', {
     params: { userId, courseCategoryId: categoryId },
+    toast: { hideError: true },
+    onError({ message, status }) {
+      if (status !== 404) {
+        toaster({
+          title: 'Error',
+          condition: 'warning',
+          description: message,
+          duration: 3000,
+        });
+      }
+    },
   });
 
   useEffect(() => {

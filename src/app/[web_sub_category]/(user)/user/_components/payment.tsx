@@ -30,6 +30,7 @@ import { toaster } from '@/components/ui/toaster';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { IconArrowTwk } from '@/styles/icon';
 import {
   Plan,
   PlanFeature,
@@ -42,6 +43,7 @@ import {
   BookOpen,
   BookOpenIcon,
   BrainIcon,
+  Check,
   CheckIcon,
   Eye,
   FileText,
@@ -73,7 +75,12 @@ type PlanType = {
   name: string;
   description: string;
   price: number;
-  features: string[] | undefined;
+  features:
+    | {
+        name: string;
+        features: string[];
+      }[]
+    | undefined;
   timeline: string | null;
   coins:
     | ({
@@ -126,11 +133,15 @@ export function Payment() {
   const [pricingIsLoading, setPricingIsLoading] = useState<any>();
 
   const [topping, setTopping] = useState<PlanType[]>([]);
+  const [subscription, setSubscription] = useState<PlanType[]>([]);
+  const [bundles, setBundles] = useState<PlanType[]>([]);
 
   const getData = async () => {
     await getGeneral('/plan/getAllPlanForPricingPage', {
       onSuccess({ data }) {
         setTopping(data.topping);
+        setSubscription(data.subscriptions);
+        setBundles(data.bundles);
       },
     });
   };
@@ -176,7 +187,7 @@ export function Payment() {
         onOpenChange={setTransactionPopUp}
       >
         <DialogContent
-          className="max-w-[95vw] sm:max-w-[800px] p-0"
+          className="max-w-[95vw] h-[95vh] p-0"
           classOverlay="z-[10000]"
         >
           {pricingIsLoading && (
@@ -199,21 +210,27 @@ export function Payment() {
               </DialogHeader>
 
               <Tabs
-                defaultValue="limitasi"
+                defaultValue="coin"
                 className="w-full"
               >
-                <TabsList className="mx-auto mb-8 grid w-full max-w-md grid-cols-1">
-                  {/* <TabsTrigger
-                    value="premium"
-                    className="text-sm font-medium sm:text-base"
-                  >
-                    Paket Premium
-                  </TabsTrigger> */}
+                <TabsList className="mx-auto mb-8 grid w-full max-w-md grid-cols-3">
                   <TabsTrigger
-                    value="limitasi"
+                    value="bundle"
                     className="text-sm font-medium sm:text-base"
                   >
-                    Top-up Fitur
+                    Bundle
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="subscription"
+                    className="text-sm font-medium sm:text-base"
+                  >
+                    Berlangganan
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="coin"
+                    className="text-sm font-medium sm:text-base"
+                  >
+                    Coin
                   </TabsTrigger>
                 </TabsList>
 
@@ -228,7 +245,33 @@ export function Payment() {
                   />
                 </TabsContent>
 
-                <TabsContent value="limitasi">
+                <TabsContent value="bundle">
+                  <div className="flex flex-col md:flex-row items-center md:justify-center gap-4 mx-auto flex-wrap">
+                    {bundles.map((bundle, i) => (
+                      <CardPricing
+                        key={i}
+                        data={bundle}
+                        onSelect={() => {
+                          setType('plan');
+                          handlePackageSelect(bundle.id);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="subscription">
+                  <div className="flex flex-col md:flex-row items-center md:justify-center gap-4 mx-auto">
+                    {subscription.map((plan, i) => (
+                      <CardPricing
+                        key={i}
+                        data={plan}
+                      />
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="coin">
                   <div className="flex flex-col md:flex-row items-center md:justify-center gap-4 mx-auto">
                     {topping.map((pack) => (
                       <CardTopping
@@ -784,6 +827,145 @@ const CardTopping = ({ data, onSelect }: CardProps) => {
           onClick={() => onSelect && onSelect()}
         >
           Beli Sekarang
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const CardPricing = ({ data, onSelect }: CardProps) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  return (
+    <Card
+      key={data.name}
+      className={`flex w-full max-w-[340px] min-w-[300px] flex-col rounded-2xl overflow-hidden border-0 shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+        data.popular ? 'shadow-xl ring-2 ring-[#0066ff]' : ''
+      }`}
+    >
+      {data.popular && (
+        <div className="absolute top-0 right-0 transform translate-x-0 -translate-y-0 z-10">
+          <Badge className="bg-[#0066ff] text-white font-medium px-3 py-1 shadow-md">
+            <Sparkles className="h-3.5 w-3.5 mr-1" /> Populer
+          </Badge>
+        </div>
+      )}
+      <div className="h-3 bg-gradient"></div>
+      <CardHeader className="pb-0 pt-6">
+        <CardTitle className="text-[#0a2540] text-2xl">{data.name}</CardTitle>
+        <CardDescription className="text-[#64748b]">
+          {data.description}
+        </CardDescription>
+        <div className="mt-4">
+          <span className="text-4xl font-bold text-[#0a2540]">
+            {formatPrice(data.price)}
+          </span>
+          <span className="text-[#64748b] ml-1">/{data.timeline}</span>
+          {/* {billingCycle === "yearly" && (
+          <div className="text-sm text-[#64748b] mt-1">
+            Ditagih {formatPrice(data.price.yearly)} per tahun
+          </div>
+        )} */}
+        </div>
+      </CardHeader>
+      <CardContent className="flex-1 pt-6">
+        {data.coins && (
+          <div
+            className="mb-6 p-5 rounded-xl relative overflow-hidden"
+            style={{
+              background: `linear-gradient(to right, ${websiteSubCategory?.main_color}08, ${websiteSubCategory?.main_color}15)`,
+              boxShadow: `0 4px 12px ${websiteSubCategory?.main_color}10`,
+            }}
+          >
+            <div
+              className="absolute top-0 right-0 w-24 h-24 opacity-10"
+              style={{
+                background: `radial-gradient(circle, ${websiteSubCategory?.main_color} 0%, transparent 70%)`,
+                transform: 'translate(30%, -30%)',
+              }}
+            ></div>
+            <div className="mb-3">
+              <span className="text-sm font-medium text-main">Bonus Coin</span>
+            </div>{' '}
+            <div className="grid grid-cols-5 gap-2">
+              {data.coins.map((coin) => {
+                const item = {
+                  icon:
+                    coin?.name === 'chat'
+                      ? MessageSquare
+                      : coin?.name === 'notes'
+                        ? PenTool
+                        : coin?.name === 'quiz'
+                          ? BookOpen
+                          : coin?.name === 'tryout'
+                            ? FileText
+                            : coin?.name === 'vision'
+                              ? Eye
+                              : PenTool,
+                };
+                return (
+                  <div
+                    className="flex flex-col items-center"
+                    key={coin?.name}
+                  >
+                    <item.icon className="h-5 w-5 mb-1 text-main" />
+                    <span className="text-xs text-[#4a5568] font-medium">
+                      {coin?.name}
+                    </span>
+                    <span className="text-sm font-bold text-main">
+                      {coin?.total}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-3 px-1">
+          {data.features?.map((feature) => (
+            <div className="space-y-3 px-1">
+              <div
+                key={feature.name}
+                className="flex items-start"
+              >
+                <div
+                  className="h-5 w-5 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 bg-gradient"
+                  style={{
+                    boxShadow: `0 2px 4px ${websiteSubCategory?.main_color}30`,
+                  }}
+                >
+                  <Check className="h-3 w-3 text-white" />
+                </div>
+                <span className="text-main text-sm font-semibold">
+                  {feature.name}
+                </span>
+              </div>
+              <div className="space-y-3">
+                {feature.features.map((detail) => (
+                  <div
+                    key={detail}
+                    className="flex items-start"
+                  >
+                    {/* <Undo className="h-3 w-3 text-white" /> */}
+                    <IconArrowTwk
+                      w={15}
+                      className="text-main mr-2 ml-2"
+                    />
+                    <span className="text-main  text-sm">{detail}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+      <CardFooter className="pt-2 pb-6">
+        <Button
+          variant={'outline'}
+          className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient text-white hover:text-white hover:opacity-85"
+          onClick={() => onSelect && onSelect()}
+        >
+          Mulai Berlangganan
         </Button>
       </CardFooter>
     </Card>

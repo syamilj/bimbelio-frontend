@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Loader2Icon, Sparkles } from 'lucide-react';
+import { Check, Loader2Icon, Sparkles } from 'lucide-react';
 import { ReactElement, useEffect, useState } from 'react';
 // import {
 //   Tooltip,
@@ -29,8 +30,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { IconArrowTwk } from '@/styles/icon';
 import { BookOpen, Eye, FileText, MessageSquare, PenTool } from 'lucide-react';
 
 // type PlanType = {
@@ -75,7 +78,12 @@ type PlanType = {
   name: string;
   description: string;
   price: number;
-  features: string[] | undefined;
+  features:
+    | {
+        name: string;
+        features: string[];
+      }[]
+    | undefined;
   timeline: string | null;
   coins:
     | ({
@@ -91,10 +99,6 @@ type PlanType = {
     Vision: string | null;
   };
   popular: boolean;
-  buttonText: string;
-  buttonVariant: 'outline';
-  color: string;
-  gradient: string;
 };
 
 // const coinColors = {
@@ -128,11 +132,11 @@ export default function PricingPlans() {
   const { setShowAuth } = useGuest();
   const { data: session } = useSession();
 
-  const [, setSubscription] = useState<PlanType[]>([]);
-  const [, setBundles] = useState<PlanType[]>([]);
+  const [subscription, setSubscription] = useState<PlanType[]>([]);
+  const [bundles, setBundles] = useState<PlanType[]>([]);
   const [topping, setTopping] = useState<PlanType[]>([]);
 
-  const [, setProductCompare] = useState<{
+  const [productCompare, setProductCompare] = useState<{
     subscription: PlanType[];
     bundles: PlanType[];
     listCompare: string[];
@@ -203,7 +207,7 @@ export default function PricingPlans() {
         onClose={() => setShowPhoneConfirm(false)}
         onSubmit={handlePayment}
       />
-      {/* <div className="text-center mb-16">
+      <div className="text-center mb-16">
         <div className="inline-block bg-main/10 text-main rounded-full px-4 py-1 text-sm font-medium mb-4">
           Pilih Paket Terbaik
         </div>
@@ -215,12 +219,21 @@ export default function PricingPlans() {
           belajar bersama Bimbelio
         </p>
       </div>
-      <Tabs defaultValue="bundle" className="w-full">
+      <Tabs
+        defaultValue="bundle"
+        className="w-full"
+      >
         <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8 bg-[#e6f0ff] p-1 rounded-full">
-          <TabsTrigger value="bundle" className="rounded-full">
+          <TabsTrigger
+            value="bundle"
+            className="rounded-full"
+          >
             Paket Bundle
           </TabsTrigger>
-          <TabsTrigger value="subscription" className="rounded-full">
+          <TabsTrigger
+            value="subscription"
+            className="rounded-full"
+          >
             Paket Berlangganan
           </TabsTrigger>
         </TabsList>
@@ -228,7 +241,10 @@ export default function PricingPlans() {
         <TabsContent value="subscription">
           <div className="flex justify-center gap-4 mx-auto">
             {subscription.map((plan, i) => (
-              <CardPricing key={i} data={plan} />
+              <CardPricing
+                key={i}
+                data={plan}
+              />
             ))}
           </div>
         </TabsContent>
@@ -240,14 +256,14 @@ export default function PricingPlans() {
                 key={i}
                 data={bundle}
                 onSelect={() => {
-                  setType("plan");
+                  setType('plan');
                   handlePackageSelect(bundle.id);
                 }}
               />
             ))}
           </div>
         </TabsContent>
-      </Tabs> */}
+      </Tabs>
 
       <div className="mt-0">
         <div className="text-center mb-8">
@@ -457,6 +473,145 @@ export default function PricingPlans() {
 type CardProps = {
   data: PlanType;
   onSelect?: () => void;
+};
+
+const CardPricing = ({ data, onSelect }: CardProps) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  return (
+    <Card
+      key={data.name}
+      className={`flex w-full max-w-[340px] min-w-[300px] flex-col rounded-2xl overflow-hidden border-0 shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+        data.popular ? 'shadow-xl ring-2 ring-[#0066ff]' : ''
+      }`}
+    >
+      {data.popular && (
+        <div className="absolute top-0 right-0 transform translate-x-0 -translate-y-0 z-10">
+          <Badge className="bg-[#0066ff] text-white font-medium px-3 py-1 shadow-md">
+            <Sparkles className="h-3.5 w-3.5 mr-1" /> Populer
+          </Badge>
+        </div>
+      )}
+      <div className="h-3 bg-gradient"></div>
+      <CardHeader className="pb-0 pt-6">
+        <CardTitle className="text-[#0a2540] text-2xl">{data.name}</CardTitle>
+        <CardDescription className="text-[#64748b]">
+          {data.description}
+        </CardDescription>
+        <div className="mt-4">
+          <span className="text-4xl font-bold text-[#0a2540]">
+            {formatPrice(data.price)}
+          </span>
+          <span className="text-[#64748b] ml-1">/{data.timeline}</span>
+          {/* {billingCycle === "yearly" && (
+          <div className="text-sm text-[#64748b] mt-1">
+            Ditagih {formatPrice(data.price.yearly)} per tahun
+          </div>
+        )} */}
+        </div>
+      </CardHeader>
+      <CardContent className="flex-1 pt-6">
+        {data.coins && (
+          <div
+            className="mb-6 p-5 rounded-xl relative overflow-hidden"
+            style={{
+              background: `linear-gradient(to right, ${websiteSubCategory?.main_color}08, ${websiteSubCategory?.main_color}15)`,
+              boxShadow: `0 4px 12px ${websiteSubCategory?.main_color}10`,
+            }}
+          >
+            <div
+              className="absolute top-0 right-0 w-24 h-24 opacity-10"
+              style={{
+                background: `radial-gradient(circle, ${websiteSubCategory?.main_color} 0%, transparent 70%)`,
+                transform: 'translate(30%, -30%)',
+              }}
+            ></div>
+            <div className="mb-3">
+              <span className="text-sm font-medium text-main">Bonus Coin</span>
+            </div>{' '}
+            <div className="grid grid-cols-5 gap-2">
+              {data.coins.map((coin) => {
+                const item = {
+                  icon:
+                    coin?.name === 'chat'
+                      ? MessageSquare
+                      : coin?.name === 'notes'
+                        ? PenTool
+                        : coin?.name === 'quiz'
+                          ? BookOpen
+                          : coin?.name === 'tryout'
+                            ? FileText
+                            : coin?.name === 'vision'
+                              ? Eye
+                              : PenTool,
+                };
+                return (
+                  <div
+                    className="flex flex-col items-center"
+                    key={coin?.name}
+                  >
+                    <item.icon className="h-5 w-5 mb-1 text-main" />
+                    <span className="text-xs text-[#4a5568] font-medium">
+                      {coin?.name}
+                    </span>
+                    <span className="text-sm font-bold text-main">
+                      {coin?.total}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-3 px-1">
+          {data.features?.map((feature) => (
+            <div className="space-y-3 px-1">
+              <div
+                key={feature.name}
+                className="flex items-start"
+              >
+                <div
+                  className="h-5 w-5 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 bg-gradient"
+                  style={{
+                    boxShadow: `0 2px 4px ${websiteSubCategory?.main_color}30`,
+                  }}
+                >
+                  <Check className="h-3 w-3 text-white" />
+                </div>
+                <span className="text-main text-sm font-semibold">
+                  {feature.name}
+                </span>
+              </div>
+              <div className="space-y-3">
+                {feature.features.map((detail) => (
+                  <div
+                    key={detail}
+                    className="flex items-start"
+                  >
+                    {/* <Undo className="h-3 w-3 text-white" /> */}
+                    <IconArrowTwk
+                      w={15}
+                      className="text-main mr-2 ml-2"
+                    />
+                    <span className="text-main  text-sm">{detail}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+      <CardFooter className="pt-2 pb-6">
+        <Button
+          variant={'outline'}
+          className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient text-white hover:text-white hover:opacity-85"
+          onClick={() => onSelect && onSelect()}
+        >
+          Mulai Berlangganan
+        </Button>
+      </CardFooter>
+    </Card>
+  );
 };
 
 const CardTopping = ({ data, onSelect }: CardProps) => {

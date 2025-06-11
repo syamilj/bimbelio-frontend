@@ -66,6 +66,8 @@ export default function ProviderSessionAuth({
     }
   }, []);
 
+  console.log({ session: data?.user });
+
   const Context = {
     data,
   };

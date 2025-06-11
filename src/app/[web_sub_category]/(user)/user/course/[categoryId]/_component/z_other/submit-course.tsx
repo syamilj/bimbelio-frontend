@@ -5,11 +5,14 @@ import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { IconCheckList } from '@/styles/icon';
 
 import { useState } from 'react';
+import { useProvider } from '../../_provider/provider';
 
-const SubmitCourse = ({ subCourseId }: { subCourseId: string }) => {
-  // const subCourseId = Array.isArray(query.sub)
-  //   ? query.sub[0]
-  //   : query.sub || null;
+const SubmitCourse = () => {
+  const {
+    useData: { CourseRefetch, CourseData, CourseProgressRefetch },
+  } = useProvider();
+
+  const subCourseId = CourseData?.id;
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -45,7 +48,9 @@ const SubmitCourse = ({ subCourseId }: { subCourseId: string }) => {
       payload: { subCourseId },
       onSuccess: async () => {
         // await trpc.course.getCourseUserByCategoryId.invalidate();
+        await CourseRefetch();
         setLoading(false);
+        await CourseProgressRefetch();
       },
       onError() {
         setLoading(false);
@@ -77,7 +82,7 @@ const SubmitCourse = ({ subCourseId }: { subCourseId: string }) => {
         heading="Menyimpan Progress..."
       />
       <div
-        className="flex w-fit cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-greenUpgrade px-[1rem] py-[.7rem] text-[.9rem] text-white duration-300 active:bg-greenUpgradeHover md:hover:bg-greenUpgradeHover md:active:bg-greenUpgrade"
+        className="flex w-fit cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-gradient px-[1rem] py-[.7rem] text-[.9rem] text-white duration-300 hover:opacity-95"
         onClick={() => {
           handleSubmit();
         }}

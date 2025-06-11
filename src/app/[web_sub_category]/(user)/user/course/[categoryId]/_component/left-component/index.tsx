@@ -3,6 +3,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { ResizablePanel } from '@/components/ui/resizable';
 import { Fragment } from 'react';
 import { useProvider } from '../../_provider/provider';
+import CourseLocked from '../z_other/course-locked';
 import HeaderCourse from '../z_other/header';
 import NavigationButtons from '../z_other/navigation';
 import CourseReport from '../z_other/report';
@@ -21,6 +22,8 @@ export default function LeftComponent() {
   const { data: session } = useSession();
   const userId = session?.user.id;
 
+  const isLocked = CourseData?.premium && !session?.user.feature.course;
+
   return (
     <ResizablePanel
       defaultSize={50}
@@ -35,7 +38,9 @@ export default function LeftComponent() {
           className="flex md:hidden"
           onlyMobile
         />
-        {sub === 'report' ? (
+        {isLocked ? (
+          <CourseLocked />
+        ) : sub === 'report' ? (
           <CourseReport />
         ) : (
           <Fragment>
@@ -52,9 +57,11 @@ export default function LeftComponent() {
         )}
       </div>
 
-      <div className="absolute items-center justify-center hidden md:flex w-full bottom-6 md:left-2 z-[100]">
-        <NavigationButtons />
-      </div>
+      {!isLocked && (
+        <div className="absolute items-center justify-center hidden md:flex w-full bottom-6 md:left-2 z-[100]">
+          <NavigationButtons />
+        </div>
+      )}
     </ResizablePanel>
   );
 }

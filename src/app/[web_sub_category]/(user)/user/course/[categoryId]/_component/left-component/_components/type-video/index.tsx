@@ -94,7 +94,7 @@ const VideoType = () => {
       )}
       {!isDone && (
         <div className="flex w-full justify-end">
-          <SubmitCourse subCourseId={CourseData?.id || ''} />
+          <SubmitCourse />
         </div>
       )}
       {videoUrl.length > 0 && (
