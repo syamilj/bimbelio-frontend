@@ -101,51 +101,47 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
-        {window.location.origin.includes('localhost') && (
-          <Link
-            className="relative"
-            href={`/${website_sub_category_id}/user/course`}
-            passHref
-            onClick={() => {
-              if (isMobile) {
-                setSidebarMobile(false);
-              }
-            }}
+        <Link
+          className="relative"
+          href={`/${website_sub_category_id}/user/course`}
+          passHref
+          onClick={() => {
+            if (isMobile) {
+              setSidebarMobile(false);
+            }
+          }}
+        >
+          {/* <ComingSoonBadge minimizeSidebar={minimizeSidebar} /> */}
+          <div
+            className={`flex items-center gap-[.8rem] ${
+              pathname?.includes('course') && 'bg-main'
+            } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
+              minimizeSidebar && 'justify-center'
+            } text-main-gray-text ${
+              !pathname?.includes('course') &&
+              'md:hover:bg-main-gray-input md:hover:text-main-gray-text'
+            } duration-300`}
           >
-            {/* <ComingSoonBadge minimizeSidebar={minimizeSidebar} /> */}
-            <div
-              className={`flex items-center gap-[.8rem] ${
-                pathname?.includes('course') && 'bg-main'
-              } mx-[.5rem] cursor-pointer rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
-                minimizeSidebar && 'justify-center'
-              } text-main-gray-text ${
-                !pathname?.includes('course') &&
-                'md:hover:bg-main-gray-input md:hover:text-main-gray-text'
-              } duration-300`}
-            >
-              {}
-              <IconCourse
-                className={`${
+            {}
+            <IconCourse
+              className={`${
+                pathname?.includes('course') ? 'font-semibold text-white' : ' '
+              }`}
+              active={pathname?.includes('course') ? true : false}
+            />
+            {!minimizeSidebar && (
+              <span
+                className={`text-sm ${
                   pathname?.includes('course')
-                    ? 'font-semibold text-white'
-                    : ' '
+                    ? 'font-medium text-white'
+                    : 'font-medium'
                 }`}
-                active={pathname?.includes('course') ? true : false}
-              />
-              {!minimizeSidebar && (
-                <span
-                  className={`text-sm ${
-                    pathname?.includes('course')
-                      ? 'font-medium text-white'
-                      : 'font-medium'
-                  }`}
-                >
-                  Belajar
-                </span>
-              )}
-            </div>
-          </Link>
-        )}
+              >
+                Belajar
+              </span>
+            )}
+          </div>
+        </Link>
         <Link
           className="relative"
           href={`/${website_sub_category_id}/user/explore`}
