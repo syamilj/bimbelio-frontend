@@ -9,19 +9,24 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { Data } from '../page';
+import { useEffect, useState } from 'react';
+import { useProvider } from '../../_provider/provider';
+import { Data } from '../../page';
 
 interface NavigationButtonsProps {
   data: Data;
 }
 
-const NavigationButtons: React.FC<NavigationButtonsProps> = ({ data }) => {
+const NavigationButtons = () => {
+  const {
+    useData: { CourseData },
+  } = useProvider();
+
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const isDone = data?.CourseProgress?.length > 0;
+  const isDone = CourseData && CourseData.CourseProgress?.length > 0;
   const categoryId = params?.categoryId as string | undefined;
   const sub = searchParams?.get('sub');
 
@@ -111,8 +116,8 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ data }) => {
     // Hanya melakukan submit jika progress belum selesai, belum submit sebelumnya, dan tidak sedang loading
     if (!isDone && !submitted && !loading) {
       setLoading(true);
-      if (data.id) {
-        await saveProgress({ payload: { subCourseId: data.id } });
+      if (CourseData?.id) {
+        await saveProgress({ payload: { subCourseId: CourseData?.id } });
       } else {
         toaster({
           title: 'Sub Id Tidak ada',
@@ -136,7 +141,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({ data }) => {
           heading="Menyimpan Progress..."
         />
       )}
-      <div className="flex w-full justify-between items-center gap-6">
+      <div className="flex w-fit justify-between items-center gap-6">
         {prevLink ? (
           <Link href={prevLink}>
             <Button className="px-4 py-2 bg-main-gray-disabled text-white rounded-full hover:bg-main-gray-disabled/95">

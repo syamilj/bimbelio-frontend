@@ -62,7 +62,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
   const searchParams = useSearchParams();
   const tab = searchParams?.get('tab');
   const [headerTab, setHeaderTab] = useState<string>('chat');
-  const [documentId, setDocumentId] = useState(initialDocId || docId || '');
+
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
   const [isReportBugOpen, setIsReportBugOpen] = useState(false);
 
@@ -109,12 +109,6 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
     setIsResetModalOpen(false);
     await handleResetChat();
   };
-
-  useEffect(() => {
-    if (docId) {
-      setDocumentId(docId);
-    }
-  }, [docId]);
 
   useEffect(() => {
     const getOnboarding = localStorage.getItem('on-boarding');

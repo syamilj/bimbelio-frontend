@@ -96,7 +96,7 @@ const SubmitTryout = ({
         onOpenChange={setOpen}
       >
         <DialogTrigger asChild>
-          <button className="rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-white duration-300 active:bg-main md:hover:bg-main-hover">
+          <button className="rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-white duration-300 active:bg-main md:hover:bg-main-hover z-[101]">
             Submit Jawaban
           </button>
         </DialogTrigger>

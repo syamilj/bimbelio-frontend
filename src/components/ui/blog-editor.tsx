@@ -1,23 +1,17 @@
 import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Button } from '@/components/ui/button';
 import ReactMarkdownBlog from '@/components/ui/react-markdown-blog';
-import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 import 'katex/dist/katex.min.css';
-import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
-
-const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
-  ssr: false,
-  loading: () => <SpinnerPageCentered />,
-});
 
 type Props = {
   value?: string;
   onChange?: (value: string) => any;
+  className?: string;
 };
 
-export default function BlogEditor({ value, onChange }: Props) {
+export default function BlogEditor({ value, onChange, className }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
@@ -50,9 +44,13 @@ export default function BlogEditor({ value, onChange }: Props) {
   return (
     <div
       ref={containerRef}
-      className={cn('grid grid-cols-2 w-full border bg-white relative')}
+      className={cn(
+        'grid grid-cols-2 w-full border bg-white relative',
+        className,
+      )}
     >
       <Button
+        type="button"
         onClick={toggleFullscreen}
         className="absolute top-2 right-2"
       >
@@ -61,7 +59,7 @@ export default function BlogEditor({ value, onChange }: Props) {
       <div
         ref={editorRef}
         className={cn(
-          'border rounded-lg p-8 h-[70vh] overflow-y-auto',
+          'border-r p-8 h-[70vh] overflow-y-auto',
           isFullscreen && 'h-full',
         )}
         onScroll={() => {

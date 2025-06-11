@@ -1,6 +1,6 @@
 'use client';
 
-import BlocknoteEditor from '@/components/ui/blocknote-editor';
+import BlogEditor from '@/components/ui/blog-editor';
 import { LoadingPopUp } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
@@ -551,12 +551,12 @@ const VideoType = ({
 
       <div
         id="blog-admin"
-        className="border rounded-lg p-8 bg-white ml-6"
+        className="rounded-lg ml-6"
       >
-        <BlocknoteEditor
+        <BlogEditor
           value={EditSubChapter.description}
-          className="h-[70vh] p-4"
-          onValueChange={(value) => {
+          className="h-[70vh]"
+          onChange={(value) => {
             setSubChapter((prev) =>
               prev.map((sChapter, sIndex) => {
                 if (sIndex === currentIndexEdit) {
@@ -789,11 +789,11 @@ const MateriType = ({
   return (
     <div
       id="blog-admin"
-      className="border rounded-lg p-8 bg-white ml-6"
+      className="rounded-lg ml-6"
     >
-      <BlocknoteEditor
+      <BlogEditor
         value={EditSubChapter.materi}
-        onValueChange={(value) => {
+        onChange={(value) => {
           setSubChapter((prev) =>
             prev.map((sChapter, sIndex) => {
               if (sIndex === currentIndexEdit) {

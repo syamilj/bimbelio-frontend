@@ -36,7 +36,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import BlogEditor from '../../_components/blog-editor';
+import BlogEditor from '../../../../../../../components/ui/blog-editor';
 
 const EditBlogAdmin = () => {
   const params = useParams();

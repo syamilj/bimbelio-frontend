@@ -17,16 +17,10 @@ import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import ReactMarkdown from '@/components/ui/react-markdown';
 import { cn } from '@/lib/utils';
-import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Data } from '../../page';
-import SubmitTryout from '../submit-tryout';
-import ReviewTabTypeTryout from './components/result';
-
-interface Props {
-  TryoutSession: Data['TryoutSession'] | null;
-  subCourseId: string;
-}
+import { useProvider } from '../../../../_provider/provider';
+import ReviewTabTypeTryout from './result';
+import SubmitTryout from './submit-tryout';
 
 type userAnswersProps = {
   number: number;
@@ -36,9 +30,14 @@ type userAnswersProps = {
   notSure: boolean;
 };
 
-const TryoutType = ({ TryoutSession, subCourseId }: Props) => {
-  const searchParams = useSearchParams();
-  const sub = searchParams?.get('sub');
+const TryoutType = () => {
+  const {
+    useParams: { sub },
+    useData: { CourseData },
+  } = useProvider();
+
+  const TryoutSession = CourseData?.TryoutSession;
+  const subCourseId = CourseData?.id;
 
   const [userAnswers, setUserAnswers] = useState<userAnswersProps[] | null>(
     null,
@@ -253,7 +252,7 @@ const TryoutType = ({ TryoutSession, subCourseId }: Props) => {
                 </button>
                 <button
                   className={cn(
-                    'rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-[.9rem] text-white duration-300 active:bg-main md:hover:bg-main-hover',
+                    'rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-[.9rem] text-white duration-300 active:bg-main md:hover:bg-main-hover z-[101]',
                     currentIndexQuestion ===
                       TryoutSession.TryoutQuestion.length - 1 &&
                       'cursor-not-allowed bg-main-hover active:bg-main-hover',
@@ -341,7 +340,7 @@ const TryoutType = ({ TryoutSession, subCourseId }: Props) => {
         <SubmitTryout
           sessionAnswer={userAnswers}
           sessionId={TryoutSession.id}
-          subCourseId={subCourseId}
+          subCourseId={subCourseId || ''}
         />
       )}
     </div>

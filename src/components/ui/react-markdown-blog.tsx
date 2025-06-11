@@ -51,7 +51,10 @@ export default function ReactMarkdownBlog({
     <ReactMarkdown
       remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
       rehypePlugins={[rehypeKatex]}
-      className={cn('prose break-words ReactMarkdown', className)}
+      className={cn(
+        'prose break-words ReactMarkdown w-full max-w-[unset]',
+        className,
+      )}
       components={{
         p: ({ children }) => {
           return (

@@ -45,49 +45,32 @@ import {
   List,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pie, PieChart } from 'recharts';
 import useMedia from 'use-media';
-import ButtonPayment from '../../../_components/button-payment';
-import { CourseType, Data } from '../page';
+import ButtonPayment from '../../../../_components/button-payment';
+import { useProvider } from '../../_provider/provider';
 
 export default function HeaderCourse({
-  setShowList,
-  showList,
-  data,
-  CourseProgress,
-  Course,
-  categoryId,
-  setIndexChapter,
   className,
   onlyMobile,
 }: {
-  setShowList: Dispatch<SetStateAction<boolean>>;
-  showList: boolean;
-  data: Data;
-  CourseProgress:
-    | {
-        totalSubChapter: number;
-        finishedSubChapter: number;
-        percentageProgress: number;
-      }
-    | undefined;
-  Course: CourseType | null;
-  categoryId: string | null;
-  setIndexChapter: Dispatch<SetStateAction<number>>;
   className?: string;
   onlyMobile?: true;
 }) {
-  const searchParams = useSearchParams();
-  const sub = searchParams?.get('sub');
-  const { setSidebarMobile, setTransactionPopUp } = useAppContext();
   const { data: session } = useSession();
   const isMobile = useMedia({ maxWidth: '768px' });
-  const userRole = session?.user.role; // mis. 'ADMIN' | 'USER' | 'PREMIUM'
+  const userCourseFeatures = session?.user.feature.course || false;
+
+  const {
+    useParams: { sub, categoryId },
+    useData: { Course, setIndexChapter, CourseProgress, CourseData },
+    useOther: { setShowList, showList },
+  } = useProvider();
+  const { setSidebarMobile, setTransactionPopUp } = useAppContext();
 
   const isHide = (premium: boolean) => {
-    return premium && userRole === 'USER';
+    return premium && !userCourseFeatures;
   };
 
   const ListOfContent = () => {
@@ -128,23 +111,11 @@ export default function HeaderCourse({
                 <AccordionContent className="pb-0">
                   <div className="ml-[.5rem] flex flex-col gap-[.5rem]">
                     {chapter.CourseSubChapter.map((sChapter, sIndex) => (
-                      <Link
-                        href={`/${website_sub_category_id_params}/user/course/${categoryId}?sub=${sChapter.id}`}
-                        key={sIndex}
-                        className={cn(
-                          'flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2 duration-300 md:hover:bg-surface-primary-light relative',
-                          isHide(sChapter.premium) &&
-                            'pointer-events-none select-none md:hover:bg-transparent',
-                        )}
-                        onClick={() => {
-                          setShowList(false);
-                          setIndexChapter(cIndex);
-                        }}
-                      >
-                        <div className="absolute right-4">
+                      <div className="relative flex items-center">
+                        <div className="absolute right-4 z-[2]">
                           {sChapter.premium && (
                             <div
-                              className="flex items-center gap-1 bg-main text-xs text-white px-3 p-1 rounded-3xl cursor-pointer md:hover:bg-main-hover pointer-events-auto"
+                              className="flex items-center gap-1 bg-main text-xs text-white px-3 p-1 rounded-3xl cursor-pointer hover:bg-main/90"
                               onClick={() => {
                                 if (isHide(sChapter.premium)) {
                                   setTransactionPopUp(true);
@@ -160,71 +131,89 @@ export default function HeaderCourse({
                             </div>
                           )}
                         </div>
-                        {sChapter.CourseProgress.length > 0 ? (
-                          <IconCheckList
-                            w={18}
-                            className="mt-[.2rem] text-green-500"
-                          />
-                        ) : sChapter.type === 'VIDEO' ? (
-                          <IconPlay
-                            w={18}
-                            className={cn(
-                              'mt-[.2rem]',
-                              isHide(sChapter.premium) && 'opacity-50',
-                            )}
-                          />
-                        ) : sChapter.type === 'DOCUMENT' ? (
-                          <IconDocument
-                            w={18}
-                            className={cn(
-                              'mt-[.2rem]',
-                              isHide(sChapter.premium) && 'opacity-50',
-                            )}
-                          />
-                        ) : sChapter.type === 'TRYOUT' ? (
-                          <IconQuiz
-                            w={18}
-                            className={cn(
-                              'mt-[.2rem]',
-                              isHide(sChapter.premium) && 'opacity-50',
-                            )}
-                          />
-                        ) : (
-                          <IconDocument
-                            w={18}
-                            className={cn(
-                              'mt-[.2rem]',
-                              isHide(sChapter.premium) && 'opacity-50',
-                            )}
-                          />
-                        )}
-                        <div
+                        <Link
+                          href={`/${website_sub_category_id_params}/user/course/${categoryId}?sub=${sChapter.id}`}
+                          key={sIndex}
                           className={cn(
-                            'flex flex-col gap-[.5rem] w-full',
-                            sChapter.premium &&
-                              session?.user.role === 'USER' &&
-                              'opacity-50',
+                            'flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2 duration-300 md:hover:bg-surface-primary-light relative w-full',
+                            sChapter.id === sub && 'bg-main/10 text-main',
+                            // isHide(sChapter.premium) &&
+                            //   'pointer-events-none select-none md:hover:bg-transparent',
                           )}
+                          onClick={() => {
+                            setShowList(false);
+                            setIndexChapter(cIndex);
+                          }}
                         >
-                          <div className="text-sm font-medium w-[200px] truncate">
-                            {sChapter.title}
-                          </div>
-                          <div className="text-xs capitalize flex justify-start gap-1 items-center text-main-gray-text2">
-                            <div>
-                              {sChapter.type === 'TRYOUT'
-                                ? 'QUIZ'
-                                : sChapter.type === 'DOCUMENT'
-                                  ? 'MATERI'
-                                  : sChapter.type === 'MATERI'
+                          {sChapter.CourseProgress.length > 0 ? (
+                            <IconCheckList
+                              w={18}
+                              className="mt-[.2rem] text-green-500"
+                            />
+                          ) : sChapter.type === 'VIDEO' ? (
+                            <IconPlay
+                              w={18}
+                              className={cn(
+                                'mt-[.2rem]',
+                                isHide(sChapter.premium) && 'opacity-50',
+                              )}
+                            />
+                          ) : sChapter.type === 'DOCUMENT' ? (
+                            <IconDocument
+                              w={18}
+                              className={cn(
+                                'mt-[.2rem]',
+                                isHide(sChapter.premium) && 'opacity-50',
+                              )}
+                            />
+                          ) : sChapter.type === 'TRYOUT' ? (
+                            <IconQuiz
+                              w={18}
+                              className={cn(
+                                'mt-[.2rem]',
+                                isHide(sChapter.premium) && 'opacity-50',
+                              )}
+                            />
+                          ) : (
+                            <IconDocument
+                              w={18}
+                              className={cn(
+                                'mt-[.2rem]',
+                                isHide(sChapter.premium) && 'opacity-50',
+                              )}
+                            />
+                          )}
+                          <div
+                            className={cn(
+                              'flex flex-col gap-[.5rem] w-full',
+                              isHide(sChapter.premium) && 'opacity-50',
+                            )}
+                          >
+                            <div className="text-sm font-medium w-[200px] truncate">
+                              {sChapter.title}
+                            </div>
+                            <div
+                              className={cn(
+                                'text-xs capitalize flex justify-start gap-1 items-center text-main-gray-text2',
+                                sChapter.id === sub && 'text-main',
+                              )}
+                            >
+                              <div>
+                                {sChapter.type === 'TRYOUT'
+                                  ? 'QUIZ'
+                                  : sChapter.type === 'DOCUMENT'
                                     ? 'MATERI'
-                                    : sChapter.type}{' '}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              - {sChapter.spendTime} Menit
+                                    : sChapter.type === 'MATERI'
+                                      ? 'MATERI'
+                                      : sChapter.type}{' '}
+                              </div>
+                              <div className={cn('flex items-center gap-1')}>
+                                - {sChapter.spendTime} Menit
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </Link>
+                        </Link>
+                      </div>
                     ))}
                   </div>
                 </AccordionContent>
@@ -260,7 +249,7 @@ export default function HeaderCourse({
     used?: number,
     limit?: number,
   ) {
-    if (userRole !== 'ADMIN') {
+    if (session?.user.role !== 'ADMIN') {
       return (
         <p className="text-[.9rem] text-main-gray-text">
           {used}/{limit}
@@ -361,19 +350,17 @@ export default function HeaderCourse({
           </div>
 
           {/* Role-based status or button */}
-          {userRole === 'USER' ? (
-            <ButtonPayment />
-          ) : userRole === 'PREMIUM' ? (
-            <div className="flex items-center rounded-xl p-2 bg-main-yellow text-white">
-              <IconCrown className="text-white" />
-              {/* <p>Premium</p> */}
-            </div>
-          ) : userRole === 'ADMIN' ? (
+          {!userCourseFeatures ? (
+            <ButtonPayment>
+              <IconCrown w={15} />
+              <p className="font-regular hidden md:block">Upgrade</p>
+            </ButtonPayment>
+          ) : (
             <div className="flex items-center rounded-xl p-2 bg-main-yellow text-white">
               <IconCrown className="text-white" />
               {/* <p>Admin</p> */}
             </div>
-          ) : null}
+          )}
         </div>
         {/* <motion.div
           className="md:hidden bg-white roun✨ded-full shadow-default p-2"
@@ -412,16 +399,18 @@ export default function HeaderCourse({
                 <BookAIcon className="text-main" />
               </div>
               <div className="text-start text-nowrap">
-                <p>{sub === 'report' ? 'Report' : data.chapterTitle}</p>
+                <p>{sub === 'report' ? 'Report' : CourseData?.chapterTitle}</p>
                 <p className="text-main-gray-text">
-                  {sub === 'report' ? 'Report untuk course ini' : data.title}
+                  {sub === 'report'
+                    ? 'Report untuk course ini'
+                    : CourseData?.title}
                 </p>
               </div>
             </div>
             <div className="flex items-center text-sm">
               <div className="text-end hidden md:block">
                 <p className="text-[#a8a8a8] font-normal">
-                  {CourseProgress?.percentageProgress.toFixed(2)}%
+                  {CourseProgress?.percentageProgress?.toFixed(2)}%
                 </p>
                 <p className="text-[#a8a8a8] font-normal">
                   {CourseProgress?.finishedSubChapter}/
@@ -496,10 +485,10 @@ export default function HeaderCourse({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p className="truncate">{data.chapterTitle}</p>
+                      <p className="truncate">{CourseData?.chapterTitle}</p>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>{data.chapterTitle}</p>
+                      <p>{CourseData?.chapterTitle}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -507,11 +496,11 @@ export default function HeaderCourse({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <p className="text-muted-foreground truncate">
-                        {data.title}
+                        {CourseData?.title}
                       </p>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>{data.title}</p>
+                      <p>{CourseData?.title}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

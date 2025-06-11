@@ -155,9 +155,15 @@ export default function PredictionStep2() {
           </Card>
 
           <div className="grid grid-cols-2 gap-4">
-            <ScoreCard
+            {/* <ScoreCard
               title="Rata-rata"
               value={utbkAvg.toFixed(2)}
+              color="blue"
+            /> */}
+            <ScoreCard
+              title="Rata-rata UTBK"
+              value={utbkAvg.toFixed(1)}
+              subtitle={`${utbkScores.filter((item) => item.score > 0).length}/7 subtes diisi`}
               color="blue"
             />
             <ScoreCard

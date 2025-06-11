@@ -1,4 +1,5 @@
 import DocViewer from '@/components/pdf-reader';
+import { useSession } from '@/components/provider/provider-session-auth';
 import {
   Accordion,
   AccordionContent,
@@ -6,32 +7,21 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Loader2 } from 'lucide-react';
-import { Data } from '../../page';
-import EmojiRating from '../emoji-rating';
+import { useProvider } from '../../../../_provider/provider';
+import EmojiRating from '../../../z_other/emoji-rating';
 
-type DocProps = {
-  id: any;
-  title: any;
-  highlights: any;
-  messages: any;
-  premium: boolean;
-  url: any;
-  video: any;
-  userPermissions: {
-    canEdit: boolean;
-  };
-};
+const DocumentType = () => {
+  const { data: session } = useSession();
+  const userId = session?.user.id;
 
-const DocumentType = ({
-  doc,
-  userId,
-  data,
-}: {
-  doc: DocProps;
-  userId: string;
-  data: Data;
-}) => {
-  const isDone = data.CourseProgress.length > 0 ? true : false;
+  const {
+    useDoc: { doc },
+    useData: { CourseData },
+  } = useProvider();
+
+  const isDone =
+    CourseData && CourseData.CourseProgress.length > 0 ? true : false;
+
   return (
     <>
       {userId ? (

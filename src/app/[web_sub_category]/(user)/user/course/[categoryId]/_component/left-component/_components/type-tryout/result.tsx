@@ -8,7 +8,7 @@ import { IconCheckList, IconX } from '@/styles/icon';
 import { ArrowLeft, ArrowRight, BarChart, Book, Target } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { SetStateAction, useState } from 'react';
-import { CourseType } from '../../../page';
+import { CourseType } from '../../../../_provider/provider';
 
 // type SessionResultTryout = NonNullable<
 //   NonNullable<
