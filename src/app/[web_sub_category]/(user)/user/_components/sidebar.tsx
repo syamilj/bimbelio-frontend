@@ -188,12 +188,12 @@ const Sidebar = ({ category }: { category: any }) => {
               <div className="flex w-[1.8rem] items-center justify-center rounded-full">
                 <div className="flex h-[1.8rem] w-[1.8rem] items-center justify-center overflow-hidden rounded-[50%] border border-main-gray-input">
                   {userImage && (
-                    <Image
+                    <img
                       src={userImage}
                       alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-                      width={500}
-                      height={300}
-                      layout="responsive"
+                      // width={500}
+                      // height={300}
+                      // layout="responsive"
                     />
                   )}
                 </div>
@@ -407,12 +407,12 @@ const Sidebar = ({ category }: { category: any }) => {
               <div className="flex w-[1.8rem] items-center justify-center rounded-full">
                 <div className="flex h-[1.8rem] w-[1.8rem] items-center justify-center overflow-hidden rounded-[50%] border border-main-gray-input">
                   {userImage && (
-                    <Image
+                    <img
                       src={userImage}
                       alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-                      width={500}
-                      height={300}
-                      layout="responsive"
+                      // width={500}
+                      // height={300}
+                      // layout="responsive"
                     />
                   )}
                 </div>

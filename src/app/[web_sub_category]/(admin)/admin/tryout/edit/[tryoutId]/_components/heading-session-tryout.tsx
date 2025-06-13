@@ -445,7 +445,7 @@ const HeadingSessionTryout = () => {
                     : 'placeholder'
                 }
                 onValueChange={(value) => {
-                  onChangeCategory(value);
+                  value && onChangeCategory(value);
                 }}
               >
                 <SelectTrigger className="h-full w-full rounded-[.8rem] border-none bg-white shadow-none outline-none">

@@ -7,9 +7,9 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { AlertCircle, Info } from 'lucide-react';
-import { useProvider } from '../_provider/provider';
-import ScoreCard from './_components/score-card';
-import SimpleBarChart from './_components/simple-bar-chart';
+import { useProvider } from '../../_provider/provider';
+import ScoreCard from '../_components/score-card';
+import SimpleBarChart from '../_components/simple-bar-chart';
 
 export default function PredictionStep2() {
   // const [utbkScores, setUtbkScores] = useState([
