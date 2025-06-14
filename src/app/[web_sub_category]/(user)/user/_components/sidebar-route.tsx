@@ -21,6 +21,7 @@ import {
 import {
   AlignEndHorizontal,
   BotIcon,
+  Calculator,
   ChevronDown,
   ChevronUp,
   Sparkles,
@@ -376,7 +377,7 @@ const SidebarRoute = ({
                 } duration-300`}
               >
                 {}
-                <AlignEndHorizontal
+                <Calculator
                   className={`${
                     pathname?.includes('prediction')
                       ? ' font-medium text-white'

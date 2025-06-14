@@ -2,11 +2,19 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, BookOpen, Target } from 'lucide-react';
-import { validateSubtest } from '../_provider/helper';
-import { useProvider } from '../_provider/provider';
-import ScoreCard from './_components/score-card';
-import SimpleBarChart from './_components/simple-bar-chart';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { AlertCircle, BookOpen } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { validateSubtest } from '../../_provider/helper';
+import { useProvider } from '../../_provider/provider';
+import ScoreCard from '../_components/score-card';
+import SimpleBarChart from '../_components/simple-bar-chart';
 
 export default function PredictionStep3() {
   const {
@@ -18,7 +26,50 @@ export default function PredictionStep3() {
       simakScoreRAW,
       simakMaxScoreRAW,
     },
+    useParams: { predictionId },
+    useSelectTryouts: { SelectTryouts },
   } = useProvider();
+
+  const [tempDataSimakScores, setTempDataSimakScores] = useState<
+    typeof simakScores
+  >([]);
+
+  const [simakCategory, setSimakCategory] = useState<
+    { name: string; label: string }[]
+  >([
+    {
+      name: 'kemampuan_dasar',
+      label: 'Kemampuan Dasar',
+    },
+    {
+      name: 'kemampuan_akademik',
+      label: 'Kemampuan Akademik',
+    },
+  ]);
+
+  const [isSelectChange, setIsSelectChange] = useState<boolean>(false);
+
+  type Test = typeof simakScores;
+
+  useEffect(() => {
+    if (isSelectChange || predictionId) {
+      const category = simakScores.reduce(
+        (acc: { name: string; label: string }[], item: Test[0]) => {
+          const key = item.type.name as any;
+
+          const find = acc.find((item) => item.name === key);
+          if (!find) {
+            acc.push({ name: item.type.name, label: item.type.label });
+          }
+          return acc;
+        },
+        [],
+      );
+      console.log({ category });
+      setSimakCategory(category);
+      setIsSelectChange(false);
+    }
+  }, [simakScores, isSelectChange, predictionId]);
 
   const updateSIMAKScore = (
     subTestName: string,
@@ -45,19 +96,36 @@ export default function PredictionStep3() {
     );
   };
 
-  // useEffect(() => {
-  //   setSIMAKScores((prev) =>
-  //     prev.map((item) => {
-  //       return {
-  //         ...item,
-  //         value: {
-  //           ...item.value,
-  //           kosong: item.total_question - item.value.benar + item.value.salah,
-  //         },
-  //       };
-  //     }),
-  //   );
-  // }, [simakScores]);
+  const onChangeTryout = (value: string) => {
+    if (value === 'placeholder' && tempDataSimakScores.length > 0) {
+      setSIMAKScores(tempDataSimakScores);
+      setIsSelectChange(true);
+    }
+    const findData = SelectTryouts?.find((item) => item.Tryout.id === value);
+    if (!findData) return;
+    const newDatas: typeof simakScores = findData.Datas.map((item) => ({
+      initial: item.subCategory.name,
+      name: item.subCategory.name,
+      label: item.subCategory.name,
+      total_question: item.value.totalQuestions,
+      type: {
+        label: item.category.name,
+        name: item.category.name as any,
+      },
+      value: {
+        benar: item.value.benar,
+        salah: item.value.salah,
+        kosong: item.value.kosong,
+      },
+    }));
+    if (tempDataSimakScores.length === 0) {
+      setTempDataSimakScores(simakScores);
+    }
+    setSIMAKScores(newDatas);
+    setIsSelectChange(true);
+  };
+
+  console.log({ simakScores, simakCategory });
 
   return (
     <div className="space-y-8">
@@ -71,10 +139,129 @@ export default function PredictionStep3() {
         </p>
       </div>
 
+      <div className="">
+        <Select onValueChange={onChangeTryout}>
+          <SelectTrigger>
+            <SelectValue placeholder="Manual" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="placeholder">Manual</SelectItem>
+            {SelectTryouts?.map((item, index) => (
+              <SelectItem
+                key={index}
+                value={item.Tryout.id}
+              >
+                {item.Tryout.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="grid lg:grid-cols-4 gap-8">
-        {/* Input Section */}
         <div className="lg:col-span-3 space-y-8">
-          {/* Kemampuan Dasar */}
+          {simakCategory.map((scItem, index) => (
+            <Card key={index}>
+              <CardHeader className="bg-blue-50">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-main" />
+                  {scItem.label} (45 Soal)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-6">
+                  {simakScores
+                    .filter((item) => item.type.name === scItem.name)
+                    .map((item, index) => (
+                      <div
+                        key={index}
+                        className="space-y-3"
+                      >
+                        <div className="flex justify-between items-center">
+                          <Label className="font-medium">{item.label}</Label>
+                          <Badge variant="outline">
+                            {item.total_question}
+                            soal
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <Label className="text-xs text-gray-500 mb-1 block">
+                              Benar
+                            </Label>
+                            <Input
+                              type="number"
+                              max={item.total_question}
+                              value={item.value.benar}
+                              onChange={(e) =>
+                                updateSIMAKScore(
+                                  item.name,
+                                  'benar',
+                                  parseInt(e.target.value),
+                                )
+                              }
+                              className="h-10"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs text-gray-500 mb-1 block">
+                              Salah
+                            </Label>
+                            <Input
+                              type="number"
+                              max={item.total_question}
+                              value={item.value.salah}
+                              onChange={(e) =>
+                                updateSIMAKScore(
+                                  item.name,
+                                  'salah',
+                                  parseInt(e.target.value),
+                                )
+                              }
+                              className="h-10"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs text-gray-500 mb-1 block">
+                              Kosong
+                            </Label>
+                            <Input
+                              type="number"
+                              max={item.total_question}
+                              value={item.value.kosong}
+                              disabled
+                              onChange={(e) =>
+                                updateSIMAKScore(
+                                  item.name,
+                                  'kosong',
+                                  parseInt(e.target.value),
+                                )
+                              }
+                              className="h-10"
+                            />
+                          </div>
+                        </div>
+                        {!validateSubtest(item.value, item.total_question) && (
+                          <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-lg">
+                            <AlertCircle className="h-4 w-4" />
+                            <span>
+                              Total:{' '}
+                              {item.value.benar +
+                                item.value.salah +
+                                item.value.kosong}{' '}
+                              dari {item.total_question} soal
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* <div className="lg:col-span-3 space-y-8">
           <Card>
             <CardHeader className="bg-blue-50">
               <CardTitle className="text-lg flex items-center gap-2">
@@ -173,7 +360,6 @@ export default function PredictionStep3() {
             </CardContent>
           </Card>
 
-          {/* Kemampuan Akademik */}
           <Card>
             <CardHeader className="bg-purple-50">
               <CardTitle className="text-lg flex items-center gap-2">
@@ -273,7 +459,7 @@ export default function PredictionStep3() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
 
         {/* Visualization Section */}
         <div className="space-y-6">
@@ -286,7 +472,7 @@ export default function PredictionStep3() {
                 data={simakScores.map(
                   (item) => item.value.benar * 4 + item.value.salah * -1,
                 )}
-                labels={['MatDas', 'BI', 'BE', 'Verbal', 'Kuant', 'Logika']}
+                labels={simakScores.map((ssItem) => ssItem.initial)}
                 title="Distribusi Nilai SIMAK"
               />
             </CardContent>
@@ -317,7 +503,7 @@ export default function PredictionStep3() {
             <ScoreCard
               title="Konversi SNBT"
               value={simakAvgSNBT.toFixed(1)}
-              subtitle="Skala 200-800"
+              subtitle="Skala 100-1000"
               color="green"
             />
           </div>

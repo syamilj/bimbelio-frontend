@@ -1,18 +1,9 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { ComboboxSelect } from '@/components/ui/combobox-select';
 import { Label } from '@/components/ui/label';
-import { School, Trash2 } from 'lucide-react';
-import { useProvider } from '../_provider/provider';
+import { useProvider } from '../../_provider/provider';
 
 export default function PredictionStep1() {
   const { selectedPrograms, setSelectedPrograms, studyChoices } = useProvider();
@@ -56,7 +47,7 @@ export default function PredictionStep1() {
         />
       </div>
 
-      <div className="space-y-6">
+      {/* <div className="space-y-6">
         <h3 className="text-lg font-semibold text-center">
           Program Studi Dipilih
         </h3>
@@ -122,7 +113,7 @@ export default function PredictionStep1() {
             </Card>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

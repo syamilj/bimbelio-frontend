@@ -1,3 +1,34 @@
+export type Prediction = {
+  id: string;
+  userId: string;
+  tryoutId: string | null;
+  university: string;
+  study: string;
+  fakultas: string;
+  websiteSubCategoryId: string;
+};
+
+export type PredictionScore = {
+  id: string;
+  type: PredictionScoreTypeEnum;
+  finalScore: number;
+  predictionId: string;
+};
+
+export type PredictionScoreDetail = {
+  id: string;
+  category: string;
+  subCategory: string;
+  true: number | null;
+  false: number | null;
+  empty: number | null;
+  totalQuestions: number | null;
+  score: number;
+  predictionScoreId: string;
+};
+
+export type PredictionScoreTypeEnum = 'UTBK' | 'SIMAK_UI';
+
 export type CourseChapter = {
   number: number;
   id: string;

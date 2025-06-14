@@ -2,6 +2,13 @@
 
 import { useGet } from '@/lib/fetch-helper/useGet';
 import {
+  Prediction,
+  PredictionScore,
+  PredictionScoreDetail,
+  Tryout,
+} from '@/types/database';
+import { useParams } from 'next/navigation';
+import {
   createContext,
   Dispatch,
   SetStateAction,
@@ -16,6 +23,8 @@ type Props = {
 };
 
 export default function Provider({ children }: Props) {
+  const params = useParams();
+  const predictionId = (params.predictionId || null) as string | null;
   const [currentStep, setCurrentStep] = useState<number>(1);
 
   const [selectedPrograms, setSelectedPrograms] =
@@ -84,18 +93,92 @@ export default function Provider({ children }: Props) {
     return acc + (benar + salah);
   }, 0);
   const simakPercentageRAW = (simakScoreRAW / 540) * 100;
-  const simakMaxScoreRAW = 500;
+  const simakMaxScoreRAW = 520;
 
   // SIMAK SCORE SNBT
   const simakScoreSNBT = simakScores.reduce(
     (acc, item) => acc + calculateSubtestScore(item.value),
     0,
   );
-  const simakAvgSNBT = simakScoreSNBT / 6;
+
+  const { maxScore, minScore } = calculateSIMAKBounds();
+  const simakAvgSNBT = convertSIMAKToSNBT(simakScoreRAW, minScore, maxScore);
+  // const simakAvgSNBT = simakScoreSNBT / 6;
 
   // FINAL
   const finalScore = (utbkAvg + simakAvgSNBT) / 2;
   const finalPercentage = ((utbkAvg / 1000 + simakScoreRAW / 540) / 2) * 100;
+
+  // ===== Selects Tryout ===================================
+  const { data: SelectTryouts, isLoading: SelectTryoutsIsLoading } = useGet(
+    '/prediction/getTryoutSelects',
+  );
+
+  // ===== PredictionData ===================================
+  const { data: PredictionData, isLoading: PredictionDataIsLoading } = useGet<
+    Prediction & {
+      Tryout: Tryout;
+      PredictionScore: (PredictionScore & {
+        PredictionScoreDetail: PredictionScoreDetail[];
+      })[];
+    }
+  >('/prediction/getPredictionById', {
+    params: { id: predictionId },
+    enabled: !!predictionId,
+    useEffectDependencies: [predictionId],
+  });
+
+  console.log({ PredictionData, predictionId, simakScores, utbkScores });
+
+  useEffect(() => {
+    if (PredictionData) {
+      const findUniv = studyChoices.find(
+        (sc) => sc.study === PredictionData.study,
+      );
+      if (!findUniv) return;
+      setSelectedPrograms({
+        averageScore: findUniv.averageScore,
+        study: findUniv.study,
+        fakultas: findUniv.fakultas,
+        fakultasInitials: findUniv.fakultasInitials,
+        passingGrade: findUniv.passingGrade,
+      });
+      PredictionData.PredictionScore.forEach((psItem) => {
+        if (psItem.type === 'UTBK') {
+          setUtbkScores(
+            psItem.PredictionScoreDetail.map((psdItem) => {
+              return {
+                label: psdItem.subCategory,
+                name: psdItem.subCategory,
+                score: psdItem.score,
+              };
+            }),
+          );
+        }
+        if (psItem.type === 'SIMAK_UI') {
+          setSIMAKScores(
+            psItem.PredictionScoreDetail.map((psdItem) => {
+              return {
+                label: psdItem.subCategory,
+                initial: psdItem.subCategory,
+                name: psdItem.subCategory,
+                value: {
+                  benar: psdItem.true || 0,
+                  salah: psdItem.false || 0,
+                  kosong: psdItem.empty || 0,
+                },
+                total_question: psdItem.totalQuestions || 0,
+                type: {
+                  label: psdItem.category,
+                  name: psdItem.category as any,
+                },
+              };
+            }),
+          );
+        }
+      });
+    }
+  }, [PredictionData]);
 
   const Context = {
     selectedPrograms,
@@ -108,6 +191,10 @@ export default function Provider({ children }: Props) {
     setUtbkScores,
     simakScores,
     setSIMAKScores,
+    useSelectTryouts: {
+      SelectTryouts,
+      SelectTryoutsIsLoading,
+    },
     useScoreSimak: {
       simakScoreRAW,
       simakMaxScoreRAW,
@@ -124,7 +211,14 @@ export default function Provider({ children }: Props) {
       finalScore,
       finalPercentage,
     },
+    useParams: {
+      predictionId,
+    },
   };
+
+  if (predictionId && PredictionDataIsLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <ProviderContext.Provider value={Context}>
@@ -168,6 +262,35 @@ type ProviderType = {
   >;
   simakScores: SubTest[];
   setSIMAKScores: Dispatch<SetStateAction<SubTest[]>>;
+  useSelectTryouts: {
+    SelectTryouts:
+      | undefined
+      | {
+          Tryout: {
+            id: string;
+            title: string;
+          };
+          Datas: {
+            sessionResultId: string;
+            sessionId: string;
+            category: {
+              id: string;
+              name: string;
+            };
+            subCategory: {
+              id: string;
+              name: string;
+            };
+            value: {
+              benar: number;
+              salah: number;
+              kosong: number;
+              totalQuestions: number;
+            };
+          }[];
+        }[];
+    SelectTryoutsIsLoading: boolean;
+  };
   useScoreSimak: {
     simakScoreRAW: number;
     simakMaxScoreRAW: number;
@@ -183,6 +306,9 @@ type ProviderType = {
   useScoreFinal: {
     finalScore: number;
     finalPercentage: number;
+  };
+  useParams: {
+    predictionId: string | null;
   };
 };
 
@@ -311,3 +437,56 @@ const SIMAK_DATA: SubTest[] = [
     type: { name: 'kemampuan_akademik', label: 'Kemampuan Akademik' },
   },
 ];
+
+const convertSIMAKToSNBT = (
+  rawScore: number,
+  minScore: number,
+  maxScore: number,
+) => {
+  // Normalisasi skor ke range 0-1
+  const normalizedScore = Math.max(
+    0,
+    (rawScore - minScore) / (maxScore - minScore),
+  );
+
+  // Convert ke SNBT range (200-800)
+  const snbtScore =
+    SCORING_RULES.SNBT_MIN +
+    normalizedScore * (SCORING_RULES.SNBT_MAX - SCORING_RULES.SNBT_MIN);
+
+  return Math.max(
+    SCORING_RULES.SNBT_MIN,
+    Math.min(SCORING_RULES.SNBT_MAX, snbtScore),
+  );
+};
+
+const SCORING_RULES = {
+  BENAR: 4,
+  SALAH: -1,
+  KOSONG: 0,
+  UTBK_MIN: 100,
+  UTBK_MAX: 1000,
+  SNBT_MIN: 200,
+  SNBT_MAX: 800,
+} as const;
+
+const calculateSIMAKBounds = () => {
+  const totalQuestions = Object.values(SUBTEST_QUESTIONS).reduce(
+    (sum, count) => sum + count,
+    0,
+  );
+  return {
+    maxScore: totalQuestions * SCORING_RULES.BENAR, // Semua benar = 125 × 4 = 500
+    minScore: totalQuestions * SCORING_RULES.SALAH, // Semua salah = 125 × (-1) = -125
+  };
+};
+
+// Konstanta untuk perhitungan yang akurat
+const SUBTEST_QUESTIONS = {
+  matdas: 15,
+  bindo: 15,
+  bing: 15,
+  verbal: 20,
+  kuantitatif: 35,
+  logika: 25,
+} as const;

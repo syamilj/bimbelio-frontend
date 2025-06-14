@@ -5,14 +5,20 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { AlertCircle, CheckCircle, LucideProps, XCircle } from 'lucide-react';
-import { ForwardRefExoticComponent, Fragment, RefAttributes } from 'react';
+import {
+  ForwardRefExoticComponent,
+  Fragment,
+  RefAttributes,
+  useEffect,
+  useState,
+} from 'react';
 import { NonUndefined } from 'react-hook-form';
-import { UniversityType, useProvider } from '../_provider/provider';
-import ScoreCard from './_components/score-card';
-import SimpleBarChart from './_components/simple-bar-chart';
+import { UniversityType, useProvider } from '../../_provider/provider';
+import ScoreCard from '../_components/score-card';
+import SimpleBarChart from '../_components/simple-bar-chart';
+import { StatusIndicator } from '../_components/status-indicator';
 
 export default function PredictionStep4() {
   const {
@@ -99,167 +105,6 @@ export default function PredictionStep4() {
   );
 }
 
-// const ByFinalScore = () => {
-//   const {
-//     selectedPrograms,
-//     useScoreFinal: { finalScore, finalPercentage },
-//   } = useProvider();
-//   const averageScore = selectedPrograms?.averageScore;
-
-//   const statusCounts = () => {
-//     if (!averageScore) return '-';
-
-//     if (finalScore >= averageScore) {
-//       return 'Lolos';
-//     } else if (finalScore < averageScore && finalScore - averageScore < 10) {
-//       return 'Nyaris';
-//     } else {
-//       return 'Tidak Lolos';
-//     }
-//   };
-
-//   let overallStatus = 'Tidak Lolos';
-//   let statusColor = 'border-l-red-500 bg-red-50';
-
-//   if (statusCounts() === 'Lolos') {
-//     overallStatus = 'Berpeluang Lolos';
-//     statusColor = 'border-l-green-500 bg-green-50';
-//   } else if (statusCounts() === 'Nyaris') {
-//     overallStatus = 'Peluang Tipis';
-//     statusColor = 'border-l-yellow-500 bg-yellow-50';
-//   }
-
-//   function getPassingGradeStatus(
-//     pg: NonUndefined<UniversityType['studyProgramList'][0]['passingGrade']>[0],
-//   ): {
-//     status: 'Lolos' | 'Nyaris' | 'Tidak Lolos';
-//     icon: ForwardRefExoticComponent<
-//       Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-//     >;
-//     color: string;
-//   } {
-//     const userValue = pg.tipe === 'SCORE' ? finalScore : finalPercentage;
-//     const threshold = pg.value;
-
-//     const diff = ((userValue - threshold) / threshold) * 100;
-
-//     if (diff >= 0)
-//       return { status: 'Lolos', icon: CheckCircle, color: 'text-green-600' };
-//     if (diff >= -2)
-//       return { status: 'Nyaris', icon: AlertCircle, color: 'text-yellow-600' };
-//     return { status: 'Tidak Lolos', icon: XCircle, color: 'text-red-600' };
-//   }
-
-//   return (
-//     <div className="space-y-6">
-//       <h3 className="text-lg font-semibold text-center">
-//         Prediksi Kelulusan berdasarkan Score Final
-//       </h3>
-//       <Card
-//         key={selectedPrograms?.study}
-//         className={cn('border-l-4', statusColor)}
-//       >
-//         <CardHeader className="pb-4">
-//           <div className="flex justify-between items-center">
-//             <div>
-//               <CardTitle className="text-xl">
-//                 {selectedPrograms?.study}
-//               </CardTitle>
-//               <CardDescription className="mt-1">
-//                 {/* {sp.program.fakultas} */}
-//               </CardDescription>
-//             </div>
-//             <Badge
-//               variant="outline"
-//               className={cn(
-//                 'font-medium',
-//                 overallStatus === 'Berpeluang Lolos'
-//                   ? 'border-green-600 text-green-700'
-//                   : overallStatus === 'Peluang Tipis'
-//                     ? 'border-yellow-600 text-yellow-700'
-//                     : 'border-red-600 text-red-700',
-//               )}
-//             >
-//               {overallStatus}
-//             </Badge>
-//           </div>
-//         </CardHeader>
-//         <CardContent>
-//           <div className="overflow-x-auto">
-//             <table className="w-full text-sm">
-//               <thead>
-//                 <tr className="border-b">
-//                   <th className="text-left py-3 font-medium">Sumber</th>
-//                   <th className="text-left py-3 font-medium">Tipe</th>
-//                   <th className="text-left py-3 font-medium">PG</th>
-//                   <th className="text-left py-3 font-medium">Nilai User</th>
-//                   <th className="text-left py-3 font-medium">Status</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {selectedPrograms?.passingGrade?.map((pg, pgIndex) => {
-//                   const status = getPassingGradeStatus(pg);
-//                   const userValue =
-//                     pg.tipe === 'PERCENTAGE' ? finalPercentage : finalScore;
-//                   const StatusIcon = status.icon;
-
-//                   return (
-//                     <tr
-//                       key={pgIndex}
-//                       className="border-b"
-//                     >
-//                       <td className="py-3">{pg.sumber?.name}</td>
-//                       <td className="py-3">
-//                         {pg.tipe === 'SCORE' ? 'Skor' : 'Persentase'}
-//                       </td>
-//                       <td className="py-3 font-medium">
-//                         {pg.value}
-//                         {pg.tipe === 'PERCENTAGE' ? '%' : ''}
-//                       </td>
-//                       <td className="py-3 font-medium">
-//                         {userValue.toFixed(1)}
-//                         {pg.tipe === 'PERCENTAGE' ? '%' : ''}
-//                       </td>
-//                       <td className="py-3">
-//                         <div className="flex items-center gap-2">
-//                           <StatusIcon className={`w-4 h-4 ${status.color}`} />
-//                           <span className={`text-sm ${status.color}`}>
-//                             {status.status}
-//                           </span>
-//                         </div>
-//                       </td>
-//                     </tr>
-//                   );
-//                 })}
-//               </tbody>
-//             </table>
-//           </div>
-
-//           <Separator className="my-6" />
-
-//           <div className="flex justify-between items-center">
-//             <h4 className="font-medium">Ringkasan Status</h4>
-//             <div className="flex gap-6">
-//               {/* <StatusIndicator
-//               status="Lolos"
-//               count={lolosCount}
-//             />
-//             <StatusIndicator
-//               status="Nyaris"
-//               count={nyarisCount}
-//             />
-//             <StatusIndicator
-//               status="Tidak Lolos"
-//               count={tidakLolosCount}
-//             /> */}
-//             </div>
-//           </div>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   );
-// };
-
 const BySimakScore = () => {
   const {
     selectedPrograms,
@@ -293,6 +138,86 @@ const BySimakScore = () => {
       };
     return { status: 'Tidak Lolos', icon: XCircle, color: 'text-red-600' };
   }
+
+  const [statusSummary, setStatusSummary] = useState<
+    | {
+        title: string;
+        lolos: number;
+        nyaris: number;
+        tidak_lolos: number;
+      }[]
+    | null
+  >(null);
+
+  useEffect(() => {
+    setStatusSummary(null);
+    selectedPrograms?.passingGrade?.forEach((pg) => {
+      const statusFinal = getPassingGradeStatus(
+        pg,
+        finalScore,
+        finalPercentage,
+      );
+      const userValueFinal =
+        pg.tipe === 'PERCENTAGE' ? finalPercentage : finalScore;
+
+      const statusSimak = getPassingGradeStatus(
+        pg,
+        simakAvgSNBT,
+        simakPercentageRAW,
+      );
+      const userValueSimak =
+        pg.tipe === 'PERCENTAGE' ? simakPercentageRAW : simakAvgSNBT;
+
+      const titleFinalScore = 'UTBK + SIMAK UI';
+      const titleSimakScore = 'SIMAK UI';
+
+      setStatusSummary((prev) => {
+        if (!prev) {
+          return [
+            {
+              title: titleFinalScore,
+              lolos: statusFinal.status === 'Lolos' ? 1 : 0,
+              nyaris: statusFinal.status === 'Nyaris' ? 1 : 0,
+              tidak_lolos: statusFinal.status === 'Tidak Lolos' ? 1 : 0,
+            },
+            {
+              title: titleSimakScore,
+              lolos: statusSimak.status === 'Lolos' ? 1 : 0,
+              nyaris: statusSimak.status === 'Nyaris' ? 1 : 0,
+              tidak_lolos: statusSimak.status === 'Tidak Lolos' ? 1 : 0,
+            },
+          ];
+        }
+        return prev.map((st) => {
+          if (st.title === titleFinalScore) {
+            return {
+              ...st,
+              lolos: statusFinal.status === 'Lolos' ? st.lolos + 1 : st.lolos,
+              nyaris:
+                statusFinal.status === 'Nyaris' ? st.nyaris + 1 : st.nyaris,
+              tidak_lolos:
+                statusFinal.status === 'Tidak Lolos'
+                  ? st.tidak_lolos + 1
+                  : st.tidak_lolos,
+            };
+          }
+          if (st.title === titleSimakScore) {
+            return {
+              ...st,
+              lolos: statusSimak.status === 'Lolos' ? st.lolos + 1 : st.lolos,
+              nyaris:
+                statusSimak.status === 'Nyaris' ? st.nyaris + 1 : st.nyaris,
+              tidak_lolos:
+                statusSimak.status === 'Tidak Lolos'
+                  ? st.tidak_lolos + 1
+                  : st.tidak_lolos,
+            };
+          }
+          return st;
+        });
+      });
+    });
+  }, [selectedPrograms]);
 
   return (
     <div className="space-y-6">
@@ -407,7 +332,7 @@ const BySimakScore = () => {
                                 'text-red-600',
                             )}
                           >
-                            ( {'Nilai final'} )
+                            ( {'UTBK + SIMAK UI'} )
                           </span>
                         </td>
                         <td
@@ -464,7 +389,7 @@ const BySimakScore = () => {
                                 'text-red-600',
                             )}
                           >
-                            ( {'Nilai simak'} )
+                            ( {'SIMAK UI'} )
                           </span>
                         </td>
                         <td
@@ -490,23 +415,38 @@ const BySimakScore = () => {
             </table>
           </div>
 
-          <Separator className="my-6" />
+          <div className="space-y-4 py-4">
+            <h4 className="text-base font-semibold text-gray-800">
+              Ringkasan Status
+            </h4>
 
-          <div className="flex justify-between items-center">
-            <h4 className="font-medium">Ringkasan Status</h4>
-            <div className="flex gap-6">
-              {/* <StatusIndicator
-              status="Lolos"
-              count={lolosCount}
-            />
-            <StatusIndicator
-              status="Nyaris"
-              count={nyarisCount}
-            />
-            <StatusIndicator
-              status="Tidak Lolos"
-              count={tidakLolosCount}
-            /> */}
+            <div className="space-y-2">
+              {statusSummary !== null &&
+                statusSummary.map((st, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-2 items-center gap-4 px-4 py-2 bg-main/10 border border-main rounded-3xl shadow-sm"
+                  >
+                    <div className="text-sm font-semibold text-main">
+                      {st.title}
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-end gap-x-6 gap-y-2 text-sm">
+                      <StatusIndicator
+                        status="Lolos"
+                        count={st.lolos}
+                      />
+                      <StatusIndicator
+                        status="Nyaris"
+                        count={st.nyaris}
+                      />
+                      <StatusIndicator
+                        status="Tidak Lolos"
+                        count={st.tidak_lolos}
+                      />
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         </CardContent>
