@@ -11,6 +11,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import LoadingPageWithText from '@/components/ui/spinner';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
@@ -42,7 +43,8 @@ export default function SubmitPrediction({
   }>('/prediction/createPrediction', 'post', {
     onSuccess({ data }) {
       if (data?.id) {
-        router.push(`${data.id}`);
+        // router.push(`${data.id}`);
+        window.location.pathname = `/${website_sub_category_id}/user/prediction/${data.id}`;
       }
     },
   });
