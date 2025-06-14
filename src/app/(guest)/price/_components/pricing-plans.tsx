@@ -17,7 +17,6 @@ import { ReactElement, useEffect, useState } from 'react';
 //   TooltipProvider,
 //   TooltipTrigger,
 // } from "@/components/ui/tooltip";
-import { useGuest } from '@/components/layout/layoutGuest';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -35,42 +34,7 @@ import { toaster } from '@/components/ui/toaster';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { IconArrowTwk } from '@/styles/icon';
 import { BookOpen, Eye, FileText, MessageSquare, PenTool } from 'lucide-react';
-
-// type PlanType = {
-//   name: string;
-//   description: string;
-//   price: {
-//     monthly: number;
-//     yearly: number;
-//   };
-//   features: string[];
-//   coins: null | {
-//     Notes: number;
-//     Chat: number;
-//     Quiz: number;
-//     Tryout: number;
-//     Vision: number;
-//   };
-//   limitations: {
-//     Notes: string;
-//     Chat: string;
-//     Tryout: string;
-//     Quiz: string;
-//     Vision: string;
-//   } | null;
-//   popular: boolean;
-//   buttonText: string;
-//   buttonVariant: "outline" | "default";
-//   color: string;
-//   gradient: string;
-// };
-
-// type PlanType = Plan & {
-//   PlanSubscription?: PlanSubscription & {
-//     PlanFeature: PlanFeature[];
-//   };
-//   PlanLimitation?: PlanLimitation;
-// };
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type PlanType = {
   id: string;
@@ -129,8 +93,14 @@ const formatPrice = (price: number) => {
 //   | 'plan';
 
 export default function PricingPlans() {
-  const { setShowAuth } = useGuest();
+  const {
+    useAuth: { setShowAuth },
+  } = useAppContext();
   const { data: session } = useSession();
+
+  const searchParams = useSearchParams();
+  const planIdQuery = searchParams.get('planId');
+  const router = useRouter();
 
   const [subscription, setSubscription] = useState<PlanType[]>([]);
   const [bundles, setBundles] = useState<PlanType[]>([]);
@@ -166,7 +136,10 @@ export default function PricingPlans() {
 
   const handlePackageSelect = (planId?: string) => {
     if (!session) {
-      setShowAuth((prev) => ({ ...prev, login: true }));
+      setShowAuth({
+        redirect: `/price?planId=${planId}`,
+        open: true,
+      });
       return;
     }
     if (planId) setPlanId(planId);
@@ -176,6 +149,7 @@ export default function PricingPlans() {
   const addPayment = async (payload: any) => {
     const res = await mutateGeneral('/payment/addPayment', {
       payload: { ...payload, userId: session?.user.id },
+      params: { website_sub_category_id: 'undefined' },
       type: 'post',
     });
     return res;
@@ -200,6 +174,25 @@ export default function PricingPlans() {
     }
   };
 
+  useEffect(() => {
+    if (planIdQuery) {
+      const data = [
+        ...bundles.map((item) => ({ ...item, type: 'plan' })),
+        ...subscription.map((item) => ({ ...item, type: 'plan' })),
+        ,
+        ...topping.map((item) => ({ ...item, type: 'plan' })),
+        ,
+      ];
+      const findData = data.find((item) => item?.id === planIdQuery);
+      if (findData) {
+        setType(findData.type as any);
+        setPlanId(planIdQuery);
+        setShowPhoneConfirm(true);
+        router.replace(window.location.pathname);
+      }
+    }
+  }, [planIdQuery, bundles, subscription, topping]);
+
   return (
     <div className="space-y-16">
       <ConfirmPhoneDialog
@@ -208,7 +201,7 @@ export default function PricingPlans() {
         onSubmit={handlePayment}
       />
       <div className="text-center mb-16">
-        <div className="inline-block bg-main/10 text-main rounded-full px-4 py-1 text-sm font-medium mb-4">
+        <div className="inline-block bg-main-default/10 text-main-default rounded-full px-4 py-1 text-sm font-medium mb-4">
           Pilih Paket Terbaik
         </div>
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-4 text-[#0a2540]">
@@ -226,13 +219,13 @@ export default function PricingPlans() {
         <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8 bg-[#e6f0ff] p-1 rounded-full">
           <TabsTrigger
             value="bundle"
-            className="rounded-full"
+            className="rounded-full data-[state=active]:bg-main-default"
           >
             Paket Bundle
           </TabsTrigger>
           <TabsTrigger
             value="subscription"
-            className="rounded-full"
+            className="rounded-full data-[state=active]:bg-main-default"
           >
             Paket Berlangganan
           </TabsTrigger>
@@ -491,7 +484,7 @@ const CardPricing = ({ data, onSelect }: CardProps) => {
           </Badge>
         </div>
       )}
-      <div className="h-3 bg-gradient"></div>
+      <div className="h-3 bg-gradient-default"></div>
       <CardHeader className="pb-0 pt-6">
         <CardTitle className="text-[#0a2540] text-2xl">{data.name}</CardTitle>
         <CardDescription className="text-[#64748b]">
@@ -526,7 +519,9 @@ const CardPricing = ({ data, onSelect }: CardProps) => {
               }}
             ></div>
             <div className="mb-3">
-              <span className="text-sm font-medium text-main">Bonus Coin</span>
+              <span className="text-sm font-medium text-main-default">
+                Bonus Coin
+              </span>
             </div>{' '}
             <div className="grid grid-cols-5 gap-2">
               {data.coins.map((coin) => {
@@ -549,11 +544,11 @@ const CardPricing = ({ data, onSelect }: CardProps) => {
                     className="flex flex-col items-center"
                     key={coin?.name}
                   >
-                    <item.icon className="h-5 w-5 mb-1 text-main" />
+                    <item.icon className="h-5 w-5 mb-1 text-main-default" />
                     <span className="text-xs text-[#4a5568] font-medium">
                       {coin?.name}
                     </span>
-                    <span className="text-sm font-bold text-main">
+                    <span className="text-sm font-bold text-main-default">
                       {coin?.total}
                     </span>
                   </div>
@@ -564,21 +559,24 @@ const CardPricing = ({ data, onSelect }: CardProps) => {
         )}
 
         <div className="space-y-3 px-1">
-          {data.features?.map((feature) => (
-            <div className="space-y-3 px-1">
+          {data.features?.map((feature, index) => (
+            <div
+              key={index}
+              className="space-y-3 px-1"
+            >
               <div
                 key={feature.name}
                 className="flex items-start"
               >
                 <div
-                  className="h-5 w-5 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 bg-gradient"
-                  style={{
-                    boxShadow: `0 2px 4px ${websiteSubCategory?.main_color}30`,
-                  }}
+                  className="h-5 w-5 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 bg-gradient-default"
+                  // style={{
+                  //   boxShadow: `0 2px 4px ${websiteSubCategory?.main_color}30`,
+                  // }}
                 >
                   <Check className="h-3 w-3 text-white" />
                 </div>
-                <span className="text-main text-sm font-semibold">
+                <span className="text-main-default text-sm font-semibold">
                   {feature.name}
                 </span>
               </div>
@@ -591,9 +589,9 @@ const CardPricing = ({ data, onSelect }: CardProps) => {
                     {/* <Undo className="h-3 w-3 text-white" /> */}
                     <IconArrowTwk
                       w={15}
-                      className="text-main mr-2 ml-2"
+                      className="text-main-default mr-2 ml-2"
                     />
-                    <span className="text-main  text-sm">{detail}</span>
+                    <span className="text-main-default  text-sm">{detail}</span>
                   </div>
                 ))}
               </div>
@@ -604,7 +602,7 @@ const CardPricing = ({ data, onSelect }: CardProps) => {
       <CardFooter className="pt-2 pb-6">
         <Button
           variant={'outline'}
-          className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient text-white hover:text-white hover:opacity-85"
+          className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient-default text-white hover:text-white hover:opacity-85"
           onClick={() => onSelect && onSelect()}
         >
           Mulai Berlangganan

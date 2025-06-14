@@ -27,23 +27,19 @@ export default function PredictionStep3() {
       simakMaxScoreRAW,
     },
     useParams: { predictionId },
-    useSelectTryouts: { SelectTryouts },
+    useSelectTryouts: { SelectTryouts, tryoutId, setTryoutId },
   } = useProvider();
 
   const [tempDataSimakScores, setTempDataSimakScores] = useState<
     typeof simakScores
   >([]);
 
-  const [simakCategory, setSimakCategory] = useState<
-    { name: string; label: string }[]
-  >([
+  const [simakCategory, setSimakCategory] = useState<{ name: string }[]>([
     {
-      name: 'kemampuan_dasar',
-      label: 'Kemampuan Dasar',
+      name: 'Kemampuan Dasar',
     },
     {
-      name: 'kemampuan_akademik',
-      label: 'Kemampuan Akademik',
+      name: 'Kemampuan Akademik',
     },
   ]);
 
@@ -54,12 +50,12 @@ export default function PredictionStep3() {
   useEffect(() => {
     if (isSelectChange || predictionId) {
       const category = simakScores.reduce(
-        (acc: { name: string; label: string }[], item: Test[0]) => {
+        (acc: { name: string }[], item: Test[0]) => {
           const key = item.type.name as any;
 
           const find = acc.find((item) => item.name === key);
           if (!find) {
-            acc.push({ name: item.type.name, label: item.type.label });
+            acc.push({ name: item.type.name });
           }
           return acc;
         },
@@ -100,6 +96,7 @@ export default function PredictionStep3() {
     if (value === 'placeholder' && tempDataSimakScores.length > 0) {
       setSIMAKScores(tempDataSimakScores);
       setIsSelectChange(true);
+      setTryoutId(null);
     }
     const findData = SelectTryouts?.find((item) => item.Tryout.id === value);
     if (!findData) return;
@@ -123,9 +120,10 @@ export default function PredictionStep3() {
     }
     setSIMAKScores(newDatas);
     setIsSelectChange(true);
+    setTryoutId(value);
   };
 
-  console.log({ simakScores, simakCategory });
+  console.log({ simakScores, simakCategory, tryoutId });
 
   return (
     <div className="space-y-8">
@@ -140,7 +138,10 @@ export default function PredictionStep3() {
       </div>
 
       <div className="">
-        <Select onValueChange={onChangeTryout}>
+        <Select
+          onValueChange={onChangeTryout}
+          value={tryoutId ? tryoutId : 'placeholder'}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Manual" />
           </SelectTrigger>
@@ -165,7 +166,7 @@ export default function PredictionStep3() {
               <CardHeader className="bg-blue-50">
                 <CardTitle className="text-lg flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-main" />
-                  {scItem.label} (45 Soal)
+                  {scItem.name} (45 Soal)
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-6">
@@ -178,7 +179,7 @@ export default function PredictionStep3() {
                         className="space-y-3"
                       >
                         <div className="flex justify-between items-center">
-                          <Label className="font-medium">{item.label}</Label>
+                          <Label className="font-medium">{item.name}</Label>
                           <Badge variant="outline">
                             {item.total_question}
                             soal
@@ -472,8 +473,9 @@ export default function PredictionStep3() {
                 data={simakScores.map(
                   (item) => item.value.benar * 4 + item.value.salah * -1,
                 )}
-                labels={simakScores.map((ssItem) => ssItem.initial)}
+                labels={simakScores.map((ssItem) => ssItem.name)}
                 title="Distribusi Nilai SIMAK"
+                max={simakMaxScoreRAW}
               />
             </CardContent>
           </Card>

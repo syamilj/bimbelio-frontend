@@ -140,16 +140,9 @@ export default function PredictionStep2() {
                 data={utbkScores.map((item) => {
                   return item.score;
                 })}
-                labels={[
-                  'PU',
-                  'PPU',
-                  'PBM',
-                  'Kuant',
-                  'Lit ID',
-                  'Lit EN',
-                  'Mat',
-                ]}
+                labels={utbkScores.map((usItem) => usItem.name)}
                 title="Distribusi Nilai UTBK"
+                max={1000}
               />
             </CardContent>
           </Card>

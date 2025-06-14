@@ -1,12 +1,27 @@
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
-import { AlertCircle, CheckCircle, LucideProps, XCircle } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle,
+  LockOpen,
+  LucideProps,
+  XCircle,
+} from 'lucide-react';
+import Link from 'next/link';
 import {
   ForwardRefExoticComponent,
   Fragment,
@@ -16,6 +31,8 @@ import {
 } from 'react';
 import { NonUndefined } from 'react-hook-form';
 import { UniversityType, useProvider } from '../../_provider/provider';
+import DeletePrediction from '../_components/delete-prediction';
+import PaymentPrediction from '../_components/payment-prediction';
 import ScoreCard from '../_components/score-card';
 import SimpleBarChart from '../_components/simple-bar-chart';
 import { StatusIndicator } from '../_components/status-indicator';
@@ -23,26 +40,35 @@ import { StatusIndicator } from '../_components/status-indicator';
 export default function PredictionStep4() {
   const {
     useScoreUtbk: { utbkAvg, utbkScore, utbkPercentage },
-    useScoreSimak: { simakAvgSNBT, simakPercentageRAW, simakScoreRAW },
+    useScoreSimak: {
+      simakAvgSNBT,
+      simakPercentageRAW,
+      simakScoreRAW,
+      simakMaxScoreRAW,
+    },
     useScoreFinal: { finalPercentage, finalScore },
+    selectedPrograms,
+    simakScores,
+    utbkScores,
+    TryoutData,
   } = useProvider();
+  const [open, setOpen] = useState<string>('');
+  console.log({ open });
   return (
     <div className="space-y-8">
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Hasil Prediksi Kelulusan
+          Universitas Indonesia
         </h2>
-        <p className="text-gray-600">
-          Analisis lengkap berdasarkan nilai UTBK dan SIMAK UI
-        </p>
+        <p className="text-gray-600">{selectedPrograms?.study}</p>
       </div>
 
       {/* Score Summary */}
       <Card>
-        <CardHeader className="bg-gray-50">
+        <CardHeader className="px-0">
           <CardTitle className="text-lg">Ringkasan Nilai</CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="py-6 px-0 flex flex-col gap-4">
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
@@ -86,21 +112,102 @@ export default function PredictionStep4() {
               </Card>
             </div>
 
-            <div>
-              <h3 className="font-medium mb-4">Perbandingan Nilai</h3>
-              <SimpleBarChart
-                data={[utbkAvg, simakAvgSNBT, finalScore]}
-                labels={['UTBK', 'SIMAK', 'Final']}
-                title="Distribusi Skor"
-              />
-            </div>
+            <Card className="border">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-base">Perbandingan Nilai</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <SimpleBarChart
+                  data={[utbkAvg, simakAvgSNBT, finalScore]}
+                  labels={['UTBK', 'SIMAK', 'Final']}
+                  title="Distribusi Skor"
+                />
+              </CardContent>
+            </Card>
           </div>
+
+          <Accordion
+            type="single"
+            collapsible
+            className=""
+            value={open}
+            onValueChange={setOpen}
+          >
+            <AccordionItem
+              value="item-1"
+              className="border-none"
+            >
+              <AccordionTrigger
+                className={cn(
+                  'border-l-4 border-main px-4 bg-main/10 text-base font-semibold',
+                  open === '' && 'rounded-xl',
+                  open === 'item-1' && ' rounded-t-xl',
+                )}
+              >
+                Lihat detail nilai
+              </AccordionTrigger>
+              <AccordionContent className="grid grid-cols-2 gap-4 pt-4 border-l-4 border-main border-t-0 p-2 rounded-b-xl bg-main/10">
+                <Card className="bg-transparent">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-base">
+                      Visualisasi UTBK
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <SimpleBarChart
+                      data={utbkScores.map((item) => {
+                        return item.score;
+                      })}
+                      labels={utbkScores.map((usItem) => usItem.name)}
+                      title="Distribusi Nilai UTBK"
+                      max={1000}
+                    />
+                  </CardContent>
+                </Card>
+                <Card className="bg-transparent">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-base flex items-center">
+                      <span>Visualisasi SIMAK</span>
+                      {TryoutData && (
+                        <Link
+                          href={`/${website_sub_category_id_params}/user/try-out/${TryoutData.id}`}
+                          className="ml-2 text-xs bg-main hover:scale-105 cursor-pointer duration-300 py-1 px-2 rounded-2xl text-white font-normal"
+                        >
+                          {TryoutData.title}
+                        </Link>
+                      )}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <SimpleBarChart
+                      data={simakScores.map(
+                        (item) => item.value.benar * 4 + item.value.salah * -1,
+                      )}
+                      labels={simakScores.map((ssItem) => ssItem.name)}
+                      title="Distribusi Nilai SIMAK"
+                      max={simakMaxScoreRAW}
+                    />
+                  </CardContent>
+                </Card>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </CardContent>
       </Card>
 
       {/* Program Results */}
       {/* <ByFinalScore /> */}
       <BySimakScore />
+      <div className="flex w-full justify-end">
+        <DeletePrediction>
+          <Button
+            variant="outline"
+            className="h-11 px-6 bg-red-600 text-white hover:text-white hover:bg-red-500"
+          >
+            Delete riwayat
+          </Button>
+        </DeletePrediction>
+      </div>
     </div>
   );
 }
@@ -110,7 +217,10 @@ const BySimakScore = () => {
     selectedPrograms,
     useScoreSimak: { simakPercentageRAW, simakAvgSNBT },
     useScoreFinal: { finalPercentage, finalScore },
+    isLock,
   } = useProvider();
+
+  console.log({ isLock });
 
   function getPassingGradeStatus(
     pg: NonUndefined<UniversityType['studyProgramList'][0]['passingGrade']>[0],
@@ -284,6 +394,7 @@ const BySimakScore = () => {
                       : simakAvgSNBT;
 
                   const getStatusColor = (status: string) => {
+                    if (isLock) return 'bg-white';
                     return status === 'Tidak Lolos'
                       ? 'bg-red-100'
                       : status === 'Nyaris'
@@ -310,8 +421,14 @@ const BySimakScore = () => {
                             getStatusColor(statusFinal.status),
                           )}
                         >
-                          {pg.value}
-                          {pg.tipe === 'PERCENTAGE' ? '%' : ''}
+                          {isLock ? (
+                            <Locked />
+                          ) : (
+                            <span>
+                              {pg.value}
+                              {pg.tipe === 'PERCENTAGE' ? '%' : ''}
+                            </span>
+                          )}
                         </td>
                         <td
                           className={cn(
@@ -319,21 +436,27 @@ const BySimakScore = () => {
                             getStatusColor(statusFinal.status),
                           )}
                         >
-                          {userValueFinal.toFixed(1)}
-                          {pg.tipe === 'PERCENTAGE' ? '%' : ''}{' '}
-                          <span
-                            className={cn(
-                              'text-xs',
-                              statusFinal.status === 'Lolos' &&
-                                'text-green-600',
-                              statusFinal.status === 'Nyaris' &&
-                                'text-yellow-600',
-                              statusFinal.status === 'Tidak Lolos' &&
-                                'text-red-600',
-                            )}
-                          >
-                            ( {'UTBK + SIMAK UI'} )
-                          </span>
+                          {isLock ? (
+                            <Locked />
+                          ) : (
+                            <span>
+                              {userValueFinal.toFixed(1)}
+                              {pg.tipe === 'PERCENTAGE' ? '%' : ''}{' '}
+                              <span
+                                className={cn(
+                                  'text-xs',
+                                  statusFinal.status === 'Lolos' &&
+                                    'text-green-600',
+                                  statusFinal.status === 'Nyaris' &&
+                                    'text-yellow-600',
+                                  statusFinal.status === 'Tidak Lolos' &&
+                                    'text-red-600',
+                                )}
+                              >
+                                ( {'UTBK + SIMAK UI'} )
+                              </span>
+                            </span>
+                          )}
                         </td>
                         <td
                           className={cn(
@@ -341,14 +464,18 @@ const BySimakScore = () => {
                             getStatusColor(statusFinal.status),
                           )}
                         >
-                          <div className="flex items-center gap-2">
-                            <statusFinal.icon
-                              className={`w-4 h-4 ${statusFinal.color}`}
-                            />
-                            <span className={`text-sm ${statusFinal.color}`}>
-                              {statusFinal.status}
-                            </span>
-                          </div>
+                          {isLock ? (
+                            <Locked />
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <statusFinal.icon
+                                className={`w-4 h-4 ${statusFinal.color}`}
+                              />
+                              <span className={`text-sm ${statusFinal.color}`}>
+                                {statusFinal.status}
+                              </span>
+                            </div>
+                          )}
                         </td>
                       </tr>
                       <tr className={cn('border-b border-black/10')}>
@@ -367,8 +494,14 @@ const BySimakScore = () => {
                             getStatusColor(statusSimak.status),
                           )}
                         >
-                          {pg.value}
-                          {pg.tipe === 'PERCENTAGE' ? '%' : ''}
+                          {isLock ? (
+                            <Locked />
+                          ) : (
+                            <span>
+                              {pg.value}
+                              {pg.tipe === 'PERCENTAGE' ? '%' : ''}
+                            </span>
+                          )}
                         </td>
                         <td
                           className={cn(
@@ -376,21 +509,27 @@ const BySimakScore = () => {
                             getStatusColor(statusSimak.status),
                           )}
                         >
-                          {userValueSimak.toFixed(1)}
-                          {pg.tipe === 'PERCENTAGE' ? '%' : ''}{' '}
-                          <span
-                            className={cn(
-                              'text-xs',
-                              statusSimak.status === 'Lolos' &&
-                                'text-green-600',
-                              statusSimak.status === 'Nyaris' &&
-                                'text-yellow-600',
-                              statusSimak.status === 'Tidak Lolos' &&
-                                'text-red-600',
-                            )}
-                          >
-                            ( {'SIMAK UI'} )
-                          </span>
+                          {isLock ? (
+                            <Locked />
+                          ) : (
+                            <span>
+                              {userValueSimak.toFixed(1)}
+                              {pg.tipe === 'PERCENTAGE' ? '%' : ''}{' '}
+                              <span
+                                className={cn(
+                                  'text-xs',
+                                  statusSimak.status === 'Lolos' &&
+                                    'text-green-600',
+                                  statusSimak.status === 'Nyaris' &&
+                                    'text-yellow-600',
+                                  statusSimak.status === 'Tidak Lolos' &&
+                                    'text-red-600',
+                                )}
+                              >
+                                ( {'SIMAK UI'} )
+                              </span>
+                            </span>
+                          )}
                         </td>
                         <td
                           className={cn(
@@ -398,14 +537,18 @@ const BySimakScore = () => {
                             getStatusColor(statusSimak.status),
                           )}
                         >
-                          <div className="flex items-center gap-2">
-                            <statusSimak.icon
-                              className={`w-4 h-4 ${statusSimak.color}`}
-                            />
-                            <span className={`text-sm ${statusSimak.color}`}>
-                              {statusSimak.status}
-                            </span>
-                          </div>
+                          {isLock ? (
+                            <Locked />
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <statusSimak.icon
+                                className={`w-4 h-4 ${statusSimak.color}`}
+                              />
+                              <span className={`text-sm ${statusSimak.color}`}>
+                                {statusSimak.status}
+                              </span>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     </Fragment>
@@ -452,5 +595,18 @@ const BySimakScore = () => {
         </CardContent>
       </Card>
     </div>
+  );
+};
+
+const Locked = () => {
+  return (
+    <PaymentPrediction>
+      <span className="flex items-center justify-center gap-2 bg-yellow-100 w-fit px-3 rounded-full ml-1 hover:scale-110 duration-300 cursor-pointer text-yellow-600">
+        Lihat{' '}
+        <span className="">
+          <LockOpen className="w-4 h-4" />
+        </span>
+      </span>
+    </PaymentPrediction>
   );
 };

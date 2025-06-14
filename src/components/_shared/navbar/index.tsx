@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useMedia } from 'use-media';
 
 import UserAccountNav from '@/components/_shared/navbar/user-account-nav';
@@ -12,6 +12,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { LayoutDashboard, LogOut, Menu } from 'lucide-react';
 
+import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import Logo from '@/components/ui/logo';
@@ -21,8 +22,10 @@ import { cn } from '@/lib/utils';
 import { Badge } from '../../ui/badge';
 
 interface NavbarProps {
-  showAuth: { signUp: boolean; login: boolean };
-  setShowAuth: (show: { signUp: boolean; login: boolean }) => void;
+  showAuth: { open: boolean; redirect: string | null };
+  setShowAuth: Dispatch<
+    SetStateAction<{ open: boolean; redirect: string | null }>
+  >;
 }
 
 interface NavItem {
@@ -142,8 +145,10 @@ const MobileNav: React.FC<{
   isSheetOpen: boolean;
   setIsSheetOpen: (open: boolean) => void;
   session: any;
-  setShowAuth: NavbarProps['setShowAuth'];
-}> = ({ navItems, isSheetOpen, setIsSheetOpen, session, setShowAuth }) => {
+}> = ({ navItems, isSheetOpen, setIsSheetOpen, session }) => {
+  const {
+    useAuth: { setShowAuth },
+  } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
   return (
     <div className="fixed left-0 top-0 z-50 w-full rounded-b-3xl bg-white/70">
@@ -259,7 +264,7 @@ const MobileNav: React.FC<{
                     <Button
                       className="mx-auto flex w-full justify-center rounded-full py-3 text-base font-medium text-white transition-all duration-300 bg-gradient-default"
                       onClick={() => {
-                        setShowAuth({ signUp: false, login: true });
+                        setShowAuth((prev) => ({ ...prev, open: true }));
                         setIsSheetOpen(false);
                       }}
                     >
@@ -279,9 +284,10 @@ const MobileNav: React.FC<{
 const DesktopNav: React.FC<{
   navItems: NavItem[];
   session: any;
-  setShowAuth: NavbarProps['setShowAuth'];
-}> = ({ navItems, session, setShowAuth }) => {
-  useWebsiteSubCategory();
+}> = ({ navItems, session }) => {
+  const {
+    useAuth: { setShowAuth },
+  } = useAppContext();
   return (
     <div className="fixed left-0 top-4 z-50 w-full bg-transparent">
       <div className="mx-auto flex max-w-4xl items-center justify-between rounded-3xl bg-white/80 p-2 shadow-sm backdrop-blur-sm">
@@ -302,7 +308,7 @@ const DesktopNav: React.FC<{
         ) : (
           <button
             className="rounded-full px-4 py-2 text-sm text-white transition-colors duration-300 hover:opacity-85 bg-gradient-default"
-            onClick={() => setShowAuth({ signUp: false, login: true })}
+            onClick={() => setShowAuth((prev) => ({ ...prev, open: true }))}
           >
             Daftar/Masuk
           </button>
@@ -312,7 +318,7 @@ const DesktopNav: React.FC<{
   );
 };
 
-const Navbar: React.FC<NavbarProps> = ({ setShowAuth }) => {
+const Navbar: React.FC = () => {
   const { data: session } = useSession();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const isMobile = useMedia({ maxWidth: '768px' });
@@ -323,13 +329,11 @@ const Navbar: React.FC<NavbarProps> = ({ setShowAuth }) => {
       isSheetOpen={isSheetOpen}
       setIsSheetOpen={setIsSheetOpen}
       session={session}
-      setShowAuth={setShowAuth}
     />
   ) : (
     <DesktopNav
       navItems={navItems}
       session={session}
-      setShowAuth={setShowAuth}
     />
   );
 };

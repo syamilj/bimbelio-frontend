@@ -304,7 +304,7 @@ export type Transaction = {
   transaction_time: Date;
   expired_time: Date;
   order_id: string;
-  website_sub_category_id: string;
+  website_sub_category_id: string | null;
 };
 
 export type Pricing = {

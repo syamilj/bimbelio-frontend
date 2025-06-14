@@ -6,37 +6,22 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
-  useEffect,
-  useState,
 } from 'react';
-import Login from '../_shared/auth/login';
-import SignUp from '../_shared/auth/sign-up';
 import Navbar from '../_shared/navbar';
+import { useAppContext } from '../provider/provider-app';
 
 interface LayoutGuestProps {
   children: ReactNode;
 }
 interface auth {
-  login: boolean;
-  signUp: boolean;
+  open: boolean;
+  redirect: string | null;
 }
 
 export default function LayoutGuest({ children }: LayoutGuestProps) {
-  const [showAuth, setShowAuth] = useState<auth>({
-    login: false,
-    signUp: false,
-  });
-
-  useEffect(() => {
-    if (showAuth.login || showAuth.signUp) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [showAuth]);
+  const {
+    useAuth: { showAuth, setShowAuth },
+  } = useAppContext();
 
   const Context = {
     showAuth,
@@ -45,22 +30,7 @@ export default function LayoutGuest({ children }: LayoutGuestProps) {
 
   return (
     <GuestContext.Provider value={Context}>
-      <Navbar
-        showAuth={showAuth}
-        setShowAuth={setShowAuth}
-      />
-      {showAuth.login && (
-        <Login
-          showAuth={showAuth}
-          setShowAuth={setShowAuth}
-        />
-      )}
-      {showAuth.signUp && (
-        <SignUp
-          showAuth={showAuth}
-          setShowAuth={setShowAuth}
-        />
-      )}
+      <Navbar />
       {children}
     </GuestContext.Provider>
   );

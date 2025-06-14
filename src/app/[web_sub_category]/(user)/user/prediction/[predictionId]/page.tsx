@@ -24,6 +24,7 @@ export default function UTBKSIMAKPredictor() {
     currentStep,
     setCurrentStep,
     useParams: { predictionId },
+    isFinish,
   } = useProvider();
 
   console.log({ predictionId });
@@ -48,76 +49,121 @@ export default function UTBKSIMAKPredictor() {
             </p>
           </div>
 
-          <Card className="mb-8">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                {STEPS.map((step, index) => {
-                  const StepIcon = step.icon;
-                  const isActive = currentStep === step.id;
-                  const isCompleted = currentStep > step.id;
+          {!isFinish && (
+            <Card className="mb-8">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  {STEPS.map((step, index) => {
+                    const StepIcon = step.icon;
+                    const isActive = currentStep === step.id;
+                    const isCompleted = currentStep > step.id;
 
-                  return (
-                    <div
-                      key={step.id}
-                      className="flex flex-col items-center relative flex-1"
-                    >
+                    return (
                       <div
-                        className={cn(
-                          'w-10 h-10 rounded-xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
-                          isActive
-                            ? 'bg-main text-white'
-                            : isCompleted
-                              ? 'bg-green-600 text-white'
-                              : 'bg-gray-200 text-gray-500',
-                        )}
+                        key={step.id}
+                        className="flex flex-col items-center relative flex-1"
                       >
-                        {isCompleted ? (
-                          <Check className="w-5 h-5" />
-                        ) : (
-                          <StepIcon className="w-5 h-5" />
-                        )}
-                      </div>
-                      <div className="text-center">
-                        <p
+                        <div
                           className={cn(
-                            'text-sm font-medium mb-1',
-                            isActive ? 'text-main' : 'text-gray-600',
+                            'w-10 h-10 rounded-xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
+                            isActive
+                              ? 'bg-main text-white'
+                              : isCompleted
+                                ? 'bg-green-600 text-white'
+                                : 'bg-gray-200 text-gray-500',
                           )}
                         >
-                          {step.title}
-                        </p>
-                        <p className="text-xs text-gray-500 max-w-20">
-                          {step.description}
-                        </p>
-                      </div>
-                      {index < STEPS.length - 1 && (
-                        <div className="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 bg-gray-200">
-                          <div
-                            className="h-full bg-green-600 transition-all duration-500"
-                            style={{ width: isCompleted ? '100%' : '0%' }}
-                          />
+                          {isCompleted ? (
+                            <Check className="w-5 h-5" />
+                          ) : (
+                            <StepIcon className="w-5 h-5" />
+                          )}
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <Progress
-                value={(currentStep / STEPS.length) * 100}
-                className="h-2"
-              />
-            </CardContent>
-          </Card>
+                        <div className="text-center">
+                          <p
+                            className={cn(
+                              'text-sm font-medium mb-1',
+                              isActive ? 'text-main' : 'text-gray-600',
+                            )}
+                          >
+                            {step.title}
+                          </p>
+                          <p className="text-xs text-gray-500 max-w-20">
+                            {step.description}
+                          </p>
+                        </div>
+                        {index < STEPS.length - 1 && (
+                          <div className="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 bg-gray-200">
+                            <div
+                              className="h-full bg-green-600 transition-all duration-500"
+                              style={{ width: isCompleted ? '100%' : '0%' }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <Progress
+                  value={(currentStep / STEPS.length) * 100}
+                  className="h-2"
+                />
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardContent className="p-8">
-              {currentStep === 1 && <PredictionStep1 />}
+              {!isFinish && (
+                <>
+                  {currentStep === 1 && <PredictionStep1 />}
 
-              {currentStep === 2 && <PredictionStep2 />}
+                  {currentStep === 2 && <PredictionStep2 />}
 
-              {currentStep === 3 && <PredictionStep3 />}
+                  {currentStep === 3 && <PredictionStep3 />}
 
-              {currentStep === 4 && <PredictionStep4 />}
+                  {currentStep === 4 && <PredictionStep4 />}
+                </>
+              )}
+              {isFinish && (
+                <>
+                  <PredictionStep4 />
+                  {/* <Tabs
+                    defaultValue="hasil"
+                    className="space-y-4"
+                  >
+                    <TabsList>
+                      <TabsTrigger
+                        className="text-sm rounded-3xl px-4 py-2"
+                        value="hasil"
+                      >
+                        Hasil
+                      </TabsTrigger>
+                      <TabsTrigger
+                        className="text-sm rounded-3xl px-4 py-2"
+                        value="simak_ui"
+                      >
+                        Nilai Simak UI
+                      </TabsTrigger>
+                      <TabsTrigger
+                        className="text-sm rounded-3xl px-4 py-2"
+                        value="utbk"
+                      >
+                        Nilai UTBK
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="hasil">
+                      <PredictionStep4 />
+                    </TabsContent>
+                    <TabsContent value="simak_ui">
+                      <PredictionStep3 />
+                    </TabsContent>
+                    <TabsContent value="utbk">
+                      <PredictionStep2 />
+                    </TabsContent>
+                  </Tabs> */}
+                </>
+              )}
 
               <Navigation />
             </CardContent>

@@ -1,8 +1,6 @@
 'use client';
 
 import AdminImage from '@/_assest/logo-minimize.png';
-import Login from '@/components/_shared/auth/login';
-import SignUp from '@/components/_shared/auth/sign-up';
 import Footer from '@/components/_shared/footer';
 import Navbar from '@/components/_shared/navbar';
 import ToC from '@/components/_shared/other/ToC';
@@ -90,10 +88,6 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
     hideToast: true,
   });
 
-  const [showAuth, setShowAuth] = useState<Auth>({
-    login: false,
-    signUp: false,
-  });
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [processedContent, setProcessedContent] = useState<string>('');
   const [viewCount, setViewCount] = useState<number>(blog.views);
@@ -115,17 +109,6 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  /**
-   * 2) Disable body scroll when modal login/signUp is open
-   */
-  useEffect(() => {
-    document.body.style.overflow =
-      showAuth.login || showAuth.signUp ? 'hidden' : 'auto';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [showAuth]);
 
   /**
    * 3) Process content & increment view (run once per blog ID)
@@ -216,31 +199,9 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
     return new Date(date).toLocaleDateString('id-ID', options);
   };
 
-  // Setting remark plugin
-  const remarkMathOptions = { singleDollarTextMath: false };
-
-  // 7) Render UI (SAMA seperti desain Kamu)
   return (
     <Fragment>
-      {/* NAVBAR */}
-      <Navbar
-        showAuth={showAuth}
-        setShowAuth={setShowAuth}
-      />
-
-      {/* LOGIN & SIGNUP MODAL */}
-      {showAuth.login && (
-        <Login
-          showAuth={showAuth}
-          setShowAuth={setShowAuth}
-        />
-      )}
-      {showAuth.signUp && (
-        <SignUp
-          showAuth={showAuth}
-          setShowAuth={setShowAuth}
-        />
-      )}
+      <Navbar />
 
       <main className="container mx-auto px-4 py-8 md:py-[8rem]">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">

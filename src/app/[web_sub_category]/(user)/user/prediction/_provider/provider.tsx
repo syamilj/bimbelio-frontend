@@ -1,5 +1,6 @@
 'use client';
 
+import { toaster } from '@/components/ui/toaster';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import {
   Prediction,
@@ -7,7 +8,8 @@ import {
   PredictionScoreDetail,
   Tryout,
 } from '@/types/database';
-import { useParams } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
+import { notFound, useParams, useSearchParams } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -32,6 +34,7 @@ export default function Provider({ children }: Props) {
 
   const [utbkScores, setUtbkScores] = useState(UTBK_DATA);
 
+  const [tryoutId, setTryoutId] = useState<string | null>(null);
   const [simakScores, setSIMAKScores] = useState(SIMAK_DATA);
 
   const { data: University } = useGet<UniversityType>('/universitas/single', {
@@ -117,6 +120,7 @@ export default function Provider({ children }: Props) {
   // ===== PredictionData ===================================
   const { data: PredictionData, isLoading: PredictionDataIsLoading } = useGet<
     Prediction & {
+      isLock: boolean;
       Tryout: Tryout;
       PredictionScore: (PredictionScore & {
         PredictionScoreDetail: PredictionScoreDetail[];
@@ -126,6 +130,17 @@ export default function Provider({ children }: Props) {
     params: { id: predictionId },
     enabled: !!predictionId,
     useEffectDependencies: [predictionId],
+    toast: {
+      hideError: true,
+    },
+    onError({ message }) {
+      if (predictionId === 'step') return;
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: message,
+      });
+    },
   });
 
   console.log({ PredictionData, predictionId, simakScores, utbkScores });
@@ -159,8 +174,6 @@ export default function Provider({ children }: Props) {
           setSIMAKScores(
             psItem.PredictionScoreDetail.map((psdItem) => {
               return {
-                label: psdItem.subCategory,
-                initial: psdItem.subCategory,
                 name: psdItem.subCategory,
                 value: {
                   benar: psdItem.true || 0,
@@ -169,16 +182,36 @@ export default function Provider({ children }: Props) {
                 },
                 total_question: psdItem.totalQuestions || 0,
                 type: {
-                  label: psdItem.category,
-                  name: psdItem.category as any,
+                  name: psdItem.category,
                 },
               };
             }),
           );
         }
       });
+      setTryoutId(PredictionData?.Tryout?.id || null);
+      setCurrentStep(4);
     }
   }, [PredictionData]);
+
+  const isFinish = currentStep === 4 ? true : false;
+
+  const isLock = PredictionData ? PredictionData.isLock : true;
+
+  const searchParams = useSearchParams();
+  const stepQuery = searchParams.get('step');
+
+  const TryoutData = PredictionData?.Tryout;
+
+  useEffect(() => {
+    // if (predictionId !== 'step') return;
+    const step = parseInt(stepQuery || '');
+    if (stepQuery && !isNaN(step)) {
+      setCurrentStep(step);
+    }
+  }, [stepQuery, predictionId]);
+
+  console.log({ currentStep });
 
   const Context = {
     selectedPrograms,
@@ -194,6 +227,8 @@ export default function Provider({ children }: Props) {
     useSelectTryouts: {
       SelectTryouts,
       SelectTryoutsIsLoading,
+      tryoutId,
+      setTryoutId,
     },
     useScoreSimak: {
       simakScoreRAW,
@@ -214,10 +249,21 @@ export default function Provider({ children }: Props) {
     useParams: {
       predictionId,
     },
+    isFinish,
+    isLock,
+    TryoutData,
   };
 
   if (predictionId && PredictionDataIsLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex w-full justify-center items-center min-h-[70vh]">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (predictionId && predictionId !== 'step' && !PredictionData) {
+    return notFound();
   }
 
   return (
@@ -290,6 +336,8 @@ type ProviderType = {
           }[];
         }[];
     SelectTryoutsIsLoading: boolean;
+    tryoutId: string | null;
+    setTryoutId: Dispatch<SetStateAction<string | null>>;
   };
   useScoreSimak: {
     simakScoreRAW: number;
@@ -310,6 +358,9 @@ type ProviderType = {
   useParams: {
     predictionId: string | null;
   };
+  isFinish: boolean;
+  isLock: boolean;
+  TryoutData: Tryout | undefined;
 };
 
 export type UniversityType = {
@@ -372,9 +423,9 @@ const UTBK_DATA = [
 ];
 
 type SubTest = {
-  label: string;
-  initial: string;
   name: string;
+  // initial: string;
+  // name: string;
   value: {
     benar: number;
     salah: number;
@@ -382,61 +433,113 @@ type SubTest = {
   };
   total_question: number;
   type: {
-    name: 'kemampuan_dasar' | 'kemampuan_akademik';
-    label: string;
+    // name: 'kemampuan_dasar' | 'kemampuan_akademik';
+    // name: 'kemampuan_dasar' | 'kemampuan_akademik';
+    name: string;
   };
 };
 
 const SIMAK_DATA: SubTest[] = [
   {
-    label: 'Matematika Dasar',
-    initial: 'Mat Das',
-    name: 'matematika_dasar',
+    name: 'Matematika Dasar',
     value: { benar: 0, salah: 0, kosong: 0 },
     total_question: 15,
-    type: { name: 'kemampuan_dasar', label: 'Kemampuan Dasar' },
+    type: {
+      name: 'Kemampuan Dasar',
+    },
   },
   {
-    label: 'Bahasa Indo',
-    initial: 'B Indo',
-    name: 'bahasa_indo',
+    name: 'Bahasa Indo',
     value: { benar: 0, salah: 0, kosong: 0 },
     total_question: 15,
-    type: { name: 'kemampuan_dasar', label: 'Kemampuan Dasar' },
+    type: {
+      name: 'Kemampuan Dasar',
+    },
   },
   {
-    label: 'Bahasa Inggris',
-    initial: 'B Ing',
-    name: 'bahasa_inggris',
+    name: 'Bahasa Inggris',
     value: { benar: 0, salah: 0, kosong: 0 },
     total_question: 15,
-    type: { name: 'kemampuan_dasar', label: 'Kemampuan Dasar' },
+    type: {
+      name: 'Kemampuan Dasar',
+    },
   },
   {
-    label: 'Verbal',
-    name: 'verbal',
-    initial: 'Verbal',
+    name: 'Verbal',
     value: { benar: 0, salah: 0, kosong: 0 },
     total_question: 20,
-    type: { name: 'kemampuan_akademik', label: 'Kemampuan Akademik' },
+    type: {
+      name: 'Kemampuan Akademik',
+    },
   },
   {
-    label: 'Kuantitatif',
-    name: 'kuantitatif',
-    initial: 'Kuantitatif',
+    name: 'Kuantitatif',
     value: { benar: 0, salah: 0, kosong: 0 },
     total_question: 35,
-    type: { name: 'kemampuan_akademik', label: 'Kemampuan Akademik' },
+    type: {
+      name: 'Kemampuan Akademik',
+    },
   },
   {
-    label: 'Logika',
-    name: 'logika',
-    initial: 'Logika',
+    name: 'Logika',
     value: { benar: 0, salah: 0, kosong: 0 },
     total_question: 25,
-    type: { name: 'kemampuan_akademik', label: 'Kemampuan Akademik' },
+    type: {
+      name: 'Kemampuan Akademik',
+    },
   },
 ];
+
+// const SIMAK_DATA: SubTest[] = [
+//   {
+//     label: 'Matematika Dasar',
+//     initial: 'Mat Das',
+//     name: 'matematika_dasar',
+//     value: { benar: 0, salah: 0, kosong: 0 },
+//     total_question: 15,
+//     type: { name: 'kemampuan_dasar', label: 'Kemampuan Dasar' },
+//   },
+//   {
+//     label: 'Bahasa Indo',
+//     initial: 'B Indo',
+//     name: 'bahasa_indo',
+//     value: { benar: 0, salah: 0, kosong: 0 },
+//     total_question: 15,
+//     type: { name: 'kemampuan_dasar', label: 'Kemampuan Dasar' },
+//   },
+//   {
+//     label: 'Bahasa Inggris',
+//     initial: 'B Ing',
+//     name: 'bahasa_inggris',
+//     value: { benar: 0, salah: 0, kosong: 0 },
+//     total_question: 15,
+//     type: { name: 'kemampuan_dasar', label: 'Kemampuan Dasar' },
+//   },
+//   {
+//     label: 'Verbal',
+//     name: 'verbal',
+//     initial: 'Verbal',
+//     value: { benar: 0, salah: 0, kosong: 0 },
+//     total_question: 20,
+//     type: { name: 'kemampuan_akademik', label: 'Kemampuan Akademik' },
+//   },
+//   {
+//     label: 'Kuantitatif',
+//     name: 'kuantitatif',
+//     initial: 'Kuantitatif',
+//     value: { benar: 0, salah: 0, kosong: 0 },
+//     total_question: 35,
+//     type: { name: 'kemampuan_akademik', label: 'Kemampuan Akademik' },
+//   },
+//   {
+//     label: 'Logika',
+//     name: 'logika',
+//     initial: 'Logika',
+//     value: { benar: 0, salah: 0, kosong: 0 },
+//     total_question: 25,
+//     type: { name: 'kemampuan_akademik', label: 'Kemampuan Akademik' },
+//   },
+// ];
 
 const convertSIMAKToSNBT = (
   rawScore: number,

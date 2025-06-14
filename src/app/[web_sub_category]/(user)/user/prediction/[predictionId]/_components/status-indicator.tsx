@@ -1,4 +1,6 @@
 import { cn } from '@/lib/utils';
+import { LockOpen } from 'lucide-react';
+import { useProvider } from '../../_provider/provider';
 
 export const StatusIndicator = ({
   status,
@@ -7,6 +9,8 @@ export const StatusIndicator = ({
   status: string;
   count: number;
 }) => {
+  const { isLock } = useProvider();
+
   const statusConfig = {
     Lolos: { color: 'bg-green-500', textColor: 'text-green-700' },
     Nyaris: { color: 'bg-yellow-500', textColor: 'text-yellow-700' },
@@ -20,9 +24,21 @@ export const StatusIndicator = ({
   return (
     <div className="flex items-center gap-2">
       <div className={cn('w-3 h-3 rounded-full', config.color)} />
-      <span className={cn('text-sm font-medium', config.textColor)}>
-        {status}: {count}
-      </span>
+      <div
+        className={cn(
+          'text-sm font-medium flex items-center',
+          config.textColor,
+        )}
+      >
+        <span>{status}: </span>
+        {isLock ? (
+          <span className="bg-yellow-100 w-6 h-6 flex justify-center items-center rounded-full ml-1 hover:scale-125 duration-300 cursor-pointer">
+            <LockOpen className="w-4 h-4 text-yellow-600" />
+          </span>
+        ) : (
+          <span>{count}</span>
+        )}
+      </div>
     </div>
   );
 };
