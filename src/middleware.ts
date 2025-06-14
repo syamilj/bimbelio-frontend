@@ -68,6 +68,8 @@ export const config = {
     '/:path*/user/course/:path*',
     '/:path*/user/chat',
     '/:path*/user/chat/:path*',
+    '/:path*/user/prediction',
+    '/:path*/user/prediction/:path*',
   ],
 };
 

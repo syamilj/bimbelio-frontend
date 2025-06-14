@@ -186,7 +186,7 @@ const FeaturedTryoutSection = () => {
                 router.push(
                   `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
                 );
-                setShowAuth((prev) => ({ ...prev, login: true }));
+                setShowAuth((prev) => ({ ...prev, open: true }));
               }}
             >
               Lihat Semua Try Out
@@ -351,7 +351,7 @@ const FeaturedTryOutCard = ({
         <button
           onClick={() => {
             if (!session) {
-              setShowAuth((prev) => ({ ...prev, login: true }));
+              setShowAuth((prev) => ({ ...prev, open: true }));
               router.push(`${window.location.pathname}?tryoutId=${tryOut.id}`);
               return;
             }

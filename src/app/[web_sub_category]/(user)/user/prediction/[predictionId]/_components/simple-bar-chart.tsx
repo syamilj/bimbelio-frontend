@@ -2,12 +2,14 @@ export default function SimpleBarChart({
   data,
   labels,
   title,
+  max,
 }: {
   data: number[];
   labels: string[];
   title: string;
+  max?: number;
 }) {
-  const maxValue = Math.max(...data, 1);
+  const maxValue = max ? max : Math.max(...data, 1);
 
   return (
     <div className="space-y-4">

@@ -1,7 +1,5 @@
 'use client';
 
-import Login from '@/components/_shared/auth/login';
-import SignUp from '@/components/_shared/auth/sign-up';
 import Navbar from '@/components/_shared/navbar';
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { Badge } from '@/components/ui/badge';
@@ -45,7 +43,7 @@ import {
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 
 interface Auth {
   login: boolean;
@@ -69,10 +67,6 @@ interface BlogPost {
 }
 
 export default function BlogClient() {
-  const [showAuth, setShowAuth] = useState<Auth>({
-    login: false,
-    signUp: false,
-  });
   const [sortBy, setSortBy] = useState<'recent' | 'popular' | 'updated'>(
     'recent',
   );
@@ -89,14 +83,6 @@ export default function BlogClient() {
     isLoading,
     refetch,
   } = useGet<BlogPost[]>('/blog/getBlog');
-
-  useEffect(() => {
-    document.body.style.overflow =
-      showAuth.login || showAuth.signUp ? 'hidden' : 'auto';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [showAuth]);
 
   const sortedBlogs = useCallback(() => {
     if (!blogs) return [];
@@ -115,22 +101,7 @@ export default function BlogClient() {
 
   return (
     <Fragment>
-      <Navbar
-        showAuth={showAuth}
-        setShowAuth={setShowAuth}
-      />
-      {showAuth.login && (
-        <Login
-          showAuth={showAuth}
-          setShowAuth={setShowAuth}
-        />
-      )}
-      {showAuth.signUp && (
-        <SignUp
-          showAuth={showAuth}
-          setShowAuth={setShowAuth}
-        />
-      )}
+      <Navbar />
       <Head>
         <title>Blog SNBT dan UTBK</title>
         <meta

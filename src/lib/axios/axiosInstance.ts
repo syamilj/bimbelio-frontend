@@ -23,7 +23,7 @@ axiosInstance.interceptors.request.use(
 
     const urlPathname = window.location.pathname.split('/');
 
-    if (urlPathname.length > 1) {
+    if (urlPathname.length > 2) {
       config.params = {
         ...config.params,
         website_sub_category_id: urlPathname[1],
