@@ -433,7 +433,6 @@ export default function HeaderCourse({
                 courseContainer.scrollTo({ top: 0, behavior: 'smooth' });
               }
               if (doc) {
-                console.log({ doc });
                 doc.forEach((item) => {
                   item.scrollTo({ top: 0, behavior: 'smooth' });
                 });
@@ -532,7 +531,6 @@ export default function HeaderCourse({
                 courseContainer.scrollTo({ top: 0, behavior: 'smooth' });
               }
               if (doc) {
-                console.log({ doc });
                 doc.forEach((item) => {
                   item.scrollTo({ top: 0, behavior: 'smooth' });
                 });

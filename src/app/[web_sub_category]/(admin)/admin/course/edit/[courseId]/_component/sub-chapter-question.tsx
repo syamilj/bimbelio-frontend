@@ -128,7 +128,6 @@ const SubChapterQuestion = ({
       EditSubChapter?.Questions &&
       EditSubChapter.Questions[questionIndex].image
     ) {
-      console.log(EditSubChapter.Questions[questionIndex].image);
       const title = EditSubChapter.Questions[questionIndex].image;
       const deleteImage = await supabase?.storage
         .from('to_question')
@@ -275,8 +274,6 @@ const SubChapterQuestion = ({
   ) => {
     if (EditSubChapter === null) return;
     const image = e.target.files ? e.target.files[0] : null;
-    // console.log(supabase, newQuestionValue)
-    // console.log("awd", process.env.NEXT_PUBLIC_SUPABASE_URL)
     if (
       image &&
       EditSubChapter.Questions &&
@@ -287,20 +284,15 @@ const SubChapterQuestion = ({
         .from('to_question')
         .upload(`${filename}`, image);
       if (upload?.data) {
-        console.log('berhasil upload', upload.data);
       }
       if (upload?.error) {
-        console.log('gagal upload', upload.error);
-        console.log('gagal upload', upload.error.message);
         if (upload.error.message === 'The resource already exists') {
           const update = await supabase?.storage
             .from('to_question')
             .update(`${filename}`, image);
           if (update?.data) {
-            console.log('berhasil update', update.data);
           }
           if (update?.error) {
-            console.log('gagal update', update.error);
           }
         }
       }
@@ -332,20 +324,15 @@ const SubChapterQuestion = ({
         .from('to_question')
         .upload(`${filename}`, image);
       if (upload?.data) {
-        console.log('berhasil upload', upload.data);
       }
       if (upload?.error) {
-        console.log('gagal upload', upload.error);
-        console.log('gagal upload', upload.error.message);
         if (upload.error.message === 'The resource already exists') {
           const update = await supabase?.storage
             .from('to_question')
             .update(`${filename}`, image);
           if (update?.data) {
-            console.log('berhasil update', update.data);
           }
           if (update?.error) {
-            console.log('gagal update', update.error);
           }
         }
       }
@@ -379,7 +366,6 @@ const SubChapterQuestion = ({
     answerIndex: number,
     prevValue: number,
   ) => {
-    console.log({ value, questionIndex, answerIndex, prevValue });
     setSubChapter((prev) =>
       prev.map((item, sessionIndex: number) => {
         if (
@@ -464,7 +450,6 @@ const SubChapterQuestion = ({
     const currentAnswers = [...EditSubChapter.Questions[questionIndex].Answers];
 
     const [movedAnswer] = currentAnswers.splice(answerIndex, 1);
-    console.log(currentAnswers, movedAnswer);
 
     currentAnswers.splice(fixValue, 0, movedAnswer);
 
@@ -496,7 +481,6 @@ const SubChapterQuestion = ({
     const currentQuestions = [...EditSubChapter.Questions];
 
     const [movedQuestion] = currentQuestions.splice(questionIndex, 1);
-    console.log({ currentQuestions, movedQuestion });
 
     currentQuestions.splice(fixValue, 0, movedQuestion);
 

@@ -148,7 +148,6 @@ const SubChapterOption = ({
   //       EditSubChapter?.document === undefined
   //         ? `${crypto.randomUUID()}`
   //         : EditSubChapter?.document;
-  //     console.log('file.type', file.type);
   //     if (file.type !== 'application/pdf') {
   //       toaster({
   //         title: 'Error',
@@ -181,7 +180,6 @@ const SubChapterOption = ({
   //     //         setLoading(false)
   //     //         return
   //     //     }
-  //     //     console.log({ data, error })
   //     // }
   //     if (EditSubChapter?.document !== undefined) {
   //       const { error } = await supabase.storage
@@ -189,7 +187,6 @@ const SubChapterOption = ({
   //         .update(`course/${nameFile}`, file);
 
   //       if (error) {
-  //         console.log({ error });
   //         toaster({
   //           title: 'Error',
   //           condition: 'warning',
@@ -220,7 +217,6 @@ const SubChapterOption = ({
   //         .upload(`course/${nameFile}`, file);
 
   //       if (error) {
-  //         console.log({ error });
   //         toaster({
   //           title: 'Error',
   //           condition: 'warning',
@@ -267,7 +263,6 @@ const SubChapterOption = ({
     if (e.target.files) {
       const file = e.target.files[0];
       const nameFile = `${crypto.randomUUID()}`;
-      console.log('file.type', file.type);
       if (file.type !== 'video/mp4') {
         toaster({
           title: 'Error',
@@ -302,7 +297,6 @@ const SubChapterOption = ({
           setLoading(false);
           return;
         }
-        console.log({ data, error });
       }
       const { error } = await supabase.storage
         .from('video')
@@ -355,8 +349,6 @@ const SubChapterOption = ({
     return null;
   }
 
-  console.log('setQuestionIndex', questionIndex);
-
   return (
     <div className="absolute left-0 top-0 flex h-full w-full flex-col gap-[1rem] overflow-y-auto border-l p-[1rem] pb-[100px] text-[.9rem]">
       {loading && <LoadingPopUp title="Sedang Mengupload File..." />}
@@ -398,7 +390,6 @@ const SubChapterOption = ({
                 '#tryout-admin #heading',
               ) as HTMLDivElement;
               if (div) {
-                console.log('height', div.clientHeight);
                 if (div.clientHeight !== 0) {
                   div.style.height = `${div.clientHeight}px`;
                   setHeadingSessionHeight(div.clientHeight);
@@ -449,7 +440,6 @@ const SubChapterOption = ({
                   '#tryout-admin #numberList',
                 ) as HTMLDivElement;
                 if (div) {
-                  console.log('height', div.clientHeight);
                   if (div.clientHeight !== 0) {
                     div.style.height = `${div.clientHeight}px`;
                     setListQuestionHeight(div.clientHeight);

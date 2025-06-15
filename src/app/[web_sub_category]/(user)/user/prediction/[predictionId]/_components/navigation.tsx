@@ -56,7 +56,6 @@ export default function Navigation() {
         const isScoreInvalid = !utbkScores.some(
           (utbk) => isNaN(utbk.score) || utbk.score < 100 || utbk.score > 1000,
         );
-        console.log({ isScoreInvalid });
         return isScoreInvalid;
       case 3:
         const valid = simakScores.every((item) =>

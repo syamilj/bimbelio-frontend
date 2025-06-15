@@ -255,7 +255,6 @@ const AddBlogAdmin = () => {
             placeholder={`Tags`}
             onChange={e => {
               const value = e.target.value.split(',').map(tag => tag.trim());
-              console.log('value', value);
               if (value as string[]) {
                 setTags(value);
               } else {

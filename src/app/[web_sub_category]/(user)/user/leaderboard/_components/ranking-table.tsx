@@ -236,8 +236,6 @@ export function RankingTable() {
     return items;
   };
 
-  console.log({ RankingTryout });
-
   return (
     <div className="space-y-4">
       {/* Bagian Pencarian */}

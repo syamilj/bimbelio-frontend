@@ -580,8 +580,6 @@ export default function UTBKSIMAKPredictor() {
     }
   };
 
-  console.log({ simakScores });
-
   const updateSIMAKScore = (
     category: 'kemampuan_dasar' | 'kemampuan_akademik',
     subtest: string,

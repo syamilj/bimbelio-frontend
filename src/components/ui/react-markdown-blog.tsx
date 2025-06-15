@@ -42,7 +42,6 @@ export default function ReactMarkdownBlog({
     setDisplayValue(replaceLatexNotation(convertValue));
   };
 
-  // console.log({ markdownValue });
   useEffect(() => {
     convertHtmlToMarkdown();
   }, [value]);

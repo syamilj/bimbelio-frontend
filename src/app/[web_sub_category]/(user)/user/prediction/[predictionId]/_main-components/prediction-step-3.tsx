@@ -61,7 +61,6 @@ export default function PredictionStep3() {
         },
         [],
       );
-      console.log({ category });
       setSimakCategory(category);
       setIsSelectChange(false);
     }
@@ -122,8 +121,6 @@ export default function PredictionStep3() {
     setIsSelectChange(true);
     setTryoutId(value);
   };
-
-  console.log({ simakScores, simakCategory, tryoutId });
 
   return (
     <div className="space-y-8">
