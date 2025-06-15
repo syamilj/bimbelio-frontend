@@ -38,10 +38,15 @@ export function useGet<Data = any, ErrorData = any>(
       setData: setData,
       setPage: setPage,
       setTotalPages: setTotalPages,
+      onLoading() {
+        if (more?.onLoading) more.onLoading();
+      },
       onSuccess(successData) {
+        if (more?.onSuccess) more.onSuccess(successData);
         setSuccess(successData);
       },
       onError(errorData) {
+        if (more?.onError) more.onError(errorData);
         setError(errorData);
       },
     });
@@ -84,6 +89,7 @@ type MoreProps = {
     errorTitle?: string;
     errorMsg?: string;
   };
+  onLoading?: () => any;
   onSuccess?: (params: { message: string; status: number; data?: any }) => any;
   onError?: (params: {
     status: number;

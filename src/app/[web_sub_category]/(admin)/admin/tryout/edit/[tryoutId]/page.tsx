@@ -112,8 +112,6 @@ const NewTryOut = () => {
     temporary: null,
   });
 
-  console.log({ sessions, tryout });
-
   // const trpc = api.useUtils();
   // const { data: category, isLoading: isLoadingCategory } =
   //   api.tryoutCategory.getCategory.useQuery(undefined, {
@@ -272,7 +270,6 @@ const NewTryOut = () => {
             `temporary-edit-tryout-${tryoutId}`,
           );
           const tryoutData = data;
-          console.log({ tryoutData });
           if (!saveDataString) {
             getTryoutFromDbs(tryoutData);
           } else {

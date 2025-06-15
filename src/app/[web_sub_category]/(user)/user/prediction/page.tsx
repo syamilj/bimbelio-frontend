@@ -1,31 +1,53 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
-  Award,
-  BookOpen,
-  Calculator,
-  Check,
-  School,
-  Target,
-} from 'lucide-react';
-import Navigation from './_components/_components/navigation';
-import PredictionStep1 from './_components/prediction-step-1';
-import PredictionStep2 from './_components/prediction-step-2';
-import PredictionStep3 from './_components/prediction-step-3';
-import PredictionStep4 from './_components/prediction-step-4';
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { cn } from '@/lib/utils';
+import { IconCrown } from '@/styles/icon';
+import { hexToRgba } from '@/styles/main-styles';
+import {
+  Prediction,
+  PredictionScore,
+  PredictionScoreDetail,
+  Tryout,
+} from '@/types/database';
+import { Award, BookOpen, Calculator, School, Target } from 'lucide-react';
+import Link from 'next/link';
+import ExampleResult from './[predictionId]/_components/example-result';
 import { useProvider } from './_provider/provider';
 
 export default function UTBKSIMAKPredictor() {
-  const { currentStep, setCurrentStep } = useProvider();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const { setCurrentStep } = useProvider();
+  const { data: history, isLoading: historyIsLoading } = useGet<
+    (Prediction & {
+      Tryout: Tryout;
+      PredictionScore: (PredictionScore & {
+        PredictionScoreDetail: PredictionScoreDetail[];
+      })[];
+    })[]
+  >('/prediction/getPredictionHistroty');
 
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="flex flex-col gap-4 mx-auto px-4 py-8">
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-main rounded-2xl mb-6">
               <Calculator className="w-8 h-8 text-white" />
@@ -42,78 +64,195 @@ export default function UTBKSIMAKPredictor() {
             </p>
           </div>
 
-          <Card className="mb-8">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                {STEPS.map((step, index) => {
-                  const StepIcon = step.icon;
-                  const isActive = currentStep === step.id;
-                  const isCompleted = currentStep > step.id;
+          <Card
+            className="mt-0 border border-r-0 border-l-4 border-main rounded-3xl"
+            // style={{
+            //   boxShadow: `0px 0px 10px ${websiteSubCategory?.main_color}`,
+            // }}
+          >
+            <CardHeader className="p-3">
+              <Card
+                className="relative overflow-hidden rounded-2xl border-none text-white animate-fade-in-up py-8"
+                style={{
+                  backgroundImage: `linear-gradient(to bottom right, ${websiteSubCategory?.main_color}, ${hexToRgba(websiteSubCategory?.main_color, 0.3)}, ${websiteSubCategory?.secondary_color})`,
+                }}
+              >
+                {/* Background Icon Dekoratif */}
+                <div className="absolute -top-10 -right-10 opacity-20 rotate-12 scale-150">
+                  <Calculator className="w-48 h-48" />
+                </div>
 
-                  return (
-                    <div
-                      key={step.id}
-                      className="flex flex-col items-center relative flex-1"
-                    >
-                      <div
-                        className={cn(
-                          'w-10 h-10 rounded-xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
-                          isActive
-                            ? 'bg-main text-white'
-                            : isCompleted
-                              ? 'bg-green-600 text-white'
-                              : 'bg-gray-200 text-gray-500',
-                        )}
+                {/* Sparkles Animated Background */}
+                <div className="absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10 animate-pulse-slow" />
+
+                <CardHeader className="text-center z-10 relative">
+                  <CardTitle className="text-3xl font-extrabold drop-shadow-lg">
+                    🚀 Mulai Prediksi Kelulusanmu!
+                  </CardTitle>
+                </CardHeader>
+
+                <CardContent className="relative z-10">
+                  <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-lg">
+                    Gabungkan nilai UTBK & SIMAK UI, dan lihat seberapa besar
+                    peluangmu masuk UI!
+                  </p>
+                  <div className="flex justify-center">
+                    <Link href={'prediction/step'}>
+                      <Button
+                        className="relative px-8 py-3 rounded-full bg-white text-main hover:text-white font-extrabold shadow-xl hover:scale-105 transition-transform animate-pulse-fast"
+                        onClick={() => setCurrentStep(1)}
                       >
-                        {isCompleted ? (
-                          <Check className="w-5 h-5" />
-                        ) : (
-                          <StepIcon className="w-5 h-5" />
-                        )}
-                      </div>
-                      <div className="text-center">
-                        <p
-                          className={cn(
-                            'text-sm font-medium mb-1',
-                            isActive ? 'text-main' : 'text-gray-600',
-                          )}
-                        >
-                          {step.title}
-                        </p>
-                        <p className="text-xs text-gray-500 max-w-20">
-                          {step.description}
-                        </p>
-                      </div>
-                      {index < STEPS.length - 1 && (
-                        <div className="absolute top-5 left-[calc(50%+20px)] w-[calc(100%-40px)] h-0.5 bg-gray-200">
-                          <div
-                            className="h-full bg-green-600 transition-all duration-500"
-                            style={{ width: isCompleted ? '100%' : '0%' }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <Progress
-                value={(currentStep / STEPS.length) * 100}
-                className="h-2"
-              />
-            </CardContent>
+                        🎯 Mulai Sekarang
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </CardHeader>
           </Card>
 
-          <Card>
-            <CardContent className="p-8">
-              {currentStep === 1 && <PredictionStep1 />}
+          <div
+            className={cn(
+              'flex flex-col gap-4',
+              historyIsLoading === false && history?.length === 0 && 'hidden',
+            )}
+          >
+            <h1 className="text-[1.4rem] font-semibold">Riwayat</h1>
+            <div className="grid grid-cols-1 gap-[1rem] md2:grid-cols-3 xxxl:grid-cols-4">
+              {history?.map((hItem, hIndex) => (
+                <Card
+                  key={hIndex}
+                  className="relative overflow-hidden shadow-lg"
+                >
+                  <div className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20">
+                    <IconCrown
+                      w={180}
+                      className="rotate-[-20deg]"
+                    />
+                  </div>
+                  {hItem.Tryout && (
+                    <Badge
+                      className={cn(
+                        'absolute right-4 top-4 bg-main text-white',
+                      )}
+                    >
+                      {hItem.Tryout.title}
+                    </Badge>
+                  )}
+                  <CardHeader className="relative z-[2]">
+                    <CardTitle className="text-[1.3rem] font-bold text-main">
+                      {hItem.study}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="relative z-[2]">
+                    <div className="grid gap-2">
+                      {hItem.PredictionScore.map((psItem, psIndex) => (
+                        <div
+                          key={psIndex}
+                          className="mb-2"
+                        >
+                          <div className="flex items-center justify-between w-full mb-2">
+                            <h3 className="text-lg font-semibold">
+                              {psItem.type.replace('_', ' ')}
+                            </h3>
+                            <h3 className="text-lg font-semibold text-green-600">
+                              {psItem.finalScore.toFixed(2)}
+                            </h3>
+                          </div>
 
-              {currentStep === 2 && <PredictionStep2 />}
+                          {psItem.PredictionScoreDetail.map((psdItem) => (
+                            <div className="flex justify-between items-center mb-2">
+                              <div className="flex items-center ml-2">
+                                <span className="text-sm">
+                                  {psdItem.subCategory}
+                                </span>
+                              </div>
+                              <span className="text-sm text-gray-500">
+                                {psdItem.score}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                  <CardFooter className="relative z-[2]">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Link
+                            href={`prediction/${hItem.id}`}
+                            className="w-full"
+                          >
+                            <Button
+                              className={cn(
+                                'w-full bg-gradient text-white md:hover:opacity-90',
+                              )}
+                            >
+                              Lihat hasil
+                            </Button>
+                          </Link>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Lanjutkan tryout SNBT/UTBK yang sedang berlangsung.
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+            {historyIsLoading && (
+              <div className="grid grid-cols-1 gap-[1rem] md2:grid-cols-3 xxxl:grid-cols-4">
+                {Array.from({ length: 6 }).map((_: any, i: number) => (
+                  <Skeleton
+                    key={i}
+                    className={
+                      'h-[360px] mb:h-[400px] md:h-[400px] md2:h-[380px] xl:h-[450px] xxxl:h-[500px]'
+                    }
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <Card
+            className="mt-4 border border-r-0 border-l-4 border-main rounded-3xl"
+            // style={{
+            //   boxShadow: `0px 0px 10px ${websiteSubCategory?.main_color}`,
+            // }}
+          >
+            <CardHeader className="p-3">
+              <Card
+                className="relative overflow-hidden rounded-2xl border-none text-white animate-fade-in-up py-8"
+                style={{
+                  backgroundImage: `linear-gradient(to bottom right, ${websiteSubCategory?.main_color}, ${hexToRgba(websiteSubCategory?.main_color, 0.3)}, ${websiteSubCategory?.secondary_color})`,
+                }}
+              >
+                {/* Background Icon Dekoratif */}
+                <div className="absolute -top-10 -right-10 opacity-20 rotate-12 scale-150">
+                  <Target className="w-48 h-48" />
+                </div>
 
-              {currentStep === 3 && <PredictionStep3 />}
+                {/* Sparkles Animated Background */}
+                <div className="absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10 animate-pulse-slow" />
 
-              {currentStep === 4 && <PredictionStep4 />}
+                <CardHeader className="text-center z-10 relative">
+                  <CardTitle className="text-3xl font-extrabold drop-shadow-lg">
+                    🎓 Contoh Hasil Prediksi Kelulusan
+                  </CardTitle>
+                </CardHeader>
 
-              <Navigation />
+                <CardContent className="relative z-10">
+                  <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-lg">
+                    Begini gambaran hasil akhir yang akan kamu dapatkan setelah
+                    mengisi data prediksi. Yuk lihat seperti apa skornya!
+                  </p>
+                </CardContent>
+              </Card>
+            </CardHeader>
+
+            <CardContent className="pt-4 shadow-lg">
+              <ExampleResult />
             </CardContent>
           </Card>
         </div>
@@ -148,3 +287,136 @@ const STEPS = [
     icon: Award,
   },
 ];
+
+/*
+
+    <Card key={i} className="relative overflow-hidden">
+            <div className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20">
+              <IconCrown w={180} className="rotate-[-20deg]" />
+            </div>
+            <Badge
+              className={cn(
+                "absolute right-4 top-4 bg-main text-white",
+                getBadgeValue(item)?.className
+              )}
+            >
+              {getBadgeValue(item)?.title}
+            </Badge>
+            <CardHeader className="relative z-[2]">
+              <CardTitle className="text-[1.3rem] font-bold text-main">
+                {item.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="relative z-[2]">
+              <div className="grid gap-2">
+                {(() => {
+                  // Mengelompokkan sesi berdasarkan kategori
+                  const groupedSessions = item.TryoutSession.reduce(
+                    (groups, session) => {
+                      const categoryName = session.TryoutCategory.name;
+                      if (!groups[categoryName]) {
+                        groups[categoryName] = [];
+                      }
+                      groups[categoryName].push(session);
+                      return groups;
+                    },
+                    {} as { [key: string]: (typeof item.TryoutSession)[0][] }
+                  );
+
+                  // Mengurutkan kategori sesuai dengan urutan yang diinginkan
+                  const orderedCategories = [
+                    "Tes Potensi Skolastik (TPS)",
+                    "Tes Literasi",
+                    "Tes Penalaran Matematika",
+                  ];
+
+                  return orderedCategories
+                    .filter((category) => groupedSessions[category]) // Hanya kategori yang ada
+                    .map((categoryName) => (
+                      <div key={categoryName} className="mb-2">
+                        <div className="flex items-center mb-2">
+                          <h3 className="text-lg font-semibold">
+                            {categoryName}:
+                          </h3>
+                        </div>
+
+                        {groupedSessions[categoryName].map((session, index) => (
+                          <div
+                            key={session.id || index} // Pastikan setiap sesi memiliki id unik
+                            className="flex justify-between items-center mb-2"
+                          >
+                            <div className="flex items-center ml-2">
+                              <span className="text-sm">
+                                - {session.TryoutSubCategory.name}
+                              </span>
+                            </div>
+                            <span className="text-sm text-gray-500">
+                              {session.duration} menit
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    ));
+                })()}
+                <div className="flex items-center gap-2">
+                  <IconQuiz w={16} className="text-black/80" />
+                  <span className="text-sm font-semibold">
+                    {item.TryoutSession.reduce(
+                      (acc, session) => acc + session._count.TryoutQuestion,
+                      0
+                    )}{" "}
+                    Soal
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <IconUserAdmin w={16} className="text-black/80" />
+                  <span className="text-sm font-semibold">
+                    {item._count.TryoutRegistration} Pendaftar
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-main-gray-text" />
+                  <span className="text-sm font-semibold">
+                    {`${getHours(item.startDate)}, ${getDateStringShort(
+                      item.startDate
+                    )}`}{" "}
+                    -{" "}
+                    {`${getHours(item.endDate)}, ${getDateStringShort(
+                      item.endDate
+                    )}`}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <IconTimer2 w={16} className="text-black/80" />
+                  <span className="text-sm font-semibold">
+                    {getTimer(item.startDate, item)?.value}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="relative z-[2]">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      className={cn(
+                        "w-full bg-gradientGreen text-white md:hover:bg-gradientGreenHover",
+                        getButtonValue(item)?.className
+                      )}
+                      onClick={() => {
+                        setShowDetail(item);
+                      }}
+                    >
+                      {getButtonValue(item)?.title}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {item.status === "ongoing"
+                      ? "Lanjutkan tryout SNBT/UTBK yang sedang berlangsung."
+                      : "Daftar untuk mengikuti tryout SNBT/UTBK ini."}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </CardFooter>
+          </Card>
+*/

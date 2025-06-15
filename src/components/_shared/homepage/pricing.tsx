@@ -6,12 +6,15 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
+const Pricing = () => {
   const Router = useRouter();
 
   const { data: session } = useSession();
 
-  const { setTransactionPopUp } = useAppContext();
+  const {
+    setTransactionPopUp,
+    useAuth: { setShowAuth },
+  } = useAppContext();
 
   const data = [
     {
@@ -68,7 +71,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
               onClick={() => {
                 if (session)
                   Router.push(`/${website_sub_category_id}/dashboard`);
-                else setShowAuth({ login: true, signUp: false });
+                else setShowAuth((prev) => ({ ...prev, open: true }));
               }}
             >
               Mulai sekarang
@@ -92,7 +95,7 @@ const Pricing = ({ setShowAuth }: { setShowAuth: any }) => {
                   setTransactionPopUp(true);
                   Router.push(`/${website_sub_category_id}/user/dashboard`);
                 } else {
-                  setShowAuth({ login: true, signUp: false });
+                  setShowAuth((prev) => ({ ...prev, open: true }));
                 }
               }}
             >

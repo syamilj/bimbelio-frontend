@@ -26,7 +26,6 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import Logo from '@/components/ui/logo';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
-import { Payment } from './payment';
 // Main Sidebar Component
 const Sidebar = ({ category }: { category: any }) => {
   const { data: session } = useSession();
@@ -69,7 +68,6 @@ const Sidebar = ({ category }: { category: any }) => {
 
   return (
     <Fragment>
-      <Payment />
       {/* Desktop Sidebar */}
       <div className="relative hidden h-full flex-col bg-white shadow-xl md:flex">
         {/* Header */}
@@ -190,12 +188,12 @@ const Sidebar = ({ category }: { category: any }) => {
               <div className="flex w-[1.8rem] items-center justify-center rounded-full">
                 <div className="flex h-[1.8rem] w-[1.8rem] items-center justify-center overflow-hidden rounded-[50%] border border-main-gray-input">
                   {userImage && (
-                    <Image
+                    <img
                       src={userImage}
                       alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-                      width={500}
-                      height={300}
-                      layout="responsive"
+                      // width={500}
+                      // height={300}
+                      // layout="responsive"
                     />
                   )}
                 </div>
@@ -409,12 +407,12 @@ const Sidebar = ({ category }: { category: any }) => {
               <div className="flex w-[1.8rem] items-center justify-center rounded-full">
                 <div className="flex h-[1.8rem] w-[1.8rem] items-center justify-center overflow-hidden rounded-[50%] border border-main-gray-input">
                   {userImage && (
-                    <Image
+                    <img
                       src={userImage}
                       alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-                      width={500}
-                      height={300}
-                      layout="responsive"
+                      // width={500}
+                      // height={300}
+                      // layout="responsive"
                     />
                   )}
                 </div>

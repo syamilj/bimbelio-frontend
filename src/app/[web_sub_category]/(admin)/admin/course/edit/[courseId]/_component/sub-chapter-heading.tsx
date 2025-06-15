@@ -209,7 +209,6 @@ const SubChapterHeading = ({
             <p className="font-regular">Premium</p>
             <div className="h-full flex justify-center items-center">
               <Switch
-                className="data-[state=checked]:bg-main"
                 checked={EditSubChapter.premium}
                 onCheckedChange={(checked) => {
                   setSubChapter((prev) =>

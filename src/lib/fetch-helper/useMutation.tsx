@@ -20,7 +20,7 @@ import { mutateGeneral } from './fetch-helper';
 export function useMutation<Data = any, ErrorData = any>(
   url: string,
   type: 'post' | 'put' | 'delete',
-  more?: MoreProps,
+  more?: MoreProps<Data, ErrorData>,
 ): FetchReturnType<Data, ErrorData> {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ErrorType<ErrorData> | null>(null);
@@ -62,7 +62,7 @@ export function useMutation<Data = any, ErrorData = any>(
   };
 }
 
-type MoreProps = {
+type MoreProps<Data = any, ErrorData = any> = {
   params?: object;
   payload?: any;
   setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -85,7 +85,7 @@ type MoreProps = {
   }: {
     message: string;
     status: number;
-    data?: any;
+    data?: Data;
   }) => any;
   onError?: ({
     status,
@@ -94,7 +94,7 @@ type MoreProps = {
   }: {
     status: number;
     message: string;
-    error: any;
+    error: ErrorData;
   }) => any;
 };
 
@@ -111,17 +111,22 @@ type SuccessType<Data = any> = {
 };
 
 type FetchReturnType<Data, ErrorData> = {
-  mutate: (optional?: { payload?: any; params?: object }) => Promise<
-    | {
-        message: string;
-        status: number;
-        data?: any;
-        page?: number;
-        total_pages?: number;
-      }
-    | undefined
-  >;
+  mutate: MutateType;
   isLoading: boolean;
   error: ErrorType<ErrorData> | null;
   success: SuccessType<Data> | null;
 };
+
+export type MutateType = (optional?: {
+  payload?: any;
+  params?: object;
+}) => Promise<
+  | {
+      message: string;
+      status: number;
+      data?: any;
+      page?: number;
+      total_pages?: number;
+    }
+  | undefined
+>;

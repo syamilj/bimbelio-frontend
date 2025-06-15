@@ -2,6 +2,10 @@
 
 import { env } from '@/env.mjs';
 import {
+  website_sub_category_id,
+  website_sub_category_id_params,
+} from '@/hooks/use-web-sub-category-id';
+import {
   createContext,
   Dispatch,
   ReactNode,
@@ -12,10 +16,16 @@ import {
 } from 'react';
 import useMedia from 'use-media';
 import HistoryPayment from '../_shared/account/setting';
+import Login from '../_shared/auth/login';
 import { BlocknoteEditorType } from '../workspace/editor/provider';
 
 export default function ProviderApp({ children }: { children: ReactNode }) {
   const isDekstop = useMedia({ minWidth: '768px' });
+
+  const [showAuth, setShowAuth] = useState<{
+    open: boolean;
+    redirect: string | null;
+  }>({ open: false, redirect: null });
 
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(false);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
@@ -67,6 +77,19 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (showAuth.open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showAuth]);
+
+  console.log({ website_sub_category_id, website_sub_category_id_params });
+
   const Context = {
     minimizeSidebar,
     setMinimizeSidebar,
@@ -104,10 +127,15 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       editor,
       setEditor,
     },
+    useAuth: {
+      showAuth,
+      setShowAuth,
+    },
   };
 
   return (
     <AppContext.Provider value={Context}>
+      {showAuth.open && <Login />}
       {transactionHistory && <HistoryPayment pages={`${pagesSetting}`} />}
       {children}
     </AppContext.Provider>
@@ -160,6 +188,18 @@ interface AppContextType {
   useEditor: {
     editor: BlocknoteEditorType | null;
     setEditor: Dispatch<SetStateAction<BlocknoteEditorType | null>>;
+  };
+  useAuth: {
+    showAuth: {
+      open: boolean;
+      redirect: string | null;
+    };
+    setShowAuth: Dispatch<
+      SetStateAction<{
+        open: boolean;
+        redirect: string | null;
+      }>
+    >;
   };
 }
 

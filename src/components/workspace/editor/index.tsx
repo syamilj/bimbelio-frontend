@@ -1,4 +1,3 @@
-import { useSession } from '@/components/provider/provider-session-auth';
 import AiPopover from '@/components/workspace/editor/custom/ai/popover';
 import { IconBook } from '@/styles/icon';
 import {
@@ -24,21 +23,24 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { AINote } from './components/ai-note';
 import { DeleteNote } from './components/delete-note';
 import { HandleEditor } from './components/handle-editor';
-import { SaveNote } from './components/save-note';
 import Provider, { BlocknoteEditorType, schema, useProvider } from './provider';
 
-type Props = { docId: string };
+type Props = {
+  onChange?: (editor: BlocknoteEditorType | null) => void;
+};
 
 export default function Editor({
   docId,
   editor,
   setEditor,
   value,
+  onChange,
 }: {
   docId: string;
   editor: BlocknoteEditorType | null;
   setEditor: Dispatch<SetStateAction<BlocknoteEditorType | null>>;
   value?: string;
+  onChange?: (editor: BlocknoteEditorType | null) => void;
 }) {
   const initialEditor = useCreateBlockNote({
     schema,
@@ -56,27 +58,21 @@ export default function Editor({
       editor={editor}
       value={value}
     >
-      <MainContent docId={docId} />
+      <MainContent onChange={onChange} />
     </Provider>
   );
   // <div className="">awd</div>
 }
 
-function MainContent({ docId }: Props) {
+function MainContent({ onChange }: Props) {
   const { editorRef, editor, rect, change, setChange } = useProvider();
-  const { data: session } = useSession();
 
-  const handleOnChange = () => {
+  const handleOnChange = (editor: BlocknoteEditorType | null) => {
     if (!editor) return;
     if (!change && editor.document.length > 1) {
       setChange(true);
     }
-    if (editor.document.length > 1) {
-      localStorage.setItem(
-        `notes-${docId}-${session?.user}`,
-        JSON.stringify(editor.document),
-      );
-    }
+    if (onChange && change) onChange(editor);
   };
 
   if (!editor) return null;
@@ -123,7 +119,7 @@ function MainContent({ docId }: Props) {
           />
           {rect && <AiPopover />}
         </BlockNoteView>
-        {change && <SaveNote />}
+        {/* {change && <SaveNote />} */}
       </div>
     </>
   );

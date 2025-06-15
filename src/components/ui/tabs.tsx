@@ -46,7 +46,6 @@ const TabsTrigger = React.forwardRef<
 
     observer.observe(el, { attributes: true, attributeFilter: ['data-state'] });
 
-    // Initialize state on mount
     setIsActive(el.getAttribute('data-state') === 'active');
 
     return () => observer.disconnect();
