@@ -97,7 +97,7 @@ export default function UTBKSIMAKPredictor() {
                     peluangmu masuk UI!
                   </p>
                   <div className="flex justify-center">
-                    <Link href={'prediction/step'}>
+                    <Link href={'prediction/step?step=new'}>
                       <Button
                         className="relative px-8 py-3 rounded-full bg-white text-main hover:text-white font-extrabold shadow-xl hover:scale-105 transition-transform animate-pulse-fast"
                         onClick={() => setCurrentStep(1)}
