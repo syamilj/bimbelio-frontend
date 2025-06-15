@@ -9,7 +9,7 @@ import {
   Tryout,
 } from '@/types/database';
 import { Loader2 } from 'lucide-react';
-import { notFound, useParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -26,6 +26,7 @@ type Props = {
 
 export default function Provider({ children }: Props) {
   const params = useParams();
+  const router = useRouter();
   const predictionId = (params.predictionId || null) as string | null;
   const [currentStep, setCurrentStep] = useState<number>(1);
 
@@ -119,7 +120,11 @@ export default function Provider({ children }: Props) {
   );
 
   // ===== PredictionData ===================================
-  const { data: PredictionData, isLoading: PredictionDataIsLoading } = useGet<
+  const {
+    data: PredictionData,
+    isLoading: PredictionDataIsLoading,
+    error,
+  } = useGet<
     Prediction & {
       isLock: boolean;
       Tryout: Tryout;
@@ -136,6 +141,7 @@ export default function Provider({ children }: Props) {
     },
     onError({ message }) {
       if (predictionId === 'step') return;
+      router.push('step?step=new');
       toaster({
         title: 'Error',
         condition: 'warning',
@@ -143,6 +149,8 @@ export default function Provider({ children }: Props) {
       });
     },
   });
+
+  console.log({ predictionId });
 
   useEffect(() => {
     if (PredictionData) {
@@ -197,18 +205,19 @@ export default function Provider({ children }: Props) {
 
   const isLock = PredictionData ? PredictionData.isLock : true;
 
-  // const searchParams = useSearchParams();
-  // const stepQuery = searchParams.get('step');
+  const searchParams = useSearchParams();
+  const stepQuery = searchParams.get('step');
 
   const TryoutData = PredictionData?.Tryout;
 
-  // useEffect(() => {
-  //   // if (predictionId !== 'step') return;
-  //   const step = parseInt(stepQuery || '');
-  //   if (stepQuery && !isNaN(step)) {
-  //     setCurrentStep(step);
-  //   }
-  // }, [stepQuery, predictionId]);
+  useEffect(() => {
+    if (stepQuery === 'new') {
+      setCurrentStep(1);
+      setUtbkScores(UTBK_DATA);
+      setSIMAKScores(SIMAK_DATA);
+      setSelectedPrograms(undefined);
+    }
+  }, [stepQuery]);
 
   const Context = {
     selectedPrograms,
@@ -259,9 +268,15 @@ export default function Provider({ children }: Props) {
     );
   }
 
-  if (predictionId && predictionId !== 'step' && !PredictionData) {
-    return notFound();
-  }
+  console.log({ error });
+
+  // if (predictionId && predictionId !== 'step' && !PredictionData && error) {
+  //   return notFound();
+  // }
+
+  // if (error && predictionId !== 'step' && predictionId) {
+  //   return notFound();
+  // }
 
   return (
     <ProviderContext.Provider value={Context}>

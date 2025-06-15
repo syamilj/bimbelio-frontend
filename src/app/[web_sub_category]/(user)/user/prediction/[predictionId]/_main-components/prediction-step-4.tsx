@@ -207,7 +207,7 @@ export default function PredictionStep4() {
             Delete riwayat
           </Button>
         </DeletePrediction>
-        <Link href={'step?step=1'}>
+        <Link href={'step?step=new'}>
           <Button
             variant={'outline'}
             className="h-11 px-6 border-gray-300"

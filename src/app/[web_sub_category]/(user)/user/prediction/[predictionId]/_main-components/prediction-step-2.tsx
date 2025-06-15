@@ -140,7 +140,7 @@ export default function PredictionStep2() {
                 data={utbkScores.map((item) => {
                   return item.score;
                 })}
-                labels={utbkScores.map((usItem) => usItem.name)}
+                labels={utbkScores.map((usItem) => usItem.label)}
                 title="Distribusi Nilai UTBK"
                 max={1000}
               />
