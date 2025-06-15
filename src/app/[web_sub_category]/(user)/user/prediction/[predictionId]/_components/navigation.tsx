@@ -9,6 +9,7 @@ import {
   School,
   Target,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { validateSubtest } from '../../_provider/helper';
 import { useProvider } from '../../_provider/provider';
@@ -78,14 +79,19 @@ export default function Navigation() {
     >
       {!isFinish && (
         <>
-          <Button
-            variant="outline"
-            onClick={prevStep}
-            disabled={currentStep === 1}
-            className="h-11 px-6"
+          <Link
+            href={`${window.location.pathname}?step=${currentStep - 1}`}
+            className={cn(currentStep === 1 && 'pointer-events-none')}
           >
-            <ChevronLeft className="mr-2 h-4 w-4" /> Sebelumnya
-          </Button>
+            <Button
+              variant="outline"
+              // onClick={prevStep}
+              disabled={currentStep === 1}
+              className="h-11 px-6"
+            >
+              <ChevronLeft className="mr-2 h-4 w-4" /> Sebelumnya
+            </Button>
+          </Link>
 
           <div className="text-center">
             <p className="text-sm text-gray-500 font-medium">
@@ -98,13 +104,18 @@ export default function Navigation() {
       {!isFinish ? (
         <>
           {currentStep !== 3 ? (
-            <Button
-              onClick={nextStep}
-              disabled={!canProceedToNextStep()}
-              className="h-11 px-6 bg-main hover:bg-main/90"
+            <Link
+              href={`${window.location.pathname}?step=${currentStep + 1}`}
+              className={cn(!canProceedToNextStep() && 'pointer-events-none')}
             >
-              Selanjutnya <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
+              <Button
+                // onClick={nextStep}
+                disabled={!canProceedToNextStep()}
+                className="h-11 px-6 bg-main hover:bg-main/90"
+              >
+                Selanjutnya <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           ) : (
             <SubmitPrediction>
               <Button className="h-11 px-6 bg-main hover:bg-main/90">

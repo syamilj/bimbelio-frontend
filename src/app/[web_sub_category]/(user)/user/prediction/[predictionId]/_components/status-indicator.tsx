@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import { LockOpen } from 'lucide-react';
 import { useProvider } from '../../_provider/provider';
+import PaymentPrediction from './payment-prediction';
 
 export const StatusIndicator = ({
   status,
@@ -36,9 +37,11 @@ export const StatusIndicator = ({
       >
         <span>{status}: </span>
         {isLock ? (
-          <span className="bg-yellow-100 w-6 h-6 flex justify-center items-center rounded-full ml-1 hover:scale-125 duration-300 cursor-pointer">
-            <LockOpen className="w-4 h-4 text-yellow-600" />
-          </span>
+          <PaymentPrediction>
+            <span className="bg-yellow-100 w-6 h-6 flex justify-center items-center rounded-full ml-1 hover:scale-125 duration-300 cursor-pointer">
+              <LockOpen className="w-4 h-4 text-yellow-600" />
+            </span>
+          </PaymentPrediction>
         ) : (
           <span>{count}</span>
         )}
