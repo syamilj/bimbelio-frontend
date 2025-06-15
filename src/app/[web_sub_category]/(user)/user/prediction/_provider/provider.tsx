@@ -66,23 +66,24 @@ export default function Provider({ children }: Props) {
     }
   }, [utbkScores, simakScores, selectedPrograms]);
 
-  useEffect(() => {
-    const utbkScoresSaved = localStorage.getItem('utbkScores');
-    const simakScoresSaved = localStorage.getItem('simakScores');
-    const selectedProgramsSaved = localStorage.getItem('selectedPrograms');
-    if (utbkScoresSaved) {
-      const data = JSON.parse(utbkScoresSaved);
-      setUtbkScores(data);
-    }
-    if (simakScoresSaved) {
-      const data = JSON.parse(simakScoresSaved);
-      setSIMAKScores(data);
-    }
-    if (selectedProgramsSaved) {
-      const data = JSON.parse(selectedProgramsSaved);
-      setSelectedPrograms(data);
-    }
-  }, []);
+  // ===== FOR DEVELOPMENT
+  // useEffect(() => {
+  //   const utbkScoresSaved = localStorage.getItem('utbkScores');
+  //   const simakScoresSaved = localStorage.getItem('simakScores');
+  //   const selectedProgramsSaved = localStorage.getItem('selectedPrograms');
+  //   if (utbkScoresSaved) {
+  //     const data = JSON.parse(utbkScoresSaved);
+  //     setUtbkScores(data);
+  //   }
+  //   if (simakScoresSaved) {
+  //     const data = JSON.parse(simakScoresSaved);
+  //     setSIMAKScores(data);
+  //   }
+  //   if (selectedProgramsSaved) {
+  //     const data = JSON.parse(selectedProgramsSaved);
+  //     setSelectedPrograms(data);
+  //   }
+  // }, []);
 
   // UTBK SCORE
   const utbkScore = utbkScores.reduce((acc, item) => acc + item.score, 0);
