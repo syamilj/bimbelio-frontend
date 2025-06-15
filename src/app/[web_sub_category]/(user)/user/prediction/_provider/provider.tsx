@@ -9,7 +9,7 @@ import {
   Tryout,
 } from '@/types/database';
 import { Loader2 } from 'lucide-react';
-import { notFound, useParams, useSearchParams } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -197,18 +197,18 @@ export default function Provider({ children }: Props) {
 
   const isLock = PredictionData ? PredictionData.isLock : true;
 
-  const searchParams = useSearchParams();
-  const stepQuery = searchParams.get('step');
+  // const searchParams = useSearchParams();
+  // const stepQuery = searchParams.get('step');
 
   const TryoutData = PredictionData?.Tryout;
 
-  useEffect(() => {
-    // if (predictionId !== 'step') return;
-    const step = parseInt(stepQuery || '');
-    if (stepQuery && !isNaN(step)) {
-      setCurrentStep(step);
-    }
-  }, [stepQuery, predictionId]);
+  // useEffect(() => {
+  //   // if (predictionId !== 'step') return;
+  //   const step = parseInt(stepQuery || '');
+  //   if (stepQuery && !isNaN(step)) {
+  //     setCurrentStep(step);
+  //   }
+  // }, [stepQuery, predictionId]);
 
   const Context = {
     selectedPrograms,
