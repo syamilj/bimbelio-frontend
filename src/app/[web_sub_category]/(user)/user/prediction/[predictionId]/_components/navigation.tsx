@@ -9,7 +9,6 @@ import {
   School,
   Target,
 } from 'lucide-react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { validateSubtest } from '../../_provider/helper';
 import { useProvider } from '../../_provider/provider';
@@ -35,7 +34,7 @@ export default function Navigation() {
     //   return;
     // }
     if (currentStep < STEPS.length) {
-      router.replace(`${window.location.pathname}?step=${currentStep + 1}`);
+      // router.replace(`${window.location.pathname}?step=${currentStep + 1}`);
       setCurrentStep(currentStep + 1);
       window.scrollTo(0, 0);
     }
@@ -43,7 +42,7 @@ export default function Navigation() {
 
   const prevStep = () => {
     if (currentStep > 1) {
-      router.replace(`${window.location.pathname}?step=${currentStep - 1}`);
+      // router.replace(`${window.location.pathname}?step=${currentStep - 1}`);
       setCurrentStep(currentStep - 1);
       window.scrollTo(0, 0);
     }
@@ -79,19 +78,14 @@ export default function Navigation() {
     >
       {!isFinish && (
         <>
-          <Link
-            href={`${window.location.pathname}?step=${currentStep - 1}`}
-            className={cn(currentStep === 1 && 'pointer-events-none')}
+          <Button
+            variant="outline"
+            onClick={prevStep}
+            disabled={currentStep === 1}
+            className="h-11 px-6"
           >
-            <Button
-              variant="outline"
-              // onClick={prevStep}
-              disabled={currentStep === 1}
-              className="h-11 px-6"
-            >
-              <ChevronLeft className="mr-2 h-4 w-4" /> Sebelumnya
-            </Button>
-          </Link>
+            <ChevronLeft className="mr-2 h-4 w-4" /> Sebelumnya
+          </Button>
 
           <div className="text-center">
             <p className="text-sm text-gray-500 font-medium">
@@ -104,18 +98,13 @@ export default function Navigation() {
       {!isFinish ? (
         <>
           {currentStep !== 3 ? (
-            <Link
-              href={`${window.location.pathname}?step=${currentStep + 1}`}
-              className={cn(!canProceedToNextStep() && 'pointer-events-none')}
+            <Button
+              onClick={nextStep}
+              disabled={!canProceedToNextStep()}
+              className="h-11 px-6 bg-main hover:bg-main/90"
             >
-              <Button
-                // onClick={nextStep}
-                disabled={!canProceedToNextStep()}
-                className="h-11 px-6 bg-main hover:bg-main/90"
-              >
-                Selanjutnya <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+              Selanjutnya <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
           ) : (
             <SubmitPrediction>
               <Button className="h-11 px-6 bg-main hover:bg-main/90">
