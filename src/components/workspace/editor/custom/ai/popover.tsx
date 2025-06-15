@@ -129,8 +129,6 @@ const AiPopover = () => {
     }
   }, [rect, inputRef]);
 
-  console.log({ rect });
-
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [query, setQuery] = useState('');
 

@@ -19,8 +19,6 @@ const Switch = React.forwardRef<
 
   const [isActive, setIsActive] = React.useState(false);
 
-  console.log(isActive);
-
   React.useEffect(() => {
     const el = localRef.current;
     if (!el) return;

@@ -55,7 +55,6 @@ export interface SubChapterProps {
 
 const Index = () => {
   const params = useParams();
-  console.log('params', params);
   const courseId = Array.isArray(params?.courseId)
     ? params.courseId[0]
     : (params?.courseId ?? '');
@@ -85,12 +84,9 @@ const Index = () => {
   //       //   duration: 3000,
   //       // });
   //       // resetCourse()
-  //       console.log('data', data);
-  //       console.log('variables', variables);
   //       localStorage.removeItem(`temporary-course-${courseId}`);
   //     },
   //     onError(error, variables) {
-  //       console.log(error, variables);
   //       alert(`${error.message}`);
   //     },
   //   });
@@ -162,7 +158,6 @@ const Index = () => {
   }, [Course]);
 
   useEffect(() => {
-    console.log('change', assessmentType);
     if (assessmentType !== '') {
       setSubChapter((prev) =>
         prev.map((item, i: number) => {
@@ -181,7 +176,6 @@ const Index = () => {
     );
     if (saveDataString) {
       const saveData = JSON.parse(saveDataString);
-      console.log('save-data', saveData);
       setChapter({ ...saveData.chapter });
       setSubChapter([...saveData.subChapter]);
     }
@@ -200,14 +194,6 @@ const Index = () => {
       );
     }
   }, [chapter, subChapter]);
-
-  console.log('chapter : ', chapter);
-  console.log(
-    'subChapter : ',
-    currentIndexEdit !== null && subChapter[currentIndexEdit],
-  );
-  console.log('ass : ', assessmentType);
-  console.log('Course : ', Course);
 
   const showToast = ({
     value,

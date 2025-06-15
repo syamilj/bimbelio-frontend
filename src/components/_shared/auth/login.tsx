@@ -29,7 +29,6 @@ export const Login = () => {
       Cookies.set('token', res.data.data.token);
       const pathname = window.location.pathname;
       const origin = window.location.origin;
-      console.log({ pathname, showAuth });
       if (pathname === showAuth.redirect || !showAuth.redirect) {
         window.location.reload();
       } else {

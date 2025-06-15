@@ -172,8 +172,6 @@ const Sidebar = ({
   const isMobile = useMedia({ maxWidth: '768px' });
   const [activeIndex, setActiveIndex] = useState(tab || 'notes');
 
-  console.log('onBoarding', onBoarding);
-
   const { mutate: deleteQuiz } = useMutation(
     '/quiz/deleteQuizCourse',
     'delete',
@@ -218,7 +216,6 @@ const Sidebar = ({
         setOnBoarding({ ...data });
       }
     }
-    console.log('getOnboarding', getOnboarding);
   }, []);
 
   const handleResetChat = async () => {
@@ -231,12 +228,10 @@ const Sidebar = ({
           .remove([...resData]);
 
         if (data) {
-          console.log('berhasil delete', data);
           try {
             await resetChat();
             router.refresh();
           } catch (error) {
-            console.log(error);
             toaster({
               title: 'Upss',
               description: 'Gagal hapus pesan, coba lagi!',
@@ -247,7 +242,6 @@ const Sidebar = ({
           }
         }
         if (error) {
-          console.log('errror', error);
           toaster({
             title: 'Upss',
             description: 'Gagal hapus pesan, coba lagi!',
@@ -261,7 +255,6 @@ const Sidebar = ({
           await resetChat();
           router.refresh();
         } catch (error) {
-          console.log(error);
           toaster({
             title: 'Upss',
             description: 'Gagal hapus pesan, coba lagi!',

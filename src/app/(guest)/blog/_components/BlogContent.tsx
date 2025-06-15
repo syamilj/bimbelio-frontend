@@ -126,9 +126,6 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
     // const convertToHtml = await ParseMarkdownToHTML(cleanContent, editor);
     setProcessedContent(blog.value);
 
-    // console.log({ default: blog.value });
-    // console.log({ contentWithIds });
-    // console.log({ cleanContent });
     setViewCount(blog.views);
 
     // Increment view count

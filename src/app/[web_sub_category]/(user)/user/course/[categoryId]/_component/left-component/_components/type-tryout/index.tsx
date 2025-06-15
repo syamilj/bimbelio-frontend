@@ -46,8 +46,6 @@ const TryoutType = () => {
   const [isDone, setIsDone] = useState<boolean>(false);
   const [currentIndexQuestion, setCurrentIndexQuestion] = useState<number>(0);
 
-  console.log({ userAnswers });
-
   useEffect(() => {
     const savedAnswer = localStorage.getItem(`tryout-sub-chapter-${sub}`);
     const savedAnswerArray = savedAnswer ? JSON.parse(savedAnswer) : null;
@@ -112,8 +110,6 @@ const TryoutType = () => {
     }
     return '';
   };
-
-  console.log({ userAnswers, TryoutSession });
 
   return (
     <div className="flex w-full flex-col gap-[1rem] p-6 h-full pb-[100px]">
@@ -186,9 +182,7 @@ const TryoutType = () => {
                 // value={selectedAnswers[currentQuestion]}
                 // onValueChange={handleAnswerSelect}
                 value={getRadioGroupValue()}
-                onValueChange={(value) => {
-                  console.log('Jawaban :', value);
-                }}
+                onValueChange={(value) => {}}
               >
                 {TryoutSession.TryoutQuestion[
                   currentIndexQuestion

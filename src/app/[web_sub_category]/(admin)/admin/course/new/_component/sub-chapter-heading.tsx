@@ -96,7 +96,6 @@ const SubChapterHeading = ({
       );
     }
   };
-  console.log('EditSubChapter2', EditSubChapter);
 
   if (!EditSubChapter) {
     return null;

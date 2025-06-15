@@ -27,8 +27,6 @@ export default function UTBKSIMAKPredictor() {
     isFinish,
   } = useProvider();
 
-  console.log({ predictionId });
-
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-gray-50">

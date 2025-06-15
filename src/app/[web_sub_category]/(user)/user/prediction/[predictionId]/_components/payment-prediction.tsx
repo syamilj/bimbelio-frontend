@@ -69,8 +69,6 @@ const Step1 = ({ setStep }: { setStep: Dispatch<SetStateAction<number>> }) => {
     '/pricing/getPricingBySlug?slug=prediction_unlock',
   );
 
-  console.log({ pricing });
-
   return (
     <div className="flex flex-col gap-[2rem] p-[1.5rem]">
       <p className="">Akses lengkap seluruh detail prediksi kelulusan Anda:</p>

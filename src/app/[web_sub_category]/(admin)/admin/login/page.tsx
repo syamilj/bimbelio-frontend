@@ -21,9 +21,7 @@ export default function Page() {
       Cookies.set('token', success?.data?.token);
       window.location.pathname = '/';
     }
-    console.log('Email:', email);
   };
-  console.log({ success });
   return (
     <form onSubmit={handleSubmit}>
       <Input

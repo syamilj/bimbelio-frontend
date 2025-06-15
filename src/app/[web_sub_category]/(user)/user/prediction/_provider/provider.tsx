@@ -144,8 +144,6 @@ export default function Provider({ children }: Props) {
     },
   });
 
-  console.log({ PredictionData, predictionId, simakScores, utbkScores });
-
   useEffect(() => {
     if (PredictionData) {
       const findUniv = studyChoices.find(
@@ -211,8 +209,6 @@ export default function Provider({ children }: Props) {
       setCurrentStep(step);
     }
   }, [stepQuery, predictionId]);
-
-  console.log({ currentStep });
 
   const Context = {
     selectedPrograms,

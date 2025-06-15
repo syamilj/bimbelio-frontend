@@ -157,7 +157,6 @@ const ChapterOption = ({
               '#tryout-admin #date',
             ) as HTMLDivElement;
             if (div) {
-              console.log('height', div.clientHeight);
               if (div.clientHeight !== 0) {
                 div.style.height = `${div.clientHeight}px`;
                 setDateTryoutHeight(div.clientHeight);
@@ -274,7 +273,6 @@ const ChapterOption = ({
                         sessionIndex,
                         1,
                       );
-                      console.log(currentSessions, movedSession);
 
                       currentSessions.splice(fixValue, 0, movedSession);
 

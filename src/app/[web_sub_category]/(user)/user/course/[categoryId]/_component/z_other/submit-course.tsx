@@ -62,8 +62,6 @@ const SubmitCourse = () => {
     // const subCourseId = query.sub || null;
     setLoading(true);
 
-    console.log('sub', subCourseId);
-
     if (subCourseId) {
       saveProgress();
     } else {

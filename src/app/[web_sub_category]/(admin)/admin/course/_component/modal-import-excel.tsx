@@ -29,7 +29,6 @@ const ModalImportExcel = ({
       reader.onload = (e) => {
         if (e.target) setFileBuffer(e.target.result);
       };
-      console.log(file.type);
     }
   }, [file]);
 
@@ -46,7 +45,6 @@ const ModalImportExcel = ({
       const worksheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[worksheetName];
       const data: any[] = XLSX.utils.sheet_to_json(worksheet);
-      console.log('data', data);
 
       let isAssesmentTypeValid = {
         value: true,
@@ -85,7 +83,6 @@ const ModalImportExcel = ({
           };
         }
       });
-      console.log({ Questions });
       if (!isAssesmentTypeValid.value) {
         toaster({
           title: `Number ${isAssesmentTypeValid.number}`,
@@ -169,7 +166,6 @@ const ModalImportExcel = ({
 export default ModalImportExcel;
 
 const handleGenerateQuestions = (data: any[]) => {
-  console.log('data - IRT', data);
   const fixData: QuestionProps[] = data.map((quest: any) => {
     const Correct = (quest.Correct as string).toLowerCase();
     const getAnswers = [

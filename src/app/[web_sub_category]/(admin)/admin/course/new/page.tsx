@@ -89,11 +89,8 @@ const Index = () => {
   //     onSuccess(data, variables) {
   //       alert('Success');
   //       resetCourse({ deleteFile: false });
-  //       console.log('data', data);
-  //       console.log('variables', variables);
   //     },
   //     onError(error, variables) {
-  //       console.log(error, variables);
   //       alert(`${error.message}`);
   //     },
   //   });
@@ -150,7 +147,6 @@ const Index = () => {
   };
 
   useEffect(() => {
-    console.log('change', assessmentType);
     if (assessmentType !== '') {
       setSubChapter((prev) =>
         prev.map((item, i: number) => {
@@ -167,7 +163,6 @@ const Index = () => {
     const saveDataString = localStorage.getItem(`temporary-course`);
     if (saveDataString) {
       const saveData = JSON.parse(saveDataString);
-      console.log('save-data', saveData);
       setChapter({ ...saveData.chapter });
       setSubChapter([...saveData.subChapter]);
     }
@@ -183,14 +178,6 @@ const Index = () => {
       localStorage.setItem(`temporary-course`, JSON.stringify(saveData));
     }
   }, [chapter, subChapter]);
-
-  console.log('chapter : ', chapter);
-  console.log(
-    'sessions : ',
-    currentIndexEdit !== null && subChapter[currentIndexEdit],
-  );
-  console.log('ass : ', assessmentType);
-  console.log('EditSubChapter : ', EditSubChapter);
 
   const showToast = ({
     value,
@@ -211,7 +198,6 @@ const Index = () => {
   };
 
   const handleSubmit = () => {
-    console.log(1);
     if (subChapter.length === 0)
       toaster({
         title: 'Error',
@@ -229,7 +215,6 @@ const Index = () => {
     let checkVideo = { value: false, message: '' };
     let checkMateri = { value: false, message: '' };
 
-    console.log(2);
     subChapter.forEach((sChapter, index) => {
       if (!sChapter.title || sChapter.title.length === 0) {
         checkTitleSubChapter = {
@@ -306,7 +291,6 @@ const Index = () => {
     if (showToast(checkDocument)) return;
     if (showToast(checkVideo)) return;
     if (showToast(checkMateri)) return;
-    console.log(3);
 
     if (!chapter?.categoryId) {
       showToast({ value: true, message: 'Pilih Course Kategori' });

@@ -54,7 +54,6 @@ export default function PredictionStep4() {
     setCurrentStep,
   } = useProvider();
   const [open, setOpen] = useState<string>('');
-  console.log({ open });
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -228,8 +227,6 @@ const BySimakScore = () => {
     useScoreFinal: { finalPercentage, finalScore },
     isLock,
   } = useProvider();
-
-  console.log({ isLock });
 
   function getPassingGradeStatus(
     pg: NonUndefined<UniversityType['studyProgramList'][0]['passingGrade']>[0],

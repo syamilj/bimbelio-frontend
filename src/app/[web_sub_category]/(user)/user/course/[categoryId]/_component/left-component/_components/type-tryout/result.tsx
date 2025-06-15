@@ -25,8 +25,6 @@ interface Props {
 }
 
 export default function ReviewTabTypeTryout({ sessionResult }: Props) {
-  console.log({ sessionResult });
-
   const [userAnswerIndex, setUserAnswerIndex] = useState<number>(0);
 
   // Safeguard: Pastikan userAnswerIndex dalam rentang yang valid
