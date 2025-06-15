@@ -4,7 +4,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -12,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
   AlertCircle,
@@ -21,7 +19,6 @@ import {
   LucideProps,
   XCircle,
 } from 'lucide-react';
-import Link from 'next/link';
 import {
   ForwardRefExoticComponent,
   Fragment,
@@ -30,31 +27,77 @@ import {
   useState,
 } from 'react';
 import { NonUndefined } from 'react-hook-form';
-import { UniversityType, useProvider } from '../../_provider/provider';
-import DeletePrediction from '../_components/delete-prediction';
-import PaymentPrediction from '../_components/payment-prediction';
-import ScoreCard from '../_components/score-card';
-import SimpleBarChart from '../_components/simple-bar-chart';
-import { StatusIndicator } from '../_components/status-indicator';
+import { calculateSubtestScore } from '../../_provider/helper';
+import { UniversityType } from '../../_provider/provider';
+import PaymentPrediction from './payment-prediction';
+import ScoreCard from './score-card';
+import SimpleBarChart from './simple-bar-chart';
+import { StatusIndicator } from './status-indicator';
 
-export default function PredictionStep4() {
-  const {
-    useScoreUtbk: { utbkAvg, utbkScore, utbkPercentage },
-    useScoreSimak: {
-      simakAvgSNBT,
-      simakPercentageRAW,
-      simakScoreRAW,
-      simakMaxScoreRAW,
-    },
-    useScoreFinal: { finalPercentage, finalScore },
+export default function ExampleResult() {
+  // const {
+  //   useScoreUtbk: { utbkAvg, utbkScore, utbkPercentage },
+  //   useScoreSimak: {
+  //     simakAvgSNBT,
+  //     simakPercentageRAW,
+  //     simakScoreRAW,
+  //     simakMaxScoreRAW,
+  //   },
+  //   useScoreFinal: { finalPercentage, finalScore },
+  //   selectedPrograms,
+  //   simakScores,
+  //   utbkScores,
+  //   TryoutData,
+  // } = useProvider();
+
+  // UTBK SCORE
+  const utbkScore = utbkScores.reduce((acc, item) => acc + item.score, 0);
+  const utbkAvg = utbkScore / utbkScores.length;
+  const utbkPercentage = (utbkAvg / 1000) * 100;
+
+  // SIMAK SCORE RAW
+  const simakScoreRAW = simakScores.reduce((acc, item) => {
+    const benar = item.value.benar * 4;
+    const salah = -item.value.salah;
+    return acc + (benar + salah);
+  }, 0);
+  const simakPercentageRAW = (simakScoreRAW / 540) * 100;
+  const simakMaxScoreRAW = 520;
+
+  // SIMAK SCORE SNBT
+  const simakScoreSNBT = simakScores.reduce(
+    (acc, item) => acc + calculateSubtestScore(item.value),
+    0,
+  );
+
+  const { maxScore, minScore } = calculateSIMAKBounds();
+  const simakAvgSNBT = convertSIMAKToSNBT(simakScoreRAW, minScore, maxScore);
+  // const simakAvgSNBT = simakScoreSNBT / 6;
+
+  // FINAL
+  const finalScore = (utbkAvg + simakAvgSNBT) / 2;
+  const finalPercentage = ((utbkAvg / 1000 + simakScoreRAW / 540) / 2) * 100;
+
+  const useScoreUtbk = { utbkAvg, utbkScore, utbkPercentage };
+  const useScoreSimak = {
+    simakAvgSNBT,
+    simakPercentageRAW,
+    simakScoreRAW,
+    simakMaxScoreRAW,
+  };
+  const useScoreFinal = { finalPercentage, finalScore };
+
+  const sendState = {
+    useScoreUtbk,
+    useScoreSimak,
+    useScoreFinal,
     selectedPrograms,
     simakScores,
     utbkScores,
-    TryoutData,
-    setCurrentStep,
-  } = useProvider();
+    TryoutData: null,
+  };
+
   const [open, setOpen] = useState<string>('');
-  console.log({ open });
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -66,7 +109,7 @@ export default function PredictionStep4() {
 
       {/* Score Summary */}
       <Card>
-        <CardHeader className="px-0">
+        <CardHeader className="px-0 py-0">
           <CardTitle className="text-lg">Ringkasan Nilai</CardTitle>
         </CardHeader>
         <CardContent className="py-6 px-0 flex flex-col gap-4">
@@ -169,14 +212,14 @@ export default function PredictionStep4() {
                   <CardHeader className="pb-4">
                     <CardTitle className="text-base flex items-center">
                       <span>Visualisasi SIMAK</span>
-                      {TryoutData && (
+                      {/* {TryoutData && (
                         <Link
                           href={`/${website_sub_category_id_params}/user/try-out/${TryoutData.id}`}
                           className="ml-2 text-xs bg-main hover:scale-105 cursor-pointer duration-300 py-1 px-2 rounded-2xl text-white font-normal"
                         >
                           {TryoutData.title}
                         </Link>
-                      )}
+                      )} */}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -198,38 +241,71 @@ export default function PredictionStep4() {
 
       {/* Program Results */}
       {/* <ByFinalScore /> */}
-      <BySimakScore />
-      <div className="flex w-full justify-end gap-2">
-        <DeletePrediction>
-          <Button
-            variant="outline"
-            className="h-11 px-6 bg-red-600 text-white hover:text-white hover:bg-red-500"
-          >
-            Delete riwayat
-          </Button>
-        </DeletePrediction>
-        <Link href={'step?step=1'}>
-          <Button
-            variant={'outline'}
-            className="h-11 px-6 border-gray-300"
-          >
-            🎯 Buat baru
-          </Button>
-        </Link>
-      </div>
+      <BySimakScore state={sendState as any} />
     </div>
   );
 }
 
-const BySimakScore = () => {
+const BySimakScore = ({
+  state,
+}: {
+  state: {
+    useScoreUtbk: {
+      utbkAvg: number;
+      utbkScore: number;
+      utbkPercentage: number;
+    };
+    useScoreSimak: {
+      simakAvgSNBT: number;
+      simakPercentageRAW: number;
+      simakScoreRAW: number;
+      simakMaxScoreRAW: number;
+    };
+    useScoreFinal: {
+      finalPercentage: number;
+      finalScore: number;
+    };
+    selectedPrograms: {
+      averageScore: number;
+      study: string;
+      fakultas: string;
+      fakultasInitials: string;
+      passingGrade: {
+        sumber: {
+          name: string;
+          url: string;
+        };
+        tipe: 'SCORE' | 'PERCENTAGE';
+        value: number;
+      }[];
+    };
+    simakScores: {
+      name: string;
+      value: {
+        benar: number;
+        salah: number;
+        kosong: number;
+      };
+      total_question: number;
+      type: {
+        name: string;
+      };
+    }[];
+    utbkScores: {
+      label: string;
+      name: string;
+      score: number;
+    }[];
+    TryoutData: null;
+  };
+}) => {
   const {
     selectedPrograms,
     useScoreSimak: { simakPercentageRAW, simakAvgSNBT },
     useScoreFinal: { finalPercentage, finalScore },
-    isLock,
-  } = useProvider();
+  } = state;
 
-  console.log({ isLock });
+  const isLock = false;
 
   function getPassingGradeStatus(
     pg: NonUndefined<UniversityType['studyProgramList'][0]['passingGrade']>[0],
@@ -587,14 +663,17 @@ const BySimakScore = () => {
                       <StatusIndicator
                         status="Lolos"
                         count={st.lolos}
+                        isLocked={false}
                       />
                       <StatusIndicator
                         status="Nyaris"
                         count={st.nyaris}
+                        isLocked={false}
                       />
                       <StatusIndicator
                         status="Tidak Lolos"
                         count={st.tidak_lolos}
+                        isLocked={false}
                       />
                     </div>
                   </div>
@@ -617,5 +696,171 @@ const Locked = () => {
         </span>
       </span>
     </PaymentPrediction>
+  );
+};
+
+const selectedPrograms = {
+  averageScore: 236,
+  study: 'Ilmu Komunikasi',
+  fakultas: 'Fakultas Ilmu Sosial dan Ilmu Politik',
+  fakultasInitials: 'FISIP',
+  passingGrade: [
+    {
+      sumber: {
+        name: 'Quipper 2025',
+        url: 'https://www.quipper.com/id/blog/passing-grade/universitas-indonesia/',
+      },
+      tipe: 'SCORE',
+      value: 672.74,
+    },
+    {
+      sumber: {
+        name: 'Okezone 2025',
+        url: 'https://edukasi.okezone.com/read/2025/03/22/65/3124848/berapa-skor-utbk-unpad-dan-ui-untuk-lolos-snbt-2025?page=all',
+      },
+      tipe: 'SCORE',
+      value: 719.88,
+    },
+    {
+      sumber: {
+        name: 'Bocah Kampus 2024',
+        url: 'https://bocahkampus.com/passing-grade/ui',
+      },
+      tipe: 'SCORE',
+      value: 696,
+    },
+    {
+      sumber: {
+        name: 'Kampus Impian 2025',
+        url: 'https://kampusimpian.com/nilai-utbk-untuk-masuk-ui-universitas-indonesia/',
+      },
+      tipe: 'SCORE',
+      value: 683.89,
+    },
+    {
+      sumber: {
+        name: 'Scribd SNBT 2023',
+        url: 'https://id.scribd.com/document/691505886/PASSING-GRADE-SNBT',
+      },
+      tipe: 'SCORE',
+      value: 672.74,
+    },
+  ],
+};
+
+const utbkScores = [
+  { label: 'Penalaran Umum', name: 'Penalaran Umum', score: 800 },
+  {
+    label: 'Pengetahuan & Pemahaman Umum',
+    name: 'Pengetahuan & Pemahaman Umum',
+    score: 634,
+  },
+  {
+    label: 'Pemahaman Bacaan & Menulis',
+    name: 'Pemahaman Bacaan & Menulis',
+    score: 655,
+  },
+  { label: 'Penalaran Kuantitatif', name: 'Penalaran Kuantitatif', score: 812 },
+  {
+    label: 'Literasi Bahasa Indonesia',
+    name: 'Literasi Bahasa Indonesia',
+    score: 689,
+  },
+  {
+    label: 'Literasi Bahasa Inggris',
+    name: 'Literasi Bahasa Inggris',
+    score: 899,
+  },
+  { label: 'Matematika', name: 'Matematika', score: 675 },
+];
+
+const simakScores = [
+  {
+    name: 'Matematika Dasar',
+    value: { benar: 1, salah: 1, kosong: 13 },
+    total_question: 15,
+    type: { name: 'Kemampuan Dasar\t' },
+  },
+  {
+    name: 'Bahasa Indonesia',
+    value: { benar: 10, salah: 2, kosong: 3 },
+    total_question: 15,
+    type: { name: 'Kemampuan Dasar\t' },
+  },
+  {
+    name: 'Bahasa Inggris',
+    value: { benar: 10, salah: 0, kosong: 5 },
+    total_question: 15,
+    type: { name: 'Kemampuan Dasar\t' },
+  },
+  {
+    name: 'Verbal',
+    value: { benar: 20, salah: 1, kosong: 4 },
+    total_question: 25,
+    type: { name: 'Pengukuran Kemampuan Akademik\t' },
+  },
+  {
+    name: 'Kuantitatif',
+    value: { benar: 25, salah: 2, kosong: 8 },
+    total_question: 35,
+    type: { name: 'Pengukuran Kemampuan Akademik\t' },
+  },
+  {
+    name: 'Logika',
+    value: { benar: 20, salah: 1, kosong: 4 },
+    total_question: 25,
+    type: { name: 'Pengukuran Kemampuan Akademik\t' },
+  },
+];
+
+const SCORING_RULES = {
+  BENAR: 4,
+  SALAH: -1,
+  KOSONG: 0,
+  UTBK_MIN: 100,
+  UTBK_MAX: 1000,
+  SNBT_MIN: 200,
+  SNBT_MAX: 800,
+} as const;
+// Konstanta untuk perhitungan yang akurat
+const SUBTEST_QUESTIONS = {
+  matdas: 15,
+  bindo: 15,
+  bing: 15,
+  verbal: 20,
+  kuantitatif: 35,
+  logika: 25,
+} as const;
+
+const calculateSIMAKBounds = () => {
+  const totalQuestions = Object.values(SUBTEST_QUESTIONS).reduce(
+    (sum, count) => sum + count,
+    0,
+  );
+  return {
+    maxScore: totalQuestions * SCORING_RULES.BENAR, // Semua benar = 125 × 4 = 500
+    minScore: totalQuestions * SCORING_RULES.SALAH, // Semua salah = 125 × (-1) = -125
+  };
+};
+
+const convertSIMAKToSNBT = (
+  rawScore: number,
+  minScore: number,
+  maxScore: number,
+) => {
+  // Normalisasi skor ke range 0-1
+  const normalizedScore = Math.max(
+    0,
+    (rawScore - minScore) / (maxScore - minScore),
+  );
+
+  // Convert ke SNBT range (200-800)
+  const snbtScore =
+    SCORING_RULES.SNBT_MIN +
+    normalizedScore * (SCORING_RULES.SNBT_MAX - SCORING_RULES.SNBT_MIN);
+
+  return Math.max(
+    SCORING_RULES.SNBT_MIN,
+    Math.min(SCORING_RULES.SNBT_MAX, snbtScore),
   );
 };

@@ -29,6 +29,7 @@ import {
 } from '@/types/database';
 import { Award, BookOpen, Calculator, School, Target } from 'lucide-react';
 import Link from 'next/link';
+import ExampleResult from './[predictionId]/_components/example-result';
 import { useProvider } from './_provider/provider';
 
 export default function UTBKSIMAKPredictor() {
@@ -96,7 +97,7 @@ export default function UTBKSIMAKPredictor() {
             </CardHeader>
 
             <CardContent className="relative z-10">
-              <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-sm">
+              <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-lg">
                 Gabungkan nilai UTBK & SIMAK UI, dan lihat seberapa besar
                 peluangmu masuk UI!
               </p>
@@ -245,6 +246,47 @@ export default function UTBKSIMAKPredictor() {
               )}
             </div>
           )}
+
+          <Card
+            className="mt-16 border border-r-0 border-l-4 border-main rounded-3xl"
+            // style={{
+            //   boxShadow: `0px 0px 10px ${websiteSubCategory?.main_color}`,
+            // }}
+          >
+            <CardHeader className="p-3">
+              <Card
+                className="relative overflow-hidden rounded-2xl shadow-lg border-none text-white animate-fade-in-up py-8"
+                style={{
+                  backgroundImage: `linear-gradient(to bottom right, ${websiteSubCategory?.main_color}, ${hexToRgba(websiteSubCategory?.main_color, 0.3)}, ${websiteSubCategory?.secondary_color})`,
+                }}
+              >
+                {/* Background Icon Dekoratif */}
+                <div className="absolute -top-10 -right-10 opacity-20 rotate-12 scale-150">
+                  <Target className="w-48 h-48" />
+                </div>
+
+                {/* Sparkles Animated Background */}
+                <div className="absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10 animate-pulse-slow" />
+
+                <CardHeader className="text-center z-10 relative">
+                  <CardTitle className="text-3xl font-extrabold drop-shadow-lg">
+                    🎓 Contoh Hasil Prediksi Kelulusan
+                  </CardTitle>
+                </CardHeader>
+
+                <CardContent className="relative z-10">
+                  <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-lg">
+                    Begini gambaran hasil akhir yang akan kamu dapatkan setelah
+                    mengisi data prediksi. Yuk lihat seperti apa skornya!
+                  </p>
+                </CardContent>
+              </Card>
+            </CardHeader>
+
+            <CardContent className="pt-4 shadow-lg">
+              <ExampleResult />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </TooltipProvider>

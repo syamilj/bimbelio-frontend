@@ -5,11 +5,15 @@ import { useProvider } from '../../_provider/provider';
 export const StatusIndicator = ({
   status,
   count,
+  isLocked,
 }: {
   status: string;
   count: number;
+  isLocked?: boolean;
 }) => {
-  const { isLock } = useProvider();
+  const { isLock: lock } = useProvider();
+
+  const isLock = isLocked !== undefined ? isLocked : lock;
 
   const statusConfig = {
     Lolos: { color: 'bg-green-500', textColor: 'text-green-700' },
