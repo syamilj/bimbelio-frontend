@@ -2,10 +2,6 @@
 
 import { env } from '@/env.mjs';
 import {
-  website_sub_category_id,
-  website_sub_category_id_params,
-} from '@/hooks/use-web-sub-category-id';
-import {
   createContext,
   Dispatch,
   ReactNode,
@@ -88,7 +84,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     };
   }, [showAuth]);
 
-  console.log({ website_sub_category_id, website_sub_category_id_params });
+  // console.log({ website_sub_category_id, website_sub_category_id_params });
 
   const Context = {
     minimizeSidebar,
