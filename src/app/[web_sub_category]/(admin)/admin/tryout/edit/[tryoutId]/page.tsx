@@ -269,6 +269,7 @@ const NewTryOut = () => {
           const saveDataString = localStorage.getItem(
             `temporary-edit-tryout-${tryoutId}`,
           );
+          console.log({ saveDataString });
           const tryoutData = data;
           if (!saveDataString) {
             getTryoutFromDbs(tryoutData);

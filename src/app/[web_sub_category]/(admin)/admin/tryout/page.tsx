@@ -1,16 +1,16 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 // import axiosInstance from "@/lib/axios/axiosInstance";
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 // import { response } from "@/lib/response";
 import { cn, getDateString, getHours } from '@/lib/utils';
 import { Tryout } from '@/types/database';
 // import { api } from '@/trpc/react';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { utils, writeFile } from 'xlsx';
 
 interface TryoutData extends Tryout {
@@ -36,15 +36,21 @@ interface TryoutData extends Tryout {
 }
 
 export default function Page() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [tryout, setTryout] = useState<TryoutData[] | undefined>();
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [tryout, setTryout] = useState<TryoutData[] | undefined>();
 
-  useEffect(() => {
-    getGeneral('/tryout/getTryout', {
-      setData: setTryout,
-      setLoading: setIsLoading,
-    });
-  }, []);
+  // useEffect(() => {
+  //   getGeneral('/tryout/getTryout', {
+  //     setData: setTryout,
+  //     setLoading: setIsLoading,
+  //   });
+  // }, []);
+
+  const {
+    data: tryout,
+    isLoading,
+    refetch,
+  } = useGet<TryoutData[]>('/tryout/getTryout');
 
   const exportData = async ({
     downloadData,
@@ -58,6 +64,8 @@ export default function Page() {
     utils.book_append_sheet(wb, ws, 'items');
     writeFile(wb, `${fileName}.xlsx`);
   };
+
+  console.log({ isLoading });
 
   return (
     <div className="mt-[1rem] flex flex-col gap-[2rem]">
@@ -123,101 +131,106 @@ export default function Page() {
                 <th className="bg-white py-[1rem] text-center">Tanggal</th>
                 <th className="bg-white py-[1rem] text-start">Kategori</th>
                 <th className="bg-white py-[1rem] text-start">Status</th>
+                <th className="bg-white py-[1rem] text-start">Action</th>
                 <th className="rounded-tr-[.8rem] bg-white py-[1rem] text-center">
-                  Action
+                  Clear
                 </th>
               </tr>
             </thead>
             <tbody>
-              {tryout?.map((item, i: number) => (
-                <tr key={i}>
-                  <td
-                    className={cn(
-                      'border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text',
-                      i === tryout.length - 1 && 'rounded-bl-[.8rem]',
-                    )}
-                  >
-                    {i + 1}
-                  </td>
-                  <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
-                    {item.title}
-                  </td>
-                  <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
-                    <button
-                      className="rounded-[.5rem] bg-main-gray-input px-[.5rem] py-[.2rem] duration-300 md:hover:bg-main-gray-input2 md:active:bg-main-gray-input"
-                      onClick={() => {
-                        navigator.clipboard.writeText(`${item.id}`);
-                        toaster({
-                          title: 'Success',
-                          description: `ID Tryout Berhasil Disalin \n (${item.id})`,
-                          duration: 3000,
-                        });
-                      }}
-                    >
-                      Copy ID
-                    </button>
-                  </td>
-                  <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
-                    {item.totalRegistration}
-                  </td>
-                  <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
-                    {item.totalJoin}
-                  </td>
-                  <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
-                    {getDateString(item.startDate)} | {getHours(item.startDate)}
-                  </td>
-                  <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
-                    <div className="flex items-center gap-[.5rem]">
-                      {item.TryoutSession.map((item2, i: number) => {
-                        return (
-                          <div
-                            key={i}
-                            className="rounded-[1rem] bg-main px-[.5rem] text-[.9rem] text-white cursor-pointer"
-                            onClick={() => {
-                              const fileName = `${item2.TryoutCategory.name} - ${item2.TryoutSubCategory.name}`;
-                              const data = item2.TryoutQuestion.map((quest) => {
-                                return {
-                                  Session: fileName,
-                                  Question: quest.number,
-                                  a: quest.a_discrimination,
-                                  b: quest.b_difficulty,
-                                  c: quest.c_guessing,
-                                  SubCategory: quest.subCategory,
-                                  SubSubCategory: quest.subSubCategory,
-                                };
-                              });
-                              exportData({ downloadData: data, fileName });
-                            }}
-                          >
-                            {item2.TryoutCategory?.name}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </td>
-                  <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
-                    {item.status}
-                  </td>
-                  <td
-                    className={cn(
-                      'border-t bg-white text-start text-[.9rem] text-main-gray-text',
-                      i === tryout.length - 1 && 'rounded-br-[.8rem]',
-                    )}
-                  >
-                    <div className="flex w-full justify-center gap-[1rem]">
-                      <Link
-                        href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
+              {!isLoading &&
+                tryout?.map((item, i: number) => {
+                  const localString = localStorage.getItem(
+                    `temporary-edit-tryout-${item.id}`,
+                  );
+                  console.log({ localString, i });
+                  return (
+                    <tr key={i}>
+                      <td
+                        className={cn(
+                          'border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text',
+                          i === tryout.length - 1 && 'rounded-bl-[.8rem]',
+                        )}
                       >
-                        Edit
-                      </Link>
-                      {item.irt && (
-                        <Link
-                          href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}
+                        {i + 1}
+                      </td>
+                      <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
+                        {item.title}
+                      </td>
+                      <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
+                        <button
+                          className="rounded-[.5rem] bg-main-gray-input px-[.5rem] py-[.2rem] duration-300 md:hover:bg-main-gray-input2 md:active:bg-main-gray-input"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${item.id}`);
+                            toaster({
+                              title: 'Success',
+                              description: `ID Tryout Berhasil Disalin \n (${item.id})`,
+                              duration: 3000,
+                            });
+                          }}
                         >
-                          IRT
-                        </Link>
-                      )}
-                      {/* {item.irt && (
+                          Copy ID
+                        </button>
+                      </td>
+                      <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
+                        {item.totalRegistration}
+                      </td>
+                      <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
+                        {item.totalJoin}
+                      </td>
+                      <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
+                        {getDateString(item.startDate)} |{' '}
+                        {getHours(item.startDate)}
+                      </td>
+                      <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
+                        <div className="flex items-center gap-[.5rem]">
+                          {item.TryoutSession.map((item2, i: number) => {
+                            return (
+                              <div
+                                key={i}
+                                className="rounded-[1rem] bg-main px-[.5rem] text-[.9rem] text-white cursor-pointer"
+                                onClick={() => {
+                                  const fileName = `${item2.TryoutCategory.name} - ${item2.TryoutSubCategory.name}`;
+                                  const data = item2.TryoutQuestion.map(
+                                    (quest) => {
+                                      return {
+                                        Session: fileName,
+                                        Question: quest.number,
+                                        a: quest.a_discrimination,
+                                        b: quest.b_difficulty,
+                                        c: quest.c_guessing,
+                                        SubCategory: quest.subCategory,
+                                        SubSubCategory: quest.subSubCategory,
+                                      };
+                                    },
+                                  );
+                                  exportData({ downloadData: data, fileName });
+                                }}
+                              >
+                                {item2.TryoutCategory?.name}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </td>
+                      <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
+                        {item.status}
+                      </td>
+                      <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
+                        <div className="flex w-full justify-center gap-[1rem]">
+                          <Link
+                            href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
+                          >
+                            Edit
+                          </Link>
+                          {item.irt && (
+                            <Link
+                              href={`/${website_sub_category_id}/admin/tryout/irt/${item.id}`}
+                            >
+                              IRT
+                            </Link>
+                          )}
+                          {/* {item.irt && (
                         <button
                           className=""
                           onClick={() =>
@@ -230,10 +243,29 @@ export default function Page() {
                           SaveIRT
                         </button>
                       )} */}
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                        </div>
+                      </td>
+                      <td
+                        className={cn(
+                          'border-t bg-white text-start text-[.9rem] text-main-gray-text',
+                          i === tryout.length - 1 && 'rounded-br-[.8rem]',
+                        )}
+                      >
+                        <Button
+                          disabled={!localString || isLoading}
+                          onClick={async () => {
+                            localStorage.removeItem(
+                              `temporary-edit-tryout-${item.id}`,
+                            );
+                            await refetch();
+                          }}
+                        >
+                          Clear localStorage
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
           {isLoading && (
