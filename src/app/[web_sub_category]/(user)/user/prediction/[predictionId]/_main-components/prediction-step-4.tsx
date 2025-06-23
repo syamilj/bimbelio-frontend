@@ -53,7 +53,9 @@ export default function PredictionStep4() {
     TryoutData,
     setCurrentStep,
   } = useProvider();
+
   const [open, setOpen] = useState<string>('');
+
   return (
     <div className="space-y-8">
       <div className="text-center">

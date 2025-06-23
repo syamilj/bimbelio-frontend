@@ -1,16 +1,24 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import LoaderEyeAnimation from '@/components/ui/loading/loading-bounce';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import {
+  website_sub_category_id,
+  website_sub_category_id_params,
+} from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { getDateString, getHoursDetail } from '@/lib/utils';
+import { cn, getDateString, getHoursDetail } from '@/lib/utils';
 import { IconDocumentAdmin, IconTabsQuiz, IconTimer2 } from '@/styles/icon';
+import { hexToRgba } from '@/styles/main-styles';
 import { GenderEnum } from '@/types/database';
-import { Sparkles } from 'lucide-react';
+import { Calculator, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { TryoutDataType } from '../../page';
@@ -272,6 +280,7 @@ export default function TryoutResult({
 
   return (
     <div className="container mx-auto mt-[48px] px-4 py-6 md:mt-[52px]">
+      <PopUpPrediction />
       <LoadingPageWithText
         loading={TestAgainTryoutLoading}
         heading="Mereset Data Tryout..."
@@ -317,16 +326,31 @@ export default function TryoutResult({
               <p>Analisis</p>
             </TabsTrigger>
           </TabsList>
-          {isTesting && session?.user.role === 'ADMIN' && (
-            <Button
-              onClick={() => {
-                setTestAgainTryoutLoading(true);
-                TestAgainTryout({ tryoutId, userId: session.user.id });
-              }}
-            >
-              Test Again
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {isTesting && session?.user.role === 'ADMIN' && (
+              <Button
+                onClick={() => {
+                  setTestAgainTryoutLoading(true);
+                  TestAgainTryout({ tryoutId, userId: session.user.id });
+                }}
+              >
+                Test Again
+              </Button>
+            )}
+
+            {website_sub_category_id_params === 'simak-ui' && (
+              <Button
+                className="justify-self-end"
+                asChild
+              >
+                <Link
+                  href={`/${website_sub_category_id_params}/user/prediction/step?tryoutId=${tryoutId}&step=new`}
+                >
+                  Prediksi Tryout ini
+                </Link>
+              </Button>
+            )}
+          </div>
         </div>
         <TabsContent
           value="ringkasan"
@@ -395,5 +419,62 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const PopUpPrediction = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const [open, setOpen] = useState(true);
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+    >
+      <DialogContent
+        className={cn('bg-transparent border-none shadow-none')}
+        hideClose
+      >
+        <Card className="mt-0 border border-r-0 border-l-4 border-main rounded-3xl">
+          <CardHeader className="p-3">
+            <Card
+              className="relative overflow-hidden rounded-2xl border-none text-white animate-fade-in-up py-8"
+              style={{
+                backgroundImage: `linear-gradient(to bottom right, ${websiteSubCategory?.main_color}, ${hexToRgba(websiteSubCategory?.main_color, 0.3)}, ${websiteSubCategory?.secondary_color})`,
+              }}
+            >
+              {/* Background Icon Dekoratif */}
+              <div className="absolute -top-10 -right-10 opacity-20 rotate-12 scale-150">
+                <Calculator className="w-48 h-48" />
+              </div>
+
+              {/* Sparkles Animated Background */}
+              <div className="absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10 animate-pulse-slow" />
+
+              <CardHeader className="text-center z-10 relative">
+                <CardTitle className="text-3xl font-extrabold drop-shadow-lg">
+                  🚀 Mulai Prediksi Kelulusanmu!
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent className="relative z-10">
+                <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-lg">
+                  Gabungkan nilai UTBK & SIMAK UI, dan lihat seberapa besar
+                  peluangmu masuk UI!
+                </p>
+                <div className="flex justify-center">
+                  <Link
+                    href={`/${website_sub_category_id_params}/user/prediction/step?step=new`}
+                  >
+                    <Button className="relative px-8 py-3 rounded-full bg-white text-main hover:text-white font-extrabold shadow-xl hover:scale-105 transition-transform animate-pulse-fast">
+                      🎯 Mulai Sekarang
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </CardHeader>
+        </Card>
+      </DialogContent>
+    </Dialog>
   );
 };

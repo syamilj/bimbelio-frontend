@@ -102,17 +102,17 @@ const SidebarRoute = ({
             )}
           </div>
         </Link>
-        <Link
+        <div
           className="relative"
-          href={`/${website_sub_category_id}/user/course`}
-          passHref
+          // href={`/${website_sub_category_id}/user/course`}
+          // passHref
           onClick={() => {
             if (isMobile) {
               setSidebarMobile(false);
             }
           }}
         >
-          {/* <ComingSoonBadge minimizeSidebar={minimizeSidebar} /> */}
+          <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
           <div
             className={`flex items-center gap-[.8rem] ${
               pathname?.includes('course') && 'bg-main'
@@ -142,18 +142,18 @@ const SidebarRoute = ({
               </span>
             )}
           </div>
-        </Link>
-        <Link
+        </div>
+        <div
           className="relative"
-          href={`/${website_sub_category_id}/user/explore`}
-          passHref
+          // href={`/${website_sub_category_id}/user/explore`}
+          // passHref
           onClick={() => {
             if (isMobile) {
               setSidebarMobile(false);
             }
           }}
         >
-          {/* <ComingSoonBadge minimizeSidebar={minimizeSidebar} /> */}
+          <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
           <div
             className={`flex items-center gap-[.8rem] ${
               pathname?.includes('explore') && 'bg-main'
@@ -183,9 +183,9 @@ const SidebarRoute = ({
               </span>
             )}
           </div>
-        </Link>
+        </div>
         <div className={`${minimizeSidebar && 'flex justify-center'} relative`}>
-          {/* <ComingSoonBadge minimizeSidebar={minimizeSidebar} /> */}
+          <ComingSoonBadge minimizeSidebar={minimizeSidebar} />
           <div
             className={`mx-[.5rem] flex cursor-pointer items-center justify-between rounded-[1rem] px-[1rem] py-[1rem] font-semibold transition-all duration-500 ease-in-out md:rounded-[.5rem] md:py-[.8rem] ${
               minimizeSidebar && pathname?.includes('workspace') && 'bg-main'
@@ -391,7 +391,7 @@ const SidebarRoute = ({
                       : 'font-medium'
                   }`}
                 >
-                  Prediction
+                  Prediksi
                 </span>
               )}
             </div>

@@ -17,9 +17,9 @@ export default function SIMAK_UI() {
       </div>
       <div className="min-h-screen">
         <div className="flex w-full flex-col gap-[5rem]">
-          <h1 className="text-center mt-[10rem] text-xl font-medium">
+          {/* <h1 className="text-center mt-[10rem] text-xl font-medium">
             SIMAK_UI
-          </h1>
+          </h1> */}
           <HeroSection />
           <Tryout />
           <LearningRevolutions />
