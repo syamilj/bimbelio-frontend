@@ -16,7 +16,6 @@ import { cn } from '@/lib/utils';
 import { User } from 'lucide-react';
 
 import LogoMinimize from '@/_assest/logo-minimize.png';
-import LogoSvg from '@/_assest/logo.svg';
 
 import SidebarRoute from '@/app/[web_sub_category]/(user)/user/_components/sidebar-route';
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
@@ -27,7 +26,6 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import Logo from '@/components/ui/logo';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
-import { Payment } from './payment';
 // Main Sidebar Component
 const Sidebar = ({ category }: { category: any }) => {
   const { data: session } = useSession();
@@ -70,7 +68,6 @@ const Sidebar = ({ category }: { category: any }) => {
 
   return (
     <Fragment>
-      <Payment />
       {/* Desktop Sidebar */}
       <div className="relative hidden h-full flex-col bg-white shadow-xl md:flex">
         {/* Header */}
@@ -191,12 +188,12 @@ const Sidebar = ({ category }: { category: any }) => {
               <div className="flex w-[1.8rem] items-center justify-center rounded-full">
                 <div className="flex h-[1.8rem] w-[1.8rem] items-center justify-center overflow-hidden rounded-[50%] border border-main-gray-input">
                   {userImage && (
-                    <Image
+                    <img
                       src={userImage}
                       alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-                      width={500}
-                      height={300}
-                      layout="responsive"
+                      // width={500}
+                      // height={300}
+                      // layout="responsive"
                     />
                   )}
                 </div>
@@ -302,10 +299,7 @@ const Sidebar = ({ category }: { category: any }) => {
         >
           {!minimizeSidebar ? (
             <>
-              <Image
-                src={LogoSvg}
-                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-              />
+              <Logo href={`/${website_sub_category_id}/user/try-out`} />
               <div
                 onClick={() => {
                   setSidebarMobile(false);
@@ -384,7 +378,7 @@ const Sidebar = ({ category }: { category: any }) => {
                 </>
               )}
               <Button
-                className="flex w-fit items-center gap-[.5rem] rounded-[.8rem] bg-greenUpgrade px-[1rem] py-[.7rem] text-white duration-300 active:bg-greenUpgradeHover md:hover:bg-greenUpgradeHover md:active:bg-greenUpgrade"
+                className="flex w-fit items-center gap-[.5rem] rounded-[.8rem] bg-gradient px-[1rem] py-[.7rem] text-white duration-300 hover:opacity-85"
                 onClick={() => setTransactionPopUp(true)}
               >
                 <IconCrown />
@@ -413,12 +407,12 @@ const Sidebar = ({ category }: { category: any }) => {
               <div className="flex w-[1.8rem] items-center justify-center rounded-full">
                 <div className="flex h-[1.8rem] w-[1.8rem] items-center justify-center overflow-hidden rounded-[50%] border border-main-gray-input">
                   {userImage && (
-                    <Image
+                    <img
                       src={userImage}
                       alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
-                      width={500}
-                      height={300}
-                      layout="responsive"
+                      // width={500}
+                      // height={300}
+                      // layout="responsive"
                     />
                   )}
                 </div>

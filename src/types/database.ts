@@ -1,3 +1,111 @@
+export type Prediction = {
+  id: string;
+  userId: string;
+  tryoutId: string | null;
+  university: string;
+  study: string;
+  fakultas: string;
+  websiteSubCategoryId: string;
+};
+
+export type PredictionScore = {
+  id: string;
+  type: PredictionScoreTypeEnum;
+  finalScore: number;
+  predictionId: string;
+};
+
+export type PredictionScoreDetail = {
+  id: string;
+  category: string;
+  subCategory: string;
+  true: number | null;
+  false: number | null;
+  empty: number | null;
+  totalQuestions: number | null;
+  score: number;
+  predictionScoreId: string;
+};
+
+export type PredictionScoreTypeEnum = 'UTBK' | 'SIMAK_UI';
+
+export type CourseChapter = {
+  number: number;
+  id: string;
+  website_sub_category_id: string;
+  categoryId: string;
+  title: string;
+  status: CourseStatusEnum;
+};
+
+export type CourseStatusEnum = 'PRIVATE' | 'PUBLIC';
+
+export type CourseSubChapter = {
+  number: number;
+  id: string;
+  website_sub_category_id: string;
+  title: string;
+  document: string | null;
+  description: string;
+  premium: boolean;
+  video: string | null;
+  courseChapterId: string;
+  spendTime: number;
+  type: TypeCourseEnum;
+  tryoutSessionId: string | null;
+  materi: string | null;
+};
+
+export type CourseProgress = {
+  userId: string;
+  id: string;
+  createdAt: Date;
+  website_sub_category_id: string;
+  courseSubChapterId: string;
+  totalScore: number | null;
+};
+
+export type TryoutSessionResult = {
+  id: string;
+  website_sub_category_id: string;
+  categoryId: string;
+  totalScore: number;
+  tryoutResultId: string;
+  sessionId: string;
+  startSession: Date;
+  endSession: Date;
+  theta: number | null;
+};
+
+export type TypeCourseEnum = 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI';
+
+export type BlogPost = {
+  website_sub_category_id: string;
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  value: string;
+  thumbnail: string;
+  createdAt: Date;
+  publishedAt: Date | null;
+  status: BlogStatusEnum;
+  tags: string[];
+  updatedAt: Date;
+  views: number;
+  isEditorPick: boolean | null;
+};
+
+export type BlogStatusEnum = 'DRAFT' | 'SCHEDULED' | 'PUBLISH';
+
+export type BlogTags = {
+  website_sub_category_id: string;
+  id: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type Category = {
   website_sub_category_id: string;
   id: string;
@@ -196,7 +304,7 @@ export type Transaction = {
   transaction_time: Date;
   expired_time: Date;
   order_id: string;
-  website_sub_category_id: string;
+  website_sub_category_id: string | null;
 };
 
 export type Pricing = {

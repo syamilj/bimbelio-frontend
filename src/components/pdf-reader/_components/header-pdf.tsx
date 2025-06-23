@@ -1,5 +1,6 @@
 'use client';
 
+import SubmitCourse from '@/app/[web_sub_category]/(user)/user/course/[categoryId]/_component/z_other/submit-course';
 import { useAppContext } from '@/components/provider/provider-app';
 import { buttonVariants } from '@/components/ui/button';
 import { ToolTip } from '@/components/ui/tooltip';
@@ -331,11 +332,11 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           </ToolTip>
         )}
 
-        {/* {inCourse && sub && isCourseDone === false && (
+        {inCourse && sub && isCourseDone === false && (
           <div className="flex">
-            <SubmitCourse subCourseId={sub} />
+            <SubmitCourse />
           </div>
-        )} */}
+        )}
         {inCourse && sub && isCourseDone === true && (
           <div className="flex w-fit cursor-default items-center justify-center gap-[.5rem] rounded-[.8rem] bg-bg-workspace px-[1rem] py-[.7rem] text-[.9rem] text-primary duration-300">
             <p>Selesai</p>

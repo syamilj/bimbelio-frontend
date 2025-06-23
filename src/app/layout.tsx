@@ -1,6 +1,7 @@
 import ProviderApp from '@/components/provider/provider-app';
 import ProviderCheckPayment from '@/components/provider/provider-check-payment';
 import ProviderLimitation from '@/components/provider/provider-limitation';
+import ProviderMaintenance from '@/components/provider/provider-maintenance';
 import ProviderSessionAuth from '@/components/provider/provider-session-auth';
 import ProviderWebsiteCategory from '@/components/provider/provider-website-category';
 import { siteConfig } from '@/config/site';
@@ -178,15 +179,17 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         />
       </head>
       <body className={cn('min-h-screen bg-background font-sans antialiased')}>
-        <ProviderSessionAuth>
-          <ProviderWebsiteCategory>
-            <ProviderLimitation>
-              <ProviderApp>
-                <ProviderCheckPayment>{children}</ProviderCheckPayment>
-              </ProviderApp>
-            </ProviderLimitation>
-          </ProviderWebsiteCategory>
-        </ProviderSessionAuth>
+        <ProviderMaintenance>
+          <ProviderSessionAuth>
+            <ProviderWebsiteCategory>
+              <ProviderLimitation>
+                <ProviderApp>
+                  <ProviderCheckPayment>{children}</ProviderCheckPayment>
+                </ProviderApp>
+              </ProviderLimitation>
+            </ProviderWebsiteCategory>
+          </ProviderSessionAuth>
+        </ProviderMaintenance>
       </body>
     </html>
   );

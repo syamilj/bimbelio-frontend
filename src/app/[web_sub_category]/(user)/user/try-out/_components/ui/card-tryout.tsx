@@ -22,22 +22,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import {
-  cn,
-  getDateStringShort,
-  getDateTryoutString,
-  getHours,
-} from '@/lib/utils';
-import {
-  IconCrown,
-  IconQuiz,
-  IconTailedArrowUp45,
-  IconTimer2,
-  IconUserAdmin,
-  IconX,
-} from '@/styles/icon';
+import { cn, getDateString, getDateTryoutString, getHours } from '@/lib/utils';
+import { IconTailedArrowUp45, IconX } from '@/styles/icon';
 import { hexToRgba } from '@/styles/main-styles';
 import type {
   Pricing,
@@ -46,17 +35,22 @@ import type {
 } from '@/types/database';
 import {
   ArrowUp,
+  Award,
+  BookOpen,
   Calendar,
   Check,
+  Clock,
   ExternalLink,
   Heart,
   Instagram,
   Loader2,
   MessageCircle,
   Share2,
+  Tag,
   Trophy,
   Users,
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, {
@@ -144,9 +138,15 @@ interface card {
   isPrivate?: boolean;
   userTryOutId: string;
   refresh?: () => any;
+  reloadHref?: boolean;
 }
 
-export default function CardTryOut({ data, isPrivate, refresh }: card) {
+export default function CardTryOut({
+  data,
+  isPrivate,
+  refresh,
+  reloadHref,
+}: card) {
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
 
@@ -352,6 +352,7 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
           userId: session?.user.id || '',
           isPremium,
         });
+        router.push(`${pathname}?register_tryout=success`);
         setStep(1);
         setShowDetail(null);
       }
@@ -477,23 +478,7 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
     }
 
     setIsLoading(true);
-    try {
-      await handleRegistration(false);
-      toaster({
-        title: 'Success',
-        condition: 'success',
-        description: 'Berhasil mendaftar try out!',
-        duration: 3000,
-      });
-    } catch (error) {
-      setIsLoading(false);
-      toaster({
-        title: 'Error',
-        condition: 'warning',
-        description: 'Gagal mendaftar try out!',
-        duration: 3000,
-      });
-    }
+    await handleRegistration(false);
   };
 
   const renderButton = (item: ProofItem) => {
@@ -541,8 +526,8 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
             key={i}
             className="relative overflow-hidden"
           >
-            <div
-              className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20"
+            {/* <div
+              className="absolute bottom-[2rem] right-[-2rem] z-[10] text-main/20"
               style={{
                 color: hexToRgba(item.WebsiteSubCategory?.main_color, 0.2),
               }}
@@ -551,16 +536,16 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                 w={180}
                 className="rotate-[-20deg]"
               />
-            </div>
+            </div> */}
             <Badge
               className={cn(
-                'absolute right-4 top-4 bg-main text-white',
+                'absolute right-4 top-4 bg-main text-white z-[11]',
                 getBadgeValue(item)?.className,
               )}
             >
               {getBadgeValue(item)?.title}
             </Badge>
-            <CardHeader className="relative z-[2]">
+            {/* <CardHeader className="relative z-[2]">
               <CardTitle
                 className="text-[1.3rem] font-bold text-main"
                 style={{
@@ -569,97 +554,169 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
               >
                 {item.title}
               </CardTitle>
-            </CardHeader>
-            <CardContent className="relative z-[2]">
-              <div className="grid gap-2">
-                {(() => {
-                  const groupedSessions = item.TryoutSession.reduce(
-                    (groups, session) => {
-                      const categoryName = session.TryoutCategory.name;
-                      if (!groups[categoryName]) {
-                        groups[categoryName] = [];
-                      }
-                      groups[categoryName].push(session);
-                      return groups;
+            </CardHeader> */}
+            <CardContent className="relative z-[2] p-0">
+              {/* Header */}
+              <div className="relative h-[200px] w-full overflow-hidden">
+                {item.image && (
+                  <Image
+                    src={
+                      `${env.NEXT_PUBLIC_SUPABASE_IMG_URL || '/placeholder.svg'}/tryout/${item.image}` ||
+                      'placeholder.svg'
+                    }
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform object-[90%_20%] duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                )}
+
+                <div
+                  className="absolute inset-0 "
+                  style={{
+                    background: `linear-gradient(to top, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.5)}, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.3)}, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.2)})`,
+                  }}
+                />
+
+                {/* Price */}
+                <div className="absolute left-4 top-4 z-10">
+                  <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-blue-600 shadow-md flex items-center gap-1.5">
+                    <Award className="h-3.5 w-3.5 text-yellow-500" />
+                    Gratis!
+                  </span>
+                </div>
+
+                {/* Category & Title */}
+                <div className="absolute bottom-0 left-0 w-full p-4 text-center">
+                  <span className="mb-2 inline-block rounded-full bg-yellow-400 px-4 py-1 text-sm font-bold text-blue-900">
+                    {/* {item.WebsiteSubCategory.name} */}
+                  </span>
+                  <h3 className="text-xl font-bold text-white md:text-2xl">
+                    {item.title}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="p-4">
+                <div className="mb-4 grid grid-cols-3 gap-2">
+                  {[
+                    {
+                      title: 'Durasi',
+                      icon: Clock,
+                      total: item.TryoutSession.reduce(
+                        (acc, item) => acc + item.duration,
+                        0,
+                      ),
                     },
-                    {} as { [key: string]: (typeof item.TryoutSession)[0][] },
-                  );
-
-                  const orderedCategories = [
-                    'Tes Potensi Skolastik (TPS)',
-                    'Tes Literasi',
-                    'Tes Penalaran Matematika',
-                  ];
-
-                  return orderedCategories
-                    .filter((category) => groupedSessions[category])
-                    .map((categoryName) => (
-                      <div
-                        key={categoryName}
-                        className="mb-2"
-                      >
-                        <div className="flex items-center mb-2">
-                          <h3 className="text-lg font-semibold">
-                            {categoryName}:
-                          </h3>
-                        </div>
-
-                        {groupedSessions[categoryName].map((session, index) => (
-                          <div
-                            key={session.id || index}
-                            className="flex justify-between items-center mb-2"
-                          >
-                            <div className="flex items-center ml-2">
-                              <span className="text-sm">
-                                - {session.TryoutSubCategory.name}
-                              </span>
-                            </div>
-                            <span className="text-sm text-gray-500">
-                              {session.duration} menit
-                            </span>
-                          </div>
-                        ))}
+                    {
+                      title: 'Soal',
+                      icon: BookOpen,
+                      total: item.TryoutSession.reduce(
+                        (acc, session) => acc + session._count.TryoutQuestion,
+                        0,
+                      ),
+                    },
+                    {
+                      title: 'Peserta',
+                      icon: Users,
+                      total: item._count.TryoutRegistration,
+                    },
+                  ].map((cItem, cIndex) => (
+                    <div
+                      key={cIndex}
+                      className="rounded-xl bg-main p-2 text-center flex flex-col items-center"
+                      style={{
+                        backgroundColor: hexToRgba(
+                          item.WebsiteSubCategory?.main_color,
+                          0.1,
+                        ),
+                      }}
+                    >
+                      <div className="text-xs text-gray-600 flex items-center gap-1">
+                        <cItem.icon
+                          className="h-3.5 w-3.5 text-main"
+                          style={{
+                            color: item.WebsiteSubCategory?.main_color,
+                          }}
+                        />
+                        {cItem.title}
                       </div>
-                    ));
-                })()}
-                <div className="flex items-center gap-2">
-                  <IconQuiz
-                    w={16}
-                    className="text-black/80"
-                  />
-                  <span className="text-sm font-semibold">
-                    {item.TryoutSession.reduce(
-                      (acc, session) => acc + session._count.TryoutQuestion,
-                      0,
-                    )}{' '}
-                    Soal
-                  </span>
+                      <div
+                        className="text-sm font-bold text-main"
+                        style={{
+                          color: item.WebsiteSubCategory?.main_color,
+                        }}
+                      >
+                        {cItem.total}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex items-center gap-2">
-                  <IconUserAdmin
-                    w={16}
-                    className="text-black/80"
-                  />
-                  <span className="text-sm font-semibold">
-                    {item._count.TryoutRegistration} Pendaftar
-                  </span>
+
+                <div className="mb-4 flex items-center justify-center flex-wrap gap-1.5">
+                  {['tryout'].map((tag, idx) => (
+                    <span
+                      key={idx}
+                      className="rounded-full bg-main/10 px-2 py-0.5 text-xs font-medium text-main flex items-center gap-1"
+                      style={{
+                        backgroundColor: hexToRgba(
+                          item.WebsiteSubCategory?.main_color,
+                          0.1,
+                        ),
+                        color: item.WebsiteSubCategory?.main_color,
+                      }}
+                    >
+                      <Tag className="h-2.5 w-2.5" />
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-main-gray-text" />
-                  <span className="text-sm font-semibold">
-                    {`${getHours(item.startDate)}, ${getDateStringShort(item.startDate)}`}{' '}
-                    -{' '}
-                    {`${getHours(item.endDate)}, ${getDateStringShort(item.endDate)}`}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <IconTimer2
-                    w={16}
-                    className="text-black/80"
-                  />
-                  <span className="text-sm font-semibold">
-                    {getTimer(item.startDate, item)?.value}
-                  </span>
+
+                <div className="mb-4 grid grid-cols-2 gap-2">
+                  {[
+                    {
+                      icon: Calendar,
+                      title: 'Mulai',
+                      date: item.startDate,
+                    },
+                    {
+                      icon: Calendar,
+                      title: 'Selesai',
+                      date: item.endDate,
+                    },
+                  ].map((cItem, cIndex) => (
+                    <div
+                      key={cIndex}
+                      className="flex flex-col items-center rounded-lg bg-main/10 p-2 text-xs"
+                      style={{
+                        backgroundColor: hexToRgba(
+                          item.WebsiteSubCategory?.main_color,
+                          0.1,
+                        ),
+                      }}
+                    >
+                      <div className="flex items-center gap-1">
+                        <cItem.icon
+                          className="h-3.5 w-3.5 text-main"
+                          style={{
+                            color: item.WebsiteSubCategory?.main_color,
+                          }}
+                        />
+                        <span className="font-medium text-gray-700">
+                          {cItem.title}
+                        </span>
+                      </div>
+                      <span
+                        className="mt-1 text-sm font-bold text-main"
+                        style={{
+                          color: item.WebsiteSubCategory?.main_color,
+                        }}
+                      >
+                        {getDateString(cItem.date)}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </CardContent>
@@ -676,12 +733,15 @@ export default function CardTryOut({ data, isPrivate, refresh }: card) {
                         backgroundImage: `linear-gradient(145deg, ${item.WebsiteSubCategory?.secondary_color}, ${item.WebsiteSubCategory?.main_color})`,
                       }}
                       onClick={() => {
-                        if (item.WebsiteSubCategory) {
+                        if (reloadHref && item.WebsiteSubCategory) {
                           localStorage.setItem(
                             'website_sub_category_id',
                             item.WebsiteSubCategory.id,
                           );
-                          window.location.href = `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`;
+                          // window.location.href = `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`;
+                          router.push(
+                            `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`,
+                          );
                         } else {
                           setShowDetail(item);
                         }

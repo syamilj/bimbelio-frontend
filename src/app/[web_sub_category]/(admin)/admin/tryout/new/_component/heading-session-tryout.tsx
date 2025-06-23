@@ -52,29 +52,6 @@ const HeadingSessionTryout = ({
 }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  // const { mutateAsync: generateTryout } = api.tryout.generateTryout.useMutation(
-  //   {
-  //     onSuccess() {
-  //       toaster({
-  //         title: "Berhasil",
-  //         condition: "success",
-  //         description: "Berhasil generate soal",
-  //         duration: 3000,
-  //       });
-  //       setLoading(false);
-  //     },
-  //     onError() {
-  //       toaster({
-  //         title: "Error",
-  //         condition: "warning",
-  //         description: "Gagal generate soal",
-  //         duration: 3000,
-  //       });
-  //       setLoading(false);
-  //     },
-  //   }
-  // );
-
   const generateTryout = async (context: string) => {
     try {
       const res = await axiosInstance.post('/tryout/generateTryout', {
@@ -249,6 +226,7 @@ const HeadingSessionTryout = ({
               ...item,
               Questions: item.Questions.map((item2) => {
                 if (item2.Answers && item2.Answers.length > 4) {
+                  const correctValue = 5;
                   let value = 0;
                   return {
                     ...item2,
@@ -258,14 +236,18 @@ const HeadingSessionTryout = ({
                           value = value + 1;
                           return { ...answer, value: value };
                         }
-                        return { ...answer, value: 5 };
+                      } else if (item.assessmentType === '+1/0') {
+                        if (answer.value !== 1) {
+                          value = value + 1;
+                          return { ...answer, value: value };
+                        }
                       } else {
                         if (answer.value !== 5) {
                           value = value + 1;
                           return { ...answer, value: value };
                         }
-                        return { ...answer, value: 5 };
                       }
+                      return { ...answer, value: correctValue };
                     }),
                   };
                 }
@@ -289,6 +271,7 @@ const HeadingSessionTryout = ({
               ...item,
               Questions: item.Questions.map((item2) => {
                 if (item2.Answers && item2.Answers.length > 4) {
+                  const correctValue = 5;
                   return {
                     ...item2,
                     Answers: item2.Answers?.map((answer) => {
@@ -296,13 +279,53 @@ const HeadingSessionTryout = ({
                         if (answer.value !== 4) {
                           return { ...answer, value: 0 };
                         }
-                        return { ...answer, value: 5 };
+                      } else if (item.assessmentType === '+1/0') {
+                        if (answer.value !== 1) {
+                          return { ...answer, value: 0 };
+                        }
                       } else {
                         if (answer.value !== 5) {
                           return { ...answer, value: 0 };
                         }
-                        return { ...answer, value: 5 };
                       }
+                      return { ...answer, value: correctValue };
+                    }),
+                  };
+                }
+                return item2;
+              }),
+            };
+          }
+          return { ...item };
+        }),
+      );
+      return;
+    } else if (assessmentType === '+1/0') {
+      setSessions((prev) =>
+        prev.map((item, sessionIndex: number) => {
+          if (
+            sessionIndex === currentIndexEdit &&
+            item.Questions &&
+            item.Questions.length > 0
+          ) {
+            return {
+              ...item,
+              Questions: item.Questions.map((item2) => {
+                if (item2.Answers && item2.Answers.length > 4) {
+                  const correctValue = 1;
+                  return {
+                    ...item2,
+                    Answers: item2.Answers?.map((answer) => {
+                      if (item.assessmentType === '+4/-1/0') {
+                        if (answer.value !== 4) {
+                          return { ...answer, value: 0 };
+                        }
+                      } else {
+                        if (answer.value !== 5) {
+                          return { ...answer, value: 0 };
+                        }
+                      }
+                      return { ...answer, value: correctValue };
                     }),
                   };
                 }
@@ -326,6 +349,7 @@ const HeadingSessionTryout = ({
               ...item,
               Questions: item.Questions.map((item2) => {
                 if (item2.Answers && item2.Answers.length > 4) {
+                  const correctValue = 5;
                   return {
                     ...item2,
                     Answers: item2.Answers?.map((answer) => {
@@ -333,13 +357,16 @@ const HeadingSessionTryout = ({
                         if (answer.value !== 4) {
                           return { ...answer, value: 0 };
                         }
-                        return { ...answer, value: 5 };
+                      } else if (item.assessmentType === '+1/0') {
+                        if (answer.value !== 1) {
+                          return { ...answer, value: 0 };
+                        }
                       } else {
                         if (answer.value !== 5) {
                           return { ...answer, value: 0 };
                         }
-                        return { ...answer, value: 5 };
                       }
+                      return { ...answer, value: correctValue };
                     }),
                   };
                 }
@@ -363,13 +390,20 @@ const HeadingSessionTryout = ({
               ...item,
               Questions: item.Questions.map((item2) => {
                 if (item2.Answers && item2.Answers.length > 4) {
+                  const correctValue = 4;
                   return {
                     ...item2,
                     Answers: item2.Answers?.map((answer) => {
-                      if (answer.value !== 5) {
-                        return { ...answer, value: -1 };
+                      if (item.assessmentType === '+1/0') {
+                        if (answer.value !== 1) {
+                          return { ...answer, value: -1 };
+                        }
+                      } else {
+                        if (answer.value !== 5) {
+                          return { ...answer, value: -1 };
+                        }
                       }
-                      return { ...answer, value: 4 };
+                      return { ...answer, value: correctValue };
                     }),
                   };
                 }
@@ -421,7 +455,7 @@ const HeadingSessionTryout = ({
                     : 'placeholder'
                 }
                 onValueChange={(value) => {
-                  onChangeCategory(value);
+                  value && onChangeCategory(value);
                 }}
               >
                 <SelectTrigger className="h-full w-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
@@ -464,7 +498,7 @@ const HeadingSessionTryout = ({
                       : 'placeholder'
                   }
                   onValueChange={(value) => {
-                    onChangeSubCategory(value);
+                    value && onChangeSubCategory(value);
                   }}
                 >
                   <SelectTrigger className="h-full w-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
@@ -530,6 +564,7 @@ const HeadingSessionTryout = ({
                   <SelectItem value="+5/0">+5/0</SelectItem>
                   <SelectItem value="IRT">IRT</SelectItem>
                   <SelectItem value="+4/-1/0">+4/-1/0</SelectItem>
+                  <SelectItem value="+1/0">+1/0</SelectItem>
                 </SelectContent>
               </Select>
             </div>

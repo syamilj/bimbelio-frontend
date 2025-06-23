@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
 import { CircleCheck, CircleX } from 'lucide-react';
-import React, { SetStateAction, useCallback, useState } from 'react';
+import React, { SetStateAction, useCallback } from 'react';
 import { SessionProps } from '../page';
 
 interface Props {
@@ -34,9 +34,6 @@ const QuestionSessionTryout = ({
   setQuestionIndex,
   assessmentType,
 }: Props) => {
-  const [showPreview, setShowPreview] = useState<number>(99999);
-  const [showAnswerPreview, setShowAnswerPreview] = useState<number>(99999);
-
   const deleteQuestion = async (questionIndex: number) => {
     if (!EditSession?.Questions) {
       return;
@@ -532,72 +529,12 @@ const QuestionSessionTryout = ({
               }}
             />
           </div>
-          {EditSession.Questions[questionIndex].image ? (
-            <div className="flex w-full gap-[1rem]">
-              <div
-                className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
-                onClick={() => {
-                  if (!EditSession.Questions) {
-                    return;
-                  }
-                  // const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession.Questions[questionIndex].image} "")`;
-                  // navigator.clipboard.writeText(image);
-                  const image = BlockNoteImageHtml(
-                    `${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession?.Questions[questionIndex].image}`,
-                  );
-                  addImageToQuestion(image, questionIndex);
-                }}
-              >
-                Add Image
-              </div>
-              <div
-                className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
-                onClick={() => {
-                  document.getElementById(`image-${questionIndex}`)?.click();
-                }}
-              >
-                <input
-                  id={`image-${questionIndex}`}
-                  type="file"
-                  className="w-0 overflow-auto p-0"
-                  onChange={(e) => {
-                    onChangeQuestionImage(e, questionIndex);
-                  }}
-                />
-                Change Image
-              </div>
-              <div
-                className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 px-[1rem] py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
-                onClick={() => {
-                  if (!EditSession.Questions) {
-                    return;
-                  }
-                  const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession.Questions[questionIndex].image} "")`;
-                  navigator.clipboard.writeText(image);
-                  deleteImageQuestion(questionIndex);
-                }}
-              >
-                Delete Image
-              </div>
-            </div>
-          ) : (
-            <div
-              className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
-              onClick={() => {
-                document.getElementById(`image-${questionIndex}`)?.click();
-              }}
-            >
-              <input
-                id={`image-${questionIndex}`}
-                type="file"
-                className="w-0 overflow-auto p-0"
-                onChange={(e) => {
-                  onChangeQuestionImage(e, questionIndex);
-                }}
-              />
-              Upload Gambar
-            </div>
-          )}
+          <UploadImageQuestion
+            EditSession={EditSession}
+            currentIndexEdit={currentIndexEdit}
+            questionIndex={questionIndex}
+            setSessions={setSessions}
+          />
         </div>
         <div className="flex flex-col gap-[1rem]">
           {EditSession.Questions[questionIndex].Answers?.map(
@@ -640,6 +577,13 @@ const QuestionSessionTryout = ({
                       }}
                     />
                   </div>
+                  <UploadAnswerQuestion
+                    EditSession={EditSession}
+                    currentIndexEdit={currentIndexEdit}
+                    questionIndex={questionIndex}
+                    setSessions={setSessions}
+                    answerIndex={answerIndex}
+                  />
                 </div>
                 <div className="flex h-full items-center gap-[.5rem]">
                   {Array.from({
@@ -648,11 +592,13 @@ const QuestionSessionTryout = ({
                         ? 5
                         : assessmentType === '+5/0'
                           ? 2
-                          : assessmentType === 'IRT'
+                          : assessmentType === '+1/0'
                             ? 2
-                            : assessmentType === '+4/-1/0'
+                            : assessmentType === 'IRT'
                               ? 2
-                              : 0,
+                              : assessmentType === '+4/-1/0'
+                                ? 2
+                                : 0,
                   }).map((_: any, i: number) => (
                     <div
                       key={i}
@@ -663,6 +609,9 @@ const QuestionSessionTryout = ({
                           'bg-main text-white md:hover:bg-main',
                         assessmentType === '+5/0' &&
                           i * 5 === item2.value &&
+                          'bg-main text-white md:hover:bg-main',
+                        assessmentType === '+1/0' &&
+                          i * 1 === item2.value &&
                           'bg-main text-white md:hover:bg-main',
                         assessmentType === 'IRT' &&
                           i * 5 === item2.value &&
@@ -686,6 +635,13 @@ const QuestionSessionTryout = ({
                             answerIndex,
                             item2.value,
                           );
+                        } else if (assessmentType === '+1/0') {
+                          onChangeAnswerValue(
+                            i * 1,
+                            questionIndex,
+                            answerIndex,
+                            item2.value,
+                          );
                         } else if (assessmentType === 'IRT') {
                           onChangeAnswerValue(
                             i * 5,
@@ -700,20 +656,23 @@ const QuestionSessionTryout = ({
                             answerIndex,
                             item2.value,
                           );
-                        } else {
-                          onChangeAnswerValue(
-                            i + 1,
-                            questionIndex,
-                            answerIndex,
-                            item2.value,
-                          );
                         }
+                        // else {
+                        //   onChangeAnswerValue(
+                        //     i + 1,
+                        //     questionIndex,
+                        //     answerIndex,
+                        //     item2.value,
+                        //   );
+                        // }
                       }}
                     >
                       {assessmentType === '1-5' ? (
                         <>{i + 1}</>
                       ) : assessmentType === '+5/0' ? (
                         <>{i * 5}</>
+                      ) : assessmentType === '+1/0' ? (
+                        <>{i * 1}</>
                       ) : assessmentType === 'IRT' && i == 0 ? (
                         <CircleX />
                       ) : assessmentType === 'IRT' && i == 1 ? (
@@ -746,3 +705,506 @@ const QuestionSessionTryout = ({
 };
 
 export default QuestionSessionTryout;
+
+const UploadImageQuestion = ({
+  EditSession,
+  questionIndex,
+  setSessions,
+  currentIndexEdit,
+}: {
+  EditSession: SessionProps;
+  questionIndex: number;
+  currentIndexEdit: number | null;
+  setSessions: React.Dispatch<SetStateAction<SessionProps[]>>;
+}) => {
+  const imageValue = EditSession.Questions[questionIndex].image || null;
+  const addImageToQuestion = (image: string, questionIndex: number) => {
+    setSessions((prev) => {
+      return prev.map((item, sessionIndex) => {
+        if (
+          sessionIndex === currentIndexEdit &&
+          item.Questions &&
+          item.Questions.length > 0
+        ) {
+          return {
+            ...item,
+            Questions: item.Questions.map((item2, qIndex) => {
+              if (qIndex === questionIndex) {
+                return { ...item2, question: `${item2.question}\n\n${image}` };
+              }
+              return item2;
+            }),
+          };
+        }
+        return item;
+      });
+    });
+  };
+  const onChangeQuestionImage = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    questionIndex: number,
+  ) => {
+    if (EditSession === null) return;
+    const image = e.target.files ? e.target.files[0] : null;
+    if (image && EditSession.Questions && imageValue) {
+      const filename = `${imageValue}`;
+      const upload = await supabase?.storage
+        .from('to-question')
+        .upload(`${filename}`, image);
+      if (upload?.data) {
+      }
+      if (upload?.error) {
+        if (upload.error.message === 'The resource already exists') {
+          const update = await supabase?.storage
+            .from('to-question')
+            .update(`${filename}`, image);
+          if (update?.data) {
+          }
+          if (update?.error) {
+          }
+        }
+      }
+      setSessions((prev) => {
+        return prev.map((item, sessionIndex) => {
+          if (
+            sessionIndex === currentIndexEdit &&
+            item.Questions &&
+            item.Questions.length > 0
+          ) {
+            return {
+              ...item,
+              Questions: item.Questions.map((item2, qIndex) => {
+                if (qIndex === questionIndex) {
+                  return { ...item2, image: filename };
+                }
+                return item2;
+              }),
+            };
+          }
+          return item;
+        });
+      });
+      return;
+    }
+    if (image) {
+      const filename = `${crypto.randomUUID()}-${questionIndex + 1}`;
+      const upload = await supabase?.storage
+        .from('to-question')
+        .upload(`${filename}`, image);
+      if (upload?.data) {
+      }
+      if (upload?.error) {
+        if (upload.error.message === 'The resource already exists') {
+          const update = await supabase?.storage
+            .from('to-question')
+            .update(`${filename}`, image);
+          if (update?.data) {
+          }
+          if (update?.error) {
+          }
+        }
+      }
+      setSessions((prev) => {
+        return prev.map((item, sessionIndex) => {
+          if (
+            sessionIndex === currentIndexEdit &&
+            item.Questions &&
+            item.Questions.length > 0
+          ) {
+            return {
+              ...item,
+              Questions: item.Questions.map((item2, qIndex) => {
+                if (qIndex === questionIndex) {
+                  return { ...item2, image: filename };
+                }
+                return item2;
+              }),
+            };
+          }
+          return item;
+        });
+      });
+      return;
+    }
+  };
+  const deleteImageQuestion = async (questionIndex: number) => {
+    if (EditSession?.Questions && imageValue) {
+      const title = imageValue;
+      const deleteImage = await supabase?.storage
+        .from('to-question')
+        .remove([`${title}`]);
+      if (deleteImage?.data) {
+        setSessions((prev) =>
+          prev.map((session, sessionIndex) => {
+            if (
+              sessionIndex === currentIndexEdit &&
+              session.Questions &&
+              session.Questions.length > 0
+            ) {
+              return {
+                ...session,
+                Questions: session.Questions.map((question, qindex) => {
+                  if (qindex === questionIndex) {
+                    return {
+                      ...question,
+                      image: null,
+                    };
+                  }
+                  return { ...question };
+                }),
+              };
+            }
+            return { ...session };
+          }),
+        );
+      }
+      if (deleteImage?.error) {
+        alert('Failed delete image, try again');
+      }
+    }
+  };
+  return (
+    <>
+      {imageValue ? (
+        <div className="flex w-full gap-[1rem]">
+          <div
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+            onClick={() => {
+              if (!EditSession.Questions) {
+                return;
+              }
+              // const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession.Questions[questionIndex].image} "")`;
+              // navigator.clipboard.writeText(image);
+              const image = BlockNoteImageHtml(
+                `${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession?.Questions[questionIndex].image}`,
+              );
+              addImageToQuestion(image, questionIndex);
+            }}
+          >
+            Add Image
+          </div>
+          {/* <div
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+            onClick={() => {
+              document.getElementById(`image-${questionIndex}`)?.click();
+            }}
+          >
+            <input
+              id={`image-${questionIndex}`}
+              type="file"
+              className="w-0 overflow-auto p-0"
+              onChange={(e) => {
+                onChangeQuestionImage(e, questionIndex);
+              }}
+            />
+            Change Image
+          </div> */}
+          <div
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 px-[1rem] py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
+            onClick={() => {
+              if (!EditSession.Questions) {
+                return;
+              }
+              const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession.Questions[questionIndex].image} "")`;
+              navigator.clipboard.writeText(image);
+              deleteImageQuestion(questionIndex);
+            }}
+          >
+            Delete Image
+          </div>
+        </div>
+      ) : (
+        <div
+          className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+          onClick={() => {
+            document.getElementById(`image-${questionIndex}`)?.click();
+          }}
+        >
+          <input
+            id={`image-${questionIndex}`}
+            type="file"
+            className="w-0 overflow-auto p-0"
+            onChange={(e) => {
+              onChangeQuestionImage(e, questionIndex);
+            }}
+          />
+          Upload Gambar
+        </div>
+      )}
+    </>
+  );
+};
+
+const UploadAnswerQuestion = ({
+  EditSession,
+  questionIndex,
+  setSessions,
+  currentIndexEdit,
+  answerIndex,
+}: {
+  EditSession: SessionProps;
+  questionIndex: number;
+  currentIndexEdit: number | null;
+  setSessions: React.Dispatch<SetStateAction<SessionProps[]>>;
+  answerIndex: number;
+}) => {
+  const imageValue =
+    EditSession?.Questions[questionIndex].Answers[answerIndex].image || null;
+  const addImageToQuestion = (
+    image: string,
+    questionIndex: number,
+    answerIndex: number,
+  ) => {
+    setSessions((prev) => {
+      return prev.map((item, sessionIndex) => {
+        if (
+          sessionIndex === currentIndexEdit &&
+          item.Questions &&
+          item.Questions.length > 0
+        ) {
+          return {
+            ...item,
+            Questions: item.Questions.map((item2, qIndex) => {
+              if (qIndex === questionIndex) {
+                return {
+                  ...item2,
+                  Answers: item2.Answers?.map((answer, aIndex) => {
+                    if (aIndex === answerIndex) {
+                      return {
+                        ...answer,
+                        answer: `${answer.answer}\n\n${image}`,
+                      };
+                    }
+                    return answer;
+                  }),
+                };
+              }
+              return item2;
+            }),
+          };
+        }
+        return item;
+      });
+    });
+  };
+  const onChangeQuestionImage = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    questionIndex: number,
+    answerIndex: number,
+  ) => {
+    if (EditSession === null) return;
+    const image = e.target.files ? e.target.files[0] : null;
+    if (image && EditSession.Questions && imageValue) {
+      const filename = `${imageValue}`;
+      const upload = await supabase?.storage
+        .from('to-question')
+        .upload(`${filename}`, image);
+      if (upload?.data) {
+      }
+      if (upload?.error) {
+        if (upload.error.message === 'The resource already exists') {
+          const update = await supabase?.storage
+            .from('to-question')
+            .update(`${filename}`, image);
+          if (update?.data) {
+          }
+          if (update?.error) {
+          }
+        }
+      }
+      setSessions((prev) => {
+        return prev.map((item, sessionIndex) => {
+          if (
+            sessionIndex === currentIndexEdit &&
+            item.Questions &&
+            item.Questions.length > 0
+          ) {
+            return {
+              ...item,
+              Questions: item.Questions.map((item2, qIndex) => {
+                if (qIndex === questionIndex) {
+                  return {
+                    ...item2,
+                    Answers: item2.Answers?.map((answer, aIndex) => {
+                      if (aIndex === answerIndex) {
+                        return { ...answer, image: filename };
+                      }
+                      return answer;
+                    }),
+                  };
+                }
+                return item2;
+              }),
+            };
+          }
+          return item;
+        });
+      });
+      return;
+    }
+    if (image) {
+      const filename = `${crypto.randomUUID()}-${questionIndex + 1}`;
+      const upload = await supabase?.storage
+        .from('to-question')
+        .upload(`${filename}`, image);
+      if (upload?.data) {
+      }
+      if (upload?.error) {
+        if (upload.error.message === 'The resource already exists') {
+          const update = await supabase?.storage
+            .from('to-question')
+            .update(`${filename}`, image);
+          if (update?.data) {
+          }
+          if (update?.error) {
+          }
+        }
+      }
+      setSessions((prev) => {
+        return prev.map((item, sessionIndex) => {
+          if (
+            sessionIndex === currentIndexEdit &&
+            item.Questions &&
+            item.Questions.length > 0
+          ) {
+            return {
+              ...item,
+              Questions: item.Questions.map((item2, qIndex) => {
+                if (qIndex === questionIndex) {
+                  return {
+                    ...item2,
+                    Answers: item2.Answers?.map((answer, aIndex) => {
+                      if (aIndex === answerIndex) {
+                        return { ...answer, image: filename };
+                      }
+                      return answer;
+                    }),
+                  };
+                }
+                return item2;
+              }),
+            };
+          }
+          return item;
+        });
+      });
+      return;
+    }
+  };
+  const deleteImageQuestion = async (
+    questionIndex: number,
+    answerIndex: number,
+  ) => {
+    if (EditSession?.Questions && imageValue) {
+      const title = imageValue;
+      const deleteImage = await supabase?.storage
+        .from('to-question')
+        .remove([`${title}`]);
+      if (deleteImage?.data) {
+        setSessions((prev) =>
+          prev.map((session, sessionIndex) => {
+            if (
+              sessionIndex === currentIndexEdit &&
+              session.Questions &&
+              session.Questions.length > 0
+            ) {
+              return {
+                ...session,
+                Questions: session.Questions.map((question, qindex) => {
+                  if (qindex === questionIndex) {
+                    return {
+                      ...question,
+                      Answers: question.Answers?.map((answer, aIndex) => {
+                        if (aIndex === answerIndex) {
+                          return { ...answer, image: null };
+                        }
+                        return answer;
+                      }),
+                    };
+                  }
+                  return { ...question };
+                }),
+              };
+            }
+            return { ...session };
+          }),
+        );
+      }
+      if (deleteImage?.error) {
+        alert('Failed delete image, try again');
+      }
+    }
+  };
+  return (
+    <>
+      {imageValue ? (
+        <div className="flex w-full gap-[1rem]">
+          <div
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+            onClick={() => {
+              if (!EditSession.Questions) {
+                return;
+              }
+              // const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession.Questions[questionIndex].image} "")`;
+              // navigator.clipboard.writeText(image);
+              const image = BlockNoteImageHtml(
+                `${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${imageValue}`,
+              );
+              addImageToQuestion(image, questionIndex, answerIndex);
+            }}
+          >
+            Add Image
+          </div>
+          {/* <div
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+            onClick={() => {
+              document.getElementById(`image-${questionIndex}`)?.click();
+            }}
+          >
+            <input
+              id={`image-${questionIndex}`}
+              type="file"
+              className="w-0 overflow-auto p-0"
+              onChange={(e) => {
+                onChangeQuestionImage(e, questionIndex);
+              }}
+            />
+            Change Image
+          </div> */}
+          <div
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 px-[1rem] py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
+            onClick={() => {
+              if (!EditSession.Questions) {
+                return;
+              }
+              const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSession.Questions[questionIndex].image} "")`;
+              navigator.clipboard.writeText(image);
+              deleteImageQuestion(questionIndex, answerIndex);
+            }}
+          >
+            Delete Image
+          </div>
+        </div>
+      ) : (
+        <div
+          className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+          onClick={() => {
+            document
+              .getElementById(`answer-${questionIndex}-${answerIndex}`)
+              ?.click();
+          }}
+        >
+          <input
+            id={`answer-${questionIndex}-${answerIndex}`}
+            type="file"
+            className="w-0 overflow-auto p-0"
+            onChange={(e) => {
+              onChangeQuestionImage(e, questionIndex, answerIndex);
+            }}
+          />
+          Upload Gambar
+        </div>
+      )}
+    </>
+  );
+};

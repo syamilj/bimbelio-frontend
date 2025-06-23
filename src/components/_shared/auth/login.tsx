@@ -1,6 +1,7 @@
 'use client';
 
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
+import { useAppContext } from '@/components/provider/provider-app';
 import LoadingPage from '@/components/ui/Loading-Page';
 import Logo from '@/components/ui/logo';
 import { env } from '@/env.mjs';
@@ -9,7 +10,11 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 
-export const Login = ({ showAuth, setShowAuth }: any) => {
+export const Login = () => {
+  const {
+    useAuth: { setShowAuth, showAuth },
+  } = useAppContext();
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (googleToken: any) => {
@@ -22,7 +27,15 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
       });
 
       Cookies.set('token', res.data.data.token);
-      window.location.pathname = '/';
+      const pathname = window.location.pathname;
+      const origin = window.location.origin;
+      if (pathname === showAuth.redirect || !showAuth.redirect) {
+        window.location.reload();
+      } else {
+        window.location.href = showAuth.redirect
+          ? `${origin}/${showAuth.redirect}`
+          : origin;
+      }
     } catch (error) {
       setLoading(false);
       return;
@@ -42,7 +55,7 @@ export const Login = ({ showAuth, setShowAuth }: any) => {
           <div
             className="fixed left-0 top-0 z-[1] h-full w-full bg-transparent"
             onClick={() => {
-              setShowAuth((prev: any) => ({ ...prev, login: false }));
+              setShowAuth((prev) => ({ ...prev, open: false }));
               setStepLogin(1);
             }}
           />

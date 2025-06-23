@@ -10,10 +10,15 @@ import { Popover, PopoverContent } from '@/components/ui/popover';
 import { toaster } from '@/components/ui/toaster';
 
 import { useUserLimitation } from '@/components/provider/provider-limitation';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Input } from '@/components/ui/input';
+import { env } from '@/env.mjs';
 import { useBlockNoteEditor } from '@blocknote/react';
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { useCompletion } from 'ai/react';
+import Cookies from 'js-cookie';
 import 'katex/dist/katex.min.css';
+import { ArrowRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
@@ -43,6 +48,7 @@ const remarkMathOptions = {
 };
 
 const AiPopover = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const { editorRef, rect, setRect } = useProvider();
 
   const [completions, setCompletions] = useState<string[]>([]);
@@ -52,7 +58,12 @@ const AiPopover = () => {
   const { checkLimitation } = useUserLimitation();
 
   const { complete, completion, stop, isLoading } = useCompletion({
-    body: {},
+    api: `${env.NEXT_PUBLIC_API_URL}/ai/chatNotes?website_sub_category_id=${websiteSubCategory?.id}`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${Cookies.get('token')}`,
+    },
+    streamProtocol: 'text',
     onFinish: (_prompt, completion) => {
       setCompletions((prev) => [...prev, completion]);
       inputRef.current?.focus();
@@ -65,7 +76,6 @@ const AiPopover = () => {
         duration: 3000,
       });
     },
-    streamProtocol: 'text',
   });
 
   const closePopover = () => {
@@ -81,7 +91,43 @@ const AiPopover = () => {
     setCurIndex(completions.length);
   };
 
+  const handleSubmit = async (prompt: string) => {
+    incrementCur();
+    try {
+      const data = await checkLimitation({
+        notes: true,
+      });
+      if (data && !data.status) {
+        toaster({
+          title: 'Uppss',
+          condition: 'warning',
+          description: data.message,
+        });
+        return;
+      } else if (data && data.status) {
+        complete(prompt);
+      }
+    } catch (error) {
+      toaster({
+        title: 'Gagal',
+        condition: 'warning',
+        description: 'Coba lagi nanti!',
+      });
+      return;
+    }
+  };
+
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const input = document.getElementById('notes-ai-input') as
+      | HTMLInputElement
+      | undefined;
+    input?.focus();
+    if (inputRef) {
+      inputRef.current?.focus();
+    }
+  }, [rect, inputRef]);
 
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [query, setQuery] = useState('');
@@ -170,7 +216,7 @@ const AiPopover = () => {
           <DropdownMenuTrigger className="flex w-full flex-col items-start hover:cursor-auto">
             {(isLoading || responseExists) && (
               <ReactMarkdown
-                className="ReactMarkdown prose px-2 py-1"
+                className="ReactMarkdown prose px-2 py-1 text-start"
                 remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
                 rehypePlugins={[rehypeKatex, rehypeRaw]}
               >
@@ -204,6 +250,32 @@ const AiPopover = () => {
             align="start"
             className="w-[20rem] max-w-[80%] empty:hidden"
           >
+            {!responseExists && (
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const input = document.getElementById('notes-ai-input') as
+                    | HTMLInputElement
+                    | undefined;
+                  if (input) {
+                    await handleSubmit(`${input.value}: ${rect.text}`);
+                    input.value = '';
+                  }
+                }}
+                className="flex justify-center items-center relative"
+              >
+                <Input
+                  ref={inputRef}
+                  id="notes-ai-input"
+                />
+                <button
+                  type="submit"
+                  className="absolute bg-main text-white right-2 hover:bg-main/80 duration-300 rounded-lg p-1"
+                >
+                  <ArrowRight className="text-white w-4 h-4" />
+                </button>
+              </form>
+            )}
             {responseExists
               ? AI_OPTIONS_AFTER_COMPLETION.map((item) => (
                   <div key={item.title}>
@@ -235,29 +307,7 @@ const AiPopover = () => {
                       {item.items.map((inner) => (
                         <DropdownMenuItem
                           onClick={async () => {
-                            incrementCur();
-                            try {
-                              const data = await checkLimitation({
-                                notes: true,
-                              });
-                              if (data && !data.status) {
-                                toaster({
-                                  title: 'Uppss',
-                                  condition: 'warning',
-                                  description: data.message,
-                                });
-                                return;
-                              } else if (data && data.status) {
-                                complete(`${inner}: ${rect.text}`);
-                              }
-                            } catch (error) {
-                              toaster({
-                                title: 'Gagal',
-                                condition: 'warning',
-                                description: 'Coba lagi nanti!',
-                              });
-                              return;
-                            }
+                            handleSubmit(`${inner}: ${rect.text}`);
                           }}
                           key={inner}
                         >

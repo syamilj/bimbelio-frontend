@@ -1,0 +1,451 @@
+'use client';
+import { useAppContext } from '@/components/provider/provider-app';
+import LoadingPageWithText, { Spinner } from '@/components/ui/spinner';
+import { toaster } from '@/components/ui/toaster';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { useMutation } from '@/lib/fetch-helper/useMutation';
+import { cn } from '@/lib/utils';
+import { Category } from '@/types/database';
+import 'katex/dist/katex.min.css';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import ChapterOption from './_component/chapter-option';
+import SubChapterOption from './_component/sub-chapter-option';
+
+export interface ChapterProps {
+  id?: string;
+  title?: string;
+  categoryId?: string;
+  status?: 'PRIVATE' | 'PUBLIC';
+  number?: number;
+}
+
+interface AnswerProps {
+  id?: string;
+  answer: string;
+  value: number;
+}
+
+export interface QuestionProps {
+  id?: string;
+  number: number;
+  question: string;
+  image?: string | null;
+  explanation?: string;
+  subCategory?: string;
+  subSubCategory?: string;
+  Answers: AnswerProps[];
+}
+
+export interface SubChapterProps {
+  id?: string;
+  number?: string;
+  title?: string;
+  spendTime?: number | string;
+  type?: 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI';
+  description?: string;
+  video?: string;
+  premium?: boolean;
+  document?: string;
+  documentTitle?: string;
+  materi?: string;
+  tryoutSessionId?: string;
+  Questions: QuestionProps[];
+}
+
+const Index = () => {
+  const params = useParams();
+  const courseId = Array.isArray(params?.courseId)
+    ? params.courseId[0]
+    : (params?.courseId ?? '');
+
+  const [showDetailSubChapter, setShowDetailSubChapter] =
+    useState<boolean>(true);
+
+  const [currentIndexEdit, setCurrentIndexEdit] = useState<number | null>(null);
+  const [questionIndex, setQuestionIndex] = useState<number>(0);
+
+  const [chapter, setChapter] = useState<ChapterProps | null>(null);
+  const [subChapter, setSubChapter] = useState<SubChapterProps[]>([]);
+
+  const EditSubChapter =
+    currentIndexEdit !== null ? subChapter[currentIndexEdit] : null;
+
+  const [assessmentType] = useState<string>('+5/0');
+
+  // const { mutate: updateCourse, isPending: isLoading } =
+  //   api.course.updateCourse.useMutation({
+  //     onSuccess(data, variables) {
+  //       alert('Success');
+  //       // toaster({
+  //       //   title: 'Success',
+  //       //   condition: 'success',
+  //       //   description: 'Berhasil Menyimpan Chapter',
+  //       //   duration: 3000,
+  //       // });
+  //       // resetCourse()
+  //       localStorage.removeItem(`temporary-course-${courseId}`);
+  //     },
+  //     onError(error, variables) {
+  //       alert(`${error.message}`);
+  //     },
+  //   });
+
+  const { mutate: updateCourse, isLoading } = useMutation(
+    '/course/updateCourse',
+    'put',
+    {
+      onSuccess() {
+        alert('Success');
+        localStorage.removeItem(`temporary-course-${courseId}`);
+      },
+      onError({ message }) {
+        alert(`${message}`);
+      },
+    },
+  );
+
+  // const { data: Course } = api.course.getCourseForUpdate.useQuery(
+  //   { courseId },
+  //   { refetchOnWindowFocus: false },
+  // );
+
+  const { data: Course } = useGet('/course/getCourseForUpdate', {
+    params: { courseId },
+    useEffectDependencies: [courseId],
+  });
+
+  // const { data: category, isLoading: isLoadingCategory } =
+  //   api.category.getAllCategoryAdminCourse.useQuery(undefined, {
+  //     refetchOnWindowFocus: false,
+  //     refetchOnMount: false,
+  //   });
+
+  const { data: category, isLoading: isLoadingCategory } = useGet<Category[]>(
+    '/category/getAllCategoryAdminCourse',
+  );
+
+  const { minimizeSidebar } = useAppContext();
+
+  // const resetCourse = async () => {
+  //     const fileDocument: string[] = []
+  //     const fileVideo: string[] = []
+  //     subChapter.forEach((sChapter) => {
+  //         if (sChapter.document && sChapter.document.length > 0) {
+  //             fileDocument.push(`course/${sChapter.document}`)
+  //         }
+  //         if (sChapter.video && sChapter.video.length > 0) {
+  //             fileVideo.push(`course/${sChapter.video}`)
+  //         }
+  //     })
+  //     setChapter(null)
+  //     setSubChapter([])
+  //     setAssesmentType("")
+  //     if (fileDocument.length > 0) {
+  //         await supabase.storage.from("pdf").remove(fileDocument)
+  //     }
+  //     if (fileVideo.length > 0) {
+  //         await supabase.storage.from("video").remove(fileVideo)
+  //     }
+  //     localStorage.removeItem(`temporary-course-${courseId}`)
+  // }
+
+  useEffect(() => {
+    if (Course?.chapter && Course.subChapter) {
+      setChapter(Course.chapter);
+      setSubChapter(Course.subChapter);
+    }
+  }, [Course]);
+
+  useEffect(() => {
+    if (assessmentType !== '') {
+      setSubChapter((prev) =>
+        prev.map((item, i: number) => {
+          if (i === currentIndexEdit) {
+            return { ...item, assessmentType: assessmentType };
+          }
+          return { ...item };
+        }),
+      );
+    }
+  }, [assessmentType]);
+
+  useEffect(() => {
+    const saveDataString = localStorage.getItem(
+      `temporary-course-${courseId}-${courseId}`,
+    );
+    if (saveDataString) {
+      const saveData = JSON.parse(saveDataString);
+      setChapter({ ...saveData.chapter });
+      setSubChapter([...saveData.subChapter]);
+    }
+    document.body.style.overflow = 'hidden';
+  }, []);
+
+  useEffect(() => {
+    const saveData = {
+      chapter,
+      subChapter,
+    };
+    if (chapter) {
+      localStorage.setItem(
+        `temporary-course-${courseId}-${courseId}`,
+        JSON.stringify(saveData),
+      );
+    }
+  }, [chapter, subChapter]);
+
+  const showToast = ({
+    value,
+    message,
+  }: {
+    value: boolean;
+    message: string;
+  }) => {
+    if (value) {
+      toaster({
+        title: 'Error',
+        description: message,
+        condition: 'warning',
+        duration: 3000,
+      });
+    }
+    return value;
+  };
+
+  const handleSubmit = () => {
+    if (subChapter.length === 0) {
+      toaster({
+        title: 'Error',
+        description: 'Buat Minimal 1 Sub Chapter',
+        condition: 'warning',
+        duration: 3000,
+      });
+    }
+    let checkTitleSubChapter = { value: false, message: '' };
+    let checkSpendTimeSubChapter = { value: false, message: '' };
+    let checkDescriptionSubChapter = { value: false, message: '' };
+    let checkTypeSubChapter = { value: false, message: '' };
+    let checkQuestion = { value: false, message: '' };
+    let checkAnswers = { value: false, message: '' };
+    let checkDocument = { value: false, message: '' };
+    let checkVideo = { value: false, message: '' };
+    let checkMateri = { value: false, message: '' };
+
+    subChapter.forEach((sChapter, index) => {
+      if (!sChapter.title || sChapter.title.length === 0) {
+        checkTitleSubChapter = {
+          value: true,
+          message: `Masukan Title SubChapter ke ${index + 1}`,
+        };
+      } else if (
+        !sChapter.spendTime ||
+        parseInt(sChapter.spendTime?.toString()) === 0
+      ) {
+        checkSpendTimeSubChapter = {
+          value: true,
+          message: `Masukan Lama Belajar SubChapter ke ${index + 1}`,
+        };
+      } else if (!sChapter.description || sChapter.description.length === 0) {
+        checkDescriptionSubChapter = {
+          value: true,
+          message: `Masukan Deskripsi SubChapter ke ${index + 1}`,
+        };
+      } else if (!sChapter.type) {
+        checkTypeSubChapter = {
+          value: true,
+          message: `Pilih Type SubChapter ke ${index + 1}`,
+        };
+      } else if (
+        (sChapter.type === 'DOCUMENT' && !sChapter.document) ||
+        sChapter.document?.length === 0
+      ) {
+        checkDocument = {
+          value: true,
+          message: `Pada sub chapter ${index + 1}, Document masih kosong`,
+        };
+      } else if (
+        (sChapter.type === 'VIDEO' && !sChapter.video) ||
+        sChapter.video?.length === 0
+      ) {
+        checkVideo = {
+          value: true,
+          message: `Pada sub chapter ${index + 1}, Video masih kosong`,
+        };
+      } else if (
+        (sChapter.type === 'MATERI' && !sChapter.materi) ||
+        sChapter.materi?.length === 0
+      ) {
+        checkMateri = {
+          value: true,
+          message: `Pada sub chapter ${index + 1}, Materi masih kosong`,
+        };
+      } else if (sChapter.type === 'TRYOUT') {
+        sChapter.Questions.forEach((quest, qIndex) => {
+          if (quest.question.length === 0) {
+            checkQuestion = {
+              value: true,
+              message: `Pada sub chapter ${index + 1}, Soal ${qIndex + 1} masih kosong`,
+            };
+          }
+          quest.Answers.forEach((answer) => {
+            if (answer.answer.length === 0) {
+              checkAnswers = {
+                value: true,
+                message: `Pada sub chapter ${index + 1}, Pada soal ${qIndex + 1} Jawaban masih ada yang kosong`,
+              };
+            }
+          });
+        });
+      }
+    });
+    if (showToast(checkTitleSubChapter)) return;
+    if (showToast(checkSpendTimeSubChapter)) return;
+    if (showToast(checkDescriptionSubChapter)) return;
+    if (showToast(checkTypeSubChapter)) return;
+    if (showToast(checkQuestion)) return;
+    if (showToast(checkAnswers)) return;
+    if (showToast(checkDocument)) return;
+    if (showToast(checkVideo)) return;
+    if (showToast(checkMateri)) return;
+
+    if (!chapter?.id) {
+      showToast({ value: true, message: 'ID Not Found!!' });
+      return;
+    }
+    if (!chapter?.categoryId) {
+      showToast({ value: true, message: 'Pilih Course Kategori' });
+      return;
+    }
+    if (chapter.status === undefined) {
+      showToast({ value: true, message: 'Pilih Course Status' });
+      return;
+    }
+    if (!chapter?.title) {
+      showToast({ value: true, message: 'Masukan Judul Course' });
+      return;
+    }
+    if (!chapter?.number) {
+      showToast({ value: true, message: 'Masukan Number Course' });
+      return;
+    }
+
+    const CourseSubChapter = subChapter.map((sChapter) => {
+      return {
+        id: sChapter.id || 'new',
+        title: sChapter.title || 'Default Title',
+        number: (sChapter.number && parseInt(sChapter.number.toString())) || 0,
+        description: sChapter.description || '',
+        spendTime:
+          (sChapter.spendTime && parseInt(sChapter.spendTime.toString())) || 0,
+        type: sChapter.type || 'TRYOUT',
+        tryoutSessionId: sChapter.tryoutSessionId,
+        document: sChapter.document,
+        premium: sChapter.premium !== undefined ? sChapter.premium : true,
+        video: sChapter.video,
+        materi: sChapter.materi,
+        Questions: sChapter.Questions.map((quest) => {
+          return {
+            id: quest.id || 'new',
+            number: quest.number || 0,
+            question: quest.question,
+            image: quest.image,
+            explanation: quest.explanation,
+            subCategory: quest.subCategory,
+            subSubCategory: quest.subSubCategory,
+            TryoutAnswers: quest.Answers.map((answer) => {
+              return {
+                id: answer.id || 'new',
+                answer: answer.answer,
+                value: answer.value,
+              };
+            }),
+          };
+        }),
+      };
+    });
+
+    const course = {
+      id: chapter.id,
+      categoryId: chapter.categoryId,
+      title: chapter.title,
+      status: chapter.status,
+      number: chapter.number,
+      CourseSubChapter,
+    };
+
+    updateCourse({ payload: course });
+  };
+
+  if (isLoadingCategory) {
+    return <Spinner />;
+  }
+
+  return (
+    <>
+      <LoadingPageWithText
+        loading={isLoading}
+        heading="Menyimpan Course Chapter..."
+      />
+      <div
+        className={cn(
+          'fixed left-0 top-[80px] h-full w-full bg-workspace duration-300',
+          minimizeSidebar && 'pl-[calc(73px+1rem)]',
+          !minimizeSidebar && 'pl-[calc(254px+1rem)]',
+        )}
+      >
+        <form
+          id="tryout-admin"
+          className="flex w-full"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
+          <div
+            className={cn(
+              'col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-[1rem] pt-[1rem] duration-300',
+              currentIndexEdit === null && 'col-span-5 w-[100%]',
+              currentIndexEdit !== null && !showDetailSubChapter && 'w-0',
+            )}
+          >
+            <ChapterOption
+              chapter={chapter}
+              subChapter={subChapter}
+              setSubChapter={setSubChapter}
+              setChapter={setChapter}
+              currentIndexEdit={currentIndexEdit}
+              setCurrentIndexEdit={setCurrentIndexEdit}
+              setQuestionIndex={setQuestionIndex}
+              isLoading={isLoading}
+              category={category}
+            />
+          </div>
+          <div
+            className={cn(
+              'relative col-span-3 mt-[1rem] h-[90vh] w-[60%] duration-300',
+              currentIndexEdit !== null &&
+                !showDetailSubChapter &&
+                'ml-[-1rem] w-full',
+              currentIndexEdit === null && 'w-0',
+            )}
+          >
+            <SubChapterOption
+              EditSubChapter={EditSubChapter}
+              setSubChapter={setSubChapter}
+              currentIndexEdit={currentIndexEdit}
+              setCurrentIndexEdit={setCurrentIndexEdit}
+              showDetailSubChapter={showDetailSubChapter}
+              setShowDetailSubChapter={setShowDetailSubChapter}
+              assessmentType={assessmentType}
+              questionIndex={questionIndex}
+              setQuestionIndex={setQuestionIndex}
+            />
+          </div>
+        </form>
+      </div>
+    </>
+  );
+};
+
+export default Index;

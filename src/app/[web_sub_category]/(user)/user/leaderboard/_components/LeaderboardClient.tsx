@@ -10,12 +10,14 @@ import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useEffect, useState } from 'react';
 
 export interface RankingTryoutProps {
+  tryoutId: string;
   topScore: number;
   bottomScore: number;
   averageScore: number;
   totalParticipants: number;
   rankingData: {
     rank: number;
+    maxScore: number;
     totalScore: number;
     averageScore: number;
     name: string;
@@ -24,14 +26,23 @@ export interface RankingTryoutProps {
     univChoice: string | undefined;
     univStudyChoice: string | undefined;
     image: string | null;
-    categoryResult: {
-      category: string;
+    // categoryResult: {
+    //   category: string;
+    //   totalScore: number;
+    //   averageScore: number;
+    //   isUnlocked: boolean;
+    // }[];
+    sessionResult: {
       totalScore: number;
-      averageScore: number;
+      sessionId: string;
+      category: string;
+      subCategory: string;
+      isUnlocked: boolean;
+      maxScore: number;
     }[];
   }[];
-  analisisCategory: {
-    category: string;
+  AnalisisCategory: {
+    name: string;
     totalScore: number;
     totalTheta: number;
     avgScore: number;
