@@ -12,7 +12,7 @@ export default function LandingPageWebsiteCategory() {
 
   const url = window.location.origin;
 
-  if (url.includes('bimbelio')) return notFound();
+  // if (url.includes('bimbelio')) return notFound();
 
   if (web_sub_category === 'snbt') {
     return <SNBT />;

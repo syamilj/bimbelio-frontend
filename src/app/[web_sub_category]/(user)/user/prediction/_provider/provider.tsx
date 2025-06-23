@@ -115,9 +115,8 @@ export default function Provider({ children }: Props) {
   const finalPercentage = ((utbkAvg / 1000 + simakScoreRAW / 540) / 2) * 100;
 
   // ===== Selects Tryout ===================================
-  const { data: SelectTryouts, isLoading: SelectTryoutsIsLoading } = useGet(
-    '/prediction/getTryoutSelects',
-  );
+  const { data: SelectTryouts, isLoading: SelectTryoutsIsLoading } =
+    useGet<SelectTryoutsType>('/prediction/getTryoutSelects');
 
   // ===== PredictionData ===================================
   const {
@@ -149,8 +148,6 @@ export default function Provider({ children }: Props) {
       });
     },
   });
-
-  console.log({ predictionId });
 
   useEffect(() => {
     if (PredictionData) {
@@ -207,6 +204,7 @@ export default function Provider({ children }: Props) {
 
   const searchParams = useSearchParams();
   const stepQuery = searchParams.get('step');
+  const tryoutIdQuery = searchParams.get('tryoutId');
 
   const TryoutData = PredictionData?.Tryout;
 
@@ -218,6 +216,17 @@ export default function Provider({ children }: Props) {
       setSelectedPrograms(undefined);
     }
   }, [stepQuery]);
+
+  useEffect(() => {
+    console.log({ tryoutIdQuery });
+    if (tryoutIdQuery && SelectTryouts && SelectTryouts.length > 0) {
+      const findData = SelectTryouts.find(
+        (item) => item.Tryout.id === tryoutIdQuery,
+      );
+      console.log({ findData, SelectTryouts });
+      if (findData) setTryoutId(findData.Tryout.id);
+    }
+  }, [tryoutIdQuery, SelectTryouts]);
 
   const Context = {
     selectedPrograms,
@@ -254,6 +263,7 @@ export default function Provider({ children }: Props) {
     },
     useParams: {
       predictionId,
+      tryoutId: tryoutIdQuery,
     },
     isFinish,
     isLock,
@@ -321,32 +331,7 @@ type ProviderType = {
   simakScores: SubTest[];
   setSIMAKScores: Dispatch<SetStateAction<SubTest[]>>;
   useSelectTryouts: {
-    SelectTryouts:
-      | undefined
-      | {
-          Tryout: {
-            id: string;
-            title: string;
-          };
-          Datas: {
-            sessionResultId: string;
-            sessionId: string;
-            category: {
-              id: string;
-              name: string;
-            };
-            subCategory: {
-              id: string;
-              name: string;
-            };
-            value: {
-              benar: number;
-              salah: number;
-              kosong: number;
-              totalQuestions: number;
-            };
-          }[];
-        }[];
+    SelectTryouts: SelectTryoutsType | null;
     SelectTryoutsIsLoading: boolean;
     tryoutId: string | null;
     setTryoutId: Dispatch<SetStateAction<string | null>>;
@@ -369,6 +354,7 @@ type ProviderType = {
   };
   useParams: {
     predictionId: string | null;
+    tryoutId: string | null;
   };
   isFinish: boolean;
   isLock: boolean;
@@ -605,3 +591,30 @@ const SUBTEST_QUESTIONS = {
   kuantitatif: 35,
   logika: 25,
 } as const;
+
+type SelectTryoutsType =
+  | undefined
+  | {
+      Tryout: {
+        id: string;
+        title: string;
+      };
+      Datas: {
+        sessionResultId: string;
+        sessionId: string;
+        category: {
+          id: string;
+          name: string;
+        };
+        subCategory: {
+          id: string;
+          name: string;
+        };
+        value: {
+          benar: number;
+          salah: number;
+          kosong: number;
+          totalQuestions: number;
+        };
+      }[];
+    }[];

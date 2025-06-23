@@ -345,7 +345,7 @@ export function RankingTable() {
                       </TableCell>
                       <TableCell className="font-medium text-right tabular-nums">
                         <span className="text-green-600">
-                          {participant.totalScore.toFixed(2)}
+                          {participant.totalScore.toFixed(0)}
                         </span>{' '}
                         <span className="text-gray-600">
                           /{participant.maxScore}
@@ -359,7 +359,7 @@ export function RankingTable() {
                           {item.isUnlocked ? (
                             <>
                               <span className="text-green-600">
-                                {item.totalScore.toFixed(2)}
+                                {item.totalScore.toFixed(0)}
                               </span>{' '}
                               <span className="text-gray-600">
                                 /{item.maxScore}
