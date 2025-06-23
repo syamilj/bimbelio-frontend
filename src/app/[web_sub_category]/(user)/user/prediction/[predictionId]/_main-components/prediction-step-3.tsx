@@ -26,7 +26,7 @@ export default function PredictionStep3() {
       simakScoreRAW,
       simakMaxScoreRAW,
     },
-    useParams: { predictionId },
+    useParams: { predictionId, tryoutId: tryoutIdParams },
     useSelectTryouts: { SelectTryouts, tryoutId, setTryoutId },
   } = useProvider();
 
@@ -136,6 +136,7 @@ export default function PredictionStep3() {
 
       <div className="">
         <Select
+          disabled={!!tryoutIdParams && tryoutIdParams === tryoutId}
           onValueChange={onChangeTryout}
           value={tryoutId ? tryoutId : 'placeholder'}
         >

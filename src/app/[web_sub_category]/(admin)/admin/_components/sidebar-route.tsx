@@ -1,6 +1,7 @@
 'use client';
 import { useAppContext } from '@/components/provider/provider-app';
 import ChooseWebCategory from '@/components/ui/choose-web-category';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
   IconBlogAdmin,
@@ -13,7 +14,6 @@ import {
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 import ActiveLink from './active-link';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 const SidebarRoute: FC = () => {
   const pathname = usePathname();
@@ -78,6 +78,23 @@ const SidebarRoute: FC = () => {
       ),
       href: `/${website_sub_category_id}/admin/plan`,
       label: 'Plan',
+    },
+    {
+      icon: (
+        <IconTryOut
+          w={20}
+          className={`text-[1.5rem] ${
+            !pathname?.toLowerCase().includes('/transaction')
+              ? 'text-main-gray-text2'
+              : 'text-white'
+          }`}
+          active={
+            pathname?.toLowerCase().includes('/transaction') ? true : false
+          }
+        />
+      ),
+      href: `/${website_sub_category_id}/admin/transaction`,
+      label: 'Transaction',
     },
     {
       icon: (

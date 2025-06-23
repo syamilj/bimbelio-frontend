@@ -11,16 +11,20 @@ export default function Page() {
   const { mutate, isLoading, success } = useMutation<{ token: string }>(
     '/auth/loginUserAccount',
     'post',
+    {
+      onSuccess({ data }) {
+        if (data?.token) {
+          Cookies.set('token', data?.token);
+          window.location.pathname = '/';
+        }
+      },
+    },
   );
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email');
     await mutate({ payload: { email } });
-    if (success?.data?.token) {
-      Cookies.set('token', success?.data?.token);
-      window.location.pathname = '/';
-    }
   };
   return (
     <form onSubmit={handleSubmit}>
