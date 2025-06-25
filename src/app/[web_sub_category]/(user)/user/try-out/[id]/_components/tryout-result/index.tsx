@@ -280,7 +280,7 @@ export default function TryoutResult({
 
   return (
     <div className="container mx-auto mt-[48px] px-4 py-6 md:mt-[52px]">
-      <PopUpPrediction />
+      {website_sub_category_id_params === 'simak-ui' && <PopUpPrediction />}
       <LoadingPageWithText
         loading={TestAgainTryoutLoading}
         heading="Mereset Data Tryout..."

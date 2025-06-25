@@ -392,7 +392,7 @@ export function AnalisisTab({
           </CardDescription>
         </CardHeader>
         <CardContent className="px-0">
-          <Tabs defaultValue="simulasi">
+          <Tabs defaultValue="analisis">
             <TabsList className="mb-8 flex w-fit gap-2">
               <TabsTrigger
                 value="analisis"
