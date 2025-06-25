@@ -27,6 +27,8 @@ export default function EditDocument() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [file, setFile] = useState<File | undefined>();
+  const [mdFile, setMdFile] = useState<File | undefined>();
+  const [fileUrl, setFileUrl] = useState<string | undefined>();
   const [fileName, setFileName] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [subCategory, setSubCategory] = useState<string>('');
@@ -66,6 +68,8 @@ export default function EditDocument() {
     categoryId: string;
     subCategoryId: string;
     url: string;
+    mdUrl?: string;
+    isDocsChange: boolean;
     img: string;
     premium: boolean;
     dateTo?: string;
@@ -77,14 +81,20 @@ export default function EditDocument() {
       payload,
       type: 'put',
       setLoading: setLoading,
-      onSuccess() {
+      async onSuccess() {
         fetchDocument();
+        await supabase.storage
+          .from('dump-embedding')
+          .remove([`${fileName || mdFile?.name}`]);
+        setMdFile(undefined);
       },
     });
   };
 
   useEffect(() => {
     if (editData) {
+      console.log({ editData });
+      setFileUrl(editData?.url);
       setFileName(editData?.title);
       setPremium(editData?.premium);
       setCategory(editData?.categoryId);
@@ -291,6 +301,7 @@ export default function EditDocument() {
               url: `${fileName}`,
               img: `${fileName}`,
               premium: premium,
+              isDocsChange: file ? true : false,
             });
           } else {
             await editDocument({
@@ -305,6 +316,7 @@ export default function EditDocument() {
               dateToUnlock,
               description,
               tokenTo: token,
+              isDocsChange: file ? true : false,
               // hourToUnlock: parseInt(`${hourToUnlock}`),
               // durationTo: parseInt(`${durationTo}`),
             });
@@ -331,7 +343,7 @@ export default function EditDocument() {
           if (file) {
             const { error: errorSaveNewPdf } = await supabase.storage
               .from('pdf')
-              .update(fileName, file, {
+              .update(`document/${fileName}`, file, {
                 cacheControl: '3600',
                 upsert: true,
               });
@@ -339,6 +351,21 @@ export default function EditDocument() {
               toaster({
                 title: 'Gagal',
                 description: `${errorSaveNewPdf?.message}`,
+                condition: 'warning',
+              });
+              setLoading(false);
+              return;
+            }
+          }
+          if (mdFile) {
+            const { error: mdError } = await supabase.storage
+              .from('dump-embedding')
+              .upload(`${fileName || mdFile.name}`, mdFile);
+
+            if (mdError) {
+              toaster({
+                title: 'Gagal',
+                description: `${mdError?.message}`,
                 condition: 'warning',
               });
               setLoading(false);
@@ -354,6 +381,10 @@ export default function EditDocument() {
               url: `${fileName}`,
               img: `${fileName}`,
               premium: premium,
+              isDocsChange: file ? true : false,
+              mdUrl: mdFile
+                ? `${fileName !== '' ? fileName : mdFile.name}`
+                : undefined,
             });
           } else {
             await editDocument({
@@ -368,6 +399,10 @@ export default function EditDocument() {
               dateToUnlock,
               description,
               tokenTo: token,
+              isDocsChange: file ? true : false,
+              mdUrl: mdFile
+                ? `${fileName !== '' ? fileName : mdFile.name}`
+                : undefined,
               // hourToUnlock: parseInt(`${hourToUnlock}`),
               // durationTo: parseInt(`${durationTo}`),
             });
@@ -376,7 +411,7 @@ export default function EditDocument() {
           if (file) {
             const { error: errorSaveNewPdf } = await supabase.storage
               .from('pdf')
-              .update(fileName, file, {
+              .update(`document/${fileName}`, file, {
                 cacheControl: '3600',
                 upsert: true,
               });
@@ -390,9 +425,24 @@ export default function EditDocument() {
               return;
             }
           }
+          if (mdFile) {
+            const { error: mdError } = await supabase.storage
+              .from('dump-embedding')
+              .upload(`${fileName || mdFile.name}`, mdFile);
+
+            if (mdError) {
+              toaster({
+                title: 'Gagal',
+                description: `${mdError?.message}`,
+                condition: 'warning',
+              });
+              setLoading(false);
+              return;
+            }
+          }
           const { error: errorUpdateImg } = await supabase.storage
             .from('img')
-            .update(fileName, thumbnail, {
+            .update(`document/${fileName}`, thumbnail, {
               cacheControl: '3600',
               upsert: true,
             });
@@ -414,6 +464,10 @@ export default function EditDocument() {
               url: `${fileName}`,
               img: `${fileName}`,
               premium: premium,
+              isDocsChange: file ? true : false,
+              mdUrl: mdFile
+                ? `${fileName !== '' ? fileName : mdFile.name}`
+                : undefined,
             });
           } else {
             await editDocument({
@@ -428,6 +482,10 @@ export default function EditDocument() {
               dateToUnlock,
               description,
               tokenTo: token,
+              isDocsChange: file ? true : false,
+              mdUrl: mdFile
+                ? `${fileName !== '' ? fileName : mdFile.name}`
+                : undefined,
               // hourToUnlock: parseInt(`${hourToUnlock}`),
               // durationTo: parseInt(`${durationTo}`),
             });
@@ -463,13 +521,29 @@ export default function EditDocument() {
             <div id="file">
               <UploadFile
                 heading="Dokumen"
-                contentText="Pilih dokumen untuk diupload (.pdf, max 5MB)"
+                contentText={
+                  fileUrl
+                    ? `${fileUrl}.pdf`
+                    : 'Pilih dokumen untuk diupload (.pdf, max 5MB)'
+                }
                 inputId="editDocumentFile"
-                buttonText="Upload Dokumen"
+                buttonText="Ubah Dokumen"
                 file={file}
                 setFile={setFile}
               />
             </div>
+            {file && (
+              <div id="file">
+                <UploadFile
+                  heading="MD (optional)"
+                  contentText="Pilih MD untuk diupload (.pdf, max 5MB)"
+                  inputId="editMdFile"
+                  buttonText="Upload md"
+                  file={mdFile}
+                  setFile={setMdFile}
+                />
+              </div>
+            )}
             {!to && (
               <div
                 id="name-file"
