@@ -27,7 +27,7 @@ export default function EditDocument() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [file, setFile] = useState<File | undefined>();
-  const [mdFile, setMdFile] = useState<File | undefined>();
+  const [docxUrl, setDocxUrl] = useState<File | undefined>();
   const [fileUrl, setFileUrl] = useState<string | undefined>();
   const [fileName, setFileName] = useState<string>('');
   const [category, setCategory] = useState<string>('');
@@ -68,7 +68,7 @@ export default function EditDocument() {
     categoryId: string;
     subCategoryId: string;
     url: string;
-    mdUrl?: string;
+    docxUrl?: string;
     isDocsChange: boolean;
     img: string;
     premium: boolean;
@@ -85,8 +85,8 @@ export default function EditDocument() {
         fetchDocument();
         await supabase.storage
           .from('dump-embedding')
-          .remove([`${fileName || mdFile?.name}`]);
-        setMdFile(undefined);
+          .remove([`${fileName || docxUrl?.name}`]);
+        setDocxUrl(undefined);
       },
     });
   };
@@ -357,10 +357,10 @@ export default function EditDocument() {
               return;
             }
           }
-          if (mdFile) {
+          if (docxUrl) {
             const { error: mdError } = await supabase.storage
               .from('dump-embedding')
-              .upload(`${fileName || mdFile.name}`, mdFile);
+              .upload(`${fileName || docxUrl.name}`, docxUrl);
 
             if (mdError) {
               toaster({
@@ -382,8 +382,8 @@ export default function EditDocument() {
               img: `${fileName}`,
               premium: premium,
               isDocsChange: file ? true : false,
-              mdUrl: mdFile
-                ? `${fileName !== '' ? fileName : mdFile.name}`
+              docxUrl: docxUrl
+                ? `${fileName !== '' ? fileName : docxUrl.name}`
                 : undefined,
             });
           } else {
@@ -400,8 +400,8 @@ export default function EditDocument() {
               description,
               tokenTo: token,
               isDocsChange: file ? true : false,
-              mdUrl: mdFile
-                ? `${fileName !== '' ? fileName : mdFile.name}`
+              docxUrl: docxUrl
+                ? `${fileName !== '' ? fileName : docxUrl.name}`
                 : undefined,
               // hourToUnlock: parseInt(`${hourToUnlock}`),
               // durationTo: parseInt(`${durationTo}`),
@@ -425,10 +425,10 @@ export default function EditDocument() {
               return;
             }
           }
-          if (mdFile) {
+          if (docxUrl) {
             const { error: mdError } = await supabase.storage
               .from('dump-embedding')
-              .upload(`${fileName || mdFile.name}`, mdFile);
+              .upload(`${fileName || docxUrl.name}`, docxUrl);
 
             if (mdError) {
               toaster({
@@ -465,8 +465,8 @@ export default function EditDocument() {
               img: `${fileName}`,
               premium: premium,
               isDocsChange: file ? true : false,
-              mdUrl: mdFile
-                ? `${fileName !== '' ? fileName : mdFile.name}`
+              docxUrl: docxUrl
+                ? `${fileName !== '' ? fileName : docxUrl.name}`
                 : undefined,
             });
           } else {
@@ -483,8 +483,8 @@ export default function EditDocument() {
               description,
               tokenTo: token,
               isDocsChange: file ? true : false,
-              mdUrl: mdFile
-                ? `${fileName !== '' ? fileName : mdFile.name}`
+              docxUrl: docxUrl
+                ? `${fileName !== '' ? fileName : docxUrl.name}`
                 : undefined,
               // hourToUnlock: parseInt(`${hourToUnlock}`),
               // durationTo: parseInt(`${durationTo}`),
@@ -524,7 +524,7 @@ export default function EditDocument() {
                 contentText={
                   fileUrl
                     ? `${fileUrl}.pdf`
-                    : 'Pilih dokumen untuk diupload (.pdf, max 5MB)'
+                    : 'Pilih dokumen untuk diupload (.pdf)'
                 }
                 inputId="editDocumentFile"
                 buttonText="Ubah Dokumen"
@@ -535,12 +535,12 @@ export default function EditDocument() {
             {file && (
               <div id="file">
                 <UploadFile
-                  heading="MD (optional)"
-                  contentText="Pilih MD untuk diupload (.pdf, max 5MB)"
-                  inputId="editMdFile"
+                  heading="Docx (optional)"
+                  contentText="Pilih docx untuk diupload (.pdf)"
+                  inputId="editDocxFile"
                   buttonText="Upload md"
-                  file={mdFile}
-                  setFile={setMdFile}
+                  file={docxUrl}
+                  setFile={setDocxUrl}
                 />
               </div>
             )}
@@ -731,7 +731,9 @@ const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
 
       reader.readAsDataURL(file);
     } else {
-      setPreviewImage(`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${fileName}`);
+      setPreviewImage(
+        `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/document/${fileName}`,
+      );
     }
   }, [file]);
 
