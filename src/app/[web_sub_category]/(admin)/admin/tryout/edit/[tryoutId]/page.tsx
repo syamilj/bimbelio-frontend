@@ -12,8 +12,10 @@ import { cn, getDateHourStr } from '@/lib/utils';
 import { TryoutSubCategory } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Loader2 } from 'lucide-react';
+import LZString from 'lz-string';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 export interface TryoutProps {
   id?: string;
@@ -266,8 +268,11 @@ const NewTryOut = () => {
     if (category.length > 0) {
       getTryoutForUpdate()
         .then((data) => {
-          const saveDataString = localStorage.getItem(
-            `temporary-edit-tryout-${tryoutId}`,
+          // const saveDataString = localStorage.getItem(
+          //   `temporary-edit-tryout-${tryoutId}`,
+          // );
+          const saveDataString = LZString.decompress(
+            localStorage.getItem(`temporary-edit-tryout-${tryoutId}`) || '',
           );
           console.log({ saveDataString });
           const tryoutData = data;
@@ -391,16 +396,25 @@ const NewTryOut = () => {
   //   document.body.style.overflow = 'hidden';
   // }, [tryoutId]);
 
+  const handleSetLocalData = useDebouncedCallback(
+    (tryoutId: string, saveData: any) => {
+      const notCompressed = JSON.stringify(saveData);
+      const compressed = LZString.compress(JSON.stringify(saveData));
+      localStorage.setItem(`temporary-edit-tryout-${tryoutId}`, compressed);
+      console.log('123');
+    },
+    1000,
+  );
+
   useEffect(() => {
     const saveData = {
       tryout,
       sessions,
     };
     if (tryout && tryout.id) {
-      localStorage.setItem(
-        `temporary-edit-tryout-${tryout.id}`,
-        JSON.stringify(saveData),
-      );
+      // const compressed = LZString.compress(JSON.stringify(saveData));
+      // localStorage.setItem(`temporary-edit-tryout-${tryout.id}`, compressed);
+      handleSetLocalData(tryout.id, saveData);
     }
   }, [tryout, sessions]);
 

@@ -25,6 +25,7 @@ export default function TambahDokumen() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [file, setFile] = useState<File | undefined>();
+  const [docxFile, setDocxFile] = useState<File | undefined>();
   const [thumbnail, setThumbnail] = useState<File | undefined>();
   const [video, setVideo] = useState<File | undefined>();
 
@@ -67,6 +68,7 @@ export default function TambahDokumen() {
     categoryId: string;
     subCategoryId: string;
     url: string;
+    docxUrl?: string;
     img: string;
     premium: boolean;
     dateTo?: string;
@@ -81,7 +83,8 @@ export default function TambahDokumen() {
       },
       type: 'post',
       setLoading: setLoading,
-      onSuccess() {
+      async onSuccess({ data }) {
+        console.log({ data });
         fetchDocument();
         setShowAddDocument(false);
         setFile(undefined);
@@ -97,6 +100,10 @@ export default function TambahDokumen() {
         setToken('');
         setDateTo('');
         setDateToUnlock('');
+        await supabase.storage
+          .from('dump-embedding')
+          .remove([`${fileName || docxFile?.name}`]);
+        setDocxFile(undefined);
       },
       async onError() {
         if (file && thumbnail && option === 'doc') {
@@ -108,6 +115,9 @@ export default function TambahDokumen() {
           await supabase.storage
             .from('img')
             .remove([`document/${documentFileName}`]);
+          await supabase.storage
+            .from('dump-embedding')
+            .remove([`${fileName || docxFile?.name}`]);
         }
       },
     });
@@ -118,6 +128,7 @@ export default function TambahDokumen() {
     categoryId: string;
     subCategoryId: string;
     urlDocs: string;
+    docxUrl?: string;
     img: string;
     titleVideo: string;
     urlVideo: string;
@@ -175,6 +186,17 @@ export default function TambahDokumen() {
 
   const AddDokumen = async () => {
     try {
+      // await addDokumen({
+      //   title: '',
+      //   categoryId: '',
+      //   subCategoryId: '',
+      //   url: '',
+      //   img: '',
+      //   mdUrl: '',
+      //   premium: false,
+      // });
+      // setLoading(false);
+      // return;
       setLoading(true);
       if (!to) {
         if (!file) {
@@ -331,6 +353,22 @@ export default function TambahDokumen() {
           .from('img')
           .upload(`document/${documentFileName}`, thumbnail);
 
+        if (docxFile) {
+          const { error: mdError } = await supabase.storage
+            .from('dump-embedding')
+            .upload(`${fileName || docxFile.name}`, docxFile);
+
+          if (mdError) {
+            toaster({
+              title: 'Gagal',
+              description: `${mdError?.message}`,
+              condition: 'warning',
+            });
+            setLoading(false);
+            return;
+          }
+        }
+
         if (pdf && img) {
           // alert('Berhasil Upload File');
           if (!to) {
@@ -340,6 +378,9 @@ export default function TambahDokumen() {
               subCategoryId: subCategory,
               url: `${fileName !== '' ? fileName : file.name}`,
               img: `${fileName !== '' ? fileName : file.name}`,
+              docxUrl: docxFile
+                ? `${fileName !== '' ? fileName : docxFile.name}`
+                : undefined,
               premium: premium,
             });
           } else {
@@ -348,6 +389,9 @@ export default function TambahDokumen() {
               categoryId: category,
               subCategoryId: subCategory,
               url: `${fileName !== '' ? fileName : file.name}`,
+              docxUrl: docxFile
+                ? `${fileName !== '' ? fileName : docxFile.name}`
+                : undefined,
               img: `${fileName !== '' ? fileName : file.name}`,
               premium: premium,
               dateTo,
@@ -366,6 +410,7 @@ export default function TambahDokumen() {
             condition: 'warning',
           });
           setLoading(false);
+          return;
         }
         if (imgError) {
           toaster({
@@ -374,6 +419,7 @@ export default function TambahDokumen() {
             condition: 'warning',
           });
           setLoading(false);
+          return;
         }
       }
       if (file && thumbnail && video && option === 'video') {
@@ -390,6 +436,22 @@ export default function TambahDokumen() {
             .from('video')
             .upload(`document/${videoName || video.name}`, video);
 
+        if (docxFile) {
+          const { error: mdError } = await supabase.storage
+            .from('dump-embedding')
+            .upload(`${fileName || docxFile.name}`, docxFile);
+
+          if (mdError) {
+            toaster({
+              title: 'Gagal',
+              description: `${mdError?.message}`,
+              condition: 'warning',
+            });
+            setLoading(false);
+            return;
+          }
+        }
+
         if (pdf && img && videoSave) {
           if (!to) {
             await addDocumentWithVideo({
@@ -397,6 +459,9 @@ export default function TambahDokumen() {
               categoryId: category,
               subCategoryId: subCategory,
               urlDocs: `${fileName !== '' ? fileName : file.name}`,
+              docxUrl: docxFile
+                ? `${fileName !== '' ? fileName : docxFile.name}`
+                : undefined,
               img: `${fileName !== '' ? fileName : file.name}`,
               titleVideo: videoName !== '' ? videoName : video.name,
               urlVideo: `${videoName !== '' ? videoName : video.name}`,
@@ -408,6 +473,9 @@ export default function TambahDokumen() {
               categoryId: category,
               subCategoryId: subCategory,
               urlDocs: `${fileName !== '' ? fileName : file.name}`,
+              docxUrl: docxFile
+                ? `${fileName !== '' ? fileName : docxFile.name}`
+                : undefined,
               img: `${fileName !== '' ? fileName : file.name}`,
               titleVideo: videoName !== '' ? videoName : video.name,
               urlVideo: `${videoName !== '' ? videoName : video.name}`,
@@ -475,12 +543,22 @@ export default function TambahDokumen() {
           <div className="flex flex-col gap-[1rem] text-[.9rem] font-medium">
             <div id="file">
               <UploadFile
-                heading="Dokumen"
-                contentText="Pilih dokumen untuk diupload (.pdf, max 5MB)"
+                heading="Pdf"
+                contentText="Pilih Pdf untuk diupload (.pdf)"
                 inputId="documentFile"
-                buttonText="Upload Dokumen"
+                buttonText="Upload Pdf"
                 file={file}
                 setFile={setFile}
+              />
+            </div>
+            <div id="file">
+              <UploadFile
+                heading="Docx (optional)"
+                contentText="Pilih Docx untuk diupload (.docx)"
+                inputId="docxFile"
+                buttonText="Upload Docx"
+                file={docxFile}
+                setFile={setDocxFile}
               />
             </div>
             {!to && (
