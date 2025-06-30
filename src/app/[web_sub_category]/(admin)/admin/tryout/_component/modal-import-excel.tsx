@@ -2,8 +2,10 @@
 
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { toaster } from '@/components/ui/toaster';
+import { supabase } from '@/supabaseClient';
 import { BlockNoteEditor } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
+import { Loader2 } from 'lucide-react';
 import Papa from 'papaparse';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { QuestionProps, SessionProps } from '../new/page';
@@ -20,6 +22,7 @@ const ModalImportCSV = ({
   const editor = useCreateBlockNote();
   const [open, setOpen] = useState<boolean>(false);
   const [file, setFile] = useState<File | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -33,6 +36,7 @@ const ModalImportCSV = ({
   }, [open]);
 
   const handleGenerate = () => {
+    setIsLoading(true);
     if (file) {
       Papa.parse(file, {
         header: true,
@@ -59,12 +63,61 @@ const ModalImportCSV = ({
                 };
               }
             });
-
             const ParseQuestions = await Promise.all(
               Questions.map(async (item) => {
+                let questionValue = item.question;
+
+                const matches = [
+                  ...item.question.matchAll(
+                    /!\[.*?\]\((data:image\/.*?;base64,.*?)\)/g,
+                  ),
+                ];
+
+                for (const match of matches) {
+                  const fullMatch = match[0];
+                  const base64Data = match[1];
+
+                  const parsed = base64Data.match(
+                    /^data:(image\/\w+);base64,(.+)$/,
+                  );
+                  if (!parsed) continue;
+
+                  const mime = parsed[1];
+                  const ext = mime.split('/')[1];
+                  const base64 = parsed[2];
+
+                  const fileName = `${crypto.randomUUID()}.${ext}`;
+                  const buffer = Buffer.from(base64, 'base64');
+
+                  const { error } = await supabase.storage
+                    .from('dump-images')
+                    .upload(fileName, buffer, {
+                      contentType: mime,
+                      upsert: true,
+                    });
+
+                  if (error) {
+                    console.error('Upload error:', error);
+                    continue;
+                  }
+
+                  const { data: publicUrlData } = supabase.storage
+                    .from('dump-images')
+                    .getPublicUrl(fileName);
+
+                  const publicUrl = publicUrlData?.publicUrl || '';
+
+                  questionValue = questionValue.replace(
+                    fullMatch,
+                    `![Gambar](${publicUrl})`,
+                  );
+                }
+
+                console.log({ questionValue });
+
                 return {
                   ...item,
-                  question: await ParseMarkdownToHTML(item.question, editor),
+                  question: await ParseMarkdownToHTML(questionValue, editor),
                   Answers: await Promise.all(
                     item.Answers.map(async (aItem) => {
                       return {
@@ -80,6 +133,7 @@ const ModalImportCSV = ({
                 };
               }),
             );
+
             if (!isAssesmentTypeValid.value) {
               toaster({
                 title: `Number ${isAssesmentTypeValid.number}`,
@@ -89,6 +143,7 @@ const ModalImportCSV = ({
               });
               return;
             }
+            console.log({ ParseQuestions });
             setSessions((prev) =>
               prev.map((session, sessionId) => {
                 if (sessionId === currentIndexEdit) {
@@ -101,6 +156,7 @@ const ModalImportCSV = ({
               }),
             );
             setOpen(false);
+            setIsLoading(false);
             return;
           }
 
@@ -177,6 +233,7 @@ const ModalImportCSV = ({
               condition: 'warning',
               description: 'Format Answer Tidak Valid!',
             });
+            setIsLoading(false);
             return;
           }
 
@@ -187,6 +244,7 @@ const ModalImportCSV = ({
               description: 'Sesuaikan jumlah jawaban dengan tipe penilaian!',
               duration: 3000,
             });
+            setIsLoading(false);
             return;
           }
 
@@ -201,6 +259,7 @@ const ModalImportCSV = ({
               return { ...session };
             }),
           );
+          setIsLoading(false);
           setOpen(false);
         },
         error: function (error: any) {
@@ -210,6 +269,7 @@ const ModalImportCSV = ({
             condition: 'warning',
             description: 'Gagal membaca file CSV!',
           });
+          setIsLoading(false);
         },
       });
     }
@@ -217,7 +277,7 @@ const ModalImportCSV = ({
 
   return (
     <Dialog
-      open={open}
+      open={isLoading ? true : open}
       onOpenChange={setOpen}
     >
       <DialogTrigger>
@@ -256,12 +316,17 @@ const ModalImportCSV = ({
               onChange={(e) => handleChangeFile(e)}
             />
             {file ? (
-              <div
+              <button
                 className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
                 onClick={handleGenerate}
+                disabled={isLoading}
               >
-                Generate
-              </div>
+                {isLoading ? (
+                  <Loader2 className="animate-spin w-4 h-4 mx-auto" />
+                ) : (
+                  'Generate'
+                )}
+              </button>
             ) : (
               <div
                 className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
