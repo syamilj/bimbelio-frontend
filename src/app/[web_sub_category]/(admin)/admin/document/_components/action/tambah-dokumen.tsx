@@ -2,7 +2,6 @@
 
 import type React from 'react';
 
-import uploadFile from '@/_assest/icon/uploadDokumen.png';
 import { useSession } from '@/components/provider/provider-session-auth';
 import LoadingPage from '@/components/ui/Loading-Page';
 import { toaster } from '@/components/ui/toaster';
@@ -10,6 +9,7 @@ import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { getDateForInput, getHours } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import type { Category, Subcategory } from '@/types/database';
+import { UploadIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../../provider';
@@ -937,10 +937,7 @@ export const UploadFile = ({
         {!image ? (
           <>
             <div className="flex flex-col items-center gap-[.5rem] text-center">
-              <Image
-                src={uploadFile || '/placeholder.svg'}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-              />
+              <UploadIcon />
               <p className="text-[.8rem] text-main-gray-text">
                 {!file ? (
                   <>
@@ -971,10 +968,7 @@ export const UploadFile = ({
             {!previewImage ? (
               <>
                 <div className="flex flex-col items-center gap-[.5rem] text-center">
-                  <Image
-                    src={uploadFile || '/placeholder.svg'}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-                  />
+                  <UploadIcon />
                   <p className="text-[.8rem] text-main-gray-text">
                     {!file ? (
                       <>

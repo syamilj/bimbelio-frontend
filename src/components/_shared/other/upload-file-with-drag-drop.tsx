@@ -3,6 +3,7 @@
 import type React from 'react';
 
 import uploadFile from '@/_assest/icon/uploadDokumen.png';
+import { UploadIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -180,10 +181,7 @@ export const UploadFile = ({
             {!previewImage ? (
               <>
                 <div className="flex flex-col items-center gap-[.5rem] text-center">
-                  <Image
-                    src={uploadFile || '/placeholder.svg'}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-                  />
+                  <UploadIcon />
                   <p className="text-[.8rem] text-main-gray-text">
                     {!file ? (
                       <>
