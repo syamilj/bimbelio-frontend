@@ -519,7 +519,7 @@ const RegistrationTryOut = ({
 
           {!isHideTargetValue && (
             <InputNumber
-              heading="Target Nilai SNBT/UTBK (0-1000)"
+              heading="Target Nilai PTN dan Kedinasan (0-1000)"
               placeholder="Target Nilai"
               value={TargetNilai} // Kirim sebagai number
               setValue={setTargetNilai} // Fungsi menerima number

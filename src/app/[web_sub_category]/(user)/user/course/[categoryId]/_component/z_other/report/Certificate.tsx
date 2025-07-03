@@ -45,7 +45,7 @@ export default function Certificate({
               <div className="relative w-full h-12 mb-4">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Logo-White-16:9-vEbhZ999MJFwslR8y73eQAX1U6OOc3.png"
-                  alt="TutorSNBT Logo"
+                  alt="Bimbelio Logo"
                   fill
                   className="object-contain"
                   priority
@@ -80,7 +80,7 @@ export default function Certificate({
                   />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">TutorSNBT</p>
+                  <p className="font-semibold text-gray-800">Bimbelio</p>
                   <p className="text-xs text-gray-500">{currentDate}</p>
                 </div>
               </div>

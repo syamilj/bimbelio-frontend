@@ -168,7 +168,7 @@ const AddBlogAdmin = () => {
       id="blog-admin"
       className="flex w-full flex-col gap-[2rem] bg-white p-[1rem]"
     >
-      <h1 className="text-center text-[1.2rem] font-bold">TutorSNBT Blog</h1>
+      <h1 className="text-center text-[1.2rem] font-bold">Bimbelio Blog</h1>
       <div className="flex flex-col gap-[.5rem]">
         <InputText
           heading="Title"

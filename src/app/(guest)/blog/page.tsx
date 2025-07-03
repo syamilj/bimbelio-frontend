@@ -103,14 +103,14 @@ export default function BlogClient() {
     <Fragment>
       <Navbar />
       <Head>
-        <title>Blog SNBT dan UTBK</title>
+        <title>Blog Bimbelio</title>
         <meta
           name="description"
-          content="Temukan inspirasi, wawasan, dan strategi terkini untuk sukses dalam seleksi SNBT/UTBK. Baca Blog-Blog pilihan dari para ahli yang dibuat oleh TutorSNBT."
+          content="Temukan inspirasi, wawasan, dan strategi terkini untuk sukses dalam seleksi PTN dan Kedinasan. Baca Blog-Blog pilihan dari para ahli yang dibuat oleh Bimbelio."
         />
         <meta
           name="keywords"
-          content="SNBT, SNBP, TutorSNBT. UTBK, tips belajar, persiapan ujian, strategi ujian"
+          content="SNBT, SNBP, Bimbelio. UTBK, tips belajar, persiapan ujian, strategi ujian"
         />
       </Head>
       <div className="container mx-auto px-4 py-8 pt-[7rem] bg-workspace">
@@ -119,7 +119,7 @@ export default function BlogClient() {
         </h1>
         <p className="mx-auto mb-12 max-w-2xl text-center text-muted-foreground">
           Temukan inspirasi, wawasan, dan strategi terkini untuk sukses dalam
-          seleksi SNBT/UTBK.
+          seleksi PTN dan Kedinasan.
         </p>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">

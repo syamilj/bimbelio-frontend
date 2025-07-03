@@ -149,7 +149,7 @@ export const UploadFile = ({
             <div className="flex flex-col items-center gap-[.5rem] text-center">
               <Image
                 src={uploadFile || '/placeholder.svg'}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               />
               <p className="text-[.8rem] text-main-gray-text">
                 {!file ? (
@@ -212,7 +212,7 @@ export const UploadFile = ({
                 <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
                   <Image
                     src={previewImage || '/placeholder.svg'}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                    alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                     layout="responsive"
                     width={500}
                     height={300}

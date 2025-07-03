@@ -5,7 +5,7 @@ export function AlurPembelajaranSection() {
     <section className="space-y-6 pt-8">
       <div className="text-center space-y-2">
         <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
-          Alur Pembelajaran TutorSNBT
+          Alur Pembelajaran Bimbelio
         </h2>
         <div className="w-20 h-1 bg-yellow-400 mx-auto mb-4"></div>
         <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">

@@ -756,7 +756,7 @@ const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
             {/* <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
               <Image
                 src={previewImage}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                 layout="responsive"
                 width={500}
                 height={300}
@@ -791,7 +791,7 @@ const UploadImage = ({ file, setFile, heading, inputId, fileName }: any) => {
             <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
               <Image
                 src={previewImage}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                 layout="responsive"
                 width={500}
                 height={300}
@@ -869,7 +869,7 @@ const UploadFile = ({
             <div className="flex flex-col items-center gap-[.5rem] text-center">
               <Image
                 src={uploadFileImg}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               />
               <p className="text-[.8rem] text-main-gray-text">
                 {!file ? `${contentText}` : `${file.name}`}
@@ -891,7 +891,7 @@ const UploadFile = ({
                 <div className="flex flex-col items-center gap-[.5rem] text-center">
                   <Image
                     src={uploadFileImg}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                    alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                   />
                   <p className="text-[.8rem] text-main-gray-text">
                     {!file ? `${contentText}` : `${file.name}`}
@@ -911,7 +911,7 @@ const UploadFile = ({
                 <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
                   <Image
                     src={previewImage}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                    alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                     layout="responsive"
                     width={500}
                     height={300}

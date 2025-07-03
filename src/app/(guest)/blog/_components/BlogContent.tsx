@@ -276,7 +276,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     />
                   </Avatar>
                   <div>
-                    <span className="text-sm font-medium">TutorSNBT</span>
+                    <span className="text-sm font-medium">Bimbelio</span>
                     <span className="block text-xs text-main-gray-text">
                       @admin
                     </span>

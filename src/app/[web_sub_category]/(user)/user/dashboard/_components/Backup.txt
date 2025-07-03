@@ -217,17 +217,17 @@ dataScoreDistribution,
 analysisByCategoryTryout,
 } = reportData            ;
 
-                      ;
+;
 
 return (
 <div className="min-h-screen bg-gray-100">
 <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 <div className="mb-8">
 <h2 className="mb-2 text-3xl font-bold text-gray-900">
-Laporan Perkembangan Belajar SNBT/UTBK
+Laporan Perkembangan Belajar PTN dan Kedinasan
 </h2>
 <p className="text-gray-600">
-Pantau kemajuan Kamu dan tingkatkan persiapan ujian SNBT/UTBK
+Pantau kemajuan Kamu dan tingkatkan persiapan ujian PTN dan Kedinasan
 </p>
 </div>
 
@@ -246,7 +246,7 @@ alt="Foto Profil"
 <div>
 <h2 className="text-2xl font-bold">{userHeader.name}</h2>
 <p className="text-gray-600">
-Peserta SNBT/UTBK 2024 - Formasi Umum
+Peserta PTN dan Kedinasan 2024 - Formasi Umum
 </p>
 <div className="mt-2 space-x-2 capitalize">
 <Badge>{userHeader.status}</Badge>
@@ -433,7 +433,7 @@ tryoutHistory.history?.map((tryout, index) => (
 const thisSession =
 tryout?.TryoutSessionResult.find(
 (item) => item.categoryId === category.id,
-)                                                                                                                    ;
+)                                                                                                              ;
 if (!tryout.show)
 return (
 <TableCell
@@ -442,7 +442,7 @@ className="text-center"
 >
 ...?
 </TableCell>
-)                                                                                                                    ;
+)                                                                                                              ;
 return (
 <TableCell
 key={index}
@@ -452,7 +452,7 @@ className="text-center"
 {thisSession && ' / '}
 {thisSession?.TryoutSession.thresholdValue}
 </TableCell>
-)                                                                                                                    ;
+)                                                                                                              ;
 })}
 <TableCell className="text-center">
 {tryout.show ? tryout.rank : '...?'}
@@ -526,7 +526,7 @@ name="Peringkat"
 </ResponsiveContainer>
 <p className="mt-4 text-sm text-muted-foreground">
 Grafik ini menunjukkan perkembangan skor total dan peringkat
-Kamu dalam tryout SNBT/UTBK. Garis biru menunjukkan skor
+Kamu dalam tryout PTN dan Kedinasan. Garis biru menunjukkan skor
 total, sedangkan garis hijau menunjukkan peringkat Kamu.
 </p>
 </TabsContent>
@@ -627,7 +627,7 @@ name="Perubahan"
 </ResponsiveContainer>
 <p className="mt-4 text-sm text-muted-foreground">
 Grafik ini menunjukkan perkembangan skor total dan peringkat
-Kamu dalam tryout SNBT/UTBK. Garis biru menunjukkan skor
+Kamu dalam tryout PTN dan Kedinasan. Garis biru menunjukkan skor
 total, sedangkan garis hijau menunjukkan peringkat Kamu.
 </p>
 </TabsContent>
@@ -922,7 +922,7 @@ name="Rata-rata Skor"
 </BarChart>
 </ResponsiveContainer>
 <p className="mt-4 text-sm text-muted-foreground">
-Grafik ini menunjukkan distribusi skor peserta SNBT/UTBK.
+Grafik ini menunjukkan distribusi skor peserta PTN dan Kedinasan.
 Batang biru menunjukkan jumlah peserta dalam setiap rentang
 skor, sedangkan garis hijau menunjukkan rata-rata skor untuk
 setiap rentang.
@@ -957,7 +957,7 @@ setiap rentang.
 </div>
 <p className="mt-4 text-sm text-muted-foreground">
 Tabel ini menunjukkan detail distribusi skor peserta
-SNBT/UTBK, termasuk jumlah peserta, persentase, skor
+PTN dan Kedinasan, termasuk jumlah peserta, persentase, skor
 tertinggi, terendah, dan rata-rata untuk setiap rentang skor.
 </p>
 </TabsContent>

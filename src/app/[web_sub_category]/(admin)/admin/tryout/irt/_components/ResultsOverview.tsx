@@ -263,7 +263,7 @@ export default function ResultsOverview({
       {/* <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Distribusi Skor SNBT/UTBK per Bagian</CardTitle>
+            <CardTitle>Distribusi Skor PTN dan Kedinasan per Bagian</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={400}>

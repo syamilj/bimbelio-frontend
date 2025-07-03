@@ -195,7 +195,8 @@ export default function UTBKSIMAKPredictor() {
                           </Link>
                         </TooltipTrigger>
                         <TooltipContent>
-                          Lanjutkan tryout SNBT/UTBK yang sedang berlangsung.
+                          Lanjutkan tryout PTN dan Kedinasan yang sedang
+                          berlangsung.
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -413,8 +414,8 @@ const STEPS = [
                   </TooltipTrigger>
                   <TooltipContent>
                     {item.status === "ongoing"
-                      ? "Lanjutkan tryout SNBT/UTBK yang sedang berlangsung."
-                      : "Daftar untuk mengikuti tryout SNBT/UTBK ini."}
+                      ? "Lanjutkan tryout PTN dan Kedinasan yang sedang berlangsung."
+                      : "Daftar untuk mengikuti tryout PTN dan Kedinasan ini."}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

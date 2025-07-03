@@ -213,7 +213,7 @@ const EditBlogAdmin = () => {
       className="flex w-full flex-col gap-[2rem] bg-white p-[1rem]"
     >
       <h1 className="text-center text-[1.2rem] font-bold">
-        Edit TutorSNBT Blog
+        Edit Bimbelio Blog
       </h1>
       <div className="flex flex-col gap-[.5rem]">
         <InputText
@@ -497,7 +497,7 @@ const UploadFile = ({
             <div className="flex flex-col items-center gap-[.5rem] text-center">
               <Image
                 src={uploadFile}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               />
               <p className="text-[.8rem] text-main-gray-text">
                 {!file
@@ -521,7 +521,7 @@ const UploadFile = ({
                 <div className="flex flex-col items-center gap-[.5rem] text-center">
                   <Image
                     src={uploadFile}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                    alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                   />
                   <p className="text-[.8rem] text-main-gray-text">
                     {!file
@@ -543,7 +543,7 @@ const UploadFile = ({
                 <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
                   <Image
                     src={previewImage}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                    alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                     layout="responsive"
                     width={500}
                     height={300}

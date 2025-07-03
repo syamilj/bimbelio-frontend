@@ -27,23 +27,23 @@ import { Fragment } from 'react';
 //   const blog = await getBlogBySlug(params.slug);
 //   if (!blog) {
 //     return {
-//       title: 'Blog Not Found | TutorSNBT',
+//       title: 'Blog Not Found | Bimbelio',
 //       description: 'Maaf, artikel tidak ditemukan.',
 //       openGraph: {
-//         title: 'Blog Not Found | TutorSNBT',
+//         title: 'Blog Not Found | Bimbelio',
 //         description: 'Maaf, artikel tidak ditemukan.',
 //       },
 //       twitter: { card: 'summary_large_image' },
 //     };
 //   }
 //   return {
-//     title: `${blog.title} | TutorSNBT Blog`,
+//     title: `${blog.title} | Bimbelio Blog`,
 //     description:
-//       blog.description ?? `Baca tentang ${blog.title} di TutorSNBT Artikel`,
+//       blog.description ?? `Baca tentang ${blog.title} di Bimbelio Artikel`,
 //     openGraph: {
-//       title: `${blog.title} | TutorSNBT Artikel`,
+//       title: `${blog.title} | Bimbelio Artikel`,
 //       description:
-//         blog.description ?? `Baca tentang ${blog.title} di TutorSNBT Artikel`,
+//         blog.description ?? `Baca tentang ${blog.title} di Bimbelio Artikel`,
 //       images: [blog.thumbnail],
 //       type: 'article',
 //     },
