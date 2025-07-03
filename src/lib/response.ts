@@ -9,12 +9,10 @@ export const responseError = (
 ) => {
   if (showToast) {
     toaster({
-      title: toastTitle || 'Error',
+      title: toastTitle || 'Gagal',
       condition: 'warning',
       description:
-        toastMessage ||
-        (error as any).response.data.message ||
-        'Internal Server Error',
+        toastMessage || (error as any).response.data.message || 'Gagal',
       duration: 2500,
     });
   }
@@ -41,9 +39,9 @@ export const response = (
 } => {
   if (showToast) {
     toaster({
-      title: toastTitle || 'Successfully',
+      title: toastTitle || 'Berhasil',
       condition: 'success',
-      description: toastMessage || res.data.message || 'Succesfully',
+      description: toastMessage || res.data.message || 'Berhasil',
       duration: 2500,
     });
   }
