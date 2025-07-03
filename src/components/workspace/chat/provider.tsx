@@ -66,16 +66,17 @@ export default function Provider({
   const [firstMessage, setFirstMessage] = useState<boolean>(false);
 
   const scrollToPdfPage = (pageNum: number) => {
-    const containerId = vision ? 'VisionOn' : 'VisionOff';
-    const selector = `#${containerId} #pdf-page-${pageNum}`;
-    const pageElement = document.querySelector(selector);
-
-    if (pageElement) {
-      pageElement.scrollIntoView({ behavior: 'smooth' });
-      setCurrentPage(pageNum);
-    } else {
-      console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
-    }
+    setTimeout(() => {
+      const containerId = vision ? 'VisionOn' : 'VisionOff';
+      const selector = `#${containerId} #pdf-page-${pageNum}`;
+      const pageElement = document.querySelector(selector);
+      if (pageElement) {
+        pageElement.scrollIntoView({ behavior: 'smooth' });
+        setCurrentPage(pageNum);
+      } else {
+        console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
+      }
+    }, 200); // delay kecil agar render page dulu
   };
 
   const {
