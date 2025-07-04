@@ -325,6 +325,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
       id="DocViewer"
       className="flex h-full flex-1 flex-col"
     >
+
       <HeaderPdf
         doc={doc}
         isCourseDone={isCourseDone}

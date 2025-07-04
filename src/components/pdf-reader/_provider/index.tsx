@@ -153,6 +153,46 @@ export default function Provider({ children, doc }: Props) {
     }
   };
 
+  // Fixed function for scrolling to page
+  const scrollToPdfPage = (pageNum: number) => {
+    const containerId = vision ? 'VisionOn' : 'VisionOff';
+    const selector = `#${containerId} #pdf-page-${pageNum}`;
+    const pageElement = document.querySelector(selector);
+
+    if (pageElement) {
+      // Get the container to scroll within
+      const container = document.querySelector(
+        `#${containerId} .PdfHighlighter`,
+      );
+      if (container) {
+        // Calculate the position relative to the container
+        const containerRect = container.getBoundingClientRect();
+        const pageRect = pageElement.getBoundingClientRect();
+        const scrollTop =
+          container.scrollTop + (pageRect.top - containerRect.top) - 50; // 50px offset from top
+
+        // Smooth scroll to the calculated position
+        container.scrollTo({
+          top: Math.max(0, scrollTop), // Ensure not negative
+          behavior: 'smooth',
+        });
+
+        // Update current page state immediately
+        setCurrentPage(pageNum);
+      } else {
+        // Fallback to scrollIntoView
+        pageElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
+        setCurrentPage(pageNum);
+      }
+    } else {
+      console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
+    }
+  };
+
   useEffect(() => {
     const updateHash = () => {
       const currentHash = window.location.hash.slice(1);
@@ -192,6 +232,7 @@ export default function Provider({ children, doc }: Props) {
       setSearchPdf,
       editPage,
       setEditPage,
+      scrollToPdfPage, // Add this to context
     },
     useHighlights: {
       highlights,
@@ -242,6 +283,7 @@ type ProviderType = {
     setSearchPdf: Dispatch<SetStateAction<string>>;
     editPage: boolean;
     setEditPage: Dispatch<SetStateAction<boolean>>;
+    scrollToPdfPage: (pageNum: number) => void; // Add this type
   };
   useHighlights: {
     highlights: DocDataType['highlights'];

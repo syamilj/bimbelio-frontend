@@ -1,6 +1,7 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
-import { Document, User, UserDocument } from '@/types/database';
+import type { Document } from '@/types/database';
+import { User, UserDocument } from '@/types/database';
 import type {
   ChatRequestOptions,
   CreateMessage,
@@ -66,21 +67,32 @@ export default function Provider({
   const [firstMessage, setFirstMessage] = useState<boolean>(false);
 
   const scrollToPdfPage = (pageNum: number) => {
-    setTimeout(() => {
-      const containerId = vision ? 'VisionOn' : 'VisionOff';
-      const selector = `#${containerId} #pdf-page-${pageNum}`;
-      const pageElement = document.querySelector(selector);
-      if (pageElement) {
-        pageElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-          inline: 'nearest',
-        });
-        setCurrentPage(pageNum);
-      } else {
-        console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
-      }
-    }, 200);
+    const containerId = vision ? 'VisionOn' : 'VisionOff';
+    const selector = `#${containerId} #pdf-page-${pageNum}`;
+
+    // Check if we're in a document viewer context
+    const isInDocViewer = document.querySelector('#DocViewer');
+
+    if (!isInDocViewer) {
+      return;
+    }
+
+    const pageElement = document.querySelector(selector);
+    const container = document.querySelector(`#${containerId} .PdfHighlighter`);
+
+    if (pageElement && container) {
+      const containerRect = container.getBoundingClientRect();
+      const pageRect = pageElement.getBoundingClientRect();
+      const scrollTop =
+        container.scrollTop + (pageRect.top - containerRect.top) - 50;
+
+      container.scrollTo({
+        top: Math.max(0, scrollTop),
+        behavior: 'smooth',
+      });
+
+      setCurrentPage(pageNum);
+    }
   };
 
   const {
@@ -295,3 +307,4 @@ export type MessageDataType = {
   like: boolean;
   dislike: boolean;
 };
+document: Document;

@@ -53,19 +53,17 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
       setZoomValue,
       vision,
       setVision,
+      scrollToPdfPage, // Get from provider
     },
   } = useProvider();
 
-  const scrollToPdfPage = (pageNum: number) => {
-    const containerId = vision ? 'VisionOn' : 'VisionOff';
-    const selector = `#${containerId} #pdf-page-${pageNum}`;
-    const pageElement = document.querySelector(selector);
-
-    if (pageElement) {
-      pageElement.scrollIntoView({ behavior: 'smooth' });
-      setCurrentPage(pageNum);
+  // Remove the local scrollToPdfPage function and use the one from provider
+  const scrollToPage = () => {
+    if (currentPage > 0 && currentPage <= (totalPage || 1)) {
+      scrollToPdfPage(currentPage);
     } else {
-      console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
+      // fallback, misal ke halaman 1
+      scrollToPdfPage(1);
     }
   };
 
@@ -97,17 +95,6 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
     }
     if (parameter === 'reset') {
       setZoomValue('page-width');
-    }
-  };
-
-  // Contoh panggilan scroll ke halaman PDF
-  const scrollToPage = () => {
-    if (currentPage > 0) {
-      // Panggil fungsi context
-      scrollToPdfPage(currentPage);
-    } else {
-      // fallback, misal ke halaman 1
-      scrollToPdfPage(1);
     }
   };
 

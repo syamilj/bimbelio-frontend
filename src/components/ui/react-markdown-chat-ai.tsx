@@ -9,12 +9,6 @@ import ReactMarkdown from 'react-markdown';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from './tooltip';
 
 interface ReactMarkdownProps {
   value: string;
@@ -58,13 +52,14 @@ export default function ReactMarkdownChatAI({
       .replace(/\\\)/g, '$$$');
   };
 
-  // Badge <PAGE#n> dan <PAGE#n-m>
+  // Badge <PAGE#n> dan <PAGE#n-m> - Fixed to avoid nested elements
   const processPageTags = (content: React.ReactNode): React.ReactNode => {
     if (typeof content !== 'string') {
       return React.Children.map(content, (child) =>
         typeof child === 'string' ? processPageTags(child) : child,
       );
     }
+
     const parts = content.split(/(<PAGE#\d+(?:-\d+)?>)/g);
     return parts.flatMap((part, idx) => {
       const rangeMatch = part.match(/^<PAGE#(\d+)-(\d+)>$/);
@@ -75,24 +70,17 @@ export default function ReactMarkdownChatAI({
           return Array.from({ length: end - start + 1 }).map((_, i) => {
             const pageNum = start + i;
             return (
-              <TooltipProvider key={`${idx}-${pageNum}`}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      className="mx-0.5 px-1.5 py-0.5 h-5 rounded-full text-[10px] align-super font-semibold bg-blue-100 hover:bg-blue-200 border-blue-200 transition-colors duration-200"
-                      onClick={() => {
-                        if (scrollToPdfPage) scrollToPdfPage(pageNum);
-                        if (onClickPageNumber) onClickPageNumber();
-                      }}
-                    >
-                      {pageNum}
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent className="rounded-full h-8 w-full text-white font-medium bg-main font-center flex justify-center items-center">
-                    <p>Scroll ke Hal. {pageNum}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <button
+                key={`${idx}-${pageNum}`}
+                className="mx-0.5 px-1.5 py-0.5 h-5 rounded-full text-[10px] align-super font-semibold bg-blue-100 hover:bg-blue-200 border-blue-200 transition-colors duration-200 inline-block"
+                onClick={() => {
+                  if (scrollToPdfPage) scrollToPdfPage(pageNum);
+                  if (onClickPageNumber) onClickPageNumber();
+                }}
+                title={`Scroll ke Hal. ${pageNum}`}
+              >
+                {pageNum}
+              </button>
             );
           });
         }
@@ -101,24 +89,17 @@ export default function ReactMarkdownChatAI({
       if (singleMatch) {
         const pageNum = parseInt(singleMatch[1], 10);
         return (
-          <TooltipProvider key={idx}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className="mx-0.5 px-1.5 py-0.5 h-5 rounded-full text-[10px] align-super font-semibold bg-blue-100 hover:bg-blue-200 border-blue-200 transition-colors duration-200"
-                  onClick={() => {
-                    if (scrollToPdfPage) scrollToPdfPage(pageNum);
-                    if (onClickPageNumber) onClickPageNumber();
-                  }}
-                >
-                  {pageNum}
-                </button>
-              </TooltipTrigger>
-              <TooltipContent className="rounded-full h-8 w-full text-white font-medium bg-main font-center flex justify-center items-center">
-                <p>Scroll ke Hal. {pageNum}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <button
+            key={idx}
+            className="mx-0.5 px-1.5 py-0.5 h-5 rounded-full text-[10px] align-super font-semibold bg-blue-100 hover:bg-blue-200 border-blue-200 transition-colors duration-200 inline-block"
+            onClick={() => {
+              if (scrollToPdfPage) scrollToPdfPage(pageNum);
+              if (onClickPageNumber) onClickPageNumber();
+            }}
+            title={`Scroll ke Hal. ${pageNum}`}
+          >
+            {pageNum}
+          </button>
         );
       }
       return part;
@@ -152,38 +133,45 @@ export default function ReactMarkdownChatAI({
 
   const { main, saran } = extractSaranPertanyaan(replaceLatexNotation(value));
 
-  // Markdown components (anti-nested <p>)
+  // Fixed Markdown components to avoid nested issues
   const markdownComponents = {
     p: ({ node, children, ...props }: any) => {
-      // Cek apakah children mengandung block element
-      const hasBlockChild = React.Children.toArray(children).some(
+      // Convert any PAGE tags in children to avoid nesting issues
+      const processedChildren = React.Children.map(children, (child) => {
+        if (typeof child === 'string') {
+          return processPageTags(child);
+        }
+        return child;
+      });
+
+      // Check if we have any interactive elements that shouldn't be in a p tag
+      const hasInteractiveElements = React.Children.toArray(
+        processedChildren,
+      ).some(
         (child: any) =>
-          typeof child !== 'string' &&
-          [
-            'h1',
-            'h2',
-            'h3',
-            'h4',
-            'h5',
-            'h6',
-            'ul',
-            'ol',
-            'li',
-            'blockquote',
-            'div',
-            'p',
-          ].includes(child?.type),
+          React.isValidElement(child) &&
+          (child.type === 'button' ||
+            child.type === 'a' ||
+            child.type === 'div'),
       );
-      // Jangan render <p> jika ada block element, ganti <div>
-      if (hasBlockChild) {
-        return <div {...props}>{processPageTags(children)}</div>;
+
+      if (hasInteractiveElements) {
+        return (
+          <span
+            {...props}
+            className="block"
+          >
+            {processedChildren}
+          </span>
+        );
       }
-      return <p {...props}>{processPageTags(children)}</p>;
+
+      return <p {...props}>{processedChildren}</p>;
     },
     h1: ({ children, ...props }: any) => (
       <h1
         {...props}
-        className="text-2xl font-bold mb-4 mt-6 text-gray-900"
+        className="text-2xl font-bold mb-4 mt-6 text-gray-900 dark:text-gray-100"
       >
         {processPageTags(children)}
       </h1>
@@ -191,7 +179,7 @@ export default function ReactMarkdownChatAI({
     h2: ({ children, ...props }: any) => (
       <h2
         {...props}
-        className="text-xl font-semibold mb-3 mt-5 text-gray-900"
+        className="text-xl font-semibold mb-3 mt-5 text-gray-900 dark:text-gray-100"
       >
         {processPageTags(children)}
       </h2>
@@ -199,7 +187,7 @@ export default function ReactMarkdownChatAI({
     h3: ({ children, ...props }: any) => (
       <h3
         {...props}
-        className="text-lg font-semibold mb-2 mt-4 text-gray-900"
+        className="text-lg font-semibold mb-2 mt-4 text-gray-900 dark:text-gray-100"
       >
         {processPageTags(children)}
       </h3>
@@ -207,7 +195,7 @@ export default function ReactMarkdownChatAI({
     h4: ({ children, ...props }: any) => (
       <h4
         {...props}
-        className="text-base font-medium mb-2 mt-3 text-gray-900"
+        className="text-base font-medium mb-2 mt-3 text-gray-900 dark:text-gray-100"
       >
         {processPageTags(children)}
       </h4>
@@ -215,7 +203,7 @@ export default function ReactMarkdownChatAI({
     h5: ({ children, ...props }: any) => (
       <h5
         {...props}
-        className="text-sm font-medium mb-2 mt-3 text-gray-900"
+        className="text-sm font-medium mb-2 mt-3 text-gray-900 dark:text-gray-100"
       >
         {processPageTags(children)}
       </h5>
@@ -223,7 +211,7 @@ export default function ReactMarkdownChatAI({
     h6: ({ children, ...props }: any) => (
       <h6
         {...props}
-        className="text-sm font-medium mb-2 mt-3 text-gray-900"
+        className="text-sm font-medium mb-2 mt-3 text-gray-900 dark:text-gray-100"
       >
         {processPageTags(children)}
       </h6>
@@ -255,7 +243,7 @@ export default function ReactMarkdownChatAI({
     blockquote: ({ children, ...props }: any) => (
       <blockquote
         {...props}
-        className="border-l-4 border-gray-300 pl-4 py-2 mb-4 bg-gray-50 italic"
+        className="border-l-4 border-gray-300 dark:border-gray-700 pl-4 py-2 mb-4 bg-gray-50 dark:bg-gray-800 italic"
       >
         {children}
       </blockquote>
@@ -265,7 +253,7 @@ export default function ReactMarkdownChatAI({
         return (
           <code
             {...props}
-            className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono"
+            className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono"
           >
             {children}
           </code>
@@ -274,7 +262,7 @@ export default function ReactMarkdownChatAI({
       return (
         <code
           {...props}
-          className="block bg-gray-100 p-3 rounded-lg overflow-x-auto text-sm font-mono mb-4"
+          className="block bg-gray-100 dark:bg-gray-800 p-3 rounded-lg overflow-x-auto text-sm font-mono mb-4"
         >
           {children}
         </code>
@@ -303,7 +291,10 @@ export default function ReactMarkdownChatAI({
       <ReactMarkdown
         remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
         rehypePlugins={[rehypeKatex]}
-        className={cn('prose break-words ReactMarkdown max-w-none', className)}
+        className={cn(
+          'prose break-words ReactMarkdown max-w-none dark:prose-invert',
+          className,
+        )}
         components={markdownComponents}
       >
         {main}
@@ -311,26 +302,30 @@ export default function ReactMarkdownChatAI({
 
       {/* Blok Saran Pertanyaan */}
       {saran && (
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
               <Lightbulb className="text-white w-4 h-4" />
             </div>
-            <h3 className="font-semibold text-blue-900">Saran Pertanyaan</h3>
+            <h3 className="font-semibold text-blue-900 dark:text-blue-100">
+              Saran Pertanyaan
+            </h3>
           </div>
           <div className="space-y-2">
             {saran.map((q, i) => (
               <button
                 key={i}
                 type="button"
-                className="w-full text-left p-3 bg-white border border-blue-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-sm leading-relaxed shadow-sm hover:shadow-md"
+                className="w-full text-left p-3 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-200 text-gray-700 dark:text-gray-300 text-sm leading-relaxed shadow-sm hover:shadow-md"
                 onClick={() => handleSaranClick(q)}
               >
-                <span className="font-medium text-blue-600 mr-2">{i + 1}.</span>
+                <span className="font-medium text-blue-600 dark:text-blue-400 mr-2">
+                  {i + 1}.
+                </span>
                 <ReactMarkdown
                   remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
                   rehypePlugins={[rehypeKatex]}
-                  className="inline prose prose-sm max-w-none"
+                  className="inline prose prose-sm max-w-none dark:prose-invert"
                   components={{
                     p: ({ children, ...props }) => (
                       <span {...props}>{processPageTags(children)}</span>
@@ -352,13 +347,12 @@ export default function ReactMarkdownChatAI({
                       </em>
                     ),
                     code: ({ node, children, ...props }) => {
-                      // node.inline is the correct way to check for inline code in react-markdown v8+
-                      const isInline = (node as any)?.inline;
+                      const isInline = (node as any)?.properties?.inline;
                       if (isInline) {
                         return (
                           <code
                             {...props}
-                            className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono"
+                            className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-xs font-mono"
                           >
                             {children}
                           </code>
@@ -367,7 +361,7 @@ export default function ReactMarkdownChatAI({
                       return (
                         <code
                           {...props}
-                          className="block bg-gray-100 p-2 rounded text-xs font-mono"
+                          className="block bg-gray-100 dark:bg-gray-800 p-2 rounded text-xs font-mono"
                         >
                           {children}
                         </code>
