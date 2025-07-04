@@ -89,11 +89,14 @@ const SubmitChat = () => {
     ) as HTMLTextAreaElement;
     if (inputMessages.length > 0) {
       handleSubmitMessages();
-      inputChat.value = '';
+      // Immediate clear without delay
+      if (inputChat) {
+        inputChat.value = '';
+      }
       setCharCount(0);
       setSend(false);
     }
-  }, [inputMessages]);
+  }, [inputMessages, handleSubmitMessages]);
 
   const handleNewChat = useDebouncedCallback(async () => {
     if (!newChat) return;

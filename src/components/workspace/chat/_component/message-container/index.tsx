@@ -29,8 +29,14 @@ export default function MessageContainer() {
 
     return baseHeight;
   };
+
   const scrollToBottom = () => {
-    listRef.current?.scrollToItem(messageData.length - 1, 'end');
+    if (listRef.current && messageData.length > 0) {
+      // Single smooth scroll without multiple calls
+      requestAnimationFrame(() => {
+        listRef.current.scrollToItem(messageData.length - 1, 'end');
+      });
+    }
   };
 
   const handleScroll = ({ scrollOffset, scrollHeight, clientHeight }: any) => {
@@ -88,6 +94,7 @@ export default function MessageContainer() {
               setFirstRender,
               scrollToBottom,
             }}
+            overscanCount={5}
           >
             {Row}
           </List>

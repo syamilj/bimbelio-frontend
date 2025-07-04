@@ -71,12 +71,16 @@ export default function Provider({
       const selector = `#${containerId} #pdf-page-${pageNum}`;
       const pageElement = document.querySelector(selector);
       if (pageElement) {
-        pageElement.scrollIntoView({ behavior: 'smooth' });
+        pageElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
         setCurrentPage(pageNum);
       } else {
         console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
       }
-    }, 200); // delay kecil agar render page dulu
+    }, 200);
   };
 
   const {
@@ -97,14 +101,17 @@ export default function Provider({
     onError: (error: any) => {
       toaster({
         title: 'Gagal',
-        description: 'Terjadi kesalahan2!',
+        description: 'Terjadi kesalahan!',
         condition: 'warning',
         duration: 3000,
       });
     },
     onFinish: () => {
       setFirstMessage(false);
-      fetchMessages();
+      // Reduced delay to prevent multiple scrolls
+      setTimeout(() => {
+        fetchMessages();
+      }, 100);
     },
   });
 
@@ -132,7 +139,10 @@ export default function Provider({
       });
     },
     onFinish: () => {
-      fetchMessages();
+      // Reduced delay to prevent multiple scrolls
+      setTimeout(() => {
+        fetchMessages();
+      }, 100);
     },
   });
 

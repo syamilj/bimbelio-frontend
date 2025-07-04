@@ -1,6 +1,8 @@
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { Bot, MessageCircle, Sparkles } from 'lucide-react';
 import { useProvider } from '../provider';
 
 export default function ThreeQuestions() {
@@ -10,8 +12,11 @@ export default function ThreeQuestions() {
   } = useProvider();
 
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
-  // const limitation = api.user.limitation.useMutation();
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const limitation = async (payload: {
     chat?: boolean;
@@ -37,12 +42,15 @@ export default function ThreeQuestions() {
   const ThirdQuestion = [
     {
       question: 'Tolong buat ringkasan singkat dari dokumen ini!',
+      icon: MessageCircle,
     },
     {
       question: 'Apa informasi kunci yang perlu diketahui dari dokumen ini?',
+      icon: Sparkles,
     },
     {
       question: 'Bagaimana dokumen ini relevan dengan kebutuhan?',
+      icon: Bot,
     },
   ];
 
@@ -89,26 +97,86 @@ export default function ThreeQuestions() {
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="flex h-full w-full max-w-[800px] flex-col items-center justify-center gap-[2rem] px-[1rem]">
-        <h1 className="font-regular w-full text-[24px] text-main-gray-text">
-          <span className="text-main">Halo, {session?.user.name}</span> <br />
-          Bagaimana kami dapat membantu?
-        </h1>
-        <div className="grid grid-cols-1 gap-[1rem] font-medium text-main-gray-text md:h-[200px] md:grid-cols-3">
-          {ThirdQuestion.map((item: any, i: number) => (
-            <div
-              key={i} // Adding key here
-              className="rounded-[1rem] bg-white p-[1.5rem] duration-200 hover:shadow-xl"
-              onClick={() => handleThreeQuestions(`${item.question}`)}
-            >
-              <p>{item.question}</p>
-            </div>
-          ))}
+    <div className="flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="flex h-full w-full max-w-4xl flex-col items-center justify-center gap-8 px-6">
+        {/* Header Section */}
+        <div className="text-center space-y-4">
+          <div
+            className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-lg mb-4"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
+          >
+            <Bot className="w-8 h-8 text-white" />
+          </div>
+
+          <div className="space-y-2">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+              Halo,{' '}
+              <span style={{ color: mainColor }}>{session?.user.name}</span>
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
+              Bagaimana kami dapat membantu Anda hari ini?
+            </p>
+          </div>
         </div>
-        <p className="w-full text-main-gray-text">
-          Atau ajukan pertanyaan dibawah.
-        </p>
+
+        {/* Question Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
+          {ThirdQuestion.map((item, index) => {
+            const IconComponent = item.icon;
+            return (
+              <button
+                key={index}
+                className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:-translate-y-1"
+                onClick={() => handleThreeQuestions(item.question)}
+                style={{
+                  borderColor: `${mainColor}20`,
+                }}
+              >
+                {/* Background Pattern */}
+                <div
+                  className="absolute inset-0 opacity-5 transition-opacity group-hover:opacity-10"
+                  style={{ backgroundColor: mainColor }}
+                />
+
+                {/* Content */}
+                <div className="relative z-10 space-y-4">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                    style={{ backgroundColor: `${mainColor}15` }}
+                  >
+                    <IconComponent
+                      className="w-5 h-5"
+                      style={{ color: mainColor }}
+                    />
+                  </div>
+
+                  <p className="text-gray-800 dark:text-gray-200 font-medium leading-relaxed group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                    {item.question}
+                  </p>
+                </div>
+
+                {/* Hover Effect */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
+                  style={{ backgroundColor: mainColor }}
+                />
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Footer Text */}
+        <div className="text-center space-y-3">
+          <p className="text-gray-600 dark:text-gray-400">
+            Atau ajukan pertanyaan khusus di kolom chat di bawah
+          </p>
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-500">
+            <Sparkles className="w-4 h-4" />
+            <span>Didukung oleh AI terdepan</span>
+          </div>
+        </div>
       </div>
     </div>
   );

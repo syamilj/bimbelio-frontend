@@ -93,25 +93,25 @@ const MainContent = () => {
     if (prevChatMessages && prevChatMessages?.length > 0 && !firstMessage) {
       setMessageData([GreetingMessage, ...prevChatMessages]);
     }
-  }, [prevChatMessages]);
+  }, [prevChatMessages, firstMessage, setMessageData]);
 
   useEffect(() => {
-    if (isLoadingMessages) {
+    if (isLoadingMessages && messages.length > 0) {
       if (prevChatMessages) {
         const data = [GreetingMessage, ...prevChatMessages, ...messages];
-        setMessageData(() => [...data]);
+        setMessageData(data);
       }
     }
-  }, [messages]);
+  }, [messages, isLoadingMessages, prevChatMessages, setMessageData]);
 
   useEffect(() => {
-    if (isLoadingMessagesEdit) {
+    if (isLoadingMessagesEdit && messageEdit.length > 0) {
       if (prevChatMessages) {
-        const data = [GreetingMessage, ...prevChatMessages, ...messages];
-        setMessageData(() => [...data]);
+        const data = [GreetingMessage, ...prevChatMessages, ...messageEdit];
+        setMessageData(data);
       }
     }
-  }, [messageEdit]);
+  }, [messageEdit, isLoadingMessagesEdit, prevChatMessages, setMessageData]);
 
   const isVectorised = userDocData?.isVectorised || false;
 

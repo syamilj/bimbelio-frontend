@@ -58,8 +58,10 @@ export default function Row({
   );
 
   const setRowHeight = (index: any, size: any) => {
-    listRef.current.resetAfterIndex(0);
-    rowHeights.current = { ...rowHeights.current, [index]: size };
+    if (listRef.current) {
+      listRef.current.resetAfterIndex(0);
+      rowHeights.current = { ...rowHeights.current, [index]: size };
+    }
   };
 
   useEffect(() => {
@@ -77,33 +79,45 @@ export default function Row({
     };
   }, []);
 
-  // Scroll down when new messages come in
+  // Simplified scroll down when new messages come in
   useEffect(() => {
     if (isLoadingMessages || isLoadingMessagesEdit) {
-      scrollToBottom();
-      setTimeout(() => scrollToBottom(), 100);
-      setTimeout(() => scrollToBottom(), 300); // Additional scroll for loading component
+      // Single smooth scroll call
+      setTimeout(() => scrollToBottom(), 150);
     }
-  }, [isLoadingMessages, isLoadingMessagesEdit, messageData]);
+  }, [
+    isLoadingMessages,
+    isLoadingMessagesEdit,
+    messageData.length,
+    scrollToBottom,
+  ]);
 
-  // Scroll to bottom on first render
+  // Simplified scroll to bottom on first render
   useEffect(() => {
     if (firstRender && listRef?.current) {
-      scrollToBottom();
       setTimeout(() => {
         scrollToBottom();
         setShowButtonScroll(false);
-      }, 100);
-      setFirstRender(false);
+        setFirstRender(false);
+      }, 200);
     }
-  }, [listRef]);
+  }, [
+    firstRender,
+    listRef,
+    scrollToBottom,
+    setFirstRender,
+    setShowButtonScroll,
+  ]);
 
-  // Update row height
+  // Simplified row height update
   useEffect(() => {
     if (rowRef.current) {
-      setRowHeight(index, rowRef.current.clientHeight);
+      const height = rowRef.current.clientHeight;
+      if (rowHeights.current[index] !== height) {
+        setRowHeight(index, height);
+      }
     }
-  }, [rowRef.current?.clientHeight]);
+  }, [index, rowRef.current?.clientHeight]);
 
   const isUser = currentMessage?.role === 'user' || currentMessage === null;
 
