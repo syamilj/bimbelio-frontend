@@ -1,10 +1,10 @@
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
 import ReactMarkdownChatAI from '@/components/ui/react-markdown-chat-ai';
 import { env } from '@/env.mjs';
 import { cn, getDate, getHours } from '@/lib/utils';
-import { BotMessageSquareIcon, User2Icon } from 'lucide-react';
+import { Bot, User } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { useProvider } from '../../provider';
@@ -36,6 +36,11 @@ export default function Row({
   };
 }) {
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+
   const {
     messageData,
     useMessages: { isLoadingMessages },
@@ -47,7 +52,6 @@ export default function Row({
   } = useProvider();
 
   const currentMessage = messageData[index];
-
   const rowRef = useRef<HTMLDivElement>(null);
   const isBase64Image = currentMessage?.content?.startsWith(
     env.NEXT_PUBLIC_SUPABASE_URL,
@@ -57,17 +61,15 @@ export default function Row({
     listRef.current.resetAfterIndex(0);
     rowHeights.current = { ...rowHeights.current, [index]: size };
   };
+
   useEffect(() => {
     const input = document.getElementById('editInput');
-
     const handleInputChange = (e: any) => {
       setEditMessage((prev) => ({ ...prev, value: e.target.value }));
     };
-
     if (input) {
       input.addEventListener('input', handleInputChange);
     }
-
     return () => {
       if (input) {
         input.removeEventListener('input', handleInputChange);
@@ -80,6 +82,7 @@ export default function Row({
     if (isLoadingMessages || isLoadingMessagesEdit) {
       scrollToBottom();
       setTimeout(() => scrollToBottom(), 100);
+      setTimeout(() => scrollToBottom(), 300); // Additional scroll for loading component
     }
   }, [isLoadingMessages, isLoadingMessagesEdit, messageData]);
 
@@ -109,120 +112,173 @@ export default function Row({
       style={{
         ...style,
         overflow: 'hidden',
+        paddingLeft: '1rem',
         paddingRight: '1rem',
         paddingBottom: '1rem',
-        paddingTop: '1rem',
+        paddingTop: '0.5rem',
       }}
     >
       <div
         ref={rowRef}
         className={cn(
-          'text-left flex flex-col w-full',
-          'max-w-[95%]',
-          isUser && 'ml-4',
+          'flex w-full max-w-5xl mx-auto',
+          isUser ? 'justify-end' : 'justify-start',
         )}
       >
-        <Card
+        <div
           className={cn(
-            'rounded-xl shadow-none bg-transparent',
-            isUser ? 'bg-white ml-auto' : 'mr-auto',
+            'flex gap-3 max-w-[85%] md:max-w-[75%]',
+            isUser ? 'flex-row-reverse' : 'flex-row',
           )}
         >
-          <div className="p-4">
+          {/* Avatar */}
+          <div className="flex-shrink-0">
+            <Avatar className="w-8 h-8 border border-gray-200 dark:border-gray-700">
+              <AvatarFallback
+                className={cn(
+                  'text-white font-semibold',
+                  isUser
+                    ? 'bg-gradient-to-br from-green-500 to-emerald-600'
+                    : 'bg-gradient-to-br',
+                )}
+                style={{
+                  backgroundImage: !isUser
+                    ? `linear-gradient(135deg, ${mainColor}, ${websiteSubCategory?.secondary_color || mainColor})`
+                    : undefined,
+                }}
+              >
+                {isUser ? (
+                  <User className="w-4 h-4" />
+                ) : (
+                  <Bot className="w-4 h-4" />
+                )}
+              </AvatarFallback>
+            </Avatar>
+          </div>
+
+          {/* Message Content */}
+          <div className="flex-1 min-w-0">
+            {/* Message Header */}
             <div
               className={cn(
-                'flex items-start gap-2',
-                isUser && 'justify-start flex-row-reverse',
+                'flex items-center gap-2 mb-2',
+                isUser ? 'flex-row-reverse' : 'flex-row',
               )}
             >
-              <Avatar className="h-8 w-8">
-                <AvatarFallback
-                  className={cn(
-                    isUser ? 'bg-green-50 border' : 'bg-blue-50 border',
-                  )}
-                >
-                  {isUser ? (
-                    <User2Icon className="h-5 w-5 text-gray-300" />
-                  ) : (
-                    <BotMessageSquareIcon className="h-5 w-5 text-main" />
-                  )}
-                </AvatarFallback>
-              </Avatar>
-              <div className={cn('flex flex-col flex-1', isUser && 'text-end')}>
-                <div className="relative justify-between items-center mb-2">
-                  <p className="font-semibold text-sm">
-                    {isUser ? session?.user?.name : 'Bimbelio'}
-                  </p>
-                  {!isUser && (
-                    <span className="absolute -top-2 left-[-20px] bg-red-500 rounded-full px-[0.35rem] py-1 text-white font-bold text-[0.5rem]">
-                      AI
-                    </span>
-                  )}
-                  {currentMessage.createdAt && (
-                    <p className="text-xs text-muted-foreground">
-                      {getHours(currentMessage.createdAt)} |{' '}
-                      {getDate(currentMessage.createdAt)}
-                    </p>
-                  )}
-                </div>
-
-                {isBase64Image && currentMessage && (
-                  <div>
-                    <div className="w-fit rounded-lg overflow-hidden">
-                      <Image
-                        src={
-                          currentMessage.content.includes(
-                            'data:image/png;base64',
-                          )
-                            ? currentMessage.content.split('=')[0] ||
-                              '/placeholder.svg'
-                            : currentMessage.content || '/placeholder.svg'
-                        }
-                        className="h-auto max-w-full"
-                        alt="Bimbelio - Bimbel AI"
-                        width={500}
-                        height={300}
-                      />
-                    </div>
+              <div
+                className={cn(
+                  'flex items-center gap-2',
+                  isUser ? 'flex-row-reverse' : 'flex-row',
+                )}
+              >
+                <span className="font-semibold text-sm">
+                  {isUser ? session?.user?.name || 'You' : 'Bimbot AI'}
+                </span>
+                {!isUser && (
+                  <div
+                    className="px-2 py-0.5 rounded-full text-xs font-bold text-white shadow-sm"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    AI
                   </div>
                 )}
+              </div>
+              {currentMessage.createdAt && (
+                <span className="text-xs text-muted-foreground">
+                  {getHours(currentMessage.createdAt)} •{' '}
+                  {getDate(currentMessage.createdAt)}
+                </span>
+              )}
+            </div>
 
-                {!isBase64Image && currentMessage && (
+            {/* Message Bubble */}
+            <div
+              className={cn(
+                'relative rounded-2xl px-4 py-3 shadow-sm border transition-all duration-200',
+                isUser
+                  ? 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                  : 'border-transparent shadow-md',
+              )}
+              style={{
+                backgroundColor: !isUser ? `${mainColor}08` : undefined,
+                borderColor: !isUser ? `${mainColor}20` : undefined,
+              }}
+            >
+              {/* Message Content */}
+              {isBase64Image && currentMessage ? (
+                <div className="rounded-lg overflow-hidden">
+                  <Image
+                    src={
+                      currentMessage.content.includes('data:image/png;base64')
+                        ? currentMessage.content.split('=')[0] ||
+                          '/placeholder.svg'
+                        : currentMessage.content || '/placeholder.svg'
+                    }
+                    className="h-auto max-w-full"
+                    alt="Bimbelio - Bimbel AI"
+                    width={500}
+                    height={300}
+                  />
+                </div>
+              ) : (
+                currentMessage && (
                   <>
                     {editMessage.index !== index ? (
                       <ReactMarkdownChatAI
                         value={currentMessage?.content}
                         onClickPageNumber={onClickPageNumber}
                         scrollToPdfPage={scrollToPdfPage}
-                        className={cn(isUser && 'text-start')}
+                        className={cn(
+                          'prose prose-base max-w-none dark:prose-invert prose-headings:text-inherit prose-p:text-inherit prose-strong:text-inherit prose-code:text-inherit prose-pre:text-inherit prose-li:text-inherit prose-blockquote:text-inherit',
+                          // Additional styling for user messages
+                          isUser &&
+                            'prose-p:text-gray-700 dark:prose-p:text-gray-300',
+                        )}
                       />
                     ) : (
                       <SubmitChatEdit />
                     )}
                   </>
-                )}
+                )
+              )}
 
-                {!editMessage.bool && currentMessage && (
-                  <div
-                    className={cn(
-                      'mt-4 flex justify-between items-center text-sm text-muted-foreground',
-                      isUser && 'justify-end',
-                    )}
-                  >
-                    <ChatTools messageIndex={index} />
-                  </div>
+              {/* Message Actions */}
+              {!editMessage.bool && currentMessage && (
+                <div
+                  className={cn(
+                    'mt-3 pt-2 border-t border-gray-100 dark:border-gray-700',
+                    isUser ? 'text-right' : 'text-left',
+                  )}
+                >
+                  <ChatTools messageIndex={index} />
+                </div>
+              )}
+
+              {/* Message Tail */}
+              <div
+                className={cn(
+                  'absolute top-3 w-0 h-0',
+                  isUser
+                    ? 'right-[-8px] border-l-8 border-l-white dark:border-l-gray-800 border-t-4 border-t-transparent border-b-4 border-b-transparent'
+                    : 'left-[-8px] border-r-8 border-t-4 border-t-transparent border-b-4 border-b-transparent',
                 )}
-              </div>
+                style={{
+                  borderRightColor: !isUser ? `${mainColor}08` : undefined,
+                }}
+              />
             </div>
           </div>
-        </Card>
-        {index === messageData.length - 1 &&
-          isLoadingMessages &&
-          currentMessage.role === 'user' && <LoadingChat />}
-        {index === messageData.length - 1 &&
-          isLoadingMessagesEdit &&
-          currentMessage.role === 'user' && <LoadingChat />}
+        </div>
       </div>
+
+      {/* Loading Indicator - Positioned separately below the current message */}
+      {index === messageData.length - 1 &&
+        (isLoadingMessages || isLoadingMessagesEdit) &&
+        currentMessage.role === 'user' && (
+          <div className="mt-4">
+            <LoadingChat />
+          </div>
+        )}
     </div>
   );
 }

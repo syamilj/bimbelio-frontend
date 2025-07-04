@@ -327,7 +327,56 @@ export default function ReactMarkdownChatAI({
                 onClick={() => handleSaranClick(q)}
               >
                 <span className="font-medium text-blue-600 mr-2">{i + 1}.</span>
-                {q}
+                <ReactMarkdown
+                  remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
+                  rehypePlugins={[rehypeKatex]}
+                  className="inline prose prose-sm max-w-none"
+                  components={{
+                    p: ({ children, ...props }) => (
+                      <span {...props}>{processPageTags(children)}</span>
+                    ),
+                    strong: ({ children, ...props }) => (
+                      <strong
+                        {...props}
+                        className="font-semibold"
+                      >
+                        {processPageTags(children)}
+                      </strong>
+                    ),
+                    em: ({ children, ...props }) => (
+                      <em
+                        {...props}
+                        className="italic"
+                      >
+                        {processPageTags(children)}
+                      </em>
+                    ),
+                    code: ({ node, children, ...props }) => {
+                      // node.inline is the correct way to check for inline code in react-markdown v8+
+                      const isInline = (node as any)?.inline;
+                      if (isInline) {
+                        return (
+                          <code
+                            {...props}
+                            className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono"
+                          >
+                            {children}
+                          </code>
+                        );
+                      }
+                      return (
+                        <code
+                          {...props}
+                          className="block bg-gray-100 p-2 rounded text-xs font-mono"
+                        >
+                          {children}
+                        </code>
+                      );
+                    },
+                  }}
+                >
+                  {q}
+                </ReactMarkdown>
               </button>
             ))}
           </div>
