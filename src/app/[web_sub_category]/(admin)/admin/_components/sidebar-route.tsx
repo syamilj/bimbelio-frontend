@@ -202,7 +202,7 @@ const SidebarRoute: FC = () => {
   return (
     <div className="flex flex-col gap-[.5rem]">
       <div className={cn('px-2 w-full', minimizeSidebar && 'hidden')}>
-        <ChooseWebCategory />
+        <ChooseWebCategory minimizeSidebar={false} />
       </div>
       {routes.map((route, index) => (
         <ActiveLink

@@ -1,34 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-// import Image from 'next/image';
-// import card1 from '../../_assest/card1.png';
-// import card2 from '../../_assest/card2.png';
-// import card3 from '../../_assest/card3.png';
-// import TIU from '../../_assest/category/TIU.png';
-// import TKP from '../../_assest/category/TKP.png';
-// import TOEFL from '../../_assest/category/TOEFL.png';
-// import TWK from '../../_assest/category/TWK.png';
-// import Umum from '../../_assest/category/Umum.png';
-
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { Category } from '@/types/database';
+import type { Category } from '@/types/database';
+import { useEffect, useState } from 'react';
 import SearchDeskstop from '../../_components/search-dekstop';
 import Free from './free';
 import Riwayat from './riwayat';
 import Terbaru from './terbaru';
 import Trending from './trending';
-// import iklan from '../../_assest/Iklan/test.png';
 
 export default function ExploreClient() {
-  // const {
-  //   data: category,
-  //   // isLoading: isLoadingCategory
-  // } = api.category.getAllCategories.useQuery(undefined, {
-  //   refetchOnWindowFocus: false,
-  //   refetchOnMount: false,
-  // });
-
   const [category, setCategory] = useState<
     Omit<Category, 'to' | 'website_sub_category_id'>[]
   >([]);
@@ -44,25 +25,37 @@ export default function ExploreClient() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-[2rem] px-[1rem] md:px-0">
-      <div className="hidden w-full justify-center md:flex">
-        <SearchDeskstop />
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="container mx-auto px-4 py-8 space-y-12">
+        {/* Search Section */}
+        <div className="hidden w-full justify-center md:flex">
+          <div className="w-full max-w-2xl">
+            <SearchDeskstop />
+          </div>
+        </div>
 
-      <div className="font-regular flex flex-col gap-[.5rem]">
-        <Free />
-      </div>
+        {/* Main Content Grid */}
+        <div className="space-y-16">
+          {/* Free Section */}
+          <section className="space-y-6">
+            <Free />
+          </section>
 
-      <div className="font-regular flex flex-col gap-[.5rem]">
-        <Terbaru />
-      </div>
+          {/* Latest Section */}
+          <section className="space-y-6">
+            <Terbaru />
+          </section>
 
-      <div className="font-regular flex flex-col gap-[.5rem]">
-        <Trending />
-      </div>
+          {/* Trending Section */}
+          <section className="space-y-6">
+            <Trending />
+          </section>
 
-      <div className="font-regular flex flex-col gap-[.5rem]">
-        <Riwayat />
+          {/* History Section */}
+          <section className="space-y-6">
+            <Riwayat />
+          </section>
+        </div>
       </div>
     </div>
   );

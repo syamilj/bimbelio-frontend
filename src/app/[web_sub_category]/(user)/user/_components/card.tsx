@@ -68,13 +68,13 @@ export default function Card({ data, href, noCategory }: CardProps) {
                 {/* Title */}
                 <p
                   id="title"
-                  className="text-sm font-semibold text-gray-900 leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis mb-2 transition-colors duration-200"
+                  className="text-sm font-semibold text-gray-900 leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis mb-2 group-hover:text-blue-600 transition-colors duration-200"
                 >
                   {item.title}
                 </p>
 
                 {/* Categories */}
-                <div className="flex gap-2 flex-wrap">
+                <div className="flex gap-2 mb-2 flex-wrap">
                   <p
                     className={`
     text-sm font-semibold leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis
@@ -95,8 +95,9 @@ export default function Card({ data, href, noCategory }: CardProps) {
                   >
                     {item.category?.name}
                   </p>
-
-                  <p className="text-sm font-semibold leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-200 bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200">
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  <p className="text-sm font-semibold leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis group-hover:text-blue-600 transition-colors duration-200 bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200">
                     {item.subCategory?.name}
                   </p>
                 </div>

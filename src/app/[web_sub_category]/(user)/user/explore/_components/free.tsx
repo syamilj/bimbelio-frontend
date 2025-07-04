@@ -3,20 +3,13 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { Category, Document, Subcategory } from '@/types/database';
+import type { Category, Document, Subcategory } from '@/types/database';
+import { Gift, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Card from '../../_components/card';
 import CardNotFound from '../../_components/card-not-found';
 
 export default function Free() {
-  // const { data: dokumen, isLoading } = api.document.getFreeDocument.useQuery(
-  //   undefined,
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     refetchOnMount: false,
-  //   },
-  // );
-
   const [datas, setDatas] = useState<
     (Document & {
       category: Category;
@@ -33,10 +26,26 @@ export default function Free() {
   }, []);
 
   return (
-    <>
-      <h1 className="text-[1.4rem] font-medium">Coba Gratis</h1>
+    <div className="space-y-6">
+      {/* Section Header */}
+      <div className="flex items-center gap-3 pb-2">
+        <div className="flex items-center justify-center w-10 h-10 bg-emerald-500 rounded-xl shadow-lg">
+          <Gift className="w-5 h-5 text-white" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            Coba Gratis
+            <Sparkles className="w-5 h-5 text-yellow-500" />
+          </h1>
+          <p className="text-sm text-gray-600 mt-1">
+            Mulai belajar dengan materi gratis pilihan terbaik
+          </p>
+        </div>
+      </div>
+
+      {/* Content */}
       {!isLoading && datas?.length > 0 && (
-        <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <Card
             data={datas}
             href={`${website_sub_category_id}/user/workspace`}
@@ -44,23 +53,23 @@ export default function Free() {
           />
         </div>
       )}
+
       {!isLoading && datas?.length === 0 && (
-        <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <CardNotFound />
         </div>
       )}
+
       {isLoading && (
-        <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
-          {Array.from({ length: 4 }).map((_: any, i: number) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_: any, i: number) => (
             <Skeleton
               key={i}
-              className={
-                'h-[160px] mb:h-[200px] md:h-[200px] md2:h-[180px] xl:h-[250px] xxxl:h-[300px]'
-              }
+              className="h-[200px] rounded-xl bg-gradient-to-br from-gray-100 to-gray-200"
             />
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -9,7 +9,7 @@ import { Loader2 } from 'lucide-react';
 import { useParams, usePathname } from 'next/navigation';
 import NextTopLoader from 'nextjs-toploader';
 import { createContext, useContext, useEffect, useState } from 'react';
-import ChooseWebCategory from '../ui/choose-web-category';
+import { DialogWebCategory } from '../ui/choose-web-category/dialog-web-category';
 import { useSession } from './provider-session-auth';
 
 const initialValue = {
@@ -119,8 +119,33 @@ export default function ProviderWebsiteCategory({
   if (first) {
     return (
       <WebsiteSubCategoryContext.Provider value={Context}>
-        <div className="fixed top-0 left-0 h-full w-full justify-center items-center">
-          <ChooseWebCategory first />
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="w-full max-w-2xl mx-4">
+            <DialogWebCategory
+              items={webCategoryData}
+              value={websiteSubCategory?.id}
+              isOpen={true}
+              onOpenChange={(open) => {
+                if (!open) {
+                  // Don't allow closing if this is the first selection
+                  return;
+                }
+              }}
+              onSelect={(item) => {
+                localStorage.setItem('website_sub_category_id', item?.id);
+                setWebsiteSubCategory(item);
+                setFirst(false);
+                // Navigate to the selected category
+                const currentPath = window.location.pathname;
+                const pathParts = currentPath.split('/').filter(Boolean);
+                if (pathParts.length > 0) {
+                  window.location.pathname = `/${item.id}/${pathParts.slice(1).join('/')}`;
+                } else {
+                  window.location.pathname = `/${item.id}/user/dashboard`;
+                }
+              }}
+            />
+          </div>
         </div>
       </WebsiteSubCategoryContext.Provider>
     );
