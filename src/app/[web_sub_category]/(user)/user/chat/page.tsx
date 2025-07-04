@@ -160,8 +160,8 @@ export default function AIChatPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto max-w-4xl px-4 py-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto max-w-5xl px-4 py-8">
         {/* Header Section */}
         <div className="text-center mb-12">
           <div
@@ -171,19 +171,19 @@ export default function AIChatPage() {
             <Bot className="w-10 h-10 text-white" />
           </div>
           <h1
-            className="text-3xl font-bold mb-2"
+            className="text-3xl md:text-4xl font-bold mb-3"
             style={{ color: mainColor }}
           >
             Bimbot AI Assistant
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
             Tanyakan apapun tentang materi pembelajaran. Saya siap membantu Anda
             belajar lebih efektif!
           </p>
         </div>
 
         {/* Enhanced Chat Input with Animation */}
-        <div className="mb-8">
+        <div className="mb-10">
           <PlaceholdersAndVanishInput
             placeholders={placeholders}
             onChange={handleInputChange}
@@ -192,8 +192,11 @@ export default function AIChatPage() {
           {loading && (
             <div className="flex justify-center mt-4">
               <div
-                className="flex items-center gap-2 text-sm"
-                style={{ color: mainColor }}
+                className="flex items-center gap-2 text-sm px-4 py-2 rounded-xl"
+                style={{
+                  backgroundColor: `${mainColor}10`,
+                  color: mainColor,
+                }}
               >
                 <div
                   className="animate-spin rounded-full h-4 w-4 border-b-2"
@@ -209,58 +212,74 @@ export default function AIChatPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 max-w-2xl mx-auto">
           <Button
             variant="outline"
-            className="h-14 justify-start gap-4 rounded-xl border-2 hover:shadow-md transition-all"
+            className="h-16 justify-start gap-4 rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white"
             onClick={() => setIsHistoryOpen(true)}
             style={{ borderColor: `${mainColor}20` }}
           >
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Clock
-                className="w-4 h-4"
-                style={{ color: mainColor }}
-              />
+              <Clock className="w-5 h-5" style={{ color: mainColor }} />
             </div>
-            <span>Lanjutkan Percakapan</span>
+            <div className="text-left">
+              <div className="font-semibold">Lanjutkan Percakapan</div>
+              <div className="text-sm text-gray-500">Buka riwayat chat</div>
+            </div>
           </Button>
 
           <Button
             variant="outline"
-            className="h-14 justify-start gap-4 rounded-xl border-2 hover:shadow-md transition-all"
+            className="h-16 justify-start gap-4 rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white"
             style={{ borderColor: `${mainColor}20` }}
           >
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Sparkles
-                className="w-4 h-4"
-                style={{ color: mainColor }}
-              />
+              <Sparkles className="w-5 h-5" style={{ color: mainColor }} />
             </div>
-            <span>Eksplorasi Materi</span>
+            <div className="text-left">
+              <div className="font-semibold">Eksplorasi Materi</div>
+              <div className="text-sm text-gray-500">Temukan topik baru</div>
+            </div>
           </Button>
         </div>
 
         {/* Suggested Topics */}
-        <div className="max-w-2xl mx-auto mb-12">
-          <h3 className="text-lg font-semibold mb-4 text-center">
+        <div className="max-w-4xl mx-auto mb-12">
+          <h3 className="text-xl font-semibold mb-6 text-center text-gray-900">
             Topik Populer
           </h3>
-          <div className="flex flex-wrap gap-3 justify-center">
-            {placeholders.slice(0, 6).map((topic) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {placeholders.slice(0, 6).map((topic, index) => (
               <button
                 key={topic}
                 onClick={() => setNewChatInput(topic)}
-                className="px-4 py-2 rounded-xl border-2 text-sm font-medium transition-all hover:shadow-md"
+                className="p-4 text-left rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white group"
                 style={{
-                  borderColor: `${mainColor}20`,
-                  backgroundColor: `${mainColor}05`,
-                  color: mainColor,
+                  borderColor: `${mainColor}15`,
                 }}
               >
-                {topic.length > 30 ? topic.slice(0, 30) + '...' : topic}
+                <div className="flex items-start gap-3">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: `${mainColor}15` }}
+                  >
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: mainColor }}
+                    >
+                      {index + 1}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900 mb-1">
+                      {topic.length > 40 ? topic.slice(0, 40) + '...' : topic}
+                    </p>
+                    <p className="text-xs text-gray-500">Klik untuk mulai chat</p>
+                  </div>
+                </div>
               </button>
             ))}
           </div>
@@ -273,29 +292,29 @@ export default function AIChatPage() {
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
         >
-          <h3 className="text-xl font-bold mb-4">Powered by Advanced AI</h3>
-          <div className="grid grid-cols-3 gap-6">
-            <div>
-              <div className="text-2xl font-bold mb-1">24/7</div>
-              <div className="text-sm opacity-90">Siap Membantu</div>
+          <h3 className="text-2xl font-bold mb-6">Powered by Advanced AI</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="text-3xl font-bold mb-2">24/7</div>
+              <div className="text-white/90 font-medium">Siap Membantu</div>
+              <div className="text-sm text-white/70 mt-1">Kapan saja dibutuhkan</div>
             </div>
-            <div>
-              <div className="text-2xl font-bold mb-1">∞</div>
-              <div className="text-sm opacity-90">Topik Pembelajaran</div>
+            <div className="text-center">
+              <div className="text-3xl font-bold mb-2">∞</div>
+              <div className="text-white/90 font-medium">Topik Pembelajaran</div>
+              <div className="text-sm text-white/70 mt-1">Tanpa batas materi</div>
             </div>
-            <div>
-              <div className="text-2xl font-bold mb-1">🚀</div>
-              <div className="text-sm opacity-90">Respons Cepat</div>
+            <div className="text-center">
+              <div className="text-3xl font-bold mb-2">🚀</div>
+              <div className="text-white/90 font-medium">Respons Cepat</div>
+              <div className="text-sm text-white/70 mt-1">Jawaban instan</div>
             </div>
           </div>
         </div>
 
         {/* Chat History Dialog */}
-        <Dialog
-          open={isHistoryOpen}
-          onOpenChange={setIsHistoryOpen}
-        >
-          <DialogContent className="max-w-2xl max-h-[80vh] p-0 overflow-hidden">
+        <Dialog open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
+          <DialogContent className="max-w-2xl max-h-[80vh] p-0 overflow-hidden mx-4">
             <DialogHeader className="p-6 pb-4 border-b">
               <DialogTitle className="text-xl">Riwayat Percakapan</DialogTitle>
               <div className="relative mt-4">
@@ -322,7 +341,7 @@ export default function AIChatPage() {
                   filteredHistory.map((chat) => (
                     <div
                       key={chat.id}
-                      className="flex items-center justify-between p-4 rounded-xl border-2 hover:shadow-md transition-all cursor-pointer"
+                      className="flex items-center justify-between p-4 rounded-xl border-2 hover:shadow-md transition-all cursor-pointer bg-white"
                       style={{ borderColor: `${mainColor}15` }}
                       onClick={() => {
                         router.push(
@@ -342,10 +361,10 @@ export default function AIChatPage() {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-sm line-clamp-2 mb-1">
+                          <h4 className="font-medium text-sm line-clamp-2 mb-1 text-gray-800">
                             {chat.title}
                           </h4>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-xs text-gray-500">
                             {getDateString(chat.updatedAt)}
                           </p>
                         </div>
@@ -353,7 +372,7 @@ export default function AIChatPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="flex-shrink-0 text-muted-foreground hover:text-red-600"
+                        className="flex-shrink-0 text-gray-500 hover:text-red-600"
                         onClick={(e) => {
                           e.stopPropagation();
                           deleteChat({ id: chat.id });
@@ -364,7 +383,7 @@ export default function AIChatPage() {
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className="text-center py-8 text-gray-500">
                     <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
                     <p>Belum ada riwayat percakapan</p>
                   </div>

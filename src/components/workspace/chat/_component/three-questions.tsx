@@ -97,7 +97,7 @@ export default function ThreeQuestions() {
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-full w-full items-center justify-center bg-gray-50">
       <div className="flex h-full w-full max-w-4xl flex-col items-center justify-center gap-8 px-6">
         {/* Header Section */}
         <div className="text-center space-y-4">
@@ -111,11 +111,11 @@ export default function ThreeQuestions() {
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
               Halo,{' '}
               <span style={{ color: mainColor }}>{session?.user.name}</span>
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
+            <p className="text-gray-600 text-lg">
               Bagaimana kami dapat membantu Anda hari ini?
             </p>
           </div>
@@ -128,7 +128,7 @@ export default function ThreeQuestions() {
             return (
               <button
                 key={index}
-                className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:-translate-y-1"
+                className="group relative overflow-hidden rounded-2xl bg-white p-6 text-left shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:-translate-y-1"
                 onClick={() => handleThreeQuestions(item.question)}
                 style={{
                   borderColor: `${mainColor}20`,
@@ -152,7 +152,7 @@ export default function ThreeQuestions() {
                     />
                   </div>
 
-                  <p className="text-gray-800 dark:text-gray-200 font-medium leading-relaxed group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
+                  <p className="text-gray-800 font-medium leading-relaxed group-hover:text-gray-900 transition-colors">
                     {item.question}
                   </p>
                 </div>
@@ -169,10 +169,10 @@ export default function ThreeQuestions() {
 
         {/* Footer Text */}
         <div className="text-center space-y-3">
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600">
             Atau ajukan pertanyaan khusus di kolom chat di bawah
           </p>
-          <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-500">
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
             <Sparkles className="w-4 h-4" />
             <span>Didukung oleh AI terdepan</span>
           </div>

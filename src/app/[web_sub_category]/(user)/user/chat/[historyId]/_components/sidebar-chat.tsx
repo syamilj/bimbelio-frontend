@@ -98,10 +98,10 @@ export default function SidebarChat() {
   return (
     <>
       {/* Desktop Sidebar - Always visible */}
-      <div className="hidden md:flex w-80 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-lg flex-col">
+      <div className="hidden md:flex w-80 h-full bg-white border-r border-gray-200 shadow-lg flex-col">
         {/* Header */}
         <div
-          className="p-4 border-b border-gray-200 dark:border-gray-800 relative overflow-hidden flex-shrink-0"
+          className="p-4 border-b border-gray-200 relative overflow-hidden flex-shrink-0"
           style={{ backgroundColor: `${mainColor}05` }}
         >
           <div className="relative z-10 flex items-center gap-3">
@@ -118,7 +118,7 @@ export default function SidebarChat() {
               >
                 Bimbot AI
               </h2>
-              <p className="text-xs text-muted-foreground">Assistant</p>
+              <p className="text-xs text-gray-500">Assistant</p>
             </div>
           </div>
           {/* Decorative elements */}
@@ -129,7 +129,7 @@ export default function SidebarChat() {
         </div>
 
         {/* New Chat Input */}
-        <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
+        <div className="p-4 border-b border-gray-200 flex-shrink-0">
           <form
             onSubmit={handleNewChat}
             className="space-y-3"
@@ -162,7 +162,7 @@ export default function SidebarChat() {
         {/* Chat History */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="p-4 pb-2 flex-shrink-0">
-            <h3 className="text-sm font-medium text-muted-foreground mb-3">
+            <h3 className="text-sm font-medium text-gray-500 mb-3">
               Riwayat Percakapan
             </h3>
           </div>
@@ -185,7 +185,7 @@ export default function SidebarChat() {
                           'flex items-start gap-3 p-3 rounded-xl transition-all duration-200 hover:shadow-md cursor-pointer border-2',
                           isActive
                             ? 'shadow-md scale-[1.02]'
-                            : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700',
+                            : 'border-transparent hover:border-gray-200',
                         )}
                         style={{
                           backgroundColor: isActive ? mainColor : 'transparent',
@@ -234,7 +234,7 @@ export default function SidebarChat() {
                             <h4
                               className={cn(
                                 'text-sm font-medium line-clamp-2 mb-1',
-                                isActive ? 'text-white' : 'text-foreground',
+                                isActive ? 'text-white' : 'text-gray-800',
                               )}
                             >
                               {chat.title}
@@ -243,9 +243,7 @@ export default function SidebarChat() {
                           <div
                             className={cn(
                               'flex items-center text-xs',
-                              isActive
-                                ? 'text-white/80'
-                                : 'text-muted-foreground',
+                              isActive ? 'text-white/80' : 'text-gray-500',
                             )}
                           >
                             <Clock className="w-3 h-3 mr-1" />
@@ -264,7 +262,7 @@ export default function SidebarChat() {
                         'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6',
                         isActive
                           ? 'text-white hover:bg-white/20'
-                          : 'text-muted-foreground hover:bg-gray-100',
+                          : 'text-gray-500 hover:bg-gray-100',
                       )}
                       onClick={(e) => {
                         e.preventDefault();
@@ -285,10 +283,10 @@ export default function SidebarChat() {
       {/* Mobile Sidebar - Shows when not minimized */}
       {!isMinimized && (
         <>
-          <div className="fixed inset-y-0 left-0 w-80 z-[9999] md:hidden bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-lg flex flex-col">
+          <div className="fixed inset-y-0 left-0 w-80 z-[9999] md:hidden bg-white border-r border-gray-200 shadow-lg flex flex-col">
             {/* Header */}
             <div
-              className="p-4 border-b border-gray-200 dark:border-gray-800 relative overflow-hidden flex-shrink-0"
+              className="p-4 border-b border-gray-200 relative overflow-hidden flex-shrink-0"
               style={{ backgroundColor: `${mainColor}05` }}
             >
               <div className="relative z-10 flex items-center gap-3">
@@ -305,7 +303,7 @@ export default function SidebarChat() {
                   >
                     Bimbot AI
                   </h2>
-                  <p className="text-xs text-muted-foreground">Assistant</p>
+                  <p className="text-xs text-gray-500">Assistant</p>
                 </div>
               </div>
               {/* Decorative elements */}
@@ -316,7 +314,7 @@ export default function SidebarChat() {
             </div>
 
             {/* New Chat Input */}
-            <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
+            <div className="p-4 border-b border-gray-200 flex-shrink-0">
               <form
                 onSubmit={handleNewChat}
                 className="space-y-3"
@@ -349,7 +347,7 @@ export default function SidebarChat() {
             {/* Chat History */}
             <div className="flex-1 flex flex-col overflow-hidden">
               <div className="p-4 pb-2 flex-shrink-0">
-                <h3 className="text-sm font-medium text-muted-foreground mb-3">
+                <h3 className="text-sm font-medium text-gray-500 mb-3">
                   Riwayat Percakapan
                 </h3>
               </div>
@@ -372,7 +370,7 @@ export default function SidebarChat() {
                               'flex items-start gap-3 p-3 rounded-xl transition-all duration-200 hover:shadow-md cursor-pointer border-2',
                               isActive
                                 ? 'shadow-md scale-[1.02]'
-                                : 'border-transparent hover:border-gray-200 dark:hover:border-gray-700',
+                                : 'border-transparent hover:border-gray-200',
                             )}
                             style={{
                               backgroundColor: isActive
@@ -425,7 +423,7 @@ export default function SidebarChat() {
                                 <h4
                                   className={cn(
                                     'text-sm font-medium line-clamp-2 mb-1',
-                                    isActive ? 'text-white' : 'text-foreground',
+                                    isActive ? 'text-white' : 'text-gray-800',
                                   )}
                                 >
                                   {chat.title}
@@ -434,9 +432,7 @@ export default function SidebarChat() {
                               <div
                                 className={cn(
                                   'flex items-center text-xs',
-                                  isActive
-                                    ? 'text-white/80'
-                                    : 'text-muted-foreground',
+                                  isActive ? 'text-white/80' : 'text-gray-500',
                                 )}
                               >
                                 <Clock className="w-3 h-3 mr-1" />
@@ -455,7 +451,7 @@ export default function SidebarChat() {
                             'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 h-6 w-6',
                             isActive
                               ? 'text-white hover:bg-white/20'
-                              : 'text-muted-foreground hover:bg-gray-100',
+                              : 'text-gray-500 hover:bg-gray-100',
                           )}
                           onClick={(e) => {
                             e.preventDefault();

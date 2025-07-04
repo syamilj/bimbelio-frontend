@@ -17,7 +17,7 @@ export default function Start({ isLoading, onClick }: Props) {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   return (
-    <div className="flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-full w-full items-center justify-center bg-gray-50">
       <div className="flex h-full w-full max-w-3xl flex-col items-center justify-center gap-8 px-6">
         {/* Header Section */}
         <div className="text-center space-y-4">
@@ -31,11 +31,11 @@ export default function Start({ isLoading, onClick }: Props) {
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
               Halo,{' '}
               <span style={{ color: mainColor }}>{session?.user.name}</span>
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
+            <p className="text-gray-600 text-lg">
               Siap untuk memulai pembelajaran hari ini?
             </p>
           </div>
@@ -93,7 +93,7 @@ export default function Start({ isLoading, onClick }: Props) {
 
         {/* Features */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">
-          <div className="text-center p-4 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-200">
             <div
               className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
@@ -104,12 +104,10 @@ export default function Start({ isLoading, onClick }: Props) {
               />
             </div>
             <h3 className="font-semibold text-sm mb-1">AI Assistant</h3>
-            <p className="text-xs text-muted-foreground">
-              Bantuan pembelajaran cerdas
-            </p>
+            <p className="text-xs text-gray-500">Bantuan pembelajaran cerdas</p>
           </div>
 
-          <div className="text-center p-4 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-200">
             <div
               className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
@@ -120,12 +118,10 @@ export default function Start({ isLoading, onClick }: Props) {
               />
             </div>
             <h3 className="font-semibold text-sm mb-1">Materi Lengkap</h3>
-            <p className="text-xs text-muted-foreground">
-              Bank soal terlengkap
-            </p>
+            <p className="text-xs text-gray-500">Bank soal terlengkap</p>
           </div>
 
-          <div className="text-center p-4 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-200">
             <div
               className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
@@ -136,7 +132,7 @@ export default function Start({ isLoading, onClick }: Props) {
               />
             </div>
             <h3 className="font-semibold text-sm mb-1">Belajar Interaktif</h3>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-500">
               Pengalaman belajar yang menyenangkan
             </p>
           </div>
@@ -144,10 +140,10 @@ export default function Start({ isLoading, onClick }: Props) {
 
         {/* Footer */}
         <div className="text-center space-y-2">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-500">
             Mulai perjalanan belajarmu sekarang juga
           </p>
-          <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
             <Sparkles className="w-3 h-3" />
             <span>Didukung oleh teknologi AI terdepan</span>
           </div>

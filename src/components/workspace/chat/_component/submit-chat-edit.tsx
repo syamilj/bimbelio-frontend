@@ -138,9 +138,9 @@ const SubmitChatEdit = () => {
   };
 
   return (
-    <div className="w-full space-y-3 bg-background border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+    <div className="w-full space-y-3 bg-background border border-gray-200 rounded-xl p-4">
       {/* Edit Header */}
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2 text-sm text-gray-500">
         <div
           className="w-2 h-2 rounded-full animate-pulse"
           style={{ backgroundColor: mainColor }}
@@ -156,9 +156,9 @@ const SubmitChatEdit = () => {
           defaultValue={editMessage.value}
           className={cn(
             'w-full resize-none rounded-xl border-2 py-3 px-4 text-sm font-normal outline-none transition-all duration-200',
-            'placeholder:text-gray-400 dark:placeholder:text-gray-500',
-            'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700',
-            'focus:bg-white dark:focus:bg-gray-800 focus:border-2',
+            'placeholder:text-gray-400',
+            'bg-gray-50 border-gray-200',
+            'focus:bg-white focus:border-2',
           )}
           style={{
             borderColor: `${mainColor}60`,
@@ -194,7 +194,7 @@ const SubmitChatEdit = () => {
         />
 
         {/* Character counter */}
-        <div className="absolute bottom-2 right-3 text-xs text-muted-foreground bg-background/80 px-2 py-1 rounded-md">
+        <div className="absolute bottom-2 right-3 text-xs text-gray-500 bg-background/80 px-2 py-1 rounded-md">
           <span>{charCount}/1000</span>
         </div>
       </div>
@@ -204,7 +204,7 @@ const SubmitChatEdit = () => {
         <Button
           variant="outline"
           size="sm"
-          className="rounded-xl border-gray-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
+          className="rounded-xl border-gray-200 hover:bg-gray-50"
           onClick={resetEdit}
           disabled={isSubmitting}
         >
@@ -239,7 +239,7 @@ const SubmitChatEdit = () => {
       </div>
 
       {/* Helper Text */}
-      <div className="text-xs text-muted-foreground text-center pt-1 border-t border-gray-200 dark:border-gray-700">
+      <div className="text-xs text-gray-500 text-center pt-1 border-t border-gray-200">
         <span>Ctrl+Enter untuk simpan • Escape untuk membatalkan</span>
       </div>
     </div>

@@ -15,7 +15,7 @@ export default function ChatPage({
 
   return (
     <ChatProvider>
-      <div className="absolute inset-0 md:left-[75px] bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      <div className="absolute inset-0 md:left-[75px] bg-gray-50 overflow-hidden">
         <div className="flex h-full w-full">
           <SidebarChat />
           <div className="flex-1 flex flex-col overflow-hidden md:ml-0">

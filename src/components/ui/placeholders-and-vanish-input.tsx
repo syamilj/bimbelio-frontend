@@ -1,5 +1,6 @@
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -13,6 +14,12 @@ export function PlaceholdersAndVanishInput({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -174,17 +181,22 @@ export function PlaceholdersAndVanishInput({
     vanishAndSubmit();
     onSubmit && onSubmit(e);
   };
+
   return (
     <form
       className={cn(
-        'w-full relative max-w-xl mx-auto bg-white dark:bg-zinc-800 h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200',
-        value && 'bg-gray-50',
+        'w-full relative max-w-xl mx-auto bg-white dark:bg-zinc-800 h-12 rounded-full overflow-hidden shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),_0px_1px_0px_0px_rgba(25,28,33,0.02),_0px_0px_0px_1px_rgba(25,28,33,0.08)] transition duration-200 border-2',
+        value ? 'border-opacity-60' : 'border-gray-200',
       )}
+      style={{
+        borderColor: value ? `${mainColor}60` : undefined,
+        backgroundColor: value ? `${mainColor}05` : undefined,
+      }}
       onSubmit={handleSubmit}
     >
       <canvas
         className={cn(
-          'absolute pointer-events-none  text-base transform scale-50 top-[20%] left-2 sm:left-8 origin-top-left filter invert dark:invert-0 pr-20',
+          'absolute pointer-events-none text-base transform scale-50 top-[20%] left-2 sm:left-8 origin-top-left filter invert dark:invert-0 pr-20',
           !animating ? 'opacity-0' : 'opacity-100',
         )}
         ref={canvasRef}
@@ -209,7 +221,11 @@ export function PlaceholdersAndVanishInput({
       <button
         disabled={!value}
         type="submit"
-        className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full disabled:bg-gray-100 bg-black dark:bg-zinc-900 dark:disabled:bg-zinc-800 transition duration-200 flex items-center justify-center"
+        className="absolute right-2 top-1/2 z-50 -translate-y-1/2 h-8 w-8 rounded-full transition duration-200 flex items-center justify-center shadow-sm hover:shadow-md"
+        style={{
+          backgroundColor: value ? mainColor : '#f3f4f6',
+          opacity: value ? 1 : 0.5,
+        }}
       >
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +237,10 @@ export function PlaceholdersAndVanishInput({
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-gray-300 h-4 w-4"
+          className={cn(
+            'h-4 w-4 transition-colors',
+            value ? 'text-white' : 'text-gray-400',
+          )}
         >
           <path
             stroke="none"

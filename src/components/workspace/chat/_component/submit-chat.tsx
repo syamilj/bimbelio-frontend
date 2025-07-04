@@ -139,13 +139,13 @@ const SubmitChat = () => {
     session?.user.role !== 'ADMIN';
 
   return (
-    <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 z-10">
+    <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10">
       <div className="max-w-4xl mx-auto px-4 py-3">
         {/* Compact Limitation Warnings */}
         {isLimitReached && (
-          <div className="mb-3 flex items-center gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-            <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
-            <span className="text-sm text-red-700 dark:text-red-300 flex-1">
+          <div className="mb-3 flex items-center gap-3 p-3 rounded-lg bg-red-50 border border-red-200">
+            <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+            <span className="text-sm text-red-700 flex-1">
               Limit chat tercapai
             </span>
             <Button
@@ -160,12 +160,12 @@ const SubmitChat = () => {
         )}
 
         {hasLimitWarning && (
-          <div className="mb-3 flex items-center gap-3 p-3 rounded-lg bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800">
+          <div className="mb-3 flex items-center gap-3 p-3 rounded-lg bg-orange-50 border border-orange-200">
             <Zap
               className="w-4 h-4 flex-shrink-0"
               style={{ color: mainColor }}
             />
-            <span className="text-sm text-orange-700 dark:text-orange-300 flex-1">
+            <span className="text-sm text-orange-700 flex-1">
               <span style={{ color: mainColor, fontWeight: '600' }}>
                 {userLimitation?.chat}/{userLimitation?.chatLimit}
               </span>{' '}
@@ -184,8 +184,8 @@ const SubmitChat = () => {
         )}
 
         {session?.user.role === 'ADMIN' && (
-          <div className="mb-3 flex items-center gap-2 p-2 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
-            <div className="flex items-center gap-1 text-green-700 dark:text-green-300 text-sm">
+          <div className="mb-3 flex items-center gap-2 p-2 rounded-lg bg-green-50 border border-green-200">
+            <div className="flex items-center gap-1 text-green-700 text-sm">
               <IconUnlimited w={14} />
               <span>/</span>
               <IconUnlimited w={14} />
@@ -209,9 +209,9 @@ const SubmitChat = () => {
               placeholder="Ketik pesan Anda di sini..."
               className={cn(
                 'w-full resize-none rounded-2xl border-2 py-3 px-4 pr-14 text-sm font-normal outline-none transition-all duration-200',
-                'placeholder:text-gray-400 dark:placeholder:text-gray-500',
-                'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700',
-                'focus:bg-white dark:focus:bg-gray-800',
+                'placeholder:text-gray-400',
+                'bg-gray-50 border-gray-200',
+                'focus:bg-white',
                 send && !isLimitReached ? 'focus:border-2' : '',
               )}
               style={{
@@ -263,7 +263,7 @@ const SubmitChat = () => {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="w-8 h-8 rounded-xl bg-gray-200 dark:bg-gray-700 p-0"
+                    className="w-8 h-8 rounded-xl bg-gray-200 p-0"
                     onMouseEnter={() => setShowUpgrade(true)}
                     onMouseLeave={() => setShowUpgrade(false)}
                     disabled
@@ -275,7 +275,7 @@ const SubmitChat = () => {
                   </Button>
 
                   {showUpgrade && (
-                    <div className="absolute bottom-full right-0 mb-2 w-56 p-3 bg-gray-900 dark:bg-gray-800 text-white rounded-xl shadow-xl z-50">
+                    <div className="absolute bottom-full right-0 mb-2 w-56 p-3 bg-gray-900 text-white rounded-xl shadow-xl z-50">
                       <div className="space-y-2">
                         <h4 className="font-semibold text-xs">
                           Limit Chat Tercapai
@@ -285,7 +285,7 @@ const SubmitChat = () => {
                         </p>
                         <ButtonPayment text="Upgrade Sekarang" />
                       </div>
-                      <div className="absolute -bottom-1 right-4 w-2 h-2 bg-gray-900 dark:bg-gray-800 rotate-45" />
+                      <div className="absolute -bottom-1 right-4 w-2 h-2 bg-gray-900 rotate-45" />
                     </div>
                   )}
                 </div>

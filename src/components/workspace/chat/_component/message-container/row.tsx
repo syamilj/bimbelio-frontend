@@ -147,7 +147,7 @@ export default function Row({
         >
           {/* Avatar */}
           <div className="flex-shrink-0">
-            <Avatar className="w-8 h-8 border border-gray-200 dark:border-gray-700">
+            <Avatar className="w-8 h-8 border border-gray-200">
               <AvatarFallback
                 className={cn(
                   'text-white font-semibold',
@@ -198,7 +198,7 @@ export default function Row({
                 )}
               </div>
               {currentMessage.createdAt && (
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-gray-500">
                   {getHours(currentMessage.createdAt)} •{' '}
                   {getDate(currentMessage.createdAt)}
                 </span>
@@ -210,7 +210,7 @@ export default function Row({
               className={cn(
                 'relative rounded-2xl px-4 py-3 shadow-sm border transition-all duration-200',
                 isUser
-                  ? 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                  ? 'bg-white border-gray-200'
                   : 'border-transparent shadow-md',
               )}
               style={{
@@ -243,10 +243,9 @@ export default function Row({
                         onClickPageNumber={onClickPageNumber}
                         scrollToPdfPage={scrollToPdfPage}
                         className={cn(
-                          'prose prose-base max-w-none dark:prose-invert prose-headings:text-inherit prose-p:text-inherit prose-strong:text-inherit prose-code:text-inherit prose-pre:text-inherit prose-li:text-inherit prose-blockquote:text-inherit',
+                          'prose prose-base max-w-none prose-headings:text-inherit prose-p:text-inherit prose-strong:text-inherit prose-code:text-inherit prose-pre:text-inherit prose-li:text-inherit prose-blockquote:text-inherit',
                           // Additional styling for user messages
-                          isUser &&
-                            'prose-p:text-gray-700 dark:prose-p:text-gray-300',
+                          isUser && 'prose-p:text-gray-700',
                         )}
                       />
                     ) : (
@@ -260,7 +259,7 @@ export default function Row({
               {!editMessage.bool && currentMessage && (
                 <div
                   className={cn(
-                    'mt-3 pt-2 border-t border-gray-100 dark:border-gray-700',
+                    'mt-3 pt-2 border-t border-gray-100',
                     isUser ? 'text-right' : 'text-left',
                   )}
                 >
@@ -273,7 +272,7 @@ export default function Row({
                 className={cn(
                   'absolute top-3 w-0 h-0',
                   isUser
-                    ? 'right-[-8px] border-l-8 border-l-white dark:border-l-gray-800 border-t-4 border-t-transparent border-b-4 border-b-transparent'
+                    ? 'right-[-8px] border-l-8 border-l-white border-t-4 border-t-transparent border-b-4 border-b-transparent'
                     : 'left-[-8px] border-r-8 border-t-4 border-t-transparent border-b-4 border-b-transparent',
                 )}
                 style={{

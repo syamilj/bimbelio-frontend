@@ -2,12 +2,14 @@
 
 import { useLeaderboardContext } from '@/app/[web_sub_category]/(user)/user/leaderboard/_components/provider-leaderboard';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateStringShort } from '@/lib/utils';
-import { IconTimer2, IconUserAdmin } from '@/styles/icon';
+import { Calendar, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 type TryoutListType = {
@@ -20,34 +22,29 @@ type TryoutListType = {
 };
 
 export function TryOutSelector() {
-  const { data: sesssion } = useSession();
+  const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const { selectedTryOut, setSelectedTryOut } = useLeaderboardContext();
 
-  const [firstLoad, setFirstLoad] = useState<number>(0);
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
-  // const {
-  //   data: TryoutList,
-  //   isError: TryoutListIsError,
-  //   isLoading: TryoutListIsLoading,
-  // } = api.leaderboard.getTryoutList.useQuery(undefined, {
-  //   refetchOnWindowFocus: false,
-  //   refetchOnMount: false,
-  // });
+  const [firstLoad, setFirstLoad] = useState<number>(0);
 
   const [TryoutList, setTryoutList] = useState<TryoutListType[]>([]);
   const [TryoutListIsLoading, setTryoutListIsLoading] = useState<boolean>(true);
   const [TryoutListIsError, setTryoutListIsError] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!sesssion) return;
-    getGeneral(`/leaderboard/getTryoutList?userId=${sesssion.user.id}`, {
+    if (!session) return;
+    getGeneral(`/leaderboard/getTryoutList?userId=${session.user.id}`, {
       setData: setTryoutList,
       setLoading: setTryoutListIsLoading,
       onError() {
         setTryoutListIsError(true);
       },
     });
-  }, [sesssion]);
+  }, [session]);
 
   useEffect(() => {
     if (Array.isArray(TryoutList) && TryoutList.length > 0 && firstLoad === 0) {
@@ -68,52 +65,116 @@ export function TryOutSelector() {
     }
   }, [TryoutList, firstLoad, setSelectedTryOut]);
 
-  if (TryoutListIsError) return <div className="">Error...</div>;
+  if (TryoutListIsError) {
+    return (
+      <Card className="h-full border-2 border-red-200 bg-red-50">
+        <CardContent className="flex items-center justify-center h-32">
+          <p className="text-red-600 font-medium">Gagal memuat data try out</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
-    <Card className="flex h-full w-full flex-col bg-transparent border-none">
-      <CardContent className="flex-grow overflow-hidden p-2">
-        <div
-          id="tryout-selector"
-          className="scrollable-content h-fit md:h-[300px] max-h-[300px] space-y-2 overflow-y-scroll pr-2"
-        >
-          {TryoutList?.map((tryOut) => (
-            <Button
-              key={tryOut.id}
-              className={cn(
-                'h-auto w-full justify-start px-4 py-3 text-left bg-white text-black hover:bg-main/85 hover:text-white border rounded-xl',
-                selectedTryOut === tryOut.id && 'text-white bg-main',
-              )}
-              onClick={() => setSelectedTryOut(tryOut.id)}
+    <Card className="h-full bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+      <CardHeader
+        className="pb-4 relative overflow-hidden"
+        style={{ backgroundColor: `${mainColor}05` }}
+      >
+        <div className="relative z-10">
+          <CardTitle
+            className="text-lg font-bold flex items-center gap-2"
+            style={{ color: mainColor }}
+          >
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
             >
-              <div className="flex w-full flex-col items-start gap-1">
-                <span className="font-medium">{tryOut.title}</span>
-                <div
-                  className={cn(
-                    'flex items-center gap-4 text-xs text-muted-foreground',
-                    selectedTryOut === tryOut.id && 'text-white',
-                  )}
-                >
-                  <div className="flex items-center gap-1">
-                    <IconTimer2 className="h-4 w-4" />
-                    <span>{getDateStringShort(tryOut.startDate)}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <IconUserAdmin className="h-4 w-4" />
-                    <span>{tryOut._count.TryoutResult}</span>
+              <Calendar
+                className="w-4 h-4"
+                style={{ color: mainColor }}
+              />
+            </div>
+            Pilih Try Out
+          </CardTitle>
+          <p className="text-sm text-gray-600 mt-1">
+            Pilih try out untuk melihat leaderboard
+          </p>
+        </div>
+        {/* Decorative elements */}
+        <div
+          className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-10"
+          style={{ backgroundColor: mainColor }}
+        />
+      </CardHeader>
+
+      <CardContent className="p-0 flex-grow overflow-hidden">
+        <ScrollArea className="h-[400px] px-4 pb-4">
+          <div className="space-y-3">
+            {TryoutList?.map((tryOut) => (
+              <Button
+                key={tryOut.id}
+                variant="ghost"
+                className={cn(
+                  'w-full h-auto justify-start p-4 text-left rounded-xl border-2 transition-all duration-200 hover:shadow-md',
+                  selectedTryOut === tryOut.id
+                    ? 'shadow-md border-transparent'
+                    : 'border-gray-200 hover:border-gray-300 bg-white',
+                )}
+                style={{
+                  backgroundColor:
+                    selectedTryOut === tryOut.id ? mainColor : undefined,
+                  color: selectedTryOut === tryOut.id ? 'white' : undefined,
+                }}
+                onClick={() => setSelectedTryOut(tryOut.id)}
+              >
+                <div className="flex w-full flex-col items-start gap-2">
+                  <span className="font-medium text-sm leading-tight">
+                    {tryOut.title}
+                  </span>
+                  <div className="flex items-center justify-between w-full">
+                    <div
+                      className={cn(
+                        'flex items-center gap-1 text-xs',
+                        selectedTryOut === tryOut.id
+                          ? 'text-white/80'
+                          : 'text-gray-500',
+                      )}
+                    >
+                      <Calendar className="w-3 h-3" />
+                      <span>{getDateStringShort(tryOut.startDate)}</span>
+                    </div>
+                    <div
+                      className={cn(
+                        'flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-xl',
+                        selectedTryOut === tryOut.id
+                          ? 'bg-white/20 text-white'
+                          : 'bg-gray-100 text-gray-600',
+                      )}
+                    >
+                      <Users className="w-3 h-3" />
+                      <span>{tryOut._count.TryoutResult}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Button>
-          ))}
-          {TryoutListIsLoading &&
-            Array.from({ length: 8 }).map((_, index) => (
-              <Skeleton
-                key={index}
-                className="h-[60px] w-full"
-              />
+              </Button>
             ))}
-        </div>
+
+            {TryoutListIsLoading &&
+              Array.from({ length: 6 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="p-4 rounded-xl border-2 border-gray-200"
+                >
+                  <Skeleton className="h-4 w-3/4 mb-2" />
+                  <div className="flex justify-between">
+                    <Skeleton className="h-3 w-20" />
+                    <Skeleton className="h-3 w-12" />
+                  </div>
+                </div>
+              ))}
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );
