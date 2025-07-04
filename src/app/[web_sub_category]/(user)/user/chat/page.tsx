@@ -216,7 +216,7 @@ export default function AIChatHistoryPage() {
           <div className="bg-main text-white rounded-full p-6 mb-6 w-24 h-24 flex items-center justify-center">
             <BotIcon className="h-12 w-12" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Bimbo AI</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Bimbot AI</h1>
           <h2 className="text-sm text-gray-600 mb-4">Powered by OpenAI</h2>
           <p className="text-gray-600 mb-8 max-w-2xl">
             Apa yang ingin Kamu pelajari hari ini? Bimbelio siap membantu.
