@@ -165,50 +165,52 @@ const DocViewerPage = () => {
   }
 
   return (
-    <ResizablePanelGroup
-      autoSaveId="window-layout"
-      direction={isMobile ? 'vertical' : 'horizontal'}
-      onLayout={() => {}}
-      className="flex-col"
-    >
-      <ResizablePanel
-        defaultSize={50}
-        minSize={0}
-        className={cn(
-          `DocumentContainer relative border-b`,
-          mobileScreen === 'minimize' && 'pt-[68px] md:pt-0',
-        )}
-      >
-        <LeftComponent doc={doc} />
-      </ResizablePanel>
-      <ResizableHandleComponent />
-      <ResizablePanel
-        defaultSize={50}
-        minSize={0}
-        className="chatAIContainer relative"
-      >
-        <RightComponent docId={docId} />
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    <div className="h-full flex flex-col">
+      {/* Main Content Area */}
+      <div className="flex-1 min-h-0">
+        <ResizablePanelGroup
+          autoSaveId="workspace-layout"
+          direction={isMobile ? 'vertical' : 'horizontal'}
+          onLayout={() => {}}
+          className="h-full"
+        >
+          <ResizablePanel
+            defaultSize={50}
+            minSize={30}
+            className={cn(
+              `DocumentContainer relative`,
+              !isMobile && 'border-r border-gray-200',
+              isMobile && 'border-b border-gray-200',
+            )}
+          >
+            <LeftComponent doc={doc} />
+          </ResizablePanel>
+          <ResizableHandleComponent />
+          <ResizablePanel
+            defaultSize={50}
+            minSize={30}
+            className="chatAIContainer relative"
+          >
+            <RightComponent docId={docId} />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    </div>
   );
 };
 
 export default DocViewerPage;
 
 const ResizableHandleComponent = () => {
-  const { mobileScreen } = useAppContext();
+  const isMobile = useMedia({ maxWidth: '768px' });
+
   return (
-    <div
-      className={cn(
-        `relative items-center justify-center`,
-        mobileScreen === 'minimize' ? 'flex' : 'h-0 w-0 overflow-hidden p-0',
-      )}
-    >
+    <div className="relative flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors">
       <ResizableHandle
-        className="relative z-[42] h-full w-[.5px] rounded-full bg-main-gray-input duration-300 after:w-[1px] data-[panel-group-direction=vertical]:h-[1px]"
+        className="relative z-[42] h-full w-[4px] bg-gray-300 duration-300 data-[panel-group-direction=vertical]:h-[4px] data-[panel-group-direction=vertical]:w-full hover:bg-blue-400 active:bg-blue-500"
         withHandle
       />
-      <div className="absolute z-[41] ml-[-.2px] h-[6px] w-[100px] rounded-[2rem] bg-main-gray-input md:h-[100px] md:w-[6px]" />
+      <div className="absolute z-[41] h-[40px] w-[12px] rounded-full bg-gray-400 md:h-[12px] md:w-[40px] opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
   );
 };

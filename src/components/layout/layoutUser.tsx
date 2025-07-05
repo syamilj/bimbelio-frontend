@@ -111,11 +111,12 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     if (isWorkspaceRoute || isCourseRoute) {
       setComponentName('DocViewerPage');
       setInWorkspace(true);
+      // Remove forced minimize - let user control sidebar state
     } else {
       setInWorkspace(false);
       setComponentName('');
     }
-  }, [pathname, params]);
+  }, [pathname, params, isMobile]);
 
   // 2) Jika route 'try-out/[id]' => hideLayout = true
   useEffect(() => {
@@ -581,10 +582,16 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
           {/* SIDEBAR (Desktop) */}
           <div
             className={cn(
-              'fixed inset-y-0 left-0 transition-all duration-300',
-              minimizeSidebar ? 'w-20' : 'w-72',
-              showSidebar && 'z-50',
-              'hidden md:block z-50', // Add hidden md:block here and lower z-index
+              'fixed inset-y-0 left-0 transition-all duration-300 z-50',
+              // In workspace: always show sidebar (minimized or expanded)
+              inWorkspace && !isMobile
+                ? minimizeSidebar
+                  ? 'w-20'
+                  : 'w-72'
+                : minimizeSidebar
+                  ? 'w-20'
+                  : 'w-72',
+              'hidden md:block',
             )}
           >
             <div className="h-full">
@@ -617,8 +624,16 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
           <main
             className={cn(
               'transition-all duration-300',
-              // Workspace full screen
-              componentName === 'DocViewerPage' && 'fixed inset-0 z-30',
+              // Workspace: 3-column layout with dynamic sidebar width
+              componentName === 'DocViewerPage' &&
+                !isMobile &&
+                (minimizeSidebar
+                  ? 'fixed inset-0 z-30 pl-20'
+                  : 'fixed inset-0 z-30 pl-72'),
+              // Mobile workspace: full screen
+              componentName === 'DocViewerPage' &&
+                isMobile &&
+                'fixed inset-0 z-30',
               // Normal layout
               !inWorkspace &&
                 cn(

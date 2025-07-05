@@ -35,7 +35,7 @@ import {
   User,
   X,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 import SidebarRoute from './sidebar-route';
 
@@ -47,6 +47,8 @@ const Sidebar = ({ category }: { category: any }) => {
   const router = useRouter();
   const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
   const [isWebCategoryDialogOpen, setIsWebCategoryDialogOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const pathname = usePathname();
 
   const {
     minimizeSidebar,
@@ -59,7 +61,8 @@ const Sidebar = ({ category }: { category: any }) => {
     setPagesSetting,
   } = useAppContext();
 
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
+  // Use minimizeSidebar state consistently
+  const shouldMinimize = minimizeSidebar;
 
   // Handle body overflow based on pop-ups
   useEffect(() => {
@@ -145,35 +148,39 @@ const Sidebar = ({ category }: { category: any }) => {
           {/* Header */}
           <div
             className={cn(
-              'flex items-center p-4 border-b border-gray-200 transition-all duration-300',
-              minimizeSidebar ? 'justify-center px-2' : 'justify-between',
+              'flex items-center p-4 border-b border-gray-200 transition-all duration-300 bg-gray-50/80',
+              shouldMinimize ? 'justify-center px-2' : 'justify-between',
             )}
           >
-            {!minimizeSidebar ? (
+            {!shouldMinimize ? (
               <>
                 <Logo href={`/${website_sub_category_id}/user/dashboard`} />
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-gray-100 rounded-lg transition-colors"
-                      onClick={() => setMinimizeSidebar(true)}
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">
-                    <p>Minimize sidebar</p>
-                  </TooltipContent>
-                </Tooltip>
+                <div className="flex items-center gap-2">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-gray-500 hover:text-gray-700 hover:bg-white rounded-lg transition-all duration-200 shadow-sm"
+                        onClick={() => setMinimizeSidebar(true)}
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      <p>Minimize sidebar</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
               </>
             ) : (
               <>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm cursor-pointer"
+                      className={cn(
+                        'w-10 h-10 rounded-xl flex items-center justify-center shadow-lg cursor-pointer hover:shadow-xl transition-all duration-200',
+                      )}
                       style={{ backgroundColor: mainColor }}
                       onClick={() => setMinimizeSidebar(false)}
                     >
@@ -188,14 +195,11 @@ const Sidebar = ({ category }: { category: any }) => {
             )}
           </div>
 
-          {/* Category Selection - Only when expanded */}
-          {!minimizeSidebar && (
-            <div
-              className="p-4 border-b border-gray-200"
-              style={{ backgroundColor: `${mainColor}05` }}
-            >
+          {/* Category Selection - Always shown when expanded */}
+          {!shouldMinimize && (
+            <div className="p-4 border-b border-gray-200 bg-gradient-to-br from-gray-50 to-white">
               <div
-                className="relative overflow-hidden rounded-2xl p-4 text-white shadow-lg cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                className="relative overflow-hidden rounded-xl p-4 text-white shadow-lg cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -203,7 +207,7 @@ const Sidebar = ({ category }: { category: any }) => {
               >
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center">
+                    <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                       <BookOpen className="w-3 h-3" />
                     </div>
                     <span className="text-xs font-medium opacity-90">
@@ -223,16 +227,17 @@ const Sidebar = ({ category }: { category: any }) => {
                     <ChevronRight className="w-4 h-4" />
                   </div>
                 </div>
-                {/* Decorative elements */}
-                <div className="absolute -right-6 -top-6 w-20 h-20 bg-white/10 rounded-full blur-[1px]" />
-                <div className="absolute -right-10 -bottom-10 w-24 h-24 bg-white/5 rounded-full blur-[1px]" />
+                {/* Enhanced decorative elements */}
+                <div className="absolute -right-6 -top-6 w-20 h-20 bg-white/10 rounded-full blur-sm" />
+                <div className="absolute -right-10 -bottom-10 w-24 h-24 bg-white/5 rounded-full blur-sm" />
+                <div className="absolute right-2 top-2 w-12 h-12 bg-white/5 rounded-full blur-md" />
               </div>
             </div>
           )}
 
           {/* Minimized Quick Access */}
-          {minimizeSidebar && (
-            <div className="p-2 border-b border-gray-200">
+          {shouldMinimize && (
+            <div className="p-2 border-b border-gray-200 bg-gradient-to-br from-gray-50 to-white">
               <div className="flex flex-col items-center gap-3">
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -253,21 +258,21 @@ const Sidebar = ({ category }: { category: any }) => {
           )}
 
           {/* Sidebar Routes */}
-          <div className="flex-1 overflow-y-auto py-4">
+          <div className="flex-1 overflow-y-auto py-4 bg-gradient-to-b from-white to-gray-50/50">
             <SidebarRoute
               category={category}
-              minimizeSidebar={minimizeSidebar}
+              minimizeSidebar={shouldMinimize}
               setMinimizeSidebar={setMinimizeSidebar}
               categoryColors={{ mainColor, secondaryColor }}
             />
           </div>
 
-          {/* Footer - Fixed to prevent glitch */}
-          <div className="border-t border-gray-200 p-4 space-y-3 flex-shrink-0 bg-bg-workspace">
-            {/* Upgrade Premium (Only when expanded and not premium) */}
-            {!session?.user.tier && !minimizeSidebar && (
+          {/* Footer - Enhanced styling */}
+          <div className="border-t border-gray-200 p-4 space-y-3 flex-shrink-0 bg-gradient-to-br from-gray-50 to-white">
+            {/* Upgrade Premium - Enhanced styling */}
+            {!session?.user.tier && !shouldMinimize && (
               <div
-                className="relative overflow-hidden rounded-xl p-4 text-white shadow-lg"
+                className="relative overflow-hidden rounded-xl p-4 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                 style={{ backgroundColor: mainColor }}
               >
                 <div className="relative z-10">
@@ -279,7 +284,7 @@ const Sidebar = ({ category }: { category: any }) => {
                     Unlock fitur terlengkap untuk pembelajaran optimal
                   </p>
                   <Button
-                    className="w-full bg-white/20 hover:bg-white/30 border border-white/20 text-white font-semibold text-sm rounded-lg"
+                    className="w-full bg-white/20 hover:bg-white/30 border border-white/20 text-white font-semibold text-sm rounded-lg backdrop-blur-sm transition-all duration-200"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -289,23 +294,24 @@ const Sidebar = ({ category }: { category: any }) => {
                     Upgrade Sekarang
                   </Button>
                 </div>
-                <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/10 rounded-full blur-[1px]" />
+                <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/10 rounded-full blur-sm" />
+                <div className="absolute -right-8 -bottom-8 w-20 h-20 bg-white/5 rounded-full blur-md" />
               </div>
             )}
 
             {/* User Profile */}
             <div
               className={cn(
-                'flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors',
-                minimizeSidebar ? 'justify-center' : 'justify-between',
+                'flex items-center gap-3 p-2 rounded-xl hover:bg-white/60 transition-all duration-200 shadow-sm',
+                shouldMinimize ? 'justify-center' : 'justify-between',
               )}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                {minimizeSidebar ? (
+                {shouldMinimize ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Avatar className="w-8 h-8 ring-2 ring-gray-200 cursor-pointer">
+                      <Avatar className="w-8 h-8 ring-2 ring-white shadow-md cursor-pointer">
                         <AvatarImage
                           src={userImage || '/placeholder.svg'}
                           alt={session?.user.name || 'User'}
@@ -331,7 +337,7 @@ const Sidebar = ({ category }: { category: any }) => {
                   </Tooltip>
                 ) : (
                   <>
-                    <Avatar className="w-8 h-8 ring-2 ring-gray-200">
+                    <Avatar className="w-8 h-8 ring-2 ring-white shadow-md">
                       <AvatarImage
                         src={userImage || '/placeholder.svg'}
                         alt={session?.user.name || 'User'}
@@ -355,7 +361,7 @@ const Sidebar = ({ category }: { category: any }) => {
                 )}
               </div>
 
-              {!minimizeSidebar && (
+              {!shouldMinimize && (
                 <DropdownMenu
                   open={openMenu}
                   onOpenChange={setOpenMenu}
@@ -364,7 +370,7 @@ const Sidebar = ({ category }: { category: any }) => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="w-8 h-8 rounded-lg hover:bg-gray-100 flex-shrink-0"
+                      className="w-8 h-8 rounded-lg hover:bg-white/80 flex-shrink-0 shadow-sm transition-all duration-200"
                     >
                       <Settings className="w-4 h-4" />
                     </Button>
@@ -426,15 +432,15 @@ const Sidebar = ({ category }: { category: any }) => {
           </div>
         </div>
 
-        {/* Mobile Sidebar - Completely Redesigned */}
+        {/* Mobile Sidebar - Enhanced styling */}
         <div className="md:hidden h-full w-full flex flex-col bg-white shadow-xl">
           {/* Mobile Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0 bg-gray-50/80">
             <Logo href={`/${website_sub_category_id}/user/dashboard`} />
             <Button
               variant="ghost"
               size="icon"
-              className="w-9 h-9 rounded-xl"
+              className="w-9 h-9 rounded-xl hover:bg-white shadow-sm"
               onClick={() => setSidebarMobile(false)}
             >
               <X className="w-5 h-5" />
@@ -442,13 +448,10 @@ const Sidebar = ({ category }: { category: any }) => {
           </div>
 
           {/* Mobile User Profile Section */}
-          <div
-            className="p-4 border-b border-gray-200 flex-shrink-0"
-            style={{ backgroundColor: `${mainColor}05` }}
-          >
+          <div className="p-4 border-b border-gray-200 flex-shrink-0 bg-gradient-to-br from-gray-50 to-white">
             <div className="flex items-center gap-3 mb-4">
               <Avatar
-                className="w-12 h-12 ring-2 ring-offset-2"
+                className="w-12 h-12 ring-2 ring-offset-2 shadow-lg"
                 style={{ '--tw-ring-color': mainColor } as React.CSSProperties}
               >
                 <AvatarImage
@@ -477,7 +480,7 @@ const Sidebar = ({ category }: { category: any }) => {
 
             {/* Mobile Category Card */}
             <div
-              className="relative overflow-hidden rounded-xl p-4 text-white shadow-lg cursor-pointer"
+              className="relative overflow-hidden rounded-xl p-4 text-white shadow-lg cursor-pointer transition-all duration-300 hover:shadow-xl"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -501,12 +504,13 @@ const Sidebar = ({ category }: { category: any }) => {
                   <ChevronRight className="w-4 h-4" />
                 </div>
               </div>
-              <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/10 rounded-full blur-[1px]" />
+              <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/10 rounded-full blur-sm" />
+              <div className="absolute -right-8 -bottom-8 w-20 h-20 bg-white/5 rounded-full blur-md" />
             </div>
           </div>
 
           {/* Mobile Navigation */}
-          <div className="flex-1 overflow-y-auto py-4">
+          <div className="flex-1 overflow-y-auto py-4 bg-gradient-to-b from-white to-gray-50/50">
             <SidebarRoute
               category={category}
               minimizeSidebar={false}
@@ -516,10 +520,10 @@ const Sidebar = ({ category }: { category: any }) => {
           </div>
 
           {/* Mobile Footer */}
-          <div className="border-t border-gray-200 p-4 flex-shrink-0">
+          <div className="border-t border-gray-200 p-4 flex-shrink-0 bg-gradient-to-br from-gray-50 to-white">
             {!session?.user.tier && (
               <div
-                className="mb-4 relative overflow-hidden rounded-xl p-4 text-white shadow-lg"
+                className="mb-4 relative overflow-hidden rounded-xl p-4 text-white shadow-lg transition-all duration-300"
                 style={{ backgroundColor: mainColor }}
               >
                 <div className="relative z-10">
@@ -531,7 +535,7 @@ const Sidebar = ({ category }: { category: any }) => {
                     Dapatkan akses unlimited ke semua fitur
                   </p>
                   <Button
-                    className="w-full bg-white/20 hover:bg-white/30 border border-white/20 text-white font-semibold text-sm"
+                    className="w-full bg-white/20 hover:bg-white/30 border border-white/20 text-white font-semibold text-sm backdrop-blur-sm transition-all duration-200"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -542,6 +546,8 @@ const Sidebar = ({ category }: { category: any }) => {
                     Upgrade Sekarang
                   </Button>
                 </div>
+                <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/10 rounded-full blur-sm" />
+                <div className="absolute -right-8 -bottom-8 w-20 h-20 bg-white/5 rounded-full blur-md" />
               </div>
             )}
           </div>
