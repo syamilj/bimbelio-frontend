@@ -523,7 +523,7 @@ const Sidebar = ({
           },
           {
             value: 'chat',
-            tw: ' p-2 pb-0 break-words bg-white px-0 pr-[.5rem] sm:shadow-lg h-[calc(100vh-10rem)] w-full',
+            tw: 'break-words bg-gray-50 sm:shadow-lg h-[calc(100vh-10rem)] w-full',
             children: (
               <ChatContent
                 docId={docId}

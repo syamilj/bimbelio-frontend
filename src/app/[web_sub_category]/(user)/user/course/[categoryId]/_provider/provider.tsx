@@ -48,7 +48,7 @@ export default function Provider({ children }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
-  const userId = session?.user.id;
+  const userId = session?.user?.id;
 
   // ===== Params ================================
   const tab = searchParams?.get('tab');
@@ -61,7 +61,7 @@ export default function Provider({ children }: Props) {
     if (!tab && sub) {
       router.push(`${window.location.pathname}?sub=${sub}&tab=notes`);
     }
-  }, [tab, sub]);
+  }, [tab, sub, router]);
 
   // ===== Editor ================================
   const editor = useCreateBlockNote({
@@ -78,6 +78,7 @@ export default function Provider({ children }: Props) {
     refetch: CourseRefetch,
   } = useGet<CourseType>('/course/getCourseUserByCategoryId', {
     params: { categoryId },
+    enabled: !!categoryId,
     useEffectDependencies: [categoryId],
   });
 
@@ -85,6 +86,7 @@ export default function Provider({ children }: Props) {
     '/course/getProgressByCategory',
     {
       params: { categoryId },
+      enabled: !!categoryId,
       useEffectDependencies: [categoryId],
     },
   );
@@ -96,9 +98,6 @@ export default function Provider({ children }: Props) {
   useEffect(() => {
     if (Course) {
       if (sub) {
-        // const findData = Course[indexChapter].CourseSubChapter.find(
-        //   sChapter => sChapter.id === sub,
-        // );
         let findData: any;
         Course.forEach((item) => {
           item.CourseSubChapter.forEach((sChapter) => {
@@ -124,7 +123,7 @@ export default function Provider({ children }: Props) {
             CourseProgress: findData.CourseProgress,
           });
         } else {
-          if (Course.length > 0) {
+          if (Course.length > 0 && Course[0].CourseSubChapter.length > 0) {
             setCourseData({
               id: Course[0].CourseSubChapter[0].id,
               number: Course[0].CourseSubChapter[0].number,
@@ -143,7 +142,7 @@ export default function Provider({ children }: Props) {
           }
         }
       } else {
-        if (Course.length > 0) {
+        if (Course.length > 0 && Course[0].CourseSubChapter.length > 0) {
           setCourseData({
             id: Course[0].CourseSubChapter[0].id,
             number: Course[0].CourseSubChapter[0].number,
@@ -167,8 +166,7 @@ export default function Provider({ children }: Props) {
         }
       }
     }
-    // setLoading(false);
-  }, [Course, sub, indexChapter]);
+  }, [Course, sub, indexChapter, router]);
 
   useEffect(() => {
     const chatAIContainer = document.querySelector(
@@ -192,15 +190,15 @@ export default function Provider({ children }: Props) {
         'flex: 50.0 1 0px; overflow: hidden; position: relative;';
       setMobileScreen('minimize');
     }
-  }, [CourseData?.type]);
+  }, [CourseData?.type, setMobileScreen]);
 
   // ===== Doc ================================
   const [docId, setDocId] = useState<string>('');
 
   const { data: doc } = useGet('/document/getDocData', {
     params: { docId, userId: userId },
-    enabled: !!docId,
-    useEffectDependencies: [categoryId, docId],
+    enabled: !!docId && !!userId,
+    useEffectDependencies: [categoryId, docId, userId],
   });
 
   useEffect(() => {
@@ -213,7 +211,7 @@ export default function Provider({ children }: Props) {
   const [showAI, setShowAI] = useState<boolean>(false);
 
   const isLocked =
-    (CourseData?.premium && !session?.user.feature.course) || false;
+    (CourseData?.premium && !session?.user?.feature?.course) || false;
 
   const Context = {
     isLocked,

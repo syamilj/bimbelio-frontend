@@ -1,45 +1,24 @@
-//src/components/workspace-course/_component/submit-course.tsx
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { IconCheckList } from '@/styles/icon';
-
+import { CheckCircle, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useProvider } from '../../_provider/provider';
 
 const SubmitCourse = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const {
     useData: { CourseRefetch, CourseData, CourseProgressRefetch },
   } = useProvider();
 
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
   const subCourseId = CourseData?.id;
-
   const [loading, setLoading] = useState<boolean>(false);
-
-  // const trpc = api.useUtils();
-
-  // const { mutateAsync: saveProgress } =
-  //   api.course.saveProgressCourse.useMutation({
-  //     onSuccess: async () => {
-  //       await trpc.course.getCourseUserByCategoryId.invalidate();
-  //       setLoading(false);
-  //       toaster({
-  //         title: 'Success',
-  //         condition: 'success',
-  //         description: 'Berhasil Menyimpan Progress',
-  //         duration: 2000,
-  //       });
-  //     },
-  //     onError() {
-  //       toaster({
-  //         title: 'Error',
-  //         condition: 'warning',
-  //         description: 'Gagal Menyimpan Progress',
-  //         duration: 2000,
-  //       });
-  //       setLoading(false);
-  //     },
-  //   });
 
   const { mutate: saveProgress } = useMutation(
     '/course/saveProgressCourse',
@@ -47,19 +26,29 @@ const SubmitCourse = () => {
     {
       payload: { subCourseId },
       onSuccess: async () => {
-        // await trpc.course.getCourseUserByCategoryId.invalidate();
         await CourseRefetch();
         setLoading(false);
         await CourseProgressRefetch();
+        toaster({
+          title: 'Berhasil!',
+          condition: 'success',
+          description: 'Progress berhasil disimpan',
+          duration: 2000,
+        });
       },
       onError() {
         setLoading(false);
+        toaster({
+          title: 'Gagal',
+          condition: 'warning',
+          description: 'Gagal menyimpan progress',
+          duration: 2000,
+        });
       },
     },
   );
 
   const handleSubmit = () => {
-    // const subCourseId = query.sub || null;
     setLoading(true);
 
     if (subCourseId) {
@@ -79,15 +68,39 @@ const SubmitCourse = () => {
         loading={loading}
         heading="Menyimpan Progress..."
       />
-      <div
-        className="flex w-fit cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-gradient px-[1rem] py-[.7rem] text-[.9rem] text-white duration-300 hover:opacity-95"
-        onClick={() => {
-          handleSubmit();
+
+      <Button
+        onClick={handleSubmit}
+        disabled={loading}
+        className="group relative rounded-xl px-6 py-3 font-semibold text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
         }}
       >
-        <p>Selesai</p>
-        <IconCheckList />
-      </div>
+        {/* Shimmer effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 group-hover:animate-shimmer" />
+
+        <div className="relative flex items-center gap-2">
+          <CheckCircle className="w-5 h-5" />
+          <span>Selesai</span>
+          <Sparkles className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+        </div>
+      </Button>
+
+      {/* Custom CSS for shimmer animation */}
+      <style jsx>{`
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%) skewX(-12deg);
+          }
+          100% {
+            transform: translateX(200%) skewX(-12deg);
+          }
+        }
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
     </>
   );
 };

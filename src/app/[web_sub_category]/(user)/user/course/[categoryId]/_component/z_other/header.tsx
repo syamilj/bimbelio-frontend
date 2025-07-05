@@ -76,7 +76,7 @@ export default function HeaderCourse({
   const ListOfContent = () => {
     return (
       <div className="flex flex-col">
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-between p-4 ">
           <h3 className="font-semibold">Daftar Isi</h3>
           <div
             onClick={() => {
@@ -444,7 +444,7 @@ export default function HeaderCourse({
 
           <motion.div
             className={cn(
-              'absolute left-0 top-[calc(100%)] z-[102] w-[400px] h-[700px] border border-main-gray-input bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-xl mt-2',
+              'absolute left-0 top-[calc(100%)] z-[102] w-[400px] h-[700px] border p-2 shadow-xl duration-100 overflow-y-auto bg-white overflow-x-hidden rounded-xl mt-2',
               !showList && 'w-0 h-0 p-0',
             )}
           >

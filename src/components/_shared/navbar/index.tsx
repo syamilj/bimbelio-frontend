@@ -245,7 +245,7 @@ const MobileNav: React.FC<{
                           onClick={() => setIsSheetOpen(false)}
                         >
                           <LayoutDashboard className="h-5 w-5" />
-                          <span className="font-medium">Dashboard2</span>
+                          <span className="font-medium">Dashboard</span>
                         </Link>
                         <button
                           className="flex flex-1 items-center justify-center gap-2 rounded-3xl bg-red-500 px-4 py-2.5 text-white transition-colors duration-300 hover:bg-red-600"
