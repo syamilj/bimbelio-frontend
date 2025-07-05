@@ -10,7 +10,7 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateStringShort, getHours } from '@/lib/utils';
 import { ChatHistory } from '@/types/database';
-import { Bot, Clock, Edit3, MessageSquare, Plus } from 'lucide-react';
+import { Bot, Clock, Edit3, MessageSquare, Plus, X } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -20,14 +20,12 @@ export default function SidebarChat() {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const params = useParams();
-  const historyId = params?.historyId;
   const router = useRouter();
   const pathname = usePathname();
-  const { isMinimized } = useChatContext();
+  const { isMinimized, setIsMinimized } = useChatContext();
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [loading, setLoading] = useState(false);
@@ -94,6 +92,10 @@ export default function SidebarChat() {
     },
     500,
   );
+
+  const handleCloseSidebar = () => {
+    setIsMinimized(true);
+  };
 
   return (
     <>
@@ -289,22 +291,33 @@ export default function SidebarChat() {
               className="p-4 border-b border-gray-200 relative overflow-hidden flex-shrink-0"
               style={{ backgroundColor: `${mainColor}05` }}
             >
-              <div className="relative z-10 flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ backgroundColor: mainColor }}
-                >
-                  <Bot className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h2
-                    className="font-bold text-lg"
-                    style={{ color: mainColor }}
+              <div className="relative z-10 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ backgroundColor: mainColor }}
                   >
-                    Bimbot AI
-                  </h2>
-                  <p className="text-xs text-gray-500">Assistant</p>
+                    <Bot className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h2
+                      className="font-bold text-lg"
+                      style={{ color: mainColor }}
+                    >
+                      Bimbot AI
+                    </h2>
+                    <p className="text-xs text-gray-500">Assistant</p>
+                  </div>
                 </div>
+                {/* Close Button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleCloseSidebar}
+                  className="p-1 h-8 w-8 text-gray-500 hover:bg-gray-100"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
               </div>
               {/* Decorative elements */}
               <div
@@ -470,7 +483,10 @@ export default function SidebarChat() {
           </div>
 
           {/* Mobile Overlay */}
-          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9998] md:hidden" />
+          <div
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9998] md:hidden"
+            onClick={handleCloseSidebar}
+          />
         </>
       )}
     </>

@@ -12,13 +12,16 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
   ArrowRight,
+  BookOpen,
   Calculator,
   ChevronDown,
   ChevronUp,
   Crown,
+  FileText,
   Home,
   Lock,
   MessageCircle,
+  Search,
   Sparkles,
   Trophy,
 } from 'lucide-react';
@@ -35,30 +38,30 @@ const navItems = [
     icon: Home,
     description: 'Overview & Statistics',
   },
-  // {
-  //   title: 'Belajar',
-  //   url: (subCategoryId: string) => `/${subCategoryId}/user/course`,
-  //   icon: BookOpen,
-  //   badge: 'Soon!',
-  //   isLocked: true,
-  //   description: 'Materi Pembelajaran',
-  // },
-  // {
-  //   title: 'Telusuri',
-  //   url: (subCategoryId: string) => `/${subCategoryId}/user/explore`,
-  //   icon: Search,
-  //   badge: 'Soon!',
-  //   isLocked: true,
-  //   description: 'Cari Materi',
-  //   isHighlighted: true,
-  // },
-  // {
-  //   title: 'Material',
-  //   url: (subCategoryId: string) => `/${subCategoryId}/user/workspace`, // Base URL for Material
-  //   icon: FileText,
-  //   description: 'Bank Soal',
-  //   isCollapsible: true, // Indicates this item has sub-categories
-  // },
+  {
+    title: 'Belajar',
+    url: (subCategoryId: string) => `/${subCategoryId}/user/course`,
+    icon: BookOpen,
+    badge: 'Soon!',
+    isLocked: true,
+    description: 'Materi Pembelajaran',
+  },
+  {
+    title: 'Telusuri',
+    url: (subCategoryId: string) => `/${subCategoryId}/user/explore`,
+    icon: Search,
+    badge: 'Soon!',
+    isLocked: true,
+    description: 'Cari Materi',
+    isHighlighted: true,
+  },
+  {
+    title: 'Material',
+    url: (subCategoryId: string) => `/${subCategoryId}/user/workspace`, // Base URL for Material
+    icon: FileText,
+    description: 'Bank Soal',
+    isCollapsible: true, // Indicates this item has sub-categories
+  },
   {
     title: 'Try Out',
     url: (subCategoryId: string) => `/${subCategoryId}/user/try-out`,
