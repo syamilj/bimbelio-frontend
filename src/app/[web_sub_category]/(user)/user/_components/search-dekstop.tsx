@@ -74,7 +74,7 @@ const SearchDeskstop = () => {
         <div
           className={cn(
             'relative flex items-center overflow-hidden bg-white dark:bg-gray-800 shadow-lg border-2 transition-all duration-300',
-            isMobile ? 'rounded-xl' : 'rounded-2xl',
+            isMobile ? 'rounded-xl' : 'rounded-full',
             isFocused ? 'shadow-xl scale-[1.02]' : 'shadow-lg',
           )}
           style={{
@@ -163,7 +163,7 @@ const SearchDeskstop = () => {
               disabled={!searchValue.trim()}
               className={cn(
                 'shadow-lg transition-all duration-300 p-0',
-                isMobile ? 'w-8 h-8 rounded-lg' : 'w-12 h-12 rounded-xl',
+                isMobile ? 'w-8 h-8 rounded-lg' : 'w-12 h-12 rounded-full',
                 searchValue.trim()
                   ? 'hover:shadow-xl hover:scale-105'
                   : 'opacity-50 cursor-not-allowed',
@@ -183,7 +183,7 @@ const SearchDeskstop = () => {
         <div className="flex items-center gap-2 pb-2">
           <button
             className={cn(
-              'px-3 py-2 rounded-lg whitespace-nowrap text-sm font-medium transition-all duration-200',
+              'px-3 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200',
               categoryId === ''
                 ? 'text-white shadow-md'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700',
@@ -199,7 +199,7 @@ const SearchDeskstop = () => {
             <button
               key={item.id}
               className={cn(
-                'px-3 py-2 rounded-lg whitespace-nowrap text-sm font-medium transition-all duration-200',
+                'px-3 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200',
                 categoryId === item.id
                   ? 'text-white shadow-md'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700',
