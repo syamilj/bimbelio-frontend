@@ -90,7 +90,7 @@ const Search = ({}: any) => {
         <input
           id="searchValue"
           type="text"
-          placeholder="Coming Soon..."
+          // placeholder="Coming Soon..."
           className="w-full rounded-xl px-[1rem] py-[.8rem] text-sm outline-none md:w-[unset] md:rounded-xl md:py-[.5rem]"
           disabled
         />

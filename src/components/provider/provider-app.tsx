@@ -57,7 +57,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    if (isDekstop) setMinimizeSidebar(true);
+    if (isDekstop) setMinimizeSidebar(false);
   }, [isDekstop]);
 
   useEffect(() => {
@@ -201,7 +201,7 @@ interface AppContextType {
 
 interface OnBoardingProps {
   chat: boolean;
-  notes: boolean;
+  notes: false;
   quiz: boolean;
   tryout: boolean;
 }

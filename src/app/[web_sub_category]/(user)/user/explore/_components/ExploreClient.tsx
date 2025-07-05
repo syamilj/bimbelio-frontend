@@ -25,7 +25,7 @@ export default function ExploreClient() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8 space-y-12">
         {/* Search Section */}
         <div className="hidden w-full justify-center md:flex">
