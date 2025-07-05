@@ -1,67 +1,137 @@
 'use client';
 
-import { useAppContext } from '@/components/provider/provider-app';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { ReactNode } from 'react';
 
 interface ActiveLinkProps {
-  icon: any;
-  href: any;
-  label: any;
+  icon: ReactNode;
+  href: string;
+  label: string;
+  description?: string;
+  isActive?: boolean;
+  minimized?: boolean;
 }
 
-const ActiveLink = ({ icon, href, label }: ActiveLinkProps) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const { minimizeSidebar } = useAppContext();
+const ActiveLink = ({
+  icon,
+  href,
+  label,
+  description,
+  isActive = false,
+  minimized = false,
+}: ActiveLinkProps) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
-  if (!icon || !href || !label) {
-    return null; // Jangan render apapun jika props tidak terdefinisi
-  }
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  const onClick = (e: any) => {
-    if (e.currentTarget.tagName === 'FORM') {
-      e.preventDefault();
-    }
-
-    router.push(href);
-  };
-
-  const isLabelActive = () => {
-    if (pathname && label) {
-      if (pathname === '/admin/category-tryout') {
-        if (label === 'Category Tryout') {
-          return true;
-        }
-        return false;
-      }
-      if (pathname === '/admin/category') {
-        if (label === 'Category Document') return true;
-        return false;
-      }
-      return pathname.toLowerCase().includes(label.toLowerCase());
-    }
-  };
-  return (
+  const linkContent = (
     <Link
       href={href}
-      passHref
+      className={cn(
+        'group relative flex items-center gap-3 rounded-2xl transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5',
+        minimized ? 'justify-center p-3 mx-1' : 'p-4 mx-3',
+        isActive
+          ? 'text-white shadow-lg scale-105'
+          : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900',
+      )}
+      style={{
+        background: isActive
+          ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
+          : undefined,
+      }}
     >
+      {/* Icon Container */}
       <div
-        onClick={onClick}
-        className={`${
-          isLabelActive()
-            ? 'bg-main font-medium text-white'
-            : 'font-medium text-main-gray-text md:hover:bg-main-gray-input'
-        } mx-[.5rem] flex items-center gap-2 px-4 rounded-xl py-3 duration-500`}
+        className={cn(
+          'flex items-center justify-center rounded-xl transition-all duration-300',
+          minimized ? 'w-8 h-8' : 'w-10 h-10',
+          isActive
+            ? 'bg-white/20 shadow-inner'
+            : 'bg-gray-100 group-hover:bg-gray-200',
+        )}
       >
         {icon}
-        {!minimizeSidebar && (
-          <span className="whitespace-nowrap text-sm">{label}</span>
-        )}
       </div>
+
+      {/* Label and Description - Only show when not minimized */}
+      {!minimized && (
+        <div className="flex-1 min-w-0">
+          <div
+            className={cn(
+              'font-semibold text-sm leading-tight transition-colors duration-200',
+              isActive ? 'text-white' : 'text-gray-900',
+            )}
+          >
+            {label}
+          </div>
+          {description && (
+            <div
+              className={cn(
+                'text-xs leading-tight mt-0.5 transition-colors duration-200',
+                isActive ? 'text-white/80' : 'text-gray-500',
+              )}
+            >
+              {description}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Active Indicator */}
+      {isActive && !minimized && (
+        <div className="w-1 h-8 bg-white/30 rounded-full" />
+      )}
+
+      {/* Hover Effect */}
+      <div
+        className={cn(
+          'absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none',
+          !isActive && 'bg-gray-900',
+        )}
+      />
+
+      {/* Shimmer Effect for Active State */}
+      {isActive && (
+        <div className="absolute inset-0 rounded-2xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 group-hover:animate-shimmer" />
+        </div>
+      )}
     </Link>
   );
+
+  // Wrap with tooltip when minimized
+  if (minimized) {
+    return (
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
+          <TooltipContent
+            side="right"
+            className="bg-white shadow-lg border border-gray-200 rounded-xl p-3"
+          >
+            <div className="space-y-1">
+              <div className="font-semibold text-sm text-gray-900">{label}</div>
+              {description && (
+                <div className="text-xs text-gray-600">{description}</div>
+              )}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  return linkContent;
 };
 
 export default ActiveLink;
