@@ -41,7 +41,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-12 w-12 overflow-hidden rounded-2xl ring-2 ring-offset-2 ring-offset-background transition-all duration-300 hover:ring-4 hover:shadow-lg focus:ring-4 p-0"
+          className="relative h-10 w-10 overflow-hidden rounded-full ring-2 hover:ring-4 hover:shadow-lg focus:ring-4 p-0"
           style={
             {
               '--tw-ring-color': `${mainColor}30`,

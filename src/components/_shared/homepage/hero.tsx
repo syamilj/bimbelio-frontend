@@ -10,6 +10,7 @@ import LogoITB from '@/_assest/homepage/hero/LOGO_PTN_ITB.webp';
 import LogoITS from '@/_assest/homepage/hero/LOGO_PTN_ITS.webp';
 import LogoUGM from '@/_assest/homepage/hero/LOGO_PTN_UGM.webp';
 import LogoUI from '@/_assest/homepage/hero/LOGO_PTN_UI.webp';
+import { SparklesText } from '@/components/magicui/sparkles-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { IPhoneFrame } from '@/components/ui/iphone-frame';
 import { cn } from '@/lib/utils';
@@ -17,16 +18,12 @@ import { IconOpenAI } from '@/styles/icon';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   ArrowRight,
-  Award,
   ChevronLeft,
   ChevronRight,
   Play,
   RotateCw,
   Search,
-  Sparkles,
   Star,
-  TrendingUp,
-  Users,
 } from 'lucide-react';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
@@ -215,28 +212,9 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
-      className="flex mt-16 mb-12 flex-col items-center"
+      className="flex mt-16 mb-8 flex-col items-center"
     >
       {/*  badge */}
-      <div className="mb-8 flex items-center justify-center">
-        <div className="flex items-center gap-1 rounded-full bg-white shadow-lg border px-4 py-2">
-          <div className="relative h-8 w-8 flex items-center justify-center">
-            <Image
-              src="/logo.png"
-              alt="Bimbelio Logo"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
-          </div>
-          <span
-            className="font-bold text-sm"
-            style={{ color: mainColor }}
-          >
-            Bimbel AI #1 Indonesia
-          </span>
-        </div>
-      </div>
 
       {/* Powered by section */}
       <motion.div
@@ -265,41 +243,45 @@ const HeadingSection: React.FC<{
       transition={{ duration: 0.8, delay: 0.5 }}
       className="space-y-6"
     >
-      <h1 className="text-5xl md:text-7xl font-black leading-tight text-gray-900">
-        JUARA
-        <span
-          className="text-gradient"
-          style={
-            {
-              '--main-color': mainColor,
-              '--secondary-color': secondaryColor,
-            } as React.CSSProperties
-          }
-        >
-          {' '}
-          PTN
-        </span>{' '}
-        &{' '}
-        <span
-          className="text-gradient"
-          style={
-            {
-              '--main-color': mainColor,
-              '--secondary-color': secondaryColor,
-            } as React.CSSProperties
-          }
-        >
-          KEDINASAN
-        </span>
+      <h1 className="text-center font-black leading-tight relative text-6xl">
+        {/* Baris 1: LOLOS PTN & */}
+        <div className="flex justify-center items-center gap-3 flex-wrap">
+          <span className="text-gray-900">LOLOS</span>
+          <SparklesText sparklesCount={6}>
+            <span
+              className="text-white bg-clip-padding px-1 rounded-lg"
+              style={{
+                backgroundColor: mainColor,
+              }}
+            >
+              PTN
+            </span>
+          </SparklesText>
+          <span className="text-gray-900">&</span>
+        </div>
+        {/* Baris 2: .Pasti. Kedinasan */}
+        <div className="flex justify-center items-center gap-3 mt-4 flex-wrap">
+          <SparklesText sparklesCount={6}>
+            <span
+              className="text-white bg-clip-padding px-1 rounded-lg"
+              style={{
+                backgroundColor: mainColor,
+              }}
+            >
+              Kedinasan.
+            </span>
+          </SparklesText>
+          <span className="text-gray-900"> Pasti.</span>
+        </div>
       </h1>
 
       <p className="text-xl md:text-2xl text-gray-600 font-medium leading-relaxed">
-        Raih impianmu dengan AI Personal Tutor terdepan di Indonesia
+        Raih impianmu dengan Adaptive-AI terdepan di Indonesia
       </p>
     </motion.div>
 
     {/*  feature pills */}
-    <motion.div
+    {/* <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8, duration: 0.6 }}
@@ -314,12 +296,17 @@ const HeadingSection: React.FC<{
         <div
           key={index}
           className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border"
+          style={
+            {
+              borderColor: `${mainColor} ${secondaryColor}`,
+            } as React.CSSProperties
+          }
         >
           <div style={{ color: mainColor }}>{pill.icon}</div>
           <span className="font-medium text-gray-700 text-sm">{pill.text}</span>
         </div>
       ))}
-    </motion.div>
+    </motion.div> */}
   </div>
 );
 

@@ -497,7 +497,7 @@ const DesktopNav: React.FC<{
                   <UserAccountNav user={session.user} />
                 ) : (
                   <Button
-                    className="px-6 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
+                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
