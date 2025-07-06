@@ -16,7 +16,6 @@ import {
   Trophy,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
 import CountDownTryout from './countdown-tryout';
 import SessionQuestion from './session-question';
 import SubmitTryout from './submit-tryout';
@@ -150,7 +149,7 @@ const Tryout: React.FC<Props> = ({
 
             {/* Timer */}
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 px-4 py-2 bg-red-50 rounded-xl border border-red-200">
+              <div className="flex items-center ">
                 <span className="font-mono font-bold text-red-700">
                   <CountDownTryout
                     seconds={getDuration()}

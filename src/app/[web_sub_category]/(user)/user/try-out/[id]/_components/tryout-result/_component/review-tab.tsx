@@ -1,5 +1,6 @@
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Button } from '@/components/ui/button';
@@ -12,10 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn, getInitials } from '@/lib/utils';
-import { IconCheckList, IconX } from '@/styles/icon';
 import {
   TryoutAnswer,
   TryoutQuestion,
@@ -23,13 +22,18 @@ import {
   TryoutSessionParticipant,
   TryoutUserAnswer,
 } from '@/types/database';
+import { motion } from 'framer-motion';
 import {
-  ArrowLeft,
-  ArrowRight,
-  BarChart,
-  Book,
-  Clock,
-  Target,
+  BookOpen,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  FileText,
+  Grid3X3,
+  Lightbulb,
+  Trophy,
+  User,
+  XCircle,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { SetStateAction, useState } from 'react';
@@ -70,13 +74,27 @@ interface Props {
   sessionOptions: SessionOptionsProps[];
 }
 
+interface NavigationProps {
+  sessionResult: SessionResultTryout | undefined;
+  userAnswerIndex: number;
+  getIsCorrect: (userAnswerIdx: number) => boolean | null;
+  setUserAnswerIndex: React.Dispatch<SetStateAction<number>>;
+  className?: string;
+}
+
 export function ReviewTab({
   sessionResult,
   setResultIndex,
   resultIndex,
   sessionOptions,
 }: Props) {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [userAnswerIndex, setUserAnswerIndex] = useState<number>(0);
+  const [activeView, setActiveView] = useState<'question' | 'grid'>('question');
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   // Safeguard: Pastikan userAnswerIndex dalam rentang yang valid
   const safeUserAnswerIndex =
@@ -192,153 +210,252 @@ export function ReviewTab({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Review Soal</h1>
-        <Select
-          value={resultIndex != null ? resultIndex.toString() : '0'}
-          onValueChange={(value) => {
-            if (value !== undefined && value !== null) {
-              const parsedValue = parseInt(value, 10);
-              if (!isNaN(parsedValue)) {
-                setResultIndex(parsedValue);
-              }
-            }
-          }}
-        >
-          <SelectTrigger className="font-regular h-[45px] w-fit rounded-[.5rem] border-none bg-white px-[1rem] text-sm text-black shadow-cardSoft outline-none">
-            <SelectValue placeholder="Pilih Subtes" />
-          </SelectTrigger>
-          <SelectContent>
-            {Array.isArray(sessionOptions) && sessionOptions.length > 0 ? (
-              sessionOptions.map((subtest, index) => (
-                <SelectItem
-                  key={subtest.id}
-                  value={`${index}`}
-                >
-                  {getInitials(subtest.TryoutCategory || '')} -{' '}
-                  {subtest.TryoutSubCategory || 'Subkategori'}
-                </SelectItem>
-              ))
-            ) : (
-              <SelectItem value="0">Tidak ada subtes</SelectItem>
-            )}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-none bg-blue-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Skor</CardTitle>
-            <BarChart className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {getTotalScore().toFixed(2)}
-            </div>
-            {getPercentageScore() && (
-              <Progress
-                value={getPercentageScore()}
-                className="mt-2 h-1"
-                classNameThumb="bg-blue-500"
+      {/* Enhanced Compact Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-100"
+      >
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div className="flex items-center gap-4">
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <FileText
+                className="w-6 h-6"
+                style={{ color: mainColor }}
               />
-            )}
-            <p className="mt-2 text-xs font-medium text-muted-foreground">
-              Poin Keseluruhan
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-none bg-green-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Akurasi</CardTitle>
-            <Target className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{accuracy.toFixed(2)}%</div>
-            <Progress
-              value={accuracy}
-              className="mt-2 h-1"
-              classNameThumb="bg-green-600"
-            />
-            <p className="mt-2 text-xs font-medium text-muted-foreground">
-              {correctAnswer()} benar, {TotalQuestion - correctAnswer()} salah
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-none bg-yellow-100/40">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Waktu</CardTitle>
-            <Clock className="h-4 w-4 text-yellow-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{getSessionDuration()}</div>
-            <p className="mt-2 text-xs font-medium text-muted-foreground">
-              {getSecondPerQuestion()}
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="border-none bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Soal</CardTitle>
-            <Book className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{TotalQuestion}</div>
-            <p className="mt-2 text-xs font-medium text-muted-foreground">
-              {correctAnswer()} benar, {TotalQuestion - correctAnswer()} salah
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+            </div>
+            <div>
+              <h1
+                className="text-xl font-bold"
+                style={{ color: mainColor }}
+              >
+                Review Soal
+              </h1>
+              <p className="text-sm text-gray-600">
+                Soal {userAnswerIndex + 1} dari {TotalQuestion} •{' '}
+                {correctAnswer()} benar
+              </p>
+            </div>
+          </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr,1fr]">
-        {/* Navigasi Soal untuk Mobile */}
-        <Navigation
-          getIsCorrect={getIsCorrect}
-          sessionResult={sessionResult}
-          setUserAnswerIndex={setUserAnswerIndex}
-          userAnswerIndex={userAnswerIndex}
-          className="md:hidden"
-        />
-        {/* Review Jawaban */}
-        <Card className="border-none bg-transparent shadow-none">
-          <CardHeader className="px-0">
-            <CardTitle className="text-xl font-bold">Review Jawaban</CardTitle>
+          <div className="flex items-center gap-3 w-full lg:w-auto">
+            {/* View Toggle */}
+            <div className="flex bg-gray-100 rounded-xl p-1">
+              <Button
+                variant={activeView === 'question' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setActiveView('question')}
+                className="rounded-lg px-3 py-2 h-8"
+                style={{
+                  backgroundColor:
+                    activeView === 'question' ? mainColor : 'transparent',
+                  color: activeView === 'question' ? 'white' : 'inherit',
+                }}
+              >
+                <FileText className="w-4 h-4 mr-1" />
+                <span className="hidden sm:inline">Soal</span>
+              </Button>
+              <Button
+                variant={activeView === 'grid' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setActiveView('grid')}
+                className="rounded-lg px-3 py-2 h-8"
+                style={{
+                  backgroundColor:
+                    activeView === 'grid' ? mainColor : 'transparent',
+                  color: activeView === 'grid' ? 'white' : 'inherit',
+                }}
+              >
+                <Grid3X3 className="w-4 h-4 mr-1" />
+                <span className="hidden sm:inline">Grid</span>
+              </Button>
+            </div>
+
+            {/* Subtest Selector */}
+            <Select
+              value={resultIndex != null ? resultIndex.toString() : '0'}
+              onValueChange={(value) => {
+                if (value !== undefined && value !== null) {
+                  const parsedValue = parseInt(value, 10);
+                  if (!isNaN(parsedValue)) {
+                    setResultIndex(parsedValue);
+                  }
+                }
+              }}
+            >
+              <SelectTrigger className="w-40 h-10 rounded-xl border-2 border-gray-200 bg-white shadow-sm">
+                <SelectValue placeholder="Pilih Subtes" />
+              </SelectTrigger>
+              <SelectContent>
+                {Array.isArray(sessionOptions) && sessionOptions.length > 0 ? (
+                  sessionOptions.map((subtest, index) => (
+                    <SelectItem
+                      key={subtest.id}
+                      value={`${index}`}
+                    >
+                      {getInitials(subtest.TryoutCategory || '')} -{' '}
+                      {subtest.TryoutSubCategory || 'Subkategori'}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="0">Tidak ada subtes</SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Quick Stats Bar */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-4 border-t border-gray-100">
+          <div className="text-center">
+            <div
+              className="text-2xl font-bold"
+              style={{ color: mainColor }}
+            >
+              {getTotalScore().toFixed(0)}
+            </div>
+            <div className="text-xs text-gray-600">Skor Total</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">
+              {accuracy.toFixed(1)}%
+            </div>
+            <div className="text-xs text-gray-600">Akurasi</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">
+              {correctAnswer()}
+            </div>
+            <div className="text-xs text-gray-600">Benar</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-red-600">
+              {TotalQuestion - correctAnswer()}
+            </div>
+            <div className="text-xs text-gray-600">Salah</div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Main Content */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        {activeView === 'question' ? (
+          <QuestionView
+            UserAnswers={UserAnswers}
+            safeUserAnswerIndex={safeUserAnswerIndex}
+            getIsCorrect={getIsCorrect}
+            getCorrectAnswer={getCorrectAnswer}
+            mainColor={mainColor}
+            userAnswerIndex={userAnswerIndex}
+            setUserAnswerIndex={setUserAnswerIndex}
+            totalQuestions={TotalQuestion}
+            sessionResult={sessionResult}
+          />
+        ) : (
+          <GridView
+            sessionResult={sessionResult}
+            getIsCorrect={getIsCorrect}
+            setUserAnswerIndex={setUserAnswerIndex}
+            userAnswerIndex={userAnswerIndex}
+            setActiveView={setActiveView}
+            mainColor={mainColor}
+          />
+        )}
+      </motion.div>
+    </div>
+  );
+}
+
+// Question View Component
+const QuestionView = ({
+  UserAnswers,
+  safeUserAnswerIndex,
+  getIsCorrect,
+  getCorrectAnswer,
+  mainColor,
+  userAnswerIndex,
+  setUserAnswerIndex,
+  totalQuestions,
+  sessionResult,
+}: any) => {
+  const router = useRouter();
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      {/* Main Question Area */}
+      <div className="lg:col-span-3">
+        <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+          <CardHeader
+            className="border-b"
+            style={{ backgroundColor: `${mainColor}03` }}
+          >
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-xl font-bold flex items-center gap-3">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  {safeUserAnswerIndex + 1}
+                </div>
+                Soal {UserAnswers?.TryoutQuestion.number || 'N/A'}
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                {getIsCorrect(safeUserAnswerIndex) === true ? (
+                  <Badge className="bg-green-100 text-green-700 border-green-200">
+                    <CheckCircle2 className="w-4 h-4 mr-1" />
+                    Benar
+                  </Badge>
+                ) : getIsCorrect(safeUserAnswerIndex) === false ? (
+                  <Badge className="bg-red-100 text-red-700 border-red-200">
+                    <XCircle className="w-4 h-4 mr-1" />
+                    Salah
+                  </Badge>
+                ) : (
+                  <Badge className="bg-gray-100 text-gray-700 border-gray-200">
+                    Tidak Dijawab
+                  </Badge>
+                )}
+              </div>
+            </div>
           </CardHeader>
-          <CardContent className="rounded-[.6rem] border bg-white pt-[.7rem]">
-            <Tabs defaultValue="all">
-              <TabsContent value="all">
-                {UserAnswers ? (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        {getIsCorrect(safeUserAnswerIndex) === true ? (
-                          <IconCheckList className="text-green-600" />
-                        ) : getIsCorrect(safeUserAnswerIndex) === false ? (
-                          <IconX className="text-red-600" />
-                        ) : null}
-                        <span className="font-semibold">
-                          Soal {UserAnswers.TryoutQuestion.number || 'N/A'}
-                        </span>
-                      </div>
+
+          <CardContent className="p-6">
+            {UserAnswers ? (
+              <div className="space-y-6">
+                {/* Question Content */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Pertanyaan
+                    </h3>
+                    {UserAnswers.difficultyQuestion && (
                       <Badge
                         className={cn(
-                          'bg-white',
-                          !UserAnswers.difficultyQuestion && 'hidden',
+                          'text-sm px-3 py-1',
                           UserAnswers.difficultyQuestion?.value === 1 &&
-                            'bg-green-100 text-green-600',
+                            'bg-green-100 text-green-700 border-green-200',
                           UserAnswers.difficultyQuestion?.value === 2 &&
-                            'bg-green-200 text-green-600',
+                            'bg-green-200 text-green-700 border-green-300',
                           UserAnswers.difficultyQuestion?.value === 3 &&
-                            'bg-orange-100 text-orange-600',
+                            'bg-orange-100 text-orange-700 border-orange-200',
                           UserAnswers.difficultyQuestion?.value === 4 &&
-                            'bg-red-100 text-red-600',
+                            'bg-red-100 text-red-700 border-red-200',
                           UserAnswers.difficultyQuestion?.value === 5 &&
-                            'bg-red-200 text-red-600',
+                            'bg-red-200 text-red-700 border-red-300',
                         )}
                       >
                         {UserAnswers.difficultyQuestion?.message}
                       </Badge>
-                    </div>
+                    )}
+                  </div>
+                  <div className="p-6 bg-gray-50 rounded-xl">
                     <BlocknoteEditor
                       value={
                         UserAnswers.TryoutQuestion.question ||
@@ -346,8 +463,36 @@ export function ReviewTab({
                       }
                       viewOnly
                     />
-                    <div className="space-y-2">
-                      <p className="font-medium">Jawaban Kamu:</p>
+                  </div>
+                </div>
+
+                {/* Answer Comparison */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Your Answer */}
+                  <div className="space-y-3">
+                    <h3 className="text-base font-semibold flex items-center gap-2">
+                      <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <User className="w-4 h-4 text-blue-600" />
+                      </div>
+                      Jawaban Anda
+                    </h3>
+                    <div
+                      className="p-4 rounded-xl border-2 min-h-[100px]"
+                      style={{
+                        backgroundColor:
+                          getIsCorrect(safeUserAnswerIndex) === true
+                            ? '#f0fdf4'
+                            : getIsCorrect(safeUserAnswerIndex) === false
+                              ? '#fef2f2'
+                              : '#f9fafb',
+                        borderColor:
+                          getIsCorrect(safeUserAnswerIndex) === true
+                            ? '#bbf7d0'
+                            : getIsCorrect(safeUserAnswerIndex) === false
+                              ? '#fecaca'
+                              : '#e5e7eb',
+                      }}
+                    >
                       <BlocknoteEditor
                         value={
                           UserAnswers.TryoutAnswers?.answer || 'Tidak Dijawab'
@@ -355,117 +500,439 @@ export function ReviewTab({
                         viewOnly
                       />
                     </div>
-                    <div className="space-y-2">
-                      <p className="font-medium">Jawaban Benar:</p>
+                  </div>
+
+                  {/* Correct Answer */}
+                  <div className="space-y-3">
+                    <h3 className="text-base font-semibold flex items-center gap-2">
+                      <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center">
+                        <CheckCircle2 className="w-4 h-4 text-green-600" />
+                      </div>
+                      Jawaban Benar
+                    </h3>
+                    <div className="p-4 bg-green-50 rounded-xl border-2 border-green-200 min-h-[100px]">
                       <BlocknoteEditor
                         value={getCorrectAnswer()}
                         viewOnly
                       />
                     </div>
-                    <div className="space-y-2">
-                      <p className="font-medium">Pembahasan:</p>
-                      <BlocknoteEditor
-                        value={UserAnswers.TryoutQuestion.explanation || ''}
-                        viewOnly
+                  </div>
+                </div>
+
+                {/* Explanation */}
+                <div className="space-y-3">
+                  <h3 className="text-base font-semibold flex items-center gap-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: `${mainColor}15` }}
+                    >
+                      <Lightbulb
+                        className="w-4 h-4"
+                        style={{ color: mainColor }}
                       />
                     </div>
+                    Pembahasan
+                  </h3>
+                  <div
+                    className="p-6 rounded-xl border-2"
+                    style={{
+                      backgroundColor: `${mainColor}05`,
+                      borderColor: `${mainColor}20`,
+                    }}
+                  >
+                    <BlocknoteEditor
+                      value={
+                        UserAnswers.TryoutQuestion.explanation ||
+                        'Belum ada pembahasan untuk soal ini.'
+                      }
+                      viewOnly
+                    />
                   </div>
-                ) : (
-                  <p className="text-center text-sm text-muted-foreground">
-                    Tidak ada jawaban untuk ditampilkan.
-                  </p>
-                )}
-              </TabsContent>
-            </Tabs>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                  <FileText className="w-8 h-8 text-gray-400" />
+                </div>
+                <p className="text-gray-500 font-medium">
+                  Tidak ada jawaban untuk ditampilkan
+                </p>
+              </div>
+            )}
           </CardContent>
+
+          {/* Enhanced Navigation Footer */}
+          <div className="border-t bg-gray-50 p-4">
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                onClick={() =>
+                  setUserAnswerIndex((prev: number) => Math.max(0, prev - 1))
+                }
+                disabled={userAnswerIndex === 0}
+                className="flex items-center gap-2 rounded-xl border-2 h-11"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Sebelumnya
+              </Button>
+
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">
+                  {userAnswerIndex + 1} / {totalQuestions}
+                </span>
+                <Progress
+                  value={((userAnswerIndex + 1) / totalQuestions) * 100}
+                  className="w-20 h-2"
+                  style={{ backgroundColor: '#f3f4f6' }}
+                />
+              </div>
+
+              <Button
+                variant="outline"
+                onClick={() =>
+                  setUserAnswerIndex((prev: number) =>
+                    Math.min(totalQuestions - 1, prev + 1),
+                  )
+                }
+                disabled={userAnswerIndex === totalQuestions - 1}
+                className="flex items-center gap-2 rounded-xl border-2 h-11"
+              >
+                Selanjutnya
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
         </Card>
-        {/* Navigasi Soal untuk Desktop */}
-        <Navigation
-          getIsCorrect={getIsCorrect}
+      </div>
+
+      {/* Compact Sidebar */}
+      <div className="lg:col-span-1">
+        <CompactNavigation
           sessionResult={sessionResult}
+          getIsCorrect={getIsCorrect}
           setUserAnswerIndex={setUserAnswerIndex}
           userAnswerIndex={userAnswerIndex}
-          className="hidden md:block"
+          mainColor={mainColor}
         />
       </div>
     </div>
   );
-}
-
-type NavigationProps = {
-  sessionResult: SessionResultTryout | undefined;
-  userAnswerIndex: number;
-  getIsCorrect: (userAnswerIndex: number) => boolean | null;
-  setUserAnswerIndex: React.Dispatch<SetStateAction<number>>;
-  className?: string;
 };
 
-const Navigation = ({
+// Grid View Component
+const GridView = ({
   sessionResult,
-  userAnswerIndex,
   getIsCorrect,
   setUserAnswerIndex,
-  className,
-}: NavigationProps) => {
-  const router = useRouter();
+  userAnswerIndex,
+  setActiveView,
+  mainColor,
+}: any) => {
   const totalQuestions = Array.isArray(sessionResult?.TryoutUserAnswer)
     ? sessionResult.TryoutUserAnswer.length
     : 0;
 
   return (
-    <Card className={cn('bg-transparent shadow-none', className)}>
-      <CardHeader>
-        <CardTitle>Navigasi Soal</CardTitle>
+    <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+      <CardHeader
+        className="border-b"
+        style={{ backgroundColor: `${mainColor}03` }}
+      >
+        <CardTitle className="text-xl font-bold flex items-center gap-3">
+          <Grid3X3
+            className="w-6 h-6"
+            style={{ color: mainColor }}
+          />
+          Grid Navigasi Soal
+        </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap justify-center gap-4">
+      <CardContent className="p-6">
+        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-3 mb-6">
           {Array.from({ length: totalQuestions }).map((_, index) => {
             const isCorrect = getIsCorrect(index);
             return (
-              <Button
+              <motion.button
                 key={index}
-                variant={userAnswerIndex === index ? 'default' : 'outline'}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 className={cn(
-                  'flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-[.5rem] bg-white font-bold text-main-gray-text hover:bg-white md:hover:bg-black/5',
+                  'aspect-square rounded-xl font-bold text-sm transition-all duration-200 border-2 flex items-center justify-center relative',
+                  userAnswerIndex === index
+                    ? 'border-transparent text-white shadow-lg'
+                    : 'border-gray-200 hover:border-gray-300 text-gray-600',
                   isCorrect === true &&
-                    'bg-green-100 text-green-800 hover:bg-green-100 md:hover:bg-green-200',
+                    userAnswerIndex !== index &&
+                    'bg-green-100 text-green-700 border-green-200 hover:bg-green-200',
                   isCorrect === false &&
-                    'bg-red-100 text-red-800 hover:bg-red-100 md:hover:bg-red-200',
-                  isCorrect === null && 'bg-white hover:bg-white',
+                    userAnswerIndex !== index &&
+                    'bg-red-100 text-red-700 border-red-200 hover:bg-red-200',
+                  isCorrect === null &&
+                    userAnswerIndex !== index &&
+                    'bg-gray-50 hover:bg-gray-100',
                 )}
-                onClick={() => setUserAnswerIndex(index)}
+                style={{
+                  backgroundColor:
+                    userAnswerIndex === index ? mainColor : undefined,
+                }}
+                onClick={() => {
+                  setUserAnswerIndex(index);
+                  setActiveView('question');
+                }}
               >
                 {index + 1}
-              </Button>
+                {/* Status Indicator */}
+                <div className="absolute -top-1 -right-1">
+                  {isCorrect === true && (
+                    <div className="w-3 h-3 bg-green-500 rounded-full border border-white" />
+                  )}
+                  {isCorrect === false && (
+                    <div className="w-3 h-3 bg-red-500 rounded-full border border-white" />
+                  )}
+                  {isCorrect === null && (
+                    <div className="w-3 h-3 bg-gray-400 rounded-full border border-white" />
+                  )}
+                </div>
+              </motion.button>
             );
           })}
         </div>
-        <div className="mt-6 flex justify-center gap-[1rem] md:justify-center">
-          <Button
-            variant="outline"
-            onClick={() => setUserAnswerIndex((prev) => Math.max(0, prev - 1))}
-            disabled={userAnswerIndex === 0}
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Sebelumnya
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() =>
-              setUserAnswerIndex((prev) =>
-                Math.min(totalQuestions - 1, prev + 1),
-              )
-            }
-            disabled={userAnswerIndex === totalQuestions - 1}
-          >
-            Selanjutnya
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+
+        {/* Grid Legend */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div className="flex items-center justify-center gap-2">
+            <div className="w-6 h-6 bg-green-100 border-2 border-green-200 rounded-lg flex items-center justify-center">
+              <CheckCircle2 className="w-4 h-4 text-green-600" />
+            </div>
+            <span className="text-sm text-gray-600">Benar</span>
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <div className="w-6 h-6 bg-red-100 border-2 border-red-200 rounded-lg flex items-center justify-center">
+              <XCircle className="w-4 h-4 text-red-600" />
+            </div>
+            <span className="text-sm text-gray-600">Salah</span>
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <div className="w-6 h-6 bg-gray-100 border-2 border-gray-200 rounded-lg flex items-center justify-center">
+              <span className="text-gray-400 text-xs">?</span>
+            </div>
+            <span className="text-sm text-gray-600">Kosong</span>
+          </div>
         </div>
-        <div className="w-full flex justify-end mt-8">
+      </CardContent>
+    </Card>
+  );
+};
+
+// Enhanced Compact Navigation Component
+const CompactNavigation = ({
+  sessionResult,
+  getIsCorrect,
+  setUserAnswerIndex,
+  userAnswerIndex,
+  mainColor,
+}: any) => {
+  const router = useRouter();
+  const totalQuestions = Array.isArray(sessionResult?.TryoutUserAnswer)
+    ? sessionResult.TryoutUserAnswer.length
+    : 0;
+
+  // Enhanced pagination for navigation
+  const [currentPage, setCurrentPage] = useState(0);
+  const questionsPerPage = 20; // Increased from 12 to 20
+  const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+
+  // Calculate current page based on selected question
+  React.useEffect(() => {
+    const newPage = Math.floor(userAnswerIndex / questionsPerPage);
+    setCurrentPage(newPage);
+  }, [userAnswerIndex, questionsPerPage]);
+
+  const getCurrentPageQuestions = () => {
+    const startIndex = currentPage * questionsPerPage;
+    const endIndex = Math.min(startIndex + questionsPerPage, totalQuestions);
+    return Array.from(
+      { length: endIndex - startIndex },
+      (_, i) => startIndex + i,
+    );
+  };
+
+  const getQuestionStats = () => {
+    if (!sessionResult) return { correct: 0, wrong: 0, unanswered: 0 };
+
+    let correct = 0,
+      wrong = 0,
+      unanswered = 0;
+
+    for (let i = 0; i < totalQuestions; i++) {
+      const isCorrect = getIsCorrect(i);
+      if (isCorrect === true) correct++;
+      else if (isCorrect === false) wrong++;
+      else unanswered++;
+    }
+
+    return { correct, wrong, unanswered };
+  };
+
+  const stats = getQuestionStats();
+
+  return (
+    <div className="space-y-4">
+      {/* Enhanced Navigation Header with Stats */}
+      <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+        <CardHeader
+          className="border-b py-3"
+          style={{ backgroundColor: `${mainColor}05` }}
+        >
+          <CardTitle className="text-base font-bold flex items-center gap-2">
+            <Trophy
+              className="w-4 h-4"
+              style={{ color: mainColor }}
+            />
+            Navigasi Soal
+          </CardTitle>
+          <div className="grid grid-cols-3 gap-2 mt-3">
+            <div className="text-center">
+              <div className="text-lg font-bold text-green-600">
+                {stats.correct}
+              </div>
+              <div className="text-xs text-gray-600">Benar</div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-bold text-red-600">
+                {stats.wrong}
+              </div>
+              <div className="text-xs text-gray-600">Salah</div>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-bold text-gray-600">
+                {stats.unanswered}
+              </div>
+              <div className="text-xs text-gray-600">Kosong</div>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-4">
+          {/* Page Navigation */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between mb-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
+                disabled={currentPage === 0}
+                className="h-8 px-3 rounded-lg"
+              >
+                <ChevronLeft className="w-3 h-3" />
+              </Button>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-600">
+                  {currentPage * questionsPerPage + 1}-
+                  {Math.min(
+                    (currentPage + 1) * questionsPerPage,
+                    totalQuestions,
+                  )}{' '}
+                  dari {totalQuestions}
+                </span>
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setCurrentPage(Math.min(totalPages - 1, currentPage + 1))
+                }
+                disabled={currentPage === totalPages - 1}
+                className="h-8 px-3 rounded-lg"
+              >
+                <ChevronRight className="w-3 h-3" />
+              </Button>
+            </div>
+          )}
+
+          {/* Question Grid - Responsive */}
+          <div className="grid grid-cols-5 gap-2 mb-4">
+            {getCurrentPageQuestions().map((index) => {
+              const isCorrect = getIsCorrect(index);
+              return (
+                <motion.button
+                  key={index}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={cn(
+                    'aspect-square rounded-lg font-bold text-xs transition-all duration-200 border flex items-center justify-center relative',
+                    userAnswerIndex === index
+                      ? 'border-transparent text-white shadow-lg'
+                      : 'border-gray-200 hover:border-gray-300 text-gray-600',
+                    isCorrect === true &&
+                      userAnswerIndex !== index &&
+                      'bg-green-100 text-green-700 border-green-200',
+                    isCorrect === false &&
+                      userAnswerIndex !== index &&
+                      'bg-red-100 text-red-700 border-red-200',
+                    isCorrect === null &&
+                      userAnswerIndex !== index &&
+                      'bg-gray-50',
+                  )}
+                  style={{
+                    backgroundColor:
+                      userAnswerIndex === index ? mainColor : undefined,
+                  }}
+                  onClick={() => setUserAnswerIndex(index)}
+                >
+                  {index + 1}
+
+                  {/* Enhanced Status Indicator */}
+                  {userAnswerIndex !== index && (
+                    <div className="absolute -top-1 -right-1">
+                      {isCorrect === true && (
+                        <div className="w-2 h-2 bg-green-500 rounded-full border border-white" />
+                      )}
+                      {isCorrect === false && (
+                        <div className="w-2 h-2 bg-red-500 rounded-full border border-white" />
+                      )}
+                      {isCorrect === null && (
+                        <div className="w-2 h-2 bg-gray-400 rounded-full border border-white" />
+                      )}
+                    </div>
+                  )}
+                </motion.button>
+              );
+            })}
+          </div>
+
+          {/* Page Indicators */}
+          {totalPages > 1 && (
+            <div className="flex justify-center gap-1 mb-4">
+              {Array.from({ length: totalPages }).map((_, pageIndex) => (
+                <button
+                  key={pageIndex}
+                  onClick={() => setCurrentPage(pageIndex)}
+                  className={cn(
+                    'w-2 h-2 rounded-full transition-all duration-200',
+                    currentPage === pageIndex
+                      ? 'w-4'
+                      : 'bg-gray-300 hover:bg-gray-400',
+                  )}
+                  style={{
+                    backgroundColor:
+                      currentPage === pageIndex ? mainColor : undefined,
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Quick Actions */}
+      <Card className="border-2 border-gray-100 rounded-2xl shadow-lg">
+        <CardContent className="p-4 space-y-3">
           {sessionResult?.TryoutSession.Document && (
             <Button
-              className="h-[unset] bg-main hover:bg-main/85 py-[.6rem] px-[1rem] rounded-[.6rem]"
+              className="w-full h-10 rounded-xl font-medium text-white shadow-lg"
+              style={{ backgroundColor: mainColor }}
               onClick={() =>
                 router.push(
                   `/${website_sub_category_id}/user/workspace/${
@@ -474,12 +941,54 @@ const Navigation = ({
                 )
               }
             >
-              Pembahasan
+              <BookOpen className="w-4 h-4 mr-2" />
+              Pembahasan Lengkap
             </Button>
           )}
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+
+      {/* Enhanced Legend */}
+      <Card className="border-2 border-gray-100 rounded-2xl shadow-lg">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm font-semibold text-gray-700">
+            Keterangan
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0 space-y-3">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              style={{ backgroundColor: mainColor }}
+            >
+              5
+            </div>
+            <span className="text-sm text-gray-600">Soal Dipilih</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-green-100 border border-green-200 rounded-lg flex items-center justify-center relative">
+              <span className="text-green-700 text-xs font-bold">1</span>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-white" />
+            </div>
+            <span className="text-sm text-gray-600">Jawaban Benar</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center relative">
+              <span className="text-red-700 text-xs font-bold">2</span>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border border-white" />
+            </div>
+            <span className="text-sm text-gray-600">Jawaban Salah</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center relative">
+              <span className="text-gray-500 text-xs font-bold">3</span>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-gray-400 rounded-full border border-white" />
+            </div>
+            <span className="text-sm text-gray-600">Tidak Dijawab</span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

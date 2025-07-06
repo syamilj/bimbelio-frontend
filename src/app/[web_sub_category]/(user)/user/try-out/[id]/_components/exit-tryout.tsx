@@ -2,10 +2,23 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { motion } from 'framer-motion';
-import { AlertTriangle, ArrowLeft, CheckCircle2, Clock, Save, X } from 'lucide-react';
+import {
+  AlertTriangle,
+  ArrowLeft,
+  CheckCircle2,
+  Clock,
+  Save,
+  X,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { SetStateAction } from 'react';
 
@@ -22,9 +35,9 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
   open,
   setOpen,
   done,
-  timeRemaining = "0:00",
+  timeRemaining = '0:00',
   answeredQuestions = 0,
-  totalQuestions = 0
+  totalQuestions = 0,
 }) => {
   const router = useRouter();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -33,7 +46,8 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  const completionPercentage = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
+  const completionPercentage =
+    totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
 
   const handleExit = () => {
     router.push(`/${website_sub_category_id}/user/try-out`);
@@ -44,12 +58,17 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+    >
       <DialogContent className="max-w-md mx-4 rounded-3xl border-0 shadow-2xl">
+        <DialogTitle className="sr-only">
+          {done ? 'Keluar Try Out' : 'Yakin Ingin Keluar?'}
+        </DialogTitle>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-
           className="p-6"
         >
           {/* Header Section */}
@@ -57,7 +76,6 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-               0.5, delay: 0.2 }}
               className={`w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center shadow-lg ${
                 done ? 'bg-green-100' : 'bg-orange-100'
               }`}
@@ -76,8 +94,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
               <DialogDescription className="text-gray-600 text-base leading-relaxed">
                 {done
                   ? 'Try out sudah selesai. Kamu bisa keluar sekarang.'
-                  : 'Try out belum selesai. Pastikan progress kamu sudah tersimpan.'
-                }
+                  : 'Try out belum selesai. Pastikan progress kamu sudah tersimpan.'}
               </DialogDescription>
             </DialogHeader>
           </div>
@@ -87,18 +104,20 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-               0.5, delay:
               className="mb-8"
             >
               <div
                 className="p-6 rounded-2xl border-2 space-y-4"
                 style={{
                   borderColor: `${mainColor}20`,
-                  backgroundColor: `${mainColor}05`
+                  backgroundColor: `${mainColor}05`,
                 }}
               >
                 <h4 className="font-bold text-gray-900 flex items-center gap-2">
-                  <Save className="w-5 h-5" style={{ color: mainColor }} />
+                  <Save
+                    className="w-5 h-5"
+                    style={{ color: mainColor }}
+                  />
                   Status Progress
                 </h4>
 
@@ -136,7 +155,6 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${completionPercentage}%` }}
-                       1, delay: 0.5 }}
                       className="h-full rounded-full"
                       style={{ backgroundColor: mainColor }}
                     />
@@ -160,7 +178,6 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-               0.5, delay: 0.4 }}
               className="mb-8"
             >
               <div className="p-4 bg-red-50 rounded-2xl border border-red-200">
@@ -169,8 +186,11 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
                   <div>
                     <h5 className="font-bold text-red-800 mb-1">Perhatian!</h5>
                     <p className="text-red-700 text-sm leading-relaxed">
-                      <span className="font-medium">Waktu akan tetap berjalan</span> meski kamu keluar.
-                      Progress jawaban sudah tersimpan otomatis, jadi kamu bisa melanjutkan nanti.
+                      <span className="font-medium">
+                        Waktu akan tetap berjalan
+                      </span>{' '}
+                      meski kamu keluar. Progress jawaban sudah tersimpan
+                      otomatis, jadi kamu bisa melanjutkan nanti.
                     </p>
                   </div>
                 </div>
@@ -182,7 +202,6 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-             0.5, delay: 0.5 }}
             className="grid grid-cols-2 gap-4"
           >
             <Button
@@ -201,7 +220,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
               style={{
                 background: done
                   ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
-                  : 'linear-gradient(135deg, #EF4444, #DC2626)'
+                  : 'linear-gradient(135deg, #EF4444, #DC2626)',
               }}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -214,11 +233,11 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-               0.5, delay:
               className="mt-6 text-center"
             >
               <p className="text-xs text-gray-500">
-                💡 Tip: Kamu bisa melanjutkan try out kapan saja sebelum waktu habis
+                💡 Tip: Kamu bisa melanjutkan try out kapan saja sebelum waktu
+                habis
               </p>
             </motion.div>
           )}

@@ -3,28 +3,34 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import LoaderEyeAnimation from '@/components/ui/loading/loading-bounce';
 import LoadingPageWithText from '@/components/ui/spinner';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import {
   website_sub_category_id,
   website_sub_category_id_params,
 } from '@/hooks/use-web-sub-category-id';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { cn, getDateString, getHoursDetail } from '@/lib/utils';
-import { IconDocumentAdmin, IconTabsQuiz, IconTimer2 } from '@/styles/icon';
-import { hexToRgba } from '@/styles/main-styles';
+import { getDateString, getHoursDetail } from '@/lib/utils';
 import { GenderEnum } from '@/types/database';
-import { Calculator, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import {
+  ArrowLeft,
+  Calculator,
+  Clock,
+  FileText,
+  Sparkles,
+  Trophy,
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { TryoutDataType } from '../../page';
 import CountdownResult from '../countdown-result';
 import { AnalisisTab } from './_component/analisis-tab';
-import Header from './_component/header';
+import ExitTryout from './_component/exit-tryout';
 import { ReviewTab } from './_component/review-tab';
 import { RingkasanTab } from './_component/ringkasan-tab';
 
@@ -131,11 +137,14 @@ export default function TryoutResult({
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
-  // const { query } = router;
-  // const tab = query.tab as TabsProps;
   const searchParams = useSearchParams();
   const tab = searchParams?.get('tab') as TabsProps;
+
+  // Get dynamic colors - mengikuti pattern dari tryout.tsx
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const currentDate = new Date();
 
@@ -253,12 +262,41 @@ export default function TryoutResult({
     getUserTryout();
   }, []);
 
+  // Add state for exit dialog
+  const [showExitDialog, setShowExitDialog] = useState(false);
+
   if (currentDate < resultDate && !isTesting) {
     return <CoundowntShowResult resultDate={resultDate} />;
   }
 
   if (ResultDataIsError || sessionResultIsError || unlockTryoutIsError) {
-    return 'Error';
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+        >
+          <div className="text-center">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center shadow-sm"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <FileText
+                className="w-8 h-8"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Gagal Memuat Hasil
+            </h2>
+            <p className="text-gray-600">
+              Terjadi kesalahan saat memuat hasil try out
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
   }
 
   if (
@@ -270,120 +308,315 @@ export default function TryoutResult({
     unlockTryout === undefined
   )
     return (
-      <div className="fixed flex h-full w-full items-center justify-center">
-        <div className="flex flex-col items-center gap-2">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center gap-6"
+        >
           <LoaderEyeAnimation />
-          <p className="text-lg">Loading...</p>
-        </div>
+          <div className="text-center">
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
+              Memproses Hasil Try Out
+            </h3>
+            <p className="text-gray-600">
+              Mohon tunggu sebentar, kami sedang menyiapkan hasil Anda...
+            </p>
+          </div>
+        </motion.div>
       </div>
     );
 
   return (
-    <div className="container mx-auto mt-[48px] px-4 py-6 md:mt-[52px]">
-      {website_sub_category_id_params === 'simak-ui' && <PopUpPrediction />}
-      <LoadingPageWithText
-        loading={TestAgainTryoutLoading}
-        heading="Mereset Data Tryout..."
-      />
-      <Header
-        current={0}
-        total={-1}
-        name={''}
-        done
-      />
-      <Tabs
-        value={tabs}
-        className="w-full"
-      >
-        <div className="flex w-full justify-between mb-8 ">
-          <TabsList className="flex w-fit gap-2">
-            <TabsTrigger
-              value="ringkasan"
-              className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              onClick={() => setTabs('ringkasan')}
-            >
-              <IconDocumentAdmin
-                active
-                w={15}
-              />
-              <p>Ringkasan</p>
-            </TabsTrigger>
-            <TabsTrigger
-              value="review"
-              className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              onClick={() => setTabs('review')}
-            >
-              <IconTabsQuiz w={15} />
-              <p>Review Soal</p>
-            </TabsTrigger>
-
-            <TabsTrigger
-              value="analisis"
-              className="flex flex-1 items-center gap-[.5rem] rounded-[.7rem] bg-white px-[1rem] py-[.6rem] text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              onClick={() => setTabs('analisis')}
-            >
-              <Sparkles className="mr-2 h-4 w-4" />
-              <p>Analisis</p>
-            </TabsTrigger>
-          </TabsList>
-          <div className="flex items-center gap-2">
-            {isTesting && session?.user.role === 'ADMIN' && (
+    <div className="min-h-screen bg-gray-50">
+      {/* Enhanced Header - mengikuti pattern dari tryout.tsx */}
+      <div className="bg-white border-b-2 border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div className="container mx-auto max-w-7xl px-4 py-4">
+          <div className="flex items-center justify-between">
+            {/* Header Info - mirip dengan tryout.tsx */}
+            <div className="flex items-center gap-4">
+              {/* Exit Button dengan koneksi ke ExitTryout component */}
               <Button
-                onClick={() => {
-                  setTestAgainTryoutLoading(true);
-                  TestAgainTryout({ tryoutId, userId: session.user.id });
-                }}
+                variant="ghost"
+                onClick={() => setShowExitDialog(true)}
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 p-2 rounded-xl hover:bg-gray-100 transition-colors"
               >
-                Test Again
+                <ArrowLeft className="w-5 h-5" />
+                <span className="hidden sm:inline">Kembali</span>
               </Button>
-            )}
 
-            {website_sub_category_id_params === 'simak-ui' && (
-              <Button
-                className="justify-self-end"
-                asChild
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: `${mainColor}15` }}
               >
-                <Link
-                  href={`/${website_sub_category_id_params}/user/prediction/step?tryoutId=${tryoutId}&step=new`}
+                <Trophy
+                  className="w-6 h-6"
+                  style={{ color: mainColor }}
+                />
+              </div>
+              <div>
+                <h1 className="text-lg md:text-xl font-bold text-gray-900">
+                  Hasil Try Out
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Review dan analisis performa Anda
+                </p>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3">
+              {isTesting && session?.user.role === 'ADMIN' && (
+                <Button
+                  onClick={() => {
+                    setTestAgainTryoutLoading(true);
+                    TestAgainTryout({ tryoutId, userId: session.user.id });
+                  }}
+                  variant="outline"
+                  className="rounded-xl border-2"
+                  style={{ borderColor: `${mainColor}30` }}
                 >
-                  Prediksi Tryout ini
-                </Link>
-              </Button>
-            )}
+                  Test Again
+                </Button>
+              )}
+
+              {website_sub_category_id_params === 'simak-ui' && (
+                <Button
+                  className="rounded-xl font-bold text-white shadow-lg"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                  asChild
+                >
+                  <Link
+                    href={`/${website_sub_category_id_params}/user/prediction/step?tryoutId=${tryoutId}&step=new`}
+                  >
+                    <Calculator className="w-4 h-4 mr-2" />
+                    Prediksi Tryout ini
+                  </Link>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-        <TabsContent
-          value="ringkasan"
-          className="md:px-[1rem]"
-        >
-          <RingkasanTab
-            ResultData={ResultData}
-            unlockTryout={unlockTryout}
-          />
-        </TabsContent>
-        <TabsContent
-          value="review"
-          className="md:px-[1rem]"
-        >
-          <ReviewTab
-            sessionResult={sessionResult}
-            setResultIndex={setResultIndex}
-            resultIndex={resultIndex}
-            sessionOptions={sessionOptions}
-          />
-        </TabsContent>
-        <TabsContent
-          value="analisis"
-          className="md:px-[1rem]"
-        >
-          <AnalisisTab
-            tryoutId={tryoutId}
-            ResultData={ResultData}
-            unlockTryout={unlockTryout}
-            tryoutAccount={tryoutAccount}
-          />
-        </TabsContent>
-      </Tabs>
+      </div>
+
+      <div className="container mx-auto max-w-7xl px-4 py-6">
+        {/* Exit Dialog Component */}
+        <ExitTryout
+          open={showExitDialog}
+          setOpen={setShowExitDialog}
+          done={true}
+        />
+
+        {website_sub_category_id_params === 'simak-ui' && <PopUpPrediction />}
+        <LoadingPageWithText
+          loading={TestAgainTryoutLoading}
+          heading="Mereset Data Tryout..."
+        />
+
+        {/* Main Content dengan grid layout seperti tryout.tsx */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Tabs Navigation - Takes 1 column */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+            className="lg:col-span-1"
+          >
+            <div className="sticky top-32 space-y-6">
+              {/* Enhanced Tabs Navigation */}
+              <Card
+                className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                style={{ borderColor: `${mainColor}20` }}
+              >
+                <CardContent className="p-6">
+                  <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                    <FileText
+                      className="w-5 h-5"
+                      style={{ color: mainColor }}
+                    />
+                    Navigasi Hasil
+                  </h3>
+                  <div className="space-y-3">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`w-full p-4 rounded-xl text-left transition-all duration-200 border-2 ${
+                        tabs === 'ringkasan'
+                          ? 'border-transparent text-white shadow-lg'
+                          : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                      }`}
+                      style={{
+                        backgroundColor:
+                          tabs === 'ringkasan' ? mainColor : 'white',
+                      }}
+                      onClick={() => setTabs('ringkasan')}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Trophy className="w-5 h-5" />
+                        <div>
+                          <div className="font-semibold">Ringkasan</div>
+                          <div className="text-xs opacity-80">
+                            Hasil keseluruhan
+                          </div>
+                        </div>
+                      </div>
+                    </motion.button>
+
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`w-full p-4 rounded-xl text-left transition-all duration-200 border-2 ${
+                        tabs === 'review'
+                          ? 'border-transparent text-white shadow-lg'
+                          : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                      }`}
+                      style={{
+                        backgroundColor:
+                          tabs === 'review' ? mainColor : 'white',
+                      }}
+                      onClick={() => setTabs('review')}
+                    >
+                      <div className="flex items-center gap-3">
+                        <FileText className="w-5 h-5" />
+                        <div>
+                          <div className="font-semibold">Review Soal</div>
+                          <div className="text-xs opacity-80">
+                            Tinjau jawaban
+                          </div>
+                        </div>
+                      </div>
+                    </motion.button>
+
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`w-full p-4 rounded-xl text-left transition-all duration-200 border-2 ${
+                        tabs === 'analisis'
+                          ? 'border-transparent text-white shadow-lg'
+                          : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                      }`}
+                      style={{
+                        backgroundColor:
+                          tabs === 'analisis' ? mainColor : 'white',
+                      }}
+                      onClick={() => setTabs('analisis')}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Sparkles className="w-5 h-5" />
+                        <div>
+                          <div className="font-semibold">Analisis</div>
+                          <div className="text-xs opacity-80">
+                            Analisis mendalam
+                          </div>
+                        </div>
+                      </div>
+                    </motion.button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Progress Summary Card - mirip dengan statistik di tryout.tsx */}
+              <Card
+                className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                style={{ borderColor: `${secondaryColor}20` }}
+              >
+                <CardContent className="p-6">
+                  <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                    <Trophy
+                      className="w-5 h-5"
+                      style={{ color: secondaryColor }}
+                    />
+                    Ringkasan Hasil
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="text-center">
+                      <div
+                        className="text-3xl font-bold"
+                        style={{ color: mainColor }}
+                      >
+                        {ResultData?.userScore?.toFixed(0) || '0'}
+                      </div>
+                      <div className="text-sm text-gray-600">Total Skor</div>
+                    </div>
+
+                    {unlockTryout && (
+                      <>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="text-center">
+                            <div className="text-xl font-bold text-green-600">
+                              {ResultData?.choiceAnalisis?.rankingTryout || '-'}
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              Peringkat
+                            </div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-xl font-bold text-blue-600">
+                              {ResultData?.totalParticipants || '-'}
+                            </div>
+                            <div className="text-xs text-gray-600">Peserta</div>
+                          </div>
+                        </div>
+
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-yellow-600">
+                            Top{' '}
+                            {ResultData?.choiceAnalisis?.tryoutPersentage ||
+                              '-'}
+                            %
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Dari semua peserta
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
+
+          {/* Content Area - Takes 3 columns */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-3"
+          >
+            <Tabs
+              value={tabs}
+              className="w-full"
+            >
+              {/* Tab Contents */}
+              <TabsContent value="ringkasan">
+                <RingkasanTab
+                  ResultData={ResultData}
+                  unlockTryout={unlockTryout}
+                />
+              </TabsContent>
+              <TabsContent value="review">
+                <ReviewTab
+                  sessionResult={sessionResult}
+                  setResultIndex={setResultIndex}
+                  resultIndex={resultIndex}
+                  sessionOptions={sessionOptions}
+                />
+              </TabsContent>
+              <TabsContent value="analisis">
+                <AnalisisTab
+                  tryoutId={tryoutId}
+                  ResultData={ResultData}
+                  unlockTryout={unlockTryout}
+                  tryoutAccount={tryoutAccount}
+                />
+              </TabsContent>
+            </Tabs>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -393,30 +626,107 @@ interface CoundowntShowResultProps {
 }
 
 const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  // Add state for exit dialog in countdown component too
+  const [showExitDialog, setShowExitDialog] = useState(false);
+
   return (
-    <div className="container mx-auto mt-[48px] px-4 py-6 md:mt-[52px]">
-      <Header
-        current={0}
-        total={-1}
-        name={''}
-        done
-      />
-      <div className="flex flex-col gap-[1rem] overflow-y-auto px-[1rem] pb-[2rem] pt-[1rem]">
-        <div className="flex flex-col items-center gap-[1rem] rounded-[1rem] bg-white py-[1rem]">
-          <IconTimer2
-            className="my-[.5rem] text-main-gray-text"
-            w={62}
-          />
-          <p className="font-semibold">Penilaian dapat dilihat dalam</p>
-          <div className="flex flex-col items-center">
-            <p className="text-[1.4rem] font-medium text-orange-500/80">
-              <CountdownResult targetDate={resultDate} />
-            </p>
-            <p className="font-regular mt-[.5rem] text-[.9rem] text-main-gray-text">
-              ({getDateString(resultDate)} - {getHoursDetail(resultDate)})
-            </p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header serupa dengan tryout.tsx */}
+      <div className="bg-white border-b-2 border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div className="container mx-auto max-w-7xl px-4 py-4">
+          <div className="flex items-center gap-4">
+            {/* Exit Button */}
+            <Button
+              variant="ghost"
+              onClick={() => setShowExitDialog(true)}
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 p-2 rounded-xl hover:bg-gray-100 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span className="hidden sm:inline">Kembali</span>
+            </Button>
+
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <Clock
+                className="w-6 h-6"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <div>
+              <h1 className="text-lg md:text-xl font-bold text-gray-900">
+                Hasil Belum Tersedia
+              </h1>
+              <p className="text-sm text-gray-600">
+                Menunggu waktu pengumuman hasil
+              </p>
+            </div>
           </div>
         </div>
+      </div>
+
+      <div className="container mx-auto max-w-7xl px-4 py-6">
+        {/* Exit Dialog Component */}
+        <ExitTryout
+          open={showExitDialog}
+          setOpen={setShowExitDialog}
+          done={true}
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-center min-h-[70vh]"
+        >
+          <Card
+            className="max-w-md mx-auto border-2 rounded-2xl shadow-xl overflow-hidden"
+            style={{
+              borderColor: `${mainColor}20`,
+              backgroundColor: `${mainColor}05`,
+            }}
+          >
+            <CardContent className="p-8 text-center">
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg"
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
+              >
+                <Clock className="w-10 h-10 text-white" />
+              </motion.div>
+
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Hasil Segera Tersedia
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Penilaian dapat dilihat dalam
+              </p>
+
+              <div className="space-y-4">
+                <div
+                  className="text-3xl font-mono font-bold p-4 rounded-xl shadow-sm"
+                  style={{
+                    color: mainColor,
+                    backgroundColor: `${mainColor}10`,
+                  }}
+                >
+                  <CountdownResult targetDate={resultDate} />
+                </div>
+                <p className="text-sm text-gray-500">
+                  {getDateString(resultDate)} - {getHoursDetail(resultDate)}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );
@@ -425,55 +735,66 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
 const PopUpPrediction = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [open, setOpen] = useState(true);
+
   return (
     <Dialog
       open={open}
       onOpenChange={setOpen}
     >
       <DialogContent
-        className={cn('bg-transparent border-none shadow-none')}
+        className="bg-transparent border-none shadow-none max-w-lg"
         hideClose
       >
-        <Card className="mt-0 border border-r-0 border-l-4 border-main rounded-3xl">
-          <CardHeader className="p-3">
-            <Card
-              className="relative overflow-hidden rounded-2xl border-none text-white animate-fade-in-up py-8"
+        <DialogTitle className="sr-only">Prediksi Kelulusan UI</DialogTitle>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <Card className="border-0 rounded-3xl overflow-hidden shadow-2xl">
+            <div
+              className="relative p-8 text-white"
               style={{
-                backgroundImage: `linear-gradient(to bottom right, ${websiteSubCategory?.main_color}, ${hexToRgba(websiteSubCategory?.main_color, 0.3)}, ${websiteSubCategory?.secondary_color})`,
+                background: `linear-gradient(135deg, ${websiteSubCategory?.main_color}, ${websiteSubCategory?.secondary_color})`,
               }}
             >
-              {/* Background Icon Dekoratif */}
-              <div className="absolute -top-10 -right-10 opacity-20 rotate-12 scale-150">
-                <Calculator className="w-48 h-48" />
+              {/* Decorative elements */}
+              <div className="absolute -top-10 -right-10 opacity-10 rotate-12">
+                <Calculator className="w-32 h-32" />
               </div>
+              <div className="absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10" />
 
-              {/* Sparkles Animated Background */}
-              <div className="absolute inset-0 bg-[url('/sparkle.svg')] bg-cover opacity-10 animate-pulse-slow" />
+              <div className="relative z-10 text-center">
+                <motion.div
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <h2 className="text-3xl font-bold mb-4">
+                    🚀 Mulai Prediksi Kelulusanmu!
+                  </h2>
+                  <p className="text-lg mb-6 opacity-90">
+                    Gabungkan nilai UTBK & SIMAK UI, dan lihat seberapa besar
+                    peluangmu masuk UI!
+                  </p>
+                </motion.div>
 
-              <CardHeader className="text-center z-10 relative">
-                <CardTitle className="text-3xl font-extrabold drop-shadow-lg">
-                  🚀 Mulai Prediksi Kelulusanmu!
-                </CardTitle>
-              </CardHeader>
-
-              <CardContent className="relative z-10">
-                <p className="text-center text-base font-medium max-w-md mx-auto mb-6 drop-shadow-lg">
-                  Gabungkan nilai UTBK & SIMAK UI, dan lihat seberapa besar
-                  peluangmu masuk UI!
-                </p>
-                <div className="flex justify-center">
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
                   <Link
                     href={`/${website_sub_category_id_params}/user/prediction/step?step=new`}
                   >
-                    <Button className="relative px-8 py-3 rounded-full bg-white text-main hover:text-white font-extrabold shadow-xl hover:scale-105 transition-transform animate-pulse-fast">
+                    <Button className="bg-white text-gray-900 hover:bg-gray-100 font-bold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform">
                       🎯 Mulai Sekarang
                     </Button>
                   </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </CardHeader>
-        </Card>
+                </motion.div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
       </DialogContent>
     </Dialog>
   );

@@ -2,34 +2,37 @@
 'use client';
 
 import ButtonUpgradeTryout from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/button-upgrade-tryout';
-// import { InputOptionUniversity } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/registration-try-out';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { ComboboxSelect } from '@/components/ui/combobox-select';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-// import University from '@/lib/data/university';
-import { ComboboxSelect } from '@/components/ui/combobox-select';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
-import { IconStar, IconTryOut } from '@/styles/icon';
+import { motion } from 'framer-motion';
 import {
+  BarChart3,
   CheckCircle,
+  Crown,
   Loader2,
+  Lock,
   Minus,
   School,
   Sparkles,
+  Target,
   TrendingDown,
   TrendingUp,
+  Trophy,
   XCircle,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -64,10 +67,12 @@ export function AnalisisTab({
   tryoutAccount: TryoutAccountType;
 }) {
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const { UniversityOptions } = useProvider();
 
-  // const { mutateAsync: SimulationData } =
-  //   api.tryout.getSimulationDataByTryoutId.useMutation();
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const userScore = ResultData?.userScore || 0;
   const totalParticipants = ResultData?.totalParticipants || 0;
@@ -101,11 +106,6 @@ export function AnalisisTab({
     if (!unlockTryout) return null;
     setSelectedData(null);
     setSimulationLoad(true);
-    // const data = await SimulationData({
-    //   tryoutId,
-    //   university: selectedUniversity,
-    //   major: selectedMajor,
-    // });
     const res = await getGeneral(
       `/tryout/getSimulationDataByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}&university=${selectedUniversity}&major=${selectedMajor}`,
     );
@@ -379,788 +379,607 @@ export function AnalisisTab({
   }, [selectedUniversity]);
 
   return (
-    <div className="space-y-6">
-      <Card className="border-none bg-transparent p-6 px-0">
-        <CardHeader className="px-0">
-          <CardTitle className="flex items-center gap-2 text-2xl font-bold">
-            <Sparkles className="h-6 w-6" />
-            Analisis Hasil Try Out
-          </CardTitle>
-          <CardDescription>
-            Analisis peluang kelulusan berdasarkan passing grade dan peringkat
-            Kamu
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="px-0">
-          <Tabs defaultValue="analisis">
-            <TabsList className="mb-8 flex w-fit gap-2">
-              <TabsTrigger
-                value="analisis"
-                className="flex flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              >
-                Analisis Pilihan
-              </TabsTrigger>
-              {website_sub_category_id === 'snbt' && (
-                <TabsTrigger
-                  value="rekomendasi"
-                  className="flex flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-                >
-                  Rekomendasi
-                </TabsTrigger>
-              )}
-              <TabsTrigger
-                value="simulasi"
-                className="flex flex-1 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm data-[state=active]:bg-main data-[state=active]:text-white"
-              >
-                Simulasi
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent
+    <div className="space-y-8">
+      {/* Enhanced Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center"
+      >
+        <div
+          className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
+        >
+          <Sparkles className="w-8 h-8 text-white" />
+        </div>
+        <h1
+          className="text-3xl font-bold mb-2"
+          style={{ color: mainColor }}
+        >
+          Analisis Mendalam
+        </h1>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Analisis komprehensif peluang kelulusan berdasarkan passing grade
+          universitas dan jurusan target Anda
+        </p>
+      </motion.div>
+
+      {/* Enhanced Tabs */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <Tabs defaultValue="analisis">
+          <TabsList
+            className="grid w-full grid-cols-2 h-14 p-1 rounded-2xl border-0 shadow-lg mb-8"
+            style={{ backgroundColor: `${mainColor}08` }}
+          >
+            <TabsTrigger
               value="analisis"
-              className="relative"
+              className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
+              // style={{
+              //   backgroundColor: 'transparent',
+              // }}
             >
-              <UpgareLayer unlockTryout={unlockTryout} />
-              {!unlockTryout && (
-                <div className="flex flex-col gap-12">
-                  <div className="space-y-4">
-                    <h1 className="text-2xl font-semibold">Analisis Pilihan</h1>
-                    <div className="grid grid-cols-1 gap-4 pt-0 md:grid-cols-3">
-                      <Card
-                        id="skor_snbt"
-                        className="flex flex-col justify-between rounded-2xl border-none bg-main/15 shadow-none"
-                      >
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-semibold">
-                            Skor
-                          </CardTitle>
-                          <IconStar
-                            active
-                            className="text-main"
-                            w={20}
-                          />
-                        </CardHeader>
-                        <CardContent className="flex flex-col gap-2 pb-0">
-                          <div className="text-2xl font-bold">-</div>
-                          <Progress
-                            value={80}
-                            className="mb-2 h-1"
-                            classNameThumb="bg-blue-400"
-                          />
-                        </CardContent>
-                        <CardFooter className="pt-2 text-xs font-medium text-main-gray-text">
-                          Dari poin maksimum
-                        </CardFooter>
-                      </Card>
-                      <Card
-                        id="ranking"
-                        className="flex flex-col rounded-2xl border-none bg-green-100 shadow-none"
-                      >
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-semibold">
-                            Ranking Kamu
-                          </CardTitle>
-                          <IconTryOut
-                            active
-                            className="text-green-600"
-                            w={20}
-                          />
-                        </CardHeader>
-                        <CardContent className="mt-2 grid grid-cols-2">
-                          <div className="flex flex-col">
-                            <div className="flex flex-col gap-2 pb-0">
-                              <div className="text-2xl font-bold">-</div>
-                            </div>
-                            <div className="pt-2 text-xs font-medium text-main-gray-text">
-                              Dari - peserta
-                            </div>
-                          </div>
-                          <div className="ml-[-1rem] flex flex-col border-l-2 border-green-400 pl-4">
-                            <div className="flex flex-col gap-2 pb-0">
-                              <div className="text-2xl font-bold">Top -%</div>
-                            </div>
-                            <div className="pt-2 text-xs font-medium text-main-gray-text">
-                              Peserta
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card
-                        id="ranking_univ"
-                        className="flex flex-col rounded-2xl border-none bg-yellow-50 shadow-none"
-                      >
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-semibold">
-                            Ranking Universitas & Jurusan
-                          </CardTitle>
-                          <IconTryOut
-                            active
-                            className="text-yellow-500"
-                            w={20}
-                          />
-                        </CardHeader>
-                        <CardContent className="mt-2 grid grid-cols-2">
-                          <div className="flex flex-col">
-                            <div className="flex flex-col gap-2 pb-0">
-                              <div className="text-2xl font-bold">-</div>
-                            </div>
-                            <div className="pt-2 text-xs font-medium text-main-gray-text">
-                              Estimasi Universitas
-                            </div>
-                          </div>
-                          <div className="ml-[-1rem] flex flex-col border-l-2 border-yellow-400 pl-4">
-                            <div className="flex flex-col gap-2 pb-0">
-                              <div className="text-2xl font-bold">-</div>
-                            </div>
-                            <div className="pt-2 text-xs font-medium text-main-gray-text">
-                              Estimasi Jurusan
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+              <BarChart3 className="w-4 h-4" />
+              <span className=" sm:inline">Analisis Pilihan</span>
+            </TabsTrigger>
+
+            {website_sub_category_id === 'snbt' && (
+              <TabsTrigger
+                value="rekomendasi"
+                className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
+              >
+                <Trophy className="w-4 h-4" />
+                <span className="sm:inline">Rekomendasi</span>
+              </TabsTrigger>
+            )}
+
+            <TabsTrigger
+              value="simulasi"
+              className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
+            >
+              <Target className="w-4 h-4" />
+              <span className=" sm:inline">Simulasi</span>
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Tab Contents */}
+          <TabsContent
+            value="analisis"
+            className="relative"
+          >
+            <UpgradeLayer unlockTryout={unlockTryout} />
+
+            <div className="space-y-8">
+              {/* Summary Statistics */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="grid grid-cols-1 sm:grid-cols-3 gap-6"
+              >
+                {/* Score Card */}
+                <Card
+                  className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                  style={{
+                    borderColor: `${mainColor}20`,
+                    backgroundColor: `${mainColor}05`,
+                  }}
+                >
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                    <CardTitle className="text-sm font-semibold text-gray-700">
+                      Skor Total
+                    </CardTitle>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: mainColor }}
+                    >
+                      <Trophy className="h-5 w-5 text-white" />
                     </div>
-                  </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div
+                      className="text-3xl font-bold mb-2"
+                      style={{ color: mainColor }}
+                    >
+                      {unlockTryout ? userScore.toFixed(1) : '---'}
+                    </div>
+                    <Progress
+                      value={unlockTryout ? (userScore / 1000) * 100 : 0}
+                      className="h-2 mb-2"
+                      style={{ backgroundColor: '#f3f4f6' }}
+                    />
+                    <p className="text-xs font-medium text-gray-600">
+                      Dari skor maksimum 1000
+                    </p>
+                  </CardContent>
+                </Card>
 
-                  <div className="space-y-4">
-                    <h1 className="text-2xl font-semibold">
-                      Universitas dan Jurusan
-                    </h1>
-                    {ResultData?.choiceAnalisis.university.map((choice) => {
-                      const passingUniv = choice.univAverageScore;
-                      const passingMajor = choice.majorAverageScore;
+                {/* Ranking Card */}
+                <Card className="border-2 border-green-200 bg-green-50 rounded-2xl overflow-hidden shadow-lg">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                    <CardTitle className="text-sm font-semibold text-green-700">
+                      Ranking Anda
+                    </CardTitle>
+                    <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center">
+                      <Crown className="h-5 w-5 text-white" />
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0 grid grid-cols-2 gap-4">
+                    <div>
+                      <div className="text-2xl font-bold text-green-700">
+                        {unlockTryout
+                          ? ResultData?.choiceAnalisis.rankingTryout
+                          : '---'}
+                      </div>
+                      <p className="text-xs text-green-600">
+                        Dari {unlockTryout ? totalParticipants : '---'} peserta
+                      </p>
+                    </div>
+                    <div className="ml-[-1rem] flex flex-col border-l-2 border-green-400 pl-4">
+                      <div className="flex flex-col gap-2 pb-0">
+                        <div className="text-2xl font-bold text-green-700">
+                          Top{' '}
+                          {unlockTryout
+                            ? ResultData?.choiceAnalisis.tryoutPersentage
+                            : '--'}
+                          %
+                        </div>
+                      </div>
+                      <div className="pt-2 text-xs font-medium text-main-gray-text">
+                        Peserta
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                      return (
-                        <Card
-                          key={choice.univ}
-                          className="mt-6"
-                        >
-                          <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-xl md:text-xl">
-                              <School className="hidden h-6 w-6 md:block" />
-                              Universitas - Jurusan
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent className="space-y-6">
-                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                              <Card>
-                                <CardHeader className="flex items-center justify-between md:flex-row">
-                                  <CardTitle className="text-lg">
-                                    Analisis Universitas
-                                  </CardTitle>
-                                  <Badge
-                                    variant="default"
-                                    className="flex items-center gap-1 bg-green-100 text-green-600"
-                                  >
-                                    <CheckCircle className="h-4 w-4" /> Lulus
-                                    atau tidak
-                                  </Badge>
-                                </CardHeader>
-                                <CardContent>
-                                  <div className="space-y-4">
-                                    <div>
-                                      <div className="mb-2 flex items-center justify-between">
-                                        <span className="text-sm font-semibold">
-                                          Skormu: -
-                                        </span>
-                                        <span className="text-sm font-semibold">
-                                          Passing Grade: -
-                                        </span>
-                                      </div>
-                                      <Progress
-                                        value={90}
-                                        className="mb-2 h-1"
-                                        classNameThumb={cn('bg-green-600')}
-                                      />
-                                      <div className="flex items-center justify-end">
-                                        {getTrendIcon(userScore, passingUniv)}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <h1 className="mb-4 text-sm font-semibold">
-                                        Peringkatmu:
-                                      </h1>
-                                      <div className="grid grid-cols-2">
-                                        <div className="flex flex-col gap-2">
-                                          <h1 className="text-xl font-bold">
-                                            -
-                                          </h1>
-                                          <p className="text-xs font-semibold text-muted-foreground">
-                                            dari - peserta
-                                          </p>
-                                        </div>
-                                        <div className="ml-[-1rem] flex flex-col gap-2 border-l pl-4">
-                                          <h1 className="text-xl font-bold">
-                                            -%
-                                          </h1>
-                                          <p className="text-xs font-semibold text-muted-foreground">
-                                            Kamu berada di top -% peserta
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                              <Card>
-                                <CardHeader className="flex items-center justify-between md:flex-row">
-                                  <CardTitle className="text-lg">
-                                    Analisis Jurusan
-                                  </CardTitle>
-                                  <Badge
-                                    variant="default"
-                                    className="flex items-center gap-1 bg-green-100 text-green-600"
-                                  >
-                                    <CheckCircle className="h-4 w-4" /> Lulus
-                                    atau tidak
-                                  </Badge>
-                                </CardHeader>
-                                <CardContent>
-                                  <div className="space-y-4">
-                                    <div>
-                                      <div className="mb-2 flex items-center justify-between">
-                                        <span className="text-sm font-semibold">
-                                          Skormu: -
-                                        </span>
-                                        <span className="text-sm font-semibold">
-                                          Passing Grade: -
-                                        </span>
-                                      </div>
-                                      <Progress
-                                        value={80}
-                                        className="mb-2 h-1"
-                                        classNameThumb={cn('bg-green-600')}
-                                      />
-                                      <div className="flex items-center justify-end">
-                                        {getTrendIcon(userScore, passingMajor)}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <h4 className="mb-2 text-sm font-semibold">
-                                        Peringkatmu
-                                      </h4>
-                                      <div className="grid grid-cols-2">
-                                        <div className="flex flex-col gap-2">
-                                          <h1 className="text-xl font-bold">
-                                            -
-                                          </h1>
-                                          <p className="text-xs font-semibold text-muted-foreground">
-                                            dari - peserta
-                                          </p>
-                                        </div>
-                                        <div className="ml-[-1rem] flex flex-col gap-2 border-l pl-4">
-                                          <h1 className="text-xl font-bold">
-                                            -%
-                                          </h1>
-                                          <p className="text-xs font-semibold text-muted-foreground">
-                                            Kamu berada di top -% peserta
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+                {/* University Ranking Card */}
+                <Card className="border-2 border-yellow-200 bg-yellow-50 rounded-2xl overflow-hidden shadow-lg">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                    <CardTitle className="text-sm font-semibold text-yellow-700">
+                      Estimasi Universitas
+                    </CardTitle>
+                    <div className="w-10 h-10 rounded-xl bg-yellow-500 flex items-center justify-center">
+                      <School className="h-5 w-5 text-white" />
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0 grid grid-cols-2 gap-4">
+                    <div>
+                      <div className="text-2xl font-bold text-yellow-700">
+                        {unlockTryout
+                          ? ResultData?.choiceAnalisis.rankingUniv
+                          : '---'}
+                      </div>
+                      <p className="text-xs text-yellow-600">
+                        Ranking Universitas
+                      </p>
+                    </div>
+                    <div className="ml-[-1rem] flex flex-col border-l-2 border-yellow-400 pl-4">
+                      <div className="flex flex-col gap-2 pb-0">
+                        <div className="text-2xl font-bold text-yellow-700">
+                          {unlockTryout
+                            ? ResultData?.choiceAnalisis.rankingMajor
+                            : '---'}
+                        </div>
+                      </div>
+                      <div className="pt-2 text-xs font-medium text-main-gray-text">
+                        Ranking Jurusan
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* University Analysis */}
               {unlockTryout && (
-                <div className="flex flex-col gap-12">
-                  <div className="space-y-4">
-                    <h1 className="text-2xl font-semibold">Analisis Pilihan</h1>
-                    <div className="grid grid-cols-1 gap-4 pt-0 md:grid-cols-3">
-                      <Card
-                        id="skor_snbt"
-                        className="flex flex-col justify-between rounded-2xl border-none bg-main/15 shadow-none"
-                      >
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-semibold">
-                            Skor
-                          </CardTitle>
-                          <IconStar
-                            active
-                            className="text-main"
-                            w={20}
-                          />
-                        </CardHeader>
-                        <CardContent className="flex flex-col gap-2 pb-0">
-                          <div className="text-2xl font-bold">
-                            {userScore.toFixed(2)}
-                          </div>
-                          <Progress
-                            value={(userScore / 1000) * 100}
-                            className="mb-2 h-1"
-                            classNameThumb="bg-blue-400"
-                          />
-                        </CardContent>
-                        <CardFooter className="pt-2 text-xs font-medium text-main-gray-text">
-                          Dari poin maksimum
-                        </CardFooter>
-                      </Card>
-                      <Card
-                        id="ranking"
-                        className="flex flex-col rounded-2xl border-none bg-green-100 shadow-none"
-                      >
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-semibold">
-                            Ranking Kamu
-                          </CardTitle>
-                          <IconTryOut
-                            active
-                            className="text-green-600"
-                            w={20}
-                          />
-                        </CardHeader>
-                        <CardContent className="mt-2 grid grid-cols-2">
-                          <div className="flex flex-col">
-                            <div className="flex flex-col gap-2 pb-0">
-                              <div className="text-2xl font-bold">
-                                {ResultData?.choiceAnalisis.rankingTryout}
-                              </div>
-                            </div>
-                            <div className="pt-2 text-xs font-medium text-main-gray-text">
-                              Dari {totalParticipants} peserta
-                            </div>
-                          </div>
-                          <div className="ml-[-1rem] flex flex-col border-l-2 border-green-400 pl-4">
-                            <div className="flex flex-col gap-2 pb-0">
-                              <div className="text-2xl font-bold">
-                                Top{' '}
-                                {ResultData?.choiceAnalisis.tryoutPersentage}%
-                              </div>
-                            </div>
-                            <div className="pt-2 text-xs font-medium text-main-gray-text">
-                              Peserta
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card
-                        id="ranking_univ"
-                        className="flex flex-col rounded-2xl border-none bg-yellow-50 shadow-none"
-                      >
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-semibold">
-                            Ranking Universitas & Jurusan
-                          </CardTitle>
-                          <IconTryOut
-                            active
-                            className="text-yellow-500"
-                            w={20}
-                          />
-                        </CardHeader>
-                        <CardContent className="mt-2 grid grid-cols-2">
-                          <div className="flex flex-col">
-                            <div className="flex flex-col gap-2 pb-0">
-                              <div className="text-2xl font-bold">
-                                {ResultData?.choiceAnalisis.rankingUniv}
-                              </div>
-                            </div>
-                            <div className="pt-2 text-xs font-medium text-main-gray-text">
-                              Estimasi Universitas
-                            </div>
-                          </div>
-                          <div className="ml-[-1rem] flex flex-col border-l-2 border-yellow-400 pl-4">
-                            <div className="flex flex-col gap-2 pb-0">
-                              <div className="text-2xl font-bold">
-                                {ResultData?.choiceAnalisis.rankingMajor}
-                              </div>
-                            </div>
-                            <div className="pt-2 text-xs font-medium text-main-gray-text">
-                              Estimasi Jurusan
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="space-y-6"
+                >
+                  <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                    <School
+                      className="w-6 h-6"
+                      style={{ color: mainColor }}
+                    />
+                    Analisis Universitas dan Jurusan
+                  </h2>
 
-                  <div className="space-y-4">
-                    <h1 className="text-2xl font-semibold">
-                      Universitas dan Jurusan
-                    </h1>
-                    {ResultData?.choiceAnalisis.university.map((choice) => {
+                  {ResultData?.choiceAnalisis.university.map(
+                    (choice, index) => {
                       const passingUniv = choice.univAverageScore;
                       const passingMajor = choice.majorAverageScore;
-
-                      const uniRank = choice.univRanking;
-                      const majorRank = choice.majorRanking;
-
-                      const univTotalApplicants = choice.univTotalAplicants;
-                      const majorTotalApplicants = choice.majorTotalAplicants;
-
                       const isUnivPass = passingUniv < userScore;
                       const isMajorPass = passingMajor < userScore;
 
                       return (
                         <Card
                           key={choice.univ}
-                          className="mt-6"
+                          className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden"
                         >
-                          <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-xl md:text-xl">
-                              <School className="hidden h-6 w-6 md:block" />
+                          <CardHeader
+                            className="border-b"
+                            style={{ backgroundColor: `${mainColor}03` }}
+                          >
+                            <CardTitle className="text-xl font-bold flex items-center gap-3">
+                              <div
+                                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                                style={{ backgroundColor: `${mainColor}15` }}
+                              >
+                                <School
+                                  className="w-5 h-5"
+                                  style={{ color: mainColor }}
+                                />
+                              </div>
                               {choice.univ} - {choice.major}
                             </CardTitle>
                           </CardHeader>
-                          <CardContent className="space-y-6">
-                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                              <Card>
-                                <CardHeader className="flex items-center justify-between md:flex-row">
-                                  <CardTitle className="text-lg">
+
+                          <CardContent className="p-8">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                              {/* University Analysis */}
+                              <div className="space-y-6">
+                                <div className="flex items-center justify-between">
+                                  <h3 className="text-lg font-bold text-gray-900">
                                     Analisis Universitas
-                                  </CardTitle>
-                                  {isUnivPass ? (
-                                    <Badge
-                                      variant="default"
-                                      className="flex items-center gap-1 bg-green-100 text-green-600"
-                                    >
-                                      <CheckCircle className="h-4 w-4" /> Lulus
-                                      Passing Grade
-                                    </Badge>
-                                  ) : (
-                                    <Badge
-                                      variant="destructive"
-                                      className="flex items-center gap-1 bg-red-100 text-red-600"
-                                    >
-                                      <XCircle className="h-4 w-4" /> Belum
-                                      Lulus Passing Grade
-                                    </Badge>
-                                  )}
-                                </CardHeader>
-                                <CardContent>
-                                  <div className="space-y-4">
-                                    <div>
-                                      <div className="mb-2 flex items-center justify-between">
-                                        <span className="text-sm font-semibold">
-                                          Skormu: {userScore}
-                                        </span>
-                                        <span className="text-sm font-semibold">
-                                          Passing Grade: {passingUniv}
-                                        </span>
-                                      </div>
-                                      <Progress
-                                        value={(userScore / passingUniv) * 100}
-                                        className="mb-2 h-1"
-                                        classNameThumb={cn(
-                                          isUnivPass
-                                            ? 'bg-green-600'
-                                            : 'bg-red-600',
-                                        )}
-                                      />
-                                      <div className="flex items-center justify-end">
-                                        {getTrendIcon(userScore, passingUniv)}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <h1 className="mb-4 text-sm font-semibold">
-                                        Peringkatmu:
-                                      </h1>
-                                      <div className="grid grid-cols-2">
-                                        <div className="flex flex-col gap-2">
-                                          <h1 className="text-xl font-bold">
-                                            {uniRank}
-                                          </h1>
-                                          <p className="text-xs font-semibold text-muted-foreground">
-                                            dari {univTotalApplicants} peserta
-                                          </p>
-                                        </div>
-                                        <div className="ml-[-1rem] flex flex-col gap-2 border-l pl-4">
-                                          <h1 className="text-xl font-bold">
-                                            {choice.univPercentage}%
-                                          </h1>
-                                          <p className="text-xs font-semibold text-muted-foreground">
-                                            Kamu berada di top{' '}
-                                            {choice.univPercentage}% peserta
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
+                                  </h3>
+                                  <Badge
+                                    className={cn(
+                                      'flex items-center gap-1 px-3 py-1',
+                                      isUnivPass
+                                        ? 'bg-green-100 text-green-700 border-green-200'
+                                        : 'bg-red-100 text-red-700 border-red-200',
+                                    )}
+                                  >
+                                    {isUnivPass ? (
+                                      <CheckCircle className="h-4 w-4" />
+                                    ) : (
+                                      <XCircle className="h-4 w-4" />
+                                    )}
+                                    {isUnivPass
+                                      ? 'Lulus Passing Grade'
+                                      : 'Belum Lulus'}
+                                  </Badge>
+                                </div>
+
+                                <div className="space-y-4">
+                                  <div className="flex justify-between text-sm font-medium">
+                                    <span>Skor Anda: {userScore}</span>
+                                    <span>Passing Grade: {passingUniv}</span>
                                   </div>
-                                </CardContent>
-                              </Card>
-                              <Card>
-                                <CardHeader className="flex items-center justify-between md:flex-row">
-                                  <CardTitle className="text-lg">
+                                  <Progress
+                                    value={(userScore / passingUniv) * 100}
+                                    className="h-3"
+                                  />
+                                  <div className="flex justify-end">
+                                    {getTrendIcon(userScore, passingUniv)}
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                                    <div className="text-2xl font-bold text-gray-900">
+                                      {choice.univRanking}
+                                    </div>
+                                    <p className="text-xs text-gray-600">
+                                      Dari {choice.univTotalAplicants} peserta
+                                    </p>
+                                  </div>
+                                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                                    <div className="text-2xl font-bold text-gray-900">
+                                      {choice.univPercentage}%
+                                    </div>
+                                    <p className="text-xs text-gray-600">
+                                      Top peserta
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Major Analysis */}
+                              <div className="space-y-6">
+                                <div className="flex items-center justify-between">
+                                  <h3 className="text-lg font-bold text-gray-900">
                                     Analisis Jurusan
-                                  </CardTitle>
-                                  {isMajorPass ? (
-                                    <Badge
-                                      variant="default"
-                                      className="flex items-center gap-1 bg-green-100 text-green-600"
-                                    >
-                                      <CheckCircle className="h-4 w-4" /> Lulus
-                                      Passing Grade
-                                    </Badge>
-                                  ) : (
-                                    <Badge
-                                      variant="destructive"
-                                      className="flex items-center gap-1 bg-red-100 text-red-600"
-                                    >
-                                      <XCircle className="h-4 w-4" /> Belum
-                                      Lulus Passing Grade
-                                    </Badge>
-                                  )}
-                                </CardHeader>
-                                <CardContent>
-                                  <div className="space-y-4">
-                                    <div>
-                                      <div className="mb-2 flex items-center justify-between">
-                                        <span className="text-sm font-semibold">
-                                          Skormu: {userScore}
-                                        </span>
-                                        <span className="text-sm font-semibold">
-                                          Passing Grade: {passingMajor}
-                                        </span>
-                                      </div>
-                                      <Progress
-                                        value={(userScore / passingMajor) * 100}
-                                        className="mb-2 h-1"
-                                        classNameThumb={cn(
-                                          isMajorPass
-                                            ? 'bg-green-600'
-                                            : 'bg-red-600',
-                                        )}
-                                      />
-                                      <div className="flex items-center justify-end">
-                                        {getTrendIcon(userScore, passingMajor)}
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <h4 className="mb-2 text-sm font-semibold">
-                                        Peringkatmu
-                                      </h4>
-                                      <div className="grid grid-cols-2">
-                                        <div className="flex flex-col gap-2">
-                                          <h1 className="text-xl font-bold">
-                                            {majorRank}
-                                          </h1>
-                                          <p className="text-xs font-semibold text-muted-foreground">
-                                            dari {majorTotalApplicants} peserta
-                                          </p>
-                                        </div>
-                                        <div className="ml-[-1rem] flex flex-col gap-2 border-l pl-4">
-                                          <h1 className="text-xl font-bold">
-                                            {choice.majorPercentage}%
-                                          </h1>
-                                          <p className="text-xs font-semibold text-muted-foreground">
-                                            Kamu berada di top{' '}
-                                            {choice.majorPercentage}% peserta
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
+                                  </h3>
+                                  <Badge
+                                    className={cn(
+                                      'flex items-center gap-1 px-3 py-1',
+                                      isMajorPass
+                                        ? 'bg-green-100 text-green-700 border-green-200'
+                                        : 'bg-red-100 text-red-700 border-red-200',
+                                    )}
+                                  >
+                                    {isMajorPass ? (
+                                      <CheckCircle className="h-4 w-4" />
+                                    ) : (
+                                      <XCircle className="h-4 w-4" />
+                                    )}
+                                    {isMajorPass
+                                      ? 'Lulus Passing Grade'
+                                      : 'Belum Lulus'}
+                                  </Badge>
+                                </div>
+
+                                <div className="space-y-4">
+                                  <div className="flex justify-between text-sm font-medium">
+                                    <span>Skor Anda: {userScore}</span>
+                                    <span>Passing Grade: {passingMajor}</span>
                                   </div>
-                                </CardContent>
-                              </Card>
+                                  <Progress
+                                    value={(userScore / passingMajor) * 100}
+                                    className="h-3"
+                                  />
+                                  <div className="flex justify-end">
+                                    {getTrendIcon(userScore, passingMajor)}
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                                    <div className="text-2xl font-bold text-gray-900">
+                                      {choice.majorRanking}
+                                    </div>
+                                    <p className="text-xs text-gray-600">
+                                      Dari {choice.majorTotalAplicants} peserta
+                                    </p>
+                                  </div>
+                                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                                    <div className="text-2xl font-bold text-gray-900">
+                                      {choice.majorPercentage}%
+                                    </div>
+                                    <p className="text-xs text-gray-600">
+                                      Top peserta
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </CardContent>
                         </Card>
                       );
-                    })}
-                  </div>
-                </div>
+                    },
+                  )}
+                </motion.div>
               )}
-            </TabsContent>
+            </div>
+          </TabsContent>
+
+          {/* Rekomendasi Tab */}
+          {website_sub_category_id === 'snbt' && (
             <TabsContent
               value="rekomendasi"
               className="relative"
             >
-              <UpgareLayer unlockTryout={unlockTryout} />
-              {!unlockTryout && (
-                <div className="flex flex-col gap-4">
-                  <h1 className="text-2xl font-semibold">
-                    Rekomendasi Universitas dan Jurusan
-                  </h1>
-                  <div className="space-y-4">
-                    {Array.from({ length: 4 }).map((_, index) => (
-                      <Card key={index}>
-                        <CardHeader>
-                          <CardTitle className="text-lg">Universitas</CardTitle>
-                          <CardDescription>Jurusan</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm font-medium">
-                              Skor Kamu: -
-                            </span>
-                            <span className="text-sm font-medium">
-                              Passing Grade: -
-                            </span>
-                          </div>
-                          <Progress
-                            value={80}
-                            className="mb-2"
-                          />
-                          <div className="flex items-center justify-between">
-                            <Badge
-                              variant="default"
-                              className="flex items-center gap-1"
-                            >
-                              <CheckCircle className="h-4 w-4" /> Lulus atau
-                              tidak
-                            </Badge>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
+              <UpgradeLayer unlockTryout={unlockTryout} />
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-6"
+              >
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Rekomendasi Universitas & Jurusan
+                  </h2>
+                  <p className="text-gray-600">
+                    Berdasarkan skor Anda, berikut adalah rekomendasi
+                    universitas dan jurusan dengan peluang kelulusan tinggi
+                  </p>
                 </div>
-              )}
-              {unlockTryout && (
-                <div className="flex flex-col gap-4">
-                  <h1 className="text-2xl font-semibold">
-                    Rekomendasi Universitas dan Jurusan
-                  </h1>
-                  <div className="space-y-4">
-                    {recommendations.map((item, index) => (
-                      <Card key={index}>
-                        <CardHeader>
-                          <CardTitle className="text-lg">{item.univ}</CardTitle>
-                          <CardDescription>{item.study}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="mb-2 flex items-center justify-between">
-                            <span className="text-sm font-medium">
-                              Skor Kamu: {userScore}
-                            </span>
-                            <span className="text-sm font-medium">
-                              Passing Grade: {item.averageScore}
-                            </span>
-                          </div>
-                          <Progress
-                            value={(userScore / item.averageScore) * 100}
-                            className="mb-2"
-                          />
-                          <div className="flex items-center justify-between">
-                            <Badge
-                              variant="default"
-                              className="flex items-center gap-1"
-                            >
-                              <CheckCircle className="h-4 w-4" /> Lulus Passing
-                              Grade
+
+                <div className="grid grid-cols-1 gap-6">
+                  {unlockTryout
+                    ? recommendations.map((item, index) => (
+                        <Card
+                          key={index}
+                          className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                        >
+                          <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                              <CardTitle className="text-lg font-bold">
+                                {item.univ}
+                              </CardTitle>
+                              <CardDescription className="text-base">
+                                {item.study}
+                              </CardDescription>
+                            </div>
+                            <Badge className="bg-green-100 text-green-700 border-green-200">
+                              <CheckCircle className="h-4 w-4 mr-1" />
+                              Rekomendasi Tinggi
                             </Badge>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-4">
+                              <div className="flex justify-between text-sm font-medium">
+                                <span>Skor Anda: {userScore}</span>
+                                <span>Passing Grade: {item.averageScore}</span>
+                              </div>
+                              <Progress
+                                value={(userScore / item.averageScore) * 100}
+                                className="h-3"
+                              />
+                              <div className="text-center">
+                                <span className="text-green-700 font-semibold">
+                                  Peluang Lulus:{' '}
+                                  {Math.min(
+                                    95,
+                                    Math.round(
+                                      (userScore / item.averageScore) * 100,
+                                    ),
+                                  )}
+                                  %
+                                </span>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))
+                    : // Locked content preview
+                      Array.from({ length: 4 }).map((_, index) => (
+                        <Card
+                          key={index}
+                          className="border-2 border-gray-200 rounded-2xl shadow-lg overflow-hidden opacity-60"
+                        >
+                          <CardHeader>
+                            <CardTitle className="text-lg">
+                              Universitas ---
+                            </CardTitle>
+                            <CardDescription>Jurusan ---</CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-4">
+                              <div className="flex justify-between text-sm">
+                                <span>Skor Anda: ---</span>
+                                <span>Passing Grade: ---</span>
+                              </div>
+                              <Progress
+                                value={0}
+                                className="h-3"
+                              />
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                 </div>
-              )}
+              </motion.div>
             </TabsContent>
-            <TabsContent
-              value="simulasi"
-              className="relative"
+          )}
+
+          {/* Simulasi Tab */}
+          <TabsContent
+            value="simulasi"
+            className="relative"
+          >
+            <UpgradeLayer unlockTryout={unlockTryout} />
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-8"
             >
-              <UpgareLayer unlockTryout={unlockTryout} />
-              <Card className="border-none bg-transparent shadow-none">
-                <CardHeader className="px-0">
-                  <CardTitle>
+              <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+                <CardHeader
+                  className="border-b"
+                  style={{ backgroundColor: `${mainColor}05` }}
+                >
+                  <CardTitle className="text-xl font-bold flex items-center gap-3">
+                    <Target
+                      className="w-6 h-6"
+                      style={{ color: mainColor }}
+                    />
                     Simulasi Pilihan Universitas dan Jurusan
                   </CardTitle>
-                  <CardDescription>
-                    Pilih universitas dan jurusan untuk melihat peluang
-                    kelulusan Kamu
+                  <CardDescription className="text-base">
+                    Pilih universitas dan jurusan untuk melihat analisis peluang
+                    kelulusan yang detail
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="rounded-xl border bg-white p-6">
-                  <div className="space-y-4">
-                    <form
-                      className="flex flex-col gap-2"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        getSimulationData();
-                      }}
-                    >
-                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        {/* <InputOptionUniversity
-                          heading="Pilihan 1 - Universitas"
-                          placeholder="Universitas"
-                          value={selectedUniversity}
-                          setValue={setSelectedUniversity}
-                          type="university"
-                          disabled={website_sub_category_id !== 'snbt'}
-                        />
-                        <InputOptionUniversity
-                          heading="Pilihan 1 - Jurusan"
-                          placeholder="Jurusan"
-                          value={selectedMajor}
-                          setValue={setSelectedMajor}
-                          type="studyProgramList"
-                          university={selectedUniversity}
-                          disabled={website_sub_category_id !== 'snbt'}
-                        /> */}
-                        <ComboboxSelect
-                          heading="Pilihan 1 - Universitas"
-                          placeholder="Universitas"
-                          value={selectedUniversity}
-                          setValue={setSelectedUniversity}
-                          isUniversity={true}
-                          options={UniversityOptions.map((item) => ({
-                            label: item.university,
-                            value: item.university,
-                          }))}
-                          disabled={website_sub_category_id !== 'snbt'}
-                        />
-                        <ComboboxSelect
-                          heading="Pilihan 1 - Jurusan"
-                          placeholder="Jurusan"
-                          value={selectedMajor}
-                          setValue={setSelectedMajor}
-                          options={(UnivChoice?.studyProgramList || [])
-                            .map((item) => {
-                              return {
-                                label: item.study,
-                                value: item.study,
-                              };
-                            })
-                            .filter((item) => item !== null)
-                            .flat(Infinity)}
-                          disabled={
-                            website_sub_category_id !== 'snbt' || !UnivChoice
-                          }
-                        />
+
+                <CardContent className="p-8">
+                  <form
+                    className="space-y-6"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      getSimulationData();
+                    }}
+                  >
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      <ComboboxSelect
+                        heading="Pilihan Universitas"
+                        placeholder="Pilih universitas target"
+                        value={selectedUniversity}
+                        setValue={setSelectedUniversity}
+                        isUniversity={true}
+                        options={UniversityOptions.map((item) => ({
+                          label: item.university,
+                          value: item.university,
+                        }))}
+                        disabled={website_sub_category_id !== 'snbt'}
+                      />
+                      <ComboboxSelect
+                        heading="Pilihan Jurusan"
+                        placeholder="Pilih jurusan target"
+                        value={selectedMajor}
+                        setValue={setSelectedMajor}
+                        options={(UnivChoice?.studyProgramList || [])
+                          .map((item) => ({
+                            label: item.study,
+                            value: item.study,
+                          }))
+                          .filter((item) => item !== null)}
+                        disabled={
+                          website_sub_category_id !== 'snbt' || !UnivChoice
+                        }
+                      />
+                    </div>
+
+                    {website_sub_category_id === 'snbt' && (
+                      <div className="flex justify-center">
+                        <Button
+                          type="submit"
+                          className={cn(
+                            'px-8 py-3 rounded-xl font-bold text-white shadow-lg',
+                            !unlockTryout && 'cursor-not-allowed opacity-50',
+                          )}
+                          style={{ backgroundColor: mainColor }}
+                          disabled={simualationLoad || !unlockTryout}
+                        >
+                          {simualationLoad && unlockTryout ? (
+                            <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                          ) : (
+                            <Target className="h-5 w-5 mr-2" />
+                          )}
+                          Analisis Simulasi
+                        </Button>
                       </div>
-                      {website_sub_category_id === 'snbt' && (
-                        <div className="flex w-full justify-start">
-                          <Button
-                            className={cn(
-                              'h-9 w-30 bg-main duration-300 hover:bg-main/85',
-                              !unlockTryout && 'cursor-not-allowed',
-                            )}
-                            disabled={simualationLoad}
-                          >
-                            {simualationLoad && unlockTryout ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              'Submit'
-                            )}
-                          </Button>
-                        </div>
-                      )}
-                    </form>
-                    <div>{unlockTryout && renderAnalysisSimulasi()}</div>
-                  </div>
+                    )}
+                  </form>
+
+                  {/* Simulation Results */}
+                  {unlockTryout && renderAnalysisSimulasi()}
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+            </motion.div>
+          </TabsContent>
+        </Tabs>
+      </motion.div>
     </div>
   );
 }
 
-export default AnalisisTab;
-
-const UpgareLayer = ({ unlockTryout }: { unlockTryout: boolean }) => {
+const UpgradeLayer = ({ unlockTryout }: { unlockTryout: boolean }) => {
   if (unlockTryout) return null;
+
   return (
-    <div className="absolute -top-4 -left-4 -bottom-4 -right-4 rounded-xl bg-white/70 z-[1] flex justify-end pt-4 pr-4">
-      <ButtonUpgradeTryout />
+    <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-2xl z-10 flex items-center justify-center">
+      <div className="text-center space-y-6">
+        <div className="w-16 h-16 mx-auto bg-yellow-100 rounded-full flex items-center justify-center">
+          <Lock className="w-8 h-8 text-yellow-600" />
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-xl font-bold text-gray-900">
+            Fitur Premium Diperlukan
+          </h3>
+          <p className="text-gray-600 max-w-md">
+            Upgrade ke premium untuk mengakses analisis mendalam dan rekomendasi
+            personal
+          </p>
+        </div>
+        <ButtonUpgradeTryout>
+          <Button className="bg-yellow-500 hover:bg-yellow-400 text-yellow-900 font-bold px-8 py-3 rounded-xl shadow-lg">
+            <Crown className="w-5 h-5 mr-2" />
+            Upgrade Sekarang
+          </Button>
+        </ButtonUpgradeTryout>
+      </div>
     </div>
   );
 };
+
+export default AnalisisTab;
