@@ -111,19 +111,19 @@ export function RankingStats() {
           className="w-full"
         >
           {/* Clean Simple Tabs */}
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-gray-100 rounded-xl p-1 h-12 border-0">
+          <TabsList className="grid w-full grid-cols-3 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
             {TabsItem.map((tab, index) => (
               <React.Fragment key={index}>
                 {!RankingTryoutIsLoading ? (
                   <TabsTrigger
                     value={tab.value}
-                    className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm data-[state=active]:bg-gradient-to-r"
+                    className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
                     style={
                       {
-                        '--tw-gradient-from': mainColor,
-                        '--tw-gradient-to': secondaryColor,
-                      } as React.CSSProperties
+                        '--tw-bg-opacity': '1',
+                      } as React.CSSProperties & { [key: string]: string }
                     }
+                    data-active-bg={mainColor}
                   >
                     {tab.icon}
                     <span className="hidden sm:inline font-medium">
@@ -131,7 +131,7 @@ export function RankingStats() {
                     </span>
                   </TabsTrigger>
                 ) : (
-                  <Skeleton className="h-10 w-full rounded-lg" />
+                  <Skeleton className="h-9 md:h-10 w-full rounded-lg" />
                 )}
               </React.Fragment>
             ))}
@@ -215,40 +215,42 @@ const Summary = () => {
   return (
     <Fragment>
       {!RankingTryoutIsLoading ? (
-        <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {summaryCards.map((card, index) => (
             <Card
               key={index}
               className={cn(
-                'border-2 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:-translate-y-1',
+                'border-2 transition-all duration-300 hover:shadow-lg hover:scale-105 rounded-xl overflow-hidden',
                 card.bgColor,
                 card.borderColor,
               )}
             >
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 md:pb-3">
                 <CardTitle
-                  className={cn('text-sm font-semibold', card.textColor)}
+                  className={cn(
+                    'text-xs md:text-sm font-semibold',
+                    card.textColor,
+                  )}
                 >
                   {card.title}
                 </CardTitle>
                 <div
                   className={cn(
-                    'w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br text-white shadow-sm',
+                    'w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-gradient-to-br text-white shadow-sm',
                     card.gradient,
                   )}
                 >
                   {card.icon}
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-gray-900 mb-2">
+              <CardContent className="pt-0">
+                <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
                   {card.value}
                 </div>
                 <p
                   className={cn(
-                    'text-sm font-medium',
+                    'text-xs md:text-sm font-medium opacity-80',
                     card.textColor,
-                    'opacity-80',
                   )}
                 >
                   {card.description}
@@ -258,11 +260,11 @@ const Summary = () => {
           ))}
         </div>
       ) : (
-        <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <Skeleton
               key={index}
-              className="h-36 w-full rounded-xl"
+              className="h-28 md:h-36 w-full rounded-xl"
             />
           ))}
         </div>

@@ -1,47 +1,18 @@
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
 import LoadingPage from '@/components/ui/Loading-Page';
-// import { api } from '@/trpc/react';
+import { Eye, EyeOff, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export const SignUp = ({ showAuth, setShowAuth }: any) => {
   const router = useRouter();
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
-  // const createUsers = api.user.createUser.useMutation({
-  //   onMutate() {
-  //     setLoading(true);
-  //   },
-  //   onSettled(data, error) {
-  //     if (!error) {
-  //       setLoading(false);
-  //       setShowAuth({ login: true, signUp: false });
-  //     }
-  //   },
-  //   onSuccess(data, variables, context) {
-  //     // toaster({
-  //     //   title: 'Verifikasi email Kamu untuk login',
-  //     //   description: 'Periksa email Kamu!',
-  //     //   duration: 6000,
-  //     //   condition: 'success',
-  //     // });
-  //     toaster({
-  //       title: 'Akun berhasil dibuat',
-  //       description: 'Periksa email Kamu!',
-  //       duration: 6000,
-  //       condition: 'success',
-  //     });
-  //   },
-  //   onError(error) {
-  //     toaster({
-  //       title: 'Gagal',
-  //       description: `${error.shape?.message}`,
-  //       duration: 5000,
-  //       condition: 'warning',
-  //     });
-  //     setLoading(false);
-  //   },
-  // });
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const [loading] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
@@ -86,124 +57,184 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
     //   return;
     // }
   };
+
   return (
-    <div
-      id="login"
-      className="fixed left-0 top-0 z-[3000] flex h-full w-full items-center justify-center bg-[#0000005e] backdrop-blur-[8px]"
-    >
+    <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/50 backdrop-blur-sm">
       {loading && <LoadingPage />}
+
+      {/* Backdrop */}
       {showAuth && (
         <div
-          className="fixed left-0 top-0 z-[1] h-full w-full bg-transparent"
+          className="fixed inset-0 bg-transparent"
           onClick={() =>
             setShowAuth((prev: any) => ({ ...prev, signUp: false }))
           }
         />
       )}
 
-      <div className="z-[2] mx-[1rem] flex w-[500px] flex-col gap-[2rem] rounded-[1rem] bg-white p-[2rem] md:mx-0">
-        <div className="flex flex-col gap-[.5rem]">
-          <h1 className="font-regular text-[1.5rem]">
-            Mulai <span className="text-main">sekarang</span>
+      {/* Main Modal */}
+      <div className="relative z-10 w-full max-w-md mx-4 bg-white rounded-2xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div
+          className="p-6 pb-4 text-center relative"
+          style={{ backgroundColor: `${mainColor}05` }}
+        >
+          {/* Close button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() =>
+              setShowAuth((prev: any) => ({ ...prev, signUp: false }))
+            }
+            className="absolute top-4 right-4 w-8 h-8 rounded-lg hover:bg-gray-100"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+
+          <h1
+            className="text-2xl font-bold mb-2"
+            style={{ color: mainColor }}
+          >
+            Mulai <span className="text-gray-700">sekarang</span>
           </h1>
-          <p className="text-main-gray-text">Daftarkan akunmu</p>
+          <p className="text-gray-600">Daftarkan akunmu</p>
         </div>
 
-        <form
-          className="flex flex-col gap-[1.5rem]"
-          onSubmit={(e: any) => handleSubmit(e)}
-        >
-          <div
-            id="nama"
-            className=""
+        {/* Form */}
+        <div className="p-6">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
           >
-            <input
-              type="text"
-              placeholder="Nama Lengkap..."
-              className="w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.8rem] text-[.9rem] outline-none"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-            />
-          </div>
+            {/* Name Field */}
+            <div>
+              <input
+                type="text"
+                placeholder="Nama Lengkap..."
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-2 transition-all"
+                style={
+                  {
+                    borderColor: name ? `${mainColor}80` : undefined,
+                    '--focus-border-color': mainColor,
+                  } as React.CSSProperties
+                }
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                required
+              />
+            </div>
 
-          <div
-            id="email"
-            className=""
-          >
-            <input
-              type="email"
-              placeholder="Email..."
-              className="w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.8rem] text-[.9rem] outline-none"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-            />
-          </div>
+            {/* Email Field */}
+            <div>
+              <input
+                type="email"
+                placeholder="Email..."
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-2 transition-all"
+                style={
+                  {
+                    borderColor: email ? `${mainColor}80` : undefined,
+                    '--focus-border-color': mainColor,
+                  } as React.CSSProperties
+                }
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                required
+              />
+            </div>
 
-          <div
-            id="password"
-            className="relative flex items-center"
-          >
-            <input
-              type={`${showPassword ? 'text' : 'password'}`}
-              placeholder="Kata sandi..."
-              className="w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.8rem] text-[.9rem] outline-none"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-            <i
-              className={`bx ${
-                !showPassword ? 'bxs-hide' : 'bxs-show'
-              } absolute right-[1rem] cursor-pointer text-[1.5rem] text-[#5A5D66]`}
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          </div>
-
-          <div className="flex items-start gap-[.5rem] px-[.2rem]">
-            <input
-              type="checkbox"
-              className="mt-[.3rem]"
-              required
-            />
-            <p className="text-[.9rem]">
-              Saya telah membaca dan setuju dengan{' '}
-              <span
-                className="cursor-pointer text-main underline"
-                onClick={() => router.push('/terms-of-service')}
+            {/* Password Field */}
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Kata sandi..."
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 pr-12 text-sm outline-none focus:border-2 transition-all"
+                style={
+                  {
+                    borderColor: password ? `${mainColor}80` : undefined,
+                    '--focus-border-color': mainColor,
+                  } as React.CSSProperties
+                }
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
+                minLength={6}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                Ketentuan Layanan
-              </span>{' '}
-              dan{' '}
-              <span
-                className="cursor-pointer text-main underline"
-                onClick={() => router.push('/privacy-policy')}
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+
+            {/* Terms Agreement */}
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50">
+              <input
+                type="checkbox"
+                className="mt-1 w-4 h-4 rounded"
+                style={{ accentColor: mainColor }}
+                required
+              />
+              <p className="text-sm text-gray-700">
+                Saya telah membaca dan setuju dengan{' '}
+                <button
+                  type="button"
+                  className="font-semibold underline hover:no-underline"
+                  style={{ color: mainColor }}
+                  onClick={() => router.push('/terms-of-service')}
+                >
+                  Ketentuan Layanan
+                </button>{' '}
+                dan{' '}
+                <button
+                  type="button"
+                  className="font-semibold underline hover:no-underline"
+                  style={{ color: mainColor }}
+                  onClick={() => router.push('/privacy-policy')}
+                >
+                  Kebijakan Privasi
+                </button>{' '}
+                bimbelio.com
+              </p>
+            </div>
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full h-12 rounded-xl text-white font-semibold bg-gradient-to-r hover:opacity-90 transition-opacity"
+              style={{
+                background: `linear-gradient(to right, ${mainColor}, ${mainColor}dd)`,
+              }}
+            >
+              Daftar Akun
+            </Button>
+          </form>
+
+          {/* Footer */}
+          <div className="mt-6 text-center space-y-3">
+            <p className="text-sm text-gray-600">
+              Sudah punya akun?{' '}
+              <button
+                type="button"
+                className="font-semibold underline hover:no-underline"
+                style={{ color: mainColor }}
+                onClick={() =>
+                  setShowAuth(() => ({ signUp: false, login: true }))
+                }
               >
-                Kebijakan Privasi
-              </span>{' '}
-              bimbelio.com
+                masuk sekarang
+              </button>
+            </p>
+            <p className="text-xs text-gray-500">
+              Dengan melanjutkan, kamu setuju dengan ketentuan Layanan dan
+              Kebijakan Privasi kami.
             </p>
           </div>
-
-          <button className="font-regular rounded-[.5rem] bg-gradient py-[.8rem] text-white">
-            Daftar Akun
-          </button>
-        </form>
-
-        <div className="flex flex-col items-center gap-[1rem]">
-          <p className="font-regular">
-            Sudah punya akun?{' '}
-            <span
-              className="cursor-pointer text-main underline"
-              onClick={() =>
-                setShowAuth(() => ({ signUp: false, login: true }))
-              }
-            >
-              masuk sekarang
-            </span>
-          </p>
-          <p className="font-regular text-center text-[.8rem]">
-            Dengan melanjutkan, kamu setuju dengan ketentuan Layanan dan
-            Kebijakan Privasi kami.
-          </p>
         </div>
       </div>
     </div>

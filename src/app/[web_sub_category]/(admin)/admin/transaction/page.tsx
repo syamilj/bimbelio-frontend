@@ -9,7 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import ListPagination from '@/components/ui/list-pagination';
 // import AbsoluteLoader from '@/components/ui/loading/absolute-loader';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import {
   Table,
   TableBody,
@@ -247,7 +253,9 @@ const DetailTransaction = ({
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md space-y-4">
-        <div className="text-xl font-bold">Detail Transaksi</div>
+        <DialogHeader>
+          <DialogTitle>Detail Transaksi</DialogTitle>
+        </DialogHeader>
 
         <div className="space-y-1">
           <p>

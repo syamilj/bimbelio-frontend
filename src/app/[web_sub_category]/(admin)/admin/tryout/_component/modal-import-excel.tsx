@@ -1,6 +1,12 @@
 'use client';
 
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { toaster } from '@/components/ui/toaster';
 import { supabase } from '@/supabaseClient';
 import { BlockNoteEditor } from '@blocknote/core';
@@ -289,6 +295,11 @@ const ModalImportCSV = ({
         </div>
       </DialogTrigger>
       <DialogContent className="w-[400px]">
+        <DialogHeader>
+          <DialogTitle className="text-center text-lg font-semibold mb-2">
+            Import Soal dari CSV
+          </DialogTitle>
+        </DialogHeader>
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-semibold underline">Format CSV:</p>
           {assessmentType === 'IRT' ? (

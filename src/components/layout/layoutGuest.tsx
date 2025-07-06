@@ -30,8 +30,10 @@ export default function LayoutGuest({ children }: LayoutGuestProps) {
 
   return (
     <GuestContext.Provider value={Context}>
-      <Navbar />
-      {children}
+      <div className="min-h-screen">
+        <Navbar />
+        <main className="relative">{children}</main>
+      </div>
     </GuestContext.Provider>
   );
 }

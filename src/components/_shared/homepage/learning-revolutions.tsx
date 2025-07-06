@@ -1,3 +1,5 @@
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   IconRevolusi1,
   IconRevolusi2,
@@ -9,95 +11,116 @@ import { ImageBahanAjar } from '@/_assest/homepage/Revolusi/BahanAjar';
 import { ImageChatAI } from '@/_assest/homepage/Revolusi/Chat';
 import { ImageNotes } from '@/_assest/homepage/Revolusi/Notes';
 import { ImageQuiz } from '@/_assest/homepage/Revolusi/Quiz';
-import AnimatedGradientText from '../../magicui/animated-gradient-text';
 
 const LearningRevolutions = () => {
-  // <span className="text-main-default"></span>
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+
   const revolusiBelajar = [
     {
       icon: <IconRevolusi1 />,
       heading: 'Interactive Materials',
-      description: (
-        <p className="text-[.95rem] text-main-gray-text">
-          Ingin material interaktif? Dapatkan material{' '}
-          <span className="text-main-default">materi</span>,{' '}
-          <span className="text-main-default">soal</span>, dan{' '}
-          <span className="text-main-default">video</span> yang bisa kamu tandai
-          dan tanyakan sesuai kebutuhan!
-        </p>
-      ),
+      description:
+        'Dapatkan materi, soal, dan video yang bisa kamu tandai dan tanyakan sesuai kebutuhan!',
       image: <ImageBahanAjar />,
+      highlights: [
+        'Materi Interaktif',
+        'Soal Terintegrasi',
+        'Video Learning',
+      ],
     },
     {
       icon: <IconRevolusi2 />,
       heading: 'Chat & Vision',
-      description: (
-        <p className="text-[.95rem] text-main-gray-text">
-          Perlu bantuan langsung?{' '}
-          <span className="text-main-default">Chat Bimbelio AI</span> untuk
-          penjelasan dan analisis materi dalam bentuk apapun secara real-time
-          dan teruji!
-        </p>
-      ),
+      description:
+        'Chat Bimbelio AI untuk penjelasan dan analisis materi dalam bentuk apapun secara real-time!',
       image: <ImageChatAI />,
+      highlights: ['AI Chat 24/7', 'Vision Analysis', 'Real-time Help'],
     },
     {
       icon: <IconRevolusi3 />,
       heading: 'Note Collection',
-      description: (
-        <p className="text-[.95rem] text-main-gray-text">
-          Tipe belajar mencatat? Gunakan fitur{' '}
-          <span className="text-main-default">Note</span> yang disertai AI untuk
-          membantu perihal catatan dan mengatur informasi pentingmu!
-        </p>
-      ),
+      description:
+        'Gunakan fitur Note yang disertai AI untuk membantu mencatat dan mengatur informasi penting!',
       image: <ImageNotes />,
+      highlights: ['Smart Notes', 'AI Assistant', 'Organization Tools'],
     },
     {
       icon: <IconRevolusi4 />,
       heading: 'Generate Quiz',
-      description: (
-        <p className="text-[.95rem] text-main-gray-text">
-          Ingin menguji pemahamanmu?{' '}
-          <span className="text-main-default">Generate Quiz</span> pilihan ganda
-          maupun esai secara otomatis dari material!
-        </p>
-      ),
-
+      description:
+        'Generate Quiz pilihan ganda maupun esai secara otomatis dari material yang ada!',
       image: <ImageQuiz />,
+      highlights: ['Auto Generate', 'Multiple Choice', 'Essay Questions'],
     },
   ];
 
   return (
-    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-[4rem]">
-      <div className="mx-[1rem] md:mx-0">
-        <h2 className="text-center text-[1.5rem] font-bold md:text-[2.5rem]">
-          <AnimatedGradientText>
-            Revolusi Persiapan Belajar dengan AI!
-          </AnimatedGradientText>
+    <section className="max-w-6xl mx-auto px-4 py-16">
+      {/* Header */}
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: mainColor }}>
+          Revolusi Persiapan Belajar dengan AI!
         </h2>
-        <p className="font-regular mt-[-1rem] text-center text-main-gray-text">
-          Bagaimana cara belajar dengan AI membantu Kamu?
-        </p>
+        <p className="text-gray-600">Bagaimana cara belajar dengan AI membantu Kamu?</p>
       </div>
-      <div className="mx-[1rem] grid grid-cols-1 gap-[1.5rem] md:mx-0 md:grid-cols-2">
-        {revolusiBelajar.map((item: any, i: number) => (
-          <div
-            key={i}
-            className="grid grid-cols-1 rounded-[.8rem] bg-white p-[1.5rem] md:grid-cols-2  bg-white/50"
+
+      {/* Cards Grid */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {revolusiBelajar.map((item, index) => (
+          <Card
+            key={index}
+            className="rounded-2xl border-2 border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
           >
-            <div className="flex flex-col gap-[1rem]">
-              <div className="text-main-default">{item.icon}</div>
-              <h1 className="text-[1.3rem] font-medium">{item.heading}</h1>
-              {item.description}
-            </div>
-            <div className="hidden shrink-0 md:block text-main-default">
-              {item.image}
-            </div>
-          </div>
+            <CardContent className="p-6">
+              <div className="grid md:grid-cols-2 gap-6 items-center">
+                {/* Content */}
+                <div className="space-y-4">
+                  {/* Icon */}
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ backgroundColor: `${mainColor}15` }}
+                  >
+                    <div style={{ color: mainColor }}>{item.icon}</div>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-bold text-gray-900">{item.heading}</h3>
+
+                  {/* Description */}
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+
+                  {/* Highlights */}
+                  <div className="flex flex-wrap gap-2">
+                    {item.highlights.map((highlight, hIndex) => (
+                      <span
+                        key={hIndex}
+                        className="px-3 py-1 text-xs font-medium rounded-full"
+                        style={{
+                          backgroundColor: `${mainColor}10`,
+                          color: mainColor,
+                        }}
+                      >
+                        {highlight}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Image */}
+                <div className="hidden md:block">
+                  <div style={{ color: mainColor }}>{item.image}</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

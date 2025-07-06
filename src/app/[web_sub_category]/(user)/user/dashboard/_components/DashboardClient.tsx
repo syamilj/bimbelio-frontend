@@ -323,30 +323,30 @@ export const TryoutHistoryCard: React.FC<{
 
     <CardContent className="p-6">
       <Tabs defaultValue="grafik">
-        <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100 rounded-xl p-1 h-12">
+        <TabsList className="grid w-full grid-cols-2 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
           <TabsTrigger
             value="grafik"
-            className="rounded-xl data-[state=active]:text-white data-[state=active]:shadow-sm"
+            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
             style={
               {
-                '--tw-gradient-from': mainColor,
-                '--tw-gradient-to': secondaryColor,
-              } as React.CSSProperties
+                '--tw-bg-opacity': '1',
+              } as React.CSSProperties & { [key: string]: string }
             }
+            data-active-bg={mainColor}
           >
-            Grafik
+            <span className="font-medium">Grafik</span>
           </TabsTrigger>
           <TabsTrigger
             value="detail"
-            className="rounded-xl data-[state=active]:text-white data-[state=active]:shadow-sm"
+            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
             style={
               {
-                '--tw-gradient-from': mainColor,
-                '--tw-gradient-to': secondaryColor,
-              } as React.CSSProperties
+                '--tw-bg-opacity': '1',
+              } as React.CSSProperties & { [key: string]: string }
             }
+            data-active-bg={mainColor}
           >
-            Detail
+            <span className="font-medium">Detail</span>
           </TabsTrigger>
         </TabsList>
 
@@ -539,13 +539,13 @@ export const QuizHistoryCard: React.FC<{
         <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100 rounded-xl p-1 h-12">
           <TabsTrigger
             value="grafik"
-            className="rounded-xl data-[state=active]:text-white data-[state=active]:shadow-sm"
+            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
             style={
               {
-                '--tw-gradient-from': mainColor,
-                '--tw-gradient-to': secondaryColor,
-              } as React.CSSProperties
+                '--tw-bg-opacity': '1',
+              } as React.CSSProperties & { [key: string]: string }
             }
+            data-active-bg={mainColor}
           >
             Grafik
           </TabsTrigger>
@@ -644,176 +644,176 @@ export const QuizHistoryCard: React.FC<{
   </Card>
 );
 
-export const TestAnalysisCard: React.FC<{
-  analysisByCategoryTryout: any;
-  tryoutCategory: any;
-  mainColor: string;
-  secondaryColor: string;
-}> = ({
-  analysisByCategoryTryout,
-  tryoutCategory,
-  mainColor,
-  secondaryColor,
-}) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-    <CardHeader
-      className="pb-4 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-      }}
-    >
-      <div className="relative z-10">
-        <CardTitle
-          className="text-xl font-bold flex items-center gap-3"
-          style={{ color: mainColor }}
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
-            <Target
-              className="w-5 h-5"
-              style={{ color: mainColor }}
-            />
-          </div>
-          Analisis per Bidang Tes
-        </CardTitle>
-        <CardDescription className="text-gray-600 mt-2">
-          Analisis detail berdasarkan subtes.
-        </CardDescription>
-      </div>
-      {/* Decorative elements */}
-      <div
-        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-        style={{ backgroundColor: mainColor }}
-      />
-    </CardHeader>
+// export const TestAnalysisCard: React.FC<{
+//   analysisByCategoryTryout: any;
+//   tryoutCategory: any;
+//   mainColor: string;
+//   secondaryColor: string;
+// }> = ({
+//   analysisByCategoryTryout,
+//   tryoutCategory,
+//   mainColor,
+//   secondaryColor,
+// }) => (
+//   <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+//     <CardHeader
+//       className="pb-4 relative overflow-hidden"
+//       style={{
+//         background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+//       }}
+//     >
+//       <div className="relative z-10">
+//         <CardTitle
+//           className="text-xl font-bold flex items-center gap-3"
+//           style={{ color: mainColor }}
+//         >
+//           <div
+//             className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+//             style={{ backgroundColor: `${mainColor}15` }}
+//           >
+//             <Target
+//               className="w-5 h-5"
+//               style={{ color: mainColor }}
+//             />
+//           </div>
+//           Analisis per Bidang Tes
+//         </CardTitle>
+//         <CardDescription className="text-gray-600 mt-2">
+//           Analisis detail berdasarkan subtes.
+//         </CardDescription>
+//       </div>
+//       {/* Decorative elements */}
+//       <div
+//         className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+//         style={{ backgroundColor: mainColor }}
+//       />
+//     </CardHeader>
 
-    <CardContent className="p-6 overflow-hidden">
-      <Tabs defaultValue={tryoutCategory?.[0]?.name || ''}>
-        <div className="w-full overflow-x-auto pb-2">
-          <TabsList className="mb-4 inline-flex w-max bg-gray-100 rounded-xl p-1 h-12">
-            {tryoutCategory?.map((category: any, index: number) => (
-              <TabsTrigger
-                key={index}
-                value={category.name}
-                className="whitespace-nowrap rounded-xl data-[state=active]:text-white data-[state=active]:shadow-sm"
-                style={
-                  {
-                    '--tw-gradient-from': mainColor,
-                    '--tw-gradient-to': secondaryColor,
-                  } as React.CSSProperties
-                }
-              >
-                {category.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </div>
-        {analysisByCategoryTryout?.map((category: any, index: number) =>
-          category.data.length === 0 ? (
-            <TabsContent
-              key={index}
-              value={category.category}
-            >
-              <div className="text-center py-8 md:py-12 text-gray-500">
-                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-                  <Target className="w-6 h-6 md:w-8 md:h-8 opacity-50" />
-                </div>
-                <h3 className="font-semibold mb-2 text-sm md:text-base">
-                  Belum Ada Data
-                </h3>
-                <p className="text-xs md:text-sm">
-                  Data analisis untuk kategori ini belum tersedia
-                </p>
-              </div>
-            </TabsContent>
-          ) : (
-            <TabsContent
-              key={index}
-              value={category.category}
-            >
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                  <ChartContainer
-                    config={defaultChartConfig}
-                    className="min-h-[200px] w-full"
-                  >
-                    <ResponsiveContainer
-                      width="100%"
-                      height={300}
-                    >
-                      <BarChart data={category.data}>
-                        <XAxis dataKey="subCategory" />
-                        <YAxis />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar
-                          dataKey="accuracy"
-                          fill={mainColor}
-                          name="Akurasi"
-                          radius={[4, 4, 0, 0]}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
-                </div>
-                <div className="h-[400px] overflow-x-auto overflow-y-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-                        <TableHead className="font-bold text-gray-800">
-                          Subtes
-                        </TableHead>
-                        <TableHead className="font-bold text-gray-800">
-                          Akurasi
-                        </TableHead>
-                        <TableHead className="font-bold text-gray-800">
-                          Status
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {category.data.map((item: any, idx: number) => (
-                        <TableRow
-                          key={idx}
-                          className="hover:bg-gray-50 transition-colors"
-                        >
-                          <TableCell className="font-medium">
-                            {item.subCategory}
-                          </TableCell>
-                          <TableCell className="font-medium">
-                            {item.accuracy.toFixed(2)}%
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              className={
-                                item.accuracy >= 80
-                                  ? 'text-white border-0'
-                                  : 'bg-yellow-500 text-white border-0'
-                              }
-                              style={{
-                                backgroundColor:
-                                  item.accuracy >= 80 ? '#10b981' : undefined,
-                              }}
-                            >
-                              {item.accuracy >= 80
-                                ? 'Sangat Baik'
-                                : 'Perlu Ditingkatkan'}
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-            </TabsContent>
-          ),
-        )}
-      </Tabs>
-    </CardContent>
-  </Card>
-);
+//     <CardContent className="p-6 overflow-hidden">
+//       <Tabs defaultValue={tryoutCategory?.[0]?.name || ''}>
+//         <div className="w-full overflow-x-auto pb-2">
+//           <TabsList className="mb-4 inline-flex w-max bg-gray-100 rounded-xl p-1 h-12">
+//             {tryoutCategory?.map((category: any, index: number) => (
+//               <TabsTrigger
+//                 key={index}
+//                 value={category.name}
+//                 className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+//                 style={
+//                   {
+//                     '--tw-bg-opacity': '1',
+//                   } as React.CSSProperties & { [key: string]: string }
+//                 }
+//                 data-active-bg={mainColor}
+//               >
+//                 {category.name}
+//               </TabsTrigger>
+//             ))}
+//           </TabsList>
+//         </div>
+//         {analysisByCategoryTryout?.map((category: any, index: number) =>
+//           category.data.length === 0 ? (
+//             <TabsContent
+//               key={index}
+//               value={category.category}
+//             >
+//               <div className="text-center py-8 md:py-12 text-gray-500">
+//                 <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+//                   <Target className="w-6 h-6 md:w-8 md:h-8 opacity-50" />
+//                 </div>
+//                 <h3 className="font-semibold mb-2 text-sm md:text-base">
+//                   Belum Ada Data
+//                 </h3>
+//                 <p className="text-xs md:text-sm">
+//                   Data analisis untuk kategori ini belum tersedia
+//                 </p>
+//               </div>
+//             </TabsContent>
+//           ) : (
+//             <TabsContent
+//               key={index}
+//               value={category.category}
+//             >
+//               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+//                 <div>
+//                   <ChartContainer
+//                     config={defaultChartConfig}
+//                     className="min-h-[200px] w-full"
+//                   >
+//                     <ResponsiveContainer
+//                       width="100%"
+//                       height={300}
+//                     >
+//                       <BarChart data={category.data}>
+//                         <XAxis dataKey="subCategory" />
+//                         <YAxis />
+//                         <ChartTooltip content={<ChartTooltipContent />} />
+//                         <Bar
+//                           dataKey="accuracy"
+//                           fill={mainColor}
+//                           name="Akurasi"
+//                           radius={[4, 4, 0, 0]}
+//                         />
+//                       </BarChart>
+//                     </ResponsiveContainer>
+//                   </ChartContainer>
+//                 </div>
+//                 <div className="h-[400px] overflow-x-auto overflow-y-auto">
+//                   <Table>
+//                     <TableHeader>
+//                       <TableRow style={{ backgroundColor: `${mainColor}08` }}>
+//                         <TableHead className="font-bold text-gray-800">
+//                           Subtes
+//                         </TableHead>
+//                         <TableHead className="font-bold text-gray-800">
+//                           Akurasi
+//                         </TableHead>
+//                         <TableHead className="font-bold text-gray-800">
+//                           Status
+//                         </TableHead>
+//                       </TableRow>
+//                     </TableHeader>
+//                     <TableBody>
+//                       {category.data.map((item: any, idx: number) => (
+//                         <TableRow
+//                           key={idx}
+//                           className="hover:bg-gray-50 transition-colors"
+//                         >
+//                           <TableCell className="font-medium">
+//                             {item.subCategory}
+//                           </TableCell>
+//                           <TableCell className="font-medium">
+//                             {item.accuracy.toFixed(2)}%
+//                           </TableCell>
+//                           <TableCell>
+//                             <Badge
+//                               className={
+//                                 item.accuracy >= 80
+//                                   ? 'text-white border-0'
+//                                   : 'bg-yellow-500 text-white border-0'
+//                               }
+//                               style={{
+//                                 backgroundColor:
+//                                   item.accuracy >= 80 ? '#10b981' : undefined,
+//                               }}
+//                             >
+//                               {item.accuracy >= 80
+//                                 ? 'Sangat Baik'
+//                                 : 'Perlu Ditingkatkan'}
+//                             </Badge>
+//                           </TableCell>
+//                         </TableRow>
+//                       ))}
+//                     </TableBody>
+//                   </Table>
+//                 </div>
+//               </div>
+//             </TabsContent>
+//           ),
+//         )}
+//       </Tabs>
+//     </CardContent>
+//   </Card>
+// );
 
 export const ScoreDevelopmentCard: React.FC<{
   scoreDevelopmentData: any;
@@ -1356,20 +1356,20 @@ export const CalendarComponent: React.FC<{
 
       <CardContent className="p-6">
         <Tabs defaultValue="schedule">
-          <TabsList className="grid grid-cols-3 mb-6 bg-gray-100 gap-2 rounded-xl p-1 h-12">
-            {calendarViews.map(({ value, label }) => (
+          <TabsList className="grid w-full grid-cols-3 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
+            {calendarViews.map(({ value, label }, index) => (
               <TabsTrigger
                 key={value}
                 value={value}
-                className="rounded-xl data-[state=active]:text-white data-[state=active]:shadow-sm"
+                className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
                 style={
                   {
-                    '--tw-gradient-from': mainColor,
-                    '--tw-gradient-to': secondaryColor,
-                  } as React.CSSProperties
+                    '--tw-bg-opacity': '1',
+                  } as React.CSSProperties & { [key: string]: string }
                 }
+                data-active-bg={mainColor}
               >
-                {label}
+                <span className="font-medium">{label}</span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -1563,14 +1563,14 @@ export default function DashboardClient() {
         </section>
 
         {/* Test Analysis */}
-        <section className="mb-8">
+        {/* <section className="mb-8">
           <TestAnalysisCard
             analysisByCategoryTryout={reportData?.analysisByCategoryTryout}
             tryoutCategory={reportData?.tryoutCategory}
             mainColor={mainColor}
             secondaryColor={secondaryColor}
           />
-        </section>
+        </section> */}
       </div>
     </div>
   );

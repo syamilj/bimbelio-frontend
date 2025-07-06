@@ -1,6 +1,12 @@
 'use client';
 
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { useState } from 'react';
 
 const ModalDeleteSubChapter = ({
@@ -24,6 +30,11 @@ const ModalDeleteSubChapter = ({
         </div>
       </DialogTrigger>
       <DialogContent className="w-[360px]">
+        <DialogHeader>
+          <DialogTitle className="text-center text-lg font-semibold mb-2">
+            Konfirmasi Hapus Sub Chapter
+          </DialogTitle>
+        </DialogHeader>
         <div className="flex flex-col items-center justify-center text-center">
           <p>
             Apakah Kamu yakin akan <br />{' '}

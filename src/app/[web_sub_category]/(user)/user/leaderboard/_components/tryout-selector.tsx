@@ -164,12 +164,12 @@ export function TryOutSelector() {
               Array.from({ length: 6 }).map((_, index) => (
                 <div
                   key={index}
-                  className="p-4 rounded-xl border-2 border-gray-200"
+                  className="p-4 rounded-xl border-2 border-gray-200 bg-white"
                 >
-                  <Skeleton className="h-4 w-3/4 mb-2" />
-                  <div className="flex justify-between">
-                    <Skeleton className="h-3 w-20" />
-                    <Skeleton className="h-3 w-12" />
+                  <Skeleton className="h-4 w-3/4 mb-3 rounded-lg" />
+                  <div className="flex justify-between items-center">
+                    <Skeleton className="h-3 w-20 rounded-lg" />
+                    <Skeleton className="h-6 w-12 rounded-xl" />
                   </div>
                 </div>
               ))}

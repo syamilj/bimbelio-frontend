@@ -1,4 +1,9 @@
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { toaster } from '@/components/ui/toaster';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
@@ -122,6 +127,9 @@ const ModalImportExcel = ({
         </div>
       </DialogTrigger>
       <DialogContent className="w-[400px]">
+        <DialogTitle className="text-center text-lg font-semibold mb-2">
+          Import Soal dari Excel/CSV
+        </DialogTitle>
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-semibold underline">Format Excel:</p>
           <p className="font-semibold">

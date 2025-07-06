@@ -1,7 +1,12 @@
 'use client';
 
 import { useEditTryoutContext } from '@/app/[web_sub_category]/(admin)/admin/tryout/_component/provider-edit-tryout';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
@@ -663,6 +668,11 @@ const HeadingSessionTryout = () => {
             classOverlay="bg-[#ffffffe3]"
             hideClose
           >
+            <DialogHeader>
+              <DialogTitle className="text-center text-lg font-semibold mb-2">
+                Sedang Menggenerate Soal
+              </DialogTitle>
+            </DialogHeader>
             <div className="z-[100000000] flex items-center justify-center p-[1.5rem]">
               <div className="flex flex-col items-center">
                 <Loader2 className="h-[2rem] w-[2rem] animate-spin" />

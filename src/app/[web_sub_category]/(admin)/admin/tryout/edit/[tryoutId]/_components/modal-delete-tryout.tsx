@@ -1,6 +1,11 @@
 'use client';
 
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 import React, { SetStateAction } from 'react';
 
@@ -18,6 +23,11 @@ const ModalDeleteTryout = ({ onClick, open, setOpen, isLoading }: Props) => {
       onOpenChange={setOpen}
     >
       <DialogContent className="w-[360px]">
+        <DialogHeader>
+          <DialogTitle className="text-center text-lg font-semibold mb-2">
+            Hapus Tryout
+          </DialogTitle>
+        </DialogHeader>
         <div className="flex flex-col items-center justify-center text-center">
           <p>
             Apakah Kamu yakin akan <br />{' '}
