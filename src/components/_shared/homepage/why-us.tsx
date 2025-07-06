@@ -111,110 +111,108 @@ const WhyUs = () => {
       id="whyUs"
       className="py-16 md:py-24 relative overflow-hidden"
     >
-      {/* Enhanced Background */}
-      <div className="absolute inset-0 -z-10">
-        <div
-          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
-          style={{ backgroundColor: mainColor }}
-        />
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
-          style={{ backgroundColor: secondaryColor }}
-        />
-      </div>
-
-      <div className="container mx-auto max-w-7xl px-4">
-        {/* Enhanced Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2
-            className="text-4xl md:text-5xl font-bold mb-6"
-            style={{ color: mainColor }}
-          >
-            Mengapa Bimbelio?
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Keunggulan Bimbel Bimbelio untuk persiapan terbaik menuju
-            kelulusanmu
-          </p>
-        </motion.div>
-
-        {/* Enhanced Tab Navigation */}
+      {/* Enhanced Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="text-center mb-16"
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="flex justify-center mb-12"
+          className="mb-6"
         >
-          <div
-            className="bg-white rounded-3xl p-2 shadow-xl border-2"
-            style={{ borderColor: `${mainColor}20` }}
+          <span
+            className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {heading?.map((item, i) => (
-                <motion.button
-                  key={i}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`flex flex-col items-center gap-3 rounded-2xl px-6 py-4 text-center transition-all duration-300 min-w-[200px] ${
+            <Star className="w-4 h-4" />
+            MENGAPA BIMBELIO
+          </span>
+        </motion.div>
+
+        <h2
+          className="text-4xl md:text-5xl font-bold mb-6"
+          style={{ color: mainColor }}
+        >
+          Mengapa Bimbelio?
+        </h2>
+        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          Keunggulan Bimbel Bimbelio untuk persiapan terbaik menuju kelulusanmu
+        </p>
+      </motion.div>
+
+      {/* Enhanced Tab Navigation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        viewport={{ once: true }}
+        className="flex justify-center mb-12"
+      >
+        <div
+          className="bg-white rounded-3xl p-2 shadow-xl border-2"
+          style={{ borderColor: `${mainColor}20` }}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {heading?.map((item, i) => (
+              <motion.button
+                key={i}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex flex-col items-center gap-3 rounded-2xl px-6 py-4 text-center transition-all duration-300 min-w-[200px] ${
+                  active === 1 + i
+                    ? 'text-white shadow-lg'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+                style={{
+                  background:
                     active === 1 + i
-                      ? 'text-white shadow-lg'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                  style={{
-                    background:
-                      active === 1 + i
-                        ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
-                        : 'transparent',
-                  }}
-                  onClick={() => setActive(1 + i)}
+                      ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
+                      : 'transparent',
+                }}
+                onClick={() => setActive(1 + i)}
+              >
+                <div
+                  className={`p-2 rounded-xl ${active === 1 + i ? 'bg-white/20' : 'bg-gray-100'}`}
                 >
                   <div
-                    className={`p-2 rounded-xl ${active === 1 + i ? 'bg-white/20' : 'bg-gray-100'}`}
+                    style={{ color: active === 1 + i ? 'white' : mainColor }}
                   >
-                    <div
-                      style={{ color: active === 1 + i ? 'white' : mainColor }}
-                    >
-                      {item.icon}
-                    </div>
+                    {item.icon}
                   </div>
-                  <div>
-                    <div className="font-bold text-base">{item.title}</div>
-                    <div
-                      className={`text-xs mt-1 ${active === 1 + i ? 'text-white/80' : 'text-gray-500'}`}
-                    >
-                      {item.description}
-                    </div>
+                </div>
+                <div>
+                  <div className="font-bold text-base">{item.title}</div>
+                  <div
+                    className={`text-xs mt-1 ${active === 1 + i ? 'text-white/80' : 'text-gray-500'}`}
+                  >
+                    {item.description}
                   </div>
-                </motion.button>
-              ))}
-            </div>
+                </div>
+              </motion.button>
+            ))}
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* Enhanced Content Sections */}
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          {active === 1 && <EvaluationSection mainColor={mainColor} />}
-          {active === 2 && <AIModelSection mainColor={mainColor} />}
-          {active === 3 && (
-            <ComparisonSection
-              data={data}
-              mainColor={mainColor}
-              secondaryColor={secondaryColor}
-            />
-          )}
-        </motion.div>
+      {/* Enhanced Content Sections */}
+      <div className="container">
+        {active === 1 && <EvaluationSection mainColor={mainColor} />}
+        {active === 2 && <AIModelSection mainColor={mainColor} />}
+        {active === 3 && (
+          <ComparisonSection
+            data={data}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
+        )}
       </div>
     </section>
   );

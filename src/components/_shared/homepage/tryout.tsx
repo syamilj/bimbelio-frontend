@@ -2,7 +2,6 @@
 
 import { CardTryoutProps } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
-import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { env } from '@/env.mjs';
@@ -125,8 +124,11 @@ const FeaturedTryoutSection = () => {
             </span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <AnimatedGradientText>Pilih Try Out Terbaikmu</AnimatedGradientText>
+          <h2
+            className="text-4xl md:text-5xl font-bold mb-6"
+            style={{ color: mainColor }}
+          >
+            Pilih Try Out Terbaikmu
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Kami menyediakan berbagai Try Out berkualitas untuk membantu
