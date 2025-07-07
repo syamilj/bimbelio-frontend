@@ -1,6 +1,6 @@
 'use client';
 
-import uploadFile from '@/_assest/icon/uploadDokumen.png';
+import uploadFile from '@/_assets/icon/uploadDokumen.png';
 import { Button } from '@/components/ui/button';
 import {
   Command,

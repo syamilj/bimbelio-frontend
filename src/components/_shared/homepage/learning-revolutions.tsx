@@ -9,10 +9,10 @@ import {
   IconRevolusi4,
 } from '@/styles/icon';
 
-import { ImageBahanAjar } from '@/_assest/homepage/Revolusi/BahanAjar';
-import { ImageChatAI } from '@/_assest/homepage/Revolusi/Chat';
-import { ImageNotes } from '@/_assest/homepage/Revolusi/Notes';
-import { ImageQuiz } from '@/_assest/homepage/Revolusi/Quiz';
+import { ImageBahanAjar } from '@/_assets/homepage/Revolusi/BahanAjar';
+import { ImageChatAI } from '@/_assets/homepage/Revolusi/Chat';
+import { ImageNotes } from '@/_assets/homepage/Revolusi/Notes';
+import { ImageQuiz } from '@/_assets/homepage/Revolusi/Quiz';
 import { motion } from 'framer-motion';
 import { Brain, Lightbulb, Target, Zap } from 'lucide-react';
 import { memo, useMemo } from 'react';

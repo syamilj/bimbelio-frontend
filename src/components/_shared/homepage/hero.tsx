@@ -1,15 +1,15 @@
 'use client';
 
-import ImageHero from '@/_assest/homepage/hero/bg-hero.webp';
-import MobilePoster from '@/_assest/homepage/hero/bimbelio-mobile.webp';
-import DesktopPoster from '@/_assest/homepage/hero/bimbelio.webp';
-import LogoIPDN from '@/_assest/homepage/hero/LOGO_KEDINASAN_IPDN.webp';
-import LogoSTAN from '@/_assest/homepage/hero/LOGO_KEDINASAN_STAN.webp';
-import LogoSTIS from '@/_assest/homepage/hero/LOGO_KEDINASAN_STIS.webp';
-import LogoITB from '@/_assest/homepage/hero/LOGO_PTN_ITB.webp';
-import LogoITS from '@/_assest/homepage/hero/LOGO_PTN_ITS.webp';
-import LogoUGM from '@/_assest/homepage/hero/LOGO_PTN_UGM.webp';
-import LogoUI from '@/_assest/homepage/hero/LOGO_PTN_UI.webp';
+import ImageHero from '@/_assets/homepage/hero/bg-hero.webp';
+import MobilePoster from '@/_assets/homepage/hero/bimbelio-mobile.webp';
+import DesktopPoster from '@/_assets/homepage/hero/bimbelio.webp';
+import LogoIPDN from '@/_assets/homepage/hero/LOGO_KEDINASAN_IPDN.webp';
+import LogoSTAN from '@/_assets/homepage/hero/LOGO_KEDINASAN_STAN.webp';
+import LogoSTIS from '@/_assets/homepage/hero/LOGO_KEDINASAN_STIS.webp';
+import LogoITB from '@/_assets/homepage/hero/LOGO_PTN_ITB.webp';
+import LogoITS from '@/_assets/homepage/hero/LOGO_PTN_ITS.webp';
+import LogoUGM from '@/_assets/homepage/hero/LOGO_PTN_UGM.webp';
+import LogoUI from '@/_assets/homepage/hero/LOGO_PTN_UI.webp';
 import { SparklesText } from '@/components/magicui/sparkles-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { IPhoneFrame } from '@/components/ui/iphone-frame';

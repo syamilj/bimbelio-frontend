@@ -1,7 +1,7 @@
 'use client';
 
-import LogoMinimize from '@/_assest/logo-minimize.png';
-import test from '@/_assest/logo.png';
+import LogoMinimize from '@/_assets/logo-minimize.png';
+import test from '@/_assets/logo.png';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';

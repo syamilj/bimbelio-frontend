@@ -1,6 +1,6 @@
 'use client';
 
-import AdminImage from '@/_assest/logo-minimize.png';
+import AdminImage from '@/_assets/logo-minimize.png';
 import Footer from '@/components/_shared/footer';
 import Navbar from '@/components/_shared/navbar';
 import ToC from '@/components/_shared/other/ToC';

@@ -1,4 +1,4 @@
-import uploadFileImg from '@/_assest/icon/uploadDokumen.png';
+import uploadFileImg from '@/_assets/icon/uploadDokumen.png';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { supabase } from '@/supabaseClient';

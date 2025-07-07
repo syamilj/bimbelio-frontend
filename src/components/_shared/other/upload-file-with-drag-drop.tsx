@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import uploadFile from '@/_assest/icon/uploadDokumen.png';
+import uploadFile from '@/_assets/icon/uploadDokumen.png';
 import { UploadIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

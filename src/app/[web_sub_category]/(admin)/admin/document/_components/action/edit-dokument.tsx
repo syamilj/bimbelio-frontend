@@ -1,6 +1,6 @@
 'use client';
 
-import uploadFileImg from '@/_assest/icon/uploadDokumen.png';
+import uploadFileImg from '@/_assets/icon/uploadDokumen.png';
 import LoadingPage from '@/components/ui/Loading-Page';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';

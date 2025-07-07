@@ -1,4 +1,4 @@
-import LOGO from '@/_assest/logomark.png';
+import LOGO from '@/_assets/logomark.png';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
