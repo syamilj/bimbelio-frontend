@@ -59,7 +59,7 @@ export default function Upcoming({ id }: { id: string }) {
 
       <CardContent className="p-6">
         {!isLoading && cards && cards.length > 0 && (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 ">
             <CardTryOut
               data={cards}
               userTryOutId={id}
@@ -76,7 +76,7 @@ export default function Upcoming({ id }: { id: string }) {
         )}
 
         {isLoading && (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 ">
             {Array.from({ length: 4 }).map((_, i: number) => (
               <Skeleton
                 key={i}

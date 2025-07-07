@@ -3,6 +3,7 @@
 import { PaymentTryout } from '@/components/_shared/payment/payment-tryout';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +14,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
@@ -22,14 +22,20 @@ import type { Pricing } from '@/types/database';
 import {
   ArrowUp,
   Check,
+  Clock,
+  Crown,
   ExternalLink,
+  Gift,
   Heart,
   Instagram,
   Loader2,
   MessageCircle,
   Share2,
+  Sparkles,
+  Star,
   Trophy,
   Users,
+  Zap,
 } from 'lucide-react';
 import {
   useEffect,
@@ -38,7 +44,6 @@ import {
   type ReactNode,
   type SetStateAction,
 } from 'react';
-import ButtonPayment from '../../../_components/button-payment';
 import type { CardTryoutProps } from './card-tryout';
 
 interface ProofItem {
@@ -74,6 +79,11 @@ export default function RegistrationProofModal({
 }: RegistrationProofModalProps) {
   const { userLimitation, checkLimitation } = useUserLimitation();
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [step, setStep] = useState<number>(1);
   const [showPayment, setShowPayment] = useState<boolean>(false);
@@ -213,11 +223,16 @@ export default function RegistrationProofModal({
   }, []);
 
   useEffect(() => {
-    if (showPayment === false && step === 3) {
+    // Fix: Only close modal when payment is cancelled AND we're in premium flow
+    if (
+      showPayment === false &&
+      step === 3 &&
+      selectTypeRegistration === 'premium'
+    ) {
       setShowDetail(null);
       setStep(1);
     }
-  }, [showPayment, setShowDetail, step]);
+  }, [showPayment, setShowDetail, step, selectTypeRegistration]);
 
   useEffect(() => {
     const container = document.getElementById('register-tryout-modal') as
@@ -342,240 +357,504 @@ export default function RegistrationProofModal({
 
   if (step === 1) {
     return (
-      <div>
-        <p className="pt-[1rem] text-center text-[.9rem] text-main-gray-text">
-          Apakah kamu akan mengikuti try out ini?
-        </p>
-        <div className="mt-[1rem] flex w-full items-center justify-center">
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-3">
           <div
-            className={cn(
-              'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
-              isLoading && 'bg-main/80',
-            )}
-            onClick={async () => {
-              if (session?.user.role !== 'USER') {
-                onRegistrationComplete();
-              } else if (
-                userLimitation &&
-                userLimitation.tryout < userLimitation.tryoutLimit
-              ) {
-                setIsLoading(true);
-                const check = await checkLimitation({ tryout: true });
-                if (check && check.status) {
-                  onRegistrationComplete(true);
-                } else {
-                  setIsLoading(false);
-                }
-              } else {
-                toaster({
-                  title: 'Upss',
-                  condition: 'warning',
-                  description: 'Coin tryoutmu tidak cukup, coba opsi lain',
-                  duration: 3000,
-                });
-                setStep(2);
-              }
+            className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <>
-                Daftar try out
-                <IconTailedArrowUp45 w={15} />
-              </>
-            )}
+            <Trophy className="w-8 h-8 text-white" />
           </div>
+          <h2 className="text-xl font-bold text-gray-900">Daftar Try Out</h2>
+          <p className="text-gray-600 text-sm">
+            Apakah kamu akan mengikuti try out ini?
+          </p>
         </div>
+
+        {/* Try Out Info */}
+        <Card className="border-2 border-gray-100">
+          <CardContent className="p-4">
+            <div className="space-y-3">
+              <h3 className="font-semibold text-center text-gray-900">
+                {showDetail.title}
+              </h3>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ backgroundColor: `${mainColor}15` }}
+                  >
+                    <Trophy
+                      className="w-4 h-4"
+                      style={{ color: mainColor }}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Peserta</p>
+                    <p className="font-semibold">
+                      {showDetail._count.TryoutRegistration}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ backgroundColor: `${mainColor}15` }}
+                  >
+                    <Clock
+                      className="w-4 h-4"
+                      style={{ color: mainColor }}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Durasi</p>
+                    <p className="font-semibold">
+                      {showDetail.TryoutSession.reduce(
+                        (acc, s) => acc + s.duration,
+                        0,
+                      )}{' '}
+                      menit
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Action Button */}
+        <Button
+          className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
+          disabled={isLoading}
+          onClick={async () => {
+            if (session?.user.role !== 'USER') {
+              onRegistrationComplete();
+            } else if (
+              userLimitation &&
+              userLimitation.tryout < userLimitation.tryoutLimit
+            ) {
+              setIsLoading(true);
+              const check = await checkLimitation({ tryout: true });
+              if (check && check.status) {
+                onRegistrationComplete(true);
+              } else {
+                setIsLoading(false);
+              }
+            } else {
+              toaster({
+                title: 'Upss',
+                condition: 'warning',
+                description: 'Coin tryoutmu tidak cukup, coba opsi lain',
+                duration: 3000,
+              });
+              setStep(2);
+            }
+          }}
+        >
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Memproses...</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <span>Daftar Try Out</span>
+              <IconTailedArrowUp45 w={16} />
+            </div>
+          )}
+        </Button>
       </div>
     );
   } else if (step === 2) {
     return (
-      <div className="flex w-full flex-col gap-[1rem]">
-        <h1 className="text-center font-medium">Pilih Tipe Pendaftaran</h1>
-        <div className="flex flex-col gap-[1rem]">
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-3">
           <div
-            className="cursor-pointer"
-            onClick={() => {
-              setShowDetail(null);
+            className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            <ButtonPayment
-              className="w-full flex justify-center items-center"
-              text="Top up"
-              type="modal"
-            />
+            <Gift className="w-8 h-8 text-white" />
           </div>
+          <h2 className="text-xl font-bold text-gray-900">
+            Pilih Tipe Pendaftaran
+          </h2>
+          <p className="text-gray-600 text-sm">
+            Pilih opsi yang sesuai dengan kebutuhanmu
+          </p>
+        </div>
+
+        {/* Top Up Option */}
+        <Card className="border-2 border-blue-200 bg-blue-50">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-blue-900">Top Up Coins</h3>
+                  <p className="text-sm text-blue-700">
+                    Langsung akses semua try out
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={() => setShowDetail(null)}
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                Top Up
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Registration Options */}
+        <div className="space-y-4">
+          {/* Free Option */}
           {!showDetail?.isDone && (
             <Card
               onClick={() => setSelectTypeRegistration('free')}
               className={cn(
-                'cursor-pointer transition-all hover:shadow-md',
+                'cursor-pointer transition-all duration-300 hover:shadow-lg border-2',
                 selectTypeRegistration === 'free'
-                  ? 'border-2 border-main'
-                  : 'border-2 hover:border-main/70',
+                  ? 'shadow-lg scale-[1.02]'
+                  : 'hover:scale-[1.01]',
               )}
+              style={{
+                borderColor:
+                  selectTypeRegistration === 'free' ? mainColor : '#e5e7eb',
+                backgroundColor:
+                  selectTypeRegistration === 'free'
+                    ? `${mainColor}05`
+                    : 'white',
+              }}
             >
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  Gratis
-                  <span className="text-sm font-normal text-muted-foreground">
-                    Rp 0
-                  </span>
-                </CardTitle>
-                <CardDescription>
-                  Daftar dengan mengikuti sosial media dan membagikan info Try
-                  Out
-                </CardDescription>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: `${mainColor}15` }}
+                    >
+                      <Star
+                        className="w-5 h-5"
+                        style={{ color: mainColor }}
+                      />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Gratis</CardTitle>
+                      <CardDescription>
+                        Daftar dengan mengikuti tugas sosial media
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-100 text-green-700 border-green-200">
+                    FREE
+                  </Badge>
+                </div>
               </CardHeader>
-              <CardContent>
-                <ul className="list-inside list-disc space-y-1 text-sm">
-                  <li>Akses ke semua materi Try Out</li>
-                  <li>Hasil dan pembahasan setelah Try Out selesai</li>
-                  <li>Peringkat nasional</li>
-                </ul>
+              <CardContent className="pt-0">
+                <div className="space-y-2">
+                  {[
+                    'Akses ke semua materi Try Out',
+                    'Hasil dan pembahasan setelah Try Out selesai',
+                    'Peringkat nasional',
+                  ].map((feature, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2 text-sm"
+                    >
+                      <Check className="w-4 h-4 text-green-500" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           )}
+
+          {/* Premium Option */}
           <Card
             onClick={() => setSelectTypeRegistration('premium')}
             className={cn(
-              'cursor-pointer transition-all hover:shadow-md',
+              'cursor-pointer transition-all duration-300 hover:shadow-lg border-2 relative overflow-hidden',
               selectTypeRegistration === 'premium'
-                ? 'border-2 border-main'
-                : 'border-2 hover:border-main/70',
+                ? 'shadow-lg scale-[1.02]'
+                : 'hover:scale-[1.01]',
             )}
+            style={{
+              borderColor:
+                selectTypeRegistration === 'premium' ? mainColor : '#e5e7eb',
+              backgroundColor:
+                selectTypeRegistration === 'premium'
+                  ? `${mainColor}05`
+                  : 'white',
+            }}
           >
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
+            {/* Premium Badge */}
+            <div className="absolute top-4 right-4">
+              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0">
+                <Crown className="w-3 h-3 mr-1" />
                 Premium
+              </Badge>
+            </div>
+
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Premium</CardTitle>
+                  <CardDescription>
+                    Daftar cepat dengan fitur eksklusif
+                  </CardDescription>
+                </div>
+              </div>
+              <div className="mt-2">
                 {pricingIsLoading || !pricing ? (
-                  <div className="">
-                    <Loader2 className="animate-spin w-4 h-4" />
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span className="text-sm text-gray-500">
+                      Loading harga...
+                    </span>
                   </div>
                 ) : (
-                  <span className="text-sm font-normal text-muted-foreground">
-                    Rp{' '}
-                    {pricing.price.toLocaleString('id-ID', {
-                      style: 'decimal',
-                    })}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold text-gray-900">
+                      Rp {pricing.price.toLocaleString('id-ID')}
+                    </span>
+                    <Badge className="bg-red-100 text-red-700 border-red-200">
+                      Sekali bayar
+                    </Badge>
+                  </div>
                 )}
-              </CardTitle>
-              <CardDescription>
-                Daftar cepat dengan fitur tambahan
-              </CardDescription>
+              </div>
             </CardHeader>
-            <CardContent>
-              <ul className="list-inside list-disc space-y-1 text-sm">
-                <li>Semua fitur Gratis</li>
-                <li>Akses prioritas saat Try Out berlangsung</li>
-                <li>Analisis detail performa dan rekomendasi belajar</li>
-                <li>Konsultasi dengan tutor</li>
-              </ul>
+            <CardContent className="pt-0">
+              <div className="space-y-2">
+                {[
+                  'Semua fitur Gratis',
+                  'Akses prioritas saat Try Out berlangsung',
+                  'Analisis detail performa dan rekomendasi',
+                  'Konsultasi dengan tutor',
+                ].map((feature, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 text-sm"
+                  >
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </div>
-        <div className="mt-[1rem] flex w-full items-center justify-center">
-          <div
-            className={cn(
-              'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
-              isLoading && 'bg-main/80',
-            )}
-            onClick={() => {
-              setStep(3);
-              if (selectTypeRegistration === 'premium') setShowPayment(true);
-            }}
-          >
-            Selanjutnya
-          </div>
-        </div>
+
+        {/* Continue Button */}
+        <Button
+          className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
+          onClick={() => {
+            setStep(3);
+            if (selectTypeRegistration === 'premium') {
+              setShowPayment(true);
+            }
+          }}
+        >
+          Selanjutnya
+        </Button>
       </div>
     );
   } else if (step === 3 && selectTypeRegistration === 'free') {
     return (
-      <>
-        <div
-          className="absolute right-4 top-4"
-          onClick={() => setShowDetail(null)}
-        >
-          <IconX className="cursor-pointer text-main-gray-text duration-200 md:hover:text-main-gray-text2" />
-        </div>
-        <div className="flex w-full flex-col gap-[1rem]">
-          <h1 className="text-center font-medium">Bukti Pendaftaran Try Out</h1>
-          <Progress
-            value={progress}
-            className="h-2 mb-3"
-          />
-          <div className="flex justify-between text-sm text-gray-500 mb-4">
-            <span>
-              {completedCount}/{proofItems.length} selesai
-            </span>
-            <span>{Math.round(progress)}%</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            {proofItems.map((item) => (
-              <div
-                key={item.id}
-                className={cn(
-                  'border rounded-lg p-4 flex flex-col justify-between',
-                  item.uploaded
-                    ? 'border-green-300 bg-green-50'
-                    : item.completed
-                      ? 'border-blue-300 bg-blue-50'
-                      : 'border-gray-200',
-                )}
-              >
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="p-2 rounded-full bg-gray-100">
-                      {item.icon}
-                    </div>
-                    <Badge className="text-xs">+{item.points} poin</Badge>
-                  </div>
-                  <h3 className="font-semibold mb-1">{item.title}</h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {item.instruction}
-                  </p>
-                  {item.completed && !item.uploaded && (
-                    <p className="text-blue-600 text-sm mb-2">
-                      Siap upload bukti screenshot
-                    </p>
-                  )}
-                  {item.uploaded && (
-                    <p className="text-green-600 text-sm mb-2">
-                      {item.fileName
-                        ? `Bukti terupload: ${item.fileName}`
-                        : 'Tugas selesai'}
-                    </p>
-                  )}
-                </div>
-                <Button
-                  className="mt-2 w-full"
-                  onClick={() => handleAction(item.id)}
-                  disabled={item.loading || item.uploaded}
-                >
-                  {renderButton(item)}
-                </Button>
-              </div>
-            ))}
-          </div>
+      <div className="space-y-6">
+        {/* Close Button */}
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold text-gray-900">
+            Bukti Pendaftaran Try Out
+          </h2>
           <Button
-            className="w-full py-2 bg-main hover:bg-main/80 text-white"
-            onClick={handleSubmitProof}
-            disabled={isLoading}
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowDetail(null)}
+            className="h-8 w-8 p-0 rounded-full hover:bg-gray-100"
           >
-            {isLoading ? (
-              <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
-            ) : (
-              <Trophy className="h-5 w-5 mr-2 inline" />
-            )}
-            {isLoading
-              ? 'Memproses...'
-              : `Daftar Try Out (${earnedPoints} poin)`}
+            <IconX className="w-4 h-4" />
           </Button>
         </div>
-      </>
+
+        {/* Progress Section */}
+        <Card className="border-2 border-gray-100">
+          <CardContent className="p-4">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-gray-700">
+                  Progress Tugas
+                </span>
+                <span className="text-sm text-gray-500">
+                  {completedCount}/{proofItems.length}
+                </span>
+              </div>
+              <Progress
+                value={progress}
+                className="h-2"
+              />
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div>
+                  <div
+                    className="text-lg font-bold"
+                    style={{ color: mainColor }}
+                  >
+                    {earnedPoints}
+                  </div>
+                  <div className="text-xs text-gray-500">Poin Terkumpul</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-gray-600">
+                    {totalPoints}
+                  </div>
+                  <div className="text-xs text-gray-500">Total Target</div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Tasks Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {proofItems.map((item) => (
+            <Card
+              key={item.id}
+              className={cn(
+                'transition-all duration-300 border-2',
+                item.uploaded
+                  ? 'border-green-300 bg-green-50 shadow-green-100'
+                  : item.completed
+                    ? 'border-blue-300 bg-blue-50 shadow-blue-100'
+                    : 'border-gray-200 hover:border-gray-300 hover:shadow-md',
+              )}
+            >
+              <CardContent className="p-4">
+                <div className="space-y-3">
+                  {/* Header */}
+                  <div className="flex items-center justify-between">
+                    <div
+                      className={cn(
+                        'w-10 h-10 rounded-xl flex items-center justify-center',
+                        item.uploaded
+                          ? 'bg-green-100'
+                          : item.completed
+                            ? 'bg-blue-100'
+                            : 'bg-gray-100',
+                      )}
+                    >
+                      {item.uploaded ? (
+                        <Check className="w-5 h-5 text-green-600" />
+                      ) : (
+                        item.icon
+                      )}
+                    </div>
+                    <Badge
+                      className={cn(
+                        'text-xs',
+                        item.uploaded
+                          ? 'bg-green-100 text-green-700 border-green-200'
+                          : 'bg-gray-100 text-gray-700 border-gray-200',
+                      )}
+                    >
+                      +{item.points} poin
+                    </Badge>
+                  </div>
+
+                  {/* Content */}
+                  <div className="space-y-2">
+                    <h3 className="font-semibold text-sm">{item.title}</h3>
+                    <p className="text-xs text-gray-600">{item.instruction}</p>
+
+                    {/* Status Messages */}
+                    {item.completed && !item.uploaded && (
+                      <div className="flex items-center gap-1 text-blue-600 text-xs">
+                        <ArrowUp className="w-3 h-3" />
+                        <span>Siap upload bukti screenshot</span>
+                      </div>
+                    )}
+                    {item.uploaded && (
+                      <div className="flex items-center gap-1 text-green-600 text-xs">
+                        <Check className="w-3 h-3" />
+                        <span>
+                          {item.fileName
+                            ? `Terupload: ${item.fileName}`
+                            : 'Tugas selesai'}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Action Button */}
+                  <Button
+                    className={cn(
+                      'w-full text-xs h-8',
+                      item.uploaded
+                        ? 'bg-green-500 hover:bg-green-600 text-white'
+                        : item.completed
+                          ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                          : 'bg-gray-500 hover:bg-gray-600 text-white',
+                    )}
+                    onClick={() => handleAction(item.id)}
+                    disabled={item.loading || item.uploaded}
+                  >
+                    {renderButton(item)}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Submit Button */}
+        <Card className="border-2 border-gray-100">
+          <CardContent className="p-4">
+            <Button
+              className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
+              onClick={handleSubmitProof}
+              disabled={isLoading || earnedPoints !== totalPoints}
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Memproses...</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Trophy className="w-4 h-4" />
+                  <span>Daftar Try Out ({earnedPoints} poin)</span>
+                </div>
+              )}
+            </Button>
+            {earnedPoints !== totalPoints && (
+              <p className="text-center text-xs text-gray-500 mt-2">
+                Lengkapi semua tugas untuk melanjutkan
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     );
   } else if (step === 3 && selectTypeRegistration === 'premium') {
     return (
