@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { CheckCircle, Sparkles } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useProvider } from '../../_provider/provider';
 
@@ -29,21 +29,21 @@ const SubmitCourse = () => {
         await CourseRefetch();
         setLoading(false);
         await CourseProgressRefetch();
-        toaster({
-          title: 'Berhasil!',
-          condition: 'success',
-          description: 'Progress berhasil disimpan',
-          duration: 2000,
-        });
+        // toaster({
+        //   title: 'Berhasil!',
+        //   condition: 'success',
+        //   description: 'Progress berhasil disimpan',
+        //   duration: 2000,
+        // });
       },
       onError() {
         setLoading(false);
-        toaster({
-          title: 'Gagal',
-          condition: 'warning',
-          description: 'Gagal menyimpan progress',
-          duration: 2000,
-        });
+        // toaster({
+        //   title: 'Gagal',
+        //   condition: 'warning',
+        //   description: 'Gagal menyimpan progress',
+        //   duration: 2000,
+        // });
       },
     },
   );
@@ -83,7 +83,6 @@ const SubmitCourse = () => {
         <div className="relative flex items-center gap-2">
           <CheckCircle className="w-5 h-5" />
           <span>Selesai</span>
-          <Sparkles className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </Button>
 

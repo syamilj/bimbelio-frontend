@@ -53,13 +53,14 @@ export default function Provider({ children }: Props) {
   // ===== Params ================================
   const tab = searchParams?.get('tab');
   const sub = searchParams?.get('sub');
+  const startParam = searchParams?.get('start'); // New parameter to detect start flow
   const categoryId = Array.isArray(params?.categoryId)
     ? params.categoryId[0]
     : params?.categoryId || null;
 
   useEffect(() => {
     if (!tab && sub) {
-      router.push(`${window.location.pathname}?sub=${sub}&tab=notes`);
+      router.push(`${window.location.pathname}?sub=${sub}&tab=chat`);
     }
   }, [tab, sub, router]);
 
@@ -71,6 +72,7 @@ export default function Provider({ children }: Props) {
   // ===== Data & IndexChapter ================================
   const [CourseData, setCourseData] = useState<Data | null>(null);
   const [indexChapter, setIndexChapter] = useState<number>(0);
+  const [showStartCourse, setShowStartCourse] = useState<boolean>(false);
 
   const {
     data: Course,
@@ -96,7 +98,28 @@ export default function Provider({ children }: Props) {
   }, [categoryId, pathname]);
 
   useEffect(() => {
-    if (Course) {
+    if (Course && CourseProgress) {
+      // Check if user has any progress in this course category
+      const hasProgress =
+        Array.isArray(CourseProgress) &&
+        CourseProgress.some(
+          (progress: any) =>
+            progress.courseSubChapterId &&
+            Array.isArray(Course) &&
+            Course.some(
+              (chapter: any) =>
+                Array.isArray(chapter.CourseSubChapter) &&
+                chapter.CourseSubChapter.some(
+                  (subChapter: any) =>
+                    subChapter.id === progress.courseSubChapterId,
+                ),
+            ),
+        );
+
+      // Check if user is starting a new course (start=true param OR no progress and no sub)
+      const isStartFlow = startParam === 'true' || (!sub && !hasProgress);
+      setShowStartCourse(isStartFlow);
+
       if (sub) {
         let findData: any;
         Course.forEach((item) => {
@@ -142,7 +165,12 @@ export default function Provider({ children }: Props) {
           }
         }
       } else {
-        if (Course.length > 0 && Course[0].CourseSubChapter.length > 0) {
+        // Only auto-navigate if not showing start course
+        if (
+          Course.length > 0 &&
+          Course[0].CourseSubChapter.length > 0 &&
+          !isStartFlow
+        ) {
           setCourseData({
             id: Course[0].CourseSubChapter[0].id,
             number: Course[0].CourseSubChapter[0].number,
@@ -159,14 +187,14 @@ export default function Provider({ children }: Props) {
             CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
           });
           router.push(
-            `${window.location.pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=notes`,
+            `${window.location.pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`,
           );
         } else {
           setCourseData(null);
         }
       }
     }
-  }, [Course, sub, indexChapter, router]);
+  }, [Course, CourseProgress, sub, indexChapter, router, startParam]);
 
   useEffect(() => {
     const chatAIContainer = document.querySelector(
@@ -230,6 +258,8 @@ export default function Provider({ children }: Props) {
       setCourseData,
       indexChapter,
       setIndexChapter,
+      showStartCourse,
+      setShowStartCourse,
     },
     useDoc: {
       docId,
@@ -297,6 +327,8 @@ type ProviderType = {
     setCourseData: Dispatch<SetStateAction<Data | null>>;
     indexChapter: number;
     setIndexChapter: Dispatch<SetStateAction<number>>;
+    showStartCourse: boolean;
+    setShowStartCourse: Dispatch<SetStateAction<boolean>>;
   };
   useDoc: {
     docId: string;

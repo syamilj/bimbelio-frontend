@@ -29,6 +29,7 @@ import {
   FileQuestionIcon,
   ForwardIcon,
   ListIcon,
+  Loader2,
   PlayIcon,
   SparklesIcon,
   StarIcon,
@@ -36,6 +37,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 type TypeData = {
   id: string;
@@ -81,10 +83,21 @@ export default function ModulPembelajaranSection() {
   const { data: CategoryCard, isLoading } = useGet<TypeData>(
     '/course/getCategoryForCard',
   );
+  const [loadingCourseId, setLoadingCourseId] = useState<string | null>(null);
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  const handleStartCourse = (categoryId: string) => {
+    setLoadingCourseId(categoryId);
+    // Add a small delay for better UX feedback
+    setTimeout(() => {
+      router.push(
+        `/${website_sub_category_id_params}/user/course/${categoryId}?start=true`,
+      );
+    }, 300);
+  };
 
   return (
     <section className="space-y-6 pt-8">
@@ -120,21 +133,27 @@ export default function ModulPembelajaranSection() {
             const getActionButton = () => {
               if (category.completedChapters === 0) {
                 return (
-                  <Link
-                    href={`/${website_sub_category_id_params}/user/course/${category.id}`}
-                    className="flex-1"
+                  <Button
+                    size="sm"
+                    onClick={() => handleStartCourse(category.id)}
+                    disabled={loadingCourseId === category.id}
+                    className="flex-1 w-full rounded-xl text-white border-0 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
                   >
-                    <Button
-                      size="sm"
-                      className="w-full rounded-xl text-white border-0 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
-                      style={{
-                        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                      }}
-                    >
-                      <PlayIcon className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-                      Mulai Belajar
-                    </Button>
-                  </Link>
+                    {loadingCourseId === category.id ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Memuat...
+                      </>
+                    ) : (
+                      <>
+                        <PlayIcon className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                        Mulai Belajar
+                      </>
+                    )}
+                  </Button>
                 );
               } else if (
                 category.completedChapters === category.totalChapters
@@ -486,9 +505,11 @@ export default function ModulPembelajaranSection() {
                                   key={i}
                                   className="p-3 rounded-xl border-2 border-gray-100 hover:border-gray-200 transition-all cursor-pointer hover:shadow-sm"
                                   onClick={() => {
-                                    router.push(
-                                      `/user/course/${category.id}?sub=${chapter.CourseSubChapter[0].id}`,
-                                    );
+                                    if (chapter.CourseSubChapter.length > 0) {
+                                      router.push(
+                                        `/${website_sub_category_id_params}/user/course/${category.id}?sub=${chapter.CourseSubChapter[0].id}&tab=chat`,
+                                      );
+                                    }
                                   }}
                                 >
                                   <div className="flex items-center gap-3">
@@ -531,8 +552,37 @@ export default function ModulPembelajaranSection() {
                             style={{
                               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                             }}
+                            onClick={() => {
+                              if (category.completedChapters === 0) {
+                                // If no progress, go to start flow
+                                router.push(
+                                  `/${website_sub_category_id_params}/user/course/${category.id}?start=true`,
+                                );
+                              } else {
+                                // If has progress, go to first incomplete chapter
+                                const firstIncompleteChapter =
+                                  category.CourseChapter.find(
+                                    (chapter) => !chapter.isDone,
+                                  );
+                                if (
+                                  firstIncompleteChapter &&
+                                  firstIncompleteChapter.CourseSubChapter
+                                    .length > 0
+                                ) {
+                                  router.push(
+                                    `/${website_sub_category_id_params}/user/course/${category.id}?sub=${firstIncompleteChapter.CourseSubChapter[0].id}&tab=chat`,
+                                  );
+                                } else {
+                                  router.push(
+                                    `/${website_sub_category_id_params}/user/course/${category.id}`,
+                                  );
+                                }
+                              }
+                            }}
                           >
-                            Lanjutkan Belajar
+                            {category.completedChapters === 0
+                              ? 'Mulai Belajar'
+                              : 'Lanjutkan Belajar'}
                             <ArrowRightIcon className="w-4 h-4 ml-2" />
                           </Button>
                         </DialogFooter>

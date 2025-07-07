@@ -74,6 +74,7 @@ const WorkspaceCourse = () => {
       setIndexChapter,
       Course,
       CourseProgress,
+      showStartCourse,
     },
     useDoc: { doc, docId },
     useParams: { sub, tab },
@@ -148,20 +149,28 @@ const WorkspaceCourse = () => {
   // }
   return (
     <Fragment>
-      <HeaderCourse className="hidden md:flex" />
-      <ResizablePanelGroup
-        autoSaveId="window-layout"
-        direction={isMobile ? 'vertical' : 'horizontal'}
-        onLayout={() => {}}
-        className="flex-col h-full bg-bg-workspace"
-      >
-        <LeftComponent />
-        <ResizableHandleComponent />
-        <RightComponent />
-        <div className="fixed md:hidden items-center justify-center flex w-full bottom-6 md:left-2 z-[100]">
-          <NavigationButtons />
+      {!showStartCourse && <HeaderCourse className="hidden md:flex" />}
+      {showStartCourse ? (
+        // Full screen start course experience
+        <div className="h-full w-full">
+          <LeftComponent />
         </div>
-      </ResizablePanelGroup>
+      ) : (
+        // Normal layout with left and right panels
+        <ResizablePanelGroup
+          autoSaveId="window-layout"
+          direction={isMobile ? 'vertical' : 'horizontal'}
+          onLayout={() => {}}
+          className="flex-col h-full bg-bg-workspace"
+        >
+          <LeftComponent />
+          <ResizableHandleComponent />
+          <RightComponent />
+          <div className="fixed md:hidden items-center justify-center flex w-full bottom-6 md:left-2 z-[100]">
+            <NavigationButtons />
+          </div>
+        </ResizablePanelGroup>
+      )}
     </Fragment>
   );
 };

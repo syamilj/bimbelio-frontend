@@ -1,12 +1,16 @@
 // src/app/(user)/workspace-course/_component/NavigationButtons.tsx
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -21,6 +25,11 @@ const NavigationButtons = () => {
   const {
     useData: { CourseData },
   } = useProvider();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const params = useParams();
   const searchParams = useSearchParams();
@@ -141,28 +150,68 @@ const NavigationButtons = () => {
           heading="Menyimpan Progress..."
         />
       )}
-      <div className="flex w-fit justify-between items-center gap-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex w-fit justify-between items-center gap-4 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-2"
+      >
         {prevLink ? (
           <Link href={prevLink}>
-            <Button className="px-4 py-2 bg-main-gray-disabled text-white rounded-full hover:bg-main-gray-disabled/95">
-              ← Sebelumnya
-            </Button>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Sebelumnya
+              </Button>
+            </motion.div>
           </Link>
         ) : (
-          <div />
+          <div className="w-[110px]" /> /* Placeholder to maintain spacing */
         )}
+
         {nextLink ? (
-          <Button
-            onClick={handleNextClick}
-            className="px-4 py-2 bg-main text-white rounded-full hover:bg-main/90"
-            disabled={loading}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Selanjutnya →
-          </Button>
+            <Button
+              onClick={handleNextClick}
+              disabled={loading}
+              className={cn(
+                'flex items-center gap-2 px-4 py-2 rounded-xl text-white border-0 font-semibold shadow-md hover:shadow-lg transition-all duration-300 group',
+                loading && 'opacity-50 cursor-not-allowed',
+              )}
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
+            >
+              {loading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Menyimpan...
+                </>
+              ) : isDone || submitted ? (
+                <>
+                  Lanjutkan
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </>
+              ) : (
+                <>
+                  Selanjutnya
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </>
+              )}
+            </Button>
+          </motion.div>
         ) : (
-          <div />
+          <div className="w-[110px]" /> /* Placeholder to maintain spacing */
         )}
-      </div>
+      </motion.div>
     </footer>
   );
 };
