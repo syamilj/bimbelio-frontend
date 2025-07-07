@@ -162,10 +162,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
     return (
       <div className="flex items-center gap-2 px-2 lg:px-3 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group min-w-0">
-        <div
-          className="w-6 h-6 lg:w-8 lg:h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: `${color || mainColor}15` }}
-        >
+        <div className="flex items-center justify-center flex-shrink-0">
           <Icon
             className="w-3 h-3 lg:w-4 lg:h-4"
             style={{ color: color || mainColor }}

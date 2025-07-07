@@ -335,20 +335,27 @@ const Sidebar = ({ category }: { category: any }) => {
             {/* Enhanced User Profile */}
             <div
               className={cn(
-                'flex items-center gap-3 p-3 rounded-2xl hover:bg-white/80 transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200/50 bg-white/60 backdrop-blur-sm',
+                'flex items-center gap-3 p-3 rounded-2xl hover:bg-white/80 transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200/50 bg-white/60 backdrop-blur-sm overflow-hidden',
                 shouldMinimize ? 'justify-center' : 'justify-between',
               )}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div
+                className={cn(
+                  shouldMinimize
+                    ? 'flex items-center justify-center w-10 h-10'
+                    : 'flex items-center gap-3 flex-1 min-w-0',
+                )}
+              >
                 {shouldMinimize ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="relative group">
-                        <Avatar className="w-10 h-10 ring-2 ring-white shadow-xl cursor-pointer transition-all duration-300  border-2 border-slate-200/50">
+                      <div className="relative group w-8 h-8 flex items-center justify-center bg-white/90 rounded-2xl shadow-lg">
+                        <Avatar className="w-8 h-8 ring-2 ring-white border-2 border-slate-200/50 shadow-md overflow-hidden">
                           <AvatarImage
                             src={userImage || '/placeholder.svg'}
                             alt={session?.user.name || 'User'}
+                            className="object-cover w-full h-full rounded-full"
                           />
                           <AvatarFallback
                             className="text-white font-bold bg-gradient-to-br"
@@ -376,10 +383,11 @@ const Sidebar = ({ category }: { category: any }) => {
                 ) : (
                   <>
                     <div className="relative">
-                      <Avatar className="w-10 h-10 ring-2 ring-white shadow-xl border-2 border-slate-200/50 transition-all duration-300 ">
+                      <Avatar className="w-10 h-10 ring-2 ring-white shadow-xl border-2 border-slate-200/50 transition-all duration-300 overflow-hidden">
                         <AvatarImage
                           src={userImage || '/placeholder.svg'}
                           alt={session?.user.name || 'User'}
+                          className="rounded-full object-cover"
                         />
                         <AvatarFallback
                           className="text-white font-bold bg-gradient-to-br"
@@ -409,6 +417,7 @@ const Sidebar = ({ category }: { category: any }) => {
                 )}
               </div>
 
+              {/* Dropdown hanya muncul kalau sidebar tidak minimize */}
               {!shouldMinimize && (
                 <DropdownMenu
                   open={openMenu}
