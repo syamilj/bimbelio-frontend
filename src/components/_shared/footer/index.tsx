@@ -1,9 +1,9 @@
 // index.tsx
-import Logo from '@/components/ui/logo';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Card } from '@/components/ui/card';
+import Logo from '@/components/ui/logo';
 import { IconOpenAI } from '@/styles/icon';
-import { Sparkles } from 'lucide-react';
+import { InstagramIcon, Sparkles } from 'lucide-react';
 
 export default function Footer() {
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -29,9 +29,15 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
               {/* Logo Section */}
               <div className="flex flex-col items-center md:items-start gap-3">
-                <Logo className="text-2xl md:text-3xl" style={{ color: mainColor }} />
+                <Logo
+                  className="text-2xl md:text-3xl"
+                  style={{ color: mainColor }}
+                />
                 <div className="flex items-center gap-2 text-sm md:text-base text-gray-600">
-                  <Sparkles className="w-4 h-4" style={{ color: mainColor }} />
+                  <Sparkles
+                    className="w-4 h-4"
+                    style={{ color: mainColor }}
+                  />
                   <span className="font-medium">Bimbel AI Terdepan</span>
                 </div>
               </div>
@@ -41,27 +47,44 @@ export default function Footer() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-lg"
-                    style={{ background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})` }}
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
                   >
-                    <i className="bx bxl-instagram text-xl" />
+                    <InstagramIcon className="w-12 h-12" />
                   </div>
                   <div>
-                    <p className="font-bold text-lg" style={{ color: mainColor }}>
+                    <p
+                      className="font-bold text-lg"
+                      style={{ color: mainColor }}
+                    >
                       @Bimbelio
                     </p>
-                    <p className="text-sm text-gray-600">Follow us on Instagram</p>
+                    <p className="text-sm text-gray-600">
+                      Follow us on Instagram
+                    </p>
                   </div>
                 </div>
 
                 {/* Quick Stats */}
                 <div className="flex items-center gap-6 text-center">
                   <div>
-                    <p className="text-xl md:text-2xl font-bold" style={{ color: mainColor }}>10K+</p>
+                    <p
+                      className="text-xl md:text-2xl font-bold"
+                      style={{ color: mainColor }}
+                    >
+                      10K+
+                    </p>
                     <p className="text-xs text-gray-600">Siswa Aktif</p>
                   </div>
                   <div className="w-px h-8 bg-gray-300" />
                   <div>
-                    <p className="text-xl md:text-2xl font-bold" style={{ color: secondaryColor }}>95%</p>
+                    <p
+                      className="text-xl md:text-2xl font-bold"
+                      style={{ color: secondaryColor }}
+                    >
+                      95%
+                    </p>
                     <p className="text-xs text-gray-600">Tingkat Kepuasan</p>
                   </div>
                 </div>
@@ -78,24 +101,37 @@ export default function Footer() {
                 <span className="font-medium">Powered by</span>
                 <div className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full">
                   <IconOpenAI className="w-4 h-4" />
-                  <span className="font-semibold">OpenAI</span>
                 </div>
               </div>
 
               {/* Copyright */}
               <div className="text-center order-1 md:order-2">
                 <p className="text-gray-600">
-                  <span className="font-semibold" style={{ color: mainColor }}>Jutif AI</span>
+                  <span
+                    className="font-semibold"
+                    style={{ color: mainColor }}
+                  >
+                    Jutif AI
+                  </span>
                   {' • '}
-                  <span>©2024 Bimbelio. All Rights Reserved.</span>
+                  <span>©2025 Bimbelio. All Rights Reserved.</span>
                 </p>
               </div>
 
               {/* Decorative Elements */}
               <div className="hidden md:flex items-center gap-2 order-3">
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: `${mainColor}60` }} />
-                <div className="w-1 h-1 rounded-full" style={{ backgroundColor: `${secondaryColor}80` }} />
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: `${mainColor}40` }} />
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: `${mainColor}60` }}
+                />
+                <div
+                  className="w-1 h-1 rounded-full"
+                  style={{ backgroundColor: `${secondaryColor}80` }}
+                />
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: `${mainColor}40` }}
+                />
               </div>
             </div>
           </div>
