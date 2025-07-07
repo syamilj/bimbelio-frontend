@@ -54,10 +54,17 @@ export default function Provider({ children, doc }: Props) {
   const [editPage, setEditPage] = useState<boolean>(false);
 
   useEffect(() => {
+    // Reset highlights dan state PDF ketika dokumen berubah
+    setHighlights([]);
+    setCurrentPage(1);
+    setSearchPdf('');
+    setEditPage(false);
+
+    // Set highlights baru setelah dokumen berubah
     if (doc.highlights.length > 0) {
       setHighlights(doc.highlights);
     }
-  }, [doc]);
+  }, [doc.id, doc.highlights]); // Tambahkan doc.id sebagai dependency
 
   const getHighlightById = (id: string): HighlightTypeData | undefined => {
     return doc?.highlights?.find(
