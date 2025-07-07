@@ -1,5 +1,7 @@
 'use client';
 
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -8,12 +10,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/supabaseClient';
+import { Crown, FileText, Play, Video } from 'lucide-react';
 import React, { SetStateAction } from 'react';
 import { SubChapterProps } from '../page';
 import ModalDeleteSubChapter from './modal-delete';
-// import { toaster } from "@/lib/utils";
-// import { useCompletion } from "ai/react";
 
 interface Props {
   EditSubChapter: SubChapterProps;
@@ -28,13 +30,11 @@ const SubChapterHeading = ({
   currentIndexEdit,
   setCurrentIndexEdit,
 }: Props) => {
-  // const [loading, setLoading] = useState<boolean>(false)
-
   const deleteSubChapter = async () => {
     setCurrentIndexEdit(null);
-    setSubChapter((prev) =>
-      prev.filter((_, i: number) => i !== currentIndexEdit),
-    );
+    setSubChapter((prev) => prev.filter((_, i) => i !== currentIndexEdit));
+
+    // Clean up files
     if (EditSubChapter.type === 'DOCUMENT' && EditSubChapter.document) {
       await supabase.storage
         .from('pdf')
@@ -51,6 +51,7 @@ const SubChapterHeading = ({
     value: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI',
   ) => {
     if (!value || value.length === 0) return;
+
     if (value !== EditSubChapter.type) {
       setSubChapter((prev) =>
         prev.map((sChapter, index) => {
@@ -62,13 +63,14 @@ const SubChapterHeading = ({
               spendTime: sChapter.spendTime,
               Questions: sChapter.Questions,
               type: value,
+              premium: sChapter.premium,
             };
           }
-          return {
-            ...sChapter,
-          };
+          return sChapter;
         }),
       );
+
+      // Clean up old files
       if (EditSubChapter.type === 'DOCUMENT') {
         await supabase.storage
           .from('pdf')
@@ -80,20 +82,20 @@ const SubChapterHeading = ({
           .remove([`course/${EditSubChapter.video}`]);
       }
     }
-    if (!EditSubChapter.type) {
-      setSubChapter((prev) =>
-        prev.map((sChapter, index) => {
-          if (index === currentIndexEdit) {
-            return {
-              ...sChapter,
-              type: value,
-            };
-          }
-          return {
-            ...sChapter,
-          };
-        }),
-      );
+  };
+
+  const getTypeIcon = (type?: string) => {
+    switch (type) {
+      case 'VIDEO':
+        return <Video className="h-4 w-4" />;
+      case 'DOCUMENT':
+        return <FileText className="h-4 w-4" />;
+      case 'TRYOUT':
+        return <Play className="h-4 w-4" />;
+      case 'MATERI':
+        return <FileText className="h-4 w-4" />;
+      default:
+        return <FileText className="h-4 w-4" />;
     }
   };
 
@@ -102,147 +104,158 @@ const SubChapterHeading = ({
   }
 
   return (
-    <>
-      <div
-        id="heading"
-        className="flex shrink-0 flex-col gap-[1rem] overflow-hidden"
-      >
-        <div className="flex items-center justify-between">
-          <ModalDeleteSubChapter deleteSubChapter={deleteSubChapter} />
-        </div>
-        <div className="grid w-full grid-cols-2 gap-[1rem]">
-          <div className="flex w-full flex-col gap-[.5rem]">
-            <p className="font-regular">Judul sub chapter</p>
-            <input
-              type="text"
-              placeholder="Judul sub chapter...."
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              required
-              value={EditSubChapter.title}
+    <div className="space-y-6">
+      {/* Header with Delete */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold">Pengaturan Sub Chapter</h3>
+        <ModalDeleteSubChapter deleteSubChapter={deleteSubChapter} />
+      </div>
+
+      {/* Basic Form */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="title">Judul Sub Chapter *</Label>
+            <Input
+              id="title"
+              placeholder="Judul sub chapter..."
+              value={EditSubChapter.title || ''}
               onChange={(e) => {
                 setSubChapter((prev) =>
                   prev.map((item, i) => {
                     if (i === currentIndexEdit) {
                       return { ...item, title: e.target.value };
                     }
-                    return { ...item };
+                    return item;
                   }),
                 );
               }}
             />
           </div>
-          <div className="flex w-full flex-col gap-[.5rem]">
-            <p className="font-regular">Lama belajar (menit)</p>
-            <input
+
+          <div>
+            <Label htmlFor="duration">Durasi (menit) *</Label>
+            <Input
+              id="duration"
               type="number"
-              placeholder="Lama Belajar...."
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              required
-              value={EditSubChapter.spendTime}
+              placeholder="30"
+              value={EditSubChapter.spendTime || ''}
               onChange={(e) => {
                 setSubChapter((prev) =>
                   prev.map((item, i) => {
                     if (i === currentIndexEdit) {
                       return { ...item, spendTime: e.target.value };
                     }
-                    return { ...item };
+                    return item;
                   }),
                 );
               }}
             />
           </div>
         </div>
+
         {EditSubChapter.type !== 'VIDEO' && (
-          <div className="flex w-full flex-col gap-[.5rem] pb-[.8rem]">
-            <p className="font-regular">Deskripsi</p>
-            <textarea
-              placeholder="Deskripsi Sub Chapter...."
-              className="w-full shrink-0 rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              value={EditSubChapter.description}
+          <div>
+            <Label htmlFor="description">Deskripsi</Label>
+            <Textarea
+              id="description"
+              placeholder="Deskripsi sub chapter..."
+              value={EditSubChapter.description || ''}
               onChange={(e) => {
                 setSubChapter((prev) =>
                   prev.map((sChapter, sIndex) => {
                     if (sIndex === currentIndexEdit) {
-                      return {
-                        ...sChapter,
-                        description: e.target.value,
-                      };
+                      return { ...sChapter, description: e.target.value };
                     }
-                    return {
-                      ...sChapter,
-                    };
+                    return sChapter;
                   }),
                 );
               }}
+              className="min-h-[100px]"
             />
           </div>
         )}
-        <div className="flex w-full gap-[1rem] pb-[.8rem]">
-          <div className="flex w-full flex-col gap-[.5rem]">
-            <p className="font-regular">Tipe Materi</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="type">Tipe Materi *</Label>
             <Select
-              value={`${EditSubChapter.type || 'placeholder'}`}
+              value={EditSubChapter.type || ''}
               onValueChange={(value) => {
                 handleChangeType(
                   value as 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI',
                 );
               }}
             >
-              <SelectTrigger className="h-[45px] w-full rounded-[.8rem] border-none bg-white text-main-gray-text shadow-none outline-none">
-                <SelectValue placeholder="Tipe Materi" />
+              <SelectTrigger>
+                <SelectValue placeholder="Pilih tipe...">
+                  {EditSubChapter.type && (
+                    <div className="flex items-center gap-2">
+                      {getTypeIcon(EditSubChapter.type)}
+                      <span>{EditSubChapter.type}</span>
+                    </div>
+                  )}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem
-                  value="placeholder"
-                  disabled
-                >
-                  Tipe Materi
+                <SelectItem value="DOCUMENT">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    Document
+                  </div>
                 </SelectItem>
-                <SelectItem value="DOCUMENT">Document</SelectItem>
-                <SelectItem value="MATERI">Materi</SelectItem>
-                <SelectItem value="VIDEO">Video</SelectItem>
-                <SelectItem value="TRYOUT">Tryout</SelectItem>
+                <SelectItem value="MATERI">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    Materi
+                  </div>
+                </SelectItem>
+                <SelectItem value="VIDEO">
+                  <div className="flex items-center gap-2">
+                    <Video className="h-4 w-4" />
+                    Video
+                  </div>
+                </SelectItem>
+                <SelectItem value="TRYOUT">
+                  <div className="flex items-center gap-2">
+                    <Play className="h-4 w-4" />
+                    Tryout
+                  </div>
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-fit flex-col gap-[.5rem]">
-            <p className="font-regular">Premium</p>
-            <div className="h-full flex justify-center items-center">
+
+          <div>
+            <Label>Status Premium</Label>
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg">
               <Switch
                 checked={EditSubChapter.premium}
                 onCheckedChange={(checked) => {
                   setSubChapter((prev) =>
                     prev.map((sChapter, index) => {
                       if (index === currentIndexEdit) {
-                        return {
-                          ...sChapter,
-                          premium: checked,
-                        };
+                        return { ...sChapter, premium: checked };
                       }
-                      return {
-                        ...sChapter,
-                      };
+                      return sChapter;
                     }),
                   );
                 }}
               />
+              <div className="flex items-center gap-2">
+                <Crown className="h-4 w-4 text-yellow-500" />
+                <Label>Konten Premium</Label>
+              </div>
             </div>
+            <p className="text-xs text-gray-500 mt-1">
+              {EditSubChapter.premium
+                ? 'Hanya dapat diakses oleh pengguna premium'
+                : 'Dapat diakses oleh semua pengguna'}
+            </p>
           </div>
         </div>
       </div>
-      {/* {loading && (
-                <Dialog open={true}>
-                    <DialogContent className="p-0 overflow-hidden border-none shadow-none bg-[#fff0]" classOverlay="bg-[#ffffffe3]" hideClose >
-                        <div className="flex justify-center items-center z-[100000000] p-[1.5rem]">
-                            <div className="flex flex-col items-center">
-                                <Loader2 className='animate-spin h-[2rem] w-[2rem]' />
-                                <p className='text-[1.1rem] font-medium text-center'>AI Sedang Generate soal Tryout </p>
-                            </div>
-                        </div>
-                    </DialogContent>
-                </Dialog>
-            )} */}
-    </>
+    </div>
   );
 };
 

@@ -31,18 +31,18 @@ const SidebarRoute: FC = () => {
 
   const routes = [
     {
+      icon: Users,
+      href: `/${website_sub_category_id}/admin/`,
+      label: 'Users',
+      description: 'Manajemen pengguna',
+      category: 'Dashboard',
+    },
+    {
       icon: Globe,
       href: `/${website_sub_category_id}/admin/website-category`,
       label: 'Web Category',
       description: 'Kelola kategori website',
       category: 'System',
-    },
-    {
-      icon: Users,
-      href: `/${website_sub_category_id}/admin/user`,
-      label: 'Users',
-      description: 'Manajemen pengguna',
-      category: 'User Management',
     },
     {
       icon: CreditCard,

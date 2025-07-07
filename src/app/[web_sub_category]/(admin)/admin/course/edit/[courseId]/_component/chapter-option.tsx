@@ -1,5 +1,8 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -10,14 +13,10 @@ import {
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import {
-  IconDown,
-  IconFullscreen,
-  IconMinimizeScreen,
-  IconUp,
-} from '@/styles/icon';
+import { cn } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import { Category } from '@/types/database';
+import { Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { SetStateAction, useState } from 'react';
 import { ChapterProps, SubChapterProps } from '../page';
@@ -47,37 +46,36 @@ const ChapterOption = ({
   category,
 }: Props) => {
   const router = useRouter();
-
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
-
-  const [dateTryoutHeight, setDateTryoutHeight] = useState<number>(0);
-  const [showDateTryout, setShowDateTryout] = useState<boolean>(true);
-  const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
-  // const [thumbnail, setThumbnail] = useState<File | undefined>();
-  // const [thumbnailName, setThumbnailName] = useState<string>('');
-
-  // const { mutateAsync: deleteChapter } = api.course.deleteChapter.useMutation();
 
   const { mutate: deleteChapter } = useMutation(
     '/course/deleteChapter',
     'delete',
   );
 
-  const addSesi = () => {
-    setSubChapter((prev) => {
-      return [
-        ...prev,
-        {
-          title: '',
-          description: '',
-          spendTime: '',
-          premium: true,
-          assessmentType: '1-5',
-          Questions: [],
-        },
-      ];
-    });
+  const addSubChapter = () => {
+    const newIndex = subChapter.length;
+    setSubChapter((prev) => [
+      ...prev,
+      {
+        title: '',
+        description: '',
+        spendTime: '',
+        premium: false,
+        Questions: [],
+      },
+    ]);
+    setCurrentIndexEdit(newIndex);
+  };
+
+  const removeSubChapter = (index: number) => {
+    setSubChapter((prev) => prev.filter((_, i) => i !== index));
+    if (currentIndexEdit === index) {
+      setCurrentIndexEdit(null);
+    } else if (currentIndexEdit && currentIndexEdit > index) {
+      setCurrentIndexEdit(currentIndexEdit - 1);
+    }
   };
 
   const handleDeleteChapter = async () => {
@@ -92,11 +90,14 @@ const ChapterOption = ({
       setLoadingDelete(false);
       return;
     }
+
     const success = await deleteChapter({ params: { chapterId: chapter?.id } });
     if (!success) {
       setLoadingDelete(false);
       return;
     }
+
+    // Clean up files
     const fileDocument: string[] = [];
     const fileVideo: string[] = [];
     subChapter.forEach((sChapter) => {
@@ -107,108 +108,55 @@ const ChapterOption = ({
         fileVideo.push(`course/${sChapter.video}`);
       }
     });
+
     if (fileDocument.length > 0) {
       await supabase.storage.from('pdf').remove(fileDocument);
     }
     if (fileVideo.length > 0) {
       await supabase.storage.from('video').remove(fileVideo);
     }
-    router.push(`${website_sub_category_id}/admin/course`);
+
+    router.push(`/${website_sub_category_id}/admin/course`);
   };
 
   return (
-    <div className="flex w-full flex-col gap-[1rem] p-[1rem] text-[.9rem]">
+    <div className="space-y-6">
       <ModalDeleteChapter
         onClick={handleDeleteChapter}
         open={openDelete}
         setOpen={setOpenDelete}
         isLoading={loadingDelete}
       />
-      <div className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-[1rem]">
-          <h1 className="text-[1.2rem] font-medium">Detail Chapter</h1>
-          {currentIndexEdit !== null ? (
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
-              onClick={() => {
-                setCurrentIndexEdit(null);
-                if (currentIndexEdit !== null)
-                  setPrevIndexEdit(currentIndexEdit);
-              }}
-            >
-              <IconFullscreen w={15} />
-            </div>
-          ) : (
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
-              onClick={() => {
-                if (prevIndexEdit !== null) setCurrentIndexEdit(prevIndexEdit);
-                else setCurrentIndexEdit(0);
-              }}
-            >
-              <IconMinimizeScreen w={15} />
-            </div>
-          )}
-        </div>
-        <div
-          className="cursor-pointer text-main-gray-text duration-300 md:hover:text-black"
-          onClick={() => {
-            const div = document.querySelector(
-              '#tryout-admin #date',
-            ) as HTMLDivElement;
-            if (div) {
-              if (div.clientHeight !== 0) {
-                div.style.height = `${div.clientHeight}px`;
-                setDateTryoutHeight(div.clientHeight);
-                setShowDateTryout(false);
-              } else {
-                setShowDateTryout(true);
-              }
-              div.style.height =
-                div.clientHeight === 0 ? `${dateTryoutHeight}px` : '0px';
-              div.style.overflow = 'hidden';
-              div.style.transition = 'height 0.3s ease';
+
+      {/* Basic Info */}
+      <div className="space-y-4">
+        <div>
+          <Label htmlFor="title">Judul Kursus *</Label>
+          <Input
+            id="title"
+            placeholder="Masukkan judul..."
+            value={chapter?.title || ''}
+            onChange={(e) =>
+              setChapter((prev) => ({ ...prev, title: e.target.value }))
             }
-          }}
-        >
-          {showDateTryout ? <IconUp /> : <IconDown />}
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-[1rem]">
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Judul Chapter</p>
-          <input
-            type="text"
-            placeholder="Judul Chapter"
-            className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-            required
-            value={chapter?.title ? chapter?.title : ''}
-            onChange={(e) => {
-              setChapter((prev) => ({ ...prev, title: e.target.value }));
-            }}
           />
         </div>
-        <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Kategori</p>
+
+        <div>
+          <Label htmlFor="category">Kategori *</Label>
           <Select
             value={chapter?.categoryId || ''}
             onValueChange={(value) =>
-              value && setChapter((prev) => ({ ...prev, categoryId: value }))
+              setChapter((prev) => ({ ...prev, categoryId: value }))
             }
           >
-            <SelectTrigger className="h-full min-w-[63px] rounded-[.8rem] border-none bg-white shadow-none outline-none">
-              <SelectValue placeholder="Kategori" />
+            <SelectTrigger>
+              <SelectValue placeholder="Pilih kategori..." />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem
-                value="placeholder"
-                disabled
-              >
-                Kategori
-              </SelectItem>
-              {category?.map((item, index) => (
+              {category?.map((item) => (
                 <SelectItem
-                  key={index}
+                  key={item.id}
                   value={item.id}
                 >
                   {item.name}
@@ -217,162 +165,156 @@ const ChapterOption = ({
             </SelectContent>
           </Select>
         </div>
-      </div>
-      <div className="flex flex-col gap-[.5rem]">
-        <p className="font-medium">Urutan Chapter</p>
-        <input
-          type="number"
-          placeholder="Urutan Chapter"
-          className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-          required
-          value={chapter?.number ? chapter?.number : ''}
-          onChange={(e) => {
-            setChapter((prev) => ({
-              ...prev,
-              number: parseInt(e.target.value),
-            }));
-          }}
-        />
-      </div>
-      <div className="my-[1rem] h-[1px] w-full bg-main-gray-disabled/60" />
-      {chapter?.categoryId && (
-        <>
-          <div
-            id="session"
-            className="flex flex-col gap-[.5rem]"
-          >
-            <div className="flex items-center justify-between">
-              <h1 className="text-[1.1rem] font-medium">Daftar Sub-chapter</h1>
-              <div
-                className="cursor-pointer rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-white duration-300 md:hover:bg-main-hover md:active:bg-main"
-                onClick={addSesi}
-              >
-                Tambah sub-chapter
-              </div>
-            </div>
-            {subChapter?.map((item, sessionIndex: number) => (
-              <div
-                key={sessionIndex}
-                className="flex w-full gap-[1rem]"
-              >
-                <div className="overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
-                  <input
-                    type="text"
-                    defaultValue={`${sessionIndex + 1}`}
-                    required
-                    className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
-                  />
-                  <Select
-                    value={`${sessionIndex + 1}`}
-                    onValueChange={(value) => {
-                      const fixValue = parseInt(value) - 1;
 
-                      const currentSessions = [...subChapter];
-
-                      const [movedSession] = currentSessions.splice(
-                        sessionIndex,
-                        1,
-                      );
-
-                      currentSessions.splice(fixValue, 0, movedSession);
-
-                      setSubChapter([...currentSessions]);
-                    }}
-                  >
-                    <SelectTrigger className="h-full min-w-[63px] rounded-[.8rem] border-none bg-white shadow-none outline-none">
-                      <SelectValue placeholder="Kategori" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem
-                        value="placeholder"
-                        disabled
-                      >
-                        Urutan Sesi
-                      </SelectItem>
-                      {Array.from({ length: subChapter.length }).map(
-                        (_, index) => (
-                          <SelectItem
-                            key={index}
-                            value={`${index + 1}`}
-                          >
-                            {index + 1}
-                          </SelectItem>
-                        ),
-                      )}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="flex w-full items-center justify-between rounded-[.8rem] bg-white px-[1rem] py-[.8rem]">
-                  <p>
-                    {!item.title || item.title === '' ? '.....' : item.title}
-                  </p>
-                  <p>{!item.type ? '.....' : item.type}</p>
-                </div>
-                <div
-                  className="shrink-0 cursor-pointer px-[1rem] py-[.8rem] text-main-gray-text duration-300 md:hover:text-black"
-                  onClick={() => {
-                    setCurrentIndexEdit(sessionIndex);
-                    setQuestionIndex(0);
-                    // if (item.assessmentType) setAssesmentType(item.assessmentType);
-                  }}
-                >
-                  Edit
-                </div>
-              </div>
-            ))}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="number">Urutan</Label>
+            <Input
+              id="number"
+              type="number"
+              placeholder="1"
+              value={chapter?.number || ''}
+              onChange={(e) =>
+                setChapter((prev) => ({
+                  ...prev,
+                  number: parseInt(e.target.value) || 0,
+                }))
+              }
+            />
           </div>
-          <div className="my-[1rem] h-[1px] w-full bg-main-gray-disabled/60" />
-          <div className="grid w-full grid-cols-2 gap-[1rem]">
-            <div
-              className="flex w-full shrink-0 cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
-              onClick={() => {
-                setOpenDelete(true);
-              }}
+          <div>
+            <Label htmlFor="status">Status</Label>
+            <Select
+              value={chapter?.status || ''}
+              onValueChange={(value) =>
+                setChapter((prev) => ({
+                  ...prev,
+                  status: value as 'PUBLIC' | 'PRIVATE',
+                }))
+              }
             >
-              Hapus
-            </div>
-            <div className="relative w-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
-              <input
-                type="text"
-                defaultValue={chapter?.status ? `${chapter?.status}` : ''}
-                required
-                className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
-              />
-              <Select
-                value={chapter?.status ? `${chapter?.status}` : 'placeholder'}
-                onValueChange={(value) => {
-                  setChapter((prev) => ({
-                    ...prev,
-                    status: value as 'PUBLIC' | 'PRIVATE',
-                  }));
-                }}
-              >
-                <SelectTrigger className="h-full w-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem
-                    value="placeholder"
-                    disabled
-                  >
-                    Status
-                  </SelectItem>
-                  <SelectItem value="PUBLIC">PUBLIC</SelectItem>
-                  <SelectItem value="PRIVATE">PRIVATE</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <SelectTrigger>
+                <SelectValue placeholder="Status..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="PUBLIC">
+                  <div className="flex items-center gap-2">
+                    <Eye className="h-4 w-4" />
+                    Public
+                  </div>
+                </SelectItem>
+                <SelectItem value="PRIVATE">
+                  <div className="flex items-center gap-2">
+                    <EyeOff className="h-4 w-4" />
+                    Private
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          <div className="flex h-[45px] w-full items-center justify-center">
-            <button
-              type="submit"
-              className="h-full w-full rounded-[.8rem] bg-main text-white duration-300 md:hover:bg-main-hover md:active:bg-main"
+        </div>
+      </div>
+
+      {/* Sub Chapters */}
+      {chapter?.categoryId && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <Label>Sub Chapters ({subChapter.length})</Label>
+            <Button
+              onClick={addSubChapter}
+              size="sm"
+              variant="outline"
               disabled={isLoading}
             >
-              Simpan
-            </button>
+              <Plus className="h-4 w-4 mr-1" />
+              Tambah
+            </Button>
           </div>
-        </>
+
+          {subChapter.length === 0 ? (
+            <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
+              <p className="text-sm">Belum ada sub chapter</p>
+              <Button
+                onClick={addSubChapter}
+                size="sm"
+                className="mt-2"
+                disabled={isLoading}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Tambah Sub Chapter
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {subChapter.map((item, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    'p-3 border rounded-lg cursor-pointer transition-all hover:shadow-sm',
+                    currentIndexEdit === index
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200',
+                  )}
+                  onClick={() => {
+                    setCurrentIndexEdit(index);
+                    setQuestionIndex(0);
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-medium text-sm">
+                        {item.title || `Sub Chapter ${index + 1}`}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {item.type || 'Tipe belum dipilih'}
+                        {item.spendTime && ` • ${item.spendTime} menit`}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {item.type === 'TRYOUT' && item.Questions && (
+                        <span className="text-xs text-gray-500">
+                          {item.Questions.length} soal
+                        </span>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeSubChapter(index);
+                        }}
+                        className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                        disabled={isLoading}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Actions */}
+      <div className="flex gap-3 pt-4 border-t">
+        <Button
+          variant="outline"
+          onClick={() => setOpenDelete(true)}
+          className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50"
+          disabled={isLoading}
+        >
+          <Trash2 className="h-4 w-4 mr-2" />
+          Hapus Kursus
+        </Button>
+      </div>
+
+      {/* Helper Text */}
+      {!chapter?.categoryId && (
+        <div className="text-sm text-gray-500 bg-blue-50 p-3 rounded-lg">
+          💡 Pilih kategori terlebih dahulu untuk menambahkan sub chapter
+        </div>
       )}
     </div>
   );

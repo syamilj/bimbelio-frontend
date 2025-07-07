@@ -1,13 +1,17 @@
 'use client';
-import { useAppContext } from '@/components/provider/provider-app';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import LoadingPageWithText, { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { cn } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import { Category } from '@/types/database';
 import 'katex/dist/katex.min.css';
+import { ArrowLeft, Check, Save } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ChapterOption from './_component/chapter-option';
 import SubChapterOption from './_component/sub-chapter-option';
@@ -34,27 +38,6 @@ export interface QuestionProps {
   Answers: AnswerProps[];
 }
 
-// export interface SubChapterProps {
-//     categoryId?: string;
-//     category?: string;
-//     name?: string;
-//     description?: string;
-//     duration?: number | string;
-//     thresholdValue?: number;
-//     assessmentType?: string;
-//     Questions: QuestionProps[]
-// }
-
-// export interface Category {
-//     image: string | null;
-//     id: string;
-//     description: string | null;
-//     createAt: Date;
-//     updateAt: Date;
-//     name: string;
-//     slug: string;
-// }
-
 export interface SubChapterProps {
   number?: string;
   title?: string;
@@ -70,56 +53,47 @@ export interface SubChapterProps {
 }
 
 const Index = () => {
+  const router = useRouter();
+
   const [showDetailSubChapter, setShowDetailSubChapter] =
     useState<boolean>(true);
-
   const [currentIndexEdit, setCurrentIndexEdit] = useState<number | null>(null);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
-
   const [chapter, setChapter] = useState<ChapterProps | null>(null);
   const [subChapter, setSubChapter] = useState<SubChapterProps[]>([]);
 
   const EditSubChapter =
     currentIndexEdit !== null ? subChapter[currentIndexEdit] : null;
-
   const [assessmentType, setAssesmentType] = useState<string>('+5/0');
-
-  // const { mutate: createCourse, isPending: isLoading } =
-  //   api.course.createCourse.useMutation({
-  //     onSuccess(data, variables) {
-  //       alert('Success');
-  //       resetCourse({ deleteFile: false });
-  //     },
-  //     onError(error, variables) {
-  //       alert(`${error.message}`);
-  //     },
-  //   });
 
   const { mutate: createCourse, isLoading } = useMutation(
     '/course/createCourse',
     'post',
     {
       onSuccess() {
-        alert('Success');
+        toaster({
+          title: 'Berhasil!',
+          description: 'Kursus berhasil dibuat',
+          condition: 'success',
+          duration: 3000,
+        });
         resetCourse({ deleteFile: false });
+        router.push(`/${website_sub_category_id}/admin/course`);
       },
       onError({ message }) {
-        alert(`${message}`);
+        toaster({
+          title: 'Gagal!',
+          description: message,
+          condition: 'warning',
+          duration: 3000,
+        });
       },
     },
   );
 
-  // const { data: category, isPending: isLoadingCategory } =
-  //   api.category.getAllCategoryAdminCourse.useQuery(undefined, {
-  //     refetchOnWindowFocus: false,
-  //     refetchOnMount: false,
-  //   });
-
   const { data: category, isLoading: isLoadingCategory } = useGet<Category[]>(
     '/category/getAllCategoryAdminCourse',
   );
-
-  const { minimizeSidebar } = useAppContext();
 
   const resetCourse = async ({ deleteFile }: { deleteFile: boolean }) => {
     setChapter(null);
@@ -350,69 +324,137 @@ const Index = () => {
     return <Spinner />;
   }
 
+  // Calculate progress
+  const getProgress = () => {
+    let progress = 0;
+    if (chapter?.title && chapter?.categoryId) progress += 25;
+    if (chapter?.number && chapter?.status) progress += 25;
+    if (subChapter.length > 0) progress += 25;
+    if (subChapter.some((sc) => sc.title && sc.spendTime && sc.type))
+      progress += 25;
+    return progress;
+  };
+
+  const canSave = () => {
+    return (
+      chapter?.title &&
+      chapter?.categoryId &&
+      chapter?.number &&
+      chapter?.status &&
+      subChapter.length > 0 &&
+      subChapter.every((sc) => sc.title && sc.spendTime && sc.type)
+    );
+  };
+
   return (
     <>
       <LoadingPageWithText
         loading={isLoading}
-        heading="Menyimpan Course Chapter..."
+        heading="Menyimpan kursus..."
       />
-      <div
-        className={cn(
-          'fixed left-0 top-[80px] h-full w-full bg-workspace duration-300',
-          minimizeSidebar && 'pl-[calc(73px+1rem)]',
-          !minimizeSidebar && 'pl-[calc(254px+1rem)]',
-        )}
-      >
-        <form
-          id="tryout-admin"
-          className="flex w-full"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
-          <div
-            className={cn(
-              'col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-[1rem] pt-[1rem] duration-300',
-              currentIndexEdit === null && 'col-span-5 w-[100%]',
-              currentIndexEdit !== null && !showDetailSubChapter && 'w-0',
-            )}
-          >
-            <ChapterOption
-              chapter={chapter}
-              subChapter={subChapter}
-              setSubChapter={setSubChapter}
-              setChapter={setChapter}
-              currentIndexEdit={currentIndexEdit}
-              setCurrentIndexEdit={setCurrentIndexEdit}
-              setQuestionIndex={setQuestionIndex}
-              isLoading={isLoading}
-              resetCourse={resetCourse}
-              category={category}
-            />
+
+      <div className=" bg-gray-50">
+        {/* Simplified Header */}
+        <div className="bg-white border-b sticky top-0 z-40">
+          <div className="max-w-6xl mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => router.back()}
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Kembali
+                </Button>
+                <div>
+                  <h1 className="text-xl font-bold">
+                    {chapter?.title || 'Kursus Baru'}
+                  </h1>
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <div className="w-32 bg-gray-200 rounded-full h-1.5">
+                      <div
+                        className="bg-blue-500 h-1.5 rounded-full transition-all"
+                        style={{ width: `${getProgress()}%` }}
+                      />
+                    </div>
+                    <span>{getProgress()}% selesai</span>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                onClick={handleSubmit}
+                disabled={!canSave() || isLoading}
+                className="gap-2"
+              >
+                <Save className="h-4 w-4" />
+                Simpan
+              </Button>
+            </div>
           </div>
-          <div
-            className={cn(
-              'relative col-span-3 mt-[1rem] h-[90vh] w-[60%] duration-300',
-              currentIndexEdit !== null &&
-                !showDetailSubChapter &&
-                'ml-[-1rem] w-full',
-              currentIndexEdit === null && 'w-0',
-            )}
-          >
-            <SubChapterOption
-              EditSubChapter={EditSubChapter}
-              setSubChapter={setSubChapter}
-              currentIndexEdit={currentIndexEdit}
-              setCurrentIndexEdit={setCurrentIndexEdit}
-              showDetailSubChapter={showDetailSubChapter}
-              setShowDetailSubChapter={setShowDetailSubChapter}
-              assessmentType={assessmentType}
-              questionIndex={questionIndex}
-              setQuestionIndex={setQuestionIndex}
-            />
+        </div>
+
+        {/* Main Content - Simplified Layout */}
+        <div className="max-w-6xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left: Chapter Setup */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-24">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  {chapter?.title && chapter?.categoryId ? (
+                    <Check className="h-5 w-5 text-green-500" />
+                  ) : (
+                    <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                  )}
+                  Setup Kursus
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ChapterOption
+                  chapter={chapter}
+                  subChapter={subChapter}
+                  setSubChapter={setSubChapter}
+                  setChapter={setChapter}
+                  currentIndexEdit={currentIndexEdit}
+                  setCurrentIndexEdit={setCurrentIndexEdit}
+                  setQuestionIndex={setQuestionIndex}
+                  isLoading={isLoading}
+                  resetCourse={resetCourse}
+                  category={category}
+                />
+              </CardContent>
+            </Card>
           </div>
-        </form>
+
+          {/* Right: Sub Chapter Editor */}
+          <div className="lg:col-span-2">
+            {currentIndexEdit !== null ? (
+              <SubChapterOption
+                EditSubChapter={EditSubChapter}
+                setSubChapter={setSubChapter}
+                currentIndexEdit={currentIndexEdit}
+                setCurrentIndexEdit={setCurrentIndexEdit}
+                showDetailSubChapter={showDetailSubChapter}
+                setShowDetailSubChapter={setShowDetailSubChapter}
+                assessmentType={assessmentType}
+                questionIndex={questionIndex}
+                setQuestionIndex={setQuestionIndex}
+              />
+            ) : (
+              <Card className="h-96 flex items-center justify-center">
+                <div className="text-center text-gray-500">
+                  <h3 className="text-lg font-medium mb-2">
+                    Pilih Sub Chapter
+                  </h3>
+                  <p className="text-sm">
+                    Pilih atau buat sub chapter untuk mulai editing
+                  </p>
+                </div>
+              </Card>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );

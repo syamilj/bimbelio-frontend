@@ -379,7 +379,7 @@ const Sidebar = ({ category }: { category: any }) => {
                         {session?.user.name || 'User'}
                       </p>
                       <p className="text-xs text-slate-500">
-                        {session?.user.tier || 'Free User'}
+                        {session?.user.tier || 'Gratis'}
                       </p>
                     </div>
                   </TooltipContent>
@@ -410,7 +410,7 @@ const Sidebar = ({ category }: { category: any }) => {
                     </p>
                     <div className="flex items-center gap-2">
                       <p className="text-xs text-slate-500">
-                        {session?.user.tier || 'Free User'}
+                        {session?.user.tier || 'Gratis'}
                       </p>
                       {session?.user.tier === 'PREMIUM' && (
                         <Crown className="w-3 h-3 text-yellow-500" />
@@ -542,7 +542,7 @@ const Sidebar = ({ category }: { category: any }) => {
               </h3>
               <div className="flex items-center gap-2">
                 <p className="text-sm text-slate-500">
-                  {session?.user.tier || 'Free User'}
+                  {session?.user.tier || 'Gratis'}
                 </p>
                 {session?.user.tier === 'PREMIUM' && (
                   <Crown className="w-4 h-4 text-yellow-500" />

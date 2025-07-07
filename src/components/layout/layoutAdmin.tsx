@@ -64,7 +64,7 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
               !minimizeSidebar ? 'md:pl-72' : 'md:pl-20',
             )}
           >
-            <div className="p-6">{children}</div>
+            <div>{children}</div>
           </main>
         </div>
       </CheckSubscription>

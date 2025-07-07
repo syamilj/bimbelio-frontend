@@ -1,5 +1,9 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import ReactMarkdown from '@/components/ui/react-markdown';
 import {
   Select,
@@ -8,11 +12,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { env } from '@/env.mjs';
 import { cn, replaceLatexNotation } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
-import { CircleCheck, CircleX } from 'lucide-react';
+import {
+  AlertCircle,
+  CircleCheck,
+  CircleX,
+  Eye,
+  EyeOff,
+  ImageIcon,
+  Trash2,
+  Upload,
+} from 'lucide-react';
 import React, { SetStateAction, useCallback, useState } from 'react';
 import { SubChapterProps } from '../page';
 
@@ -503,442 +517,430 @@ const SubChapterQuestion = ({
   };
 
   if (!EditSubChapter || EditSubChapter?.Questions.length < 1) {
-    return null;
+    return (
+      <Card>
+        <CardContent className="py-12 text-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+            <AlertCircle className="w-8 h-8 text-gray-400" />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Belum Ada Soal
+          </h3>
+          <p className="text-gray-500 mb-4">
+            Tambahkan soal pertama untuk memulai membuat tryout
+          </p>
+        </CardContent>
+      </Card>
+    );
   }
 
-  return (
-    <div className="flex items-start">
-      <div className="flex h-fit items-center justify-center px-[1rem] text-[1.2rem] font-medium">
-        {/* {EditSubChapter.Questions[questionIndex].number} */}
+  const currentQuestion = EditSubChapter.Questions[questionIndex];
 
-        <Select
-          value={`${EditSubChapter.Questions[questionIndex].number}`}
-          onValueChange={(value) => {
-            value && changeQuestionOrder(value, questionIndex);
-          }}
-        >
-          <SelectTrigger className="h-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
-            <SelectValue placeholder="Urutan Soal" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem
-              value="placeholder"
-              disabled
-            >
-              Urutan Soal
-            </SelectItem>
-            {EditSubChapter.Questions.map((quest, i) => (
-              <SelectItem
-                key={i}
-                value={`${quest.number}`}
-              >
-                {quest.number}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex w-full flex-col gap-[1rem]">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <input
-              type="text"
-              className="rounded-[.8rem] border border-transparent px-[1rem] py-[.5rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              placeholder="Subcategory soal"
-              value={
-                EditSubChapter.Questions[questionIndex].subCategory
-                  ? EditSubChapter.Questions[questionIndex].subCategory
-                  : ''
-              }
-              onChange={(e) => onChangeSubcategoryQuestion(e, questionIndex)}
-            />
-            <input
-              type="text"
-              className="rounded-[.8rem] border border-transparent px-[1rem] py-[.5rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              placeholder="SubSubCategory soal"
-              value={
-                EditSubChapter?.Questions[questionIndex].subSubCategory
-                  ? EditSubChapter?.Questions[questionIndex].subSubCategory
-                  : ''
-              }
-              onChange={(e) => onChangeSubSubCategoryQuestion(e, questionIndex)}
-            />
-          </div>
-          <div
-            className="shrink-0 cursor-pointer rounded-[.8rem] bg-red-100 px-[1.5rem] py-[.5rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
-            onClick={() => {
-              deleteQuestion(questionIndex);
-            }}
-          >
-            Hapus
-          </div>
-        </div>
-        <div className="relative mt-[-.5rem]">
-          {showPreview === questionIndex ? (
-            <>
-              <div className="absolute top-[calc(100%-2.5rem)] z-[1] h-[250px] w-full overflow-y-auto rounded-[.8rem] border bg-white p-[.5rem] shadow-default">
-                <ReactMarkdown
-                  value={replaceLatexNotation(
-                    EditSubChapter?.Questions[questionIndex].question,
-                  )}
-                />
+  return (
+    <div className="space-y-6">
+      {/* Question Header */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center font-bold">
+                {currentQuestion.number}
               </div>
-              <textarea
-                id={`question-${questionIndex}`}
-                placeholder="Soal"
-                className="relative z-0 h-[200px] w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-                required
-                value={EditSubChapter.Questions[questionIndex].question}
-                onChange={(e) => {
-                  onChangeQuestion(e, questionIndex);
+              <span>Soal {currentQuestion.number}</span>
+            </CardTitle>
+            <div className="flex items-center gap-2">
+              <Select
+                value={`${currentQuestion.number}`}
+                onValueChange={(value) => {
+                  value && changeQuestionOrder(value, questionIndex);
                 }}
-                onFocus={() => setShowPreview(questionIndex)}
-                onBlur={() => {
-                  setShowPreview(99999);
-                }}
+              >
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {EditSubChapter.Questions.map((quest, i) => (
+                    <SelectItem
+                      key={i}
+                      value={`${quest.number}`}
+                    >
+                      Soal {quest.number}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => deleteQuestion(questionIndex)}
+                className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                <Trash2 className="h-4 w-4" />
+                Hapus
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
+      </Card>
+
+      {/* Question Categories */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Kategori Soal</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="sub-category">Sub Kategori</Label>
+              <Input
+                id="sub-category"
+                placeholder="Contoh: Aljabar, Geometri"
+                value={currentQuestion.subCategory || ''}
+                onChange={(e) => onChangeSubcategoryQuestion(e, questionIndex)}
               />
-            </>
-          ) : (
-            <div
-              className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-              onClick={() => {
-                setShowPreview(questionIndex);
-                setTimeout(() => {
-                  document.getElementById(`question-${questionIndex}`)?.focus();
-                }, 200);
-              }}
-            >
-              <input
-                type="text"
-                defaultValue={EditSubChapter.Questions[questionIndex].question}
-                required
-                className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
-              />
-              <ReactMarkdown
-                value={
-                  replaceLatexNotation(
-                    EditSubChapter?.Questions[questionIndex].question,
-                  ).length > 0
-                    ? replaceLatexNotation(
-                        EditSubChapter?.Questions[questionIndex].question,
-                      )
-                    : '.....'
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="sub-sub-category">Sub Sub Kategori</Label>
+              <Input
+                id="sub-sub-category"
+                placeholder="Contoh: Persamaan Linear"
+                value={currentQuestion.subSubCategory || ''}
+                onChange={(e) =>
+                  onChangeSubSubCategoryQuestion(e, questionIndex)
                 }
               />
             </div>
-          )}
-          {EditSubChapter.Questions[questionIndex].image ? (
-            <div className="flex w-full gap-[1rem]">
-              <div
-                className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
-                onClick={() => {
-                  if (!EditSubChapter.Questions) {
-                    return;
-                  }
-                  const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSubChapter.Questions[questionIndex].image} "")`;
-                  navigator.clipboard.writeText(image);
-                  addImageToQuestion(image, questionIndex);
-                }}
-              >
-                Add Image
-              </div>
-              <div
-                className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
-                onClick={() => {
-                  document.getElementById(`image-${questionIndex}`)?.click();
-                }}
-              >
-                <input
-                  id={`image-${questionIndex}`}
-                  type="file"
-                  className="w-0 overflow-auto p-0"
-                  onChange={(e) => {
-                    onChangeQuestionImage(e, questionIndex);
-                  }}
-                />
-                Change Image
-              </div>
-              <div
-                className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 px-[1rem] py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
-                onClick={() => {
-                  if (!EditSubChapter.Questions) {
-                    return;
-                  }
-                  const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${EditSubChapter.Questions[questionIndex].image} "")`;
-                  navigator.clipboard.writeText(image);
-                  deleteImageQuestion(questionIndex);
-                }}
-              >
-                Delete Image
-              </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Question Content */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base">Soal</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                setShowPreview(
+                  showPreview === questionIndex ? 99999 : questionIndex,
+                )
+              }
+              className="gap-2"
+            >
+              {showPreview === questionIndex ? (
+                <>
+                  <EyeOff className="h-4 w-4" />
+                  Edit
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4" />
+                  Preview
+                </>
+              )}
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {showPreview === questionIndex ? (
+            <div className="min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50">
+              <ReactMarkdown
+                value={replaceLatexNotation(currentQuestion.question)}
+              />
             </div>
           ) : (
-            <div
-              className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
-              onClick={() => {
-                document.getElementById(`image-${questionIndex}`)?.click();
-              }}
-            >
+            <Textarea
+              placeholder="Tulis soal di sini... Mendukung Markdown dan LaTeX"
+              value={currentQuestion.question}
+              onChange={(e) => onChangeQuestion(e, questionIndex)}
+              className="min-h-[200px] font-mono"
+            />
+          )}
+
+          {/* Image Upload Section */}
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+            <div className="text-center">
+              <ImageIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+              {currentQuestion.image ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-green-600 font-medium">
+                    Gambar terupload: {currentQuestion.image}
+                  </p>
+                  <div className="flex justify-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image} "")`;
+                        addImageToQuestion(image, questionIndex);
+                      }}
+                      className="gap-2"
+                    >
+                      <ImageIcon className="h-4 w-4" />
+                      Sisipkan ke Soal
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        document
+                          .getElementById(`image-${questionIndex}`)
+                          ?.click()
+                      }
+                      className="gap-2"
+                    >
+                      <Upload className="h-4 w-4" />
+                      Ganti Gambar
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => deleteImageQuestion(questionIndex)}
+                      className="gap-2 text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Hapus
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-500">
+                    Upload gambar untuk soal (opsional)
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      document.getElementById(`image-${questionIndex}`)?.click()
+                    }
+                    className="gap-2"
+                  >
+                    <Upload className="h-4 w-4" />
+                    Upload Gambar
+                  </Button>
+                </div>
+              )}
               <input
                 id={`image-${questionIndex}`}
                 type="file"
-                className="w-0 overflow-auto p-0"
-                onChange={(e) => {
-                  onChangeQuestionImage(e, questionIndex);
-                }}
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => onChangeQuestionImage(e, questionIndex)}
               />
-              Upload Gambar
             </div>
-          )}
-        </div>
-        <div className="flex flex-col gap-[1rem]">
-          {EditSubChapter.Questions[questionIndex].Answers?.map(
-            (item2, answerIndex: number) => (
-              <div
-                key={answerIndex}
-                className="flex items-center gap-[1rem]"
-              >
-                <div className="h-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Answer Options */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Pilihan Jawaban</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {currentQuestion.Answers?.map((answer, answerIndex) => (
+            <div
+              key={answerIndex}
+              className="space-y-3"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <Select
                     value={`${answerIndex + 1}`}
-                    onValueChange={(value) => {
-                      changeAnswerOrder(value, answerIndex);
-                    }}
+                    onValueChange={(value) =>
+                      changeAnswerOrder(value, answerIndex)
+                    }
                   >
-                    <SelectTrigger className="h-full rounded-[.8rem] border-none bg-white shadow-none outline-none">
-                      <SelectValue placeholder="Urutan Jawaban" />
+                    <SelectTrigger className="w-20">
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem
-                        value="placeholder"
-                        disabled
-                      >
-                        Urutan Jawaban
-                      </SelectItem>
-                      <SelectItem value="1">1</SelectItem>
-                      <SelectItem value="2">2</SelectItem>
-                      <SelectItem value="3">3</SelectItem>
-                      <SelectItem value="4">4</SelectItem>
-                      <SelectItem value="5">5</SelectItem>
+                      {[1, 2, 3, 4, 5].map((num) => (
+                        <SelectItem
+                          key={num}
+                          value={`${num}`}
+                        >
+                          {String.fromCharCode(64 + num)}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
-                </div>
-                <div className="relative w-full">
-                  {showAnswerPreview === answerIndex ? (
-                    <>
-                      <div className="absolute top-[100%] z-[1] h-[250px] w-full overflow-y-auto rounded-[.8rem] border bg-white p-[.5rem] shadow-default">
-                        <ReactMarkdown
-                          value={replaceLatexNotation(item2.answer)}
-                        />
-                      </div>
-                      <textarea
-                        id={`answer-${answerIndex}`}
-                        placeholder="Jawaban"
-                        className="h-[50px] w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none focus:shadow-default md:hover:shadow-default"
-                        required
-                        value={item2.answer}
-                        onChange={(e) => {
-                          onChangeAnswer(
-                            e.target.value,
-                            questionIndex,
-                            answerIndex,
-                          );
-                        }}
-                        onFocus={() => setShowAnswerPreview(answerIndex)}
-                        onBlur={() => setShowAnswerPreview(9999)}
-                      />
-                    </>
-                  ) : (
-                    <div
-                      className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none focus:shadow-default md:hover:shadow-default"
-                      onClick={() => {
-                        setShowAnswerPreview(answerIndex);
-                        setTimeout(() => {
-                          document
-                            .getElementById(`answer-${answerIndex}`)
-                            ?.focus();
-                        }, 200);
-                      }}
-                    >
-                      <input
-                        type="text"
-                        defaultValue={item2.answer}
-                        required
-                        className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
-                      />
-                      <ReactMarkdown
-                        value={
-                          replaceLatexNotation(item2.answer).length > 0
-                            ? replaceLatexNotation(item2.answer)
-                            : '.....'
-                        }
-                      />
-                    </div>
-                  )}
-                  {/* <textarea placeholder="Jawaban" className="outline-none rounded-[.8rem] px-[1rem] py-[.8rem] h-[50px] w-full border border-transparent focus:shadow-default md:hover:shadow-default " required value={item2.answer} onChange={(e) => { onChangeAnswer(e.target.value, questionIndex, answerIndex) }} onFocus={() => setShowAnswerPreview(answerIndex)} onBlur={() => setShowAnswerPreview(9999)} /> */}
-                </div>
-                <div className="flex h-full items-center gap-[.5rem]">
-                  {Array.from({
-                    length:
-                      assessmentType === '1-5'
-                        ? 5
-                        : assessmentType === '+5/0'
-                          ? 2
-                          : assessmentType === 'IRT'
-                            ? 2
-                            : assessmentType === '+4/-1/0'
-                              ? 2
-                              : 0,
-                  }).map((_: any, i: number) => (
-                    <div
-                      key={i}
-                      className={cn(
-                        'flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-[.8rem] bg-white font-medium text-main-gray-text duration-300 md:hover:bg-main-gray-input md:active:shadow-default',
-                        assessmentType === '1-5' &&
-                          i + 1 === item2.value &&
-                          'bg-main text-white md:hover:bg-main',
-                        assessmentType === '+5/0' &&
-                          i * 5 === item2.value &&
-                          'bg-main text-white md:hover:bg-main',
-                        assessmentType === 'IRT' &&
-                          i * 5 === item2.value &&
-                          'bg-main text-white md:hover:bg-main',
-                        assessmentType === '+4/-1/0' &&
-                          i * 5 + 1 === item2.value + 2 &&
-                          'bg-main text-white md:hover:bg-main',
-                      )}
-                      onClick={() => {
-                        if (assessmentType === '1-5') {
-                          onChangeAnswerValue(
-                            i + 1,
-                            questionIndex,
-                            answerIndex,
-                            item2.value,
-                          );
-                        } else if (assessmentType === '+5/0') {
-                          onChangeAnswerValue(
-                            i * 5,
-                            questionIndex,
-                            answerIndex,
-                            item2.value,
-                          );
-                        } else if (assessmentType === 'IRT') {
-                          onChangeAnswerValue(
-                            i * 5,
-                            questionIndex,
-                            answerIndex,
-                            item2.value,
-                          );
-                        } else if (assessmentType === '+4/-1/0') {
-                          onChangeAnswerValue(
-                            i * 5 - 1,
-                            questionIndex,
-                            answerIndex,
-                            item2.value,
-                          );
-                        } else {
-                          onChangeAnswerValue(
-                            i + 1,
-                            questionIndex,
-                            answerIndex,
-                            item2.value,
-                          );
-                        }
-                      }}
-                    >
-                      {assessmentType === '1-5' ? (
-                        <>{i + 1}</>
-                      ) : assessmentType === '+5/0' ? (
-                        <>{i * 5}</>
-                      ) : assessmentType === 'IRT' && i == 0 ? (
-                        <CircleX />
-                      ) : assessmentType === 'IRT' && i == 1 ? (
-                        <CircleCheck />
-                      ) : assessmentType === '+4/-1/0' && i == 0 ? (
-                        <CircleX />
-                      ) : assessmentType === '+4/-1/0' && i == 1 ? (
-                        <CircleCheck />
-                      ) : (
-                        <>{i + 1}</>
-                      )}
-                    </div>
-                  ))}
+                  <Label className="font-medium">
+                    {String.fromCharCode(65 + answerIndex)}.
+                  </Label>
                 </div>
               </div>
-            ),
+
+              <div className="space-y-3">
+                {showAnswerPreview === answerIndex ? (
+                  <div className="min-h-[80px] p-3 border border-gray-200 rounded-lg bg-gray-50">
+                    <ReactMarkdown
+                      value={replaceLatexNotation(answer.answer)}
+                    />
+                  </div>
+                ) : (
+                  <Textarea
+                    placeholder="Tulis pilihan jawaban..."
+                    value={answer.answer}
+                    onChange={(e) =>
+                      onChangeAnswer(e.target.value, questionIndex, answerIndex)
+                    }
+                    className="min-h-[80px]"
+                  />
+                )}
+
+                <div className="flex items-center justify-between">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setShowAnswerPreview(
+                        showAnswerPreview === answerIndex ? 99999 : answerIndex,
+                      )
+                    }
+                    className="gap-2"
+                  >
+                    {showAnswerPreview === answerIndex ? (
+                      <>
+                        <EyeOff className="h-4 w-4" />
+                        Edit
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="h-4 w-4" />
+                        Preview
+                      </>
+                    )}
+                  </Button>
+
+                  {/* Score Buttons */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Poin:</span>
+                    {Array.from({
+                      length: assessmentType === '1-5' ? 5 : 2,
+                    }).map((_, i) => {
+                      const isSelected =
+                        assessmentType === '1-5'
+                          ? i + 1 === answer.value
+                          : assessmentType === '+5/0'
+                            ? i * 5 === answer.value
+                            : assessmentType === 'IRT'
+                              ? i * 5 === answer.value
+                              : i * 5 - 1 === answer.value;
+
+                      return (
+                        <Button
+                          key={i}
+                          variant={isSelected ? 'default' : 'outline'}
+                          size="sm"
+                          className={cn(
+                            'w-10 h-10 p-0',
+                            isSelected && 'bg-green-500 hover:bg-green-600',
+                          )}
+                          onClick={() => {
+                            if (assessmentType === '1-5') {
+                              onChangeAnswerValue(
+                                i + 1,
+                                questionIndex,
+                                answerIndex,
+                                answer.value,
+                              );
+                            } else if (
+                              assessmentType === '+5/0' ||
+                              assessmentType === 'IRT'
+                            ) {
+                              onChangeAnswerValue(
+                                i * 5,
+                                questionIndex,
+                                answerIndex,
+                                answer.value,
+                              );
+                            } else if (assessmentType === '+4/-1/0') {
+                              onChangeAnswerValue(
+                                i * 5 - 1,
+                                questionIndex,
+                                answerIndex,
+                                answer.value,
+                              );
+                            }
+                          }}
+                        >
+                          {assessmentType === '1-5' ? (
+                            i + 1
+                          ) : assessmentType === '+5/0' ? (
+                            i * 5
+                          ) : assessmentType === 'IRT' && i === 0 ? (
+                            <CircleX className="w-4 h-4" />
+                          ) : assessmentType === 'IRT' && i === 1 ? (
+                            <CircleCheck className="w-4 h-4" />
+                          ) : assessmentType === '+4/-1/0' && i === 0 ? (
+                            <CircleX className="w-4 h-4" />
+                          ) : assessmentType === '+4/-1/0' && i === 1 ? (
+                            <CircleCheck className="w-4 h-4" />
+                          ) : (
+                            i + 1
+                          )}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Explanation */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base">Pembahasan</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                setShowExplanationPreview(
+                  showExplanationPreview === questionIndex
+                    ? 99999
+                    : questionIndex,
+                )
+              }
+              className="gap-2"
+            >
+              {showExplanationPreview === questionIndex ? (
+                <>
+                  <EyeOff className="h-4 w-4" />
+                  Edit
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4" />
+                  Preview
+                </>
+              )}
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {showExplanationPreview === questionIndex ? (
+            <div className="min-h-[150px] p-4 border border-gray-200 rounded-lg bg-gray-50">
+              <ReactMarkdown
+                value={replaceLatexNotation(currentQuestion.explanation || '')}
+              />
+            </div>
+          ) : (
+            <Textarea
+              placeholder="Tulis pembahasan dan penjelasan jawaban yang benar..."
+              value={currentQuestion.explanation || ''}
+              onChange={(e) => onChangeExplanation(e, questionIndex)}
+              className="min-h-[150px]"
+            />
           )}
-        </div>
-        {showExplanationPreview === questionIndex ? (
-          <textarea
-            id={`explanation-${questionIndex}`}
-            placeholder="Explanation.."
-            className="relative z-0 h-[200px] w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-            required
-            value={EditSubChapter?.Questions[questionIndex].explanation}
-            onChange={(e) => {
-              onChangeExplanation(e, questionIndex);
-            }}
-            onFocus={() => setShowExplanationPreview(questionIndex)}
-            onBlur={() => {
-              setShowExplanationPreview(99999);
-            }}
-          />
-        ) : (
-          <div
-            className=""
-            onClick={() => {
-              setShowExplanationPreview(questionIndex);
-              setTimeout(() => {
-                const input = document.getElementById(
-                  `explanation-${questionIndex}`,
-                );
-                input?.focus();
-              }, 200);
-            }}
-          >
-            <ReactMarkdown
-              value={
-                replaceLatexNotation(
-                  EditSubChapter?.Questions[questionIndex]
-                    .explanation as string,
-                ).length > 0
-                  ? replaceLatexNotation(
-                      EditSubChapter?.Questions[questionIndex]
-                        .explanation as string,
-                    )
-                  : '.....'
-              }
-            />
-          </div>
-        )}
-        {showExplanationPreview === questionIndex && (
-          <div
-            className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
-            onClick={() => {
-              setShowExplanationPreview(questionIndex);
-              setTimeout(() => {
-                document
-                  .getElementById(`explanation-${questionIndex}`)
-                  ?.focus();
-              }, 200);
-            }}
-          >
-            <ReactMarkdown
-              value={
-                replaceLatexNotation(
-                  EditSubChapter?.Questions[questionIndex]
-                    .explanation as string,
-                ).length > 0
-                  ? replaceLatexNotation(
-                      EditSubChapter?.Questions[questionIndex]
-                        .explanation as string,
-                    )
-                  : '.....'
-              }
-            />
-          </div>
-        )}
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
