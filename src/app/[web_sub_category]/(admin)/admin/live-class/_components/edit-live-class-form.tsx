@@ -25,6 +25,7 @@ import {
   MockLiveClass,
   mockLiveClasses,
   mockTutorsForForm,
+  URLReferenceInput,
 } from '@/lib/mock-data/live-class';
 import {
   AlertTriangle,
@@ -32,6 +33,7 @@ import {
   BookOpen,
   Calendar,
   FileText,
+  Link,
   Play,
   Save,
   Users,
@@ -93,6 +95,22 @@ export function EditLiveClassForm({ classId }: EditLiveClassFormProps) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // URL Reference Form States
+  const [showURLReadingForm, setShowURLReadingForm] = useState(false);
+  const [showURLRecordingForm, setShowURLRecordingForm] = useState(false);
+  const [urlReadingData, setUrlReadingData] = useState<URLReferenceInput>({
+    title: '',
+    description: '',
+    url: '',
+    type: 'website',
+  });
+  const [urlRecordingData, setUrlRecordingData] = useState<URLReferenceInput>({
+    title: '',
+    description: '',
+    url: '',
+    type: 'video',
+  });
+
   // Get subjects dynamically from mock data
   const subjects = getSubjectList();
 
@@ -152,10 +170,8 @@ export function EditLiveClassForm({ classId }: EditLiveClassFormProps) {
           description: a.description,
           duration: a.duration.toString(),
         })),
-        // For now, treat all existing references as reading references
-        // In the future, this should be split in the mock data
-        readingReferences: [],
-        recordingReferences: [],
+        readingReferences: existingClass.readingReferences || [],
+        recordingReferences: existingClass.recordingReferences || [],
       });
     }
   }, [classId]);
@@ -244,12 +260,15 @@ export function EditLiveClassForm({ classId }: EditLiveClassFormProps) {
   const addReadingReference = (subchapter: any, course: any, chapter: any) => {
     const newReference: CourseReference = {
       id: `ref-${Date.now()}`,
+      source: 'subchapter',
       courseId: course.id,
       courseTitle: course.title,
       chapterId: chapter.id,
       chapterTitle: chapter.title,
       subchapterId: subchapter.id,
       subchapterTitle: subchapter.title,
+      title: subchapter.title,
+      description: subchapter.content,
       type: subchapter.type,
       content: subchapter.content,
       fileUrl: subchapter.fileUrl,
@@ -288,12 +307,15 @@ export function EditLiveClassForm({ classId }: EditLiveClassFormProps) {
   ) => {
     const newReference: CourseReference = {
       id: `ref-${Date.now()}`,
+      source: 'subchapter',
       courseId: course.id,
       courseTitle: course.title,
       chapterId: chapter.id,
       chapterTitle: chapter.title,
       subchapterId: subchapter.id,
       subchapterTitle: subchapter.title,
+      title: subchapter.title,
+      description: subchapter.content,
       type: subchapter.type,
       content: subchapter.content,
       fileUrl: subchapter.fileUrl,
@@ -339,6 +361,73 @@ export function EditLiveClassForm({ classId }: EditLiveClassFormProps) {
         (ref) => ref.id !== id,
       ),
     }));
+  };
+
+  // URL Reference Functions
+  const addURLReadingReference = (urlData: URLReferenceInput) => {
+    const newReference: CourseReference = {
+      id: `url-ref-${Date.now()}`,
+      source: 'url',
+      title: urlData.title,
+      description: urlData.description,
+      url: urlData.url,
+      type: urlData.type,
+      content: urlData.description,
+      createdAt: new Date(),
+    };
+
+    setFormData((prev) => ({
+      ...prev,
+      readingReferences: [...prev.readingReferences, newReference],
+    }));
+
+    // Reset form and hide
+    setUrlReadingData({
+      title: '',
+      description: '',
+      url: '',
+      type: 'website',
+    });
+    setShowURLReadingForm(false);
+
+    toaster({
+      title: 'URL Reference Ditambahkan',
+      description: `"${urlData.title}" berhasil ditambahkan ke referensi bacaan`,
+      condition: 'success',
+    });
+  };
+
+  const addURLRecordingReference = (urlData: URLReferenceInput) => {
+    const newReference: CourseReference = {
+      id: `url-ref-${Date.now()}`,
+      source: 'url',
+      title: urlData.title,
+      description: urlData.description,
+      url: urlData.url,
+      type: urlData.type,
+      content: urlData.description,
+      createdAt: new Date(),
+    };
+
+    setFormData((prev) => ({
+      ...prev,
+      recordingReferences: [...prev.recordingReferences, newReference],
+    }));
+
+    // Reset form and hide
+    setUrlRecordingData({
+      title: '',
+      description: '',
+      url: '',
+      type: 'video',
+    });
+    setShowURLRecordingForm(false);
+
+    toaster({
+      title: 'URL Reference Ditambahkan',
+      description: `"${urlData.title}" berhasil ditambahkan ke referensi rekaman`,
+      condition: 'success',
+    });
   };
 
   // Get filtered courses based on selected subject
@@ -1146,6 +1235,384 @@ export function EditLiveClassForm({ classId }: EditLiveClassFormProps) {
                   Pilih mata pelajaran terlebih dahulu untuk melihat course
                   references
                 </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* URL References */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Link className="h-5 w-5" />
+              References dari URL (Opsional)
+            </CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              Tambahkan referensi bacaan atau rekaman dari URL eksternal
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-medium">URL References</Label>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowURLReadingForm(true)}
+                  className="text-xs"
+                >
+                  <Link className="h-3 w-3 mr-1" />
+                  <FileText className="h-3 w-3 mr-1" />
+                  Tambah URL Bacaan
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowURLRecordingForm(true)}
+                  className="text-xs"
+                >
+                  <Link className="h-3 w-3 mr-1" />
+                  <Play className="h-3 w-3 mr-1" />
+                  Tambah URL Rekaman
+                </Button>
+              </div>
+            </div>
+
+            {/* URL Reading Form */}
+            {showURLReadingForm && (
+              <Card className="border-blue-200 bg-blue-50">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      <FileText className="h-4 w-4 text-blue-600" />
+                      Tambah URL Bacaan
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowURLReadingForm(false)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label className="text-xs">Judul *</Label>
+                      <Input
+                        placeholder="e.g., Panduan Matematika Dasar"
+                        value={urlReadingData.title}
+                        onChange={(e) =>
+                          setUrlReadingData((prev) => ({
+                            ...prev,
+                            title: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs">Tipe</Label>
+                      <Select
+                        value={urlReadingData.type}
+                        onValueChange={(value) =>
+                          setUrlReadingData((prev) => ({
+                            ...prev,
+                            type: value as any,
+                          }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="website">Website</SelectItem>
+                          <SelectItem value="pdf">PDF</SelectItem>
+                          <SelectItem value="document">Dokumen</SelectItem>
+                          <SelectItem value="article">Artikel</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs">URL *</Label>
+                    <Input
+                      type="url"
+                      placeholder="https://example.com/resource"
+                      value={urlReadingData.url}
+                      onChange={(e) =>
+                        setUrlReadingData((prev) => ({
+                          ...prev,
+                          url: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs">Deskripsi</Label>
+                    <Textarea
+                      placeholder="Jelaskan isi dari URL ini..."
+                      rows={2}
+                      value={urlReadingData.description}
+                      onChange={(e) =>
+                        setUrlReadingData((prev) => ({
+                          ...prev,
+                          description: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowURLReadingForm(false)}
+                    >
+                      Batal
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={() => addURLReadingReference(urlReadingData)}
+                      disabled={!urlReadingData.title || !urlReadingData.url}
+                    >
+                      Tambah Reference
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* URL Recording Form */}
+            {showURLRecordingForm && (
+              <Card className="border-green-200 bg-green-50">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      <Play className="h-4 w-4 text-green-600" />
+                      Tambah URL Rekaman
+                    </span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowURLRecordingForm(false)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label className="text-xs">Judul *</Label>
+                      <Input
+                        placeholder="e.g., Tutorial Video Matematika"
+                        value={urlRecordingData.title}
+                        onChange={(e) =>
+                          setUrlRecordingData((prev) => ({
+                            ...prev,
+                            title: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs">Tipe</Label>
+                      <Select
+                        value={urlRecordingData.type}
+                        onValueChange={(value) =>
+                          setUrlRecordingData((prev) => ({
+                            ...prev,
+                            type: value as any,
+                          }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="video">Video</SelectItem>
+                          <SelectItem value="audio">Audio</SelectItem>
+                          <SelectItem value="webinar">Webinar</SelectItem>
+                          <SelectItem value="recording">Recording</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs">URL *</Label>
+                    <Input
+                      type="url"
+                      placeholder="https://youtube.com/watch?v=..."
+                      value={urlRecordingData.url}
+                      onChange={(e) =>
+                        setUrlRecordingData((prev) => ({
+                          ...prev,
+                          url: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs">Deskripsi</Label>
+                    <Textarea
+                      placeholder="Jelaskan isi dari URL ini..."
+                      rows={2}
+                      value={urlRecordingData.description}
+                      onChange={(e) =>
+                        setUrlRecordingData((prev) => ({
+                          ...prev,
+                          description: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowURLRecordingForm(false)}
+                    >
+                      Batal
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={() => addURLRecordingReference(urlRecordingData)}
+                      disabled={
+                        !urlRecordingData.title || !urlRecordingData.url
+                      }
+                    >
+                      Tambah Reference
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Display added URL references */}
+            {(formData.readingReferences.filter((ref) => ref.source === 'url')
+              .length > 0 ||
+              formData.recordingReferences.filter((ref) => ref.source === 'url')
+                .length > 0) && (
+              <div className="space-y-3">
+                {/* URL Reading References */}
+                {formData.readingReferences.filter(
+                  (ref) => ref.source === 'url',
+                ).length > 0 && (
+                  <div>
+                    <Label className="text-sm font-medium text-blue-700 mb-2 block">
+                      URL References - Bacaan (
+                      {
+                        formData.readingReferences.filter(
+                          (ref) => ref.source === 'url',
+                        ).length
+                      }
+                      )
+                    </Label>
+                    <div className="space-y-2">
+                      {formData.readingReferences
+                        .filter((ref) => ref.source === 'url')
+                        .map((reference) => (
+                          <div
+                            key={reference.id}
+                            className="flex items-start gap-3 p-3 border rounded-lg bg-blue-50"
+                          >
+                            <Link className="h-4 w-4 text-blue-600 mt-1" />
+                            <div className="flex-1 min-w-0">
+                              <h6 className="font-medium text-sm">
+                                {reference.title}
+                              </h6>
+                              <p className="text-xs text-blue-600 truncate">
+                                {reference.url}
+                              </p>
+                              {reference.description && (
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {reference.description}
+                                </p>
+                              )}
+                              <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full mt-1 inline-block">
+                                {reference.type}
+                              </span>
+                            </div>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() =>
+                                removeReadingReference(reference.id)
+                              }
+                              className="ml-3 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* URL Recording References */}
+                {formData.recordingReferences.filter(
+                  (ref) => ref.source === 'url',
+                ).length > 0 && (
+                  <div>
+                    <Label className="text-sm font-medium text-green-700 mb-2 block">
+                      URL References - Rekaman (
+                      {
+                        formData.recordingReferences.filter(
+                          (ref) => ref.source === 'url',
+                        ).length
+                      }
+                      )
+                    </Label>
+                    <div className="space-y-2">
+                      {formData.recordingReferences
+                        .filter((ref) => ref.source === 'url')
+                        .map((reference) => (
+                          <div
+                            key={reference.id}
+                            className="flex items-start gap-3 p-3 border rounded-lg bg-green-50"
+                          >
+                            <Link className="h-4 w-4 text-green-600 mt-1" />
+                            <div className="flex-1 min-w-0">
+                              <h6 className="font-medium text-sm">
+                                {reference.title}
+                              </h6>
+                              <p className="text-xs text-green-600 truncate">
+                                {reference.url}
+                              </p>
+                              {reference.description && (
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {reference.description}
+                                </p>
+                              )}
+                              <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full mt-1 inline-block">
+                                {reference.type}
+                              </span>
+                            </div>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="ghost"
+                              onClick={() =>
+                                removeRecordingReference(reference.id)
+                              }
+                              className="ml-3 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </CardContent>

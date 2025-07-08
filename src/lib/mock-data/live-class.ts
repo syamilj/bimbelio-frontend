@@ -23,9 +23,9 @@ export interface MockLiveClass {
   currentParticipants: number;
   status: LiveClassStatus;
   isRecorded: boolean;
-  materials: MockMaterial[];
   agenda: MockAgenda[];
-  references: MockReference[];
+  readingReferences: CourseReference[];
+  recordingReferences: CourseReference[];
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
@@ -63,16 +63,34 @@ export interface MockReference {
 // Course reference types untuk form integration
 export interface CourseReference {
   id: string;
-  courseId: string;
-  courseTitle: string;
-  chapterId: string;
-  chapterTitle: string;
-  subchapterId: string;
-  subchapterTitle: string;
-  type: 'reading' | 'video' | 'audio';
+  // Untuk subchapter references
+  courseId?: string;
+  courseTitle?: string;
+  chapterId?: string;
+  chapterTitle?: string;
+  subchapterId?: string;
+  subchapterTitle?: string;
+  // Untuk URL references
+  title: string;
+  description: string;
+  url?: string;
+  // Common fields
+  type: 'reading' | 'video' | 'audio' | 'document' | 'website';
+  source: 'subchapter' | 'url';
   content: string;
   fileUrl?: string;
   duration?: string;
+  // Metadata
+  createdAt?: Date;
+  addedBy?: string;
+}
+
+// Helper type untuk form input
+export interface URLReferenceInput {
+  title: string;
+  description: string;
+  url: string;
+  type: 'reading' | 'video' | 'audio' | 'document' | 'website';
 }
 
 export type LiveClassStatus =
@@ -430,16 +448,6 @@ export const mockLiveClasses: MockLiveClass[] = [
     currentParticipants: 35,
     status: 'SCHEDULED',
     isRecorded: true,
-    materials: [
-      {
-        id: '1',
-        category: 'Matematika',
-        subCategory: 'Aljabar Linear',
-        title: 'Pengantar Matriks',
-        content: 'Konsep dasar matriks dan operasi-operasinya',
-        order: 1,
-      },
-    ],
     agenda: [
       {
         id: '1',
@@ -463,14 +471,48 @@ export const mockLiveClasses: MockLiveClass[] = [
         order: 3,
       },
     ],
-    references: [
+    readingReferences: [
       {
-        id: '1',
-        title: 'Bab 3: Matriks dan Determinan',
-        type: 'DOCUMENT',
+        id: 'ref-1',
+        source: 'subchapter',
+        courseId: 'course-math',
+        courseTitle: 'Matematika Dasar',
         chapterId: 'ch-math-1',
-        subChapterId: 'sub-math-1-1',
-        order: 1,
+        chapterTitle: 'Aljabar Linear',
+        subchapterId: 'sub-math-1-1',
+        subchapterTitle: 'Operasi Matriks',
+        title: 'Operasi Matriks',
+        description: 'Penjumlahan, pengurangan, dan perkalian matriks',
+        type: 'reading',
+        content: 'Penjumlahan, pengurangan, dan perkalian matriks',
+        fileUrl: '/materials/math/matrix-operations.pdf',
+      },
+      {
+        id: 'url-ref-1',
+        source: 'url',
+        title: 'Khan Academy - Matrix Operations',
+        description: 'Tutorial lengkap operasi matriks dari Khan Academy',
+        url: 'https://www.khanacademy.org/math/algebra-home/alg-matrices',
+        type: 'website',
+        content: 'Tutorial lengkap operasi matriks dari Khan Academy',
+      },
+    ],
+    recordingReferences: [
+      {
+        id: 'rec-1',
+        source: 'subchapter',
+        courseId: 'course-math',
+        courseTitle: 'Matematika Dasar',
+        chapterId: 'ch-math-1',
+        chapterTitle: 'Aljabar Linear',
+        subchapterId: 'sub-math-1-2',
+        subchapterTitle: 'Video Tutorial Determinan',
+        title: 'Video Tutorial Determinan',
+        description: 'Cara menghitung determinan matriks 2x2 dan 3x3',
+        type: 'video',
+        content: 'Cara menghitung determinan matriks 2x2 dan 3x3',
+        fileUrl: '/materials/math/determinant-video.mp4',
+        duration: '15 menit',
       },
     ],
     createdAt: new Date('2025-01-10T10:00:00'),
@@ -496,16 +538,6 @@ export const mockLiveClasses: MockLiveClass[] = [
     currentParticipants: 28,
     status: 'SCHEDULED',
     isRecorded: true,
-    materials: [
-      {
-        id: '2',
-        category: 'Fisika',
-        subCategory: 'Mekanika',
-        title: 'Hukum Newton',
-        content: 'Tiga hukum dasar Newton dalam mekanika',
-        order: 1,
-      },
-    ],
     agenda: [
       {
         id: '4',
@@ -529,14 +561,39 @@ export const mockLiveClasses: MockLiveClass[] = [
         order: 3,
       },
     ],
-    references: [
+    readingReferences: [
       {
-        id: '2',
-        title: 'Video: Eksperimen Hukum Newton',
-        type: 'VIDEO',
+        id: 'ref-2',
+        source: 'subchapter',
+        courseId: 'course-physics',
+        courseTitle: 'Fisika Dasar',
         chapterId: 'ch-physics-1',
-        subChapterId: 'sub-physics-1-2',
-        order: 1,
+        chapterTitle: 'Mekanika',
+        subchapterId: 'sub-physics-1-1',
+        subchapterTitle: 'Hukum Newton I',
+        title: 'Hukum Newton I',
+        description: 'Hukum kelembaman Newton',
+        type: 'reading',
+        content: 'Hukum kelembaman Newton',
+        fileUrl: '/materials/physics/newton-law-1.pdf',
+      },
+    ],
+    recordingReferences: [
+      {
+        id: 'rec-2',
+        source: 'subchapter',
+        courseId: 'course-physics',
+        courseTitle: 'Fisika Dasar',
+        chapterId: 'ch-physics-1',
+        chapterTitle: 'Mekanika',
+        subchapterId: 'sub-physics-1-2',
+        subchapterTitle: 'Video: Eksperimen Hukum Newton',
+        title: 'Video: Eksperimen Hukum Newton',
+        description: 'Demonstrasi eksperimen hukum Newton',
+        type: 'video',
+        content: 'Demonstrasi eksperimen hukum Newton',
+        fileUrl: '/materials/physics/newton-experiment.mp4',
+        duration: '12 menit',
       },
     ],
     createdAt: new Date('2025-01-11T09:00:00'),
@@ -562,16 +619,6 @@ export const mockLiveClasses: MockLiveClass[] = [
     currentParticipants: 22,
     status: 'ONGOING',
     isRecorded: false,
-    materials: [
-      {
-        id: '3',
-        category: 'Bahasa Indonesia',
-        subCategory: 'Teks Argumentasi',
-        title: 'Struktur Teks Argumentasi',
-        content: 'Komponen-komponen dalam teks argumentasi',
-        order: 1,
-      },
-    ],
     agenda: [
       {
         id: '7',
@@ -595,14 +642,32 @@ export const mockLiveClasses: MockLiveClass[] = [
         order: 3,
       },
     ],
-    references: [
+    readingReferences: [
       {
-        id: '3',
-        title: 'Contoh Teks Argumentasi Terbaik',
-        type: 'DOCUMENT',
+        id: 'ref-3',
+        source: 'subchapter',
+        courseId: 'course-indo',
+        courseTitle: 'Bahasa Indonesia',
         chapterId: 'ch-indo-1',
-        subChapterId: 'sub-indo-1-1',
-        order: 1,
+        chapterTitle: 'Teks Argumentasi',
+        subchapterId: 'sub-indo-1-1',
+        subchapterTitle: 'Contoh Teks Argumentasi Terbaik',
+        title: 'Contoh Teks Argumentasi Terbaik',
+        description: 'Koleksi teks argumentasi berkualitas tinggi',
+        type: 'reading',
+        content: 'Koleksi teks argumentasi berkualitas tinggi',
+        fileUrl: '/materials/indo/argumentative-texts.pdf',
+      },
+    ],
+    recordingReferences: [
+      {
+        id: 'url-rec-3',
+        source: 'url',
+        title: 'TED Talk: The Art of Persuasive Writing',
+        description: 'Video tentang teknik menulis persuasif yang efektif',
+        url: 'https://www.ted.com/talks/persuasive_writing',
+        type: 'video',
+        content: 'Video tentang teknik menulis persuasif yang efektif',
       },
     ],
     createdAt: new Date('2025-01-12T16:00:00'),
@@ -626,16 +691,6 @@ export const mockLiveClasses: MockLiveClass[] = [
     currentParticipants: 45,
     status: 'COMPLETED',
     isRecorded: true,
-    materials: [
-      {
-        id: '4',
-        category: 'Kimia',
-        subCategory: 'Ikatan Kimia',
-        title: 'Jenis-jenis Ikatan',
-        content: 'Ikatan ionik, kovalen, dan logam',
-        order: 1,
-      },
-    ],
     agenda: [
       {
         id: '10',
@@ -659,13 +714,32 @@ export const mockLiveClasses: MockLiveClass[] = [
         order: 3,
       },
     ],
-    references: [
+    readingReferences: [
       {
-        id: '4',
+        id: 'ref-4',
+        source: 'subchapter',
+        courseId: 'course-chemistry',
+        courseTitle: 'Kimia Dasar',
+        chapterId: 'ch-chemistry-1',
+        chapterTitle: 'Ikatan Kimia',
+        subchapterId: 'sub-chemistry-1-1',
+        subchapterTitle: 'Jenis-jenis Ikatan',
+        title: 'Jenis-jenis Ikatan',
+        description: 'Ikatan ionik, kovalen, dan logam',
+        type: 'reading',
+        content: 'Ikatan ionik, kovalen, dan logam',
+        fileUrl: '/materials/chemistry/chemical-bonds.pdf',
+      },
+    ],
+    recordingReferences: [
+      {
+        id: 'url-rec-4',
+        source: 'url',
         title: 'Simulasi Ikatan Kimia',
-        type: 'URL',
+        description: 'Simulasi interaktif pembentukan ikatan kimia',
         url: 'https://simulation.chemistry.edu/bonds',
-        order: 1,
+        type: 'website',
+        content: 'Simulasi interaktif pembentukan ikatan kimia',
       },
     ],
     createdAt: new Date('2025-01-08T14:00:00'),
@@ -689,9 +763,9 @@ export const mockLiveClasses: MockLiveClass[] = [
     currentParticipants: 15,
     status: 'CANCELLED',
     isRecorded: false,
-    materials: [],
     agenda: [],
-    references: [],
+    readingReferences: [],
+    recordingReferences: [],
     createdAt: new Date('2025-01-13T12:00:00'),
     updatedAt: new Date('2025-01-14T15:00:00'),
     createdBy: 'admin-003',
