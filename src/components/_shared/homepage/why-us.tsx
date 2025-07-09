@@ -15,6 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { cn } from '@/lib/utils';
 import { IconBook, IconChat, IconStar } from '@/styles/icon';
 import { motion } from 'framer-motion';
 import { CheckCircle, Star } from 'lucide-react';
@@ -126,21 +127,13 @@ const WhyUs = () => {
           viewport={{ once: true }}
           className="mb-6"
         >
-          <span
-            className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          >
+          <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
             <Star className="w-4 h-4" />
             MENGAPA BIMBELIO
           </span>
         </motion.div>
 
-        <h2
-          className="text-4xl md:text-5xl font-bold mb-6"
-          style={{ color: mainColor }}
-        >
+        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-main-default">
           Mengapa Bimbelio?
         </h2>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -156,10 +149,7 @@ const WhyUs = () => {
         viewport={{ once: true }}
         className="flex justify-center mb-12"
       >
-        <div
-          className="bg-white rounded-3xl p-2 shadow-xl border-2"
-          style={{ borderColor: `${mainColor}20` }}
-        >
+        <div className="bg-white rounded-3xl p-2 shadow-xl border-2 border-main-default/20">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {heading?.map((item, i) => (
               <motion.button
@@ -168,22 +158,18 @@ const WhyUs = () => {
                 whileTap={{ scale: 0.98 }}
                 className={`flex flex-col items-center gap-3 rounded-2xl px-6 py-4 text-center transition-all duration-300 min-w-[200px] ${
                   active === 1 + i
-                    ? 'text-white shadow-lg'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'text-white shadow-lg bg-gradient-default'
+                    : 'text-gray-600 hover:bg-gray-50 bg-transparent'
                 }`}
-                style={{
-                  background:
-                    active === 1 + i
-                      ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
-                      : 'transparent',
-                }}
                 onClick={() => setActive(1 + i)}
               >
                 <div
                   className={`p-2 rounded-xl ${active === 1 + i ? 'bg-white/20' : 'bg-gray-100'}`}
                 >
                   <div
-                    style={{ color: active === 1 + i ? 'white' : mainColor }}
+                    className={cn(
+                      active === 1 + i ? 'text-white' : 'text-main-default',
+                    )}
                   >
                     {item.icon}
                   </div>
@@ -223,12 +209,7 @@ const EvaluationSection = ({ mainColor }: { mainColor: string }) => (
   <div className="space-y-8">
     <div className="text-center">
       <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-        <span
-          className="font-bold"
-          style={{ color: mainColor }}
-        >
-          Bimbelio
-        </span>{' '}
+        <span className="font-bold text-main-default">Bimbelio</span>{' '}
         menggunakan GPT-4o yang menunjukkan performa unggul dalam berbagai hasil
         ujian, memastikan hasil belajar yang optimal untuk persiapan PTN dan
         Kedinasan kamu.
@@ -248,12 +229,7 @@ const AIModelSection = ({ mainColor }: { mainColor: string }) => (
   <div className="space-y-8">
     <div className="text-center">
       <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-        <span
-          className="font-bold"
-          style={{ color: mainColor }}
-        >
-          Bimbelio
-        </span>{' '}
+        <span className="font-bold text-main-default">Bimbelio</span>{' '}
         menggunakan GPT-4o yang terbukti memiliki tingkat akurasi tertinggi
         dibandingkan model AI lainnya dalam berbagai benchmark evaluasi.
       </p>
@@ -278,16 +254,8 @@ const ComparisonSection = ({
   secondaryColor: string;
 }) => (
   <Card className="border-2 border-gray-100 rounded-3xl shadow-xl overflow-hidden">
-    <CardHeader
-      className="text-center py-8"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-      }}
-    >
-      <CardTitle
-        className="text-2xl font-bold"
-        style={{ color: mainColor }}
-      >
+    <CardHeader className="text-center py-8 bg-main-default/10">
+      <CardTitle className="text-2xl font-bold text-main-default">
         Perbandingan Metode Belajar
       </CardTitle>
       <CardDescription className="text-lg">
@@ -299,18 +267,9 @@ const ComparisonSection = ({
       <div className="overflow-x-auto">
         <div className="min-w-[800px]">
           {/* Enhanced Header */}
-          <div
-            className="grid grid-cols-4 border-b-2"
-            style={{ borderColor: `${mainColor}20` }}
-          >
+          <div className="grid grid-cols-4 border-b-2 border-main-default/20">
             <div className="p-6"></div>
-            <div
-              className="p-6 text-center border-x-2"
-              style={{
-                borderColor: `${mainColor}20`,
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
+            <div className="p-6 text-center border-x-2 border-main-default/20 bg-gradient-default">
               <div className="text-white">
                 <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-white/20 flex items-center justify-center">
                   <Star className="w-6 h-6" />
@@ -355,19 +314,10 @@ const ComparisonSection = ({
                   {item.heading}
                 </span>
               </div>
-              <div
-                className="p-6 text-center border-x border-gray-100 flex items-center justify-center"
-                style={{ backgroundColor: `${mainColor}08` }}
-              >
+              <div className="p-6 text-center border-x border-gray-100 flex items-center justify-center bg-main-default/10">
                 <div className="flex items-center gap-2">
-                  <CheckCircle
-                    className="w-5 h-5"
-                    style={{ color: mainColor }}
-                  />
-                  <span
-                    className="font-semibold"
-                    style={{ color: mainColor }}
-                  >
+                  <CheckCircle className="w-5 h-5 text-main-default" />
+                  <span className="font-semibold text-main-default">
                     {item.one}
                   </span>
                 </div>
@@ -621,10 +571,7 @@ export function Chart() {
               key={i}
               className="flex items-center gap-3"
             >
-              <div
-                className="w-4 h-4 rounded-full shadow-sm"
-                style={{ backgroundColor: item.color }}
-              />
+              <div className="w-4 h-4 rounded-full shadow-sm bg-main-default" />
               <span className="text-sm font-medium text-gray-700">
                 {item.title}
               </span>

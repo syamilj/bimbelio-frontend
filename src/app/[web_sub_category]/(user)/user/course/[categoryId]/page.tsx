@@ -106,6 +106,9 @@ const WorkspaceCourse = () => {
       payload: {
         documentId: docId as string,
       },
+      toast: {
+        hideSuccess: true,
+      },
       onSuccess() {
         //     await trpc.document.getHistoryByUser.refetch();
         //     await trpc.document.getDocumentTotalPage.refetch();

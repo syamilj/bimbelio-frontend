@@ -79,9 +79,6 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     showSidebar,
     sidebarMobile,
     setSidebarMobile,
-    docsSearchData,
-    setDocsSearchData,
-    setMinimizeSidebar,
     setTransactionPopUp,
     setPagesSetting,
     setTransactionHistory,
@@ -620,28 +617,16 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
           {/* MAIN CONTENT */}
           <main
             className={cn(
-              'transition-all duration-300',
-              // Workspace: 3-column layout with dynamic sidebar width
+              'relative mt-0 pr-0 pt-0 duration-300 md:pl-[75px] min-h-screen',
+              // docViewer => full fixed
               componentName === 'DocViewerPage' &&
-                !isMobile &&
-                (minimizeSidebar
-                  ? 'fixed inset-0 z-30 pl-20'
-                  : 'fixed inset-0 z-30 pl-72'),
-              // Mobile workspace: full screen
-              componentName === 'DocViewerPage' &&
-                isMobile &&
-                'fixed inset-0 z-30',
-              // Normal layout
+                'fixed left-0 top-0 h-full w-full',
+              // not in workspace => push down margin
               !inWorkspace &&
-                cn(
-                  'pt-14 md:pt-16 min-h-screen',
-                  minimizeSidebar ? 'md:pl-20' : 'md:pl-72',
-                ),
+                'mt-[80px] pt-[1rem] md:pl-[calc(75px+3rem)] md:pr-10 md:pt-12  min-h-[calc(100vh-80px)]',
             )}
           >
-            <div className={cn(!inWorkspace && 'p-3 md:p-4 lg:p-6')}>
-              {children}
-            </div>
+            {children}
           </main>
         </div>
       </ProviderCheckSubscription>

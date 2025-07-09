@@ -156,29 +156,17 @@ const MobileNav: React.FC<{
     <div className="fixed left-0 top-0 z-50 w-full">
       {/* Enhanced Mobile Header */}
       <Card className="mx-3 mt-3 shadow-xl border-2 border-white/20 rounded-2xl backdrop-blur-xl overflow-hidden">
-        <div
-          className="px-4 py-3 relative"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}05, ${secondaryColor}05)`,
-          }}
-        >
+        <div className="px-4 py-3 relative bg-transparent">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5">
-            <div
-              className="absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-6 translate-x-6"
-              style={{ backgroundColor: mainColor }}
-            />
-            <div
-              className="absolute bottom-0 left-0 w-12 h-12 rounded-full translate-y-3 -translate-x-3"
-              style={{ backgroundColor: secondaryColor }}
-            />
+            <div className="absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-6 translate-x-6 bg-main-default" />
+            <div className="absolute bottom-0 left-0 w-12 h-12 rounded-full translate-y-3 -translate-x-3 bg-main-default" />
           </div>
 
           <div className="relative z-10 flex items-center justify-between">
             <Logo
               href="/"
-              className="text-xl font-bold"
-              style={{ color: mainColor }}
+              className="text-xl font-bold text-main-default"
             />
 
             <Sheet
@@ -189,11 +177,7 @@ const MobileNav: React.FC<{
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative w-10 h-10 rounded-xl transition-all duration-300 hover:scale-105"
-                  style={{
-                    backgroundColor: `${mainColor}10`,
-                    color: mainColor,
-                  }}
+                  className="relative w-10 h-10 rounded-xl transition-all duration-300 hover:scale-105 text-main-default bg-main-default/10"
                 >
                   <motion.div
                     animate={isSheetOpen ? { rotate: 90 } : { rotate: 0 }}
@@ -210,35 +194,16 @@ const MobileNav: React.FC<{
               >
                 {/* Elegant Header */}
                 <div className="relative overflow-hidden">
-                  <div
-                    className="p-6 pb-4 relative"
-                    style={{
-                      background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-                    }}
-                  >
+                  <div className="p-6 pb-4 relative bg-main-default/10">
                     {/* Decorative Elements */}
-                    <div
-                      className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-10"
-                      style={{ backgroundColor: mainColor }}
-                    />
-                    <div
-                      className="absolute -bottom-2 -left-2 w-8 h-8 rounded-full opacity-15"
-                      style={{ backgroundColor: secondaryColor }}
-                    />
+                    <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-10 bg-main-default" />
+                    <div className="absolute bottom-2 -left-2 w-8 h-8 rounded-full opacity-15 bg-main-default" />
 
                     <div className="relative z-10 text-center">
-                      <div
-                        className="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center shadow-lg"
-                        style={{
-                          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                        }}
-                      >
+                      <div className="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-default">
                         <Menu className="w-6 h-6 text-white" />
                       </div>
-                      <h2
-                        className="text-xl font-bold mb-1"
-                        style={{ color: mainColor }}
-                      >
+                      <h2 className="text-xl font-bold mb-1 text-main-default">
                         Menu Navigasi
                       </h2>
                       <p className="text-sm text-gray-600">
@@ -248,7 +213,7 @@ const MobileNav: React.FC<{
                   </div>
                 </div>
 
-                <div className="px-6 pb-6 space-y-4">
+                <div className="px-6 pb-6 space-y-4 bg-main-default/10">
                   {/* Navigation Items */}
                   <Card className="border-2 border-gray-100 rounded-2xl shadow-sm overflow-hidden">
                     <CardContent className="p-0">
@@ -265,12 +230,7 @@ const MobileNav: React.FC<{
                             onClick={() => setIsSheetOpen(false)}
                           >
                             <div className="flex items-center gap-3">
-                              <div
-                                className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white"
-                                style={{
-                                  background: `linear-gradient(135deg, ${mainColor}80, ${secondaryColor}80)`,
-                                }}
-                              >
+                              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white bg-gradient-default">
                                 {index + 1}
                               </div>
                               <NavLink item={item} />
@@ -306,10 +266,7 @@ const MobileNav: React.FC<{
                           className="space-y-4"
                         >
                           {/* User Info Card */}
-                          <div
-                            className="p-4 rounded-2xl relative overflow-hidden"
-                            style={{ backgroundColor: `${mainColor}08` }}
-                          >
+                          <div className="p-4 rounded-2xl relative overflow-hidden">
                             <div className="relative z-10 flex items-center gap-3">
                               <div className="relative">
                                 <Avatar className="h-12 w-12 border-2 border-white shadow-lg">
@@ -363,16 +320,8 @@ const MobileNav: React.FC<{
                             >
                               <Card className="border-2 border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-md">
                                 <CardContent className="p-4 text-center">
-                                  <div
-                                    className="w-10 h-10 mx-auto mb-2 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                                    style={{
-                                      backgroundColor: `${mainColor}15`,
-                                    }}
-                                  >
-                                    <LayoutDashboard
-                                      className="w-5 h-5"
-                                      style={{ color: mainColor }}
-                                    />
+                                  <div className="w-10 h-10 mx-auto mb-2 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 bg-main-default/20">
+                                    <LayoutDashboard className="w-5 h-5 text-main-default" />
                                   </div>
                                   <p className="text-sm font-medium text-gray-700">
                                     Dashboard
@@ -408,7 +357,13 @@ const MobileNav: React.FC<{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
                           onClick={() => {
-                            setShowAuth((prev) => ({ ...prev, open: true }));
+                            setShowAuth((prev) => ({
+                              ...prev,
+                              open: true,
+                              redirect: website_sub_category_id
+                                ? `${website_sub_category_id}/user/dashboard`
+                                : '/choice/user/dashboard',
+                            }));
                             setIsSheetOpen(false);
                           }}
                         >
@@ -467,8 +422,7 @@ const DesktopNav: React.FC<{
               <div className="flex items-center">
                 <Logo
                   href="/"
-                  className="text-xl font-bold"
-                  style={{ color: mainColor }}
+                  className="text-xl font-bold text-main-default"
                 />
               </div>
 
@@ -483,10 +437,7 @@ const DesktopNav: React.FC<{
                       <NavLink item={item} />
                     </div>
                     {/* Hover indicator */}
-                    <div
-                      className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300 group-hover:w-8"
-                      style={{ backgroundColor: mainColor }}
-                    />
+                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300 group-hover:w-8 bg-main-default" />
                   </div>
                 ))}
               </nav>
@@ -497,12 +448,15 @@ const DesktopNav: React.FC<{
                   <UserAccountNav user={session.user} />
                 ) : (
                   <Button
-                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
-                    style={{
-                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                    }}
+                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0 bg-gradient-default"
                     onClick={() =>
-                      setShowAuth((prev) => ({ ...prev, open: true }))
+                      setShowAuth((prev) => ({
+                        ...prev,
+                        open: true,
+                        redirect: website_sub_category_id
+                          ? `${website_sub_category_id}/user/dashboard`
+                          : '/choice/user/dashboard',
+                      }))
                     }
                   >
                     Daftar/Masuk
@@ -513,12 +467,7 @@ const DesktopNav: React.FC<{
           </div>
 
           {/* Bottom accent line */}
-          <div
-            className="h-1"
-            style={{
-              background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          />
+          <div className="h-1 bg-gradient-default" />
         </Card>
       </div>
     </div>

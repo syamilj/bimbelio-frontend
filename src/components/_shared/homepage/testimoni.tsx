@@ -96,21 +96,13 @@ const Testimoni = () => {
           viewport={{ once: true }}
           className="mb-6"
         >
-          <span
-            className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          >
+          <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
             <Quote className="w-4 h-4" />
             EXPERT OPINIONS
           </span>
         </motion.div>
 
-        <h2
-          className="text-4xl md:text-5xl font-bold mb-6"
-          style={{ color: mainColor }}
-        >
+        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-main-default">
           Pendapat Para Ahli Teknologi
         </h2>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -281,13 +273,7 @@ const Testimoni = () => {
         viewport={{ once: true }}
         className="text-center mt-16 container mx-auto"
       >
-        <div
-          className="max-w-4xl mx-auto p-8 rounded-3xl border-2 shadow-lg relative overflow-hidden"
-          style={{
-            borderColor: `${mainColor}20`,
-            background: `linear-gradient(135deg, ${mainColor}05, ${secondaryColor}05)`,
-          }}
-        >
+        <div className="max-w-4xl mx-auto p-8 rounded-3xl border-2 shadow-lg relative overflow-hidden border-main-default/20 bg-main-default/10">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5">
             <div className="absolute top-4 left-4 w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
@@ -296,10 +282,7 @@ const Testimoni = () => {
           </div>
 
           <div className="relative z-10 space-y-6">
-            <h3
-              className="text-2xl md:text-3xl font-bold text-gray-900"
-              style={{ color: mainColor }}
-            >
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-main-default">
               Bergabunglah dengan Revolusi Pembelajaran AI
             </h3>
             <p className="text-lg text-gray-600">
@@ -311,10 +294,7 @@ const Testimoni = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2"
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                }}
+                className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 bg-gradient-default"
               >
                 <Star className="w-5 h-5" />
                 Mulai Belajar Sekarang

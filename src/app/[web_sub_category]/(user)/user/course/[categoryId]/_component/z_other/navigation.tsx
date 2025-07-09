@@ -4,7 +4,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import LoadingPageWithText from '@/components/ui/spinner';
-import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
@@ -121,24 +120,24 @@ const NavigationButtons = () => {
     }
   }, [chapters, currentIndex, categoryId, sub]);
 
-  const handleNextClick = async () => {
-    // Hanya melakukan submit jika progress belum selesai, belum submit sebelumnya, dan tidak sedang loading
-    if (!isDone && !submitted && !loading) {
-      setLoading(true);
-      if (CourseData?.id) {
-        await saveProgress({ payload: { subCourseId: CourseData?.id } });
-      } else {
-        toaster({
-          title: 'Sub Id Tidak ada',
-          condition: 'warning',
-        });
-        setLoading(false);
-      }
-    }
-    if (nextLink) {
-      router.push(nextLink);
-    }
-  };
+  // const handleNextClick = async () => {
+  //   // Hanya melakukan submit jika progress belum selesai, belum submit sebelumnya, dan tidak sedang loading
+  //   if (!isDone && !submitted && !loading) {
+  //     setLoading(true);
+  //     if (CourseData?.id) {
+  //       await saveProgress({ payload: { subCourseId: CourseData?.id } });
+  //     } else {
+  //       toaster({
+  //         title: 'Sub Id Tidak ada',
+  //         condition: 'warning',
+  //       });
+  //       setLoading(false);
+  //     }
+  //   }
+  //   if (nextLink) {
+  //     router.push(nextLink);
+  //   }
+  // };
 
   if (sub === 'report') return null;
 
@@ -175,39 +174,41 @@ const NavigationButtons = () => {
         )}
 
         {nextLink ? (
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Button
-              onClick={handleNextClick}
-              disabled={loading}
-              className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-xl text-white border-0 font-semibold shadow-md hover:shadow-lg transition-all duration-300 group',
-                loading && 'opacity-50 cursor-not-allowed',
-              )}
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
+          <Link href={nextLink}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Menyimpan...
-                </>
-              ) : isDone || submitted ? (
-                <>
-                  Lanjutkan
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </>
-              ) : (
-                <>
-                  Selanjutnya
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
-            </Button>
-          </motion.div>
+              <Button
+                // onClick={handleNextClick}
+                disabled={loading}
+                className={cn(
+                  'flex items-center gap-2 px-4 py-2 rounded-xl text-white border-0 font-semibold shadow-md hover:shadow-lg transition-all duration-300 group',
+                  loading && 'opacity-50 cursor-not-allowed',
+                )}
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
+              >
+                {loading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Menyimpan...
+                  </>
+                ) : isDone || submitted ? (
+                  <>
+                    Lanjutkan
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </>
+                ) : (
+                  <>
+                    Selanjutnya
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </Button>
+            </motion.div>
+          </Link>
         ) : (
           <div className="w-[110px]" /> /* Placeholder to maintain spacing */
         )}

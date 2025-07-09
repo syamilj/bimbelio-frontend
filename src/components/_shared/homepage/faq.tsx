@@ -119,14 +119,8 @@ const FAQ = () => {
     >
       {/* Enhanced Background */}
       <div className="absolute inset-0 -z-10">
-        <div
-          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
-          style={{ backgroundColor: mainColor }}
-        />
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
-          style={{ backgroundColor: secondaryColor }}
-        />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl bg-main-default" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl" />
       </div>
 
       <div className="container mx-auto max-w-6xl px-4">
@@ -145,21 +139,13 @@ const FAQ = () => {
             viewport={{ once: true }}
             className="mb-6"
           >
-            <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
+            <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
               <Quote className="w-4 h-4" />
               FREQUENTLY ASKED
             </span>
           </motion.div>
 
-          <h2
-            className="text-4xl md:text-5xl font-bold mb-6"
-            style={{ color: mainColor }}
-          >
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-main-default">
             Pertanyaan yang Sering Ditanyakan
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -382,10 +368,7 @@ const FAQ = () => {
             </div>
 
             <div className="relative z-10 space-y-6">
-              <h3
-                className="text-2xl md:text-3xl font-bold text-gray-900"
-                style={{ color: mainColor }}
-              >
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-main-default">
                 Masih ada pertanyaan lain?
               </h3>
               <p className="text-lg text-gray-600">
@@ -396,10 +379,7 @@ const FAQ = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2"
-                  style={{
-                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                  }}
+                  className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 bg-gradient-default"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Hubungi Support

@@ -248,12 +248,7 @@ const HeadingSection: React.FC<{
         <div className="flex justify-center items-center gap-3 flex-wrap">
           <span className="text-gray-900">LOLOS</span>
           <SparklesText sparklesCount={6}>
-            <span
-              className="text-white bg-clip-padding px-1 rounded-lg"
-              style={{
-                backgroundColor: mainColor,
-              }}
-            >
+            <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
               PTN
             </span>
           </SparklesText>
@@ -262,12 +257,7 @@ const HeadingSection: React.FC<{
         {/* Baris 2: .Pasti. Kedinasan */}
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap">
           <SparklesText sparklesCount={6}>
-            <span
-              className="text-white bg-clip-padding px-1 rounded-lg"
-              style={{
-                backgroundColor: mainColor,
-              }}
-            >
+            <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
               Kedinasan.
             </span>
           </SparklesText>
@@ -324,10 +314,7 @@ const StatsSection: React.FC<{
         transition={{ duration: 0.6, delay: 1 + i * 0.1 }}
         className="text-center"
       >
-        <div
-          className="text-3xl md:text-4xl font-black mb-2"
-          style={{ color: mainColor }}
-        >
+        <div className="text-3xl md:text-4xl font-black mb-2 text-main-default">
           {stat.value}
         </div>
         <div className="text-sm md:text-base font-medium text-gray-600">
@@ -379,10 +366,7 @@ const LogoSection: React.FC<{
                   loading="lazy"
                 />
               </div>
-              <span
-                className="text-sm font-semibold mt-3"
-                style={{ color: mainColor }}
-              >
+              <span className="text-sm font-semibold mt-3 text-main-default">
                 {logo.label}
               </span>
             </div>
@@ -410,10 +394,12 @@ const CTASection: React.FC<{
       onClick={onClick}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg text-white shadow-lg transition-all duration-300"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-      }}
+      className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg text-white shadow-lg transition-all duration-300 bg-main-default"
+      style={
+        {
+          // background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+        }
+      }
     >
       <Play className="w-5 h-5" />
       <span>Mulai Try Out GRATIS</span>
@@ -427,8 +413,7 @@ const CTASection: React.FC<{
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold"
-              style={{ backgroundColor: mainColor }}
+              className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold bg-main-default"
             >
               <Star className="w-3 h-3" />
             </div>

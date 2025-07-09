@@ -22,9 +22,9 @@ import {
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { cn } from '@/lib/utils';
+import LogoSvg from '@/styles/logo-svg';
 import {
   BookOpen,
-  ChevronLeft,
   ChevronRight,
   Crown,
   Heart,
@@ -65,6 +65,8 @@ const Sidebar = ({ category }: { category: any }) => {
 
   // Use minimizeSidebar state consistently
   const shouldMinimize = minimizeSidebar;
+
+  console.log({ minimizeSidebar });
 
   // Handle body overflow based on pop-ups
   useEffect(() => {
@@ -146,7 +148,19 @@ const Sidebar = ({ category }: { category: any }) => {
     <Fragment>
       {/* TooltipProvider Wrapper */}
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex h-full w-full flex-col bg-gradient-to-br from-slate-50 via-white to-slate-100 border-r border-slate-200/60 shadow-2xl backdrop-blur-xl">
+      <div
+        className="hidden md:flex h-full w-full flex-col bg-gradient-to-br from-slate-50 via-white to-slate-100 border-r border-slate-200/60 shadow-2xl backdrop-blur-xl"
+        onMouseOver={() => {
+          if (!openMenu) {
+            setMinimizeSidebar(false);
+          }
+        }}
+        onMouseLeave={() => {
+          if (!openMenu) {
+            setMinimizeSidebar(true);
+          }
+        }}
+      >
         {/* Enhanced Header with glassmorphism */}
         <div
           className={cn(
@@ -159,7 +173,7 @@ const Sidebar = ({ category }: { category: any }) => {
               <div className="transition-all duration-300 ">
                 <Logo href={`/${website_sub_category_id}/user/dashboard`} />
               </div>
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
@@ -178,7 +192,7 @@ const Sidebar = ({ category }: { category: any }) => {
                     <p>Minimize sidebar</p>
                   </TooltipContent>
                 </Tooltip>
-              </div>
+              </div> */}
             </>
           ) : (
             <>
@@ -186,14 +200,16 @@ const Sidebar = ({ category }: { category: any }) => {
                 <TooltipTrigger asChild>
                   <div
                     className={cn(
-                      'w-11 h-11 rounded-2xl flex items-center justify-center shadow-xl cursor-pointer hover:shadow-2xl transition-all duration-300  bg-gradient-to-br from-white to-slate-50 border border-slate-200/50',
+                      'w-11 h-11 rounded-2xl flex items-center justify-center shadow-xl cursor-pointer hover:shadow-2xl transition-all duration-300  bg-gradient-to-br from-white to-slate-50 border border-slate-200/50 text-main',
                     )}
-                    onClick={() => setMinimizeSidebar(false)}
+                    // onClick={() => setMinimizeSidebar(false)}
                   >
-                    <ChevronRight
+                    {/* <ChevronRight
                       className="w-5 h-5"
                       style={{ color: mainColor }}
-                    />
+                    /> */}
+
+                    <LogoSvg w={30} />
                   </div>
                 </TooltipTrigger>
                 <TooltipContent
@@ -302,7 +318,7 @@ const Sidebar = ({ category }: { category: any }) => {
               }}
               onClick={(e) => {
                 e.preventDefault();
-                e.stopPropagation();
+                // e.stopPropagation();
                 setTransactionPopUp(true);
               }}
             >
@@ -323,7 +339,7 @@ const Sidebar = ({ category }: { category: any }) => {
                   className="w-full bg-white/20 hover:bg-white/30 border border-white/30 text-white font-bold text-sm rounded-xl backdrop-blur-md transition-all duration-300  shadow-lg"
                   onClick={(e) => {
                     e.preventDefault();
-                    e.stopPropagation();
+                    // e.stopPropagation();
                     setTransactionPopUp(true);
                   }}
                 >
@@ -339,7 +355,7 @@ const Sidebar = ({ category }: { category: any }) => {
               'flex items-center gap-3 p-3 rounded-2xl hover:bg-white/80 transition-all duration-300 shadow-sm hover:shadow-md border border-slate-200/50 bg-white/60 backdrop-blur-sm overflow-hidden',
               shouldMinimize ? 'justify-center' : 'justify-between',
             )}
-            onClick={(e) => e.stopPropagation()}
+            // onClick={(e) => e.stopPropagation()}
           >
             <div
               className={cn(
@@ -421,7 +437,7 @@ const Sidebar = ({ category }: { category: any }) => {
               )}
             </div>
             {/* Dropdown hanya muncul kalau sidebar tidak minimize */}
-            {!shouldMinimize && (
+            {!minimizeSidebar && (
               <DropdownMenu
                 open={openMenu}
                 onOpenChange={setOpenMenu}
@@ -607,7 +623,7 @@ const Sidebar = ({ category }: { category: any }) => {
               }}
               onClick={(e) => {
                 e.preventDefault();
-                e.stopPropagation();
+                // e.stopPropagation();
                 setSidebarMobile(false);
                 setTransactionPopUp(true);
               }}
@@ -631,7 +647,7 @@ const Sidebar = ({ category }: { category: any }) => {
                   className="w-full bg-white/20 hover:bg-white/30 border border-white/30 text-white font-bold text-sm backdrop-blur-md transition-all duration-300 rounded-xl shadow-lg"
                   onClick={(e) => {
                     e.preventDefault();
-                    e.stopPropagation();
+                    // e.stopPropagation();
                     setSidebarMobile(false);
                     setTransactionPopUp(true);
                   }}
