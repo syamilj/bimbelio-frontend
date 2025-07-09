@@ -1,7 +1,10 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { mockLiveClasses } from '@/lib/mock-data/live-class';
+import {
+  mockLiveClasses,
+  mockLiveClassParticipants,
+} from '@/lib/mock-data/live-class';
 import { Calendar, Clock, TrendingUp, Users } from 'lucide-react';
 
 export function LiveClassMetrics() {
@@ -25,6 +28,15 @@ export function LiveClassMetrics() {
     mockLiveClasses.reduce((sum, c) => sum + c.currentParticipants, 0) /
       totalClasses,
   );
+
+  // Calculate participant metrics
+  const totalParticipants = mockLiveClassParticipants.length;
+  const registeredParticipants = mockLiveClassParticipants.filter(
+    (p) => p.status === 'registered',
+  ).length;
+  const invitedParticipants = mockLiveClassParticipants.filter(
+    (p) => p.status === 'invited',
+  ).length;
 
   const metrics = [
     {
@@ -52,17 +64,33 @@ export function LiveClassMetrics() {
       bgColor: 'bg-orange-50',
     },
     {
-      title: 'Rata-rata Peserta',
-      value: averageParticipants,
-      description: 'Per kelas',
+      title: 'Total Peserta',
+      value: totalParticipants,
+      description: 'Semua peserta',
       icon: Users,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
     },
+    {
+      title: 'Perlu Undangan',
+      value: registeredParticipants,
+      description: 'Belum diundang',
+      icon: Clock,
+      color: 'text-yellow-600',
+      bgColor: 'bg-yellow-50',
+    },
+    {
+      title: 'Sudah Diundang',
+      value: invitedParticipants,
+      description: 'Siap join',
+      icon: Users,
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-50',
+    },
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
       {metrics.map((metric) => {
         const Icon = metric.icon;
         return (

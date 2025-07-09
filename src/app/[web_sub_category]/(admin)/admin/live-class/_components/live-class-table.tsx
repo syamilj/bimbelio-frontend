@@ -97,6 +97,12 @@ export function LiveClassTable({
     router.push(`/${website_sub_category_id}/admin/live-class/edit/${classId}`);
   };
 
+  const handleManageParticipants = (classId: string) => {
+    router.push(
+      `/${website_sub_category_id}/admin/live-class/participants?classId=${classId}`,
+    );
+  };
+
   const handleDelete = (liveClass: MockLiveClass) => {
     setSelectedClass(liveClass);
     setDeleteDialogOpen(true);
@@ -294,6 +300,14 @@ export function LiveClassTable({
                               >
                                 <Edit className="mr-2 h-4 w-4" />
                                 Edit Kelas
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleManageParticipants(liveClass.id)
+                                }
+                              >
+                                <Users className="mr-2 h-4 w-4" />
+                                Kelola Peserta
                               </DropdownMenuItem>
                               <DropdownMenuItem>
                                 <Eye className="mr-2 h-4 w-4" />

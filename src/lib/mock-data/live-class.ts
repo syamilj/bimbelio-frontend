@@ -93,6 +93,20 @@ export interface URLReferenceInput {
   type: 'reading' | 'video' | 'audio' | 'document' | 'website';
 }
 
+// Interface untuk participant management
+export interface LiveClassParticipant {
+  id: string;
+  liveClassId: string;
+  userId: string;
+  email: string;
+  name: string;
+  registeredAt: Date;
+  invitedAt?: Date;
+  status: 'registered' | 'invited' | 'expired';
+  hasPackage: boolean;
+  packageType?: string;
+}
+
 export type LiveClassStatus =
   | 'SCHEDULED'
   | 'ONGOING'
@@ -973,3 +987,163 @@ export const mockTutorsForForm = [
     rating: 4.8,
   },
 ];
+
+// Mock data untuk participants live class
+export const mockLiveClassParticipants: LiveClassParticipant[] = [
+  // Participants for Live Class 1
+  {
+    id: 'p1',
+    liveClassId: '1',
+    userId: 'user1',
+    email: 'student1@bimbelio.com',
+    name: 'Ahmad Fauzi',
+    registeredAt: new Date('2025-01-12T10:00:00'),
+    status: 'registered',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  {
+    id: 'p2',
+    liveClassId: '1',
+    userId: 'user2',
+    email: 'student2@bimbelio.com',
+    name: 'Siti Nurhaliza',
+    registeredAt: new Date('2025-01-12T10:30:00'),
+    invitedAt: new Date('2025-01-13T08:00:00'),
+    status: 'invited',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  {
+    id: 'p3',
+    liveClassId: '1',
+    userId: 'user3',
+    email: 'student3@bimbelio.com',
+    name: 'Budi Santoso',
+    registeredAt: new Date('2025-01-12T11:00:00'),
+    invitedAt: new Date('2025-01-13T08:00:00'),
+    status: 'invited',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  {
+    id: 'p4',
+    liveClassId: '1',
+    userId: 'user4',
+    email: 'student4@bimbelio.com',
+    name: 'Dewi Kartika',
+    registeredAt: new Date('2025-01-12T14:00:00'),
+    status: 'registered',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  {
+    id: 'p5',
+    liveClassId: '1',
+    userId: 'user5',
+    email: 'student5@bimbelio.com',
+    name: 'Ricky Pratama',
+    registeredAt: new Date('2025-01-12T15:00:00'),
+    status: 'registered',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  // Participants for Live Class 2
+  {
+    id: 'p6',
+    liveClassId: '2',
+    userId: 'user6',
+    email: 'student6@bimbelio.com',
+    name: 'Maya Sari',
+    registeredAt: new Date('2025-01-13T09:00:00'),
+    invitedAt: new Date('2025-01-14T08:00:00'),
+    status: 'invited',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  {
+    id: 'p7',
+    liveClassId: '2',
+    userId: 'user7',
+    email: 'student7@bimbelio.com',
+    name: 'Doni Setiawan',
+    registeredAt: new Date('2025-01-13T10:00:00'),
+    status: 'registered',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  {
+    id: 'p8',
+    liveClassId: '2',
+    userId: 'user8',
+    email: 'student8@bimbelio.com',
+    name: 'Lina Marlina',
+    registeredAt: new Date('2025-01-13T11:00:00'),
+    status: 'registered',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  // Participants for Live Class 3 (Ongoing)
+  {
+    id: 'p9',
+    liveClassId: '3',
+    userId: 'user9',
+    email: 'student9@bimbelio.com',
+    name: 'Eko Prasetyo',
+    registeredAt: new Date('2025-01-14T08:00:00'),
+    invitedAt: new Date('2025-01-14T09:00:00'),
+    status: 'invited',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+  {
+    id: 'p10',
+    liveClassId: '3',
+    userId: 'user10',
+    email: 'student10@bimbelio.com',
+    name: 'Rina Wulandari',
+    registeredAt: new Date('2025-01-14T08:30:00'),
+    invitedAt: new Date('2025-01-14T09:00:00'),
+    status: 'invited',
+    hasPackage: true,
+    packageType: 'SIMAK UI Premium 2024',
+  },
+];
+
+// Helper functions untuk participant management
+export const getParticipantsByLiveClass = (
+  liveClassId: string,
+): LiveClassParticipant[] => {
+  return mockLiveClassParticipants.filter((p) => p.liveClassId === liveClassId);
+};
+
+export const getParticipantStats = (liveClassId: string) => {
+  const participants = getParticipantsByLiveClass(liveClassId);
+  const registered = participants.filter(
+    (p) => p.status === 'registered',
+  ).length;
+  const invited = participants.filter((p) => p.status === 'invited').length;
+  const expired = participants.filter((p) => p.status === 'expired').length;
+  const total = participants.length;
+
+  return {
+    total,
+    registered,
+    invited,
+    expired,
+    pendingInvitation: registered,
+  };
+};
+
+export const getParticipantEmails = (
+  liveClassId: string,
+  status?: 'registered' | 'invited' | 'expired',
+): string[] => {
+  let participants = getParticipantsByLiveClass(liveClassId);
+
+  if (status) {
+    participants = participants.filter((p) => p.status === status);
+  }
+
+  return participants.map((p) => p.email);
+};
