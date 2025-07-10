@@ -243,7 +243,7 @@ export const mutateGeneral = async (
     else showToast = true;
     let res;
     if (type === 'post' || type === 'put') {
-      res = await axiosInstance[type](url, payload);
+      res = await axiosInstance[type](url, payload, { params });
     } else {
       res = await axiosInstance.delete(url, { params });
     }

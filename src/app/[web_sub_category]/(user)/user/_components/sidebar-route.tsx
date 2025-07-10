@@ -18,6 +18,7 @@ import {
   Search,
   TrendingUp,
   Trophy,
+  Video,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -69,6 +70,16 @@ const navItems = [
     isCollapsible: false,
     isLocked: false,
     gradient: 'from-yellow-500 to-orange-600',
+  },
+  {
+    title: 'Live Class',
+    url: (subCategoryId: string) => `/${subCategoryId}/user/live-class`,
+    icon: Video,
+    description: 'Kelas Langsung',
+    isNew: true,
+    isCollapsible: false,
+    isLocked: false,
+    gradient: 'from-pink-500 to-rose-600',
   },
   {
     title: 'Peringkat',
