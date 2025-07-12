@@ -15,7 +15,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { responseError } from '@/lib/response';
 import { supabase } from '@/supabaseClient';
-import { Category, Subcategory } from '@/types/database';
+import { Category } from '@/types/database';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
@@ -33,17 +33,16 @@ export default function UpdateTutorForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState(false);
 
-  const { data: Instructor, refetch: RefetchInstructor } = useGet<
-    InstructorsType[0]
-  >('/instructor/getSingleInstructor', { params: { id: instructorId } });
+  const { data: Instructor } = useGet<InstructorsType[0]>(
+    '/instructor/getSingleInstructor',
+    { params: { id: instructorId } },
+  );
 
   console.log({ Instructor });
 
-  const { data: SubCategories } = useGet<
-    (Subcategory & {
-      category: Category;
-    })[]
-  >('/category/getAllSubcategories');
+  const { data: SubCategories } = useGet<Category[]>(
+    '/category/getAllCategories',
+  );
 
   const { mutate: UpdateTutor } = useMutation(
     '/instructor/updateInstructor',
@@ -59,7 +58,7 @@ export default function UpdateTutorForm() {
       setValueForm('last-education', Instructor.lastEducation);
       (document.getElementById('description') as HTMLTextAreaElement).value =
         Instructor.description;
-      setSelectedSubject(Instructor.SubCategory.map((item) => item.id));
+      setSelectedSubject(Instructor.Category.map((item) => item.id));
       setStatus(Instructor.status);
       setAvatarPreview(Instructor.image);
     }
@@ -107,7 +106,7 @@ export default function UpdateTutorForm() {
       const lastEducation = formData.get('last-education');
       const certificate = formData.get('certificate');
       const status = formData.get('status') === 'on' ? true : false;
-      const subCategoryIds = selectedSubjects;
+      const categoryIds = selectedSubjects;
 
       let image = Instructor?.image;
 
@@ -152,7 +151,7 @@ export default function UpdateTutorForm() {
           status,
           lastEducation,
           certificate,
-          subCategoryIds,
+          categoryIds,
         },
       });
     } catch (error) {

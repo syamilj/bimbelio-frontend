@@ -863,16 +863,14 @@ export const mockTutors: MockTutor[] = [
 ];
 
 // Helper functions
-export const getStatusColor = (status: LiveClassStatus) => {
+export const getStatusColor = (status: string) => {
   switch (status) {
-    case 'SCHEDULED':
+    case 'Sedang Berlangsung':
       return 'bg-blue-100 text-blue-800';
-    case 'ONGOING':
+    case 'Akan Datang':
       return 'bg-green-100 text-green-800';
-    case 'COMPLETED':
+    case 'Selesai':
       return 'bg-gray-100 text-gray-800';
-    case 'CANCELLED':
-      return 'bg-red-100 text-red-800';
     default:
       return 'bg-gray-100 text-gray-800';
   }

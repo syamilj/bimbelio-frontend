@@ -15,7 +15,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { responseError } from '@/lib/response';
 import { supabase } from '@/supabaseClient';
-import { Category, Subcategory } from '@/types/database';
+import { Category } from '@/types/database';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
@@ -40,11 +40,7 @@ export default function CreateTutorForm() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: SubCategories } = useGet<
-    (Subcategory & {
-      category: Category;
-    })[]
-  >('/category/getAllSubcategories');
+  const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
   const { mutate: SaveTutor } = useMutation(
     '/instructor/addInstructor',
@@ -89,7 +85,7 @@ export default function CreateTutorForm() {
       const lastEducation = formData.get('last-education');
       const certificate = formData.get('certificate');
       const status = formData.get('status') === 'on' ? true : false;
-      const subCategoryIds = selectedSubjects;
+      const categoryIds = selectedSubjects;
 
       let image = null;
 
@@ -125,7 +121,7 @@ export default function CreateTutorForm() {
           status,
           lastEducation,
           certificate,
-          subCategoryIds,
+          categoryIds,
         },
       });
       if (res?.status === 200) {
@@ -277,7 +273,7 @@ export default function CreateTutorForm() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                    {SubCategories?.map((subject) => {
+                    {Categories?.map((subject) => {
                       const value = selectedSubjects.some(
                         (item) => item === subject.id,
                       );
@@ -323,7 +319,7 @@ export default function CreateTutorForm() {
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {selectedSubjects.map((id) => {
-                          const subject = SubCategories?.find(
+                          const subject = Categories?.find(
                             (item) => item.id === id,
                           );
                           return (

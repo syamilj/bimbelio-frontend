@@ -157,7 +157,7 @@ export function TutorTable({
               {/* Subjects */}
               <TableCell>
                 <div className="flex flex-wrap gap-1">
-                  {tutor.SubCategory.slice(0, 2).map((subject) => (
+                  {tutor.Category.slice(0, 2).map((subject) => (
                     <Badge
                       key={subject.id}
                       variant="secondary"
@@ -166,12 +166,12 @@ export function TutorTable({
                       {subject.name}
                     </Badge>
                   ))}
-                  {tutor.SubCategory.length > 2 && (
+                  {tutor.Category.length > 2 && (
                     <Badge
                       variant="outline"
                       className="text-xs"
                     >
-                      +{tutor.SubCategory.length - 2}
+                      +{tutor.Category.length - 2}
                     </Badge>
                   )}
                 </div>

@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { Instructor, Subcategory } from '@/types/database';
+import { Category, Instructor } from '@/types/database';
 import { Plus, Search, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -12,7 +12,7 @@ import { TutorMetrics } from './_components/tutor-metrics';
 import { TutorTable } from './_components/tutor-table';
 
 export type InstructorsType = (Instructor & {
-  SubCategory: Subcategory[];
+  Category: Category[];
   totalLiveClass: number;
 })[];
 
@@ -32,14 +32,14 @@ export default function TutorDashboard() {
     const matchesSearch =
       tutor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       tutor.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tutor.SubCategory.some((subject) =>
+      tutor.Category.some((subject) =>
         subject.name.toLowerCase().includes(searchQuery.toLowerCase()),
       );
 
     const matchesSubject =
       !subjectFilter ||
       subjectFilter === 'all' ||
-      tutor.SubCategory.map((item) => item.id).includes(subjectFilter);
+      tutor.Category.map((item) => item.id).includes(subjectFilter);
     const matchesStatus =
       !statusFilter ||
       statusFilter === 'all' ||

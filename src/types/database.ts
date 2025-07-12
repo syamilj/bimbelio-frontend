@@ -454,41 +454,87 @@ export type TryoutUserAnswer = {
   sessionParticipantId: string;
 };
 
-export type Instructor = {
+export type LiveClassReference = {
   id: string;
+  description: string;
+  type: LiveClassReferenceTypeEnum;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  subChapterId: string | null;
+  url: string | null;
+  urlType: LiveClassReferenceUrlTypeEnum;
+};
+
+export type Pivot_Instructor_Category = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  instructorId: string;
+  categoryId: string;
+  subcategoryId: string | null;
+};
+
+export type LiveClassReferenceUrlTypeEnum =
+  | 'VIDEO'
+  | 'AUDIO'
+  | 'WEBSITE'
+  | 'DOCUMENT'
+  | 'ARTICLE';
+export type LiveClassReferenceTypeEnum = 'URL' | 'COURSE';
+
+export type LiveClass = {
+  id: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  categoryId: string;
+  image: string | null;
+  startDate: Date;
+  link: string;
+  instructorId: string;
+  duration: number;
+  maxParticipant: number | null;
+  isRecord: boolean;
+};
+
+export type Instructor = {
   name: string;
+  id: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  status: boolean;
+  image: string | null;
   email: string;
   phone: string;
-  description: string;
-  image: string | null;
-  status: boolean;
   lastEducation: string;
   certificate: string | null;
 };
-
 // =============================================================================
 
 // === LIVE CLASS SYSTEM ===
-export type LiveClass = {
-  id: string;
-  title: string;
-  description: string;
-  subject: string;
-  tutorId: string;
-  scheduleDate: Date;
-  startTime: string;
-  endTime: string;
-  duration: number; // calculated field
-  meetLink: string;
-  maxParticipants?: number;
-  status: LiveClassStatusEnum;
-  isRecorded: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: string;
-  updatedBy: string;
-  website_sub_category_id: string;
-};
+// export type LiveClass = {
+//   id: string;
+//   title: string;
+//   description: string;
+//   subject: string;
+//   tutorId: string;
+//   scheduleDate: Date;
+//   startTime: string;
+//   endTime: string;
+//   duration: number; // calculated field
+//   meetLink: string;
+//   maxParticipants?: number;
+//   status: LiveClassStatusEnum;
+//   isRecorded: boolean;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   createdBy: string;
+//   updatedBy: string;
+//   website_sub_category_id: string;
+// };
 
 export type LiveClassStatusEnum =
   | 'SCHEDULED'
@@ -518,17 +564,17 @@ export type LiveClassAgenda = {
   website_sub_category_id: string;
 };
 
-export type LiveClassReference = {
-  id: string;
-  liveClassId: string;
-  title: string;
-  type: ReferenceTypeEnum;
-  url?: string;
-  chapterId?: string; // reference to CourseChapter
-  subChapterId?: string; // reference to CourseSubChapter
-  order: number;
-  website_sub_category_id: string;
-};
+// export type LiveClassReference = {
+//   id: string;
+//   liveClassId: string;
+//   title: string;
+//   type: ReferenceTypeEnum;
+//   url?: string;
+//   chapterId?: string; // reference to CourseChapter
+//   subChapterId?: string; // reference to CourseSubChapter
+//   order: number;
+//   website_sub_category_id: string;
+// };
 
 export type ReferenceTypeEnum = 'URL' | 'CHAPTER' | 'DOCUMENT' | 'VIDEO';
 
