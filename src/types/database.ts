@@ -1,3 +1,59 @@
+export type LiveClassReference = {
+  id: string;
+  description: string;
+  type: LiveClassReferenceTypeEnum;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  subChapterId: string | null;
+  url: string | null;
+  urlType: LiveClassReferenceUrlTypeEnum;
+};
+
+export type LiveClassReferenceUrlTypeEnum =
+  | 'VIDEO'
+  | 'AUDIO'
+  | 'WEBSITE'
+  | 'DOCUMENT'
+  | 'ARTICLE';
+export type LiveClassReferenceTypeEnum = 'URL' | 'COURSE';
+
+export type LiveClass = {
+  id: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  categoryId: string;
+  image: string | null;
+  startDate: Date;
+  link: string;
+  instructorId: string;
+  duration: number;
+  maxParticipant: number | null;
+  isRecord: boolean;
+};
+
+export type Instructor = {
+  name: string;
+  id: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  status: boolean;
+  image: string | null;
+  email: string;
+  phone: string;
+  lastEducation: string;
+  certificate: string | null;
+};
+
+export type Pivot_LiveClass_Plan = {
+  id: string;
+  planId: string;
+  liveClassId: string;
+};
+
 export type Prediction = {
   id: string;
   userId: string;
@@ -382,7 +438,7 @@ export type WebsiteSubCategory = {
   website_category_id: string;
 };
 
-export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE';
+export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS';
 
 export type Subscription = {
   id: string;
@@ -442,6 +498,7 @@ export type PlanFeature = {
   createdAt: Date;
   updatedAt: Date;
   type: FeatureTypeEnum;
+  liveClassesPerWeek?: number;
   planSubscriptionId: string;
 };
 
@@ -452,65 +509,6 @@ export type TryoutUserAnswer = {
   questionId: string;
   answerId: string | null;
   sessionParticipantId: string;
-};
-
-export type LiveClassReference = {
-  id: string;
-  description: string;
-  type: LiveClassReferenceTypeEnum;
-  createdAt: Date;
-  updatedAt: Date;
-  title: string;
-  subChapterId: string | null;
-  url: string | null;
-  urlType: LiveClassReferenceUrlTypeEnum;
-};
-
-export type Pivot_Instructor_Category = {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  instructorId: string;
-  categoryId: string;
-  subcategoryId: string | null;
-};
-
-export type LiveClassReferenceUrlTypeEnum =
-  | 'VIDEO'
-  | 'AUDIO'
-  | 'WEBSITE'
-  | 'DOCUMENT'
-  | 'ARTICLE';
-export type LiveClassReferenceTypeEnum = 'URL' | 'COURSE';
-
-export type LiveClass = {
-  id: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  title: string;
-  categoryId: string;
-  image: string | null;
-  startDate: Date;
-  link: string;
-  instructorId: string;
-  duration: number;
-  maxParticipant: number | null;
-  isRecord: boolean;
-};
-
-export type Instructor = {
-  name: string;
-  id: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  status: boolean;
-  image: string | null;
-  email: string;
-  phone: string;
-  lastEducation: string;
-  certificate: string | null;
 };
 // =============================================================================
 

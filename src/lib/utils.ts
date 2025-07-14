@@ -390,6 +390,38 @@ export const getDateForInput = (dateStr: any) => {
 
   return `${year}-${month}-${day}`;
 };
+export const getDateForInputDateTime = (dateStr: any) => {
+  const date = new Date(dateStr);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
+export const formatDateTime = (date: Date) => {
+  return new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
+};
+
+export const formatDuration = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+
+  if (hours > 0) {
+    return `${hours}j ${mins}m`;
+  }
+  return `${mins}m`;
+};
+
 export const replaceLatexNotation = (content: string) => {
   if (content) {
     return content

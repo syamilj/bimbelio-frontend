@@ -9,24 +9,23 @@ import {
   formatDateTime,
   formatDuration,
   MockLiveClass,
-  mockLiveClasses,
 } from '@/lib/mock-data/live-class';
-import { Calendar, Clock, ExternalLink, Users } from 'lucide-react';
+import { Calendar, Clock, Users } from 'lucide-react';
 import Link from 'next/link';
+import { LiveClassAvailableType } from '../_type';
 
 // Mock enrolled classes
 const mockEnrolledClassIds = ['1', '2', '4'];
 
-export function UpcomingLiveClasses() {
+export function UpcomingLiveClasses({
+  data,
+}: {
+  data: LiveClassAvailableType[];
+}) {
   // Filter untuk kelas yang terdaftar dan akan berlangsung
-  const upcomingClasses = mockLiveClasses
-    .filter(
-      (lc) =>
-        mockEnrolledClassIds.includes(lc.id) &&
-        (lc.status === 'SCHEDULED' || lc.status === 'ONGOING'),
-    )
-    .sort((a, b) => a.scheduleDate.getTime() - b.scheduleDate.getTime())
-    .slice(0, 3); // Hanya ambil 3 kelas terdekat
+  const upcomingClasses = data.sort(
+    (a, b) => a.startDate.getTime() - b.startDate.getTime(),
+  );
 
   const getTimeUntilClass = (scheduleDate: Date) => {
     const now = new Date();
@@ -82,7 +81,7 @@ export function UpcomingLiveClasses() {
               {/* Urgency Indicator */}
               <div className="flex-shrink-0">
                 <div
-                  className={`w-3 h-3 rounded-full ${getUrgencyColor(liveClass.scheduleDate)}`}
+                  className={`w-3 h-3 rounded-full ${getUrgencyColor(new Date(liveClass.startDate))}`}
                 />
               </div>
 
@@ -105,7 +104,7 @@ export function UpcomingLiveClasses() {
                 <div className="flex items-center gap-3 text-xs text-gray-500 mb-2">
                   <div className="flex items-center gap-1">
                     <Clock className="h-3 w-3" />
-                    {formatDateTime(liveClass.scheduleDate)}
+                    {formatDateTime(liveClass.startDate)}
                   </div>
                   <div className="flex items-center gap-1">
                     <Users className="h-3 w-3" />
@@ -116,49 +115,40 @@ export function UpcomingLiveClasses() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Avatar className="h-6 w-6">
-                      <AvatarImage src={liveClass.tutorAvatar} />
+                      <AvatarImage
+                        src={liveClass.Instructor.image || undefined}
+                      />
                       <AvatarFallback className="text-xs">
-                        {liveClass.tutorName
+                        {liveClass.Instructor.name
                           .split(' ')
                           .map((n) => n[0])
                           .join('')}
                       </AvatarFallback>
                     </Avatar>
                     <span className="text-xs text-gray-600">
-                      {liveClass.tutorName}
+                      {liveClass.Instructor.name}
                     </span>
                   </div>
 
                   <div className="text-xs font-medium text-gray-900">
-                    {getTimeUntilClass(liveClass.scheduleDate)}
+                    {getTimeUntilClass(new Date(liveClass.startDate))}
                   </div>
                 </div>
               </div>
 
               {/* Action Button */}
               <div className="flex-shrink-0">
-                {canJoinNow(liveClass) ? (
-                  <Button
-                    size="sm"
-                    onClick={() => handleJoinClass(liveClass)}
-                    className="bg-green-600 hover:bg-green-700"
+                <Button
+                  variant="outline"
+                  size="sm"
+                  asChild
+                >
+                  <Link
+                    href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
                   >
-                    <ExternalLink className="h-4 w-4 mr-1" />
-                    Join
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    asChild
-                  >
-                    <Link
-                      href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
-                    >
-                      Detail
-                    </Link>
-                  </Button>
-                )}
+                    Detail
+                  </Link>
+                </Button>
               </div>
             </div>
           ))}

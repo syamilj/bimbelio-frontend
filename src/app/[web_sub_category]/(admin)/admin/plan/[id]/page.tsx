@@ -53,6 +53,7 @@ type GetSingleType = Plan & {
 export default function CreatePlanForm() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [activeTab, setActiveTab] = useState<ActiveTabType>({
     feature: false,
     limit: false,
@@ -68,6 +69,7 @@ export default function CreatePlanForm() {
   const getData = async () => {
     await getGeneral(`/plan/getSinglePlan?id=${id}`, {
       onSuccess({ data: dat }) {
+        console.log({ dat });
         const data = dat as GetSingleType;
         changeValue('name', data.name);
         changeValue('description', data.description);
@@ -82,8 +84,19 @@ export default function CreatePlanForm() {
           const materiPremium = data.PlanSubscription.PlanFeature.find(
             (item) => item.type === 'DOCUMENT',
           );
+          const liveClass = data.PlanSubscription.PlanFeature.find(
+            (item) => item.type === 'LIVECLASS',
+          );
           if (course) changeValue('course', 'on');
           if (materiPremium) changeValue('materiPremium', 'on');
+          if (liveClass) changeValue('liveClass', 'on');
+          if (liveClass?.liveClassesPerWeek) {
+            console.log(liveClass?.liveClassesPerWeek);
+            changeValue(
+              'liveClassesPerWeek',
+              liveClass?.liveClassesPerWeek.toString(),
+            );
+          }
           setInitialWebSubCategoryId(
             data.PlanSubscription.websiteSubCategoryId,
           );
@@ -127,6 +140,9 @@ export default function CreatePlanForm() {
 
     const course = formData.get('course') as 'on' | null;
     const materiPremium = formData.get('materiPremium') as 'on' | null;
+    const liveClass = formData.get('liveClass') as 'on' | null;
+
+    const liveClassesPerWeek = formData.get('liveClassesPerWeek') as string;
 
     const expireType = formData.get('expireType') as string;
     const duration = formData.get('duration') as string;
@@ -170,6 +186,10 @@ export default function CreatePlanForm() {
             planfeature: [
               { type: course ? 'COURSE' : null },
               { type: materiPremium ? 'DOCUMENT' : null },
+              {
+                type: liveClass ? 'LIVECLASS' : null,
+                liveClassesPerWeek: parseInt(liveClassesPerWeek || '0'),
+              },
             ].filter((item) => item.type),
           }
         : undefined,
@@ -179,7 +199,7 @@ export default function CreatePlanForm() {
       payload,
       type: 'put',
       setLoading: setIsLoading,
-      onSuccess: getData,
+      // onSuccess: getData,
     });
   };
 
@@ -678,6 +698,10 @@ const SectionFeature = ({
 
   const [subCategories, setSubCategories] = useState<WebsiteSubCategory[]>([]);
 
+  const [isLiveClassActive, setIsLiveClassActive] = useState<boolean>(false);
+
+  console.log({ isLiveClassActive });
+
   const changeExpireType = (type: string) => {
     const input = document.getElementById('expireType') as
       | HTMLInputElement
@@ -790,6 +814,21 @@ const SectionFeature = ({
                 className="ml-2"
               >
                 Materi Premium
+              </Label>
+            </div>
+            <div className="flex items-center">
+              <Checkbox
+                id="liveClass"
+                name="liveClass"
+                onCheckedChange={(value) => {
+                  setIsLiveClassActive(value as boolean);
+                }}
+              />
+              <Label
+                htmlFor="liveClass"
+                className="ml-2"
+              >
+                Live Class
               </Label>
             </div>
           </div>
@@ -932,6 +971,25 @@ const SectionFeature = ({
                 </Select>
               </div>
             )}
+          </div>
+
+          <div className={cn('ml-6', !isLiveClassActive && 'hidden')}>
+            <Label
+              htmlFor="liveClassesPerWeek"
+              className="block mb-2"
+            >
+              Live Class Per Minggu <span className="text-red-500">*</span>
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                id="liveClassesPerWeek"
+                name="liveClassesPerWeek"
+                type="number"
+                placeholder="0"
+                className="flex-1"
+                required={isLiveClassActive}
+              />
+            </div>
           </div>
         </div>
       )}

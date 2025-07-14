@@ -101,3 +101,16 @@ export default function LoadingPageWithText({
     </>
   );
 }
+
+export function LoadingComponentWithText({ heading }: { heading?: string }) {
+  return (
+    <div className="flex w-full select-none items-center justify-center h-[75vh]">
+      <div className="flex flex-col items-center gap-[.5rem] text-center">
+        <Loader2 className="h-[4rem] w-[4rem] animate-spin text-[#464646]" />
+        <p className="text-[1.3rem] text-[#464646]">
+          {heading ? heading : 'Loading'}
+        </p>
+      </div>
+    </div>
+  );
+}

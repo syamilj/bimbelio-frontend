@@ -29,7 +29,6 @@ import {
   Mail,
   MoreHorizontal,
   Phone,
-  Star,
   Trash,
   UserCheck,
   UserX,
@@ -74,15 +73,6 @@ export function TutorTable({
       .slice(0, 2);
   };
 
-  const renderStarRating = (rating: number) => {
-    return (
-      <div className="flex items-center gap-1">
-        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-        <span className="text-sm font-medium">{rating.toFixed(1)}</span>
-      </div>
-    );
-  };
-
   const { mutate: DeleteInstructor, isLoading: DeleteInstructorIsLoading } =
     useMutation('/instructor/deleteInstructor', 'delete', {
       onSuccess() {
@@ -105,7 +95,7 @@ export function TutorTable({
             <TableHead>Tutor</TableHead>
             <TableHead>Kontak</TableHead>
             <TableHead>Mata Pelajaran</TableHead>
-            <TableHead>Rating</TableHead>
+            {/* <TableHead>Rating</TableHead> */}
             <TableHead>Total Kelas</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="w-[100px]">Aksi</TableHead>
@@ -178,7 +168,7 @@ export function TutorTable({
               </TableCell>
 
               {/* Rating */}
-              <TableCell>{renderStarRating(4)}</TableCell>
+              {/* <TableCell>{renderStarRating(4)}</TableCell> */}
 
               {/* Total Classes */}
               <TableCell>

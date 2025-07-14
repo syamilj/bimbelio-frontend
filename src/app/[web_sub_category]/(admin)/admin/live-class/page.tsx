@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { LiveClassStatus } from '@/lib/mock-data/live-class';
 import { Plus } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LiveClassFilters } from './_components/live-class-filters';
@@ -16,16 +17,14 @@ export default function LiveClassDashboard() {
   const [statusFilter, setStatusFilter] = useState<LiveClassStatus | 'ALL'>(
     'ALL',
   );
-  const [subjectFilter, setSubjectFilter] = useState('Semua Mata Pelajaran');
-
-  const handleCreateClass = () => {
-    router.push(`/${website_sub_category_id}/admin/live-class/new`);
-  };
+  const [subjectFilter, setSubjectFilter] = useState<string | undefined>(
+    undefined,
+  );
 
   const handleResetFilters = () => {
     setSearchTerm('');
     setStatusFilter('ALL');
-    setSubjectFilter('Semua Mata Pelajaran');
+    setSubjectFilter(undefined);
   };
 
   return (
@@ -38,13 +37,12 @@ export default function LiveClassDashboard() {
             Kelola dan pantau semua live class Anda
           </p>
         </div>
-        <Button
-          onClick={handleCreateClass}
-          className="flex items-center gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          Buat Live Class
-        </Button>
+        <Link href={`/${website_sub_category_id}/admin/live-class/new`}>
+          <Button className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Buat Live Class
+          </Button>
+        </Link>
       </div>
 
       {/* Metrics */}

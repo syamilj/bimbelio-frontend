@@ -27,6 +27,7 @@ import {
   Category,
   CourseChapter,
   CourseSubChapter,
+  Instructor,
   LiveClassReferenceTypeEnum,
   LiveClassReferenceUrlTypeEnum,
 } from '@/types/database';
@@ -44,7 +45,6 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { InstructorsType } from '../../tutors/page';
 import { CardSubs } from './_components/card-subs';
 
 type AgendaType = {
@@ -61,6 +61,11 @@ type ReferenceType = {
   urlType?: LiveClassReferenceUrlTypeEnum;
   subChapterId?: string;
 };
+
+type InstructorsType = (Instructor & {
+  Category: Category[];
+  totalLiveClass: number;
+})[];
 
 export default function CreateLiveClassForm() {
   const router = useRouter();
@@ -453,6 +458,7 @@ export default function CreateLiveClassForm() {
 
               <div className="space-y-2 relative">
                 <button
+                  type="button"
                   className="absolute bottom-[-20px] text-xs bg-main hover:bg-main/90 duration-300 text-white rounded-full px-4"
                   onClick={() => {
                     const value = agendas.reduce(
@@ -561,7 +567,11 @@ export default function CreateLiveClassForm() {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        // onClick={() => removeAgenda(agenda.id)}
+                        onClick={() =>
+                          setAgendas((prev) =>
+                            prev.filter((_, aIndex) => aIndex !== index),
+                          )
+                        }
                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
                         <X className="h-4 w-4" />

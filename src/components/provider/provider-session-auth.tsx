@@ -47,6 +47,7 @@ export default function ProviderSessionAuth({
               feature: {
                 document: userData.feature.document,
                 course: userData.feature.course,
+                liveClass: userData.feature.liveClass,
               },
             },
           });
@@ -65,6 +66,8 @@ export default function ProviderSessionAuth({
       setIsLoading(false);
     }
   }, []);
+
+  console.log(data);
 
   const Context = {
     data,
@@ -105,7 +108,7 @@ type SessionProviderType = {
           userTryOutId: string | null;
           type: string;
           tier: string;
-          feature: { document: boolean; course: boolean };
+          feature: { document: boolean; course: boolean; liveClass: boolean };
         };
         expires: string | undefined;
       }

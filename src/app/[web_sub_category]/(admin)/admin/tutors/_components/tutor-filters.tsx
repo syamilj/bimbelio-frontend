@@ -37,11 +37,11 @@ export function TutorFilters({
   const hasActiveFilters =
     searchQuery || subjectFilter !== 'all' || statusFilter !== 'all';
 
-  const { data: SubCategories } = useGet<
+  const { data: Categories } = useGet<
     (Subcategory & {
       category: Category;
     })[]
-  >('/category/getAllSubcategories');
+  >('/category/getAllCategories');
 
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-end">
@@ -73,7 +73,7 @@ export function TutorFilters({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Semua mata pelajaran</SelectItem>
-            {SubCategories?.map((subject) => (
+            {Categories?.map((subject) => (
               <SelectItem
                 key={subject.id}
                 value={subject.id}

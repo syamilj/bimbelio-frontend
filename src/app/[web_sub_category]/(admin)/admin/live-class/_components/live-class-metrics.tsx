@@ -1,11 +1,29 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import {
   mockLiveClasses,
   mockLiveClassParticipants,
 } from '@/lib/mock-data/live-class';
-import { Calendar, Clock, TrendingUp, Users } from 'lucide-react';
+import { Calendar, Clock, LucideProps, TrendingUp, Users } from 'lucide-react';
+import {
+  ForwardRefExoticComponent,
+  RefAttributes,
+  useEffect,
+  useState,
+} from 'react';
+
+type MetricsType = {
+  title: string;
+  value: number;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+  >;
+  color: string;
+  bgColor: string;
+  description: string;
+};
 
 export function LiveClassMetrics() {
   // Calculate metrics from mock data
@@ -38,56 +56,81 @@ export function LiveClassMetrics() {
     (p) => p.status === 'invited',
   ).length;
 
-  const metrics = [
+  const { data: SummaryLiveClass } = useGet<{
+    total: number;
+    totalWillCome: number;
+    totalOnGoing: number;
+    totalCompleted: number;
+  }>('/liveClass/getSummaryLiveClass');
+
+  const [metrics, setMetrics] = useState<MetricsType[]>([
     {
       title: 'Total Kelas',
-      value: totalClasses,
+      value: 0,
       description: 'Semua kelas live',
       icon: Calendar,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
     },
     {
-      title: 'Kelas Aktif',
-      value: activeClasses,
-      description: 'Sedang berlangsung',
+      title: 'Sedang Berlangsung',
+      value: 0,
+      description: 'Live class yang sedang berlangsung',
       icon: Clock,
       color: 'text-green-600',
       bgColor: 'bg-green-50',
     },
     {
-      title: 'Terjadwal',
-      value: scheduledClasses,
-      description: 'Akan datang',
+      title: 'Akan datang',
+      value: 0,
+      description: 'Live class yang akan datang',
       icon: TrendingUp,
       color: 'text-orange-600',
       bgColor: 'bg-orange-50',
     },
     {
-      title: 'Total Peserta',
-      value: totalParticipants,
-      description: 'Semua peserta',
+      title: 'Selesai',
+      value: 0,
+      description: 'Live class yang sudah selesai',
       icon: Users,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
     },
-    {
-      title: 'Perlu Undangan',
-      value: registeredParticipants,
-      description: 'Belum diundang',
-      icon: Clock,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50',
-    },
-    {
-      title: 'Sudah Diundang',
-      value: invitedParticipants,
-      description: 'Siap join',
-      icon: Users,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
-    },
-  ];
+  ]);
+
+  useEffect(() => {
+    if (SummaryLiveClass) {
+      setMetrics((prev) =>
+        prev.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              value: SummaryLiveClass.total,
+            };
+          }
+          if (index === 1) {
+            return {
+              ...item,
+              value: SummaryLiveClass.totalOnGoing,
+            };
+          }
+          if (index === 2) {
+            return {
+              ...item,
+              value: SummaryLiveClass.totalWillCome,
+            };
+          }
+          if (index === 3) {
+            return {
+              ...item,
+              value: SummaryLiveClass.totalCompleted,
+            };
+          }
+          return item;
+        }),
+      );
+    }
+  }, [SummaryLiveClass]);
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">

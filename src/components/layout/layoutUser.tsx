@@ -439,13 +439,13 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                       <Crown className="w-3 h-3 lg:w-4 lg:h-4" />
                       <span className="hidden lg:inline">Admin</span>
                     </div>
-                  ) : userTier === 'PREMIUM' ? (
+                  ) : userTier ? (
                     <div
                       className="hidden md:flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1 lg:py-1.5 rounded-xl text-white text-xs lg:text-sm font-semibold shadow-sm"
                       style={{ backgroundColor: mainColor }}
                     >
                       <Crown className="w-3 h-3 lg:w-4 lg:h-4" />
-                      <span className="hidden lg:inline">Premium</span>
+                      <span className="hidden lg:inline">{userTier}</span>
                     </div>
                   ) : (
                     <Button

@@ -36,10 +36,8 @@ import {
   Clock,
   Copy,
   Edit,
-  Eye,
   Loader2,
   MoreHorizontal,
-  Plus,
   Trash2,
   Users,
   Video,
@@ -50,7 +48,7 @@ import { useState } from 'react';
 interface Props {
   searchTerm: string;
   statusFilter: LiveClassStatus | 'ALL';
-  subjectFilter: string;
+  subjectFilter: string | undefined;
 }
 
 export function LiveClassTable({
@@ -76,8 +74,20 @@ export function LiveClassTable({
       status: string;
     })[]
   >('/liveClass/getAllLiveClass', {
-    params: { take, page },
-    useEffectDependencies: [take, page],
+    params: {
+      take,
+      page,
+      status: statusFilter,
+      categoryId: subjectFilter,
+      search: searchTerm,
+    },
+    useEffectDependencies: [
+      take,
+      page,
+      statusFilter,
+      subjectFilter,
+      searchTerm,
+    ],
   });
 
   const { mutate: DeleteLiveClass, isLoading: DeleteLiveClassIsLoading } =
@@ -99,15 +109,14 @@ export function LiveClassTable({
       liveClass.Category.name.toLowerCase().includes(searchTerm.toLowerCase());
 
     // Status filter
-    const matchesStatus =
-      statusFilter === 'ALL' || liveClass?.status === statusFilter;
+    // const matchesStatus =
+    //   statusFilter === 'ALL' || liveClass?.status === statusFilter;
 
     // Subject filter
-    const matchesSubject =
-      subjectFilter === 'Semua Mata Pelajaran' ||
-      liveClass.Category.name === subjectFilter;
+    // const matchesSubject =
+    //   subjectFilter === 'ALL' || liveClass.Category.id === subjectFilter;
 
-    return matchesSearch && matchesStatus && matchesSubject;
+    return matchesSearch;
   });
 
   const handleEdit = (classId: string) => {
@@ -159,15 +168,6 @@ export function LiveClassTable({
           <CardTitle className="text-lg font-semibold">
             Daftar Live Class ({filteredClasses.length})
           </CardTitle>
-          <Button
-            className="rounded-xl bg-blue-600 hover:bg-blue-700"
-            onClick={() =>
-              router.push(`/${website_sub_category_id}/admin/live-class/new`)
-            }
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Tambah Kelas
-          </Button>
         </CardHeader>
         <CardContent>
           <div className="rounded-xl border border-gray-200 overflow-hidden">
@@ -186,9 +186,9 @@ export function LiveClassTable({
                   <TableHead className="font-semibold text-gray-700 py-4">
                     Durasi
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-700 py-4">
+                  {/* <TableHead className="font-semibold text-gray-700 py-4">
                     Peserta
-                  </TableHead>
+                  </TableHead> */}
                   <TableHead className="font-semibold text-gray-700 py-4">
                     Status
                   </TableHead>
@@ -267,11 +267,10 @@ export function LiveClassTable({
                           {formatDuration(liveClass.duration)}
                         </div>
                       </TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         <div className="flex items-center gap-1 text-sm">
                           <Users className="w-4 h-4 text-gray-500" />
                           <span className="font-medium">
-                            {/* {liveClass.currentParticipants} */}
                             statis
                           </span>
                           {liveClass.maxParticipant && (
@@ -280,7 +279,7 @@ export function LiveClassTable({
                             </span>
                           )}
                         </div>
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell>
                         <Badge
                           className={`rounded-lg ${getStatusColor(liveClass?.status)}`}
@@ -320,10 +319,10 @@ export function LiveClassTable({
                                 <Users className="mr-2 h-4 w-4" />
                                 Kelola Peserta
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              {/* <DropdownMenuItem>
                                 <Eye className="mr-2 h-4 w-4" />
                                 Lihat Detail
-                              </DropdownMenuItem>
+                              </DropdownMenuItem> */}
                               {liveClass?.status === 'SCHEDULED' && (
                                 <DropdownMenuItem
                                   onClick={() =>

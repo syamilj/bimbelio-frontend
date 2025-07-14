@@ -891,7 +891,8 @@ export const getStatusText = (status: LiveClassStatus) => {
   }
 };
 
-export const formatDateTime = (date: Date) => {
+export const formatDateTime = (dateData: Date | string) => {
+  const date = new Date(dateData);
   return new Intl.DateTimeFormat('id-ID', {
     day: 'numeric',
     month: 'short',
@@ -1131,17 +1132,4 @@ export const getParticipantStats = (liveClassId: string) => {
     expired,
     pendingInvitation: registered,
   };
-};
-
-export const getParticipantEmails = (
-  liveClassId: string,
-  status?: 'registered' | 'invited' | 'expired',
-): string[] => {
-  let participants = getParticipantsByLiveClass(liveClassId);
-
-  if (status) {
-    participants = participants.filter((p) => p.status === status);
-  }
-
-  return participants.map((p) => p.email);
 };

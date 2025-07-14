@@ -10,7 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { LiveClassStatus } from '@/lib/mock-data/live-class';
+import { Category } from '@/types/database';
 import { Filter, RotateCcw, Search } from 'lucide-react';
 
 interface FilterProps {
@@ -18,8 +20,8 @@ interface FilterProps {
   setSearchTerm: (value: string) => void;
   statusFilter: LiveClassStatus | 'ALL';
   setStatusFilter: (value: LiveClassStatus | 'ALL') => void;
-  subjectFilter: string;
-  setSubjectFilter: (value: string) => void;
+  subjectFilter: string | undefined;
+  setSubjectFilter: (value: string | undefined) => void;
   onReset: () => void;
 }
 
@@ -32,15 +34,7 @@ export function LiveClassFilters({
   setSubjectFilter,
   onReset,
 }: FilterProps) {
-  const subjects = [
-    'Semua Mata Pelajaran',
-    'Matematika',
-    'Fisika',
-    'Kimia',
-    'Biologi',
-    'Bahasa Indonesia',
-    'Bahasa Inggris',
-  ];
+  const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
   return (
     <Card className="border-0 shadow-sm">
@@ -73,28 +67,34 @@ export function LiveClassFilters({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL">Semua Status</SelectItem>
-              <SelectItem value="SCHEDULED">Terjadwal</SelectItem>
+              <SelectItem value="WILLCOME">Akan Datang</SelectItem>
               <SelectItem value="ONGOING">Berlangsung</SelectItem>
               <SelectItem value="COMPLETED">Selesai</SelectItem>
-              <SelectItem value="CANCELLED">Dibatalkan</SelectItem>
             </SelectContent>
           </Select>
 
           {/* Subject Filter */}
           <Select
-            value={subjectFilter}
-            onValueChange={setSubjectFilter}
+            value={subjectFilter === undefined ? 'ALL' : subjectFilter}
+            onValueChange={(value) => {
+              if (value === 'ALL') {
+                setSubjectFilter(undefined);
+              } else {
+                setSubjectFilter(value);
+              }
+            }}
           >
             <SelectTrigger className="rounded-xl border-gray-200">
               <SelectValue placeholder="Pilih mata pelajaran" />
             </SelectTrigger>
             <SelectContent>
-              {subjects.map((subject) => (
+              <SelectItem value={'ALL'}>Semua Mata Pelajaran</SelectItem>
+              {Categories?.map((subject) => (
                 <SelectItem
-                  key={subject}
-                  value={subject === 'Semua Mata Pelajaran' ? 'ALL' : subject}
+                  key={subject.id}
+                  value={subject.id}
                 >
-                  {subject}
+                  {subject.name}
                 </SelectItem>
               ))}
             </SelectContent>

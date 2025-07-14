@@ -1,12 +1,36 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Star, TrendingUp, Users } from 'lucide-react';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import {
+  BookOpen,
+  LucideProps,
+  TrendingDown,
+  TrendingUp,
+  Users,
+} from 'lucide-react';
+import {
+  ForwardRefExoticComponent,
+  RefAttributes,
+  useEffect,
+  useState,
+} from 'react';
 import { InstructorsType } from '../page';
 
 interface Props {
   instructor: InstructorsType;
 }
+
+type MetricsType = {
+  title: string;
+  value: number;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+  >;
+  color: string;
+  bgColor: string;
+  description: string;
+};
 
 export function TutorMetrics({ instructor }: Props) {
   const activeInstructors = instructor.filter((tutor) => tutor.status).length;
@@ -19,40 +43,81 @@ export function TutorMetrics({ instructor }: Props) {
   );
   const averageRating = '5.0';
 
-  const metrics = [
+  const { data: SummaryInstructor } = useGet<{
+    totalTutors: number;
+    totalTutorsActive: number;
+    totalTutorsInActive: number;
+    totalLiveClass: number;
+  }>('/instructor/getSummaryInstructor');
+
+  const [metrics, setMetrics] = useState<MetricsType[]>([
     {
       title: 'Total Tutor',
-      value: instructor.length.toString(),
+      value: 0,
       icon: Users,
       color: 'text-blue-600',
       bgColor: 'bg-blue-100',
-      description: `${activeInstructors} aktif, ${inactiveInstructors} tidak aktif`,
-    },
-    {
-      title: 'Rating Rata-rata',
-      value: averageRating,
-      icon: Star,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-100',
-      description: 'Rating dari semua tutor',
-    },
-    {
-      title: 'Total Kelas',
-      value: totalClasses.toString(),
-      icon: BookOpen,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100',
-      description: 'Total kelas yang sudah diajar',
+      description: `Total tutor yang tersedia`,
     },
     {
       title: 'Tutor Aktif',
-      value: activeInstructors.toString(),
+      value: 0,
       icon: TrendingUp,
       color: 'text-purple-600',
       bgColor: 'bg-purple-100',
       description: 'Tutor yang tersedia',
     },
-  ];
+    {
+      title: 'Tutor Tidak Aktif',
+      value: 0,
+      icon: TrendingDown,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-100',
+      description: 'Tutor yang tersedia',
+    },
+    {
+      title: 'Total Kelas',
+      value: 0,
+      icon: BookOpen,
+      color: 'text-green-600',
+      bgColor: 'bg-green-100',
+      description: 'Total kelas yang sudah diajar',
+    },
+  ]);
+
+  useEffect(() => {
+    if (SummaryInstructor) {
+      setMetrics((prev) =>
+        prev.map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              value: SummaryInstructor.totalTutors,
+            };
+          }
+          if (index === 1) {
+            return {
+              ...item,
+              value: SummaryInstructor.totalTutorsActive,
+            };
+          }
+          if (index === 2) {
+            return {
+              ...item,
+              value: SummaryInstructor.totalTutorsInActive,
+            };
+          }
+          if (index === 3) {
+            return {
+              ...item,
+              value: SummaryInstructor.totalLiveClass,
+            };
+          }
+          return item;
+        }),
+      );
+    }
+  }, [SummaryInstructor]);
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
