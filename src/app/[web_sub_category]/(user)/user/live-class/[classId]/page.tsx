@@ -174,12 +174,12 @@ export default function LiveClassDetail() {
 
   const handleEnroll = () => {
     // Open register modal instead of direct enrollment
-    setRegisterModal({ isOpen: true, liveClass: LiveClass });
+    // setRegisterModal({ isOpen: true, liveClass: LiveClass });
   };
 
   const handleJoinClass = () => {
     // Open join modal instead of direct window.open
-    setJoinModal({ isOpen: true, liveClass: LiveClass });
+    // setJoinModal({ isOpen: true, liveClass: LiveClass });
   };
 
   const handleDownloadReference = (reference: any) => {
@@ -195,11 +195,6 @@ export default function LiveClassDetail() {
     if (!ratingModal.liveClass) return;
 
     // TODO: Implement actual API call to submit rating
-    console.log('Submitting rating:', {
-      liveClassId: ratingModal.liveClass.id,
-      rating,
-      review,
-    });
 
     // Show success message
     toaster({
@@ -227,13 +222,11 @@ export default function LiveClassDetail() {
 
   const handleRegisterSuccess = (email: string) => {
     setRegisterModal({ isOpen: false, liveClass: null });
-    console.log('User registered with email:', email);
     // Dalam implementasi nyata, ini akan trigger refresh data
   };
 
   const handleJoinSuccess = (email: string) => {
     setJoinModal({ isOpen: false, liveClass: null });
-    console.log('User joined with email:', email);
   };
 
   return (

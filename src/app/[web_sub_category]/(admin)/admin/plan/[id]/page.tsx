@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import LoadingPageWithText from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
@@ -24,7 +25,7 @@ import {
   WebsiteCategory,
   WebsiteSubCategory,
 } from '@/types/database';
-import { Loader2, Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -69,11 +70,11 @@ export default function CreatePlanForm() {
   const getData = async () => {
     await getGeneral(`/plan/getSinglePlan?id=${id}`, {
       onSuccess({ data: dat }) {
-        console.log({ dat });
         const data = dat as GetSingleType;
         changeValue('name', data.name);
         changeValue('description', data.description);
         changeValue('price', data.price.toString());
+        changeValue('original_price', data.originalPrice.toString());
         if (data.PlanSubscription) {
           setActiveTab((prev) => ({ ...prev, feature: true }));
           changeValue('duration', data.PlanSubscription.expireDays.toString());
@@ -91,7 +92,6 @@ export default function CreatePlanForm() {
           if (materiPremium) changeValue('materiPremium', 'on');
           if (liveClass) changeValue('liveClass', 'on');
           if (liveClass?.liveClassesPerWeek) {
-            console.log(liveClass?.liveClassesPerWeek);
             changeValue(
               'liveClassesPerWeek',
               liveClass?.liveClassesPerWeek.toString(),
@@ -137,6 +137,7 @@ export default function CreatePlanForm() {
     const tier = formData.get('tier') as string;
     const description = formData.get('description') as string;
     const price = formData.get('price') as string;
+    const originalPrice = formData.get('original_price') as string;
 
     const course = formData.get('course') as 'on' | null;
     const materiPremium = formData.get('materiPremium') as 'on' | null;
@@ -162,6 +163,7 @@ export default function CreatePlanForm() {
       name,
       description,
       price: parseFloat(price),
+      originalPrice: parseFloat(originalPrice),
       planLimitation: activeTab.limit
         ? {
             chat: limitRowsData?.chat || 0,
@@ -209,6 +211,10 @@ export default function CreatePlanForm() {
       className="mx-auto p-4 min-h-screen"
       onSubmit={handleSubmit}
     >
+      <LoadingPageWithText
+        loading={isLoading}
+        heading="Mengupdate Plan"
+      />
       <div className="space-y-6">
         {/* Basic Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -271,6 +277,26 @@ export default function CreatePlanForm() {
             </div>
 
             <div className="space-y-4">
+              <div>
+                <Label
+                  htmlFor="original_price"
+                  className="block mb-2"
+                >
+                  Original Price{' '}
+                  <span className="text-xs text-gray-500">(optional)</span>
+                </Label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none bg-gray-100 border-r rounded-l-xl px-2">
+                    <span className="text-gray-500">Rp</span>
+                  </div>
+                  <Input
+                    id="original_price"
+                    name="original_price"
+                    type="text"
+                    className="pl-12"
+                  />
+                </div>
+              </div>
               <div>
                 <Label
                   htmlFor="total"
@@ -429,7 +455,7 @@ export default function CreatePlanForm() {
             className="bg-main hover:bg-main/80"
             disabled={isLoading}
           >
-            {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save'}
+            Save
           </Button>
         </div>
       </div>
@@ -699,8 +725,6 @@ const SectionFeature = ({
   const [subCategories, setSubCategories] = useState<WebsiteSubCategory[]>([]);
 
   const [isLiveClassActive, setIsLiveClassActive] = useState<boolean>(false);
-
-  console.log({ isLiveClassActive });
 
   const changeExpireType = (type: string) => {
     const input = document.getElementById('expireType') as

@@ -111,20 +111,20 @@ type SuccessType<Data = any> = {
 };
 
 type FetchReturnType<Data, ErrorData> = {
-  mutate: MutateType;
+  mutate: MutateType<Data>;
   isLoading: boolean;
   error: ErrorType<ErrorData> | null;
   success: SuccessType<Data> | null;
 };
 
-export type MutateType = (optional?: {
+type MutateType<Data = any> = (optional?: {
   payload?: any;
   params?: object;
 }) => Promise<
   | {
       message: string;
       status: number;
-      data?: any;
+      data?: Data;
       page?: number;
       total_pages?: number;
     }

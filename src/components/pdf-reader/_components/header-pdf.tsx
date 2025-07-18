@@ -40,7 +40,6 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
   const isMobile = useMedia({ maxWidth: '768px' });
 
   const { mobileScreen, setMobileScreen } = useAppContext();
-  console.log({ doc });
   const {
     useHeaderPdf: {
       currentPage,

@@ -67,6 +67,13 @@ const SidebarRoute: FC = () => {
       category: 'User Management',
     },
     {
+      icon: CreditCard,
+      href: `/${website_sub_category_id}/admin/voucher`,
+      label: 'Voucher',
+      description: 'Voucher Management',
+      category: 'User Management',
+    },
+    {
       icon: FileText,
       href: `/${website_sub_category_id}/admin/blog`,
       label: 'Blog',

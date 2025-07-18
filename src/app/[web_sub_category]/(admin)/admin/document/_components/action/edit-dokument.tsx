@@ -93,7 +93,6 @@ export default function EditDocument() {
 
   useEffect(() => {
     if (editData) {
-      console.log({ editData });
       setFileUrl(editData?.url);
       setFileName(editData?.title);
       setPremium(editData?.premium);

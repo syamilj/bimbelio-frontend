@@ -113,8 +113,6 @@ export default function UpdateLiveClassForm() {
       },
     });
 
-  console.log({ LiveClass });
-
   useEffect(() => {
     if (LiveClass) {
       setSelectedPlanIds(
@@ -260,8 +258,6 @@ export default function UpdateLiveClassForm() {
       };
 
       await mutate({ payload });
-
-      console.log({ payload });
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -275,8 +271,6 @@ export default function UpdateLiveClassForm() {
   const selectedCategory = Categories?.find(
     (item) => item.id === selectedCategoryId,
   );
-
-  console.log({ references });
 
   // URL Reference Functions
   const addURLReadingReference = (urlData: ReferenceType) => {
@@ -549,7 +543,6 @@ export default function UpdateLiveClassForm() {
                     (
                       document.getElementById('duration') as HTMLInputElement
                     ).value = value.toString();
-                    console.log({ value });
                   }}
                 >
                   Sesuaikan dengan agenda
@@ -1205,7 +1198,6 @@ export default function UpdateLiveClassForm() {
                               });
                               return;
                             }
-                            console.log({ urlReadingData });
                             addURLReadingReference({
                               id: 'new',
                               title: urlReadingData.title,

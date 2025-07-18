@@ -274,7 +274,6 @@ const NewTryOut = () => {
           const saveDataString = LZString.decompress(
             localStorage.getItem(`temporary-edit-tryout-${tryoutId}`) || '',
           );
-          console.log({ saveDataString });
           const tryoutData = data;
           if (!saveDataString) {
             getTryoutFromDbs(tryoutData);
@@ -401,7 +400,6 @@ const NewTryOut = () => {
       const notCompressed = JSON.stringify(saveData);
       const compressed = LZString.compress(JSON.stringify(saveData));
       localStorage.setItem(`temporary-edit-tryout-${tryoutId}`, compressed);
-      console.log('123');
     },
     1000,
   );

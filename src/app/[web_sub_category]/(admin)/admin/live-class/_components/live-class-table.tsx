@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import ListPagination from '@/components/ui/list-pagination';
 import { ModalVerification } from '@/components/ui/modal-verification';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -36,7 +37,6 @@ import {
   Clock,
   Copy,
   Edit,
-  Loader2,
   MoreHorizontal,
   Trash2,
   Users,
@@ -137,8 +137,6 @@ export function LiveClassTable({
       description: 'Link meet berhasil disalin ke clipboard',
       condition: 'success',
     });
-
-    console.log('Meet link copied:', meetLink);
   };
 
   const handleSendReminder = (classTitle: string) => {
@@ -148,8 +146,6 @@ export function LiveClassTable({
       description: `Reminder untuk kelas "${classTitle}" berhasil dikirim`,
       condition: 'success',
     });
-
-    console.log('Reminder sent for class:', classTitle);
   };
 
   const getInitials = (name: string) => {
@@ -199,14 +195,16 @@ export function LiveClassTable({
               </TableHeader>
               <TableBody>
                 {LiveClassIsLoading ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={7}
-                      className="text-center py-8 text-gray-500"
-                    >
-                      <Loader2 className="animate-spin w-12 h-12 mx-auto" />
-                    </TableCell>
-                  </TableRow>
+                  Array.from({ length: 7 }).map((_, index) => (
+                    <TableRow key={index}>
+                      <TableCell
+                        colSpan={7}
+                        className="h-[48.5px]"
+                      >
+                        <Skeleton className="w-full h-full rounded-md" />
+                      </TableCell>
+                    </TableRow>
+                  ))
                 ) : filteredClasses.length === 0 ? (
                   <TableRow>
                     <TableCell

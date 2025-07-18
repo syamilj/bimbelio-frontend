@@ -50,7 +50,6 @@ type PaticipantType = {
 export default function ParticipantsPage() {
   const searchParams = useSearchParams();
   const classId = searchParams.get('classId');
-  console.log({ classId });
 
   const {
     data: Participants,
@@ -59,8 +58,6 @@ export default function ParticipantsPage() {
   } = useGet<PaticipantType[]>('/liveClass/getLiveClassParticipants', {
     params: { id: classId },
   });
-
-  console.log({ Participants });
 
   const participants = Participants || [];
 
@@ -139,7 +136,6 @@ export default function ParticipantsPage() {
       });
       return;
     }
-    console.log({ selectedParticipants });
     // return;
     setIsUpdating(true);
     try {

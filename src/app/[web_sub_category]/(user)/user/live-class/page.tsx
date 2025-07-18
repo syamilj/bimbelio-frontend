@@ -160,11 +160,6 @@ export default function LiveClassStudentDashboard() {
     if (!ratingModal.liveClass) return;
 
     // TODO: Implement actual API call to submit rating
-    console.log('Submitting rating:', {
-      liveClassId: ratingModal.liveClass.id,
-      rating,
-      review,
-    });
 
     // For now, just show success message
     alert(`Rating ${rating} bintang berhasil dikirim!`);
@@ -198,14 +193,12 @@ export default function LiveClassStudentDashboard() {
   const handleRegisterSuccess = (email: string) => {
     // Modal akan otomatis close, dan kita bisa refresh atau update state
     setRegisterModal({ isOpen: false, liveClass: null });
-    console.log('User registered with email:', email);
     // Dalam implementasi nyata, ini akan trigger refresh data
   };
 
   const handleJoinSuccess = (email: string) => {
     // Modal akan otomatis close setelah redirect
     setJoinModal({ isOpen: false, liveClass: null });
-    console.log('User joined with email:', email);
   };
 
   return (

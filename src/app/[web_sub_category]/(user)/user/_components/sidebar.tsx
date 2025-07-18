@@ -66,8 +66,6 @@ const Sidebar = ({ category }: { category: any }) => {
   // Use minimizeSidebar state consistently
   const shouldMinimize = minimizeSidebar;
 
-  console.log({ minimizeSidebar });
-
   // Handle body overflow based on pop-ups
   useEffect(() => {
     if (transactionPopUp || transactionHistory) {

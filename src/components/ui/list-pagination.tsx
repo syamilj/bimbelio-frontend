@@ -28,7 +28,6 @@ export default function ListPagination({
   const [page, setPage] = useState<number>(1);
   const handleChange = (parameter: 'next' | 'prev') => {
     if (parameter === 'next') {
-      console.log({ totalPage });
       if (page < totalPage) {
         setPage(page + 1);
         if (onPageChange) {

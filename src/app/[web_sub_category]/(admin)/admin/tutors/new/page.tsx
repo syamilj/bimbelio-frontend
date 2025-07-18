@@ -47,8 +47,6 @@ export default function CreateTutorForm() {
     'post',
   );
 
-  // console.log({ SubCategories });
-
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {

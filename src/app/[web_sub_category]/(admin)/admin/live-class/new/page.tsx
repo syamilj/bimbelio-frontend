@@ -186,8 +186,6 @@ export default function CreateLiveClassForm() {
       };
 
       await mutate({ payload });
-
-      console.log({ payload });
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -201,8 +199,6 @@ export default function CreateLiveClassForm() {
   const selectedCategory = Categories?.find(
     (item) => item.id === selectedCategoryId,
   );
-
-  console.log({ references });
 
   // URL Reference Functions
   const addURLReadingReference = (urlData: ReferenceType) => {
@@ -468,7 +464,6 @@ export default function CreateLiveClassForm() {
                     (
                       document.getElementById('duration') as HTMLInputElement
                     ).value = value.toString();
-                    console.log({ value });
                   }}
                 >
                   Sesuaikan dengan agenda
@@ -1239,7 +1234,6 @@ export default function CreateLiveClassForm() {
                               });
                               return;
                             }
-                            console.log({ urlReadingData });
                             addURLReadingReference(urlReadingData);
                             setUrlReadingData({
                               title: '',

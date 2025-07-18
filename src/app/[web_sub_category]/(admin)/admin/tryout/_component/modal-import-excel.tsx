@@ -119,8 +119,6 @@ const ModalImportCSV = ({
                   );
                 }
 
-                console.log({ questionValue });
-
                 return {
                   ...item,
                   question: await ParseMarkdownToHTML(questionValue, editor),
@@ -149,7 +147,6 @@ const ModalImportCSV = ({
               });
               return;
             }
-            console.log({ ParseQuestions });
             setSessions((prev) =>
               prev.map((session, sessionId) => {
                 if (sessionId === currentIndexEdit) {

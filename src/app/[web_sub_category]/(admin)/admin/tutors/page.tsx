@@ -27,7 +27,6 @@ export default function TutorDashboard() {
     isLoading,
   } = useGet<InstructorsType>('/instructor/getAllInstructor');
 
-  console.log({ Instructors });
   const filteredTutors = Instructors?.filter((tutor) => {
     const matchesSearch =
       tutor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

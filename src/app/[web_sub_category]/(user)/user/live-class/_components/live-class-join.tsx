@@ -266,7 +266,6 @@ export function LiveClassJoin({ classId }: LiveClassJoinProps) {
   };
 
   const handleJoinSuccess = (email: string) => {
-    console.log('User joined with email:', email);
     setShowJoinModal(false);
   };
 

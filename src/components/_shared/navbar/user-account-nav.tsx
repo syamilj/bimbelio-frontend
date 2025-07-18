@@ -164,7 +164,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
               className="cursor-pointer p-0 mb-2"
             >
               <Link
-                href={`/${website_sub_category_id}/user/try-out`}
+                href={`/${website_sub_category_id}/user/dashboard`}
                 className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
                 style={
                   {

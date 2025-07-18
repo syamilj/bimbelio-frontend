@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import LoadingPageWithText from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
@@ -20,7 +21,7 @@ import {
   WebsiteCategory,
   WebsiteSubCategory,
 } from '@/types/database';
-import { Loader2, Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 type LimitType = 'chat' | 'notes' | 'tryout' | 'vision' | 'quiz';
@@ -56,9 +57,13 @@ export default function CreatePlanForm() {
     const tier = formData.get('tier') as string;
     const description = formData.get('description') as string;
     const price = formData.get('price') as string;
+    const originalPrice = formData.get('original_price') as string;
 
     const course = formData.get('course') as 'on' | null;
     const materiPremium = formData.get('materiPremium') as 'on' | null;
+    const liveClass = formData.get('liveClass') as 'on' | null;
+
+    const liveClassesPerWeek = formData.get('liveClassesPerWeek') as string;
 
     const expireType = formData.get('expireType') as string;
     const duration = formData.get('duration') as string;
@@ -77,6 +82,7 @@ export default function CreatePlanForm() {
       name,
       description,
       price: parseFloat(price),
+      originalPrice: parseFloat(originalPrice),
       planLimitation: activeTab.limit
         ? {
             chat: limitRowsData?.chat || 0,
@@ -101,6 +107,10 @@ export default function CreatePlanForm() {
             planfeature: [
               { type: course ? 'COURSE' : null },
               { type: materiPremium ? 'DOCUMENT' : null },
+              {
+                type: liveClass ? 'LIVECLASS' : null,
+                liveClassesPerWeek: parseInt(liveClassesPerWeek || '0'),
+              },
             ].filter((item) => item.type),
           }
         : undefined,
@@ -118,6 +128,10 @@ export default function CreatePlanForm() {
       className="mx-auto p-4 min-h-screen"
       onSubmit={handleSubmit}
     >
+      <LoadingPageWithText
+        loading={isLoading}
+        heading="Menambahkan Plan"
+      />
       <div className="space-y-6">
         {/* Basic Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -188,7 +202,28 @@ export default function CreatePlanForm() {
             <div className="space-y-4">
               <div>
                 <Label
-                  htmlFor="total"
+                  htmlFor="original_price"
+                  className="block mb-2"
+                >
+                  Original Price{' '}
+                  <span className="text-xs text-gray-500">(optional)</span>
+                </Label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none bg-gray-100 border-r rounded-l-xl px-2">
+                    <span className="text-gray-500">Rp</span>
+                  </div>
+                  <Input
+                    id="original_price"
+                    name="original_price"
+                    type="text"
+                    className="pl-12"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label
+                  htmlFor="price"
                   className="block mb-2"
                 >
                   Total
@@ -205,62 +240,6 @@ export default function CreatePlanForm() {
                   />
                 </div>
               </div>
-
-              {/* <div className="rounded-xl shadow-cardSoft2 p-4">
-                <div className="flex items-center mb-4">
-                  <Checkbox id="discount" defaultChecked />
-                  <Label htmlFor="discount" className="ml-2 font-medium">
-                    Discount
-                  </Label>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex gap-2 items-center">
-                    <div className="w-10 h-10 rounded-full bg-main text-white flex items-center justify-center">
-                      <span>Rp</span>
-                    </div>
-                    <span className="text-gray-500">%</span>
-                  </div>
-
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none bg-gray-100 border-r rounded-l-xl px-2">
-                      <span className="text-gray-500">Rp</span>
-                    </div>
-                    <Input className="pl-12" />
-                  </div>
-
-                  <div className="flex gap-2">
-                    <div className="relative flex-1">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none bg-gray-100 border-r rounded-l-xl px-2">
-                        <span className="text-gray-500">Rp</span>
-                      </div>
-                      <Input className="pl-12" />
-                    </div>
-                    <div className="relative w-20">
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none bg-gray-100 border-l rounded-r-xl px-2">
-                        <span className="text-gray-500">%</span>
-                      </div>
-                      <Input className="pr-10" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="grandTotal" className="block mb-2">
-                  Grand Total
-                </Label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none bg-gray-100 border-r rounded-l-xl px-2">
-                    <span className="text-gray-500">Rp</span>
-                  </div>
-                  <Input
-                    id="grandTotal"
-                    className="pl-12 bg-gray-100"
-                    readOnly
-                  />
-                </div>
-              </div> */}
             </div>
           </CardContent>
         </Card>
@@ -346,7 +325,7 @@ export default function CreatePlanForm() {
             className="bg-main hover:bg-main/80"
             disabled={isLoading}
           >
-            {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save'}
+            Save
           </Button>
         </div>
       </div>
@@ -610,6 +589,8 @@ const SectionFeature = ({
 
   const [subCategories, setSubCategories] = useState<WebsiteSubCategory[]>([]);
 
+  const [isLiveClassActive, setIsLiveClassActive] = useState<boolean>(false);
+
   const changeExpireType = (type: string) => {
     const input = document.getElementById('expireType') as
       | HTMLInputElement
@@ -696,6 +677,21 @@ const SectionFeature = ({
                 className="ml-2"
               >
                 Materi Premium
+              </Label>
+            </div>
+            <div className="flex items-center">
+              <Checkbox
+                id="liveClass"
+                name="liveClass"
+                onCheckedChange={(value) => {
+                  setIsLiveClassActive(value as boolean);
+                }}
+              />
+              <Label
+                htmlFor="liveClass"
+                className="ml-2"
+              >
+                Live Class
               </Label>
             </div>
           </div>
@@ -829,6 +825,24 @@ const SectionFeature = ({
                 </Select>
               </div>
             )}
+          </div>
+          <div className={cn('ml-6', !isLiveClassActive && 'hidden')}>
+            <Label
+              htmlFor="liveClassesPerWeek"
+              className="block mb-2"
+            >
+              Live Class Per Minggu <span className="text-red-500">*</span>
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                id="liveClassesPerWeek"
+                name="liveClassesPerWeek"
+                type="number"
+                placeholder="0"
+                className="flex-1"
+                required={isLiveClassActive}
+              />
+            </div>
           </div>
         </div>
       )}

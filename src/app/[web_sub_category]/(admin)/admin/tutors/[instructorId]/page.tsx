@@ -196,7 +196,7 @@ export default function TutorDetail() {
                       Mata Pelajaran
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {Instructor?.SubCategory.map((subject) => (
+                      {Instructor?.Category.map((subject) => (
                         <Badge
                           key={subject.id}
                           variant="secondary"

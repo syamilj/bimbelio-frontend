@@ -381,7 +381,7 @@ export const getDateTryoutString = (date: any) => {
 
   return `${day < 10 ? `0${day}` : day} ${monthNames[month]}`;
 };
-export const getDateForInput = (dateStr: any) => {
+export const getDateForInput = (dateStr: string | Date) => {
   const date = new Date(dateStr);
 
   const year = date.getFullYear();
@@ -390,7 +390,7 @@ export const getDateForInput = (dateStr: any) => {
 
   return `${year}-${month}-${day}`;
 };
-export const getDateForInputDateTime = (dateStr: any) => {
+export const getDateForInputDateTime = (dateStr: string | Date) => {
   const date = new Date(dateStr);
 
   const year = date.getFullYear();
@@ -402,7 +402,8 @@ export const getDateForInputDateTime = (dateStr: any) => {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
-export const formatDateTime = (date: Date) => {
+export const formatDateTime = (dateData: Date | string) => {
+  const date = new Date(dateData);
   return new Intl.DateTimeFormat('id-ID', {
     day: 'numeric',
     month: 'short',

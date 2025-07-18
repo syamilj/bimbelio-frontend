@@ -65,8 +65,6 @@ export default function Page() {
     writeFile(wb, `${fileName}.xlsx`);
   };
 
-  console.log({ isLoading });
-
   return (
     <div className="mt-[1rem] flex flex-col gap-[2rem]">
       <div className="grid grid-cols-3 gap-[1rem]">
@@ -143,7 +141,6 @@ export default function Page() {
                   const localString = localStorage.getItem(
                     `temporary-edit-tryout-${item.id}`,
                   );
-                  console.log({ localString, i });
                   return (
                     <tr key={i}>
                       <td

@@ -38,8 +38,6 @@ export default function UpdateTutorForm() {
     { params: { id: instructorId } },
   );
 
-  console.log({ Instructor });
-
   const { data: SubCategories } = useGet<Category[]>(
     '/category/getAllCategories',
   );
@@ -67,8 +65,6 @@ export default function UpdateTutorForm() {
   const setValueForm = (name: string, value: string) => {
     (document.getElementsByName(name)[0] as HTMLInputElement).value = value;
   };
-
-  // console.log({ SubCategories });
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -116,8 +112,6 @@ export default function UpdateTutorForm() {
         const deleteData = await supabase.storage
           .from('img')
           .remove([`tutor/${existhingImageName}`]);
-
-        console.log({ deleteData, existhingImageName });
 
         const filePath = `tutor/${email}-${crypto.randomUUID().slice(0, 4)}`;
         const { data, error } = await supabase.storage
@@ -420,7 +414,6 @@ export default function UpdateTutorForm() {
                     name="status"
                     checked={status}
                     onCheckedChange={(value) => {
-                      console.log({ value });
                       setStatus(value);
                     }}
                   />

@@ -84,8 +84,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     };
   }, [showAuth]);
 
-  // console.log({ website_sub_category_id, website_sub_category_id_params });
-
   const Context = {
     minimizeSidebar,
     setMinimizeSidebar,

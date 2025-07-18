@@ -223,8 +223,6 @@ export function TutorTable({
                         const deleteData = await supabase.storage
                           .from('img')
                           .remove([`tutor/${existhingImageName}`]);
-
-                        console.log({ deleteData });
                       }}
                       isLoading={DeleteInstructorIsLoading}
                     >

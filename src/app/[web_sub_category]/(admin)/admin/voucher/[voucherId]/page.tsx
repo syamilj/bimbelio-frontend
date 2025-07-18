@@ -1,14 +1,13 @@
 'use client';
 
-import { Download } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import ListPagination from '@/components/ui/list-pagination';
 // import AbsoluteLoader from '@/components/ui/loading/absolute-loader';
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -16,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -24,102 +24,42 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { env } from '@/env.mjs';
-import { response } from '@/lib/response';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { getDateString } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
-import { exportToExcel } from '@/lib/utils/excel';
 import { User } from '@/types/database';
 import { MidtransTransaction } from '@/types/midtrans-type';
-import axios from 'axios';
 import { format } from 'date-fns';
-import Cookies from 'js-cookie';
-import toast from 'react-hot-toast';
-import { useDebouncedCallback } from 'use-debounce';
+import { useParams } from 'next/navigation';
 
-export default function TransactionsPage() {
-  const [isExporting, setIsExporting] = useState(false);
-
-  const [isLoadingMessage, setIsLoadingMessage] = useState<null | string>(null);
-  const [transactions, setTransactions] = useState<
-    (MidtransTransaction & { user: User; total_amount: number })[]
-  >([]);
+export default function Detail() {
+  const { voucherId }: { voucherId: string } = useParams();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [type, setType] = useState<'ALL' | 'Percentage' | 'Fixed_Amount'>(
+    'ALL',
+  );
   const [take, setTake] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(10);
 
-  const fetchData = (page: number) => {
-    const token = Cookies.get('token');
-    axios
-      .get(
-        `${env.NEXT_PUBLIC_API_URL}/payment/getTransactions?page=${page}&take=${take}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((res) => {
-        const resData = response(res);
-        setTransactions(resData.data);
-        setPage(resData?.page || 1);
-        setTotalPage(resData?.total_pages || 1);
-      })
-      .finally(() => setIsLoadingMessage(null));
-  };
-
-  useEffect(() => {
-    setIsLoadingMessage('Fetching Data....');
-    fetchData(1);
-  }, []);
-
-  const fetchWithDebounced = useDebouncedCallback(() => {
-    fetchData(page);
-  }, 500);
-
-  useEffect(() => {
-    fetchWithDebounced();
-  }, [take, page]);
-
-  const handleExport = () => {
-    try {
-      setIsExporting(true);
-      const dataToExport = transactions.map((transaction) => ({
-        'Transaction ID': transaction.id,
-        'User ID': transaction.userId,
-        'User Name': transaction.user.name,
-        Amount: `$${(transaction.item_details as any[]).length}`,
-        Status: 'Status',
-        Plan: `${(transaction.item_details as any[])[0].name}`,
-        Date: new Date(transaction.transaction_time).toLocaleDateString(),
-      }));
-
-      exportToExcel(
-        dataToExport,
-        `transactions-${new Date().toISOString().split('T')[0]}`,
-      );
-
-      toast.success('Export Successful');
-    } catch (error) {
-      console.error('Export failed:', error);
-      toast.error('Export Failed');
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'settlement':
-        return 'bg-green-100 text-green-700';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-700';
-      case 'Failed':
-        return 'bg-red-100 text-red-700';
-      default:
-        return 'bg-gray-100 text-gray-700';
-    }
-  };
+  const {
+    data: VoucherHistories,
+    totalPages,
+    isLoading,
+  } = useGet<
+    (MidtransTransaction & {
+      user: User;
+      total_amount: number;
+      status: string;
+    })[]
+  >('/voucher/getVoucherHistory', {
+    params: {
+      id: voucherId,
+      page,
+      take,
+      search: searchTerm,
+    },
+    useEffectDependencies: [page, take, searchTerm, voucherId],
+  });
 
   return (
     <>
@@ -127,26 +67,43 @@ export default function TransactionsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-black">Transactions</h1>
+            <h1 className="text-2xl font-semibold text-black">
+              Voucher Hisitory
+            </h1>
             <p className="text-sm text-gray-500">
-              View and manage payment transactions.
+              View and manage voucher history.
             </p>
           </div>
-          <Button
-            onClick={handleExport}
-            disabled={isExporting}
-            className="gap-2"
-          >
-            <Download className="h-4 w-4" />
-            {isExporting ? 'Exporting...' : 'Export to Excel'}
-          </Button>
         </div>
-
         <Card>
           <CardHeader>
-            <CardTitle>List Transactions</CardTitle>
+            <CardTitle>List Voucher History</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pb-0">
+            {/* <div className="grid gap-4 md:grid-cols-4 mb-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder="Cari judul voucher atau code..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 rounded-xl border-gray-200 focus:border-blue-500"
+                />
+              </div>
+              <Select
+                value={type}
+                onValueChange={(value: any) => setType(value)}
+              >
+                <SelectTrigger className="rounded-xl border-gray-200">
+                  <SelectValue placeholder="Pilih status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">Semua Type</SelectItem>
+                  <SelectItem value="Percentage">Persentase</SelectItem>
+                  <SelectItem value="Fixed_Amount">Fixed Amount</SelectItem>
+                </SelectContent>
+              </Select>
+            </div> */}
             <Table>
               <TableHeader>
                 <TableRow>
@@ -161,63 +118,81 @@ export default function TransactionsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {transactions.map((transaction, index) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell>{page * take - take + index + 1}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-4">
-                        {/* <img
-                          src={transaction.user.image || '/placeholder.svg'}
-                          alt={transaction.user.name}
-                          className="h-10 w-10 rounded-full bg-gray-100 object-cover"
-                        /> */}
-                        <UserAvatar
-                          name={transaction.user.name}
-                          image={transaction.user.image}
-                        />
-                        <div className="flex flex-col min-w-[140px]">
-                          <span className="font-medium text-black/70 whitespace-nowrap">
-                            {transaction.user.name}
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            {transaction.user.email}
-                          </span>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="font-medium text-black/70">
-                      {transaction.token}
-                    </TableCell>
-                    <TableCell className="text-black/70">
-                      {(transaction.item_details as any[])[0].name}
-                    </TableCell>
-                    <TableCell className="text-black/70">
-                      {formatIDR(transaction.total_amount)}
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor('Pending')}>
-                        {'Pending'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-black/70">
-                      {getDateString(transaction.transaction_time)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DetailTransaction transaction={transaction as any}>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-blue-600 hover:text-blue-700"
-                        >
-                          Detail
-                        </Button>
-                      </DetailTransaction>
+                {isLoading ? (
+                  Array.from({ length: 8 }).map((_, index) => (
+                    <TableRow key={index}>
+                      <TableCell
+                        colSpan={8}
+                        className="h-[48.5px]"
+                      >
+                        <Skeleton className="w-full h-full rounded-md" />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : VoucherHistories?.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={10}
+                      className="text-center py-8 text-gray-500"
+                    >
+                      Tidak ada history yang ditemukan
                     </TableCell>
                   </TableRow>
-                ))}
+                ) : (
+                  VoucherHistories?.map((transaction, index) => (
+                    <TableRow key={transaction.id}>
+                      <TableCell>{page * take - take + index + 1}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-4">
+                          <UserAvatar
+                            name={transaction.user.name}
+                            image={transaction.user.image}
+                          />
+                          <div className="flex flex-col min-w-[140px]">
+                            <span className="font-medium text-black/70 whitespace-nowrap">
+                              {transaction.user.name}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                              {transaction.user.email}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium text-black/70">
+                        {transaction.token}
+                      </TableCell>
+                      <TableCell className="text-black/70">
+                        {(transaction.item_details as any[])[0].name}
+                      </TableCell>
+                      <TableCell className="text-black/70">
+                        {formatIDR(transaction.total_amount)}
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(transaction.status)}>
+                          {transaction.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-black/70">
+                        {getDateString(transaction.transaction_time)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DetailTransaction transaction={transaction as any}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-blue-600 hover:text-blue-700"
+                          >
+                            Detail
+                          </Button>
+                        </DetailTransaction>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
             <ListPagination
+              className="border-t"
               onSizeChange={(size) => {
                 setTake(size);
               }}
@@ -225,7 +200,7 @@ export default function TransactionsPage() {
                 setPage(page);
               }}
               currentPage={page}
-              totalPage={totalPage}
+              totalPage={totalPages}
               pageSize={take}
             />
           </CardContent>
@@ -380,4 +355,17 @@ const UserAvatar = ({
       onError={() => setImgError(true)}
     />
   );
+};
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case 'settlement':
+      return 'bg-green-100 text-green-700';
+    case 'pending':
+      return 'bg-yellow-100 text-yellow-700';
+    case 'Failed':
+      return 'bg-red-100 text-red-700';
+    default:
+      return 'bg-gray-100 text-gray-700';
+  }
 };

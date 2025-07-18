@@ -24,9 +24,18 @@ export default function ProviderSessionAuth({
 
   useEffect(() => {
     const token = Cookies.get('token');
+    const urlPathname = window.location.pathname.split('/');
+
+    const website_sub_category_id =
+      urlPathname.length > 1 && urlPathname[1].length > 0
+        ? urlPathname[1]
+        : localStorage?.getItem('website_sub_category_id');
+
     if (token) {
       axiosInstanceWithToken
-        .post('/auth/verifyToken')
+        .post(
+          `/auth/verifyToken?website_sub_category_id=${website_sub_category_id}`,
+        )
         .then((res) => {
           const resData = res.data;
           const userData = resData.data;
