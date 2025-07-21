@@ -1,3 +1,19 @@
+export type Pivot_Plan_Category = {
+  id: string;
+  planFeatureId: string;
+  categoryId: string;
+};
+
+export type PlanBenefit = {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  planId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type LiveClassReference = {
   id: string;
   description: string;
@@ -475,14 +491,18 @@ export type SubscriptionFeature = {
 
 export type Plan = {
   id: string;
+  slug: string;
   name: string;
+  description: string;
+  image: string | null;
+  originalPrice: number | null;
+  price: number;
+  status: PlanStatusEnum;
   createdAt: Date;
   updatedAt: Date;
-  slug: string;
-  price: number;
-  originalPrice: number;
-  description: string;
 };
+
+export type PlanStatusEnum = 'PUBLIC' | 'DRAFT' | 'COMING_SOON';
 
 export type PlanLimitation = {
   id: string;

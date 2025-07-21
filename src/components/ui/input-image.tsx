@@ -5,25 +5,25 @@ import { useEffect, useState } from 'react';
 type InputImageProps = {
   onChange?: (image: File | undefined) => void;
   preview?: string;
-  show?: boolean;
-  title?: string;
+  // showPreview?: boolean;
+  placeholder?: string;
   required?: boolean;
 };
 
 export function InputImage({
   onChange,
   preview,
-  show,
-  title,
+  // showPreview,
+  placeholder,
   required,
 }: InputImageProps) {
   const inputId = crypto.randomUUID();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [PreviewImg, setPreviewImg] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!show) setPreviewImg(null);
-  }, [show]);
+  // useEffect(() => {
+  //   if (!showPreview) setPreviewImg(null);
+  // }, [showPreview]);
 
   useEffect(() => {
     if (preview) setPreviewImg(preview);
@@ -73,7 +73,7 @@ export function InputImage({
             <div className="flex flex-col gap-[.5rem] items-center">
               <UploadIcon className="text-gray-400" />
               <p className="text-gray-500/80 font-[500]">
-                {title ? title : 'Upload Foto'}
+                {placeholder ? placeholder : 'Upload Foto'}
               </p>
             </div>
           </div>
@@ -87,7 +87,7 @@ export function InputImage({
           <div className="flex flex-col gap-[.5rem] items-center">
             <UploadIcon className="text-gray-400" />
             <p className="text-gray-500/80 font-[500]">
-              {title ? title : 'Upload Foto'}
+              {placeholder ? placeholder : 'Upload Foto'}
             </p>
           </div>
         )}

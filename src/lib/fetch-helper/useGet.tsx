@@ -21,7 +21,7 @@ import { getGeneral } from './fetch-helper';
 
 export function useGet<Data = any, ErrorData = any>(
   url: string,
-  more?: MoreProps,
+  more?: MoreProps<Data, ErrorData>,
 ): FetchReturnType<Data, ErrorData> {
   const [data, setData] = useState<Data | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -75,7 +75,7 @@ export function useGet<Data = any, ErrorData = any>(
   };
 }
 
-type MoreProps = {
+type MoreProps<Data = any, ErrorData = any> = {
   enabled?: boolean;
   params?: object;
   firstLoad?: boolean;
@@ -90,12 +90,12 @@ type MoreProps = {
     errorMsg?: string;
   };
   onLoading?: () => any;
-  onSuccess?: (params: { message: string; status: number; data?: any }) => any;
+  onSuccess?: (params: { message: string; status: number; data?: Data }) => any;
   onError?: (params: {
     status: number;
     message: string;
     error: any;
-    data: any;
+    data: ErrorData;
   }) => any;
   useEffectDependencies?: any[];
 };
