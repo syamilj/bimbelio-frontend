@@ -30,6 +30,7 @@ export function useGet<Data = any, ErrorData = any>(
 
   const [page, setPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalData, setTotalData] = useState<number>(0);
 
   const refetch = async () => {
     const res = await getGeneral(url, {
@@ -38,6 +39,7 @@ export function useGet<Data = any, ErrorData = any>(
       setData: setData,
       setPage: setPage,
       setTotalPages: setTotalPages,
+      setTotalData: setTotalData,
       onLoading() {
         if (more?.onLoading) more.onLoading();
       },
@@ -72,6 +74,7 @@ export function useGet<Data = any, ErrorData = any>(
     refetch,
     page,
     totalPages,
+    totalData,
   };
 }
 
@@ -129,4 +132,5 @@ type FetchReturnType<Data, ErrorData> = {
   >;
   page: number;
   totalPages: number;
+  totalData: number;
 };

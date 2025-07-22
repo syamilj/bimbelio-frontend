@@ -59,7 +59,13 @@ export type LiveClass = {
   maxParticipant: number | null;
   isRecord: boolean;
 };
-
+export type LiveClassInvited = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  liveClassId: string;
+  userId: string;
+};
 export type Instructor = {
   name: string;
   id: string;
@@ -470,7 +476,7 @@ export type Subscription = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  planId: string;
+  planId?: string;
   userId: string;
   websiteSubCategoryId: string | null;
   planSlug: string;

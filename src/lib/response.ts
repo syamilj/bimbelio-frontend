@@ -42,6 +42,7 @@ export const response = (
   data?: any;
   page?: number;
   total_pages?: number;
+  total_data?: number;
 } => {
   if (showToast) {
     toaster({

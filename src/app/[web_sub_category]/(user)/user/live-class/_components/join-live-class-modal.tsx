@@ -1,5 +1,7 @@
 'use client';
 
+import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -8,40 +10,120 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { MockLiveClass } from '@/lib/mock-data/live-class';
-import { Mail } from 'lucide-react';
-import { useState } from 'react';
+import { formatDateTime } from '@/lib/utils/live-class';
+import { Video } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { LiveClassType } from '../[classId]/page';
 
-interface JoinLiveClassModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  liveClass: MockLiveClass;
-  userEmail: string;
-  onJoin: (email: string) => void;
+// Custom hook untuk countdown dengan dependency yang stabil
+function useCountdown(targetDate: string | Date) {
+  const [timeLeft, setTimeLeft] = useState<{
+    totalMinutes: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+    isExpired: boolean;
+    canJoinSoon: boolean; // 5 menit sebelum dimulai
+  }>({
+    totalMinutes: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    isExpired: true,
+    canJoinSoon: false,
+  });
+
+  // Stabilkan targetDate dengan useMemo
+  const stableTargetDate = useMemo(
+    () => new Date(targetDate).getTime(),
+    [targetDate],
+  );
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const difference = stableTargetDate - now;
+
+      if (difference > 0) {
+        const totalMinutes = Math.floor(difference / (1000 * 60));
+        const hours = Math.floor(difference / (1000 * 60 * 60));
+        const minutes = Math.floor((difference / (1000 * 60)) % 60);
+        const seconds = Math.floor((difference / 1000) % 60);
+        const canJoinSoon = totalMinutes <= 5; // Bisa join 5 menit sebelumnya
+
+        setTimeLeft({
+          totalMinutes,
+          hours,
+          minutes,
+          seconds,
+          isExpired: false,
+          canJoinSoon,
+        });
+      } else {
+        setTimeLeft({
+          totalMinutes: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          isExpired: true,
+          canJoinSoon: true,
+        });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+    return () => clearInterval(timer);
+  }, [stableTargetDate]);
+
+  return timeLeft;
 }
 
 export function JoinLiveClassModal({
-  isOpen,
   onClose,
   liveClass,
-  userEmail,
-  onJoin,
-}: JoinLiveClassModalProps) {
+  onSuccess,
+  children,
+}: {
+  onClose?: () => void;
+  liveClass: LiveClassType;
+  onSuccess?: (message: string) => void;
+  children: React.ReactNode;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
   const [isJoining, setIsJoining] = useState(false);
+  const { data: sessionData } = useSession();
+  const userEmail = sessionData?.user?.email;
+
+  // Stabilkan liveClass.startDate untuk menghindari re-render berulang
+  const startDate = useMemo(
+    () => liveClass?.startDate || new Date(),
+    [liveClass?.startDate],
+  );
+  const timeLeft = useCountdown(startDate);
+
+  if (!liveClass) return null;
+
+  const isLive = liveClass.status === 'Sedang Berlangsung';
+  const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
+  const canJoinNow = isLive || (isUpcoming && timeLeft.canJoinSoon);
 
   const handleJoin = async () => {
-    if (!userEmail.trim()) return;
-
     setIsJoining(true);
     try {
-      await onJoin(userEmail);
-      // Redirect to Google Meet after confirmation
-      window.open(liveClass.meetLink, '_blank');
-      onClose();
+      if (liveClass.link) {
+        window.open(liveClass.link, '_blank');
+        if (onSuccess) onSuccess('Redirected to Meeting');
+      }
+      if (onClose) onClose();
     } catch (error) {
-      console.error('Error joining class:', error);
+      console.error('Error redirecting to meeting:', error);
     } finally {
       setIsJoining(false);
     }
@@ -50,71 +132,149 @@ export function JoinLiveClassModal({
   return (
     <Dialog
       open={isOpen}
-      onOpenChange={onClose}
+      onOpenChange={(open) => {
+        if (!open && onClose) onClose();
+        setIsOpen(open);
+      }}
     >
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Mail className="h-5 w-5" />
-            Join Live Class
-          </DialogTitle>
-          <DialogDescription>
-            Konfirmasi email Anda untuk bergabung dengan kelas "
-            {liveClass.title}"
-          </DialogDescription>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="sm:max-w-md overflow-hidden border-0 shadow-xl rounded-2xl">
+        {/* Header */}
+        <DialogHeader className="relative pb-4 border-b border-gray-100 text-center">
+          <div
+            className="absolute inset-0 opacity-5 rounded-t-2xl"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
+          />
+          <div className="relative z-10">
+            <div className="flex justify-center mb-3">
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: `${mainColor}15` }}
+              >
+                <Video
+                  className="w-6 h-6"
+                  style={{ color: mainColor }}
+                />
+              </div>
+            </div>
+            <DialogTitle
+              className="text-xl text-center font-bold"
+              style={{ color: mainColor }}
+            >
+              {isLive ? 'Join Live Class' : 'Ready to Join'}
+            </DialogTitle>
+            <DialogDescription className="text-sm text-center mt-1 text-gray-600">
+              {isLive ? 'Kelas sedang berlangsung!' : 'Bergabung ke live class'}
+            </DialogDescription>
+          </div>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email Anda</Label>
-            <div className="p-3 bg-gray-50 border rounded-md">
-              <p className="text-sm font-medium text-gray-900">{userEmail}</p>
-              <p className="text-xs text-gray-500">
-                Pastikan email ini sama dengan yang terdaftar di Google Meet
-              </p>
-            </div>
-          </div>
-
-          <div className="p-3 bg-blue-50 rounded-lg">
-            <h4 className="font-medium text-sm mb-1 text-blue-900">
+          {/* Live Class Info */}
+          <div className="text-center py-2">
+            <h4 className="font-semibold text-gray-900 mb-2">
               {liveClass.title}
             </h4>
-            <div className="text-xs text-blue-700 space-y-1">
-              <p>Tutor: {liveClass.tutorName}</p>
+            <div className="text-sm text-gray-600 space-y-1">
+              <p>{formatDateTime(liveClass.startDate)}</p>
               <p>
-                Waktu: {liveClass.startTime} - {liveClass.endTime}
+                {liveClass.duration} menit • {liveClass.Instructor.name}
               </p>
             </div>
           </div>
 
-          <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-            <p className="text-sm text-amber-800">
-              ⚠️ Setelah klik "Join Meeting", Anda akan diarahkan ke Google
-              Meet. Pastikan email yang Anda masukkan sudah diundang oleh admin.
-            </p>
-          </div>
+          {/* Status Display */}
+          {isLive && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-center">
+              <div className="flex justify-center items-center gap-2 text-red-600 mb-1">
+                <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
+                <span className="font-bold">LIVE NOW</span>
+              </div>
+              <p className="text-sm text-red-700">Kelas sedang berlangsung</p>
+            </div>
+          )}
+
+          {/* Countdown Timer */}
+          {isUpcoming && (
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-center">
+              <p className="text-sm font-medium text-blue-700 mb-2">
+                {timeLeft.canJoinSoon
+                  ? 'Dapat bergabung dalam:'
+                  : 'Dimulai dalam:'}
+              </p>
+              <div className="flex justify-center gap-2">
+                <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
+                  <div className="text-sm font-bold text-gray-900">
+                    {timeLeft.hours.toString().padStart(2, '0')}
+                  </div>
+                  <div className="text-xs text-gray-500">jam</div>
+                </div>
+                <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
+                  <div className="text-sm font-bold text-gray-900">
+                    {timeLeft.minutes.toString().padStart(2, '0')}
+                  </div>
+                  <div className="text-xs text-gray-500">mnt</div>
+                </div>
+                <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
+                  <div className="text-sm font-bold text-gray-900">
+                    {timeLeft.seconds.toString().padStart(2, '0')}
+                  </div>
+                  <div className="text-xs text-gray-500">dtk</div>
+                </div>
+              </div>
+              {!timeLeft.canJoinSoon && (
+                <p className="text-xs text-blue-600 mt-2">
+                  Tombol join akan aktif 5 menit sebelum dimulai
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Access Info */}
+          {userEmail && (
+            <div className="p-3 bg-green-50 border border-green-200 rounded-xl text-center">
+              <p className="text-sm font-medium text-green-800 mb-1">
+                Email Terdaftar
+              </p>
+              <p className="text-xs text-green-700">{userEmail}</p>
+            </div>
+          )}
         </div>
 
-        <DialogFooter>
+        {/* Footer */}
+        <DialogFooter className="flex gap-3 pt-4 border-t border-gray-100">
           <Button
             variant="outline"
-            onClick={onClose}
-            disabled={isJoining}
+            onClick={() => {
+              setIsOpen(false);
+              if (onClose) onClose();
+            }}
+            className="flex-1"
           >
             Batal
           </Button>
           <Button
             onClick={handleJoin}
-            disabled={!userEmail.trim() || isJoining}
-            className="bg-green-600 hover:bg-green-700"
+            disabled={!canJoinNow || isJoining}
+            className="flex-1"
+            style={{
+              backgroundColor: canJoinNow ? mainColor : undefined,
+              opacity: canJoinNow ? 1 : 0.5,
+            }}
           >
             {isJoining ? (
+              'Bergabung...'
+            ) : isLive ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                Joining...
+                <Video className="mr-2 h-4 w-4" />
+                Join Live
               </>
+            ) : timeLeft.canJoinSoon ? (
+              'Bergabung'
             ) : (
-              'Join Meeting'
+              'Belum Bisa Join'
             )}
           </Button>
         </DialogFooter>
