@@ -1,7 +1,17 @@
 'use client';
 
-import { Edit, Eye, MoreHorizontal, Plus, Search, Trash } from 'lucide-react';
-import { ReactNode, useState } from 'react';
+import {
+  Edit,
+  Eye,
+  Import,
+  Loader2,
+  MoreHorizontal,
+  Plus,
+  Search,
+  Trash,
+} from 'lucide-react';
+import Papa from 'papaparse';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,6 +50,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { toaster } from '@/components/ui/toaster';
 import {
   Tooltip,
   TooltipContent,
@@ -51,9 +62,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { formatDateTime } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
-import { Pivot_Voucher_Plan, Plan, User, Voucher } from '@/types/database';
-import { MidtransTransaction } from '@/types/midtrans-type';
-import { format } from 'date-fns';
+import { Pivot_Voucher_Plan, Plan, Voucher } from '@/types/database';
 import Link from 'next/link';
 
 export default function VoucherPage() {
@@ -100,12 +109,24 @@ export default function VoucherPage() {
             <h1 className="text-2xl font-semibold text-black">Voucher</h1>
             <p className="text-sm text-gray-500">View and manage voucher.</p>
           </div>
-          <Link href={'voucher/new'}>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Buat Voucher
-            </Button>
-          </Link>
+          <div className="flex items-center justify-center gap-4">
+            {/* <Button className="gap-2">
+              <Import className="h-4 w-4" />
+              Import CSV
+            </Button> */}
+            <DialogImportVouchers onSuccess={VouchersRefetch}>
+              <Button className="gap-2">
+                <Import className="h-4 w-4" />
+                Import CSV
+              </Button>
+            </DialogImportVouchers>
+            <Link href={'voucher/new'}>
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Buat Voucher
+              </Button>
+            </Link>
+          </div>
         </div>
         <Card>
           <CardHeader>
@@ -304,149 +325,156 @@ export default function VoucherPage() {
   );
 }
 
-const DetailTransaction = ({
-  transaction,
+const DialogImportVouchers = ({
   children,
+  onSuccess,
 }: {
-  transaction: MidtransTransaction & {
-    total_amount: number;
-    status: string;
-    transaction_details: { order_id: string };
-    user: User;
-    customer_details: { tryout_id?: string; title_tryout?: string };
-  };
   children: ReactNode;
+  onSuccess: () => Promise<any>;
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const [file, setFile] = useState<File | undefined>();
+
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
+  };
+
+  const { mutate: SaveVouchers } = useMutation(
+    '/voucher/createManyVoucher',
+    'post',
+  );
+
+  type Payload = {
+    title: string;
+    voucherCode: string;
+    type: 'Percentage' | 'Fixed_Amount';
+    discount: number;
+    startDate: string;
+    endDate?: string;
+    usageLimit?: number;
+    voucherPlanType: 'ALL_PLAN' | 'SELECTED_PLAN';
+    planIds: string[];
+  };
+
+  const handleGenerate = () => {
+    setIsLoading(true);
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: async function (results: any) {
+          const data = results.data;
+
+          const fixData: Payload[] = data.map((item: any) => {
+            return {
+              title: item?.Title,
+              voucherCode: item?.Code,
+              type:
+                item?.Tipe === 'Fixed'
+                  ? 'Fixed_Amount'
+                  : item?.Tipe === 'Percentage'
+                    ? 'Percentage'
+                    : null,
+              discount: parseFloat(item?.Discount),
+              startDate: new Date(),
+              usageLimit: parseInt(item?.Limit),
+              voucherPlanType: item?.PlanType,
+              planIds: item?.PlanIds || [],
+            };
+          });
+          console.log({ data, fixData });
+
+          await SaveVouchers({
+            payload: {
+              vouchers: fixData,
+            },
+          });
+          await onSuccess();
+
+          setIsLoading(false);
+          setOpen(false);
+        },
+        error: function (error: any) {
+          console.error(error);
+          toaster({
+            title: 'Upss',
+            condition: 'warning',
+            description: 'Gagal membaca file CSV!',
+          });
+          setIsLoading(false);
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!open) {
+      setFile(undefined);
+    }
+  }, [open]);
+
   return (
-    <Dialog>
+    <Dialog
+      open={isLoading ? true : open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-md space-y-4">
+      <DialogContent className="w-[600px]">
         <DialogHeader>
-          <DialogTitle>Detail Transaksi</DialogTitle>
+          <DialogTitle className="text-center text-lg font-semibold mb-2">
+            Import Soal dari CSV
+          </DialogTitle>
         </DialogHeader>
+        <div className="flex flex-col items-center justify-center text-center">
+          <p className="font-semibold underline">Format CSV:</p>
+          <p className="font-semibold">
+            Title | Code | Tipe{' '}
+            <span className="text-xs text-gray-500 my-auto">
+              ("Percentage" / "Fixed"){' '}
+            </span>{' '}
+            | Discount | Limit | Plan_Type{' '}
+            <span className="text-xs text-gray-500 my-auto">
+              ("ALL_PLAN" / "SELECTED_PLAN")
+            </span>{' '}
+            | PlanIds
+          </p>
 
-        <div className="space-y-1">
-          <p>
-            <span className="font-medium">Status:</span> {transaction.status}
-          </p>
-          <p>
-            <span className="font-medium">Order ID:</span>{' '}
-            {transaction.transaction_details.order_id}
-          </p>
-          <p>
-            <span className="font-medium">Total:</span>{' '}
-            {formatIDR(transaction.total_amount)}
-          </p>
-          <p>
-            <span className="font-medium">Waktu Transaksi:</span>{' '}
-            {format(
-              new Date(transaction.transaction_time),
-              'dd MMM yyyy, HH:mm',
-            )}
-          </p>
-          <p>
-            <span className="font-medium">Kadaluarsa:</span>{' '}
-            {format(new Date(transaction.expired_time), 'dd MMM yyyy, HH:mm')}
-          </p>
-        </div>
-
-        <hr />
-
-        <div>
-          <div className="font-semibold mb-2">User</div>
-          <div className="flex items-center gap-3">
-            {/* <img
-              src={transaction.user.image}
-              alt="User"
-              className="w-10 h-10 rounded-full"
-            /> */}
-            <UserAvatar
-              name={transaction.user.name}
-              image={transaction.user.image}
+          <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-[2rem] text-[.9rem]">
+            <input
+              id="uploadCSV"
+              type="file"
+              accept=".csv"
+              className="absolute left-0 top-0 w-0 p-0"
+              onChange={(e) => handleChangeFile(e)}
             />
-            <div>
-              <p className="font-medium">{transaction.user.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {transaction.user.email}
-              </p>
-            </div>
+            {file ? (
+              <button
+                className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                onClick={handleGenerate}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Loader2 className="animate-spin w-4 h-4 mx-auto" />
+                ) : (
+                  'Generate'
+                )}
+              </button>
+            ) : (
+              <div
+                className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                onClick={() => {
+                  document.getElementById('uploadCSV')?.click();
+                }}
+              >
+                Upload
+              </div>
+            )}
           </div>
-        </div>
-
-        {transaction.customer_details?.tryout_id && (
-          <>
-            <hr />
-
-            <div>
-              <div className="font-semibold mb-2">Tryout</div>
-              <p>
-                <span className="font-medium">Judul:</span>{' '}
-                {transaction.customer_details?.title_tryout}
-              </p>
-              <p>
-                <span className="font-medium">Tryout ID:</span>{' '}
-                {transaction.customer_details?.tryout_id}
-              </p>
-            </div>
-          </>
-        )}
-
-        <hr />
-
-        <div>
-          <div className="font-semibold mb-2">Item</div>
-          {transaction.item_details.map((item, idx) => (
-            <div
-              key={item.id}
-              className="border p-2 rounded mb-2"
-            >
-              <p>
-                <span className="font-medium">Nama:</span> {item.name}
-              </p>
-              <p>
-                <span className="font-medium">Brand:</span> {item.brand}
-              </p>
-              <p>
-                <span className="font-medium">Harga:</span>{' '}
-                {formatIDR(item.price)}
-              </p>
-              <p>
-                <span className="font-medium">Jumlah:</span> {item.quantity}
-              </p>
-            </div>
-          ))}
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
-
-const UserAvatar = ({
-  name,
-  image,
-}: {
-  name: string;
-  image?: string | null;
-}) => {
-  const [imgError, setImgError] = useState(false);
-
-  const initials = name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-
-  return imgError || !image ? (
-    <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600">
-      {initials}
-    </div>
-  ) : (
-    <img
-      src={image}
-      alt={name}
-      className="h-10 w-10 rounded-full bg-gray-100 object-cover"
-      onError={() => setImgError(true)}
-    />
   );
 };
