@@ -834,12 +834,6 @@ function LiveClassCard({
   const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
   const isLive = liveClass.status === 'Sedang Berlangsung';
 
-  // NEW: Determine variant automatically if not provided
-  const effectiveVariant =
-    variant === 'accessible' && liveClassWithAccess.userAccess?.needsUpgrade
-      ? 'preview'
-      : variant;
-
   // Grid view - more compact card
   if (viewMode === 'grid') {
     return (
@@ -1058,12 +1052,7 @@ function LiveClassCard({
 
   // List view - Modern redesigned layout
   return (
-    <Card
-      className="hover:shadow-xl transition-all duration-500 border border-gray-100 rounded-2xl overflow-hidden cursor-pointer group bg-white hover:border-blue-200"
-      onClick={() =>
-        (window.location.href = `/${website_sub_category_id}/user/live-class/${liveClass.id}`)
-      }
-    >
+    <Card className="hover:shadow-xl transition-all duration-500 border border-gray-100 rounded-2xl overflow-hidden cursor-pointer group bg-white hover:border-blue-200">
       <CardContent className="p-0">
         {/* Modern Header with Floating Elements */}
         <div className="relative bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-50 p-6">

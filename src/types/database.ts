@@ -58,6 +58,7 @@ export type LiveClass = {
   duration: number;
   maxParticipant: number | null;
   isRecord: boolean;
+  websiteSubCategoryId: string;
 };
 export type LiveClassInvited = {
   id: string;
@@ -66,6 +67,17 @@ export type LiveClassInvited = {
   liveClassId: string;
   userId: string;
 };
+
+export type LiveClassRating = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  score: number;
+  comment: string | null;
+  userId: string | null;
+  liveClassId: string;
+};
+
 export type Instructor = {
   name: string;
   id: string;

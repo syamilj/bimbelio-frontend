@@ -53,6 +53,7 @@ export default function ProviderSessionAuth({
               expire: userData.expire,
               image: userData.image,
               tier: userData.tier,
+              phone: userData.phone,
               feature: {
                 document: userData.feature.document,
                 course: userData.feature.course,
@@ -117,6 +118,7 @@ type SessionProviderType = {
           userTryOutId: string | null;
           type: string;
           tier: string;
+          phone: string | null;
           feature: { document: boolean; course: boolean; liveClass: boolean };
         };
         expires: string | undefined;

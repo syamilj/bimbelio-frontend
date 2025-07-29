@@ -68,7 +68,9 @@ export default function Provider({ children }: Props) {
   const [isDocumentActive, setIsDocumentActive] = useState<boolean>(false);
   const [isLiveClassActive, setIsLiveClassActive] = useState<boolean>(false);
 
-  const [expireType, setExpireType] = useState<string>('days');
+  const [expireType, setExpireType] = useState<'days' | 'month' | 'year'>(
+    'days',
+  );
 
   const [benefitRows, setBenefitRows] = useState<BenefitRowType>([]);
 
@@ -192,8 +194,8 @@ type ProviderType = {
     setIsDocumentActive: Dispatch<SetStateAction<boolean>>;
     isLiveClassActive: boolean;
     setIsLiveClassActive: Dispatch<SetStateAction<boolean>>;
-    expireType: string;
-    setExpireType: Dispatch<SetStateAction<string>>;
+    expireType: 'days' | 'month' | 'year';
+    setExpireType: Dispatch<SetStateAction<'days' | 'month' | 'year'>>;
     liveClassIds: {
       label: string;
       value: string;

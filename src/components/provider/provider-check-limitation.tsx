@@ -4,15 +4,15 @@ import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { ReactNode, useEffect, useState } from 'react';
 import { useSession } from './provider-session-auth';
 
-export default function ProviderCheckSubscription({
+export default function ProviderCheckLimitation({
   children,
 }: {
   children: ReactNode;
 }) {
   const [checkSubs, setCheckSubs] = useState<boolean>(true);
   const { data: session } = useSession();
-  const CheckSubscription = async () => {
-    const res = await mutateGeneral('/user/checkSubscription', {
+  const CheckLimitation = async () => {
+    const res = await mutateGeneral('/user/checkLimitation', {
       payload: { userId: session?.user.id },
       type: 'post',
       hideToast: true,
@@ -23,7 +23,7 @@ export default function ProviderCheckSubscription({
   useEffect(() => {
     const check = async () => {
       try {
-        const res = await CheckSubscription();
+        const res = await CheckLimitation();
         if (res?.status == 201) {
           window.location.reload();
         }

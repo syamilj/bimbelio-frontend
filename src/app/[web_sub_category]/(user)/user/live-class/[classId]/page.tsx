@@ -81,6 +81,7 @@ export default function LiveClassStudentDetail() {
     data: liveClass,
     isLoading,
     error,
+    refetch: liveClassRefetch,
   } = useGet<LiveClassType>('/liveClass/getSingleLiveClass', {
     params: {
       id: classId,
@@ -567,10 +568,13 @@ export default function LiveClassStudentDetail() {
                 )} */}
 
                 {liveClass.status === 'Selesai' && (
-                  <RatingModal liveClass={liveClass}>
+                  <RatingModal
+                    liveClass={liveClass}
+                    onSuccess={liveClassRefetch}
+                  >
                     <Button
                       variant="outline"
-                      className="w-full hover:bg-yellow-50 hover:border-yellow-300 transition-colors hidden"
+                      className="w-full hover:bg-yellow-50 hover:border-yellow-300 transition-colors"
                     >
                       <Star className="mr-2 h-4 w-4" />
                       Beri Rating

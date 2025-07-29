@@ -224,7 +224,7 @@ export default function UpdatePlanForm() {
                   ? parseInt(duration)
                   : expireType === 'month'
                     ? parseInt(duration) * 30
-                    : expireType === 'month'
+                    : expireType === 'year'
                       ? parseInt(duration) * 365
                       : 0,
               planfeature: [
@@ -714,7 +714,7 @@ const SectionFeature = () => {
     },
   } = useProvider();
 
-  const changeExpireType = (type: string) => {
+  const changeExpireType = (type: 'days' | 'month' | 'year') => {
     const input = document.getElementById('expireType') as
       | HTMLInputElement
       | undefined;
@@ -875,7 +875,7 @@ const SectionFeature = () => {
                       type="text"
                       hidden
                       value={expireType}
-                      onChange={(e) => setExpireType(e.target.value)}
+                      onChange={(e) => setExpireType(e.target.value as any)}
                       required
                     />
                     <Button

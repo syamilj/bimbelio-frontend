@@ -12,21 +12,24 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { getRatingText } from '@/lib/utils/live-class';
+import { LiveClassRating } from '@/types/database';
 import { Heart, Send, Star, ThumbsUp } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { LiveClassType } from '../[classId]/page';
 
 export function RatingModal({
   onClose,
   liveClass,
-  onSubmit,
   children,
+  onSuccess,
 }: {
   onClose?: () => void;
   liveClass: LiveClassType;
-  onSubmit?: (rating: number, review: string) => void;
   children: React.ReactNode;
+  onSuccess?: () => any;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   // === DESIGN SYSTEM FROM LEADERBOARD ===
@@ -38,44 +41,23 @@ export function RatingModal({
   const [review, setReview] = useState('');
   const [hoveredRating, setHoveredRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [existingRating, setExistingRating] = useState<{
-    rating: number;
-    review?: string;
-  } | null>(null);
+  // const [existingRating, setExistingRating] = useState<{
+  //   rating: number;
+  //   review?: string;
+  // } | null>(null);
 
-  // Load existing rating when modal opens
-  useEffect(() => {
-    if (isOpen && liveClass) {
-      // Fetch existing rating
-      const fetchExistingRating = async () => {
-        try {
-          const response = await fetch(
-            `/api/liveClass/${liveClass.id}/ratings?website_sub_category_id=${websiteSubCategory?.id}`,
-          );
-          if (response.ok) {
-            const data = await response.json();
-            if (data.data?.userRating) {
-              const userRating = data.data.userRating;
-              setExistingRating(userRating);
-              setRating(userRating.rating);
-              setReview(userRating.review || '');
-            } else {
-              setExistingRating(null);
-              setRating(0);
-              setReview('');
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching existing rating:', error);
-          setExistingRating(null);
-          setRating(0);
-          setReview('');
-        }
-      };
+  const { data: existingRating, isLoading } = useGet<LiveClassRating>(
+    `/liveClass/getIsUserRatingLiveClass`,
+    {
+      params: { id: liveClass.id },
+      useEffectDependencies: [liveClass],
+    },
+  );
 
-      fetchExistingRating();
-    }
-  }, [isOpen, liveClass?.id, websiteSubCategory?.id]);
+  const { mutate: addRating } = useMutation(
+    '/liveClass/addRatingLiveClass',
+    'post',
+  );
 
   // Reset state ketika modal ditutup
   const resetState = () => {
@@ -83,7 +65,7 @@ export function RatingModal({
     setReview('');
     setHoveredRating(0);
     setIsSubmitting(false);
-    setExistingRating(null);
+    // setExistingRating(null);
   };
 
   // Reset state saat modal ditutup
@@ -97,9 +79,15 @@ export function RatingModal({
 
     setIsSubmitting(true);
     try {
-      if (onSubmit) {
-        await onSubmit(rating, review);
-      }
+      console.log({ rating, review });
+      const payload = {
+        instructorId: liveClass.instructorId,
+        liveClassId: liveClass.id,
+        score: rating,
+        comment: review,
+      };
+      await addRating({ payload });
+      if (onSuccess) await onSuccess();
       handleClose();
     } catch (error) {
       console.error('Error submitting rating:', error);
@@ -182,7 +170,7 @@ export function RatingModal({
               {existingRating && (
                 <div className="mt-2 px-3 py-2 bg-blue-50 rounded-lg border border-blue-200">
                   <span className="text-sm text-blue-700 font-medium">
-                    Rating sebelumnya: {existingRating.rating} ⭐
+                    Rating sebelumnya: {existingRating.score} ⭐
                   </span>
                 </div>
               )}
