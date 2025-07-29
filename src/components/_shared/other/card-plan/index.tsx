@@ -109,7 +109,7 @@ export function CardPlan({
 
   return (
     <ProviderContext.Provider value={Context}>
-      <Card className="w-full max-w-md mx-auto hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+      <Card className="w-full max-w-md hover:shadow-xl transition-all duration-300 relative overflow-hidden">
         {/* Header dengan badges */}
         <CardHeader className="relative">
           {/* Popular/Recommended badges */}
