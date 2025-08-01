@@ -1,3 +1,5 @@
+// src/components/_shared/other/card-plan/_components/render-benefit.tsx
+
 'use client';
 
 import { Gift } from 'lucide-react';

@@ -1,3 +1,5 @@
+// src/components/_shared/other/card-plan/_components/render-feature.tsx
+
 'use client';
 
 import { Badge } from '@/components/ui/badge';
