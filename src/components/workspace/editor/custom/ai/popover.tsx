@@ -64,11 +64,11 @@ const AiPopover = () => {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
     streamProtocol: 'text',
-    onFinish: (_prompt, completion) => {
+    onFinish: (_prompt: string, completion: string) => {
       setCompletions((prev) => [...prev, completion]);
       inputRef.current?.focus();
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toaster({
         title: 'Gagal',
         description: 'Terjadi kesalahan dengan pembuatan teks!',
@@ -215,15 +215,16 @@ const AiPopover = () => {
         >
           <DropdownMenuTrigger className="flex w-full flex-col items-start hover:cursor-auto">
             {(isLoading || responseExists) && (
-              <ReactMarkdown
-                className="ReactMarkdown prose px-2 py-1 text-start"
-                remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
-                rehypePlugins={[rehypeKatex, rehypeRaw]}
-              >
-                {replaceLatexNotation(
-                  responseExists ? completions[curIndex] : completion,
-                )}
-              </ReactMarkdown>
+              <div className="ReactMarkdown prose px-2 py-1 text-start">
+                <ReactMarkdown
+                  remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
+                  rehypePlugins={[rehypeKatex, rehypeRaw]}
+                >
+                  {replaceLatexNotation(
+                    responseExists ? completions[curIndex] : completion,
+                  )}
+                </ReactMarkdown>
+              </div>
             )}
             {isLoading && (
               <div className="flex w-full items-center justify-between px-2 py-1">

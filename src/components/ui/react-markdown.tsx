@@ -19,58 +19,59 @@ export default function ReactMarkdown({
   className,
 }: ReactMarkdownProps) {
   return (
-    <MarkdownView
-      className={cn('prose bg-transparent', className)}
-      remarkPlugins={[remarkMath, remarkGfm]}
-      rehypePlugins={[rehypeKatex, rehypeRaw]}
-      components={{
-        code({ className, children, ...props }) {
-          return (
-            <code
-              className={className}
-              {...props}
-            >
-              {children}
-            </code>
-          );
-        },
-        img({ ...props }) {
-          return (
-            <div
-              className={cn(
-                'my-4',
-                !props.title && 'w-20',
-                // Jika Kamu memiliki judul dengan ukuran tertentu, Kamu dapat menambahkannya di sini.
-                // Misalnya:
-                // props.title === 'small' && 'w-16',
-                // props.title === 'large' && 'w-32',
-              )}
-            >
-              <Image
-                style={{ maxWidth: '100%' }}
-                alt={props.alt || 'Image'}
-                src={props.src as string}
-                layout="responsive"
-                width={props.width ? Number(props.width) : 200}
-                height={props.height ? Number(props.height) : 200}
+    <div className={cn('prose bg-transparent', className)}>
+      <MarkdownView
+        remarkPlugins={[remarkMath, remarkGfm]}
+        rehypePlugins={[rehypeKatex, rehypeRaw]}
+        components={{
+          code({ className, children, ...props }) {
+            return (
+              <code
+                className={className}
+                {...props}
+              >
+                {children}
+              </code>
+            );
+          },
+          img({ ...props }) {
+            return (
+              <div
+                className={cn(
+                  'my-4',
+                  !props.title && 'w-20',
+                  // Jika Kamu memiliki judul dengan ukuran tertentu, Kamu dapat menambahkannya di sini.
+                  // Misalnya:
+                  // props.title === 'small' && 'w-16',
+                  // props.title === 'large' && 'w-32',
+                )}
+              >
+                <Image
+                  style={{ maxWidth: '100%' }}
+                  alt={props.alt || 'Image'}
+                  src={props.src as string}
+                  layout="responsive"
+                  width={props.width ? Number(props.width) : 200}
+                  height={props.height ? Number(props.height) : 200}
+                />
+              </div>
+            );
+          },
+          a({ ...props }) {
+            return (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+                {...props}
               />
-            </div>
-          );
-        },
-        a({ ...props }) {
-          return (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline"
-              {...props}
-            />
-          );
-        },
-      }}
-    >
-      {replaceLatexNotation(value)}
-    </MarkdownView>
+            );
+          },
+        }}
+      >
+        {replaceLatexNotation(value)}
+      </MarkdownView>
+    </div>
   );
 }
 

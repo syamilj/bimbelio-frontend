@@ -47,57 +47,60 @@ export default function ReactMarkdownBlog({
   }, [value]);
 
   return (
-    <ReactMarkdown
-      remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
-      rehypePlugins={[rehypeKatex]}
+    <div
       className={cn(
         'prose break-words ReactMarkdown w-full max-w-[unset]',
         className,
       )}
-      components={{
-        p: ({ children }) => {
-          return (
-            <p className="text-[#3F3F3F] text-[16px] my-[3px]">{children}</p>
-          );
-        },
-        h1: ({ children }) => {
-          return (
-            <h1
-              id={slugify(`${children}`)}
-              className="text-[#3F3F3F] text-[48px] my-[3px] leading-normal font-[700]"
-            >
-              {children}
-            </h1>
-          );
-        },
-        h2: ({ children }) => {
-          return (
-            <h2
-              id={slugify(`${children}`)}
-              className="text-[#3F3F3F] text-[32px] my-[3px] leading-normal font-[700]"
-            >
-              {children}
-            </h2>
-          );
-        },
-        h3: ({ children }) => {
-          return (
-            <h3
-              id={slugify(`${children}`)}
-              className="text-[#3F3F3F] text-[20.8px] my-[3px] leading-normal font-[700]"
-            >
-              {children}
-            </h3>
-          );
-        },
-        strong: ({ children, ...props }) => (
-          <strong {...props}>{children}</strong>
-        ),
-        em: ({ children, ...props }) => <em {...props}>{children}</em>,
-      }}
     >
-      {displayValue}
-    </ReactMarkdown>
+      <ReactMarkdown
+        remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
+        rehypePlugins={[rehypeKatex]}
+        components={{
+          p: ({ children }) => {
+            return (
+              <p className="text-[#3F3F3F] text-[16px] my-[3px]">{children}</p>
+            );
+          },
+          h1: ({ children }) => {
+            return (
+              <h1
+                id={slugify(`${children}`)}
+                className="text-[#3F3F3F] text-[48px] my-[3px] leading-normal font-[700]"
+              >
+                {children}
+              </h1>
+            );
+          },
+          h2: ({ children }) => {
+            return (
+              <h2
+                id={slugify(`${children}`)}
+                className="text-[#3F3F3F] text-[32px] my-[3px] leading-normal font-[700]"
+              >
+                {children}
+              </h2>
+            );
+          },
+          h3: ({ children }) => {
+            return (
+              <h3
+                id={slugify(`${children}`)}
+                className="text-[#3F3F3F] text-[20.8px] my-[3px] leading-normal font-[700]"
+              >
+                {children}
+              </h3>
+            );
+          },
+          strong: ({ children, ...props }) => (
+            <strong {...props}>{children}</strong>
+          ),
+          em: ({ children, ...props }) => <em {...props}>{children}</em>,
+        }}
+      >
+        {displayValue}
+      </ReactMarkdown>
+    </div>
   );
 }
 

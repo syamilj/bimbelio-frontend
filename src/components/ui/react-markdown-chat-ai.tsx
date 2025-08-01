@@ -288,17 +288,20 @@ export default function ReactMarkdownChatAI({
 
   return (
     <div className="space-y-4">
-      <ReactMarkdown
-        remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
-        rehypePlugins={[rehypeKatex]}
+      <div
         className={cn(
           'prose break-words ReactMarkdown max-w-none dark:prose-invert',
           className,
         )}
-        components={markdownComponents}
       >
-        {main}
-      </ReactMarkdown>
+        <ReactMarkdown
+          remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
+          rehypePlugins={[rehypeKatex]}
+          components={markdownComponents}
+        >
+          {main}
+        </ReactMarkdown>
+      </div>
 
       {/* Blok Saran Pertanyaan */}
       {saran && (
@@ -322,55 +325,56 @@ export default function ReactMarkdownChatAI({
                 <span className="font-medium text-blue-600 dark:text-blue-400 mr-2">
                   {i + 1}.
                 </span>
-                <ReactMarkdown
-                  remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
-                  rehypePlugins={[rehypeKatex]}
-                  className="inline prose prose-sm max-w-none dark:prose-invert"
-                  components={{
-                    p: ({ children, ...props }) => (
-                      <span {...props}>{processPageTags(children)}</span>
-                    ),
-                    strong: ({ children, ...props }) => (
-                      <strong
-                        {...props}
-                        className="font-semibold"
-                      >
-                        {processPageTags(children)}
-                      </strong>
-                    ),
-                    em: ({ children, ...props }) => (
-                      <em
-                        {...props}
-                        className="italic"
-                      >
-                        {processPageTags(children)}
-                      </em>
-                    ),
-                    code: ({ node, children, ...props }) => {
-                      const isInline = (node as any)?.properties?.inline;
-                      if (isInline) {
+                <span className="inline prose prose-sm max-w-none dark:prose-invert">
+                  <ReactMarkdown
+                    remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
+                    rehypePlugins={[rehypeKatex]}
+                    components={{
+                      p: ({ children, ...props }) => (
+                        <span {...props}>{processPageTags(children)}</span>
+                      ),
+                      strong: ({ children, ...props }) => (
+                        <strong
+                          {...props}
+                          className="font-semibold"
+                        >
+                          {processPageTags(children)}
+                        </strong>
+                      ),
+                      em: ({ children, ...props }) => (
+                        <em
+                          {...props}
+                          className="italic"
+                        >
+                          {processPageTags(children)}
+                        </em>
+                      ),
+                      code: ({ node, children, ...props }) => {
+                        const isInline = (node as any)?.properties?.inline;
+                        if (isInline) {
+                          return (
+                            <code
+                              {...props}
+                              className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-xs font-mono"
+                            >
+                              {children}
+                            </code>
+                          );
+                        }
                         return (
                           <code
                             {...props}
-                            className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-xs font-mono"
+                            className="block bg-gray-100 dark:bg-gray-800 p-2 rounded text-xs font-mono"
                           >
                             {children}
                           </code>
                         );
-                      }
-                      return (
-                        <code
-                          {...props}
-                          className="block bg-gray-100 dark:bg-gray-800 p-2 rounded text-xs font-mono"
-                        >
-                          {children}
-                        </code>
-                      );
-                    },
-                  }}
-                >
-                  {q}
-                </ReactMarkdown>
+                      },
+                    }}
+                  >
+                    {q}
+                  </ReactMarkdown>
+                </span>
               </button>
             ))}
           </div>
