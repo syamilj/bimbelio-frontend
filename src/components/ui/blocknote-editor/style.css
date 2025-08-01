@@ -53,3 +53,74 @@
 /* .bn-block-content[data-content-type='image'] .bn-resize-handle {
   display: none;
 } */
+
+/* Custom styles for highlight blocks */
+.bn-block-content[data-content-type='highlight'] {
+  min-height: 40px !important;
+  width: 100% !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.bn-block-content[data-content-type='highlight'] .inline-content {
+  display: block !important;
+  min-height: 20px !important;
+  width: 100% !important;
+}
+
+/* Force text visibility in highlight blocks */
+.bn-block-content[data-content-type='highlight'] * {
+  color: #1f2937 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.bn-block-content[data-content-type='highlight'] .ProseMirror {
+  color: #1f2937 !important;
+}
+
+.bn-block-content[data-content-type='highlight'] p {
+  color: #1f2937 !important;
+  margin: 0 !important;
+}
+
+/* Additional force styling for highlight text content */
+.bn-block-content[data-content-type='highlight'] span,
+.bn-block-content[data-content-type='highlight'] text,
+.bn-block-content[data-content-type='highlight'] .bn-inline-content {
+  color: #1f2937 !important;
+  background: transparent !important;
+}
+
+/* Override any potential text hiding */
+.bn-block-content[data-content-type='highlight'] .ProseMirror p {
+  color: #1f2937 !important;
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Force content in highlight blocks to be visible */
+.bn-block-content[data-content-type='highlight'] [data-node-view-content-react] {
+  color: #1f2937 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  min-height: 20px !important;
+}
+
+/* Ensure bn-inline-content shows text */
+.bn-block-content[data-content-type='highlight'] .bn-inline-content {
+  color: #1f2937 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  min-height: 20px !important;
+}
+
+/* If content is there but invisible, make it visible */
+.bn-block-content[data-content-type='highlight'] .bn-inline-content:empty::after {
+  content: "No content rendered - check text insertion";
+  color: red !important;
+  font-style: italic;
+}
