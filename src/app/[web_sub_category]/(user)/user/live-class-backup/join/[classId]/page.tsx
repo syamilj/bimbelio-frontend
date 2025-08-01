@@ -1,11 +1,12 @@
 import { LiveClassJoin } from '../../_components/live-class-join';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     classId: string;
-  };
+  }>;
 }
 
-export default function LiveClassJoinPage({ params }: PageProps) {
-  return <LiveClassJoin classId={params.classId} />;
+export default async function LiveClassJoinPage({ params }: PageProps) {
+  const { classId } = await params;
+  return <LiveClassJoin classId={classId} />;
 }
