@@ -108,7 +108,7 @@ export function TryOutSelector() {
         />
       </CardHeader>
 
-      <CardContent className="p-0 flex-grow overflow-hidden">
+      <CardContent className="p-0 grow overflow-hidden">
         <ScrollArea className="h-[400px] px-4 pb-4">
           <div className="space-y-3">
             {TryoutList?.map((tryOut) => (

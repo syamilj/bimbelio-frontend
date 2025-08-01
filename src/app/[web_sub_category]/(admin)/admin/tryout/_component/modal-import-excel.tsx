@@ -285,7 +285,7 @@ const ModalImportCSV = ({
     >
       <DialogTrigger>
         <div
-          className="shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 px-[1rem] py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+          className="shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 px-4 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
           onClick={() => setOpen(true)}
         >
           Import CSV
@@ -312,10 +312,10 @@ const ModalImportCSV = ({
             </p>
           )}
           {file ? (
-            <p className="mt-[1rem] font-semibold text-blue-700">{file.name}</p>
+            <p className="mt-4 font-semibold text-blue-700">{file.name}</p>
           ) : null}
 
-          <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-[2rem] text-[.9rem]">
+          <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-8 text-[.9rem]">
             <input
               id="uploadCSV"
               type="file"

@@ -35,7 +35,7 @@ export default function PanduanLanjutanSection() {
               key={index}
               className="w-[300px] sm:w-[320px] shrink-0 transition-all hover:shadow-sm hover:-translate-y-1"
             >
-              <CardContent className="p-5 space-y-4 bg-gradient-to-br from-card/50 to-card border-main/5 h-full flex items-center justify-center flex-col rounded-xl">
+              <CardContent className="p-5 space-y-4 bg-linear-to-br from-card/50 to-card border-main/5 h-full flex items-center justify-center flex-col rounded-xl">
                 <div className="space-y-2 flex-1 justify-center text-center">
                   <div className="flex items-center justify-center">
                     <div className="size-10 rounded-xl bg-main/10 flex items-center text-center justify-center">

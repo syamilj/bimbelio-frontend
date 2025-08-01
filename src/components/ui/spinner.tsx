@@ -22,7 +22,7 @@ export function SpinnerPageCentered({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'fixed left-0 top-0 z-[1000] flex h-full w-full items-center justify-center bg-white',
+        'fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-white',
         className,
       )}
     >
@@ -41,7 +41,7 @@ export function PageError({
   return (
     <div
       className={cn(
-        'fixed left-0 top-0 z-[1000] flex h-full w-full items-center justify-center bg-white',
+        'fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-white',
         className,
       )}
     >
@@ -66,9 +66,9 @@ export function LoadingPopUp({ title }: { title?: string }) {
         classOverlay="bg-[#ffffffe3]"
         hideClose
       >
-        <div className="z-[100000000] flex items-center justify-center p-[1.5rem]">
+        <div className="z-100000000 flex items-center justify-center p-6">
           <div className="flex flex-col items-center">
-            <Loader2 className="h-[2rem] w-[2rem] animate-spin" />
+            <Loader2 className="h-8 w-[2rem] animate-spin" />
             <p className="text-center text-[1.1rem] font-medium">
               {title ? title : 'Loading...'}{' '}
             </p>
@@ -89,9 +89,9 @@ export default function LoadingPageWithText({
   return (
     <>
       {loading && (
-        <div className="fixed left-0 top-0 z-[201] flex h-full w-full select-none items-center justify-center bg-[#ffffff52] backdrop-blur-[6px]">
+        <div className="fixed left-0 top-0 z-201 flex h-full w-full select-none items-center justify-center bg-[#ffffff52] backdrop-blur-[6px]">
           <div className="flex flex-col items-center gap-[.5rem] text-center">
-            <Loader2 className="h-[4rem] w-[4rem] animate-spin text-[#464646]" />
+            <Loader2 className="h-16 w-16 animate-spin text-[#464646]" />
             {heading && (
               <p className="text-[1.3rem] text-[#464646]">{heading}</p>
             )}
@@ -106,7 +106,7 @@ export function LoadingComponentWithText({ heading }: { heading?: string }) {
   return (
     <div className="flex w-full select-none items-center justify-center h-[75vh]">
       <div className="flex flex-col items-center gap-[.5rem] text-center">
-        <Loader2 className="h-[4rem] w-[4rem] animate-spin text-[#464646]" />
+        <Loader2 className="h-16 w-16 animate-spin text-[#464646]" />
         <p className="text-[1.3rem] text-[#464646]">
           {heading ? heading : 'Loading'}
         </p>

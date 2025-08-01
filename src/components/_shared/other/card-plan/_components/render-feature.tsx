@@ -31,7 +31,7 @@ export const RenderFeatureTab = () => {
       // Show LiveClass features instead
       return (
         <div className="space-y-4">
-          <div className="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
+          <div className="text-center p-4 bg-linear-to-r from-green-50 to-emerald-50 rounded-lg">
             <Video
               size={24}
               className="mx-auto mb-2 text-green-600"
@@ -90,7 +90,7 @@ export const RenderFeatureTab = () => {
           </div>
 
           {plan.PlanSubscription && (
-            <div className="p-3 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+            <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
               <div className="flex items-center gap-2">
                 <Calendar
                   size={16}
@@ -158,7 +158,7 @@ export const RenderFeatureTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="text-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
+      <div className="text-center p-4 bg-linear-to-r from-purple-50 to-pink-50 rounded-lg">
         <Star
           size={24}
           className="mx-auto mb-2 text-purple-600"
@@ -178,7 +178,7 @@ export const RenderFeatureTab = () => {
 
       {/* Global Access */}
       {(isCourse || isDocument) && (
-        <div className="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+        <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
           <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
             <Star
               size={14}
@@ -246,7 +246,7 @@ export const RenderFeatureTab = () => {
       )} */}
 
       {plan.PlanSubscription && (
-        <div className="p-3 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+        <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
           <div className="flex items-center gap-2">
             <Calendar
               size={16}

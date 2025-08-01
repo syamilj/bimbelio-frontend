@@ -305,7 +305,7 @@ const StartTryout = ({
                           className="flex gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-colors"
                         >
                           <div
-                            className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                             style={{ backgroundColor: `${mainColor}15` }}
                           >
                             <div style={{ color: mainColor }}>{rule.icon}</div>

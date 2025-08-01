@@ -207,7 +207,7 @@ const AiPopover = () => {
           left: rect.left,
           width: rect.width,
         }}
-        className="absolute z-[1000] border-gray-300 bg-white p-0 text-black"
+        className="absolute z-1000 border-gray-300 bg-white p-0 text-black"
       >
         <DropdownMenu
           modal={false}

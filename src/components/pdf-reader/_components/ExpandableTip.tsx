@@ -248,7 +248,7 @@ const TextSelectionPopover = ({
 
   return (
     <div className="relative rounded-xl bg-black">
-      <div className="absolute -bottom-[10px] left-[50%] h-0 w-0 -translate-x-[50%] border-l-[10px] border-r-[10px] border-t-[10px] border-solid border-black border-l-transparent border-r-transparent" />
+      <div className="absolute -bottom-[10px] left-[50%] h-0 w-0 -translate-x-[50%] border-l-10 border-r-10 border-t-10 border-solid border-black border-l-transparent border-r-transparent" />
 
       <div
         id="tooltips"
@@ -415,7 +415,7 @@ export const CommentForm = ({ onSubmit, placeHolder }: CommentFormProps) => {
 
 //   return (
 //     <div className="relative rounded-xl bg-black">
-//       <div className="absolute -bottom-[10px] left-[50%] h-0 w-0 -translate-x-[50%] border-l-[10px] border-r-[10px] border-t-[10px] border-solid border-black border-l-transparent border-r-transparent " />
+//       <div className="absolute -bottom-[10px] left-[50%] h-0 w-0 -translate-x-[50%] border-l-10 border-r-10 border-t-10 border-solid border-black border-l-transparent border-r-transparent " />
 
 //       <div className="flex divide-x divide-gray-800">
 //         {OPTIONS.map((option, id) => (

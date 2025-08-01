@@ -65,7 +65,7 @@ export function Payment() {
       >
         <DialogContent
           className="max-w-[95vw] h-[95vh] p-0"
-          classOverlay="z-[10000]"
+          classOverlay="z-10000"
         >
           {isLoading && (
             <div className="absolute inset-0 z-50 grid place-items-center bg-white/80 backdrop-blur-sm">

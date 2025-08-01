@@ -165,7 +165,7 @@ export default function ModulPembelajaranSection() {
                   >
                     <Button
                       size="sm"
-                      className="w-full rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 border-0 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
+                      className="w-full rounded-xl bg-linear-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 border-0 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
                     >
                       <CheckIcon className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                       Selesai
@@ -180,7 +180,7 @@ export default function ModulPembelajaranSection() {
                   >
                     <Button
                       size="sm"
-                      className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 border-0 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
+                      className="w-full rounded-xl bg-linear-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 border-0 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group"
                     >
                       <ForwardIcon className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                       Lanjutkan
@@ -356,7 +356,7 @@ export default function ModulPembelajaranSection() {
                       {/* Shine effect */}
                       <div className="absolute inset-0 h-3 rounded-full overflow-hidden">
                         <div
-                          className="h-full w-full bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 group-hover:animate-shimmer"
+                          className="h-full w-full bg-linear-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 group-hover:animate-shimmer"
                           style={{
                             transform: 'translateX(-100%) skewX(-12deg)',
                           }}
@@ -367,9 +367,9 @@ export default function ModulPembelajaranSection() {
 
                   {/* Enhanced Stats Grid */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="group/stat p-4 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 hover:from-blue-100 hover:to-blue-200 transition-all duration-300">
+                    <div className="group/stat p-4 rounded-xl bg-linear-to-br from-blue-50 to-blue-100 border border-blue-200 hover:from-blue-100 hover:to-blue-200 transition-all duration-300">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg group-hover/stat:scale-110 transition-transform">
+                        <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg group-hover/stat:scale-110 transition-transform">
                           <ClockIcon className="w-5 h-5 text-white" />
                         </div>
                         <div>
@@ -385,9 +385,9 @@ export default function ModulPembelajaranSection() {
                       </div>
                     </div>
 
-                    <div className="group/stat p-4 rounded-xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 hover:from-green-100 hover:to-green-200 transition-all duration-300">
+                    <div className="group/stat p-4 rounded-xl bg-linear-to-br from-green-50 to-green-100 border border-green-200 hover:from-green-100 hover:to-green-200 transition-all duration-300">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg group-hover/stat:scale-110 transition-transform">
+                        <div className="w-10 h-10 rounded-xl bg-linear-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg group-hover/stat:scale-110 transition-transform">
                           <FileQuestionIcon className="w-5 h-5 text-white" />
                         </div>
                         <div>

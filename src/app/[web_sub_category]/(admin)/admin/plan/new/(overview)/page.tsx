@@ -766,7 +766,7 @@ const SectionFeature = () => {
           </div>
 
           <Tabs defaultValue="umum">
-            <TabsList className="ml-[1rem]">
+            <TabsList className="ml-4">
               <TabsTrigger value="umum">Umum</TabsTrigger>
               {isCourseActive && (
                 <TabsTrigger value="course">Course</TabsTrigger>

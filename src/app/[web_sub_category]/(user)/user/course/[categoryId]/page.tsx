@@ -169,7 +169,7 @@ const WorkspaceCourse = () => {
           <LeftComponent />
           <ResizableHandleComponent />
           <RightComponent />
-          <div className="fixed md:hidden items-center justify-center flex w-full bottom-6 md:left-2 z-[100]">
+          <div className="fixed md:hidden items-center justify-center flex w-full bottom-6 md:left-2 z-100">
             <NavigationButtons />
           </div>
         </ResizablePanelGroup>
@@ -195,10 +195,10 @@ const ResizableHandleComponent = () => {
       className={`relative ${mobileScreen === 'minimize' ? 'flex' : 'h-0 w-0 overflow-hidden p-0'} items-center justify-center`}
     >
       <ResizableHandle
-        className="relative z-[42] h-full w-[.5px] rounded-full bg-main-gray-input duration-300 after:w-[1px] data-[panel-group-direction=vertical]:h-[1px]"
+        className="relative z-42 h-full w-[.5px] rounded-full bg-main-gray-input duration-300 after:w-px data-[panel-group-direction=vertical]:h-px"
         withHandle
       />
-      <div className="absolute z-[41] ml-[-.2px] h-[6px] w-[100px] rounded-[2rem] bg-main-gray-input md:h-[100px] md:w-[6px]"></div>
+      <div className="absolute z-41 ml-[-.2px] h-[6px] w-[100px] rounded-4xl bg-main-gray-input md:h-[100px] md:w-[6px]"></div>
     </div>
   );
 };

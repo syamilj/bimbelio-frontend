@@ -71,10 +71,10 @@ export default function HeadingTools() {
 
   return (
     <div className="flex w-full justify-between">
-      <div className="flex gap-[1rem]">
+      <div className="flex gap-4">
         {showFilter && (
           <div
-            className="fixed left-0 top-0 z-[1] h-full w-full"
+            className="fixed left-0 top-0 z-1 h-full w-full"
             onClick={() => setShowFilter(false)}
           />
         )}
@@ -82,13 +82,13 @@ export default function HeadingTools() {
           <input
             type="text"
             placeholder="Cari document...."
-            className="h-full w-full rounded-[.7rem] bg-white px-[1rem] outline-none"
+            className="h-full w-full rounded-[.7rem] bg-white px-4 outline-none"
           />
         </div>
         <div className="relative">
           <div
             className={cn(
-              'font-regular relative z-[2] flex cursor-pointer items-center rounded-[.7rem] bg-white px-[1rem] py-[.5rem] text-main-gray-text2',
+              'font-regular relative z-2 flex cursor-pointer items-center rounded-[.7rem] bg-white px-4 py-[.5rem] text-main-gray-text2',
               filterDocument?.filter &&
                 filterDocument?.filterValue !== '' &&
                 'bg-main text-white',
@@ -99,7 +99,7 @@ export default function HeadingTools() {
             {filterDocument?.filter ? 'Filtered' : 'Filter'}
           </div>
           {showFilter && (
-            <div className="absolute left-[0] top-[calc(100%+.5rem)] z-[2] flex min-w-[280px] flex-col whitespace-nowrap rounded-[.5rem] bg-white p-[.5rem] text-[.8rem] text-main-gray-text shadow-cardSoft">
+            <div className="absolute left-[0] top-[calc(100%+.5rem)] z-2 flex min-w-[280px] flex-col whitespace-nowrap rounded-[.5rem] bg-white p-[.5rem] text-[.8rem] text-main-gray-text shadow-cardSoft">
               <div className="flex items-center justify-between gap-[.5rem]">
                 <Select
                   value={filter?.filter}
@@ -167,7 +167,7 @@ export default function HeadingTools() {
                 )}
               </div>
               <hr className="my-[.5rem]" />
-              <div className="flex items-center justify-between gap-[2rem]">
+              <div className="flex items-center justify-between gap-8">
                 <div
                   className="flex cursor-pointer items-center justify-center gap-[.5rem] rounded-[.3rem] px-[.5rem] py-[.2rem] duration-300 active:bg-white md:hover:bg-main-gray-input"
                   onClick={() => {
@@ -195,15 +195,15 @@ export default function HeadingTools() {
         </div>
       </div>
 
-      <div className="flex gap-[1rem]">
+      <div className="flex gap-4">
         <div
-          className="cursor-pointer rounded-[.7rem] bg-transparent px-[1.5rem] py-[.7rem] font-medium text-main-gray-text duration-200"
+          className="cursor-pointer rounded-[.7rem] bg-transparent px-6 py-[.7rem] font-medium text-main-gray-text duration-200"
           onClick={() => setShowAddDocument(true)}
         >
           Export CSV
         </div>
         <div
-          className="font-regular cursor-pointer rounded-[.7rem] bg-main px-[1.5rem] py-[.7rem] text-white duration-200 hover:bg-main-hover"
+          className="font-regular cursor-pointer rounded-[.7rem] bg-main px-6 py-[.7rem] text-white duration-200 hover:bg-main-hover"
           onClick={() => setShowAddDocument(true)}
         >
           Tambah dokumen

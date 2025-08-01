@@ -175,7 +175,7 @@ const SummaryTryout = () => {
                 {!isLoading ? (
                   <TabsTrigger
                     value={tab.value}
-                    className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm data-[state=active]:bg-gradient-to-r"
+                    className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm data-[state=active]:bg-linear-to-r"
                     style={
                       {
                         '--tw-gradient-from': mainColor,

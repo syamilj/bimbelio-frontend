@@ -93,7 +93,7 @@ const HeroSection: React.FC = () => {
       {/* Ultra  Background */}
       <motion.div
         style={{ y }}
-        className="absolute inset-0 z-[1]"
+        className="absolute inset-0 z-1"
       >
         {/* Subtle gradient overlay */}
         <div
@@ -120,7 +120,7 @@ const HeroSection: React.FC = () => {
       </motion.div>
 
       {/* Main Content - Ultra  Layout */}
-      <div className="relative z-[30] mx-auto flex max-w-6xl flex-col items-center px-4 text-center pb-16">
+      <div className="relative z-30 mx-auto flex max-w-6xl flex-col items-center px-4 text-center pb-16">
         <BrandSection mainColor={mainColor} />
         <HeadingSection
           mainColor={mainColor}
@@ -354,7 +354,7 @@ const LogoSection: React.FC<{
           {doubled.map((logo, i) => (
             <div
               key={i}
-              className="flex-shrink-0 mx-8 flex flex-col items-center group"
+              className="shrink-0 mx-8 flex flex-col items-center group"
             >
               <div className="w-24 h-24 p-2 bg-white rounded-full shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <Image

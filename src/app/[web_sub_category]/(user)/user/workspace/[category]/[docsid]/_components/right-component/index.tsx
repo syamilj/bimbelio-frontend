@@ -193,9 +193,9 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
         />
       ) : null}
       {(isLoading ? true : isResetModalOpen) && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex w-[380px] flex-col items-center rounded-[1.5rem] bg-white p-[2rem] text-center shadow-lg">
-            <div className="flex flex-col gap-[1rem]">
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="flex w-[380px] flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg">
+            <div className="flex flex-col gap-4">
               {tab === 'chat' ? (
                 <p>
                   Seluruh chat dalam material{' '}
@@ -271,7 +271,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
         defaultValue="notes"
         className="max-h-screen max-w-full overflow-hidden"
       >
-        <div className="relative z-[8] flex h-[60px] items-center justify-between border-b border-main-gray-input bg-bg-workspace px-[1rem]">
+        <div className="relative z-8 flex h-[60px] items-center justify-between border-b border-main-gray-input bg-bg-workspace px-4">
           <TabsList className="h-full rounded-xl bg-transparent">
             {TABS.map((item) => (
               <div
@@ -282,11 +282,11 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
                 }}
               >
                 {onBoarding.notes && item.value === 'notes' ? (
-                  <div className="absolute right-3 top-1 z-[10] h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
                 ) : onBoarding.chat && item.value === 'chat' ? (
-                  <div className="absolute right-3 top-1 z-[10] h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
                 ) : onBoarding.quiz && item.value === 'quiz' ? (
-                  <div className="absolute right-3 top-1 z-[10] h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
                 ) : null}
                 <CustomTooltip content={item.tooltip}>
                   <TabsTrigger

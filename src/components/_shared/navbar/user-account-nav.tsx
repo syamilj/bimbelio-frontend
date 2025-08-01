@@ -277,7 +277,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
           )}
 
           {/* Divider */}
-          <div className="my-2 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+          <div className="my-2 h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 
           {/* Logout */}
           <motion.div

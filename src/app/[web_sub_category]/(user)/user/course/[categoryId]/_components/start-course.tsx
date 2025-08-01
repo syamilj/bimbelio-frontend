@@ -178,7 +178,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-2 md:p-4">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-2 md:p-4">
       <div className="max-w-7xl mx-auto">
         {/* Simple Header Only */}
         <div className="text-center mb-6 md:mb-8">
@@ -284,7 +284,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
                             </div>
 
                             {/* Chapter Card */}
-                            <div className="bg-gradient-to-r from-white to-gray-50 rounded-lg md:rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
+                            <div className="bg-linear-to-r from-white to-gray-50 rounded-lg md:rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
                               <div
                                 className="p-2 md:p-4 border-l-4"
                                 style={{ borderLeftColor: mainColor }}
@@ -314,7 +314,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
                                         >
                                           <div
                                             className={cn(
-                                              'w-6 h-6 md:w-10 md:h-10 rounded-md md:rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow flex-shrink-0',
+                                              'w-6 h-6 md:w-10 md:h-10 rounded-md md:rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow shrink-0',
                                               typeConfig.bgColor,
                                             )}
                                           >
@@ -341,7 +341,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
                                               </span>
                                             </div>
                                           </div>
-                                          <div className="text-right flex-shrink-0">
+                                          <div className="text-right shrink-0">
                                             <div className="text-xs text-gray-400">
                                               #{subChapter.number}
                                             </div>
@@ -403,7 +403,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
                       className="flex gap-2 md:gap-3 p-2 md:p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
                     >
                       <div
-                        className="w-6 h-6 md:w-7 md:h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                        className="w-6 h-6 md:w-7 md:h-7 rounded-lg flex items-center justify-center shrink-0"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <div
@@ -448,7 +448,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
                         onCheckedChange={(checked) =>
                           setAgreedToGuidelines(checked as boolean)
                         }
-                        className="mt-0.5 flex-shrink-0"
+                        className="mt-0.5 shrink-0"
                       />
                       <label
                         htmlFor="agree-guidelines"

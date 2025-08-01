@@ -148,7 +148,7 @@ export default function CourseLocked() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-full font-bold shadow-lg"
+              className="inline-flex items-center gap-2 bg-linear-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-full font-bold shadow-lg"
             >
               <Sparkles className="w-5 h-5" />
               <span>Hemat hingga 40% - Penawaran Terbatas!</span>
@@ -211,13 +211,13 @@ export default function CourseLocked() {
                         )}
                       >
                         {/* Shimmer effect on hover */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
+                        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
 
                         <CardHeader className="flex items-center space-y-0 pb-3 relative z-10">
                           <div
                             className={cn(
                               'w-14 h-14 rounded-xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110',
-                              `bg-gradient-to-br ${feature.gradient}`,
+                              `bg-linear-to-br ${feature.gradient}`,
                             )}
                           >
                             <div className="text-white">{feature.icon}</div>

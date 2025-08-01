@@ -96,7 +96,7 @@ export function CalendarView({
       {/* Calendar */}
       <div className="lg:col-span-2">
         <Card className="border-0 shadow-lg rounded-2xl overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+          <CardHeader className="bg-linear-to-r from-blue-50 to-indigo-50 border-b">
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl font-bold text-gray-900">
                 {monthName}
@@ -203,7 +203,7 @@ export function CalendarView({
       {/* Selected Date Details */}
       <div className="space-y-4">
         <Card className="border-0 shadow-lg rounded-2xl">
-          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b">
+          <CardHeader className="bg-linear-to-r from-gray-50 to-gray-100 border-b">
             <CardTitle className="text-lg font-bold">
               {selectedDate
                 ? selectedDate.toLocaleDateString('id-ID', {
@@ -229,7 +229,7 @@ export function CalendarView({
                       </h4>
                       <div className="flex flex-col items-end gap-1">
                         <Badge
-                          className={`${getStatusColor(liveClass.status)} text-xs flex-shrink-0`}
+                          className={`${getStatusColor(liveClass.status)} text-xs shrink-0`}
                         >
                           {liveClass.status}
                         </Badge>

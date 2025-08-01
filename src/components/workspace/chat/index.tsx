@@ -146,7 +146,7 @@ const MainContent = () => {
       <FormMessageEdit />
       <div
         id="chatAI"
-        className="mt-[calc(60px+5px)] flex flex-1 flex-col gap-[3rem] overflow-hidden px-[1rem] pb-[1rem] md:mt-[unset]"
+        className="mt-[calc(60px+5px)] flex flex-1 flex-col gap-12 overflow-hidden px-4 pb-4 md:mt-[unset]"
       >
         {isMessages ? (
           <MessageContainer />
@@ -185,7 +185,7 @@ const FormMessageEdit = () => {
 
   return (
     <form
-      className="absolute z-[100] w-0 overflow-hidden p-0 text-black"
+      className="absolute z-100 w-0 overflow-hidden p-0 text-black"
       onSubmit={(e) => {
         handleSubmitMessagesEdit(e);
       }}

@@ -101,7 +101,7 @@ const TryoutHeader = ({
             </Button>
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
                 style={{ backgroundColor: mainColor }}
               >
                 <Trophy className="w-4 h-4 text-white" />
@@ -117,7 +117,7 @@ const TryoutHeader = ({
             </div>
           </div>
           {/* Right: Timer & Menu */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             <div
               className="flex items-center gap-2 px-3 py-2 rounded-xl"
               style={{ backgroundColor: `${mainColor}10` }}
@@ -243,7 +243,7 @@ const TryoutHeader = ({
 
       {/* MOBILE MENU OVERLAY */}
       {showMobileMenu && (
-        <div className="lg:hidden fixed inset-0 z-[60] bg-white">
+        <div className="lg:hidden fixed inset-0 z-60 bg-white">
           <div className="flex flex-col h-full">
             <div className="flex items-center justify-between px-4 py-3 border-b">
               <div className="flex items-center gap-2">
@@ -394,7 +394,7 @@ const TryoutHeader = ({
               </Button>
               <div className="flex items-center gap-3 min-w-0 flex-1">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                   style={{ backgroundColor: mainColor }}
                 >
                   <Trophy className="w-5 h-5 text-white" />

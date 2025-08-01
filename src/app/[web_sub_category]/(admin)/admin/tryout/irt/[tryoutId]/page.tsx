@@ -240,7 +240,7 @@ export default function SNBTProcessor() {
         loading={loading}
         heading="Sedang Menyimpan Data IRT"
       />
-      <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+      <Card className="bg-linear-to-r from-blue-500 to-purple-600 text-white">
         <CardHeader>
           <CardTitle className="text-4xl font-bold">Processor</CardTitle>
           <CardDescription className="text-xl text-gray-100">

@@ -168,7 +168,7 @@ const SidebarRoute = ({
                   isActive
                     ? minimizeSidebar
                       ? ''
-                      : 'text-white shadow-xl bg-gradient-to-r border border-white/20'
+                      : 'text-white shadow-xl bg-linear-to-r border border-white/20'
                     : minimizeSidebar
                       ? ''
                       : 'text-slate-700 hover:bg-white/80 hover:text-slate-900 hover:shadow-lg bg-white/40 backdrop-blur-sm border border-slate-200/50',
@@ -191,10 +191,10 @@ const SidebarRoute = ({
                 {minimizeSidebar ? (
                   <button
                     className={cn(
-                      'w-12 h-12 rounded-2xl text-white shadow-xl transition-all duration-200 p-0 hover:shadow-2xl  flex items-center justify-center bg-gradient-to-br border border-white/20',
+                      'w-12 h-12 rounded-2xl text-white shadow-xl transition-all duration-200 p-0 hover:shadow-2xl  flex items-center justify-center bg-linear-to-br border border-white/20',
                       isActive
                         ? ''
-                        : 'bg-slate-200 dark:bg-slate-700 text-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600',
+                        : 'bg-slate-200 text-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600',
                     )}
                     style={{
                       background: isActive
@@ -283,11 +283,11 @@ const SidebarRoute = ({
                     isActive
                       ? minimizeSidebar
                         ? ''
-                        : 'text-white shadow-xl bg-gradient-to-r border border-white/20'
+                        : 'text-white shadow-xl bg-linear-to-r border border-white/20'
                       : item.isHighlighted
                         ? minimizeSidebar
                           ? ''
-                          : 'border border-slate-200/60 hover:shadow-xl hover:border-slate-300/60 bg-gradient-to-r from-white/60 to-slate-50/80 backdrop-blur-sm'
+                          : 'border border-slate-200/60 hover:shadow-xl hover:border-slate-300/60 bg-linear-to-r from-white/60 to-slate-50/80 backdrop-blur-sm'
                         : minimizeSidebar
                           ? ''
                           : 'text-slate-700 hover:bg-white/80 hover:text-slate-900 hover:shadow-lg bg-white/40 backdrop-blur-sm border border-slate-200/50',
@@ -304,12 +304,12 @@ const SidebarRoute = ({
                   {minimizeSidebar ? (
                     <button
                       className={cn(
-                        'w-12 h-12 rounded-2xl shadow-xl transition-all duration-200 p-0 hover:shadow-2xl  flex items-center justify-center bg-gradient-to-br border border-white/20',
+                        'w-12 h-12 rounded-2xl shadow-xl transition-all duration-200 p-0 hover:shadow-2xl  flex items-center justify-center bg-linear-to-br border border-white/20',
                         isActive
                           ? 'text-white'
                           : item.isHighlighted
                             ? 'text-white'
-                            : 'bg-slate-200 dark:bg-slate-700 text-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600',
+                            : 'bg-slate-200 text-slate-600 hover:bg-slate-300 dark:hover:bg-slate-600',
                       )}
                       style={{
                         background: isActive
@@ -385,13 +385,13 @@ const SidebarRoute = ({
                         {item.isNew && (
                           <div className="relative">
                             <div
-                              className="w-3 h-3 rounded-full animate-pulse bg-gradient-to-r shadow-sm"
+                              className="w-3 h-3 rounded-full animate-pulse bg-linear-to-r shadow-sm"
                               style={{
                                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                               }}
                             />
                             <div
-                              className="absolute inset-0 w-3 h-3 rounded-full animate-ping bg-gradient-to-r opacity-75"
+                              className="absolute inset-0 w-3 h-3 rounded-full animate-ping bg-linear-to-r opacity-75"
                               style={{
                                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                               }}
@@ -399,7 +399,7 @@ const SidebarRoute = ({
                           </div>
                         )}
                         {item.badge && (
-                          <Badge className="text-xs px-2 py-1 rounded-xl border-0 font-bold shadow-lg bg-gradient-to-r from-orange-500 to-red-500 text-white transition-all duration-200 ">
+                          <Badge className="text-xs px-2 py-1 rounded-xl border-0 font-bold shadow-lg bg-linear-to-r from-orange-500 to-red-500 text-white transition-all duration-200 ">
                             {item.isAI && <Brain className="w-3 h-3 mr-1" />}
                             {item.badge}
                           </Badge>
@@ -426,7 +426,7 @@ const SidebarRoute = ({
                     className={cn(
                       'ml-14 mr-1 flex cursor-pointer items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 w-[calc(100%-3.5rem)] group/sub backdrop-blur-sm border',
                       pathname?.includes(`workspace/${subItem.id}`)
-                        ? 'text-white shadow-lg bg-gradient-to-r border-white/20'
+                        ? 'text-white shadow-lg bg-linear-to-r border-white/20'
                         : 'text-slate-600 hover:bg-white/80 hover:text-slate-800 hover:shadow-md bg-white/50 border-slate-200/50',
                     )}
                     style={{

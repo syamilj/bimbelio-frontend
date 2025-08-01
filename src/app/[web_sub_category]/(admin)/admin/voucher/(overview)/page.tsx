@@ -442,7 +442,7 @@ const DialogImportVouchers = ({
             | PlanIds
           </p>
 
-          <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-[2rem] text-[.9rem]">
+          <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-8 text-[.9rem]">
             <input
               id="uploadCSV"
               type="file"

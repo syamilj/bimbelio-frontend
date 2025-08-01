@@ -227,7 +227,7 @@ export default function LiveClassStudentDashboard() {
               />
             </div> */}
             {/* Quick Actions for Upcoming Classes */}
-            <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+            <div className="mt-6 p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
               <div className="flex items-center gap-2 mb-3">
                 <Timer className="w-5 h-5 text-blue-600" />
                 <h3 className="text-lg font-semibold text-blue-900">
@@ -736,7 +736,7 @@ const UpcomingCard = ({ liveClass }: { liveClass: LiveClassAvailableType }) => {
           {liveClass.title}
         </h4>
         <div className="flex flex-col items-end gap-1">
-          <Badge className="status-badge text-xs bg-blue-100 text-blue-800 border-blue-300 flex-shrink-0">
+          <Badge className="status-badge text-xs bg-blue-100 text-blue-800 border-blue-300 shrink-0">
             {liveClass.status}
           </Badge>
           <div className="text-xs font-mono text-gray-500">
@@ -840,7 +840,7 @@ function LiveClassCard({
       <Card className="live-class-card hover:shadow-xl transition-all duration-300 border-0 rounded-2xl overflow-hidden group">
         <CardContent className="p-0">
           {/* Header with gradient and status */}
-          <div className="relative p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+          <div className="relative p-4 bg-linear-to-br from-blue-50 to-indigo-50">
             <div className="flex justify-between items-start mb-3">
               <Badge
                 className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm`}
@@ -873,7 +873,7 @@ function LiveClassCard({
               </h4>
               <Badge
                 variant="secondary"
-                className="text-xs font-mono bg-gray-100 text-gray-600 border-gray-300 flex-shrink-0 ml-2"
+                className="text-xs font-mono bg-gray-100 text-gray-600 border-gray-300 shrink-0 ml-2"
               >
                 #{liveClass.id.slice(-6).toUpperCase()}
               </Badge>
@@ -910,13 +910,13 @@ function LiveClassCard({
             {/* Time info */}
             <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 flex-shrink-0" />
+                <Calendar className="h-4 w-4 shrink-0" />
                 <span className="truncate">
                   {formatDateTime(liveClass.startDate)}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 flex-shrink-0" />
+                <Clock className="h-4 w-4 shrink-0" />
                 <span>{formatDuration(liveClass.duration)}</span>
               </div>
             </div>
@@ -1055,7 +1055,7 @@ function LiveClassCard({
     <Card className="hover:shadow-xl transition-all duration-500 border border-gray-100 rounded-2xl overflow-hidden cursor-pointer group bg-white hover:border-blue-200">
       <CardContent className="p-0">
         {/* Modern Header with Floating Elements */}
-        <div className="relative bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-50 p-6">
+        <div className="relative bg-linear-to-r from-slate-50 via-blue-50 to-indigo-50 p-6">
           {/* Floating Status Elements */}
           <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
             <Badge
@@ -1072,10 +1072,10 @@ function LiveClassCard({
           </div>
           <div className="flex items-start gap-4 pr-16">
             {/* Instructor Avatar - Larger and more prominent */}
-            <div className="relative flex-shrink-0">
+            <div className="relative shrink-0">
               <Avatar className="h-16 w-16 border-3 border-white shadow-lg ring-2 ring-blue-100">
                 <AvatarImage src={liveClass.Instructor.image || undefined} />
-                <AvatarFallback className="text-lg font-bold bg-gradient-to-br from-blue-400 to-indigo-500 text-white">
+                <AvatarFallback className="text-lg font-bold bg-linear-to-br from-blue-400 to-indigo-500 text-white">
                   {liveClass.Instructor.name
                     .split(' ')
                     .map((n) => n[0])
@@ -1201,7 +1201,7 @@ function LiveClassCard({
               {/* Agenda Items - Modern card */}
               {liveClass.LiveClassAgenda &&
                 liveClass.LiveClassAgenda.length > 0 && (
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+                  <div className="bg-linear-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
                     <div className="flex items-center gap-2 mb-3">
                       <div className="w-6 h-6 rounded-lg bg-blue-500 flex items-center justify-center">
                         <Target className="h-3 w-3 text-white" />
@@ -1218,7 +1218,7 @@ function LiveClassCard({
                             className="bg-white/70 rounded-lg p-3 border border-white/50"
                           >
                             <div className="flex items-start gap-3">
-                              <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                              <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                                 {agenda.order || index + 1}
                               </div>
                               <div className="flex-1 min-w-0">
@@ -1254,7 +1254,7 @@ function LiveClassCard({
               {/* Reference Items - Modern card */}
               {liveClass.LiveClassReference &&
                 liveClass.LiveClassReference.length > 0 && (
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-4 border border-emerald-200">
+                  <div className="bg-linear-to-br from-emerald-50 to-emerald-100 rounded-xl p-4 border border-emerald-200">
                     <div className="flex items-center gap-2 mb-3">
                       <div className="w-6 h-6 rounded-lg bg-emerald-500 flex items-center justify-center">
                         <BookOpen className="h-3 w-3 text-white" />
@@ -1270,7 +1270,7 @@ function LiveClassCard({
                           className="bg-white/70 rounded-lg p-3 border border-white/50"
                         >
                           <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
                               {ref.urlType === 'VIDEO' && (
                                 <span className="text-emerald-600">🎥</span>
                               )}
@@ -1367,7 +1367,7 @@ function LiveClassCard({
           {/* Plan Information - Modern design */}
           {showPlanInfo && liveClassWithAccess.userAccess && (
             <div className="mb-6">
-              <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-4 border border-orange-200">
+              <div className="bg-linear-to-r from-orange-50 to-yellow-50 rounded-xl p-4 border border-orange-200">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-6 h-6 rounded-lg bg-orange-500 flex items-center justify-center">
                     <Target className="h-3 w-3 text-white" />

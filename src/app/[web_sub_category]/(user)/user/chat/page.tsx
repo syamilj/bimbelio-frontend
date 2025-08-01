@@ -263,7 +263,7 @@ export default function AIChatPage() {
               >
                 <div className="flex items-start gap-3">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <span
@@ -352,7 +352,7 @@ export default function AIChatPage() {
                     >
                       <div className="flex items-start gap-4 flex-1">
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                           style={{ backgroundColor: `${mainColor}15` }}
                         >
                           <MessageSquare
@@ -372,7 +372,7 @@ export default function AIChatPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="flex-shrink-0 text-gray-500 hover:text-red-600"
+                        className="shrink-0 text-gray-500 hover:text-red-600"
                         onClick={(e) => {
                           e.stopPropagation();
                           deleteChat({ id: chat.id });

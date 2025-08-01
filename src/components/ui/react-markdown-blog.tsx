@@ -15,7 +15,7 @@ interface ReactMarkdownProps {
   className?: string;
 }
 
-const heading = 'text-[#3F3F3F] my-[3px] leading-normal font-[700]';
+const heading = 'text-[#3F3F3F] my-[3px] leading-normal font-bold';
 
 export default function ReactMarkdownBlog({
   value,
@@ -66,7 +66,7 @@ export default function ReactMarkdownBlog({
             return (
               <h1
                 id={slugify(`${children}`)}
-                className="text-[#3F3F3F] text-[48px] my-[3px] leading-normal font-[700]"
+                className="text-[#3F3F3F] text-[48px] my-[3px] leading-normal font-bold"
               >
                 {children}
               </h1>
@@ -76,7 +76,7 @@ export default function ReactMarkdownBlog({
             return (
               <h2
                 id={slugify(`${children}`)}
-                className="text-[#3F3F3F] text-[32px] my-[3px] leading-normal font-[700]"
+                className="text-[#3F3F3F] text-[32px] my-[3px] leading-normal font-bold"
               >
                 {children}
               </h2>
@@ -86,7 +86,7 @@ export default function ReactMarkdownBlog({
             return (
               <h3
                 id={slugify(`${children}`)}
-                className="text-[#3F3F3F] text-[20.8px] my-[3px] leading-normal font-[700]"
+                className="text-[#3F3F3F] text-[20.8px] my-[3px] leading-normal font-bold"
               >
                 {children}
               </h3>

@@ -223,7 +223,7 @@ const SubmitTryout = ({
                 {unAnswered?.length > 0 && (
                   <div className="p-4 bg-red-50 rounded-xl border border-red-200">
                     <div className="flex items-start gap-3">
-                      <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                      <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
                       <div>
                         <h4 className="font-medium text-red-800 mb-1">
                           Soal belum dijawab ({unAnswered.length})
@@ -251,7 +251,7 @@ const SubmitTryout = ({
                 {notSure?.length > 0 && (
                   <div className="p-4 bg-yellow-50 rounded-xl border border-yellow-200">
                     <div className="flex items-start gap-3">
-                      <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                      <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 shrink-0" />
                       <div>
                         <h4 className="font-medium text-yellow-800 mb-1">
                           Jawaban belum yakin ({notSure.length})
@@ -279,7 +279,7 @@ const SubmitTryout = ({
                 {completionPercentage === 100 && (
                   <div className="p-4 bg-green-50 rounded-xl border border-green-200">
                     <div className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
                       <div>
                         <h4 className="font-medium text-green-800 mb-1">
                           Semua soal sudah terjawab!
@@ -388,7 +388,7 @@ const SubmitTryout = ({
               {/* Warning Message */}
               <div className="p-4 bg-orange-50 rounded-xl border border-orange-200 mb-6">
                 <div className="flex items-start gap-3">
-                  <Clock className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                  <Clock className="w-5 h-5 text-orange-600 mt-0.5 shrink-0" />
                   <div>
                     <h4 className="font-medium text-orange-800 mb-1">
                       Perhatian!

@@ -144,7 +144,7 @@ const SubmitChat = () => {
         {/* Compact Limitation Warnings */}
         {isLimitReached && (
           <div className="mb-3 flex items-center gap-3 p-3 rounded-lg bg-red-50 border border-red-200">
-            <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
             <span className="text-sm text-red-700 flex-1">
               Limit chat tercapai
             </span>
@@ -162,7 +162,7 @@ const SubmitChat = () => {
         {hasLimitWarning && (
           <div className="mb-3 flex items-center gap-3 p-3 rounded-lg bg-orange-50 border border-orange-200">
             <Zap
-              className="w-4 h-4 flex-shrink-0"
+              className="w-4 h-4 shrink-0"
               style={{ color: mainColor }}
             />
             <span className="text-sm text-orange-700 flex-1">

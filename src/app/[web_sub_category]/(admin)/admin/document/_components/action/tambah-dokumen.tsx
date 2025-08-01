@@ -526,7 +526,7 @@ export default function TambahDokumen() {
     <>
       {showAddDocument && (
         <div
-          className="fixed left-0 top-0 z-[49] h-full w-full"
+          className="fixed left-0 top-0 z-49 h-full w-full"
           onClick={() => {
             setShowAddDocument(false);
           }}
@@ -534,14 +534,14 @@ export default function TambahDokumen() {
       )}
       <div
         id="tambah-dokumen"
-        className={`fixed top-0 z-[50] h-full w-[400px] border border-main-gray-input bg-white duration-300 ${showAddDocument ? 'right-0' : 'right-[-420px]'} overflow-y-auto`}
+        className={`fixed top-0 z-50 h-full w-[400px] border border-main-gray-input bg-white duration-300 ${showAddDocument ? 'right-0' : 'right-[-420px]'} overflow-y-auto`}
       >
         {loading && <LoadingPage />}
 
-        <div className="flex flex-col gap-[1rem] p-[2rem]">
+        <div className="flex flex-col gap-4 p-8">
           <h1 className="text-[1.2rem] font-semibold">Tambah Material</h1>
 
-          <div className="flex flex-col gap-[1rem] text-[.9rem] font-medium">
+          <div className="flex flex-col gap-4 text-[.9rem] font-medium">
             <div id="file">
               <UploadFile
                 heading="Pdf"
@@ -575,7 +575,7 @@ export default function TambahDokumen() {
                 </p>
                 <input
                   type="text"
-                  className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+                  className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
                   placeholder="Masukan judul dokumen"
                   onChange={(e) => setFileName(e.target.value)}
                   value={fileName}
@@ -588,8 +588,8 @@ export default function TambahDokumen() {
               className="flex flex-col gap-[.5rem]"
             >
               <p>Fitur</p>
-              <div className="flex w-full justify-between gap-[1rem]">
-                <div className="flex w-full justify-between gap-[1rem]">
+              <div className="flex w-full justify-between gap-4">
+                <div className="flex w-full justify-between gap-4">
                   <div
                     className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${!premium && 'border-main bg-main text-white'}`}
                     onClick={() => setPremium(false)}
@@ -597,7 +597,7 @@ export default function TambahDokumen() {
                     Free
                   </div>
                 </div>
-                <div className="flex w-full justify-between gap-[1rem]">
+                <div className="flex w-full justify-between gap-4">
                   <div
                     className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${premium && 'border-main bg-main text-white'}`}
                     onClick={() => setPremium(true)}
@@ -615,12 +615,12 @@ export default function TambahDokumen() {
               <p>Kategori</p>
               <div
                 id="row"
-                className="flex w-full justify-start gap-[1rem] overflow-y-auto pb-[.5rem]"
+                className="flex w-full justify-start gap-4 overflow-y-auto pb-[.5rem]"
               >
                 {categoryAndSubCategory?.category?.map((item: any, i: any) => (
                   <div
                     key={i}
-                    className={`w-fit shrink-0 cursor-pointer rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${category === item.id && 'border-main bg-main text-white'}`}
+                    className={`w-fit shrink-0 cursor-pointer rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${category === item.id && 'border-main bg-main text-white'}`}
                     onClick={() => {
                       setCategory(item.id);
                       setSubCategory('');
@@ -638,7 +638,7 @@ export default function TambahDokumen() {
               className="flex flex-col gap-[.5rem]"
             >
               <p>Subkategori</p>
-              <div className="flex w-full justify-between gap-[1rem]">
+              <div className="flex w-full justify-between gap-4">
                 {subCategoryData?.map((item: any, i: any) => (
                   <div
                     key={i}
@@ -692,10 +692,10 @@ export default function TambahDokumen() {
 
             <div
               id="line"
-              className="my-[0] h-[1px] w-full bg-main-gray-input"
+              className="my-[0] h-px w-full bg-main-gray-input"
             />
 
-            <div className="flex w-full justify-between gap-[1rem]">
+            <div className="flex w-full justify-between gap-4">
               <div
                 className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'doc' && 'border-main bg-main text-white'}`}
                 onClick={() => setOption('doc')}
@@ -759,7 +759,7 @@ export default function TambahDokumen() {
                   </p>
                   <input
                     type="text"
-                    className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+                    className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
                     placeholder="Masukan judul dokumen"
                     onChange={(e) => setVideoName(e.target.value)}
                     value={videoName}
@@ -770,7 +770,7 @@ export default function TambahDokumen() {
 
             <div
               id="action"
-              className="mt-[1rem] flex gap-[1rem]"
+              className="mt-4 flex gap-4"
             >
               <button
                 className="w-full rounded-[.5rem] border border-main-gray-input py-[.6rem] text-main-gray-text duration-300 hover:border-transparent hover:bg-main-hover hover:text-white"
@@ -914,7 +914,7 @@ export const UploadFile = ({
       />
 
       <div
-        className={`relative flex flex-col gap-[1rem] rounded-[1rem] border-2 border-dashed p-[1rem] transition-all duration-200 ${
+        className={`relative flex flex-col gap-4 rounded-2xl border-2 border-dashed p-4 transition-all duration-200 ${
           isDragOver
             ? 'border-main bg-main/10 scale-[1.02]'
             : 'border-main-gray-input hover:border-main/50'
@@ -925,7 +925,7 @@ export const UploadFile = ({
       >
         {/* Drag overlay indicator */}
         {isDragOver && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-[1rem] bg-main/20 backdrop-blur-sm">
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-main/20 backdrop-blur-sm">
             <div className="flex flex-col items-center gap-2 text-main">
               <div className="text-3xl">📁</div>
               <p className="font-semibold">Lepaskan file di sini</p>
@@ -995,7 +995,7 @@ export const UploadFile = ({
               </>
             ) : (
               <>
-                <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
+                <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
                   <Image
                     src={previewImage || '/placeholder.svg'}
                     alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
@@ -1010,7 +1010,7 @@ export const UploadFile = ({
                   />
                 </div>
 
-                <div className="absolute left-0 top-0 z-[5] flex h-full w-full items-center justify-center bg-[#ffffffc4] p-[1rem]">
+                <div className="absolute left-0 top-0 z-5 flex h-full w-full items-center justify-center bg-[#ffffffc4] p-4">
                   <div
                     className="flex h-full w-full items-center justify-center cursor-pointer"
                     onClick={() => {
@@ -1059,7 +1059,7 @@ const InputText = ({
       </p>
       <input
         type="text"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}
@@ -1117,13 +1117,13 @@ const InputDateAndTime = ({
       </p>
       <input
         type="date"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         onChange={(e) => setDate(e.target.value)}
         value={date ? date : ''}
       />
       <input
         type="time"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         onChange={(e) => setTime(e.target.value)}
         value={time ? time : ''}
       />
@@ -1151,7 +1151,7 @@ const InputTextarea = ({
         {heading} <span className="text-main-gray-text">(Try-Out)</span>
       </p>
       <textarea
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}

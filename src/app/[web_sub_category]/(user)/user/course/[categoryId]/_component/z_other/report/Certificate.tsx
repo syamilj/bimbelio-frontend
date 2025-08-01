@@ -20,11 +20,11 @@ export default function Certificate({
   });
 
   const aspectClass =
-    aspectRatio === '9-16' ? 'aspect-[9/16]' : 'aspect-[16/9]';
+    aspectRatio === '9-16' ? 'aspect-9/16' : 'aspect-video';
 
   return (
     <div
-      className={`w-full ${aspectClass} relative overflow-hidden bg-gradient-to-br from-blue-50 to-white`}
+      className={`w-full ${aspectClass} relative overflow-hidden bg-linear-to-br from-blue-50 to-white`}
     >
       {/* Background Pattern */}
       <Image
@@ -40,7 +40,7 @@ export default function Certificate({
           {/* Header */}
 
           {/* Main Content */}
-          <div className="text-center space-y-2 flex-grow flex flex-col justify-center">
+          <div className="text-center space-y-2 grow flex flex-col justify-center">
             <div className="w-full text-center">
               <div className="relative w-full h-12 mb-4">
                 <Image
@@ -55,7 +55,7 @@ export default function Certificate({
             <h2 className="text-xl font-bold text-blue-600 mb-2">
               Sertifikat Penyelesaian
             </h2>
-            <div className="w-1/3 h-1 bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 rounded-full mx-auto" />
+            <div className="w-1/3 h-1 bg-linear-to-r from-blue-400 via-blue-600 to-blue-400 rounded-full mx-auto" />
             <p className="text-LG text-gray-600">Diberikan kepada</p>
             <p className="text-xl font-bold text-blue-700 relative inline-block">
               {name}
@@ -91,7 +91,7 @@ export default function Certificate({
                 Terverifikasi
               </p>
             </div>
-            <div className="w-full h-1 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 rounded-full" />
+            <div className="w-full h-1 bg-linear-to-r from-blue-200 via-blue-400 to-blue-200 rounded-full" />
           </div>
         </CardContent>
       </Card>

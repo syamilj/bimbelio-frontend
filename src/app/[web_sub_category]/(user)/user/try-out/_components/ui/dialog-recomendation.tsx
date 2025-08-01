@@ -163,7 +163,7 @@ export default function DialogRecomendation({
           <div className="space-y-4 mb-6">
             <h1 className="text-2xl lg:text-4xl font-bold leading-tight">
               <span
-                className="bg-gradient-to-r bg-clip-text text-transparent"
+                className="bg-linear-to-r bg-clip-text text-transparent"
                 style={{
                   backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
                 }}

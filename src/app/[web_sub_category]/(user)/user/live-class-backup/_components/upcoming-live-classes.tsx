@@ -79,7 +79,7 @@ export function UpcomingLiveClasses({
               className="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
             >
               {/* Urgency Indicator */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <div
                   className={`w-3 h-3 rounded-full ${getUrgencyColor(new Date(liveClass.startDate))}`}
                 />
@@ -137,7 +137,7 @@ export function UpcomingLiveClasses({
               </div>
 
               {/* Action Button */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <Button
                   variant="outline"
                   size="sm"

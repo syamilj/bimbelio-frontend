@@ -60,9 +60,9 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
           {/* Main Content */}
           <main
             className={cn(
-              'py-[6rem] min-h-screen transition-all duration-300',
-              !minimizeSidebar ? 'md:pl-[21rem]' : 'md:pl-[8rem]',
-              'pr-[3rem]',
+              'py-24 min-h-screen transition-all duration-300',
+              !minimizeSidebar ? 'md:pl-84' : 'md:pl-32',
+              'pr-12',
             )}
           >
             {children}

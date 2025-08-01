@@ -142,7 +142,7 @@ export default function TutorDetail() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-col md:flex-row gap-6">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <Avatar className="h-24 w-24">
                     <AvatarImage
                       className="object-contain w-full h-full"

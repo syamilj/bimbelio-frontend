@@ -29,11 +29,11 @@ export default function PaymentPrediction({
       >
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent
-          className="sm:max-w-[425px] w-[95vw] p-0 rounded-[1.5rem]"
+          className="sm:max-w-[425px] w-[95vw] p-0 rounded-3xl"
           hideClose
         >
-          <div className="overflow-hidden rounded-[1.5rem] bg-white">
-            <div className="flex items-center justify-between bg-main p-[1.5rem]">
+          <div className="overflow-hidden rounded-3xl bg-white">
+            <div className="flex items-center justify-between bg-main p-6">
               <div className="flex items-center gap-[.5rem] text-white">
                 <p>Prediction</p>
                 <IconCrown className="text-main-yellow" />
@@ -70,9 +70,9 @@ const Step1 = ({ setStep }: { setStep: Dispatch<SetStateAction<number>> }) => {
   );
 
   return (
-    <div className="flex flex-col gap-[2rem] p-[1.5rem]">
+    <div className="flex flex-col gap-8 p-6">
       <p className="">Akses lengkap seluruh detail prediksi kelulusan Anda:</p>
-      <div className="mt-[-1rem] grid grid-cols-5 gap-y-2 text-[.9rem]">
+      <div className="-mt-4 grid grid-cols-5 gap-y-2 text-[.9rem]">
         <p className="col-span-2 text-main-gray-text">Jenis Prediksi</p>
         <p className="col-span-3">: UTBK + SIMAK UI</p>
         <p className="col-span-2 text-main-gray-text">Universitas</p>
@@ -85,7 +85,7 @@ const Step1 = ({ setStep }: { setStep: Dispatch<SetStateAction<number>> }) => {
 
       <button
         className={cn(
-          'flex items-center justify-center rounded-[1rem] bg-main py-[1rem] text-white duration-300 hover:bg-main/85 active:bg-main',
+          'flex items-center justify-center rounded-2xl bg-main py-4 text-white duration-300 hover:bg-main/85 active:bg-main',
           // loading && 'cursor-pointer hover:bg-main/85 active:bg-main',
         )}
         onClick={() => {
@@ -147,7 +147,7 @@ const Step2 = ({
   };
 
   return (
-    <div className="flex flex-col gap-[2rem] p-[1.5rem]">
+    <div className="flex flex-col gap-8 p-6">
       <p className="text-sm text-muted-foreground text-center">
         Harap isi nomor teleponmu untuk melanjutkan ke laman pembayaran.
       </p>

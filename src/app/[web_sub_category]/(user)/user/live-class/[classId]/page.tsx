@@ -325,7 +325,7 @@ export default function LiveClassStudentDetail() {
                             className="border rounded-lg p-4"
                           >
                             <div className="flex items-start gap-3">
-                              <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                              <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center shrink-0 mt-1">
                                 <span className="text-xs font-medium text-blue-600">
                                   {index + 1}
                                 </span>
@@ -374,11 +374,11 @@ export default function LiveClassStudentDetail() {
                                 href={`/${website_sub_category_id}/user/course/${liveClass.Category?.id || 'unknown'}?sub=${ref.subChapterId}`}
                                 className="block w-full"
                               >
-                                <div className="border rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:border-blue-300 bg-gradient-to-r from-blue-50 to-indigo-50 cursor-pointer group-hover:scale-[1.02]">
+                                <div className="border rounded-xl p-4 hover:shadow-lg transition-all duration-300 hover:border-blue-300 bg-linear-to-r from-blue-50 to-indigo-50 cursor-pointer group-hover:scale-[1.02]">
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-start gap-3 flex-1">
                                       {/* Course icon */}
-                                      <div className="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center flex-shrink-0">
+                                      <div className="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center shrink-0">
                                         <BookOpen className="h-5 w-5 text-white" />
                                       </div>
 
@@ -425,11 +425,11 @@ export default function LiveClassStudentDetail() {
                               </Link>
                             ) : (
                               /* External Link Reference Card */
-                              <div className="border rounded-xl p-4 hover:shadow-md transition-all duration-300 bg-gradient-to-r from-gray-50 to-slate-50">
+                              <div className="border rounded-xl p-4 hover:shadow-md transition-all duration-300 bg-linear-to-r from-gray-50 to-slate-50">
                                 <div className="flex items-start justify-between">
                                   <div className="flex items-start gap-3 flex-1">
                                     {/* Icon based on url type */}
-                                    <div className="w-10 h-10 rounded-lg bg-gray-500 flex items-center justify-center flex-shrink-0">
+                                    <div className="w-10 h-10 rounded-lg bg-gray-500 flex items-center justify-center shrink-0">
                                       {ref.urlType === 'VIDEO' && (
                                         <Video className="h-5 w-5 text-white" />
                                       )}
@@ -488,7 +488,7 @@ export default function LiveClassStudentDetail() {
                                       size="sm"
                                       variant="outline"
                                       asChild
-                                      className="flex-shrink-0"
+                                      className="shrink-0"
                                     >
                                       <Link
                                         href={ref.url}
@@ -543,7 +543,7 @@ export default function LiveClassStudentDetail() {
                 {/* {(liveClass.canJoin || liveClass.link) && (
                   <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-start gap-2">
-                      <Mail className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <Mail className="h-4 w-4 text-blue-600 mt-0.5 shrink-0" />
                       <div className="text-sm">
                         <p className="font-medium text-blue-900 mb-1">
                           Siap bergabung ke Meeting?
@@ -677,7 +677,7 @@ function StatsCard({
           {title}
         </CardTitle>
         <div
-          className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-gradient-to-br ${gradient} text-white shadow-sm`}
+          className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-linear-to-br ${gradient} text-white shadow-sm`}
         >
           <Icon className="w-4 h-4 md:w-5 md:h-5" />
         </div>

@@ -105,14 +105,14 @@ export default function HeaderCourse({
                 value="item-1"
                 className="border-none"
               >
-                <AccordionTrigger className="flex cursor-pointer items-start gap-[.5rem] rounded-[.5rem] px-[1rem] py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light truncate">
+                <AccordionTrigger className="flex cursor-pointer items-start gap-[.5rem] rounded-[.5rem] px-4 py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light truncate">
                   {chapter.title}
                 </AccordionTrigger>
                 <AccordionContent className="pb-0">
                   <div className="ml-[.5rem] flex flex-col gap-[.5rem]">
                     {chapter.CourseSubChapter.map((sChapter, sIndex) => (
                       <div className="relative flex items-center">
-                        <div className="absolute right-4 z-[2]">
+                        <div className="absolute right-4 z-2">
                           {sChapter.premium && (
                             <div
                               className="flex items-center gap-1 bg-main text-xs text-white px-3 p-1 rounded-3xl cursor-pointer hover:bg-main/90"
@@ -223,7 +223,7 @@ export default function HeaderCourse({
           <Link
             href={`/${website_sub_category_id_params}/user/course/${categoryId}?sub=report`}
             className={cn(
-              'flex cursor-pointer items-center gap-[.5rem] text-main rounded-[.5rem] px-[1rem] py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light',
+              'flex cursor-pointer items-center gap-[.5rem] text-main rounded-[.5rem] px-4 py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light',
             )}
             onClick={() => {
               setShowList(false);
@@ -274,7 +274,7 @@ export default function HeaderCourse({
       )}
       <header
         className={cn(
-          'flex w-full items-center justify-between md:justify-center border-b py-4 px-4 bg-white md:bg-white z-[100]',
+          'flex w-full items-center justify-between md:justify-center border-b py-4 px-4 bg-white md:bg-white z-100',
           className,
         )}
       >
@@ -295,7 +295,7 @@ export default function HeaderCourse({
             <AnimatedGradientText>Limitasi</AnimatedGradientText>
           </p> */}
         </div>
-        <div className="flex items-center justify-center gap-[1rem] md:hidden">
+        <div className="flex items-center justify-center gap-4 md:hidden">
           {/* Chat limit */}
           <div className="flex items-center gap-[.5rem]">
             <IconChat
@@ -444,7 +444,7 @@ export default function HeaderCourse({
 
           <motion.div
             className={cn(
-              'absolute left-0 top-[calc(100%)] z-[102] w-[400px] h-[700px] border border-main-gray-input bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-xl mt-2',
+              'absolute left-0 top-[calc(100%)] z-102 w-[400px] h-[700px] border border-main-gray-input bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-xl mt-2',
               !showList && 'w-0 h-0 p-0',
             )}
           >
@@ -456,7 +456,7 @@ export default function HeaderCourse({
         <motion.div
           id="10"
           className={cn(
-            'bg-[#ffff] mr-4 ml-4 border p-2 rounded-[3rem] md:w-full max-w-[990px] justify-center items-center gap-4 px-4 sticky z-[120] top-4 md:relative flex md:hidden mt-4',
+            'bg-[#ffff] mr-4 ml-4 border p-2 rounded-[3rem] md:w-full max-w-[990px] justify-center items-center gap-4 px-4 sticky z-120 top-4 md:relative flex md:hidden mt-4',
           )}
           initial={{ opacity: 0, x: 0 }}
           animate={{ opacity: 1, x: 0 }}
@@ -547,7 +547,7 @@ export default function HeaderCourse({
 
           <motion.div
             className={cn(
-              'absolute left-4 top-[calc(100%)] mt-2 z-[102] w-[300px] h-[500px] border border-main-gray-input bg-white p-2 shadow-sm duration-100 overflow-y-auto overflow-x-hidden rounded-xl',
+              'absolute left-4 top-[calc(100%)] mt-2 z-102 w-[300px] h-[500px] border border-main-gray-input bg-white p-2 shadow-sm duration-100 overflow-y-auto overflow-x-hidden rounded-xl',
               !showList && 'w-0 h-0 p-0',
             )}
           >
@@ -726,9 +726,9 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                   value="item-1"
 //                   className="border-none"
 //                 >
-//                   <AccordionTrigger className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold duration-200 hover:bg-blue-50 [&[data-state=open]]:bg-blue-50 [&[data-state=open]]:text-blue-700 [&>svg]:w-4 [&>svg]:h-4">
+//                   <AccordionTrigger className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold duration-200 hover:bg-blue-50 data-[state=open]:bg-blue-50 data-[state=open]:text-blue-700 [&>svg]:w-4 [&>svg]:h-4">
 //                     <div className="flex items-center gap-3 flex-1 min-w-0">
-//                       <div className="w-6 h-6 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+//                       <div className="w-6 h-6 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
 //                         <span className="text-xs font-bold text-blue-600">
 //                           {cIndex + 1}
 //                         </span>
@@ -758,7 +758,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                             }}
 //                           >
 //                             {/* Completion Status */}
-//                             <div className="flex-shrink-0">
+//                             <div className="shrink-0">
 //                               {sChapter.CourseProgress.length > 0 ? (
 //                                 <div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center">
 //                                   <IconCheckList
@@ -779,7 +779,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                                 </div>
 //                                 {/* Premium Badge */}
 //                                 {sChapter.premium && (
-//                                   <div className="flex items-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
+//                                   <div className="flex items-center gap-1 bg-linear-to-r from-amber-400 to-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
 //                                     <span className="font-medium">Pro</span>
 //                                     <GemIcon className="w-2.5 h-2.5" />
 //                                   </div>
@@ -1061,7 +1061,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //           <div className="flex items-center justify-between">
 //             <div className="flex items-center gap-3 overflow-x-auto">
 //               {/* Chat Limit */}
-//               <div className="flex items-center gap-1.5 flex-shrink-0">
+//               <div className="flex items-center gap-1.5 shrink-0">
 //                 <div className="p-1.5 rounded-lg bg-blue-50">
 //                   <IconChat
 //                     w={14}
@@ -1078,7 +1078,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //               </div>
 
 //               {/* Notes Limit */}
-//               <div className="flex items-center gap-1.5 flex-shrink-0">
+//               <div className="flex items-center gap-1.5 shrink-0">
 //                 <div className="p-1.5 rounded-lg bg-green-50">
 //                   <IconPen
 //                     w={14}
@@ -1095,7 +1095,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //               </div>
 
 //               {/* Quiz Limit */}
-//               <div className="flex items-center gap-1.5 flex-shrink-0">
+//               <div className="flex items-center gap-1.5 shrink-0">
 //                 <div className="p-1.5 rounded-lg bg-purple-50">
 //                   <IconTabsQuiz
 //                     w={14}
@@ -1112,7 +1112,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //               </div>
 
 //               {/* Vision Limit */}
-//               <div className="flex items-center gap-1.5 flex-shrink-0">
+//               <div className="flex items-center gap-1.5 shrink-0">
 //                 <div className="p-1.5 rounded-lg bg-orange-50">
 //                   <IconVision
 //                     w={14}
@@ -1130,10 +1130,10 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //             </div>
 
 //             {/* Premium Status */}
-//             <div className="ml-3 flex-shrink-0">
+//             <div className="ml-3 shrink-0">
 //               {!userCourseFeatures ? (
 //                 <ButtonPayment>
-//                   <div className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full">
+//                   <div className="flex items-center gap-1 px-3 py-1.5 bg-linear-to-r from-amber-400 to-orange-500 rounded-full">
 //                     <IconCrown
 //                       w={12}
 //                       className="text-white"
@@ -1142,7 +1142,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                   </div>
 //                 </ButtonPayment>
 //               ) : (
-//                 <div className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full">
+//                 <div className="flex items-center gap-1 px-3 py-1.5 bg-linear-to-r from-green-400 to-emerald-500 rounded-full">
 //                   <IconCrown
 //                     w={12}
 //                     className="text-white"

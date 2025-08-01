@@ -47,7 +47,7 @@ export default function Terbaru() {
                 Terbaru
               </h2>
               <Zap className="w-6 h-6 text-blue-500" />
-              <div className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full">
+              <div className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
                 Baru Ditambahkan
               </div>
             </div>
@@ -88,7 +88,7 @@ export default function Terbaru() {
               key={i}
               className="relative"
             >
-              <Skeleton className="h-[200px] rounded-2xl bg-gradient-to-br from-blue-100 to-cyan-100" />
+              <Skeleton className="h-[200px] rounded-2xl bg-linear-to-br from-blue-100 to-cyan-100" />
               <div
                 className="absolute top-3 left-3 w-6 h-6 rounded-lg animate-pulse"
                 style={{ backgroundColor: `${mainColor}40` }}

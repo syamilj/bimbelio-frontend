@@ -117,7 +117,7 @@ export const RenderLimitationTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg">
+      <div className="text-center p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-lg">
         <TrendingUp
           size={24}
           className="mx-auto mb-2 text-blue-600"
@@ -137,7 +137,7 @@ export const RenderLimitationTab = () => {
       </div>
 
       {hasUnlimited && (
-        <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+        <div className="p-3 bg-linear-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
           <div className="flex items-center gap-2">
             <Infinity
               size={16}

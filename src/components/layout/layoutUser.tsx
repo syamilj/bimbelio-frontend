@@ -160,7 +160,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
     return (
       <div className="flex items-center gap-2 px-2 lg:px-3 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group min-w-0">
-        <div className="flex items-center justify-center flex-shrink-0">
+        <div className="flex items-center justify-center shrink-0">
           <Icon
             className="w-3 h-3 lg:w-4 lg:h-4"
             style={{ color: color || mainColor }}
@@ -247,7 +247,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     <Suspense>
       <ProviderCheckSubscription>
         <ProviderCheckLimitation>
-          <div className="h-full min-h-[100vh] overflow-x-hidden bg-gray-50">
+          <div className="h-full min-h-screen overflow-x-hidden bg-gray-50">
             {/* MODERN HEADER */}
             {!inWorkspace && (
               <header
@@ -263,7 +263,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="md:hidden w-9 h-9 rounded-xl flex-shrink-0 hover:bg-gray-100 border border-gray-200"
+                      className="md:hidden w-9 h-9 rounded-xl shrink-0 hover:bg-gray-100 border border-gray-200"
                       onClick={() => setSidebarMobile(true)}
                     >
                       <Menu className="w-5 h-5 text-gray-700" />
@@ -300,7 +300,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                             <div
                               key={index}
                               className={cn(
-                                'relative flex flex-col items-center justify-center px-2 py-1 rounded-2xl flex-shrink-0 min-w-[55px] transition-all duration-200',
+                                'relative flex flex-col items-center justify-center px-2 py-1 rounded-2xl shrink-0 min-w-[55px] transition-all duration-200',
                                 isEmpty
                                   ? 'bg-red-50 border border-red-200 shadow-sm'
                                   : isLow
@@ -353,7 +353,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                             <DropdownMenuTrigger asChild>
                               <Button
                                 variant="ghost"
-                                className="flex items-center justify-center w-12 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex-shrink-0 transition-colors"
+                                className="flex items-center justify-center w-12 h-8 bg-gray-100 hover:bg-gray-200 rounded-full shrink-0 transition-colors"
                               >
                                 <span className="text-xs font-medium text-gray-600">
                                   +{limitations.length - 3}
@@ -408,7 +408,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="w-9 h-9 rounded-xl flex-shrink-0 border border-gray-200"
+                      className="w-9 h-9 rounded-xl shrink-0 border border-gray-200"
                       onClick={() => setShowMobileSearch(!showMobileSearch)}
                     >
                       <SearchIcon className="w-5 h-5 text-gray-600" />
@@ -416,7 +416,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                   )}
 
                   {/* RIGHT SECTION */}
-                  <div className="flex items-center gap-1 md:gap-3 flex-shrink-0">
+                  <div className="flex items-center gap-1 md:gap-3 shrink-0">
                     {/* Desktop Limitations - More Compact */}
                     {!isMobile && (
                       <div className="hidden xl:flex items-center gap-1">
@@ -466,7 +466,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          className="flex items-center gap-2 h-9 px-2 rounded-xl hover:bg-gray-100 transition-colors flex-shrink-0"
+                          className="flex items-center gap-2 h-9 px-2 rounded-xl hover:bg-gray-100 transition-colors shrink-0"
                         >
                           <Avatar className="w-6 h-6 lg:w-7 lg:h-7 ring-2 ring-offset-1 ring-gray-200">
                             <AvatarImage
@@ -604,8 +604,8 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
               <div
                 className={`fixed top-0 block h-full overflow-hidden duration-200 md:hidden ${
                   sidebarMobile
-                    ? 'left-0 w-[300px] z-[10000]'
-                    : 'left-[-310px] w-[300px] z-[10000]'
+                    ? 'left-0 w-[300px] z-10000'
+                    : 'left-[-310px] w-[300px] z-10000'
                 }`}
               >
                 <Sidebar category={category} />
@@ -614,7 +614,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
             {/* Overlay Mobile */}
             {sidebarMobile && (
               <div
-                className="fixed left-0 top-0 z-[9999] h-full w-full bg-[#00000063] backdrop-blur-[5px] duration-100 md:hidden"
+                className="fixed left-0 top-0 z-9999 h-full w-full bg-[#00000063] backdrop-blur-[5px] duration-100 md:hidden"
                 onClick={() => setSidebarMobile(false)}
               />
             )}
@@ -628,7 +628,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                   'fixed left-0 top-0 h-full w-full',
                 // not in workspace => push down margin
                 !inWorkspace &&
-                  'mt-[80px] pt-[1rem] md:pl-[calc(75px+3rem)] md:pr-10 md:pt-12  min-h-[calc(100vh-80px)]',
+                  'mt-[80px] pt-4 md:pl-[calc(75px+3rem)] md:pr-10 md:pt-12  min-h-[calc(100vh-80px)]',
               )}
             >
               {children}

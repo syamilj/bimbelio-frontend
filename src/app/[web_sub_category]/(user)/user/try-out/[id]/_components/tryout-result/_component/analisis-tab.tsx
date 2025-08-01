@@ -209,7 +209,7 @@ export function AnalisisTab({
                         dari {unlockTryout ? majorTotalApplicants : '-'} peserta
                       </p>
                     </div>
-                    <div className="ml-[-1rem] flex flex-col gap-2 border-l pl-4">
+                    <div className="-ml-4 flex flex-col gap-2 border-l pl-4">
                       <h1 className="text-xl font-bold">
                         {unlockTryout ? majorPercentage : '-'}%
                       </h1>
@@ -278,7 +278,7 @@ export function AnalisisTab({
                         dari {unlockTryout ? majorTotalApplicants : '-'} peserta
                       </p>
                     </div>
-                    <div className="ml-[-1rem] flex flex-col gap-2 border-l pl-4">
+                    <div className="-ml-4 flex flex-col gap-2 border-l pl-4">
                       <h1 className="text-xl font-bold">
                         {unlockTryout ? majorPercentage : '-'}%
                       </h1>
@@ -520,7 +520,7 @@ export function AnalisisTab({
                         Dari {unlockTryout ? totalParticipants : '---'} peserta
                       </p>
                     </div>
-                    <div className="ml-[-1rem] flex flex-col border-l-2 border-green-400 pl-4">
+                    <div className="-ml-4 flex flex-col border-l-2 border-green-400 pl-4">
                       <div className="flex flex-col gap-2 pb-0">
                         <div className="text-2xl font-bold text-green-700">
                           Top{' '}
@@ -558,7 +558,7 @@ export function AnalisisTab({
                         Ranking Universitas
                       </p>
                     </div>
-                    <div className="ml-[-1rem] flex flex-col border-l-2 border-yellow-400 pl-4">
+                    <div className="-ml-4 flex flex-col border-l-2 border-yellow-400 pl-4">
                       <div className="flex flex-col gap-2 pb-0">
                         <div className="text-2xl font-bold text-yellow-700">
                           {unlockTryout

@@ -198,7 +198,7 @@ function LearningPathCard({
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           {/* Enhanced Step Number */}
-          <div className="relative flex-shrink-0">
+          <div className="relative shrink-0">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg text-white font-bold text-xl group-hover:scale-110 transition-all duration-300 relative overflow-hidden"
               style={{
@@ -207,7 +207,7 @@ function LearningPathCard({
             >
               <span className="relative z-10">{number}</span>
               {/* Shine effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12 group-hover:animate-shimmer" />
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500 -skew-x-12 group-hover:animate-shimmer" />
             </div>
 
             {/* Pulse ring */}

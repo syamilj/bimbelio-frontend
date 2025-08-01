@@ -23,7 +23,7 @@ export default function LeftComponent({ doc }: Props) {
     <div className="h-full flex flex-col">
       {/* Mobile Workspace Header */}
       {mobileScreen === 'minimize' && (
-        <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-200 flex-shrink-0">
+        <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-200 shrink-0">
           <button
             onClick={() => setSidebarMobile(true)}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

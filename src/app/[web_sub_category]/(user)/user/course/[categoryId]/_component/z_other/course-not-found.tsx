@@ -180,13 +180,13 @@ export default function CourseNotFound() {
                           )}
                         >
                           {/* Shimmer effect on hover */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
+                          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
 
                           <CardHeader className="flex items-center space-y-0 pb-3 relative z-10">
                             <div
                               className={cn(
                                 'w-14 h-14 rounded-xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110',
-                                `bg-gradient-to-br ${action.gradient}`,
+                                `bg-linear-to-br ${action.gradient}`,
                               )}
                             >
                               <div className="text-white">{action.icon}</div>

@@ -169,7 +169,7 @@ export function DialogPayment({
         classOverlay="z-[9999999999999999]"
         className="sm:max-w-6xl w-[95vw] max-h-[90vh] p-0"
       >
-        <div className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-8">
+        <div className="bg-linear-to-br from-blue-50 via-white to-indigo-50 p-8">
           <DialogHeader className="text-center mb-8">
             <DialogTitle className="text-3xl font-bold text-main-default">
               Konfirmasi Pembayaran
@@ -220,7 +220,7 @@ export function DialogPayment({
                       required
                     />
                     <div className="flex items-start">
-                      <div className="h-2 w-2 bg-blue-400 rounded-full mt-2 mr-2 flex-shrink-0"></div>
+                      <div className="h-2 w-2 bg-blue-400 rounded-full mt-2 mr-2 shrink-0"></div>
                       <p className="text-sm text-gray-500 leading-relaxed">
                         Nomor teleponmu dibutuhkan untuk menghubungi kamu jika
                         terdapat kendala

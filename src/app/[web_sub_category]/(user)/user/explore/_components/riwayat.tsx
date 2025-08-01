@@ -65,7 +65,7 @@ export default function Riwayat() {
       {/* Section Header */}
       <div className="relative">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
             <History className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
@@ -74,7 +74,7 @@ export default function Riwayat() {
                 Riwayat Terakhir
               </h2>
               <RotateCcw className="w-6 h-6 text-purple-500" />
-              <div className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium rounded-full">
+              <div className="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">
                 Lanjutkan
               </div>
             </div>
@@ -85,7 +85,7 @@ export default function Riwayat() {
         </div>
 
         {/* Decorative gradient line */}
-        <div className="absolute left-6 top-14 w-0.5 h-8 rounded-full bg-gradient-to-b from-purple-500 to-indigo-600 opacity-20" />
+        <div className="absolute left-6 top-14 w-0.5 h-8 rounded-full bg-linear-to-b from-purple-500 to-indigo-600 opacity-20" />
       </div>
 
       {/* Content */}
@@ -112,8 +112,8 @@ export default function Riwayat() {
               key={i}
               className="relative"
             >
-              <Skeleton className="h-[200px] rounded-2xl bg-gradient-to-br from-purple-100 to-indigo-100" />
-              <div className="absolute top-3 left-3 w-5 h-5 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-500 animate-pulse" />
+              <Skeleton className="h-[200px] rounded-2xl bg-linear-to-br from-purple-100 to-indigo-100" />
+              <div className="absolute top-3 left-3 w-5 h-5 rounded-lg bg-linear-to-br from-purple-400 to-indigo-500 animate-pulse" />
               <div className="absolute bottom-3 right-3 w-2 h-2 rounded-full bg-purple-500 animate-ping" />
             </div>
           ))}

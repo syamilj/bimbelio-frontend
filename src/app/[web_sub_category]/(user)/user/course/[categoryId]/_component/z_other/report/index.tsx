@@ -142,7 +142,7 @@ export default function CourseReport() {
             config={{
               score: {
                 label: 'Score',
-                color: 'hsl(165 60% 38%)',
+                color: 'oklch(0.696 0.17 162.48)',
               },
             }}
             className="h-[300px] w-full min-w-[500px]"
@@ -169,17 +169,17 @@ export default function CourseReport() {
                 <Line
                   type="monotone"
                   dataKey="score"
-                  stroke="hsl(165 60% 38%)"
+                  stroke="oklch(0.696 0.17 162.48)"
                   strokeWidth={2}
                   dot={{
                     r: 4,
-                    fill: 'hsl(165 60% 38%)',
+                    fill: 'oklch(0.696 0.17 162.48)',
                     strokeWidth: 2,
-                    stroke: 'hsl(165 60% 38%)',
+                    stroke: 'oklch(0.696 0.17 162.48)',
                   }}
                   label={{
                     position: 'top',
-                    fill: 'hsl(165 60% 38%)',
+                    fill: 'oklch(0.696 0.17 162.48)',
                     fontSize: 12,
                   }}
                 />

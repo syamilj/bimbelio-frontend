@@ -87,24 +87,24 @@ const ReportBug = ({
 
   if (isReportBugOpen) {
     return (
-      <div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-black bg-opacity-50">
+      <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-black bg-opacity-50">
         <form
-          className="mx-[1rem] w-full max-w-[500px] rounded-[2rem] bg-white p-[3rem]"
+          className="mx-4 w-full max-w-[500px] rounded-4xl bg-white p-12"
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
           }}
         >
-          <h1 className="mb-[1rem] text-center text-[1.1rem] font-medium">
+          <h1 className="mb-4 text-center text-[1.1rem] font-medium">
             Laporkan Kendala
           </h1>
-          <div className="flex flex-col gap-[1rem]">
+          <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-[.5rem] text-[.9rem]">
               <p>
                 Kategori kendala<span className="text-red-600">*</span>
               </p>
               <select
-                className="rounded-[.8rem] border border-main-gray-input px-[1rem] py-[.8rem] text-main-gray-text outline-none"
+                className="rounded-[.8rem] border border-main-gray-input px-4 py-[.8rem] text-main-gray-text outline-none"
                 required
                 onChange={(e) => setCategory(e.target.value)}
                 value={category}
@@ -122,7 +122,7 @@ const ReportBug = ({
               </p>
               <input
                 type="text"
-                className="rounded-[.8rem] border border-main-gray-input px-[1rem] py-[.8rem] outline-none"
+                className="rounded-[.8rem] border border-main-gray-input px-4 py-[.8rem] outline-none"
                 placeholder="Jelaskan kendala yang dialami..."
                 required
                 value={detail}
@@ -141,11 +141,11 @@ const ReportBug = ({
               />
             </div>
 
-            <div className="flex h-[50px] w-full items-center justify-center gap-[1rem]">
+            <div className="flex h-[50px] w-full items-center justify-center gap-4">
               {!loading ? (
                 <>
                   <div
-                    className="flex h-full w-full cursor-pointer items-center justify-center rounded-[.8rem] bg-transparent px-[1rem] text-main-gray-text duration-300 md:hover:text-black"
+                    className="flex h-full w-full cursor-pointer items-center justify-center rounded-[.8rem] bg-transparent px-4 text-main-gray-text duration-300 md:hover:text-black"
                     onClick={() => {
                       setIsReportBugOpen(false);
                     }}
@@ -154,7 +154,7 @@ const ReportBug = ({
                   </div>
                   <button
                     type="submit"
-                    className="h-full w-full rounded-[.8rem] bg-main px-[1rem] text-white duration-300 hover:bg-main/85"
+                    className="h-full w-full rounded-[.8rem] bg-main px-4 text-white duration-300 hover:bg-main/85"
                   >
                     Kirim laporan
                   </button>
@@ -201,7 +201,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
         }}
         className="absolute right-0 top-0 h-0 w-0"
       />
-      <div className="relative flex flex-col gap-[1rem] rounded-[1rem] border-2 border-dashed border-main-gray-input p-[1rem]">
+      <div className="relative flex flex-col gap-4 rounded-2xl border-2 border-dashed border-main-gray-input p-4">
         {!previewImage ? (
           <>
             <div className="flex flex-col items-center gap-[.5rem] text-center">
@@ -226,7 +226,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
           </>
         ) : (
           <>
-            <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
+            <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
               <Image
                 src={previewImage}
                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
@@ -240,7 +240,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
                 }}
               />
             </div>
-            <div className="absolute left-0 top-0 z-[5] flex h-full w-full items-center justify-center bg-[#ffffffc4] p-[1rem]">
+            <div className="absolute left-0 top-0 z-5 flex h-full w-full items-center justify-center bg-[#ffffffc4] p-4">
               <div
                 className="flex h-full w-full items-center justify-center"
                 onClick={() => {

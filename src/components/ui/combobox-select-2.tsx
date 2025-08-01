@@ -66,7 +66,7 @@ const ComboboxSelect2 = ({
             aria-expanded={open}
             disabled={disabled}
             className={cn(
-              'w-full justify-between rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-left text-[.9rem] font-normal',
+              'w-full justify-between rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-left text-[.9rem] font-normal',
               !value && 'text-main-gray-disabled',
               disabled && 'opacity-50 cursor-not-allowed',
               className,
@@ -78,7 +78,7 @@ const ComboboxSelect2 = ({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+        <PopoverContent className="w-(--radix-popover-trigger-width) p-0">
           <Command>
             {regularInput ? (
               <Input
@@ -111,7 +111,7 @@ const ComboboxSelect2 = ({
                     <div className="w-full text-left">{option.label}</div>
                     <Check
                       className={cn(
-                        'ml-auto h-4 w-4 flex-shrink-0',
+                        'ml-auto h-4 w-4 shrink-0',
                         value?.value === option.value
                           ? 'opacity-100'
                           : 'opacity-0',

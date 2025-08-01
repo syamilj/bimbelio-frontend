@@ -175,7 +175,7 @@ const Card: React.FC<CardProps> = ({
           {/* Shortcut Badge */}
           <div
             className={cn(
-              'flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center font-bold text-sm md:text-base transition-all duration-300',
+              'shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center font-bold text-sm md:text-base transition-all duration-300',
               'shadow-sm group-hover:shadow-md',
               selected ? 'text-white' : 'text-gray-600 bg-gray-100',
             )}
@@ -207,7 +207,7 @@ const Card: React.FC<CardProps> = ({
           </div>
 
           {/* Status & Selection Indicator */}
-          <div className="flex-shrink-0 flex items-center gap-2">
+          <div className="shrink-0 flex items-center gap-2">
             {/* Status Icon */}
             {status && (
               <div className="flex items-center justify-center">

@@ -154,7 +154,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
   ];
 
   return (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="w-full max-w-4xl h-full max-h-[90vh] m-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
         <div
@@ -557,7 +557,7 @@ const Plans = () => {
   const role = session?.user.role;
   const tier = session?.user.tier;
   return (
-    <div className="flex flex-col gap-[1.5rem] rounded-[1.5rem] bg-bg-layout p-[1rem]">
+    <div className="flex flex-col gap-6 rounded-3xl bg-bg-layout p-4">
       <div
         id="heading"
         className="flex flex-col"
@@ -569,7 +569,7 @@ const Plans = () => {
       </div>
       <div
         id="info"
-        className="grid grid-cols-2 gap-y-[2rem]"
+        className="grid grid-cols-2 gap-y-8"
       >
         <div className="flex flex-col gap-[.2rem]">
           <p className="text-[.8rem] text-main-gray-text">Akses bahan ajar</p>

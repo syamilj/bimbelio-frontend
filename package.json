@@ -45,7 +45,7 @@
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/typography": "^0.5.16",
     "@uiw/react-markdown-preview": "^5.1.5",
-    "ai": "3.4.8",
+    "ai": "4.2.11",
     "autoprefixer": "^10.4.21",
     "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",

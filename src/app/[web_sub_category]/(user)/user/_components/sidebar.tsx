@@ -147,7 +147,7 @@ const Sidebar = ({ category }: { category: any }) => {
       {/* TooltipProvider Wrapper */}
       {/* Desktop Sidebar */}
       <div
-        className="hidden md:flex h-full w-full flex-col bg-gradient-to-br from-slate-50 via-white to-slate-100 border-r border-slate-200/60 shadow-2xl backdrop-blur-xl"
+        className="hidden md:flex h-full w-full flex-col bg-linear-to-br from-slate-50 via-white to-slate-100 border-r border-slate-200/60 shadow-2xl backdrop-blur-xl"
         onMouseOver={() => {
           if (!openMenu) {
             setMinimizeSidebar(false);
@@ -198,7 +198,7 @@ const Sidebar = ({ category }: { category: any }) => {
                 <TooltipTrigger asChild>
                   <div
                     className={cn(
-                      'w-11 h-11 rounded-2xl flex items-center justify-center shadow-xl cursor-pointer hover:shadow-2xl transition-all duration-300  bg-gradient-to-br from-white to-slate-50 border border-slate-200/50 text-main',
+                      'w-11 h-11 rounded-2xl flex items-center justify-center shadow-xl cursor-pointer hover:shadow-2xl transition-all duration-300  bg-linear-to-br from-white to-slate-50 border border-slate-200/50 text-main',
                     )}
                     // onClick={() => setMinimizeSidebar(false)}
                   >
@@ -222,7 +222,7 @@ const Sidebar = ({ category }: { category: any }) => {
         </div>
         {/* Enhanced Category Selection */}
         {!shouldMinimize && (
-          <div className="p-4 border-b border-slate-200/50 bg-gradient-to-br from-white/60 to-slate-50/80 backdrop-blur-sm">
+          <div className="p-4 border-b border-slate-200/50 bg-linear-to-br from-white/60 to-slate-50/80 backdrop-blur-sm">
             <div
               className="relative overflow-hidden rounded-2xl p-5 text-white shadow-xl cursor-pointer transition-all duration-300 hover:shadow-2xl group border border-white/20"
               style={{
@@ -231,7 +231,7 @@ const Sidebar = ({ category }: { category: any }) => {
               onClick={() => setIsWebCategoryDialogOpen(true)}
             >
               {/* Enhanced background patterns */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10" />
+              <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-black/10" />
               <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl animate-pulse" />
               <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-white/5 rounded-full blur-xl" />
               <div className="absolute top-4 right-4 w-16 h-16 bg-white/5 rounded-full blur-lg" />
@@ -265,12 +265,12 @@ const Sidebar = ({ category }: { category: any }) => {
         )}
         {/* Enhanced Minimized Quick Access */}
         {shouldMinimize && (
-          <div className="p-3 border-b border-slate-200/50 bg-gradient-to-br from-white/60 to-slate-50/80 backdrop-blur-sm">
+          <div className="p-3 border-b border-slate-200/50 bg-linear-to-br from-white/60 to-slate-50/80 backdrop-blur-sm">
             <div className="flex flex-col items-center gap-3">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    className="w-12 h-12 rounded-2xl text-white shadow-xl transition-all duration-300 p-0 hover:shadow-2xl  bg-gradient-to-br border border-white/20"
+                    className="w-12 h-12 rounded-2xl text-white shadow-xl transition-all duration-300 p-0 hover:shadow-2xl  bg-linear-to-br border border-white/20"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -297,7 +297,7 @@ const Sidebar = ({ category }: { category: any }) => {
           </div>
         )}
         {/* Enhanced Sidebar Routes */}
-        <div className="flex-1 overflow-y-auto py-4 bg-gradient-to-b from-white/40 to-slate-50/60 backdrop-blur-sm">
+        <div className="flex-1 overflow-y-auto py-4 bg-linear-to-b from-white/40 to-slate-50/60 backdrop-blur-sm">
           <SidebarRoute
             category={category}
             minimizeSidebar={shouldMinimize}
@@ -306,7 +306,7 @@ const Sidebar = ({ category }: { category: any }) => {
           />
         </div>
         {/* Enhanced Footer */}
-        <div className="border-t border-slate-200/50 p-4 space-y-1 flex-shrink-0 bg-gradient-to-br from-white/80 to-slate-50/90 backdrop-blur-xl">
+        <div className="border-t border-slate-200/50 p-4 space-y-1 shrink-0 bg-linear-to-br from-white/80 to-slate-50/90 backdrop-blur-xl">
           {/* Enhanced Premium Card */}
           {!session?.user.tier && !shouldMinimize && (
             <div
@@ -321,7 +321,7 @@ const Sidebar = ({ category }: { category: any }) => {
               }}
             >
               {/* Premium background effects */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10" />
+              <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-black/10" />
               <div className="absolute -top-8 -right-8 w-24 h-24 bg-white/10 rounded-full blur-2xl animate-pulse" />
               <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-white/5 rounded-full blur-xl" />
               <div className="relative z-10">
@@ -373,7 +373,7 @@ const Sidebar = ({ category }: { category: any }) => {
                           className="object-cover w-full h-full rounded-full"
                         />
                         <AvatarFallback
-                          className="text-white font-bold bg-gradient-to-br"
+                          className="text-white font-bold bg-linear-to-br"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
@@ -408,7 +408,7 @@ const Sidebar = ({ category }: { category: any }) => {
                         className="rounded-full object-cover"
                       />
                       <AvatarFallback
-                        className="text-white font-bold bg-gradient-to-br"
+                        className="text-white font-bold bg-linear-to-br"
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                         }}
@@ -444,7 +444,7 @@ const Sidebar = ({ category }: { category: any }) => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="w-9 h-9 rounded-xl hover:bg-white/80 flex-shrink-0 shadow-sm transition-all duration-300 hover:shadow-md border border-slate-200/50"
+                    className="w-9 h-9 rounded-xl hover:bg-white/80 shrink-0 shadow-sm transition-all duration-300 hover:shadow-md border border-slate-200/50"
                   >
                     <Settings className="w-4 h-4" />
                   </Button>
@@ -509,9 +509,9 @@ const Sidebar = ({ category }: { category: any }) => {
         </div>
       </div>
       {/* Enhanced Mobile Sidebar */}
-      <div className="md:hidden h-full w-full flex flex-col bg-gradient-to-br from-slate-50 via-white to-slate-100 shadow-2xl backdrop-blur-xl">
+      <div className="md:hidden h-full w-full flex flex-col bg-linear-to-br from-slate-50 via-white to-slate-100 shadow-2xl backdrop-blur-xl">
         {/* Enhanced Mobile Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-200/50 flex-shrink-0 bg-white/80 backdrop-blur-xl">
+        <div className="flex items-center justify-between p-4 border-b border-slate-200/50 shrink-0 bg-white/80 backdrop-blur-xl">
           <div className="transition-all duration-300 ">
             <Logo href={`/${website_sub_category_id}/user/dashboard`} />
           </div>
@@ -525,7 +525,7 @@ const Sidebar = ({ category }: { category: any }) => {
           </Button>
         </div>
         {/* Enhanced Mobile User Profile Section */}
-        <div className="p-4 border-b border-slate-200/50 flex-shrink-0 bg-gradient-to-br from-white/60 to-slate-50/80 backdrop-blur-sm">
+        <div className="p-4 border-b border-slate-200/50 shrink-0 bg-linear-to-br from-white/60 to-slate-50/80 backdrop-blur-sm">
           <div className="flex items-center gap-4 mb-5">
             <div className="relative">
               <Avatar
@@ -537,7 +537,7 @@ const Sidebar = ({ category }: { category: any }) => {
                   alt={session?.user.name || 'User'}
                 />
                 <AvatarFallback
-                  className="text-white font-bold bg-gradient-to-br"
+                  className="text-white font-bold bg-linear-to-br"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -577,7 +577,7 @@ const Sidebar = ({ category }: { category: any }) => {
             }}
           >
             {/* Enhanced background patterns */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10" />
+            <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-black/10" />
             <div className="absolute -top-8 -right-8 w-24 h-24 bg-white/10 rounded-full blur-2xl animate-pulse" />
             <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-white/5 rounded-full blur-xl" />
             <div className="relative z-10">
@@ -603,7 +603,7 @@ const Sidebar = ({ category }: { category: any }) => {
           </div>
         </div>
         {/* Enhanced Mobile Navigation */}
-        <div className="flex-1 overflow-y-auto py-4 bg-gradient-to-b from-white/40 to-slate-50/60 backdrop-blur-sm">
+        <div className="flex-1 overflow-y-auto py-4 bg-linear-to-b from-white/40 to-slate-50/60 backdrop-blur-sm">
           <SidebarRoute
             category={category}
             minimizeSidebar={false}
@@ -612,7 +612,7 @@ const Sidebar = ({ category }: { category: any }) => {
           />
         </div>
         {/* Enhanced Mobile Footer */}
-        <div className="border-t border-slate-200/50 p-4 flex-shrink-0 bg-gradient-to-br from-white/80 to-slate-50/90 backdrop-blur-xl">
+        <div className="border-t border-slate-200/50 p-4 shrink-0 bg-linear-to-br from-white/80 to-slate-50/90 backdrop-blur-xl">
           {!session?.user.tier && (
             <div
               className="mb-4 relative overflow-hidden rounded-2xl p-5 text-white shadow-xl transition-all duration-300 border border-white/20 group cursor-pointer"
@@ -627,12 +627,12 @@ const Sidebar = ({ category }: { category: any }) => {
               }}
             >
               {/* Enhanced background effects */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10" />
+              <div className="absolute inset-0 bg-linear-to-br from-white/10 via-transparent to-black/10" />
               <div className="absolute -top-8 -right-8 w-24 h-24 bg-white/10 rounded-full blur-2xl animate-pulse" />
               <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-white/5 rounded-full blur-xl" />
               <div className="relative z-10">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <div className="w-8 h-8 bg-linear-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
                     <Crown className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-sm font-bold">Upgrade Premium</span>

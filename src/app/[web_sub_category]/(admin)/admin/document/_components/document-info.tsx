@@ -19,7 +19,7 @@ export default function DocumentInfo() {
       {data?.map((item: any, i: number) => (
         <div
           key={i}
-          className="w-full rounded-[2rem] bg-white p-[2rem]"
+          className="w-full rounded-4xl bg-white p-8"
         >
           <p className="font-regular text-[2rem]">{item.Document.length}</p>
           <p className="text-main-gray-text">{item.name}</p>

@@ -146,14 +146,14 @@ export default function Row({
           )}
         >
           {/* Avatar */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <Avatar className="w-8 h-8 border border-gray-200">
               <AvatarFallback
                 className={cn(
                   'text-white font-semibold',
                   isUser
-                    ? 'bg-gradient-to-br from-green-500 to-emerald-600'
-                    : 'bg-gradient-to-br',
+                    ? 'bg-linear-to-br from-green-500 to-emerald-600'
+                    : 'bg-linear-to-br',
                 )}
                 style={{
                   backgroundImage: !isUser

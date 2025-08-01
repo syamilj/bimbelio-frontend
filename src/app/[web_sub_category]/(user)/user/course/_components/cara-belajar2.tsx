@@ -100,7 +100,7 @@ export default function CaraBelajarSection2() {
               <div className="relative z-10">
                 <div className="flex items-center justify-center mb-3">
                   <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-gradient-to-br ${feature.gradient}`}
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-linear-to-br ${feature.gradient}`}
                   >
                     {feature.icon}
                   </div>

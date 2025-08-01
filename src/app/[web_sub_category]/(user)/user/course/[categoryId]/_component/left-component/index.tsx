@@ -134,7 +134,7 @@ export default function LeftComponent() {
       </div>
 
       {!isLocked && (
-        <div className="absolute items-center justify-center hidden md:flex w-full bottom-6 md:left-2 z-[100]">
+        <div className="absolute items-center justify-center hidden md:flex w-full bottom-6 md:left-2 z-100">
           <NavigationButtons />
         </div>
       )}

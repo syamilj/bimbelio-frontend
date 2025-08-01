@@ -54,7 +54,7 @@ export default function MessageContainer() {
       {showButtonScroll && (
         <div
           id="scrollBottom"
-          className="fixed bottom-[200px] right-4 z-[9999] cursor-pointer duration-200 md:hover:scale-105"
+          className="fixed bottom-[200px] right-4 z-9999 cursor-pointer duration-200 md:hover:scale-105"
           onClick={() => {
             scrollToBottom();
             setShowButtonScroll(false);

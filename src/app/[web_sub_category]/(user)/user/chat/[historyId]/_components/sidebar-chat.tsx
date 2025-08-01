@@ -103,7 +103,7 @@ export default function SidebarChat() {
       <div className="hidden md:flex w-80 h-full bg-white border-r border-gray-200 shadow-lg flex-col">
         {/* Header */}
         <div
-          className="p-4 border-b border-gray-200 relative overflow-hidden flex-shrink-0"
+          className="p-4 border-b border-gray-200 relative overflow-hidden shrink-0"
           style={{ backgroundColor: `${mainColor}05` }}
         >
           <div className="relative z-10 flex items-center gap-3">
@@ -131,7 +131,7 @@ export default function SidebarChat() {
         </div>
 
         {/* New Chat Input */}
-        <div className="p-4 border-b border-gray-200 flex-shrink-0">
+        <div className="p-4 border-b border-gray-200 shrink-0">
           <form
             onSubmit={handleNewChat}
             className="space-y-3"
@@ -163,7 +163,7 @@ export default function SidebarChat() {
 
         {/* Chat History */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="p-4 pb-2 flex-shrink-0">
+          <div className="p-4 pb-2 shrink-0">
             <h3 className="text-sm font-medium text-gray-500 mb-3">
               Riwayat Percakapan
             </h3>
@@ -197,7 +197,7 @@ export default function SidebarChat() {
                       >
                         <div
                           className={cn(
-                            'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0',
+                            'w-8 h-8 rounded-lg flex items-center justify-center shrink-0',
                             isActive ? 'bg-white/20' : '',
                           )}
                           style={{
@@ -285,10 +285,10 @@ export default function SidebarChat() {
       {/* Mobile Sidebar - Shows when not minimized */}
       {!isMinimized && (
         <>
-          <div className="fixed inset-y-0 left-0 w-80 z-[9999] md:hidden bg-white border-r border-gray-200 shadow-lg flex flex-col">
+          <div className="fixed inset-y-0 left-0 w-80 z-9999 md:hidden bg-white border-r border-gray-200 shadow-lg flex flex-col">
             {/* Header */}
             <div
-              className="p-4 border-b border-gray-200 relative overflow-hidden flex-shrink-0"
+              className="p-4 border-b border-gray-200 relative overflow-hidden shrink-0"
               style={{ backgroundColor: `${mainColor}05` }}
             >
               <div className="relative z-10 flex items-center justify-between">
@@ -327,7 +327,7 @@ export default function SidebarChat() {
             </div>
 
             {/* New Chat Input */}
-            <div className="p-4 border-b border-gray-200 flex-shrink-0">
+            <div className="p-4 border-b border-gray-200 shrink-0">
               <form
                 onSubmit={handleNewChat}
                 className="space-y-3"
@@ -359,7 +359,7 @@ export default function SidebarChat() {
 
             {/* Chat History */}
             <div className="flex-1 flex flex-col overflow-hidden">
-              <div className="p-4 pb-2 flex-shrink-0">
+              <div className="p-4 pb-2 shrink-0">
                 <h3 className="text-sm font-medium text-gray-500 mb-3">
                   Riwayat Percakapan
                 </h3>
@@ -395,7 +395,7 @@ export default function SidebarChat() {
                           >
                             <div
                               className={cn(
-                                'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0',
+                                'w-8 h-8 rounded-lg flex items-center justify-center shrink-0',
                                 isActive ? 'bg-white/20' : '',
                               )}
                               style={{
@@ -484,7 +484,7 @@ export default function SidebarChat() {
 
           {/* Mobile Overlay */}
           <div
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9998] md:hidden"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-9998 md:hidden"
             onClick={handleCloseSidebar}
           />
         </>

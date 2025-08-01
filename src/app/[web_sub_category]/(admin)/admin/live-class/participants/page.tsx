@@ -352,7 +352,7 @@ export default function ParticipantsPage() {
               {ParticipantsIsLoading ? (
                 <TableRow>
                   <TableCell colSpan={7}>
-                    <div className="w-full flex justify-center items-center pt-[1rem]">
+                    <div className="w-full flex justify-center items-center pt-4">
                       <Loader2 className="animate-spin w-10 h-10 text-main" />
                     </div>
                   </TableCell>

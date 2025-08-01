@@ -59,7 +59,7 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-3000 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       {loading && <LoadingPage />}
 
       {/* Backdrop */}
@@ -206,7 +206,7 @@ export const SignUp = ({ showAuth, setShowAuth }: any) => {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full h-12 rounded-xl text-white font-semibold bg-gradient-to-r hover:opacity-90 transition-opacity"
+              className="w-full h-12 rounded-xl text-white font-semibold bg-linear-to-r hover:opacity-90 transition-opacity"
               style={{
                 background: `linear-gradient(to right, ${mainColor}, ${mainColor}dd)`,
               }}

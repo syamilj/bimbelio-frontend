@@ -257,7 +257,7 @@ const FAQ = () => {
                         <motion.div
                           animate={{ rotate: openIndex === index ? 45 : 0 }}
                           transition={{ duration: 0.3 }}
-                          className="flex-shrink-0"
+                          className="shrink-0"
                         >
                           <div
                             className="w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-300"

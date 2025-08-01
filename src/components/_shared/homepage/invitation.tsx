@@ -162,7 +162,7 @@ const Invitation = () => {
                     className="flex items-center gap-3"
                   >
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                      className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
                       style={{ backgroundColor: mainColor }}
                     >
                       <div className="w-2 h-2 bg-white rounded-full" />

@@ -98,7 +98,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
   };
 
   return (
-    <div className="flex h-[60px] items-center justify-between border-main-gray-input bg-bg-workspace py-[1rem] pl-[1rem] pr-[1rem] md:border-b md:bg-bg-workspace md:pl-0 relative z-[99]">
+    <div className="flex h-[60px] items-center justify-between border-main-gray-input bg-bg-workspace py-4 pl-4 pr-4 md:border-b md:bg-bg-workspace md:pl-0 relative z-99">
       <div className="hidden items-center md:flex">
         <Link
           href={'/explore'}
@@ -114,10 +114,10 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           {doc?.title ?? id}
         </p>
       </div>
-      <div className="flex w-full items-center justify-between gap-[1.5rem] text-[1.5rem] md:w-[unset] md:justify-start">
+      <div className="flex w-full items-center justify-between gap-6 text-[1.5rem] md:w-[unset] md:justify-start">
         <div
           id="Pages"
-          className="flex w-fit shrink-0 items-center gap-[.2rem] pr-[1rem] text-[1rem] font-medium md:border-r"
+          className="flex w-fit shrink-0 items-center gap-[.2rem] pr-4 text-[1rem] font-medium md:border-r"
         >
           <form
             onSubmit={(e) => {
@@ -203,7 +203,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           value="Search PDF"
           className="hidden"
         >
-          <div className="relative z-[110111]">
+          <div className="relative z-110111">
             <div onClick={() => setOnSearchPdf(!onSearchPdf)}>
               <IconSearch
                 className={
@@ -212,7 +212,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
               />
             </div>
             <form
-              className={`absolute right-[100%] top-[100%] z-[110111] flex items-center ${
+              className={`absolute right-full top-full z-110111 flex items-center ${
                 onSearchPdf ? 'w-[300px]' : 'w-0'
               } duration-300`}
               onSubmit={(e) => {
@@ -221,9 +221,9 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
             >
               <input
                 type="text"
-                className={`w-full rounded-[1rem] ${
+                className={`w-full rounded-2xl ${
                   onSearchPdf
-                    ? 'rounded-tr-none border-2 border-white py-[.5rem] pl-[1rem] pr-[2.5rem] shadow-default outline-none focus:border-2 focus:border-main'
+                    ? 'rounded-tr-none border-2 border-white py-[.5rem] pl-4 pr-10 shadow-default outline-none focus:border-2 focus:border-main'
                     : 'p-0'
                 } duration-300`}
                 placeholder="Search..."
@@ -231,7 +231,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
                 value={searchPdf}
               />
               <IconSearch
-                className={`absolute right-[1rem] shrink-0 text-main-gray-text2 duration-200 hover:text-main ${
+                className={`absolute right-4 shrink-0 text-main-gray-text2 duration-200 hover:text-main ${
                   !onSearchPdf && 'hidden'
                 }`}
               />
@@ -324,7 +324,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
           </div>
         )}
         {inCourse && sub && isCourseDone === true && (
-          <div className="flex w-fit cursor-default items-center justify-center gap-[.5rem] rounded-[.8rem] bg-bg-workspace px-[1rem] py-[.7rem] text-[.9rem] text-primary duration-300">
+          <div className="flex w-fit cursor-default items-center justify-center gap-[.5rem] rounded-[.8rem] bg-bg-workspace px-4 py-[.7rem] text-[.9rem] text-primary duration-300">
             <p>Selesai</p>
             <IconCheckList className="text-green-500" />
           </div>

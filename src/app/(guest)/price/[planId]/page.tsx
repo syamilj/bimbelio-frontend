@@ -99,10 +99,10 @@ export default function PlanDetailPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pt-[4rem]">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50 pt-16">
       {/* Hero Section as Card */}
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-[#0091FF] via-[#0077CC] to-[#005599] text-white overflow-hidden">
+        <Card className="border-0 shadow-2xl bg-linear-to-br from-main-default via-[#0077CC] to-[#005599] text-white overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fillRule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fillOpacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
 
           <CardContent className="relative p-8 lg:p-16">
@@ -115,7 +115,7 @@ export default function PlanDetailPage() {
                     {plan.PlanSubscription?.tier || 'PREMIUM'}
                   </Badge>
                   {discountPercentage > 0 && (
-                    <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white border-0 px-4 py-2 text-sm font-medium animate-pulse">
+                    <Badge className="bg-linear-to-r from-red-500 to-pink-500 text-white border-0 px-4 py-2 text-sm font-medium animate-pulse">
                       <TrendingUp className="w-4 h-4 mr-2" />
                       Hemat {discountPercentage}%
                     </Badge>
@@ -165,7 +165,7 @@ export default function PlanDetailPage() {
                   <DialogPayment plan={plan}>
                     <Button
                       size="lg"
-                      className="bg-white text-[#0091FF] hover:bg-[#E6F3FF] shadow-xl hover:shadow-2xl transition-all duration-300 px-8 py-4 text-lg font-semibold"
+                      className="bg-white text-main-default hover:bg-[#E6F3FF] shadow-xl hover:shadow-2xl transition-all duration-300 px-8 py-4 text-lg font-semibold"
                     >
                       <Play className="w-5 h-5 mr-2" />
                       Beli Sekarang
@@ -202,7 +202,7 @@ export default function PlanDetailPage() {
                       className="w-full h-auto rounded-2xl"
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent rounded-2xl" />
                 </div>
 
                 {/* Floating elements */}
@@ -232,25 +232,25 @@ export default function PlanDetailPage() {
               <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/50 backdrop-blur-sm border border-[#B3D9FF]/50">
                 <TabsTrigger
                   value="overview"
-                  className="data-[state=active]:bg-[#0091FF] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-main-default data-[state=active]:text-white"
                 >
                   Overview
                 </TabsTrigger>
                 <TabsTrigger
                   value="features"
-                  className="data-[state=active]:bg-[#0091FF] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-main-default data-[state=active]:text-white"
                 >
                   Fitur
                 </TabsTrigger>
                 <TabsTrigger
                   value="classes"
-                  className="data-[state=active]:bg-[#0091FF] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-main-default data-[state=active]:text-white"
                 >
                   Live Class
                 </TabsTrigger>
                 <TabsTrigger
                   value="limits"
-                  className="data-[state=active]:bg-[#0091FF] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-main-default data-[state=active]:text-white"
                 >
                   Koin
                 </TabsTrigger>
@@ -266,7 +266,7 @@ export default function PlanDetailPage() {
                   <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                     <CardHeader className="pb-6">
                       <CardTitle className="text-3xl text-[#003366] flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-xl flex items-center justify-center">
+                        <div className="w-10 h-10 bg-linear-to-r from-main-default to-[#0077CC] rounded-xl flex items-center justify-center">
                           <Star className="w-5 h-5 text-white" />
                         </div>
                         Keunggulan Paket Premium
@@ -285,7 +285,7 @@ export default function PlanDetailPage() {
                               className="group relative p-6 rounded-2xl bg-[#E6F3FF] border border-[#B3D9FF]/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                             >
                               <div className="flex items-start gap-4">
-                                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-xl flex items-center justify-center shadow-lg">
+                                <div className="shrink-0 w-12 h-12 bg-linear-to-r from-main-default to-[#0077CC] rounded-xl flex items-center justify-center shadow-lg">
                                   <Check className="w-6 h-6 text-white" />
                                 </div>
                                 <div className="flex-1">
@@ -313,7 +313,7 @@ export default function PlanDetailPage() {
                   <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                     <CardHeader className="pb-6">
                       <CardTitle className="text-3xl text-[#003366] flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-xl flex items-center justify-center">
+                        <div className="w-10 h-10 bg-linear-to-r from-main-default to-[#0077CC] rounded-xl flex items-center justify-center">
                           <BookOpen className="w-5 h-5 text-white" />
                         </div>
                         Fitur yang Tersedia
@@ -331,7 +331,7 @@ export default function PlanDetailPage() {
                             className="p-6 rounded-2xl bg-[#E6F3FF] border border-[#B3D9FF]/50 hover:shadow-lg transition-all duration-300"
                           >
                             <div className="flex items-center gap-3 mb-4">
-                              <div className="w-12 h-12 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-xl flex items-center justify-center shadow-lg">
+                              <div className="w-12 h-12 bg-linear-to-r from-main-default to-[#0077CC] rounded-xl flex items-center justify-center shadow-lg">
                                 {getFeatureIcon(feature.type)}
                               </div>
                               <div>
@@ -352,7 +352,7 @@ export default function PlanDetailPage() {
                                     key={pivot.id}
                                     className="flex items-center gap-2 text-sm"
                                   >
-                                    <div className="w-5 h-5 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded text-white text-xs flex items-center justify-center font-bold">
+                                    <div className="w-5 h-5 bg-linear-to-r from-main-default to-[#0077CC] rounded text-white text-xs flex items-center justify-center font-bold">
                                       {pivot.Category.nomor}
                                     </div>
                                     <span className="text-[#003366] font-medium">
@@ -362,7 +362,7 @@ export default function PlanDetailPage() {
                                 ))}
                               {feature.type === 'DOCUMENT' && (
                                 <div className="flex gap-2 text-sm">
-                                  <div className="w-5 h-5 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded text-white text-xs flex items-center justify-center font-bold shrink-0">
+                                  <div className="w-5 h-5 bg-linear-to-r from-main-default to-[#0077CC] rounded text-white text-xs flex items-center justify-center font-bold shrink-0">
                                     <LockOpen className="w-3 h-3" />
                                   </div>
                                   <span className="text-[#003366] font-medium">
@@ -373,7 +373,7 @@ export default function PlanDetailPage() {
                               {feature.type === 'LIVECLASS' &&
                                 feature.liveClassesPerWeek && (
                                   <div className="flex gap-2 text-sm">
-                                    <div className="w-5 h-5 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded text-white text-xs flex items-center justify-center font-bold shrink-0">
+                                    <div className="w-5 h-5 bg-linear-to-r from-main-default to-[#0077CC] rounded text-white text-xs flex items-center justify-center font-bold shrink-0">
                                       <BookOpen className="w-3 h-3" />
                                     </div>
                                     <span className="text-[#003366] font-medium">
@@ -395,7 +395,7 @@ export default function PlanDetailPage() {
                     <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                       <CardHeader className="pb-6">
                         <CardTitle className="text-3xl text-[#003366] flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-xl flex items-center justify-center">
+                          <div className="w-10 h-10 bg-linear-to-r from-main-default to-[#0077CC] rounded-xl flex items-center justify-center">
                             <Video className="w-5 h-5 text-white" />
                           </div>
                           Live Class Terjadwal
@@ -414,7 +414,7 @@ export default function PlanDetailPage() {
                                 className="p-4 rounded-xl bg-[#E6F3FF] border border-[#B3D9FF]/50 hover:shadow-md transition-all duration-300"
                               >
                                 <div className="flex items-start gap-3">
-                                  <div className="w-10 h-10 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-lg flex items-center justify-center text-white font-bold">
+                                  <div className="w-10 h-10 bg-linear-to-r from-main-default to-[#0077CC] rounded-lg flex items-center justify-center text-white font-bold">
                                     {index + 1}
                                   </div>
                                   <div className="flex-1">
@@ -450,7 +450,7 @@ export default function PlanDetailPage() {
                           <div className="mt-4 text-center">
                             <Button
                               variant="outline"
-                              className="border-[#0091FF] text-[#0091FF] hover:bg-[#E6F3FF] bg-transparent"
+                              className="border-main-default text-main-default hover:bg-[#E6F3FF] bg-transparent"
                               onClick={() => setActiveTab('classes')}
                             >
                               Lihat Semua {plan.Pivot_LiveClass_Plan.length}{' '}
@@ -468,7 +468,7 @@ export default function PlanDetailPage() {
                   <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                     <CardHeader className="pb-6">
                       <CardTitle className="text-3xl text-[#003366] flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-xl flex items-center justify-center">
+                        <div className="w-10 h-10 bg-linear-to-r from-main-default to-[#0077CC] rounded-xl flex items-center justify-center">
                           <Infinity className="w-5 h-5 text-white" />
                         </div>
                         Koin
@@ -491,7 +491,7 @@ export default function PlanDetailPage() {
                               key={key}
                               className="p-4 rounded-xl bg-[#E6F3FF] border border-[#B3D9FF]/50 text-center hover:shadow-md transition-all duration-300"
                             >
-                              <div className="w-12 h-12 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-xl flex items-center justify-center text-white mx-auto mb-3">
+                              <div className="w-12 h-12 bg-linear-to-r from-main-default to-[#0077CC] rounded-xl flex items-center justify-center text-white mx-auto mb-3">
                                 {getLimitationIcon(key)}
                               </div>
                               <h4 className="font-bold text-[#003366] mb-1">
@@ -507,7 +507,7 @@ export default function PlanDetailPage() {
                                           ? 'Tryout'
                                           : key}
                               </h4>
-                              <div className="text-2xl font-bold text-[#0091FF] mb-1">
+                              <div className="text-2xl font-bold text-main-default mb-1">
                                 {typeof value === 'number'
                                   ? value.toLocaleString()
                                   : value}
@@ -535,7 +535,7 @@ export default function PlanDetailPage() {
                         key={feature.id}
                         className="border-0 shadow-xl bg-white/70 backdrop-blur-sm overflow-hidden"
                       >
-                        <CardHeader className="bg-gradient-to-r from-[#0091FF] to-[#0077CC] text-white">
+                        <CardHeader className="bg-linear-to-r from-main-default to-[#0077CC] text-white">
                           <CardTitle className="flex items-center gap-3 text-xl">
                             <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
                               {getFeatureIcon(feature.type)}
@@ -560,7 +560,7 @@ export default function PlanDetailPage() {
                                   key={pivot.id}
                                   className="group flex items-center gap-3 p-4 bg-[#E6F3FF] border border-[#B3D9FF]/50 hover:shadow-md transition-all duration-300"
                                 >
-                                  <div className="w-8 h-8 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-lg text-white text-sm flex items-center justify-center font-bold shadow-lg">
+                                  <div className="w-8 h-8 bg-linear-to-r from-main-default to-[#0077CC] rounded-lg text-white text-sm flex items-center justify-center font-bold shadow-lg">
                                     {pivot.Category.nomor}
                                   </div>
                                   <span className="font-semibold text-[#003366] group-hover:text-[#0077CC] transition-colors">
@@ -572,7 +572,7 @@ export default function PlanDetailPage() {
 
                             {feature.type === 'DOCUMENT' && (
                               <div className="group col-span-3 flex items-center gap-3 p-4 bg-[#E6F3FF] border border-[#B3D9FF]/50 hover:shadow-md transition-all duration-300">
-                                <div className="w-8 h-8 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-lg text-white text-sm flex items-center justify-center font-bold shadow-lg shrink-0">
+                                <div className="w-8 h-8 bg-linear-to-r from-main-default to-[#0077CC] rounded-lg text-white text-sm flex items-center justify-center font-bold shadow-lg shrink-0">
                                   <BookOpen className="w-5 h-5" />
                                 </div>
                                 <span className="font-semibold text-[#003366] group-hover:text-[#0077CC] transition-colors">
@@ -584,7 +584,7 @@ export default function PlanDetailPage() {
                             {feature.type === 'LIVECLASS' &&
                               feature.liveClassesPerWeek && (
                                 <div className="group col-span-3 flex items-center gap-3 p-4 bg-[#E6F3FF] border border-[#B3D9FF]/50 hover:shadow-md transition-all duration-300">
-                                  <div className="w-8 h-8 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-lg text-white text-sm flex items-center justify-center font-bold shadow-lg shrink-0">
+                                  <div className="w-8 h-8 bg-linear-to-r from-main-default to-[#0077CC] rounded-lg text-white text-sm flex items-center justify-center font-bold shadow-lg shrink-0">
                                     <Play className="w-5 h-5" />
                                   </div>
                                   <span className="font-semibold text-[#003366] group-hover:text-[#0077CC] transition-colors">
@@ -622,9 +622,9 @@ export default function PlanDetailPage() {
                               fill
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                            <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
                             <div className="absolute top-4 left-4">
-                              <Badge className="bg-[#0091FF] text-white">
+                              <Badge className="bg-main-default text-white">
                                 Kelas #{index + 1}
                               </Badge>
                             </div>
@@ -643,18 +643,18 @@ export default function PlanDetailPage() {
                           </div>
 
                           <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                            <div className="flex items-center gap-2 text-[#0091FF]">
+                            <div className="flex items-center gap-2 text-main-default">
                               <Calendar className="w-4 h-4" />
                               <span>
                                 {formatDate(pivot.LiveClass.startDate)}
                               </span>
                             </div>
-                            <div className="flex items-center gap-2 text-[#0091FF]">
+                            <div className="flex items-center gap-2 text-main-default">
                               <Clock className="w-4 h-4" />
                               <span>{pivot.LiveClass.duration} menit</span>
                             </div>
                             {pivot.LiveClass.maxParticipant && (
-                              <div className="flex items-center gap-2 text-[#0091FF]">
+                              <div className="flex items-center gap-2 text-main-default">
                                 <Users className="w-4 h-4" />
                                 <span>
                                   Max {pivot.LiveClass.maxParticipant} peserta
@@ -683,7 +683,7 @@ export default function PlanDetailPage() {
                             >
                               <Button
                                 size="sm"
-                                className="bg-[#0091FF] hover:bg-[#0077CC]"
+                                className="bg-main-default hover:bg-[#0077CC]"
                               >
                                 <Play className="w-4 h-4 mr-2" />
                                 Lihat Kelas
@@ -703,7 +703,7 @@ export default function PlanDetailPage() {
                   <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                     <CardHeader>
                       <CardTitle className="text-2xl text-[#003366] flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-xl flex items-center justify-center">
+                        <div className="w-10 h-10 bg-linear-to-r from-main-default to-[#0077CC] rounded-xl flex items-center justify-center">
                           <Infinity className="w-5 h-5 text-white" />
                         </div>
                         Koin
@@ -727,7 +727,7 @@ export default function PlanDetailPage() {
                           >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-r from-[#0091FF] to-[#0077CC] rounded-lg flex items-center justify-center text-white">
+                                <div className="w-10 h-10 bg-linear-to-r from-main-default to-[#0077CC] rounded-lg flex items-center justify-center text-white">
                                   {getLimitationIcon(key)}
                                 </div>
                                 <div>
@@ -754,7 +754,7 @@ export default function PlanDetailPage() {
                                 </div>
                               </div>
                               <div className="text-right">
-                                <div className="text-2xl font-bold text-[#0091FF]">
+                                <div className="text-2xl font-bold text-main-default">
                                   {typeof value === 'number'
                                     ? value.toLocaleString()
                                     : value}
@@ -781,7 +781,7 @@ export default function PlanDetailPage() {
           <div className="space-y-6">
             {/* Sticky Purchase Card */}
             <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-sm overflow-hidden">
-              <div className="bg-gradient-to-r from-[#0091FF] to-[#0077CC] p-6 text-white">
+              <div className="bg-linear-to-r from-main-default to-[#0077CC] p-6 text-white">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold">{plan.name}</h3>
                 </div>
@@ -843,7 +843,7 @@ export default function PlanDetailPage() {
                 <div className="space-y-3">
                   <DialogPayment plan={plan}>
                     <Button
-                      className="w-full bg-gradient-to-r from-[#0091FF] to-[#0077CC] hover:from-[#0077CC] hover:to-[#005599] text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                      className="w-full bg-linear-to-r from-main-default to-[#0077CC] hover:from-[#0077CC] hover:to-[#005599] text-white shadow-lg hover:shadow-xl transition-all duration-300"
                       size="lg"
                     >
                       <Play className="w-5 h-5 mr-2" />
@@ -853,7 +853,7 @@ export default function PlanDetailPage() {
 
                   <Button
                     variant="ghost"
-                    className="w-full text-gray-600 hover:text-[#0091FF] hover:bg-[#E6F3FF] transition-all duration-300"
+                    className="w-full text-gray-600 hover:text-main-default hover:bg-[#E6F3FF] transition-all duration-300"
                   >
                     <Share2 className="w-4 h-4 mr-2" />
                     Bagikan ke Teman
@@ -864,19 +864,19 @@ export default function PlanDetailPage() {
                 <div className="pt-4 border-t border-gray-100">
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
-                      <div className="text-lg font-bold text-[#0091FF]">
+                      <div className="text-lg font-bold text-main-default">
                         15K+
                       </div>
                       <div className="text-xs text-gray-500">Siswa</div>
                     </div>
                     <div>
-                      <div className="text-lg font-bold text-[#0091FF]">
+                      <div className="text-lg font-bold text-main-default">
                         4.9★
                       </div>
                       <div className="text-xs text-gray-500">Rating</div>
                     </div>
                     <div>
-                      <div className="text-lg font-bold text-[#0091FF]">
+                      <div className="text-lg font-bold text-main-default">
                         95%
                       </div>
                       <div className="text-xs text-gray-500">Lulus</div>
@@ -924,10 +924,10 @@ export default function PlanDetailPage() {
 
 function LoadingSkeleton() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pt-[4rem]">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50 pt-16">
       {/* Hero Section Skeleton */}
       <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-[#0091FF] via-[#0077CC] to-[#005599] text-white overflow-hidden">
+        <Card className="border-0 shadow-2xl bg-linear-to-br from-main-default via-[#0077CC] to-[#005599] text-white overflow-hidden">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fillRule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fillOpacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
 
           <CardContent className="relative p-8 lg:p-16">
@@ -1030,7 +1030,7 @@ function LoadingSkeleton() {
                         className="p-6 rounded-2xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
                       >
                         <div className="flex items-start gap-4">
-                          <Skeleton className="w-12 h-12 rounded-xl flex-shrink-0" />
+                          <Skeleton className="w-12 h-12 rounded-xl shrink-0" />
                           <div className="flex-1 space-y-2">
                             <Skeleton className="h-6 w-3/4" />
                             <Skeleton className="h-4 w-full" />
@@ -1101,7 +1101,7 @@ function LoadingSkeleton() {
                         className="p-4 rounded-xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
                       >
                         <div className="flex items-start gap-3">
-                          <Skeleton className="w-10 h-10 rounded-lg flex-shrink-0" />
+                          <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
                           <div className="flex-1 space-y-2">
                             <Skeleton className="h-5 w-full" />
                             <div className="flex items-center gap-4">
@@ -1152,7 +1152,7 @@ function LoadingSkeleton() {
           <div className="space-y-6">
             {/* Purchase Card Skeleton */}
             <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-sm overflow-hidden">
-              <div className="bg-gradient-to-r from-[#0091FF] to-[#0077CC] p-6 text-white">
+              <div className="bg-linear-to-r from-main-default to-[#0077CC] p-6 text-white">
                 <div className="flex items-center justify-between mb-4">
                   <Skeleton className="h-6 w-32 bg-white/20" />
                   <Skeleton className="h-8 w-8 rounded-full bg-white/20" />

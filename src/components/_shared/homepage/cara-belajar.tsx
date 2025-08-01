@@ -231,7 +231,7 @@ export default function CaraBelajarSection1() {
         />
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 space-y-12">
+      <div className="max-w-2xl mx-auto px-4 space-y-12">
         {/* Enhanced Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -310,7 +310,7 @@ export default function CaraBelajarSection1() {
                     <CardContent className="p-6">
                       <div className="flex items-center gap-4">
                         {/* Step Number & Icon */}
-                        <div className="relative flex-shrink-0">
+                        <div className="relative shrink-0">
                           <motion.div
                             whileHover={{ scale: 1.1 }}
                             className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 ${
@@ -499,7 +499,7 @@ export default function CaraBelajarSection1() {
                                 className="flex items-start gap-2 text-sm"
                               >
                                 <div
-                                  className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                                  className="w-2 h-2 rounded-full mt-2 shrink-0"
                                   style={{ backgroundColor: mainColor }}
                                 />
                                 <span>{point}</span>
@@ -536,7 +536,7 @@ export default function CaraBelajarSection1() {
                                 className="flex items-center gap-3 p-3 rounded-xl bg-white shadow-sm"
                               >
                                 <CheckCircleIcon
-                                  className="w-5 h-5 flex-shrink-0"
+                                  className="w-5 h-5 shrink-0"
                                   style={{ color: mainColor }}
                                 />
                                 <span className="text-sm font-medium">

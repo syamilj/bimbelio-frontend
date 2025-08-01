@@ -59,7 +59,7 @@ export function InputImage({
       />
       <div
         className={cn(
-          'w-[200px] h-[120px] border rounded-[1rem] p-[1rem] bg-gray-100 flex justify-center items-center relative overflow-hidden',
+          'w-[200px] h-[120px] border rounded-2xl p-4 bg-gray-100 flex justify-center items-center relative overflow-hidden',
           PreviewImg && 'w-fit h-fit max-w-[200px]',
         )}
       >
@@ -72,7 +72,7 @@ export function InputImage({
           >
             <div className="flex flex-col gap-[.5rem] items-center">
               <UploadIcon className="text-gray-400" />
-              <p className="text-gray-500/80 font-[500]">
+              <p className="text-gray-500/80 font-medium">
                 {placeholder ? placeholder : 'Upload Foto'}
               </p>
             </div>
@@ -86,7 +86,7 @@ export function InputImage({
         ) : (
           <div className="flex flex-col gap-[.5rem] items-center">
             <UploadIcon className="text-gray-400" />
-            <p className="text-gray-500/80 font-[500]">
+            <p className="text-gray-500/80 font-medium">
               {placeholder ? placeholder : 'Upload Foto'}
             </p>
           </div>

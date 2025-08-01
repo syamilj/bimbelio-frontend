@@ -50,7 +50,7 @@ export const RenderOverviewTab = () => {
       </div>
 
       <div className="space-y-3">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-linear-to-r from-blue-50 to-purple-50 rounded-lg">
           {/* Limitation Stats (jika ada) */}
           {plan.PlanLimitation && (
             <div className="text-center">
@@ -113,7 +113,7 @@ export const RenderOverviewTab = () => {
 
         {/* Global Access Info */}
         {(isCourse || isDocument) && (
-          <div className="p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+          <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
             <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
               <Star
                 size={14}
@@ -147,7 +147,7 @@ export const RenderOverviewTab = () => {
 
       {/* Platform/WebSubCategory Info (jika subscription) */}
       {plan.PlanSubscription && (
-        <div className="p-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
+        <div className="p-3 bg-linear-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
           <div className="text-center">
             <div className="text-sm font-semibold text-indigo-700 flex items-center justify-center gap-2">
               <MapPin size={14} />
@@ -176,13 +176,13 @@ export const RenderOverviewTab = () => {
               key={benefit.id}
               className={`flex items-start gap-3 p-3 rounded-lg border-l-4 ${
                 index === 0
-                  ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-500'
+                  ? 'bg-linear-to-r from-yellow-50 to-orange-50 border-yellow-500'
                   : index === 1
-                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-500'
-                    : 'bg-gradient-to-r from-green-50 to-teal-50 border-green-500'
+                    ? 'bg-linear-to-r from-blue-50 to-purple-50 border-blue-500'
+                    : 'bg-linear-to-r from-green-50 to-teal-50 border-green-500'
               }`}
             >
-              <div className="flex-shrink-0 mt-1">
+              <div className="shrink-0 mt-1">
                 {index === 0 ? (
                   <Crown
                     size={16}

@@ -119,7 +119,7 @@ export function StatsCard({
           {title}
         </CardTitle>
         <div
-          className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-gradient-to-br ${gradient} text-white shadow-sm`}
+          className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-linear-to-br ${gradient} text-white shadow-sm`}
         >
           <Icon className="w-4 h-4 md:w-5 md:h-5" />
         </div>
@@ -165,9 +165,9 @@ export function MarketingCTA({
   }
 
   return (
-    <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-4">
+    <div className="bg-linear-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-4">
       <div className="flex items-start gap-3 mb-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
+        <div className="w-10 h-10 rounded-full bg-linear-to-br from-orange-500 to-red-500 flex items-center justify-center shrink-0">
           <Crown className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
@@ -182,7 +182,7 @@ export function MarketingCTA({
 
       <ButtonPayment
         type="modal"
-        className="w-full h-10 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-medium shadow-md transition-all duration-200"
+        className="w-full h-10 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-medium shadow-md transition-all duration-200"
       >
         Upgrade Sekarang
       </ButtonPayment>
@@ -196,10 +196,10 @@ interface PreviewContentProps {
 
 export function PreviewContent({ liveClass }: PreviewContentProps) {
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3 sm:p-5 space-y-3 sm:space-y-4">
+    <div className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3 sm:p-5 space-y-3 sm:space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-blue-500 flex items-center justify-center flex-shrink-0">
+          <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-blue-500 flex items-center justify-center shrink-0">
             <Eye className="w-3 h-3 text-white" />
           </div>
           <span className="font-semibold text-blue-900 text-sm sm:text-base">
@@ -215,7 +215,7 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
       {liveClass.LiveClassAgenda && liveClass.LiveClassAgenda.length > 0 && (
         <div className="bg-white rounded-lg p-3 sm:p-4 border border-blue-100 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
-            <BookOpen className="w-4 h-4 text-blue-600 flex-shrink-0" />
+            <BookOpen className="w-4 h-4 text-blue-600 shrink-0" />
             <span className="font-medium text-gray-800 text-sm">
               Agenda Pembelajaran
             </span>
@@ -227,7 +227,7 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
                   key={index}
                   className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-blue-50 rounded-lg"
                 >
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center mt-0.5 flex-shrink-0">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center mt-0.5 shrink-0">
                     {index + 1}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -246,7 +246,7 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
             {liveClass.LiveClassAgenda.length > 2 && (
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-2 p-2 sm:p-3 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
                 <div className="flex items-center justify-center sm:justify-start gap-2">
-                  <Lock className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <Lock className="w-4 h-4 text-gray-400 shrink-0" />
                   <span className="text-xs sm:text-sm text-gray-500 font-medium">
                     +{liveClass.LiveClassAgenda.length - 2} agenda lainnya
                   </span>
@@ -265,13 +265,13 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
         liveClass.LiveClassReference.length > 0 && (
           <div className="bg-white rounded-lg p-3 sm:p-4 border border-blue-100 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
-              <BookOpen className="w-4 h-4 text-green-600 flex-shrink-0" />
+              <BookOpen className="w-4 h-4 text-green-600 shrink-0" />
               <span className="font-medium text-gray-800 text-sm">
                 Materi & Referensi
               </span>
             </div>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 p-3 sm:p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-200">
-              <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mx-auto sm:mx-0 flex-shrink-0" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 p-3 sm:p-4 bg-linear-to-r from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-200">
+              <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mx-auto sm:mx-0 shrink-0" />
               <div className="text-center sm:text-left">
                 <p className="font-medium text-gray-700 text-xs sm:text-sm">
                   {liveClass.LiveClassReference.length} referensi pembelajaran
@@ -285,9 +285,9 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
         )}
 
       {/* Call to Action - Responsive */}
-      <div className="bg-gradient-to-r from-orange-100 to-red-100 rounded-lg p-3 sm:p-4 border border-orange-200">
+      <div className="bg-linear-to-r from-orange-100 to-red-100 rounded-lg p-3 sm:p-4 border border-orange-200">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center mx-auto sm:mx-0 flex-shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-linear-to-br from-orange-400 to-red-500 flex items-center justify-center mx-auto sm:mx-0 shrink-0">
             <Crown className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
           </div>
           <div className="flex-1 text-center sm:text-left">

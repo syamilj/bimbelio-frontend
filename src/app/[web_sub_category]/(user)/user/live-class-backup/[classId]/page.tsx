@@ -447,7 +447,7 @@ export default function LiveClassDetail() {
                         key={item.id}
                         className="flex gap-4 p-4 border rounded-lg"
                       >
-                        <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold">
+                        <div className="shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold">
                           {index + 1}
                         </div>
                         <div className="flex-1">
@@ -493,7 +493,7 @@ export default function LiveClassDetail() {
                         key={reference.id}
                         className="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                       >
-                        <div className="flex-shrink-0 mt-1">
+                        <div className="shrink-0 mt-1">
                           <LinkIcon className="h-5 w-5 text-blue-600" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -538,7 +538,7 @@ export default function LiveClassDetail() {
                         key={reference.id}
                         className="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
                       >
-                        <div className="flex-shrink-0 mt-1">
+                        <div className="shrink-0 mt-1">
                           <LinkIcon className="h-5 w-5 text-green-600" />
                         </div>
                         <div className="flex-1 min-w-0">

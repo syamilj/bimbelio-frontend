@@ -112,7 +112,7 @@ const TryoutType = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-[1rem] p-6 h-full pb-[100px]">
+    <div className="flex w-full flex-col gap-4 p-6 h-full pb-[100px]">
       {!isDone ? (
         <Card>
           <CardHeader>
@@ -228,7 +228,7 @@ const TryoutType = () => {
               <div className="mt-6 flex justify-between">
                 <button
                   className={cn(
-                    'rounded-[.8rem] border border-input bg-white px-[1rem] py-[.8rem] text-[.9rem] text-black duration-300 active:bg-white md:hover:bg-accent md:hover:text-accent-foreground',
+                    'rounded-[.8rem] border border-input bg-white px-4 py-[.8rem] text-[.9rem] text-black duration-300 active:bg-white md:hover:bg-accent md:hover:text-accent-foreground',
                     currentIndexQuestion === 0 &&
                       'cursor-not-allowed bg-white hover:bg-white md:hover:bg-white text-muted-foreground/30',
                   )}
@@ -246,7 +246,7 @@ const TryoutType = () => {
                 </button>
                 <button
                   className={cn(
-                    'rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-[.9rem] text-white duration-300 active:bg-main md:hover:bg-main-hover z-[101]',
+                    'rounded-[.8rem] bg-main px-4 py-[.8rem] text-[.9rem] text-white duration-300 active:bg-main md:hover:bg-main-hover z-101',
                     currentIndexQuestion ===
                       TryoutSession.TryoutQuestion.length - 1 &&
                       'cursor-not-allowed bg-main-hover active:bg-main-hover',
@@ -267,10 +267,10 @@ const TryoutType = () => {
           </CardContent>
         </Card>
       ) : (
-        // <div className="flex w-full flex-col gap-[1rem]">
+        // <div className="flex w-full flex-col gap-4">
         //   <div
         //     className={cn(
-        //       'flex flex-col items-center gap-[1rem] rounded-[1rem] py-[1.5rem] font-medium text-white',
+        //       'flex flex-col items-center gap-4 rounded-2xl py-6 font-medium text-white',
         //       isPassed && 'bg-main',
         //       !isPassed && 'bg-main-red',
         //     )}
@@ -301,8 +301,8 @@ const TryoutType = () => {
         //       </>
         //     )}
         //   </div>
-        //   <div className="grid grid-cols-2 gap-[1rem]">
-        //     <div className="flex gap-[.5rem] rounded-[1rem] bg-white p-[1rem]">
+        //   <div className="grid grid-cols-2 gap-4">
+        //     <div className="flex gap-[.5rem] rounded-2xl bg-white p-4">
         //       <div className="">
         //         <IconCircleLoop className="mt-[.1rem] text-main" />
         //       </div>
@@ -313,7 +313,7 @@ const TryoutType = () => {
         //         </p>
         //       </div>
         //     </div>
-        //     <div className="flex gap-[.5rem] rounded-[1rem] bg-white p-[1rem]">
+        //     <div className="flex gap-[.5rem] rounded-2xl bg-white p-4">
         //       <div className="">
         //         <IconTimer className="mt-[.1rem] text-main" />
         //       </div>
