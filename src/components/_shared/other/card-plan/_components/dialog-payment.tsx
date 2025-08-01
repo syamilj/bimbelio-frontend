@@ -36,8 +36,12 @@ export function DialogPayment({
   type?: 'limit' | 'plan';
   children: ReactNode;
 }) {
-  const { setPagesSetting, setTransactionHistory, setTransactionPopUp } =
-    useAppContext();
+  const {
+    setPagesSetting,
+    setTransactionHistory,
+    setTransactionPopUp,
+    useAuth: { setShowAuth },
+  } = useAppContext();
   const { data: session } = useSession();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -144,10 +148,10 @@ export function DialogPayment({
             setTelp(session.user.phone);
           }
           if (!session) {
-            // setShowAuth({
-            //   redirect: `/price?planId=${plan.id}${voucherCodeQuery ? `&voucherCode=${voucherCodeQuery}` : ''}`,
-            //   open: true,
-            // });
+            setShowAuth({
+              redirect: `/price?planId=${plan.id}${voucherCodeQuery ? `&voucherCode=${voucherCodeQuery}` : ''}`,
+              open: true,
+            });
             setIsOpen(false);
             return;
           }
