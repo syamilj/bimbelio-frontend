@@ -21,78 +21,67 @@ export const HighlighBlock = createReactBlockSpec(
             onClick={() => {
               if (!props?.block?.props?.highlightId) return;
 
-              // Try to find the highlight in the currently active PDF view
-              const visionOnElement = document.querySelector('#VisionOn') as HTMLElement;
-              const vision = visionOnElement?.style.display !== 'none';
-              const containerId = vision ? 'VisionOn' : 'VisionOff';
+              const highlightId = props.block.props.highlightId;
               
-              // Multiple selector patterns based on react-pdf-highlighter-extended structure
-              const selectors = [
-                // CSS class selectors from the library
-                `#${containerId} .Highlight[data-highlight-id="${props.block.props.highlightId}"]`,
-                `#${containerId} .TextHighlight[data-highlight-id="${props.block.props.highlightId}"]`,
-                `#${containerId} .Highlight__part[data-highlight-id="${props.block.props.highlightId}"]`,
-                `#${containerId} .TextHighlight__part[data-highlight-id="${props.block.props.highlightId}"]`,
-                // ID-based selectors
-                `#${containerId} #${props.block.props.highlightId}`,
-                `#${containerId} [data-id="${props.block.props.highlightId}"]`,
-                // General highlight selectors
-                `#${containerId} [data-highlight-id="${props.block.props.highlightId}"]`,
-                // Fallback selectors
-                `.Highlight[data-highlight-id="${props.block.props.highlightId}"]`,
-                `#${props.block.props.highlightId}`
-              ];
-              
-              let highlightElement: HTMLElement | null = null;
-              
-              // Try each selector until we find a match
-              for (const selector of selectors) {
-                highlightElement = document.querySelector(selector) as HTMLElement;
-                if (highlightElement) {
-                  console.log(`Found highlight using selector: ${selector}`);
-                  break;
-                }
-              }
-
-              if (highlightElement) {
-                // Get the PDF container for proper scrolling
-                const pdfContainer = document.querySelector(`#${containerId} .PdfHighlighter`);
+              // Multiple scroll strategies for better reliability
+              const scrollToHighlight = () => {
+                // Strategy 1: Use URL hash (works with PDF provider)
+                const currentHash = window.location.hash;
+                window.location.hash = highlightId;
                 
-                if (pdfContainer) {
-                  // Calculate position relative to container
-                  const containerRect = pdfContainer.getBoundingClientRect();
-                  const highlightRect = highlightElement.getBoundingClientRect();
-                  const scrollTop = pdfContainer.scrollTop + (highlightRect.top - containerRect.top) - 100; // 100px offset
-                  
-                  // Smooth scroll to position
-                  pdfContainer.scrollTo({
-                    top: Math.max(0, scrollTop),
-                    behavior: 'smooth'
-                  });
-                } else {
-                  // Fallback to regular scrollIntoView
-                  highlightElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                    inline: 'nearest',
-                  });
-                }
-
-                // Add temporary highlight effect
-                const originalBoxShadow = highlightElement.style.boxShadow;
-                const originalTransition = highlightElement.style.transition;
-                highlightElement.style.boxShadow = '0 0 15px rgba(255, 193, 7, 0.9)';
-                highlightElement.style.transition = 'box-shadow 0.3s ease';
-                
+                // Strategy 2: Direct DOM scroll after small delay
                 setTimeout(() => {
-                  highlightElement.style.boxShadow = originalBoxShadow;
-                  highlightElement.style.transition = originalTransition;
-                }, 2500);
-              } else {
-                console.warn(`Highlight dengan ID ${props.block.props.highlightId} tidak ditemukan di ${containerId}`);
-                // Fallback: set hash and let browser handle scroll
-                document.location.hash = props.block.props.highlightId;
-              }
+                  const visionOnElement = document.querySelector('#VisionOn') as HTMLElement;
+                  const vision = visionOnElement?.style.display !== 'none';
+                  const containerId = vision ? 'VisionOn' : 'VisionOff';
+                  
+                  const pdfContainer = document.querySelector(`#${containerId} .PdfHighlighter`);
+                  
+                  if (pdfContainer) {
+                    // Try multiple selectors for the highlight
+                    const selectors = [
+                      `#${containerId} [data-id="${highlightId}"]`,
+                      `#${containerId} .Highlight[data-id="${highlightId}"]`,
+                      `#${containerId} .TextHighlight[data-id="${highlightId}"]`,
+                      `[data-id="${highlightId}"]`,
+                      `#${highlightId}`
+                    ];
+
+                    let highlightElement: HTMLElement | null = null;
+                    for (const selector of selectors) {
+                      const el = document.querySelector(selector) as HTMLElement;
+                      if (el && el.offsetParent !== null) {
+                        highlightElement = el;
+                        break;
+                      }
+                    }
+
+                    if (highlightElement) {
+                      const containerRect = pdfContainer.getBoundingClientRect();
+                      const highlightRect = highlightElement.getBoundingClientRect();
+                      const scrollTop = pdfContainer.scrollTop + (highlightRect.top - containerRect.top) - 100;
+                      
+                      pdfContainer.scrollTo({
+                        top: Math.max(0, scrollTop),
+                        behavior: 'smooth'
+                      });
+
+                      // Visual feedback
+                      highlightElement.style.outline = '2px solid #fbbf24';
+                      setTimeout(() => {
+                        highlightElement!.style.outline = '';
+                      }, 1500);
+                    }
+                  }
+                  
+                  // Reset hash
+                  setTimeout(() => {
+                    window.location.hash = currentHash;
+                  }, 100);
+                }, 200);
+              };
+
+              scrollToHighlight();
             }}
             className="w-3 h-3 rounded-full bg-yellow-400 hover:cursor-pointer hover:bg-yellow-500 transition-colors flex-shrink-0"
           />
