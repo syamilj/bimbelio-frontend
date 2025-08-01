@@ -142,7 +142,7 @@ export default function Provider({
     },
     body,
     streamProtocol: 'text',
-    onError: (error) => {
+    onError: (error: Error) => {
       toaster({
         title: 'Gagal',
         description: error?.message ?? 'Terjadi kesalahan!',
