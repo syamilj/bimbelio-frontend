@@ -27,6 +27,29 @@
   width: 200px;
 }
 
+/* Fix untuk BlockNote text selection/highlight */
+.bn-editor ::selection {
+  background: rgba(180, 213, 255, 0.3) !important;
+  color: inherit !important;
+}
+
+.bn-editor ::-moz-selection {
+  background: rgba(180, 213, 255, 0.3) !important;
+  color: inherit !important;
+}
+
+/* Prevent PDF highlighter styles from affecting BlockNote */
+.bn-editor * {
+  user-select: text !important;
+}
+
+.bn-editor .ProseMirror {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
 /* .bn-block-content[data-content-type='image'] .bn-resize-handle {
   display: none;
 } */

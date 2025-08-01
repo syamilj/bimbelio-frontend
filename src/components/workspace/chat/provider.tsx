@@ -158,8 +158,20 @@ export default function Provider({
     },
   });
 
+  // Helper function untuk convert UIMessage ke MessageDataType
+  const convertToMessageDataType = (messages: Message[]): MessageDataType[] => {
+    return messages.map(msg => ({
+      id: msg.id,
+      createdAt: msg.createdAt,
+      content: msg.content,
+      role: msg.role,
+      like: false, // Default value
+      dislike: false, // Default value
+    }));
+  };
+
   const useMessages = {
-    messages: messages as MessageDataType[],
+    messages: convertToMessageDataType(messages),
     inputMessages,
     handleInputChangeMessages,
     handleSubmitMessages,
@@ -168,7 +180,7 @@ export default function Provider({
   };
 
   const useMessagesEdit = {
-    messageEdit: messageEdit as MessageDataType[],
+    messageEdit: convertToMessageDataType(messageEdit),
     inputMessagesEdit,
     handleInputChangeMessagesEdit,
     handleSubmitMessagesEdit,
