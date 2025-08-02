@@ -18,6 +18,7 @@ import { Label } from '@/components/ui/label';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
+import { pixel } from '@/lib/pixel/_core';
 import { cn } from '@/lib/utils';
 import {
   getPriceByDiscountFixedAmount,
@@ -153,6 +154,14 @@ export function DialogPayment({
           setPagesSetting('rt');
           setTransactionHistory(true);
         },
+      });
+      pixel.meta.track('Purchase', {
+        value: discountPrice || plan.price,
+        currency: 'IDR',
+      });
+      pixel.tiktok.track('Purchase', {
+        value: discountPrice || plan.price,
+        currency: 'IDR',
       });
     } catch (error) {
       toaster({

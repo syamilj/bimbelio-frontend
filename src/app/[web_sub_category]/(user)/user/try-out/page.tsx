@@ -5,6 +5,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { UserTryout } from '@/types/database';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -34,6 +35,15 @@ export default function TryOutPage() {
       Router.push(`/${website_sub_category_id}/user/try-out`);
     }
   }, [payment]);
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Tryout Page',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Tryout Page',
+    });
+  }, []);
 
   return (
     <div>

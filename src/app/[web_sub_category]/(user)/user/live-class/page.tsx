@@ -22,6 +22,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { pixel } from '@/lib/pixel/_core';
 import { formatDateTime, formatDuration } from '@/lib/utils';
 import { getStatusColor } from '@/lib/utils/live-class';
 import {
@@ -50,7 +51,7 @@ import {
   Video,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CalendarView } from './_components/live-class-calendar-view';
 import { useCountdown } from './_components/live-class-hooks';
 import {
@@ -136,6 +137,15 @@ export default function LiveClassStudentDashboard() {
   console.log({ LiveClassRegistered, LiveClassInvited });
 
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Live Class Page',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Live Class Page',
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">

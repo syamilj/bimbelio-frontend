@@ -2,6 +2,7 @@
 
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { Category, Subcategory } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
@@ -35,6 +36,17 @@ export default function DocumentSearch() {
   useEffect(() => {
     fetchSearchData();
   }, [search, categoryId]);
+
+  useEffect(() => {
+    pixel.meta.track('Search', {
+      content_name: 'Document Search',
+      search_string: search,
+    });
+    pixel.tiktok.track('Search', {
+      content_name: 'Document Search',
+      search_string: search,
+    });
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 px-4 md:gap-8 md:p-0">

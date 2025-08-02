@@ -8,6 +8,7 @@ import { TryOutSelector } from '@/app/[web_sub_category]/(user)/user/leaderboard
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -102,6 +103,15 @@ export default function LeaderboardClient() {
       },
     );
   }, [selectedTryOut, session]);
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Leaderboard',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Leaderboard',
+    });
+  }, []);
 
   return (
     <LeaderboardContext.Provider

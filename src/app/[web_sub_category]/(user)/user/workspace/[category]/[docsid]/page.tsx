@@ -16,6 +16,7 @@ import { DocDataType } from '@/components/pdf-reader';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { pixel } from '@/lib/pixel/_core';
 import { cn } from '@/lib/utils';
 import { CrownIcon, LockIcon, PlayIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -111,6 +112,15 @@ const DocViewerPage = () => {
   }, []);
 
   const isMobile = useMedia({ maxWidth: '768px' });
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Workspace',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Workspace',
+    });
+  }, []);
 
   if (!docId) {
     return <p>Document ID not found in the URL.</p>;

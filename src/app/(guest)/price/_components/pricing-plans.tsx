@@ -5,7 +5,9 @@ import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/typ
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { pixel } from '@/lib/pixel/_core';
 import { Sparkles, Zap } from 'lucide-react';
+import { useEffect } from 'react';
 
 type PlanType = PlanDataType;
 
@@ -37,6 +39,11 @@ export default function PricingPlans() {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const topping = PricingData?.topping || [];
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', { content_name: 'Pricing Page' });
+    pixel.tiktok.track('ViewContent', { content_name: 'Pricing Page' });
+  }, []);
 
   return (
     <div className="space-y-20">

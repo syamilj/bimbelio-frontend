@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { pixel } from '@/lib/pixel/_core';
 import {
   formatDateTime,
   formatDuration,
@@ -50,6 +51,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { JoinLiveClassModal } from '../_components/join-live-class-modal';
 import { LiveClassRatingsDisplay } from '../_components/live-class-ratings-display';
 import { RatingModal } from '../_components/rating-modal';
@@ -87,6 +89,15 @@ export default function LiveClassStudentDetail() {
       id: classId,
     },
   });
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Live Class Detail',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Live Class Detail',
+    });
+  }, []);
 
   if (isLoading) {
     return (

@@ -8,6 +8,7 @@ import {
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
+import { pixel } from '@/lib/pixel/_core';
 import {
   CourseProgress,
   TryoutAnswer,
@@ -125,6 +126,11 @@ const WorkspaceCourse = () => {
       Run();
     }
   }, [isHistoryUpdated]);
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', { content_name: 'Course Detail' });
+    pixel.tiktok.track('ViewContent', { content_name: 'Course Detail' });
+  }, []);
 
   if (!docId && CourseData?.document) {
     return <p>Document ID not found in the URL.</p>;

@@ -1,6 +1,7 @@
 'use client';
 
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import type { Category } from '@/types/database';
 import { useEffect, useState } from 'react';
 import SearchDeskstop from '../../_components/search-dekstop';
@@ -22,6 +23,15 @@ export default function ExploreClient() {
 
   useEffect(() => {
     fetchCategory();
+  }, []);
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Explore Document',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Explore Document',
+    });
   }, []);
 
   return (

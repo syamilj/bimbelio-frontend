@@ -19,6 +19,7 @@ import {
   getGeneral,
   mutateGeneral,
 } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { getDateString } from '@/lib/utils';
 import { ChatHistory } from '@/types/database';
 import {
@@ -159,6 +160,11 @@ export default function AIChatPage() {
     'Biologi Sel',
   ];
 
+  useEffect(() => {
+    pixel.meta.track('ViewContent', { content_name: 'Chat AI' });
+    pixel.tiktok.track('ViewContent', { content_name: 'Chat AI' });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto max-w-5xl px-4 py-8">
@@ -220,7 +226,10 @@ export default function AIChatPage() {
               className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Clock className="w-5 h-5" style={{ color: mainColor }} />
+              <Clock
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
             </div>
             <div className="text-left">
               <div className="font-semibold">Lanjutkan Percakapan</div>
@@ -237,7 +246,10 @@ export default function AIChatPage() {
               className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Sparkles className="w-5 h-5" style={{ color: mainColor }} />
+              <Sparkles
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
             </div>
             <div className="text-left">
               <div className="font-semibold">Eksplorasi Materi</div>
@@ -277,7 +289,9 @@ export default function AIChatPage() {
                     <p className="font-medium text-gray-900 mb-1">
                       {topic.length > 40 ? topic.slice(0, 40) + '...' : topic}
                     </p>
-                    <p className="text-xs text-gray-500">Klik untuk mulai chat</p>
+                    <p className="text-xs text-gray-500">
+                      Klik untuk mulai chat
+                    </p>
                   </div>
                 </div>
               </button>
@@ -297,12 +311,18 @@ export default function AIChatPage() {
             <div className="text-center">
               <div className="text-3xl font-bold mb-2">24/7</div>
               <div className="text-white/90 font-medium">Siap Membantu</div>
-              <div className="text-sm text-white/70 mt-1">Kapan saja dibutuhkan</div>
+              <div className="text-sm text-white/70 mt-1">
+                Kapan saja dibutuhkan
+              </div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold mb-2">∞</div>
-              <div className="text-white/90 font-medium">Topik Pembelajaran</div>
-              <div className="text-sm text-white/70 mt-1">Tanpa batas materi</div>
+              <div className="text-white/90 font-medium">
+                Topik Pembelajaran
+              </div>
+              <div className="text-sm text-white/70 mt-1">
+                Tanpa batas materi
+              </div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold mb-2">🚀</div>
@@ -313,7 +333,10 @@ export default function AIChatPage() {
         </div>
 
         {/* Chat History Dialog */}
-        <Dialog open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
+        <Dialog
+          open={isHistoryOpen}
+          onOpenChange={setIsHistoryOpen}
+        >
           <DialogContent className="max-w-2xl max-h-[80vh] p-0 overflow-hidden mx-4">
             <DialogHeader className="p-6 pb-4 border-b">
               <DialogTitle className="text-xl">Riwayat Percakapan</DialogTitle>
