@@ -243,7 +243,7 @@ export default function ReactMarkdownChatAI({
     blockquote: ({ children, ...props }: any) => (
       <blockquote
         {...props}
-        className="border-l-4 border-gray-300 dark:border-gray-700 pl-4 py-2 mb-4 bg-gray-50 dark:bg-gray-800 italic"
+        className="border-l-4 border-gray-300 pl-4 py-2 mb-4 bg-gray-50 italic"
       >
         {children}
       </blockquote>
@@ -253,7 +253,7 @@ export default function ReactMarkdownChatAI({
         return (
           <code
             {...props}
-            className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono"
+            className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono"
           >
             {children}
           </code>
@@ -262,7 +262,7 @@ export default function ReactMarkdownChatAI({
       return (
         <code
           {...props}
-          className="block bg-gray-100 dark:bg-gray-800 p-3 rounded-lg overflow-x-auto text-sm font-mono mb-4"
+          className="block bg-gray-100 p-3 rounded-lg overflow-x-auto text-sm font-mono mb-4"
         >
           {children}
         </code>
@@ -288,21 +288,24 @@ export default function ReactMarkdownChatAI({
 
   return (
     <div className="space-y-4">
-      <ReactMarkdown
-        remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
-        rehypePlugins={[rehypeKatex]}
+      <div
         className={cn(
           'prose break-words ReactMarkdown max-w-none dark:prose-invert',
           className,
         )}
-        components={markdownComponents}
       >
-        {main}
-      </ReactMarkdown>
+        <ReactMarkdown
+          remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
+          rehypePlugins={[rehypeKatex]}
+          components={markdownComponents}
+        >
+          {main}
+        </ReactMarkdown>
+      </div>
 
       {/* Blok Saran Pertanyaan */}
       {saran && (
-        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
               <Lightbulb className="text-white w-4 h-4" />
@@ -316,61 +319,62 @@ export default function ReactMarkdownChatAI({
               <button
                 key={i}
                 type="button"
-                className="w-full text-left p-3 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-200 text-gray-700 dark:text-gray-300 text-sm leading-relaxed shadow-sm hover:shadow-md"
+                className="w-full text-left p-3 bg-white border border-blue-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-sm leading-relaxed shadow-sm hover:shadow-md"
                 onClick={() => handleSaranClick(q)}
               >
-                <span className="font-medium text-blue-600 dark:text-blue-400 mr-2">
+                <span className="font-medium text-blue-600 mr-2">
                   {i + 1}.
                 </span>
-                <ReactMarkdown
-                  remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
-                  rehypePlugins={[rehypeKatex]}
-                  className="inline prose prose-sm max-w-none dark:prose-invert"
-                  components={{
-                    p: ({ children, ...props }) => (
-                      <span {...props}>{processPageTags(children)}</span>
-                    ),
-                    strong: ({ children, ...props }) => (
-                      <strong
-                        {...props}
-                        className="font-semibold"
-                      >
-                        {processPageTags(children)}
-                      </strong>
-                    ),
-                    em: ({ children, ...props }) => (
-                      <em
-                        {...props}
-                        className="italic"
-                      >
-                        {processPageTags(children)}
-                      </em>
-                    ),
-                    code: ({ node, children, ...props }) => {
-                      const isInline = (node as any)?.properties?.inline;
-                      if (isInline) {
+                <span className="inline prose prose-sm max-w-none dark:prose-invert">
+                  <ReactMarkdown
+                    remarkPlugins={[[remarkMath, remarkMathOptions], remarkGfm]}
+                    rehypePlugins={[rehypeKatex]}
+                    components={{
+                      p: ({ children, ...props }) => (
+                        <span {...props}>{processPageTags(children)}</span>
+                      ),
+                      strong: ({ children, ...props }) => (
+                        <strong
+                          {...props}
+                          className="font-semibold"
+                        >
+                          {processPageTags(children)}
+                        </strong>
+                      ),
+                      em: ({ children, ...props }) => (
+                        <em
+                          {...props}
+                          className="italic"
+                        >
+                          {processPageTags(children)}
+                        </em>
+                      ),
+                      code: ({ node, children, ...props }) => {
+                        const isInline = (node as any)?.properties?.inline;
+                        if (isInline) {
+                          return (
+                            <code
+                              {...props}
+                              className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono"
+                            >
+                              {children}
+                            </code>
+                          );
+                        }
                         return (
                           <code
                             {...props}
-                            className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-xs font-mono"
+                            className="block bg-gray-100 p-2 rounded text-xs font-mono"
                           >
                             {children}
                           </code>
                         );
-                      }
-                      return (
-                        <code
-                          {...props}
-                          className="block bg-gray-100 dark:bg-gray-800 p-2 rounded text-xs font-mono"
-                        >
-                          {children}
-                        </code>
-                      );
-                    },
-                  }}
-                >
-                  {q}
-                </ReactMarkdown>
+                      },
+                    }}
+                  >
+                    {q}
+                  </ReactMarkdown>
+                </span>
               </button>
             ))}
           </div>

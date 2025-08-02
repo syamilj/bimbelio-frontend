@@ -163,7 +163,7 @@ const FinalCTA = () => {
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                 Wujudkan
                 <span
-                  className="block bg-gradient-to-r bg-clip-text text-transparent"
+                  className="block bg-linear-to-r bg-clip-text text-transparent"
                   style={{
                     backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -188,7 +188,7 @@ const FinalCTA = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
-              className="p-6 rounded-2xl border-2 border-orange-200 bg-gradient-to-r from-orange-50 to-red-50"
+              className="p-6 rounded-2xl border-2 border-orange-200 bg-linear-to-r from-orange-50 to-red-50"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
@@ -208,7 +208,7 @@ const FinalCTA = () => {
                     viewport={{ once: true }}
                     className="flex items-center gap-2"
                   >
-                    <CheckCircle className="w-4 h-4 text-orange-600 flex-shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-orange-600 shrink-0" />
                     <span className="text-orange-800 text-sm font-medium">
                       {reason}
                     </span>
@@ -229,7 +229,7 @@ const FinalCTA = () => {
                   className="flex items-start gap-3 p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-all duration-300"
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <div style={{ color: mainColor }}>{benefit.icon}</div>
@@ -261,7 +261,7 @@ const FinalCTA = () => {
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 group-hover:animate-shimmer" />
+                    <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 group-hover:animate-shimmer" />
                     <Zap className="w-5 h-5" />
                     <span>Mulai Try Out Gratis</span>
                     <ArrowRight className="w-5 h-5" />
@@ -282,7 +282,7 @@ const FinalCTA = () => {
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 group-hover:animate-shimmer" />
+                  <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 group-hover:animate-shimmer" />
                   <Sparkles className="w-5 h-5" />
                   <span>Daftar Sekarang GRATIS</span>
                   <ArrowRight className="w-5 h-5" />

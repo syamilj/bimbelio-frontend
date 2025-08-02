@@ -51,36 +51,36 @@ const BlogAdmin = () => {
         open={open}
         setOpen={setOpen}
       />
-      <div className="mt-[1rem] flex flex-col gap-[2rem]">
-        <div className="flex flex-col gap-[2rem]">
+      <div className="mt-4 flex flex-col gap-8">
+        <div className="flex flex-col gap-8">
           <div
             id="head"
             className="flex items-center justify-between"
           >
-            <div className="flex items-center gap-[1rem]">
+            <div className="flex items-center gap-4">
               <input
                 type="text"
-                className="w-[300px] rounded-[.8rem] border border-transparent px-[1rem] py-[.5rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+                className="w-[300px] rounded-[.8rem] border border-transparent px-4 py-[.5rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
                 placeholder="Cari blog.."
               />
-              <div className="flex h-full items-center justify-center rounded-[.8rem] bg-white px-[2rem] py-[.5rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:shadow-default">
+              <div className="flex h-full items-center justify-center rounded-[.8rem] bg-white px-8 py-[.5rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:shadow-default">
                 Filter
               </div>
 
               <Link
                 href={`/${website_sub_category_id}/admin/blog/tag`}
-                className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-[1rem] py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
+                className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-4 py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
               >
                 Tambah tag
               </Link>
             </div>
-            <div className="flex items-center gap-[1rem] text-[.9rem]">
-              <div className="flex h-full cursor-pointer items-center justify-center px-[1rem] font-medium text-main-gray-text duration-300 md:hover:text-black">
+            <div className="flex items-center gap-4 text-[.9rem]">
+              <div className="flex h-full cursor-pointer items-center justify-center px-4 font-medium text-main-gray-text duration-300 md:hover:text-black">
                 Export CSV
               </div>
               <Link
                 href={`/${website_sub_category_id}/admin/blog/add`}
-                className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-[1rem] py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
+                className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-4 py-[.6rem] text-white duration-300 md:hover:bg-main-hover"
               >
                 Tambah blog
               </Link>
@@ -93,14 +93,14 @@ const BlogAdmin = () => {
             <table className="w-full rounded-[.8rem]">
               <thead>
                 <tr>
-                  <th className="rounded-tl-[.8rem] bg-white py-[1rem] text-center">
+                  <th className="rounded-tl-[.8rem] bg-white py-4 text-center">
                     No
                   </th>
-                  <th className="bg-white py-[1rem] text-start">Judul</th>
-                  <th className="bg-white py-[1rem] text-center">Publish</th>
-                  <th className="bg-white py-[1rem] text-center">Views</th>
-                  <th className="bg-white py-[1rem] text-center">Status</th>
-                  <th className="rounded-tr-[.8rem] bg-white py-[1rem] text-start">
+                  <th className="bg-white py-4 text-start">Judul</th>
+                  <th className="bg-white py-4 text-center">Publish</th>
+                  <th className="bg-white py-4 text-center">Views</th>
+                  <th className="bg-white py-4 text-center">Status</th>
+                  <th className="rounded-tr-[.8rem] bg-white py-4 text-start">
                     Action
                   </th>
                 </tr>
@@ -110,39 +110,39 @@ const BlogAdmin = () => {
                   <tr key={i}>
                     <td
                       className={cn(
-                        'border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text',
+                        'border-t bg-white px-[.5rem] py-4 text-center text-[.9rem] text-main-gray-text',
                         i === blogs.length - 1 && 'rounded-bl-[.8rem]',
                       )}
                     >
                       {i + 1}
                     </td>
-                    <td className="border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text">
+                    <td className="border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text">
                       {item.title}
                     </td>
-                    <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
+                    <td className="border-t bg-white px-[.5rem] py-4 text-center text-[.9rem] text-main-gray-text">
                       {item.publishedAt ? getDateString(item.publishedAt) : '-'}
                     </td>
-                    <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
+                    <td className="border-t bg-white px-[.5rem] py-4 text-center text-[.9rem] text-main-gray-text">
                       {item.views}
                     </td>
-                    <td className="border-t bg-white px-[.5rem] py-[1rem] text-center text-[.9rem] text-main-gray-text">
+                    <td className="border-t bg-white px-[.5rem] py-4 text-center text-[.9rem] text-main-gray-text">
                       {item.status}
                     </td>
                     <td
                       className={cn(
-                        'border-t bg-white px-[.5rem] py-[1rem] text-start text-[.9rem] text-main-gray-text',
+                        'border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text',
                         i === blogs.length - 1 && 'rounded-br-[.8rem]',
                       )}
                     >
                       <div className="flex w-full items-center justify-center gap-[.5rem]">
                         <Link
                           href={`/${website_sub_category_id}/admin/blog/edit/${item.id}`}
-                          className="rounded-[.5rem] bg-main px-[1rem] py-[.5rem] text-white duration-300 md:hover:bg-main-hover"
+                          className="rounded-[.5rem] bg-main px-4 py-[.5rem] text-white duration-300 md:hover:bg-main-hover"
                         >
                           Edit
                         </Link>
                         <button
-                          className="rounded-[.5rem] bg-red-100 px-[1rem] py-[.5rem] font-medium text-red-700 duration-300 md:hover:bg-red-200"
+                          className="rounded-[.5rem] bg-red-100 px-4 py-[.5rem] font-medium text-red-700 duration-300 md:hover:bg-red-200"
                           onClick={() => {
                             setOpen(true);
                             setBlogId(item.id);
@@ -191,7 +191,7 @@ const ModalDeleteBlog = ({ onClick, open, setOpen, isLoading }: Props) => {
           </p>
           <div className="h-[80px] w-full">
             {!isLoading ? (
-              <div className="grid w-full grid-cols-2 gap-[.5rem] pt-[2rem] text-[.9rem]">
+              <div className="grid w-full grid-cols-2 gap-[.5rem] pt-8 text-[.9rem]">
                 <div
                   className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
                   onClick={() => {
@@ -209,7 +209,7 @@ const ModalDeleteBlog = ({ onClick, open, setOpen, isLoading }: Props) => {
                 </div>
               </div>
             ) : (
-              <div className="flex h-full w-full items-center justify-center pt-[2rem]">
+              <div className="flex h-full w-full items-center justify-center pt-8">
                 <Spinner />
               </div>
             )}

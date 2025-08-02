@@ -85,7 +85,7 @@ export default function Free() {
               key={i}
               className="relative"
             >
-              <Skeleton className="h-[200px] rounded-2xl bg-gradient-to-br from-emerald-100 to-green-100" />
+              <Skeleton className="h-[200px] rounded-2xl bg-linear-to-br from-emerald-100 to-green-100" />
               <div
                 className="absolute top-3 right-3 w-3 h-3 rounded-full animate-pulse"
                 style={{ backgroundColor: mainColor }}

@@ -1,7 +1,6 @@
 'use client';
 
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 import { useSession } from './provider-session-auth';
 
@@ -12,16 +11,6 @@ export default function ProviderCheckSubscription({
 }) {
   const [checkSubs, setCheckSubs] = useState<boolean>(true);
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const order_id = searchParams?.get('order_id');
-  const transaction_status = searchParams?.get('transaction_status');
-
-  //   const { mutateAsync: buyTryoutCheck } =
-  //     api.payment.buyTryoutPremiumRedirect.useMutation();
-
-  // const CheckSubscription = api.user.checkSubscription.useMutation();
-
   const CheckSubscription = async () => {
     const res = await mutateGeneral('/user/checkSubscription', {
       payload: { userId: session?.user.id },

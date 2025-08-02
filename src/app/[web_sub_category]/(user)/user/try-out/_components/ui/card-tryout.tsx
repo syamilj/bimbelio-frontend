@@ -302,7 +302,7 @@ export default function CardTryOut({
 
               {/* Free Badge */}
               <div className="absolute top-4 left-4 z-20">
-                <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white border-0 shadow-sm flex items-center gap-1">
+                <Badge className="bg-linear-to-r from-emerald-500 to-green-600 text-white border-0 shadow-sm flex items-center gap-1">
                   <Award className="w-3 h-3" />
                   <span className="text-xs font-bold">GRATIS</span>
                 </Badge>
@@ -331,7 +331,7 @@ export default function CardTryOut({
                   )}
 
                   {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
 
                   {/* Title Overlay */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
@@ -488,7 +488,7 @@ export default function CardTryOut({
 
       {/* Enhanced Modal */}
       {showDetail && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div
             className="absolute inset-0"
             onClick={() => setShowDetail(null)}

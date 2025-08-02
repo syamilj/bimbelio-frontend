@@ -172,11 +172,11 @@ export default function Table() {
                   <td className="bg-white p-[.5rem]">
                     <div className="flex w-full items-center justify-center">
                       {item.premium ? (
-                        <div className="flex w-[100px] items-center justify-center rounded-[1rem] bg-main py-[.2rem] text-white">
+                        <div className="flex w-[100px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
                           Premium
                         </div>
                       ) : (
-                        <div className="flex w-[100px] items-center justify-center rounded-[1rem] bg-main py-[.2rem] text-white">
+                        <div className="flex w-[100px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
                           Free
                         </div>
                       )}
@@ -184,14 +184,14 @@ export default function Table() {
                   </td>
                   <td className="bg-white p-[.5rem]">
                     <div className="flex w-full items-center justify-center">
-                      <div className="flex w-[76px] items-center justify-center rounded-[1rem] bg-main py-[.2rem] text-white">
+                      <div className="flex w-[76px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
                         {item.category.name}
                       </div>
                     </div>
                   </td>
                   <td className="bg-white p-[.5rem]">
                     <div className="flex w-full items-center justify-center">
-                      <div className="flex w-[76px] items-center justify-center rounded-[1rem] bg-bg-workspace py-[.2rem] font-medium text-black">
+                      <div className="flex w-[76px] items-center justify-center rounded-2xl bg-bg-workspace py-[.2rem] font-medium text-black">
                         {item.subCategory.name}
                       </div>
                     </div>
@@ -229,7 +229,7 @@ export default function Table() {
                       />
 
                       <button
-                        className="cursor-pointer border border-black px-[1rem] py-[.3rem]"
+                        className="cursor-pointer border border-black px-4 py-[.3rem]"
                         onClick={() => {
                           setEditData({ ...item });
                         }}
@@ -263,17 +263,17 @@ export default function Table() {
                   </td>
                   <td className="bg-transparent p-[.5rem]">1000</td>
                   <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-[1rem] bg-transparent px-[.7rem] py-[.2rem] text-transparent">
+                    <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
                       awdawd
                     </div>
                   </td>
                   <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-[1rem] bg-transparent px-[.7rem] py-[.2rem] text-transparent">
+                    <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
                       awdawd
                     </div>
                   </td>
                   <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-[1rem] bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
+                    <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
                       awdwadaw
                     </div>
                   </td>
@@ -297,11 +297,11 @@ export default function Table() {
                           <i className="bx bx-download"></i>
                         </div>
                       </div>
-                      <button className="cursor-default border border-transparent px-[1rem] py-[.3rem]">
+                      <button className="cursor-default border border-transparent px-4 py-[.3rem]">
                         Hapus
                       </button>
 
-                      <button className="cursor-default border border-transparent px-[1rem] py-[.3rem]">
+                      <button className="cursor-default border border-transparent px-4 py-[.3rem]">
                         Edit Document
                       </button>
                     </div>
@@ -316,14 +316,14 @@ export default function Table() {
         id="pagination"
         className="flex w-full items-center justify-between"
       >
-        <div className="flex items-center gap-[1rem]">
+        <div className="flex items-center gap-4">
           {/* <p>Show</p>
-          <div className="bg-white rounded-[.5rem] px-[1rem] py-[.5rem] text-main-gray-text flex items-center gap-[.5rem]">
+          <div className="bg-white rounded-[.5rem] px-4 py-[.5rem] text-main-gray-text flex items-center gap-[.5rem]">
             10
             <i className="bx bx-chevron-down text-[1.5rem]" />
           </div> */}
         </div>
-        <div className="flex items-center gap-[1rem]">
+        <div className="flex items-center gap-4">
           <div onClick={() => handlePagination('prev')}>
             <IconTailedArrowPrev
               className="cursor-pointer duration-300 md:hover:-translate-x-1"
@@ -343,21 +343,21 @@ export default function Table() {
       </div>
 
       {deleteConfirmation && (
-        <div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-[#ffffff7a]">
-          <div className="flex flex-col gap-[1rem] rounded-[1rem] bg-white p-[1rem] shadow-lg">
+        <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-[#ffffff7a]">
+          <div className="flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-lg">
             <p className="text-center">
               Apakah anda yakin ingin menghapus dokumen <br /> &quot;
               {deleteData.title}&quot; ?
             </p>
             <div className="flex w-full justify-center gap-[.5rem]">
               <button
-                className="rounded-[.3rem] bg-blue-600 px-[1rem] py-[.2rem] text-white hover:bg-blue-500"
+                className="rounded-[.3rem] bg-blue-600 px-4 py-[.2rem] text-white hover:bg-blue-500"
                 onClick={() => setDeleteConfirmation(false)}
               >
                 No
               </button>
               <button
-                className="rounded-[.3rem] bg-red-600 px-[1rem] py-[.2rem] text-white hover:bg-red-500"
+                className="rounded-[.3rem] bg-red-600 px-4 py-[.2rem] text-white hover:bg-red-500"
                 onClick={() => removeDocument()}
               >
                 Yes

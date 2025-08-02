@@ -16,8 +16,8 @@ export default function SIMAK_UI() {
         <div className="absolute bottom-auto left-auto right-32 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
       </div>
       <div className="min-h-screen">
-        <div className="flex w-full flex-col gap-[5rem]">
-          {/* <h1 className="text-center mt-[10rem] text-xl font-medium">
+        <div className="flex w-full flex-col gap-20">
+          {/* <h1 className="text-center mt-40 text-xl font-medium">
             SIMAK_UI
           </h1> */}
           <HeroSection />

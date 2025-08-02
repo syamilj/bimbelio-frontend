@@ -602,7 +602,7 @@ export default function RegistrationProofModal({
           >
             {/* Premium Badge */}
             <div className="absolute top-4 right-4">
-              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0">
+              <Badge className="bg-linear-to-r from-yellow-400 to-orange-500 text-white border-0">
                 <Crown className="w-3 h-3 mr-1" />
                 Premium
               </Badge>
@@ -610,7 +610,7 @@ export default function RegistrationProofModal({
 
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <div>

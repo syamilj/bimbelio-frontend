@@ -103,7 +103,7 @@ const ActiveLink = ({
       {/* Shimmer Effect for Active State */}
       {isActive && (
         <div className="absolute inset-0 rounded-2xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 group-hover:animate-shimmer" />
+          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -skew-x-12 group-hover:animate-shimmer" />
         </div>
       )}
     </Link>

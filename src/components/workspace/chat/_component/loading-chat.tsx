@@ -20,10 +20,10 @@ const LoadingChat = () => {
     >
       <div className="flex gap-3 max-w-[85%] md:max-w-[75%]">
         {/* Avatar */}
-        <div className="flex-shrink-0">
-          <Avatar className="w-8 h-8 border border-gray-200 dark:border-gray-700">
+        <div className="shrink-0">
+          <Avatar className="w-8 h-8 border border-gray-200">
             <AvatarFallback
-              className="text-white font-semibold bg-gradient-to-br"
+              className="text-white font-semibold bg-linear-to-br"
               style={{
                 backgroundImage: `linear-gradient(135deg, ${mainColor}, ${websiteSubCategory?.secondary_color || mainColor})`,
               }}

@@ -60,11 +60,12 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
           {/* Main Content */}
           <main
             className={cn(
-              'pt-16 min-h-screen transition-all duration-300',
-              !minimizeSidebar ? 'md:pl-72' : 'md:pl-20',
+              'py-24 min-h-screen transition-all duration-300',
+              !minimizeSidebar ? 'md:pl-84' : 'md:pl-32',
+              'pr-12',
             )}
           >
-            <div>{children}</div>
+            {children}
           </main>
         </div>
       </CheckSubscription>

@@ -47,7 +47,7 @@ export function TopWinners() {
           bgGradient: 'from-yellow-400 via-yellow-500 to-amber-500',
           ringGradient: 'from-yellow-300 to-yellow-500',
           icon: Crown,
-          iconBg: 'bg-gradient-to-br from-yellow-400 to-yellow-600',
+          iconBg: 'bg-linear-to-br from-yellow-400 to-yellow-600',
           textColor: 'text-yellow-700',
           shadowColor: 'shadow-yellow-500/30',
           position: 'top-0',
@@ -60,7 +60,7 @@ export function TopWinners() {
           bgGradient: 'from-slate-300 via-slate-400 to-slate-500',
           ringGradient: 'from-slate-300 to-slate-500',
           icon: Medal,
-          iconBg: 'bg-gradient-to-br from-slate-300 to-slate-500',
+          iconBg: 'bg-linear-to-br from-slate-300 to-slate-500',
           textColor: 'text-slate-700',
           shadowColor: 'shadow-slate-500/30',
           position: 'top-8',
@@ -73,7 +73,7 @@ export function TopWinners() {
           bgGradient: 'from-orange-400 via-orange-500 to-orange-600',
           ringGradient: 'from-orange-300 to-orange-500',
           icon: Award,
-          iconBg: 'bg-gradient-to-br from-orange-400 to-orange-600',
+          iconBg: 'bg-linear-to-br from-orange-400 to-orange-600',
           textColor: 'text-orange-700',
           shadowColor: 'shadow-orange-500/30',
           position: 'top-8',
@@ -178,7 +178,7 @@ export function TopWinners() {
                         className={cn(
                           'absolute -top-2 md:-top-3 -right-1 md:-right-2 z-40 rounded-full flex items-center justify-center text-white font-bold text-xs md:text-sm shadow-lg border-2 border-white',
                           'w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12',
-                          `bg-gradient-to-br ${config.bgGradient}`,
+                          `bg-linear-to-br ${config.bgGradient}`,
                           config.shadowColor,
                         )}
                       >
@@ -201,7 +201,7 @@ export function TopWinners() {
                         <div
                           className={cn(
                             'relative rounded-full p-1 shadow-xl',
-                            `bg-gradient-to-br ${config.ringGradient}`,
+                            `bg-linear-to-br ${config.ringGradient}`,
                             config.shadowColor,
                             'group-hover:scale-105 transition-transform duration-300',
                           )}
@@ -279,14 +279,14 @@ export function TopWinners() {
 
                           {/* Animated background for winner */}
                           {winner.rank === 1 && (
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer" />
+                            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer" />
                           )}
                         </div>
 
                         {/* Special Winner Badge */}
                         {winner.rank === 1 && (
                           <div className="mt-1 md:mt-2">
-                            <div className="inline-flex items-center gap-1 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-yellow-400 to-amber-500 shadow-md">
+                            <div className="inline-flex items-center gap-1 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white bg-linear-to-r from-yellow-400 to-amber-500 shadow-md">
                               <Crown className="w-2 h-2 md:w-3 md:h-3" />
                               <span className="text-xs">JUARA</span>
                             </div>
@@ -295,7 +295,7 @@ export function TopWinners() {
 
                         {winner.rank === 2 && (
                           <div className="mt-1 md:mt-2">
-                            <div className="inline-flex items-center gap-1 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-slate-400 to-slate-500 shadow-md">
+                            <div className="inline-flex items-center gap-1 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white bg-linear-to-r from-slate-400 to-slate-500 shadow-md">
                               <Medal className="w-2 h-2 md:w-3 md:h-3" />
                               <span className="text-xs">KEDUA</span>
                             </div>
@@ -304,7 +304,7 @@ export function TopWinners() {
 
                         {winner.rank === 3 && (
                           <div className="mt-1 md:mt-2">
-                            <div className="inline-flex items-center gap-1 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-orange-400 to-orange-500 shadow-md">
+                            <div className="inline-flex items-center gap-1 px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-bold text-white bg-linear-to-r from-orange-400 to-orange-500 shadow-md">
                               <Award className="w-2 h-2 md:w-3 md:h-3" />
                               <span className="text-xs">KETIGA</span>
                             </div>

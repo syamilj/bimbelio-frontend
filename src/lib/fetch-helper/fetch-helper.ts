@@ -8,6 +8,7 @@ export const getGeneral = async (
     setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
     setPage?: React.Dispatch<React.SetStateAction<any>>;
     setTotalPages?: React.Dispatch<React.SetStateAction<any>>;
+    setTotalData?: React.Dispatch<React.SetStateAction<any>>;
     firstLoad?: boolean;
     endLoad?: boolean;
     hideToast?: boolean;
@@ -66,6 +67,7 @@ export const getGeneral = async (
     if (resData.total_pages && resData.page) {
       if (more?.setPage) more.setPage(resData.page);
       if (more?.setTotalPages) more.setTotalPages(resData.total_pages);
+      if (more?.setTotalData) more.setTotalData(resData.total_data);
     }
     return resData || null;
   } catch (error) {
@@ -243,7 +245,7 @@ export const mutateGeneral = async (
     else showToast = true;
     let res;
     if (type === 'post' || type === 'put') {
-      res = await axiosInstance[type](url, payload);
+      res = await axiosInstance[type](url, payload, { params });
     } else {
       res = await axiosInstance.delete(url, { params });
     }

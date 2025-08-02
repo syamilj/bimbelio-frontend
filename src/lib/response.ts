@@ -25,6 +25,12 @@ export const responseError = (
   };
 };
 
+export const throwError = (status: number, message?: string) => {
+  const error = new Error(message || 'Terjadi kesalahan pada server');
+  (error as any).status = status || 500;
+  throw error;
+};
+
 export const response = (
   res: any,
   showToast?: boolean,
@@ -36,6 +42,7 @@ export const response = (
   data?: any;
   page?: number;
   total_pages?: number;
+  total_data?: number;
 } => {
   if (showToast) {
     toaster({

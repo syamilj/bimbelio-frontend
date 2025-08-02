@@ -135,12 +135,12 @@ const ChatAI = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
       <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
         {data[index].image}
       </div>
       <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
           <p>{data[index].content}</p>
           {data[index].plus && (
@@ -149,9 +149,9 @@ const ChatAI = () => {
             </span>
           )}
         </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
+        <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -236,12 +236,12 @@ const Notes = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
       <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
         {data[index].image}
       </div>
       <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
           <p>{data[index].content}</p>
           {data[index].plus && (
@@ -250,9 +250,9 @@ const Notes = () => {
             </span>
           )}
         </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
+        <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -347,12 +347,12 @@ const QuizAI = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
       <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
         {data[index].image}
       </div>
       <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
           <p>{data[index].content}</p>
           {data[index].plus && (
@@ -361,9 +361,9 @@ const QuizAI = () => {
             </span>
           )}
         </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
+        <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -470,12 +470,12 @@ const Tryout = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
       <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
         {data[index].image}
       </div>
       <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
           <p>{data[index].content}</p>
           {data[index].plus && (
@@ -484,9 +484,9 @@ const Tryout = () => {
             </span>
           )}
         </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
+        <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);

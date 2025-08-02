@@ -119,13 +119,13 @@ export default function UTBKSIMAKPredictor() {
             )}
           >
             <h1 className="text-[1.4rem] font-semibold">Riwayat</h1>
-            <div className="grid grid-cols-1 gap-[1rem] md2:grid-cols-3 xxxl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 md2:grid-cols-3 xxxl:grid-cols-4">
               {history?.map((hItem, hIndex) => (
                 <Card
                   key={hIndex}
                   className="relative overflow-hidden shadow-lg"
                 >
-                  <div className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20">
+                  <div className="absolute bottom-8 -right-8 z-1 text-main/20">
                     <IconCrown
                       w={180}
                       className="rotate-[-20deg]"
@@ -140,12 +140,12 @@ export default function UTBKSIMAKPredictor() {
                       {hItem.Tryout.title}
                     </Badge>
                   )}
-                  <CardHeader className="relative z-[2]">
+                  <CardHeader className="relative z-2">
                     <CardTitle className="text-[1.3rem] font-bold text-main">
                       {hItem.study}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="relative z-[2]">
+                  <CardContent className="relative z-2">
                     <div className="grid gap-2">
                       {hItem.PredictionScore.map((psItem, psIndex) => (
                         <div
@@ -177,7 +177,7 @@ export default function UTBKSIMAKPredictor() {
                       ))}
                     </div>
                   </CardContent>
-                  <CardFooter className="relative z-[2]">
+                  <CardFooter className="relative z-2">
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -205,7 +205,7 @@ export default function UTBKSIMAKPredictor() {
               ))}
             </div>
             {historyIsLoading && (
-              <div className="grid grid-cols-1 gap-[1rem] md2:grid-cols-3 xxxl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-4 md2:grid-cols-3 xxxl:grid-cols-4">
                 {Array.from({ length: 6 }).map((_: any, i: number) => (
                   <Skeleton
                     key={i}
@@ -293,7 +293,7 @@ const STEPS = [
 /*
 
     <Card key={i} className="relative overflow-hidden">
-            <div className="absolute bottom-[2rem] right-[-2rem] z-[1] text-main/20">
+            <div className="absolute bottom-8 -right-8 z-1 text-main/20">
               <IconCrown w={180} className="rotate-[-20deg]" />
             </div>
             <Badge
@@ -304,12 +304,12 @@ const STEPS = [
             >
               {getBadgeValue(item)?.title}
             </Badge>
-            <CardHeader className="relative z-[2]">
+            <CardHeader className="relative z-2">
               <CardTitle className="text-[1.3rem] font-bold text-main">
                 {item.title}
               </CardTitle>
             </CardHeader>
-            <CardContent className="relative z-[2]">
+            <CardContent className="relative z-2">
               <div className="grid gap-2">
                 {(() => {
                   // Mengelompokkan sesi berdasarkan kategori
@@ -396,7 +396,7 @@ const STEPS = [
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="relative z-[2]">
+            <CardFooter className="relative z-2">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>

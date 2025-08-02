@@ -93,7 +93,7 @@ export default function RightComponent() {
       ) : (
         <>
           <motion.div
-            className="fixed bottom-6 right-4 bg-main shadow-default p-2 rounded-full z-[102]"
+            className="fixed bottom-6 right-4 bg-main shadow-default p-2 rounded-full z-102"
             onClick={() => setShowAI((prev) => !prev)}
             whileTap={{ scale: 1.2 }}
             transition={{ type: 'spring', stiffness: 300 }}
@@ -115,7 +115,7 @@ export default function RightComponent() {
                 setShowAI(false);
               }}
               className={cn(
-                'fixed z-[999] left-0 w-full h-full top-[130%] duration-300',
+                'fixed z-999 left-0 w-full h-full top-[130%] duration-300',
                 showAI && 'top-0',
               )}
             />
@@ -294,8 +294,8 @@ const Sidebar = ({
       ) : null}
       {isResetModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex w-[380px] flex-col items-center rounded-[1.5rem] bg-white p-[2rem] text-center shadow-lg">
-            <div className="flex flex-col gap-[1rem]">
+          <div className="flex w-[380px] flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg">
+            <div className="flex flex-col gap-4">
               {tab === 'chat' ? (
                 <p>
                   Seluruh chat dalam material{' '}
@@ -363,7 +363,7 @@ const Sidebar = ({
         defaultValue="notes"
         className="max-h-screen max-w-full overflow-hidden"
       >
-        <div className="relative z-[8] flex h-[60px] items-center justify-between border-b border-main-gray-input bg-white px-[1rem]">
+        <div className="relative z-8 flex h-[60px] items-center justify-between border-b border-main-gray-input bg-white px-4">
           <TabsList className="h-full rounded-xl bg-transparent">
             {TABS.filter((item) => {
               if (courseType === 'DOCUMENT') return true;
@@ -387,11 +387,11 @@ const Sidebar = ({
                 }}
               >
                 {onBoarding.notes && item.value === 'notes' ? (
-                  <div className="absolute right-3 top-1 z-[10] h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
                 ) : onBoarding.chat && item.value === 'chat' ? (
-                  <div className="absolute right-3 top-1 z-[10] h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
                 ) : onBoarding.quiz && item.value === 'quiz' ? (
-                  <div className="absolute right-3 top-1 z-[10] h-2 w-2 rounded-[50%] bg-red-700" />
+                  <div className="absolute right-3 top-1 z-10 h-2 w-2 rounded-[50%] bg-red-700" />
                 ) : null}
                 <CustomTooltip content={item.tooltip}>
                   <TabsTrigger

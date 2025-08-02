@@ -398,9 +398,9 @@ export function RankingTable() {
                       const getRankBadge = (rank: number) => {
                         if (rank <= 3) {
                           const colors = {
-                            1: 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-white',
-                            2: 'bg-gradient-to-r from-gray-300 to-gray-500 text-white',
-                            3: 'bg-gradient-to-r from-orange-400 to-orange-600 text-white',
+                            1: 'bg-linear-to-r from-yellow-400 to-yellow-600 text-white',
+                            2: 'bg-linear-to-r from-gray-300 to-gray-500 text-white',
+                            3: 'bg-linear-to-r from-orange-400 to-orange-600 text-white',
                           };
                           return colors[rank as keyof typeof colors];
                         }
@@ -563,7 +563,7 @@ export function RankingTable() {
 
             {/* Mobile scroll hint for non-premium users */}
             {!isPremiumUser && (
-              <div className="md:hidden bg-gradient-to-r from-gray-50 to-gray-100 p-3 border-t border-gray-200">
+              <div className="md:hidden bg-linear-to-r from-gray-50 to-gray-100 p-3 border-t border-gray-200">
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2 text-gray-600">
                     <div className="flex gap-1">

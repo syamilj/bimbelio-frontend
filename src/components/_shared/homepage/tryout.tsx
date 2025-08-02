@@ -114,20 +114,17 @@ const FeaturedTryoutSection = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
+              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default"
+              // style={{
+              //   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              // }}
             >
               <Award className="w-4 h-4" />
               TRY OUT TERSEDIA
             </span>
           </motion.div>
 
-          <h2
-            className="text-4xl md:text-5xl font-bold mb-6"
-            style={{ color: mainColor }}
-          >
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-main-default">
             Pilih Try Out Terbaikmu
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -143,10 +140,7 @@ const FeaturedTryoutSection = () => {
             className="flex justify-center items-center gap-8 mt-8"
           >
             <div className="text-center">
-              <div
-                className="text-3xl font-bold"
-                style={{ color: mainColor }}
-              >
+              <div className="text-3xl font-bold text-main-default">
                 {cards.length}
               </div>
               <div className="text-sm text-gray-500">Try Out Aktif</div>
@@ -223,10 +217,7 @@ const FeaturedTryoutSection = () => {
           {session ? (
             <Link
               href={`${website_sub_category_id}/user/try-out`}
-              className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
+              className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl bg-gradient-default"
             >
               Lihat Semua Try Out
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -235,10 +226,7 @@ const FeaturedTryoutSection = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
+              className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl bg-gradient-default"
               onClick={() => {
                 router.push(
                   `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,

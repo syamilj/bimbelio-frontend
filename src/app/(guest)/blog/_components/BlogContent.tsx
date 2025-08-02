@@ -200,7 +200,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
     <Fragment>
       <Navbar />
 
-      <main className="container mx-auto px-4 py-8 md:py-[8rem]">
+      <main className="container mx-auto px-4 py-8 md:py-32">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Left Sidebar */}
           <aside className="hidden lg:col-span-2 lg:block">

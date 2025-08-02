@@ -42,7 +42,7 @@ export default function ProviderMaintenance({
   if (!isMaintenance) return <>{children}</>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
@@ -78,12 +78,12 @@ export default function ProviderMaintenance({
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-3 mb-6">
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
                   <span className="text-white text-xl font-bold">B</span>
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-ping"></div>
               </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Bimbelio
               </h1>
             </div>
@@ -92,7 +92,7 @@ export default function ProviderMaintenance({
           {/* Main Card */}
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
             {/* Hero Section */}
-            <div className="relative bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 p-8 md:p-12 text-white text-center">
+            <div className="relative bg-linear-to-r from-blue-600 via-blue-700 to-indigo-700 p-8 md:p-12 text-white text-center">
               <div className="absolute inset-0 bg-black/10"></div>
               <div className="relative z-10">
                 <div className="inline-flex items-center justify-center w-24 h-24 bg-white/20 rounded-full mb-6 backdrop-blur-sm">
@@ -134,7 +134,7 @@ export default function ProviderMaintenance({
                       key={item.label}
                       className="text-center"
                     >
-                      <div className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-2xl p-4 min-w-[80px] shadow-lg">
+                      <div className="bg-linear-to-br from-blue-600 to-indigo-600 text-white rounded-2xl p-4 min-w-[80px] shadow-lg">
                         <div className="text-3xl font-bold">
                           {item.value.toString().padStart(2, '0')}
                         </div>
@@ -146,7 +146,7 @@ export default function ProviderMaintenance({
                   ))}
                 </div>
 
-                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-200">
+                <div className="bg-linear-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-200">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Sparkles className="w-5 h-5 text-yellow-600" />
                     <span className="font-semibold text-yellow-800">
@@ -232,7 +232,7 @@ export default function ProviderMaintenance({
                 </div>
               </div>
               {/* Contact Section */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
+              <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Butuh Bantuan?
@@ -265,8 +265,8 @@ export default function ProviderMaintenance({
                     target="_blank"
                     className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-pink-300 hover:shadow-lg transition-all duration-300"
                   >
-                    <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-purple-100 rounded-xl flex items-center justify-center group-hover:from-pink-200 group-hover:to-purple-200 transition-all">
-                      <div className="w-6 h-6 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-linear-to-br from-pink-100 to-purple-100 rounded-xl flex items-center justify-center group-hover:from-pink-200 group-hover:to-purple-200 transition-all">
+                      <div className="w-6 h-6 bg-linear-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
                         <span className="text-white text-xs font-bold">IG</span>
                       </div>
                     </div>

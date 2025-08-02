@@ -16,6 +16,7 @@ import { DocDataType } from '@/components/pdf-reader';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { pixel } from '@/lib/pixel/_core';
 import { cn } from '@/lib/utils';
 import { CrownIcon, LockIcon, PlayIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -112,6 +113,15 @@ const DocViewerPage = () => {
 
   const isMobile = useMedia({ maxWidth: '768px' });
 
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Workspace',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Workspace',
+    });
+  }, []);
+
   if (!docId) {
     return <p>Document ID not found in the URL.</p>;
   }
@@ -119,7 +129,7 @@ const DocViewerPage = () => {
   if (error) {
     return (
       <div className="flex justify-center items-center w-full h-full min-h-[90vh]">
-        <Card className="mb-8 bg-gradient-to-r from-yellow-100 to-orange-100 border-yellow-400 rounded-3xl">
+        <Card className="mb-8 bg-linear-to-r from-yellow-100 to-orange-100 border-yellow-400 rounded-3xl">
           <CardContent className="p-8 text-center">
             <div className="flex items-center justify-center mb-6">
               <div className="bg-yellow-100 p-4 rounded-full">
@@ -136,7 +146,7 @@ const DocViewerPage = () => {
                 <ButtonUpgradeTryout tryoutId={tryoutId || ''}>
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-8 py-3"
+                    className="bg-linear-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-8 py-3"
                   >
                     <CrownIcon className="mr-2 h-5 w-5" />
                     Beli Tryout
@@ -207,10 +217,10 @@ const ResizableHandleComponent = () => {
   return (
     <div className="relative flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-colors">
       <ResizableHandle
-        className="relative z-[42] h-full w-[4px] bg-gray-300 duration-300 data-[panel-group-direction=vertical]:h-[4px] data-[panel-group-direction=vertical]:w-full hover:bg-blue-400 active:bg-blue-500"
+        className="relative z-42 h-full w-[4px] bg-gray-300 duration-300 data-[panel-group-direction=vertical]:h-[4px] data-[panel-group-direction=vertical]:w-full hover:bg-blue-400 active:bg-blue-500"
         withHandle
       />
-      <div className="absolute z-[41] h-[40px] w-[12px] rounded-full bg-gray-400 md:h-[12px] md:w-[40px] opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute z-41 h-[40px] w-[12px] rounded-full bg-gray-400 md:h-[12px] md:w-[40px] opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
   );
 };

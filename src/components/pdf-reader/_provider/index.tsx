@@ -64,6 +64,30 @@ export default function Provider({ children, doc }: Props) {
     if (doc.highlights.length > 0) {
       setHighlights(doc.highlights);
     }
+
+    // Add event listener for highlight removal from BlockNote
+    const handleRemoveHighlightFromPdf = (event: CustomEvent) => {
+      const { highlightId } = event.detail;
+
+      if (highlightId) {
+        // Remove highlight from PDF view by updating the highlights state
+        setHighlights((prevHighlights) =>
+          prevHighlights.filter((highlight) => highlight.id !== highlightId),
+        );
+      }
+    };
+
+    window.addEventListener(
+      'removeHighlightFromPdf',
+      handleRemoveHighlightFromPdf as EventListener,
+    );
+
+    return () => {
+      window.removeEventListener(
+        'removeHighlightFromPdf',
+        handleRemoveHighlightFromPdf as EventListener,
+      );
+    };
   }, [doc.id, doc.highlights]); // Tambahkan doc.id sebagai dependency
 
   const getHighlightById = (id: string): HighlightTypeData | undefined => {

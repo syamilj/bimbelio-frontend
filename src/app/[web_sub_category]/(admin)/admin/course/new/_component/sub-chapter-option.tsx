@@ -555,6 +555,24 @@ const DocumentSelector = ({
     },
   );
 
+  const selectedDoc = documents?.find(
+    (item) => item.id === EditSubChapter.document,
+  );
+
+  if (EditSubChapter.document) {
+    return (
+      <div
+        key={selectedDoc?.id}
+        className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+      >
+        <div className="flex items-center gap-3">
+          <FileText className="h-5 w-5 text-gray-400" />
+          <span>{selectedDoc?.title}</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       <Input

@@ -123,9 +123,9 @@ const TryoutOption = ({
   }, [tryout]);
 
   return (
-    <div className="flex w-full flex-col gap-[1rem] p-[1rem] text-[.9rem]">
+    <div className="flex w-full flex-col gap-4 p-4 text-[.9rem]">
       <div className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-[1rem]">
+        <div className="flex items-center gap-4">
           <h1 className="text-[1.2rem] font-medium">Detail Try out</h1>
           {currentIndexEdit !== null ? (
             <div
@@ -176,14 +176,14 @@ const TryoutOption = ({
       </div>
       <div
         id="date"
-        className="flex flex-col gap-[1rem]"
+        className="flex flex-col gap-4"
       >
         <div className="flex flex-col gap-[.5rem]">
           <p className="font-medium">Judul tryout</p>
           <input
             type="text"
             placeholder="Judul try out"
-            className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+            className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
             required
             value={tryout?.title ? tryout?.title : ''}
             onChange={(e) => {
@@ -243,7 +243,7 @@ const TryoutOption = ({
               <input
                 type="text"
                 placeholder="Link postingan instagram"
-                className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+                className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
                 value={tryout?.instagram ? tryout?.instagram : ''}
                 onChange={(e) => {
                   setTryout((prev) => ({ ...prev, instagram: e.target.value }));
@@ -258,7 +258,7 @@ const TryoutOption = ({
               <input
                 type="text"
                 placeholder="Link postingan tiktok"
-                className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+                className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
                 value={tryout?.tiktok ? tryout?.tiktok : ''}
                 onChange={(e) => {
                   setTryout((prev) => ({ ...prev, tiktok: e.target.value }));
@@ -269,11 +269,11 @@ const TryoutOption = ({
         </div>
         <div className="flex flex-col gap-[.5rem]">
           <p className="font-medium">Waktu mulai tryout</p>
-          <div className="grid w-full grid-cols-2 gap-[1rem]">
+          <div className="grid w-full grid-cols-2 gap-4">
             <input
               type="date"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={startDate}
               onChange={(e) => {
@@ -283,7 +283,7 @@ const TryoutOption = ({
             <input
               type="time"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={startDateTime}
               onChange={(e) => {
@@ -294,11 +294,11 @@ const TryoutOption = ({
         </div>
         <div className="flex flex-col gap-[.5rem]">
           <p className="font-medium">Pelaksanaan berakhir</p>
-          <div className="grid w-full grid-cols-2 gap-[1rem]">
+          <div className="grid w-full grid-cols-2 gap-4">
             <input
               type="date"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={endDate}
               onChange={(e) => {
@@ -308,7 +308,7 @@ const TryoutOption = ({
             <input
               type="time"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={endDateTime}
               onChange={(e) => {
@@ -319,11 +319,11 @@ const TryoutOption = ({
         </div>
         <div className="flex flex-col gap-[.5rem]">
           <p className="font-medium">Waktu pembagian hasil tryout</p>
-          <div className="grid w-full grid-cols-2 gap-[1rem]">
+          <div className="grid w-full grid-cols-2 gap-4">
             <input
               type="date"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={resultDate}
               onChange={(e) => {
@@ -333,7 +333,7 @@ const TryoutOption = ({
             <input
               type="time"
               placeholder="Judul try out"
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
               required
               value={resultDateTime}
               onChange={(e) => {
@@ -353,7 +353,7 @@ const TryoutOption = ({
           setFile={setThumbnail}
         />
       </div> */}
-      <div className="my-[1rem] h-[1px] w-full bg-main-gray-disabled/60" />
+      <div className="my-4 h-px w-full bg-main-gray-disabled/60" />
       <div
         id="session"
         className="flex flex-col gap-[.5rem]"
@@ -361,7 +361,7 @@ const TryoutOption = ({
         <div className="flex items-center justify-between">
           <h1 className="text-[1.1rem] font-medium">Sesi Tryout</h1>
           <div
-            className="cursor-pointer rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-white duration-300 hover:bg-main/85 md:active:bg-main"
+            className="cursor-pointer rounded-[.8rem] bg-main px-4 py-[.8rem] text-white duration-300 hover:bg-main/85 md:active:bg-main"
             onClick={addSesi}
           >
             Tambah sesi
@@ -370,14 +370,14 @@ const TryoutOption = ({
         {sessions?.map((item, sessionIndex: number) => (
           <div
             key={sessionIndex}
-            className="flex w-full gap-[1rem]"
+            className="flex w-full gap-4"
           >
             <div className="overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
               <input
                 type="text"
                 defaultValue={`${sessionIndex + 1}`}
                 required
-                className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
+                className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
               />
               <Select
                 value={`${sessionIndex + 1}`}
@@ -417,10 +417,10 @@ const TryoutOption = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex w-full items-center justify-between rounded-[.8rem] bg-white px-[1rem] py-[.8rem]">
+            <div className="flex w-full items-center justify-between rounded-[.8rem] bg-white px-4 py-[.8rem]">
               {item.categoryId !== '' ? (
                 <div className="flex items-center">
-                  <div className="rounded-[1rem] bg-main px-[.5rem] py-[.2rem] text-[.8rem] text-white">
+                  <div className="rounded-2xl bg-main px-[.5rem] py-[.2rem] text-[.8rem] text-white">
                     <p>
                       {item.category === 'Tes Potensi Skolastik (TPS)' && 'TPS'}
                       {item.category === 'Tes Literasi Bahasa' && 'Literasi'}
@@ -428,7 +428,7 @@ const TryoutOption = ({
                         'Matematika'}
                     </p>
                   </div>
-                  <div className="rounded-[1rem] bg-main-gray-input2 px-[.5rem] py-[.2rem] text-[.8rem] text-black ml-2">
+                  <div className="rounded-2xl bg-main-gray-input2 px-[.5rem] py-[.2rem] text-[.8rem] text-black ml-2">
                     <p>{item.subCategory}</p>
                   </div>
                 </div>
@@ -439,7 +439,7 @@ const TryoutOption = ({
               <p>{item.duration === '' ? 0 : item.duration} menit</p>
             </div>
             <div
-              className="shrink-0 cursor-pointer px-[1rem] py-[.8rem] text-main-gray-text duration-300 md:hover:text-black"
+              className="shrink-0 cursor-pointer px-4 py-[.8rem] text-main-gray-text duration-300 md:hover:text-black"
               onClick={() => {
                 setCurrentIndexEdit(sessionIndex);
                 setQuestionIndex(0);
@@ -450,14 +450,14 @@ const TryoutOption = ({
             </div>
           </div>
         ))}
-        <div className="flex w-full items-center gap-[1rem]">
+        <div className="flex w-full items-center gap-4">
           <div className="flex w-full items-center justify-between py-[.8rem] font-medium">
             Waktu istirahat (menit)
           </div>
           <input
             type="number"
             placeholder="Durasi istirahat"
-            className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
+            className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
             value={tryout?.restTime ? tryout?.restTime : ''}
             onChange={(e) => {
               setTryout((prev) => ({
@@ -468,8 +468,8 @@ const TryoutOption = ({
           />
         </div>
       </div>
-      <div className="my-[1rem] h-[1px] w-full bg-main-gray-disabled/60" />
-      <div className="grid w-full grid-cols-2 gap-[1rem]">
+      <div className="my-4 h-px w-full bg-main-gray-disabled/60" />
+      <div className="grid w-full grid-cols-2 gap-4">
         <div
           className="flex w-full shrink-0 cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
           onClick={() => {
@@ -483,7 +483,7 @@ const TryoutOption = ({
             type="text"
             defaultValue={tryout?.status ? `${tryout?.status}` : ''}
             required
-            className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
+            className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
           />
           <Select
             value={tryout?.status ? `${tryout?.status}` : 'placeholder'}
@@ -513,7 +513,7 @@ const TryoutOption = ({
       </div>
       <div className="flex h-[45px] w-full items-center justify-center">
         {isLoading ? (
-          <Loader2 className="h-[1.5rem] w-[1.5rem] animate-spin" />
+          <Loader2 className="h-6 w-6 animate-spin" />
         ) : (
           <button
             type="submit"
@@ -552,7 +552,7 @@ export default TryoutOption;
 //   return (
 //     <div className="relative">
 //       <p className="font-medium text-[.9rem] mb-[.5rem]">{heading}</p>
-//       <div className="absolute bottom-[-1rem] left-[1rem]">
+//       <div className="absolute -bottom-4 left-4">
 //         <input
 //           id={`${inputId}`}
 //           type="file"
@@ -569,10 +569,10 @@ export default TryoutOption;
 //         />
 //         <div className="absolute top-0 left-0 w-full h-full bg-workspace" />
 //       </div>
-//       <div className="border-2 border-main-gray-input border-dashed rounded-[1rem] overflow-hidden p-[1rem] flex flex-col gap-[1rem] relative">
+//       <div className="border-2 border-main-gray-input border-dashed rounded-2xl overflow-hidden p-4 flex flex-col gap-4 relative">
 //         {!previewImage ? (
 //           <>
-//             <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
+//             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
 //               <Image
 //                 src={previewImage}
 //                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
@@ -586,7 +586,7 @@ export default TryoutOption;
 //                 }}
 //               />
 //             </div>
-//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-[5] p-[1rem]">
+//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-5 p-4">
 //               <div
 //                 className="w-full h-full flex justify-center items-center"
 //                 onClick={() => {
@@ -607,7 +607,7 @@ export default TryoutOption;
 //           </>
 //         ) : (
 //           <>
-//             <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
+//             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
 //               <Image
 //                 src={previewImage}
 //                 alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
@@ -621,7 +621,7 @@ export default TryoutOption;
 //                 }}
 //               />
 //             </div>
-//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-[5] p-[1rem]">
+//             <div className="absolute top-0 left-0 w-full h-full bg-[#ffffffc4] flex justify-center items-center z-5 p-4">
 //               <div
 //                 className="w-full h-full flex justify-center items-center"
 //                 onClick={() => {

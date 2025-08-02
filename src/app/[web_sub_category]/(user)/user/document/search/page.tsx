@@ -2,6 +2,7 @@
 
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { Category, Subcategory } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
@@ -36,17 +37,28 @@ export default function DocumentSearch() {
     fetchSearchData();
   }, [search, categoryId]);
 
+  useEffect(() => {
+    pixel.meta.track('Search', {
+      content_name: 'Document Search',
+      search_string: search,
+    });
+    pixel.tiktok.track('Search', {
+      content_name: 'Document Search',
+      search_string: search,
+    });
+  }, []);
+
   return (
-    <div className="flex flex-col gap-[1rem] px-[1rem] md:gap-[2rem] md:p-0">
+    <div className="flex flex-col gap-4 px-4 md:gap-8 md:p-0">
       <div className="hidden w-full justify-center md:flex">
         <SearchDeskstop />
       </div>
-      <div className="mt-[3rem] flex flex-col gap-[1rem] md:mt-0 md:gap-0">
+      <div className="mt-12 flex flex-col gap-4 md:mt-0 md:gap-0">
         <h1 className="text-[1.5rem] font-semibold">Hasil Pencarian :</h1>
       </div>
 
       {searchDatas.length !== 0 ? (
-        <div className="grid grid-cols-2 gap-[1rem] font-semibold md2:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 font-semibold md2:grid-cols-4">
           <Card
             data={searchDatas}
             href={`${website_sub_category_id}/user/workspace`}
@@ -61,7 +73,7 @@ export default function DocumentSearch() {
           ) : (
             <>
               {searchDatas?.length === 0 && (
-                <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 md2:grid-cols-4">
                   <CardNotFound title="Document Not Found" />
                 </div>
               )}

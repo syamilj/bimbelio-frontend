@@ -15,7 +15,7 @@ export default function AnimatedGradientText({
   return (
     <span
       className={cn(
-        'relative inline-block animate-gradient cursor-pointer bg-clip-text text-transparent bg-gradient-to-r from-main-default to-secondary-default',
+        'relative inline-block animate-gradient cursor-pointer bg-clip-text text-transparent bg-linear-to-r from-main-default to-secondary-default',
         className,
       )}
       onClick={onClick}

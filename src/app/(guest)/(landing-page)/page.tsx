@@ -19,7 +19,7 @@ export default function Home() {
         <div className="absolute bottom-auto left-auto right-32 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
       </div>
       <div className="min-h-screen">
-        <div className="flex w-full flex-col gap-[5rem]">
+        <div className="flex w-full flex-col gap-20">
           <HeroSection />
           <Tryout />
           <LearningRevolutions />

@@ -14,8 +14,8 @@ export default function Dokumen() {
       <TambahDokumen />
       <EditDocument />
 
-      <div className="flex flex-col gap-[4rem]">
-        <div className="flex justify-between gap-[1rem]">
+      <div className="flex flex-col gap-16">
+        <div className="flex justify-between gap-4">
           <DocumentInfo />
         </div>
 
@@ -47,7 +47,7 @@ export default function Dokumen() {
 //       {data?.map((item: any, i: number) => (
 //         <div
 //           key={i}
-//           className="w-full rounded-[2rem] bg-white p-[2rem]"
+//           className="w-full rounded-4xl bg-white p-8"
 //         >
 //           <p className="font-regular text-[2rem]">{item.Document.length}</p>
 //           <p className="text-main-gray-text">{item.name}</p>
@@ -117,10 +117,10 @@ export default function Dokumen() {
 
 //   return (
 //     <div className="flex w-full justify-between">
-//       <div className="flex gap-[1rem]">
+//       <div className="flex gap-4">
 //         {showFilter && (
 //           <div
-//             className="fixed left-0 top-0 z-[1] h-full w-full"
+//             className="fixed left-0 top-0 z-1 h-full w-full"
 //             onClick={() => setShowFilter(false)}
 //           />
 //         )}
@@ -128,13 +128,13 @@ export default function Dokumen() {
 //           <input
 //             type="text"
 //             placeholder="Cari document...."
-//             className="h-full w-full rounded-[.7rem] bg-white px-[1rem] outline-none"
+//             className="h-full w-full rounded-[.7rem] bg-white px-4 outline-none"
 //           />
 //         </div>
 //         <div className="relative">
 //           <div
 //             className={cn(
-//               'font-regular relative z-[2] flex cursor-pointer items-center rounded-[.7rem] bg-white px-[1rem] py-[.5rem] text-main-gray-text2',
+//               'font-regular relative z-2 flex cursor-pointer items-center rounded-[.7rem] bg-white px-4 py-[.5rem] text-main-gray-text2',
 //               filterDocument?.filter &&
 //                 filterDocument?.filterValue !== '' &&
 //                 'bg-main text-white',
@@ -145,7 +145,7 @@ export default function Dokumen() {
 //             {filterDocument?.filter ? 'Filtered' : 'Filter'}
 //           </div>
 //           {showFilter && (
-//             <div className="absolute left-[0] top-[calc(100%+.5rem)] z-[2] flex min-w-[280px] flex-col whitespace-nowrap rounded-[.5rem] bg-white p-[.5rem] text-[.8rem] text-main-gray-text shadow-cardSoft">
+//             <div className="absolute left-[0] top-[calc(100%+.5rem)] z-2 flex min-w-[280px] flex-col whitespace-nowrap rounded-[.5rem] bg-white p-[.5rem] text-[.8rem] text-main-gray-text shadow-cardSoft">
 //               <div className="flex items-center justify-between gap-[.5rem]">
 //                 <Select
 //                   value={filter?.filter}
@@ -213,7 +213,7 @@ export default function Dokumen() {
 //                 )}
 //               </div>
 //               <hr className="my-[.5rem]" />
-//               <div className="flex items-center justify-between gap-[2rem]">
+//               <div className="flex items-center justify-between gap-8">
 //                 <div
 //                   className="flex cursor-pointer items-center justify-center gap-[.5rem] rounded-[.3rem] px-[.5rem] py-[.2rem] duration-300 active:bg-white md:hover:bg-main-gray-input"
 //                   onClick={() => {
@@ -241,15 +241,15 @@ export default function Dokumen() {
 //         </div>
 //       </div>
 
-//       <div className="flex gap-[1rem]">
+//       <div className="flex gap-4">
 //         <div
-//           className="cursor-pointer rounded-[.7rem] bg-transparent px-[1.5rem] py-[.7rem] font-medium text-main-gray-text duration-200"
+//           className="cursor-pointer rounded-[.7rem] bg-transparent px-6 py-[.7rem] font-medium text-main-gray-text duration-200"
 //           onClick={() => setShowAddDocument(true)}
 //         >
 //           Export CSV
 //         </div>
 //         <div
-//           className="font-regular cursor-pointer rounded-[.7rem] bg-main px-[1.5rem] py-[.7rem] text-white duration-200 hover:bg-main-hover"
+//           className="font-regular cursor-pointer rounded-[.7rem] bg-main px-6 py-[.7rem] text-white duration-200 hover:bg-main-hover"
 //           onClick={() => setShowAddDocument(true)}
 //         >
 //           Tambah dokumen
@@ -425,11 +425,11 @@ export default function Dokumen() {
 //                   <td className="bg-white p-[.5rem]">
 //                     <div className="flex w-full items-center justify-center">
 //                       {item.premium ? (
-//                         <div className="flex w-[100px] items-center justify-center rounded-[1rem] bg-main py-[.2rem] text-white">
+//                         <div className="flex w-[100px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
 //                           Premium
 //                         </div>
 //                       ) : (
-//                         <div className="flex w-[100px] items-center justify-center rounded-[1rem] bg-main py-[.2rem] text-white">
+//                         <div className="flex w-[100px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
 //                           Free
 //                         </div>
 //                       )}
@@ -437,14 +437,14 @@ export default function Dokumen() {
 //                   </td>
 //                   <td className="bg-white p-[.5rem]">
 //                     <div className="flex w-full items-center justify-center">
-//                       <div className="flex w-[76px] items-center justify-center rounded-[1rem] bg-main py-[.2rem] text-white">
+//                       <div className="flex w-[76px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
 //                         {item.category.name}
 //                       </div>
 //                     </div>
 //                   </td>
 //                   <td className="bg-white p-[.5rem]">
 //                     <div className="flex w-full items-center justify-center">
-//                       <div className="flex w-[76px] items-center justify-center rounded-[1rem] bg-bg-workspace py-[.2rem] font-medium text-black">
+//                       <div className="flex w-[76px] items-center justify-center rounded-2xl bg-bg-workspace py-[.2rem] font-medium text-black">
 //                         {item.subCategory.name}
 //                       </div>
 //                     </div>
@@ -481,7 +481,7 @@ export default function Dokumen() {
 //                       />
 
 //                       <button
-//                         className="cursor-pointer border border-black px-[1rem] py-[.3rem]"
+//                         className="cursor-pointer border border-black px-4 py-[.3rem]"
 //                         onClick={() => {
 //                           setEditData({ ...item });
 //                         }}
@@ -515,17 +515,17 @@ export default function Dokumen() {
 //                   </td>
 //                   <td className="bg-transparent p-[.5rem]">1000</td>
 //                   <td className="bg-transparent p-[.5rem]">
-//                     <div className="w-fit rounded-[1rem] bg-transparent px-[.7rem] py-[.2rem] text-transparent">
+//                     <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
 //                       awdawd
 //                     </div>
 //                   </td>
 //                   <td className="bg-transparent p-[.5rem]">
-//                     <div className="w-fit rounded-[1rem] bg-transparent px-[.7rem] py-[.2rem] text-transparent">
+//                     <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
 //                       awdawd
 //                     </div>
 //                   </td>
 //                   <td className="bg-transparent p-[.5rem]">
-//                     <div className="w-fit rounded-[1rem] bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
+//                     <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
 //                       awdwadaw
 //                     </div>
 //                   </td>
@@ -549,11 +549,11 @@ export default function Dokumen() {
 //                           <i className="bx bx-download"></i>
 //                         </div>
 //                       </div>
-//                       <button className="cursor-default border border-transparent px-[1rem] py-[.3rem]">
+//                       <button className="cursor-default border border-transparent px-4 py-[.3rem]">
 //                         Hapus
 //                       </button>
 
-//                       <button className="cursor-default border border-transparent px-[1rem] py-[.3rem]">
+//                       <button className="cursor-default border border-transparent px-4 py-[.3rem]">
 //                         Edit Document
 //                       </button>
 //                     </div>
@@ -568,14 +568,14 @@ export default function Dokumen() {
 //         id="pagination"
 //         className="flex w-full items-center justify-between"
 //       >
-//         <div className="flex items-center gap-[1rem]">
+//         <div className="flex items-center gap-4">
 //           {/* <p>Show</p>
-//           <div className="bg-white rounded-[.5rem] px-[1rem] py-[.5rem] text-main-gray-text flex items-center gap-[.5rem]">
+//           <div className="bg-white rounded-[.5rem] px-4 py-[.5rem] text-main-gray-text flex items-center gap-[.5rem]">
 //             10
 //             <i className="bx bx-chevron-down text-[1.5rem]" />
 //           </div> */}
 //         </div>
-//         <div className="flex items-center gap-[1rem]">
+//         <div className="flex items-center gap-4">
 //           <div onClick={() => handlePagination('prev')}>
 //             <IconTailedArrowPrev
 //               className="cursor-pointer duration-300 md:hover:-translate-x-1"
@@ -595,21 +595,21 @@ export default function Dokumen() {
 //       </div>
 
 //       {deleteConfirmation && (
-//         <div className="fixed left-0 top-0 z-[100] flex h-full w-full items-center justify-center bg-[#ffffff7a]">
-//           <div className="flex flex-col gap-[1rem] rounded-[1rem] bg-white p-[1rem] shadow-lg">
+//         <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-[#ffffff7a]">
+//           <div className="flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-lg">
 //             <p className="text-center">
 //               Apakah anda yakin ingin menghapus dokumen <br /> &quot;
 //               {deleteData.title}&quot; ?
 //             </p>
 //             <div className="flex w-full justify-center gap-[.5rem]">
 //               <button
-//                 className="rounded-[.3rem] bg-blue-600 px-[1rem] py-[.2rem] text-white hover:bg-blue-500"
+//                 className="rounded-[.3rem] bg-blue-600 px-4 py-[.2rem] text-white hover:bg-blue-500"
 //                 onClick={() => setDeleteConfirmation(false)}
 //               >
 //                 No
 //               </button>
 //               <button
-//                 className="rounded-[.3rem] bg-red-600 px-[1rem] py-[.2rem] text-white hover:bg-red-500"
+//                 className="rounded-[.3rem] bg-red-600 px-4 py-[.2rem] text-white hover:bg-red-500"
 //                 onClick={() => removeDocument()}
 //               >
 //                 Yes

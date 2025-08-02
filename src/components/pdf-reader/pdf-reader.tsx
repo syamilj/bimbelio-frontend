@@ -170,9 +170,9 @@ function PdfReader({
 
   if (pdfUrl.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full w-full bg-gradient-to-br from-gray-50 to-white">
+      <div className="flex items-center justify-center h-full w-full bg-linear-to-br from-gray-50 to-white">
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 mx-auto rounded-full bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-lg">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
           </div>
           <div>

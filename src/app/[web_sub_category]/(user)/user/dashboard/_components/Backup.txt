@@ -461,7 +461,7 @@ className="text-center"
 <div className="flex h-full w-full items-center justify-center">
 <Link
 href={`/user/try-out/${tryout.Tryout?.id}`}
-className="rounded-[.5rem] bg-main px-[1rem] py-[.5rem] text-[.8rem] text-white duration-300 hover:bg-main/85"
+className="rounded-[.5rem] bg-main px-4 py-[.5rem] text-[.8rem] text-white duration-300 hover:bg-main/85"
 >
 Lihat Pembahasan
 </Link>
@@ -1241,7 +1241,7 @@ Aktivitas belajar Kamu selama 7 hari terakhir
 <CardContent>
 <ChartContainer
 config={chartConfig}
-className="aspect-[4/3] w-full"
+className="aspect-4/3 w-full"
 >
 <LineChart data={data.weeklyProgress.reverse()}>
 <XAxis
@@ -1340,7 +1340,7 @@ Waktu di mana Kamu paling sering belajar
 <CardContent>
 <ChartContainer
 config={chartConfig}
-className="aspect-[4/3] w-full"
+className="aspect-4/3 w-full"
 >
 <BarChart data={data.mostActiveHours}>
 <XAxis dataKey="hour" />

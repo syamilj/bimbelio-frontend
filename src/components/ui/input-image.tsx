@@ -5,25 +5,25 @@ import { useEffect, useState } from 'react';
 type InputImageProps = {
   onChange?: (image: File | undefined) => void;
   preview?: string;
-  show?: boolean;
-  title?: string;
+  // showPreview?: boolean;
+  placeholder?: string;
   required?: boolean;
 };
 
 export function InputImage({
   onChange,
   preview,
-  show,
-  title,
+  // showPreview,
+  placeholder,
   required,
 }: InputImageProps) {
   const inputId = crypto.randomUUID();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [PreviewImg, setPreviewImg] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!show) setPreviewImg(null);
-  }, [show]);
+  // useEffect(() => {
+  //   if (!showPreview) setPreviewImg(null);
+  // }, [showPreview]);
 
   useEffect(() => {
     if (preview) setPreviewImg(preview);
@@ -59,7 +59,7 @@ export function InputImage({
       />
       <div
         className={cn(
-          'w-[200px] h-[120px] border rounded-[1rem] p-[1rem] bg-gray-100 flex justify-center items-center relative overflow-hidden',
+          'w-[200px] h-[120px] border rounded-2xl p-4 bg-gray-100 flex justify-center items-center relative overflow-hidden',
           PreviewImg && 'w-fit h-fit max-w-[200px]',
         )}
       >
@@ -72,8 +72,8 @@ export function InputImage({
           >
             <div className="flex flex-col gap-[.5rem] items-center">
               <UploadIcon className="text-gray-400" />
-              <p className="text-gray-500/80 font-[500]">
-                {title ? title : 'Upload Foto'}
+              <p className="text-gray-500/80 font-medium">
+                {placeholder ? placeholder : 'Upload Foto'}
               </p>
             </div>
           </div>
@@ -86,8 +86,8 @@ export function InputImage({
         ) : (
           <div className="flex flex-col gap-[.5rem] items-center">
             <UploadIcon className="text-gray-400" />
-            <p className="text-gray-500/80 font-[500]">
-              {title ? title : 'Upload Foto'}
+            <p className="text-gray-500/80 font-medium">
+              {placeholder ? placeholder : 'Upload Foto'}
             </p>
           </div>
         )}

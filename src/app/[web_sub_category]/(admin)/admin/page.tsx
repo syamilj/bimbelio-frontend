@@ -185,9 +185,9 @@ export default function UserManagementDashboard() {
   };
 
   const chartConfig: ChartConfig = {
-    total: { label: 'Total Users', color: 'hsl(var(--chart-1))' },
-    premium: { label: 'Premium Users', color: 'hsl(var(--chart-2))' },
-    tryout: { label: 'Tryout Users', color: 'hsl(var(--chart-3))' },
+    total: { label: 'Total Users', color: 'var(--color-chart-1)' },
+    premium: { label: 'Premium Users', color: 'var(--color-chart-2)' },
+    tryout: { label: 'Tryout Users', color: 'var(--color-chart-3)' },
   };
 
   return (

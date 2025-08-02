@@ -5,6 +5,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { UserTryout } from '@/types/database';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -34,6 +35,15 @@ export default function TryOutPage() {
       Router.push(`/${website_sub_category_id}/user/try-out`);
     }
   }, [payment]);
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Tryout Page',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Tryout Page',
+    });
+  }, []);
 
   return (
     <div>
@@ -147,8 +157,8 @@ const Content = () => {
       ) : (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           {step === 1 ? (
-            <div className="flex w-[calc(100%-2rem)] max-w-[380px] flex-col items-center rounded-[1.5rem] bg-white p-[2rem] text-center shadow-lg md:w-full">
-              <div className="flex flex-col gap-[1rem]">
+            <div className="flex w-[calc(100%-2rem)] max-w-[380px] flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg md:w-full">
+              <div className="flex flex-col gap-4">
                 <p className="font-semibold">Akun Belum Terverifikasi</p>
                 <p className="font-regular text-main-gray-text">
                   Untuk menggunakan fitur try out, harap verifikasi akunmu

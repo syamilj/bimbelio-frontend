@@ -23,7 +23,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     redirect: string | null;
   }>({ open: false, redirect: null });
 
-  const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(false);
+  const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(true);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
 
   const [vision, setVision] = useState<boolean>(false);
@@ -56,9 +56,9 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     tryout: false,
   });
 
-  useEffect(() => {
-    if (isDekstop) setMinimizeSidebar(false);
-  }, [isDekstop]);
+  // useEffect(() => {
+  //   if (isDekstop) setMinimizeSidebar(false);
+  // }, [isDekstop]);
 
   useEffect(() => {
     const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
@@ -83,8 +83,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
       document.body.style.overflow = 'auto';
     };
   }, [showAuth]);
-
-  // console.log({ website_sub_category_id, website_sub_category_id_params });
 
   const Context = {
     minimizeSidebar,

@@ -13,7 +13,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { supabase } from '@/supabaseClient';
 import { Document } from '@/types/database';
 import 'katex/dist/katex.min.css';
-import { FileText, Plus, Video } from 'lucide-react';
+import { FileText, Plus, Video, X } from 'lucide-react';
 import React, { ChangeEvent, SetStateAction, useEffect, useState } from 'react';
 import ModalImportExcel from '../../../_component/modal-import-excel';
 import { QuestionProps, SubChapterProps } from '../page';
@@ -516,6 +516,41 @@ const DocumentSelector = ({
       useEffectDependencies: [search],
     },
   );
+
+  const selectedDoc = documents?.find(
+    (item) => item.id === EditSubChapter.document,
+  );
+
+  if (EditSubChapter.document) {
+    return (
+      <div
+        key={selectedDoc?.id}
+        className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50 "
+      >
+        <div className="flex items-center gap-3 relative">
+          <FileText className="h-5 w-5 text-gray-400" />
+          <span>{selectedDoc?.title}</span>
+          <X
+            className="absolute right-2 w-4 h-4 hover:bg-gray-500 hover:text-white rounded-full"
+            onClick={() => {
+              setSubChapter((prev) =>
+                prev.map((sChapter, sIndex) => {
+                  if (sIndex === currentIndexEdit) {
+                    return {
+                      ...sChapter,
+                      document: undefined,
+                      documentTitle: undefined,
+                    };
+                  }
+                  return sChapter;
+                }),
+              );
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

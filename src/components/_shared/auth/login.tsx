@@ -49,7 +49,7 @@ export const Login = () => {
 
   return (
     <GoogleOAuthProvider clientId={env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
-      <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="fixed inset-0 z-3000 flex items-center justify-center bg-black/50 backdrop-blur-sm">
         {loading && <LoadingPage />}
 
         {/* Backdrop */}
@@ -65,7 +65,7 @@ export const Login = () => {
           {/* Header */}
           <div
             className="p-6 pb-8 text-center relative"
-            style={{ backgroundColor: `${mainColor}05` }}
+            // style={{ backgroundColor: `${mainColor}05` }}
           >
             {/* Close button */}
             <Button
@@ -79,13 +79,13 @@ export const Login = () => {
 
             <div className="space-y-4">
               <Logo
-                className="text-2xl font-bold"
-                style={{ color: mainColor }}
+                className="text-2xl font-bold text-main-default"
+                // style={{ color: mainColor }}
               />
               <div>
                 <h1
-                  className="text-xl font-bold"
-                  style={{ color: mainColor }}
+                  className="text-xl font-bold text-main-default"
+                  // style={{ color: mainColor }}
                 >
                   Selamat Datang Kembali!
                 </h1>
@@ -107,15 +107,17 @@ export const Login = () => {
               </div>
 
               <div className="flex justify-center">
-                <div
-                  className="p-4 rounded-xl border-2 hover:shadow-md transition-all"
-                  style={{
-                    borderColor: `${mainColor}20`,
-                    backgroundColor: `${mainColor}02`,
-                  }}
+                {/* <div
+                  className="p-4 rounded-xl border-2 hover:shadow-md transition-all border-main-default bg-main-default"
+                  // style={{
+                  //   borderColor: `${mainColor}20`,
+                  //   backgroundColor: `${mainColor}02`,
+                  // }}
                 >
                   <GoogleButton handleSubmit={handleSubmit} />
-                </div>
+                </div> */}
+
+                <GoogleButton handleSubmit={handleSubmit} />
               </div>
 
               <div className="text-center">
@@ -185,7 +187,7 @@ const GoogleButton = ({
         onSuccess={handleSubmit}
         onError={() => console.log('Login Failed')}
         text="signin_with"
-        shape="rectangular"
+        shape="circle"
         size="large"
         width="280"
         theme="outline"

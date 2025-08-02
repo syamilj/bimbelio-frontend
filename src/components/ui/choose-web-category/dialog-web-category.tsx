@@ -67,7 +67,7 @@ export function DialogWebCategory({
     >
       <DialogContent className="max-w-xl w-full sm:space-x-2 p-0 overflow-hidden bg-background border shadow-xl">
         {/* Header */}
-        <DialogHeader className="relative p-6 pb-4 border-b border-gray-200 dark:border-gray-800 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <DialogHeader className="relative p-6 pb-4 border-b border-gray-200 bg-linear-to-r from-gray-50 to-gray-100 dark:to-gray-800">
           <div className="flex items-center justify-between">
             <div>
               <DialogTitle className="text-xl font-bold">
@@ -134,7 +134,7 @@ export function DialogWebCategory({
                             'group relative overflow-hidden rounded-xl p-4 text-left transition-all duration-300 hover:shadow-md border',
                             isSelected
                               ? 'border-transparent shadow-lg scale-[1.02]'
-                              : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700',
+                              : 'border-gray-200 hover:border-gray-300 dark:hover:border-gray-700',
                           )}
                           style={{
                             backgroundColor: isSelected
@@ -185,7 +185,7 @@ export function DialogWebCategory({
                                 'flex items-center justify-center w-6 h-6 rounded-full border-2 transition-all duration-200',
                                 isSelected
                                   ? 'bg-white border-white'
-                                  : 'border-gray-300 dark:border-gray-600 group-hover:border-gray-400',
+                                  : 'border-gray-300 group-hover:border-gray-400',
                               )}
                             >
                               {isSelected && (
@@ -226,7 +226,7 @@ export function DialogWebCategory({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-muted/30">
+        <div className="p-4 border-t border-gray-200 bg-muted/30">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>💡 Kategori dapat diubah sewaktu-waktu</span>
             <span>

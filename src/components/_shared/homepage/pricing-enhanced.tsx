@@ -260,7 +260,7 @@ const PricingEnhanced = () => {
                         className="flex items-center gap-3"
                       >
                         <div
-                          className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                          className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
                           style={{ backgroundColor: `${mainColor}20` }}
                         >
                           <Check
@@ -278,7 +278,7 @@ const PricingEnhanced = () => {
                         key={lIndex}
                         className="flex items-center gap-3 opacity-60"
                       >
-                        <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0">
+                        <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
                           <span className="text-gray-400 text-xs">✗</span>
                         </div>
                         <span className="text-gray-500 font-medium line-through">

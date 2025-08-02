@@ -113,7 +113,7 @@ export default function BlogClient() {
           content="SNBT, SNBP, Bimbelio. UTBK, tips belajar, persiapan ujian, strategi ujian"
         />
       </Head>
-      <div className="container mx-auto px-4 py-8 pt-[7rem] bg-workspace">
+      <div className="container mx-auto px-4 py-8 pt-28 bg-workspace">
         <h1 className="mb-4 text-center text-3xl font-bold">
           <AnimatedGradientText>Blog</AnimatedGradientText>
         </h1>
@@ -192,7 +192,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
   return (
     <Link href={`/blog/${post.slug}`}>
       <Card className="group flex h-full cursor-pointer flex-col rounded-xl overflow-hidden transition-all duration-300 hover:shadow-sm">
-        <div className="relative aspect-[16/9]">
+        <div className="relative aspect-video">
           <Image
             src={post.thumbnail}
             alt={post.title}
@@ -210,7 +210,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
             </Badge>
           )}
         </div>
-        <CardContent className="flex-grow p-6">
+        <CardContent className="grow p-6">
           <div className="mb-3 flex flex-wrap gap-2">
             {post.tags.slice(0, 3).map((tag) => (
               <Badge
@@ -296,7 +296,7 @@ function Sidebar({
               placeholder="Kata kunci..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-grow rounded-xl"
+              className="grow rounded-xl"
             />
             <Button
               type="submit"

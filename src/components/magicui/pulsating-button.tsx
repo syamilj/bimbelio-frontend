@@ -21,7 +21,7 @@ export default function PulsatingButton({
     <>
       <button
         className={cn(
-          'bg-gradient-default md:hover:opacity-80 relative flex cursor-pointer items-center justify-center rounded-[2rem] px-[1.3rem] py-[.8rem] text-center text-white',
+          'bg-gradient-default md:hover:opacity-80 relative flex cursor-pointer items-center justify-center rounded-4xl px-[1.3rem] py-[.8rem] text-center text-white',
         )}
         style={
           {
@@ -32,7 +32,7 @@ export default function PulsatingButton({
         {...props}
       >
         <div className="relative z-10">{children}</div>
-        <div className="absolute left-1/2 top-1/2 size-full -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-[2rem] bg-inherit px-[1.3rem] py-[.8rem]" />
+        <div className="absolute left-1/2 top-1/2 size-full -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-4xl bg-inherit px-[1.3rem] py-[.8rem]" />
       </button>
     </>
   );

@@ -12,10 +12,10 @@ export default function BahanAjarByCategory() {
 
   return (
     <Fragment>
-      <div className="mb-[2rem] hidden w-full justify-center md:flex">
+      <div className="mb-8 hidden w-full justify-center md:flex">
         <SearchDeskstop />
       </div>
-      <div className="flex flex-col gap-[1rem] px-[1rem] md:px-0">
+      <div className="flex flex-col gap-4 px-4 md:px-0">
         <HeadingBahanAjar
           subCategoryId={subCategoryId}
           setSubCategoryId={setSubCategoryId}

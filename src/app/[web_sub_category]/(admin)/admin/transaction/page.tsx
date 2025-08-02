@@ -61,7 +61,6 @@ export default function TransactionsPage() {
       )
       .then((res) => {
         const resData = response(res);
-        console.log({ resData });
         setTransactions(resData.data);
         setPage(resData?.page || 1);
         setTotalPage(resData?.total_pages || 1);

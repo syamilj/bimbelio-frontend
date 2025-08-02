@@ -164,7 +164,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
               className="cursor-pointer p-0 mb-2"
             >
               <Link
-                href={`/${website_sub_category_id}/user/try-out`}
+                href={`/${website_sub_category_id}/user/dashboard`}
                 className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
                 style={
                   {
@@ -277,7 +277,7 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
           )}
 
           {/* Divider */}
-          <div className="my-2 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+          <div className="my-2 h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 
           {/* Logout */}
           <motion.div

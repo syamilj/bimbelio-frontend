@@ -91,10 +91,10 @@ const Search = ({}: any) => {
           id="searchValue"
           type="text"
           // placeholder="Coming Soon..."
-          className="w-full rounded-xl px-[1rem] py-[.8rem] text-sm outline-none md:w-[unset] md:rounded-xl md:py-[.5rem]"
+          className="w-full rounded-xl px-4 py-[.8rem] text-sm outline-none md:w-[unset] md:rounded-xl md:py-[.5rem]"
           disabled
         />
-        <div className="hidden items-center justify-center gap-[.7rem] pr-[1rem] md:flex">
+        <div className="hidden items-center justify-center gap-[.7rem] pr-4 md:flex">
           <p>di</p>
           <div className="font-regular">
             <select
@@ -113,14 +113,14 @@ const Search = ({}: any) => {
             </select>
           </div>
         </div>
-        <div className="absolute left-0 top-[100%] w-full px-[1rem]">
+        <div className="absolute left-0 top-full w-full px-4">
           {pathname?.includes('search') && (
             <div
               id="searchCategoryMobile"
               className="flex items-center justify-start gap-[.7rem] overflow-x-auto bg-bg-workspace pb-[.5rem] md:hidden"
             >
               <div
-                className={`px-[1.5rem] py-[.7rem] ${
+                className={`px-6 py-[.7rem] ${
                   categoryId === '' && 'bg-main text-white'
                 } shrink-0 rounded-xl text-main-gray-text`}
                 onClick={() => {
@@ -132,7 +132,7 @@ const Search = ({}: any) => {
               {category?.map((item, i) => (
                 <div
                   key={i}
-                  className={`px-[1.5rem] py-[.7rem] ${
+                  className={`px-6 py-[.7rem] ${
                     categoryId === item.id && 'bg-main text-white'
                   } shrink-0 rounded-xl text-main-gray-text`}
                   onClick={() => {
@@ -149,7 +149,7 @@ const Search = ({}: any) => {
       <button
         type="submit"
         id="border"
-        className="flex h-0 w-0 cursor-pointer items-center justify-center overflow-hidden text-sm rounded-xl bg-main p-0 font-semibold text-white md:h-[unset] md:w-[unset] md:px-[1rem]"
+        className="flex h-0 w-0 cursor-pointer items-center justify-center overflow-hidden text-sm rounded-xl bg-main p-0 font-semibold text-white md:h-[unset] md:w-[unset] md:px-4"
       >
         Cari
       </button>

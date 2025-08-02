@@ -59,9 +59,9 @@ const Toasts = ({
       id="toaster"
       className={`${
         data.visible ? 'animate-enter' : 'animate-leave'
-      } pointer-events-auto relative flex w-full max-w-md rounded-[1rem] bg-white shadow-default`}
+      } pointer-events-auto relative flex w-full max-w-md rounded-2xl bg-white shadow-default`}
     >
-      <div className="flex flex-col p-[1rem] text-[.9rem]">
+      <div className="flex flex-col p-4 text-[.9rem]">
         <div className="flex items-center">
           <div className="flex w-[30px] justify-start">
             {condition === 'success' ? (

@@ -15,6 +15,7 @@ import {
   Receipt,
   Trophy,
   Users,
+  Video,
   Zap,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -66,6 +67,13 @@ const SidebarRoute: FC = () => {
       category: 'User Management',
     },
     {
+      icon: CreditCard,
+      href: `/${website_sub_category_id}/admin/voucher`,
+      label: 'Voucher',
+      description: 'Voucher Management',
+      category: 'User Management',
+    },
+    {
       icon: FileText,
       href: `/${website_sub_category_id}/admin/blog`,
       label: 'Blog',
@@ -105,6 +113,20 @@ const SidebarRoute: FC = () => {
       href: `/${website_sub_category_id}/admin/course`,
       label: 'Courses',
       description: 'Kelola kursus',
+      category: 'Education',
+    },
+    {
+      icon: Video,
+      href: `/${website_sub_category_id}/admin/live-class`,
+      label: 'Live Class',
+      description: 'Kelola live class',
+      category: 'Education',
+    },
+    {
+      icon: Users,
+      href: `/${website_sub_category_id}/admin/tutors`,
+      label: 'Tutors',
+      description: 'Kelola tutor live class',
       category: 'Education',
     },
     {

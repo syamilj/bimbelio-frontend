@@ -73,7 +73,7 @@ const SearchDeskstop = () => {
       >
         <div
           className={cn(
-            'relative flex items-center overflow-hidden bg-white dark:bg-gray-800 shadow-lg border-2 transition-all duration-300',
+            'relative flex items-center overflow-hidden bg-white shadow-lg border-2 transition-all duration-300',
             isMobile ? 'rounded-xl' : 'rounded-full',
             isFocused ? 'shadow-xl scale-[1.02]' : 'shadow-lg',
           )}
@@ -119,7 +119,7 @@ const SearchDeskstop = () => {
                     setCategoryId(value === 'all' ? '' : value);
                   }}
                 >
-                  <SelectTrigger className="border-none shadow-none bg-transparent text-gray-600 dark:text-gray-300 focus:ring-0 h-auto p-0">
+                  <SelectTrigger className="border-none shadow-none bg-transparent text-gray-600 focus:ring-0 h-auto p-0">
                     <SelectValue placeholder="Semua Kategori" />
                   </SelectTrigger>
                   <SelectContent className="rounded-xl border shadow-xl">
@@ -186,7 +186,7 @@ const SearchDeskstop = () => {
               'px-3 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200',
               categoryId === ''
                 ? 'text-white shadow-md'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700',
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700',
             )}
             style={{
               backgroundColor: categoryId === '' ? mainColor : undefined,
@@ -202,7 +202,7 @@ const SearchDeskstop = () => {
                 'px-3 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200',
                 categoryId === item.id
                   ? 'text-white shadow-md'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700',
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700',
               )}
               style={{
                 backgroundColor: categoryId === item.id ? mainColor : undefined,

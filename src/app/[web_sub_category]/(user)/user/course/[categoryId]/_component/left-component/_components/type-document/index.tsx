@@ -35,7 +35,7 @@ const DocumentType = () => {
               value="item-1"
               className="border-none"
             >
-              <AccordionTrigger className="flex cursor-pointer items-start gap-[.5rem] rounded-[.5rem] px-[1rem] py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light truncate">
+              <AccordionTrigger className="flex cursor-pointer items-start gap-[.5rem] rounded-[.5rem] px-4 py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light truncate">
                 Berikan Rating
               </AccordionTrigger>
               <AccordionContent className="pb-0">

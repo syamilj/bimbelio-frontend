@@ -102,7 +102,7 @@ export default function MateriType() {
         value={CourseData.materi}
         className="pt-4 pb-12"
       />
-      <div className="w-full flex justify-center pb-[7rem]">
+      <div className="w-full flex justify-center pb-28">
         <EmojiRating />
       </div>
     </div>

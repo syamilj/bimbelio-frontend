@@ -4,6 +4,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Clock, Shield } from 'lucide-react';
@@ -131,6 +132,15 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       });
     }
   }, [tryoutData]);
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Tryout Detail',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Tryout Detail',
+    });
+  }, []);
 
   if (isLoading || loading) return <SpinnerPageCentered />;
 

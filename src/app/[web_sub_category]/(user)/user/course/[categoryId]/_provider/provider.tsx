@@ -2,6 +2,7 @@
 
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { LoadingRetro } from '@/components/ui/loading-retro';
 import {
   BlocknoteEditorType,
   schema,
@@ -241,6 +242,15 @@ export default function Provider({ children }: Props) {
   const isLocked =
     (CourseData?.premium && !session?.user?.feature?.course) || false;
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, [sub]);
+
   const Context = {
     isLocked,
     useParams: {
@@ -274,6 +284,8 @@ export default function Provider({ children }: Props) {
     },
     editor,
   };
+
+  if (isLoading) return <LoadingRetro />;
 
   return (
     <ProviderContext.Provider value={Context}>

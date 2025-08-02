@@ -67,8 +67,8 @@ const ToC: React.FC<ToCProps> = ({ headings }) => {
               className={cn(
                 'transition-colors duration-200',
                 activeId === heading.id
-                  ? 'font-medium text-black dark:text-white'
-                  : 'text-gray-400 hover:text-main-gray-text dark:text-main-gray-text2 dark:hover:text-gray-200',
+                  ? 'font-medium text-black'
+                  : 'text-gray-400 hover:text-main-gray-text',
               )}
             >
               {heading.text}

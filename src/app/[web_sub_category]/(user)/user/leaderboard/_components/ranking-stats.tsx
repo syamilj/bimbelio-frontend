@@ -236,7 +236,7 @@ const Summary = () => {
                 </CardTitle>
                 <div
                   className={cn(
-                    'w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-gradient-to-br text-white shadow-sm',
+                    'w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-linear-to-br text-white shadow-sm',
                     card.gradient,
                   )}
                 >

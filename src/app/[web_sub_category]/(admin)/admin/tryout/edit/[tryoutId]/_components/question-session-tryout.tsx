@@ -492,7 +492,7 @@ const QuestionSessionTryout = () => {
 
   return (
     <div className="flex items-start">
-      <div className="flex h-fit items-center justify-center px-[1rem] text-[1.2rem] font-medium">
+      <div className="flex h-fit items-center justify-center px-4 text-[1.2rem] font-medium">
         {/* {EditSession.Questions[questionIndex].number} */}
 
         <Select
@@ -522,12 +522,12 @@ const QuestionSessionTryout = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className="flex w-full flex-col gap-[1rem]">
+      <div className="flex w-full flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <input
               type="text"
-              className="rounded-[.8rem] border border-transparent px-[1rem] py-[.5rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              className="rounded-[.8rem] border border-transparent px-4 py-[.5rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               placeholder="SubCategory soal"
               value={
                 EditSession?.Questions[questionIndex].subCategory
@@ -538,7 +538,7 @@ const QuestionSessionTryout = () => {
             />
             <input
               type="text"
-              className="rounded-[.8rem] border border-transparent px-[1rem] py-[.5rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              className="rounded-[.8rem] border border-transparent px-4 py-[.5rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               placeholder="SubSubCategory soal"
               value={
                 EditSession?.Questions[questionIndex].subSubCategory
@@ -549,7 +549,7 @@ const QuestionSessionTryout = () => {
             />
           </div>
           <div
-            className="shrink-0 cursor-pointer rounded-[.8rem] bg-red-100 px-[1.5rem] py-[.5rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
+            className="shrink-0 cursor-pointer rounded-[.8rem] bg-red-100 px-6 py-[.5rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
             onClick={() => {
               deleteQuestion(questionIndex);
             }}
@@ -560,7 +560,7 @@ const QuestionSessionTryout = () => {
         <div className="relative mt-[-.5rem]">
           {/* {showPreview === questionIndex ? (
             <>
-              <div className="absolute top-[calc(100%-2.5rem)] z-[1] h-[250px] w-full overflow-y-auto rounded-[.8rem] border bg-white p-[.5rem] text-[.9rem] shadow-default">
+              <div className="absolute top-[calc(100%-2.5rem)] z-1 h-[250px] w-full overflow-y-auto rounded-[.8rem] border bg-white p-[.5rem] text-[.9rem] shadow-default">
                 <ReactMarkdown
                   value={replaceLatexNotation(
                     EditSession?.Questions[questionIndex].question,
@@ -570,7 +570,7 @@ const QuestionSessionTryout = () => {
               <textarea
                 id={`question-${questionIndex}`}
                 placeholder="Soal"
-                className="relative z-0 h-[200px] w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+                className="relative z-0 h-[200px] w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
                 required
                 value={EditSession?.Questions[questionIndex].question}
                 onChange={(e) => {
@@ -584,7 +584,7 @@ const QuestionSessionTryout = () => {
             </>
           ) : (
             <div
-              className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               onClick={() => {
                 setShowPreview(questionIndex);
                 setTimeout(() => {
@@ -596,7 +596,7 @@ const QuestionSessionTryout = () => {
                 type="text"
                 defaultValue={EditSession?.Questions[questionIndex].question}
                 required
-                className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
+                className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
               />
               <ReactMarkdown
                 value={
@@ -611,7 +611,7 @@ const QuestionSessionTryout = () => {
               />
             </div>
           )} */}
-          <div className="relative z-1 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
+          <div className="relative z-1 w-full rounded-[.8rem] border border-transparent bg-white px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
             <BlocknoteEditor
               value={EditSession.Questions[questionIndex].question}
               onValueChange={(value) => {
@@ -621,12 +621,12 @@ const QuestionSessionTryout = () => {
           </div>
           <UploadImageQuestion />
         </div>
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           {EditSession?.Questions[questionIndex].Answers?.map(
             (item2, answerIndex) => (
               <div
                 key={answerIndex}
-                className="flex items-center gap-[1rem]"
+                className="flex items-center gap-4"
               >
                 <div className="h-full overflow-visible rounded-[.8rem] border border-transparent bg-white duration-300 md:hover:shadow-default">
                   <Select
@@ -654,7 +654,7 @@ const QuestionSessionTryout = () => {
                   </Select>
                 </div>
                 <div className="relative w-full">
-                  <div className="relative z-1 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none focus:shadow-default md:hover:shadow-default">
+                  <div className="relative z-1 w-full rounded-[.8rem] border border-transparent bg-white px-4 py-[.8rem] outline-none focus:shadow-default md:hover:shadow-default">
                     <BlocknoteEditor
                       value={item2.answer}
                       onValueChange={(value) => {
@@ -770,7 +770,7 @@ const QuestionSessionTryout = () => {
             ),
           )}
         </div>
-        <div className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
+        <div className="relative z-0 w-full rounded-[.8rem] border border-transparent bg-white px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default">
           <BlocknoteEditor
             value={EditSession.Questions[questionIndex].explanation}
             onValueChange={(value) => {
@@ -940,9 +940,9 @@ const UploadImageQuestion = () => {
   return (
     <>
       {EditSession?.Questions[questionIndex].image ? (
-        <div className="flex w-full gap-[1rem]">
+        <div className="flex w-full gap-4">
           <div
-            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-4 py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
             onClick={() => {
               if (!EditSession?.Questions) {
                 return;
@@ -958,7 +958,7 @@ const UploadImageQuestion = () => {
             Add Image
           </div>
           {/* <div
-            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-4 py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
             onClick={() => {
               document.getElementById(`image-${questionIndex}`)?.click();
             }}
@@ -974,7 +974,7 @@ const UploadImageQuestion = () => {
             Change Image
           </div> */}
           <div
-            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 px-[1rem] py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 px-4 py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
             onClick={() => {
               if (!EditSession?.Questions) {
                 return;
@@ -989,7 +989,7 @@ const UploadImageQuestion = () => {
         </div>
       ) : (
         <div
-          className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+          className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-4 py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
           onClick={() => {
             document.getElementById(`image-${questionIndex}`)?.click();
           }}
@@ -1207,9 +1207,9 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
   return (
     <>
       {imageValue ? (
-        <div className="flex w-full gap-[1rem]">
+        <div className="flex w-full gap-4">
           <div
-            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-4 py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
             onClick={() => {
               if (!EditSession?.Questions) {
                 return;
@@ -1225,7 +1225,7 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
             Add Image
           </div>
           {/* <div
-            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-4 py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
             onClick={() => {
               document.getElementById(`image-${questionIndex}`)?.click();
             }}
@@ -1241,7 +1241,7 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
             Change Image
           </div> */}
           <div
-            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 px-[1rem] py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
+            className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 px-4 py-[.5rem] text-[.8rem] font-medium text-red-700 duration-300 md:hover:shadow-default md:active:shadow-none"
             onClick={() => {
               if (!EditSession?.Questions) {
                 return;
@@ -1256,7 +1256,7 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
         </div>
       ) : (
         <div
-          className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-[1rem] py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
+          className="relative mt-[.5rem] flex w-fit cursor-pointer items-center justify-center rounded-[.8rem] bg-white px-4 py-[.5rem] text-[.8rem] font-medium text-main-gray-text duration-300 md:hover:shadow-default md:active:shadow-none"
           onClick={() => {
             document
               .getElementById(`answer-${questionIndex}-${answerIndex}`)

@@ -200,7 +200,7 @@ const EnhancedPricing = () => {
             viewport={{ once: true }}
             className="mt-8"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-lg">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-linear-to-r from-red-500 to-pink-500 text-white font-bold shadow-lg">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
               <span>🔥 Diskon 50% - Terbatas untuk 100 pendaftar pertama!</span>
             </div>

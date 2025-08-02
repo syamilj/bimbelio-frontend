@@ -428,7 +428,7 @@ const HeadingSessionTryout = () => {
     <>
       <div
         id="heading"
-        className="flex shrink-0 flex-col gap-[1rem] overflow-hidden"
+        className="flex shrink-0 flex-col gap-4 overflow-hidden"
       >
         <div className="flex items-center justify-between">
           <div className="flex gap-[.5rem]">
@@ -441,7 +441,7 @@ const HeadingSessionTryout = () => {
                     : ''
                 }
                 required
-                className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
+                className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
               />
               <Select
                 value={
@@ -484,7 +484,7 @@ const HeadingSessionTryout = () => {
                       : ''
                   }
                   required
-                  className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
+                  className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
                 />
                 <Select
                   value={
@@ -523,7 +523,7 @@ const HeadingSessionTryout = () => {
             <input
               type="number"
               placeholder="Durasi waktu"
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-100 focus:shadow-default md:hover:shadow-default"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-100 focus:shadow-default md:hover:shadow-default"
               required
               value={EditSession.duration === 0 ? '' : EditSession.duration}
               onChange={(e) => onChangeDuration(e)}
@@ -534,7 +534,7 @@ const HeadingSessionTryout = () => {
                 type="text"
                 defaultValue={assessmentType !== '' ? `${assessmentType}` : ''}
                 required
-                className="absolute bottom-0 left-[1rem] h-1 w-1 p-0 text-transparent outline-none"
+                className="absolute bottom-0 left-4 h-1 w-1 p-0 text-transparent outline-none"
               />
               <Select
                 value={
@@ -564,18 +564,18 @@ const HeadingSessionTryout = () => {
               </Select>
             </div>
           </div>
-          {/* <div className="bg-red-100 md:hover:bg-red-200 md:active:bg-red-100 text-red-700 font-medium rounded-[.8rem] py-[.8rem] px-[1rem] shrink-0 cursor-pointer duration-300 " onClick={deleteSession}>
+          {/* <div className="bg-red-100 md:hover:bg-red-200 md:active:bg-red-100 text-red-700 font-medium rounded-[.8rem] py-[.8rem] px-4 shrink-0 cursor-pointer duration-300 " onClick={deleteSession}>
                     Hapus sesi
                 </div> */}
           <ModalDeleteSession deleteSession={deleteSession} />
         </div>
-        <div className="grid w-full grid-cols-2 gap-[1rem]">
+        <div className="grid w-full grid-cols-2 gap-4">
           <div className="flex w-full flex-col gap-[.5rem]">
             <p className="font-medium">Judul sesi</p>
             <input
               type="text"
               placeholder="Judul sesi...."
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               required
               value={EditSession.name}
               onChange={(e) => {
@@ -598,7 +598,7 @@ const HeadingSessionTryout = () => {
             <input
               type="number"
               placeholder="Ambang batas...."
-              className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+              className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
               value={
                 EditSession.thresholdValue === 0
                   ? ''
@@ -628,7 +628,7 @@ const HeadingSessionTryout = () => {
           <input
             type="text"
             placeholder="Document ID...."
-            className="w-full rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+            className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] text-[.9rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
             value={EditSession.documentId || ''}
             onChange={(e) => {
               setSessions((prev) =>
@@ -646,7 +646,7 @@ const HeadingSessionTryout = () => {
           <div className="flex w-full items-center justify-between">
             <p className="font-medium">Generate soal</p>
             <div
-              className="shrink-0 cursor-pointer rounded-[.4rem] bg-blue-100 px-[1rem] py-[.2rem] text-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+              className="shrink-0 cursor-pointer rounded-[.4rem] bg-blue-100 px-4 py-[.2rem] text-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
               onClick={() => {
                 handleGenerate();
               }}
@@ -657,7 +657,7 @@ const HeadingSessionTryout = () => {
           <textarea
             id="context-for-generate-ai-edit"
             placeholder="Prompt generation"
-            className="w-full shrink-0 rounded-[.8rem] border border-transparent px-[1rem] py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
+            className="w-full shrink-0 rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default"
           />
         </div>
       </div>
@@ -673,9 +673,9 @@ const HeadingSessionTryout = () => {
                 Sedang Menggenerate Soal
               </DialogTitle>
             </DialogHeader>
-            <div className="z-[100000000] flex items-center justify-center p-[1.5rem]">
+            <div className="z-100000000 flex items-center justify-center p-6">
               <div className="flex flex-col items-center">
-                <Loader2 className="h-[2rem] w-[2rem] animate-spin" />
+                <Loader2 className="h-8 w-[2rem] animate-spin" />
                 <p className="text-center text-[1.1rem] font-medium">
                   AI Sedang Generate soal Tryout{' '}
                 </p>

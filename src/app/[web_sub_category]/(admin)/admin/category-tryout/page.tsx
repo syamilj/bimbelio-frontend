@@ -68,7 +68,7 @@ export default function CategoryTryoutPage() {
   }));
 
   return (
-    <div className="pt-[1rem]">
+    <div className="pt-4">
       <Tab
         categories={categoriesWithDate}
         subCategories={subCategories}

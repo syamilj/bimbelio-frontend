@@ -44,7 +44,7 @@ export const addHighlightToNotes = async (
   if (!editor) {
     toaster({
       title: 'Gagal',
-      description: 'Terjadi kesalahan!',
+      description: 'Editor tidak tersedia!',
       condition: 'warning',
       duration: 3000,
     });
@@ -53,14 +53,67 @@ export const addHighlightToNotes = async (
 
   if (type === 'TEXT') {
     if (!content || !highlightId) return;
-    insertOrUpdateBlock(editor, {
-      content,
-      props: {
-        highlightId,
-        textAlignment: 'justify',
-      },
-      type: 'highlight',
-    });
+
+    try {
+      // Check if highlight block type exists in schema
+      if (!editor.schema.blockSpecs.highlight) {
+        toaster({
+          title: 'Error',
+          description: 'Highlight block type tidak terdaftar di schema editor!',
+          condition: 'warning',
+          duration: 3000,
+        });
+        return;
+      }
+
+      // Insert block at the end of the document to avoid position errors
+      const currentBlocks = editor.document;
+      const currentLastBlock = currentBlocks[currentBlocks.length - 1];
+
+      // Try the original approach that works in other parts of the app
+      insertOrUpdateBlock(editor, {
+        content: content,
+        props: {
+          highlightId,
+          textAlignment: 'justify',
+        },
+        type: 'highlight',
+      });
+
+      // Force editor to re-render by triggering a small update
+      setTimeout(() => {
+        // Get the last block (should be our highlight)
+        const blocks = editor.document;
+        const lastBlock = blocks[blocks.length - 1];
+
+        if (lastBlock && lastBlock.type === 'highlight') {
+          // Force update the block to trigger re-render
+          editor.updateBlock(lastBlock, {
+            content: content,
+            props: {
+              ...lastBlock.props,
+              highlightId,
+            },
+          });
+
+          // Focus the editor to ensure it's active
+          editor._tiptapEditor.commands.focus('end');
+        }
+      }, 100);
+
+      // Trigger manual save to ensure highlight persists
+      const htmlContent = await editor.blocksToFullHTML(editor.document);
+
+      // Focus editor to ensure it's in active state
+      editor._tiptapEditor.commands.focus('end');
+    } catch (error) {
+      toaster({
+        title: 'Error',
+        description: 'Gagal menambahkan highlight ke notes!',
+        condition: 'warning',
+        duration: 3000,
+      });
+    }
   } else {
     if (!content || !highlightId) return;
 

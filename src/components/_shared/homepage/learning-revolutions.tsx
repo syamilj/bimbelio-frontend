@@ -134,12 +134,10 @@ const LearningRevolutions = memo(() => {
       {/* Simplified Background - reduced opacity dan blur untuk performa */}
       <div className="absolute inset-0 -z-10">
         <div
-          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full opacity-3 blur-2xl" // Reduced size and blur
-          style={{ backgroundColor: mainColor }}
+          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full opacity-3 blur-2xl bg-main-default" // Reduced size and blur
         />
         <div
-          className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full opacity-3 blur-2xl" // Reduced size and blur
-          style={{ backgroundColor: secondaryColor }}
+          className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full opacity-3 blur-2xl bg-main-default" // Reduced size and blur
         />
       </div>
 
@@ -159,21 +157,13 @@ const LearningRevolutions = memo(() => {
             viewport={{ once: true }}
             className="mb-6"
           >
-            <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
+            <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
               <Zap className="w-4 h-4" />
               REVOLUSI BELAJAR
             </span>
           </motion.div>
 
-          <h2
-            className="text-4xl md:text-5xl font-bold mb-6"
-            style={{ color: mainColor }}
-          >
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-main-default">
             Revolusi Persiapan Belajar dengan AI!
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -349,20 +339,11 @@ const CTASection = memo(
     mainColor: string;
     secondaryColor: string;
   }) => (
-    <Card
-      className="max-w-4xl mx-auto border-2 rounded-3xl overflow-hidden shadow-xl"
-      style={{
-        borderColor: `${mainColor}20`,
-        background: `linear-gradient(135deg, ${mainColor}05, ${secondaryColor}05)`,
-      }}
-    >
+    <Card className="max-w-4xl mx-auto border-2 rounded-3xl overflow-hidden shadow-xl border-main-default/20 bg-white">
       <CardContent className="p-8">
         <div className="space-y-6">
           <div>
-            <h3
-              className="text-2xl md:text-3xl font-bold mb-4"
-              style={{ color: mainColor }}
-            >
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-main-default">
               Siap Merasakan Revolusi Belajar?
             </h3>
             <p className="text-lg text-gray-600">
@@ -376,12 +357,7 @@ const CTASection = memo(
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.1 }} // Faster button interaction
           >
-            <button
-              className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-200 flex items-center justify-center gap-2 mx-auto" // Faster transition
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
+            <button className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-200 flex items-center justify-center gap-2 mx-auto bg-main-default">
               <Zap className="w-5 h-5" />
               Coba Revolusi AI Sekarang
             </button>
@@ -394,10 +370,7 @@ const CTASection = memo(
             </div>
             <div className="w-px h-4 bg-gray-300" />
             <div className="flex items-center gap-2">
-              <Brain
-                className="w-4 h-4"
-                style={{ color: mainColor }}
-              />
+              <Brain className="w-4 h-4 text-main-default" />
               <span>AI Powered</span>
             </div>
           </div>
