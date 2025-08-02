@@ -170,7 +170,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr,1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
         {/* Navigasi Soal untuk Mobile */}
         <Navigation
           getIsCorrect={getIsCorrect}
@@ -301,7 +301,7 @@ const Navigation = ({
             );
           })}
         </div>
-        <div className="mt-6 flex justify-center gap-[1rem] md:justify-center">
+        <div className="mt-6 flex justify-center gap-4 md:justify-center">
           <Button
             variant="outline"
             onClick={() => setUserAnswerIndex((prev) => Math.max(0, prev - 1))}
@@ -326,7 +326,7 @@ const Navigation = ({
         <div className="w-full flex justify-end mt-8">
           {sessionResult?.TryoutSession.Document && (
             <Button
-              className="h-[unset] bg-main hover:bg-main-hover py-[.6rem] px-[1rem] rounded-[.6rem]"
+              className="h-[unset] bg-main hover:bg-main-hover py-[.6rem] px-4 rounded-[.6rem]"
               onClick={() =>
                 router.push(
                   `/user/workspace/${sessionResult?.TryoutSession.Document!.category.id}/${sessionResult.TryoutSession.Document!.id}`,

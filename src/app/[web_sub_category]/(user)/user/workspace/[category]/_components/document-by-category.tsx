@@ -78,7 +78,7 @@ export default function DocumentByCategory({
   return (
     <>
       {docsData?.length !== 0 ? (
-        <div className="grid grid-cols-2 gap-[1rem] font-semibold md2:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 font-semibold md2:grid-cols-4">
           <Card
             data={docsData}
             href={`/user/workspace/${params?.category}`}
@@ -93,7 +93,7 @@ export default function DocumentByCategory({
           ) : (
             <>
               {docsData?.length === 0 && (
-                <div className="grid grid-cols-2 gap-[1rem] md2:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 md2:grid-cols-4">
                   <CardNotFound title="Document Not Found" />
                 </div>
               )}

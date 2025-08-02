@@ -1,31 +1,23 @@
 'use client';
 
 import BlogEditor from '@/components/ui/blog-editor';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { LoadingPopUp } from '@/components/ui/spinner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
-import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { cn } from '@/lib/utils';
-import {
-  IconDown,
-  IconFullscreen,
-  IconMinimizeScreen,
-  IconPlus,
-  IconUp,
-  IconUploadImage,
-} from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
 import { Document } from '@/types/database';
 import 'katex/dist/katex.min.css';
-import React, { ChangeEvent, SetStateAction, useEffect, useState } from 'react';
+import { FileText, Plus, Video } from 'lucide-react';
+import React, { ChangeEvent, SetStateAction, useState } from 'react';
 import ModalImportExcel from '../../_component/modal-import-excel';
 import { QuestionProps, SubChapterProps } from '../page';
-import SubChapterHeading from './sub-chapter-heading';
 import SubChapterQuestion from './sub-chapter-question';
-
-// const MDEditor = dynamic(() => import('@uiw/react-md-editor'), {
-//   ssr: false,
-// });
 
 interface Props {
   EditSubChapter: SubChapterProps | null;
@@ -52,22 +44,9 @@ const SubChapterOption = ({
 }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [headingSessionHeight, setHeadingSessionHeight] = useState<number>(0);
-  const [showHeadingSession, setShowHeadingSession] = useState<boolean>(true);
-
-  const [listQuestionHeight, setListQuestionHeight] = useState<number>(0);
-  const [showListQuestion, setShowListQuestion] = useState<boolean>(true);
-
-  // const remarkMathOptions = {
-  //   singleDollarTextMath: false,
-  // };
-
   const addQuestion = () => {
     if (EditSubChapter === null) return;
-    const div = document.querySelector(
-      '#tryout-admin #numberList',
-    ) as HTMLDivElement;
-    div.style.height = 'auto';
+
     let newQuestion: QuestionProps;
     if (assessmentType === '1-5') {
       newQuestion = {
@@ -140,92 +119,49 @@ const SubChapterOption = ({
     );
   };
 
-  // const handleChangeDocument = async (e: ChangeEvent<HTMLInputElement>) => {
-  //   setLoading(true);
-  //   if (e.target.files) {
-  //     const file = e.target.files[0];
-  //     const nameFile = `${crypto.randomUUID()}`;
-  //     if (file.type !== 'application/pdf') {
-  //       toaster({
-  //         title: 'Error',
-  //         condition: 'warning',
-  //         description: 'File yang di-upload tidak sesuai',
-  //         duration: 3000,
-  //       });
-  //       setLoading(false);
-  //       return;
-  //     }
-  //     if (EditSubChapter?.document && EditSubChapter.document.length > 0) {
-  //       const { data, error } = await supabase.storage
-  //         .from('pdf')
-  //         .remove([`course/${EditSubChapter?.document}`]);
-  //       if (error) {
-  //         toaster({
-  //           title: 'Error',
-  //           condition: 'warning',
-  //           description: 'Gagal mengupload file, silahkan coba lagi',
-  //           duration: 3000,
-  //         });
-  //         setLoading(false);
-  //         return;
-  //       }
-  //       if (data.length === 0) {
-  //         toaster({
-  //           title: 'Error',
-  //           condition: 'warning',
-  //           description: 'Gagal mengupload file, silahkan coba lagi',
-  //           duration: 3000,
-  //         });
-  //         setLoading(false);
-  //         return;
-  //       }
-  //     }
-  //     const { error } = await supabase.storage
-  //       .from('pdf')
-  //       .upload(`course/${nameFile}`, file);
+  const handleChangeType = async (
+    value: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI',
+  ) => {
+    if (!value || value.length === 0) return;
 
-  //     if (error) {
-  //       toaster({
-  //         title: 'Error',
-  //         condition: 'warning',
-  //         description: 'Gagal mengupload file, silahkan coba lagi',
-  //         duration: 3000,
-  //       });
-  //       setSubChapter(prev =>
-  //         prev.map((sChapter, sIndex) => {
-  //           if (sIndex === currentIndexEdit) {
-  //             return {
-  //               ...sChapter,
-  //               title: sChapter.title,
-  //               description: sChapter.description,
-  //               spendTime: sChapter.spendTime,
-  //               type: sChapter.type,
-  //               document: sChapter.document,
-  //             };
-  //           }
-  //           return { ...sChapter };
-  //         }),
-  //       );
-  //       setLoading(false);
-  //       return;
-  //     }
+    if (value !== EditSubChapter?.type) {
+      setSubChapter((prev) =>
+        prev.map((sChapter, index) => {
+          if (index === currentIndexEdit) {
+            return {
+              title: sChapter.title,
+              description: sChapter.description,
+              number: sChapter.number,
+              spendTime: sChapter.spendTime,
+              Questions: sChapter.Questions,
+              type: value,
+              premium: sChapter.premium,
+            };
+          }
+          return sChapter;
+        }),
+      );
 
-  //     setSubChapter(prev =>
-  //       prev.map((sChapter, sIndex) => {
-  //         if (sIndex === currentIndexEdit) {
-  //           return {
-  //             ...sChapter,
-  //             document: nameFile,
-  //           };
-  //         }
-  //         return { ...sChapter };
-  //       }),
-  //     );
-  //   }
-  //   setLoading(false);
-  // };
+      // Clean up old files when changing type
+      if (EditSubChapter?.type === 'DOCUMENT' && EditSubChapter.document) {
+        await supabase.storage
+          .from('pdf')
+          .remove([`course/${EditSubChapter.document}`]);
+      }
+      if (EditSubChapter?.type === 'VIDEO' && EditSubChapter.video) {
+        await supabase.storage
+          .from('video')
+          .remove([`course/${EditSubChapter.video}`]);
+      }
+    }
+  };
 
-  const handleChangeVideo = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleVideoUpload = async (
+    e: ChangeEvent<HTMLInputElement>,
+    setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>,
+    currentIndexEdit: number | null,
+    setLoading: React.Dispatch<SetStateAction<boolean>>,
+  ) => {
     setLoading(true);
     if (e.target.files) {
       const file = e.target.files[0];
@@ -240,10 +176,12 @@ const SubChapterOption = ({
         setLoading(false);
         return;
       }
-      if (EditSubChapter?.video && EditSubChapter?.video.length > 0) {
+
+      // Remove old video if exists
+      if (EditSubChapter?.video && EditSubChapter.video.length > 0) {
         const { data, error } = await supabase.storage
           .from('video')
-          .remove([`course/${EditSubChapter?.video}`]);
+          .remove([`course/${EditSubChapter.video}`]);
         if (error) {
           toaster({
             title: 'Error',
@@ -254,17 +192,9 @@ const SubChapterOption = ({
           setLoading(false);
           return;
         }
-        if (data.length === 0) {
-          toaster({
-            title: 'Error',
-            condition: 'warning',
-            description: 'Gagal mengupload file, silahkan coba lagi',
-            duration: 3000,
-          });
-          setLoading(false);
-          return;
-        }
       }
+
+      // Upload new video
       const { error } = await supabase.storage
         .from('video')
         .upload(`course/${nameFile}`, file);
@@ -276,21 +206,6 @@ const SubChapterOption = ({
           description: 'Gagal mengupload file, silahkan coba lagi',
           duration: 3000,
         });
-        setSubChapter((prev) =>
-          prev.map((sChapter, sIndex) => {
-            if (sIndex === currentIndexEdit) {
-              return {
-                ...sChapter,
-                title: sChapter.title,
-                description: sChapter.description,
-                spendTime: sChapter.spendTime,
-                type: sChapter.type,
-                video: sChapter.video,
-              };
-            }
-            return { ...sChapter };
-          }),
-        );
         setLoading(false);
         return;
       }
@@ -310,461 +225,319 @@ const SubChapterOption = ({
     setLoading(false);
   };
 
-  useEffect(() => {});
-
   if (!EditSubChapter || currentIndexEdit === null) {
     return null;
   }
 
   return (
-    <div className="absolute left-0 top-0 flex h-full w-full flex-col gap-[1rem] overflow-y-auto border-l p-[1rem] pb-[100px] text-[.9rem]">
-      {loading && <LoadingPopUp title="Sedang Mengupload File..." />}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-[1rem]">
-          <h1 className="text-[1.2rem] font-medium">
-            Sub Chapter {currentIndexEdit + 1}
-          </h1>
-          {showDetailSubChapter ? (
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
-              onClick={() => {
-                setShowDetailSubChapter(false);
-              }}
-            >
-              <IconFullscreen w={15} />
-            </div>
-          ) : (
-            <div
-              className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
-              onClick={() => {
-                setShowDetailSubChapter(true);
-              }}
-            >
-              <IconMinimizeScreen w={15} />
-            </div>
-          )}
-        </div>
-        <div className="flex items-center gap-4">
-          <ModalImportExcel
-            setSubChapter={setSubChapter}
-            currentIndexEdit={currentIndexEdit}
-            assessmentType={assessmentType}
-          />
-          <div
-            className="cursor-pointer text-main-gray-text duration-300 md:hover:text-black"
-            onClick={() => {
-              const div = document.querySelector(
-                '#tryout-admin #heading',
-              ) as HTMLDivElement;
-              if (div) {
-                if (div.clientHeight !== 0) {
-                  div.style.height = `${div.clientHeight}px`;
-                  setHeadingSessionHeight(div.clientHeight);
-                  setShowHeadingSession(false);
-                } else {
-                  setShowHeadingSession(true);
-                }
-                div.style.height =
-                  div.clientHeight === 0 ? `${headingSessionHeight}px` : '0px';
-                div.style.overflow = 'hidden';
-                div.style.transition = 'height 0.3s ease';
-              }
-            }}
-          >
-            {showHeadingSession ? <IconUp /> : <IconDown />}
-          </div>
-        </div>
-      </div>
-      <SubChapterHeading
-        EditSubChapter={EditSubChapter}
-        setSubChapter={setSubChapter}
-        currentIndexEdit={currentIndexEdit}
-        setCurrentIndexEdit={setCurrentIndexEdit}
-      />
-      <div className="my-[.5rem] h-[1px] w-full shrink-0 bg-main-gray-disabled/60" />
-      {EditSubChapter.type === 'VIDEO' ? (
-        <VideoType
-          EditSubChapter={EditSubChapter}
-          setSubChapter={setSubChapter}
-          handleChangeVideo={handleChangeVideo}
-          currentIndexEdit={currentIndexEdit}
-        />
-      ) : EditSubChapter.type === 'DOCUMENT' ? (
-        <DocumentType
-          EditSubChapter={EditSubChapter}
-          setSubChapter={setSubChapter}
-          currentIndexEdit={currentIndexEdit}
-        />
-      ) : EditSubChapter.type === 'TRYOUT' ? (
-        <>
-          <div className="mb-[.5rem] flex w-full items-center justify-between">
-            <h1 className="text-[1.1rem] font-medium">Daftar soal</h1>
+    <Card>
+      {loading && <LoadingPopUp title="Mengupload..." />}
 
-            <div
-              className="cursor-pointer text-main-gray-text duration-300 md:hover:text-black"
-              onClick={() => {
-                const div = document.querySelector(
-                  '#tryout-admin #numberList',
-                ) as HTMLDivElement;
-                if (div) {
-                  if (div.clientHeight !== 0) {
-                    div.style.height = `${div.clientHeight}px`;
-                    setListQuestionHeight(div.clientHeight);
-                    setShowListQuestion(false);
-                  } else {
-                    setShowListQuestion(true);
-                  }
-                  div.style.height =
-                    div.clientHeight === 0 ? `${listQuestionHeight}px` : '0px';
-                  div.style.overflow = 'hidden';
-                  div.style.transition = 'height 0.3s ease';
-                }
-              }}
-            >
-              {showListQuestion ? <IconUp /> : <IconDown />}
-            </div>
-          </div>
-          <div
-            id="numberList"
-            className="mt-[-1rem] flex shrink-0 flex-wrap items-center justify-start gap-[.5rem]"
-          >
-            {EditSubChapter.Questions &&
-              EditSubChapter.Questions?.length > 0 &&
-              EditSubChapter.Questions?.map((question, qIndex) => (
-                <div
-                  key={qIndex}
-                  className={cn(
-                    'flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-[.8rem] bg-white font-medium text-main-gray-text duration-300 md:hover:bg-main-gray-input md:active:shadow-default',
-                    qIndex === questionIndex &&
-                      'bg-main text-white md:hover:bg-main',
-                  )}
-                  onClick={() => setQuestionIndex(qIndex)}
-                >
-                  {question.number}
-                </div>
-              ))}
-            <div
-              className="flex h-[38px] w-[38px] cursor-pointer items-center justify-center rounded-[.8rem] bg-blue-100 font-medium text-blue-600 duration-300 md:hover:bg-blue-200 md:hover:shadow-default md:active:bg-blue-100"
-              onClick={addQuestion}
-            >
-              <IconPlus w={15} />
-            </div>
-          </div>
-          <div id="question">
-            <SubChapterQuestion
-              EditSubChapter={EditSubChapter}
-              questionIndex={questionIndex}
-              setQuestionIndex={setQuestionIndex}
-              currentIndexEdit={currentIndexEdit}
-              assessmentType={assessmentType}
-              setSubChapter={setSubChapter}
-            />
-          </div>
-        </>
-      ) : EditSubChapter.type === 'MATERI' ? (
-        <MateriType
-          EditSubChapter={EditSubChapter}
-          setSubChapter={setSubChapter}
-          currentIndexEdit={currentIndexEdit}
-        />
-      ) : null}
-    </div>
-  );
-};
+      <CardHeader>
+        <CardTitle>Edit Sub Chapter {currentIndexEdit + 1}</CardTitle>
+      </CardHeader>
 
-const VideoType = ({
-  EditSubChapter,
-  handleChangeVideo,
-  setSubChapter,
-  currentIndexEdit,
-}: {
-  EditSubChapter: SubChapterProps;
-  handleChangeVideo: (e: ChangeEvent<HTMLInputElement>) => void;
-  setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>;
-  currentIndexEdit: number | null;
-}) => {
-  const remarkMathOptions = {
-    singleDollarTextMath: false,
-  };
-  return (
-    <div className="flex flex-col gap-[.5rem]">
-      <p className="ml-[1rem]">Video</p>
-      <div className="flex w-full flex-col gap-[1rem] rounded-[1rem] border-2 border-dashed border-main-gray-input p-[1rem]">
-        <div className="flex w-full justify-center">
-          <IconUploadImage
-            className="text-main"
-            w={26}
-          />
-        </div>
-        {!EditSubChapter.video ? (
-          <p className="text-center text-main-gray-text">
-            Pilih video untuk di-upload (.mp4)
-          </p>
-        ) : (
-          <p className="text-center text-main-gray-text">
-            {EditSubChapter?.video}.mp4
-          </p>
-        )}
-
-        {EditSubChapter.video && (
-          <a
-            href={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${EditSubChapter.video}`}
-            target="_blank"
-            className="font-regular relative mt-[-.5rem] flex w-full cursor-pointer select-none justify-center rounded-[.8rem] border-2 py-[.5rem] text-center text-main-gray-text duration-300 md:hover:bg-main-gray-input md:active:bg-white"
-          >
-            Lihat Video
-          </a>
-        )}
-        <div
-          className="font-regular relative mt-[-.5rem] flex w-full cursor-pointer select-none justify-center rounded-[.8rem] border-2 py-[.5rem] text-center text-main-gray-text duration-300 md:hover:bg-main-gray-input md:active:bg-white"
-          onClick={() => {
-            const input = document.getElementById(
-              'sub-chapter-upload-video',
-            ) as HTMLInputElement;
-            input.click();
-          }}
+      <CardContent>
+        <Tabs
+          defaultValue="basic"
+          className="w-full"
         >
-          {EditSubChapter.video ? 'Upload Ulang' : 'Upload'} Video
-          <div className="absolute top-[100%]">
-            <div className="absolute left-0 top-0 h-full w-full bg-workspace"></div>
-            <input
-              id="sub-chapter-upload-video"
-              type="file"
-              className="h-1 w-1 p-0"
-              required={EditSubChapter.video ? false : true}
-              onChange={(e) => {
-                handleChangeVideo(e);
-              }}
-            />
-          </div>
-        </div>
-      </div>
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="basic">Basic</TabsTrigger>
+            <TabsTrigger value="content">Konten</TabsTrigger>
+            <TabsTrigger
+              value="questions"
+              disabled={EditSubChapter.type !== 'TRYOUT'}
+            >
+              Soal
+            </TabsTrigger>
+            <TabsTrigger value="settings">Setting</TabsTrigger>
+          </TabsList>
 
-      <div
-        id="blog-admin"
-        className="rounded-lg ml-6"
-      >
-        <BlogEditor
-          value={EditSubChapter.description}
-          className="h-[70vh]"
-          onChange={(value) => {
-            setSubChapter((prev) =>
-              prev.map((sChapter, sIndex) => {
-                if (sIndex === currentIndexEdit) {
-                  return {
-                    ...sChapter,
-                    description: value,
-                  };
-                }
-                return sChapter;
-              }),
-            );
-          }}
-        />
-        {/* <MDEditor
-          value={EditSubChapter.description}
-          height={'70vh'}
-          onChange={(val) => {
-            const processedValue = replaceLatexNotation(val ?? '');
-            // setValue(processedValue);
-            setSubChapter((prev) =>
-              prev.map((sChapter, sIndex) => {
-                if (sIndex === currentIndexEdit) {
-                  return {
-                    ...sChapter,
-                    description: processedValue,
-                  };
-                }
-                return sChapter;
-              }),
-            );
-          }}
-          previewOptions={{
-            remarkPlugins: [[remarkMath, remarkMathOptions], remarkGfm],
-            rehypePlugins: [rehypeKatex, rehypeRaw],
-            className: 'ReactMarkdown',
-          }}
-        /> */}
-      </div>
-    </div>
-  );
-};
-
-const DocumentType = ({
-  EditSubChapter,
-  setSubChapter,
-  currentIndexEdit,
-}: {
-  EditSubChapter: SubChapterProps;
-  setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>;
-  currentIndexEdit: number | null;
-}) => {
-  const [inputData, setInputData] = useState<{
-    id: string;
-    name: string;
-    disabled: boolean;
-  }>({
-    id: '',
-    name: '',
-    disabled: false,
-  });
-  const [showSearchData, setShowSearchData] = useState<boolean>(false);
-
-  // const { data: searchData } = api.document.getDocumentAdminCourse.useQuery(
-  //   { title: inputData.name },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     refetchOnMount: false,
-  //   },
-  // );
-
-  const { data: searchData } = useGet<Document[]>(
-    '/document/getDocumentAdminCourse',
-    {
-      params: { title: inputData.name },
-      useEffectDependencies: [inputData],
-    },
-  );
-
-  useEffect(() => {
-    if (EditSubChapter.document && EditSubChapter.document.length > 0) {
-      setInputData((prev) => ({
-        ...prev,
-        name: EditSubChapter.documentTitle || '',
-        id: EditSubChapter.document || '',
-        disabled: true,
-      }));
-    }
-  }, [EditSubChapter]);
-
-  return (
-    <div className="flex flex-col gap-[.5rem]">
-      <p className="ml-[1rem]">Document</p>
-      <div className="relative">
-        {inputData.disabled && (
-          <div
-            className="absolute bottom-[calc(100%+.5rem)] left-[6rem] cursor-pointer rounded-[.5rem] bg-main px-[1rem] py-[.2rem] text-[.7rem] text-white hover:bg-main-hover active:bg-main"
-            onClick={() => {
-              setInputData((prev) => ({
-                ...prev,
-                id: '',
-                disabled: false,
-              }));
-            }}
+          <TabsContent
+            value="basic"
+            className="space-y-4 mt-6"
           >
-            <p>Change</p>
-          </div>
-        )}
-        <input
-          type="text"
-          placeholder={`Input Name...`}
-          className="border-main-gray-border w-full rounded-[.5rem] border px-[1rem] py-[.7rem] outline-none"
-          onChange={(e) => {
-            setInputData((prev) => ({ ...prev, name: e.target.value }));
-          }}
-          value={inputData.name}
-          disabled={inputData.disabled}
-          required={true}
-          onFocus={() => {
-            setShowSearchData(true);
-          }}
-          onBlur={() => {
-            setTimeout(() => {
-              setShowSearchData(false);
-            }, 100);
-          }}
-        />
-        {showSearchData && (
-          <div className="absolute left-0 top-[100%] flex h-fit w-full flex-col rounded-[.5rem] border bg-white">
-            {searchData?.map((document, index) => (
-              <div
-                key={index}
-                className="p-[.5rem] hover:bg-main-hover hover:text-white"
-                onClick={() => {
-                  setInputData((prev) => ({
-                    ...prev,
-                    name: document.title,
-                    id: document.id,
-                    disabled: true,
-                  }));
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="sub-title">Judul *</Label>
+                <Input
+                  id="sub-title"
+                  placeholder="Judul sub chapter..."
+                  value={EditSubChapter.title || ''}
+                  onChange={(e) => {
+                    setSubChapter((prev) =>
+                      prev.map((item, i) => {
+                        if (i === currentIndexEdit) {
+                          return { ...item, title: e.target.value };
+                        }
+                        return item;
+                      }),
+                    );
+                  }}
+                />
+              </div>
+              <div>
+                <Label htmlFor="duration">Durasi (menit) *</Label>
+                <Input
+                  id="duration"
+                  type="number"
+                  placeholder="30"
+                  value={EditSubChapter.spendTime || ''}
+                  onChange={(e) => {
+                    setSubChapter((prev) =>
+                      prev.map((item, i) => {
+                        if (i === currentIndexEdit) {
+                          return { ...item, spendTime: e.target.value };
+                        }
+                        return item;
+                      }),
+                    );
+                  }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="type">Tipe Materi *</Label>
+              <select
+                id="type"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                value={EditSubChapter.type || ''}
+                onChange={(e) => handleChangeType(e.target.value as any)}
+              >
+                <option value="">Pilih tipe...</option>
+                <option value="VIDEO">Video</option>
+                <option value="DOCUMENT">Dokumen</option>
+                <option value="MATERI">Artikel</option>
+                <option value="TRYOUT">Try Out</option>
+              </select>
+            </div>
+
+            <div>
+              <Label htmlFor="description">Deskripsi</Label>
+              <Textarea
+                id="description"
+                placeholder="Deskripsi sub chapter..."
+                value={EditSubChapter.description || ''}
+                onChange={(e) => {
                   setSubChapter((prev) =>
                     prev.map((sChapter, sIndex) => {
                       if (sIndex === currentIndexEdit) {
-                        return {
-                          ...sChapter,
-                          document: document.id,
-                          documentTitle: document.title,
-                        };
+                        return { ...sChapter, description: e.target.value };
                       }
-                      return { ...sChapter };
+                      return sChapter;
                     }),
                   );
                 }}
-              >
-                {document.title}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent
+            value="content"
+            className="mt-6"
+          >
+            {EditSubChapter.type === 'VIDEO' && (
+              <VideoEditor
+                EditSubChapter={EditSubChapter}
+                setSubChapter={setSubChapter}
+                currentIndexEdit={currentIndexEdit}
+                setLoading={setLoading}
+                handleVideoUpload={handleVideoUpload}
+              />
+            )}
+
+            {EditSubChapter.type === 'DOCUMENT' && (
+              <DocumentSelector
+                EditSubChapter={EditSubChapter}
+                setSubChapter={setSubChapter}
+                currentIndexEdit={currentIndexEdit}
+              />
+            )}
+
+            {EditSubChapter.type === 'MATERI' && (
+              <ArticleEditor
+                EditSubChapter={EditSubChapter}
+                setSubChapter={setSubChapter}
+                currentIndexEdit={currentIndexEdit}
+              />
+            )}
+
+            {!EditSubChapter.type && (
+              <div className="text-center py-8 text-gray-500">
+                <p>Pilih tipe materi di tab Basic terlebih dahulu</p>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+            )}
+          </TabsContent>
+
+          <TabsContent
+            value="questions"
+            className="mt-6"
+          >
+            {EditSubChapter.type === 'TRYOUT' ? (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-medium">
+                    Soal ({EditSubChapter.Questions?.length || 0})
+                  </h3>
+                  <div className="flex gap-2">
+                    <ModalImportExcel
+                      setSubChapter={setSubChapter}
+                      currentIndexEdit={currentIndexEdit}
+                      assessmentType={assessmentType}
+                    />
+                    <Button
+                      onClick={addQuestion}
+                      size="sm"
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Tambah Soal
+                    </Button>
+                  </div>
+                </div>
+
+                {EditSubChapter.Questions &&
+                EditSubChapter.Questions.length > 0 ? (
+                  <>
+                    <div className="flex gap-2 flex-wrap">
+                      {EditSubChapter.Questions.map((_, qIndex) => (
+                        <Button
+                          key={qIndex}
+                          variant={
+                            qIndex === questionIndex ? 'default' : 'outline'
+                          }
+                          size="sm"
+                          onClick={() => setQuestionIndex(qIndex)}
+                          className="w-8 h-8 p-0"
+                        >
+                          {qIndex + 1}
+                        </Button>
+                      ))}
+                    </div>
+
+                    <SubChapterQuestion
+                      EditSubChapter={EditSubChapter}
+                      questionIndex={questionIndex}
+                      setQuestionIndex={setQuestionIndex}
+                      currentIndexEdit={currentIndexEdit}
+                      assessmentType={assessmentType}
+                      setSubChapter={setSubChapter}
+                    />
+                  </>
+                ) : (
+                  <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
+                    <p>Belum ada soal</p>
+                    <Button
+                      onClick={addQuestion}
+                      size="sm"
+                      className="mt-2"
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Tambah Soal Pertama
+                    </Button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <p>Fitur soal hanya tersedia untuk tipe Try Out</p>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent
+            value="settings"
+            className="mt-6"
+          >
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="premium"
+                  checked={EditSubChapter.premium}
+                  onChange={(e) => {
+                    setSubChapter((prev) =>
+                      prev.map((sChapter, index) => {
+                        if (index === currentIndexEdit) {
+                          return { ...sChapter, premium: e.target.checked };
+                        }
+                        return sChapter;
+                      }),
+                    );
+                  }}
+                />
+                <Label htmlFor="premium">Konten Premium</Label>
+              </div>
+              <p className="text-sm text-gray-500">
+                {EditSubChapter.premium
+                  ? 'Hanya bisa diakses pengguna premium'
+                  : 'Dapat diakses semua pengguna'}
+              </p>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
   );
-
-  // return (
-  //   <div className="flex flex-col gap-[.5rem]">
-  //     <p className="ml-[1rem]">Document</p>
-  //     <div className="border-2 border-main-gray-input border-dashed rounded-[1rem] p-[1rem] flex flex-col gap-[1rem] w-full ">
-  //       <div className="flex w-full justify-center">
-  //         <IconUploadDocument className="text-main" w={26} />
-  //       </div>
-  //       {!EditSubChapter.document ? (
-  //         <p className="text-center text-main-gray-text">
-  //           Pilih dokumen untuk di-upload (.pdf)
-  //         </p>
-  //       ) : (
-  //         <p className="text-center text-main-gray-text">
-  //           {EditSubChapter?.document}.pdf
-  //         </p>
-  //       )}
-
-  //       {EditSubChapter.document && (
-  //         <a
-  //           href={`${env.NEXT_PUBLIC_SUPABASE_PDF_URL}/course/${EditSubChapter.document}`}
-  //           target="_blank"
-  //           className="text-center flex justify-center cursor-pointer py-[.5rem] w-full border-2 mt-[-.5rem] font-regular rounded-[.8rem] text-main-gray-text duration-300 md:hover:bg-main-gray-input md:active:bg-white select-none relative"
-  //         >
-  //           Lihat Document
-  //         </a>
-  //       )}
-  //       <div
-  //         className="text-center flex justify-center cursor-pointer py-[.5rem] w-full border-2 mt-[-.5rem] font-regular rounded-[.8rem] text-main-gray-text duration-300 md:hover:bg-main-gray-input md:active:bg-white select-none relative"
-  //         onClick={() => {
-  //           const input = document.getElementById(
-  //             'sub-chapter-upload-document',
-  //           ) as HTMLInputElement;
-  //           input.click();
-  //         }}
-  //       >
-  //         {EditSubChapter.document ? 'Upload Ulang' : 'Upload'} Document
-  //         <div className="absolute top-[100%]">
-  //           <div className="absolute top-0 left-0 w-full h-full bg-workspace"></div>
-  //           <input
-  //             id="sub-chapter-upload-document"
-  //             type="file"
-  //             className="p-0 w-1 h-1"
-  //             required={EditSubChapter.document ? false : true}
-  //             onChange={e => {
-  //               handleChangeDocument(e);
-  //             }}
-  //           />
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 };
 
-const MateriType = ({
+// Simplified component editors
+const VideoEditor = ({
+  EditSubChapter,
+  setSubChapter,
+  currentIndexEdit,
+  setLoading,
+  handleVideoUpload,
+}: {
+  EditSubChapter: SubChapterProps;
+  setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>;
+  currentIndexEdit: number | null;
+  setLoading: React.Dispatch<SetStateAction<boolean>>;
+  handleVideoUpload: (
+    e: ChangeEvent<HTMLInputElement>,
+    setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>,
+    currentIndexEdit: number | null,
+    setLoading: React.Dispatch<SetStateAction<boolean>>,
+  ) => void;
+}) => (
+  <div className="space-y-4">
+    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+      <Video className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+      {EditSubChapter.video ? (
+        <div>
+          <p className="text-green-600 mb-2">✓ Video sudah diupload</p>
+          <Button
+            variant="outline"
+            onClick={() => document.getElementById('video-upload')?.click()}
+          >
+            Ganti Video
+          </Button>
+        </div>
+      ) : (
+        <div>
+          <p className="text-gray-500 mb-4">Upload file MP4</p>
+          <Button
+            onClick={() => document.getElementById('video-upload')?.click()}
+          >
+            Pilih Video
+          </Button>
+        </div>
+      )}
+      <input
+        id="video-upload"
+        type="file"
+        accept="video/mp4"
+        className="hidden"
+        onChange={(e) =>
+          handleVideoUpload(e, setSubChapter, currentIndexEdit, setLoading)
+        }
+      />
+    </div>
+  </div>
+);
+
+const DocumentSelector = ({
   EditSubChapter,
   setSubChapter,
   currentIndexEdit,
@@ -773,57 +546,93 @@ const MateriType = ({
   setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>;
   currentIndexEdit: number | null;
 }) => {
-  const remarkMathOptions = {
-    singleDollarTextMath: false,
-  };
+  const [search, setSearch] = useState('');
+  const { data: documents } = useGet<Document[]>(
+    '/document/getDocumentAdminCourse',
+    {
+      params: { title: search },
+      useEffectDependencies: [search],
+    },
+  );
+
+  const selectedDoc = documents?.find(
+    (item) => item.id === EditSubChapter.document,
+  );
+
+  if (EditSubChapter.document) {
+    return (
+      <div
+        key={selectedDoc?.id}
+        className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+      >
+        <div className="flex items-center gap-3">
+          <FileText className="h-5 w-5 text-gray-400" />
+          <span>{selectedDoc?.title}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      id="blog-admin"
-      className="rounded-lg ml-6"
-    >
-      <BlogEditor
-        value={EditSubChapter.materi}
-        onChange={(value) => {
-          setSubChapter((prev) =>
-            prev.map((sChapter, sIndex) => {
-              if (sIndex === currentIndexEdit) {
-                return {
-                  ...sChapter,
-                  materi: value,
-                };
-              }
-              return sChapter;
-            }),
-          );
-        }}
+    <div className="space-y-4">
+      <Input
+        placeholder="Cari dokumen..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
-      {/* <MDEditor
-        value={EditSubChapter.materi}
-        height={'70vh'}
-        onChange={(val) => {
-          const processedValue = replaceLatexNotation(val ?? '');
-          // setValue(processedValue);
-          setSubChapter((prev) =>
-            prev.map((sChapter, sIndex) => {
-              if (sIndex === currentIndexEdit) {
-                return {
-                  ...sChapter,
-                  materi: processedValue,
-                };
-              }
-              return sChapter;
-            }),
-          );
-        }}
-        previewOptions={{
-          remarkPlugins: [[remarkMath, remarkMathOptions], remarkGfm],
-          rehypePlugins: [rehypeKatex, rehypeRaw],
-          className: 'ReactMarkdown',
-        }}
-      /> */}
+      <div className="max-h-64 overflow-y-auto space-y-2">
+        {documents?.map((doc) => (
+          <div
+            key={doc.id}
+            className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+            onClick={() => {
+              setSubChapter((prev) =>
+                prev.map((sChapter, sIndex) => {
+                  if (sIndex === currentIndexEdit) {
+                    return {
+                      ...sChapter,
+                      document: doc.id,
+                      documentTitle: doc.title,
+                    };
+                  }
+                  return sChapter;
+                }),
+              );
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <FileText className="h-5 w-5 text-gray-400" />
+              <span>{doc.title}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
+
+const ArticleEditor = ({
+  EditSubChapter,
+  setSubChapter,
+  currentIndexEdit,
+}: {
+  EditSubChapter: SubChapterProps;
+  setSubChapter: React.Dispatch<SetStateAction<SubChapterProps[]>>;
+  currentIndexEdit: number | null;
+}) => (
+  <BlogEditor
+    value={EditSubChapter.materi}
+    onChange={(value) => {
+      setSubChapter((prev) =>
+        prev.map((sChapter, sIndex) => {
+          if (sIndex === currentIndexEdit) {
+            return { ...sChapter, materi: value };
+          }
+          return sChapter;
+        }),
+      );
+    }}
+  />
+);
 
 export default SubChapterOption;

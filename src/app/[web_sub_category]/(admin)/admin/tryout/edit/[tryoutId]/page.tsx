@@ -274,7 +274,6 @@ const NewTryOut = () => {
           const saveDataString = LZString.decompress(
             localStorage.getItem(`temporary-edit-tryout-${tryoutId}`) || '',
           );
-          console.log({ saveDataString });
           const tryoutData = data;
           if (!saveDataString) {
             getTryoutFromDbs(tryoutData);
@@ -401,7 +400,6 @@ const NewTryOut = () => {
       const notCompressed = JSON.stringify(saveData);
       const compressed = LZString.compress(JSON.stringify(saveData));
       localStorage.setItem(`temporary-edit-tryout-${tryoutId}`, compressed);
-      console.log('123');
     },
     1000,
   );
@@ -733,8 +731,8 @@ const NewTryOut = () => {
         >
           <div
             className={cn(
-              'col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-[1rem] pt-[1rem] duration-300',
-              currentIndexEdit === null && 'col-span-5 w-[100%]',
+              'col-span-2 h-[90vh] w-[40%] overflow-y-auto pb-4 pt-4 duration-300',
+              currentIndexEdit === null && 'col-span-5 w-full',
               currentIndexEdit !== null && !showDetailTryout && 'w-0',
             )}
           >
@@ -742,10 +740,10 @@ const NewTryOut = () => {
           </div>
           <div
             className={cn(
-              'relative col-span-3 mt-[1rem] h-[90vh] w-[60%] duration-300',
+              'relative col-span-3 mt-4 h-[90vh] w-[60%] duration-300',
               currentIndexEdit !== null &&
                 !showDetailTryout &&
-                'ml-[-1rem] w-full',
+                '-ml-4 w-full',
               currentIndexEdit === null && 'w-0',
             )}
           >

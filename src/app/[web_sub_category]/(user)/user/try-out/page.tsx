@@ -5,6 +5,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { UserTryout } from '@/types/database';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -21,7 +22,6 @@ export default function TryOutPage() {
   const Router = useRouter();
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
-  // const { query } = Router;
   const searchParams = useSearchParams();
   const payment = searchParams?.get('payment');
 
@@ -36,13 +36,15 @@ export default function TryOutPage() {
     }
   }, [payment]);
 
-  if (isTesting) {
-    return (
-      <div>
-        <Content />
-      </div>
-    );
-  }
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Tryout Page',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Tryout Page',
+    });
+  }, []);
+
   return (
     <div>
       <Content />
@@ -134,7 +136,7 @@ const Content = () => {
   return (
     <div className="relative">
       {tryoutAccount?.userTryOutId ? (
-        <div className="flex flex-col gap-[2rem] px-[1rem] md:px-0">
+        <div className="container mx-auto max-w-7xl px-4 py-6">
           <DialogRecomendation
             openExternal={open}
             setOpenExternal={setOpen}
@@ -143,31 +145,20 @@ const Content = () => {
             open={onBoarding.tryout}
             type="tryout"
           />
-          <div className="font-regular flex flex-col gap-[.5rem]">
+
+          <div className="space-y-8">
             <SummaryTryout />
-          </div>
-
-          <div className="font-regular flex flex-col gap-[.5rem]">
             <Terbaru id={tryoutAccount.userTryOutId} />
-          </div>
-
-          <div className="font-regular flex flex-col gap-[.5rem]">
             <Upcoming id={tryoutAccount.userTryOutId} />
-          </div>
-
-          <div className="font-regular flex flex-col gap-[.5rem]">
             <Done id={tryoutAccount.userTryOutId} />
-          </div>
-
-          <div className="font-regular flex flex-col gap-[.5rem]">
             <UpcomingOtherWeb id={tryoutAccount.userTryOutId} />
           </div>
         </div>
       ) : (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           {step === 1 ? (
-            <div className="flex w-[calc(100%-2rem)] max-w-[380px] flex-col items-center rounded-[1.5rem] bg-white p-[2rem] text-center shadow-lg md:w-full">
-              <div className="flex flex-col gap-[1rem]">
+            <div className="flex w-[calc(100%-2rem)] max-w-[380px] flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg md:w-full">
+              <div className="flex flex-col gap-4">
                 <p className="font-semibold">Akun Belum Terverifikasi</p>
                 <p className="font-regular text-main-gray-text">
                   Untuk menggunakan fitur try out, harap verifikasi akunmu

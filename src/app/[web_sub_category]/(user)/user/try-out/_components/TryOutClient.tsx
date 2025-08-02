@@ -114,7 +114,7 @@ const Content = () => {
   return (
     <div className="relative">
       {tryoutAccount?.userTryOutId ? (
-        <div className="flex flex-col gap-[2rem] px-[1rem] md:px-0">
+        <div className="flex flex-col gap-8 px-4 md:px-0">
           <OnBoarding
             open={onBoarding.tryout}
             type="tryout"
@@ -142,8 +142,8 @@ const Content = () => {
       ) : (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           {step === 1 ? (
-            <div className="flex w-[calc(100%-2rem)] max-w-[380px] flex-col items-center rounded-[1.5rem] bg-white p-[2rem] text-center shadow-lg md:w-full">
-              <div className="flex flex-col gap-[1rem]">
+            <div className="flex w-[calc(100%-2rem)] max-w-[380px] flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg md:w-full">
+              <div className="flex flex-col gap-4">
                 <p className="font-semibold">Akun Belum Terverifikasi</p>
                 <p className="font-regular text-main-gray-text">
                   Untuk menggunakan fitur try out, harap verifikasi akunmu

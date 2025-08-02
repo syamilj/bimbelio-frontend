@@ -1,6 +1,6 @@
 'use client';
 
-import uploadFile from '@/_assest/icon/uploadDokumen.png';
+import uploadFile from '@/_assets/icon/uploadDokumen.png';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -210,10 +210,10 @@ const EditBlogAdmin = () => {
   return (
     <div
       id="blog-admin"
-      className="flex w-full flex-col gap-[2rem] bg-white p-[1rem]"
+      className="flex w-full flex-col gap-8 bg-white p-4"
     >
       <h1 className="text-center text-[1.2rem] font-bold">
-        Edit TutorSNBT Blog
+        Edit Bimbelio Blog
       </h1>
       <div className="flex flex-col gap-[.5rem]">
         <InputText
@@ -240,7 +240,7 @@ const EditBlogAdmin = () => {
             fileName={thumbnailName}
           />
         </div>
-        <div className="grid w-full grid-cols-2 gap-[1rem]">
+        <div className="grid w-full grid-cols-2 gap-4">
           <div
             id="name-file"
             className="flex w-full flex-col gap-[.5rem]"
@@ -252,7 +252,7 @@ const EditBlogAdmin = () => {
                 value && setStatus(value as BlogStatusEnum)
               }
             >
-              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] text-black outline-none">
+              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -270,7 +270,7 @@ const EditBlogAdmin = () => {
               value={isEditorPick ? 'true' : 'false'}
               onValueChange={(value) => setIsEditorPick(value === 'true')}
             >
-              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] text-black outline-none">
+              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none">
                 <SelectValue placeholder="Pilihan Editor" />
               </SelectTrigger>
               <SelectContent>
@@ -287,7 +287,7 @@ const EditBlogAdmin = () => {
               <p>Published Date </p>
               <input
                 type="datetime-local"
-                className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] text-black outline-none"
+                className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none"
                 onChange={(e) => setPublishedAt(e.target.value)}
                 value={publishedAt}
               />
@@ -301,7 +301,7 @@ const EditBlogAdmin = () => {
           <p>Tags (format : tags1, tags2, tags3)</p>
           {/* <input
             type="text"
-            className="border border-main-gray-input rounded-[.5rem] outline-none text-black py-[.5rem] px-[1rem] w-full font-regular"
+            className="border border-main-gray-input rounded-[.5rem] outline-none text-black py-[.5rem] px-4 w-full font-regular"
             placeholder={`Tags`}
             onChange={e => {
               const value = e.target.value.split(',').map(tag => tag.trim());
@@ -317,7 +317,7 @@ const EditBlogAdmin = () => {
             }}
             value={tags.join(', ')}
           /> */}
-          <div className="flex items-start gap-[1rem]">
+          <div className="flex items-start gap-4">
             {tagValue.map((tagVal, tagValIndex) => (
               <Popover
                 open={tagVal.open}
@@ -333,7 +333,7 @@ const EditBlogAdmin = () => {
                 key={tagValIndex}
               >
                 <div
-                  className="relative pb-[1.5rem]"
+                  className="relative pb-6"
                   onMouseOver={() => setShowDeleteIndex(tagValIndex)}
                   onMouseLeave={() => setShowDeleteIndex(null)}
                 >
@@ -491,13 +491,13 @@ const UploadFile = ({
         }
         className="absolute right-0 top-0 h-0 w-0"
       />
-      <div className="relative flex flex-col gap-[1rem] rounded-[1rem] border-2 border-dashed border-main-gray-input p-[1rem]">
+      <div className="relative flex flex-col gap-4 rounded-2xl border-2 border-dashed border-main-gray-input p-4">
         {!image ? (
           <>
             <div className="flex flex-col items-center gap-[.5rem] text-center">
               <Image
                 src={uploadFile}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
               />
               <p className="text-[.8rem] text-main-gray-text">
                 {!file
@@ -521,7 +521,7 @@ const UploadFile = ({
                 <div className="flex flex-col items-center gap-[.5rem] text-center">
                   <Image
                     src={uploadFile}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                    alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                   />
                   <p className="text-[.8rem] text-main-gray-text">
                     {!file
@@ -540,10 +540,10 @@ const UploadFile = ({
               </>
             ) : (
               <>
-                <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
+                <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
                   <Image
                     src={previewImage}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                    alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                     layout="responsive"
                     width={500}
                     height={300}
@@ -554,7 +554,7 @@ const UploadFile = ({
                     }}
                   />
                 </div>
-                <div className="absolute left-0 top-0 z-[5] flex h-full w-full items-center justify-center bg-[#ffffffc4] p-[1rem]">
+                <div className="absolute left-0 top-0 z-5 flex h-full w-full items-center justify-center bg-[#ffffffc4] p-4">
                   <div
                     className="flex h-full w-full items-center justify-center"
                     onClick={() => {
@@ -600,7 +600,7 @@ const InputText = ({
       <p>{heading}</p>
       <input
         type="text"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}
@@ -627,7 +627,7 @@ const InputTextarea = ({
     >
       <p>{heading}</p>
       <textarea
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}

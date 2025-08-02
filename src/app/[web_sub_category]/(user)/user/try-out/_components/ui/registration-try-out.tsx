@@ -178,7 +178,7 @@ const RegistrationTryOut = ({
   }, [isHideGeneralSection, univOption]);
 
   return (
-    <div className="relative w-[calc(100%-2rem)] max-w-[500px] rounded-[1rem] bg-white p-[2rem] shadow-default md:w-full">
+    <div className="relative w-[calc(100%-2rem)] max-w-[500px] rounded-2xl bg-white p-8 shadow-default md:w-full">
       <div
         className="absolute right-4 top-4 cursor-pointer"
         onClick={() => {
@@ -191,13 +191,13 @@ const RegistrationTryOut = ({
       >
         <X className="text-main-gray-text duration-200 md:hover:text-main-gray-text2" />
       </div>
-      <p className="mb-[2rem] text-center text-[1.2rem] font-semibold">
+      <p className="mb-8 text-center text-[1.2rem] font-semibold">
         Verifikasi Akun
       </p>
 
       {step === 2 && (
         <form
-          className="flex flex-col gap-[1rem]"
+          className="flex flex-col gap-4"
           onSubmit={(e) => {
             e.preventDefault();
             handleNextStep(2);
@@ -209,7 +209,7 @@ const RegistrationTryOut = ({
             value={Name}
             setValue={setName}
           />
-          <div className="grid grid-cols-2 gap-[1rem]">
+          <div className="grid grid-cols-2 gap-4">
             <InputNumber
               heading="Umur"
               placeholder="Umur"
@@ -231,7 +231,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     Gender === '' && 'text-main-gray-disabled',
                   )}
                 >
@@ -249,10 +249,10 @@ const RegistrationTryOut = ({
               No. Hp<span className="text-red-600">*</span>
             </p>
             <div className="relative flex items-center">
-              <p className="absolute left-[1rem] text-[.9rem]">+62</p>
+              <p className="absolute left-4 text-[.9rem]">+62</p>
               <input
                 type="number"
-                className="font-regular w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] pl-[4rem] pr-[1rem] text-[.9rem] text-black outline-none focus:border-main"
+                className="font-regular w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] pl-16 pr-4 text-[.9rem] text-black outline-none focus:border-main"
                 placeholder={'No. Hp'}
                 onChange={(e) => {
                   setPhone(e.target.value);
@@ -262,7 +262,7 @@ const RegistrationTryOut = ({
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-[1rem]">
+          <div className="grid grid-cols-2 gap-4">
             <ComboboxSelect
               heading="Provinsi"
               placeholder="Provinsi"
@@ -295,7 +295,7 @@ const RegistrationTryOut = ({
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-[2rem] text-white md:hover:opacity-85"
+                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-8 text-white md:hover:opacity-85"
               >
                 Selanjutnya
               </Button>
@@ -306,13 +306,13 @@ const RegistrationTryOut = ({
 
       {step === 3 && (
         <form
-          className="flex flex-col gap-[1rem]"
+          className="flex flex-col gap-4"
           onSubmit={(e) => {
             e.preventDefault();
             handleNextStep(3);
           }}
         >
-          <div className="grid grid-cols-2 gap-[1rem]">
+          <div className="grid grid-cols-2 gap-4">
             <div
               id="school-type-field"
               className="flex flex-col gap-[.5rem]"
@@ -332,7 +332,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     TipeSekolah === '' && 'text-main-gray-disabled',
                   )}
                 >
@@ -353,7 +353,7 @@ const RegistrationTryOut = ({
               setValue={setAsalSekolah}
             />
           </div>
-          <div className="grid grid-cols-2 gap-[1rem]">
+          <div className="grid grid-cols-2 gap-4">
             <div
               id="major-field"
               className="flex flex-col gap-[.5rem]"
@@ -379,7 +379,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     Jurusan === '' && 'text-main-gray-disabled',
                   )}
                 >
@@ -412,7 +412,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     TahunLulus === 0 && 'text-main-gray-disabled',
                   )}
                 >
@@ -438,7 +438,7 @@ const RegistrationTryOut = ({
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-[2rem] text-white md:hover:opacity-85"
+                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-8 text-white md:hover:opacity-85"
               >
                 Selanjutnya
               </Button>
@@ -449,13 +449,13 @@ const RegistrationTryOut = ({
 
       {step === 4 && (
         <form
-          className="flex flex-col gap-[1rem]"
+          className="flex flex-col gap-4"
           onSubmit={(e) => {
             e.preventDefault();
             handleRegistration();
           }}
         >
-          <div className="grid grid-cols-2 gap-[1rem]">
+          <div className="grid grid-cols-2 gap-4">
             <ComboboxSelect
               heading="Pilihan 1 - Universitas"
               placeholder="Universitas"
@@ -486,7 +486,7 @@ const RegistrationTryOut = ({
             />
           </div>
           {!univOption && (
-            <div className="grid grid-cols-2 gap-[1rem]">
+            <div className="grid grid-cols-2 gap-4">
               <ComboboxSelect
                 heading="Pilihan 2 - Universitas"
                 placeholder="Universitas"
@@ -519,7 +519,7 @@ const RegistrationTryOut = ({
 
           {!isHideTargetValue && (
             <InputNumber
-              heading="Target Nilai SNBT/UTBK (0-1000)"
+              heading="Target Nilai PTN dan Kedinasan (0-1000)"
               placeholder="Target Nilai"
               value={TargetNilai} // Kirim sebagai number
               setValue={setTargetNilai} // Fungsi menerima number
@@ -543,7 +543,7 @@ const RegistrationTryOut = ({
               >
                 <SelectTrigger
                   className={cn(
-                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
+                    `font-regular h-[unset] w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main`,
                     Channel === '' && 'text-main-gray-disabled',
                   )}
                 >
@@ -569,7 +569,7 @@ const RegistrationTryOut = ({
             ) : (
               <Button
                 type="submit"
-                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-[2rem] text-white md:hover:opacity-85"
+                className="h-[calc(100%-1rem)] w-full rounded-[.8rem] bg-gradient px-8 text-white md:hover:opacity-85"
               >
                 Submit
               </Button>
@@ -608,7 +608,7 @@ const InputText = ({
       </p>
       <input
         type="text"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
         placeholder={`${placeholder}`}
         onChange={(e) => {
           setValue(e.target.value);
@@ -670,7 +670,7 @@ const InputNumber = ({
       </p>
       <input
         type="number"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-[.9rem] text-black outline-none focus:border-main"
         placeholder={`${placeholder}`}
         onChange={handleChange}
         value={value === 0 ? '' : value} // Menangani sebagai number
@@ -724,7 +724,7 @@ const ComboboxSelect = ({
             aria-expanded={open}
             disabled={disabled}
             className={cn(
-              'w-full justify-between rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-left text-[.9rem] font-normal',
+              'w-full justify-between rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-left text-[.9rem] font-normal',
               !value && 'text-main-gray-disabled',
               disabled && 'opacity-50 cursor-not-allowed',
             )}
@@ -738,7 +738,7 @@ const ComboboxSelect = ({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+        <PopoverContent className="w-(--radix-popover-trigger-width) p-0">
           <Command>
             <CommandInput
               placeholder={`Search ${heading.toLowerCase()}...`}
@@ -760,7 +760,7 @@ const ComboboxSelect = ({
                     <div className="w-full text-left">{option.label}</div>
                     <Check
                       className={cn(
-                        'ml-auto h-4 w-4 flex-shrink-0',
+                        'ml-auto h-4 w-4 shrink-0',
                         value === option.value ? 'opacity-100' : 'opacity-0',
                       )}
                     />

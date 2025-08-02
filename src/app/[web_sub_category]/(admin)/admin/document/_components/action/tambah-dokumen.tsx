@@ -1,14 +1,15 @@
 'use client';
 
-import uploadFile from '@/_assest/icon/uploadDokumen.png';
+import type React from 'react';
+
 import { useSession } from '@/components/provider/provider-session-auth';
 import LoadingPage from '@/components/ui/Loading-Page';
 import { toaster } from '@/components/ui/toaster';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-
 import { getDateForInput, getHours } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
-import { Category, Subcategory } from '@/types/database';
+import type { Category, Subcategory } from '@/types/database';
+import { UploadIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../../provider';
@@ -20,15 +21,12 @@ export default function TambahDokumen() {
     useCatAndSubCat: { categoryAndSubCategory },
     useDocument: { fetchDocument },
   } = useProvider();
-
   const { data: session } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
-
   const [file, setFile] = useState<File | undefined>();
   const [docxFile, setDocxFile] = useState<File | undefined>();
   const [thumbnail, setThumbnail] = useState<File | undefined>();
   const [video, setVideo] = useState<File | undefined>();
-
   const [fileName, setFileName] = useState<string>('');
   const [videoName, setVideoName] = useState<string>('');
   const [option, setOption] = useState<string>('doc');
@@ -36,13 +34,11 @@ export default function TambahDokumen() {
   const [to, setTo] = useState<boolean>(false);
   const [subCategory, setSubCategory] = useState<string>('');
   const [premium, setPremium] = useState<boolean>(false);
-
   // Try-out
   const [description, setDescription] = useState<string>('');
   const [dateTo, setDateTo] = useState<string>('');
   const [token, setToken] = useState<string>('');
   const [dateToUnlock, setDateToUnlock] = useState<string>('');
-
   const [subCategoryData, setSubCategoryData] = useState<
     (Subcategory & { category: Category })[]
   >([]);
@@ -56,13 +52,12 @@ export default function TambahDokumen() {
     );
   };
 
-  // if (subCategoryData) {
-  // }
   useEffect(() => {
     if (category.length === 0) return;
     fetchSubCategories(category);
   }, [category]);
 
+  // ... (rest of your existing functions remain the same)
   const addDokumen = async (payload: {
     title: string;
     categoryId: string;
@@ -84,7 +79,6 @@ export default function TambahDokumen() {
       type: 'post',
       setLoading: setLoading,
       async onSuccess({ data }) {
-        console.log({ data });
         fetchDocument();
         setShowAddDocument(false);
         setFile(undefined);
@@ -111,7 +105,6 @@ export default function TambahDokumen() {
           const sPdf = await supabase.storage
             .from('pdf')
             .remove([`document/${documentFileName}`]);
-
           await supabase.storage
             .from('img')
             .remove([`document/${documentFileName}`]);
@@ -173,11 +166,9 @@ export default function TambahDokumen() {
           await supabase.storage
             .from('img')
             .remove([`document/${documentFileName}`]);
-
           await supabase.storage
             .from('video')
             .remove([`document/${videoName || video.name}`]);
-
           setLoading(false);
         }
       },
@@ -186,18 +177,8 @@ export default function TambahDokumen() {
 
   const AddDokumen = async () => {
     try {
-      // await addDokumen({
-      //   title: '',
-      //   categoryId: '',
-      //   subCategoryId: '',
-      //   url: '',
-      //   img: '',
-      //   mdUrl: '',
-      //   premium: false,
-      // });
-      // setLoading(false);
-      // return;
       setLoading(true);
+
       if (!to) {
         if (!file) {
           toaster({
@@ -209,6 +190,7 @@ export default function TambahDokumen() {
           setLoading(false);
           return;
         }
+
         if (category === '' || subCategory === '') {
           setLoading(false);
           toaster({
@@ -219,6 +201,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (!thumbnail) {
           toaster({
             title: 'Upss',
@@ -240,6 +223,7 @@ export default function TambahDokumen() {
           setLoading(false);
           return;
         }
+
         if (subCategory === '') {
           setLoading(false);
           toaster({
@@ -250,6 +234,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (fileName === '') {
           setLoading(false);
           toaster({
@@ -260,6 +245,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (description === '') {
           setLoading(false);
           toaster({
@@ -270,6 +256,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (token === '') {
           setLoading(false);
           toaster({
@@ -280,6 +267,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (dateTo === '') {
           setLoading(false);
           toaster({
@@ -290,6 +278,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (dateTo.includes('none')) {
           const string = dateTo.split('-');
           setLoading(false);
@@ -301,6 +290,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (dateToUnlock === '') {
           setLoading(false);
           toaster({
@@ -311,6 +301,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (dateToUnlock.includes('none')) {
           const string = dateToUnlock.split('-');
           setLoading(false);
@@ -322,6 +313,7 @@ export default function TambahDokumen() {
           });
           return;
         }
+
         if (!thumbnail) {
           toaster({
             title: 'Upss',
@@ -333,6 +325,7 @@ export default function TambahDokumen() {
           return;
         }
       }
+
       if (option === 'video' && !video) {
         toaster({
           title: 'Upss',
@@ -343,8 +336,10 @@ export default function TambahDokumen() {
         setLoading(false);
         return;
       }
+
       if (file && thumbnail && option === 'doc') {
         const documentFileName = fileName || file.name;
+
         const { data: pdf, error: pdfError } = await supabase.storage
           .from('pdf')
           .upload(`document/${documentFileName}`, file);
@@ -370,7 +365,6 @@ export default function TambahDokumen() {
         }
 
         if (pdf && img) {
-          // alert('Berhasil Upload File');
           if (!to) {
             await addDokumen({
               title: fileName !== '' ? fileName : file.name,
@@ -398,11 +392,10 @@ export default function TambahDokumen() {
               dateToUnlock,
               description,
               tokenTo: token,
-              // hourToUnlock: parseInt(`${hourToUnlock}`),
-              // durationTo: parseInt(`${durationTo}`),
             });
           }
         }
+
         if (pdfError) {
           toaster({
             title: 'Gagal',
@@ -412,6 +405,7 @@ export default function TambahDokumen() {
           setLoading(false);
           return;
         }
+
         if (imgError) {
           toaster({
             title: 'Gagal',
@@ -422,11 +416,14 @@ export default function TambahDokumen() {
           return;
         }
       }
+
       if (file && thumbnail && video && option === 'video') {
         const documentFileName = fileName || file.name;
+
         const { data: pdf, error: pdfError } = await supabase.storage
           .from('pdf')
           .upload(`document/${documentFileName}`, file);
+
         const { data: img, error: imgError } = await supabase.storage
           .from('img')
           .upload(`document/${documentFileName}`, thumbnail);
@@ -484,11 +481,10 @@ export default function TambahDokumen() {
               dateToUnlock,
               description,
               tokenTo: token,
-              // hourToUnlock: parseInt(`${hourToUnlock}`),
-              // durationTo: parseInt(`${durationTo}`),
             });
           }
         }
+
         if (pdfError) {
           toaster({
             title: 'Gagal',
@@ -497,6 +493,7 @@ export default function TambahDokumen() {
           });
           setLoading(false);
         }
+
         if (imgError) {
           toaster({
             title: 'Gagal',
@@ -505,6 +502,7 @@ export default function TambahDokumen() {
           });
           setLoading(false);
         }
+
         if (videoSaveError) {
           toaster({
             title: 'Gagal',
@@ -516,6 +514,7 @@ export default function TambahDokumen() {
 
         setLoading(false);
       }
+
       return;
     } catch (error) {
       setLoading(false);
@@ -527,7 +526,7 @@ export default function TambahDokumen() {
     <>
       {showAddDocument && (
         <div
-          className="fixed left-0 top-0 z-[49] h-full w-full"
+          className="fixed left-0 top-0 z-49 h-full w-full"
           onClick={() => {
             setShowAddDocument(false);
           }}
@@ -535,12 +534,14 @@ export default function TambahDokumen() {
       )}
       <div
         id="tambah-dokumen"
-        className={`fixed top-0 z-[50] h-full w-[400px] border border-main-gray-input bg-white duration-300 ${showAddDocument ? 'right-0' : 'right-[-420px]'} overflow-y-auto`}
+        className={`fixed top-0 z-50 h-full w-[400px] border border-main-gray-input bg-white duration-300 ${showAddDocument ? 'right-0' : 'right-[-420px]'} overflow-y-auto`}
       >
         {loading && <LoadingPage />}
-        <div className="flex flex-col gap-[1rem] p-[2rem]">
+
+        <div className="flex flex-col gap-4 p-8">
           <h1 className="text-[1.2rem] font-semibold">Tambah Material</h1>
-          <div className="flex flex-col gap-[1rem] text-[.9rem] font-medium">
+
+          <div className="flex flex-col gap-4 text-[.9rem] font-medium">
             <div id="file">
               <UploadFile
                 heading="Pdf"
@@ -551,6 +552,7 @@ export default function TambahDokumen() {
                 setFile={setFile}
               />
             </div>
+
             <div id="file">
               <UploadFile
                 heading="Docx (optional)"
@@ -561,6 +563,7 @@ export default function TambahDokumen() {
                 setFile={setDocxFile}
               />
             </div>
+
             {!to && (
               <div
                 id="name-file"
@@ -572,20 +575,21 @@ export default function TambahDokumen() {
                 </p>
                 <input
                   type="text"
-                  className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+                  className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
                   placeholder="Masukan judul dokumen"
                   onChange={(e) => setFileName(e.target.value)}
                   value={fileName}
                 />
               </div>
             )}
+
             <div
               id="category"
               className="flex flex-col gap-[.5rem]"
             >
               <p>Fitur</p>
-              <div className="flex w-full justify-between gap-[1rem]">
-                <div className="flex w-full justify-between gap-[1rem]">
+              <div className="flex w-full justify-between gap-4">
+                <div className="flex w-full justify-between gap-4">
                   <div
                     className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${!premium && 'border-main bg-main text-white'}`}
                     onClick={() => setPremium(false)}
@@ -593,7 +597,7 @@ export default function TambahDokumen() {
                     Free
                   </div>
                 </div>
-                <div className="flex w-full justify-between gap-[1rem]">
+                <div className="flex w-full justify-between gap-4">
                   <div
                     className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${premium && 'border-main bg-main text-white'}`}
                     onClick={() => setPremium(true)}
@@ -603,6 +607,7 @@ export default function TambahDokumen() {
                 </div>
               </div>
             </div>
+
             <div
               id="category"
               className="flex flex-col gap-[.5rem]"
@@ -610,12 +615,12 @@ export default function TambahDokumen() {
               <p>Kategori</p>
               <div
                 id="row"
-                className="flex w-full justify-start gap-[1rem] overflow-y-auto pb-[.5rem]"
+                className="flex w-full justify-start gap-4 overflow-y-auto pb-[.5rem]"
               >
                 {categoryAndSubCategory?.category?.map((item: any, i: any) => (
                   <div
                     key={i}
-                    className={`w-fit shrink-0 cursor-pointer rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${category === item.id && 'border-main bg-main text-white'}`}
+                    className={`w-fit shrink-0 cursor-pointer rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${category === item.id && 'border-main bg-main text-white'}`}
                     onClick={() => {
                       setCategory(item.id);
                       setSubCategory('');
@@ -627,12 +632,13 @@ export default function TambahDokumen() {
                 ))}
               </div>
             </div>
+
             <div
               id="subCategory"
               className="flex flex-col gap-[.5rem]"
             >
               <p>Subkategori</p>
-              <div className="flex w-full justify-between gap-[1rem]">
+              <div className="flex w-full justify-between gap-4">
                 {subCategoryData?.map((item: any, i: any) => (
                   <div
                     key={i}
@@ -644,6 +650,7 @@ export default function TambahDokumen() {
                 ))}
               </div>
             </div>
+
             {to && (
               <>
                 <InputText
@@ -652,49 +659,43 @@ export default function TambahDokumen() {
                   setValue={setFileName}
                   value={fileName}
                 />
+
                 <InputTextarea
                   heading="Deskripsi"
                   placeholder="Masukan deskripsi"
                   setValue={setDescription}
                   value={description}
                 />
+
                 <InputText
                   heading="ID Tryout"
                   placeholder="Masukan id tryout"
                   setValue={setToken}
                   value={token}
                 />
+
                 <InputDateAndTime
                   heading="Tanggal berakhir"
                   setValue={setDateTo}
                   value={dateTo}
                   warning="Tryout berakhir"
                 />
+
                 <InputDateAndTime
                   heading="Tanggal Unlock Pembahasan"
                   setValue={setDateToUnlock}
                   value={dateToUnlock}
                   warning="Unlock Pembahasan"
                 />
-                {/* <InputNumber
-                  heading="Jam Unlock Pembahasan"
-                  placeholder="Masukan jam (0-24)"
-                  setValue={setHourToUnlock}
-                  value={hourToUnlock}
-                />
-                <InputNumber
-                  heading="Duration"
-                  placeholder="Masukan duration (menit)"
-                  setValue={setDurationTo}
-                  value={durationTo}
-                /> */}
               </>
             )}
+
             <div
               id="line"
-              className="my-[0] h-[1px] w-full bg-main-gray-input"
+              className="my-[0] h-px w-full bg-main-gray-input"
             />
-            <div className="flex w-full justify-between gap-[1rem]">
+
+            <div className="flex w-full justify-between gap-4">
               <div
                 className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'doc' && 'border-main bg-main text-white'}`}
                 onClick={() => setOption('doc')}
@@ -708,6 +709,7 @@ export default function TambahDokumen() {
                 Video
               </div>
             </div>
+
             {option === 'doc' && (
               <div id="thumbnail">
                 <UploadFile
@@ -721,6 +723,7 @@ export default function TambahDokumen() {
                 />
               </div>
             )}
+
             {option === 'video' && (
               <>
                 <div id="thumbnail">
@@ -734,6 +737,7 @@ export default function TambahDokumen() {
                     setFile={setThumbnail}
                   />
                 </div>
+
                 <div id="video">
                   <UploadFile
                     heading="Video"
@@ -755,7 +759,7 @@ export default function TambahDokumen() {
                   </p>
                   <input
                     type="text"
-                    className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+                    className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
                     placeholder="Masukan judul dokumen"
                     onChange={(e) => setVideoName(e.target.value)}
                     value={videoName}
@@ -763,9 +767,10 @@ export default function TambahDokumen() {
                 </div>
               </>
             )}
+
             <div
               id="action"
-              className="mt-[1rem] flex gap-[1rem]"
+              className="mt-4 flex gap-4"
             >
               <button
                 className="w-full rounded-[.5rem] border border-main-gray-input py-[.6rem] text-main-gray-text duration-300 hover:border-transparent hover:bg-main-hover hover:text-white"
@@ -790,6 +795,7 @@ export default function TambahDokumen() {
   );
 }
 
+// Enhanced UploadFile component with drag and drop
 export const UploadFile = ({
   file,
   setFile,
@@ -801,48 +807,156 @@ export const UploadFile = ({
 }: any) => {
   const [previewHover, setPreviewHover] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState<string>('');
+  const [isDragOver, setIsDragOver] = useState<boolean>(false);
 
   useEffect(() => {
     setPreviewImage('');
     if (image && file) {
       const reader = new FileReader();
-
       reader.onloadend = () => {
         const result = reader.result as string;
         setPreviewImage(result);
       };
-
       reader.readAsDataURL(file);
     }
   }, [file]);
+
+  // Drag and Drop handlers
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const droppedFile = files[0];
+
+      // Validasi tipe file berdasarkan jenis upload
+      if (image) {
+        // Untuk image, hanya terima file gambar
+        if (droppedFile.type.startsWith('image/')) {
+          setFile(droppedFile);
+        } else {
+          alert('Hanya file gambar yang diperbolehkan untuk thumbnail');
+        }
+      } else if (inputId === 'documentFile') {
+        // Untuk dokumen PDF
+        if (droppedFile.type === 'application/pdf') {
+          setFile(droppedFile);
+        } else {
+          alert('Hanya file PDF yang diperbolehkan');
+        }
+      } else if (inputId === 'docxFile') {
+        // Untuk dokumen DOCX
+        if (
+          droppedFile.type ===
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ) {
+          setFile(droppedFile);
+        } else {
+          alert('Hanya file DOCX yang diperbolehkan');
+        }
+      } else if (inputId === 'videoFile') {
+        // Untuk video
+        if (droppedFile.type.startsWith('video/')) {
+          setFile(droppedFile);
+        } else {
+          alert('Hanya file video yang diperbolehkan');
+        }
+      } else {
+        // Default: terima semua file
+        setFile(droppedFile);
+      }
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
 
   return (
     <div className="relative">
       <p className="mb-[.5rem] ml-[.5rem] text-[.9rem] font-medium">
         {heading}
       </p>
+
       <input
-        id={`${inputId}`}
+        id={inputId}
         type="file"
-        onChange={(e: any) => setFile(e.target.files[0])}
+        onChange={handleFileInputChange}
         className="absolute right-0 top-0 h-0 w-0"
+        accept={
+          image
+            ? 'image/*'
+            : inputId === 'documentFile'
+              ? '.pdf'
+              : inputId === 'docxFile'
+                ? '.docx'
+                : inputId === 'videoFile'
+                  ? 'video/*'
+                  : '*'
+        }
       />
-      <div className="relative flex flex-col gap-[1rem] rounded-[1rem] border-2 border-dashed border-main-gray-input p-[1rem]">
+
+      <div
+        className={`relative flex flex-col gap-4 rounded-2xl border-2 border-dashed p-4 transition-all duration-200 ${
+          isDragOver
+            ? 'border-main bg-main/10 scale-[1.02]'
+            : 'border-main-gray-input hover:border-main/50'
+        }`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        {/* Drag overlay indicator */}
+        {isDragOver && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-main/20 backdrop-blur-sm">
+            <div className="flex flex-col items-center gap-2 text-main">
+              <div className="text-3xl">📁</div>
+              <p className="font-semibold">Lepaskan file di sini</p>
+            </div>
+          </div>
+        )}
+
         {!image ? (
           <>
             <div className="flex flex-col items-center gap-[.5rem] text-center">
-              <Image
-                src={uploadFile}
-                alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-              />
+              <UploadIcon />
               <p className="text-[.8rem] text-main-gray-text">
-                {!file ? `${contentText}` : `${file.name}`}
+                {!file ? (
+                  <>
+                    {contentText}
+                    <br />
+                    <span className="text-main font-medium">
+                      atau seret dan lepas file di sini
+                    </span>
+                  </>
+                ) : (
+                  file.name
+                )}
               </p>
             </div>
+
             <button
+              type="button"
               className="w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
               onClick={() => {
-                document.getElementById(`${inputId}`)?.click();
+                document.getElementById(inputId)?.click();
               }}
             >
               {buttonText}
@@ -853,18 +967,27 @@ export const UploadFile = ({
             {!previewImage ? (
               <>
                 <div className="flex flex-col items-center gap-[.5rem] text-center">
-                  <Image
-                    src={uploadFile}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
-                  />
+                  <UploadIcon />
                   <p className="text-[.8rem] text-main-gray-text">
-                    {!file ? `${contentText}` : `${file.name}`}
+                    {!file ? (
+                      <>
+                        {contentText}
+                        <br />
+                        <span className="text-main font-medium">
+                          atau seret dan lepas file di sini
+                        </span>
+                      </>
+                    ) : (
+                      file.name
+                    )}
                   </p>
                 </div>
+
                 <button
+                  type="button"
                   className="w-full rounded-[.5rem] border border-main-gray-input py-[.5rem] text-[.8rem] text-main-gray-text duration-300 hover:border-main hover:bg-main hover:text-white active:bg-main-hover"
                   onClick={() => {
-                    document.getElementById(`${inputId}`)?.click();
+                    document.getElementById(inputId)?.click();
                   }}
                 >
                   {buttonText}
@@ -872,10 +995,10 @@ export const UploadFile = ({
               </>
             ) : (
               <>
-                <div className={`relative ${previewHover ? 'z-[4]' : 'z-[6]'}`}>
+                <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>
                   <Image
-                    src={previewImage}
-                    alt="TutorSNBT - Bimbel AI untuk SNBT/UTBK"
+                    src={previewImage || '/placeholder.svg'}
+                    alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                     layout="responsive"
                     width={500}
                     height={300}
@@ -886,11 +1009,12 @@ export const UploadFile = ({
                     }}
                   />
                 </div>
-                <div className="absolute left-0 top-0 z-[5] flex h-full w-full items-center justify-center bg-[#ffffffc4] p-[1rem]">
+
+                <div className="absolute left-0 top-0 z-5 flex h-full w-full items-center justify-center bg-[#ffffffc4] p-4">
                   <div
-                    className="flex h-full w-full items-center justify-center"
+                    className="flex h-full w-full items-center justify-center cursor-pointer"
                     onClick={() => {
-                      document.getElementById(`${inputId}`)?.click();
+                      document.getElementById(inputId)?.click();
                     }}
                     onMouseLeave={() => {
                       if (previewImage) {
@@ -901,6 +1025,7 @@ export const UploadFile = ({
                     <div className="flex flex-col items-center text-center text-main-gray-text">
                       <i className="bx bx-upload text-[1.5rem]" />
                       <p>Ganti Thumbnail</p>
+                      <p className="text-xs mt-1">atau seret file baru</p>
                     </div>
                   </div>
                 </div>
@@ -934,7 +1059,7 @@ const InputText = ({
       </p>
       <input
         type="text"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}
@@ -942,6 +1067,7 @@ const InputText = ({
     </div>
   );
 };
+
 const InputDateAndTime = ({
   heading,
   setValue,
@@ -991,70 +1117,19 @@ const InputDateAndTime = ({
       </p>
       <input
         type="date"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         onChange={(e) => setDate(e.target.value)}
         value={date ? date : ''}
       />
       <input
         type="time"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         onChange={(e) => setTime(e.target.value)}
         value={time ? time : ''}
       />
     </div>
   );
 };
-
-// const InputDate = ({
-//   heading,
-//   setValue,
-//   value,
-// }: {
-//   heading: string;
-//   setValue: any;
-//   value: string;
-// }) => {
-//   return (
-//     <div id="name-file" className="flex flex-col gap-[.5rem]">
-//       <p>
-//         {heading} <span className="text-main-gray-text">(Try-Out)</span>
-//       </p>
-//       <input
-//         type="date"
-//         className="border border-main-gray-input rounded-[.5rem] outline-none text-black py-[.5rem] px-[1rem] w-full font-regular"
-//         onChange={e => setValue(e.target.value)}
-//         value={value}
-//       />
-//     </div>
-//   );
-// };
-
-// const InputNumber = ({
-//   heading,
-//   placeholder,
-//   setValue,
-//   value,
-// }: {
-//   heading: string;
-//   placeholder: string;
-//   setValue: any;
-//   value: number;
-// }) => {
-//   return (
-//     <div id="name-file" className="flex flex-col gap-[.5rem]">
-//       <p>
-//         {heading} <span className="text-main-gray-text">(Try-Out)</span>
-//       </p>
-//       <input
-//         type="number"
-//         className="border border-main-gray-input rounded-[.5rem] outline-none text-black py-[.5rem] px-[1rem] w-full font-regular"
-//         placeholder={`${placeholder}`}
-//         onChange={e => setValue(e.target.value)}
-//         value={value === 0 ? '' : value}
-//       />
-//     </div>
-//   );
-// };
 
 const InputTextarea = ({
   heading,
@@ -1076,7 +1151,7 @@ const InputTextarea = ({
         {heading} <span className="text-main-gray-text">(Try-Out)</span>
       </p>
       <textarea
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}

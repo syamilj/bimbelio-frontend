@@ -1,13 +1,22 @@
 'use client';
 
-import { TryoutAnswer, TryoutQuestion } from '@/types/database';
-import { useEffect, useState } from 'react';
-
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Card, CardContent } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
-import { IconDown, IconTimer, IconUp } from '@/styles/icon';
+import { TryoutAnswer, TryoutQuestion } from '@/types/database';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  BookOpen,
+  ChevronDown,
+  ChevronUp,
+  FileText,
+  Target,
+  Trophy,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 import CountDownTryout from './countdown-tryout';
-import Header from './header';
 import SessionQuestion from './session-question';
 import SubmitTryout from './submit-tryout';
 
@@ -30,14 +39,18 @@ const Tryout: React.FC<Props> = ({
   isSessionDone,
   numberSession,
 }) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [sessionAnswer, setSessionAnswer] = useState<any>(null);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
-  const [listQuestionsHeight, setListQuestionsHeight] = useState<number>(0);
-  const [showListQuestions, setShowListQuestions] = useState<boolean>(true);
+  const [showSidebar, setShowSidebar] = useState<boolean>(true);
   const [status] = useState<'none' | 'correct' | 'wrong' | 'complete'>('none');
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   useEffect(() => {
     const dataString = localStorage.getItem(`sessionAnswer-${sessionId}`);
@@ -101,136 +114,252 @@ const Tryout: React.FC<Props> = ({
     return <SpinnerPageCentered />;
 
   const currentQuestionData = questions[currentQuestionIndex];
-
-  const toggleListQuestions = () => {
-    const div = document.querySelector(
-      '#info #list-questions',
-    ) as HTMLDivElement;
-    if (div) {
-      if (div.clientHeight !== 0) {
-        div.style.height = `${div.clientHeight}px`;
-        setListQuestionsHeight(div.clientHeight);
-        setShowListQuestions(false);
-      } else {
-        setShowListQuestions(true);
-      }
-      div.style.height =
-        div.clientHeight === 0 ? `${listQuestionsHeight}px` : '0px';
-      div.style.overflow = 'hidden';
-      div.style.transition = 'height 0.3s ease';
-    }
-  };
+  const answeredCount = sessionAnswer.filter(
+    (item: any) => item.answer !== '',
+  ).length;
+  const notSureCount = sessionAnswer.filter((item: any) => item.notSure).length;
+  const progressPercentage = (answeredCount / questions.length) * 100;
 
   return (
-    <>
-      <Header
-        current={currentQuestionIndex}
-        total={questions.length}
-        name={sessionData ? sessionData.name : ''}
-      />
-      <div className="absolute left-0 top-0 h-full w-full flex-1 overflow-y-auto bg-workspace pb-20 pt-14 md:top-16 md:pb-32 md:pt-4">
-        <div className="flex flex-col-reverse justify-end md:h-fit md:flex-row md:justify-between">
-          <SessionQuestion
-            currentQuestionIndex={currentQuestionIndex}
-            currentQuestionData={currentQuestionData}
-            selectedOptions={selectedOptions}
-            selectedOption={selectedOption}
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            sessionAnswer={sessionAnswer}
-            setSessionAnswer={setSessionAnswer}
-            setCurrentQuestionIndex={setCurrentQuestionIndex}
-            questions={questions}
-            status={status}
-          />
-          <div
-            id="info"
-            className="flex w-full shrink-0 flex-col items-center gap-y-6 px-6 py-4 md:w-[420px] md:py-0"
-          >
-            <div className="flex w-full justify-center rounded-xl bg-white px-4 py-1 text-lg md:hidden">
-              {!isSessionDone && (
-                <div className="flex items-center gap-2 font-medium text-red-800">
-                  <IconTimer />
-                  <CountDownTryout
-                    seconds={getDuration()}
-                    sessionId={sessionId}
-                    sessionAnswer={sessionAnswer}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="relative flex w-full items-center justify-between">
-              <h1 className="w-full text-center font-semibold">
-                Sesi {numberSession} -{' '}
-                {sessionData ? sessionData?.TryoutCategory?.name : ''}
-              </h1>
+    <div className="min-h-screen bg-gray-50">
+      {/* Enhanced Header */}
+      <div className="bg-white border-b-2 border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div className="container mx-auto max-w-7xl px-4 py-4">
+          <div className="flex items-center justify-between">
+            {/* Session Info */}
+            <div className="flex items-center gap-4">
               <div
-                className="absolute right-4 cursor-pointer text-main-gray-text duration-300 md:hover:text-black"
-                onClick={toggleListQuestions}
+                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: `${mainColor}15` }}
               >
-                {showListQuestions ? <IconUp /> : <IconDown />}
+                <Trophy
+                  className="w-6 h-6"
+                  style={{ color: mainColor }}
+                />
+              </div>
+              <div>
+                <h1 className="text-lg md:text-xl font-bold text-gray-900">
+                  Sesi {numberSession}
+                </h1>
+                <p className="text-sm text-gray-600">
+                  {sessionData ? sessionData?.TryoutCategory?.name : ''}
+                </p>
               </div>
             </div>
-            <div className="mt-[-1rem] hidden w-full justify-center rounded-xl bg-white px-4 py-1 text-lg md:flex">
-              {!isSessionDone && (
-                <div className="flex items-center gap-2 font-medium text-red-800">
-                  <IconTimer />
+
+            {/* Timer */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center ">
+                <span className="font-mono font-bold text-red-700">
                   <CountDownTryout
                     seconds={getDuration()}
                     sessionId={sessionId}
                     sessionAnswer={sessionAnswer}
                   />
-                </div>
-              )}
+                </span>
+              </div>
+              <button
+                onClick={() => setShowSidebar(!showSidebar)}
+                className="lg:hidden p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+              >
+                {showSidebar ? (
+                  <ChevronUp className="w-5 h-5" />
+                ) : (
+                  <ChevronDown className="w-5 h-5" />
+                )}
+              </button>
             </div>
-            <div
-              id="list-questions"
-              className="flex w-full flex-wrap justify-center gap-4"
-            >
-              {questions?.map((_, i: number) => (
-                <div
-                  key={i}
-                  className={cn(
-                    `flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-xl bg-white font-bold text-main-gray-text md:hover:bg-black/5 ${
-                      currentQuestionIndex === i && 'bg-black/10'
-                    } duration-300`,
-                    !isSessionDone &&
-                      isAnswered(i) &&
-                      'bg-main-default text-white hover:bg-main-default/85',
-                    !isSessionDone &&
-                      sessionAnswer[i].notSure &&
-                      'bg-main-yellow text-black md:hover:bg-yellow-400',
-                  )}
-                  onClick={() => {
-                    if (!isSessionDone) {
-                      setCurrentQuestionIndex(i);
-                    } else {
-                      const scrollTo = (selector: string) => {
-                        const element = document.querySelector(selector);
-                        if (element) {
-                          element.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      };
-                      scrollTo(`#question${i + 1}`);
-                    }
-                  }}
+          </div>
+
+          {/* Progress Bar */}
+          {/* <div className="mt-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">
+                Soal {currentQuestionIndex + 1} dari {questions.length}
+              </span>
+              <span className="text-sm text-gray-600">
+                {answeredCount} terjawab
+              </span>
+            </div>
+            <Progress
+              value={progressPercentage}
+              className="h-2 rounded-full"
+              style={{
+                background: '#f3f4f6',
+              }}
+            />
+          </div> */}
+        </div>
+      </div>
+
+      <div className="container mx-auto max-w-7xl px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Main Question Area */}
+          <div className="lg:col-span-3">
+            <SessionQuestion
+              currentQuestionIndex={currentQuestionIndex}
+              currentQuestionData={currentQuestionData}
+              selectedOptions={selectedOptions}
+              selectedOption={selectedOption}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+              sessionAnswer={sessionAnswer}
+              setSessionAnswer={setSessionAnswer}
+              setCurrentQuestionIndex={setCurrentQuestionIndex}
+              questions={questions}
+              status={status}
+            />
+          </div>
+
+          {/* Enhanced Sidebar */}
+          <div className="lg:col-span-1">
+            <AnimatePresence>
+              {(showSidebar || window.innerWidth >= 1024) && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="sticky top-32 space-y-6"
                 >
-                  {i + 1}
-                </div>
-              ))}
-            </div>
-            <div className="flex w-full justify-end">
-              {!isSessionDone && (
-                <SubmitTryout
-                  sessionAnswer={sessionAnswer}
-                  sessionId={sessionId}
-                />
+                  {/* Session Stats */}
+                  <Card
+                    className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                    style={{ borderColor: `${mainColor}20` }}
+                  >
+                    <CardContent className="p-6">
+                      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                        <BookOpen
+                          className="w-5 h-5"
+                          style={{ color: mainColor }}
+                        />
+                        Statistik Sesi
+                      </h3>
+                      <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="text-center">
+                          <div
+                            className="text-2xl font-bold"
+                            style={{ color: mainColor }}
+                          >
+                            {answeredCount}
+                          </div>
+                          <div className="text-xs text-gray-600">Terjawab</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-yellow-600">
+                            {notSureCount}
+                          </div>
+                          <div className="text-xs text-gray-600">Ragu-ragu</div>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-gray-400">
+                          {questions.length - answeredCount}
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          Belum dijawab
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Question Navigation */}
+                  <Card
+                    className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                    style={{ borderColor: `${secondaryColor}20` }}
+                  >
+                    <CardContent className="p-6">
+                      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                        <Target
+                          className="w-5 h-5"
+                          style={{ color: secondaryColor }}
+                        />
+                        Navigasi Soal
+                      </h3>
+                      <div className="grid grid-cols-5 gap-2 max-h-64 overflow-y-auto">
+                        {questions?.map((_, i) => (
+                          <motion.button
+                            key={i}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={cn(
+                              'h-10 w-10 rounded-xl font-bold text-sm transition-all duration-200 border-2',
+                              currentQuestionIndex === i
+                                ? 'border-transparent text-white shadow-lg'
+                                : 'border-gray-200 text-gray-600 hover:border-gray-300',
+                              isAnswered(i) && currentQuestionIndex !== i
+                                ? 'text-white border-transparent'
+                                : '',
+                              sessionAnswer[i].notSure &&
+                                currentQuestionIndex !== i
+                                ? 'bg-yellow-400 text-yellow-900 border-yellow-300'
+                                : '',
+                            )}
+                            style={{
+                              backgroundColor:
+                                currentQuestionIndex === i
+                                  ? mainColor
+                                  : isAnswered(i) && currentQuestionIndex !== i
+                                    ? '#10B981'
+                                    : sessionAnswer[i].notSure &&
+                                        currentQuestionIndex !== i
+                                      ? ''
+                                      : 'white',
+                            }}
+                            onClick={() => {
+                              if (!isSessionDone) {
+                                setCurrentQuestionIndex(i);
+                              }
+                            }}
+                          >
+                            {i + 1}
+                          </motion.button>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Submit Section */}
+                  {!isSessionDone && (
+                    <Card
+                      className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                      style={{ borderColor: `${mainColor}20` }}
+                    >
+                      <CardContent className="p-6">
+                        <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                          <FileText
+                            className="w-5 h-5"
+                            style={{ color: mainColor }}
+                          />
+                          Selesaikan Sesi
+                        </h3>
+                        <div className="space-y-4">
+                          <div className="text-sm text-gray-600">
+                            <div className="flex justify-between mb-2">
+                              <span>Progress:</span>
+                              <span className="font-bold">
+                                {Math.round(progressPercentage)}%
+                              </span>
+                            </div>
+                            <Progress
+                              value={progressPercentage}
+                              className="h-2"
+                            />
+                          </div>
+                          <SubmitTryout
+                            sessionAnswer={sessionAnswer}
+                            sessionId={sessionId}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </motion.div>
               )}
-            </div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

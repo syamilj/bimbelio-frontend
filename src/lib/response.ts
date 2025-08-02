@@ -9,12 +9,10 @@ export const responseError = (
 ) => {
   if (showToast) {
     toaster({
-      title: toastTitle || 'Error',
+      title: toastTitle || 'Gagal',
       condition: 'warning',
       description:
-        toastMessage ||
-        (error as any).response.data.message ||
-        'Internal Server Error',
+        toastMessage || (error as any).response.data.message || 'Gagal',
       duration: 2500,
     });
   }
@@ -25,6 +23,12 @@ export const responseError = (
       'Internal Server Error',
     status: ((error as any)?.response?.data?.status as number) || 500,
   };
+};
+
+export const throwError = (status: number, message?: string) => {
+  const error = new Error(message || 'Terjadi kesalahan pada server');
+  (error as any).status = status || 500;
+  throw error;
 };
 
 export const response = (
@@ -38,12 +42,13 @@ export const response = (
   data?: any;
   page?: number;
   total_pages?: number;
+  total_data?: number;
 } => {
   if (showToast) {
     toaster({
-      title: toastTitle || 'Successfully',
+      title: toastTitle || 'Berhasil',
       condition: 'success',
-      description: toastMessage || res.data.message || 'Succesfully',
+      description: toastMessage || res.data.message || 'Berhasil',
       duration: 2500,
     });
   }

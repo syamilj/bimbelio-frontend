@@ -1,3 +1,103 @@
+export type Pivot_Plan_Category = {
+  id: string;
+  planFeatureId: string;
+  categoryId: string;
+};
+
+export type PlanBenefit = {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  planId: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type LiveClassReference = {
+  id: string;
+  description: string;
+  type: LiveClassReferenceTypeEnum;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  subChapterId: string | null;
+  url: string | null;
+  urlType: LiveClassReferenceUrlTypeEnum;
+};
+
+export type LiveClassAgenda = {
+  id: string;
+  liveClassId: string;
+  title: string;
+  description: string;
+  duration: number; // in minutes
+  order: number;
+  website_sub_category_id: string;
+};
+
+export type LiveClassReferenceUrlTypeEnum =
+  | 'VIDEO'
+  | 'AUDIO'
+  | 'WEBSITE'
+  | 'DOCUMENT'
+  | 'ARTICLE';
+export type LiveClassReferenceTypeEnum = 'URL' | 'COURSE';
+
+export type LiveClass = {
+  id: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  title: string;
+  categoryId: string;
+  image: string | null;
+  startDate: Date;
+  link: string;
+  instructorId: string;
+  duration: number;
+  maxParticipant: number | null;
+  isRecord: boolean;
+  websiteSubCategoryId: string;
+};
+export type LiveClassInvited = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  liveClassId: string;
+  userId: string;
+};
+
+export type LiveClassRating = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  score: number;
+  comment: string | null;
+  userId: string | null;
+  liveClassId: string;
+};
+
+export type Instructor = {
+  name: string;
+  id: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  status: boolean;
+  image: string | null;
+  email: string;
+  phone: string;
+  lastEducation: string;
+  certificate: string | null;
+};
+
+export type Pivot_LiveClass_Plan = {
+  id: string;
+  planId: string;
+  liveClassId: string;
+};
+
 export type Prediction = {
   id: string;
   userId: string;
@@ -382,13 +482,13 @@ export type WebsiteSubCategory = {
   website_category_id: string;
 };
 
-export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE';
+export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS';
 
 export type Subscription = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  planId: string;
+  planId?: string;
   userId: string;
   websiteSubCategoryId: string | null;
   planSlug: string;
@@ -409,13 +509,18 @@ export type SubscriptionFeature = {
 
 export type Plan = {
   id: string;
+  slug: string;
   name: string;
+  description: string;
+  image: string | null;
+  originalPrice: number | null;
+  price: number;
+  status: PlanStatusEnum;
   createdAt: Date;
   updatedAt: Date;
-  slug: string;
-  price: number;
-  description: string;
 };
+
+export type PlanStatusEnum = 'PUBLIC' | 'DRAFT' | 'COMING_SOON';
 
 export type PlanLimitation = {
   id: string;
@@ -442,6 +547,7 @@ export type PlanFeature = {
   createdAt: Date;
   updatedAt: Date;
   type: FeatureTypeEnum;
+  liveClassesPerWeek?: number;
   planSubscriptionId: string;
 };
 
@@ -453,3 +559,310 @@ export type TryoutUserAnswer = {
   answerId: string | null;
   sessionParticipantId: string;
 };
+
+export type Voucher = {
+  id: string;
+  createdAt: string;
+  title: string;
+  voucherCode: string;
+  type: VoucherTypeEnum;
+  discount: number;
+  startDate: string;
+  endDate: string | null;
+  usageLimit: number | null;
+  voucherPlanType: VoucherPlanTypeEnum;
+  updatedAt: string;
+};
+
+export type VoucherTypeEnum = 'Percentage' | 'Fixed_Amount';
+
+export type VoucherPlanTypeEnum = 'ALL_PLAN' | 'SELECTED_PLAN';
+
+export type Pivot_Voucher_Plan = {
+  id: string;
+  planId: string;
+  voucherId: string;
+};
+
+// // =============================================================================
+
+// // === LIVE CLASS SYSTEM ===
+// // export type LiveClass = {
+// //   id: string;
+// //   title: string;
+// //   description: string;
+// //   subject: string;
+// //   tutorId: string;
+// //   scheduleDate: Date;
+// //   startTime: string;
+// //   endTime: string;
+// //   duration: number; // calculated field
+// //   meetLink: string;
+// //   maxParticipants?: number;
+// //   status: LiveClassStatusEnum;
+// //   isRecorded: boolean;
+// //   createdAt: Date;
+// //   updatedAt: Date;
+// //   createdBy: string;
+// //   updatedBy: string;
+// //   website_sub_category_id: string;
+// // };
+
+// export type LiveClassStatusEnum =
+//   | 'SCHEDULED'
+//   | 'ONGOING'
+//   | 'COMPLETED'
+//   | 'CANCELLED';
+
+// export type LiveClassMaterial = {
+//   id: string;
+//   liveClassId: string;
+//   category: string;
+//   subCategory: string;
+//   title: string;
+//   content: string;
+//   fileUrl?: string;
+//   order: number;
+//   website_sub_category_id: string;
+// };
+
+// export type LiveClassAgenda = {
+//   id: string;
+//   liveClassId: string;
+//   title: string;
+//   description: string;
+//   duration: number; // in minutes
+//   order: number;
+//   website_sub_category_id: string;
+// };
+
+// // export type LiveClassReference = {
+// //   id: string;
+// //   liveClassId: string;
+// //   title: string;
+// //   type: ReferenceTypeEnum;
+// //   url?: string;
+// //   chapterId?: string; // reference to CourseChapter
+// //   subChapterId?: string; // reference to CourseSubChapter
+// //   order: number;
+// //   website_sub_category_id: string;
+// // };
+
+// export type ReferenceTypeEnum = 'URL' | 'CHAPTER' | 'DOCUMENT' | 'VIDEO';
+
+// export type LiveClassRecording = {
+//   id: string;
+//   liveClassId: string;
+//   title: string;
+//   url: string;
+//   duration: number;
+//   uploadedAt: Date;
+//   isPublic: boolean;
+//   website_sub_category_id: string;
+// };
+
+// export type LiveClassParticipant = {
+//   id: string;
+//   liveClassId: string;
+//   userId: string;
+//   joinedAt?: Date;
+//   leftAt?: Date;
+//   isPresent: boolean;
+//   programPurchaseId: string; // link to program purchase
+//   website_sub_category_id: string;
+// };
+
+// // === TUTOR SYSTEM ===
+// export type Tutor = {
+//   id: string;
+//   fullName: string;
+//   email: string;
+//   phone?: string;
+//   bio: string;
+//   subjects: string[]; // JSON array
+//   avatar?: string;
+//   socialLinks?: TutorSocialLink[];
+//   rating: number;
+//   totalClasses: number;
+//   isActive: boolean;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   website_sub_category_id: string;
+// };
+
+// export type TutorSocialLink = {
+//   platform: string;
+//   url: string;
+// };
+
+// // === PROGRAM & MARKETPLACE SYSTEM ===
+// export type Program = {
+//   id: string;
+//   name: string;
+//   description: string;
+//   type: ProgramTypeEnum;
+//   price: number;
+//   discount: number;
+//   finalPrice: number; // calculated field
+//   duration?: string;
+//   isActive: boolean;
+//   status: ProgramStatusEnum;
+//   // Type-specific fields
+//   maxParticipants?: number; // for REGULAR/BUNDLE
+//   quantity?: number; // for SINGLE type (e.g., 10x tryout)
+//   sessionCount?: number; // for PRIVATE type
+//   specialNotes?: string; // for PRIVATE type
+//   createdAt: Date;
+//   updatedAt: Date;
+//   createdBy: string;
+//   updatedBy: string;
+//   website_sub_category_id: string;
+// };
+
+// export type ProgramTypeEnum = 'REGULAR' | 'BUNDLE' | 'SINGLE' | 'PRIVATE';
+// export type ProgramStatusEnum = 'DRAFT' | 'ACTIVE' | 'INACTIVE' | 'ARCHIVED';
+
+// export type ProgramClass = {
+//   id: string;
+//   programId: string;
+//   liveClassId: string;
+//   order: number;
+//   website_sub_category_id: string;
+// };
+
+// export type ProgramLimitation = {
+//   id: string;
+//   programId: string;
+//   type: LimitationTypeEnum;
+//   value: number;
+//   website_sub_category_id: string;
+// };
+
+// export type LimitationTypeEnum =
+//   | 'CHAT'
+//   | 'NOTES'
+//   | 'VISION'
+//   | 'QUIZ'
+//   | 'TRYOUT'
+//   | 'COURSE_ACCESS';
+
+// export type ProgramVoucher = {
+//   id: string;
+//   programId: string;
+//   voucherId: string;
+//   website_sub_category_id: string;
+// };
+
+// // === VOUCHER SYSTEM ===
+// export type Voucher = {
+//   id: string;
+//   code: string;
+//   type: VoucherTypeEnum;
+//   value: number;
+//   maxDiscount?: number;
+//   totalQuota: number;
+//   quotaPerUser: number;
+//   usedCount: number;
+//   validFrom: Date;
+//   validUntil: Date;
+//   isActive: boolean;
+//   // Marketing & Tracking
+//   channel: string; // IG, WA, TikTok, etc
+//   campaign: string;
+//   utmSource?: string;
+//   utmMedium?: string;
+//   utmCampaign?: string;
+//   // Restrictions
+//   allowedUsers?: string[]; // JSON array of user IDs
+//   minPurchase?: number;
+//   maxUsagePerUser: number;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   createdBy: string;
+//   website_sub_category_id: string;
+// };
+
+// export type VoucherTypeEnum = 'NOMINAL' | 'PERCENTAGE';
+
+// export type VoucherUsage = {
+//   id: string;
+//   voucherId: string;
+//   userId: string;
+//   programPurchaseId: string;
+//   discountAmount: number;
+//   usedAt: Date;
+//   // UTM tracking saat redeem
+//   utmSource?: string;
+//   utmMedium?: string;
+//   utmCampaign?: string;
+//   website_sub_category_id: string;
+// };
+
+// // === PROGRAM PURCHASE & TRANSACTION ===
+// export type ProgramPurchase = {
+//   id: string;
+//   userId: string;
+//   programId: string;
+//   voucherId?: string;
+//   originalPrice: number;
+//   discountAmount: number;
+//   finalPrice: number;
+//   status: PurchaseStatusEnum;
+//   purchasedAt: Date;
+//   expiresAt?: Date;
+//   // Payment integration
+//   transactionId?: string; // link to existing Transaction table
+//   paymentMethod?: string;
+//   // Metadata
+//   metadata?: Record<string, any>; // JSON for flexible data
+//   website_sub_category_id: string;
+// };
+
+// export type PurchaseStatusEnum =
+//   | 'PENDING'
+//   | 'PAID'
+//   | 'EXPIRED'
+//   | 'REFUNDED'
+//   | 'CANCELLED';
+
+// export type UserProgramAccess = {
+//   id: string;
+//   userId: string;
+//   programId: string;
+//   programPurchaseId: string;
+//   accessGrantedAt: Date;
+//   expiresAt?: Date;
+//   isActive: boolean;
+//   website_sub_category_id: string;
+// };
+
+// // === WISHLIST SYSTEM ===
+// export type UserWishlist = {
+//   id: string;
+//   userId: string;
+//   programId: string;
+//   addedAt: Date;
+//   website_sub_category_id: string;
+// };
+
+// // === AUDIT & TRACKING ===
+// export type AuditLog = {
+//   id: string;
+//   entityType: string; // 'LiveClass', 'Program', 'Voucher', etc
+//   entityId: string;
+//   action: AuditActionEnum;
+//   oldData?: Record<string, any>;
+//   newData?: Record<string, any>;
+//   performedBy: string; // userId
+//   performedAt: Date;
+//   ipAddress?: string;
+//   userAgent?: string;
+//   website_sub_category_id: string;
+// };
+
+// export type AuditActionEnum =
+//   | 'CREATE'
+//   | 'UPDATE'
+//   | 'DELETE'
+//   | 'PUBLISH'
+//   | 'UNPUBLISH';

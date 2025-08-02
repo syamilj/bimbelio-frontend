@@ -1,18 +1,16 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
@@ -21,43 +19,37 @@ import {
   getGeneral,
   mutateGeneral,
 } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { getDateString } from '@/lib/utils';
 import { ChatHistory } from '@/types/database';
 import {
-  AwardIcon,
-  BarChartIcon,
-  BotIcon,
-  ClockIcon,
-  GraduationCapIcon,
-  Loader2,
-  MessageSquareIcon,
-  Plus,
+  Bot,
+  Clock,
+  MessageSquare,
+  Search,
+  Sparkles,
   Trash2,
-  UsersIcon,
-  ZapIcon,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react'; // Added ReactElement import
+import { useEffect, useState } from 'react';
 
-export default function AIChatHistoryPage() {
+export default function AIChatPage() {
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [newChatInput, setNewChatInput] = useState('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [searchHistory, setSearchHistory] = useState('');
 
-  // Mutation untuk membuat chat baru
-  // const { mutateAsync: createNewChat } = api.chat.createNewChat.useMutation({
-  //   onError(error) {
-  //     toaster({
-  //       title: "Error",
-  //       condition: "warning",
-  //       description: error.message || "Gagal membuat chat baru",
-  //       duration: 3000,
-  //     });
-  //     setLoading(false);
-  //   },
-  // });
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
+  const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(true);
+  const [isLoadingDeleteChat, setIsLoadingDeleteChat] =
+    useState<boolean>(false);
 
   const createNewChat = async (payload: { title: string }) => {
     let sendData: any = null;
@@ -81,39 +73,13 @@ export default function AIChatHistoryPage() {
     return sendData;
   };
 
-  // Mutation untuk menghapus chat
-  // const { mutateAsync: deleteChat, isPending: isLoadingDeleteChat } =
-  //   api.chat.deleteChat.useMutation({
-  //     onSuccess() {
-  //       refetch();
-  //       toaster({
-  //         title: "Success",
-  //         condition: "success",
-  //         description: "Berhasil menghapus chat",
-  //         duration: 3000,
-  //       });
-  //       setLoading(false);
-  //     },
-  //     onError(error) {
-  //       toaster({
-  //         title: "Error",
-  //         condition: "warning",
-  //         description: error.message || "Gagal menghapus chat",
-  //         duration: 3000,
-  //       });
-  //       setLoading(false);
-  //     },
-  //   });
-
-  const [isLoadingDeleteChat, setIsLoadingDeleteChat] =
-    useState<boolean>(false);
-
   const deleteChat = async ({ id }: { id: string }) => {
     let sendData: any = null;
     await deleteGeneral(`/chat/deleteChat?id=${id}`, {
       setLoading: setIsLoadingDeleteChat,
       toast: {
         errorMsg: 'Gagal menghapus chat',
+        successMsg: 'Berhasil menghapus chat',
       },
       onSuccess() {
         refetch();
@@ -126,23 +92,6 @@ export default function AIChatHistoryPage() {
     return sendData;
   };
 
-  // Query untuk mengambil riwayat chat dan dokumen
-  // const {
-  //   data: chatHistory,
-  //   isLoading: isLoadingHistory,
-  //   refetch,
-  // } = api.chat.getAllHistoryByUserId.useQuery(undefined, {
-  //   refetchOnWindowFocus: false,
-  // });
-
-  // const { data: documents, isLoading: isLoadingDocument } =
-  //   api.chat.getAllDocument.useQuery(undefined, {
-  //     refetchOnWindowFocus: false,
-  //   });
-
-  const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
-  const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(true);
-
   const refetch = async () => {
     await getGeneral(`/chat/getAllHistoryByUserId?userId=${session?.user.id}`, {
       setData: setChatHistory,
@@ -154,44 +103,11 @@ export default function AIChatHistoryPage() {
     refetch();
   }, [session]);
 
-  const features = [
-    {
-      icon: ZapIcon,
-      title: 'Akses Instan',
-      description: 'Dapatkan jawaban dan pengetahuan seketika',
-    },
-    {
-      icon: ClockIcon,
-      title: '24/7 Siap Membantu',
-      description: 'Belajar kapan saja tanpa batas waktu',
-    },
-    {
-      icon: UsersIcon,
-      title: 'Pendekatan Personal',
-      description: 'Pengetahuan disesuaikan dengan kebutuhan',
-    },
-    {
-      icon: GraduationCapIcon,
-      title: 'Materi Berkualitas',
-      description: 'Konten pembelajaran dari pakar terkemuka',
-    },
-    {
-      icon: AwardIcon,
-      title: 'Sertifikasi',
-      description: 'Dapatkan sertifikat untuk setiap pencapaian',
-    },
-    {
-      icon: BarChartIcon,
-      title: 'Analisis Kemajuan',
-      description: 'Pantau perkembangan belajar secara real-time',
-    },
-  ];
-
   const handleNewChat = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     if (newChatInput.trim()) {
-      const res = await createNewChat({ title: newChatInput.slice(0, 20) });
+      const res = await createNewChat({ title: newChatInput.slice(0, 50) });
       router.push(
         `/${website_sub_category_id}/user/chat/${res.id}?new=${newChatInput}`,
       );
@@ -200,266 +116,306 @@ export default function AIChatHistoryPage() {
     }
   };
 
+  const filteredHistory =
+    chatHistory?.filter((chat) =>
+      chat.title.toLowerCase().includes(searchHistory.toLowerCase()),
+    ) || [];
+
+  const placeholders = [
+    'Jelaskan konsep integral dalam matematika',
+    'Bagaimana cara kerja fotosintesis pada tumbuhan?',
+    'Apa perbedaan antara mitosis dan meiosis?',
+    'Tolong jelaskan hukum Newton yang pertama',
+    'Bagaimana cara menghitung luas lingkaran?',
+    'Apa yang dimaksud dengan revolusi industri?',
+    'Jelaskan struktur atom menurut Bohr',
+    'Bagaimana proses pembentukan hujan?',
+    'Apa itu teorema Pythagoras dan bagaimana menggunakannya?',
+    'Jelaskan perbedaan antara DNA dan RNA',
+  ];
+
+  const handleNewChatAdvanced = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    if (newChatInput.trim()) {
+      const res = await createNewChat({ title: newChatInput.slice(0, 50) });
+      router.push(
+        `/${website_sub_category_id}/user/chat/${res.id}?new=${newChatInput}`,
+      );
+    } else {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewChatInput(e.target.value);
+  };
+
+  const suggestedTopics = [
+    'Matematika Dasar',
+    'Fisika Kuantum',
+    'Kimia Organik',
+    'Bahasa Inggris',
+    'Sejarah Indonesia',
+    'Biologi Sel',
+  ];
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', { content_name: 'Chat AI' });
+    pixel.tiktok.track('ViewContent', { content_name: 'Chat AI' });
+  }, []);
+
   return (
-    <div className="min-h-screen">
-      {loading && (
-        <div className="fixed bg-white/80 top-0 left-0 w-full h-full flex justify-center items-center">
-          <div className="flex items-center gap-2 flex-col text-main">
-            <Loader2 className="animate-spin h-4 w-4" />
-            <p>Membuat Chat Baru</p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto max-w-5xl px-4 py-8">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <div
+            className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg"
+            style={{ backgroundColor: mainColor }}
+          >
+            <Bot className="w-10 h-10 text-white" />
           </div>
-        </div>
-      )}
-      <main className="container mx-auto max-w-3xl">
-        {/* Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="bg-main text-white rounded-full p-6 mb-6 w-24 h-24 flex items-center justify-center">
-            <BotIcon className="h-12 w-12" />
-          </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Bimbo AI</h1>
-          <h2 className="text-sm text-gray-600 mb-4">Powered by OpenAI</h2>
-          <p className="text-gray-600 mb-8 max-w-2xl">
-            Apa yang ingin Kamu pelajari hari ini? Bimbelio siap membantu.
+          <h1
+            className="text-3xl md:text-4xl font-bold mb-3"
+            style={{ color: mainColor }}
+          >
+            Bimbot AI Assistant
+          </h1>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+            Tanyakan apapun tentang materi pembelajaran. Saya siap membantu Anda
+            belajar lebih efektif!
           </p>
-
-          {/* Action Buttons */}
-          <div className="w-full max-w-md space-y-4">
-            <div className="grid grid-cols-1 gap-4">
-              <Button
-                variant="outline"
-                className="w-full py-5 text-gray-700 hover:bg-gray-50"
-                onClick={() => setIsDialogOpen(true)}
-              >
-                <ClockIcon className="mr-2 h-4 w-4" />
-                Lanjutkan Belajar
-              </Button>
-              {/* <Button
-                variant="outline"
-                className="w-full py-5 text-gray-700 hover:bg-gray-50"
-                onClick={startDocumentConversation}
-              >
-                <FileTextIcon className="mr-2 h-4 w-4" />
-                Eksplorasi Dokumen
-              </Button> */}
-            </div>
-
-            {/* New Topic Input */}
-            <form
-              onSubmit={handleNewChat}
-              className="flex space-x-2"
-            >
-              <Input
-                placeholder="Topik baru yang ingin dipelajari"
-                value={newChatInput}
-                onChange={(e) => setNewChatInput(e.target.value)}
-                className="flex-grow"
-              />
-              <Button
-                disabled={newChatInput.length === 0}
-                className="bg-main hover:bg-main/50"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Mulai Baru
-              </Button>
-            </form>
-          </div>
-
-          {/* Popular Documents */}
-          {/* <div className="mt-12 w-full max-w-2xl">
-            <h3 className="text-lg font-semibold mb-4 text-center">
-              Dokumen Populer
-            </h3>
-            <div className="flex flex-wrap gap-2 justify-center">
-              {isLoadingDocument
-                ? Array.from({ length: 8 }).map((_, index) => (
-                    <Skeleton key={index} className="h-8 w-32" />
-                  ))
-                : documents?.slice(0, 8).map((doc) => (
-                    <Badge
-                      key={doc.id}
-                      variant="secondary"
-                      className="py-2 px-4 bg-blue-50 text-[#2563EB] hover:bg-blue-100 cursor-pointer"
-                      onClick={() =>
-                        router.push(
-                          `/user/workspace/${doc.categoryId}/${doc.id}?tab=chat`
-                        )
-                      }
-                    >
-                      {doc.title}
-                    </Badge>
-                  ))}
-            </div>
-            <div className="flex justify-center mt-4">
-              <Button
-                variant="outline"
-                className="text-gray-700 hover:bg-gray-50"
-                onClick={startDocumentConversation}
-              >
-                Lainnya
-              </Button>
-            </div>
-          </div> */}
-
-          {/* Features */}
-          <div className="mt-16 w-full">
-            <h3 className="text-2xl font-bold mb-12 text-center">
-              Keunggulan Bimbelio
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center text-center p-6 border rounded-xl bg-white"
-                >
-                  <div className="text-main mb-4">
-                    <feature.icon className="h-8 w-8" />
-                  </div>
-                  <h4 className="text-lg font-semibold mb-2">
-                    {feature.title}
-                  </h4>
-                  <p className="text-gray-600 text-sm">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Statistics */}
-          {/* <div className="mt-16 w-full bg-[#2563EB] rounded-lg p-8 text-white">
-            <h3 className="text-2xl font-bold mb-8 text-center">
-              Bimbelio dalam Angka
-            </h3>
-            <div className="grid grid-cols-2 gap-8">
-              <div className="flex flex-col items-center text-center">
-                <MessageSquareIcon className="h-8 w-8 mb-2" />
-                <p className="text-3xl font-bold mb-1">1,000,000+</p>
-                <p className="text-sm">Total Pertanyaan Diajukan</p>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <User2Icon className="h-8 w-8 mb-2" />
-                <p className="text-3xl font-bold mb-1">100,000+</p>
-                <p className="text-sm">Total Pengguna</p>
-              </div>
-            </div>
-          </div> */}
         </div>
 
-        {/* Dialog untuk Riwayat Chat */}
-        <Dialog
-          open={isDialogOpen}
-          onOpenChange={setIsDialogOpen}
+        {/* Enhanced Chat Input with Animation */}
+        <div className="mb-10">
+          <PlaceholdersAndVanishInput
+            placeholders={placeholders}
+            onChange={handleInputChange}
+            onSubmit={handleNewChatAdvanced}
+          />
+          {loading && (
+            <div className="flex justify-center mt-4">
+              <div
+                className="flex items-center gap-2 text-sm px-4 py-2 rounded-xl"
+                style={{
+                  backgroundColor: `${mainColor}10`,
+                  color: mainColor,
+                }}
+              >
+                <div
+                  className="animate-spin rounded-full h-4 w-4 border-b-2"
+                  style={{ borderColor: mainColor }}
+                />
+                <span>Memulai percakapan...</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 max-w-2xl mx-auto">
+          <Button
+            variant="outline"
+            className="h-16 justify-start gap-4 rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white"
+            onClick={() => setIsHistoryOpen(true)}
+            style={{ borderColor: `${mainColor}20` }}
+          >
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <Clock
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <div className="text-left">
+              <div className="font-semibold">Lanjutkan Percakapan</div>
+              <div className="text-sm text-gray-500">Buka riwayat chat</div>
+            </div>
+          </Button>
+
+          <Button
+            variant="outline"
+            className="h-16 justify-start gap-4 rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white"
+            style={{ borderColor: `${mainColor}20` }}
+          >
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <Sparkles
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <div className="text-left">
+              <div className="font-semibold">Eksplorasi Materi</div>
+              <div className="text-sm text-gray-500">Temukan topik baru</div>
+            </div>
+          </Button>
+        </div>
+
+        {/* Suggested Topics */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <h3 className="text-xl font-semibold mb-6 text-center text-gray-900">
+            Topik Populer
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {placeholders.slice(0, 6).map((topic, index) => (
+              <button
+                key={topic}
+                onClick={() => setNewChatInput(topic)}
+                className="p-4 text-left rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white group"
+                style={{
+                  borderColor: `${mainColor}15`,
+                }}
+              >
+                <div className="flex items-start gap-3">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: `${mainColor}15` }}
+                  >
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: mainColor }}
+                    >
+                      {index + 1}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900 mb-1">
+                      {topic.length > 40 ? topic.slice(0, 40) + '...' : topic}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Klik untuk mulai chat
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats or Features */}
+        <div
+          className="rounded-2xl p-8 text-white text-center"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
         >
-          <DialogContent className="sm:max-w-[425px] mx-auto w-[90%]">
-            <DialogHeader>
-              <DialogTitle>Percakapan Sebelumnya</DialogTitle>
-              <DialogDescription>
-                Pilih percakapan yang ingin dilanjutkan
-              </DialogDescription>
+          <h3 className="text-2xl font-bold mb-6">Powered by Advanced AI</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="text-3xl font-bold mb-2">24/7</div>
+              <div className="text-white/90 font-medium">Siap Membantu</div>
+              <div className="text-sm text-white/70 mt-1">
+                Kapan saja dibutuhkan
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold mb-2">∞</div>
+              <div className="text-white/90 font-medium">
+                Topik Pembelajaran
+              </div>
+              <div className="text-sm text-white/70 mt-1">
+                Tanpa batas materi
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold mb-2">🚀</div>
+              <div className="text-white/90 font-medium">Respons Cepat</div>
+              <div className="text-sm text-white/70 mt-1">Jawaban instan</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Chat History Dialog */}
+        <Dialog
+          open={isHistoryOpen}
+          onOpenChange={setIsHistoryOpen}
+        >
+          <DialogContent className="max-w-2xl max-h-[80vh] p-0 overflow-hidden mx-4">
+            <DialogHeader className="p-6 pb-4 border-b">
+              <DialogTitle className="text-xl">Riwayat Percakapan</DialogTitle>
+              <div className="relative mt-4">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Cari percakapan..."
+                  value={searchHistory}
+                  onChange={(e) => setSearchHistory(e.target.value)}
+                  className="pl-10 h-10 rounded-xl"
+                />
+              </div>
             </DialogHeader>
-            <ScrollArea className="h-[60vh] pr-4">
-              <div className="space-y-4">
-                {isLoadingHistory
-                  ? Array.from({ length: 5 }).map((_, index) => (
-                      <Skeleton
-                        key={index}
-                        className="h-[72px] w-full"
-                      />
-                    ))
-                  : chatHistory?.map((chat) => (
-                      <div
-                        key={chat.id}
-                        className="flex items-center justify-between p-4 rounded-xl border hover:bg-gray-50 transition-colors"
-                      >
-                        <button
-                          onClick={() => {
-                            router.push(
-                              `/${website_sub_category_id}/user/chat/${chat.id}`,
-                            );
-                            setIsDialogOpen(false);
-                          }}
-                          className="flex items-start flex-1 text-left"
+
+            <ScrollArea className="flex-1 p-6">
+              <div className="space-y-3">
+                {isLoadingHistory ? (
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <Skeleton
+                      key={index}
+                      className="h-16 w-full rounded-xl"
+                    />
+                  ))
+                ) : filteredHistory.length > 0 ? (
+                  filteredHistory.map((chat) => (
+                    <div
+                      key={chat.id}
+                      className="flex items-center justify-between p-4 rounded-xl border-2 hover:shadow-md transition-all cursor-pointer bg-white"
+                      style={{ borderColor: `${mainColor}15` }}
+                      onClick={() => {
+                        router.push(
+                          `/${website_sub_category_id}/user/chat/${chat.id}`,
+                        );
+                        setIsHistoryOpen(false);
+                      }}
+                    >
+                      <div className="flex items-start gap-4 flex-1">
+                        <div
+                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                          style={{ backgroundColor: `${mainColor}15` }}
                         >
-                          <div className="flex-shrink-0 mr-4">
-                            <Avatar className="h-10 w-10">
-                              <AvatarFallback className="bg-blue-50 border">
-                                <MessageSquareIcon className="h-5 w-5 text-[#2563EB]" />
-                              </AvatarFallback>
-                            </Avatar>
-                          </div>
-                          <div>
-                            <h4 className="font-medium text-gray-900">
-                              {chat.title}
-                            </h4>
-                            <p className="text-sm text-gray-500">
-                              {getDateString(chat.updatedAt)}
-                            </p>
-                          </div>
-                        </button>
-                        <ModalDelete
-                          onDelete={async () => {
-                            deleteChat({ id: chat.id });
-                          }}
-                          isDeleting={isLoadingDeleteChat}
-                        >
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="flex-shrink-0 text-gray-400 hover:text-red-600"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </ModalDelete>
+                          <MessageSquare
+                            className="w-5 h-5"
+                            style={{ color: mainColor }}
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-sm line-clamp-2 mb-1 text-gray-800">
+                            {chat.title}
+                          </h4>
+                          <p className="text-xs text-gray-500">
+                            {getDateString(chat.updatedAt)}
+                          </p>
+                        </div>
                       </div>
-                    ))}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="shrink-0 text-gray-500 hover:text-red-600"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteChat({ id: chat.id });
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>Belum ada riwayat percakapan</p>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </DialogContent>
         </Dialog>
-      </main>
+      </div>
     </div>
   );
 }
-
-const ModalDelete = ({
-  children,
-  onDelete,
-  isDeleting,
-}: {
-  children: React.ReactNode;
-  onDelete: () => Promise<void>;
-  isDeleting: boolean;
-}) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={setIsOpen}
-    >
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Hapus Chat</DialogTitle>
-          <DialogDescription>
-            Apakah kamu yakin ingin menghapus chat ini?
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setIsOpen(false)}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={async () => {
-              await onDelete();
-            }}
-            disabled={isDeleting}
-          >
-            {isDeleting ? 'Deleting...' : 'Delete'}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};

@@ -130,9 +130,9 @@ const SessionOption = ({
   }
 
   return (
-    <div className="absolute left-0 top-0 flex h-full w-full flex-col gap-[1rem] overflow-y-auto border-l p-[1rem] pb-[100px] text-[.9rem]">
+    <div className="absolute left-0 top-0 flex h-full w-full flex-col gap-4 overflow-y-auto border-l p-4 pb-[100px] text-[.9rem]">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-[1rem]">
+        <div className="flex items-center gap-4">
           <h1 className="text-[1.2rem] font-medium">
             Sesi {currentIndexEdit + 1}
           </h1>
@@ -196,7 +196,7 @@ const SessionOption = ({
         currentIndexEdit={currentIndexEdit}
         setCurrentIndexEdit={setCurrentIndexEdit}
       />
-      <div className="my-[.5rem] h-[1px] w-full shrink-0 bg-main-gray-disabled/60" />
+      <div className="my-[.5rem] h-px w-full shrink-0 bg-main-gray-disabled/60" />
       <div className="mb-[.5rem] flex w-full items-center justify-between">
         <h1 className="text-[1.1rem] font-medium">Daftar soal</h1>
 
@@ -226,7 +226,7 @@ const SessionOption = ({
       </div>
       <div
         id="numberList"
-        className="mt-[-1rem] flex shrink-0 flex-wrap items-center justify-start gap-[.5rem]"
+        className="-mt-4 flex shrink-0 flex-wrap items-center justify-start gap-[.5rem]"
       >
         {EditSession.Questions &&
           EditSession.Questions?.length > 0 &&

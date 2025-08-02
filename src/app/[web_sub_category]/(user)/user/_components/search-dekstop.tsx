@@ -1,5 +1,6 @@
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -10,16 +11,26 @@ import {
 } from '@/components/ui/select';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { cn } from '@/lib/utils';
 import { Category } from '@/types/database';
-import { Search } from 'lucide-react';
+import { Filter, Search, Sparkles } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import useMedia from 'use-media';
 
 const SearchDeskstop = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const isMobile = useMedia({ maxWidth: '768px' });
+
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [categoryId, setCategoryId] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const [category, setCategory] = useState<
     Omit<Category, 'to' | 'website_sub_category_id'>[]
@@ -36,9 +47,12 @@ const SearchDeskstop = () => {
   }, []);
 
   const handleSearch = async () => {
-    const input = document.getElementById('searchValue2') as HTMLInputElement;
+    if (!searchValue.trim()) return;
+
     router.push(
-      `/${website_sub_category_id}/user/document/search?search=${input.value}${categoryId && `&categoryId=${categoryId}`}`,
+      `/${website_sub_category_id}/user/document/search?search=${searchValue}${
+        categoryId && `&categoryId=${categoryId}`
+      }`,
     );
   };
 
@@ -48,90 +62,173 @@ const SearchDeskstop = () => {
   }, [categoryId]);
 
   return (
-    <form
-      className="flex w-[80%] gap-[.5rem] xxl:w-full xxl:max-w-[800px]"
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSearch();
-      }}
-    >
-      <div className="flex w-full justify-between rounded-xl bg-white overflow-hidden">
-        {/* Input Search */}
-        <input
-          id="searchValue2"
-          type="text"
-          placeholder="Cari material..."
-          className="w-full text-sm px-[1rem] py-[.8rem] outline-none md:py-[.5rem]"
-        />
+    <div className="w-full max-w-2xl mx-auto">
+      {/* Main Search Form */}
+      <form
+        className="relative"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearch();
+        }}
+      >
+        <div
+          className={cn(
+            'relative flex items-center overflow-hidden bg-white shadow-lg border-2 transition-all duration-300',
+            isMobile ? 'rounded-xl' : 'rounded-full',
+            isFocused ? 'shadow-xl scale-[1.02]' : 'shadow-lg',
+          )}
+          style={{
+            borderColor: isFocused ? `${mainColor}60` : 'transparent',
+          }}
+        >
+          {/* Search Icon */}
+          <div className="absolute left-3 z-10">
+            <Search
+              className={cn('text-gray-400', isMobile ? 'w-4 h-4' : 'w-5 h-5')}
+              style={{ color: isFocused ? mainColor : undefined }}
+            />
+          </div>
 
-        {/* Select Dropdown (Kategori) */}
-        <div className="hidden items-center justify-center gap-[.7rem] pr-[1rem] md:flex">
-          <p className="text-main-gray-text2 text-sm">di</p>
-          <div className="font-regular">
-            <Select
-              value={categoryId === '' ? 'placeholder' : categoryId}
-              onValueChange={(value) => {
-                if (value === 'placeholder') setCategoryId('');
-                else if (value) setCategoryId(value);
-              }}
+          {/* Search Input */}
+          <input
+            id="searchValue2"
+            type="text"
+            placeholder={
+              isMobile ? 'Cari materi...' : 'Cari materi pembelajaran...'
+            }
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            className={cn(
+              'flex-1 bg-transparent border-none outline-none placeholder:text-gray-400 dark:text-white',
+              isMobile
+                ? 'pl-10 pr-3 py-3 text-sm'
+                : 'pl-12 pr-4 py-4 text-base',
+            )}
+          />
+
+          {/* Category Filter - Desktop */}
+          {!isMobile && (
+            <div className="hidden md:flex items-center gap-3 px-4 border-l border-gray-200 dark:border-gray-700">
+              <Filter className="w-4 h-4 text-gray-400" />
+              <div className="min-w-[150px]">
+                <Select
+                  value={categoryId === '' ? 'all' : categoryId}
+                  onValueChange={(value) => {
+                    setCategoryId(value === 'all' ? '' : value);
+                  }}
+                >
+                  <SelectTrigger className="border-none shadow-none bg-transparent text-gray-600 focus:ring-0 h-auto p-0">
+                    <SelectValue placeholder="Semua Kategori" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl border shadow-xl">
+                    <SelectItem
+                      value="all"
+                      className="rounded-lg"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: mainColor }}
+                        />
+                        Semua Kategori
+                      </div>
+                    </SelectItem>
+                    {category?.map((item) => (
+                      <SelectItem
+                        key={item.id}
+                        value={item.id}
+                        className="rounded-lg"
+                      >
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-2 h-2 rounded-full"
+                            style={{ backgroundColor: mainColor }}
+                          />
+                          {item.name}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
+
+          {/* Search Button */}
+          <div className={cn('p-2', isMobile && 'p-1')}>
+            <Button
+              type="submit"
+              disabled={!searchValue.trim()}
+              className={cn(
+                'shadow-lg transition-all duration-300 p-0',
+                isMobile ? 'w-8 h-8 rounded-lg' : 'w-12 h-12 rounded-full',
+                searchValue.trim()
+                  ? 'hover:shadow-xl hover:scale-105'
+                  : 'opacity-50 cursor-not-allowed',
+              )}
+              style={{ backgroundColor: mainColor }}
             >
-              <SelectTrigger className="min-w-[150px] border-none shadow-none text-main-gray-text2 text-sm">
-                <SelectValue placeholder="Seluruh Kategori" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="placeholder">Seluruh Kategori</SelectItem>
-                {category?.map((item) => (
-                  <SelectItem
-                    key={item.id}
-                    value={item.id}
-                  >
-                    {item.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <Search
+                className={cn('text-white', isMobile ? 'w-4 h-4' : 'w-5 h-5')}
+              />
+            </Button>
           </div>
         </div>
+      </form>
 
-        {/* Tombol Submit */}
-        <Button
-          type="submit"
-          className="flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-main p-3 text-sm font-semibold text-white hover:bg-main-hover md:px-6"
-        >
-          <Search className="h-6 w-6" />
-        </Button>
-      </div>
-
-      {/* Kategori Mobile */}
-      <div className="absolute left-0 top-[100%] w-full px-[1rem]">
-        {pathname?.includes('search') && (
-          <div
-            id="searchCategoryMobile"
-            className="flex items-center justify-start gap-[.7rem] overflow-x-auto bg-bg-workspace pb-[.5rem] md:hidden"
+      {/* Mobile Category Filter */}
+      <div className="mt-4 overflow-x-auto">
+        <div className="flex items-center gap-2 pb-2">
+          <button
+            className={cn(
+              'px-3 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200',
+              categoryId === ''
+                ? 'text-white shadow-md'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700',
+            )}
+            style={{
+              backgroundColor: categoryId === '' ? mainColor : undefined,
+            }}
+            onClick={() => setCategoryId('')}
           >
-            <div
-              className={`px-[1.5rem] py-[.7rem] ${
-                categoryId === '' && 'bg-main text-white'
-              } shrink-0 rounded-xl text-main-gray-text`}
-              onClick={() => setCategoryId('')}
+            Semua
+          </button>
+          {category?.map((item) => (
+            <button
+              key={item.id}
+              className={cn(
+                'px-3 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200',
+                categoryId === item.id
+                  ? 'text-white shadow-md'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700',
+              )}
+              style={{
+                backgroundColor: categoryId === item.id ? mainColor : undefined,
+              }}
+              onClick={() => setCategoryId(item.id)}
             >
-              Semua
-            </div>
-            {category?.map((item) => (
-              <div
-                key={item.id}
-                className={`px-[1.5rem] py-[.7rem] ${
-                  categoryId === item.id && 'bg-main text-white'
-                } shrink-0 rounded-xl text-main-gray-text`}
-                onClick={() => setCategoryId(item.id)}
-              >
-                {item.name}
-              </div>
-            ))}
-          </div>
-        )}
+              {item.name}
+            </button>
+          ))}
+        </div>
       </div>
-    </form>
+
+      {/* Search Tips - Only show on desktop */}
+      {!isMobile && (
+        <div className="mt-4 flex items-center justify-center gap-4 text-xs text-gray-500">
+          <div className="flex items-center gap-1">
+            <Sparkles className="w-3 h-3" />
+            <span>AI-powered search</span>
+          </div>
+          <span>•</span>
+          <span>Lebih dari 1000+ materi</span>
+          <span>•</span>
+          <span>Updated daily</span>
+        </div>
+      )}
+    </div>
   );
 };
 

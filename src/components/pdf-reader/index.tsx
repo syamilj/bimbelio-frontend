@@ -323,7 +323,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
   return (
     <div
       id="DocViewer"
-      className="flex h-full flex-1 flex-col"
+      className="flex h-full flex-1 flex-col bg-linear-to-br from-slate-50 via-white to-blue-50"
     >
       <HeaderPdf
         doc={doc}
@@ -333,40 +333,44 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
         {doc?.video && (
           <div
             className={
-              'relative h-fit w-full shrink-0 overflow-hidden bg-bg-workspace duration-300'
+              'relative h-fit w-full shrink-0 overflow-hidden bg-linear-to-r from-slate-100 to-slate-50 duration-300'
             }
           >
             <div
-              className={`flex h-full w-full flex-col p-[1rem] pb-0 ${hideVideo && 'mt-[-100%]'} duration-300 ease-in-out`}
+              className={`flex h-full w-full flex-col p-4 pb-0 ${hideVideo && 'mt-[-100%]'} duration-300 ease-in-out`}
             >
               {doc.video && videoUrl !== '' && (
-                <video
-                  controls
-                  controlsList="nodownload"
-                  className="h-fit w-full rounded-[.8rem] bg-black"
-                >
-                  <source
-                    src={videoUrl}
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
+                <div className="relative rounded-2xl overflow-hidden shadow-xl bg-black">
+                  <video
+                    controls
+                    controlsList="nodownload"
+                    className="h-fit w-full rounded-2xl bg-black"
+                  >
+                    <source
+                      src={videoUrl}
+                      type="video/mp4"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                  {/* Video overlay for modern look */}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/10 to-transparent pointer-events-none" />
+                </div>
               )}
-              <div className="z-[49] flex w-full shrink-0 justify-between px-[1rem] py-[.5rem] text-black">
-                <div className="flex items-center overflow-hidden rounded-[1rem] bg-[rgba(0,0,0,0.05)]">
+              <div className="z-49 flex w-full shrink-0 justify-between px-4 py-4 text-slate-700">
+                <div className="flex items-center overflow-hidden rounded-xl bg-white/70 backdrop-blur-sm shadow-sm border border-white/20">
                   <ToolTip value="Like video">
-                    <div className="border-r border-main-gray-input px-[1rem] py-[.3rem] duration-200 hover:bg-[rgba(0,0,0,0.15)]">
-                      <IconLike className="text-main-gray-text2" />
+                    <div className="border-r border-slate-200/50 px-4 py-[.5rem] duration-200 hover:bg-white/80 transition-all">
+                      <IconLike className="text-slate-600 w-5 h-5" />
                     </div>
                   </ToolTip>
                   <ToolTip value="Dislike video">
-                    <div className="p-[.5rem] px-[1rem] py-[.3rem] duration-200 hover:bg-[rgba(0,0,0,0.15)]">
-                      <IconDislike className="text-main-gray-text2" />
+                    <div className="px-4 py-[.5rem] duration-200 hover:bg-white/80 transition-all">
+                      <IconDislike className="text-slate-600 w-5 h-5" />
                     </div>
                   </ToolTip>
                 </div>
                 <button
-                  className="rounded-[1rem] border border-main-gray-input px-[1rem] text-[.8rem] text-main-gray-text duration-200 hover:border-main hover:bg-main hover:text-white"
+                  className="rounded-xl bg-white/70 backdrop-blur-sm border border-white/20 px-6 py-[.5rem] text-[.85rem] text-slate-700 font-medium duration-200 hover:bg-white hover:shadow-md transition-all"
                   onClick={() => setHideVideo(true)}
                 >
                   Hide Video
@@ -377,10 +381,13 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
         )}
         <div
           id="DocumentViewPdf"
-          className={`relative h-full w-full border-[2px] bg-bg-workspace ${vision ? 'border-main' : 'border-transparent'} `}
+          className={`relative flex-1 w-full bg-white shadow-inner ${vision ? 'ring-2 ring-blue-500 ring-opacity-50' : ''} transition-all duration-300`}
+          style={{
+            height: 'calc(100vh - 120px)', // Ensure minimum height for mobile
+            minHeight: '500px',
+          }}
         >
-          {}
-          <div className="relative h-full w-full bg-bg-workspace">
+          <div className="relative h-full w-full bg-linear-to-br from-slate-50/30 to-white">
             <PdfReader
               docId={id as string}
               userId={userId as string}
@@ -391,12 +398,12 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
             />
             {hideVideo && doc?.video && (
               <button
-                className="absolute right-[1rem] top-0 z-[49] rounded-[1rem] border border-main-gray-input px-[1rem] py-[.3rem] text-[.8rem] text-main-gray-text duration-200 hover:border-main hover:bg-main hover:text-white"
+                className="absolute right-4 top-4 z-49 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-[.5rem] text-[.85rem] font-medium duration-200 shadow-lg hover:shadow-xl transition-all"
                 onClick={() => {
                   setHideVideo(false);
                 }}
               >
-                Show video
+                Show Video
               </button>
             )}
           </div>

@@ -86,9 +86,9 @@ export const PaymentTryout = ({
   if (!show) return null;
 
   return (
-    <div className="fixed left-0 top-0 z-[1000] flex h-full w-full items-center justify-center bg-[#0000007a]">
-      <div className="mx-[1rem] w-[400px] overflow-hidden rounded-[1.5rem] bg-white md:mx-[1rem]">
-        <div className="flex items-center justify-between bg-main p-[1.5rem]">
+    <div className="fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-[#0000007a]">
+      <div className="mx-4 w-[400px] overflow-hidden rounded-3xl bg-white md:mx-4">
+        <div className="flex items-center justify-between bg-main p-6">
           <div className="flex items-center gap-[.5rem] text-white">
             <p>Tryout Premium</p>
             <IconCrown className="text-main-yellow" />
@@ -102,15 +102,15 @@ export const PaymentTryout = ({
           </div>
         </div>
         {!tryoutData ? (
-          <div className="w-full h-full flex justify-center items-center py-[2rem]">
+          <div className="w-full h-full flex justify-center items-center py-8">
             <Loader2 className="w-4 h-4 animate-spin" />
           </div>
         ) : (
-          <div className="flex flex-col gap-[2rem] p-[1.5rem]">
+          <div className="flex flex-col gap-8 p-6">
             <p className="">
               Akses lengkap seluruh fitur premium pada tryout ini :
             </p>
-            <div className="mt-[-1rem] grid grid-cols-5 gap-y-2 text-[.9rem]">
+            <div className="-mt-4 grid grid-cols-5 gap-y-2 text-[.9rem]">
               <p className="col-span-2 text-main-gray-text">Try out</p>
               <p className="col-span-3">: {tryoutData?.title} </p>
               <p className="col-span-2 text-main-gray-text">Pelaksanaan</p>
@@ -136,7 +136,7 @@ export const PaymentTryout = ({
             ) : (
               <button
                 className={cn(
-                  'flex items-center justify-center rounded-[1rem] bg-main py-[1rem] text-white duration-300 hover:bg-main/85 active:bg-main',
+                  'flex items-center justify-center rounded-2xl bg-main py-4 text-white duration-300 hover:bg-main/85 active:bg-main',
                   loading && 'cursor-pointer hover:bg-main/85 active:bg-main',
                 )}
                 onClick={() => {

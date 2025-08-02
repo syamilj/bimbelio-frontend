@@ -1,7 +1,16 @@
 'use client';
 
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
+import { AlertTriangle, Trash2, X } from 'lucide-react';
 import React, { SetStateAction } from 'react';
 
 interface Props {
@@ -17,37 +26,40 @@ const ModalDeleteChapter = ({ onClick, open, setOpen, isLoading }: Props) => {
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogContent className="w-[360px]">
-        <div className="flex flex-col items-center justify-center text-center">
-          <p>
-            Apakah Kamu yakin akan <br />{' '}
-            <span className="text-red-700">menghapus chapter</span> ini?
-          </p>
-          <div className="h-[80px] w-full">
-            {!isLoading ? (
-              <div className="grid w-full grid-cols-2 gap-[.5rem] pt-[2rem] text-[.9rem]">
-                <div
-                  className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
-                  onClick={() => {
-                    onClick();
-                  }}
-                >
-                  Hapus Chapter
-                </div>
-                <div
-                  className="w-full shrink-0 cursor-pointer rounded-[.8rem] py-[.8rem] font-medium text-main-gray-text duration-300 md:hover:text-black"
-                  onClick={() => setOpen(false)}
-                >
-                  Batalkan
-                </div>
-              </div>
-            ) : (
-              <div className="flex h-full w-full items-center justify-center pt-[2rem]">
-                <Spinner />
-              </div>
-            )}
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader className="text-center space-y-4">
+          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+            <AlertTriangle className="w-8 h-8 text-red-600" />
           </div>
-        </div>
+          <DialogTitle>Hapus Chapter?</DialogTitle>
+          <DialogDescription>
+            Tindakan ini tidak dapat dibatalkan. Chapter dan semua sub chapter
+            yang terkait akan dihapus permanen.
+          </DialogDescription>
+        </DialogHeader>
+
+        {!isLoading ? (
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setOpen(false)}
+            >
+              <X className="w-4 h-4 mr-2" />
+              Batal
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={onClick}
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Ya, Hapus Chapter
+            </Button>
+          </DialogFooter>
+        ) : (
+          <div className="flex justify-center py-4">
+            <Spinner />
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
@@ -69,6 +81,14 @@ export default ModalDeleteChapter;
 
 //     return (
 //         <Dialog open={open} onOpenChange={setOpen}>
+//             <DialogContent className="w-[360px]">
+//                 {children}
+//             </DialogContent>
+//         </Dialog>
+//     )
+// }
+
+// export default ModalDeleteTryout;
 //             <DialogContent className="w-[360px]">
 //                 {children}
 //             </DialogContent>

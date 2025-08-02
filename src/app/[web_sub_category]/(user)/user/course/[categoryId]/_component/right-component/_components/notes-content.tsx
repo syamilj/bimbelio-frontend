@@ -74,7 +74,9 @@ export default function NotesContent({ docId }: Props) {
       setEditor={setEditor}
       value={value}
       onChange={(editor) => {
-        saveNoteMutation(editor);
+        if (value.length > 0) {
+          saveNoteMutation(editor);
+        }
       }}
     />
   );

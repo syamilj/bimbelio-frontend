@@ -34,36 +34,36 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
   return (
     <Suspense>
       <CheckSubscription>
-        <div className="h-full">
+        <div className="h-full min-h-screen bg-gray-50">
+          {/* Enhanced Navbar */}
           <div
-            id="border"
             className={cn(
-              'fixed inset-y-0 z-50 h-[80px] w-full duration-300 md:pl-[calc(254px+1rem)]',
-              minimizeSidebar && 'md:pl-[calc(73px+1rem)]',
+              'fixed inset-x-0 top-0 z-40 h-16 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm transition-all duration-300',
+              !minimizeSidebar ? 'md:pl-72' : 'md:pl-20',
             )}
           >
             <Navbar />
           </div>
+
+          {/* Enhanced Sidebar */}
           <div
-            id="border"
-            className={`md-flex h-full max-sm:hidden ${
-              !minimizeSidebar ? 'w-[16rem]' : 'w-[75px]'
-            } fixed inset-y-0 z-50 flex-col duration-300`}
-            onMouseOver={() => {
-              setMinimizeSidebar(false);
-            }}
-            onMouseOut={() => {
-              setMinimizeSidebar(true);
-            }}
+            className={cn(
+              'fixed inset-y-0 left-0 z-50 transition-all duration-300',
+              !minimizeSidebar ? 'w-72' : 'w-20',
+            )}
+            onMouseEnter={() => setMinimizeSidebar(false)}
+            onMouseLeave={() => setMinimizeSidebar(true)}
           >
             <Sidebar />
           </div>
+
+          {/* Main Content */}
           <main
-            className={`${
-              !minimizeSidebar
-                ? 'pl-[calc(16rem+3rem)]'
-                : 'pl-[calc(75px+3rem)]'
-            } ml-[16px] mt-[80px] h-full min-h-[100vh] bg-bg-workspace pr-10 pt-12 duration-300`}
+            className={cn(
+              'py-24 min-h-screen transition-all duration-300',
+              !minimizeSidebar ? 'md:pl-84' : 'md:pl-32',
+              'pr-12',
+            )}
           >
             {children}
           </main>

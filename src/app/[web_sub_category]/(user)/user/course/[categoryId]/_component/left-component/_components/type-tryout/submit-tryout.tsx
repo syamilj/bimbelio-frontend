@@ -96,7 +96,7 @@ const SubmitTryout = ({
         onOpenChange={setOpen}
       >
         <DialogTrigger asChild>
-          <button className="rounded-[.8rem] bg-main px-[1rem] py-[.8rem] text-white duration-300 active:bg-main md:hover:bg-main-hover z-[101]">
+          <button className="rounded-[.8rem] bg-main px-4 py-[.8rem] text-white duration-300 active:bg-main md:hover:bg-main-hover z-101">
             Submit Jawaban
           </button>
         </DialogTrigger>
@@ -108,7 +108,7 @@ const SubmitTryout = ({
                   Selesaikan Tryout ini?
                 </DialogTitle>
               </DialogHeader>
-              <div className="flex flex-col gap-[1rem] text-[1rem] text-main-gray-text">
+              <div className="flex flex-col gap-4 text-[1rem] text-main-gray-text">
                 {unAnswered?.length > 0 && (
                   <div className="flex flex-col gap-[.5rem]">
                     <p>Soal yang kamu kosongkan :</p>
@@ -137,7 +137,7 @@ const SubmitTryout = ({
                     <Spinner />
                   </div>
                 ) : (
-                  <div className="flex h-[48px] items-center gap-[1rem] text-[.9rem]">
+                  <div className="flex h-[48px] items-center gap-4 text-[.9rem]">
                     <button
                       className="h-full w-full rounded-[.8rem] bg-transparent text-main-gray-disabled duration-300 md:hover:text-main-gray-text"
                       onClick={() => setOpen(false)}
@@ -173,14 +173,14 @@ const SubmitTryout = ({
                   Submit jawaban?
                 </DialogTitle>
               </DialogHeader>
-              <div className="flex flex-col gap-[1rem] text-[1rem] text-main-gray-text">
+              <div className="flex flex-col gap-4 text-[1rem] text-main-gray-text">
                 {notSure?.length > 0 && (
                   <div className="flex flex-col gap-[.5rem] text-center">
                     <p>
                       Kamu belum yakin dengan jawaban berikut. Apakah tetap
                       ingin melanjutkan?
                     </p>
-                    <div className="my-[1rem] flex items-center justify-center gap-[.2rem] text-yellow-500">
+                    <div className="my-4 flex items-center justify-center gap-[.2rem] text-yellow-500">
                       {notSure?.map((item: any, i: number) => (
                         <p key={i}>
                           {item?.number}
@@ -190,7 +190,7 @@ const SubmitTryout = ({
                     </div>
                   </div>
                 )}
-                <div className="flex items-center gap-[1rem] text-[.9rem]">
+                <div className="flex items-center gap-4 text-[.9rem]">
                   <button
                     className="w-full rounded-[.8rem] bg-transparent py-[.8rem] text-main-gray-disabled duration-300 md:hover:text-main-gray-text"
                     onClick={() => setOpen(false)}

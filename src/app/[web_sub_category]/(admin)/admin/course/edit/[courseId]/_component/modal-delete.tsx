@@ -1,6 +1,16 @@
 'use client';
 
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { AlertTriangle, Trash2, X } from 'lucide-react';
 import { useState } from 'react';
 
 const ModalDeleteSubChapter = ({
@@ -9,44 +19,66 @@ const ModalDeleteSubChapter = ({
   deleteSubChapter: () => void;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteSubChapter();
+      setOpen(false);
+    } catch (error) {
+      console.error('Error deleting sub chapter:', error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <Dialog
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger>
-        <div
-          className="shrink-0 cursor-pointer rounded-[.8rem] bg-red-100 px-[1rem] py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
-          onClick={() => setOpen(true)}
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className="text-red-600 hover:text-red-700 hover:bg-red-50"
         >
-          Hapus sub chapter
-        </div>
+          <Trash2 className="h-4 w-4 mr-2" />
+          Hapus Sub Chapter
+        </Button>
       </DialogTrigger>
-      <DialogContent className="w-[360px]">
-        <div className="flex flex-col items-center justify-center text-center">
-          <p>
-            Apakah Kamu yakin akan <br />{' '}
-            <span className="text-red-700">menghapus sub chapter</span> ini?
-          </p>
-          <div className="grid w-full grid-cols-2 gap-[.5rem] pt-[2rem] text-[.9rem]">
-            <div
-              className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
-              onClick={() => {
-                deleteSubChapter();
-                setOpen(false);
-              }}
-            >
-              Hapus sub chapter
-            </div>
-            <div
-              className="w-full shrink-0 cursor-pointer rounded-[.8rem] py-[.8rem] font-medium text-main-gray-text duration-300 md:hover:text-black"
-              onClick={() => setOpen(false)}
-            >
-              Batalkan
-            </div>
+
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader className="text-center space-y-4">
+          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+            <AlertTriangle className="w-8 h-8 text-red-600" />
           </div>
-        </div>
+          <DialogTitle>Hapus Sub Chapter?</DialogTitle>
+          <DialogDescription>
+            Tindakan ini tidak dapat dibatalkan. Sub chapter dan semua konten
+            yang terkait akan dihapus permanen.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter className="gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={isDeleting}
+          >
+            <X className="w-4 h-4 mr-2" />
+            Batal
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            <Trash2 className="w-4 h-4 mr-2" />
+            {isDeleting ? 'Menghapus...' : 'Ya, Hapus'}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

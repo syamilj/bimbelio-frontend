@@ -72,7 +72,7 @@ export default function UrutkanDocs({
   };
 
   return (
-    <div className="relative z-[40]">
+    <div className="relative z-40">
       <Select
         value={option}
         onValueChange={handleValueChange}
@@ -82,7 +82,7 @@ export default function UrutkanDocs({
             option !== ''
               ? 'bg-main text-white'
               : 'bg-white text-main-gray-text'
-          } flex items-center justify-between rounded-[.8rem] gap-2 px-[1.5rem] py-[.7rem] border-none focus:ring-0 focus:ring-offset-0`}
+          } flex items-center justify-between rounded-[.8rem] gap-2 px-6 py-[.7rem] border-none focus:ring-0 focus:ring-offset-0`}
         >
           <span className="text-sm font-medium">{getDisplayText()}</span>
           {sort ? (
@@ -99,7 +99,7 @@ export default function UrutkanDocs({
             <SelectItem
               key={value}
               value={value}
-              className={`cursor-pointer px-[1rem] py-[.5rem] text-start transition-colors hover:bg-main/85 hover:text-white focus:bg-main focus:text-white ${
+              className={`cursor-pointer px-4 py-[.5rem] text-start transition-colors hover:bg-main/85 hover:text-white focus:bg-main focus:text-white ${
                 option === value ? 'bg-main text-white' : 'text-main-gray-text'
               }`}
             >

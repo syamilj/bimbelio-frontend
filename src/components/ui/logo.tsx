@@ -1,16 +1,17 @@
-import Link from 'next/link';
-// import { useWebsiteSubCategory } from "../provider/provider-website-category";
 import { cn } from '@/lib/utils';
 import LogoSvg from '@/styles/logo-svg';
+import Link from 'next/link';
 
 export default function Logo({
   href,
   className,
   imageWidth,
+  style, // <-- Add this!
 }: {
   href?: string;
   className?: string;
   imageWidth?: number;
+  style?: React.CSSProperties; // <-- Add this!
 }) {
   if (!href) {
     return (
@@ -20,6 +21,7 @@ export default function Logo({
             'relative flex items-center gap-1 text-main',
             className,
           )}
+          style={style} // <-- Add this!
         >
           <LogoSvg w={imageWidth ? imageWidth : 30} />
           <span className="font-semibold text-xl sm:text-3xl">Bimbelio</span>
@@ -31,6 +33,7 @@ export default function Logo({
     <Link href={href}>
       <div
         className={cn('relative flex items-center gap-1 text-main', className)}
+        style={style} // <-- Add this!
       >
         <LogoSvg w={imageWidth ? imageWidth : 30} />
         <span className="font-semibold text-3xl md:text-2xl">Bimbelio</span>

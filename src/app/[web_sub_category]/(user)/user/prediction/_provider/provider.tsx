@@ -218,12 +218,10 @@ export default function Provider({ children }: Props) {
   }, [stepQuery]);
 
   useEffect(() => {
-    console.log({ tryoutIdQuery });
     if (tryoutIdQuery && SelectTryouts && SelectTryouts.length > 0) {
       const findData = SelectTryouts.find(
         (item) => item.Tryout.id === tryoutIdQuery,
       );
-      console.log({ findData, SelectTryouts });
       if (findData) setTryoutId(findData.Tryout.id);
     }
   }, [tryoutIdQuery, SelectTryouts]);
@@ -277,8 +275,6 @@ export default function Provider({ children }: Props) {
       </div>
     );
   }
-
-  console.log({ error });
 
   // if (predictionId && predictionId !== 'step' && !PredictionData && error) {
   //   return notFound();

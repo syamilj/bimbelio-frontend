@@ -93,25 +93,25 @@ const MainContent = () => {
     if (prevChatMessages && prevChatMessages?.length > 0 && !firstMessage) {
       setMessageData([GreetingMessage, ...prevChatMessages]);
     }
-  }, [prevChatMessages]);
+  }, [prevChatMessages, firstMessage, setMessageData]);
 
   useEffect(() => {
-    if (isLoadingMessages) {
+    if (isLoadingMessages && messages.length > 0) {
       if (prevChatMessages) {
         const data = [GreetingMessage, ...prevChatMessages, ...messages];
-        setMessageData(() => [...data]);
+        setMessageData(data);
       }
     }
-  }, [messages]);
+  }, [messages, isLoadingMessages, prevChatMessages, setMessageData]);
 
   useEffect(() => {
-    if (isLoadingMessagesEdit) {
+    if (isLoadingMessagesEdit && messageEdit.length > 0) {
       if (prevChatMessages) {
-        const data = [GreetingMessage, ...prevChatMessages, ...messages];
-        setMessageData(() => [...data]);
+        const data = [GreetingMessage, ...prevChatMessages, ...messageEdit];
+        setMessageData(data);
       }
     }
-  }, [messageEdit]);
+  }, [messageEdit, isLoadingMessagesEdit, prevChatMessages, setMessageData]);
 
   const isVectorised = userDocData?.isVectorised || false;
 
@@ -146,7 +146,7 @@ const MainContent = () => {
       <FormMessageEdit />
       <div
         id="chatAI"
-        className="mt-[calc(60px+5px)] flex flex-1 flex-col gap-[3rem] overflow-hidden px-[1rem] pb-[1rem] md:mt-[unset]"
+        className="mt-[calc(60px+5px)] flex flex-1 flex-col gap-12 overflow-hidden px-4 pb-4 md:mt-[unset]"
       >
         {isMessages ? (
           <MessageContainer />
@@ -185,7 +185,7 @@ const FormMessageEdit = () => {
 
   return (
     <form
-      className="absolute z-[100] w-0 overflow-hidden p-0 text-black"
+      className="absolute z-100 w-0 overflow-hidden p-0 text-black"
       onSubmit={(e) => {
         handleSubmitMessagesEdit(e);
       }}

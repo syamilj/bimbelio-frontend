@@ -3,6 +3,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { pixel } from '@/lib/pixel/_core';
 import { cn } from '@/lib/utils';
 import {
   Award,
@@ -12,6 +13,7 @@ import {
   School,
   Target,
 } from 'lucide-react';
+import { useEffect } from 'react';
 import { useProvider } from '../_provider/provider';
 import Navigation from './_components/navigation';
 import PredictionStep1 from './_main-components/prediction-step-1';
@@ -26,6 +28,15 @@ export default function UTBKSIMAKPredictor() {
     useParams: { predictionId },
     isFinish,
   } = useProvider();
+
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Prediction Detail',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Prediction Detail',
+    });
+  }, []);
 
   return (
     <TooltipProvider>

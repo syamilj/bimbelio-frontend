@@ -1,3 +1,4 @@
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -7,14 +8,20 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { motion } from 'framer-motion';
 import {
-  IconCheckList,
-  IconDocumentAdmin,
-  IconStar,
-  IconTryOut,
-  IconX,
-} from '@/styles/icon';
-import { Lock, Trophy } from 'lucide-react';
+  Award,
+  BarChart3,
+  BookOpen,
+  CheckCircle2,
+  Crown,
+  Star,
+  Target,
+  TrendingUp,
+  Trophy,
+  Users,
+  XCircle,
+} from 'lucide-react';
 import { ResultDataProps } from '..';
 import ButtonUpgradeTryout from '../../../../_components/ui/button-upgrade-tryout';
 
@@ -24,235 +31,311 @@ interface RingkasanTabProps {
 }
 
 export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
   const userScore = ResultData?.userScore || 0;
-  // const userScore = 750;
   const totalParticipants = ResultData?.totalParticipants || 0;
 
+  const summaryCards = [
+    {
+      title: 'Skor Total',
+      value: userScore.toFixed(1),
+      description: 'Rata rata skor keseluruhan',
+      icon: Star,
+      gradient: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+      bgColor: `${mainColor}10`,
+      borderColor: `${mainColor}20`,
+    },
+    {
+      title: 'Ranking Kamu',
+      value: unlockTryout ? ResultData?.choiceAnalisis.rankingTryout : '...',
+      description: `Dari ${unlockTryout ? totalParticipants : '...'} peserta`,
+      icon: Trophy,
+      gradient: 'linear-gradient(135deg, #10B981, #065F46)',
+      bgColor: '#10B98110',
+      borderColor: '#10B98120',
+      locked: !unlockTryout,
+      percentage: unlockTryout
+        ? ResultData?.choiceAnalisis.tryoutPersentage
+        : null,
+    },
+    {
+      title: 'Ranking Universitas',
+      value: unlockTryout ? ResultData?.choiceAnalisis.rankingUniv : '...',
+      description: 'Estimasi universitas target',
+      icon: Award,
+      gradient: 'linear-gradient(135deg, #F59E0B, #D97706)',
+      bgColor: '#F59E0B10',
+      borderColor: '#F59E0B20',
+      locked: !unlockTryout,
+    },
+    {
+      title: 'Ranking Jurusan',
+      value: unlockTryout ? ResultData?.choiceAnalisis.rankingMajor : '...',
+      description: 'Estimasi jurusan target',
+      icon: Target,
+      gradient: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+      bgColor: '#8B5CF610',
+      borderColor: '#8B5CF620',
+      locked: !unlockTryout,
+    },
+  ];
+
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-[3rem]">
-        {/* {userChoices.map(choice => renderAnalysis(choice))} */}
-
-        <div className="space-y-4">
-          <h1 className="text-2xl font-semibold">Analisis Pilihan</h1>
-          <div className="grid grid-cols-1 gap-4 pt-0 md:grid-cols-3">
-            <Card
-              id="skor_snbt"
-              className="flex flex-col justify-between rounded-[.8rem] border-none bg-blue-100 shadow-none"
-            >
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">Skor</CardTitle>
-                <IconStar
-                  active
-                  className="text-blue-600"
-                  w={20}
-                />
-              </CardHeader>
-              <CardContent className="flex flex-col gap-[.5rem] pb-0">
-                <div className="text-2xl font-bold">{userScore.toFixed(2)}</div>
-                {/* <Progress
-                  value={(userScore / 1000) * 100}
-                  className="mb-2 h-1"
-                  classNameThumb="bg-blue-400"
-                /> */}
-              </CardContent>
-              <CardFooter className="pt-2 text-xs font-medium text-main-gray-text">
-                Rata rata skor
-              </CardFooter>
-            </Card>
-            <Card
-              id="ranking"
-              className="flex flex-col rounded-[.8rem] border-none bg-green-100 shadow-none relative"
-            >
-              <UpgareLayer unlockTryout={unlockTryout} />
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">
-                  Ranking Kamu
-                </CardTitle>
-                <IconTryOut
-                  active
-                  className="text-green-600"
-                  w={20}
-                />
-              </CardHeader>
-              <CardContent className="mt-[.5rem] grid grid-cols-2">
-                <div className="flex flex-col">
-                  <div className="flex flex-col gap-[.5rem] pb-0">
-                    <div className="text-2xl font-bold">
-                      {unlockTryout
-                        ? ResultData?.choiceAnalisis.rankingTryout
-                        : '...'}
-                    </div>
-                  </div>
-                  <div className="pt-2 text-xs font-medium text-main-gray-text">
-                    Dari {unlockTryout ? totalParticipants : '...'} peserta
-                  </div>
-                </div>
-                <div className="ml-[-1rem] flex flex-col border-l-2 border-green-400 pl-[1rem]">
-                  <div className="flex flex-col gap-[.5rem] pb-0">
-                    <div className="text-2xl font-bold">
-                      Top{' '}
-                      {unlockTryout
-                        ? ResultData?.choiceAnalisis.tryoutPersentage
-                        : '...'}
-                      %
-                    </div>
-                  </div>
-                  <div className="pt-2 text-xs font-medium text-main-gray-text">
-                    Peserta
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card
-              id="ranking_univ"
-              className="flex flex-col rounded-[.8rem] border-none bg-yellow-50 shadow-none relative"
-            >
-              <UpgareLayer unlockTryout={unlockTryout} />
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">
-                  Ranking Universitas & Jurusan
-                </CardTitle>
-                <IconTryOut
-                  active
-                  className="text-yellow-500"
-                  w={20}
-                />
-              </CardHeader>
-              <CardContent className="mt-[.5rem] grid grid-cols-2">
-                <div className="flex flex-col">
-                  <div className="flex flex-col gap-[.5rem] pb-0">
-                    <div className="text-2xl font-bold">
-                      {unlockTryout
-                        ? ResultData?.choiceAnalisis.rankingUniv
-                        : '...'}
-                    </div>
-                  </div>
-                  <div className="pt-2 text-xs font-medium text-main-gray-text">
-                    Estimasi Universitas
-                  </div>
-                </div>
-                <div className="ml-[-1rem] flex flex-col border-l-2 border-yellow-400 pl-[1rem]">
-                  <div className="flex flex-col gap-[.5rem] pb-0">
-                    <div className="text-2xl font-bold">
-                      {unlockTryout
-                        ? ResultData?.choiceAnalisis.rankingMajor
-                        : '...'}
-                    </div>
-                  </div>
-                  <div className="pt-2 text-xs font-medium text-main-gray-text">
-                    Estimasi Jurusan
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-
-      {ResultData?.summaryTryout.Result?.map((category, index) => (
+    <div className="space-y-8">
+      {/* Header Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center"
+      >
         <div
-          key={index}
-          className="mb-[1rem] flex flex-col gap-2"
+          className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
         >
-          <h1 className="text-2xl font-semibold">{category.category}</h1>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {category.data.map((subject) => (
+          <BarChart3 className="w-8 h-8 text-white" />
+        </div>
+        <h1
+          className="text-3xl font-bold mb-2"
+          style={{ color: mainColor }}
+        >
+          Ringkasan Hasil
+        </h1>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Berikut adalah ringkasan lengkap dari performa Anda dalam try out ini
+        </p>
+      </motion.div>
+
+      {/* Summary Cards */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+      >
+        {summaryCards.map((card, index) => {
+          const IconComponent = card.icon;
+
+          return (
+            <Card
+              key={index}
+              className="relative border-2 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              style={{
+                backgroundColor: card.bgColor,
+                borderColor: card.borderColor,
+              }}
+            >
+              {card.locked && <UpgradeLayer />}
+
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-sm font-semibold text-gray-700">
+                    {card.title}
+                  </CardTitle>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm"
+                    style={{ background: card.gradient }}
+                  >
+                    <IconComponent className="w-5 h-5" />
+                  </div>
+                </div>
+              </CardHeader>
+
+              <CardContent className="pt-0">
+                <div className="text-3xl font-bold text-gray-900 mb-2">
+                  {card.value}
+                  {card.percentage && (
+                    <span className="text-lg text-green-600 ml-2">
+                      (Top {card.percentage}%)
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-600">{card.description}</p>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </motion.div>
+
+      {/* Detailed Results by Category */}
+      {ResultData?.summaryTryout.Result?.map((category, categoryIndex) => (
+        <motion.div
+          key={categoryIndex}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 + categoryIndex * 0.1 }}
+          className="space-y-6"
+        >
+          {/* Category Header */}
+          <div className="flex items-center gap-4">
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <BookOpen
+                className="w-6 h-6"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <div>
+              <h2
+                className="text-2xl font-bold"
+                style={{ color: mainColor }}
+              >
+                {category.category}
+              </h2>
+              <p className="text-gray-600">
+                Analisis detail per mata pelajaran
+              </p>
+            </div>
+          </div>
+
+          {/* Subject Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {category.data.map((subject, subjectIndex) => (
               <Card
                 key={subject.id}
-                className="flex flex-col gap-4 rounded-[.6rem] border-none p-4"
+                className="border-2 border-gray-100 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-lg font-semibold">
-                    <IconDocumentAdmin
-                      className="text-green-600"
-                      active
-                      w={20}
+                <CardHeader
+                  className="pb-4 relative"
+                  style={{ backgroundColor: `${mainColor}05` }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{ backgroundColor: `${mainColor}20` }}
+                      >
+                        <BookOpen
+                          className="w-5 h-5"
+                          style={{ color: mainColor }}
+                        />
+                      </div>
+                      <CardTitle className="text-lg font-bold text-gray-900">
+                        {subject.title}
+                      </CardTitle>
+                    </div>
+                    <div
+                      className="text-2xl font-bold px-3 py-1 rounded-xl"
+                      style={{
+                        color: mainColor,
+                        backgroundColor: `${mainColor}15`,
+                      }}
+                    >
+                      {subject.score.toFixed(1)}
+                    </div>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="p-6 space-y-4">
+                  {/* Progress Bar */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm text-gray-600">
+                      <span>Progress Jawaban</span>
+                      <span className="font-semibold">
+                        {Math.round(
+                          (subject.correctAnswers / subject.totalQuestions) *
+                            100,
+                        )}
+                        %
+                      </span>
+                    </div>
+                    <Progress
+                      value={
+                        (subject.correctAnswers / subject.totalQuestions) * 100
+                      }
+                      className="h-3 rounded-full"
+                      style={{
+                        backgroundColor: '#f3f4f6',
+                      }}
                     />
-                    <h1>{subject.title}</h1>
                   </div>
-                  <div className="text-lg font-bold">
-                    {subject.score.toFixed(2)}
-                  </div>
-                </div>
-                <Progress
-                  value={
-                    (subject.correctAnswers / subject.totalQuestions) * 100
-                  }
-                  className="h-1"
-                />
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1 text-xs font-medium text-main-gray-text md:text-sm">
-                      {/* <CheckCircle className="h-4 w-4 text-green-600" /> */}
-                      <IconCheckList
-                        w={16}
-                        className="text-green-600"
-                      />
-                      <span>
-                        {subject.correctAnswers}/{subject.totalQuestions} Benar
-                      </span>
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-center p-3 bg-green-50 rounded-xl">
+                      <CheckCircle2 className="w-6 h-6 mx-auto mb-1 text-green-600" />
+                      <div className="text-lg font-bold text-green-700">
+                        {subject.correctAnswers}
+                      </div>
+                      <div className="text-xs text-green-600">Benar</div>
                     </div>
-                    <div className="flex items-center gap-1 text-xs font-medium text-main-gray-text md:text-sm">
-                      {/* <XCircle className="h-4 w-4 text-red-500" /> */}
-                      <IconX
-                        w={16}
-                        className="text-red-500"
-                      />
-                      <span>
-                        {subject.wrongAnswers}/{subject.totalQuestions} Salah
-                      </span>
+                    <div className="text-center p-3 bg-red-50 rounded-xl">
+                      <XCircle className="w-6 h-6 mx-auto mb-1 text-red-600" />
+                      <div className="text-lg font-bold text-red-700">
+                        {subject.wrongAnswers}
+                      </div>
+                      <div className="text-xs text-red-600">Salah</div>
+                    </div>
+                    <div className="text-center p-3 bg-blue-50 rounded-xl">
+                      <Users className="w-6 h-6 mx-auto mb-1 text-blue-600" />
+                      <div className="text-lg font-bold text-blue-700">
+                        {subject.totalQuestions}
+                      </div>
+                      <div className="text-xs text-blue-600">Total</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-xs md:text-sm">
-                    <Trophy className="h-4 w-4 text-yellow-400" />
+                </CardContent>
+
+                <CardFooter className="flex items-center justify-between border-t border-gray-100 bg-gray-50/50 p-4">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="w-4 h-4 text-yellow-500" />
+                    <span className="text-sm font-medium text-gray-700">
+                      Peringkat:
+                    </span>
                     {unlockTryout ? (
-                      <span>
-                        Peringkat: {subject.ranking} dari{' '}
-                        {subject.totalParticipants}
+                      <span className="font-bold text-gray-900">
+                        {subject.ranking} dari {subject.totalParticipants}
                       </span>
                     ) : (
-                      <span>
-                        Peringkat:{' '}
-                        <ButtonUpgradeTryout>
-                          <span className="text-yellow-500 underline cursor-pointer">
-                            Unlock this
-                          </span>
-                        </ButtonUpgradeTryout>
-                      </span>
+                      <ButtonUpgradeTryout>
+                        <span className="text-yellow-600 underline cursor-pointer font-semibold">
+                          Unlock
+                        </span>
+                      </ButtonUpgradeTryout>
                     )}
-                    {/* <Button
-                      onClick={() =>
-                        alert(`Review soal untuk ${subject.title}`)
-                      }
-                      className="ml-2 h-8 px-2 py-0 text-xs"
-                      variant="outline"
-                    >
-                      Review Soal
-                    </Button> */}
                   </div>
-                </div>
+
+                  {unlockTryout && (
+                    <div className="flex items-center gap-1">
+                      <TrendingUp className="w-4 h-4 text-green-600" />
+                      <span className="text-sm font-semibold text-green-600">
+                        Top{' '}
+                        {Math.round(
+                          ((subject.totalParticipants - subject.ranking + 1) /
+                            subject.totalParticipants) *
+                            100,
+                        )}
+                        %
+                      </span>
+                    </div>
+                  )}
+                </CardFooter>
               </Card>
             ))}
           </div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );
 }
 
-export default RingkasanTab;
-
-const UpgareLayer = ({ unlockTryout }: { unlockTryout: boolean }) => {
-  if (unlockTryout) return null;
+const UpgradeLayer = () => {
   return (
-    <div className="absolute top-0 left-0 bottom-0 right-0 rounded-xl bg-white/40 flex justify-end items-end pt-4 pr-4">
+    <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-2xl z-10 flex items-end justify-end p-4">
       <ButtonUpgradeTryout>
-        <Button className="text-xs px-4 h-[unset] flex justify-center items-center gap-2 bg-yellow-400 hover:bg-yellow-300">
-          <p>Unlock</p>
-          <Lock className="w-3 h-3" />
+        <Button className="bg-yellow-500 hover:bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 text-sm">
+          <Crown className="w-4 h-4" />
+          Unlock
         </Button>
       </ButtonUpgradeTryout>
     </div>
   );
 };
+
+export default RingkasanTab;

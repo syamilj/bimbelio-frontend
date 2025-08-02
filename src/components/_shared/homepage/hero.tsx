@@ -1,23 +1,30 @@
 'use client';
 
-import ImageHero from '@/_assest/homepage/hero/bg-hero.webp';
-import LogoIPDN from '@/_assest/homepage/hero/LOGO_KEDINASAN_IPDN.webp';
-import LogoSTAN from '@/_assest/homepage/hero/LOGO_KEDINASAN_STAN.webp';
-import LogoSTIS from '@/_assest/homepage/hero/LOGO_KEDINASAN_STIS.webp';
-import LogoITB from '@/_assest/homepage/hero/LOGO_PTN_ITB.webp';
-import LogoITS from '@/_assest/homepage/hero/LOGO_PTN_ITS.webp';
-import LogoUGM from '@/_assest/homepage/hero/LOGO_PTN_UGM.webp';
-import LogoUI from '@/_assest/homepage/hero/LOGO_PTN_UI.webp';
-// Add these imports after the existing logo imports
-import MobilePoster from '@/_assest/homepage/hero/bimbelio-mobile.webp';
-import DesktopPoster from '@/_assest/homepage/hero/bimbelio.webp';
-import GridPattern from '@/components/magicui/animated-grid-pattern';
-import PulsatingButton from '@/components/magicui/pulsating-button';
+import ImageHero from '@/_assets/homepage/hero/bg-hero.webp';
+import MobilePoster from '@/_assets/homepage/hero/bimbelio-mobile.webp';
+import DesktopPoster from '@/_assets/homepage/hero/bimbelio.webp';
+import LogoIPDN from '@/_assets/homepage/hero/LOGO_KEDINASAN_IPDN.webp';
+import LogoSTAN from '@/_assets/homepage/hero/LOGO_KEDINASAN_STAN.webp';
+import LogoSTIS from '@/_assets/homepage/hero/LOGO_KEDINASAN_STIS.webp';
+import LogoITB from '@/_assets/homepage/hero/LOGO_PTN_ITB.webp';
+import LogoITS from '@/_assets/homepage/hero/LOGO_PTN_ITS.webp';
+import LogoUGM from '@/_assets/homepage/hero/LOGO_PTN_UGM.webp';
+import LogoUI from '@/_assets/homepage/hero/LOGO_PTN_UI.webp';
+import { SparklesText } from '@/components/magicui/sparkles-text';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { IPhoneFrame } from '@/components/ui/iphone-frame';
 import { cn } from '@/lib/utils';
 import { IconOpenAI } from '@/styles/icon';
-import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, RotateCw, Search } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  RotateCw,
+  Search,
+  Star,
+} from 'lucide-react';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import type React from 'react';
@@ -34,13 +41,7 @@ interface Stat {
   value: string;
 }
 
-interface HeadingItem {
-  text: string;
-  bg: string;
-  color: string;
-}
-
-// Constants
+// Simplified Constants
 const LOGOS: Logo[] = [
   { src: LogoITB, alt: 'Logo ITB', label: 'ITB' },
   { src: LogoSTIS, alt: 'Logo STIS', label: 'STIS' },
@@ -53,26 +54,20 @@ const LOGOS: Logo[] = [
 
 const STATS: Stat[] = [
   { label: 'Tingkat Kelulusan', value: '95%' },
-  { label: 'Siswa Diterima', value: '1500+' },
-  { label: 'Materi Belajar', value: '10.000+' },
-];
-
-const HEADINGS: HeadingItem[] = [
-  {
-    text: 'Paket Bundling Spesial',
-    bg: 'bg-blue-600',
-    color: 'text-white',
-  },
-  {
-    text: 'Pejuang PTN & STAN!',
-    bg: 'bg-yellow-400',
-    color: 'text-blue-800',
-  },
+  { label: 'Siswa Aktif', value: '15,000+' },
+  { label: 'Try Out Tersedia', value: '100+' },
 ];
 
 // Component
 const HeroSection: React.FC = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [isMobile, setIsMobile] = useState(false);
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 300], [0, -50]);
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768);
@@ -94,300 +89,373 @@ const HeroSection: React.FC = () => {
       className="relative min-h-screen w-full overflow-hidden pt-16 md:pt-20"
     >
       <GlobalStyles />
-      <BackgroundElements />
 
-      {/* Main Content */}
-      <div className="relative z-[30] mx-auto flex max-w-7xl flex-col items-center px-4 text-center md:pb-0 pb-12">
-        <BrandLogo />
-        <HeadingSection headings={HEADINGS} />
-        <Subtitle />
-        <StatsSection stats={STATS} />
-        <LogoSliders
-          logos={LOGOS}
-          isMobile={isMobile}
+      {/* Ultra  Background */}
+      <motion.div
+        style={{ y }}
+        className="absolute inset-0 z-1"
+      >
+        {/* Subtle gradient overlay */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            background: `radial-gradient(ellipse at center, ${mainColor}20 0%, transparent 70%)`,
+          }}
         />
-        <CTAButton onClick={() => scrollTo('tryout')} />
-        <VideoMockup isMobile={isMobile} />
+
+        {/* Hero image with better masking */}
+        <Image
+          src={ImageHero || '/placeholder.svg'}
+          alt="University Buildings Background"
+          fill
+          className="object-cover opacity-5"
+          priority
+          sizes="100vw"
+          loading="eager"
+          style={{
+            objectPosition: isMobile ? '75% top' : 'center top',
+            transform: isMobile ? 'translateY(-400px)' : 'translateY(-500px)',
+          }}
+        />
+      </motion.div>
+
+      {/* Main Content - Ultra  Layout */}
+      <div className="relative z-30 mx-auto flex max-w-6xl flex-col items-center px-4 text-center pb-16">
+        <BrandSection mainColor={mainColor} />
+        <HeadingSection
+          mainColor={mainColor}
+          secondaryColor={secondaryColor}
+        />
+        <StatsSection
+          stats={STATS}
+          mainColor={mainColor}
+        />
+
+        <CTASection
+          onClick={() => scrollTo('tryout')}
+          mainColor={mainColor}
+          secondaryColor={secondaryColor}
+        />
+        <LogoSection
+          logos={LOGOS}
+          mainColor={mainColor}
+        />
+        <VideoSection isMobile={isMobile} />
       </div>
     </div>
   );
 };
 
-// Sub-components
+//  Global Styles - Simplified
 const GlobalStyles: React.FC = () => (
   <style
     jsx
     global
   >{`
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
-    }
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+    @keyframes gentle-float {
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
     }
 
-    @keyframes marquee {
+    @keyframes smooth-marquee {
       0% {
         transform: translateX(0);
       }
       100% {
-        transform: translateX(-33.33%);
+        transform: translateX(-50%);
       }
     }
 
-    @keyframes marquee-reverse {
+    @keyframes fade-in-up {
       0% {
-        transform: translateX(-33.33%);
+        opacity: 0;
+        transform: translateY(30px);
       }
       100% {
-        transform: translateX(0);
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
-    .animate-marquee-slower {
-      animation: marquee 30s linear infinite;
+    .animate-gentle-float {
+      animation: gentle-float 6s ease-in-out infinite;
+    }
+    .animate-smooth-marquee {
+      animation: smooth-marquee 40s linear infinite;
+    }
+    .animate-fade-in-up {
+      animation: fade-in-up 0.8s ease-out;
     }
 
-    .animate-marquee-reverse {
-      animation: marquee-reverse 20s linear infinite;
-    }
-
-    .animate-marquee-slower:hover,
-    .animate-marquee-reverse:hover {
-      animation-play-state: paused;
+    .text-gradient {
+      background: linear-gradient(
+        135deg,
+        var(--main-color),
+        var(--secondary-color)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
   `}</style>
 );
 
-const BackgroundElements: React.FC = () => (
-  <>
-    {/* Background Grid Pattern */}
-    <div className="absolute inset-0 z-[1] h-full w-full overflow-hidden">
-      <GridPattern
-        numSquares={30}
-        maxOpacity={0.05}
-        duration={3}
-        repeatdelay={1}
-        className="[mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_95%)]"
-      />
-    </div>
-
-    {/* Background Image + Overlay */}
-    <div className="absolute inset-0 z-[2]">
-      <Image
-        src={ImageHero || '/placeholder.svg'}
-        alt="University Buildings Background"
-        fill
-        className="object-cover object-[75%] transition-all duration-500 md:object-center [mask-image:radial-gradient(white_90%)] mt-[-15rem]"
-        priority
-        sizes="100vw"
-        loading="eager"
-      />
-      <div className="absolute inset-0 bg-white/80" />
-      <div className="absolute bottom-0 left-0 w-full h-[40px] bg-gradient-to-b from-white to-workspace" />
-    </div>
-  </>
-);
-
-const BrandLogo: React.FC = () => {
+//  Brand Section
+const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
   return (
-    <div className="flex mt-6 mb-6 flex-col items-center">
-      {/* Badge tanpa “Powered by” */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-2 flex items-center justify-center"
-      >
-        <div className="flex items-center gap-1.5 rounded-full bg-white border px-3 py-1.5 shadow-sm">
-          {/* Logo Bimbelio */}
-          <div className="relative h-6 w-6 flex-shrink-0">
-            <Image
-              src="/logo.png"
-              alt="Bimbelio Logo"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
-          </div>
-          {/* Teks badge */}
-          <span className="text-blue-500 font-medium text-xs sm:text-sm">
-            Bimbel AI untuk PTN dan Kedinasan
-          </span>
-        </div>
-      </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+      className="flex mt-16 mb-8 flex-col items-center"
+    >
+      {/*  badge */}
 
-      {/* “Powered by OpenAI” */}
+      {/* Powered by section */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex items-center gap-1 text-gray-600 text-xs mt-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="flex items-center gap-2 text-gray-600 text-sm bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm"
       >
         <span>Powered by</span>
-        <IconOpenAI className="h-3 w-3" />
+        <IconOpenAI className="h-4 w-4" />
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
-const HeadingSection: React.FC<{ headings: HeadingItem[] }> = ({
-  headings,
-}) => (
-  <div className="mb-8">
-    {headings.map((item, i) => (
-      <motion.div
-        key={i}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-        className="mb-4"
-      >
-        <span
-          className={`inline-block rounded-xl px-4 py-2 font-bold ${item.bg} ${item.color} text-3xl md:text-6xl`}
+//  Heading Section - Much simpler
+const HeadingSection: React.FC<{
+  mainColor: string;
+  secondaryColor: string;
+}> = ({ mainColor, secondaryColor }) => (
+  <div className="mb-16 space-y-8 max-w-4xl">
+    {/* Main heading -  and powerful */}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.5 }}
+      className="space-y-6"
+    >
+      <h1 className="text-center font-black leading-tight relative text-6xl">
+        {/* Baris 1: LOLOS PTN & */}
+        <div className="flex justify-center items-center gap-3 flex-wrap">
+          <span className="text-gray-900">LOLOS</span>
+          <SparklesText sparklesCount={6}>
+            <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
+              PTN
+            </span>
+          </SparklesText>
+          <span className="text-gray-900">&</span>
+        </div>
+        {/* Baris 2: .Pasti. Kedinasan */}
+        <div className="flex justify-center items-center gap-3 mt-4 flex-wrap">
+          <SparklesText sparklesCount={6}>
+            <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
+              Kedinasan.
+            </span>
+          </SparklesText>
+          <span className="text-gray-900"> Pasti.</span>
+        </div>
+      </h1>
+
+      <p className="text-xl md:text-2xl text-gray-600 font-medium leading-relaxed">
+        Raih impianmu dengan Adaptive-AI terdepan di Indonesia
+      </p>
+    </motion.div>
+
+    {/*  feature pills */}
+    {/* <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.8, duration: 0.6 }}
+      className="flex flex-wrap justify-center gap-3"
+    >
+      {[
+        { icon: <Sparkles className="w-4 h-4" />, text: 'AI Powered' },
+        { icon: <Users className="w-4 h-4" />, text: '15K+ Students' },
+        { icon: <TrendingUp className="w-4 h-4" />, text: '95% Success' },
+        { icon: <Award className="w-4 h-4" />, text: 'Top Rated' },
+      ].map((pill, index) => (
+        <div
+          key={index}
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border"
+          style={
+            {
+              borderColor: `${mainColor} ${secondaryColor}`,
+            } as React.CSSProperties
+          }
         >
-          {item.text}
-        </span>
-      </motion.div>
-    ))}
+          <div style={{ color: mainColor }}>{pill.icon}</div>
+          <span className="font-medium text-gray-700 text-sm">{pill.text}</span>
+        </div>
+      ))}
+    </motion.div> */}
   </div>
 );
 
-const Subtitle: React.FC = () => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay: 0.4 }}
-    className="mb-12 rounded-full bg-blue-100 px-6 py-3 text-blue-600 shadow-md text-base"
-  >
-    Siap-siap gaspol bareng Try Out paling komplit dan paling worth it!
-  </motion.div>
-);
-
-const StatsSection: React.FC<{ stats: Stat[] }> = ({ stats }) => (
-  <div className="grid grid-cols-3 gap-4 mb-12 max-w-4xl">
+//  Stats Section
+const StatsSection: React.FC<{
+  stats: Stat[];
+  mainColor: string;
+}> = ({ stats, mainColor }) => (
+  <div className="grid grid-cols-3 gap-8 mb-16 max-w-2xl w-full">
     {stats.map((stat, i) => (
       <motion.div
         key={i}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
-        className="flex flex-col items-center bg-white/90 backdrop-blur-sm border p-4 rounded-xl shadow-md"
+        transition={{ duration: 0.6, delay: 1 + i * 0.1 }}
+        className="text-center"
       >
-        <p className="text-gray-700 mb-1">{stat.label}</p>
-        <p className="text-blue-600 font-bold text-xl">{stat.value}</p>
+        <div className="text-3xl md:text-4xl font-black mb-2 text-main-default">
+          {stat.value}
+        </div>
+        <div className="text-sm md:text-base font-medium text-gray-600">
+          {stat.label}
+        </div>
       </motion.div>
     ))}
   </div>
 );
 
-const LogoSliders: React.FC<{ logos: Logo[]; isMobile: boolean }> = ({
-  logos,
-  isMobile,
-}) => {
-  // triple array untuk efek continuous scroll
-  const doubled = [...logos, ...logos, ...logos];
+//  Logo Section
+const LogoSection: React.FC<{
+  logos: Logo[];
+  mainColor: string;
+}> = ({ logos, mainColor }) => {
+  const doubled = [...logos, ...logos];
 
   return (
-    <div className="w-full mb-12">
-      {/* desktop: scroll kanan→kiri */}
-      <div className="hidden md:block relative overflow-hidden py-4 rounded-full">
-        <div className="animate-marquee-slower flex">
-          {doubled.map((logo, i) => (
-            <div
-              key={i}
-              className="flex-shrink-0 mx-4 flex flex-col items-center group"
-            >
-              <div
-                className="w-28 h-28 p-1 bg-white rounded-full shadow-md flex items-center justify-center
-                              group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
-              >
-                <Image
-                  src={logo.src || '/placeholder.svg'}
-                  alt={logo.alt}
-                  width={100}
-                  height={100}
-                  className="w-20 h-20 object-contain"
-                  loading="lazy"
-                />
-              </div>
-              <span className="text-sm mt-2 font-medium text-blue-800 opacity-80 group-hover:opacity-100">
-                {logo.label}
-              </span>
-            </div>
-          ))}
-        </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, delay: 1.5 }}
+      className="w-full mb-16"
+    >
+      <div className="text-center mb-8">
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+          Destinasi Impian Para Juara
+        </h3>
+        <p className="text-gray-600">
+          Alumni berhasil diterima di universitas terbaik
+        </p>
       </div>
 
-      {/* mobile: scroll kiri→kanan */}
-      <div className="md:hidden relative overflow-hidden py-3 rounded-full">
-        <div className="animate-marquee-reverse flex">
+      {/*  logo slider */}
+      <div className="relative overflow-hidden py-4 rounded-2xl">
+        <div className="animate-smooth-marquee flex">
           {doubled.map((logo, i) => (
             <div
               key={i}
-              className="flex-shrink-0 mx-3 flex flex-col items-center group"
+              className="shrink-0 mx-8 flex flex-col items-center group"
             >
-              <div
-                className="w-20 h-20 p-2 bg-white rounded-full shadow-md flex items-center justify-center
-                              group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
-              >
+              <div className="w-24 h-24 p-2 bg-white rounded-full shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <Image
                   src={logo.src || '/placeholder.svg'}
                   alt={logo.alt}
                   width={80}
                   height={80}
-                  className="w-16 h-16 object-contain"
+                  className="w-20 h-20 object-cover rounded-full"
                   loading="lazy"
                 />
               </div>
-              <span className="text-xs mt-2 font-medium text-blue-800 opacity-80 group-hover:opacity-100">
+              <span className="text-sm font-semibold mt-3 text-main-default">
                 {logo.label}
               </span>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
-const handleClick = () => {
-  const el = document.getElementById('tryout');
-  if (el) {
-    const top = el.getBoundingClientRect().top + window.pageYOffset - 100;
-    window.scrollTo({ top, behavior: 'smooth' });
-  }
-};
 
-const CTAButton: React.FC<{ onClick?: () => void }> = () => (
+//  CTA Section
+const CTASection: React.FC<{
+  onClick?: () => void;
+  mainColor: string;
+  secondaryColor: string;
+}> = ({ onClick, mainColor, secondaryColor }) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
+    initial={{ opacity: 0, y: 30 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay: 0.7 }}
-    className="w-full flex justify-center mb-6"
+    transition={{ duration: 0.8, delay: 2 }}
+    className="w-full flex flex-col items-center mb-16 space-y-6"
   >
-    <PulsatingButton
-      onClick={handleClick}
-      aria-label="Coba Try Out Sekarang"
-      tabIndex={0}
+    {/* Main CTA */}
+    <motion.button
+      onClick={onClick}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg text-white shadow-lg transition-all duration-300 bg-main-default"
+      style={
+        {
+          // background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+        }
+      }
     >
-      Coba Try Out Sekarang!
-    </PulsatingButton>
+      <Play className="w-5 h-5" />
+      <span>Mulai Try Out GRATIS</span>
+      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+    </motion.button>
+
+    {/* Trust indicators */}
+    <div className="flex items-center gap-6 text-sm text-gray-600">
+      <div className="flex items-center gap-2">
+        <div className="flex -space-x-1">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold bg-main-default"
+            >
+              <Star className="w-3 h-3" />
+            </div>
+          ))}
+        </div>
+        <span className="font-medium">15,000+ siswa</span>
+      </div>
+
+      <div className="w-px h-4 bg-gray-300" />
+
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+        <span className="font-medium">100% Gratis</span>
+      </div>
+
+      <div className="w-px h-4 bg-gray-300" />
+
+      <div className="flex items-center gap-1">
+        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+        <span className="font-medium">4.9/5 rating</span>
+      </div>
+    </div>
   </motion.div>
 );
 
-const VideoMockup: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
-  <div
+//  Video Section
+const VideoSection: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1, delay: 2.5 }}
     className={cn(
-      'relative mx-auto mb-12 z-20',
-      isMobile ? 'w-[320px] h-[568px]' : 'w-[1024px] h-[576px]',
+      'relative mx-auto',
+      isMobile ? 'w-[280px] h-[500px]' : 'w-[900px] h-[506px]',
     )}
   >
-    {isMobile ? <MobileVideoMockup /> : <DesktopVideoMockup />}
-  </div>
+    {isMobile ? <MobileVideo /> : <DesktopVideo />}
+  </motion.div>
 );
 
-const MobileVideoMockup: React.FC = () => {
+//  Mobile Video
+const MobileVideo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -400,7 +468,7 @@ const MobileVideoMockup: React.FC = () => {
           observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: '50px' },
+      { threshold: 0.1 },
     );
 
     if (videoRef.current) {
@@ -417,7 +485,7 @@ const MobileVideoMockup: React.FC = () => {
       setIsLoaded(true);
 
       const handleCanPlay = () => {
-        video.playbackRate = 2;
+        video.playbackRate = 1.5;
         video.play().catch(console.error);
       };
 
@@ -426,30 +494,31 @@ const MobileVideoMockup: React.FC = () => {
   }, [isInView, isLoaded]);
 
   return (
-    <IPhoneFrame>
-      <div className="relative w-full h-full">
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover"
-          muted
-          loop
-          playsInline
-          preload="none"
-          poster={MobilePoster.src}
-          aria-label="Bimbelio mobile app demonstration"
-        >
-          <source
-            src="/hero/bimbelio-mobile.webm"
-            type="video/webm"
-          />
-        </video>
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
-      </div>
-    </IPhoneFrame>
+    <div className="relative">
+      <IPhoneFrame>
+        <div className="relative w-full h-full">
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            muted
+            loop
+            playsInline
+            preload="none"
+            poster={MobilePoster.src}
+          >
+            <source
+              src="/hero/bimbelio-mobile.webm"
+              type="video/webm"
+            />
+          </video>
+        </div>
+      </IPhoneFrame>
+    </div>
   );
 };
 
-const DesktopVideoMockup: React.FC = () => {
+//  Desktop Video
+const DesktopVideo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -462,7 +531,7 @@ const DesktopVideoMockup: React.FC = () => {
           observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: '50px' },
+      { threshold: 0.1 },
     );
 
     if (videoRef.current) {
@@ -479,7 +548,7 @@ const DesktopVideoMockup: React.FC = () => {
       setIsLoaded(true);
 
       const handleCanPlay = () => {
-        video.playbackRate = 2;
+        video.playbackRate = 1.5;
         video.play().catch(console.error);
       };
 
@@ -488,24 +557,26 @@ const DesktopVideoMockup: React.FC = () => {
   }, [isInView, isLoaded]);
 
   return (
-    <div className="relative w-full h-full rounded-xl shadow-xl overflow-hidden">
-      <div className="flex flex-col w-full h-full bg-white rounded-xl overflow-hidden border border-gray-200">
-        <div className="flex items-center bg-gray-100 px-4 py-2 border-b border-gray-200">
+    <div className="relative w-full h-full rounded-xl shadow-2xl overflow-hidden bg-white">
+      <div className="flex flex-col w-full h-full">
+        {/*  browser bar */}
+        <div className="flex items-center bg-gray-50 px-4 py-3 border-b">
           <div className="flex space-x-2 mr-4">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <div className="w-3 h-3 rounded-full bg-red-400"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+            <div className="w-3 h-3 rounded-full bg-green-400"></div>
           </div>
-          <div className="flex space-x-2 mr-4 text-gray-500">
+          <div className="flex space-x-2 mr-4 text-gray-400">
             <ChevronLeft className="w-4 h-4" />
             <ChevronRight className="w-4 h-4" />
             <RotateCw className="w-4 h-4" />
           </div>
-          <div className="flex-1 flex items-center bg-gray-200 rounded-md px-3 py-1 text-sm text-gray-600">
-            <Search className="w-3.5 h-3.5 mr-2 text-gray-500" />
-            <span>bimbelio.com</span>
+          <div className="flex-1 flex items-center bg-white rounded-lg px-3 py-2 text-sm border">
+            <Search className="w-4 h-4 mr-2 text-gray-400" />
+            <span className="text-gray-600">bimbelio.com</span>
           </div>
         </div>
+
         <video
           ref={videoRef}
           className="w-full h-full object-cover"
@@ -514,7 +585,6 @@ const DesktopVideoMockup: React.FC = () => {
           playsInline
           preload="none"
           poster={DesktopPoster.src}
-          aria-label="Bimbelio desktop website demonstration"
         >
           <source
             src="/hero/bimbelio.webm"

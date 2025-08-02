@@ -1,19 +1,25 @@
 'use client';
 
-import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useAppContext } from '@/components/provider/provider-app';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
 import LoadingPage from '@/components/ui/Loading-Page';
 import Logo from '@/components/ui/logo';
 import { env } from '@/env.mjs';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { X } from 'lucide-react';
 import { useState } from 'react';
 
 export const Login = () => {
   const {
     useAuth: { setShowAuth, showAuth },
   } = useAppContext();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -21,7 +27,6 @@ export const Login = () => {
     setLoading(true);
     try {
       const { credential } = googleToken as { credential: string };
-      // Kirim token ke backend
       const res = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/google`, {
         token: credential,
       });
@@ -42,69 +47,125 @@ export const Login = () => {
     }
   };
 
-  const [stepLogin, setStepLogin] = useState<number>(1);
-
   return (
     <GoogleOAuthProvider clientId={env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
-      <div
-        id="login"
-        className="fixed left-0 top-0 z-[3000] flex h-full w-full items-center justify-center bg-[#0000005e] backdrop-blur-[8px]"
-      >
+      <div className="fixed inset-0 z-3000 flex items-center justify-center bg-black/50 backdrop-blur-sm">
         {loading && <LoadingPage />}
+
+        {/* Backdrop */}
         {showAuth && (
           <div
-            className="fixed left-0 top-0 z-[1] h-full w-full bg-transparent"
-            onClick={() => {
-              setShowAuth((prev) => ({ ...prev, open: false }));
-              setStepLogin(1);
-            }}
+            className="fixed inset-0 bg-transparent"
+            onClick={() => setShowAuth((prev) => ({ ...prev, open: false }))}
           />
         )}
 
-        <div className="z-[2] mx-[1rem] flex w-[500px] flex-col gap-[2rem] rounded-[1rem] bg-white p-[2rem] md:mx-0">
-          {stepLogin !== 1 && (
-            <div className="flex flex-col gap-[.5rem]">
-              <h1 className="text-[1.5rem] font-bold">
-                <AnimatedGradientText>Selamat datang di </AnimatedGradientText>
-                <span className="font-regular text-main">Bimbelio!</span>
-              </h1>
-              <p className="font-regular text-main-gray-text">
-                Masuk dengan akunmu
-              </p>
-            </div>
-          )}
-          <form className="flex flex-col gap-[1.5rem]">
-            <div className="flex w-full justify-center">
+        {/* Main Modal */}
+        <div className="relative z-10 w-full max-w-md mx-4 bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Header */}
+          <div
+            className="p-6 pb-8 text-center relative"
+            // style={{ backgroundColor: `${mainColor}05` }}
+          >
+            {/* Close button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowAuth((prev) => ({ ...prev, open: false }))}
+              className="absolute top-4 right-4 w-8 h-8 rounded-lg hover:bg-gray-100"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+
+            <div className="space-y-4">
               <Logo
-                className="text-[1.5rem] text-main-default"
-                imageWidth={40}
+                className="text-2xl font-bold text-main-default"
+                // style={{ color: mainColor }}
               />
-            </div>
-            <div className="mt-[1rem] flex flex-col items-center gap-[1.5rem]">
-              <h1 className="text-[1.5rem] font-semibold">Masuk</h1>
-              <div
-                id="google-button-container"
-                className="flex w-full justify-center rounded-xl"
-              >
-                <GoogleButton handleSubmit={handleSubmit} />
-                {/* <div
-                    className="bg-white w-full flex justify-center items-center gap-[.5rem] border rounded-[.5rem] font-semibold text-[.9rem] h-[40px] cursor-pointer duration-300 md:hover:bg-main-gray-input/15"
-                    onClick={() => {
-                      setStepLogin(2);
-                    }}
-                  >
-                    <Image src={EmailImage} alt="Email" className="w-[1.1rem]" />
-                    <p>Masuk dengan Email</p>
-                  </div> */}
+              <div>
+                <h1
+                  className="text-xl font-bold text-main-default"
+                  // style={{ color: mainColor }}
+                >
+                  Selamat Datang Kembali!
+                </h1>
+                <p className="text-gray-600 mt-1">
+                  Masuk untuk melanjutkan perjalanan belajar Anda
+                </p>
               </div>
             </div>
-          </form>
-          <div className="flex flex-col items-center gap-[1rem]">
-            <p className="font-regular">Ayo mulai sekarang! </p>
-            <p className="font-regular text-center text-[.8rem] text-main-gray-text">
-              Dengan melanjutkan, kamu setuju dengan ketentuan Layanan dan
-              Kebijakan Privasi Bimbelio
-            </p>
+          </div>
+
+          {/* Content */}
+          <div className="p-6 space-y-6">
+            {/* Google Login */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Masuk dengan Akun Anda
+                </h3>
+              </div>
+
+              <div className="flex justify-center">
+                {/* <div
+                  className="p-4 rounded-xl border-2 hover:shadow-md transition-all border-main-default bg-main-default"
+                  // style={{
+                  //   borderColor: `${mainColor}20`,
+                  //   backgroundColor: `${mainColor}02`,
+                  // }}
+                >
+                  <GoogleButton handleSubmit={handleSubmit} />
+                </div> */}
+
+                <GoogleButton handleSubmit={handleSubmit} />
+              </div>
+
+              <div className="text-center">
+                <p className="text-sm text-gray-500">
+                  Gunakan akun Google untuk masuk dengan mudah dan aman
+                </p>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-3 rounded-lg bg-blue-50 text-center">
+                <div className="font-medium text-blue-700 text-sm">Try Out</div>
+                <div className="text-xs text-blue-600">Gratis!</div>
+              </div>
+              <div className="p-3 rounded-lg bg-green-50 text-center">
+                <div className="font-medium text-green-700 text-sm">
+                  AI Learning
+                </div>
+                <div className="text-xs text-green-600">Terdepan</div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="text-center space-y-3">
+              {/* <p className="text-sm text-gray-600">
+                Belum punya akun?{' '}
+                <button
+                  type="button"
+                  className="font-semibold underline hover:no-underline"
+                  style={{ color: mainColor }}
+                  onClick={() =>
+                    setShowAuth((prev) => ({
+                      ...prev,
+                      signUp: true,
+                      open: false,
+                    }))
+                  }
+                >
+                  Daftar sekarang
+                </button>
+              </p> */}
+
+              <p className="text-xs text-gray-500">
+                Dengan melanjutkan, Anda setuju dengan Ketentuan Layanan dan
+                Kebijakan Privasi Bimbelio
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -114,19 +175,23 @@ export const Login = () => {
 
 export default Login;
 
+// Enhanced Google Button Component
 const GoogleButton = ({
   handleSubmit,
 }: {
   handleSubmit: (googleToken: any) => void;
 }) => {
   return (
-    <>
+    <div className="w-full flex justify-center">
       <GoogleLogin
         onSuccess={handleSubmit}
         onError={() => console.log('Login Failed')}
-        text={'signin_with'}
+        text="signin_with"
         shape="circle"
+        size="large"
+        width="280"
+        theme="outline"
       />
-    </>
+    </div>
   );
 };

@@ -5,9 +5,10 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useEffect, useState } from "react";
-import { Input } from "./input";
+} from '@/components/ui/pagination';
+import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
+import { Input } from './input';
 
 export default function ListPagination({
   onPageChange,
@@ -15,17 +16,18 @@ export default function ListPagination({
   totalPage,
   pageSize,
   currentPage,
+  className,
 }: {
   totalPage: number;
   pageSize: number;
   currentPage?: number;
   onPageChange?: (page: number) => void;
   onSizeChange?: (size: number) => void;
+  className?: string;
 }) {
   const [page, setPage] = useState<number>(1);
-  const handleChange = (parameter: "next" | "prev") => {
-    if (parameter === "next") {
-      console.log({ totalPage });
+  const handleChange = (parameter: 'next' | 'prev') => {
+    if (parameter === 'next') {
       if (page < totalPage) {
         setPage(page + 1);
         if (onPageChange) {
@@ -33,7 +35,7 @@ export default function ListPagination({
         }
       }
     }
-    if (parameter === "prev") {
+    if (parameter === 'prev') {
       if (page > 1) {
         setPage(page - 1);
         if (onPageChange) {
@@ -50,7 +52,7 @@ export default function ListPagination({
   }, [currentPage]);
 
   return (
-    <div className="flex w-full justify-between py-2">
+    <div className={cn('flex w-full justify-between py-2', className)}>
       {/* <Select>
         <SelectTrigger className="w-fit">
           <SelectValue placeholder="" />
@@ -87,7 +89,7 @@ export default function ListPagination({
       <Pagination className="w-fit mx-0">
         <PaginationContent>
           <PaginationItem
-            onClick={() => handleChange("prev")}
+            onClick={() => handleChange('prev')}
             className="cursor-pointer"
           >
             <PaginationPrevious />
@@ -96,7 +98,7 @@ export default function ListPagination({
             <PaginationLink className="cursor-pointer">{page}</PaginationLink>
           </PaginationItem>
           <PaginationItem
-            onClick={() => handleChange("next")}
+            onClick={() => handleChange('next')}
             className="cursor-pointer"
           >
             <PaginationNext />

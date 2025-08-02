@@ -1,14 +1,25 @@
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { IconSend } from '@/styles/icon';
+import { cn } from '@/lib/utils';
+import { Check, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 import { useProvider } from '../provider';
 
 const SubmitChatEdit = () => {
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
+  const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+
   const {
     messageData,
     setMessageData,
@@ -17,8 +28,8 @@ const SubmitChatEdit = () => {
     useMessagesEdit: { handleInputChangeMessagesEdit },
   } = useProvider();
 
-  const { data: session } = useSession();
-  // const limitation = api.user.limitation.useMutation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [charCount, setCharCount] = useState(0);
 
   const limitation = async (payload: {
     chat?: boolean;
@@ -40,11 +51,6 @@ const SubmitChatEdit = () => {
     });
     return sendData;
   };
-
-  // const editMessageApi = api.message.editMessages.useMutation({
-  //   onSettled: async () => {},
-  //   onMutate() {},
-  // });
 
   const editMessageApi = async (payload: {
     docId: string;
@@ -70,9 +76,22 @@ const SubmitChatEdit = () => {
 
   const handleExecuteEditMessage = async () => {
     try {
+      setIsSubmitting(true);
       const inputChatEdit = document.getElementById(
         'editInput',
       ) as HTMLInputElement;
+
+      if (!inputChatEdit?.value.trim()) {
+        toaster({
+          title: 'Error',
+          condition: 'warning',
+          description: 'Pesan tidak boleh kosong!',
+          duration: 3000,
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
       const data: any = await limitation({ chat: true });
       if (data && !data.status) {
         toaster({
@@ -81,6 +100,7 @@ const SubmitChatEdit = () => {
           description: data.message,
           duration: 5000,
         });
+        setIsSubmitting(false);
         return;
       } else if (data && data.status) {
         try {
@@ -88,7 +108,6 @@ const SubmitChatEdit = () => {
           const newMessage = messageData.filter(
             (item: any, i: number) => i <= editMessage.index - 1,
           );
-          // setTempData([...newMessage]);
           setMessageData(() => [...newMessage]);
           const e: any = {
             target: {
@@ -105,7 +124,7 @@ const SubmitChatEdit = () => {
             messageIndex: editMessage.index,
           });
         } catch (error) {
-          error;
+          setIsSubmitting(false);
         }
       }
     } catch (error) {
@@ -114,48 +133,114 @@ const SubmitChatEdit = () => {
         condition: 'warning',
         description: 'Coba lagi nanti!',
       });
-      return;
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="w-full overflow-hidden">
-      <textarea
-        id="editInput"
-        placeholder="Edit your chat here..."
-        className="h-[100px] w-full resize-none rounded-[1rem] border border-main-gray-input bg-white px-[1rem] py-[.5rem] text-[.9rem] outline-none"
-        onChange={(e) => {
-          if (e.target.value.length > 1000) {
-            e.target.value = e.target.value.slice(0, 1000);
-          }
-          if (e.target.value.length === 1000) {
-            toaster({
-              title: 'Upss',
-              condition: 'warning',
-              description: 'Maksimal 1000 karakter input chat!',
-              duration: 3000,
-            });
-          }
-        }}
-      />
-      <div className="flex w-full justify-end gap-[.5rem] px-[1rem] pb-[1rem] text-[.9rem]">
-        <button
-          className="font-regular rounded-[.8rem] bg-transparent px-[1.2rem] py-[.7rem] text-main-gray-text duration-100 md:hover:text-main-gray-disabled"
-          onClick={() => {
-            resetEdit();
+    <div className="w-full space-y-3 bg-background border border-gray-200 rounded-xl p-4">
+      {/* Edit Header */}
+      <div className="flex items-center gap-2 text-sm text-gray-500">
+        <div
+          className="w-2 h-2 rounded-full animate-pulse"
+          style={{ backgroundColor: mainColor }}
+        />
+        <span className="font-medium">Mengedit pesan</span>
+      </div>
+
+      {/* Textarea */}
+      <div className="relative">
+        <TextareaAutosize
+          id="editInput"
+          placeholder="Edit pesan Anda di sini..."
+          defaultValue={editMessage.value}
+          className={cn(
+            'w-full resize-none rounded-xl border-2 py-3 px-4 text-sm font-normal outline-none transition-all duration-200',
+            'placeholder:text-gray-400',
+            'bg-gray-50 border-gray-200',
+            'focus:bg-white focus:border-2',
+          )}
+          style={{
+            borderColor: `${mainColor}60`,
           }}
-        >
-          Batalkan
-        </button>
-        <button
-          className="flex items-center gap-[.5rem] rounded-[.8rem] bg-main px-[1.2rem] py-[.7rem] text-white duration-100 hover:bg-main/85 md:active:bg-main"
-          onClick={() => {
-            handleExecuteEditMessage();
+          onChange={(e) => {
+            const length = e.target.value.length;
+            setCharCount(length);
+
+            if (length > 1000) {
+              e.target.value = e.target.value.slice(0, 1000);
+              setCharCount(1000);
+            }
+            if (length === 1000) {
+              toaster({
+                title: 'Upss',
+                condition: 'warning',
+                description: 'Maksimal 1000 karakter input chat!',
+                duration: 3000,
+              });
+            }
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              resetEdit();
+            }
+            if (e.key === 'Enter' && e.ctrlKey) {
+              handleExecuteEditMessage();
+            }
+          }}
+          maxRows={8}
+          minRows={3}
+          disabled={isSubmitting}
+        />
+
+        {/* Character counter */}
+        <div className="absolute bottom-2 right-3 text-xs text-gray-500 bg-background/80 px-2 py-1 rounded-md">
+          <span>{charCount}/1000</span>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex items-center justify-end gap-3 pt-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-xl border-gray-200 hover:bg-gray-50"
+          onClick={resetEdit}
+          disabled={isSubmitting}
         >
-          Kirim
-          <IconSend w={15} />
-        </button>
+          <X className="w-4 h-4 mr-2" />
+          Batal
+        </Button>
+
+        <Button
+          size="sm"
+          className={cn(
+            'rounded-xl text-white shadow-lg transition-all duration-200',
+            isSubmitting
+              ? 'opacity-75 cursor-not-allowed'
+              : 'hover:shadow-xl hover:scale-105',
+          )}
+          style={{ backgroundColor: mainColor }}
+          onClick={handleExecuteEditMessage}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+              Menyimpan...
+            </>
+          ) : (
+            <>
+              <Check className="w-4 h-4 mr-2" />
+              Simpan
+            </>
+          )}
+        </Button>
+      </div>
+
+      {/* Helper Text */}
+      <div className="text-xs text-gray-500 text-center pt-1 border-t border-gray-200">
+        <span>Ctrl+Enter untuk simpan • Escape untuk membatalkan</span>
       </div>
     </div>
   );

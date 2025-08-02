@@ -24,9 +24,18 @@ export default function ProviderSessionAuth({
 
   useEffect(() => {
     const token = Cookies.get('token');
+    const urlPathname = window.location.pathname.split('/');
+
+    const website_sub_category_id =
+      urlPathname.length > 1 && urlPathname[1].length > 0
+        ? urlPathname[1]
+        : localStorage?.getItem('website_sub_category_id');
+
     if (token) {
       axiosInstanceWithToken
-        .post('/auth/verifyToken')
+        .post(
+          `/auth/verifyToken?website_sub_category_id=${website_sub_category_id}`,
+        )
         .then((res) => {
           const resData = res.data;
           const userData = resData.data;
@@ -44,9 +53,11 @@ export default function ProviderSessionAuth({
               expire: userData.expire,
               image: userData.image,
               tier: userData.tier,
+              phone: userData.phone,
               feature: {
                 document: userData.feature.document,
                 course: userData.feature.course,
+                liveClass: userData.feature.liveClass,
               },
             },
           });
@@ -65,6 +76,8 @@ export default function ProviderSessionAuth({
       setIsLoading(false);
     }
   }, []);
+
+  console.log(data);
 
   const Context = {
     data,
@@ -105,7 +118,8 @@ type SessionProviderType = {
           userTryOutId: string | null;
           type: string;
           tier: string;
-          feature: { document: boolean; course: boolean };
+          phone: string | null;
+          feature: { document: boolean; course: boolean; liveClass: boolean };
         };
         expires: string | undefined;
       }

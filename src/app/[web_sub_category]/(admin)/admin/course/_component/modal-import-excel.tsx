@@ -1,4 +1,9 @@
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { toaster } from '@/components/ui/toaster';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
@@ -115,13 +120,16 @@ const ModalImportExcel = ({
     >
       <DialogTrigger>
         <div
-          className="shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 px-[1rem] py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+          className="shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 px-4 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
           onClick={() => setOpen(true)}
         >
           Import CSV
         </div>
       </DialogTrigger>
       <DialogContent className="w-[400px]">
+        <DialogTitle className="text-center text-lg font-semibold mb-2">
+          Import Soal dari Excel/CSV
+        </DialogTitle>
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-semibold underline">Format Excel:</p>
           <p className="font-semibold">
@@ -129,10 +137,10 @@ const ModalImportExcel = ({
             | Correct | Explanation
           </p>
           {file ? (
-            <p className="mt-[1rem] font-semibold text-blue-700">{file.name}</p>
+            <p className="mt-4 font-semibold text-blue-700">{file.name}</p>
           ) : null}
 
-          <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-[2rem] text-[.9rem]">
+          <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-8 text-[.9rem]">
             <input
               id="uploadCSV"
               type="file"

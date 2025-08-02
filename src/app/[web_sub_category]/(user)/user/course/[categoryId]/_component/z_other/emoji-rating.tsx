@@ -3,11 +3,12 @@
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
-import { Loader2Icon, StarIcon } from 'lucide-react';
+import { StarIcon } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const labels = ['Sangat Buruk', 'Buruk', 'Cukup', 'Baik', 'Sangat Baik'];
+const emojis = ['😞', '😕', '😐', '😊', '😍'];
 
 export default function EmojiRating() {
   const searchParams = useSearchParams();
@@ -36,16 +37,18 @@ export default function EmojiRating() {
   );
 
   const [rating, setRating] = useState<number | null>(null);
-  const [hover, setHover] = useState<number | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     if (ratingData?.value !== undefined) {
       setRating(ratingData.value);
+      setIsSubmitted(true);
     }
   }, [ratingData]);
 
   const handleRating = (value: number) => {
     setRating(value);
+    setIsSubmitted(true);
     if (sub) {
       addRating({ payload: { subChapterId: sub as string, value } });
     }
@@ -53,68 +56,51 @@ export default function EmojiRating() {
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-xl mx-auto bg-white rounded-2xl p-6 shadow-sm min-h-[250px] flex items-center justify-center">
-        <Loader2Icon className="animate-spin h-5 w-5 text-gray-400" />
+      <div className="w-full text-center py-4">
+        <div className="text-gray-400">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-xl mx-auto bg-white rounded-2xl p-6 shadow-sm">
-      <div className="space-y-8">
-        <h1 className="text-xl font-bold text-center text-gray-900">
-          Beri Penilaian Pengalaman Kamu
-        </h1>
-
-        <div className="flex justify-center items-center space-x-2">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <button
-              key={star}
-              onClick={() => handleRating(star)}
-              onMouseEnter={() => setHover(star)}
-              onMouseLeave={() => setHover(null)}
-              className="focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-full p-1 transition-all duration-200"
-            >
-              <StarIcon
-                className={cn(
-                  'w-8 h-8 transition-all duration-200',
-                  (hover !== null && hover >= star) ||
-                    (rating !== null && rating >= star)
-                    ? 'text-yellow-400 fill-yellow-400'
-                    : 'text-gray-300',
-                )}
-              />
-            </button>
-          ))}
-        </div>
-
-        {rating !== null ? (
-          <div className="space-y-3">
-            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-yellow-400 transition-all duration-500 ease-out"
-                style={{ width: `${(rating / 5) * 100}%` }}
-              />
-            </div>
-            <div className="text-center space-y-1">
-              <p className="text-lg font-semibold text-gray-900">
-                {labels[rating - 1]}
-              </p>
-              <p className="text-sm text-gray-600">
-                Kamu memberi nilai: {rating}{' '}
-                {rating === 1 ? 'bintang' : 'bintang'}
-              </p>
-              <p className="text-xs text-gray-500">
-                Terima kasih atas umpan balikmu!
-              </p>
-            </div>
-          </div>
-        ) : (
-          <p className="text-center text-gray-600 text-sm">
-            Klik bintang untuk memberi penilaian pengalaman Kamu
-          </p>
-        )}
+    <div className="w-full">
+      {/* Simple Rating Stars for Popup */}
+      <div className="flex justify-center items-center space-x-1 mb-3">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            onClick={() => handleRating(star)}
+            className="focus:outline-none p-1 rounded transition-colors duration-200"
+            disabled={isSubmitted}
+          >
+            <StarIcon
+              className={cn(
+                'w-6 h-6 transition-colors duration-200',
+                rating !== null && rating >= star
+                  ? 'text-yellow-400 fill-yellow-400'
+                  : 'text-gray-300 hover:text-yellow-300',
+              )}
+            />
+          </button>
+        ))}
       </div>
+
+      {/* Simple Label */}
+      {rating !== null && (
+        <div className="text-center">
+          <p className="text-sm text-gray-600 mb-2">{labels[rating - 1]}</p>
+          <div className="text-2xl mb-2">{emojis[rating - 1]}</div>
+        </div>
+      )}
+
+      {/* Thank you message */}
+      {isSubmitted && (
+        <div className="text-center">
+          <p className="text-xs text-green-600">
+            Terima kasih atas penilaian Anda!
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -57,10 +57,10 @@ const VideoType = () => {
   return (
     <div
       id="course-video"
-      className="flex flex-col gap-[1rem] p-6 h-full w-full max-w-[1000px] mx-auto"
+      className="flex flex-col gap-4 p-6 h-full w-full max-w-[1000px] mx-auto"
     >
       {isDone && (
-        // <div className="mb-[2rem] mt-[1rem] flex w-full justify-start text-[1.3rem] font-semibold">
+        // <div className="mb-8 mt-4 flex w-full justify-start text-[1.3rem] font-semibold">
         //   <div className="relative flex items-center gap-[.5rem]">
         //     <p>Course Ini Telah Selesai</p>
         //     <IconCheckList className="text-green-600" />
@@ -123,14 +123,14 @@ const VideoType = () => {
         wrapperElement={{
           'data-color-mode': 'light',
         }}
-        className="ReactMarkdown course select-none pb-[5rem]"
+        className="ReactMarkdown course select-none pb-20"
       /> */}
 
       <ReactMarkdownBlog
         value={CourseData?.description || ''}
         className="pt-4 pb-12"
       />
-      <div className="w-full flex justify-center pb-[7rem]">
+      <div className="w-full flex justify-center pb-28">
         <EmojiRating />
       </div>
     </div>

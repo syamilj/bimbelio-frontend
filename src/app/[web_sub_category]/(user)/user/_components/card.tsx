@@ -8,46 +8,22 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-interface card {
+interface CardProps {
   data: any;
   href: string;
   noCategory?: boolean;
 }
 
-export default function Card({ data, href, noCategory }: card) {
+export default function Card({ data, href, noCategory }: CardProps) {
   const router = useRouter();
-
   const { data: session } = useSession();
-
-  // const [docData, setDocData] = useState<any>([]);
-
   const [showUpgrade, setShowUpgrade] = useState<number>(99999);
-
-  // const getDate = (date: any) => {
-  //   const Dates = new Date(date);
-  //   const year = Dates.getFullYear();
-  //   return year;
-  // };
 
   const handleClick = (id: string, category: string, premium: boolean) => {
     const LinkButton = document.getElementById(
       `hrefLink-${id}`,
     ) as HTMLButtonElement;
-
     LinkButton.click();
-    // if (premium) {
-    //   if (noCategory) {
-    //     LinkButton.click();
-    //   } else {
-    //     router.push(`${href}/${id}?tab=chat`);
-    //   }
-    // } else {
-    //   if (noCategory) {
-    //     LinkButton.click();
-    //   } else {
-    //     router.push(`${href}/${id}?tab=chat`);
-    //   }
-    // }
   };
 
   return (
@@ -55,98 +31,94 @@ export default function Card({ data, href, noCategory }: card) {
       {data?.length > 0 &&
         data?.map((item: any, i: number) => (
           <div
-            className="relative"
+            className="relative group"
             key={i}
-            onMouseOver={() => {
-              setShowUpgrade(i);
-            }}
-            onMouseLeave={() => {
-              setShowUpgrade(9999);
-            }}
+            onMouseOver={() => setShowUpgrade(i)}
+            onMouseLeave={() => setShowUpgrade(9999)}
           >
-            {/* {item.premium && !session?.user.tier && (
-              <>
-                <div className="absolute left-0 top-0 z-[2] flex h-full w-full items-center justify-center rounded-xl bg-[#ffffff73]">
-                  <IconLock
-                    w={60}
-                    className="text-[#6e717b9d]"
-                  />
-                </div>
-                {showUpgrade === i && (
-                  <div className="absolute bottom-[50%] left-[50%] z-[10] flex w-[250px] flex-col gap-[1rem] rounded-xl bg-[#1A1E25] p-[1rem] text-main-gray-text2">
-                    <h1 className="font-regular text-white">Limit material</h1>
-                    <p className="mt-[-.5rem] text-[.9rem]">
-                      Limit kamu terbatas.{' '}
-                      <span className="font-regular text-main">
-                        Upgrade akun
-                      </span>{' '}
-                      untuk mendapatkan akses material lengkap.
-                    </p>
-                    <ButtonPayment text="Subscription" />
-                    <div className="absolute bottom-[-8px] left-[2rem] h-[20px] w-[20px] rotate-45 bg-[#1A1E25]" />
-                  </div>
-                )}
-              </>
-            )} */}
             <Link
               id={`hrefLink-${item.id}`}
               href={`/${website_sub_category_id}/user/workspace/${item.categoryId}/${item.id}?tab=chat`}
               className="hidden"
             />
+
             <div
               id="card"
-              className={
-                'relative flex h-[160px] cursor-pointer flex-col items-center justify-start overflow-hidden rounded-xl shadow-sm bg-white duration-300 hover:shadow-inner mb:h-[200px] md:h-[200px] md:hover:scale-105 md:active:scale-100 md2:h-[180px] xl:h-[250px] xxxl:h-[300px]'
-              }
+              className="relative flex cursor-pointer flex-col items-center justify-start overflow-hidden rounded-xl bg-white shadow-sm border border-gray-200 transition-all duration-300 hover:shadow-lg hover:border-gray-200 hover:-translate-y-0.5 mb-4"
               onClick={() =>
                 handleClick(item.id, item.categoryId, item.premium)
               }
             >
-              <div className="h-auto w-full bg-[#E8EBF4] p-[1.5rem]">
+              {/* Image Container */}
+              <div className="relative h-90% h-full w-full overflow-hidden rounded-t-lg bg-white shadow-sm">
                 <Image
                   src={`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/document/${item.img}`}
-                  className="h-auto w-full rounded-xl"
-                  layout="responsive"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   width={500}
                   height={300}
                   alt="Bimbelio - Bimbel AI untuk PTN dan Kedinasan"
                 />
               </div>
+
+              {/* Content Container */}
               <div
                 id="text-container"
-                className="absolute bottom-0 left-0 z-[1] flex w-full shrink-0 flex-col gap-[.5rem] border-t border-main-border bg-white px-[1rem] pb-[1rem] pt-[.5rem] backdrop-blur-[5px]"
+                className="flex w-full h-full flex-col justify-between border-t border-gray-100 bg-white px-4 py-3"
               >
+                {/* Title */}
                 <p
                   id="title"
-                  className="overflow-hidden text-ellipsis whitespace-nowrap font-medium text-black"
+                  className="text-sm font-semibold text-gray-900 leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis mb-2 group-hover:text-blue-600 transition-colors duration-200"
                 >
-                  {`${
-                    item.title?.length > 50
-                      ? `${item.title.slice(0, 50)}...`
-                      : item.title
-                  }`}{' '}
+                  {item.title}
                 </p>
-                <div className="flex items-center gap-[.5rem] flex-wrap">
-                  <div className="flex shrink-0 items-center justify-center rounded-xl bg-main px-[.6rem] py-[.2rem] text-[.6rem] text-white md:px-[1rem] md:py-[.35rem] md:text-[.8rem]">
-                    <p>{item.category?.name}</p>
-                  </div>
-                  <div className="flex shrink-0 items-center justify-center rounded-xl border border-main-gray-input bg-bg-layout px-[.6rem] py-[.2rem] text-[.6rem] md:px-[1rem] md:py-[.35rem] md:text-[.8rem]">
-                    <p>{item.subCategory?.name}</p>
-                  </div>
+
+                {/* Categories */}
+                <div className="flex gap-2 mb-2 flex-wrap">
+                  <p
+                    className={`
+    text-sm font-semibold leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis
+ transition-colors duration-200
+    px-3 py-1.5 rounded-lg shadow-sm
+    text-white
+    ${
+      item.category?.name === 'Bahasa Inggris'
+        ? 'bg-blue-500'
+        : item.category?.name === 'Bahasa Indonesia'
+          ? 'bg-red-500'
+          : item.category?.name === 'Matematika Dasar'
+            ? 'bg-green-600'
+            : 'bg-gray-400' // default warna kalau bukan ketiganya
+    }
+  `}
+                    title={item.category?.name}
+                  >
+                    {item.category?.name}
+                  </p>
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  <p className="text-sm font-semibold leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis group-hover:text-blue-600 transition-colors duration-200 bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200">
+                    {item.subCategory?.name}
+                  </p>
                 </div>
               </div>
-              <div className="absolute right-[1rem] top-[.5rem] flex items-center gap-[.5rem]">
+
+              {/* Top Badges */}
+              <div className="absolute right-3 top-3 flex flex-col gap-1.5 z-10">
                 {item.new && (
-                  <div className="rounded-xl bg-main-yellow px-[.8rem] text-[.9rem] font-medium text-black">
+                  <div className="rounded-lg bg-orange-400 px-2.5 py-1 text-xs font-semibold text-white shadow-lg">
                     Baru!
                   </div>
                 )}
                 {item.videoId && (
-                  <div className="rounded-xl bg-main px-[.8rem] text-[.9rem] font-medium text-white">
+                  <div className="rounded-lg bg-blue-500 px-2.5 py-1 text-xs font-semibold text-white shadow-lg">
                     Video
                   </div>
                 )}
               </div>
+
+              {/* Hover Border Effect */}
+              <div className="absolute inset-0 rounded-xl ring-2 ring-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </div>
           </div>
         ))}

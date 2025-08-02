@@ -1,22 +1,28 @@
-import OpeningChat from '@/_assest/onboarding/chat/1-opening.png';
-import Chat from '@/_assest/onboarding/chat/2-chat.png';
-import Vision1 from '@/_assest/onboarding/chat/3-vision.png';
-import Vision2 from '@/_assest/onboarding/chat/4-vision.png';
-import OpeningNotes from '@/_assest/onboarding/notes/1-opening.png';
-import Notes1 from '@/_assest/onboarding/notes/2-notes.png';
-import Notes2 from '@/_assest/onboarding/notes/3-notes.png';
-import OpeningQuiz from '@/_assest/onboarding/quiz/1-opening.png';
-import Quiz1 from '@/_assest/onboarding/quiz/2-quiz.png';
-import Quiz2 from '@/_assest/onboarding/quiz/3-quiz.png';
-import Quiz3 from '@/_assest/onboarding/quiz/4-quiz.png';
-import OpeningTryout from '@/_assest/onboarding/tryout/1-opening.png';
-import Tryout1 from '@/_assest/onboarding/tryout/2-tryout.png';
-import Tryout2 from '@/_assest/onboarding/tryout/3-tryout.png';
-import Tryout3 from '@/_assest/onboarding/tryout/4-tryout.png';
-import Tryout4 from '@/_assest/onboarding/tryout/5-tryout.png';
+'use client';
+
 import { useAppContext } from '@/components/provider/provider-app';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import Image from 'next/image';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Progress } from '@/components/ui/progress';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Brain,
+  CheckCircle,
+  FileText,
+  MessageCircle,
+  Sparkles,
+  Trophy,
+  X,
+} from 'lucide-react';
 import { useState } from 'react';
 
 interface Props {
@@ -26,52 +32,111 @@ interface Props {
 
 const OnBoarding = ({ open, type }: Props) => {
   const { setOnBoarding, onBoarding } = useAppContext();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const handleClose = () => {
-    if (type === 'chat') {
-      setOnBoarding((prev: any) => ({ ...prev, chat: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, chat: false }),
-      );
-    } else if (type === 'notes') {
-      setOnBoarding((prev: any) => ({ ...prev, notes: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, notes: false }),
-      );
-    } else if (type === 'quiz') {
-      setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, quiz: false }),
-      );
-    } else if (type === 'tryout') {
-      setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
-      localStorage.setItem(
-        'on-boarding',
-        JSON.stringify({ ...onBoarding, tryout: false }),
-      );
+    setOnBoarding({ ...onBoarding, [type]: false });
+  };
+
+  const getOnboardingContent = () => {
+    switch (type) {
+      case 'chat':
+        return <ChatAI />;
+      case 'notes':
+        return <Notes />;
+      case 'quiz':
+        return <QuizAI />;
+      case 'tryout':
+        return <Tryout />;
+      default:
+        return null;
     }
   };
+
+  const getTypeConfig = () => {
+    const configs = {
+      chat: {
+        title: 'Chat AI Assistant',
+        icon: <MessageCircle className="w-6 h-6 text-white" />,
+        gradient: 'from-blue-500 to-blue-600',
+      },
+      notes: {
+        title: 'Smart Notes',
+        icon: <FileText className="w-6 h-6 text-white" />,
+        gradient: 'from-green-500 to-green-600',
+      },
+      quiz: {
+        title: 'Quiz AI',
+        icon: <Brain className="w-6 h-6 text-white" />,
+        gradient: 'from-purple-500 to-purple-600',
+      },
+      tryout: {
+        title: 'Try Out',
+        icon: <Trophy className="w-6 h-6 text-white" />,
+        gradient: 'from-orange-500 to-orange-600',
+      },
+    };
+    return configs[type];
+  };
+
+  const config = getTypeConfig();
 
   return (
     <Dialog
       open={open}
-      onOpenChange={() => {
-        handleClose();
-      }}
+      onOpenChange={handleClose}
     >
-      <DialogContent className="w-[90%] max-w-[690px] md:w-full">
-        {type === 'chat' ? (
-          <ChatAI />
-        ) : type === 'notes' ? (
-          <Notes />
-        ) : type === 'quiz' ? (
-          <QuizAI />
-        ) : type === 'tryout' ? (
-          <Tryout />
-        ) : null}
+      <DialogContent className="sm:max-w-2xl w-[95%] mx-auto rounded-2xl overflow-hidden border-0 p-0">
+        {/* Header */}
+        <DialogHeader
+          className="pb-4 px-6 pt-6 relative overflow-hidden"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+          }}
+        >
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center bg-linear-to-br ${config.gradient} shadow-lg`}
+                >
+                  {config.icon}
+                </div>
+                <div>
+                  <DialogTitle
+                    className="text-xl font-bold"
+                    style={{ color: mainColor }}
+                  >
+                    {config.title}
+                  </DialogTitle>
+                  <DialogDescription>
+                    Panduan cepat untuk memulai
+                  </DialogDescription>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClose}
+                className="rounded-xl hover:bg-gray-100"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+          {/* Decorative elements */}
+          <div
+            className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+            style={{ backgroundColor: mainColor }}
+          />
+        </DialogHeader>
+
+        {/* Content */}
+        <div className="px-6 pb-6">{getOnboardingContent()}</div>
       </DialogContent>
     </Dialog>
   );
@@ -81,112 +146,170 @@ export default OnBoarding;
 
 const ChatAI = () => {
   const { setOnBoarding, onBoarding } = useAppContext();
-
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState<number>(0);
 
-  const data = [
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  const steps = [
     {
-      image: (
-        <Image
-          src={OpeningChat}
-          alt=""
-        />
+      title: 'Selamat Datang di Chat AI',
+      description:
+        'Asisten cerdas yang siap membantu perjalanan belajar kamu 24/7',
+      content: (
+        <div className="text-center space-y-4">
+          <div
+            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
+          >
+            <MessageCircle className="w-10 h-10 text-white" />
+          </div>
+          <p className="text-gray-600">
+            Chat AI akan membantu menjawab pertanyaan, menjelaskan konsep, dan
+            memberikan panduan belajar yang personal.
+          </p>
+        </div>
       ),
-      heading: 'Selamat Datang di Chat AI',
-      content:
-        'Dengan Chat AI, kamu dapat bertanya seputar soal atau materi yang kurang dipahami, dan langsung mendapatkan jawaban secara real-time.',
-      plus: 'Ingin pelajari fitur ini lebih lanjut?',
     },
     {
-      image: (
-        <Image
-          src={Chat}
-          alt=""
-        />
+      title: 'Cara Menggunakan',
+      description: 'Tips untuk mendapatkan hasil terbaik dari Chat AI',
+      content: (
+        <div className="space-y-4">
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+            <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
+              1
+            </div>
+            <div>
+              <h4 className="font-semibold text-blue-900">
+                Ajukan Pertanyaan Spesifik
+              </h4>
+              <p className="text-sm text-blue-700">
+                Contoh: "Jelaskan rumus integral by parts dengan contoh soal"
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-green-50 border border-green-200">
+            <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center text-white font-bold text-sm">
+              2
+            </div>
+            <div>
+              <h4 className="font-semibold text-green-900">
+                Minta Penjelasan Detail
+              </h4>
+              <p className="text-sm text-green-700">
+                AI akan memberikan penjelasan step-by-step yang mudah dipahami
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 p-4 rounded-xl bg-purple-50 border border-purple-200">
+            <div className="w-8 h-8 rounded-lg bg-purple-500 flex items-center justify-center text-white font-bold text-sm">
+              3
+            </div>
+            <div>
+              <h4 className="font-semibold text-purple-900">Follow Up</h4>
+              <p className="text-sm text-purple-700">
+                Jangan ragu untuk bertanya lebih lanjut jika belum paham
+              </p>
+            </div>
+          </div>
+        </div>
       ),
-      heading: 'Bertanya Langsung ke AI',
-      content:
-        'Kamu bisa langsung mengetik pertanyaan atau soal yang kamu ingin tanyakan kepada Chat AI, dan AI akan memberikan penjelasan yang kamu butuhkan.',
-      plus: null,
     },
     {
-      image: (
-        <Image
-          src={Vision1}
-          alt=""
-        />
+      title: 'Siap Memulai!',
+      description: 'Chat AI sudah siap membantu perjalanan belajar kamu',
+      content: (
+        <div className="text-center space-y-6">
+          <div className="flex justify-center">
+            <CheckCircle className="w-16 h-16 text-green-500" />
+          </div>
+          <div>
+            <h4 className="text-lg font-bold text-gray-900 mb-2">
+              Kamu sudah siap!
+            </h4>
+            <p className="text-gray-600">
+              Mulai chat dengan AI sekarang dan dapatkan bantuan belajar yang
+              kamu butuhkan.
+            </p>
+          </div>
+        </div>
       ),
-      heading: 'Pakai Vision AI (1/2)',
-      content:
-        'Dengan Vision AI, kamu bisa menganalisis gambar atau soal yang muncul di layar. Klik ikon Vision untuk memulai.',
-      plus: null,
-    },
-    {
-      image: (
-        <Image
-          src={Vision2}
-          alt=""
-        />
-      ),
-      heading: 'Pakai Vision AI (2/2)',
-      content:
-        'Kamu bisa memilih bagian dari dokumen atau soal yang ingin kamu tanyakan. Setelah memilih area, tooltip akan muncul dengan opsi untuk meminta bantuan lebih lanjut.',
-      plus: 'Mulai fitur Chat AI?',
     },
   ];
+
+  const currentStep = steps[index];
+  const progress = ((index + 1) / steps.length) * 100;
+
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
-      <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
-        {data[index].image}
+    <div className="space-y-6">
+      {/* Progress */}
+      <div className="space-y-2">
+        <div className="flex justify-between text-sm">
+          <span className="font-medium text-gray-700">Progress</span>
+          <span className="text-gray-500">
+            {index + 1} dari {steps.length}
+          </span>
+        </div>
+        <Progress
+          value={progress}
+          className="h-2"
+          style={{ backgroundColor: `${mainColor}20` }}
+        />
       </div>
-      <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
-          <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
-          <p>{data[index].content}</p>
-          {data[index].plus && (
-            <span className="text-[.9rem] text-blue-700">
-              {data[index].plus}
-            </span>
-          )}
-        </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
-          <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
-            onClick={() => {
-              if (index > 0) {
-                setIndex((prev) => prev - 1);
-              } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, chat: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, chat: false }),
-                );
-              }
+
+      {/* Content */}
+      <Card className="border-2 border-gray-100">
+        <CardHeader className="text-center">
+          <CardTitle
+            className="text-xl"
+            style={{ color: mainColor }}
+          >
+            {currentStep.title}
+          </CardTitle>
+          <p className="text-gray-600">{currentStep.description}</p>
+        </CardHeader>
+        <CardContent>{currentStep.content}</CardContent>
+      </Card>
+
+      {/* Navigation */}
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => setIndex(Math.max(0, index - 1))}
+          disabled={index === 0}
+          className="rounded-xl"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Sebelumnya
+        </Button>
+
+        {index < steps.length - 1 ? (
+          <Button
+            onClick={() => setIndex(Math.min(steps.length - 1, index + 1))}
+            className="rounded-xl text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            {index === 0 ? 'Tutup' : 'Sebelumnya'}
-          </button>
-          <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 md:hover:bg-main-hover"
-            onClick={() => {
-              if (index < data.length - 1) {
-                setIndex((prev) => prev + 1);
-              } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, chat: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, chat: false }),
-                );
-              }
+            Selanjutnya
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => setOnBoarding({ ...onBoarding, chat: false })}
+            className="rounded-xl text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            {index === 0
-              ? 'Lihat Panduan'
-              : index === data.length - 1
-                ? 'Mulai'
-                : 'Berikutnya'}
-          </button>
-        </div>
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Selesai
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -194,100 +317,146 @@ const ChatAI = () => {
 
 const Notes = () => {
   const { setOnBoarding, onBoarding } = useAppContext();
-
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState<number>(0);
 
-  const data = [
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  const steps = [
     {
-      image: (
-        <Image
-          src={OpeningNotes}
-          alt=""
-        />
+      title: 'Smart Notes AI',
+      description:
+        'Buat catatan cerdas dengan bantuan AI untuk pembelajaran yang lebih efektif',
+      content: (
+        <div className="text-center space-y-4">
+          <div
+            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
+          >
+            <FileText className="w-10 h-10 text-white" />
+          </div>
+          <p className="text-gray-600">
+            Fitur Notes AI membantu kamu membuat catatan yang terstruktur,
+            ringkasan otomatis, dan mind map dari materi pembelajaran.
+          </p>
+        </div>
       ),
-      heading: 'Selamat Datang di Notes',
-      content:
-        'Dengan Notes, kamu bisa membuat catatan pribadi untuk menyimpan poin-poin penting selama belajar.',
-      plus: 'Ingin pelajari fitur ini lebih lanjut?',
     },
     {
-      image: (
-        <Image
-          src={Notes1}
-          alt=""
-        />
+      title: 'Fitur Unggulan',
+      description: 'Manfaatkan teknologi AI untuk catatan yang lebih efektif',
+      content: (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 rounded-xl bg-blue-50 border border-blue-200">
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="w-4 h-4 text-blue-600" />
+              <h4 className="font-semibold text-blue-900">Auto Summary</h4>
+            </div>
+            <p className="text-sm text-blue-700">
+              AI akan merangkum poin-poin penting dari materi
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-green-50 border border-green-200">
+            <div className="flex items-center gap-2 mb-2">
+              <Brain className="w-4 h-4 text-green-600" />
+              <h4 className="font-semibold text-green-900">
+                Smart Organization
+              </h4>
+            </div>
+            <p className="text-sm text-green-700">
+              Organisasi catatan otomatis berdasarkan topik
+            </p>
+          </div>
+        </div>
       ),
-      heading: 'Catatan Terstruktur',
-      content:
-        'Kamu bisa mengetik garis miring ‘/’ di awal paragraf untuk menampilkan berbagai opsi seperti heading, tabel, daftar, blok kutipan, dan elemen lainnya sesuai kebutuhanmu.',
-      plus: null,
     },
     {
-      image: (
-        <Image
-          src={Notes2}
-          alt=""
-        />
+      title: 'Mulai Membuat Notes!',
+      description: 'Siap untuk membuat catatan cerdas pertama kamu',
+      content: (
+        <div className="text-center space-y-6">
+          <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+          <div>
+            <h4 className="text-lg font-bold text-gray-900 mb-2">
+              Kamu sudah siap!
+            </h4>
+            <p className="text-gray-600">
+              Mulai buat catatan dengan bantuan AI dan rasakan perbedaannya.
+            </p>
+          </div>
+        </div>
       ),
-      heading: 'AI dalam Catatan',
-      content:
-        'Gunakan fitur AI untuk membantu kamu memahami atau menyempurnakan catatan yang sudah dibuat. Klik pada catatanmu, lalu pilih opsi AI untuk merangkum atau memperjelas isi catatan.',
-      plus: null,
     },
   ];
+
+  const currentStep = steps[index];
+  const progress = ((index + 1) / steps.length) * 100;
+
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
-      <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
-        {data[index].image}
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <div className="flex justify-between text-sm">
+          <span className="font-medium text-gray-700">Progress</span>
+          <span className="text-gray-500">
+            {index + 1} dari {steps.length}
+          </span>
+        </div>
+        <Progress
+          value={progress}
+          className="h-2"
+        />
       </div>
-      <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
-          <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
-          <p>{data[index].content}</p>
-          {data[index].plus && (
-            <span className="text-[.9rem] text-blue-700">
-              {data[index].plus}
-            </span>
-          )}
-        </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
-          <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
-            onClick={() => {
-              if (index > 0) {
-                setIndex((prev) => prev - 1);
-              } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, notes: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, notes: false }),
-                );
-              }
+
+      <Card className="border-2 border-gray-100">
+        <CardHeader className="text-center">
+          <CardTitle
+            className="text-xl"
+            style={{ color: mainColor }}
+          >
+            {currentStep.title}
+          </CardTitle>
+          <p className="text-gray-600">{currentStep.description}</p>
+        </CardHeader>
+        <CardContent>{currentStep.content}</CardContent>
+      </Card>
+
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => setIndex(Math.max(0, index - 1))}
+          disabled={index === 0}
+          className="rounded-xl"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Sebelumnya
+        </Button>
+
+        {index < steps.length - 1 ? (
+          <Button
+            onClick={() => setIndex(Math.min(steps.length - 1, index + 1))}
+            className="rounded-xl text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            {index === 0 ? 'Tutup' : 'Sebelumnya'}
-          </button>
-          <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 md:hover:bg-main-hover"
-            onClick={() => {
-              if (index < data.length - 1) {
-                setIndex((prev) => prev + 1);
-              } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, notes: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, notes: false }),
-                );
-              }
+            Selanjutnya
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => setOnBoarding({ ...onBoarding, notes: false })}
+            className="rounded-xl text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            {index === 0
-              ? 'Lihat Panduan'
-              : index === data.length - 1
-                ? 'Mulai'
-                : 'Berikutnya'}
-          </button>
-        </div>
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Selesai
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -295,110 +464,117 @@ const Notes = () => {
 
 const QuizAI = () => {
   const { setOnBoarding, onBoarding } = useAppContext();
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState<number>(0);
-  const data = [
+
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+
+  const steps = [
     {
-      image: (
-        <Image
-          src={OpeningQuiz}
-          alt=""
-        />
+      title: 'Quiz AI Adaptif',
+      description:
+        'Latihan soal yang menyesuaikan dengan kemampuan dan perkembangan kamu',
+      content: (
+        <div className="text-center space-y-4">
+          <div
+            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, #9333ea)`,
+            }}
+          >
+            <Brain className="w-10 h-10 text-white" />
+          </div>
+          <p className="text-gray-600">
+            Quiz AI menggunakan teknologi adaptif untuk memberikan soal yang
+            sesuai dengan level kamu dan membantu peningkatan yang optimal.
+          </p>
+        </div>
       ),
-      heading: 'Selamat Datang di Quiz',
-      content:
-        'Dengan Quiz AI, kamu bisa mengerjakan soal-soal pilihan ganda atau esai secara interaktif. Hasil quiz kamu akan dinilai secara otomatis oleh sistem.',
-      plus: 'Ingin pelajari fitur ini lebih lanjut?',
     },
     {
-      image: (
-        <Image
-          src={Quiz1}
-          alt=""
-        />
+      title: 'Siap Quiz!',
+      description: 'Mulai latihan dengan Quiz AI sekarang',
+      content: (
+        <div className="text-center space-y-6">
+          <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+          <div>
+            <h4 className="text-lg font-bold text-gray-900 mb-2">
+              Let's Quiz!
+            </h4>
+            <p className="text-gray-600">
+              Mulai latihan soal dengan AI dan tingkatkan kemampuan kamu.
+            </p>
+          </div>
+        </div>
       ),
-      heading: 'Pilih Tipe Soal',
-      content:
-        'Pilih tipe soal pilihan ganda atau jawaban singkat, sesuai dengan kebutuhanmu.',
-      plus: null,
-    },
-    {
-      image: (
-        <Image
-          src={Quiz2}
-          alt=""
-        />
-      ),
-      heading: 'Pilih Halaman',
-      content:
-        'Pilih halaman material yang ingin dijadikan quiz. Topik dan isi quiz akan dibuat berdasarkan konten dari halaman tersebut.',
-      plus: null,
-    },
-    {
-      image: (
-        <Image
-          src={Quiz3}
-          alt=""
-        />
-      ),
-      heading: 'Kerjakan dan Lihat Hasil',
-      content:
-        'Setelah memilih soal dan halaman, kamu bisa langsung menjawab. Sistem akan memberi umpan balik setelah kamu menjawab soal.',
-      plus: 'Mulai fitur Quiz?',
     },
   ];
+
+  const currentStep = steps[index];
+  const progress = ((index + 1) / steps.length) * 100;
+
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
-      <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
-        {data[index].image}
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <div className="flex justify-between text-sm">
+          <span className="font-medium text-gray-700">Progress</span>
+          <span className="text-gray-500">
+            {index + 1} dari {steps.length}
+          </span>
+        </div>
+        <Progress
+          value={progress}
+          className="h-2"
+        />
       </div>
-      <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
-          <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
-          <p>{data[index].content}</p>
-          {data[index].plus && (
-            <span className="text-[.9rem] text-blue-700">
-              {data[index].plus}
-            </span>
-          )}
-        </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
-          <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
-            onClick={() => {
-              if (index > 0) {
-                setIndex((prev) => prev - 1);
-              } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, quiz: false }),
-                );
-              }
+
+      <Card className="border-2 border-gray-100">
+        <CardHeader className="text-center">
+          <CardTitle
+            className="text-xl"
+            style={{ color: mainColor }}
+          >
+            {currentStep.title}
+          </CardTitle>
+          <p className="text-gray-600">{currentStep.description}</p>
+        </CardHeader>
+        <CardContent>{currentStep.content}</CardContent>
+      </Card>
+
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => setIndex(Math.max(0, index - 1))}
+          disabled={index === 0}
+          className="rounded-xl"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Sebelumnya
+        </Button>
+
+        {index < steps.length - 1 ? (
+          <Button
+            onClick={() => setIndex(Math.min(steps.length - 1, index + 1))}
+            className="rounded-xl text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, #9333ea)`,
             }}
           >
-            {index === 0 ? 'Tutup' : 'Sebelumnya'}
-          </button>
-          <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 md:hover:bg-main-hover"
-            onClick={() => {
-              if (index < data.length - 1) {
-                setIndex((prev) => prev + 1);
-              } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, quiz: false }),
-                );
-              }
+            Selanjutnya
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => setOnBoarding({ ...onBoarding, quiz: false })}
+            className="rounded-xl text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, #9333ea)`,
             }}
           >
-            {index === 0
-              ? 'Lihat Panduan'
-              : index === data.length - 1
-                ? 'Mulai'
-                : 'Berikutnya'}
-          </button>
-        </div>
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Selesai
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -406,122 +582,118 @@ const QuizAI = () => {
 
 const Tryout = () => {
   const { setOnBoarding, onBoarding } = useAppContext();
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [index, setIndex] = useState<number>(0);
-  const data = [
+
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+
+  const steps = [
     {
-      image: (
-        <Image
-          src={OpeningTryout}
-          alt=""
-        />
+      title: 'Try Out Simulation',
+      description:
+        'Simulasi ujian yang mendekati kondisi real untuk persiapan optimal',
+      content: (
+        <div className="text-center space-y-4">
+          <div
+            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, #ea580c)`,
+            }}
+          >
+            <Trophy className="w-10 h-10 text-white" />
+          </div>
+          <p className="text-gray-600">
+            Try Out memberikan pengalaman ujian yang realistis dengan sistem
+            penilaian yang akurat dan analisis mendalam.
+          </p>
+        </div>
       ),
-      heading: 'Selamat Datang di Try Out',
-      content:
-        'Dengan Try Out, kamu dapat menguji pemahamanmu melalui simulasi ujian secara online.',
-      plus: 'Ingin pelajari fitur ini lebih lanjut?',
     },
     {
-      image: (
-        <Image
-          src={Tryout1}
-          alt=""
-        />
+      title: 'Siap Try Out!',
+      description: 'Mulai simulasi ujian sekarang',
+      content: (
+        <div className="text-center space-y-6">
+          <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+          <div>
+            <h4 className="text-lg font-bold text-gray-900 mb-2">
+              Ready to Test!
+            </h4>
+            <p className="text-gray-600">
+              Mulai try out dan uji kemampuan kamu dengan simulasi ujian yang
+              menantang.
+            </p>
+          </div>
+        </div>
       ),
-      heading: 'Daftar Try Out',
-      content:
-        'Sebelum mulai, kamu perlu klik “Daftar” pada Try Out yang ingin kamu ikuti.',
-      plus: null,
-    },
-    {
-      image: (
-        <Image
-          src={Tryout2}
-          alt=""
-        />
-      ),
-      heading: 'Mulai Try Out',
-      content:
-        'Pada hari H, klik “Mulai try out” pada Try Out yang sudah kamu daftarkan untuk mulai mengerjakan.',
-      plus: null,
-    },
-    {
-      image: (
-        <Image
-          src={Tryout3}
-          alt=""
-        />
-      ),
-      heading: 'Kerjakan Try Out',
-      content:
-        'Kerjakan Try Out dengan memilih jawaban pada pilihan ganda dan submit seluruh jawabanmu. Jika waktu habis, seluruh jawabanmu akan di-submit otomatis.',
-      plus: null,
-    },
-    {
-      image: (
-        <Image
-          src={Tryout4}
-          alt=""
-        />
-      ),
-      heading: 'Lihat Hasil',
-      content:
-        'Setelah menyelesaikan Try Out, tunggu pengumuman dan lihat hasil tesmu!',
-      plus: 'Mulai Try Out??',
     },
   ];
+
+  const currentStep = steps[index];
+  const progress = ((index + 1) / steps.length) * 100;
+
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
-      <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
-        {data[index].image}
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <div className="flex justify-between text-sm">
+          <span className="font-medium text-gray-700">Progress</span>
+          <span className="text-gray-500">
+            {index + 1} dari {steps.length}
+          </span>
+        </div>
+        <Progress
+          value={progress}
+          className="h-2"
+        />
       </div>
-      <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
-          <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
-          <p>{data[index].content}</p>
-          {data[index].plus && (
-            <span className="text-[.9rem] text-blue-700">
-              {data[index].plus}
-            </span>
-          )}
-        </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
-          <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
-            onClick={() => {
-              if (index > 0) {
-                setIndex((prev) => prev - 1);
-              } else if (index === 0) {
-                setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, tryout: false }),
-                );
-              }
+
+      <Card className="border-2 border-gray-100">
+        <CardHeader className="text-center">
+          <CardTitle
+            className="text-xl"
+            style={{ color: mainColor }}
+          >
+            {currentStep.title}
+          </CardTitle>
+          <p className="text-gray-600">{currentStep.description}</p>
+        </CardHeader>
+        <CardContent>{currentStep.content}</CardContent>
+      </Card>
+
+      <div className="flex justify-between">
+        <Button
+          variant="outline"
+          onClick={() => setIndex(Math.max(0, index - 1))}
+          disabled={index === 0}
+          className="rounded-xl"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Sebelumnya
+        </Button>
+
+        {index < steps.length - 1 ? (
+          <Button
+            onClick={() => setIndex(Math.min(steps.length - 1, index + 1))}
+            className="rounded-xl text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, #ea580c)`,
             }}
           >
-            {index === 0 ? 'Tutup' : 'Sebelumnya'}
-          </button>
-          <button
-            className="w-[120px] rounded-[.8rem] bg-main py-[.8rem] text-[.9rem] text-white outline-none duration-300 md:hover:bg-main-hover"
-            onClick={() => {
-              if (index < data.length - 1) {
-                setIndex((prev) => prev + 1);
-              } else if (index === data.length - 1) {
-                setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
-                localStorage.setItem(
-                  'on-boarding',
-                  JSON.stringify({ ...onBoarding, tryout: false }),
-                );
-              }
+            Selanjutnya
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => setOnBoarding({ ...onBoarding, tryout: false })}
+            className="rounded-xl text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, #ea580c)`,
             }}
           >
-            {index === 0
-              ? 'Lihat Panduan'
-              : index === data.length - 1
-                ? 'Mulai'
-                : 'Berikutnya'}
-          </button>
-        </div>
+            <CheckCircle className="w-4 h-4 mr-2" />
+            Selesai
+          </Button>
+        )}
       </div>
     </div>
   );

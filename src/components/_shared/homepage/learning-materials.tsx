@@ -53,17 +53,17 @@ const LearningMaterials = () => {
   return (
     <div
       id="materi"
-      className="relative mx-auto flex w-full max-w-[1280px] flex-col gap-[4rem]"
+      className="relative mx-auto flex w-full max-w-[1280px] flex-col gap-16"
     >
-      <div className="mx-[1rem] md:mx-0">
-        <h1 className="mb-[1rem] text-center text-[1.5rem] font-bold text-main md:text-[2.5rem]">
+      <div className="mx-4 md:mx-0">
+        <h1 className="mb-4 text-center text-[1.5rem] font-bold text-main md:text-[2.5rem]">
           Materi Apa yang Kamu Butuhkan?
         </h1>
-        <p className="font-regular mt-[-1rem] text-center text-main-gray-text">
+        <p className="font-regular -mt-4 text-center text-main-gray-text">
           Uji tingkat kesiapanmu dengan Quiz di setiap materi!
         </p>
       </div>
-      <div className="gap-[1.5rem]">
+      <div className="gap-6">
         <div
           className={cn(
             'relative flex h-[450px] w-full flex-col overflow-hidden rounded-xl p-6 md:h-[500px]',
@@ -77,7 +77,7 @@ const LearningMaterials = () => {
                   'relative mx-auto min-h-fit w-full max-w-[400px] cursor-pointer overflow-hidden rounded-2xl p-4',
                   'transition-all duration-200 ease-in-out hover:scale-[103%]',
                   'bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]',
-                  'transform-gpu dark:bg-transparent dark:backdrop-blur-md dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]',
+                  'transform-gpu',
                 )}
               >
                 <div className="flex flex-row items-center gap-3">
@@ -90,7 +90,7 @@ const LearningMaterials = () => {
                     <span className="text-lg">{item.icon}</span>
                   </div>
                   <div className="flex flex-col overflow-hidden">
-                    <figcaption className="flex flex-row items-center whitespace-pre text-lg font-medium dark:text-white">
+                    <figcaption className="flex flex-row items-center whitespace-pre text-lg font-medium">
                       <span className="text-lg">{item.name}</span>
                     </figcaption>
                     <p className="text-sm font-normal text-main-gray-text">

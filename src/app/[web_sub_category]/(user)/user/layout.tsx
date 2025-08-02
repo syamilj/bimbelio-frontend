@@ -1,4 +1,5 @@
 // src/app/(user)/layout.tsx (SERVER layout)
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
@@ -16,7 +17,9 @@ export const metadata: Metadata = {
 export default function LayoutUser({ children }: { children: ReactNode }) {
   return (
     <div className={cn('min-h-screen bg-background font-sans antialiased')}>
-      <LayoutUserClient>{children}</LayoutUserClient>
+      <TooltipProvider>
+        <LayoutUserClient>{children}</LayoutUserClient>
+      </TooltipProvider>
     </div>
   );
 }

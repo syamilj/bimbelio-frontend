@@ -1,19 +1,19 @@
-import OpeningChat from '@/_assest/onboarding/chat/1-opening.png';
-import Chat from '@/_assest/onboarding/chat/2-chat.png';
-import Vision1 from '@/_assest/onboarding/chat/3-vision.png';
-import Vision2 from '@/_assest/onboarding/chat/4-vision.png';
-import OpeningNotes from '@/_assest/onboarding/notes/1-opening.png';
-import Notes1 from '@/_assest/onboarding/notes/2-notes.png';
-import Notes2 from '@/_assest/onboarding/notes/3-notes.png';
-import OpeningQuiz from '@/_assest/onboarding/quiz/1-opening.png';
-import Quiz1 from '@/_assest/onboarding/quiz/2-quiz.png';
-import Quiz2 from '@/_assest/onboarding/quiz/3-quiz.png';
-import Quiz3 from '@/_assest/onboarding/quiz/4-quiz.png';
-import OpeningTryout from '@/_assest/onboarding/tryout/1-opening.png';
-import Tryout1 from '@/_assest/onboarding/tryout/2-tryout.png';
-import Tryout2 from '@/_assest/onboarding/tryout/3-tryout.png';
-import Tryout3 from '@/_assest/onboarding/tryout/4-tryout.png';
-import Tryout4 from '@/_assest/onboarding/tryout/5-tryout.png';
+import OpeningChat from '@/_assets/onboarding/chat/1-opening.png';
+import Chat from '@/_assets/onboarding/chat/2-chat.png';
+import Vision1 from '@/_assets/onboarding/chat/3-vision.png';
+import Vision2 from '@/_assets/onboarding/chat/4-vision.png';
+import OpeningNotes from '@/_assets/onboarding/notes/1-opening.png';
+import Notes1 from '@/_assets/onboarding/notes/2-notes.png';
+import Notes2 from '@/_assets/onboarding/notes/3-notes.png';
+import OpeningQuiz from '@/_assets/onboarding/quiz/1-opening.png';
+import Quiz1 from '@/_assets/onboarding/quiz/2-quiz.png';
+import Quiz2 from '@/_assets/onboarding/quiz/3-quiz.png';
+import Quiz3 from '@/_assets/onboarding/quiz/4-quiz.png';
+import OpeningTryout from '@/_assets/onboarding/tryout/1-opening.png';
+import Tryout1 from '@/_assets/onboarding/tryout/2-tryout.png';
+import Tryout2 from '@/_assets/onboarding/tryout/3-tryout.png';
+import Tryout3 from '@/_assets/onboarding/tryout/4-tryout.png';
+import Tryout4 from '@/_assets/onboarding/tryout/5-tryout.png';
 import { useAppContext } from '@/components/provider/provider-app';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import Image from 'next/image';
@@ -135,12 +135,12 @@ const ChatAI = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
       <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
         {data[index].image}
       </div>
       <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
           <p>{data[index].content}</p>
           {data[index].plus && (
@@ -149,9 +149,9 @@ const ChatAI = () => {
             </span>
           )}
         </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
+        <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -236,12 +236,12 @@ const Notes = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
       <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
         {data[index].image}
       </div>
       <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
           <p>{data[index].content}</p>
           {data[index].plus && (
@@ -250,9 +250,9 @@ const Notes = () => {
             </span>
           )}
         </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
+        <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -347,12 +347,12 @@ const QuizAI = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
       <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
         {data[index].image}
       </div>
       <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
           <p>{data[index].content}</p>
           {data[index].plus && (
@@ -361,9 +361,9 @@ const QuizAI = () => {
             </span>
           )}
         </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
+        <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);
@@ -470,12 +470,12 @@ const Tryout = () => {
     },
   ];
   return (
-    <div className="flex flex-col justify-center gap-[1rem] md:flex-row">
+    <div className="flex flex-col justify-center gap-4 md:flex-row">
       <div className="mx-auto w-full max-w-[274px] shrink-0 md:mx-0 md:w-[274px]">
         {data[index].image}
       </div>
       <div className="flex h-full flex-col justify-between">
-        <div className="flex flex-col gap-[1rem]">
+        <div className="flex flex-col gap-4">
           <h1 className="text-[1.1rem] font-semibold">{data[index].heading}</h1>
           <p>{data[index].content}</p>
           {data[index].plus && (
@@ -484,9 +484,9 @@ const Tryout = () => {
             </span>
           )}
         </div>
-        <div className="flex w-full items-center justify-end gap-[1rem]">
+        <div className="flex w-full items-center justify-end gap-4">
           <button
-            className="rounded-[.8rem] px-[1rem] py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
+            className="rounded-[.8rem] px-4 py-[.8rem] text-[.9rem] text-main-gray-text outline-none duration-300 md:hover:text-black"
             onClick={() => {
               if (index > 0) {
                 setIndex((prev) => prev - 1);

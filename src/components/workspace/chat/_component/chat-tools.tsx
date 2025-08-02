@@ -1,15 +1,12 @@
 import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
 import { toaster } from '@/components/ui/toaster';
 import { ToolTip } from '@/components/ui/tooltip';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import {
-  IconCopy,
-  IconDislike,
-  IconEdit,
-  IconLike,
-  IconRegenerateMessage,
-} from '@/styles/icon';
+import { cn } from '@/lib/utils';
+import { Copy, Edit3, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useProvider } from '../provider';
 
@@ -19,9 +16,13 @@ type Props = {
 
 const ChatTools = ({ messageIndex }: Props) => {
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
+
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const {
     messageData,
@@ -171,118 +172,114 @@ const ChatTools = ({ messageIndex }: Props) => {
   };
 
   return (
-    <>
+    <div
+      className={cn(
+        'flex items-center gap-1',
+        role === 'user' ? 'justify-end' : 'justify-start',
+      )}
+    >
       {role === 'user' ? (
-        <div className="flex items-center gap-[.5rem] text-[1.2rem]">
-          {}
-          <ToolTip value="Copy text">
-            <div
-              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
-              onClick={() => {
-                handleCopy();
-              }}
+        // User Message Tools
+        <div className="flex items-center gap-1">
+          <ToolTip value="Salin pesan">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              onClick={handleCopy}
             >
-              <IconCopy
-                w={18}
-                className={''}
-              />
-            </div>
+              <Copy className="w-3.5 h-3.5" />
+            </Button>
           </ToolTip>
-          <ToolTip value="Edit message">
-            <div
-              className="hidden rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
-              onClick={() => {
-                handleEditMessage();
-              }}
+
+          <ToolTip value="Edit pesan">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              onClick={handleEditMessage}
             >
-              <IconEdit
-                w={18}
-                className={''}
-              />
-            </div>
+              <Edit3 className="w-3.5 h-3.5" />
+            </Button>
           </ToolTip>
         </div>
       ) : (
-        <div className="flex items-center gap-[.2rem] text-[1.2rem]">
-          <ToolTip value="Copy text">
-            <div
-              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
-              onClick={() => {
-                handleCopy();
-              }}
+        // AI Message Tools
+        <div className="flex items-center gap-1">
+          <ToolTip value="Salin pesan">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              onClick={handleCopy}
             >
-              <IconCopy
-                w={18}
-                className={''}
-              />
-            </div>
+              <Copy className="w-3.5 h-3.5" />
+            </Button>
           </ToolTip>
-          <ToolTip value="Like message">
-            <div
-              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
-              onClick={() => {
-                like({ messageId: data?.id });
-              }}
-            >
-              {data?.like ? (
-                <IconLike
-                  w={18}
-                  className={''}
-                  active={true}
-                />
-              ) : (
-                <IconLike
-                  w={18}
-                  className={''}
-                />
+
+          <ToolTip value="Suka">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+                data?.like
+                  ? 'text-white shadow-sm hover:shadow-md'
+                  : 'text-gray-500 hover:text-green-600 hover:bg-green-50',
               )}
-            </div>
-          </ToolTip>
-          <ToolTip value="Dislike message">
-            <div
-              className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
-              onClick={() => {
-                dislike({ messageId: data?.id });
+              style={{
+                backgroundColor: data?.like ? mainColor : 'transparent',
               }}
+              onClick={() => like({ messageId: data?.id })}
             >
-              {data?.dislike ? (
-                <IconDislike
-                  w={18}
-                  className={''}
-                  active={true}
-                />
-              ) : (
-                <IconDislike
-                  w={18}
-                  className={''}
-                />
-              )}
-            </div>
-          </ToolTip>
-          {/* <ToolTip value="Regenerate message">
-            <div className="rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input">
-              <IconSettingMessage
-                w={18}
-                className={''}
+              <ThumbsUp
+                className={cn(
+                  'w-3.5 h-3.5 transition-transform',
+                  data?.like && 'scale-110',
+                )}
               />
-            </div>
-          </ToolTip> */}
+            </Button>
+          </ToolTip>
+
+          <ToolTip value="Tidak suka">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+                data?.dislike
+                  ? 'bg-red-500 text-white shadow-sm hover:shadow-md hover:bg-red-600'
+                  : 'text-gray-500 hover:text-red-600 hover:bg-red-50',
+              )}
+              onClick={() => dislike({ messageId: data?.id })}
+            >
+              <ThumbsDown
+                className={cn(
+                  'w-3.5 h-3.5 transition-transform',
+                  data?.dislike && 'scale-110',
+                )}
+              />
+            </Button>
+          </ToolTip>
+
           {messageData.length - 1 === messageIndex && (
-            <ToolTip value="Regenerate message">
-              <div
-                className="hidden rounded-[50%] p-[.2rem] text-main-gray-text duration-200 hover:bg-main-gray-input"
-                onClick={() => regenerateMessage()}
+            <ToolTip value="Regenerate pesan">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:bg-gray-100 transition-colors"
+                style={{
+                  color: mainColor,
+                }}
+                onClick={regenerateMessage}
               >
-                <IconRegenerateMessage
-                  w={18}
-                  className={''}
-                />
-              </div>
+                <RotateCcw className="w-3.5 h-3.5" />
+              </Button>
             </ToolTip>
           )}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

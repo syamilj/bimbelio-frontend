@@ -1,4 +1,4 @@
-import LOGO from '@/_assest/logomark.png';
+import LOGO from '@/_assets/logomark.png';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
@@ -44,8 +44,8 @@ const Pricing = () => {
       id="pricing"
       className="mx-auto flex w-full max-w-[1280px] flex-col"
     >
-      <div className="mx-[1rem] rounded-[2rem] bg-white px-[2rem] py-[4rem] md:mx-0">
-        <div className="grid grid-cols-2 gap-x-[3rem] md:grid-cols-3">
+      <div className="mx-4 rounded-4xl bg-white px-8 py-16 md:mx-0">
+        <div className="grid grid-cols-2 gap-x-12 md:grid-cols-3">
           <div className="hidden items-center justify-center md:flex">
             <div className="flex items-center gap-2">
               <Image
@@ -56,7 +56,7 @@ const Pricing = () => {
               <span className="font-semibold">Bimbelio</span>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-[1rem] text-center">
+          <div className="flex flex-col items-center gap-4 text-center">
             <h1 className="text-[2rem] font-medium text-main-gray-text">
               GRATIS
             </h1>
@@ -67,7 +67,7 @@ const Pricing = () => {
               </p>
             </div>
             <button
-              className="w-full rounded-[2rem] bg-bg-workspace py-[.8rem] font-medium text-main-gray-text"
+              className="w-full rounded-4xl bg-bg-workspace py-[.8rem] font-medium text-main-gray-text"
               onClick={() => {
                 if (session)
                   Router.push(`/${website_sub_category_id}/dashboard`);
@@ -77,7 +77,7 @@ const Pricing = () => {
               Mulai sekarang
             </button>
           </div>
-          <div className="flex flex-col items-center gap-[1rem] text-center">
+          <div className="flex flex-col items-center gap-4 text-center">
             <h1 className="text-[2rem] font-medium text-main">PREMIUM</h1>
             <div className="">
               <p className="text-[1.5rem] font-medium">Rp99.000/bulan</p>
@@ -89,7 +89,7 @@ const Pricing = () => {
               </p>
             </div>
             <button
-              className="font-regular w-full rounded-[2rem] bg-gradient py-[.8rem] text-white md:hover:opacity-85"
+              className="font-regular w-full rounded-4xl bg-gradient py-[.8rem] text-white md:hover:opacity-85"
               onClick={() => {
                 if (session) {
                   setTransactionPopUp(true);
@@ -103,8 +103,8 @@ const Pricing = () => {
             </button>
           </div>
         </div>
-        <div className="mt-[2rem] grid grid-cols-2 md:grid-cols-3">
-          <div className="font-regular hidden bg-white py-[.8rem] pl-[1rem] text-start text-main-gray-text md:block">
+        <div className="mt-8 grid grid-cols-2 md:grid-cols-3">
+          <div className="font-regular hidden bg-white py-[.8rem] pl-4 text-start text-main-gray-text md:block">
             Akses Material
           </div>
           <div className="font-regular bg-white py-[.8rem] text-center text-main-gray-text">
@@ -122,7 +122,7 @@ const Pricing = () => {
             <div
               className={`${
                 i % 2 === 0 ? 'bg-bg-workspace' : 'bg-bg-white'
-              } font-regular hidden py-[.8rem] pl-[1rem] text-start text-main-gray-text md:block`}
+              } font-regular hidden py-[.8rem] pl-4 text-start text-main-gray-text md:block`}
             >
               {item.heading}
             </div>

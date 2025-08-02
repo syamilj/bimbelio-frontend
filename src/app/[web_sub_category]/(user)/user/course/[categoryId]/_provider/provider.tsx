@@ -2,6 +2,7 @@
 
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { LoadingRetro } from '@/components/ui/loading-retro';
 import {
   BlocknoteEditorType,
   schema,
@@ -48,20 +49,21 @@ export default function Provider({ children }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
-  const userId = session?.user.id;
+  const userId = session?.user?.id;
 
   // ===== Params ================================
   const tab = searchParams?.get('tab');
   const sub = searchParams?.get('sub');
+  const startParam = searchParams?.get('start'); // New parameter to detect start flow
   const categoryId = Array.isArray(params?.categoryId)
     ? params.categoryId[0]
     : params?.categoryId || null;
 
   useEffect(() => {
     if (!tab && sub) {
-      router.push(`${window.location.pathname}?sub=${sub}&tab=notes`);
+      router.push(`${window.location.pathname}?sub=${sub}&tab=chat`);
     }
-  }, [tab, sub]);
+  }, [tab, sub, router]);
 
   // ===== Editor ================================
   const editor = useCreateBlockNote({
@@ -71,6 +73,7 @@ export default function Provider({ children }: Props) {
   // ===== Data & IndexChapter ================================
   const [CourseData, setCourseData] = useState<Data | null>(null);
   const [indexChapter, setIndexChapter] = useState<number>(0);
+  const [showStartCourse, setShowStartCourse] = useState<boolean>(false);
 
   const {
     data: Course,
@@ -78,6 +81,7 @@ export default function Provider({ children }: Props) {
     refetch: CourseRefetch,
   } = useGet<CourseType>('/course/getCourseUserByCategoryId', {
     params: { categoryId },
+    enabled: !!categoryId,
     useEffectDependencies: [categoryId],
   });
 
@@ -85,6 +89,7 @@ export default function Provider({ children }: Props) {
     '/course/getProgressByCategory',
     {
       params: { categoryId },
+      enabled: !!categoryId,
       useEffectDependencies: [categoryId],
     },
   );
@@ -94,11 +99,29 @@ export default function Provider({ children }: Props) {
   }, [categoryId, pathname]);
 
   useEffect(() => {
-    if (Course) {
+    if (Course && CourseProgress) {
+      // Check if user has any progress in this course category
+      const hasProgress =
+        Array.isArray(CourseProgress) &&
+        CourseProgress.some(
+          (progress: any) =>
+            progress.courseSubChapterId &&
+            Array.isArray(Course) &&
+            Course.some(
+              (chapter: any) =>
+                Array.isArray(chapter.CourseSubChapter) &&
+                chapter.CourseSubChapter.some(
+                  (subChapter: any) =>
+                    subChapter.id === progress.courseSubChapterId,
+                ),
+            ),
+        );
+
+      // Check if user is starting a new course (start=true param OR no progress and no sub)
+      const isStartFlow = startParam === 'true' || (!sub && !hasProgress);
+      setShowStartCourse(isStartFlow);
+
       if (sub) {
-        // const findData = Course[indexChapter].CourseSubChapter.find(
-        //   sChapter => sChapter.id === sub,
-        // );
         let findData: any;
         Course.forEach((item) => {
           item.CourseSubChapter.forEach((sChapter) => {
@@ -124,7 +147,7 @@ export default function Provider({ children }: Props) {
             CourseProgress: findData.CourseProgress,
           });
         } else {
-          if (Course.length > 0) {
+          if (Course.length > 0 && Course[0].CourseSubChapter.length > 0) {
             setCourseData({
               id: Course[0].CourseSubChapter[0].id,
               number: Course[0].CourseSubChapter[0].number,
@@ -143,7 +166,12 @@ export default function Provider({ children }: Props) {
           }
         }
       } else {
-        if (Course.length > 0) {
+        // Only auto-navigate if not showing start course
+        if (
+          Course.length > 0 &&
+          Course[0].CourseSubChapter.length > 0 &&
+          !isStartFlow
+        ) {
           setCourseData({
             id: Course[0].CourseSubChapter[0].id,
             number: Course[0].CourseSubChapter[0].number,
@@ -160,15 +188,14 @@ export default function Provider({ children }: Props) {
             CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
           });
           router.push(
-            `${window.location.pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=notes`,
+            `${window.location.pathname}?sub=${Course[0].CourseSubChapter[0].id}&tab=chat`,
           );
         } else {
           setCourseData(null);
         }
       }
     }
-    // setLoading(false);
-  }, [Course, sub, indexChapter]);
+  }, [Course, CourseProgress, sub, indexChapter, router, startParam]);
 
   useEffect(() => {
     const chatAIContainer = document.querySelector(
@@ -192,15 +219,15 @@ export default function Provider({ children }: Props) {
         'flex: 50.0 1 0px; overflow: hidden; position: relative;';
       setMobileScreen('minimize');
     }
-  }, [CourseData?.type]);
+  }, [CourseData?.type, setMobileScreen]);
 
   // ===== Doc ================================
   const [docId, setDocId] = useState<string>('');
 
   const { data: doc } = useGet('/document/getDocData', {
     params: { docId, userId: userId },
-    enabled: !!docId,
-    useEffectDependencies: [categoryId, docId],
+    enabled: !!docId && !!userId,
+    useEffectDependencies: [categoryId, docId, userId],
   });
 
   useEffect(() => {
@@ -213,7 +240,16 @@ export default function Provider({ children }: Props) {
   const [showAI, setShowAI] = useState<boolean>(false);
 
   const isLocked =
-    (CourseData?.premium && !session?.user.feature.course) || false;
+    (CourseData?.premium && !session?.user?.feature?.course) || false;
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, [sub]);
 
   const Context = {
     isLocked,
@@ -232,6 +268,8 @@ export default function Provider({ children }: Props) {
       setCourseData,
       indexChapter,
       setIndexChapter,
+      showStartCourse,
+      setShowStartCourse,
     },
     useDoc: {
       docId,
@@ -246,6 +284,8 @@ export default function Provider({ children }: Props) {
     },
     editor,
   };
+
+  if (isLoading) return <LoadingRetro />;
 
   return (
     <ProviderContext.Provider value={Context}>
@@ -299,6 +339,8 @@ type ProviderType = {
     setCourseData: Dispatch<SetStateAction<Data | null>>;
     indexChapter: number;
     setIndexChapter: Dispatch<SetStateAction<number>>;
+    showStartCourse: boolean;
+    setShowStartCourse: Dispatch<SetStateAction<boolean>>;
   };
   useDoc: {
     docId: string;

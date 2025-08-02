@@ -1,21 +1,10 @@
 'use client';
 
-import { PaymentTryout } from '@/components/_shared/payment/payment-tryout';
-import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Spinner } from '@/components/ui/spinner';
-import { toaster } from '@/components/ui/toaster';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Tooltip,
   TooltipContent,
@@ -24,28 +13,22 @@ import {
 } from '@/components/ui/tooltip';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { cn, getDateString, getDateTryoutString, getHours } from '@/lib/utils';
-import { IconTailedArrowUp45, IconX } from '@/styles/icon';
-import { hexToRgba } from '@/styles/main-styles';
+import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { cn, getDateString } from '@/lib/utils';
+import { IconTailedArrowUp45 } from '@/styles/icon';
 import type {
-  Pricing,
   TryoutRegistration,
   TryoutSessionParticipant,
 } from '@/types/database';
 import {
-  ArrowUp,
   Award,
   BookOpen,
   Calendar,
-  Check,
+  CheckCircle,
   Clock,
-  ExternalLink,
-  Heart,
-  Instagram,
-  Loader2,
-  MessageCircle,
-  Share2,
+  Eye,
+  Play,
+  Star,
   Tag,
   Trophy,
   Users,
@@ -53,14 +36,8 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, {
-  useEffect,
-  useState,
-  type Dispatch,
-  type ReactNode,
-  type SetStateAction,
-} from 'react';
-import ButtonPayment from '../../../_components/button-payment';
+import { useEffect, useState, type ReactNode } from 'react';
+import RegistrationProofModal from './registration-proof-modal';
 
 interface ProofItem {
   id: string;
@@ -149,6 +126,7 @@ export default function CardTryOut({
 }: card) {
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
   const searchParams = useSearchParams();
   const id = searchParams?.get('id');
@@ -157,134 +135,15 @@ export default function CardTryOut({
   const { data: session } = useSession();
 
   const [showDetail, setShowDetail] = useState<CardTryoutProps | null>(null);
-  const [step, setStep] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Proof items state
-  const [proofItems, setProofItems] = useState<ProofItem[]>([]);
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   useEffect(() => {
     if (showDetail) {
       document.body.style.overflow = 'hidden';
-
-      // Generate proof items based on your specification
-      const items: ProofItem[] = [
-        {
-          id: 'instagram_follow',
-          title: 'Follow Instagram',
-          instruction: 'Klik Follow di profil Instagram',
-          icon: <Instagram className="h-5 w-5" />,
-          link: 'https://www.instagram.com/bimbelio.official',
-          points: 10,
-          required: true,
-          step: 1,
-          completed: false,
-          uploaded: false,
-          loading: false,
-          fileName: '',
-          uploadType: 'file', // Changed from "action" to "file"
-        },
-        {
-          id: 'tiktok_follow',
-          title: 'Follow TikTok',
-          instruction: 'Klik Follow di profil TikTok',
-          icon: <MessageCircle className="h-5 w-5" />,
-          link: 'https://www.tiktok.com/@bimbelio.official',
-          points: 10,
-          required: true,
-          step: 2,
-          completed: false,
-          uploaded: false,
-          loading: false,
-          fileName: '',
-          uploadType: 'file', // Changed from "action" to "file"
-        },
-      ];
-
-      // Add Instagram-specific tasks if instagram link exists
-      if (showDetail.instagram) {
-        items.push(
-          {
-            id: 'like_post',
-            title: 'Like Postingan',
-            instruction: 'Klik ❤️ di postingan',
-            icon: <Heart className="h-5 w-5" />,
-            link: showDetail.instagram,
-            points: 5,
-            required: true,
-            step: 3,
-            completed: false,
-            uploaded: false,
-            loading: false,
-            fileName: '',
-            uploadType: 'file', // Changed from "action" to "file"
-          },
-          {
-            id: 'tag_friends',
-            title: 'Tag 3 Teman',
-            instruction: 'Tulis komentar dan tag 3 teman dengan @username',
-            icon: <Users className="h-5 w-5" />,
-            link: showDetail.instagram,
-            points: 20,
-            required: true,
-            step: 4,
-            completed: false,
-            uploaded: false,
-            loading: false,
-            fileName: '',
-            uploadType: 'file',
-          },
-          {
-            id: 'share_story',
-            title: 'Share ke Story',
-            instruction: 'Klik Share → Add to Story',
-            icon: <Share2 className="h-5 w-5" />,
-            link: showDetail.instagram,
-            points: 15,
-            required: true,
-            step: 5,
-            completed: false,
-            uploaded: false,
-            loading: false,
-            fileName: '',
-            uploadType: 'file',
-          },
-          {
-            id: 'share_groups',
-            title: 'Share ke 3 Grup WA',
-            instruction: 'Copy link dan kirim ke 3 grup WhatsApp',
-            icon: <Share2 className="h-5 w-5" />,
-            link: showDetail.instagram,
-            points: 25,
-            required: true,
-            step: 6,
-            completed: false,
-            uploaded: false,
-            loading: false,
-            fileName: '',
-            uploadType: 'file',
-          },
-        );
-      }
-
-      // Add WhatsApp group join task
-      items.push({
-        id: 'telegram_join',
-        title: 'Join Grup Belajar',
-        instruction: 'Klik Join Group di Telegram',
-        icon: <Users className="h-5 w-5" />,
-        link: 'https://t.me/bimbelio',
-        points: 15,
-        required: true,
-        step: items.length + 1,
-        completed: false,
-        uploaded: false,
-        loading: false,
-        fileName: '',
-        uploadType: 'file', // Changed from "action" to "file"
-      });
-
-      setProofItems(items);
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -353,7 +212,6 @@ export default function CardTryOut({
           isPremium,
         });
         router.push(`${pathname}?register_tryout=success`);
-        setStep(1);
         setShowDetail(null);
       }
       setIsLoading(false);
@@ -365,150 +223,52 @@ export default function CardTryOut({
   };
 
   const getBadgeValue = (item: CardTryoutProps) => {
-    let data = null;
     if (item.isRegistered) {
-      data = {
-        className: 'bg-green-600 text-white',
+      return {
+        className: 'bg-green-500 text-white border-0 shadow-sm',
         title: 'Terdaftar',
+        icon: <CheckCircle className="w-3 h-3" />,
       };
     } else if (!item.isRegistered) {
-      data = {
-        className: 'bg-main-yellow text-black',
+      return {
+        className: 'bg-amber-500 text-white border-0 shadow-sm',
         title: 'Belum Daftar',
+        icon: <Star className="w-3 h-3" />,
       };
     } else if (item.isActive) {
-      data = {
-        className: 'bg-main-red text-white',
-        title: 'Sedang Berlangsung',
+      return {
+        className: 'bg-red-500 text-white border-0 shadow-sm animate-pulse',
+        title: 'Berlangsung',
+        icon: <Play className="w-3 h-3" />,
       };
     }
-
-    return data;
+    return {
+      className: 'bg-gray-500 text-white border-0 shadow-sm',
+      title: 'Unknown',
+      icon: <Star className="w-3 h-3" />,
+    };
   };
 
   const getButtonValue = (item: CardTryoutProps) => {
-    const data = {
-      className: '',
-      title: '',
-    };
-
     if (item.isRegistered && item.isJoin && item.isDone) {
-      data.title = 'Lihat Hasil & Pembahasan';
-    } else if (item.isRegistered) {
-      data.title = 'Mulai Tryout';
-    } else if (!item.isRegistered) {
-      data.title = 'Daftar Sekarang';
-    }
-
-    return data;
-  };
-
-  // Proof items handlers
-  const totalPoints = proofItems.reduce((sum, i) => sum + i.points, 0);
-  const earnedPoints = proofItems.reduce(
-    (sum, i) => sum + (i.uploaded ? i.points : 0),
-    0,
-  );
-  const completedCount = proofItems.filter((i) => i.uploaded).length;
-  const progress =
-    proofItems.length > 0 ? (completedCount / proofItems.length) * 100 : 0;
-
-  const handleAction = (id: string) => {
-    const item = proofItems.find((i) => i.id === id);
-    if (!item) return;
-
-    if (!item.completed) {
-      window.open(item.link, '_blank');
-      setProofItems((prev) =>
-        prev.map((i) => (i.id === id ? { ...i, loading: true } : i)),
-      );
-      setTimeout(
-        () =>
-          setProofItems((prev) =>
-            prev.map((i) =>
-              i.id === id ? { ...i, completed: true, loading: false } : i,
-            ),
-          ),
-        3000,
-      );
-    } else if (!item.uploaded) {
-      // All items now require file upload
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.onchange = (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file?.type.includes('image'))
-          setProofItems((prev) =>
-            prev.map((i) =>
-              i.id === id ? { ...i, uploaded: true, fileName: file.name } : i,
-            ),
-          );
-        else if (file)
-          toaster({
-            title: 'Error',
-            condition: 'warning',
-            description: 'File harus berupa gambar!',
-            duration: 3000,
-          });
+      return {
+        title: 'Lihat Hasil & Pembahasan',
+        icon: <Eye className="w-4 h-4" />,
+        variant: 'results',
       };
-      input.click();
+    } else if (item.isRegistered) {
+      return {
+        title: 'Mulai Tryout',
+        icon: <Play className="w-4 h-4" />,
+        variant: 'start',
+      };
+    } else {
+      return {
+        title: 'Daftar Sekarang',
+        icon: <Trophy className="w-4 h-4" />,
+        variant: 'register',
+      };
     }
-  };
-
-  const handleSubmitProof = async () => {
-    if (earnedPoints !== totalPoints) {
-      toaster({
-        title: 'Error',
-        condition: 'warning',
-        description: `Total poin harus ${totalPoints}, sekarang ${earnedPoints}`,
-        duration: 3000,
-      });
-      return;
-    }
-    const missing = proofItems.filter((i) => !i.uploaded);
-    if (missing.length) {
-      toaster({
-        title: 'Error',
-        condition: 'warning',
-        description: 'Lengkapi semua tugas terlebih dahulu!',
-        duration: 3000,
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    await handleRegistration(false);
-  };
-
-  const renderButton = (item: ProofItem) => {
-    if (item.loading)
-      return (
-        <>
-          <Loader2 className="animate-spin h-4 w-4 mr-2" />
-          <span>Tunggu...</span>
-        </>
-      );
-    if (item.uploaded)
-      return (
-        <>
-          <Check className="h-4 w-4 mr-2" />
-          <span>Selesai</span>
-        </>
-      );
-    if (item.completed)
-      return (
-        <>
-          <ArrowUp className="h-4 w-4 mr-2" />
-          <span>Upload</span>
-        </>
-      );
-    return (
-      <>
-        <ExternalLink className="h-4 w-4 mr-2" />
-        <span>Lakukan</span>
-      </>
-    );
   };
 
   useEffect(() => {
@@ -521,762 +281,285 @@ export default function CardTryOut({
   return (
     <>
       {data?.length > 0 &&
-        data?.map((item, i: number) => (
-          <Card
-            key={i}
-            className="relative overflow-hidden"
-          >
-            {/* <div
-              className="absolute bottom-[2rem] right-[-2rem] z-[10] text-main/20"
-              style={{
-                color: hexToRgba(item.WebsiteSubCategory?.main_color, 0.2),
-              }}
+        data?.map((item, i: number) => {
+          const badgeData = getBadgeValue(item);
+          const buttonData = getButtonValue(item);
+
+          return (
+            <Card
+              key={i}
+              className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-white rounded-2xl"
             >
-              <IconCrown
-                w={180}
-                className="rotate-[-20deg]"
-              />
-            </div> */}
-            <Badge
-              className={cn(
-                'absolute right-4 top-4 bg-main text-white z-[11]',
-                getBadgeValue(item)?.className,
-              )}
-            >
-              {getBadgeValue(item)?.title}
-            </Badge>
-            {/* <CardHeader className="relative z-[2]">
-              <CardTitle
-                className="text-[1.3rem] font-bold text-main"
-                style={{
-                  color: item.WebsiteSubCategory?.main_color,
-                }}
-              >
-                {item.title}
-              </CardTitle>
-            </CardHeader> */}
-            <CardContent className="relative z-[2] p-0">
-              {/* Header */}
-              <div className="relative h-[200px] w-full overflow-hidden">
-                {item.image && (
-                  <Image
-                    src={
-                      `${env.NEXT_PUBLIC_SUPABASE_IMG_URL || '/placeholder.svg'}/tryout/${item.image}` ||
-                      'placeholder.svg'
-                    }
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform object-[90%_20%] duration-500 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                )}
-
-                <div
-                  className="absolute inset-0 "
-                  style={{
-                    background: `linear-gradient(to top, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.5)}, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.3)}, ${hexToRgba(item.WebsiteSubCategory?.main_color, 0.2)})`,
-                  }}
-                />
-
-                {/* Price */}
-                <div className="absolute left-4 top-4 z-10">
-                  <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-blue-600 shadow-md flex items-center gap-1.5">
-                    <Award className="h-3.5 w-3.5 text-yellow-500" />
-                    Gratis!
-                  </span>
-                </div>
-
-                {/* Category & Title */}
-                <div className="absolute bottom-0 left-0 w-full p-4 text-center">
-                  <span className="mb-2 inline-block rounded-full bg-yellow-400 px-4 py-1 text-sm font-bold text-blue-900">
-                    {/* {item.WebsiteSubCategory.name} */}
-                  </span>
-                  <h3 className="text-xl font-bold text-white md:text-2xl">
-                    {item.title}
-                  </h3>
-                </div>
-              </div>
-
-              {/* Body */}
-              <div className="p-4">
-                <div className="mb-4 grid grid-cols-3 gap-2">
-                  {[
-                    {
-                      title: 'Durasi',
-                      icon: Clock,
-                      total: item.TryoutSession.reduce(
-                        (acc, item) => acc + item.duration,
-                        0,
-                      ),
-                    },
-                    {
-                      title: 'Soal',
-                      icon: BookOpen,
-                      total: item.TryoutSession.reduce(
-                        (acc, session) => acc + session._count.TryoutQuestion,
-                        0,
-                      ),
-                    },
-                    {
-                      title: 'Peserta',
-                      icon: Users,
-                      total: item._count.TryoutRegistration,
-                    },
-                  ].map((cItem, cIndex) => (
-                    <div
-                      key={cIndex}
-                      className="rounded-xl bg-main p-2 text-center flex flex-col items-center"
-                      style={{
-                        backgroundColor: hexToRgba(
-                          item.WebsiteSubCategory?.main_color,
-                          0.1,
-                        ),
-                      }}
-                    >
-                      <div className="text-xs text-gray-600 flex items-center gap-1">
-                        <cItem.icon
-                          className="h-3.5 w-3.5 text-main"
-                          style={{
-                            color: item.WebsiteSubCategory?.main_color,
-                          }}
-                        />
-                        {cItem.title}
-                      </div>
-                      <div
-                        className="text-sm font-bold text-main"
-                        style={{
-                          color: item.WebsiteSubCategory?.main_color,
-                        }}
-                      >
-                        {cItem.total}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mb-4 flex items-center justify-center flex-wrap gap-1.5">
-                  {['tryout'].map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="rounded-full bg-main/10 px-2 py-0.5 text-xs font-medium text-main flex items-center gap-1"
-                      style={{
-                        backgroundColor: hexToRgba(
-                          item.WebsiteSubCategory?.main_color,
-                          0.1,
-                        ),
-                        color: item.WebsiteSubCategory?.main_color,
-                      }}
-                    >
-                      <Tag className="h-2.5 w-2.5" />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mb-4 grid grid-cols-2 gap-2">
-                  {[
-                    {
-                      icon: Calendar,
-                      title: 'Mulai',
-                      date: item.startDate,
-                    },
-                    {
-                      icon: Calendar,
-                      title: 'Selesai',
-                      date: item.endDate,
-                    },
-                  ].map((cItem, cIndex) => (
-                    <div
-                      key={cIndex}
-                      className="flex flex-col items-center rounded-lg bg-main/10 p-2 text-xs"
-                      style={{
-                        backgroundColor: hexToRgba(
-                          item.WebsiteSubCategory?.main_color,
-                          0.1,
-                        ),
-                      }}
-                    >
-                      <div className="flex items-center gap-1">
-                        <cItem.icon
-                          className="h-3.5 w-3.5 text-main"
-                          style={{
-                            color: item.WebsiteSubCategory?.main_color,
-                          }}
-                        />
-                        <span className="font-medium text-gray-700">
-                          {cItem.title}
-                        </span>
-                      </div>
-                      <span
-                        className="mt-1 text-sm font-bold text-main"
-                        style={{
-                          color: item.WebsiteSubCategory?.main_color,
-                        }}
-                      >
-                        {getDateString(cItem.date)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="relative z-[2]">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      className={cn(
-                        'w-full bg-gradient text-white hover:opacity-85',
-                        getButtonValue(item)?.className,
-                      )}
-                      style={{
-                        backgroundImage: `linear-gradient(145deg, ${item.WebsiteSubCategory?.secondary_color}, ${item.WebsiteSubCategory?.main_color})`,
-                      }}
-                      onClick={() => {
-                        if (reloadHref && item.WebsiteSubCategory) {
-                          localStorage.setItem(
-                            'website_sub_category_id',
-                            item.WebsiteSubCategory.id,
-                          );
-                          // window.location.href = `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`;
-                          router.push(
-                            `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`,
-                          );
-                        } else {
-                          setShowDetail(item);
-                        }
-                      }}
-                    >
-                      {getButtonValue(item)?.title}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {item.status === 'ongoing'
-                      ? 'Lanjutkan tryout yang sedang berlangsung.'
-                      : 'Daftar untuk mengikuti tryout ini.'}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </CardFooter>
-          </Card>
-        ))}
-      {showDetail && (
-        <div className="fixed left-0 top-0 z-[1000] flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-          <div
-            className="absolute left-0 top-0 z-[-1] h-full w-full bg-transparent"
-            onClick={() => {
-              if (step !== 3) {
-                setShowDetail(null);
-                setStep(1);
-              }
-            }}
-          />
-          <div
-            id="register-tryout-modal"
-            className={cn(
-              'relative flex w-[calc(100%-2rem)] max-w-[500px] flex-col gap-[1rem] rounded-[1rem] bg-white p-[2rem] shadow-cardSoft md:w-full max-h-[90vh] overflow-y-auto',
-              step === 3 && 'max-w-[600px]',
-            )}
-          >
-            {step === 1 && (
-              <React.Fragment>
-                <div
-                  className="absolute right-4 top-4"
-                  onClick={() => setShowDetail(null)}
+              {/* Status Badge */}
+              <div className="absolute top-4 right-4 z-20">
+                <Badge
+                  className={cn('flex items-center gap-1', badgeData.className)}
                 >
-                  <IconX className="cursor-pointer text-main-gray-text duration-200 md:hover:text-main-gray-text2" />
-                </div>
-                <div className="flex w-full flex-col gap-[1rem]">
-                  <h1 className="text-center font-medium">Detail Try Out</h1>
-                  <div className="grid grid-cols-5 gap-y-2 text-[.9rem]">
-                    <p className="col-span-2 text-main-gray-text">Try out</p>
-                    <p className="col-span-3">: {showDetail.title} </p>
-                    <p className="col-span-2 text-main-gray-text">
-                      Pelaksanaan
-                    </p>
-                    <p className="col-span-3">
-                      : {getDateTryoutString(showDetail.startDate)},{' '}
-                      {getHours(showDetail.startDate)} WIB s/d <br />{' '}
-                      <span className="text-transparent">:</span>{' '}
-                      {getDateTryoutString(showDetail.endDate)},{' '}
-                      {getHours(showDetail.endDate)} WIB
-                    </p>
-                    <p className="col-span-2 text-main-gray-text">
-                      Periode Penilaian
-                    </p>
-                    <p className="col-span-3">
-                      : {getDateTryoutString(showDetail.resultDate)},{' '}
-                      {getHours(showDetail.resultDate)} WIB
+                  {badgeData.icon}
+                  <span className="text-xs font-medium">{badgeData.title}</span>
+                </Badge>
+              </div>
+
+              {/* Free Badge */}
+              <div className="absolute top-4 left-4 z-20">
+                <Badge className="bg-linear-to-r from-emerald-500 to-green-600 text-white border-0 shadow-sm flex items-center gap-1">
+                  <Award className="w-3 h-3" />
+                  <span className="text-xs font-bold">GRATIS</span>
+                </Badge>
+              </div>
+
+              <CardContent className="p-0">
+                {/* Hero Image Section */}
+                <div className="relative h-48 lg:h-56 overflow-hidden">
+                  {item.image ? (
+                    <Image
+                      src={`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${item.image}`}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <div
+                      className="w-full h-full flex items-center justify-center"
+                      style={{
+                        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                      }}
+                    >
+                      <Trophy className="w-12 h-12 text-white opacity-50" />
+                    </div>
+                  )}
+
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
+
+                  {/* Title Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <h3 className="text-lg lg:text-xl font-bold leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs lg:text-sm text-white/80 mt-1">
+                      {item.WebsiteSubCategory?.name}
                     </p>
                   </div>
                 </div>
-              </React.Fragment>
-            )}
-            {!showDetail.isRegistered ? (
-              <RegisterTryout
-                step={step}
-                setStep={setStep}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-                setShowDetail={setShowDetail}
-                onClick={handleRegistration}
-                showDetail={showDetail}
-                proofItems={proofItems}
-                handleAction={handleAction}
-                handleSubmitProof={handleSubmitProof}
-                renderButton={renderButton}
-                totalPoints={totalPoints}
-                earnedPoints={earnedPoints}
-                completedCount={completedCount}
-                progress={progress}
-              />
-            ) : showDetail.isRegistered ? (
-              <div className="mt-[1rem] flex w-full items-center justify-center">
-                <Link
-                  href={
-                    isTesting
-                      ? `/${website_sub_category_id}/admin/tryout/testing/try-out/${showDetail.id}`
-                      : `/${website_sub_category_id}/user/try-out/${showDetail.id}`
-                  }
-                  className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white hover:bg-main/80"
-                >
-                  Mulai try out
-                  <IconTailedArrowUp45 w={15} />
-                </Link>
-              </div>
-            ) : showDetail.isRegistered &&
-              showDetail.isDone &&
-              !showDetail.isJoin ? (
-              <div className="mt-[1rem] flex w-full items-center justify-center"></div>
-            ) : showDetail.isDone &&
-              showDetail.isRegistered &&
-              showDetail.isJoin ? (
-              <div
-                className="flex w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main py-[.8rem] text-center text-[.9rem] text-white hover:bg-main/80"
-                onClick={() => {
-                  if (isTesting) {
-                    router.push(
-                      `/${website_sub_category_id}/admin/tryout/testing/try-out/${showDetail.id}`,
-                    );
-                  } else if (!isPrivate)
-                    router.push(
-                      `/${website_sub_category_id}/user/try-out/${showDetail.id}`,
-                    );
-                }}
-              >
-                Lihat Hasil
-                <IconTailedArrowUp45 w={15} />
-              </div>
-            ) : null}
+
+                {/* Content Section */}
+                <div className="p-4 lg:p-6 space-y-4">
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-3 gap-3">
+                    {[
+                      {
+                        title: 'Durasi',
+                        icon: Clock,
+                        value: `${item.TryoutSession.reduce((acc, s) => acc + s.duration, 0)} min`,
+                      },
+                      {
+                        title: 'Soal',
+                        icon: BookOpen,
+                        value: item.TryoutSession.reduce(
+                          (acc, s) => acc + s._count.TryoutQuestion,
+                          0,
+                        ),
+                      },
+                      {
+                        title: 'Peserta',
+                        icon: Users,
+                        value: item._count.TryoutRegistration,
+                      },
+                    ].map((stat, idx) => (
+                      <div
+                        key={idx}
+                        className="text-center p-3 rounded-xl border border-gray-100"
+                        style={{ backgroundColor: `${mainColor}05` }}
+                      >
+                        <div className="flex justify-center mb-1">
+                          <stat.icon
+                            className="w-4 h-4"
+                            style={{ color: mainColor }}
+                          />
+                        </div>
+                        <div
+                          className="text-lg font-bold"
+                          style={{ color: mainColor }}
+                        >
+                          {stat.value}
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          {stat.title}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Dates Section */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { label: 'Mulai', date: item.startDate, icon: Calendar },
+                      { label: 'Selesai', date: item.endDate, icon: Calendar },
+                    ].map((dateInfo, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3 rounded-xl border border-gray-100 text-center"
+                        style={{ backgroundColor: `${mainColor}03` }}
+                      >
+                        <div className="flex justify-center mb-1">
+                          <dateInfo.icon
+                            className="w-4 h-4"
+                            style={{ color: mainColor }}
+                          />
+                        </div>
+                        <div className="text-xs text-gray-600 mb-1">
+                          {dateInfo.label}
+                        </div>
+                        <div
+                          className="text-sm font-semibold"
+                          style={{ color: mainColor }}
+                        >
+                          {getDateString(dateInfo.date)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex justify-center">
+                    <Badge
+                      className="flex items-center gap-1 text-xs"
+                      style={{
+                        backgroundColor: `${mainColor}15`,
+                        color: mainColor,
+                        border: `1px solid ${mainColor}30`,
+                      }}
+                    >
+                      <Tag className="w-3 h-3" />
+                      Try Out Online
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+
+              <CardFooter className="p-4 lg:p-6 pt-0">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                        style={{
+                          background: `linear-gradient(135deg, ${item.WebsiteSubCategory?.main_color || mainColor}, ${item.WebsiteSubCategory?.secondary_color || secondaryColor})`,
+                        }}
+                        onClick={() => {
+                          if (reloadHref && item.WebsiteSubCategory) {
+                            localStorage.setItem(
+                              'website_sub_category_id',
+                              item.WebsiteSubCategory.id,
+                            );
+                            router.push(
+                              `${window.location.origin}/${item.WebsiteSubCategory.id}/user/try-out?id=${item.id}`,
+                            );
+                          } else {
+                            setShowDetail(item);
+                          }
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          {buttonData.icon}
+                          <span>{buttonData.title}</span>
+                          <IconTailedArrowUp45
+                            w={16}
+                            className="group-hover:translate-x-1 transition-transform"
+                          />
+                        </div>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {item.status === 'ongoing'
+                        ? 'Lanjutkan tryout yang sedang berlangsung.'
+                        : item.isRegistered
+                          ? 'Mulai mengerjakan try out.'
+                          : 'Daftar untuk mengikuti tryout ini.'}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </CardFooter>
+            </Card>
+          );
+        })}
+
+      {/* Enhanced Modal */}
+      {showDetail && (
+        <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div
+            className="absolute inset-0"
+            onClick={() => setShowDetail(null)}
+          />
+          <div
+            id="register-tryout-modal"
+            className="relative w-[calc(100%-2rem)] max-w-[600px] max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl"
+          >
+            <div className="p-6 lg:p-8">
+              {!showDetail.isRegistered ? (
+                <>
+                  {/* Registration Modal Component */}
+                  <RegistrationProofModal
+                    showDetail={showDetail}
+                    setShowDetail={setShowDetail}
+                    onRegistrationComplete={handleRegistration}
+                    isLoading={isLoading}
+                    setIsLoading={setIsLoading}
+                  />
+                </>
+              ) : (
+                /* Registered State */
+                <div className="text-center space-y-6">
+                  <div
+                    className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
+                  >
+                    <CheckCircle className="w-8 h-8 text-white" />
+                  </div>
+
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Sudah Terdaftar!
+                    </h2>
+                    <p className="text-gray-600">
+                      Kamu sudah terdaftar untuk try out ini
+                    </p>
+                  </div>
+
+                  <Link
+                    href={
+                      isTesting
+                        ? `/${website_sub_category_id}/admin/tryout/testing/try-out/${showDetail.id}`
+                        : `/${website_sub_category_id}/user/try-out/${showDetail.id}`
+                    }
+                    className="inline-flex items-center gap-2 w-full h-12 justify-center rounded-xl text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
+                  >
+                    {showDetail.isDone && showDetail.isJoin ? (
+                      <>
+                        <Eye className="w-4 h-4" />
+                        <span>Lihat Hasil</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play className="w-4 h-4" />
+                        <span>Mulai Try Out</span>
+                      </>
+                    )}
+                    <IconTailedArrowUp45 w={16} />
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
     </>
   );
 }
-
-const RegisterTryout = ({
-  step,
-  setStep,
-  isLoading,
-  setIsLoading,
-  setShowDetail,
-  onClick,
-  showDetail,
-  proofItems,
-  handleAction,
-  handleSubmitProof,
-  renderButton,
-  totalPoints,
-  earnedPoints,
-  completedCount,
-  progress,
-}: {
-  step: number;
-  setStep: Dispatch<SetStateAction<number>>;
-  isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
-  setShowDetail: Dispatch<SetStateAction<CardTryoutProps | null>>;
-  onClick: (isPremium?: boolean) => void;
-  showDetail: CardTryoutProps | null;
-  proofItems: ProofItem[];
-  handleAction: (id: string) => void;
-  handleSubmitProof: () => void;
-  renderButton: (item: ProofItem) => ReactNode;
-  totalPoints: number;
-  earnedPoints: number;
-  completedCount: number;
-  progress: number;
-}) => {
-  const { userLimitation, checkLimitation } = useUserLimitation();
-  const { data: session } = useSession();
-
-  const [showPayment, setShowPayment] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-  const [selectTypeRegistration, setSelectTypeRegistration] = useState<
-    'free' | 'premium'
-  >('free');
-
-  const [click, setClick] = useState<{
-    followTiktok: boolean;
-    followTiktokLoad: boolean;
-    followInstagram: boolean;
-    followInstagramLoad: boolean;
-    postinganInstagram: boolean;
-    postinganInstagramLoad: boolean;
-    tagInstagram: boolean;
-    storyInstagram: boolean;
-    grupWhatsapp: {
-      checked: boolean;
-      grup1: boolean;
-      grup2: boolean;
-      grup3: boolean;
-    };
-    joinGrupWhatsapp: boolean;
-    joinGrupWhatsappLoad: boolean;
-  }>({
-    followTiktok: false,
-    followTiktokLoad: false,
-    followInstagram: false,
-    followInstagramLoad: false,
-    postinganInstagram: false,
-    postinganInstagramLoad: false,
-    tagInstagram: false,
-    storyInstagram: false,
-    grupWhatsapp: {
-      checked: false,
-      grup1: false,
-      grup2: false,
-      grup3: false,
-    },
-    joinGrupWhatsapp: false,
-    joinGrupWhatsappLoad: false,
-  });
-
-  const [validate, setValidate] = useState<{
-    followTiktok: boolean;
-    followInstagram: boolean;
-    postinganInstagram: boolean;
-    tagInstagram: boolean;
-    storyInstagram: boolean;
-    grupWhatsapp: {
-      checked: boolean;
-      grup1: boolean;
-      grup2: boolean;
-      grup3: boolean;
-    };
-    joinGrupWhatsapp: boolean;
-  }>({
-    followTiktok: false,
-    followInstagram: false,
-    postinganInstagram: false,
-    tagInstagram: false,
-    storyInstagram: false,
-    grupWhatsapp: {
-      checked: false,
-      grup1: false,
-      grup2: false,
-      grup3: false,
-    },
-    joinGrupWhatsapp: false,
-  });
-
-  const [pricing, setPricing] = useState<Pricing>();
-  const [pricingIsLoading, setPricingIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    getGeneral(`/pricing/getPricingBySlug?slug=tryout_unlock`, {
-      setData: setPricing,
-      setLoading: setPricingIsLoading,
-    });
-  }, []);
-
-  const handleRegistration = () => {
-    if (
-      !validate.followTiktok ||
-      !validate.followInstagram ||
-      !validate.joinGrupWhatsapp
-    ) {
-      setError(true);
-      return;
-    }
-    if (
-      showDetail?.instagram &&
-      (!validate.postinganInstagram ||
-        !validate.tagInstagram ||
-        !validate.storyInstagram)
-    ) {
-      setError(true);
-      return;
-    }
-    onClick();
-  };
-
-  useEffect(() => {
-    if (showPayment === false && step === 3) {
-      setShowDetail(null);
-      setStep(1);
-    }
-  }, [showPayment]);
-
-  useEffect(() => {
-    const container = document.getElementById('register-tryout-modal') as
-      | HTMLDivElement
-      | undefined;
-    if (container && selectTypeRegistration === 'premium' && step === 3) {
-      container.classList.remove('shadow-cardSoft');
-      container.classList.remove('bg-white');
-      container.classList.add('bg-transparent');
-    } else if (container) {
-      container.classList.remove('bg-transparent');
-      container.classList.add('shadow-cardSoft');
-      container.classList.add('bg-white');
-    }
-  }, [selectTypeRegistration, step]);
-
-  if (step === 1)
-    return (
-      <div>
-        <p className="pt-[1rem] text-center text-[.9rem] text-main-gray-text">
-          Apakah kamu akan mengikuti try out ini?
-        </p>
-        <div className="mt-[1rem] flex w-full items-center justify-center">
-          <div
-            className={cn(
-              'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
-              isLoading && 'bg-main/80',
-            )}
-            onClick={async () => {
-              if (session?.user.role !== 'USER') {
-                onClick();
-              } else if (
-                userLimitation &&
-                userLimitation.tryout < userLimitation.tryoutLimit
-              ) {
-                setIsLoading(true);
-                const check = await checkLimitation({ tryout: true });
-                if (check && check.status) {
-                  onClick(true);
-                } else {
-                  setIsLoading(false);
-                }
-              } else {
-                toaster({
-                  title: 'Upss',
-                  condition: 'warning',
-                  description: 'Coin tryoutmu tidak cukup, coba opsi lain',
-                  duration: 3000,
-                });
-                setStep(2);
-              }
-            }}
-          >
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <>
-                Daftar try out
-                <IconTailedArrowUp45 w={15} />
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  else if (step === 2)
-    return (
-      <div className="flex w-full flex-col gap-[1rem]">
-        <h1 className="text-center font-medium">Pilih Tipe Pendaftaran</h1>
-        <div className="flex flex-col gap-[1rem]">
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              setShowDetail(null);
-            }}
-          >
-            <ButtonPayment
-              className="w-full flex justify-center items-center"
-              text="Top up"
-              type="modal"
-            />
-          </div>
-          {!showDetail?.isDone && (
-            <Card
-              onClick={() => setSelectTypeRegistration('free')}
-              className={cn(
-                'cursor-pointer transition-all hover:shadow-md',
-                selectTypeRegistration === 'free'
-                  ? 'border-2 border-main'
-                  : 'border-2 hover:border-main/70',
-              )}
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  Gratis
-                  <span className="text-sm font-normal text-muted-foreground">
-                    Rp 0
-                  </span>
-                </CardTitle>
-                <CardDescription>
-                  Daftar dengan mengikuti sosial media dan membagikan info Try
-                  Out
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-inside list-disc space-y-1 text-sm">
-                  <li>Akses ke semua materi Try Out</li>
-                  <li>Hasil dan pembahasan setelah Try Out selesai</li>
-                  <li>Peringkat nasional</li>
-                </ul>
-              </CardContent>
-            </Card>
-          )}
-          <Card
-            onClick={() => setSelectTypeRegistration('premium')}
-            className={cn(
-              'cursor-pointer transition-all hover:shadow-md',
-              selectTypeRegistration === 'premium'
-                ? 'border-2 border-main'
-                : 'border-2 hover:border-main/70',
-            )}
-          >
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Premium
-                {pricingIsLoading || !pricing ? (
-                  <div className="">
-                    <Loader2 className="animate-spin w-4 h-4" />
-                  </div>
-                ) : (
-                  <span className="text-sm font-normal text-muted-foreground">
-                    Rp{' '}
-                    {pricing.price.toLocaleString('id-ID', {
-                      style: 'decimal',
-                    })}
-                  </span>
-                )}
-              </CardTitle>
-              <CardDescription>
-                Daftar cepat dengan fitur tambahan
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-inside list-disc space-y-1 text-sm">
-                <li>Semua fitur Gratis</li>
-                <li>Akses prioritas saat Try Out berlangsung</li>
-                <li>Analisis detail performa dan rekomendasi belajar</li>
-                <li>Konsultasi dengan tutor</li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-        <div className="mt-[1rem] flex w-full items-center justify-center">
-          <div
-            className={cn(
-              'flex h-[47px] w-full cursor-pointer items-center justify-center gap-[.5rem] rounded-[.8rem] bg-main text-center text-[.9rem] text-white hover:bg-main/80',
-              isLoading && 'bg-main/80',
-            )}
-            onClick={() => {
-              setStep(3);
-              if (selectTypeRegistration === 'premium') setShowPayment(true);
-            }}
-          >
-            Selanjutnya
-          </div>
-        </div>
-      </div>
-    );
-  else if (step === 3 && selectTypeRegistration === 'free')
-    return (
-      <>
-        <div
-          className="absolute right-4 top-4"
-          onClick={() => setShowDetail(null)}
-        >
-          <IconX className="cursor-pointer text-main-gray-text duration-200 md:hover:text-main-gray-text2" />
-        </div>
-        <div className="flex w-full flex-col gap-[1rem]">
-          <h1 className="text-center font-medium">Bukti Pendaftaran Try Out</h1>
-          <Progress
-            value={progress}
-            className="h-2 mb-3"
-          />
-          <div className="flex justify-between text-sm text-gray-500 mb-4">
-            <span>
-              {completedCount}/{proofItems.length} selesai
-            </span>
-            <span>{Math.round(progress)}%</span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            {proofItems.map((item) => (
-              <div
-                key={item.id}
-                className={cn(
-                  'border rounded-lg p-4 flex flex-col justify-between',
-                  item.uploaded
-                    ? 'border-green-300 bg-green-50'
-                    : item.completed
-                      ? 'border-blue-300 bg-blue-50'
-                      : 'border-gray-200',
-                )}
-              >
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="p-2 rounded-full bg-gray-100">
-                      {item.icon}
-                    </div>
-                    <Badge className="text-xs">+{item.points} poin</Badge>
-                  </div>
-                  <h3 className="font-semibold mb-1">{item.title}</h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {item.instruction}
-                  </p>
-                  {item.completed && !item.uploaded && (
-                    <p className="text-blue-600 text-sm mb-2">
-                      Siap upload bukti screenshot
-                    </p>
-                  )}
-                  {item.uploaded && (
-                    <p className="text-green-600 text-sm mb-2">
-                      {item.fileName
-                        ? `Bukti terupload: ${item.fileName}`
-                        : 'Tugas selesai'}
-                    </p>
-                  )}
-                </div>
-                <Button
-                  className="mt-2 w-full"
-                  onClick={() => handleAction(item.id)}
-                  disabled={item.loading || item.uploaded}
-                >
-                  {renderButton(item)}
-                </Button>
-              </div>
-            ))}
-          </div>
-          <Button
-            className="w-full py-2 bg-main hover:bg-main/80 text-white"
-            onClick={handleSubmitProof}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <Loader2 className="animate-spin h-5 w-5 mr-2 inline" />
-            ) : (
-              <Trophy className="h-5 w-5 mr-2 inline" />
-            )}
-            {isLoading
-              ? 'Memproses...'
-              : `Daftar Try Out (${earnedPoints} poin)`}
-          </Button>
-        </div>
-      </>
-    );
-  else if (step === 3 && selectTypeRegistration === 'premium')
-    return (
-      <PaymentTryout
-        tryoutData={showDetail}
-        setShow={setShowPayment}
-        show={showPayment}
-      />
-    );
-};

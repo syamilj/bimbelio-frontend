@@ -6,12 +6,6 @@ export const metadata: Metadata = {
   ...METADATA_USER.leaderboard,
 };
 
-//
-
 export default function LeaderboardPage() {
-  return (
-    <div>
-      <LeaderboardClient />
-    </div>
-  );
+  return <LeaderboardClient />;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import AdminImage from '@/_assest/logo-minimize.png';
+import AdminImage from '@/_assets/logo-minimize.png';
 import Footer from '@/components/_shared/footer';
 import Navbar from '@/components/_shared/navbar';
 import ToC from '@/components/_shared/other/ToC';
@@ -200,7 +200,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
     <Fragment>
       <Navbar />
 
-      <main className="container mx-auto px-4 py-8 md:py-[8rem]">
+      <main className="container mx-auto px-4 py-8 md:py-32">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Left Sidebar */}
           <aside className="hidden lg:col-span-2 lg:block">
@@ -276,7 +276,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     />
                   </Avatar>
                   <div>
-                    <span className="text-sm font-medium">TutorSNBT</span>
+                    <span className="text-sm font-medium">Bimbelio</span>
                     <span className="block text-xs text-main-gray-text">
                       @admin
                     </span>

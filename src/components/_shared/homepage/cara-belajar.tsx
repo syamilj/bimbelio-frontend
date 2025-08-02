@@ -1,7 +1,9 @@
 import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpenIcon,
   BrainIcon,
@@ -172,10 +174,15 @@ const learningSteps = [
 ];
 
 export default function CaraBelajarSection1() {
+  const { websiteSubCategory } = useWebsiteSubCategory();
   const [activeStep, setActiveStep] = useState(0);
   const [autoChange, setAutoChange] = useState(true);
   const [ref, inView] = useInView();
   const detailCardRef = useRef<HTMLDivElement>(null);
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   // Logika ketika komponen dalam viewport (bisa dikembangkan sesuai kebutuhan)
   useEffect(() => {
@@ -204,176 +211,398 @@ export default function CaraBelajarSection1() {
   }, []);
 
   return (
-    // Menambahkan id sehingga halaman dapat di‑href, misalnya "#cara-belajar"
     <section
       id="cara-belajar"
-      className="max-w-[1280px] space-y-8 mx-auto px-4 py-8"
+      className="py-16 md:py-24 relative overflow-hidden"
     >
-      <div className="text-center space-y-2">
-        <h2 className="text-center text-[1.5rem] font-bold md:text-[2.5rem]">
-          <AnimatedGradientText>
-            Bagaimana Cara Belajarnya?
-          </AnimatedGradientText>
-        </h2>
-        <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-          Kami menyediakan metode belajar yang{' '}
-          <span className="font-semibold text-main">komprehensif</span> dan{' '}
-          <span className="font-semibold text-main">interaktif</span> untuk
-          memaksimalkan potensi belajarmu menuju kesuksesan PTN dan Kedinasan.
-        </p>
+      {/* Enhanced Background */}
+      <div className="absolute inset-0 -z-10">
+        <div
+          className="absolute top-20 left-10 w-72 h-72 rounded-full opacity-5 blur-3xl"
+          style={{ backgroundColor: mainColor }}
+        />
+        <div
+          className="absolute bottom-20 right-10 w-72 h-72 rounded-full opacity-5 blur-3xl"
+          style={{ backgroundColor: secondaryColor }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full opacity-3 blur-3xl"
+          style={{ backgroundColor: mainColor }}
+        />
       </div>
 
-      <div className="grid gap-8 lg:gap-12 lg:grid-cols-2">
-        {/* Steps (Bagian Kiri) */}
-        <div className="space-y-4 sm:space-y-6 items-center justify-center">
-          {learningSteps.map((step, index) => (
-            <Card
-              key={index}
-              onClick={() => handleStepClick(index)}
-              className={`cursor-pointer transition-all duration-300 overflow-hidden ${
-                activeStep === index
-                  ? 'ring-2 ring-main shadow-lg'
-                  : 'hover:shadow-sm'
-              }`}
-            >
-              <CardContent className="p-3 sm:p-4">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div
-                    className={`size-10 sm:size-12 rounded-full flex items-center justify-center ${
-                      activeStep === index
-                        ? 'bg-main text-white'
-                        : 'bg-main/10 text-main'
-                    }`}
-                  >
-                    {step.icon}
-                  </div>
-                  <div className="flex-1 space-y-1">
-                    <h3 className="font-semibold text-sm sm:text-base mb-1">
-                      {step.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
-                      {step.description}
-                    </p>
-                    <div className="flex flex-wrap items-center gap-2 pt-2">
-                      <Badge
-                        variant={activeStep === index ? 'secondary' : 'outline'}
-                        className="text-xs"
-                      >
-                        {step.badge}
-                      </Badge>
-                      {step.stats &&
-                        step.stats.map((stat, statIndex) => (
-                          <Badge
-                            key={statIndex}
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            {stat.icon} {stat.value}
-                          </Badge>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Detail (Bagian Kanan) */}
-        <div
-          ref={ref}
-          className="lg:sticky lg:top-24 lg:self-start"
+      <div className="max-w-2xl mx-auto px-4 space-y-12">
+        {/* Enhanced Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center space-y-6"
         >
-          <Card
-            ref={detailCardRef}
-            className="overflow-hidden"
+          <h2 className="text-4xl md:text-5xl font-bold">
+            <AnimatedGradientText>
+              Bagaimana Cara Belajarnya?
+            </AnimatedGradientText>
+          </h2>
+          <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            Kami menyediakan metode belajar yang{' '}
+            <span
+              className="font-bold"
+              style={{ color: mainColor }}
+            >
+              komprehensif
+            </span>{' '}
+            dan{' '}
+            <span
+              className="font-bold"
+              style={{ color: mainColor }}
+            >
+              interaktif
+            </span>{' '}
+            untuk memaksimalkan potensi belajarmu menuju kesuksesan PTN dan
+            Kedinasan.
+          </p>
+        </motion.div>
+
+        <div className="grid gap-12 lg:gap-16 xl:grid-cols-2">
+          {/* Enhanced Steps Section */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="space-y-6"
           >
-            <CardContent className="p-4 sm:p-6 space-y-6">
-              {/* Header Detail */}
-              <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                <div className="space-y-1">
-                  <h4 className="text-xl sm:text-2xl font-bold">
-                    {learningSteps[activeStep].title}
-                  </h4>
-                  <Badge
-                    variant="outline"
-                    className="text-xs sm:text-sm"
-                  >
-                    {learningSteps[activeStep].badge}
-                  </Badge>
-                  <p className="text-sm text-muted-foreground">
-                    {learningSteps[activeStep].description}
-                  </p>
-                </div>
-                <div className="text-left sm:text-right space-y-1">
-                  <p className="text-xl sm:text-2xl font-bold text-main">
-                    {learningSteps[activeStep].stat}
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    {learningSteps[activeStep].statLabel}
-                  </p>
-                </div>
+            <div className="flex items-center justify-between mb-8">
+              <h3 className="text-2xl font-bold text-gray-900">
+                Langkah Pembelajaran
+              </h3>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-sm text-gray-600">
+                  {autoChange ? 'Auto playing' : 'Manual'}
+                </span>
               </div>
+            </div>
 
-              {/* Info Tambahan */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                <div className="bg-muted p-3 sm:p-4 rounded-xl space-y-1">
-                  <h5 className="font-semibold">
-                    Apa yang akan kamu pelajari:
-                  </h5>
-                  <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm">
-                    {learningSteps[activeStep].learningPoints?.map(
-                      (point, index) => <li key={index}>{point}</li>,
-                    )}
-                  </ul>
-                </div>
-                <div className="bg-muted p-3 sm:p-4 rounded-xl space-y-1">
-                  <h5 className="font-semibold">Mengapa ini penting:</h5>
-                  <p className="text-xs sm:text-sm">
-                    {learningSteps[activeStep].importance}
-                  </p>
-                </div>
-              </div>
-
-              {/* Fitur Utama */}
-              {learningSteps[activeStep].features && (
-                <div className="space-y-2">
-                  <h5 className="font-semibold text-sm sm:text-base">
-                    Fitur Utama:
-                  </h5>
-                  <ul className="space-y-2">
-                    {learningSteps[activeStep].features.map(
-                      (feature, fIndex) => (
-                        <li
-                          key={fIndex}
-                          className="flex items-center gap-2"
-                        >
-                          <CheckCircleIcon className="size-4 sm:size-5 mr-1 text-main" />
-                          <span className="text-xs sm:text-sm">{feature}</span>
-                        </li>
-                      ),
-                    )}
-                  </ul>
-                </div>
-              )}
-
-              {/* Placeholder Gambar/Video */}
-              <div className="aspect-video bg-muted rounded-xl overflow-hidden" />
-
-              {/* Footer */}
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  {learningSteps[activeStep].users} pengguna telah mencoba ini
-                </p>
-                <Button
-                  variant="outline"
-                  size="sm"
+            <AnimatePresence mode="wait">
+              {learningSteps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  Coba Sekarang
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+                  <Card
+                    onClick={() => handleStepClick(index)}
+                    className={`cursor-pointer transition-all duration-500 overflow-hidden border-2 hover:shadow-xl ${
+                      activeStep === index
+                        ? 'shadow-2xl scale-[1.02]'
+                        : 'hover:shadow-lg'
+                    }`}
+                    style={{
+                      borderColor: activeStep === index ? mainColor : '#e5e7eb',
+                      backgroundColor:
+                        activeStep === index ? `${mainColor}08` : 'white',
+                    }}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-4">
+                        {/* Step Number & Icon */}
+                        <div className="relative shrink-0">
+                          <motion.div
+                            whileHover={{ scale: 1.1 }}
+                            className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+                              activeStep === index
+                                ? 'text-white shadow-lg'
+                                : 'text-gray-600'
+                            }`}
+                            style={{
+                              backgroundColor:
+                                activeStep === index
+                                  ? mainColor
+                                  : `${mainColor}15`,
+                            }}
+                          >
+                            {step.icon}
+                          </motion.div>
+                          <div
+                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md"
+                            style={{ backgroundColor: secondaryColor }}
+                          >
+                            {index + 1}
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 space-y-3">
+                          <h4 className="text-lg md:text-xl font-bold text-gray-900">
+                            {step.title}
+                          </h4>
+                          <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                            {step.description}
+                          </p>
+
+                          {/* Enhanced Badges */}
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge
+                              variant={
+                                activeStep === index ? 'default' : 'outline'
+                              }
+                              className="text-xs font-medium"
+                              style={{
+                                backgroundColor:
+                                  activeStep === index
+                                    ? mainColor
+                                    : 'transparent',
+                                borderColor: mainColor,
+                                color:
+                                  activeStep === index ? 'white' : mainColor,
+                              }}
+                            >
+                              {step.badge}
+                            </Badge>
+                            {step.stats?.map((stat, statIndex) => (
+                              <Badge
+                                key={statIndex}
+                                variant="outline"
+                                className="text-xs border-gray-300"
+                              >
+                                {stat.icon} {stat.value}
+                              </Badge>
+                            ))}
+                          </div>
+
+                          {/* Progress Indicator */}
+                          {activeStep === index && (
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: '100%' }}
+                              className="h-1 rounded-full mt-4"
+                              style={{ backgroundColor: mainColor }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Enhanced Detail Section */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            ref={ref}
+            className="lg:sticky lg:top-24 lg:self-start"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card
+                  ref={detailCardRef}
+                  className="overflow-hidden border-2 shadow-2xl rounded-3xl"
+                  style={{ borderColor: `${mainColor}20` }}
+                >
+                  <CardContent className="p-8 space-y-8">
+                    {/* Enhanced Header */}
+                    <div className="relative">
+                      <div
+                        className="absolute inset-0 rounded-2xl opacity-10"
+                        style={{ backgroundColor: mainColor }}
+                      />
+                      <div className="relative p-6 text-center">
+                        <div
+                          className="w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center text-white shadow-xl"
+                          style={{ backgroundColor: mainColor }}
+                        >
+                          {learningSteps[activeStep].icon}
+                        </div>
+                        <h4 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                          {learningSteps[activeStep].title}
+                        </h4>
+                        <Badge
+                          className="text-sm font-medium"
+                          style={{
+                            backgroundColor: `${mainColor}15`,
+                            color: mainColor,
+                          }}
+                        >
+                          {learningSteps[activeStep].badge}
+                        </Badge>
+                      </div>
+                    </div>
+
+                    {/* Stats Display */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div
+                        className="text-center p-4 rounded-xl"
+                        style={{ backgroundColor: `${mainColor}08` }}
+                      >
+                        <div
+                          className="text-3xl font-bold mb-1"
+                          style={{ color: mainColor }}
+                        >
+                          {learningSteps[activeStep].stat}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {learningSteps[activeStep].statLabel}
+                        </div>
+                      </div>
+                      <div
+                        className="text-center p-4 rounded-xl"
+                        style={{ backgroundColor: `${secondaryColor}08` }}
+                      >
+                        <div
+                          className="text-3xl font-bold mb-1"
+                          style={{ color: secondaryColor }}
+                        >
+                          {learningSteps[activeStep].users}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          Pengguna Aktif
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Enhanced Info Grid */}
+                    <div className="space-y-6">
+                      <div
+                        className="p-6 rounded-2xl"
+                        style={{ backgroundColor: `${mainColor}08` }}
+                      >
+                        <h5 className="font-bold text-lg mb-3 flex items-center gap-2">
+                          <CheckCircleIcon
+                            className="w-5 h-5"
+                            style={{ color: mainColor }}
+                          />
+                          Apa yang akan kamu pelajari:
+                        </h5>
+                        <ul className="space-y-2">
+                          {learningSteps[activeStep].learningPoints?.map(
+                            (point, index) => (
+                              <motion.li
+                                key={index}
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="flex items-start gap-2 text-sm"
+                              >
+                                <div
+                                  className="w-2 h-2 rounded-full mt-2 shrink-0"
+                                  style={{ backgroundColor: mainColor }}
+                                />
+                                <span>{point}</span>
+                              </motion.li>
+                            ),
+                          )}
+                        </ul>
+                      </div>
+
+                      <div className="p-6 rounded-2xl bg-gray-50">
+                        <h5 className="font-bold text-lg mb-3 text-gray-900">
+                          💡 Mengapa ini penting:
+                        </h5>
+                        <p className="text-sm text-gray-700 leading-relaxed">
+                          {learningSteps[activeStep].importance}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Enhanced Features List */}
+                    {learningSteps[activeStep].features && (
+                      <div className="space-y-4">
+                        <h5 className="font-bold text-lg">
+                          🚀 Fitur Unggulan:
+                        </h5>
+                        <div className="grid gap-3">
+                          {learningSteps[activeStep].features.map(
+                            (feature, fIndex) => (
+                              <motion.div
+                                key={fIndex}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: fIndex * 0.1 }}
+                                className="flex items-center gap-3 p-3 rounded-xl bg-white shadow-sm"
+                              >
+                                <CheckCircleIcon
+                                  className="w-5 h-5 shrink-0"
+                                  style={{ color: mainColor }}
+                                />
+                                <span className="text-sm font-medium">
+                                  {feature}
+                                </span>
+                              </motion.div>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Enhanced Mockup */}
+                    <div
+                      className="aspect-video rounded-2xl overflow-hidden relative"
+                      style={{ backgroundColor: `${mainColor}10` }}
+                    >
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div
+                          className="w-16 h-16 rounded-full flex items-center justify-center text-white"
+                          style={{ backgroundColor: mainColor }}
+                        >
+                          <PlayIcon className="w-8 h-8 ml-1" />
+                        </div>
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
+                          <div className="text-sm font-medium text-gray-900 mb-1">
+                            Preview: {learningSteps[activeStep].title}
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            Klik untuk melihat demo interaktif
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Enhanced Footer */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-gray-100">
+                      <div className="text-center sm:text-left">
+                        <div className="text-sm text-gray-600">
+                          ⭐ Rating kepuasan:{' '}
+                          <span className="font-bold">4.9/5</span>
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          dari {learningSteps[activeStep].users} pengguna
+                        </div>
+                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button
+                          size="lg"
+                          className="text-white font-bold px-6 py-3 rounded-xl shadow-lg"
+                          style={{ backgroundColor: mainColor }}
+                        >
+                          Coba Sekarang →
+                        </Button>
+                      </motion.div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,98 +1,207 @@
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { getDateStringShort } from '@/lib/utils';
 import { BlogPost } from '@/types/database';
-import { BookOpenIcon, ChevronRightIcon, ClockIcon } from 'lucide-react';
+import {
+  BookOpenIcon,
+  ChevronRightIcon,
+  ClockIcon,
+  ExternalLink,
+  GraduationCap,
+} from 'lucide-react';
 import Link from 'next/link';
 
 export default function PanduanLanjutanSection() {
-  // const { data: blogs } = api.blog.getBlogLandingPage.useQuery(undefined, {
-  //   refetchOnWindowFocus: false,
-  // });
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const { data: blogs, isLoading } = useGet<BlogPost[]>(
+    '/blog/getBlogLandingPage',
+  );
 
-  const { data: blogs } = useGet<BlogPost[]>('/blog/getBlogLandingPage');
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   return (
     <section className="space-y-6 pt-8">
-      {/* Kiri */}
-      <div className="space-y-2">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center text-foreground">
-          Ingin belajar lebih dalam?
+      {/* Section Header */}
+      <div className="text-center space-y-4">
+        <div
+          className="w-12 h-12 mx-auto rounded-xl flex items-center justify-center shadow-lg"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
+        >
+          <GraduationCap className="w-6 h-6 text-white" />
+        </div>
+        <h2
+          className="text-2xl md:text-3xl font-bold"
+          style={{ color: mainColor }}
+        >
+          Panduan Lanjutan
         </h2>
-        <div className="w-20 h-1 bg-yellow-400 mx-auto mb-4"></div>
-        <p className="text-sm sm:text-base text-center text-muted-foreground">
-          Pelajari panduan lengkap dan tingkatkan pemahaman kamu
+        <div
+          className="w-20 h-1 mx-auto rounded-full"
+          style={{ backgroundColor: secondaryColor }}
+        />
+        <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base">
+          Pelajari panduan lengkap dan tingkatkan pemahaman kamu dengan
+          artikel-artikel pilihan
         </p>
       </div>
 
-      {/* Scrollable Cards */}
-      <ScrollArea className="w-full rounded-xl">
-        <div className="flex gap-6 pb-6">
-          {blogs?.map((guide, index) => (
-            <Card
-              key={index}
-              className="w-[300px] sm:w-[320px] shrink-0 transition-all hover:shadow-sm hover:-translate-y-1"
-            >
-              <CardContent className="p-5 space-y-4 bg-gradient-to-br from-card/50 to-card border-main/5 h-full flex items-center justify-center flex-col rounded-xl">
-                <div className="space-y-2 flex-1 justify-center text-center">
-                  <div className="flex items-center justify-center">
-                    <div className="size-10 rounded-xl bg-main/10 flex items-center text-center justify-center">
-                      <BookOpenIcon className="size-5 text-main" />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Badge
-                      variant="outline"
-                      className="bg-muted"
-                    >
-                      {guide.tags}
-                    </Badge>
-                  </div>
-
-                  <h3 className="font-semibold text-base sm:text-lg leading-tight">
-                    {guide.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {guide.description}
-                  </p>
-                  <div>
-                    <Badge
-                      variant="secondary"
-                      className="bg-main/10 text-main hover:bg-main/20"
-                    >
-                      <ClockIcon className="size-3 mr-1" />{' '}
-                      {getDateStringShort(guide.publishedAt)}
-                    </Badge>
-                  </div>
-                </div>
-                <Link href={`/blog/${guide.slug}`}>
-                  <Button
-                    variant="ghost"
-                    className="w-full mt-auto group"
+      {/* Content */}
+      {!isLoading ? (
+        blogs && blogs.length > 0 ? (
+          <>
+            {/* Scrollable Cards */}
+            <ScrollArea className="w-full rounded-xl">
+              <div className="flex gap-6 pb-6">
+                {blogs.map((guide, index) => (
+                  <Card
+                    key={index}
+                    className="w-[300px] md:w-[320px] shrink-0 bg-white shadow-lg border-0 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
                   >
-                    Baca Blog
-                    <ChevronRightIcon className="size-4 ml-2 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+                    <CardHeader
+                      className="pb-4 relative overflow-hidden"
+                      style={{
+                        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+                      }}
+                    >
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-center mb-3">
+                          <div
+                            className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+                            style={{ backgroundColor: `${mainColor}15` }}
+                          >
+                            <BookOpenIcon
+                              className="w-6 h-6"
+                              style={{ color: mainColor }}
+                            />
+                          </div>
+                        </div>
 
-      {/* <Button
-          variant="outline"
-          className="w-full md:hidden"
-        >
-          Lihat Semua Panduan
-        </Button> */}
+                        <div className="text-center space-y-2">
+                          <Badge
+                            className="text-white border-0"
+                            style={{ backgroundColor: mainColor }}
+                          >
+                            {guide.tags}
+                          </Badge>
+                          <CardTitle
+                            className="text-lg font-bold leading-tight"
+                            style={{ color: mainColor }}
+                          >
+                            {guide.title}
+                          </CardTitle>
+                        </div>
+                      </div>
+                      {/* Decorative elements */}
+                      <div
+                        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+                        style={{ backgroundColor: mainColor }}
+                      />
+                    </CardHeader>
+
+                    <CardContent className="p-6 space-y-4 flex flex-col h-full">
+                      <div className="flex-1 space-y-3">
+                        <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+                          {guide.description}
+                        </p>
+
+                        <div className="flex items-center justify-center">
+                          <Badge
+                            variant="secondary"
+                            className="bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          >
+                            <ClockIcon className="size-3 mr-1" />
+                            {getDateStringShort(guide.publishedAt)}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <Link
+                        href={`/blog/${guide.slug}`}
+                        className="w-full"
+                      >
+                        <Button
+                          variant="outline"
+                          className="w-full group rounded-xl border-2 hover:shadow-sm transition-all"
+                          style={{
+                            borderColor: `${mainColor}30`,
+                            color: mainColor,
+                          }}
+                        >
+                          <span>Baca Artikel</span>
+                          <ChevronRightIcon className="size-4 ml-2 transition-transform group-hover:translate-x-1" />
+                          <ExternalLink className="size-3 ml-1 opacity-60" />
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+
+            {/* View All CTA */}
+            <div className="text-center mt-8">
+              <Link href="/blog">
+                <Button
+                  variant="outline"
+                  className="rounded-xl border-2 px-8 py-3 hover:shadow-sm"
+                  style={{
+                    borderColor: `${mainColor}30`,
+                    color: mainColor,
+                  }}
+                >
+                  <BookOpenIcon className="w-4 h-4 mr-2" />
+                  Lihat Semua Artikel
+                  <ChevronRightIcon className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </>
+        ) : (
+          // Empty State
+          <div className="text-center py-12">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center opacity-50"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <BookOpenIcon
+                className="w-8 h-8"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">
+              Belum Ada Artikel
+            </h3>
+            <p className="text-gray-500 text-sm">
+              Artikel panduan akan segera tersedia untuk kamu
+            </p>
+          </div>
+        )
+      ) : (
+        // Loading State
+        <ScrollArea className="w-full rounded-xl">
+          <div className="flex gap-6 pb-6">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <Skeleton
+                key={index}
+                className="w-[300px] md:w-[320px] h-80 shrink-0 rounded-2xl"
+              />
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      )}
     </section>
   );
 }

@@ -1,6 +1,7 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
-import { Document, User, UserDocument } from '@/types/database';
+import type { Document } from '@/types/database';
+import { User, UserDocument } from '@/types/database';
 import type {
   ChatRequestOptions,
   CreateMessage,
@@ -68,13 +69,29 @@ export default function Provider({
   const scrollToPdfPage = (pageNum: number) => {
     const containerId = vision ? 'VisionOn' : 'VisionOff';
     const selector = `#${containerId} #pdf-page-${pageNum}`;
-    const pageElement = document.querySelector(selector);
 
-    if (pageElement) {
-      pageElement.scrollIntoView({ behavior: 'smooth' });
+    // Check if we're in a document viewer context
+    const isInDocViewer = document.querySelector('#DocViewer');
+
+    if (!isInDocViewer) {
+      return;
+    }
+
+    const pageElement = document.querySelector(selector);
+    const container = document.querySelector(`#${containerId} .PdfHighlighter`);
+
+    if (pageElement && container) {
+      const containerRect = container.getBoundingClientRect();
+      const pageRect = pageElement.getBoundingClientRect();
+      const scrollTop =
+        container.scrollTop + (pageRect.top - containerRect.top) - 50;
+
+      container.scrollTo({
+        top: Math.max(0, scrollTop),
+        behavior: 'smooth',
+      });
+
       setCurrentPage(pageNum);
-    } else {
-      console.warn(`Halaman ${pageNum} tidak ditemukan di ${selector}`);
     }
   };
 
@@ -96,14 +113,17 @@ export default function Provider({
     onError: (error: any) => {
       toaster({
         title: 'Gagal',
-        description: 'Terjadi kesalahan2!',
+        description: 'Terjadi kesalahan!',
         condition: 'warning',
         duration: 3000,
       });
     },
     onFinish: () => {
       setFirstMessage(false);
-      fetchMessages();
+      // Reduced delay to prevent multiple scrolls
+      setTimeout(() => {
+        fetchMessages();
+      }, 100);
     },
   });
 
@@ -122,7 +142,7 @@ export default function Provider({
     },
     body,
     streamProtocol: 'text',
-    onError: (error) => {
+    onError: (error: Error) => {
       toaster({
         title: 'Gagal',
         description: error?.message ?? 'Terjadi kesalahan!',
@@ -131,12 +151,27 @@ export default function Provider({
       });
     },
     onFinish: () => {
-      fetchMessages();
+      // Reduced delay to prevent multiple scrolls
+      setTimeout(() => {
+        fetchMessages();
+      }, 100);
     },
   });
 
+  // Helper function untuk convert UIMessage ke MessageDataType
+  const convertToMessageDataType = (messages: Message[]): MessageDataType[] => {
+    return messages.map(msg => ({
+      id: msg.id,
+      createdAt: msg.createdAt,
+      content: msg.content,
+      role: msg.role,
+      like: false, // Default value
+      dislike: false, // Default value
+    }));
+  };
+
   const useMessages = {
-    messages: messages as MessageDataType[],
+    messages: convertToMessageDataType(messages),
     inputMessages,
     handleInputChangeMessages,
     handleSubmitMessages,
@@ -145,7 +180,7 @@ export default function Provider({
   };
 
   const useMessagesEdit = {
-    messageEdit: messageEdit as MessageDataType[],
+    messageEdit: convertToMessageDataType(messageEdit),
     inputMessagesEdit,
     handleInputChangeMessagesEdit,
     handleSubmitMessagesEdit,
@@ -284,3 +319,4 @@ export type MessageDataType = {
   like: boolean;
   dislike: boolean;
 };
+document: Document;

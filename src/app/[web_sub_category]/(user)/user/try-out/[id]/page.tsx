@@ -1,14 +1,15 @@
 'use client';
 
-import { use } from 'react';
-
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core';
 import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';
+import { motion } from 'framer-motion';
+import { AlertTriangle, Clock, Shield } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import Header from './_components/header';
+import { use, useEffect, useState } from 'react';
 import RestTime from './_components/rest-time';
 import StartTryout from './_components/start-tryout';
 import Tryout from './_components/tryout';
@@ -17,25 +18,20 @@ import TryoutResult from './_components/tryout-result';
 export interface TryoutPageProps {
   params: Promise<{ id: string }>;
 }
+
 const TryoutPage = ({ params }: TryoutPageProps) => {
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { data: sessionUser } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
-  // const { id } = router.query;
-  // const searchParams = useSearchParams();
-  // const id = searchParams?.get('id');
-
-  // const tryoutId = params.id || '';
   const { id: tryoutId } = use(params);
 
-  const [loading, setLoading] = useState<boolean>(true);
-  // const trpc = api.useUtils();
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  // const { data: tryoutData, isLoading } = api.tryout.getTryoutById.useQuery(
-  //   { tryoutId },
-  //   { refetchOnWindowFocus: false }
-  // );
+  const [loading, setLoading] = useState<boolean>(true);
   const [tryoutData, setTryoutData] = useState<TryoutDataType>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -54,14 +50,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     getTryoutById();
   }, [sessionUser, tryoutId]);
 
-  // const { mutateAsync: FinishTryOutLate } =
-  //   api.tryoutSession.finishSessionLate.useMutation({
-  //     onSuccess() {
-  //       trpc.tryout.getTryoutById.refetch();
-  //       window.location.reload();
-  //     },
-  //   });
-
   const FinishTryOutLate = async (payload: {
     userId: string;
     sessionId: string;
@@ -71,7 +59,6 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       payload,
       type: 'post',
       onSuccess() {
-        //       trpc.tryout.getTryoutById.refetch();
         getTryoutById();
         window.location.reload();
       },
@@ -129,63 +116,9 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
 
   useEffect(() => {
     if (tryoutData) {
-      const getIsDone = (data: any) => {
-        const endDate = new Date(data.endDate);
-        const currentDate = new Date();
-        return endDate < currentDate;
-      };
-
       setLoading(false);
-      // const isDone = getIsDone(tryoutData);
-      // if (isDone) {
-      //   const check = async () => {
-      //     const sessionPromises = tryoutData.TryoutSession.map(
-      //       async (session) => {
-      //         if (session.TryoutSessionParticipant.length < 1) {
-      //           const sessionAnswer = session.TryoutQuestion?.map((item) => {
-      //             return {
-      //               number: item.number,
-      //               questionId: item.id,
-      //               answerId: '',
-      //               answer: '',
-      //               type: item.type,
-      //               notSure: false,
-      //             };
-      //           });
-
-      //           await FinishTryOutLate({
-      //             sessionId: session.id,
-      //             answer: sessionAnswer,
-      //             userId: sessionUser?.user.id || '',
-      //           });
-      //         }
-      //       },
-      //     );
-
-      //     await Promise.all(sessionPromises);
-      //     let count = 0;
-      //     tryoutData.TryoutSession.forEach((session) => {
-      //       if (session.TryoutSessionParticipant.length > 0) {
-      //         count = count + 1;
-      //       }
-      //     });
-      //     if (count === tryoutData.TryoutSession.length) {
-      //       setLoading(false);
-      //     }
-      //   };
-
-      //   check();
-      // } else {
-      //   setLoading(false);
-      // }
     }
   }, [tryoutData]);
-
-  // useEffect(() => {
-  //   if (tryoutData && isTryoutDone) {
-  //     setCurrentIndexSession(sessionLength + 1)
-  //   }
-  // }, [tryoutData,isTryoutDone])
 
   useEffect(() => {
     if (tryoutData) {
@@ -200,24 +133,106 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     }
   }, [tryoutData]);
 
+  useEffect(() => {
+    pixel.meta.track('ViewContent', {
+      content_name: 'Tryout Detail',
+    });
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Tryout Detail',
+    });
+  }, []);
+
   if (isLoading || loading) return <SpinnerPageCentered />;
 
   if (!tryoutData) {
-    return <div>Error....</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+        >
+          <div className="text-center">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <AlertTriangle
+                className="w-8 h-8"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Try Out Tidak Ditemukan
+            </h2>
+            <p className="text-gray-600">
+              Terjadi kesalahan saat memuat data try out
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
   }
 
   if (!isTryoutStarted && !isTesting) {
     return (
-      <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-white font-medium">
-        <p>Tryout Belum Dimulai</p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+        >
+          <div className="text-center">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <Clock
+                className="w-8 h-8"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Try Out Belum Dimulai
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Try out akan dimulai sesuai jadwal yang telah ditentukan
+            </p>
+            <div className="text-sm text-gray-500">
+              Mulai: {new Date(tryoutData.startDate).toLocaleString('id-ID')}
+            </div>
+          </div>
+        </motion.div>
       </div>
     );
   }
 
   if (!isRegistered && isTryoutStarted) {
     return (
-      <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-white font-medium">
-        <p>Kamu tidak terdaftar</p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+        >
+          <div className="text-center">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <Shield
+                className="w-8 h-8"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Akses Ditolak
+            </h2>
+            <p className="text-gray-600">
+              Anda tidak terdaftar untuk mengikuti try out ini
+            </p>
+          </div>
+        </motion.div>
       </div>
     );
   }
@@ -253,7 +268,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   ) {
     if (!isSessionDone) {
       return (
-        <div className="fixed left-0 top-0 h-full w-full bg-workspace">
+        <div className="min-h-screen bg-gray-50">
           <Tryout
             questions={question as any}
             sessionId={sessionData[currentIndexSession].id}
@@ -265,31 +280,44 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       );
     }
     return (
-      <div className="fixed left-0 top-0 h-full w-full bg-workspace">
-        <Header
-          current={0}
-          total={-1}
-          name={''}
-        />
-        <div className="absolute left-0 top-[0] flex h-full w-full items-center justify-center pt-[1rem]">
-          Kamu Telah mengerjakan sesi ini
-        </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+        >
+          <div className="text-center">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <Shield
+                className="w-8 h-8"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Sesi Telah Selesai
+            </h2>
+            <p className="text-gray-600">Anda telah menyelesaikan sesi ini</p>
+          </div>
+        </motion.div>
       </div>
     );
   } else if (currentIndexSession === 0) {
     return (
-      <div className="fixed left-0 top-0 h-full w-full bg-workspace">
+      <div className="min-h-screen bg-gray-50">
         <StartTryout
           tryoutName={tryoutData?.title}
-          restTime={tryoutData?.restTime}
           sessionData={sessionData}
           currentIndexSession={currentIndexSession}
+          tryoutData={tryoutData}
         />
       </div>
     );
   } else if (currentIndexSession >= sessionLength) {
     return (
-      <div className="fixed left-0 top-0 h-full w-full overflow-y-auto bg-workspace">
+      <div className="min-h-screen bg-gray-50">
         <TryoutResult
           sessionData={sessionData}
           tryoutId={tryoutData?.id}
@@ -309,9 +337,9 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     return (
       <RestTime
         tryoutName={tryoutData?.title}
-        restTime={tryoutData?.restTime}
         sessionData={sessionData}
         currentIndexSession={currentIndexSession}
+        restTime={tryoutData?.restTime}
       />
     );
   }

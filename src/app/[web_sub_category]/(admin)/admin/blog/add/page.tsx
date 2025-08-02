@@ -166,9 +166,9 @@ const AddBlogAdmin = () => {
   return (
     <div
       id="blog-admin"
-      className="flex w-full flex-col gap-[2rem] bg-white p-[1rem]"
+      className="flex w-full flex-col gap-8 bg-white p-4"
     >
-      <h1 className="text-center text-[1.2rem] font-bold">TutorSNBT Blog</h1>
+      <h1 className="text-center text-[1.2rem] font-bold">Bimbelio Blog</h1>
       <div className="flex flex-col gap-[.5rem]">
         <InputText
           heading="Title"
@@ -189,7 +189,7 @@ const AddBlogAdmin = () => {
           placeholder="Description"
         />
 
-        <div className="grid w-full grid-cols-2 gap-[1rem]">
+        <div className="grid w-full grid-cols-2 gap-4">
           <div
             id="name-file"
             className="flex w-full flex-col gap-[.5rem]"
@@ -201,7 +201,7 @@ const AddBlogAdmin = () => {
                 value && setStatus(value as BlogStatusEnum)
               }
             >
-              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] text-black outline-none">
+              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -220,7 +220,7 @@ const AddBlogAdmin = () => {
               value={isEditorPick ? 'true' : 'false'}
               onValueChange={(value) => setIsEditorPick(value === 'true')}
             >
-              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] text-black outline-none">
+              <SelectTrigger className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none">
                 <SelectValue placeholder="Pilihan Editor" />
               </SelectTrigger>
               <SelectContent>
@@ -237,7 +237,7 @@ const AddBlogAdmin = () => {
               <p>Published Date </p>
               <input
                 type="datetime-local"
-                className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-[1rem] text-black outline-none"
+                className="font-regular h-[45px] w-full rounded-[.5rem] border border-main-gray-input px-4 text-black outline-none"
                 onChange={(e) => setPublishedAt(e.target.value)}
                 value={publishedAt}
               />
@@ -251,7 +251,7 @@ const AddBlogAdmin = () => {
           <p>Tags (format : tags1, tags2, tags3)</p>
           {/* <input
             type="text"
-            className="border border-main-gray-input rounded-[.5rem] outline-none text-black py-[.5rem] px-[1rem] w-full font-regular"
+            className="border border-main-gray-input rounded-[.5rem] outline-none text-black py-[.5rem] px-4 w-full font-regular"
             placeholder={`Tags`}
             onChange={e => {
               const value = e.target.value.split(',').map(tag => tag.trim());
@@ -267,7 +267,7 @@ const AddBlogAdmin = () => {
             }}
             value={tags.join(', ')}
           /> */}
-          <div className="flex items-start gap-[1rem]">
+          <div className="flex items-start gap-4">
             {tagValue.map((tagVal, tagValIndex) => (
               <Popover
                 open={tagVal.open}
@@ -283,7 +283,7 @@ const AddBlogAdmin = () => {
                 key={tagValIndex}
               >
                 <div
-                  className="relative pb-[1.5rem]"
+                  className="relative pb-6"
                   onMouseOver={() => setShowDeleteIndex(tagValIndex)}
                   onMouseLeave={() => setShowDeleteIndex(null)}
                 >
@@ -419,7 +419,7 @@ const InputText = ({
       <p>{heading}</p>
       <input
         type="text"
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}
@@ -446,7 +446,7 @@ const InputTextarea = ({
     >
       <p>{heading}</p>
       <textarea
-        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-[1rem] py-[.5rem] text-black outline-none"
+        className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
         placeholder={`${placeholder}`}
         onChange={(e) => setValue(e.target.value)}
         value={value}

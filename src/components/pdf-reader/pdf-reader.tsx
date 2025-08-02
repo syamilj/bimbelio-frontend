@@ -121,7 +121,7 @@ function PdfReader({
   docId: string;
 }) {
   const {
-    useHeaderPdf: { zoomValue },
+    useHeaderPdf: { zoomValue, vision },
     useHighlights: {
       highlighterUtilsRef,
       addHighlight,
@@ -170,15 +170,29 @@ function PdfReader({
 
   if (pdfUrl.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[80vh] w-full">
-        <Loader2 className="w-4 h-4 animate-spin" />
+      <div className="flex items-center justify-center h-full w-full bg-linear-to-br from-gray-50 to-white">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 mx-auto rounded-full bg-linear-to-br from-blue-100 to-blue-200 flex items-center justify-center shadow-lg">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Loading Document
+            </h3>
+            <p className="text-gray-600">Preparing your PDF for viewing...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <>
-      <div id="VisionOn">
+    <div className="h-full w-full relative">
+      <div
+        id="VisionOn"
+        className="h-full w-full"
+        style={{ display: vision ? 'block' : 'none' }}
+      >
         <PdfLoader
           document={`${pdfUrl}`}
           workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs"
@@ -202,7 +216,9 @@ function PdfReader({
               }
               highlights={highlights as PdfHighlightType[]}
               style={{
-                height: 'calc(100% - 41px)',
+                height: '100%',
+                minHeight: 'calc(100vh - 120px)', // Account for header height - VisionOn
+                width: '100%',
               }}
             >
               <HighlightContainer
@@ -216,7 +232,12 @@ function PdfReader({
           )}
         </PdfLoader>
       </div>
-      <div id="VisionOff">
+
+      <div
+        id="VisionOff"
+        className="h-full w-full"
+        style={{ display: !vision ? 'block' : 'none' }}
+      >
         <PdfLoader
           document={`${pdfUrl}`}
           workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs"
@@ -240,7 +261,9 @@ function PdfReader({
               }
               highlights={highlights as PdfHighlightType[]}
               style={{
-                height: 'calc(100% - 41px)',
+                height: '100%',
+                minHeight: 'calc(100vh - 120px)', // Account for header height - VisionOff
+                width: '100%',
               }}
             >
               <HighlightContainer
@@ -254,7 +277,7 @@ function PdfReader({
           )}
         </PdfLoader>
       </div>
-    </>
+    </div>
   );
 }
 

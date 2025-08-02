@@ -30,12 +30,16 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-// Utilitas dan API
-import { cn, getDateString, getHours } from '@/lib/utils';
+// Provider dan Hooks
+import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { getDateString, getHours } from '@/lib/utils';
+import { TryoutStatusEnum, UserRoleEnum } from '@/types/database';
 
 // Icon dari lucide-react
 import {
-  Activity,
   ActivityIcon,
   Award,
   Brain,
@@ -44,19 +48,16 @@ import {
   Clock,
   FileText,
   Highlighter,
+  Home,
   LibraryBigIcon,
   Loader2Icon,
   PenTool,
   Target,
   TrendingUp,
-  Users,
+  Trophy,
 } from 'lucide-react';
 
 // Komponen Chart dari recharts
-import { useSession } from '@/components/provider/provider-session-auth';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { TryoutStatusEnum, UserRoleEnum } from '@/types/database';
 import {
   Bar,
   BarChart,
@@ -88,7 +89,8 @@ interface StatCardProps {
   change: number;
   changePercentage?: number;
   changeLabel?: string;
-  bgColour: string;
+  bgColour?: string;
+  mainColor?: string;
 }
 
 interface StudyHabitStatProps {
@@ -128,6 +130,7 @@ interface ActivitySummaryProps {
   value: number;
   label: string;
   increase: number;
+  mainColor?: string;
 }
 
 interface CalendarView {
@@ -146,25 +149,51 @@ export const StatCard: React.FC<StatCardProps> = ({
   change,
   changePercentage,
   changeLabel,
-  bgColour,
+  mainColor = '#0091FF',
 }) => (
-  <Card className={cn('overflow-hidden flex flex-col', bgColour)}>
-    <CardHeader className="flex flex-row items-center justify-between pb-2">
-      <CardTitle className="text-base font-semibold">{title}</CardTitle>
-      <div className="bg-white p-2 rounded-full shadow-sm">{icon}</div>
+  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
+    <CardHeader
+      className="pb-3 relative overflow-hidden"
+      style={{ backgroundColor: `${mainColor}08` }}
+    >
+      <div className="flex items-center justify-between relative z-10">
+        <CardTitle className="text-sm font-semibold text-gray-700">
+          {title}
+        </CardTitle>
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm text-white"
+          style={{ backgroundColor: mainColor }}
+        >
+          {icon}
+        </div>
+      </div>
+      {/* Decorative element */}
+      <div
+        className="absolute -right-4 -top-4 w-12 h-12 rounded-full opacity-10"
+        style={{ backgroundColor: mainColor }}
+      />
     </CardHeader>
-    <CardContent className="flex flex-col items-start">
-      <p className="text-3xl font-bold">{value}</p>
-      <div className="mt-2 flex items-center text-sm">
-        <ChevronUp className="mr-1 h-4 w-4 text-green-500" />
-        <span className="font-medium text-green-500">
-          +{change} {changeLabel || ''}
-        </span>
-        {changePercentage !== undefined && (
-          <span className="ml-1 text-gray-500">
-            ({changePercentage.toFixed(2)}%)
-          </span>
-        )}
+    <CardContent className="pt-4">
+      <div className="space-y-3">
+        <div
+          className="text-2xl md:text-3xl font-bold"
+          style={{ color: mainColor }}
+        >
+          {value}
+        </div>
+        <div className="flex items-center text-sm">
+          <div className="flex items-center gap-1 text-green-600">
+            <ChevronUp className="w-4 h-4" />
+            <span className="font-medium">
+              +{change} {changeLabel || ''}
+            </span>
+          </div>
+          {changePercentage !== undefined && (
+            <span className="ml-2 text-gray-500 text-xs">
+              ({changePercentage.toFixed(1)}%)
+            </span>
+          )}
+        </div>
       </div>
     </CardContent>
   </Card>
@@ -185,10 +214,16 @@ export const ActivitySummary: React.FC<ActivitySummaryProps> = ({
   value,
   label,
   increase,
+  mainColor = '#0091FF',
 }) => (
   <div className="flex flex-col items-center">
     {icon}
-    <p className="mt-2 text-2xl font-bold">{value}</p>
+    <p
+      className="mt-2 text-2xl font-bold"
+      style={{ color: mainColor }}
+    >
+      {value}
+    </p>
     <p className="text-sm text-muted-foreground">{label}</p>
     <p
       className={`text-xs ${increase >= 0 ? 'text-green-500' : 'text-red-500'}`}
@@ -207,40 +242,41 @@ export const PerformanceSummary: React.FC<{
   learningReport: any;
   studyHabits: any;
   tryoutHistory: any;
-}> = ({ learningReport, studyHabits, tryoutHistory }) => (
-  <div className="grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+  mainColor: string;
+}> = ({ learningReport, studyHabits, tryoutHistory, mainColor }) => (
+  <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
     <StatCard
-      icon={<Award className="h-4 w-4" />}
+      icon={<Award className="h-5 w-5" />}
       title="Nilai Total"
       value={learningReport.totalScore}
       change={learningReport.scoreIncrease}
       changePercentage={learningReport.scoreIncreasePercentage}
-      bgColour="bg-blue-100 text-blue-600"
+      mainColor={mainColor}
     />
     <StatCard
-      icon={<Activity className="h-4 w-4" />}
+      icon={<Trophy className="h-5 w-5" />}
       title="Peringkat"
       value={`#${learningReport.rank}`}
       change={learningReport.rankIncrease}
       changeLabel="posisi"
-      bgColour="bg-green-100 text-green-600"
+      mainColor={mainColor}
     />
     <StatCard
-      icon={<Clock className="h-4 w-4" />}
+      icon={<Clock className="h-5 w-5" />}
       title="Jam Belajar"
       value={`${studyHabits.hoursThisWeek} jam`}
       change={2}
       changeLabel="jam"
       changePercentage={10}
-      bgColour="bg-yellow-100 text-yellow-600"
+      mainColor={mainColor}
     />
     <StatCard
-      icon={<Users className="h-4 w-4" />}
+      icon={<Target className="h-5 w-5" />}
       title="Tryout Selesai"
-      value={tryoutHistory?.history.length}
+      value={tryoutHistory?.history.length || 0}
       change={2}
       changeLabel="dari bulan lalu"
-      bgColour="bg-purple-100 text-purple-600"
+      mainColor={mainColor}
     />
   </div>
 );
@@ -248,46 +284,108 @@ export const PerformanceSummary: React.FC<{
 export const TryoutHistoryCard: React.FC<{
   tryoutHistory: any;
   tryoutCategory: any;
-}> = ({ tryoutHistory, tryoutCategory }) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center text-2xl font-bold">
-        <Target className="mr-2 h-6 w-6 text-red-500" />
-        Try Out
-      </CardTitle>
-      <CardDescription className="text-sm text-gray-500">
-        Rekap dan evaluasi tryout kamu.
-      </CardDescription>
+  mainColor: string;
+  secondaryColor: string;
+}> = ({ tryoutHistory, tryoutCategory, mainColor, secondaryColor }) => (
+  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <CardHeader
+      className="pb-4 relative overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+      }}
+    >
+      <div className="relative z-10">
+        <CardTitle
+          className="text-xl font-bold flex items-center gap-3"
+          style={{ color: mainColor }}
+        >
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            style={{ backgroundColor: `${mainColor}15` }}
+          >
+            <Target
+              className="w-5 h-5"
+              style={{ color: mainColor }}
+            />
+          </div>
+          Try Out
+        </CardTitle>
+        <CardDescription className="text-gray-600 mt-2">
+          Rekap dan evaluasi tryout kamu.
+        </CardDescription>
+      </div>
+      {/* Decorative elements */}
+      <div
+        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+        style={{ backgroundColor: mainColor }}
+      />
     </CardHeader>
-    <CardContent>
+
+    <CardContent className="p-6">
       <Tabs defaultValue="grafik">
-        <TabsList className="mb-4">
-          <TabsTrigger value="grafik">Grafik</TabsTrigger>
-          <TabsTrigger value="detail">Detail</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
+          <TabsTrigger
+            value="grafik"
+            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+            style={
+              {
+                '--tw-bg-opacity': '1',
+              } as React.CSSProperties & { [key: string]: string }
+            }
+            data-active-bg={mainColor}
+          >
+            <span className="font-medium">Grafik</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="detail"
+            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+            style={
+              {
+                '--tw-bg-opacity': '1',
+              } as React.CSSProperties & { [key: string]: string }
+            }
+            data-active-bg={mainColor}
+          >
+            <span className="font-medium">Detail</span>
+          </TabsTrigger>
         </TabsList>
+
         <TabsContent value="detail">
           <div className="max-h-[400px] overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Judul</TableHead>
-                  <TableHead>Tanggal</TableHead>
-                  <TableHead>Nilai Total</TableHead>
+                <TableRow style={{ backgroundColor: `${mainColor}08` }}>
+                  <TableHead className="font-bold text-gray-800">
+                    Judul
+                  </TableHead>
+                  <TableHead className="font-bold text-gray-800">
+                    Tanggal
+                  </TableHead>
+                  <TableHead className="font-bold text-gray-800">
+                    Nilai Total
+                  </TableHead>
                   {tryoutCategory?.map((category: any, index: number) => (
                     <TableHead
                       key={index}
-                      className="text-center"
+                      className="text-center font-bold text-gray-800"
                     >
                       {category.name}
                     </TableHead>
                   ))}
-                  <TableHead className="text-center">Peringkat</TableHead>
-                  <TableHead className="text-center">Action</TableHead>
+                  <TableHead className="text-center font-bold text-gray-800">
+                    Peringkat
+                  </TableHead>
+                  <TableHead className="text-center font-bold text-gray-800">
+                    Action
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {tryoutHistory?.history?.map((tryout: any, index: number) => (
-                  <TableRow key={index}>
+                  <TableRow
+                    key={index}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
                     <TableCell className="font-medium">
                       {tryout.Tryout.title}
                     </TableCell>
@@ -302,24 +400,16 @@ export const TryoutHistoryCard: React.FC<{
                       const thisSession = tryout.TryoutSessionResult.find(
                         (item: any) => item.categoryId === category.id,
                       );
-                      if (!tryout.show) {
-                        return (
-                          <TableCell
-                            key={idx}
-                            className="text-center"
-                          >
-                            ...?
-                          </TableCell>
-                        );
-                      }
                       return (
                         <TableCell
                           key={idx}
                           className="text-center"
                         >
-                          {thisSession?.totalScore || '-'}{' '}
-                          {thisSession && ' / '}
-                          {thisSession?.TryoutSession.thresholdValue}
+                          {!tryout.show
+                            ? '...?'
+                            : thisSession
+                              ? `${thisSession.totalScore} / ${thisSession.TryoutSession.thresholdValue}`
+                              : '-'}
                         </TableCell>
                       );
                     })}
@@ -330,6 +420,8 @@ export const TryoutHistoryCard: React.FC<{
                       <Button
                         asChild
                         size="sm"
+                        className="rounded-xl"
+                        style={{ backgroundColor: mainColor }}
                       >
                         <Link
                           href={`/${website_sub_category_id}/user/try-out/${tryout.Tryout?.id}`}
@@ -344,6 +436,7 @@ export const TryoutHistoryCard: React.FC<{
             </Table>
           </div>
         </TabsContent>
+
         <TabsContent value="grafik">
           <ChartContainer
             config={defaultChartConfig}
@@ -402,24 +495,72 @@ export const TryoutHistoryCard: React.FC<{
   </Card>
 );
 
-export const QuizHistoryCard: React.FC<{ quizHistory: any }> = ({
-  quizHistory,
-}) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center text-2xl font-bold">
-        <Brain className="mr-2 h-6 w-6 text-green-500" />
-        Quiz
-      </CardTitle>
-      <CardDescription className="text-sm text-gray-500">
-        Statistik dan rekap quiz yang telah kamu kerjakan.
-      </CardDescription>
+export const QuizHistoryCard: React.FC<{
+  quizHistory: any;
+  mainColor: string;
+  secondaryColor: string;
+}> = ({ quizHistory, mainColor, secondaryColor }) => (
+  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <CardHeader
+      className="pb-4 relative overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+      }}
+    >
+      <div className="relative z-10">
+        <CardTitle
+          className="text-xl font-bold flex items-center gap-3"
+          style={{ color: mainColor }}
+        >
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            style={{ backgroundColor: `${mainColor}15` }}
+          >
+            <Brain
+              className="w-5 h-5"
+              style={{ color: mainColor }}
+            />
+          </div>
+          Quiz
+        </CardTitle>
+        <CardDescription className="text-gray-600 mt-2">
+          Statistik dan rekap quiz yang telah kamu kerjakan.
+        </CardDescription>
+      </div>
+      {/* Decorative elements */}
+      <div
+        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+        style={{ backgroundColor: mainColor }}
+      />
     </CardHeader>
-    <CardContent>
+
+    <CardContent className="p-6">
       <Tabs defaultValue="grafik">
-        <TabsList className="mb-4">
-          <TabsTrigger value="grafik">Grafik</TabsTrigger>
-          <TabsTrigger value="detail">Detail</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100 rounded-xl p-1 h-12">
+          <TabsTrigger
+            value="grafik"
+            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+            style={
+              {
+                '--tw-bg-opacity': '1',
+              } as React.CSSProperties & { [key: string]: string }
+            }
+            data-active-bg={mainColor}
+          >
+            Grafik
+          </TabsTrigger>
+          <TabsTrigger
+            value="detail"
+            className="rounded-xl data-[state=active]:text-white data-[state=active]:shadow-sm"
+            style={
+              {
+                '--tw-gradient-from': mainColor,
+                '--tw-gradient-to': secondaryColor,
+              } as React.CSSProperties
+            }
+          >
+            Detail
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="detail">
           <div className="max-h-[400px] overflow-x-auto">
@@ -503,168 +644,218 @@ export const QuizHistoryCard: React.FC<{ quizHistory: any }> = ({
   </Card>
 );
 
-export const TestAnalysisCard: React.FC<{
-  analysisByCategoryTryout: any;
-  tryoutCategory: any;
-}> = ({ analysisByCategoryTryout, tryoutCategory }) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center text-2xl font-bold">
-        <Target className="mr-2 h-6 w-6 text-red-500" />
-        Analisis per Bidang Tes
-      </CardTitle>
-      <CardDescription className="text-sm text-gray-500">
-        Analisis detail berdasarkan subtes.
-      </CardDescription>
-    </CardHeader>
-    <CardContent className="overflow-hidden">
-      <Tabs defaultValue={tryoutCategory?.[0]?.name || ''}>
-        <div className="w-full overflow-x-auto pb-2">
-          <TabsList className="mb-4 inline-flex w-max">
-            {tryoutCategory?.map((category: any, index: number) => (
-              <TabsTrigger
-                key={index}
-                value={category.name}
-                className="whitespace-nowrap"
-              >
-                {category.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </div>
-        {analysisByCategoryTryout?.map((category: any, index: number) =>
-          category.data.length === 0 ? (
-            <TabsContent
-              key={index}
-              value={category.category}
-            >
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                  <ChartContainer
-                    config={defaultChartConfig}
-                    className="min-h-[200px] w-full"
-                  >
-                    <ResponsiveContainer
-                      width="100%"
-                      height={300}
-                    >
-                      <BarChart data={category.data}>
-                        <XAxis dataKey="subCategory" />
-                        <YAxis />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar
-                          dataKey="accuracy"
-                          fill="#8884d8"
-                          name="Akurasi"
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
-                </div>
-                <div className="h-[400px] overflow-x-auto overflow-y-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Subtes</TableHead>
-                        <TableHead>Akurasi</TableHead>
-                        <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>-</TableCell>
-                        <TableCell>-</TableCell>
-                        <TableCell>
-                          <Badge className="bg-green-500">-</Badge>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-            </TabsContent>
-          ) : (
-            <TabsContent
-              key={index}
-              value={category.category}
-            >
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                  <ChartContainer
-                    config={defaultChartConfig}
-                    className="min-h-[200px] w-full"
-                  >
-                    <ResponsiveContainer
-                      width="100%"
-                      height={300}
-                    >
-                      <BarChart data={category.data}>
-                        <XAxis dataKey="subCategory" />
-                        <YAxis />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar
-                          dataKey="accuracy"
-                          fill="#8884d8"
-                          name="Akurasi"
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
-                </div>
-                <div className="h-[400px] overflow-x-auto overflow-y-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Subtes</TableHead>
-                        <TableHead>Akurasi</TableHead>
-                        <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {category.data.map((item: any, idx: number) => (
-                        <TableRow key={idx}>
-                          <TableCell>{item.subCategory}</TableCell>
-                          <TableCell>{item.accuracy.toFixed(2)}%</TableCell>
-                          <TableCell>
-                            <Badge
-                              className={
-                                item.accuracy >= 80
-                                  ? 'bg-green-500'
-                                  : 'bg-yellow-500'
-                              }
-                            >
-                              {item.accuracy >= 80 ? 'Sangat Baik' : 'Baik'}
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-            </TabsContent>
-          ),
-        )}
-      </Tabs>
-    </CardContent>
-  </Card>
-);
+// export const TestAnalysisCard: React.FC<{
+//   analysisByCategoryTryout: any;
+//   tryoutCategory: any;
+//   mainColor: string;
+//   secondaryColor: string;
+// }> = ({
+//   analysisByCategoryTryout,
+//   tryoutCategory,
+//   mainColor,
+//   secondaryColor,
+// }) => (
+//   <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+//     <CardHeader
+//       className="pb-4 relative overflow-hidden"
+//       style={{
+//         background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+//       }}
+//     >
+//       <div className="relative z-10">
+//         <CardTitle
+//           className="text-xl font-bold flex items-center gap-3"
+//           style={{ color: mainColor }}
+//         >
+//           <div
+//             className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+//             style={{ backgroundColor: `${mainColor}15` }}
+//           >
+//             <Target
+//               className="w-5 h-5"
+//               style={{ color: mainColor }}
+//             />
+//           </div>
+//           Analisis per Bidang Tes
+//         </CardTitle>
+//         <CardDescription className="text-gray-600 mt-2">
+//           Analisis detail berdasarkan subtes.
+//         </CardDescription>
+//       </div>
+//       {/* Decorative elements */}
+//       <div
+//         className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+//         style={{ backgroundColor: mainColor }}
+//       />
+//     </CardHeader>
+
+//     <CardContent className="p-6 overflow-hidden">
+//       <Tabs defaultValue={tryoutCategory?.[0]?.name || ''}>
+//         <div className="w-full overflow-x-auto pb-2">
+//           <TabsList className="mb-4 inline-flex w-max bg-gray-100 rounded-xl p-1 h-12">
+//             {tryoutCategory?.map((category: any, index: number) => (
+//               <TabsTrigger
+//                 key={index}
+//                 value={category.name}
+//                 className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+//                 style={
+//                   {
+//                     '--tw-bg-opacity': '1',
+//                   } as React.CSSProperties & { [key: string]: string }
+//                 }
+//                 data-active-bg={mainColor}
+//               >
+//                 {category.name}
+//               </TabsTrigger>
+//             ))}
+//           </TabsList>
+//         </div>
+//         {analysisByCategoryTryout?.map((category: any, index: number) =>
+//           category.data.length === 0 ? (
+//             <TabsContent
+//               key={index}
+//               value={category.category}
+//             >
+//               <div className="text-center py-8 md:py-12 text-gray-500">
+//                 <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+//                   <Target className="w-6 h-6 md:w-8 md:h-8 opacity-50" />
+//                 </div>
+//                 <h3 className="font-semibold mb-2 text-sm md:text-base">
+//                   Belum Ada Data
+//                 </h3>
+//                 <p className="text-xs md:text-sm">
+//                   Data analisis untuk kategori ini belum tersedia
+//                 </p>
+//               </div>
+//             </TabsContent>
+//           ) : (
+//             <TabsContent
+//               key={index}
+//               value={category.category}
+//             >
+//               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+//                 <div>
+//                   <ChartContainer
+//                     config={defaultChartConfig}
+//                     className="min-h-[200px] w-full"
+//                   >
+//                     <ResponsiveContainer
+//                       width="100%"
+//                       height={300}
+//                     >
+//                       <BarChart data={category.data}>
+//                         <XAxis dataKey="subCategory" />
+//                         <YAxis />
+//                         <ChartTooltip content={<ChartTooltipContent />} />
+//                         <Bar
+//                           dataKey="accuracy"
+//                           fill={mainColor}
+//                           name="Akurasi"
+//                           radius={[4, 4, 0, 0]}
+//                         />
+//                       </BarChart>
+//                     </ResponsiveContainer>
+//                   </ChartContainer>
+//                 </div>
+//                 <div className="h-[400px] overflow-x-auto overflow-y-auto">
+//                   <Table>
+//                     <TableHeader>
+//                       <TableRow style={{ backgroundColor: `${mainColor}08` }}>
+//                         <TableHead className="font-bold text-gray-800">
+//                           Subtes
+//                         </TableHead>
+//                         <TableHead className="font-bold text-gray-800">
+//                           Akurasi
+//                         </TableHead>
+//                         <TableHead className="font-bold text-gray-800">
+//                           Status
+//                         </TableHead>
+//                       </TableRow>
+//                     </TableHeader>
+//                     <TableBody>
+//                       {category.data.map((item: any, idx: number) => (
+//                         <TableRow
+//                           key={idx}
+//                           className="hover:bg-gray-50 transition-colors"
+//                         >
+//                           <TableCell className="font-medium">
+//                             {item.subCategory}
+//                           </TableCell>
+//                           <TableCell className="font-medium">
+//                             {item.accuracy.toFixed(2)}%
+//                           </TableCell>
+//                           <TableCell>
+//                             <Badge
+//                               className={
+//                                 item.accuracy >= 80
+//                                   ? 'text-white border-0'
+//                                   : 'bg-yellow-500 text-white border-0'
+//                               }
+//                               style={{
+//                                 backgroundColor:
+//                                   item.accuracy >= 80 ? '#10b981' : undefined,
+//                               }}
+//                             >
+//                               {item.accuracy >= 80
+//                                 ? 'Sangat Baik'
+//                                 : 'Perlu Ditingkatkan'}
+//                             </Badge>
+//                           </TableCell>
+//                         </TableRow>
+//                       ))}
+//                     </TableBody>
+//                   </Table>
+//                 </div>
+//               </div>
+//             </TabsContent>
+//           ),
+//         )}
+//       </Tabs>
+//     </CardContent>
+//   </Card>
+// );
 
 export const ScoreDevelopmentCard: React.FC<{
   scoreDevelopmentData: any;
   tryoutCategory: any;
-}> = ({ scoreDevelopmentData, tryoutCategory }) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center text-2xl font-bold">
-        <TrendingUp className="mr-2 h-6 w-6 text-blue-500" />
-        Perkembangan Nilai
-      </CardTitle>
-      <CardDescription className="text-sm text-gray-500">
-        Grafik perkembangan nilai tryout kamu.
-      </CardDescription>
+  mainColor: string;
+  secondaryColor: string;
+}> = ({ scoreDevelopmentData, tryoutCategory, mainColor, secondaryColor }) => (
+  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <CardHeader
+      className="pb-4 relative overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+      }}
+    >
+      <div className="relative z-10">
+        <CardTitle
+          className="text-xl font-bold flex items-center gap-3"
+          style={{ color: mainColor }}
+        >
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            style={{ backgroundColor: `${mainColor}15` }}
+          >
+            <TrendingUp
+              className="w-5 h-5"
+              style={{ color: mainColor }}
+            />
+          </div>
+          Perkembangan Nilai
+        </CardTitle>
+        <CardDescription className="text-gray-600 mt-2">
+          Grafik perkembangan nilai tryout kamu.
+        </CardDescription>
+      </div>
+      {/* Decorative elements */}
+      <div
+        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+        style={{ backgroundColor: mainColor }}
+      />
     </CardHeader>
-    <CardContent>
+
+    <CardContent className="p-6">
       <ChartContainer
         config={defaultChartConfig}
         className="min-h-[200px] w-full"
@@ -684,9 +875,14 @@ export const ScoreDevelopmentCard: React.FC<{
                 type="monotone"
                 dataKey={category.name.toUpperCase()}
                 stroke={
-                  index === 0 ? '#8884d8' : index === 1 ? '#82ca9d' : '#ffc658'
+                  index === 0
+                    ? mainColor
+                    : index === 1
+                      ? secondaryColor
+                      : '#ffc658'
                 }
                 name={category.name}
+                strokeWidth={3}
               />
             ))}
             <Line
@@ -694,6 +890,7 @@ export const ScoreDevelopmentCard: React.FC<{
               dataKey="total"
               stroke="#ff7300"
               name="Total"
+              strokeWidth={4}
             />
           </LineChart>
         </ResponsiveContainer>
@@ -705,44 +902,94 @@ export const ScoreDevelopmentCard: React.FC<{
 // =====================================================================
 // KOMPOEN LEARNING PROGRESS CARD (Gabungan Study Habits + Semua Sub-Komponen)
 // =====================================================================
-export const LearningActivityCard: React.FC<{ data: LearningData }> = ({
-  data,
-}) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center text-2xl font-bold">
-        <ActivityIcon className="mr-2 h-6 w-6 text-indigo-500" />
-        Aktivitas Belajar
-      </CardTitle>
-      <CardDescription className="text-sm text-gray-500">
-        Statistik kegiatan belajar kamu minggu ini.
-      </CardDescription>
+export const LearningActivityCard: React.FC<{
+  data: LearningData;
+  mainColor: string;
+  secondaryColor: string;
+}> = ({ data, mainColor, secondaryColor }) => (
+  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <CardHeader
+      className="pb-4 relative overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+      }}
+    >
+      <div className="relative z-10">
+        <CardTitle
+          className="text-xl font-bold flex items-center gap-3"
+          style={{ color: mainColor }}
+        >
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            style={{ backgroundColor: `${mainColor}15` }}
+          >
+            <ActivityIcon
+              className="w-5 h-5"
+              style={{ color: mainColor }}
+            />
+          </div>
+          Aktivitas Belajar
+        </CardTitle>
+        <CardDescription className="text-gray-600 mt-2">
+          Statistik kegiatan belajar kamu minggu ini.
+        </CardDescription>
+      </div>
+      {/* Decorative elements */}
+      <div
+        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+        style={{ backgroundColor: mainColor }}
+      />
     </CardHeader>
-    <CardContent>
+
+    <CardContent className="p-6">
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <ActivitySummary
-          icon={<FileText className="h-8 w-8 text-blue-500" />}
+          icon={
+            <FileText
+              className="h-8 w-8"
+              style={{ color: mainColor }}
+            />
+          }
           value={data.documentsRead}
           label="Dokumen Dibaca"
           increase={data.documentsReadIncrease}
+          mainColor={mainColor}
         />
         <ActivitySummary
-          icon={<PenTool className="h-8 w-8 text-green-500" />}
+          icon={
+            <PenTool
+              className="h-8 w-8"
+              style={{ color: mainColor }}
+            />
+          }
           value={data.notesCreated}
           label="Catatan Dibuat"
           increase={data.notesCreatedIncrease}
+          mainColor={mainColor}
         />
         <ActivitySummary
-          icon={<Highlighter className="h-8 w-8 text-yellow-500" />}
+          icon={
+            <Highlighter
+              className="h-8 w-8"
+              style={{ color: mainColor }}
+            />
+          }
           value={data.highlightsMade}
           label="Highlight Dibuat"
           increase={data.highlightsMadeIncrease}
+          mainColor={mainColor}
         />
         <ActivitySummary
-          icon={<Brain className="h-8 w-8 text-red-500" />}
+          icon={
+            <Brain
+              className="h-8 w-8"
+              style={{ color: mainColor }}
+            />
+          }
           value={data.quizStudied}
           label="Quiz Dibuat"
           increase={data.quizStudiedIncrease}
+          mainColor={mainColor}
         />
       </div>
     </CardContent>
@@ -789,20 +1036,46 @@ export const LearningConsistencyCard: React.FC<{ data: LearningData }> = ({
   </Card>
 );
 
-export const WeeklyProgressCard: React.FC<{ data: LearningData }> = ({
-  data,
-}) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center text-2xl font-bold">
-        <Loader2Icon className="mr-2 h-6 w-6 text-indigo-500" />
-        Progres Mingguan
-      </CardTitle>
-      <CardDescription className="text-sm text-gray-500">
-        Aktivitas belajar selama 7 hari terakhir.
-      </CardDescription>
+export const WeeklyProgressCard: React.FC<{
+  data: LearningData;
+  mainColor: string;
+  secondaryColor: string;
+}> = ({ data, mainColor, secondaryColor }) => (
+  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <CardHeader
+      className="pb-4 relative overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+      }}
+    >
+      <div className="relative z-10">
+        <CardTitle
+          className="text-xl font-bold flex items-center gap-3"
+          style={{ color: mainColor }}
+        >
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            style={{ backgroundColor: `${mainColor}15` }}
+          >
+            <Loader2Icon
+              className="w-5 h-5"
+              style={{ color: mainColor }}
+            />
+          </div>
+          Progres Mingguan
+        </CardTitle>
+        <CardDescription className="text-gray-600 mt-2">
+          Aktivitas belajar selama 7 hari terakhir.
+        </CardDescription>
+      </div>
+      {/* Decorative elements */}
+      <div
+        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+        style={{ backgroundColor: mainColor }}
+      />
     </CardHeader>
-    <CardContent>
+
+    <CardContent className="p-6">
       <ChartContainer
         config={defaultChartConfig}
         className="min-h-[200px] w-full"
@@ -827,26 +1100,30 @@ export const WeeklyProgressCard: React.FC<{ data: LearningData }> = ({
             <Line
               type="monotone"
               dataKey="documentsRead"
-              stroke="#8884d8"
+              stroke={mainColor}
               name="Dokumen Dibaca"
+              strokeWidth={3}
             />
             <Line
               type="monotone"
               dataKey="notesCreated"
-              stroke="#82ca9d"
+              stroke={secondaryColor}
               name="Catatan Dibuat"
+              strokeWidth={3}
             />
             <Line
               type="monotone"
               dataKey="highlightsMade"
               stroke="#ffc658"
               name="Highlight Dibuat"
+              strokeWidth={3}
             />
             <Line
               type="monotone"
               dataKey="quizStudied"
               stroke="#ff7300"
               name="Quiz Dibuat"
+              strokeWidth={3}
             />
             <Legend />
           </LineChart>
@@ -916,53 +1193,100 @@ export const MostActiveCard: React.FC<{ data: LearningData }> = ({ data }) => (
   </Card>
 );
 
-export const StudyHabitsCard: React.FC<{ studyHabits: any }> = ({
-  studyHabits,
-}) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="flex items-center text-2xl font-bold">
-        <LibraryBigIcon className="mr-2 h-6 w-6 text-indigo-500" />
-        Kebiasaan Belajar
-      </CardTitle>
-      <CardDescription className="text-sm text-gray-500">
-        Ringkasan aktivitas dan performa belajar kamu.
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <StudyHabitStat
-          label="Total Jam Belajar"
-          value={`${studyHabits.totalHoursStudied.toFixed(2)} jam`}
-        />
-        <StudyHabitStat
-          label="Streak Terpanjang"
-          value={`${studyHabits.longestStreak} hari`}
-        />
-        <StudyHabitStat
-          label="Rata-rata Harian"
-          value={`${studyHabits.averageDailyStudyTime.toFixed(2)} jam`}
-        />
-        <StudyHabitStat
-          label="Jam Belajar Minggu Ini"
-          value={`${studyHabits.hoursThisWeek} jam`}
-        />
+export const StudyHabitsCard: React.FC<{
+  studyHabits: any;
+  mainColor: string;
+  secondaryColor: string;
+}> = ({ studyHabits, mainColor, secondaryColor }) => (
+  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <CardHeader
+      className="pb-4 relative overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+      }}
+    >
+      <div className="relative z-10">
+        <CardTitle
+          className="text-xl font-bold flex items-center gap-3"
+          style={{ color: mainColor }}
+        >
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            style={{ backgroundColor: `${mainColor}15` }}
+          >
+            <LibraryBigIcon
+              className="w-5 h-5"
+              style={{ color: mainColor }}
+            />
+          </div>
+          Kebiasaan Belajar
+        </CardTitle>
+        <CardDescription className="text-gray-600 mt-2">
+          Ringkasan aktivitas dan performa belajar kamu.
+        </CardDescription>
       </div>
-      <div className="mt-6 space-y-2">
-        <div className="text-sm text-muted-foreground">
-          Hari paling produktif:
+      {/* Decorative elements */}
+      <div
+        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+        style={{ backgroundColor: mainColor }}
+      />
+    </CardHeader>
+
+    <CardContent className="p-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="text-center space-y-2">
+          <div
+            className="text-2xl font-bold"
+            style={{ color: mainColor }}
+          >
+            {studyHabits.totalHoursStudied.toFixed(1)} jam
+          </div>
+          <div className="text-sm text-gray-600">Total Jam Belajar</div>
+        </div>
+        <div className="text-center space-y-2">
+          <div
+            className="text-2xl font-bold"
+            style={{ color: mainColor }}
+          >
+            {studyHabits.longestStreak} hari
+          </div>
+          <div className="text-sm text-gray-600">Streak Terpanjang</div>
+        </div>
+        <div className="text-center space-y-2">
+          <div
+            className="text-2xl font-bold"
+            style={{ color: mainColor }}
+          >
+            {studyHabits.averageDailyStudyTime.toFixed(1)} jam
+          </div>
+          <div className="text-sm text-gray-600">Rata-rata Harian</div>
+        </div>
+        <div className="text-center space-y-2">
+          <div
+            className="text-2xl font-bold"
+            style={{ color: mainColor }}
+          >
+            {studyHabits.hoursThisWeek} jam
+          </div>
+          <div className="text-sm text-gray-600">Minggu Ini</div>
+        </div>
+      </div>
+
+      <div className="mt-6 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-gray-600">Hari paling produktif:</span>
           <Badge
-            variant="outline"
-            className="ml-2"
+            className="text-white border-0"
+            style={{ backgroundColor: mainColor }}
           >
             {studyHabits.mostProductiveDay}
           </Badge>
         </div>
-        <div className="text-sm text-muted-foreground">
-          Waktu belajar paling efektif:
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-gray-600">Waktu belajar efektif:</span>
           <Badge
-            variant="outline"
-            className="ml-2"
+            className="text-white border-0"
+            style={{ backgroundColor: mainColor }}
           >
             {studyHabits.mostEffectiveTime}
           </Badge>
@@ -982,7 +1306,10 @@ const calendarViews: CalendarView[] = [
   { value: 'month', label: 'Bulanan' },
 ];
 
-export const CalendarComponent: React.FC = () => {
+export const CalendarComponent: React.FC<{
+  mainColor?: string;
+  secondaryColor?: string;
+}> = ({ mainColor = '#0091FF', secondaryColor = '#5aa4dd' }) => {
   const generateCalendarUrl = useCallback((view: string) => {
     let mode = view.toUpperCase();
     if (view === 'schedule') mode = 'AGENDA';
@@ -993,25 +1320,56 @@ export const CalendarComponent: React.FC = () => {
   }, []);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-2xl font-bold">
-          <CalendarRangeIcon className="h-6 w-6" />
-          Kalender
-        </CardTitle>
-        <CardDescription className="text-sm text-gray-500">
-          Pantau dan aktivitas kegiatan belajarmu.
-        </CardDescription>
+    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+      <CardHeader
+        className="pb-4 relative overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+        }}
+      >
+        <div className="relative z-10">
+          <CardTitle
+            className="text-xl font-bold flex items-center gap-3"
+            style={{ color: mainColor }}
+          >
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <CalendarRangeIcon
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
+            </div>
+            Kalender
+          </CardTitle>
+          <CardDescription className="text-gray-600 mt-2">
+            Pantau dan aktivitas kegiatan belajarmu.
+          </CardDescription>
+        </div>
+        {/* Decorative elements */}
+        <div
+          className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
+          style={{ backgroundColor: mainColor }}
+        />
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="p-6">
         <Tabs defaultValue="schedule">
-          <TabsList>
-            {calendarViews.map(({ value, label }) => (
+          <TabsList className="grid w-full grid-cols-3 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
+            {calendarViews.map(({ value, label }, index) => (
               <TabsTrigger
                 key={value}
                 value={value}
+                className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+                style={
+                  {
+                    '--tw-bg-opacity': '1',
+                  } as React.CSSProperties & { [key: string]: string }
+                }
+                data-active-bg={mainColor}
               >
-                {label}
+                <span className="font-medium">{label}</span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -1022,7 +1380,7 @@ export const CalendarComponent: React.FC = () => {
             >
               <iframe
                 src={generateCalendarUrl(value)}
-                className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] border-0 rounded-lg"
+                className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] border-0 rounded-xl"
                 style={{ border: 0 }}
               />
             </TabsContent>
@@ -1060,24 +1418,16 @@ export const CalendarComponent: React.FC = () => {
 
 export default function DashboardClient() {
   const { data: session } = useSession();
-  // const {
-  //   data: reportData,
-  //   isLoading,
-  //   error,
-  // } = api.report.getReportData.useQuery(undefined, {
-  //   refetchOnWindowFocus: false,
-  //   refetchOnMount: false,
-  // });
-  // const { data: learningData, isLoading: isLoadingLearningData } =
-  //   api.report.getLearningReport.useQuery(undefined, {
-  //     refetchOnWindowFocus: false,
-  //     refetchOnMount: false,
-  //   });
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  // ...existing state and useEffect code...
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const [reportData, setReportData] = useState<ReportDataType | undefined>();
-
   const [isLoadingLearningData, setIsLoadingLearningData] =
     useState<boolean>(true);
   const [learningData, setLearningData] = useState<
@@ -1127,60 +1477,101 @@ export default function DashboardClient() {
   }
 
   return (
-    <div className="min-h-screen">
-      <main className="container mx-auto px-4 py-8">
-        {/* HEADER */}
-        <header className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-          <p className="text-xl text-gray-600">
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto max-w-7xl px-4 py-6">
+        {/* Enhanced Header Section */}
+        <div className="text-center mb-8">
+          <div
+            className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 md:mb-6 rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
+          >
+            <Home className="w-8 h-8 md:w-10 md:h-10 text-white" />
+          </div>
+          <h1
+            className="text-2xl md:text-3xl font-bold mb-2"
+            style={{ color: mainColor }}
+          >
+            Dashboard
+          </h1>
+          <p className="text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base">
             Pantau kemajuan dan tingkatkan persiapan ujian kamu
           </p>
-        </header>
+        </div>
 
-        <section className="mb-12 space-y-8">
+        {/* Performance Summary */}
+        <section className="mb-8">
           <PerformanceSummary
             learningReport={reportData?.learningReport}
             studyHabits={reportData?.studyHabits}
             tryoutHistory={reportData?.tryoutHistory}
+            mainColor={mainColor}
           />
         </section>
 
-        {/* CALENDAR */}
-        <section className="mb-12">
-          <CalendarComponent />
+        {/* Calendar Section */}
+        <section className="mb-8">
+          <CalendarComponent
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
         </section>
 
-        {/* Learning Progress Card */}
-        <section className="mb-12 grid gap-6 grid-cols-1 md:grid-cols-2">
-          <StudyHabitsCard studyHabits={reportData?.studyHabits} />
-          <LearningActivityCard data={learningData as LearningData} />
+        {/* Study Habits & Learning Activity */}
+        <section className="mb-8 grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <StudyHabitsCard
+            studyHabits={reportData?.studyHabits}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
+          <LearningActivityCard
+            data={learningData as LearningData}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
         </section>
 
-        <section className="mb-12 grid gap-6 grid-cols-1 md:grid-cols-2">
-          <WeeklyProgressCard data={learningData as LearningData} />
+        {/* Progress & Score Development */}
+        <section className="mb-8 grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <WeeklyProgressCard
+            data={learningData as LearningData}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
           <ScoreDevelopmentCard
             scoreDevelopmentData={reportData?.scoreDevelopmentData}
             tryoutCategory={reportData?.tryoutCategory}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
           />
         </section>
 
-        {/* RIWAYAT TRYOUT & QUIZ */}
-        <section className="mb-12 grid gap-6 grid-cols-1 md:grid-cols-2">
+        {/* Tryout & Quiz History */}
+        <section className="mb-8 grid gap-6 grid-cols-1 lg:grid-cols-2">
           <TryoutHistoryCard
             tryoutHistory={reportData?.tryoutHistory}
             tryoutCategory={reportData?.tryoutCategory}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
           />
-          <QuizHistoryCard quizHistory={reportData?.quizHistory} />
+          <QuizHistoryCard
+            quizHistory={reportData?.quizHistory}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
         </section>
 
-        {/* ANALISIS & PERKEMBANGAN NILAI */}
-        <section className="mb-12 space-y-8">
+        {/* Test Analysis */}
+        {/* <section className="mb-8">
           <TestAnalysisCard
             analysisByCategoryTryout={reportData?.analysisByCategoryTryout}
             tryoutCategory={reportData?.tryoutCategory}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
           />
-        </section>
-      </main>
+        </section> */}
+      </div>
     </div>
   );
 }

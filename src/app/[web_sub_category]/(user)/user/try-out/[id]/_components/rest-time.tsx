@@ -1,21 +1,21 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import ReactMarkdown from '@/components/ui/react-markdown';
-import { SpinnerPageCentered } from '@/components/ui/spinner';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Card, CardContent } from '@/components/ui/card';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { cn, replaceLatexNotation, TncTryout } from '@/lib/utils';
-import 'katex/dist/katex.min.css';
-import { Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import {
+  ArrowRight,
+  BookOpen,
+  CheckCircle2,
+  Clock,
+  Coffee,
+  Play,
+  Users,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TryoutDataType } from '../page';
-import CountDownRestTime from './countdown-rest-time';
-import Header from './header';
-
-// interface SessionWithCategory extends TryoutSession {
-//   TryoutCategory: TryoutCategory;
-//   TryoutSessionParticipant: any;
-// }
 
 interface Props {
   sessionData: NonNullable<TryoutDataType>['TryoutSession'];
@@ -31,18 +31,15 @@ const RestTime = ({
   restTime,
 }: Props) => {
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  // const { mutate: createTryoutSessionParticipant } =
-  //   api.tryoutSession.createTryoutSessionParticipant.useMutation({
-  //     onSuccess() {
-  //       trpc.tryout.getTryoutById.refetch();
-  //     },
-  //     onError() {
-  //       setLoading(false);
-  //     },
-  //   });
+  const [timeLeft, setTimeLeft] = useState(restTime * 60); // Convert minutes to seconds
+  const [loading, setLoading] = useState(false);
+
   const createTryoutSessionParticipant = async (payload: {
     sessionId: string;
     userId: string;
@@ -50,9 +47,11 @@ const RestTime = ({
     await mutateGeneral('/tryoutSession/createTryoutSessionParticipant', {
       payload,
       type: 'post',
-      // onSuccess: refresh,
+      toast: {
+        errorTitle: 'Gagal Memulai Sesi',
+        errorMsg: 'Silahkan ulangi',
+      },
       onSuccess() {
-        //       trpc.tryout.getTryoutById.refetch();
         window.location.reload();
       },
       onError() {
@@ -61,24 +60,7 @@ const RestTime = ({
     });
   };
 
-  const [tnc, setTnc] = useState<string>('');
-
-  useEffect(() => {
-    if (sessionData) {
-      const data = TncTryout.find(
-        (item) =>
-          item.category ===
-          sessionData[currentIndexSession]?.TryoutCategory.name.toLowerCase(),
-      );
-      if (data) setTnc(data.value);
-      else setTnc('.....');
-    }
-  }, [sessionData, currentIndexSession]);
-
-  if (!sessionData || sessionData.length === 0 || tnc === '')
-    return <SpinnerPageCentered />;
-
-  const handleStart = () => {
+  const handleContinue = () => {
     setLoading(true);
     createTryoutSessionParticipant({
       sessionId: sessionData[currentIndexSession].id,
@@ -86,107 +68,311 @@ const RestTime = ({
     });
   };
 
-  const getDuration = () => {
-    const durationInSeconds = restTime * 60;
-    const dateNow = new Date().getTime();
-    const participant =
-      sessionData[currentIndexSession - 1].TryoutSessionParticipant[0];
-    const dateStart = participant.endSession
-      ? new Date(participant.endSession).getTime()
-      : new Date().getTime();
+  // Countdown timer
+  useEffect(() => {
+    if (timeLeft <= 0) return;
 
-    const diffInMilliseconds = dateNow - dateStart;
-    const diffInSeconds = Math.floor(diffInMilliseconds / 1000);
-    const currentDuration = durationInSeconds - diffInSeconds;
-    return currentDuration < 0 ? 0 : currentDuration;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          handleContinue();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs
+      .toString()
+      .padStart(2, '0')}`;
   };
 
+  const nextSession = sessionData[currentIndexSession];
+  const completedSessions = sessionData.slice(0, currentIndexSession);
+  const remainingSessions = sessionData.slice(currentIndexSession);
+
   return (
-    <>
-      <Header
-        current={0}
-        total={-1}
-        name={tryoutName}
-      />
-      <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-workspace pt-14 md:pt-4">
-        <form
-          className="flex h-full w-full flex-col justify-between gap-4 bg-white px-8 py-8 md:h-auto md:max-w-2xl md:justify-start md:rounded-3xl md:shadow-lg"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleStart();
-          }}
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container mx-auto max-w-6xl px-4">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
         >
-          <div className="flex flex-col gap-4">
-            <h1 className="text-center text-xl font-medium">Waktu Istirahat</h1>
-            <div className="flex w-full items-center justify-center font-medium text-blue-700">
-              <div className="rounded-xl bg-workspace px-4 py-2">
-                <CountDownRestTime
-                  sessionId={
-                    sessionData[currentIndexSession] &&
-                    sessionData[currentIndexSession].id
-                  }
-                  seconds={getDuration()}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-8 md:grid-cols-2">
-              <div className="rounded-xl bg-workspace p-4">
-                <p className="pb-4 text-main-gray-text">Ketentuan Tryout:</p>
-                <div className="ml-2 font-medium">
-                  <ReactMarkdown value={replaceLatexNotation(tnc)} />
+          <div
+            className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
+          >
+            <Coffee className="w-10 h-10 text-white" />
+          </div>
+          <h1
+            className="text-3xl md:text-4xl font-bold mb-4"
+            style={{ color: mainColor }}
+          >
+            Waktu Istirahat
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Gunakan waktu ini untuk istirahat sejenak sebelum melanjutkan ke
+            sesi berikutnya
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Timer Section */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <Card
+              className="border-2 rounded-3xl overflow-hidden shadow-xl"
+              style={{ borderColor: `${mainColor}20` }}
+            >
+              <CardContent className="p-8 text-center">
+                <div className="mb-8">
+                  <h2 className="text-xl font-bold text-gray-900 mb-4">
+                    Waktu Istirahat Tersisa
+                  </h2>
+
+                  {/* Countdown Display */}
+                  <div
+                    className="w-32 h-32 mx-auto mb-6 rounded-full flex items-center justify-center text-4xl font-mono font-bold text-white shadow-2xl"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
+                  >
+                    {formatTime(timeLeft)}
+                  </div>
+
+                  {/* Progress Ring */}
+                  <div className="relative w-48 h-48 mx-auto mb-6">
+                    <svg
+                      className="w-48 h-48 transform -rotate-90"
+                      viewBox="0 0 100 100"
+                    >
+                      {/* Background circle */}
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="45"
+                        stroke="#e5e7eb"
+                        strokeWidth="4"
+                        fill="none"
+                      />
+                      {/* Progress circle */}
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="45"
+                        stroke={mainColor}
+                        strokeWidth="4"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeDasharray={`${2 * Math.PI * 45}`}
+                        strokeDashoffset={`${2 * Math.PI * 45 * (1 - timeLeft / (restTime * 60))}`}
+                        className="transition-all duration-1000 ease-linear"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Clock
+                        className="w-12 h-12"
+                        style={{ color: mainColor }}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="rounded-xl bg-workspace p-4">
-                <p className="pb-4 text-main-gray-text">
-                  Tryout ini terdiri dari:
+
+                {/* Skip Button */}
+                <motion.button
+                  onClick={handleContinue}
+                  disabled={loading}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 mx-auto"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                >
+                  {loading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Memulai...
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-5 h-5" />
+                      Lanjutkan Sekarang
+                    </>
+                  )}
+                </motion.button>
+
+                <p className="text-sm text-gray-500 mt-4">
+                  Atau tunggu hingga waktu istirahat selesai
                 </p>
-                <div className="ml-2 flex flex-col text-sm font-medium">
-                  {sessionData?.map((item, i: number) => (
-                    <div key={i}>
-                      <div className="flex items-center justify-between bg-white px-4 py-1">
-                        <p
-                          className={cn(
-                            i < currentIndexSession &&
-                              'text-main-gray-text line-through',
-                          )}
-                        >
-                          {item.TryoutCategory.name}
-                        </p>
-                        <p className="text-sm text-main-gray-text">
-                          {item.duration} menit
-                        </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Progress Section */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="space-y-6"
+          >
+            {/* Next Session Info */}
+            <Card
+              className="border-2 rounded-2xl overflow-hidden shadow-lg"
+              style={{ borderColor: `${secondaryColor}20` }}
+            >
+              <CardContent className="p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <ArrowRight
+                    className="w-5 h-5"
+                    style={{ color: secondaryColor }}
+                  />
+                  Sesi Berikutnya
+                </h3>
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
+                    <div>
+                      <h4 className="font-bold text-gray-900">
+                        {nextSession?.TryoutCategory.name}
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        {nextSession?.name}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Clock className="w-4 h-4" />
+                        {nextSession?.duration} menit
                       </div>
-                      {i % 2 === 0 && sessionData.length > 1 && (
-                        <div className="flex items-center justify-between bg-transparent px-4 py-1">
-                          <p>Istirahat</p>
-                          <p className="text-sm text-main-gray-text">
-                            {restTime} menit
-                          </p>
-                        </div>
-                      )}
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <BookOpen className="w-4 h-4" />
+                        {nextSession?.TryoutQuestion?.length || 0} soal
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Progress Overview */}
+            <Card
+              className="border-2 rounded-2xl overflow-hidden shadow-lg"
+              style={{ borderColor: `${mainColor}20` }}
+            >
+              <CardContent className="p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Users
+                    className="w-5 h-5"
+                    style={{ color: mainColor }}
+                  />
+                  Progress Try Out
+                </h3>
+
+                <div className="space-y-4">
+                  {/* Completed Sessions */}
+                  {completedSessions.map((session, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 p-3 bg-green-50 rounded-xl"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-green-800">
+                          {session.TryoutCategory.name}
+                        </h4>
+                        <p className="text-sm text-green-600">Selesai</p>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* Current Session */}
+                  <div
+                    className="flex items-center gap-3 p-3 rounded-xl"
+                    style={{ backgroundColor: `${mainColor}08` }}
+                  >
+                    <Coffee
+                      className="w-5 h-5"
+                      style={{ color: mainColor }}
+                    />
+                    <div className="flex-1">
+                      <h4 className="font-medium text-gray-900">Istirahat</h4>
+                      <p className="text-sm text-gray-600">
+                        Sedang berlangsung
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Upcoming Sessions */}
+                  {remainingSessions.map((session, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
+                    >
+                      <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-600">
+                          {session.TryoutCategory.name}
+                        </h4>
+                        <p className="text-sm text-gray-500">Menunggu</p>
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={cn(
-              'flex h-10 w-full items-center justify-center rounded-2xl bg-main text-white transition-colors duration-200 hover:bg-main/85',
-              loading && 'cursor-default hover:bg-main/85',
-            )}
-          >
-            {loading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <span>Lanjut ke sesi berikutnya</span>
-            )}
-          </button>
-        </form>
+
+                {/* Progress Bar */}
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>Progress Keseluruhan</span>
+                    <span>
+                      {Math.round(
+                        (currentIndexSession / sessionData.length) * 100,
+                      )}
+                      %
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="h-2 rounded-full transition-all duration-300"
+                      style={{
+                        width: `${(currentIndexSession / sessionData.length) * 100}%`,
+                        backgroundColor: mainColor,
+                      }}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Tips Card */}
+            <Card className="border-2 rounded-2xl overflow-hidden shadow-lg border-yellow-200 bg-yellow-50">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-bold text-yellow-800 mb-4">
+                  💡 Tips Istirahat
+                </h3>
+                <ul className="space-y-2 text-sm text-yellow-700">
+                  <li>• Minum air putih untuk menjaga hidrasi</li>
+                  <li>• Tarik napas dalam-dalam untuk relaksasi</li>
+                  <li>• Istirahatkan mata dari layar sejenak</li>
+                  <li>• Regangkan badan untuk mengurangi ketegangan</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
