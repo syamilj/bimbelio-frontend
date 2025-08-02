@@ -2,6 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { pixel } from '@/lib/pixel/_core';
 import {
   BotMessageSquareIcon,
   ChartColumnIcon,
@@ -9,6 +10,7 @@ import {
   NotepadTextIcon,
   Sparkles,
 } from 'lucide-react';
+import { useEffect } from 'react';
 
 const supportFeatures = [
   {
@@ -55,6 +57,10 @@ export default function CaraBelajarSection2() {
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  useEffect(() => {
+    pixel.meta.track('ViewContent', { content_name: 'Course Page' });
+    pixel.tiktok.track('ViewContent', { content_name: 'Course Page' });
+  }, []);
 
   return (
     <section className="space-y-6 pt-8">
