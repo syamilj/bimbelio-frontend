@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { pixel } from '@/lib/pixel/_core';
@@ -52,15 +53,34 @@ const supportFeatures = [
 ];
 
 export default function CaraBelajarSection2() {
+  const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
   useEffect(() => {
-    pixel.meta.track('ViewContent', { content_name: 'Course Page' });
-    pixel.tiktok.track('ViewContent', { content_name: 'Course Page' });
-  }, []);
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Course Page',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Course Page',
+      content_id: 'course_page_main', // ✅ Required untuk TikTok VSA
+    });
+  }, [session]);
 
   return (
     <section className="space-y-6 pt-8">

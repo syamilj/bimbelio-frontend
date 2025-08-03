@@ -40,8 +40,39 @@ export const initMetaPixel = () => {
 export const trackMetaEvent = (
   event: MetaPixelEventType,
   data?: Partial<Record<MetaPixelCustomDataType, any>>,
+  advancedMatching?: Partial<{
+    em: string; // hashed email
+    ph: string; // hashed phone
+    fn: string; // hashed first name
+    ln: string; // hashed last name
+    ct: string; // hashed city
+    st: string; // hashed state
+    zp: string; // hashed zip
+    country: string; // hashed country
+  }>,
 ) => {
   if (typeof window !== 'undefined' && (window as any).fbq) {
-    (window as any).fbq('track', event, data || {});
+    if (advancedMatching && Object.keys(advancedMatching).length > 0) {
+      // Track dengan advanced matching data
+      (window as any).fbq('track', event, data || {}, advancedMatching);
+    } else {
+      // Track normal tanpa advanced matching
+      (window as any).fbq('track', event, data || {});
+    }
   }
+};
+
+// ✅ Helper function untuk hash data user (Advanced Matching)
+export const hashUserData = async (value: string): Promise<string> => {
+  if (!value) return '';
+
+  // Gunakan Web Crypto API untuk hash SHA256
+  const encoder = new TextEncoder();
+  const data = encoder.encode(value.toLowerCase().trim());
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+  return hashHex;
 };

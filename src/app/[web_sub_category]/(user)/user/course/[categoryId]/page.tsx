@@ -128,9 +128,27 @@ const WorkspaceCourse = () => {
   }, [isHistoryUpdated]);
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', { content_name: 'Course Detail' });
-    pixel.tiktok.track('ViewContent', { content_name: 'Course Detail' });
-  }, []);
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Course Detail',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Course Detail',
+      content_id: `course_detail_${categoryId}`, // ✅ Required untuk TikTok VSA
+    });
+  }, [categoryId, session]);
 
   if (!docId && CourseData?.document) {
     return <p>Document ID not found in the URL.</p>;

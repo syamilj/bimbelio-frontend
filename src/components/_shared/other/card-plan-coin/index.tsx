@@ -7,8 +7,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
 import { cn } from '@/lib/utils';
 import { BookOpen, Eye, FileText, MessageSquare, PenTool } from 'lucide-react';
+import { useEffect } from 'react'; // ✅ Import useEffect
 import { PlanDataType } from '../card-plan/_provider/types';
 import { DialogPayment } from './_components/dialog-payment';
 
@@ -24,6 +26,29 @@ export const CardPlanTopping = ({
   onClose?: () => void;
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // ✅ LEAD TRACKING - Track saat user melihat card coin
+  useEffect(() => {
+    try {
+      pixel.meta.track('Lead', {
+        content_name: `Coin Plan View - ${plan.name}`,
+        content_type: 'product',
+        value: plan.price,
+        currency: 'IDR',
+        contents: [{ id: plan.id, quantity: 1 }],
+      });
+
+      pixel.tiktok.track('Lead', {
+        content_name: `Coin Plan View - ${plan.name}`,
+        content_type: 'product',
+        value: plan.price,
+        currency: 'IDR',
+        content_id: `coin_plan_view_${plan.id}`, // ✅ Required untuk TikTok VSA
+      });
+    } catch (pixelError) {
+      console.warn('Pixel tracking error on coin plan view:', pixelError);
+    }
+  }, [plan.id]); // Track sekali per plan
   return (
     <Card
       key={plan.name}
@@ -149,7 +174,31 @@ export const CardPlanTopping = ({
             <Button
               variant="outline"
               className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient-default text-white hover:text-white hover:opacity-85"
-              // onClick={onClick}
+              onClick={() => {
+                // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang" coin
+                try {
+                  pixel.meta.track('AddToCart', {
+                    content_name: plan.name,
+                    content_type: 'product',
+                    value: plan.price,
+                    currency: 'IDR',
+                    contents: [{ id: plan.id, quantity: 1 }],
+                  });
+
+                  pixel.tiktok.track('AddToCart', {
+                    content_name: plan.name,
+                    content_type: 'product',
+                    value: plan.price,
+                    currency: 'IDR',
+                    content_id: `coin_addtocart_${plan.id}`, // ✅ Required untuk TikTok VSA
+                  });
+                } catch (pixelError) {
+                  console.warn(
+                    'Pixel tracking error on coin add to cart:',
+                    pixelError,
+                  );
+                }
+              }}
             >
               Beli Sekarang
             </Button>

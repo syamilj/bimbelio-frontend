@@ -50,11 +50,13 @@ import { PlanDataType } from '../_provider/types';
 export function DialogPayment({
   plan,
   onClose,
+  onOpen, // ✅ NEW: Handler untuk InitiateCheckout tracking
   type = 'plan',
   children,
 }: {
   plan: PlanDataType;
   onClose?: () => void;
+  onOpen?: () => void; // ✅ NEW: Callback saat dialog dibuka
   type?: 'limit' | 'plan';
   children: ReactNode;
 }) {
@@ -155,13 +157,55 @@ export function DialogPayment({
           setTransactionHistory(true);
         },
       });
-      pixel.meta.track('Purchase', {
-        value: discountPrice || plan.price,
-        currency: 'IDR',
-      });
+
+      // ✅ ENRICHED PURCHASE EVENT DATA - Lebih lengkap untuk tracking yang optimal
+      const purchaseValue = discountPrice || plan.price;
+      const categoryName =
+        plan.PlanSubscription?.WebsiteSubCategory?.name || 'Unknown';
+
+      // ✅ ADVANCED MATCHING - Enhanced Meta tracking dengan user data
+      const advancedMatchingData: any = {};
+
+      if (session?.user?.email) {
+        advancedMatchingData.em = await pixel.meta.hashUserData(
+          session.user.email,
+        );
+      }
+      if (session?.user?.phone || telp) {
+        const phoneNumber = session?.user?.phone || telp;
+        advancedMatchingData.ph = await pixel.meta.hashUserData(phoneNumber);
+      }
+      if (session?.user?.name) {
+        const nameParts = session.user.name.split(' ');
+        if (nameParts[0]) {
+          advancedMatchingData.fn = await pixel.meta.hashUserData(nameParts[0]);
+        }
+        if (nameParts[1]) {
+          advancedMatchingData.ln = await pixel.meta.hashUserData(nameParts[1]);
+        }
+      }
+
+      pixel.meta.track(
+        'Purchase',
+        {
+          contents: [{ id: plan.id, quantity: 1 }], // ✅ Format yang benar untuk Meta
+          content_name: plan.name,
+          content_type: 'product',
+          value: purchaseValue,
+          currency: 'IDR',
+          num_items: 1,
+          order_id: res?.data?.order_id || `order_${Date.now()}`, // Order ID from payment response
+        },
+        advancedMatchingData,
+      ); // ✅ Advanced matching data
+
       pixel.tiktok.track('Purchase', {
-        value: discountPrice || plan.price,
+        content_id: plan.id, // ✅ FIX: TikTok content_id parameter yang missing
+        content_name: plan.name,
+        content_type: 'product', // ✅ Tambahan content_type
+        value: purchaseValue,
         currency: 'IDR',
+        order_id: res?.data?.order_id || `order_${Date.now()}`,
       });
     } catch (error) {
       toaster({
@@ -175,6 +219,39 @@ export function DialogPayment({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
+    // ✅ ADDPAYMENTINFO TRACKING - Track saat user klik "Bayar Sekarang"
+    try {
+      const purchaseValue = discountPrice || plan.price;
+      pixel.meta.track(
+        'AddPaymentInfo',
+        {
+          content_name: plan.name,
+          content_type: 'product',
+          value: purchaseValue,
+          currency: 'IDR',
+          contents: [{ id: plan.id, quantity: 1 }],
+        },
+        {
+          // Advanced Matching data
+          em: session?.user?.email,
+          ph: session?.user?.phone || undefined,
+          fn: session?.user?.name?.split(' ')[0],
+          ln: session?.user?.name?.split(' ').slice(1).join(' '),
+        },
+      );
+
+      pixel.tiktok.track('AddPaymentInfo', {
+        content_id: plan.id,
+        content_name: plan.name,
+        content_type: 'product',
+        value: purchaseValue,
+        currency: 'IDR',
+      });
+    } catch (pixelError) {
+      console.warn('Pixel tracking error on add payment info:', pixelError);
+    }
+
     await handlePayment(
       telp,
       plan.PlanSubscription.websiteSubCategoryId,
@@ -191,6 +268,28 @@ export function DialogPayment({
       onOpenChange={(open) => {
         setIsOpen(open);
         if (open) {
+          // ✅ INITIATE CHECKOUT TRACKING - Track saat dialog payment dibuka
+          const purchaseValue = discountPrice || plan.price;
+          pixel.meta.track('InitiateCheckout', {
+            contents: [{ id: plan.id, quantity: 1 }],
+            content_name: plan.name,
+            content_type: 'product',
+            value: purchaseValue,
+            currency: 'IDR',
+            num_items: 1,
+          });
+
+          pixel.tiktok.track('InitiateCheckout', {
+            content_id: plan.id,
+            content_name: plan.name,
+            content_type: 'product',
+            value: purchaseValue,
+            currency: 'IDR',
+          });
+
+          // ✅ Trigger onOpen callback jika ada
+          if (onOpen) onOpen();
+
           if (voucherCodeQuery && plan) {
             setVoucherCode(voucherCodeQuery);
             checkVoucherCode({

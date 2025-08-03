@@ -134,13 +134,27 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   }, [tryoutData]);
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', {
-      content_name: 'Tryout Detail',
-    });
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Tryout Detail',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      sessionUser?.user
+        ? {
+            em: sessionUser.user.email,
+            ph: sessionUser.user.phone || undefined,
+            fn: sessionUser.user.name?.split(' ')[0],
+            ln: sessionUser.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
     pixel.tiktok.track('ViewContent', {
       content_name: 'Tryout Detail',
+      content_id: `tryout_detail_${tryoutId}`, // ✅ Required untuk TikTok VSA menggunakan tryout ID
     });
-  }, []);
+  }, [sessionUser, tryoutId]);
 
   if (isLoading || loading) return <SpinnerPageCentered />;
 

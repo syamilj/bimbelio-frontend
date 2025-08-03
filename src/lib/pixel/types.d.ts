@@ -29,8 +29,9 @@ export type StandardCustomDataType =
   | 'value' // ✅ Meta & TikTok — Nilai dari transaksi atau konversi
   | 'currency' // ✅ Meta & TikTok — Mata uang dalam format ISO 4217 (misal: 'IDR', 'USD')
   | 'order_id' // ✅ Meta & TikTok — ID unik dari pesanan atau transaksi
+  | 'content_id' // ✅ TikTok — ID produk/konten yang spesifik (untuk TikTok tracking)
   | 'content_name' // ✅ Meta & TikTok — Nama dari konten/produk yang dilihat atau dibeli
-  | 'content_type' // ✅ Meta only — Jenis konten seperti 'product', 'course', dll
+  | 'content_type' // ✅ Meta & TikTok — Jenis konten seperti 'product', 'course', dll
   | 'contents' // ✅ Meta only — Daftar item dalam keranjang/beli, misalnya: [{ id, quantity }]
   | 'num_items' // ✅ Meta — Jumlah item yang terlibat dalam event
   | 'status' // ✅ Meta — Status transaksi, misal: 'success', 'pending', 'failed'
@@ -42,6 +43,6 @@ export type StandardCustomDataType =
 
 export type MetaPixelCustomDataType = Exclude<
   StandardCustomDataType,
-  'page_path'
+  'page_path' | 'content_id' // Meta menggunakan contents array, bukan content_id
 >;
 export type TiktokPixelCustomDataType = StandardCustomDataType;

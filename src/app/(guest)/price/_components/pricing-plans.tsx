@@ -2,6 +2,7 @@
 import { CardPlan } from '@/components/_shared/other/card-plan';
 import { CardPlanTopping } from '@/components/_shared/other/card-plan-coin';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
@@ -29,6 +30,7 @@ type PricingDataType = {
 };
 
 export default function PricingPlans() {
+  const { data: session } = useSession();
   const { data: PricingData } = useGet<PricingDataType>(
     '/plan/getAllPlanByWebCategory',
   );
@@ -41,9 +43,29 @@ export default function PricingPlans() {
   const topping = PricingData?.topping || [];
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', { content_name: 'Pricing Page' });
-    pixel.tiktok.track('ViewContent', { content_name: 'Pricing Page' });
-  }, []);
+    // ✅ ENRICHED VIEWCONTENT EVENT DATA
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Pricing Page',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Pricing Page',
+      page_path: '/price',
+      content_id: 'pricing_page_main', // ✅ Required untuk TikTok VSA
+    });
+  }, [session]);
 
   return (
     <div className="space-y-20">

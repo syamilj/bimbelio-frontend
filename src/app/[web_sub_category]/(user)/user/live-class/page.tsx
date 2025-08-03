@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -84,6 +85,7 @@ export type LiveClassAvailableType = LiveClass & {
 
 export default function LiveClassStudentDashboard() {
   // === DESIGN SYSTEM PATTERNS FROM LEADERBOARD ===
+  const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
@@ -139,13 +141,27 @@ export default function LiveClassStudentDashboard() {
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', {
-      content_name: 'Live Class Page',
-    });
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Live Class Page',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
     pixel.tiktok.track('ViewContent', {
       content_name: 'Live Class Page',
+      content_id: 'live_class_page_main', // ✅ Required untuk TikTok VSA
     });
-  }, []);
+  }, [session]);
 
   return (
     <div className="min-h-screen bg-gray-50">
