@@ -84,7 +84,7 @@ export default function PricingPlans() {
         defaultValue="snbt"
       >
         <TabsList
-          className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-8 h-12 p-1 rounded-xl"
+          className="grid w-full max-w-2xl mx-auto grid-cols-5 mb-8 h-12 p-1 rounded-xl"
           style={{
             backgroundColor: `${mainColor}08`,
           }}
