@@ -1,0 +1,230 @@
+'use client';
+
+import { CardPlan } from '@/components/_shared/other/card-plan';
+import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { motion } from 'framer-motion';
+import { Crown } from 'lucide-react';
+import React from 'react';
+
+type PricingDataType = {
+  webSubCategory: {
+    webSubCategoryId: string;
+    webSubCategoryName: string;
+    main_color: string;
+    secondary_color: string;
+    bundles: PlanDataType[];
+    subscriptions: PlanDataType[];
+  }[];
+  topping: PlanDataType[];
+  productCompare?: {
+    subscription: PlanDataType[];
+    bundles: PlanDataType[];
+    listCompare: string[];
+  };
+};
+
+const PlanCards: React.FC = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const { data: PricingData } = useGet<PricingDataType>(
+    '/plan/getAllPlanByWebCategory',
+  );
+
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
+
+  // Ambil data plan dari API
+  const currentCategory = PricingData?.webSubCategory?.find(
+    (cat) => cat.webSubCategoryId === websiteSubCategory?.id,
+  );
+
+  // Gabungkan subscription dan bundle, ambil 3 teratas
+  const allPlans = [
+    ...(currentCategory?.subscriptions || []),
+    ...(currentCategory?.bundles || []),
+  ];
+
+  const topPlans = allPlans.slice(0, 3);
+
+  // Loading state
+  if (!PricingData || !websiteSubCategory) {
+    return (
+      <section className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge
+              variant="outline"
+              className="mb-6 px-6 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit mx-auto"
+              style={{ backgroundColor: mainColor }}
+            >
+              <Crown className="w-4 h-4" />
+              Blueprint Plans
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+              Loading plans...
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((index) => (
+              <div
+                key={index}
+                className="bg-white rounded-3xl p-8 border-2 border-gray-200 animate-pulse"
+              >
+                <div className="h-6 bg-gray-200 rounded mb-4"></div>
+                <div className="h-8 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                <div className="h-24 bg-gray-200 rounded"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Empty state
+  if (topPlans.length === 0) {
+    return (
+      <section className="py-24 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center">
+            <Badge
+              variant="outline"
+              className="mb-6 px-6 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit mx-auto"
+              style={{ backgroundColor: mainColor }}
+            >
+              <Crown className="w-4 h-4" />
+              Blueprint Plans
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+              Paket akan segera hadir
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Paket pembelajaran terbaik sedang disiapkan untuk kamu.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-24 px-4 bg-white">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <Badge
+            variant="outline"
+            className="mb-6 px-6 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit mx-auto"
+            style={{ backgroundColor: mainColor }}
+          >
+            <Crown className="w-4 h-4" />
+            Blueprint Plans
+          </Badge>
+
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+            Pilih Blueprint yang{' '}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              pas buat lo!
+            </span>
+          </h2>
+
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Sistem yang terukur untuk bantu ribuan siswa naik 200+ poin.{' '}
+            <span className="font-semibold">
+              Pilih sesuai kebutuhan & budget!
+            </span>
+          </p>
+        </motion.div>
+
+        {/* Plans Grid - Using CardPlan component */}
+        <div
+          className={`
+          grid gap-8
+          ${
+            topPlans.length === 1
+              ? 'grid-cols-1 max-w-md mx-auto'
+              : topPlans.length === 2
+                ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'
+                : 'grid-cols-1 md:grid-cols-3'
+          }
+        `}
+        >
+          {topPlans.map((plan, index) => (
+            <motion.div
+              key={plan.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className={`
+                ${index === 1 ? 'md:scale-105' : ''}
+              `}
+            >
+              <CardPlan
+                plan={plan}
+                hideFeatures={['comparison']}
+                viewOnly={false}
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bottom Info */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
+          <div
+            className="rounded-3xl p-8 max-w-2xl mx-auto"
+            style={{
+              background: `linear-gradient(to right, ${mainColor}08, ${secondaryColor}08)`,
+            }}
+          >
+            <h3 className="text-2xl font-black text-gray-900 mb-4">
+              Masih bingung? Konsultasi langsung aja!
+            </h3>
+
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Kalau masih ada pertanyaan atau mau konsultasi Blueprint yang
+              paling cocok, tim kami siap bantu lewat WhatsApp atau telepon.
+            </p>
+            <div className="flex flex-col items-center gap-2">
+              <a
+                href="https://wa.me/nomor_placeholder"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-2 rounded-full font-semibold bg-green-500 text-white hover:bg-green-600 transition"
+              >
+                WhatsApp: <span className="font-mono">nomor_placeholder</span>
+              </a>
+              <span className="text-gray-600">
+                atau telp: <span className="font-mono">nomor_placeholder</span>
+              </span>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default PlanCards;

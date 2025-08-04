@@ -15,7 +15,7 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden">
       {/* Background Gradient */}
-      <div className="absolute inset-0 opacity-5 bg-gradient-default" />
+      <div className="absolute inset-0 opacity-5" />
 
       <div className="relative mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8 py-8 md:py-12">
         <Card className="bg-white/80 backdrop-blur-sm border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
