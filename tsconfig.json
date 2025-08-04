@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "tailwindcss.d.ts.backup"
+    "tailwindcss.d.ts.backup",
+    "src/app/(guest)/(landing-page)/page.tsx.backup"
   ],
   "exclude": ["node_modules"]
 }
