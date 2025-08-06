@@ -12,7 +12,17 @@ import LogoUGM from '@/_assets/homepage/hero/LOGO_PTN_UGM.webp';
 import LogoUI from '@/_assets/homepage/hero/LOGO_PTN_UI.webp';
 import { SparklesText } from '@/components/magicui/sparkles-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { IPhoneFrame } from '@/components/ui/iphone-frame';
+import { CONTACT_CONFIG } from '@/config/contact';
+import { pixel } from '@/lib/pixel/_core';
 import { cn } from '@/lib/utils';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
@@ -23,6 +33,8 @@ import {
   Bot,
   ChevronLeft,
   ChevronRight,
+  MessageCircle,
+  Phone,
   PhoneCallIcon,
   Play,
   RotateCw,
@@ -77,6 +89,8 @@ const STATS: Stat[] = [
 const HeroSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [isMobile, setIsMobile] = useState(false);
+  const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
+    useState(false);
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 300], [0, -50]);
 
@@ -98,66 +112,263 @@ const HeroSection: React.FC = () => {
     window.scrollTo({ top, behavior: 'smooth' });
   };
 
+  // Pixel tracking function for contact events (sama seperti di FloatingContactButton)
+  const trackContactEvent = (contactType: string) => {
+    try {
+      pixel.meta.track('Contact', {
+        content_type: 'contact',
+        content_name: contactType,
+      });
+
+      pixel.tiktok.track('Contact', {
+        content_type: 'contact',
+        content_name: contactType,
+        content_id: `contact_${contactType.toLowerCase()}`,
+      });
+
+      console.log(`📊 Pixel tracked: ${contactType} contact initiated`);
+    } catch (error) {
+      console.warn('Pixel tracking error:', error);
+    }
+  };
+
+  // Handle consultation dialog open
+  const handleConsultationClick = () => {
+    try {
+      pixel.meta.track('ViewContent', {
+        content_type: 'page',
+        content_name: 'Contact Modal from Hero',
+      });
+
+      pixel.tiktok.track('ViewContent', {
+        content_type: 'contact',
+        content_name: 'Contact Modal from Hero',
+        content_id: 'hero_contact_modal',
+        page_path: '/hero-contact-modal',
+      });
+
+      console.log('📊 Pixel tracked: Contact dialog opened from hero');
+    } catch (error) {
+      console.warn('Pixel tracking error:', error);
+    }
+
+    setIsConsultationDialogOpen(true);
+  };
+
+  const consultationOptions = [
+    {
+      id: 'whatsapp',
+      title: 'Chat WhatsApp',
+      description: 'Respons cepat dalam 5 menit',
+      icon: <MessageCircle className="w-5 h-5" />,
+      action: () => {
+        trackContactEvent('WhatsApp');
+        const message = encodeURIComponent(CONTACT_CONFIG.whatsapp.message);
+        window.open(
+          `https://wa.me/${CONTACT_CONFIG.whatsapp.number}?text=${message}`,
+          '_blank',
+        );
+        setIsConsultationDialogOpen(false);
+      },
+      color: '#25D366',
+    },
+    {
+      id: 'phone',
+      title: 'Telepon Langsung',
+      description: 'Bicara dengan ahli sekarang',
+      icon: <Phone className="w-5 h-5" />,
+      action: () => {
+        trackContactEvent('Phone');
+        window.open(`tel:${CONTACT_CONFIG.phone.number}`, '_self');
+        setIsConsultationDialogOpen(false);
+      },
+      color: mainColor,
+    },
+  ];
+
   return (
-    <div
-      id="hero"
-      className="relative min-h-screen w-full overflow-hidden pt-16 md:pt-20"
-    >
-      <GlobalStyles />
-
-      {/* Ultra  Background */}
-      <motion.div
-        style={{ y }}
-        className="absolute inset-0 z-1"
+    <>
+      <div
+        id="hero"
+        className="relative min-h-screen w-full overflow-hidden pt-16 md:pt-20"
       >
-        {/* Subtle gradient overlay */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            background: `radial-gradient(ellipse at center, ${mainColor}20 0%, transparent 70%)`,
-          }}
-        />
+        <GlobalStyles />
 
-        {/* Hero image with better masking */}
-        <Image
-          src={ImageHero || '/placeholder.svg'}
-          alt="University Buildings Background"
-          fill
-          className="object-cover opacity-15"
-          priority
-          sizes="100vw"
-          loading="eager"
-          style={{
-            objectPosition: isMobile ? '75% top' : 'center top',
-            transform: isMobile ? 'translateY(-400px)' : 'translateY(-500px)',
-          }}
-        />
-      </motion.div>
+        {/* Ultra  Background */}
+        <motion.div
+          style={{ y }}
+          className="absolute inset-0 z-1"
+        >
+          {/* Subtle gradient overlay */}
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              background: `radial-gradient(ellipse at center, ${mainColor}20 0%, transparent 70%)`,
+            }}
+          />
 
-      {/* Main Content - Ultra  Layout */}
-      <div className="relative z-30 mx-auto flex max-w-6xl flex-col items-center px-4 text-center pb-16">
-        <BrandSection mainColor={mainColor} />
-        <HeadingSection
-          mainColor={mainColor}
-          secondaryColor={secondaryColor}
-        />
-        <StatsSection
-          stats={STATS}
-          mainColor={mainColor}
-        />
+          {/* Hero image with better masking */}
+          <Image
+            src={ImageHero || '/placeholder.svg'}
+            alt="University Buildings Background"
+            fill
+            className="object-cover opacity-15"
+            priority
+            sizes="100vw"
+            loading="eager"
+            style={{
+              objectPosition: isMobile ? '75% top' : 'center top',
+              transform: isMobile ? 'translateY(-400px)' : 'translateY(-500px)',
+            }}
+          />
+        </motion.div>
 
-        <CTASection
-          onClick={() => scrollTo('tryout')}
-          mainColor={mainColor}
-          secondaryColor={secondaryColor}
-        />
-        <LogoSection
-          logos={LOGOS}
-          mainColor={mainColor}
-        />
-        <VideoSection isMobile={isMobile} />
+        {/* Main Content - Ultra  Layout */}
+        <div className="relative z-30 mx-auto flex max-w-6xl flex-col items-center px-4 text-center pb-16">
+          <BrandSection mainColor={mainColor} />
+          <HeadingSection
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
+          <StatsSection
+            stats={STATS}
+            mainColor={mainColor}
+          />
+
+          <CTASection
+            onClick={() => scrollTo('tryout')}
+            onConsultationClick={handleConsultationClick}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
+          <LogoSection
+            logos={LOGOS}
+            mainColor={mainColor}
+          />
+          <VideoSection isMobile={isMobile} />
+        </div>
       </div>
-    </div>
+
+      {/* Consultation Dialog - sama seperti di FloatingContactButton */}
+      <Dialog
+        open={isConsultationDialogOpen}
+        onOpenChange={setIsConsultationDialogOpen}
+      >
+        <DialogContent className="sm:max-w-lg mx-4 max-h-[90vh] overflow-hidden flex flex-col items-center justify-center">
+          <DialogHeader className="pb-4 w-full">
+            <DialogTitle className="text-center text-xl font-bold text-gray-900">
+              Wujudkan Impian PTN-mu!
+            </DialogTitle>
+            <DialogDescription className="text-center text-gray-600 text-sm mt-2">
+              Pilih langkah pertama untuk memulai journey menuju PTN idaman
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6 w-full">
+            {/* Konsultasi Langsung - 2 Columns Grid */}
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-3 text-center">
+                💬 Konsultasi Langsung
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {consultationOptions.map((option) => (
+                  <div
+                    key={`consultation-${option.id}`}
+                    className="w-full"
+                  >
+                    <Button
+                      onClick={option.action}
+                      className={cn(
+                        'w-full h-auto p-3 rounded-xl text-center',
+                        'flex flex-col items-center gap-2 bg-white border-2',
+                        'hover:shadow-lg transition-all duration-300',
+                        'hover:border-opacity-60 hover:bg-opacity-5 hover:scale-105',
+                      )}
+                      style={{
+                        borderColor: `${option.color}30`,
+                      }}
+                      variant="outline"
+                    >
+                      {/* Icon */}
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md"
+                        style={{ backgroundColor: option.color }}
+                      >
+                        {option.icon}
+                      </div>
+
+                      {/* Content */}
+                      <div className="text-center">
+                        <h3 className="font-semibold text-gray-900 text-sm mb-1">
+                          {option.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 leading-tight px-1">
+                          {option.description}
+                        </p>
+                      </div>
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Stats - Compact Layout */}
+            <div className="flex justify-center gap-4 text-center py-2">
+              <div>
+                <div
+                  className="font-bold text-base leading-tight"
+                  style={{ color: mainColor }}
+                >
+                  {CONTACT_CONFIG.stats.responseTime}
+                </div>
+                <div className="text-xs text-gray-600">Response</div>
+              </div>
+              <div className="w-px bg-gray-200" />
+              <div>
+                <div
+                  className="font-bold text-base leading-tight"
+                  style={{ color: mainColor }}
+                >
+                  {CONTACT_CONFIG.stats.studentsServed}
+                </div>
+                <div className="text-xs text-gray-600">Siswa</div>
+              </div>
+              <div className="w-px bg-gray-200" />
+              <div>
+                <div
+                  className="font-bold text-base leading-tight"
+                  style={{ color: mainColor }}
+                >
+                  {CONTACT_CONFIG.stats.satisfactionRate}
+                </div>
+                <div className="text-xs text-gray-600">Rating</div>
+              </div>
+            </div>
+
+            {/* Additional Info */}
+            <div className="p-3 bg-gray-50 rounded-xl">
+              <div className="flex items-start gap-3">
+                <div
+                  className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  💡
+                </div>
+                <div className="flex-1">
+                  <span className="font-semibold text-gray-900 text-sm">
+                    Blueprint Personal 100% Gratis
+                  </span>
+                  <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                    Tim kami akan membantu kamu bikin strategi belajar yang
+                    tepat untuk mencapai target PTN idamanmu
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
@@ -475,9 +686,10 @@ const LogoSection: React.FC<{
 // CTASection dengan desain lebih modern dan UX lebih jelas
 const CTASection: React.FC<{
   onClick?: () => void;
+  onConsultationClick?: () => void;
   mainColor: string;
   secondaryColor: string;
-}> = ({ mainColor, secondaryColor }) => {
+}> = ({ mainColor, secondaryColor, onConsultationClick }) => {
   const router = useRouter();
 
   // Navigasi ke /price
@@ -537,23 +749,14 @@ const CTASection: React.FC<{
           <BarChart className="w-3 h-3" />
           Tryout Gratis
         </a>
-        <a
-          href="#contact-us"
-          onClick={(e) => {
-            e.preventDefault();
-            const el = document.getElementById('contact-us');
-            if (el) {
-              const top =
-                el.getBoundingClientRect().top + window.pageYOffset - 100;
-              window.scrollTo({ top, behavior: 'smooth' });
-            }
-          }}
+        <button
+          onClick={onConsultationClick}
           className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-white shadow border ml-2 transition-transform duration-200 hover:scale-105"
           style={{ background: mainColor, color: '#fff' }}
         >
           <PhoneCallIcon className="w-3 h-3" />
           Konsultasi
-        </a>
+        </button>
       </div>
     </motion.div>
   );
