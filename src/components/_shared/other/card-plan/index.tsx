@@ -377,7 +377,7 @@ export function CardPlan({
                   variant="outline"
                   className="text-xs text-gray-600 border-gray-300"
                 >
-                  Tier {plan.PlanSubscription.tier}
+                  {plan.PlanSubscription.tier}
                 </Badge>
               </div>
 

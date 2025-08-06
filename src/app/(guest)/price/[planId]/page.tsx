@@ -401,7 +401,7 @@ export default function PlanDetailPage() {
                 onValueChange={setActiveTab}
                 className="w-full"
               >
-                <TabsList className="grid w-full grid-cols-5 mb-6 bg-white/70 backdrop-blur-sm border border-blue-200/50 rounded-xl p-1">
+                <TabsList className="grid w-full h-full grid-cols-5 mb-6 bg-white/70 backdrop-blur-sm border border-blue-200/50 rounded-xl p-1">
                   <TabsTrigger
                     value="overview"
                     className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
@@ -655,27 +655,28 @@ export default function PlanDetailPage() {
                                   </div>
                                   <div className="space-y-3">
                                     {feature.type === 'COURSE' &&
-                                      feature.Pivot_Plan_Category.map(
-                                        (pivot) => (
+                                      feature.Pivot_Plan_Category.slice(
+                                        0,
+                                        3,
+                                      ).map((pivot) => (
+                                        <div
+                                          key={pivot.id}
+                                          className="flex items-center gap-3 p-2 rounded-xl bg-white/60 hover:bg-white/80 transition-all duration-200"
+                                        >
                                           <div
-                                            key={pivot.id}
-                                            className="flex items-center gap-3 p-2 rounded-xl bg-white/60 hover:bg-white/80 transition-all duration-200"
+                                            className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold"
+                                            style={{
+                                              backgroundColor: mainColor,
+                                            }}
                                           >
-                                            <div
-                                              className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold"
-                                              style={{
-                                                backgroundColor: mainColor,
-                                              }}
-                                            >
-                                              {pivot.Category.nomor}
-                                            </div>
-                                            <span className="text-gray-900 font-semibold text-sm">
-                                              {pivot.Category.name}
-                                            </span>
-                                            <ArrowRight className="w-4 h-4 text-gray-400 ml-auto group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
+                                            {pivot.Category.nomor}
                                           </div>
-                                        ),
-                                      )}
+                                          <span className="text-gray-900 font-semibold text-sm">
+                                            {pivot.Category.name}
+                                          </span>
+                                          <ArrowRight className="w-4 h-4 text-gray-400 ml-auto group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
+                                        </div>
+                                      ))}
                                     {feature.type === 'DOCUMENT' && (
                                       <div className="flex gap-3 p-2 rounded-xl bg-white/60">
                                         <div

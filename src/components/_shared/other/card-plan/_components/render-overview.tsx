@@ -45,9 +45,11 @@ export const RenderOverviewTab = () => {
     <div className="space-y-4">
       {/* Plan Type Badge */}
       <div className="flex items-center justify-center">
-        <Badge className={`flex items-center gap-2`}>
-          Statis
-          <span className="font-semibold">Statis</span>
+        <Badge
+          variant="destructive"
+          className={`flex items-center gap-2 text-white`}
+        >
+          {plan.PlanSubscription.tier}
         </Badge>
       </div>
 

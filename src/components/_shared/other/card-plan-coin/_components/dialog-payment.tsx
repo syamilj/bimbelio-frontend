@@ -25,7 +25,6 @@ import {
 import { Voucher } from '@/types/database';
 import {
   ArrowRight,
-  Award,
   CheckCircle2,
   Clock,
   CreditCard,
@@ -78,27 +77,27 @@ export function DialogPayment({
   const formatPhoneNumber = (value: string) => {
     // Remove all non-digits
     const digits = value.replace(/\D/g, '');
-    
+
     // Auto-add +62 if starts with 0
     if (digits.startsWith('0')) {
       return '+62' + digits.slice(1);
     }
-    
+
     // Auto-add +62 if starts with 8
     if (digits.startsWith('8')) {
       return '+62' + digits;
     }
-    
+
     // If already starts with 62, add +
     if (digits.startsWith('62')) {
       return '+' + digits;
     }
-    
+
     // If starts with +62, keep as is
     if (value.startsWith('+62')) {
       return '+62' + digits.slice(2);
     }
-    
+
     return value;
   };
 
@@ -293,9 +292,9 @@ export function DialogPayment({
         className="sm:max-w-4xl w-[95vw] max-w-[95vw] max-h-[90vh] p-0 bg-white overflow-hidden"
       >
         {/* Compact Header */}
-        <div 
+        <div
           className="relative p-4 border-b"
-          style={{ 
+          style={{
             background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}04)`,
           }}
         >
@@ -321,11 +320,17 @@ export function DialogPayment({
             {/* Compact Trust Badges */}
             <div className="flex items-center justify-center gap-6 mt-3">
               <div className="flex items-center gap-1 text-xs text-gray-600">
-                <Shield size={12} className="text-green-500" />
+                <Shield
+                  size={12}
+                  className="text-green-500"
+                />
                 <span>Pembayaran Aman</span>
               </div>
               <div className="flex items-center gap-1 text-xs text-gray-600">
-                <Truck size={12} className="text-blue-500" />
+                <Truck
+                  size={12}
+                  className="text-blue-500"
+                />
                 <span>Akses Instan</span>
               </div>
             </div>
@@ -340,7 +345,10 @@ export function DialogPayment({
           <div className="lg:col-span-2 order-2 lg:order-1">
             <div className="bg-gray-50 rounded-xl border p-4">
               <h3 className="font-semibold text-gray-800 text-sm mb-3 flex items-center gap-2">
-                <Star size={14} style={{ color: mainColor }} />
+                <Star
+                  size={14}
+                  style={{ color: mainColor }}
+                />
                 Ringkasan Pesanan
               </h3>
               <CardPlanTopping
@@ -355,7 +363,7 @@ export function DialogPayment({
           <div className="lg:col-span-3 space-y-4 order-1 lg:order-2">
             {/* Customer Information - Compact */}
             <div className="bg-white rounded-xl border">
-              <div 
+              <div
                 className="p-3 border-b"
                 style={{ backgroundColor: `${mainColor}05` }}
               >
@@ -364,7 +372,10 @@ export function DialogPayment({
                     className="p-1 rounded"
                     style={{ backgroundColor: `${mainColor}20` }}
                   >
-                    <Users size={14} style={{ color: mainColor }} />
+                    <Users
+                      size={14}
+                      style={{ color: mainColor }}
+                    />
                   </div>
                   Informasi Kontak
                 </h3>
@@ -373,9 +384,15 @@ export function DialogPayment({
               <div className="p-4">
                 <div className="space-y-3">
                   <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                    <Phone size={12} className="text-gray-500" />
+                    <Phone
+                      size={12}
+                      className="text-gray-500"
+                    />
                     Nomor Telepon
-                    <Badge variant="destructive" className="text-xs px-1 py-0">
+                    <Badge
+                      variant="destructive"
+                      className="text-xs px-1 py-0"
+                    >
                       Required
                     </Badge>
                   </Label>
@@ -404,9 +421,14 @@ export function DialogPayment({
                     )}
                   </div>
                   <div className="flex items-start gap-2 p-3 bg-blue-50 rounded-lg text-xs text-blue-700">
-                    <Shield size={12} className="text-blue-600 mt-0.5 flex-shrink-0" />
+                    <Shield
+                      size={12}
+                      className="text-blue-600 mt-0.5 flex-shrink-0"
+                    />
                     <div>
-                      <p className="font-medium mb-1">Format otomatis tersedia</p>
+                      <p className="font-medium mb-1">
+                        Format otomatis tersedia
+                      </p>
                       <ul className="space-y-0.5 text-blue-600">
                         <li>• Ketik: 08123456789 → +6281234567890</li>
                         <li>• Ketik: 81234567890 → +6281234567890</li>
@@ -420,13 +442,16 @@ export function DialogPayment({
 
             {/* Voucher Section - Compact */}
             <div className="bg-white rounded-xl border">
-              <div 
+              <div
                 className="p-3 border-b"
                 style={{ backgroundColor: `${secondaryColor}05` }}
               >
                 <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
                   <div className="p-1 rounded bg-green-200">
-                    <Tag size={14} className="text-green-700" />
+                    <Tag
+                      size={14}
+                      className="text-green-700"
+                    />
                   </div>
                   Kode Promo & Voucher
                 </h3>
@@ -440,7 +465,9 @@ export function DialogPayment({
                       placeholder="Masukkan kode voucher atau promo"
                       value={voucherCode}
                       disabled={!!discountPrice}
-                      onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                      onChange={(e) =>
+                        setVoucherCode(e.target.value.toUpperCase())
+                      }
                       className="h-10 text-sm border border-gray-200 focus:border-green-500 rounded-lg pl-8"
                     />
                     <Tag
@@ -466,7 +493,9 @@ export function DialogPayment({
                         setVoucherCode('');
                       }
                     }}
-                    disabled={isLoading || (!voucherCode.trim() && !discountPrice)}
+                    disabled={
+                      isLoading || (!voucherCode.trim() && !discountPrice)
+                    }
                   >
                     {isLoading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -482,7 +511,10 @@ export function DialogPayment({
                 {discountPrice && (
                   <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 size={16} className="text-green-600" />
+                      <CheckCircle2
+                        size={16}
+                        className="text-green-600"
+                      />
                       <div>
                         <p className="text-sm font-medium text-green-800">
                           Voucher berhasil diterapkan!
@@ -510,7 +542,10 @@ export function DialogPayment({
                     className="p-1 rounded"
                     style={{ backgroundColor: `${mainColor}20` }}
                   >
-                    <CreditCard size={14} style={{ color: mainColor }} />
+                    <CreditCard
+                      size={14}
+                      style={{ color: mainColor }}
+                    />
                   </div>
                   Ringkasan Pembayaran
                 </h3>
@@ -521,7 +556,9 @@ export function DialogPayment({
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-gray-600">Harga paket</span>
-                    <span className="font-medium">{formatPrice(plan.price)}</span>
+                    <span className="font-medium">
+                      {formatPrice(plan.price)}
+                    </span>
                   </div>
 
                   {discountPrice && (
@@ -557,7 +594,9 @@ export function DialogPayment({
                       >
                         {formatPrice(discountPrice || plan.price)}
                       </span>
-                      {(discountPrice || (plan.originalPrice && plan.originalPrice > plan.price)) && (
+                      {(discountPrice ||
+                        (plan.originalPrice &&
+                          plan.originalPrice > plan.price)) && (
                         <p className="text-xs text-gray-500 line-through">
                           {formatPrice(plan.originalPrice || plan.price)}
                         </p>
@@ -568,8 +607,13 @@ export function DialogPayment({
 
                 {/* Compact Benefits */}
                 <div className="p-3 bg-gray-50 rounded-lg text-center">
-                  <Clock size={16} className="mx-auto mb-1 text-blue-500" />
-                  <p className="text-xs font-medium text-gray-700">Akses Instan</p>
+                  <Clock
+                    size={16}
+                    className="mx-auto mb-1 text-blue-500"
+                  />
+                  <p className="text-xs font-medium text-gray-700">
+                    Akses Instan
+                  </p>
                   <p className="text-xs text-gray-500">Setelah pembayaran</p>
                 </div>
 
@@ -577,7 +621,12 @@ export function DialogPayment({
                 <Button
                   type="submit"
                   className="w-full h-12 text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
-                  disabled={loading || telp.length === 0 || !telp.startsWith('+62') || telp.length < 12}
+                  disabled={
+                    loading ||
+                    telp.length === 0 ||
+                    !telp.startsWith('+62') ||
+                    telp.length < 12
+                  }
                   style={{
                     background: loading
                       ? '#gray-400'
@@ -603,7 +652,10 @@ export function DialogPayment({
                 <div className="text-center pt-2 border-t border-gray-100">
                   <p className="text-xs text-gray-500">
                     Dengan melanjutkan, Anda menyetujui{' '}
-                    <a href="#" className="text-blue-600 hover:underline">
+                    <a
+                      href="#"
+                      className="text-blue-600 hover:underline"
+                    >
                       Syarat & Ketentuan
                     </a>{' '}
                     kami
