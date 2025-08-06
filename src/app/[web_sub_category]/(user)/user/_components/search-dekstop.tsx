@@ -42,6 +42,20 @@ const SearchDeskstop = () => {
     });
   };
 
+  // Sinkronisasi categoryId dengan URL - simplified logic
+  useEffect(() => {
+    const pathSegments = pathname.split('/');
+    const lastSegment = pathSegments[pathSegments.length - 1];
+
+    // Jika di workspace dengan categoryId, ambil categoryId
+    if (pathname.includes('/workspace/') && lastSegment !== 'workspace') {
+      setCategoryId(lastSegment);
+    } else {
+      // Untuk explore atau halaman lain, kosongkan categoryId
+      setCategoryId('');
+    }
+  }, [pathname]);
+
   useEffect(() => {
     fetchCategory();
   }, []);
@@ -56,10 +70,26 @@ const SearchDeskstop = () => {
     );
   };
 
-  useEffect(() => {
-    if (!pathname.includes('search')) return;
-    handleSearch();
-  }, [categoryId]);
+  const handleCategoryChange = (newCategoryId: string) => {
+    // Jangan lakukan apapun kalau value tidak berubah
+    if (categoryId === newCategoryId) return;
+
+    // Fix: Jangan auto push ke explore kalau lagi di workspace dan newCategoryId kosong
+    if (
+      (!newCategoryId || newCategoryId === 'all') &&
+      pathname.includes('/workspace/')
+    ) {
+      return;
+    }
+
+    if (!newCategoryId || newCategoryId === 'all') {
+      router.push(`/${website_sub_category_id}/user/explore`);
+    } else {
+      router.push(
+        `/${website_sub_category_id}/user/workspace/${newCategoryId}`,
+      );
+    }
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -115,9 +145,7 @@ const SearchDeskstop = () => {
               <div className="min-w-[150px]">
                 <Select
                   value={categoryId === '' ? 'all' : categoryId}
-                  onValueChange={(value) => {
-                    setCategoryId(value === 'all' ? '' : value);
-                  }}
+                  onValueChange={handleCategoryChange}
                 >
                   <SelectTrigger className="border-none shadow-none bg-transparent text-gray-600 focus:ring-0 h-auto p-0">
                     <SelectValue placeholder="Semua Kategori" />
@@ -138,7 +166,7 @@ const SearchDeskstop = () => {
                     {category?.map((item) => (
                       <SelectItem
                         key={item.id}
-                        value={item.id}
+                        value={item.id ?? ''} // pastikan item.id ada!
                         className="rounded-lg"
                       >
                         <div className="flex items-center gap-2">
@@ -191,7 +219,7 @@ const SearchDeskstop = () => {
             style={{
               backgroundColor: categoryId === '' ? mainColor : undefined,
             }}
-            onClick={() => setCategoryId('')}
+            onClick={() => handleCategoryChange('')}
           >
             Semua
           </button>
@@ -207,7 +235,7 @@ const SearchDeskstop = () => {
               style={{
                 backgroundColor: categoryId === item.id ? mainColor : undefined,
               }}
-              onClick={() => setCategoryId(item.id)}
+              onClick={() => handleCategoryChange(item.id)}
             >
               {item.name}
             </button>
@@ -224,8 +252,6 @@ const SearchDeskstop = () => {
           </div>
           <span>•</span>
           <span>Lebih dari 1000+ materi</span>
-          <span>•</span>
-          <span>Updated daily</span>
         </div>
       )}
     </div>
