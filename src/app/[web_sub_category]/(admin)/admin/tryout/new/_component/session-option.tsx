@@ -161,6 +161,7 @@ const SessionOption = ({
             setSessions={setSessions}
             currentIndexEdit={currentIndexEdit}
             assessmentType={assessmentType}
+            setQuestionIndex={setQuestionIndex}
           />
           <div
             className="cursor-pointer text-main-gray-text duration-300 md:hover:text-black"

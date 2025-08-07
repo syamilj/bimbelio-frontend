@@ -20,10 +20,12 @@ const ModalImportCSV = ({
   setSessions,
   currentIndexEdit,
   assessmentType,
+  setQuestionIndex,
 }: {
   setSessions: React.Dispatch<SetStateAction<SessionProps[]>>;
   currentIndexEdit: number | null;
   assessmentType: string;
+  setQuestionIndex: React.Dispatch<SetStateAction<number>>;
 }) => {
   const editor = useCreateBlockNote();
   const [open, setOpen] = useState<boolean>(false);
@@ -147,6 +149,7 @@ const ModalImportCSV = ({
               });
               return;
             }
+            setQuestionIndex(0);
             setSessions((prev) =>
               prev.map((session, sessionId) => {
                 if (sessionId === currentIndexEdit) {
@@ -229,6 +232,8 @@ const ModalImportCSV = ({
               Answers: transformedAnswers,
             };
           });
+
+          console.log({ fixData });
 
           if (!isValid) {
             toaster({
