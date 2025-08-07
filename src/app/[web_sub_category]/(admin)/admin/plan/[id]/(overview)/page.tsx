@@ -22,7 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { responseError, throwError } from '@/lib/response';
-import { cn } from '@/lib/utils';
+import { cn, formatCurrency, parseCurrency } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import {
   Category,
@@ -71,7 +71,12 @@ export default function UpdatePlanForm() {
       setCategoryIds,
       setLiveClassIds,
     },
-    useLimitation: { limitRows, setLimitRows },
+    useLimitation: {
+      limitRows,
+      setLimitRows,
+      expireTypeLimit,
+      setExpireTypeLimit,
+    },
     useForm: {
       formData: { register, setValue },
       formDataValues: {
@@ -79,6 +84,7 @@ export default function UpdatePlanForm() {
         course,
         description,
         duration,
+        durationLimit,
         liveClass,
         materiPremium,
         originalPrice,
@@ -146,6 +152,19 @@ export default function UpdatePlanForm() {
               { id: 4, type: 'quiz', limit: limit.quiz.toString() },
               { id: 5, type: 'tryout', limit: limit.tryout.toString() },
             ]);
+
+            // Set duration limit dari existing data
+            const expireDays = limit.expireDays || 0;
+            if (expireDays % 365 === 0) {
+              setValue('durationLimit', (expireDays / 365).toString());
+              setExpireTypeLimit('year');
+            } else if (expireDays % 30 === 0) {
+              setValue('durationLimit', (expireDays / 30).toString());
+              setExpireTypeLimit('month');
+            } else {
+              setValue('durationLimit', expireDays.toString());
+              setExpireTypeLimit('days');
+            }
           }
           if (planData.PlanBenefit) {
             setBenefitRows(
@@ -214,6 +233,14 @@ export default function UpdatePlanForm() {
               quiz: limitRowsData?.quiz || 0,
               tryout: limitRowsData?.tryout || 0,
               vision: limitRowsData?.vision || 0,
+              expireDays:
+                expireTypeLimit === 'days'
+                  ? parseInt(durationLimit)
+                  : expireTypeLimit === 'month'
+                    ? parseInt(durationLimit) * 30
+                    : expireTypeLimit === 'year'
+                      ? parseInt(durationLimit) * 365
+                      : 0,
             }
           : undefined,
         planSubscription: activeTab.feature
@@ -402,9 +429,13 @@ export default function UpdatePlanForm() {
                   </div>
                   <Input
                     id="originalPrice"
-                    {...register('originalPrice')}
                     type="text"
                     className="pl-12"
+                    value={formatCurrency(originalPrice)}
+                    onChange={(e) => {
+                      const rawValue = parseCurrency(e.target.value);
+                      setValue('originalPrice', rawValue);
+                    }}
                   />
                 </div>
               </div>
@@ -425,7 +456,11 @@ export default function UpdatePlanForm() {
                     type="text"
                     className="pl-12"
                     required
-                    {...register('price')}
+                    value={formatCurrency(price)}
+                    onChange={(e) => {
+                      const rawValue = parseCurrency(e.target.value);
+                      setValue('price', rawValue);
+                    }}
                   />
                 </div>
               </div>
@@ -457,7 +492,15 @@ const SectionLimit = () => {
   const {
     activeTab,
     setActiveTab,
-    useLimitation: { limitRows, setLimitRows },
+    useLimitation: {
+      limitRows,
+      setLimitRows,
+      expireTypeLimit,
+      setExpireTypeLimit,
+    },
+    useForm: {
+      formData: { register },
+    },
   } = useProvider();
 
   const addLimitRow = () => {
@@ -684,6 +727,59 @@ const SectionLimit = () => {
               </div>
             );
           })}
+          <div className="ml-6 col-span-1 md:col-span-2">
+            <Label
+              htmlFor="durationLimit"
+              className="block mb-2"
+            >
+              Duration <span className="text-red-500">*</span>
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                id="durationLimit"
+                {...register('durationLimit')}
+                type="number"
+                placeholder="0"
+                className="flex-1"
+                required
+              />
+              <div className="flex">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    'rounded-r-none ',
+                    expireTypeLimit === 'days' && 'bg-main text-white',
+                  )}
+                  onClick={() => setExpireTypeLimit('days')}
+                >
+                  days
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    'rounded-none border-l-0 border-r-0',
+                    expireTypeLimit === 'month' && 'bg-main text-white',
+                  )}
+                  onClick={() => setExpireTypeLimit('month')}
+                >
+                  month
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    'rounded-l-none',
+                    expireTypeLimit === 'year' && 'bg-main text-white',
+                  )}
+                  onClick={() => setExpireTypeLimit('year')}
+                >
+                  year
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -713,16 +809,6 @@ const SectionFeature = () => {
       formDataValues: { course, liveClass, materiPremium },
     },
   } = useProvider();
-
-  const changeExpireType = (type: 'days' | 'month' | 'year') => {
-    const input = document.getElementById('expireType') as
-      | HTMLInputElement
-      | undefined;
-    if (input) {
-      setExpireType(type);
-      input.value = type;
-    }
-  };
 
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
@@ -869,15 +955,6 @@ const SectionFeature = () => {
                     required
                   />
                   <div className="flex">
-                    <input
-                      id="expireType"
-                      name="expireType"
-                      type="text"
-                      hidden
-                      value={expireType}
-                      onChange={(e) => setExpireType(e.target.value as any)}
-                      required
-                    />
                     <Button
                       type="button"
                       variant="outline"
@@ -885,7 +962,7 @@ const SectionFeature = () => {
                         'rounded-r-none ',
                         expireType === 'days' && 'bg-main text-white',
                       )}
-                      onClick={() => changeExpireType('days')}
+                      onClick={() => setExpireType('days')}
                     >
                       days
                     </Button>
@@ -896,7 +973,7 @@ const SectionFeature = () => {
                         'rounded-none border-l-0 border-r-0',
                         expireType === 'month' && 'bg-main text-white',
                       )}
-                      onClick={() => changeExpireType('month')}
+                      onClick={() => setExpireType('month')}
                     >
                       month
                     </Button>
@@ -907,7 +984,7 @@ const SectionFeature = () => {
                         'rounded-l-none',
                         expireType === 'year' && 'bg-main text-white',
                       )}
-                      onClick={() => changeExpireType('year')}
+                      onClick={() => setExpireType('year')}
                     >
                       year
                     </Button>

@@ -529,6 +529,7 @@ export type PlanLimitation = {
   vision: number;
   quiz: number;
   tryout: number;
+  expireDays: number;
   planId: string;
 };
 
