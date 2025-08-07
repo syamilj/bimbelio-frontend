@@ -195,7 +195,7 @@ importers:
         specifier: ^8.5.9
         version: 8.5.9(@types/react@19.1.9)(react@19.1.1)
       react-virtualized-auto-sizer:
-        specifier: ^1.0.26
+        specifier: ^1.0.25
         version: 1.0.26(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       react-window:
         specifier: ^1.8.11

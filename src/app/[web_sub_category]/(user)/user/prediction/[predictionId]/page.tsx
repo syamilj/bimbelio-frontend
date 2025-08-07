@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -22,6 +23,7 @@ import PredictionStep3 from './_main-components/prediction-step-3';
 import PredictionStep4 from './_main-components/prediction-step-4';
 
 export default function UTBKSIMAKPredictor() {
+  const { data: session } = useSession();
   const {
     currentStep,
     setCurrentStep,
@@ -30,13 +32,27 @@ export default function UTBKSIMAKPredictor() {
   } = useProvider();
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', {
-      content_name: 'Prediction Detail',
-    });
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Prediction Detail',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
     pixel.tiktok.track('ViewContent', {
       content_name: 'Prediction Detail',
+      content_id: `prediction_detail_${predictionId}`, // ✅ Required untuk TikTok VSA
     });
-  }, []);
+  }, [session, predictionId]);
 
   return (
     <TooltipProvider>

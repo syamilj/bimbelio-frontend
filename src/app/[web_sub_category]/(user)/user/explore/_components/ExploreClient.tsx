@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from '@/components/provider/provider-session-auth';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { pixel } from '@/lib/pixel/_core';
 import type { Category } from '@/types/database';
@@ -11,6 +12,7 @@ import Terbaru from './terbaru';
 import Trending from './trending';
 
 export default function ExploreClient() {
+  const { data: session } = useSession();
   const [category, setCategory] = useState<
     Omit<Category, 'to' | 'website_sub_category_id'>[]
   >([]);
@@ -26,13 +28,29 @@ export default function ExploreClient() {
   }, []);
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', {
-      content_name: 'Explore Document',
-    });
+    // ✅ ENRICHED VIEWCONTENT EVENT DATA
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Explore Document',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
     pixel.tiktok.track('ViewContent', {
       content_name: 'Explore Document',
+      page_path: `/user/explore`,
+      content_id: 'explore_document_page', // ✅ Required untuk TikTok VSA
     });
-  }, []);
+  }, [session]);
 
   return (
     <div className="min-h-screen">

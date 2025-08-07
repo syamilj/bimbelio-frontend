@@ -31,11 +31,13 @@ export function DialogPayment({
   onClose,
   type = 'plan',
   children,
+  classOverlay,
 }: {
   plan: PlanDataType;
   onClose?: () => void;
   type?: 'limit' | 'plan';
   children: ReactNode;
+  classOverlay?: string;
 }) {
   const { setPagesSetting, setTransactionHistory, setTransactionPopUp } =
     useAppContext();
@@ -101,13 +103,27 @@ export function DialogPayment({
           setTransactionHistory(true);
         },
       });
+
+      // ✅ ENRICHED PURCHASE EVENT DATA - Konsisten dengan card-plan
+      const purchaseValue = discountPrice || plan.price;
+
       pixel.meta.track('Purchase', {
-        value: discountPrice || plan.price,
+        contents: [{ id: plan.id, quantity: 1 }], // ✅ Format yang benar untuk Meta
+        content_name: plan.name,
+        content_type: 'product',
+        value: purchaseValue,
         currency: 'IDR',
+        num_items: 1,
+        order_id: res?.data?.order_id || `coin_order_${Date.now()}`,
       });
+
       pixel.tiktok.track('Purchase', {
-        value: discountPrice || plan.price,
+        content_id: plan.id, // ✅ FIX: TikTok content_id parameter yang missing
+        content_name: plan.name,
+        content_type: 'product', // ✅ Tambahan content_type
+        value: purchaseValue,
         currency: 'IDR',
+        order_id: res?.data?.order_id || `coin_order_${Date.now()}`,
       });
     } catch (error) {
       toaster({
@@ -121,11 +137,42 @@ export function DialogPayment({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    // await onSubmit(
-    //   telp,
-    //   plan.PlanSubscription.websiteSubCategoryId,
-    //   voucherCode,
-    // );
+
+    // ✅ ADDPAYMENTINFO TRACKING - Track saat user klik "Bayar Sekarang" coin
+    try {
+      const purchaseValue = discountPrice || plan.price;
+      pixel.meta.track(
+        'AddPaymentInfo',
+        {
+          content_name: plan.name,
+          content_type: 'product',
+          value: purchaseValue,
+          currency: 'IDR',
+          contents: [{ id: plan.id, quantity: 1 }],
+        },
+        {
+          // Advanced Matching data
+          em: session?.user?.email,
+          ph: session?.user?.phone || undefined,
+          fn: session?.user?.name?.split(' ')[0],
+          ln: session?.user?.name?.split(' ').slice(1).join(' '),
+        },
+      );
+
+      pixel.tiktok.track('AddPaymentInfo', {
+        content_id: plan.id,
+        content_name: plan.name,
+        content_type: 'product',
+        value: purchaseValue,
+        currency: 'IDR',
+      });
+    } catch (pixelError) {
+      console.warn(
+        'Pixel tracking error on coin add payment info:',
+        pixelError,
+      );
+    }
+
     await handlePayment(
       telp,
       plan.PlanSubscription?.websiteSubCategoryId,
@@ -171,7 +218,8 @@ export function DialogPayment({
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        classOverlay="z-[9999999999999999]"
+        // classOverlay="z-[9999999999999999]"
+        classOverlay={classOverlay}
         className="sm:max-w-6xl w-[95vw] max-h-[90vh] p-0"
       >
         <div className="bg-linear-to-br from-blue-50 via-white to-indigo-50 p-8">

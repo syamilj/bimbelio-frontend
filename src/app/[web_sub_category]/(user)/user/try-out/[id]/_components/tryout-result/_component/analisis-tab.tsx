@@ -414,7 +414,7 @@ export function AnalisisTab({
       >
         <Tabs defaultValue="analisis">
           <TabsList
-            className="grid w-full grid-cols-2 h-14 p-1 rounded-2xl border-0 shadow-lg mb-8"
+            className="grid w-full grid-cols-3 h-14 p-1 rounded-2xl border-0 shadow-lg mb-8"
             style={{ backgroundColor: `${mainColor}08` }}
           >
             <TabsTrigger
@@ -450,11 +450,11 @@ export function AnalisisTab({
           {/* Tab Contents */}
           <TabsContent
             value="analisis"
-            className="relative"
+            className={cn('relative')}
           >
             <UpgradeLayer unlockTryout={unlockTryout} />
 
-            <div className="space-y-8">
+            <div className={cn('space-y-8', !unlockTryout && 'py-10')}>
               {/* Summary Statistics */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

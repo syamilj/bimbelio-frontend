@@ -105,13 +105,27 @@ export default function LeaderboardClient() {
   }, [selectedTryOut, session]);
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', {
-      content_name: 'Leaderboard',
-    });
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Leaderboard',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
     pixel.tiktok.track('ViewContent', {
       content_name: 'Leaderboard',
+      content_id: 'leaderboard_page', // ✅ Required untuk TikTok VSA
     });
-  }, []);
+  }, [session]);
 
   return (
     <LeaderboardContext.Provider

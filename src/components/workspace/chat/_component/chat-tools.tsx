@@ -3,7 +3,6 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import { toaster } from '@/components/ui/toaster';
-import { ToolTip } from '@/components/ui/tooltip';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { Copy, Edit3, RotateCcw, ThumbsDown, ThumbsUp } from 'lucide-react';
@@ -181,106 +180,204 @@ const ChatTools = ({ messageIndex }: Props) => {
       {role === 'user' ? (
         // User Message Tools
         <div className="flex items-center gap-1">
-          <ToolTip value="Salin pesan">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-              onClick={handleCopy}
-            >
-              <Copy className="w-3.5 h-3.5" />
-            </Button>
-          </ToolTip>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            onClick={handleCopy}
+          >
+            <Copy className="w-3.5 h-3.5" />
+          </Button>
 
-          <ToolTip value="Edit pesan">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-              onClick={handleEditMessage}
-            >
-              <Edit3 className="w-3.5 h-3.5" />
-            </Button>
-          </ToolTip>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            onClick={handleEditMessage}
+          >
+            <Edit3 className="w-3.5 h-3.5" />
+          </Button>
         </div>
       ) : (
         // AI Message Tools
         <div className="flex items-center gap-1">
-          <ToolTip value="Salin pesan">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-              onClick={handleCopy}
-            >
-              <Copy className="w-3.5 h-3.5" />
-            </Button>
-          </ToolTip>
-
-          <ToolTip value="Suka">
-            <Button
-              variant="ghost"
-              size="sm"
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            onClick={handleCopy}
+          >
+            <Copy className="w-3.5 h-3.5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+              data?.like
+                ? 'text-white shadow-sm hover:shadow-md'
+                : 'text-gray-500 hover:text-green-600 hover:bg-green-50',
+            )}
+            style={{
+              backgroundColor: data?.like ? mainColor : 'transparent',
+            }}
+            onClick={() => like({ messageId: data?.id })}
+          >
+            <ThumbsUp
               className={cn(
-                'h-8 w-8 rounded-lg p-0 transition-all duration-200',
-                data?.like
-                  ? 'text-white shadow-sm hover:shadow-md'
-                  : 'text-gray-500 hover:text-green-600 hover:bg-green-50',
+                'w-3.5 h-3.5 transition-transform',
+                data?.like && 'scale-110',
               )}
-              style={{
-                backgroundColor: data?.like ? mainColor : 'transparent',
-              }}
-              onClick={() => like({ messageId: data?.id })}
-            >
-              <ThumbsUp
-                className={cn(
-                  'w-3.5 h-3.5 transition-transform',
-                  data?.like && 'scale-110',
-                )}
-              />
-            </Button>
-          </ToolTip>
+            />
+          </Button>
 
-          <ToolTip value="Tidak suka">
-            <Button
-              variant="ghost"
-              size="sm"
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+              data?.dislike
+                ? 'bg-red-500 text-white shadow-sm hover:shadow-md hover:bg-red-600'
+                : 'text-gray-500 hover:text-red-600 hover:bg-red-50',
+            )}
+            onClick={() => dislike({ messageId: data?.id })}
+          >
+            <ThumbsDown
               className={cn(
-                'h-8 w-8 rounded-lg p-0 transition-all duration-200',
-                data?.dislike
-                  ? 'bg-red-500 text-white shadow-sm hover:shadow-md hover:bg-red-600'
-                  : 'text-gray-500 hover:text-red-600 hover:bg-red-50',
+                'w-3.5 h-3.5 transition-transform',
+                data?.dislike && 'scale-110',
               )}
-              onClick={() => dislike({ messageId: data?.id })}
-            >
-              <ThumbsDown
-                className={cn(
-                  'w-3.5 h-3.5 transition-transform',
-                  data?.dislike && 'scale-110',
-                )}
-              />
-            </Button>
-          </ToolTip>
+            />
+          </Button>
 
           {messageData.length - 1 === messageIndex && (
-            <ToolTip value="Regenerate pesan">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:bg-gray-100 transition-colors"
-                style={{
-                  color: mainColor,
-                }}
-                onClick={regenerateMessage}
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-              </Button>
-            </ToolTip>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:bg-gray-100 transition-colors"
+              style={{
+                color: mainColor,
+              }}
+              onClick={regenerateMessage}
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </Button>
           )}
         </div>
       )}
     </div>
   );
+
+  // return (
+  //   <div
+  //     className={cn(
+  //       'flex items-center gap-1',
+  //       role === 'user' ? 'justify-end' : 'justify-start',
+  //     )}
+  //   >
+  //     {role === 'user' ? (
+  //       // User Message Tools
+  //       <div className="flex items-center gap-1">
+  //         <ToolTip value="Salin pesan">
+  //           <Button
+  //             variant="ghost"
+  //             size="sm"
+  //             className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+  //             onClick={handleCopy}
+  //           >
+  //             <Copy className="w-3.5 h-3.5" />
+  //           </Button>
+  //         </ToolTip>
+
+  //         <ToolTip value="Edit pesan">
+  //           <Button
+  //             variant="ghost"
+  //             size="sm"
+  //             className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+  //             onClick={handleEditMessage}
+  //           >
+  //             <Edit3 className="w-3.5 h-3.5" />
+  //           </Button>
+  //         </ToolTip>
+  //       </div>
+  //     ) : (
+  //       // AI Message Tools
+  //       <div className="flex items-center gap-1">
+  //         <ToolTip value="Salin pesan">
+  //           <Button
+  //             variant="ghost"
+  //             size="sm"
+  //             className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+  //             onClick={handleCopy}
+  //           >
+  //             <Copy className="w-3.5 h-3.5" />
+  //           </Button>
+  //         </ToolTip>
+
+  //         <ToolTip value="Suka">
+  //           <Button
+  //             variant="ghost"
+  //             size="sm"
+  //             className={cn(
+  //               'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+  //               data?.like
+  //                 ? 'text-white shadow-sm hover:shadow-md'
+  //                 : 'text-gray-500 hover:text-green-600 hover:bg-green-50',
+  //             )}
+  //             style={{
+  //               backgroundColor: data?.like ? mainColor : 'transparent',
+  //             }}
+  //             onClick={() => like({ messageId: data?.id })}
+  //           >
+  //             <ThumbsUp
+  //               className={cn(
+  //                 'w-3.5 h-3.5 transition-transform',
+  //                 data?.like && 'scale-110',
+  //               )}
+  //             />
+  //           </Button>
+  //         </ToolTip>
+
+  //         <ToolTip value="Tidak suka">
+  //           <Button
+  //             variant="ghost"
+  //             size="sm"
+  //             className={cn(
+  //               'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+  //               data?.dislike
+  //                 ? 'bg-red-500 text-white shadow-sm hover:shadow-md hover:bg-red-600'
+  //                 : 'text-gray-500 hover:text-red-600 hover:bg-red-50',
+  //             )}
+  //             onClick={() => dislike({ messageId: data?.id })}
+  //           >
+  //             <ThumbsDown
+  //               className={cn(
+  //                 'w-3.5 h-3.5 transition-transform',
+  //                 data?.dislike && 'scale-110',
+  //               )}
+  //             />
+  //           </Button>
+  //         </ToolTip>
+
+  //         {messageData.length - 1 === messageIndex && (
+  //           <ToolTip value="Regenerate pesan">
+  //             <Button
+  //               variant="ghost"
+  //               size="sm"
+  //               className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:bg-gray-100 transition-colors"
+  //               style={{
+  //                 color: mainColor,
+  //               }}
+  //               onClick={regenerateMessage}
+  //             >
+  //               <RotateCcw className="w-3.5 h-3.5" />
+  //             </Button>
+  //           </ToolTip>
+  //         )}
+  //       </div>
+  //     )}
+  //   </div>
+  // );
 };
 
 export default ChatTools;

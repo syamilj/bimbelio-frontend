@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
 import { cn } from '@/lib/utils';
 import {
   Clock,
@@ -48,12 +49,14 @@ export function CardPlan({
   viewOnly,
   discount,
   onClose,
+  classOverlay,
 }: {
   plan: PlanDataType;
   hideFeatures?: string[];
   viewOnly?: boolean;
   discount?: number;
   onClose?: () => void;
+  classOverlay?: string;
 }) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -134,6 +137,40 @@ export function CardPlan({
       router.replace(window.location.pathname);
     }
   }, [planIdQuery, session, voucherCodeQuery]);
+
+  // ✅ LEAD TRACKING - Track saat user melihat card plan
+  useEffect(() => {
+    try {
+      // Track Lead event - user shows interest in plan
+      pixel.meta.track(
+        'Lead',
+        {
+          content_name: `Plan View - ${plan.name}`,
+          content_type: 'product',
+          value: plan.price,
+          currency: 'IDR',
+          contents: [{ id: plan.id, quantity: 1 }],
+        },
+        {
+          // Advanced Matching jika user sudah login
+          em: session?.user?.email,
+          ph: session?.user?.phone || undefined,
+          fn: session?.user?.name?.split(' ')[0],
+          ln: session?.user?.name?.split(' ').slice(1).join(' '),
+        },
+      );
+
+      pixel.tiktok.track('Lead', {
+        content_name: `Plan View - ${plan.name}`,
+        content_type: 'product',
+        value: plan.price,
+        currency: 'IDR',
+        content_id: `plan_view_${plan.id}`, // ✅ Required untuk TikTok VSA
+      });
+    } catch (pixelError) {
+      console.warn('Pixel tracking error on plan view:', pixelError);
+    }
+  }, [plan.id]); // Track sekali per plan
 
   const Context = {
     useState: {
@@ -453,11 +490,25 @@ export function CardPlan({
                 <div className="flex items-baseline gap-3">
                   {/* Current/Discounted Price */}
                   <div className="flex flex-col">
-                    <div
-                      className="text-3xl font-black"
-                      style={{ color: mainColor }}
-                    >
-                      {formatPrice(discount || plan.price)}
+                    <div className="flex items-center gap-2">
+                      {discount && (
+                        <div
+                          className="text-3xl font-black"
+                          style={{ color: mainColor }}
+                        >
+                          {formatPrice(discount)}
+                        </div>
+                      )}
+                      <div
+                        className={cn(
+                          'text-3xl font-black',
+                          discount &&
+                            'text-lg text-gray-500 line-through font-semibold',
+                        )}
+                        style={{ color: mainColor }}
+                      >
+                        {formatPrice(plan.price)}
+                      </div>
                     </div>
                     {plan.PlanBenefit.length > 0 && (
                       <div className="text-xs text-gray-500 mt-1">
@@ -610,7 +661,10 @@ export function CardPlan({
           <div className="mt-6 space-y-3">
             {/* Primary CTA */}
             {!viewOnly && (
-              <DialogPayment plan={plan}>
+              <DialogPayment
+                plan={plan}
+                classOverlay={classOverlay}
+              >
                 <Button
                   ref={buttonRef}
                   className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
@@ -625,6 +679,73 @@ export function CardPlan({
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}30`;
+                  }}
+                  onClick={() => {
+                    // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"
+                    try {
+                      pixel.meta.track(
+                        'AddToCart',
+                        {
+                          content_name: plan.name,
+                          content_type: 'product',
+                          value: plan.price,
+                          currency: 'IDR',
+                          contents: [{ id: plan.id, quantity: 1 }],
+                        },
+                        {
+                          // Advanced Matching jika user sudah login
+                          em: session?.user?.email,
+                          ph: session?.user?.phone || undefined,
+                          fn: session?.user?.name?.split(' ')[0],
+                          ln: session?.user?.name
+                            ?.split(' ')
+                            .slice(1)
+                            .join(' '),
+                        },
+                      );
+
+                      pixel.tiktok.track('AddToCart', {
+                        content_name: plan.name,
+                        content_type: 'product',
+                        value: plan.price,
+                        currency: 'IDR',
+                        content_id: `plan_addtocart_${plan.id}`, // ✅ Required untuk TikTok VSA
+                      });
+
+                      pixel.meta.track(
+                        'AddPaymentInfo',
+                        {
+                          content_name: plan.name,
+                          content_type: 'product',
+                          value: plan.price,
+                          currency: 'IDR',
+                          contents: [{ id: plan.id, quantity: 1 }],
+                        },
+                        {
+                          // Advanced Matching jika user sudah login
+                          em: session?.user?.email,
+                          ph: session?.user?.phone || undefined,
+                          fn: session?.user?.name?.split(' ')[0],
+                          ln: session?.user?.name
+                            ?.split(' ')
+                            .slice(1)
+                            .join(' '),
+                        },
+                      );
+
+                      pixel.tiktok.track('AddPaymentInfo', {
+                        content_name: plan.name,
+                        content_type: 'product',
+                        value: plan.price,
+                        currency: 'IDR',
+                        content_id: `plan_addpaymentinfo_${plan.id}`, // ✅ Required untuk TikTok VSA
+                      });
+                    } catch (pixelError) {
+                      console.warn(
+                        'Pixel tracking error on add to cart:',
+                        pixelError,
+                      );
+                    }
                   }}
                 >
                   <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
@@ -656,7 +777,26 @@ export function CardPlan({
                     e.currentTarget.style.backgroundColor = 'white';
                     e.currentTarget.style.borderColor = `${mainColor}40`;
                   }}
-                  onClick={() => setTransactionPopUp(false)}
+                  onClick={() => {
+                    // ✅ VIEWCONTENT TRACKING - Track saat user melihat detail produk
+                    pixel.meta.track('ViewContent', {
+                      contents: [{ id: plan.id, quantity: 1 }],
+                      content_name: plan.name,
+                      content_type: 'product',
+                      value: plan.price,
+                      currency: 'IDR',
+                    });
+
+                    pixel.tiktok.track('ViewContent', {
+                      content_id: plan.id,
+                      content_name: plan.name,
+                      content_type: 'product',
+                      value: plan.price,
+                      currency: 'IDR',
+                    });
+
+                    setTransactionPopUp(false);
+                  }}
                 >
                   <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
                   <span>Lihat Detail Lengkap</span>

@@ -114,13 +114,27 @@ const DocViewerPage = () => {
   const isMobile = useMedia({ maxWidth: '768px' });
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', {
-      content_name: 'Workspace',
-    });
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Workspace',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
     pixel.tiktok.track('ViewContent', {
       content_name: 'Workspace',
+      content_id: `workspace_document_${docId}`, // ✅ Required untuk TikTok VSA
     });
-  }, []);
+  }, [session, docId]);
 
   if (!docId) {
     return <p>Document ID not found in the URL.</p>;

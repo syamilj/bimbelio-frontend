@@ -2,11 +2,13 @@
 import { CardPlan } from '@/components/_shared/other/card-plan';
 import { CardPlanTopping } from '@/components/_shared/other/card-plan-coin';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { pixel } from '@/lib/pixel/_core';
 import { Sparkles, Zap } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 type PlanType = PlanDataType;
@@ -29,21 +31,55 @@ type PricingDataType = {
 };
 
 export default function PricingPlans() {
-  const { data: PricingData } = useGet<PricingDataType>(
-    '/plan/getAllPlanByWebCategory',
-  );
+  const { data: session } = useSession();
+
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
+  const searchParams = useSearchParams();
+  const voucherCodeQuery = searchParams.get('voucherCode');
+
+  const { data: PricingData } = useGet<PricingDataType>(
+    '/plan/getAllPlanByWebCategory',
+    {
+      params: {
+        voucherCode: voucherCodeQuery,
+      },
+      useEffectDependencies: [voucherCodeQuery],
+    },
+  );
+
+  console.log({ PricingData });
+
   const topping = PricingData?.topping || [];
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', { content_name: 'Pricing Page' });
-    pixel.tiktok.track('ViewContent', { content_name: 'Pricing Page' });
-  }, []);
+    // ✅ ENRICHED VIEWCONTENT EVENT DATA
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Pricing Page',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Pricing Page',
+      page_path: '/price',
+      content_id: 'pricing_page_main', // ✅ Required untuk TikTok VSA
+    });
+  }, [session]);
 
   return (
     <div className="space-y-20">
@@ -151,12 +187,15 @@ export default function PricingPlans() {
 
               <TabsContent value="subscription">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                  {ws.subscriptions.map((plan, i) => (
-                    <CardPlan
-                      key={i}
-                      plan={plan}
-                    />
-                  ))}
+                  {ws.subscriptions.map((plan, i) => {
+                    return (
+                      <CardPlan
+                        key={i}
+                        plan={plan}
+                        discount={plan.discount}
+                      />
+                    );
+                  })}
                 </div>
               </TabsContent>
 
@@ -166,6 +205,7 @@ export default function PricingPlans() {
                     <CardPlan
                       key={i}
                       plan={bundle}
+                      discount={bundle.discount}
                     />
                   ))}
                 </div>
@@ -176,14 +216,6 @@ export default function PricingPlans() {
       </Tabs>
       {/* Modern Coin Topping Section */}
       <div className="relative">
-        {/* Background decoration */}
-        <div
-          className="absolute inset-0 opacity-5 rounded-3xl"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-          }}
-        />
-
         <div className="relative z-10 text-center mb-12">
           <div
             className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium mb-6"
