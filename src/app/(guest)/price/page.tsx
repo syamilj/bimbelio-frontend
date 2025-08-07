@@ -5,9 +5,9 @@ import PricingPlans from './_components/pricing-plans';
 import PricingFeatures from './_components/pricing-features';
 
 export const metadata: Metadata = {
-  title: 'Pricing - Bimbelio',
+  title: 'Paket',
   description:
-    'Choose the perfect plan for your learning journey with Bimbelio',
+    'Pilih paket yang sesuai dengan kebutuhan kamu hari ini baik itu UTBK/SNBT, Ujian Mandiri, Kedinasan, atau lainnya.',
 };
 
 export default function PricingPage() {
