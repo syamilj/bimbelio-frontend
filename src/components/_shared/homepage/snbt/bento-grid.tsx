@@ -17,6 +17,7 @@ import {
   Target,
   Video,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface Feature {
@@ -34,8 +35,14 @@ interface Feature {
 
 const BentoGrid: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const router = useRouter();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
+
+  // Navigation handler untuk button CTA
+  const handlePricingNavigation = () => {
+    router.push('/price');
+  };
 
   const features: Feature[] = [
     {
@@ -360,6 +367,7 @@ const BentoGrid: React.FC = () => {
 
             <Button
               size="lg"
+              onClick={handlePricingNavigation}
               className="font-bold rounded-2xl px-8 py-3 hover:scale-105 transition-transform duration-300"
               style={{ backgroundColor: mainColor, color: 'white' }}
             >

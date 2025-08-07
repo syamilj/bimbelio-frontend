@@ -1,16 +1,9 @@
 'use client';
 
+import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { CONTACT_CONFIG } from '@/config/contact';
 import { pixel } from '@/lib/pixel/_core';
-import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -18,7 +11,6 @@ import {
   ChevronDown,
   Clock,
   MessageCircle,
-  Phone,
   Target,
   Users,
 } from 'lucide-react';
@@ -175,37 +167,6 @@ export default function FaqHomepage() {
     setIsConsultationDialogOpen(true);
   };
 
-  const consultationOptions = [
-    {
-      id: 'whatsapp',
-      title: 'Chat WhatsApp',
-      description: 'Respons cepat dalam 5 menit',
-      icon: <MessageCircle className="w-5 h-5" />,
-      action: () => {
-        trackContactEvent('WhatsApp');
-        const message = encodeURIComponent(CONTACT_CONFIG.whatsapp.message);
-        window.open(
-          `https://wa.me/${CONTACT_CONFIG.whatsapp.number}?text=${message}`,
-          '_blank',
-        );
-        setIsConsultationDialogOpen(false);
-      },
-      color: '#25D366',
-    },
-    {
-      id: 'phone',
-      title: 'Telepon Langsung',
-      description: 'Bicara dengan ahli sekarang',
-      icon: <Phone className="w-5 h-5" />,
-      action: () => {
-        trackContactEvent('Phone');
-        window.open(`tel:${CONTACT_CONFIG.phone.number}`, '_self');
-        setIsConsultationDialogOpen(false);
-      },
-      color: '#0091FF',
-    },
-  ];
-
   return (
     <>
       <section className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
@@ -321,7 +282,7 @@ export default function FaqHomepage() {
             ))}
           </motion.div>
 
-          {/* Bottom CTA - Redesigned */}
+          {/* Bottom CTA - Simplified */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -329,101 +290,69 @@ export default function FaqHomepage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-center mt-16"
           >
-            <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-3xl p-8 shadow-xl max-w-4xl mx-auto border border-blue-100">
+            <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl p-8 shadow-xl max-w-3xl mx-auto text-white">
               {/* Header Section */}
-              <div className="mb-8">
+              <div className="mb-6">
                 <motion.div
                   initial={{ scale: 0.9 }}
                   whileInView={{ scale: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-4"
+                  className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-4"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Konsultasi Gratis
                 </motion.div>
 
-                <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                  Masih Ada{' '}
-                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    Pertanyaan?
-                  </span>
+                <h3 className="text-3xl md:text-4xl font-black mb-4">
+                  Masih Ada Pertanyaan?
                 </h3>
 
-                <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-                  Chat langsung sama team expert kita! Tim kami siap bantu kamu
-                  dengan konsultasi personal{' '}
-                  <span className="font-semibold text-blue-600">
-                    100% gratis
-                  </span>
+                <p className="text-lg text-blue-50 leading-relaxed max-w-2xl mx-auto">
+                  Chat langsung sama team expert kita! Dapatkan konsultasi
+                  personal{' '}
+                  <span className="font-bold text-white">100% gratis</span>{' '}
                   untuk memulai journey PTN impianmu.
                 </p>
               </div>
 
-              {/* CTA Actions */}
-              <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
-                {/* Primary CTA - WhatsApp */}
-                <motion.button
+              {/* Single CTA Button */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="mb-6"
+              >
+                <Button
                   onClick={handleConsultationClick}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  size="lg"
+                  className="bg-white text-blue-600 hover:bg-blue-50 font-bold text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
                 >
-                  <MessageCircle className="w-6 h-6" />
-                  <span>Chat WhatsApp Sekarang</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
+                  <MessageCircle className="w-6 h-6 mr-3" />
+                  Mulai Konsultasi Gratis
+                  <ArrowRight className="w-5 h-5 ml-3" />
+                </Button>
+              </motion.div>
 
-                {/* Secondary CTA - Telepon */}
-                <motion.button
-                  onClick={handleConsultationClick}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group flex items-center gap-3 px-8 py-4 bg-white border-2 border-blue-200 text-blue-600 rounded-2xl font-bold text-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-300"
-                >
-                  <Phone className="w-6 h-6" />
-                  <span>Telepon Langsung</span>
-                </motion.button>
-              </div>
-
-              {/* Quick Stats */}
-              <div className="flex flex-wrap justify-center gap-8 text-center">
+              {/* Quick Stats - Compact */}
+              <div className="flex justify-center gap-6 text-center">
                 <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-xl font-bold text-white">
                     {CONTACT_CONFIG.stats.responseTime}
                   </div>
-                  <div className="text-sm text-gray-600">Waktu Respons</div>
+                  <div className="text-xs text-blue-200">Respons</div>
                 </div>
+                <div className="w-px bg-white/30" />
                 <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-xl font-bold text-white">
                     {CONTACT_CONFIG.stats.studentsServed}
                   </div>
-                  <div className="text-sm text-gray-600">Siswa Terlayani</div>
+                  <div className="text-xs text-blue-200">Siswa</div>
                 </div>
+                <div className="w-px bg-white/30" />
                 <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-xl font-bold text-white">
                     {CONTACT_CONFIG.stats.satisfactionRate}
                   </div>
-                  <div className="text-sm text-gray-600">Tingkat Kepuasan</div>
-                </div>
-              </div>
-
-              {/* Additional Info */}
-              <div className="mt-6 p-4 bg-blue-50 rounded-2xl">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold mt-0.5">
-                    💡
-                  </div>
-                  <div className="flex-1 text-left">
-                    <span className="font-semibold text-gray-900 text-base">
-                      Blueprint Personal Strategy Session
-                    </span>
-                    <p className="text-sm text-gray-600 mt-1 leading-relaxed">
-                      Dapatkan strategi belajar personal yang disesuaikan dengan
-                      kondisi dan target PTN impianmu. Konsultasi langsung
-                      dengan tim expert yang sudah membantu ribuan siswa
-                      berhasil masuk PTN favorit!
-                    </p>
-                  </div>
+                  <div className="text-xs text-blue-200">Rating</div>
                 </div>
               </div>
             </div>
@@ -431,113 +360,16 @@ export default function FaqHomepage() {
         </div>
       </section>
 
-      {/* Consultation Dialog */}
-      <Dialog
-        open={isConsultationDialogOpen}
+      {/* Consultation Dialog - Gunakan komponen yang sudah ada */}
+      <ConsultationDialog
+        isOpen={isConsultationDialogOpen}
         onOpenChange={setIsConsultationDialogOpen}
-      >
-        <DialogContent className="sm:max-w-lg mx-4 max-h-[90vh] overflow-hidden flex flex-col items-center justify-center">
-          <DialogHeader className="pb-4 w-full">
-            <DialogTitle className="text-center text-xl font-bold text-gray-900">
-              Wujudkan Impian PTN-mu!
-            </DialogTitle>
-            <DialogDescription className="text-center text-gray-600 text-sm mt-2">
-              Pilih langkah pertama untuk memulai journey menuju PTN idaman
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-6 w-full">
-            {/* Konsultasi Langsung - 2 Columns Grid */}
-            <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-3 text-center">
-                💬 Konsultasi Langsung
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {consultationOptions.map((option) => (
-                  <div
-                    key={`consultation-${option.id}`}
-                    className="w-full"
-                  >
-                    <Button
-                      onClick={option.action}
-                      className={cn(
-                        'w-full h-auto p-3 rounded-xl text-center',
-                        'flex flex-col items-center gap-2 bg-white border-2',
-                        'hover:shadow-lg transition-all duration-300',
-                        'hover:border-opacity-60 hover:bg-opacity-5 hover:scale-105',
-                      )}
-                      style={{
-                        borderColor: `${option.color}30`,
-                      }}
-                      variant="outline"
-                    >
-                      {/* Icon */}
-                      <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md"
-                        style={{ backgroundColor: option.color }}
-                      >
-                        {option.icon}
-                      </div>
-
-                      {/* Content */}
-                      <div className="text-center">
-                        <h3 className="font-semibold text-gray-900 text-sm mb-1">
-                          {option.title}
-                        </h3>
-                        <p className="text-xs text-gray-600 leading-tight px-1">
-                          {option.description}
-                        </p>
-                      </div>
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Quick Stats - Compact Layout */}
-            <div className="flex justify-center gap-4 text-center py-2">
-              <div>
-                <div className="font-bold text-base leading-tight text-blue-600">
-                  {CONTACT_CONFIG.stats.responseTime}
-                </div>
-                <div className="text-xs text-gray-600">Response</div>
-              </div>
-              <div className="w-px bg-gray-200" />
-              <div>
-                <div className="font-bold text-base leading-tight text-blue-600">
-                  {CONTACT_CONFIG.stats.studentsServed}
-                </div>
-                <div className="text-xs text-gray-600">Siswa</div>
-              </div>
-              <div className="w-px bg-gray-200" />
-              <div>
-                <div className="font-bold text-base leading-tight text-blue-600">
-                  {CONTACT_CONFIG.stats.satisfactionRate}
-                </div>
-                <div className="text-xs text-gray-600">Rating</div>
-              </div>
-            </div>
-
-            {/* Additional Info */}
-            <div className="p-3 bg-gray-50 rounded-xl">
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold mt-0.5">
-                  💡
-                </div>
-                <div className="flex-1">
-                  <span className="font-semibold text-gray-900 text-sm">
-                    Blueprint Personal 100% Gratis
-                  </span>
-                  <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                    Tim kami akan membantu kamu bikin strategi belajar yang
-                    tepat untuk mencapai target PTN idamanmu
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+        title="Konsultasi Gratis dengan Expert!"
+        description="Pilih cara terbaik untuk mulai konsultasi dengan tim kami"
+        onContactSelect={(contactType) => {
+          console.log(`FAQ Contact selected: ${contactType}`);
+        }}
+      />
     </>
   );
 }
