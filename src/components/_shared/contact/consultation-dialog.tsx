@@ -29,6 +29,7 @@ interface ConsultationDialogProps {
   title?: string;
   description?: string;
   showStats?: boolean;
+  showTelegramOption?: boolean;
   onContactSelect?: (contactType: string) => void;
 }
 
@@ -131,6 +132,7 @@ const ConsultationDialog = ({
   title = 'Wujudkan Impian PTN-mu!',
   description = 'Pilih langkah pertama untuk memulai journey menuju PTN idaman',
   showStats = true,
+  showTelegramOption = true,
   onContactSelect,
 }: ConsultationDialogProps) => {
   const { consultationOptions, telegramOption, mainColor } = useContactOptions(
@@ -236,58 +238,62 @@ const ConsultationDialog = ({
             </div>
           )}
 
-          {/* Divider - selalu tampil karena telegram selalu ada */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200" />
+          {/* Divider - hanya tampil jika telegram option enabled */}
+          {showTelegramOption && (
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200" />
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-white px-3 text-gray-500">atau</span>
+              </div>
             </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-3 text-gray-500">atau</span>
-            </div>
-          </div>
+          )}
 
-          {/* Grup Telegram - Alternatif - SELALU TAMPIL */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-3 text-center">
-              Mulai dari Komunitas
-            </h3>
-            <Button
-              onClick={telegramOption.action}
-              className={cn(
-                'w-full h-auto p-4 rounded-xl text-left',
-                'flex items-center gap-4 bg-white border-2',
-                'hover:shadow-lg transition-all duration-300 hover:scale-105',
-                'border-blue-200 bg-blue-50/30 hover:bg-blue-50/50',
-              )}
-              style={{
-                borderColor: `${telegramOption.color}30`,
-              }}
-              variant="outline"
-            >
-              {/* Icon */}
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md"
-                style={{ backgroundColor: telegramOption.color }}
+          {/* Grup Telegram - Alternatif - conditional rendering */}
+          {showTelegramOption && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900 mb-3 text-center">
+                Mulai dari Komunitas
+              </h3>
+              <Button
+                onClick={telegramOption.action}
+                className={cn(
+                  'w-full h-auto p-4 rounded-xl text-left',
+                  'flex items-center gap-4 bg-white border-2',
+                  'hover:shadow-lg transition-all duration-300 hover:scale-105',
+                  'border-blue-200 bg-blue-50/30 hover:bg-blue-50/50',
+                )}
+                style={{
+                  borderColor: `${telegramOption.color}30`,
+                }}
+                variant="outline"
               >
-                {telegramOption.icon}
-              </div>
-
-              {/* Content */}
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-gray-900 text-sm">
-                    {telegramOption.title}
-                  </h3>
-                  <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">
-                    Gratis
-                  </span>
+                {/* Icon */}
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md"
+                  style={{ backgroundColor: telegramOption.color }}
+                >
+                  {telegramOption.icon}
                 </div>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  {telegramOption.description}
-                </p>
-              </div>
-            </Button>
-          </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-gray-900 text-sm">
+                      {telegramOption.title}
+                    </h3>
+                    <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                      Gratis
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    {telegramOption.description}
+                  </p>
+                </div>
+              </Button>
+            </div>
+          )}
 
           {/* Additional Info - Blueprint Personal */}
           <div className="p-3 bg-gray-50 rounded-xl">
