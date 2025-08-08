@@ -4,7 +4,6 @@ import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { BookOpen, Eye, FileText, MessageSquare, PenTool } from 'lucide-react';
-import { useEffect } from 'react'; // ✅ Import useEffect
 import { PlanDataType } from '../card-plan/_provider/types';
 import { DialogPayment } from './_components/dialog-payment';
 
@@ -20,29 +19,6 @@ export const CardPlanTopping = ({
   onClose?: () => void;
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // ✅ LEAD TRACKING - Track saat user melihat card coin
-  useEffect(() => {
-    try {
-      pixel.meta.track('Lead', {
-        content_name: `Coin Plan View - ${plan.name}`,
-        content_type: 'product',
-        value: plan.price,
-        currency: 'IDR',
-        contents: [{ id: plan.id, quantity: 1 }],
-      });
-
-      pixel.tiktok.track('Lead', {
-        content_name: `Coin Plan View - ${plan.name}`,
-        content_type: 'product',
-        value: plan.price,
-        currency: 'IDR',
-        content_id: `coin_plan_view_${plan.id}`, // ✅ Required untuk TikTok VSA
-      });
-    } catch (pixelError) {
-      console.warn('Pixel tracking error on coin plan view:', pixelError);
-    }
-  }, [plan.id]); // Track sekali per plan
   return (
     <motion.div
       key={plan.name}
