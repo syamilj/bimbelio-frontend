@@ -67,6 +67,7 @@ const SessionOption = ({
           { answer: '', value: 4 },
           { answer: '', value: 5 },
         ],
+        courseChapterIds: [],
       };
     } else if (assessmentType === '+5/0') {
       newQuestion = {
@@ -81,6 +82,7 @@ const SessionOption = ({
           { answer: '', value: 0 },
           { answer: '', value: 5 },
         ],
+        courseChapterIds: [],
       };
     } else if (assessmentType === 'IRT') {
       newQuestion = {
@@ -95,6 +97,7 @@ const SessionOption = ({
           { answer: '', value: 0 },
           { answer: '', value: 5 },
         ],
+        courseChapterIds: [],
       };
     } else if (assessmentType === '+4/-1/0') {
       newQuestion = {
@@ -109,6 +112,7 @@ const SessionOption = ({
           { answer: '', value: -1 },
           { answer: '', value: 4 },
         ],
+        courseChapterIds: [],
       };
     }
     setSessions((prev) =>

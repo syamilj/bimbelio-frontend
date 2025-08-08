@@ -46,6 +46,7 @@ type FormDataType = {
   liveClass: boolean;
   liveClassesPerWeek: string;
   duration: string;
+  durationLimit: string;
   status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
 };
 
@@ -72,6 +73,10 @@ export default function Provider({ children }: Props) {
     'days',
   );
 
+  const [expireTypeLimit, setExpireTypeLimit] = useState<
+    'days' | 'month' | 'year'
+  >('days');
+
   const [benefitRows, setBenefitRows] = useState<BenefitRowType>([]);
 
   const formData = useForm<FormDataType>({
@@ -87,6 +92,7 @@ export default function Provider({ children }: Props) {
       liveClass: false,
       liveClassesPerWeek: '',
       duration: '',
+      durationLimit: '',
       status: '',
       previewImage: '',
     },
@@ -102,6 +108,7 @@ export default function Provider({ children }: Props) {
   const liveClass = formData.watch('liveClass');
   const liveClassesPerWeek = formData.watch('liveClassesPerWeek');
   const duration = formData.watch('duration');
+  const durationLimit = formData.watch('durationLimit');
   const status = formData.watch('status');
   const image = formData.watch('image');
   const previewImage = formData.watch('previewImage');
@@ -117,6 +124,7 @@ export default function Provider({ children }: Props) {
     liveClass,
     liveClassesPerWeek,
     duration,
+    durationLimit,
     image,
     status,
     previewImage,
@@ -134,6 +142,8 @@ export default function Provider({ children }: Props) {
     useLimitation: {
       limitRows,
       setLimitRows,
+      expireTypeLimit,
+      setExpireTypeLimit,
     },
     useFeature: {
       categoryIds,
@@ -184,6 +194,8 @@ type ProviderType = {
   useLimitation: {
     limitRows: LimitRowType;
     setLimitRows: Dispatch<SetStateAction<LimitRowType>>;
+    expireTypeLimit: 'days' | 'month' | 'year';
+    setExpireTypeLimit: Dispatch<SetStateAction<'days' | 'month' | 'year'>>;
   };
   useFeature: {
     categoryIds: string[];
@@ -222,6 +234,7 @@ type ProviderType = {
       liveClass: boolean;
       liveClassesPerWeek: string;
       duration: string;
+      durationLimit: string;
       image: File | undefined;
       status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
       previewImage: string;

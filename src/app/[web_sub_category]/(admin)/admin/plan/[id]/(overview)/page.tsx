@@ -71,7 +71,7 @@ export default function UpdatePlanForm() {
       setCategoryIds,
       setLiveClassIds,
     },
-    useLimitation: { limitRows, setLimitRows },
+    useLimitation: { limitRows, setLimitRows, expireTypeLimit },
     useForm: {
       formData: { register, setValue },
       formDataValues: {
@@ -88,6 +88,7 @@ export default function UpdatePlanForm() {
         image,
         status,
         previewImage,
+        durationLimit,
       },
     },
   } = useProvider();
@@ -146,6 +147,10 @@ export default function UpdatePlanForm() {
               { id: 4, type: 'quiz', limit: limit.quiz.toString() },
               { id: 5, type: 'tryout', limit: limit.tryout.toString() },
             ]);
+            setValue(
+              'durationLimit',
+              planData.PlanLimitation.expireDays.toString(),
+            );
           }
           if (planData.PlanBenefit) {
             setBenefitRows(
@@ -214,6 +219,14 @@ export default function UpdatePlanForm() {
               quiz: limitRowsData?.quiz || 0,
               tryout: limitRowsData?.tryout || 0,
               vision: limitRowsData?.vision || 0,
+              expireDays:
+                expireTypeLimit === 'days'
+                  ? parseInt(durationLimit)
+                  : expireTypeLimit === 'month'
+                    ? parseInt(durationLimit) * 30
+                    : expireTypeLimit === 'year'
+                      ? parseInt(durationLimit) * 365
+                      : 0,
             }
           : undefined,
         planSubscription: activeTab.feature
@@ -457,7 +470,15 @@ const SectionLimit = () => {
   const {
     activeTab,
     setActiveTab,
-    useLimitation: { limitRows, setLimitRows },
+    useLimitation: {
+      limitRows,
+      setLimitRows,
+      expireTypeLimit,
+      setExpireTypeLimit,
+    },
+    useForm: {
+      formData: { register },
+    },
   } = useProvider();
 
   const addLimitRow = () => {
@@ -684,6 +705,59 @@ const SectionLimit = () => {
               </div>
             );
           })}
+          <div className="ml-6 col-span-1 md:col-span-2">
+            <Label
+              htmlFor="durationLimit"
+              className="block mb-2"
+            >
+              Duration <span className="text-red-500">*</span>
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                id="durationLimit"
+                {...register('durationLimit')}
+                type="number"
+                placeholder="0"
+                className="flex-1"
+                required
+              />
+              <div className="flex">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    'rounded-r-none ',
+                    expireTypeLimit === 'days' && 'bg-main text-white',
+                  )}
+                  onClick={() => setExpireTypeLimit('days')}
+                >
+                  days
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    'rounded-none border-l-0 border-r-0',
+                    expireTypeLimit === 'month' && 'bg-main text-white',
+                  )}
+                  onClick={() => setExpireTypeLimit('month')}
+                >
+                  month
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    'rounded-l-none',
+                    expireTypeLimit === 'year' && 'bg-main text-white',
+                  )}
+                  onClick={() => setExpireTypeLimit('year')}
+                >
+                  year
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

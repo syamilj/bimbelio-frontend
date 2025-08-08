@@ -6,19 +6,7 @@ import { useEffect, type ReactNode } from 'react';
 
 export default function ProviderPixel({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  let session = null;
-
-  // ✅ Defensive error handling untuk session
-  try {
-    const sessionHook = useSession();
-    session = sessionHook?.data;
-  } catch (error) {
-    console.warn('Session provider not available:', error);
-    session = null;
-  }
-
-  // ❌ DUPLIKASI FIX: Script pixel sudah diinisialisasi di layout.tsx dengan beforeInteractive
-  // Tidak perlu init atau track PageView lagi di sini
+  const { data: session } = useSession();
 
   useEffect(() => {
     // ✅ HANYA track route changes untuk SPA navigation (bukan initial page load)

@@ -107,6 +107,7 @@ const HeadingSessionTryout = () => {
                     value,
                   };
                 }),
+                courseChapterIds: [],
               };
             }),
           ],

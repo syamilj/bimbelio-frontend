@@ -9,7 +9,15 @@ import LoadingPageWithText from '@/components/ui/spinner';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { cn, getDateHourStr } from '@/lib/utils';
-import { TryoutSubCategory } from '@/types/database';
+import {
+  CourseChapter,
+  Pivot_TryoutQuestion_CourseChapter,
+  Tryout,
+  TryoutAnswer,
+  TryoutQuestion,
+  TryoutSession,
+  TryoutSubCategory,
+} from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Loader2 } from 'lucide-react';
 import LZString from 'lz-string';
@@ -26,8 +34,8 @@ export interface TryoutProps {
   endDate?: string;
   image?: string | null;
   resultDate?: string;
-  instagram?: string;
-  tiktok?: string;
+  instagram?: string | null;
+  tiktok?: string | null;
   updateAt?: string;
 }
 
@@ -46,6 +54,8 @@ export interface QuestionProps {
   explanation?: string;
   subCategory?: string;
   subSubCategory?: string;
+  categoryId?: string;
+  courseChapterIds: string[];
   Answers: AnswerProps[];
 }
 
@@ -76,6 +86,19 @@ export interface Category {
   slug: string;
   TryoutSubCategory: TryoutSubCategory[];
 }
+
+type TryoutDataType = Tryout & {
+  TryoutSession: (TryoutSession & {
+    TryoutQuestion: (TryoutQuestion & {
+      TryoutAnswers: TryoutAnswer[];
+      Pivot_TryoutQuestion_CourseChapter: (Pivot_TryoutQuestion_CourseChapter & {
+        CourseChapter: CourseChapter & {
+          Category: Category;
+        };
+      })[];
+    })[];
+  })[];
+};
 
 const NewTryOut = () => {
   const params = useParams();
@@ -159,9 +182,9 @@ const NewTryOut = () => {
     }
   };
 
-  const getTryoutFromDbs = (tryoutData: any) => {
+  const getTryoutFromDbs = (tryoutData: TryoutDataType) => {
     if (!tryoutData) return;
-    const sessionData = tryoutData.TryoutSession.map((session: any) => {
+    const sessionData = tryoutData.TryoutSession.map((session) => {
       const getCategory = category.find(
         (item) => item.id === session.categoryId,
       );
@@ -183,7 +206,7 @@ const NewTryOut = () => {
         duration: session.duration,
         thresholdValue: session.thresholdValue ?? undefined,
         assessmentType: session.assessmentType,
-        Questions: session.TryoutQuestion.map((question: any) => {
+        Questions: session.TryoutQuestion.map((question) => {
           return {
             id: question.id,
             number: question.number,
@@ -192,7 +215,15 @@ const NewTryOut = () => {
             explanation: question.explanation ?? undefined,
             subCategory: question.subCategory ?? undefined,
             subSubCategory: question.subSubCategory ?? undefined,
-            Answers: question.TryoutAnswers.map((item: any) => {
+            categoryId:
+              question.Pivot_TryoutQuestion_CourseChapter.length > 0
+                ? question.Pivot_TryoutQuestion_CourseChapter[0].CourseChapter
+                    .categoryId
+                : undefined,
+            courseChapterIds: question.Pivot_TryoutQuestion_CourseChapter.map(
+              (item) => item.courseChapterId,
+            ),
+            Answers: question.TryoutAnswers.map((item) => {
               return {
                 id: item.id,
                 answer: item.answer,
@@ -466,6 +497,7 @@ const NewTryOut = () => {
               explanation: question.explanation,
               subCategory: question.subCategory,
               subSubCategory: question.subSubCategory,
+              courseChapterIds: question.courseChapterIds,
               TryoutAnswers: question.Answers.map((answer) => {
                 return {
                   id: answer.id || 'new',
@@ -741,9 +773,7 @@ const NewTryOut = () => {
           <div
             className={cn(
               'relative col-span-3 mt-4 h-[90vh] w-[60%] duration-300',
-              currentIndexEdit !== null &&
-                !showDetailTryout &&
-                '-ml-4 w-full',
+              currentIndexEdit !== null && !showDetailTryout && '-ml-4 w-full',
               currentIndexEdit === null && 'w-0',
             )}
           >

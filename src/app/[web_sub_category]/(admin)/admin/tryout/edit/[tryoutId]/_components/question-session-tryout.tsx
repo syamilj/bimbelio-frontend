@@ -11,12 +11,24 @@ import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
-import { CircleCheck, CircleX } from 'lucide-react';
-import React, { useCallback, useState } from 'react';
+import {
+  BookOpen,
+  CircleCheck,
+  CircleX,
+  Loader2,
+  Minus,
+  Plus,
+} from 'lucide-react';
+import React, { SetStateAction, useCallback, useState } from 'react';
 // import ReactMarkdown from 'react-markdown';
 import { useEditTryoutContext } from '@/app/[web_sub_category]/(admin)/admin/tryout/_component/provider-edit-tryout';
 import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { BlockNoteImageHtml } from '@/components/ui/blocknote-editor/latex';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { Category, CourseChapter, CourseSubChapter } from '@/types/database';
+import { SessionProps } from '../page';
 
 const QuestionSessionTryout = () => {
   const {
@@ -778,12 +790,202 @@ const QuestionSessionTryout = () => {
             }}
           />
         </div>
+        <SelectedCourseChapter
+          setSessions={setSessions}
+          currentIndexEdit={currentIndexEdit}
+          questionIndex={questionIndex}
+          EditSession={EditSession}
+        />
       </div>
     </div>
   );
 };
 
 export default QuestionSessionTryout;
+
+const SelectedCourseChapter = ({
+  setSessions,
+  currentIndexEdit,
+  questionIndex,
+  EditSession,
+}: {
+  setSessions: React.Dispatch<SetStateAction<SessionProps[]>>;
+  currentIndexEdit: number | null;
+  questionIndex: number;
+  EditSession: SessionProps;
+}) => {
+  const currentQuestion = EditSession.Questions[questionIndex];
+
+  const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
+
+  const selectedCategory = Categories?.find(
+    (item) => item.id === currentQuestion.categoryId,
+  );
+
+  const { data: CourseOptions, isLoading } = useGet<
+    (CourseChapter & {
+      Category: Category;
+      CourseSubChapter: CourseSubChapter[];
+    })[]
+  >('/course/getCourseUserByCategoryId', {
+    params: {
+      categoryId: currentQuestion.categoryId,
+    },
+    useEffectDependencies: [currentQuestion.categoryId],
+  });
+
+  return (
+    <div className="bg-white rounded-[.8rem] p-4 flex flex-col gap-4">
+      <div className="space-y-2">
+        <Label htmlFor="categoryId">Category Course</Label>
+        <Select
+          name="categoryId"
+          value={currentQuestion.categoryId || 'placeholder'}
+          onValueChange={(value) => {
+            setSessions((prev) =>
+              prev.map((session, sessionIndex) => {
+                if (sessionIndex === currentIndexEdit && session.Questions) {
+                  return {
+                    ...session,
+                    Questions: session.Questions.map((quest, qIndex) => {
+                      if (qIndex === questionIndex) {
+                        return {
+                          ...quest,
+                          categoryId: value,
+                        };
+                      }
+                      return quest;
+                    }),
+                  };
+                }
+                return session;
+              }),
+            );
+          }}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Pilih category course" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="placeholder">Pilih category course</SelectItem>
+            {Categories?.map((subject) => (
+              <SelectItem
+                key={subject.id}
+                value={subject.id}
+              >
+                {subject.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="space-y-4">
+        <div className="space-y-3">
+          <Label>Course yang Tersedia untuk {selectedCategory?.name}</Label>
+          {isLoading ? (
+            <div className="flex w-full justify-center items-center h-[150px]">
+              <Loader2 className="w-6 h-6 animate-spin" />
+            </div>
+          ) : CourseOptions?.length === 0 || !selectedCategory?.id ? (
+            <div className="text-center py-8 text-gray-500">
+              <BookOpen className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+              <p>
+                Belum ada course tersedia untuk mata pelajaran{' '}
+                {selectedCategory?.name}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4 pt-1">
+              {CourseOptions?.map((chapter) => {
+                const isSelected = currentQuestion.courseChapterIds.includes(
+                  chapter.id,
+                );
+
+                return (
+                  <div
+                    key={chapter.id}
+                    className={cn(
+                      'flex items-center justify-between p-3 border rounded-lg bg-gray-50',
+                      isSelected && 'border-main bg-main/10',
+                    )}
+                  >
+                    <h4 className="font-medium text-gray-900 mb-3">
+                      {chapter.title}
+                    </h4>
+                    <div className="flex gap-2 ml-3">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant={'outline'}
+                        onClick={() => {
+                          setSessions((prev) =>
+                            prev.map((session, sessionIndex) => {
+                              if (
+                                sessionIndex === currentIndexEdit &&
+                                session.Questions
+                              ) {
+                                return {
+                                  ...session,
+                                  Questions: session.Questions.map(
+                                    (quest, qIndex) => {
+                                      if (
+                                        qIndex === questionIndex &&
+                                        quest.courseChapterIds.includes(
+                                          chapter.id,
+                                        )
+                                      ) {
+                                        return {
+                                          ...quest,
+                                          courseChapterIds:
+                                            quest.courseChapterIds.filter(
+                                              (item) => item !== chapter.id,
+                                            ),
+                                        };
+                                      } else if (
+                                        qIndex === questionIndex &&
+                                        !quest.courseChapterIds.includes(
+                                          chapter.id,
+                                        )
+                                      ) {
+                                        return {
+                                          ...quest,
+                                          courseChapterIds: [
+                                            ...quest.courseChapterIds,
+                                            chapter.id,
+                                          ],
+                                        };
+                                      }
+                                      return quest;
+                                    },
+                                  ),
+                                };
+                              }
+                              return session;
+                            }),
+                          );
+                        }}
+                        className={cn(
+                          'text-xs bg-main text-white cursor-pointer hover:bg-main/90 hover:text-white px-2',
+                          isSelected && 'bg-red-500 hover:bg-red-400',
+                        )}
+                      >
+                        {isSelected ? (
+                          <Minus className="h-4 w-4" />
+                        ) : (
+                          <Plus className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const UploadImageQuestion = () => {
   const { EditSession, questionIndex, setSessions, currentIndexEdit } =

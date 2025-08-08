@@ -366,6 +366,7 @@ const ModalImportCSV = ({
               question: quest.Question,
               subCategory: quest.Subcategory,
               Answers: transformedAnswers,
+              courseChapterIds: [],
             };
           });
 
@@ -526,6 +527,7 @@ const handleGenerateIRT = (data: any[]) => {
       subCategory: quest.SubCategory,
       subSubCategory: quest.SubSubCategory,
       explanation: quest.Explanation,
+      courseChapterIds: [],
     };
   });
   return fixData;
@@ -562,6 +564,7 @@ const handleGenerateQuestion = (
       subCategory: quest.SubCategory,
       subSubCategory: quest.SubSubCategory,
       explanation: quest.Explanation,
+      courseChapterIds: [],
     };
   });
   return fixData;
