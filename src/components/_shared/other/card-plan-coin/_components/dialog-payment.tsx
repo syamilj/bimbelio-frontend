@@ -1,5 +1,7 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,12 +17,28 @@ import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { pixel } from '@/lib/pixel/_core';
+import { cn } from '@/lib/utils';
 import {
   getPriceByDiscountFixedAmount,
   getPriceByDiscountPercentage,
 } from '@/lib/utils/currency';
 import { Voucher } from '@/types/database';
-import { ArrowRight, Loader2, Phone, Shield, Tag } from 'lucide-react';
+import {
+  ArrowRight,
+  CheckCircle2,
+  Clock,
+  CreditCard,
+  Gift,
+  Loader2,
+  Phone,
+  Shield,
+  ShoppingBag,
+  Star,
+  Tag,
+  Truck,
+  Users,
+  Zap,
+} from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import { CardPlanTopping } from '..';
@@ -42,6 +60,11 @@ export function DialogPayment({
   const { setPagesSetting, setTransactionHistory, setTransactionPopUp } =
     useAppContext();
   const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors from the selected category
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,6 +74,55 @@ export function DialogPayment({
 
   const [telp, setTelp] = useState('');
   const [voucherCode, setVoucherCode] = useState('');
+
+  // Format phone number function
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-digits
+    const digits = value.replace(/\D/g, '');
+
+    // Auto-add +62 if starts with 0
+    if (digits.startsWith('0')) {
+      return '+62' + digits.slice(1);
+    }
+
+    // Auto-add +62 if starts with 8
+    if (digits.startsWith('8')) {
+      return '+62' + digits;
+    }
+
+    // If already starts with 62, add +
+    if (digits.startsWith('62')) {
+      return '+' + digits;
+    }
+
+    // If starts with +62, keep as is
+    if (value.startsWith('+62')) {
+      return '+62' + digits.slice(2);
+    }
+
+    return value;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setTelp(formatted);
+  };
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
+  const getDiscountPercentage = () => {
+    if (!plan.originalPrice || plan.originalPrice <= plan.price) return 0;
+    return Math.round(
+      ((plan.originalPrice - plan.price) / plan.originalPrice) * 100,
+    );
+  };
 
   const [discountPrice, setDiscountPrice] = useState<number | null>(null);
   const { mutate: checkVoucherCode, isLoading } = useMutation<Voucher>(
@@ -197,7 +269,7 @@ export function DialogPayment({
             //   checkVoucherCodeQuery();
           }
           if (session?.user.phone) {
-            setTelp(session.user.phone);
+            setTelp(formatPhoneNumber(session.user.phone));
           }
           if (!session) {
             // setShowAuth({
@@ -222,143 +294,384 @@ export function DialogPayment({
         classOverlay={classOverlay}
         className="sm:max-w-6xl w-[95vw] max-h-[90vh] p-0"
       >
-        <div className="bg-linear-to-br from-blue-50 via-white to-indigo-50 p-8">
-          <DialogHeader className="text-center mb-8">
-            <DialogTitle className="text-3xl font-bold text-main-default">
-              Konfirmasi Pembayaran
-            </DialogTitle>
-            <DialogDescription className="text-lg text-gray-600 mt-2">
-              Harap isi nomor teleponmu untuk melanjutkan ke laman pembayaran
-            </DialogDescription>
-          </DialogHeader>
-
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col-reverse lg:grid grid-cols-2 gap-8 max-w-5xl mx-auto"
-          >
-            <div className="flex justify-center lg:justify-start lg:border-r lg:max-h-[70vh] w-full lg:w-auto">
-              <div className="w-full lg:overflow-y-auto px-8 border-0 py-4 flex justify-center items-start">
-                <CardPlanTopping
-                  plan={plan}
-                  discount={discountPrice || undefined}
-                  viewOnly
+        {/* Compact Header */}
+        <div
+          className="relative p-4 border-b"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}04)`,
+          }}
+        >
+          <DialogHeader className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <div
+                className="p-1.5 rounded-lg"
+                style={{ backgroundColor: `${mainColor}15` }}
+              >
+                <ShoppingBag
+                  size={18}
+                  style={{ color: mainColor }}
                 />
               </div>
+              <DialogTitle className="text-xl font-bold text-gray-800">
+                Checkout Premium
+              </DialogTitle>
             </div>
+            <DialogDescription className="text-sm text-gray-600">
+              Selesaikan pembelian untuk akses instant ke konten premium
+            </DialogDescription>
 
-            {/* Form Section */}
-            <div className="space-y-6">
-              <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-gray-200/50">
-                <div className="flex items-center mb-6">
-                  <Shield className="h-6 w-6 text-green-500 mr-3" />
-                  <span className="text-lg font-semibold text-gray-800">
-                    Informasi Pembayaran
-                  </span>
-                </div>
+            {/* Compact Trust Badges */}
+            <div className="flex items-center justify-center gap-6 mt-3">
+              <div className="flex items-center gap-1 text-xs text-gray-600">
+                <Shield
+                  size={12}
+                  className="text-green-500"
+                />
+                <span>Pembayaran Aman</span>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-gray-600">
+                <Truck
+                  size={12}
+                  className="text-blue-500"
+                />
+                <span>Akses Instan</span>
+              </div>
+            </div>
+          </DialogHeader>
+        </div>
 
-                <div className="space-y-6">
-                  {/* Phone Number Input */}
-                  <div className="space-y-3">
-                    <Label className="text-base font-medium text-gray-700 flex items-center">
-                      <Phone className="h-4 w-4 mr-2 text-gray-500" />
-                      Nomor Telepon
-                      <span className="text-red-500 ml-1">*</span>
-                    </Label>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col lg:grid lg:grid-cols-5 gap-4 p-4 max-h-[75vh] overflow-y-auto"
+        >
+          {/* Product Summary - Compact Left Column (40%) */}
+          <div className="lg:col-span-2 order-2 lg:order-1">
+            <div className="bg-gray-50 rounded-xl border p-4">
+              <h3 className="font-semibold text-gray-800 text-sm mb-3 flex items-center gap-2">
+                <Star
+                  size={14}
+                  style={{ color: mainColor }}
+                />
+                Ringkasan Pesanan
+              </h3>
+              <CardPlanTopping
+                plan={plan}
+                discount={discountPrice || undefined}
+                viewOnly
+              />
+            </div>
+          </div>
+
+          {/* Checkout Form - Right Columns (60%) */}
+          <div className="lg:col-span-3 space-y-4 order-1 lg:order-2">
+            {/* Customer Information - Compact */}
+            <div className="bg-white rounded-xl border">
+              <div
+                className="p-3 border-b"
+                style={{ backgroundColor: `${mainColor}05` }}
+              >
+                <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+                  <div
+                    className="p-1 rounded"
+                    style={{ backgroundColor: `${mainColor}20` }}
+                  >
+                    <Users
+                      size={14}
+                      style={{ color: mainColor }}
+                    />
+                  </div>
+                  Informasi Kontak
+                </h3>
+              </div>
+
+              <div className="p-4">
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <Phone
+                      size={12}
+                      className="text-gray-500"
+                    />
+                    Nomor Telepon
+                    <Badge
+                      variant="destructive"
+                      className="text-xs px-1 py-0"
+                    >
+                      Required
+                    </Badge>
+                  </Label>
+                  <div className="relative">
                     <Input
                       type="tel"
-                      placeholder="Masukkan nomor telepon"
+                      placeholder="+62851 1234 5678"
                       value={telp}
-                      onChange={(e) => setTelp(e.target.value)}
-                      className="h-12 text-base border-2 border-gray-200 focus:border-blue-500 rounded-xl transition-colors"
+                      onChange={handlePhoneChange}
+                      className="h-12 text-sm border border-gray-200 focus:border-blue-500 rounded-lg pl-10 pr-4 transition-all duration-200"
                       required
                     />
-                    <div className="flex items-start">
-                      <div className="h-2 w-2 bg-blue-400 rounded-full mt-2 mr-2 shrink-0"></div>
-                      <p className="text-sm text-gray-500 leading-relaxed">
-                        Nomor teleponmu dibutuhkan untuk menghubungi kamu jika
-                        terdapat kendala
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Voucher Code Input */}
-                  <div className="space-y-3">
-                    <Label className="text-base font-medium text-gray-700 flex items-center">
-                      <Tag className="h-4 w-4 mr-2 text-gray-500" />
-                      Kode Voucher
-                      <span className="text-gray-400 text-sm ml-2">
-                        (opsional)
-                      </span>
-                    </Label>
-                    <div className="flex gap-2">
-                      <Input
-                        type="text"
-                        placeholder="Masukkan kode voucher"
-                        value={voucherCode}
-                        disabled={!!discountPrice}
-                        onChange={(e) => setVoucherCode(e.target.value)}
-                        className="h-12 text-base border-2 border-gray-200 focus:border-blue-500 rounded-xl transition-colors flex-1"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="h-12 px-6 border-2 border-blue-200 text-blue-600 hover:bg-blue-50 rounded-xl font-medium bg-transparent"
-                        onClick={() => {
-                          if (!discountPrice) {
-                            applyVoucherCode(plan.id);
-                          } else {
-                            setDiscountPrice(null);
-                          }
-                        }}
-                        disabled={isLoading || !voucherCode.trim()}
-                      >
-                        {isLoading ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : discountPrice ? (
-                          'Ubah'
+                    <Phone
+                      size={16}
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    />
+                    {/* Phone number indicator */}
+                    {telp && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        {telp.startsWith('+62') && telp.length >= 12 ? (
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         ) : (
-                          'Terapkan'
+                          <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
                         )}
-                      </Button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-start gap-2 p-3 bg-blue-50 rounded-lg text-xs text-blue-700">
+                    <Shield
+                      size={12}
+                      className="text-blue-600 mt-0.5 flex-shrink-0"
+                    />
+                    <div>
+                      <p className="font-medium mb-1">
+                        Format otomatis tersedia
+                      </p>
+                      <ul className="space-y-0.5 text-blue-600">
+                        <li>• Ketik: 08123456789 → +6281234567890</li>
+                        <li>• Ketik: 81234567890 → +6281234567890</li>
+                        <li>• Data aman dengan enkripsi SSL</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Payment Button */}
-              <Button
-                type="submit"
-                className="w-full h-14 text-lg font-semibold bg-main-default hover:bg-main-default/90 rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-200 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                disabled={loading || telp.length === 0}
+            {/* Voucher Section - Compact */}
+            <div className="bg-white rounded-xl border">
+              <div
+                className="p-3 border-b"
+                style={{ backgroundColor: `${secondaryColor}05` }}
               >
-                {loading ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin mr-3" />
-                    Memproses Pembayaran...
-                  </>
-                ) : (
-                  <>
-                    Lanjutkan Pembayaran
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </>
-                )}
-              </Button>
+                <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+                  <div className="p-1 rounded bg-green-200">
+                    <Tag
+                      size={14}
+                      className="text-green-700"
+                    />
+                  </div>
+                  Kode Promo & Voucher
+                </h3>
+              </div>
 
-              <div className="text-center">
-                <p className="text-sm text-gray-500">
-                  Dengan melanjutkan, kamu menyetujui{' '}
-                  <a
-                    href="#"
-                    className="text-blue-600 hover:underline font-medium"
+              <div className="p-4">
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Input
+                      type="text"
+                      placeholder="Masukkan kode voucher atau promo"
+                      value={voucherCode}
+                      disabled={!!discountPrice}
+                      onChange={(e) =>
+                        setVoucherCode(e.target.value.toUpperCase())
+                      }
+                      className="h-10 text-sm border border-gray-200 focus:border-green-500 rounded-lg pl-8"
+                    />
+                    <Tag
+                      size={14}
+                      className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className={cn(
+                      'h-10 px-4 border rounded-lg text-sm font-medium',
+                      discountPrice
+                        ? 'border-red-200 text-red-600 hover:bg-red-50'
+                        : 'border-green-200 text-green-600 hover:bg-green-50',
+                    )}
+                    onClick={() => {
+                      if (!discountPrice) {
+                        applyVoucherCode(plan.id);
+                      } else {
+                        setDiscountPrice(null);
+                        setVoucherCode('');
+                      }
+                    }}
+                    disabled={
+                      isLoading || (!voucherCode.trim() && !discountPrice)
+                    }
                   >
-                    Syarat & Ketentuan
-                  </a>{' '}
-                  kami
-                </p>
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : discountPrice ? (
+                      'Hapus'
+                    ) : (
+                      'Terapkan'
+                    )}
+                  </Button>
+                </div>
+
+                {/* Voucher Success State - Compact */}
+                {discountPrice && (
+                  <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2
+                        size={16}
+                        className="text-green-600"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-green-800">
+                          Voucher berhasil diterapkan!
+                        </p>
+                        <p className="text-xs text-green-700">
+                          Anda hemat {formatPrice(plan.price - discountPrice)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </form>
-        </div>
+
+            {/* Order Summary & Payment - Compact */}
+            <div className="bg-white rounded-xl border">
+              <div
+                className="p-3 border-b"
+                style={{
+                  backgroundColor: `${mainColor}08`,
+                }}
+              >
+                <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+                  <div
+                    className="p-1 rounded"
+                    style={{ backgroundColor: `${mainColor}20` }}
+                  >
+                    <CreditCard
+                      size={14}
+                      style={{ color: mainColor }}
+                    />
+                  </div>
+                  Ringkasan Pembayaran
+                </h3>
+              </div>
+
+              <div className="p-4 space-y-4">
+                {/* Price Breakdown - Compact */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">Harga paket</span>
+                    <span className="font-medium">
+                      {formatPrice(plan.price)}
+                    </span>
+                  </div>
+
+                  {discountPrice && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-green-600 flex items-center gap-1">
+                        <Gift size={12} />
+                        Diskon voucher
+                      </span>
+                      <span className="font-medium text-green-600">
+                        -{formatPrice(plan.price - discountPrice)}
+                      </span>
+                    </div>
+                  )}
+
+                  {plan.originalPrice && plan.originalPrice > plan.price && (
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-orange-600 flex items-center gap-1">
+                        <Zap size={12} />
+                        Diskon ({getDiscountPercentage()}%)
+                      </span>
+                      <span className="font-medium text-orange-600">
+                        -{formatPrice(plan.originalPrice - plan.price)}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-between items-center pt-2 border-t border-gray-200">
+                    <span className="font-bold text-gray-800">Total</span>
+                    <div className="text-right">
+                      <span
+                        className="text-lg font-black"
+                        style={{ color: mainColor }}
+                      >
+                        {formatPrice(discountPrice || plan.price)}
+                      </span>
+                      {(discountPrice ||
+                        (plan.originalPrice &&
+                          plan.originalPrice > plan.price)) && (
+                        <p className="text-xs text-gray-500 line-through">
+                          {formatPrice(plan.originalPrice || plan.price)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Compact Benefits */}
+                <div className="p-3 bg-gray-50 rounded-lg text-center">
+                  <Clock
+                    size={16}
+                    className="mx-auto mb-1 text-blue-500"
+                  />
+                  <p className="text-xs font-medium text-gray-700">
+                    Akses Instan
+                  </p>
+                  <p className="text-xs text-gray-500">Setelah pembayaran</p>
+                </div>
+
+                {/* Payment Button - Compact but Prominent */}
+                <Button
+                  type="submit"
+                  className="w-full h-12 text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
+                  disabled={
+                    loading ||
+                    telp.length === 0 ||
+                    !telp.startsWith('+62') ||
+                    telp.length < 12
+                  }
+                  style={{
+                    background: loading
+                      ? '#gray-400'
+                      : `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                >
+                  <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Memproses...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Bayar {formatPrice(discountPrice || plan.price)}
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </>
+                  )}
+                </Button>
+
+                {/* Security Note - Compact */}
+                <div className="text-center pt-2 border-t border-gray-100">
+                  <p className="text-xs text-gray-500">
+                    Dengan melanjutkan, Anda menyetujui{' '}
+                    <a
+                      href="#"
+                      className="text-blue-600 hover:underline"
+                    >
+                      Syarat & Ketentuan
+                    </a>{' '}
+                    kami
+                  </p>
+                  <div className="flex items-center justify-center gap-1 mt-1 text-xs text-gray-400">
+                    <Shield size={10} />
+                    <span>Pembayaran dienkripsi SSL 256-bit</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );

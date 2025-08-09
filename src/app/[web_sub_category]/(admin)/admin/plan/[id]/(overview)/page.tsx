@@ -22,7 +22,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { responseError, throwError } from '@/lib/response';
-import { cn } from '@/lib/utils';
+import { cn, formatCurrency, parseCurrency } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import {
   Category,
@@ -79,6 +79,7 @@ export default function UpdatePlanForm() {
         course,
         description,
         duration,
+        durationLimit,
         liveClass,
         materiPremium,
         originalPrice,
@@ -88,7 +89,6 @@ export default function UpdatePlanForm() {
         image,
         status,
         previewImage,
-        durationLimit,
       },
     },
   } = useProvider();
@@ -415,9 +415,13 @@ export default function UpdatePlanForm() {
                   </div>
                   <Input
                     id="originalPrice"
-                    {...register('originalPrice')}
                     type="text"
                     className="pl-12"
+                    value={formatCurrency(originalPrice)}
+                    onChange={(e) => {
+                      const rawValue = parseCurrency(e.target.value);
+                      setValue('originalPrice', rawValue);
+                    }}
                   />
                 </div>
               </div>
@@ -438,7 +442,11 @@ export default function UpdatePlanForm() {
                     type="text"
                     className="pl-12"
                     required
-                    {...register('price')}
+                    value={formatCurrency(price)}
+                    onChange={(e) => {
+                      const rawValue = parseCurrency(e.target.value);
+                      setValue('price', rawValue);
+                    }}
                   />
                 </div>
               </div>
@@ -788,16 +796,6 @@ const SectionFeature = () => {
     },
   } = useProvider();
 
-  const changeExpireType = (type: 'days' | 'month' | 'year') => {
-    const input = document.getElementById('expireType') as
-      | HTMLInputElement
-      | undefined;
-    if (input) {
-      setExpireType(type);
-      input.value = type;
-    }
-  };
-
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -943,15 +941,6 @@ const SectionFeature = () => {
                     required
                   />
                   <div className="flex">
-                    <input
-                      id="expireType"
-                      name="expireType"
-                      type="text"
-                      hidden
-                      value={expireType}
-                      onChange={(e) => setExpireType(e.target.value as any)}
-                      required
-                    />
                     <Button
                       type="button"
                       variant="outline"
@@ -959,7 +948,7 @@ const SectionFeature = () => {
                         'rounded-r-none ',
                         expireType === 'days' && 'bg-main text-white',
                       )}
-                      onClick={() => changeExpireType('days')}
+                      onClick={() => setExpireType('days')}
                     >
                       days
                     </Button>
@@ -970,7 +959,7 @@ const SectionFeature = () => {
                         'rounded-none border-l-0 border-r-0',
                         expireType === 'month' && 'bg-main text-white',
                       )}
-                      onClick={() => changeExpireType('month')}
+                      onClick={() => setExpireType('month')}
                     >
                       month
                     </Button>
@@ -981,7 +970,7 @@ const SectionFeature = () => {
                         'rounded-l-none',
                         expireType === 'year' && 'bg-main text-white',
                       )}
-                      onClick={() => changeExpireType('year')}
+                      onClick={() => setExpireType('year')}
                     >
                       year
                     </Button>

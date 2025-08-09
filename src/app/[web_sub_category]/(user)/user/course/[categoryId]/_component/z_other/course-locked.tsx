@@ -292,10 +292,6 @@ export default function CourseLocked() {
                         <Clock className="w-4 h-4" />
                         <span>Akses Instan</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4" />
-                        <span>Garansi 30 Hari</span>
-                      </div>
                     </div>
                   </div>
                 </div>

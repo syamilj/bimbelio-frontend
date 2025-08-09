@@ -72,6 +72,9 @@ export default function Provider({ children }: Props) {
   const [expireType, setExpireType] = useState<'days' | 'month' | 'year'>(
     'days',
   );
+  const [expireTypeLimit, setExpireTypeLimit] = useState<
+    'days' | 'month' | 'year'
+  >('days');
 
   const [expireTypeLimit, setExpireTypeLimit] = useState<
     'days' | 'month' | 'year'

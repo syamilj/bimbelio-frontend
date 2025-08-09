@@ -7,6 +7,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { pixel } from '@/lib/pixel/_core';
+import { motion } from 'framer-motion';
 import { Sparkles, Zap } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -83,53 +84,87 @@ export default function PricingPlans() {
 
   return (
     <div className="space-y-20">
-      {/* Modern Header Section */}
-      <div className="text-center mb-16">
-        <div
-          className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium mb-6"
-          style={{
-            backgroundColor: `${mainColor}10`,
-            color: mainColor,
-          }}
+      {/* Header Section - Matching Homepage Style */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-16"
+      >
+        {/* Badge - Match homepage style */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="inline-flex items-center gap-2 rounded-full px-6 py-2 text-sm font-semibold text-white border-none mb-6"
+          style={{ backgroundColor: mainColor }}
         >
           <Sparkles size={16} />
-          Pilih Paket Terbaik
-        </div>
+          Blueprint Plans
+        </motion.div>
 
-        <h1
-          className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
-          style={{ color: mainColor }}
-        >
-          Sudah Siap Mulai Belajar?
+        {/* Main headline - Match homepage typography */}
+        <h1 className="text-4xl md:text-5xl font-black leading-tight text-gray-900 mb-6">
+          Pilih Blueprint yang{' '}
+          <span
+            className="bg-clip-text text-transparent"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            pas buat lo!
+          </span>
         </h1>
 
+        {/* Subheadline - Match homepage style */}
         <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Pilih paket yang sesuai dengan kebutuhanmu dan mulai perjalanan
-          belajar bersama{' '}
+          Sistem yang terukur untuk bantu ribuan siswa naik 200+ poin.{' '}
           <span
-            style={{ color: mainColor }}
             className="font-semibold"
+            style={{ color: mainColor }}
           >
-            Bimbelio
+            Pilih sesuai kebutuhan & budget!
           </span>
         </p>
-      </div>
-      {/* Modern Category Tabs */}
+      </motion.div>
+      {/* Enhanced Filter Tabs System */}
       <Tabs
         className="w-full"
-        defaultValue="snbt"
+        defaultValue="all"
       >
         <TabsList
           className="grid w-full max-w-2xl mx-auto grid-cols-5 mb-8 h-12 p-1 rounded-xl"
           style={{
             backgroundColor: `${mainColor}08`,
+            gridTemplateColumns: `repeat(${(PricingData?.webSubCategory.length || 0) + 1}, 1fr)`,
           }}
         >
+          {/* All Tab */}
+          <TabsTrigger
+            value="all"
+            className="rounded-lg font-semibold data-[state=active]:shadow-sm transition-all text-sm"
+            style={
+              {
+                '--tw-data-state-active-bg': mainColor,
+                '--tw-data-state-active-color': 'white',
+              } as React.CSSProperties
+            }
+          >
+            <Sparkles
+              size={16}
+              className="mr-2"
+            />
+            Semua Paket
+          </TabsTrigger>
+
+          {/* Category Tabs */}
           {PricingData?.webSubCategory.map((ws) => (
             <TabsTrigger
               key={ws.webSubCategoryId}
               value={ws.webSubCategoryId}
-              className="rounded-lg font-medium data-[state=active]:shadow-sm transition-all"
+              className="rounded-lg font-semibold data-[state=active]:shadow-sm transition-all text-sm"
               style={
                 {
                   '--tw-data-state-active-bg': mainColor,
@@ -142,75 +177,106 @@ export default function PricingPlans() {
           ))}
         </TabsList>
 
+        {/* Individual Category Tabs - Enhanced */}
         {PricingData?.webSubCategory.map((ws) => (
           <TabsContent
             key={ws.webSubCategoryId}
             value={ws.webSubCategoryId}
             className="w-full"
           >
-            {/* Sub-category tabs for Bundle/Subscription */}
-            <Tabs
-              defaultValue="bundle"
-              className="w-full"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-              <TabsList
-                className="grid w-full max-w-md mx-auto grid-cols-2 mb-8 h-10 p-1 rounded-lg"
-                style={{
-                  backgroundColor: `${mainColor}08`,
-                }}
+              {/* Enhanced Sub-category tabs */}
+              <Tabs
+                defaultValue="all-category"
+                className="w-full"
               >
-                <TabsTrigger
-                  value="bundle"
-                  className="rounded-md font-medium data-[state=active]:shadow-sm transition-all"
-                  style={
-                    {
-                      '--tw-data-state-active-bg': mainColor,
-                      '--tw-data-state-active-color': 'white',
-                    } as React.CSSProperties
-                  }
+                <TabsList
+                  className="grid w-full max-w-lg mx-auto grid-cols-3 mb-8 h-10 p-1 rounded-lg"
+                  style={{
+                    backgroundColor: `${mainColor}08`,
+                  }}
                 >
-                  Paket Bundle
-                </TabsTrigger>
-                <TabsTrigger
-                  value="subscription"
-                  className="rounded-md font-medium data-[state=active]:shadow-sm transition-all"
-                  style={
-                    {
-                      '--tw-data-state-active-bg': mainColor,
-                      '--tw-data-state-active-color': 'white',
-                    } as React.CSSProperties
-                  }
-                >
-                  Paket Berlangganan
-                </TabsTrigger>
-              </TabsList>
+                  <TabsTrigger
+                    value="all-category"
+                    className="rounded-md font-medium data-[state=active]:shadow-sm transition-all text-xs"
+                    style={
+                      {
+                        '--tw-data-state-active-bg': mainColor,
+                        '--tw-data-state-active-color': 'white',
+                      } as React.CSSProperties
+                    }
+                  >
+                    Semua {ws.webSubCategoryName}
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="bundle"
+                    className="rounded-md font-medium data-[state=active]:shadow-sm transition-all text-xs"
+                    style={
+                      {
+                        '--tw-data-state-active-bg': mainColor,
+                        '--tw-data-state-active-color': 'white',
+                      } as React.CSSProperties
+                    }
+                  >
+                    Bundle
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="subscription"
+                    className="rounded-md font-medium data-[state=active]:shadow-sm transition-all text-xs"
+                    style={
+                      {
+                        '--tw-data-state-active-bg': mainColor,
+                        '--tw-data-state-active-color': 'white',
+                      } as React.CSSProperties
+                    }
+                  >
+                    Berlangganan
+                  </TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="subscription">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                  {ws.subscriptions.map((plan, i) => {
-                    return (
+                {/* All category plans */}
+                <TabsContent value="all-category">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {[...(ws.subscriptions || []), ...(ws.bundles || [])].map(
+                      (plan, i) => (
+                        <CardPlan
+                          key={`all-${ws.webSubCategoryId}-${i}`}
+                          plan={plan}
+                        />
+                      ),
+                    )}
+                  </div>
+                </TabsContent>
+
+                {/* Bundle only */}
+                <TabsContent value="bundle">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {ws.bundles?.map((bundle, i) => (
                       <CardPlan
-                        key={i}
-                        plan={plan}
-                        discount={plan.discount}
+                        key={`bundle-${ws.webSubCategoryId}-${i}`}
+                        plan={bundle}
                       />
-                    );
-                  })}
-                </div>
-              </TabsContent>
+                    ))}
+                  </div>
+                </TabsContent>
 
-              <TabsContent value="bundle">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                  {ws.bundles.map((bundle, i) => (
-                    <CardPlan
-                      key={i}
-                      plan={bundle}
-                      discount={bundle.discount}
-                    />
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
+                {/* Subscription only */}
+                <TabsContent value="subscription">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {ws.subscriptions?.map((plan, i) => (
+                      <CardPlan
+                        key={`subscription-${ws.webSubCategoryId}-${i}`}
+                        plan={plan}
+                      />
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </motion.div>
           </TabsContent>
         ))}
       </Tabs>

@@ -5,16 +5,10 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import {
   Clock,
   Crown,
@@ -138,40 +132,6 @@ export function CardPlan({
     }
   }, [planIdQuery, session, voucherCodeQuery]);
 
-  // ✅ LEAD TRACKING - Track saat user melihat card plan
-  useEffect(() => {
-    try {
-      // Track Lead event - user shows interest in plan
-      pixel.meta.track(
-        'Lead',
-        {
-          content_name: `Plan View - ${plan.name}`,
-          content_type: 'product',
-          value: plan.price,
-          currency: 'IDR',
-          contents: [{ id: plan.id, quantity: 1 }],
-        },
-        {
-          // Advanced Matching jika user sudah login
-          em: session?.user?.email,
-          ph: session?.user?.phone || undefined,
-          fn: session?.user?.name?.split(' ')[0],
-          ln: session?.user?.name?.split(' ').slice(1).join(' '),
-        },
-      );
-
-      pixel.tiktok.track('Lead', {
-        content_name: `Plan View - ${plan.name}`,
-        content_type: 'product',
-        value: plan.price,
-        currency: 'IDR',
-        content_id: `plan_view_${plan.id}`, // ✅ Required untuk TikTok VSA
-      });
-    } catch (pixelError) {
-      console.warn('Pixel tracking error on plan view:', pixelError);
-    }
-  }, [plan.id]); // Track sekali per plan
-
   const Context = {
     useState: {
       activeTab,
@@ -191,17 +151,21 @@ export function CardPlan({
 
   return (
     <ProviderContext.Provider value={Context}>
-      <Card
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.02, y: -4 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
         className={cn(
-          'w-full max-w-md group relative overflow-hidden bg-white hover:shadow-2xl transition-all duration-500 border-0 shadow-lg',
+          'w-full max-w-md group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl border-0 transition-all duration-500',
           isRecommended && 'ring-2 ring-offset-4',
-          isBestSeller && 'transform hover:scale-[1.02]',
         )}
         style={{
           borderColor: isRecommended ? mainColor : undefined,
           boxShadow: isPopular
-            ? `0 8px 32px ${mainColor}20`
-            : '0 4px 20px rgba(0,0,0,0.08)',
+            ? `0 8px 32px ${mainColor}30`
+            : `0 4px 24px ${mainColor}15`,
         }}
       >
         {/* Marketplace Status Bar */}
@@ -214,8 +178,8 @@ export function CardPlan({
           )}
         </div>
 
-        {/* Header Section - Marketplace Style */}
-        <CardHeader className="relative pb-2 bg-gradient-to-br from-gray-50 to-white">
+        {/* Header Section - Homepage Style */}
+        <div className="relative p-6 bg-gradient-to-br from-white/90 to-white/80 backdrop-blur-sm">
           {/* Top Badges Row */}
           <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-20">
             {/* Left badges */}
@@ -381,7 +345,7 @@ export function CardPlan({
                   variant="outline"
                   className="text-xs text-gray-600 border-gray-300"
                 >
-                  Tier {plan.PlanSubscription.tier}
+                  {plan.PlanSubscription.tier}
                 </Badge>
               </div>
 
@@ -394,9 +358,9 @@ export function CardPlan({
 
           {/* Product Title & Rating */}
           <div className="space-y-3">
-            <CardTitle className="text-lg font-bold leading-tight text-gray-900 line-clamp-2 group-hover:text-gray-700 transition-colors">
+            <h3 className="text-xl font-black leading-tight text-gray-900 line-clamp-2 group-hover:text-gray-700 transition-colors">
               {plan.name}
-            </CardTitle>
+            </h3>
 
             {/* Marketplace Rating & Social Proof */}
             {/* <div className="flex items-center justify-between">
@@ -430,9 +394,9 @@ export function CardPlan({
             </div> */}
 
             {/* Enhanced Description */}
-            <CardDescription className="text-sm text-gray-600 leading-relaxed line-clamp-2">
+            <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
               {plan.description}
-            </CardDescription>
+            </p>
 
             {/* Key Features Preview - Marketplace Style */}
             <div className="flex flex-wrap gap-1.5">
@@ -467,9 +431,9 @@ export function CardPlan({
               )}
             </div>
           </div>
-        </CardHeader>
+        </div>
 
-        <CardContent className="px-4 pb-4">
+        <div className="px-6 pb-6">
           {/* Marketplace-Style Pricing Section */}
           <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
             <div className="space-y-3">
@@ -846,8 +810,8 @@ export function CardPlan({
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </motion.div>
     </ProviderContext.Provider>
   );
 }

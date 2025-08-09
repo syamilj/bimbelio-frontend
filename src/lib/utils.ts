@@ -11,6 +11,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const formatCurrency = (value: string | number): string => {
+  if (!value || value === '') return '';
+  const numericValue =
+    typeof value === 'string' ? parseFloat(value.replace(/[^\d]/g, '')) : value;
+  if (isNaN(numericValue)) return '';
+  return numericValue.toLocaleString('id-ID');
+};
+
+export const parseCurrency = (formattedValue: string): string => {
+  return formattedValue.replace(/[^\d]/g, '');
+};
+
 export const convertDaysToWords = (days: number): string => {
   if (days > 10000) return 'Lifetime';
   if (days <= 0) return 'Hari tidak valid';

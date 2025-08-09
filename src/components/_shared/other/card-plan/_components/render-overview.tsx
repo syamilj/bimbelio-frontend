@@ -45,9 +45,11 @@ export const RenderOverviewTab = () => {
     <div className="space-y-4">
       {/* Plan Type Badge */}
       <div className="flex items-center justify-center">
-        <Badge className={`flex items-center gap-2`}>
-          Statis
-          <span className="font-semibold">Statis</span>
+        <Badge
+          variant="destructive"
+          className={`flex items-center gap-2 text-white`}
+        >
+          {plan.PlanSubscription.tier}
         </Badge>
       </div>
 
@@ -63,7 +65,7 @@ export const RenderOverviewTab = () => {
               <div className="text-lg font-bold text-blue-600">
                 {Object.entries(plan.PlanLimitation)
                   .filter(([key]) => key !== 'id' && key !== 'planId')
-                  .some(([, value]) => value === -1 || value === 0)
+                  .every(([, value]) => value === -1 || value === 0)
                   ? '∞'
                   : 'Limited'}
               </div>
@@ -173,45 +175,82 @@ export const RenderOverviewTab = () => {
             Keuntungan Utama
           </h4>
 
-          {plan.PlanBenefit.slice(0, 3).map((benefit, index) => (
-            <div
-              key={benefit.id}
-              className={`flex items-start gap-3 p-3 rounded-lg border-l-4 ${
-                index === 0
-                  ? 'bg-linear-to-r from-yellow-50 to-orange-50 border-yellow-500'
-                  : index === 1
-                    ? 'bg-linear-to-r from-blue-50 to-purple-50 border-blue-500'
-                    : 'bg-linear-to-r from-green-50 to-teal-50 border-green-500'
-              }`}
-            >
-              <div className="shrink-0 mt-1">
-                {index === 0 ? (
-                  <Crown
-                    size={16}
-                    className="text-yellow-600"
-                  />
-                ) : index === 1 ? (
-                  <Award
-                    size={16}
-                    className="text-blue-600"
-                  />
-                ) : (
-                  <CheckCircle2
-                    size={16}
-                    className="text-green-600"
-                  />
-                )}
-              </div>
-              <div className="flex-1">
-                <div className="font-semibold text-sm text-gray-800 mb-1">
-                  {benefit.title}
+          {(showAllBenefits
+            ? plan.PlanBenefit
+            : plan.PlanBenefit.slice(0, 3)
+          ).map((benefit, index) => {
+            // Gunakan index asli dari array PlanBenefit
+            const realIndex = showAllBenefits
+              ? plan.PlanBenefit.findIndex((b) => b.id === benefit.id)
+              : index;
+
+            // Pilih warna/icon sesuai urutan
+            let bgClass = '';
+            let borderClass = '';
+            let IconComp = null;
+            let iconClass = '';
+
+            if (realIndex === 0) {
+              bgClass = 'bg-linear-to-r from-yellow-50 to-orange-50';
+              borderClass = 'border-yellow-500';
+              IconComp = Crown;
+              iconClass = 'text-yellow-600';
+            } else if (realIndex === 1) {
+              bgClass = 'bg-linear-to-r from-blue-50 to-purple-50';
+              borderClass = 'border-blue-500';
+              IconComp = Award;
+              iconClass = 'text-blue-600';
+            } else if (realIndex === 2) {
+              bgClass = 'bg-linear-to-r from-green-50 to-teal-50';
+              borderClass = 'border-green-500';
+              IconComp = CheckCircle2;
+              iconClass = 'text-green-600';
+            } else if (realIndex === 3) {
+              bgClass = 'bg-linear-to-r from-pink-50 to-red-50';
+              borderClass = 'border-pink-500';
+              IconComp = Gift;
+              iconClass = 'text-pink-600';
+            } else if (realIndex === 4) {
+              bgClass = 'bg-linear-to-r from-purple-50 to-indigo-50';
+              borderClass = 'border-purple-500';
+              IconComp = Star;
+              iconClass = 'text-purple-600';
+            } else if (realIndex === 5) {
+              bgClass = 'bg-linear-to-r from-orange-50 to-yellow-50';
+              borderClass = 'border-orange-500';
+              IconComp = TrendingUp;
+              iconClass = 'text-orange-600';
+            } else {
+              bgClass = 'bg-linear-to-r from-gray-50 to-gray-100';
+              borderClass = 'border-gray-400';
+              IconComp = CheckCircle2;
+              iconClass = 'text-gray-500';
+            }
+
+            return (
+              <div
+                key={benefit.id}
+                className={`flex items-start gap-3 p-3 rounded-lg border-l-4 ${bgClass} ${borderClass}`}
+              >
+                <div className="shrink-0 mt-1">
+                  {IconComp && (
+                    <IconComp
+                      size={16}
+                      className={iconClass}
+                    />
+                  )}
                 </div>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  {benefit.description}
-                </p>
+                <div className="flex-1">
+                  <div className="font-semibold text-sm text-gray-800 mb-1">
+                    {benefit.title}
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {plan.PlanBenefit.length > 3 && (
             <Button

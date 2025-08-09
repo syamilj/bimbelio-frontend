@@ -286,7 +286,7 @@ export default function CaraBelajarSection1() {
               </div>
             </div>
 
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               {learningSteps.map((step, index) => (
                 <motion.div
                   key={index}

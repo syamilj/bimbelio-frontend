@@ -12,6 +12,17 @@ export default function ProviderPixel({ children }: { children: ReactNode }) {
     // ✅ HANYA track route changes untuk SPA navigation (bukan initial page load)
     // PageView untuk initial load sudah handled di layout.tsx
 
+    // Hindari duplikasi tracking pada initial page load
+    const isInitialLoad = sessionStorage.getItem('_pixel_initial_load') === null;
+    
+    // Set flag di sessionStorage untuk menandai initial load sudah terjadi
+    if (isInitialLoad) {
+      sessionStorage.setItem('_pixel_initial_load', 'true');
+      // Pada initial load, tidak perlu track apapun karena sudah di-handle di layout.tsx
+      return;
+    }
+
+    // ✅ Hanya track subsequent navigation (bukan initial load)
     if (typeof window !== 'undefined' && window.fbq) {
       // Track route change sebagai ViewContent (bukan PageView untuk avoid duplikasi)
       pixel.meta.track(
