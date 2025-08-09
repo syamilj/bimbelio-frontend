@@ -76,10 +76,6 @@ export default function Provider({ children }: Props) {
     'days' | 'month' | 'year'
   >('days');
 
-  const [expireTypeLimit, setExpireTypeLimit] = useState<
-    'days' | 'month' | 'year'
-  >('days');
-
   const [benefitRows, setBenefitRows] = useState<BenefitRowType>([]);
 
   const formData = useForm<FormDataType>({
