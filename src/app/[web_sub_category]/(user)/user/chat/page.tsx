@@ -161,9 +161,27 @@ export default function AIChatPage() {
   ];
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', { content_name: 'Chat AI' });
-    pixel.tiktok.track('ViewContent', { content_name: 'Chat AI' });
-  }, []);
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Chat AI',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Chat AI',
+      content_id: 'chat_ai_page', // ✅ Required untuk TikTok VSA
+    });
+  }, [session]);
 
   return (
     <div className="min-h-screen bg-gray-50">

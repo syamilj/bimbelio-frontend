@@ -25,6 +25,7 @@ import {
 import { motion } from 'framer-motion';
 import {
   BookOpen,
+  BotIcon,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
@@ -35,9 +36,11 @@ import {
   User,
   XCircle,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { SessionOptionsProps } from '..';
+import { TryoutAI } from './tryout-ai';
 
 interface QuestionWithAnswers extends TryoutQuestion {
   TryoutAnswers: TryoutAnswer[];
@@ -72,6 +75,7 @@ interface Props {
   setResultIndex: React.Dispatch<SetStateAction<number>>;
   resultIndex: number;
   sessionOptions: SessionOptionsProps[];
+  participantId: string;
 }
 
 interface NavigationProps {
@@ -87,8 +91,10 @@ export function ReviewTab({
   setResultIndex,
   resultIndex,
   sessionOptions,
+  participantId,
 }: Props) {
   const { websiteSubCategory } = useWebsiteSubCategory();
+
   const [userAnswerIndex, setUserAnswerIndex] = useState<number>(0);
   const [activeView, setActiveView] = useState<'question' | 'grid'>('question');
 
@@ -357,6 +363,7 @@ export function ReviewTab({
             setUserAnswerIndex={setUserAnswerIndex}
             totalQuestions={TotalQuestion}
             sessionResult={sessionResult}
+            participantId={participantId}
           />
         ) : (
           <GridView
@@ -384,7 +391,19 @@ const QuestionView = ({
   setUserAnswerIndex,
   totalQuestions,
   sessionResult,
-}: any) => {
+  participantId,
+}: {
+  UserAnswers: UserAnswerWithAnswerQuestion | undefined;
+  safeUserAnswerIndex: number;
+  getIsCorrect: (userAnswerIdx: number) => boolean | null;
+  getCorrectAnswer: () => string;
+  mainColor: string;
+  userAnswerIndex: number;
+  setUserAnswerIndex: Dispatch<SetStateAction<number>>;
+  totalQuestions: number;
+  sessionResult: SessionResultTryout | undefined;
+  participantId: string;
+}) => {
   const router = useRouter();
 
   return (
@@ -609,6 +628,7 @@ const QuestionView = ({
       {/* Compact Sidebar */}
       <div className="lg:col-span-1">
         <CompactNavigation
+          participantId={participantId}
           sessionResult={sessionResult}
           getIsCorrect={getIsCorrect}
           setUserAnswerIndex={setUserAnswerIndex}
@@ -731,8 +751,17 @@ const CompactNavigation = ({
   setUserAnswerIndex,
   userAnswerIndex,
   mainColor,
-}: any) => {
-  const router = useRouter();
+  participantId,
+}: {
+  sessionResult: SessionResultTryout | undefined;
+  getIsCorrect: (userAnswerIdx: number) => boolean | null;
+  setUserAnswerIndex: Dispatch<SetStateAction<number>>;
+  userAnswerIndex: number;
+  mainColor: string;
+  participantId: string;
+}) => {
+  const [openAI, setOpenAI] = useState<boolean>(false);
+
   const totalQuestions = Array.isArray(sessionResult?.TryoutUserAnswer)
     ? sessionResult.TryoutUserAnswer.length
     : 0;
@@ -929,21 +958,70 @@ const CompactNavigation = ({
       {/* Quick Actions */}
       <Card className="border-2 border-gray-100 rounded-2xl shadow-lg">
         <CardContent className="p-4 space-y-3">
-          {sessionResult?.TryoutSession.Document && (
+          {/* <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">Open</Button>
+            </SheetTrigger>
+            <SheetContent className="w-[600px]">
+              <SheetHeader>
+                <SheetTitle>Edit profile</SheetTitle>
+                <SheetDescription>
+                  Make changes to your profile here. Click save when you&apos;re
+                  done.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                <div className="grid gap-3">
+                  <Label htmlFor="sheet-demo-name">Name</Label>
+                  <Input
+                    id="sheet-demo-name"
+                    defaultValue="Pedro Duarte"
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="sheet-demo-username">Username</Label>
+                  <Input
+                    id="sheet-demo-username"
+                    defaultValue="@peduarte"
+                  />
+                </div>
+              </div>
+              <SheetFooter>
+                <Button type="submit">Save changes</Button>
+                <SheetClose asChild>
+                  <Button variant="outline">Close</Button>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet> */}
+          <TryoutAI participantId={participantId}>
             <Button
               className="w-full h-10 rounded-xl font-medium text-white shadow-lg"
               style={{ backgroundColor: mainColor }}
-              onClick={() =>
-                router.push(
-                  `/${website_sub_category_id}/user/workspace/${
-                    sessionResult?.TryoutSession.Document!.category.id
-                  }/${sessionResult.TryoutSession.Document!.id}`,
-                )
-              }
+              onClick={() => setOpenAI(true)}
             >
-              <BookOpen className="w-4 h-4 mr-2" />
-              Pembahasan Lengkap
+              <BotIcon className="w-4 h-4 mr-2" />
+              Tanya AI
             </Button>
+          </TryoutAI>
+
+          {sessionResult?.TryoutSession.Document && (
+            <div className="w-[5px] h-[20px] mx-auto bg-main rounded-2xl"></div>
+          )}
+          {sessionResult?.TryoutSession.Document && (
+            <Link
+              href={`/${website_sub_category_id}/user/workspace/${
+                sessionResult?.TryoutSession.Document!.category.id
+              }/${sessionResult.TryoutSession.Document!.id}`}
+            >
+              <Button
+                className="w-full h-10 rounded-xl font-medium text-white shadow-lg"
+                style={{ backgroundColor: mainColor }}
+              >
+                <BookOpen className="w-4 h-4 mr-2" />
+                Pembahasan
+              </Button>
+            </Link>
           )}
         </CardContent>
       </Card>

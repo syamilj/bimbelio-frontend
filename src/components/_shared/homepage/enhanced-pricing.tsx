@@ -372,11 +372,7 @@ const EnhancedPricing = () => {
                   </motion.div>
 
                   {/* Money Back Guarantee */}
-                  {plan.popular && (
-                    <div className="text-center text-sm text-gray-600 mt-4">
-                      💰 Garansi uang kembali 30 hari
-                    </div>
-                  )}
+                  {plan.popular}
                 </CardContent>
               </Card>
             </motion.div>

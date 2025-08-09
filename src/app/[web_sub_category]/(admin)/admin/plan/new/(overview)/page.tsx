@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { responseError, throwError } from '@/lib/response';
-import { cn } from '@/lib/utils';
+import { cn, formatCurrency, parseCurrency } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import { Category, Instructor, LiveClass } from '@/types/database';
 import { Plus, Trash2 } from 'lucide-react';
@@ -296,9 +296,13 @@ export default function CreatePlanForm() {
                   </div>
                   <Input
                     id="originalPrice"
-                    {...register('originalPrice')}
                     type="text"
                     className="pl-12"
+                    value={formatCurrency(originalPrice)}
+                    onChange={(e) => {
+                      const rawValue = parseCurrency(e.target.value);
+                      setValue('originalPrice', rawValue);
+                    }}
                   />
                 </div>
               </div>
@@ -319,7 +323,11 @@ export default function CreatePlanForm() {
                     type="text"
                     className="pl-12"
                     required
-                    {...register('price')}
+                    value={formatCurrency(price)}
+                    onChange={(e) => {
+                      const rawValue = parseCurrency(e.target.value);
+                      setValue('price', rawValue);
+                    }}
                   />
                 </div>
               </div>

@@ -1,13 +1,8 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import { BookOpen, Eye, FileText, MessageSquare, PenTool } from 'lucide-react';
 import { PlanDataType } from '../card-plan/_provider/types';
 import { DialogPayment } from './_components/dialog-payment';
@@ -17,32 +12,46 @@ export const CardPlanTopping = ({
   discount,
   viewOnly,
   onClose,
+  classOverlay,
 }: {
   plan: PlanDataType;
   viewOnly?: boolean;
   discount?: number;
   onClose?: () => void;
+  classOverlay?: string;
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   return (
-    <Card
+    <motion.div
       key={plan.name}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02, y: -4 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
       className={cn(
-        `rounded-2xl w-full max-w-[285px] overflow-hidden border-0 shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 `,
-        // plan.popular ? 'shadow-xl ring-2 ring-[#0066ff]' : '',
+        `rounded-3xl w-full max-w-[285px] overflow-hidden border-0 bg-white/80 backdrop-blur-sm transition-all duration-300`,
       )}
+      style={{
+        boxShadow: `0 4px 24px 0 ${websiteSubCategory?.main_color || '#0091FF'}15`,
+      }}
     >
-      {/* {plan.popular && (
-        <div className="absolute top-0 right-0 transform translate-x-0 -translate-y-0 z-10">
-          <Badge className="bg-[#0066ff] text-white font-medium px-3 py-1 shadow-md">
-            <Sparkles className="h-3.5 w-3.5 mr-1" /> Best Value
-          </Badge>
-        </div>
-      )} */}
-      <div className="h-3 bg-gradient-default"></div>
-      <CardHeader className="pt-6">
-        <CardTitle className="text-xl text-[#0a2540] flex items-center">
-          <div className="h-8 w-8 rounded-full mr-2 flex items-center justify-center shadow-sm bg-gradient-default">
+      {/* Top accent gradient matching main color */}
+      <div
+        className="h-3"
+        style={{
+          background: `linear-gradient(135deg, ${websiteSubCategory?.main_color || '#0091FF'}, ${websiteSubCategory?.secondary_color || '#5aa4dd'})`,
+        }}
+      ></div>
+
+      <div className="p-6">
+        <h3 className="text-xl font-black text-gray-900 flex items-center">
+          <div
+            className="h-8 w-8 rounded-full mr-2 flex items-center justify-center shadow-sm"
+            style={{
+              background: `linear-gradient(135deg, ${websiteSubCategory?.main_color || '#0091FF'}, ${websiteSubCategory?.secondary_color || '#5aa4dd'})`,
+            }}
+          >
             <svg
               width="16"
               height="16"
@@ -66,7 +75,7 @@ export const CardPlanTopping = ({
             </svg>
           </div>
           {plan.name}
-        </CardTitle>
+        </h3>
         {plan.PlanLimitation && (
           <div
             className="mt-4 p-4 rounded-xl border border-main-default/10"
@@ -115,8 +124,8 @@ export const CardPlanTopping = ({
             </div>
           </div>
         )}
-      </CardHeader>
-      <CardContent>
+      </div>
+      <div>
         <div
           className={cn(
             'text-2xl font-bold text-[#0a2540] relative flex items-center w-fit',
@@ -142,21 +151,63 @@ export const CardPlanTopping = ({
           </div>
         )}
         <p className="text-[#64748b] mt-1">Sekali bayar</p>
-      </CardContent>
-      <CardFooter className="pb-6">
+      </div>
+      <div className="px-6 pb-6">
         {!viewOnly && (
-          <DialogPayment plan={plan}>
+          <DialogPayment
+            plan={plan}
+            classOverlay={classOverlay}
+          >
             <Button
               variant="outline"
               className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient-default text-white hover:text-white hover:opacity-85"
-              // onClick={onClick}
+              onClick={() => {
+                // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang" coin
+                try {
+                  pixel.meta.track('AddToCart', {
+                    content_name: plan.name,
+                    content_type: 'product',
+                    value: plan.price,
+                    currency: 'IDR',
+                    contents: [{ id: plan.id, quantity: 1 }],
+                  });
+
+                  pixel.tiktok.track('AddToCart', {
+                    content_name: plan.name,
+                    content_type: 'product',
+                    value: plan.price,
+                    currency: 'IDR',
+                    content_id: `coin_addtocart_${plan.id}`, // ✅ Required untuk TikTok VSA
+                  });
+                  pixel.meta.track('AddPaymentInfo', {
+                    content_name: plan.name,
+                    content_type: 'product',
+                    value: plan.price,
+                    currency: 'IDR',
+                    contents: [{ id: plan.id, quantity: 1 }],
+                  });
+
+                  pixel.tiktok.track('AddPaymentInfo', {
+                    content_name: plan.name,
+                    content_type: 'product',
+                    value: plan.price,
+                    currency: 'IDR',
+                    content_id: `coin_addpaymentinfo_${plan.id}`, // ✅ Required untuk TikTok VSA
+                  });
+                } catch (pixelError) {
+                  console.warn(
+                    'Pixel tracking error on coin add to cart:',
+                    pixelError,
+                  );
+                }
+              }}
             >
               Beli Sekarang
             </Button>
           </DialogPayment>
         )}
-      </CardFooter>
-    </Card>
+      </div>
+    </motion.div>
   );
 };
 

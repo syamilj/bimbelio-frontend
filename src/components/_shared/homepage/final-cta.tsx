@@ -5,6 +5,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Card, CardContent } from '@/components/ui/card';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk Lead tracking
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -272,6 +273,21 @@ const FinalCTA = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
+                    // ✅ LEAD TRACKING - Track interest untuk signup
+                    pixel.meta.track(
+                      'Lead',
+                      {
+                        content_name: 'Homepage CTA - Daftar Gratis',
+                        content_type: 'signup',
+                      },
+                      // ✅ Advanced Matching untuk Meta Pixel (guest user = undefined)
+                      undefined,
+                    );
+                    pixel.tiktok.track('CompleteRegistration', {
+                      content_name: 'Homepage CTA - Daftar Gratis',
+                      content_id: 'homepage_cta_signup', // ✅ Required untuk TikTok VSA
+                    });
+
                     router.push(
                       `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
                     );

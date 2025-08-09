@@ -1,6 +1,7 @@
 import { CardTryoutProps } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, getDateTryoutString, getHours } from '@/lib/utils';
 import { IconCrown, IconX } from '@/styles/icon';
@@ -86,76 +87,158 @@ export const PaymentTryout = ({
   if (!show) return null;
 
   return (
-    <div className="fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-[#0000007a]">
-      <div className="mx-4 w-[400px] overflow-hidden rounded-3xl bg-white md:mx-4">
-        <div className="flex items-center justify-between bg-main p-6">
-          <div className="flex items-center gap-[.5rem] text-white">
-            <p>Tryout Premium</p>
-            <IconCrown className="text-main-yellow" />
-          </div>
-          <div
-            onClick={() => {
-              setShow(false);
-            }}
-          >
-            <IconX className="cursor-pointer text-white duration-300 hover:text-main-gray-input" />
-          </div>
-        </div>
-        {!tryoutData ? (
-          <div className="w-full h-full flex justify-center items-center py-8">
-            <Loader2 className="w-4 h-4 animate-spin" />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-8 p-6">
-            <p className="">
-              Akses lengkap seluruh fitur premium pada tryout ini :
-            </p>
-            <div className="-mt-4 grid grid-cols-5 gap-y-2 text-[.9rem]">
-              <p className="col-span-2 text-main-gray-text">Try out</p>
-              <p className="col-span-3">: {tryoutData?.title} </p>
-              <p className="col-span-2 text-main-gray-text">Pelaksanaan</p>
-              <p className="col-span-3">
-                : {getDateTryoutString(tryoutData?.startDate)},{' '}
-                {getHours(tryoutData?.startDate)} WIB s/d <br />{' '}
-                <span className="text-transparent">:</span>{' '}
-                {getDateTryoutString(tryoutData?.endDate)},{' '}
-                {getHours(tryoutData?.endDate)} WIB
-              </p>
-              <p className="col-span-2 text-main-gray-text">
-                Periode Penilaian
-              </p>
-              <p className="col-span-3">
-                : {getDateTryoutString(tryoutData?.resultDate)},{' '}
-                {getHours(tryoutData?.resultDate)} WIB
-              </p>
+    <Dialog
+      open={show}
+      onOpenChange={setShow}
+    >
+      <DialogContent
+        className="sm:max-w-[425px] w-[95vw] p-0 rounded-3xl"
+        hideClose
+      >
+        <div className="overflow-hidden rounded-3xl bg-white">
+          <div className="flex items-center justify-between bg-main p-6">
+            <div className="flex items-center gap-[.5rem] text-white">
+              <p>Tryout Premium</p>
+              <IconCrown className="text-main-yellow" />
             </div>
-            {pricingIsLoading || !pricing ? (
-              <div className="flex w-full justify-center items-center h-[50px]">
-                <Loader2 className="animate-spin w-4 h-4" />
-              </div>
-            ) : (
-              <button
-                className={cn(
-                  'flex items-center justify-center rounded-2xl bg-main py-4 text-white duration-300 hover:bg-main/85 active:bg-main',
-                  loading && 'cursor-pointer hover:bg-main/85 active:bg-main',
-                )}
-                onClick={() => {
-                  if (loading) return;
-                  handlePayment();
-                }}
-              >
-                {loading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  `Beli Rp. ${pricing.price.toLocaleString('id-ID', {
-                    style: 'decimal',
-                  })}`
-                )}
-              </button>
-            )}
+            <div
+              onClick={() => {
+                setShow(false);
+              }}
+            >
+              <IconX className="cursor-pointer text-white duration-300 hover:text-main-gray-input" />
+            </div>
           </div>
-        )}
-      </div>
-    </div>
+          {!tryoutData ? (
+            <div className="w-full flex justify-center items-center h-[100px]">
+              <Loader2 className="w-4 h-4 animate-spin" />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-8 p-6">
+              <p className="">
+                Akses lengkap seluruh fitur premium pada tryout ini :
+              </p>
+              <div className="-mt-4 grid grid-cols-5 gap-y-2 text-[.9rem]">
+                <p className="col-span-2 text-main-gray-text">Try out</p>
+                <p className="col-span-3">: {tryoutData?.title} </p>
+                <p className="col-span-2 text-main-gray-text">Pelaksanaan</p>
+                <p className="col-span-3">
+                  : {getDateTryoutString(tryoutData?.startDate)},{' '}
+                  {getHours(tryoutData?.startDate)} WIB s/d <br />{' '}
+                  <span className="text-transparent">:</span>{' '}
+                  {getDateTryoutString(tryoutData?.endDate)},{' '}
+                  {getHours(tryoutData?.endDate)} WIB
+                </p>
+                <p className="col-span-2 text-main-gray-text">
+                  Periode Penilaian
+                </p>
+                <p className="col-span-3">
+                  : {getDateTryoutString(tryoutData?.resultDate)},{' '}
+                  {getHours(tryoutData?.resultDate)} WIB
+                </p>
+              </div>
+              {pricingIsLoading || !pricing ? (
+                <div className="flex w-full justify-center items-center h-[50px]">
+                  <Loader2 className="animate-spin w-4 h-4" />
+                </div>
+              ) : (
+                <button
+                  className={cn(
+                    'flex items-center justify-center rounded-2xl bg-main py-4 text-white duration-300 hover:bg-main/80 active:bg-main cursor-pointer',
+                    loading && 'cursor-pointer hover:bg-main/80 active:bg-main',
+                  )}
+                  onClick={() => {
+                    if (loading) return;
+                    handlePayment();
+                  }}
+                >
+                  {loading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    `Beli Rp. ${pricing.price.toLocaleString('id-ID', {
+                      style: 'decimal',
+                    })}`
+                  )}
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
+
+  // return (
+  //   <div className="fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-[#0000007a]">
+  //     <div className="mx-4 w-[400px] overflow-hidden rounded-3xl bg-white md:mx-4">
+  //       <div className="flex items-center justify-between bg-main p-6">
+  //         <div className="flex items-center gap-[.5rem] text-white">
+  //           <p>Tryout Premium</p>
+  //           <IconCrown className="text-main-yellow" />
+  //         </div>
+  //         <div
+  //           onClick={() => {
+  //             setShow(false);
+  //           }}
+  //         >
+  //           <IconX className="cursor-pointer text-white duration-300 hover:text-main-gray-input" />
+  //         </div>
+  //       </div>
+  //       {!tryoutData ? (
+  //         <div className="w-full h-full flex justify-center items-center py-8">
+  //           <Loader2 className="w-4 h-4 animate-spin" />
+  //         </div>
+  //       ) : (
+  //         <div className="flex flex-col gap-8 p-6">
+  //           <p className="">
+  //             Akses lengkap seluruh fitur premium pada tryout ini :
+  //           </p>
+  //           <div className="-mt-4 grid grid-cols-5 gap-y-2 text-[.9rem]">
+  //             <p className="col-span-2 text-main-gray-text">Try out</p>
+  //             <p className="col-span-3">: {tryoutData?.title} </p>
+  //             <p className="col-span-2 text-main-gray-text">Pelaksanaan</p>
+  //             <p className="col-span-3">
+  //               : {getDateTryoutString(tryoutData?.startDate)},{' '}
+  //               {getHours(tryoutData?.startDate)} WIB s/d <br />{' '}
+  //               <span className="text-transparent">:</span>{' '}
+  //               {getDateTryoutString(tryoutData?.endDate)},{' '}
+  //               {getHours(tryoutData?.endDate)} WIB
+  //             </p>
+  //             <p className="col-span-2 text-main-gray-text">
+  //               Periode Penilaian
+  //             </p>
+  //             <p className="col-span-3">
+  //               : {getDateTryoutString(tryoutData?.resultDate)},{' '}
+  //               {getHours(tryoutData?.resultDate)} WIB
+  //             </p>
+  //           </div>
+  //           {pricingIsLoading || !pricing ? (
+  //             <div className="flex w-full justify-center items-center h-[50px]">
+  //               <Loader2 className="animate-spin w-4 h-4" />
+  //             </div>
+  //           ) : (
+  //             <button
+  //               className={cn(
+  //                 'flex items-center justify-center rounded-2xl bg-main py-4 text-white duration-300 hover:bg-main/85 active:bg-main',
+  //                 loading && 'cursor-pointer hover:bg-main/85 active:bg-main',
+  //               )}
+  //               onClick={() => {
+  //                 if (loading) return;
+  //                 handlePayment();
+  //               }}
+  //             >
+  //               {loading ? (
+  //                 <Loader2 className="h-4 w-4 animate-spin" />
+  //               ) : (
+  //                 `Beli Rp. ${pricing.price.toLocaleString('id-ID', {
+  //                   style: 'decimal',
+  //                 })}`
+  //               )}
+  //             </button>
+  //           )}
+  //         </div>
+  //       )}
+  //     </div>
+  //   </div>
+  // );
 };

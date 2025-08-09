@@ -69,8 +69,8 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     let done = true;
     tryoutData?.TryoutSession.forEach((item) => {
       if (
-        item.TryoutSessionParticipant.length === 0 ||
-        !item.TryoutSessionParticipant[0].isDone
+        item.TryoutSessionParticipant === null ||
+        !item.TryoutSessionParticipant.isDone
       ) {
         done = false;
       }
@@ -107,9 +107,8 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     tryoutData &&
     tryoutData?.TryoutSession[currentIndexSession] &&
     tryoutData?.TryoutSession[currentIndexSession].TryoutSessionParticipant
-      .length > 0
-      ? tryoutData?.TryoutSession[currentIndexSession]
-          .TryoutSessionParticipant[0].isDone
+      ? tryoutData?.TryoutSession[currentIndexSession].TryoutSessionParticipant
+          .isDone
       : false;
 
   const isTryoutDone = getIsTryoutDone();
@@ -124,8 +123,8 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     if (tryoutData) {
       tryoutData.TryoutSession.forEach((item, i: number) => {
         if (
-          item.TryoutSessionParticipant.length > 0 &&
-          item.TryoutSessionParticipant[0].isDone
+          item.TryoutSessionParticipant &&
+          item.TryoutSessionParticipant.isDone
         ) {
           setCurrentIndexSession(i + 1);
         }
@@ -134,13 +133,27 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   }, [tryoutData]);
 
   useEffect(() => {
-    pixel.meta.track('ViewContent', {
-      content_name: 'Tryout Detail',
-    });
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Tryout Detail',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      sessionUser?.user
+        ? {
+            em: sessionUser.user.email,
+            ph: sessionUser.user.phone || undefined,
+            fn: sessionUser.user.name?.split(' ')[0],
+            ln: sessionUser.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
     pixel.tiktok.track('ViewContent', {
       content_name: 'Tryout Detail',
+      content_id: `tryout_detail_${tryoutId}`, // ✅ Required untuk TikTok VSA menggunakan tryout ID
     });
-  }, []);
+  }, [sessionUser, tryoutId]);
 
   if (isLoading || loading) return <SpinnerPageCentered />;
 
@@ -256,15 +269,13 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       createAt: new Date(session.TryoutCategory.createAt),
       updateAt: new Date(session.TryoutCategory.updateAt),
     },
-    TryoutSessionParticipant: {
-      ...session.TryoutSessionParticipant,
-    },
+    TryoutSessionParticipant: session.TryoutSessionParticipant,
   }));
 
   if (
     !isTryoutDone &&
     currentSession &&
-    currentSession.TryoutSessionParticipant.length > 0
+    currentSession.TryoutSessionParticipant
   ) {
     if (!isSessionDone) {
       return (
@@ -394,7 +405,7 @@ export type TryoutDataType =
           startSession: Date;
           endSession: Date | null;
           isDone: boolean;
-        }[];
+        } | null;
       } & {
         number: number;
         id: string;

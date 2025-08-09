@@ -27,7 +27,6 @@ import {
 import { Voucher } from '@/types/database';
 import {
   ArrowRight,
-  Award,
   CheckCircle2,
   Clock,
   CreditCard,
@@ -50,13 +49,17 @@ import { PlanDataType } from '../_provider/types';
 export function DialogPayment({
   plan,
   onClose,
+  onOpen, // ✅ NEW: Handler untuk InitiateCheckout tracking
   type = 'plan',
   children,
+  classOverlay,
 }: {
   plan: PlanDataType;
   onClose?: () => void;
+  onOpen?: () => void; // ✅ NEW: Callback saat dialog dibuka
   type?: 'limit' | 'plan';
   children: ReactNode;
+  classOverlay?: string;
 }) {
   const {
     setPagesSetting,
@@ -79,6 +82,39 @@ export function DialogPayment({
 
   const [telp, setTelp] = useState('');
   const [voucherCode, setVoucherCode] = useState('');
+
+  // Format phone number function
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-digits
+    const digits = value.replace(/\D/g, '');
+
+    // Auto-add +62 if starts with 0
+    if (digits.startsWith('0')) {
+      return '+62' + digits.slice(1);
+    }
+
+    // Auto-add +62 if starts with 8
+    if (digits.startsWith('8')) {
+      return '+62' + digits;
+    }
+
+    // If already starts with 62, add +
+    if (digits.startsWith('62')) {
+      return '+' + digits;
+    }
+
+    // If starts with +62, keep as is
+    if (value.startsWith('+62')) {
+      return '+62' + digits.slice(2);
+    }
+
+    return value;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setTelp(formatted);
+  };
 
   const [discountPrice, setDiscountPrice] = useState<number | null>(null);
   const { mutate: checkVoucherCode, isLoading } = useMutation<Voucher>(
@@ -117,7 +153,6 @@ export function DialogPayment({
   // Mock marketplace data
   const checkoutData = {
     deliveryTime: 'Akses instan setelah pembayaran',
-    guarantee: '30 hari uang kembali',
     support: 'Support 24/7',
     securePayment: 'Pembayaran aman dengan SSL',
   };
@@ -155,13 +190,55 @@ export function DialogPayment({
           setTransactionHistory(true);
         },
       });
-      pixel.meta.track('Purchase', {
-        value: discountPrice || plan.price,
-        currency: 'IDR',
-      });
+
+      // ✅ ENRICHED PURCHASE EVENT DATA - Lebih lengkap untuk tracking yang optimal
+      const purchaseValue = discountPrice || plan.price;
+      const categoryName =
+        plan.PlanSubscription?.WebsiteSubCategory?.name || 'Unknown';
+
+      // ✅ ADVANCED MATCHING - Enhanced Meta tracking dengan user data
+      const advancedMatchingData: any = {};
+
+      if (session?.user?.email) {
+        advancedMatchingData.em = await pixel.meta.hashUserData(
+          session.user.email,
+        );
+      }
+      if (session?.user?.phone || telp) {
+        const phoneNumber = session?.user?.phone || telp;
+        advancedMatchingData.ph = await pixel.meta.hashUserData(phoneNumber);
+      }
+      if (session?.user?.name) {
+        const nameParts = session.user.name.split(' ');
+        if (nameParts[0]) {
+          advancedMatchingData.fn = await pixel.meta.hashUserData(nameParts[0]);
+        }
+        if (nameParts[1]) {
+          advancedMatchingData.ln = await pixel.meta.hashUserData(nameParts[1]);
+        }
+      }
+
+      pixel.meta.track(
+        'Purchase',
+        {
+          contents: [{ id: plan.id, quantity: 1 }], // ✅ Format yang benar untuk Meta
+          content_name: plan.name,
+          content_type: 'product',
+          value: purchaseValue,
+          currency: 'IDR',
+          num_items: 1,
+          order_id: res?.data?.order_id || `order_${Date.now()}`, // Order ID from payment response
+        },
+        advancedMatchingData,
+      ); // ✅ Advanced matching data
+
       pixel.tiktok.track('Purchase', {
-        value: discountPrice || plan.price,
+        content_id: plan.id, // ✅ FIX: TikTok content_id parameter yang missing
+        content_name: plan.name,
+        content_type: 'product', // ✅ Tambahan content_type
+        value: purchaseValue,
         currency: 'IDR',
+        order_id: res?.data?.order_id || `order_${Date.now()}`,
       });
     } catch (error) {
       toaster({
@@ -175,6 +252,39 @@ export function DialogPayment({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
+    // ✅ ADDPAYMENTINFO TRACKING - Track saat user klik "Bayar Sekarang"
+    try {
+      const purchaseValue = discountPrice || plan.price;
+      pixel.meta.track(
+        'AddPaymentInfo',
+        {
+          content_name: plan.name,
+          content_type: 'product',
+          value: purchaseValue,
+          currency: 'IDR',
+          contents: [{ id: plan.id, quantity: 1 }],
+        },
+        {
+          // Advanced Matching data
+          em: session?.user?.email,
+          ph: session?.user?.phone || undefined,
+          fn: session?.user?.name?.split(' ')[0],
+          ln: session?.user?.name?.split(' ').slice(1).join(' '),
+        },
+      );
+
+      pixel.tiktok.track('AddPaymentInfo', {
+        content_id: plan.id,
+        content_name: plan.name,
+        content_type: 'product',
+        value: purchaseValue,
+        currency: 'IDR',
+      });
+    } catch (pixelError) {
+      console.warn('Pixel tracking error on add payment info:', pixelError);
+    }
+
     await handlePayment(
       telp,
       plan.PlanSubscription.websiteSubCategoryId,
@@ -191,6 +301,28 @@ export function DialogPayment({
       onOpenChange={(open) => {
         setIsOpen(open);
         if (open) {
+          // ✅ INITIATE CHECKOUT TRACKING - Track saat dialog payment dibuka
+          const purchaseValue = discountPrice || plan.price;
+          pixel.meta.track('InitiateCheckout', {
+            contents: [{ id: plan.id, quantity: 1 }],
+            content_name: plan.name,
+            content_type: 'product',
+            value: purchaseValue,
+            currency: 'IDR',
+            num_items: 1,
+          });
+
+          pixel.tiktok.track('InitiateCheckout', {
+            content_id: plan.id,
+            content_name: plan.name,
+            content_type: 'product',
+            value: purchaseValue,
+            currency: 'IDR',
+          });
+
+          // ✅ Trigger onOpen callback jika ada
+          if (onOpen) onOpen();
+
           if (voucherCodeQuery && plan) {
             setVoucherCode(voucherCodeQuery);
             checkVoucherCode({
@@ -198,7 +330,7 @@ export function DialogPayment({
             });
           }
           if (session?.user.phone) {
-            setTelp(session.user.phone);
+            setTelp(formatPhoneNumber(session.user.phone));
           }
           if (!session) {
             setShowAuth({
@@ -219,53 +351,51 @@ export function DialogPayment({
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        classOverlay="z-[9999999999999999]"
+        // classOverlay="z-[9999999999999999]"
+        classOverlay={classOverlay}
         className="sm:max-w-7xl w-[95vw] max-h-[95vh] p-0 bg-gradient-to-br from-white via-gray-50 to-blue-50/30"
       >
-        {/* Marketplace-Style Header */}
-        <div className="relative bg-white border-b border-gray-200 p-6">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-50/50 to-transparent" />
-          <DialogHeader className="relative text-center">
-            <div className="flex items-center justify-center gap-3 mb-2">
+        {/* Compact Header */}
+        <div
+          className="relative p-4 border-b"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}04)`,
+          }}
+        >
+          <DialogHeader className="text-center">
+            <div className="flex items-center justify-center gap-2 mb-1">
               <div
-                className="p-2 rounded-xl shadow-lg"
-                style={{ backgroundColor: `${mainColor}10` }}
+                className="p-1.5 rounded-lg"
+                style={{ backgroundColor: `${mainColor}15` }}
               >
                 <ShoppingBag
-                  size={24}
+                  size={18}
                   style={{ color: mainColor }}
                 />
               </div>
-              <DialogTitle className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-                Checkout Premium
+              <DialogTitle className="text-xl font-bold text-gray-800">
+                Checkout
               </DialogTitle>
             </div>
-            <DialogDescription className="text-lg text-gray-600">
+            <DialogDescription className="text-sm text-gray-600 text-center">
               Selesaikan pembelian untuk akses instant ke konten premium
             </DialogDescription>
 
-            {/* Trust Badges */}
-            <div className="flex items-center justify-center gap-6 mt-4">
-              <div className="flex items-center gap-1 text-sm text-gray-600">
+            {/* Compact Trust Badges */}
+            <div className="flex items-center justify-center gap-6 mt-3">
+              <div className="flex items-center gap-1 text-xs text-gray-600">
                 <Shield
-                  size={16}
+                  size={12}
                   className="text-green-500"
                 />
                 <span>Pembayaran Aman</span>
               </div>
-              <div className="flex items-center gap-1 text-sm text-gray-600">
+              <div className="flex items-center gap-1 text-xs text-gray-600">
                 <Truck
-                  size={16}
+                  size={12}
                   className="text-blue-500"
                 />
                 <span>Akses Instan</span>
-              </div>
-              <div className="flex items-center gap-1 text-sm text-gray-600">
-                <Award
-                  size={16}
-                  className="text-purple-500"
-                />
-                <span>Garansi 30 Hari</span>
               </div>
             </div>
           </DialogHeader>
@@ -273,67 +403,59 @@ export function DialogPayment({
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col-reverse xl:grid xl:grid-cols-3 gap-6 p-6 max-w-7xl mx-auto"
+          className="flex flex-col lg:grid lg:grid-cols-5 gap-4 p-4 max-h-[75vh] overflow-y-auto"
         >
-          {/* Product Summary - Left Column */}
-          <div className="xl:col-span-1">
-            <div className="sticky top-6">
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="p-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-                  <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-                    <Star
-                      size={16}
-                      style={{ color: mainColor }}
-                    />
-                    Ringkasan Pesanan
-                  </h3>
-                </div>
-
-                <div className="p-4 max-h-[70vh] overflow-y-auto">
-                  <CardPlan
-                    plan={plan}
-                    discount={discountPrice || undefined}
-                    viewOnly
-                  />
-                </div>
-              </div>
+          {/* Product Summary - Compact Left Column (40%) */}
+          <div className="lg:col-span-2 order-2 lg:order-1">
+            <div className="bg-gray-50 rounded-xl border p-4">
+              <h3 className="font-semibold text-gray-800 text-sm mb-3 flex items-center gap-2">
+                <Star
+                  size={14}
+                  style={{ color: mainColor }}
+                />
+                Ringkasan Pesanan
+              </h3>
+              <CardPlan
+                plan={plan}
+                discount={discountPrice || undefined}
+                viewOnly
+              />
             </div>
           </div>
 
-          {/* Checkout Form - Right Columns */}
-          <div className="xl:col-span-2 space-y-6">
-            {/* Customer Information */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
-                <h3 className="text-xl font-semibold text-gray-800 flex items-center gap-3">
+          {/* Checkout Form - Right Columns (60%) */}
+          <div className="lg:col-span-3 space-y-4 order-1 lg:order-2">
+            {/* Customer Information - Compact */}
+            <div className="bg-white rounded-xl border">
+              <div
+                className="p-3 border-b"
+                style={{ backgroundColor: `${mainColor}05` }}
+              >
+                <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
                   <div
-                    className="p-2 rounded-lg"
+                    className="p-1 rounded"
                     style={{ backgroundColor: `${mainColor}20` }}
                   >
                     <Users
-                      size={20}
+                      size={14}
                       style={{ color: mainColor }}
                     />
                   </div>
                   Informasi Kontak
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
-                  Data ini diperlukan untuk komunikasi terkait pesanan Anda
-                </p>
               </div>
 
-              <div className="p-6 space-y-6">
-                {/* Phone Number Input - Enhanced */}
+              <div className="p-4">
                 <div className="space-y-3">
-                  <Label className="text-base font-semibold text-gray-700 flex items-center gap-2">
+                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                     <Phone
-                      size={16}
+                      size={12}
                       className="text-gray-500"
                     />
                     Nomor Telepon
                     <Badge
                       variant="destructive"
-                      className="text-xs"
+                      className="text-xs px-1 py-0 text-white"
                     >
                       Required
                     </Badge>
@@ -341,154 +463,151 @@ export function DialogPayment({
                   <div className="relative">
                     <Input
                       type="tel"
-                      placeholder="Contoh: 08123456789"
+                      placeholder="+62851 1234 5678"
                       value={telp}
-                      onChange={(e) => setTelp(e.target.value)}
-                      className="h-14 text-base border-2 border-gray-200 focus:border-blue-500 rounded-xl transition-all duration-200 pl-12"
+                      onChange={handlePhoneChange}
+                      className="h-12 text-sm border border-gray-200 focus:border-blue-500 rounded-lg pl-10 pr-4 transition-all duration-200"
                       required
                     />
                     <Phone
-                      size={18}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    />
-                  </div>
-                  <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <Shield
                       size={16}
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    />
+                    {/* Phone number indicator */}
+                    {telp && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        {telp.startsWith('+62') && telp.length >= 12 ? (
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        ) : (
+                          <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-start gap-2 p-3 bg-blue-50 rounded-lg text-xs text-blue-700">
+                    <Shield
+                      size={12}
                       className="text-blue-600 mt-0.5 flex-shrink-0"
                     />
-                    <div className="text-sm text-blue-700">
-                      <p className="font-medium">
-                        Mengapa kami memerlukan nomor telepon?
+                    <div>
+                      <p className="font-medium mb-1">
+                        Format otomatis tersedia
                       </p>
-                      <p className="text-blue-600 mt-1">
-                        Untuk konfirmasi pembelian dan support jika diperlukan.
-                        Data Anda aman dengan enkripsi SSL.
-                      </p>
+                      <ul className="space-y-0.5 text-blue-600">
+                        <li>• Ketik: 08123456789 → +6281234567890</li>
+                        <li>• Ketik: 81234567890 → +6281234567890</li>
+                        <li>• Data aman dengan enkripsi SSL</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Voucher Section - Enhanced */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-100">
-                <h3 className="text-xl font-semibold text-gray-800 flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-green-200">
+            {/* Voucher Section - Compact */}
+            <div className="bg-white rounded-xl border">
+              <div
+                className="p-3 border-b"
+                style={{ backgroundColor: `${secondaryColor}05` }}
+              >
+                <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+                  <div className="p-1 rounded bg-green-200">
                     <Tag
-                      size={20}
+                      size={14}
                       className="text-green-700"
                     />
                   </div>
                   Kode Promo & Voucher
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
-                  Punya kode promo? Gunakan untuk mendapat diskon tambahan!
-                </p>
               </div>
 
-              <div className="p-6">
-                <div className="space-y-4">
-                  <div className="flex gap-3">
-                    <div className="relative flex-1">
-                      <Input
-                        type="text"
-                        placeholder="Masukkan kode voucher atau promo"
-                        value={voucherCode}
-                        disabled={!!discountPrice}
-                        onChange={(e) =>
-                          setVoucherCode(e.target.value.toUpperCase())
-                        }
-                        className="h-14 text-base border-2 border-gray-200 focus:border-green-500 rounded-xl transition-all duration-200 pl-12 pr-4"
-                      />
-                      <Tag
-                        size={18}
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      />
-                    </div>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className={cn(
-                        'h-14 px-8 border-2 rounded-xl font-semibold transition-all duration-200',
-                        discountPrice
-                          ? 'border-red-200 text-red-600 hover:bg-red-50'
-                          : 'border-green-200 text-green-600 hover:bg-green-50',
-                      )}
-                      onClick={() => {
-                        if (!discountPrice) {
-                          applyVoucherCode(plan.id);
-                        } else {
-                          setDiscountPrice(null);
-                          setVoucherCode('');
-                        }
-                      }}
-                      disabled={
-                        isLoading || (!voucherCode.trim() && !discountPrice)
+              <div className="p-4">
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Input
+                      type="text"
+                      placeholder="Masukkan kode voucher atau promo"
+                      value={voucherCode}
+                      disabled={!!discountPrice}
+                      onChange={(e) =>
+                        setVoucherCode(e.target.value.toUpperCase())
                       }
-                    >
-                      {isLoading ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                      ) : discountPrice ? (
-                        <>
-                          <Zap
-                            size={16}
-                            className="mr-2"
-                          />
-                          Hapus
-                        </>
-                      ) : (
-                        <>
-                          <Gift
-                            size={16}
-                            className="mr-2"
-                          />
-                          Terapkan
-                        </>
-                      )}
-                    </Button>
+                      className="h-10 text-sm border border-gray-200 focus:border-green-500 rounded-lg pl-8"
+                    />
+                    <Tag
+                      size={14}
+                      className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    />
                   </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className={cn(
+                      'h-10 px-4 border rounded-lg text-sm font-medium',
+                      discountPrice
+                        ? 'border-red-200 text-red-600 hover:bg-red-50'
+                        : 'border-green-200 text-green-600 hover:bg-green-50',
+                    )}
+                    onClick={() => {
+                      if (!discountPrice) {
+                        applyVoucherCode(plan.id);
+                      } else {
+                        setDiscountPrice(null);
+                        setVoucherCode('');
+                      }
+                    }}
+                    disabled={
+                      isLoading || (!voucherCode.trim() && !discountPrice)
+                    }
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : discountPrice ? (
+                      'Hapus'
+                    ) : (
+                      'Terapkan'
+                    )}
+                  </Button>
+                </div>
 
-                  {/* Voucher Success State */}
-                  {discountPrice && (
-                    <div className="p-4 bg-green-50 border border-green-200 rounded-xl">
-                      <div className="flex items-center gap-3">
-                        <CheckCircle2
-                          size={20}
-                          className="text-green-600"
-                        />
-                        <div>
-                          <p className="font-semibold text-green-800">
-                            Voucher berhasil diterapkan!
-                          </p>
-                          <p className="text-sm text-green-700">
-                            Anda hemat {formatPrice(plan.price - discountPrice)}{' '}
-                            dari pembelian ini
-                          </p>
-                        </div>
+                {/* Voucher Success State - Compact */}
+                {discountPrice && (
+                  <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2
+                        size={16}
+                        className="text-green-600"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-green-800">
+                          Voucher berhasil diterapkan!
+                        </p>
+                        <p className="text-xs text-green-700">
+                          Anda hemat {formatPrice(plan.price - discountPrice)}
+                        </p>
                       </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Order Summary & Payment */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            {/* Order Summary & Payment - Compact */}
+            <div className="bg-white rounded-xl border">
               <div
-                className="p-6 border-b border-gray-100"
+                className="p-3 border-b"
                 style={{
-                  background: `linear-gradient(135deg, ${mainColor}10, ${secondaryColor}05)`,
+                  backgroundColor: `${mainColor}08`,
                 }}
               >
-                <h3 className="text-xl font-semibold text-gray-800 flex items-center gap-3">
+                <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
                   <div
-                    className="p-2 rounded-lg"
+                    className="p-1 rounded"
                     style={{ backgroundColor: `${mainColor}20` }}
                   >
                     <CreditCard
-                      size={20}
+                      size={14}
                       style={{ color: mainColor }}
                     />
                   </div>
@@ -496,47 +615,45 @@ export function DialogPayment({
                 </h3>
               </div>
 
-              <div className="p-6 space-y-6">
-                {/* Price Breakdown */}
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center pb-3 border-b border-gray-100">
+              <div className="p-4 space-y-4">
+                {/* Price Breakdown - Compact */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm">
                     <span className="text-gray-600">Harga paket</span>
-                    <span className="font-semibold">
+                    <span className="font-medium">
                       {formatPrice(plan.price)}
                     </span>
                   </div>
 
                   {discountPrice && (
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-green-600 flex items-center gap-2">
-                        <Gift size={16} />
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-green-600 flex items-center gap-1">
+                        <Gift size={12} />
                         Diskon voucher
                       </span>
-                      <span className="font-semibold text-green-600">
+                      <span className="font-medium text-green-600">
                         -{formatPrice(plan.price - discountPrice)}
                       </span>
                     </div>
                   )}
 
                   {plan.originalPrice && plan.originalPrice > plan.price && (
-                    <div className="flex justify-between items-center pb-3 border-b border-gray-100">
-                      <span className="text-orange-600 flex items-center gap-2">
-                        <Zap size={16} />
-                        Diskon terbatas ({getDiscountPercentage()}%)
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-orange-600 flex items-center gap-1">
+                        <Zap size={12} />
+                        Diskon ({getDiscountPercentage()}%)
                       </span>
-                      <span className="font-semibold text-orange-600">
+                      <span className="font-medium text-orange-600">
                         -{formatPrice(plan.originalPrice - plan.price)}
                       </span>
                     </div>
                   )}
 
-                  <div className="flex justify-between items-center pt-3 border-t-2 border-gray-200">
-                    <span className="text-lg font-bold text-gray-800">
-                      Total Pembayaran
-                    </span>
+                  <div className="flex justify-between items-center pt-2 border-t border-gray-200">
+                    <span className="font-bold text-gray-800">Total</span>
                     <div className="text-right">
                       <span
-                        className="text-2xl font-black"
+                        className="text-lg font-black"
                         style={{ color: mainColor }}
                       >
                         {formatPrice(discountPrice || plan.price)}
@@ -544,7 +661,7 @@ export function DialogPayment({
                       {(discountPrice ||
                         (plan.originalPrice &&
                           plan.originalPrice > plan.price)) && (
-                        <p className="text-sm text-gray-500 line-through">
+                        <p className="text-xs text-gray-500 line-through">
                           {formatPrice(plan.originalPrice || plan.price)}
                         </p>
                       )}
@@ -552,89 +669,64 @@ export function DialogPayment({
                   </div>
                 </div>
 
-                {/* Checkout Benefits */}
-                <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-xl">
-                  <div className="text-center">
-                    <Clock
-                      size={20}
-                      className="mx-auto mb-2 text-blue-500"
-                    />
-                    <p className="text-xs font-medium text-gray-700">
-                      Akses Instan
-                    </p>
-                    <p className="text-xs text-gray-500">Setelah pembayaran</p>
-                  </div>
-                  <div className="text-center">
-                    <Shield
-                      size={20}
-                      className="mx-auto mb-2 text-green-500"
-                    />
-                    <p className="text-xs font-medium text-gray-700">Garansi</p>
-                    <p className="text-xs text-gray-500">30 hari</p>
-                  </div>
+                {/* Compact Benefits */}
+                <div className="p-3 bg-gray-50 rounded-lg text-center">
+                  <Clock
+                    size={16}
+                    className="mx-auto mb-1 text-blue-500"
+                  />
+                  <p className="text-xs font-medium text-gray-700">
+                    Akses Instan
+                  </p>
+                  <p className="text-xs text-gray-500">Setelah pembayaran</p>
                 </div>
 
-                {/* Payment Button - Enhanced */}
+                {/* Payment Button - Compact but Prominent */}
                 <Button
                   type="submit"
-                  className="w-full h-16 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
-                  disabled={loading || telp.length === 0}
+                  className="w-full h-12 text-sm font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
+                  disabled={
+                    loading ||
+                    telp.length === 0 ||
+                    !telp.startsWith('+62') ||
+                    telp.length < 12
+                  }
                   style={{
                     background: loading
                       ? '#gray-400'
                       : `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
-                  onMouseEnter={(e) => {
-                    if (!loading) {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}40`;
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!loading) {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}30`;
-                    }
-                  }}
                 >
-                  <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                   {loading ? (
                     <>
-                      <Loader2 className="h-6 w-6 animate-spin mr-3" />
-                      Memproses Pembayaran...
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Memproses...
                     </>
                   ) : (
                     <>
-                      <CreditCard className="h-6 w-6 mr-3" />
-                      Bayar Sekarang -{' '}
-                      {formatPrice(discountPrice || plan.price)}
-                      <ArrowRight className="h-6 w-6 ml-3" />
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Bayar {formatPrice(discountPrice || plan.price)}
+                      <ArrowRight className="h-4 w-4 ml-2" />
                     </>
                   )}
                 </Button>
 
-                {/* Security Note */}
-                <div className="text-center pt-4 border-t border-gray-100">
-                  <p className="text-sm text-gray-500">
+                {/* Security Note - Compact */}
+                <div className="text-center pt-2 border-t border-gray-100">
+                  <p className="text-xs text-gray-500">
                     Dengan melanjutkan, Anda menyetujui{' '}
                     <a
                       href="#"
-                      className="text-blue-600 hover:underline font-medium"
+                      className="text-blue-600 hover:underline"
                     >
                       Syarat & Ketentuan
                     </a>{' '}
-                    dan{' '}
-                    <a
-                      href="#"
-                      className="text-blue-600 hover:underline font-medium"
-                    >
-                      Kebijakan Privasi
-                    </a>{' '}
                     kami
                   </p>
-                  <div className="flex items-center justify-center gap-2 mt-2 text-xs text-gray-400">
-                    <Shield size={12} />
-                    <span>Pembayaran dienkripsi dengan SSL 256-bit</span>
+                  <div className="flex items-center justify-center gap-1 mt-1 text-xs text-gray-400">
+                    <Shield size={10} />
+                    <span>Pembayaran dienkripsi SSL 256-bit</span>
                   </div>
                 </div>
               </div>

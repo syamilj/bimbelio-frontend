@@ -37,11 +37,15 @@ export default function TryOutPage() {
   }, [payment]);
 
   useEffect(() => {
+    // ✅ ENRICHED VIEWCONTENT EVENT DATA
     pixel.meta.track('ViewContent', {
       content_name: 'Tryout Page',
+      content_type: 'page',
     });
     pixel.tiktok.track('ViewContent', {
       content_name: 'Tryout Page',
+      page_path: `/user/try-out`,
+      content_id: 'tryout_page_main', // ✅ Required untuk TikTok VSA
     });
   }, []);
 

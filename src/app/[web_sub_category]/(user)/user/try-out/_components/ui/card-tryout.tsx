@@ -14,6 +14,7 @@ import {
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking Lead
 import { cn, getDateString } from '@/lib/utils';
 import { IconTailedArrowUp45 } from '@/styles/icon';
 import type {
@@ -211,6 +212,41 @@ export default function CardTryOut({
           userId: session?.user.id || '',
           isPremium,
         });
+
+        // ✅ Track Lead Event - User mendaftar try out
+        try {
+          pixel.meta.track(
+            'Lead',
+            {
+              content_name: `Tryout Registration - ${showDetail.title}`,
+              content_type: 'tryout',
+              value: isPremium ? 1 : 0, // 1 untuk premium, 0 untuk gratis
+              currency: 'IDR',
+              contents: [{ id: showDetail.id, quantity: 1 }],
+            },
+            {
+              // Advanced Matching data
+              em: session?.user?.email,
+              ph: session?.user?.phone || undefined, // ✅ Handle null value
+              fn: session?.user?.name?.split(' ')[0],
+              ln: session?.user?.name?.split(' ').slice(1).join(' '),
+            },
+          );
+
+          pixel.tiktok.track('Lead', {
+            content_name: `Tryout Registration - ${showDetail.title}`,
+            content_type: 'tryout',
+            value: isPremium ? 1 : 0,
+            currency: 'IDR',
+            content_id: `tryout_registration_${showDetail.id}`, // ✅ Required untuk TikTok VSA
+          });
+        } catch (pixelError) {
+          console.warn(
+            'Pixel tracking error on tryout registration:',
+            pixelError,
+          );
+        }
+
         router.push(`${pathname}?register_tryout=success`);
         setShowDetail(null);
       }

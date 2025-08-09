@@ -67,6 +67,7 @@ export default function Chat({
 const MainContent = () => {
   const searchParams = useSearchParams();
   const newChat = searchParams.get('new');
+
   const {
     messageData,
     setMessageData,
@@ -83,15 +84,17 @@ const MainContent = () => {
   const vectoriseDocMutation = vectorize?.vectoriseDocMutation;
 
   const userDocData = userDoc?.userDocData;
-  const isUserDocLoading = userDoc?.isUserDocLoading;
+  const isUserDocLoading = userDoc?.isUserDocLoading || false;
 
   const pathname = usePathname();
   const pathnameArray = pathname?.split('/');
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
 
   useEffect(() => {
+    console.log('masuk1');
     if (prevChatMessages && prevChatMessages?.length > 0 && !firstMessage) {
       setMessageData([GreetingMessage, ...prevChatMessages]);
+      console.log('masuk2', prevChatMessages);
     }
   }, [prevChatMessages, firstMessage, setMessageData]);
 
@@ -125,7 +128,11 @@ const MainContent = () => {
   const isNoMessages =
     messageData?.length === 0 && prevChatMessages?.length === 0 && !newChat;
 
-  if (isUserDocLoading) {
+  console.log({
+    messageData,
+  });
+
+  if (isUserDocLoading === true) {
     return <SpinnerCentered />;
   }
 

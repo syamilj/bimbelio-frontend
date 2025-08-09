@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -7,8 +6,15 @@ import { useMedia } from 'use-media';
 import UserAccountNav from '@/components/_shared/navbar/user-account-nav';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Card } from '@/components/ui/card';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { VisuallyHidden } from '@/components/ui/visually-hidden';
 import { LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
 
 import { useAppContext } from '@/components/provider/provider-app';
@@ -179,199 +185,145 @@ const MobileNav: React.FC<{
                   size="icon"
                   className="relative w-10 h-10 rounded-xl transition-all duration-300 hover:scale-105 text-main-default bg-main-default/10"
                 >
-                  <motion.div
-                    animate={isSheetOpen ? { rotate: 90 } : { rotate: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {isSheetOpen ? <X size={20} /> : <Menu size={20} />}
-                  </motion.div>
+                  {isSheetOpen ? <X size={20} /> : <Menu size={20} />}
                 </Button>
               </SheetTrigger>
 
               <SheetContent
                 side="bottom"
-                className="h-fit max-h-[85vh] rounded-t-3xl border-none bg-white/95 backdrop-blur-xl px-0 pt-0"
+                className="h-fit max-h-[85vh] rounded-t-2xl border-none bg-white px-0 pt-0"
               >
-                {/* Elegant Header */}
-                <div className="relative overflow-hidden">
-                  <div className="p-6 pb-4 relative bg-main-default/10">
-                    {/* Decorative Elements */}
-                    <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-10 bg-main-default" />
-                    <div className="absolute bottom-2 -left-2 w-8 h-8 rounded-full opacity-15 bg-main-default" />
+                {/* Add hidden title for accessibility */}
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Menu Navigasi</SheetTitle>
+                  <VisuallyHidden>
+                    <p>Jelajahi semua fitur yang tersedia</p>
+                  </VisuallyHidden>
+                </SheetHeader>
 
-                    <div className="relative z-10 text-center">
-                      <div className="w-12 h-12 mx-auto mb-3 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-default">
-                        <Menu className="w-6 h-6 text-white" />
-                      </div>
-                      <h2 className="text-xl font-bold mb-1 text-main-default">
-                        Menu Navigasi
-                      </h2>
-                      <p className="text-sm text-gray-600">
-                        Jelajahi semua fitur yang tersedia
-                      </p>
-                    </div>
+                {/* Simple Clean Header */}
+                <div className="p-6 pb-4 border-b border-gray-100">
+                  <div className="text-center">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-1">
+                      Menu Navigasi
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                      Jelajahi semua fitur yang tersedia
+                    </p>
                   </div>
                 </div>
 
-                <div className="px-6 pb-6 space-y-4 bg-main-default/10">
-                  {/* Navigation Items */}
-                  <Card className="border-2 border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-                    <CardContent className="p-0">
-                      {navItems.map((item, index) => (
-                        <motion.div
-                          key={item.href}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="border-b border-gray-100 last:border-b-0"
-                        >
-                          <div
-                            className="flex items-center justify-between px-6 py-4 transition-all duration-300 hover:bg-gray-50"
-                            onClick={() => setIsSheetOpen(false)}
+                {/* Clean Content */}
+                <div className="px-6 pb-6 space-y-4">
+                  {/* Navigation Items - Simple List */}
+                  <div className="space-y-2">
+                    {navItems.map((item, index) => (
+                      <div
+                        key={item.href}
+                        className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200"
+                        onClick={() => setIsSheetOpen(false)}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-sm font-medium text-gray-600">
+                            {index + 1}
+                          </div>
+                          <NavLink item={item} />
+                        </div>
+                        <div className="text-gray-400">
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
                           >
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white bg-gradient-default">
-                                {index + 1}
-                              </div>
-                              <NavLink item={item} />
-                            </div>
-                            <div className="text-gray-400">
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 5l7 7-7 7"
-                                />
-                              </svg>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </CardContent>
-                  </Card>
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
-                  {/* User Profile Section */}
-                  <Card className="border-2 border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-                    <CardContent className="p-6">
-                      {session ? (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="space-y-4"
-                        >
-                          {/* User Info Card */}
-                          <div className="p-4 rounded-2xl relative overflow-hidden">
-                            <div className="relative z-10 flex items-center gap-3">
-                              <div className="relative">
-                                <Avatar className="h-12 w-12 border-2 border-white shadow-lg">
-                                  <AvatarImage
-                                    src={session.user.image ?? ''}
-                                    alt={session.user.name ?? 'User'}
-                                  />
-                                  <AvatarFallback
-                                    className="text-lg font-bold text-white"
-                                    style={{
-                                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                                    }}
-                                  >
-                                    {session.user.name
-                                      ? session.user.name[0].toUpperCase()
-                                      : 'U'}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <div
-                                  className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white flex items-center justify-center"
-                                  style={{ backgroundColor: '#10B981' }}
-                                >
-                                  <div className="w-2 h-2 bg-white rounded-full" />
-                                </div>
-                              </div>
-
-                              <div className="flex-1 min-w-0">
-                                <p className="font-bold text-gray-900 truncate">
-                                  {session.user.name}
-                                </p>
-                                <p className="text-sm text-gray-600 truncate">
-                                  {session.user.email}
-                                </p>
-                              </div>
-                            </div>
-
-                            {/* Decorative dots */}
-                            <div className="absolute top-2 right-2 flex gap-1">
-                              <div className="w-1 h-1 rounded-full bg-white/30" />
-                              <div className="w-1 h-1 rounded-full bg-white/20" />
-                              <div className="w-1 h-1 rounded-full bg-white/10" />
-                            </div>
-                          </div>
-
-                          {/* Action Buttons */}
-                          <div className="grid grid-cols-2 gap-3">
-                            <Link
-                              href={`/${website_sub_category_id}/user/try-out`}
-                              onClick={() => setIsSheetOpen(false)}
-                              className="group"
+                  {/* User Profile Section - Clean Version */}
+                  <div className="border-t border-gray-100 pt-4">
+                    {session ? (
+                      <div className="space-y-4">
+                        {/* User Info - Simple */}
+                        <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50">
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage
+                              src={session.user.image ?? ''}
+                              alt={session.user.name ?? 'User'}
+                            />
+                            <AvatarFallback
+                              className="text-sm font-medium text-white"
+                              style={{ backgroundColor: mainColor }}
                             >
-                              <Card className="border-2 border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-md">
-                                <CardContent className="p-4 text-center">
-                                  <div className="w-10 h-10 mx-auto mb-2 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 bg-main-default/20">
-                                    <LayoutDashboard className="w-5 h-5 text-main-default" />
-                                  </div>
-                                  <p className="text-sm font-medium text-gray-700">
-                                    Dashboard
-                                  </p>
-                                </CardContent>
-                              </Card>
-                            </Link>
-
-                            <button
-                              onClick={() => {
-                                signOut({ callbackUrl: '/' });
-                                setIsSheetOpen(false);
-                              }}
-                              className="group"
-                            >
-                              <Card className="border-2 border-red-200 hover:border-red-300 transition-all duration-300 hover:shadow-md">
-                                <CardContent className="p-4 text-center">
-                                  <div className="w-10 h-10 mx-auto mb-2 rounded-xl bg-red-100 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                    <LogOut className="w-5 h-5 text-red-600" />
-                                  </div>
-                                  <p className="text-sm font-medium text-red-700">
-                                    Keluar
-                                  </p>
-                                </CardContent>
-                              </Card>
-                            </button>
+                              {session.user.name
+                                ? session.user.name[0].toUpperCase()
+                                : 'U'}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-gray-900 truncate">
+                              {session.user.name}
+                            </p>
+                            <p className="text-sm text-gray-500 truncate">
+                              {session.user.email}
+                            </p>
                           </div>
-                        </motion.div>
-                      ) : (
-                        <Button
-                          className="w-full h-12 rounded-xl text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
-                          style={{
-                            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                          }}
-                          onClick={() => {
-                            setShowAuth((prev) => ({
-                              ...prev,
-                              open: true,
-                              redirect: website_sub_category_id
-                                ? `${website_sub_category_id}/user/dashboard`
-                                : '/choice/user/dashboard',
-                            }));
-                            setIsSheetOpen(false);
-                          }}
-                        >
-                          Daftar/Masuk
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
+                        </div>
+
+                        {/* Action Buttons - Simple Grid */}
+                        <div className="grid grid-cols-2 gap-3">
+                          <Link
+                            href={`/${website_sub_category_id}/user/try-out`}
+                            onClick={() => setIsSheetOpen(false)}
+                            className="flex items-center justify-center gap-2 p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+                          >
+                            <LayoutDashboard className="w-4 h-4 text-gray-600" />
+                            <span className="text-sm font-medium text-gray-700">
+                              Dashboard
+                            </span>
+                          </Link>
+
+                          <button
+                            onClick={() => {
+                              signOut({ callbackUrl: '/' });
+                              setIsSheetOpen(false);
+                            }}
+                            className="flex items-center justify-center gap-2 p-3 rounded-xl bg-red-50 hover:bg-red-100 transition-colors"
+                          >
+                            <LogOut className="w-4 h-4 text-red-600" />
+                            <span className="text-sm font-medium text-red-700">
+                              Keluar
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        className="w-full h-12 rounded-xl font-medium text-white"
+                        style={{ backgroundColor: mainColor }}
+                        onClick={() => {
+                          setShowAuth((prev) => ({
+                            ...prev,
+                            open: true,
+                            redirect: website_sub_category_id
+                              ? `${website_sub_category_id}/user/dashboard`
+                              : '/choice/user/dashboard',
+                          }));
+                          setIsSheetOpen(false);
+                        }}
+                      >
+                        Daftar/Masuk
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>

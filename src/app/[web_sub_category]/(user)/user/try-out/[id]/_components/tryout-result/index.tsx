@@ -154,6 +154,8 @@ export default function TryoutResult({
   const [TestAgainTryoutLoading, setTestAgainTryoutLoading] =
     useState<boolean>(false);
 
+  const currentSession = sessionData[resultIndex];
+
   const sessionId =
     sessionData && sessionData.length > 0 ? sessionData[resultIndex].id : '';
 
@@ -599,6 +601,9 @@ export default function TryoutResult({
               </TabsContent>
               <TabsContent value="review">
                 <ReviewTab
+                  participantId={
+                    currentSession.TryoutSessionParticipant?.id || ''
+                  }
                   sessionResult={sessionResult}
                   setResultIndex={setResultIndex}
                   resultIndex={resultIndex}

@@ -8,6 +8,7 @@ import {
   useContext,
 } from 'react';
 import Navbar from '../_shared/navbar';
+import FloatingContactButton from '../_shared/other/floating-contact-button';
 import { useAppContext } from '../provider/provider-app';
 
 interface LayoutGuestProps {
@@ -33,6 +34,7 @@ export default function LayoutGuest({ children }: LayoutGuestProps) {
       <div className="min-h-screen">
         <Navbar />
         <main className="relative">{children}</main>
+        <FloatingContactButton />
       </div>
     </GuestContext.Provider>
   );
