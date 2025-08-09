@@ -67,7 +67,7 @@ const TryoutOption = () => {
     try {
       setIsLoadingDeleteTryout(true);
       const res = await axiosInstance.delete(`/tryout/deleteTryout?id=${id}`);
-      router.push(`/${website_sub_category_id}/admin/try-out`);
+      router.push(`/${website_sub_category_id}/admin/tryout`);
       return response(res, true);
     } catch (error) {
       return responseError(error, true);

@@ -16,6 +16,7 @@ import {
   Trophy,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { TryoutDataType } from '../page';
 import CountDownTryout from './countdown-tryout';
 import SessionQuestion from './session-question';
 import SubmitTryout from './submit-tryout';
@@ -27,7 +28,7 @@ interface QuestionWithAnswer extends TryoutQuestion {
 interface Props {
   questions: QuestionWithAnswer[];
   sessionId: string;
-  sessionData: any;
+  sessionData: NonNullable<TryoutDataType>['TryoutSession'][0];
   isSessionDone: boolean;
   numberSession: number;
 }
@@ -98,10 +99,11 @@ const Tryout: React.FC<Props> = ({
   };
 
   const getDuration = () => {
+    if (!sessionData.TryoutSessionParticipant?.startSession) return 0;
     const durationInSeconds = sessionData.duration * 60;
     const dateNow = new Date().getTime();
     const dateStart = new Date(
-      sessionData.TryoutSessionParticipant[0].startSession,
+      sessionData.TryoutSessionParticipant?.startSession,
     ).getTime();
 
     const diffInMilliseconds = dateNow - dateStart;

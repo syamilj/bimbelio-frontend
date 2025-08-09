@@ -20,10 +20,12 @@ const ModalImportCSV = ({
   setSessions,
   currentIndexEdit,
   assessmentType,
+  setQuestionIndex,
 }: {
   setSessions: React.Dispatch<SetStateAction<SessionProps[]>>;
   currentIndexEdit: number | null;
   assessmentType: string;
+  setQuestionIndex: React.Dispatch<SetStateAction<number>>;
 }) => {
   const editor = useCreateBlockNote();
   const [open, setOpen] = useState<boolean>(false);
@@ -147,6 +149,143 @@ const ModalImportCSV = ({
               });
               return;
             }
+            setQuestionIndex(0);
+            setSessions((prev) =>
+              prev.map((session, sessionId) => {
+                if (sessionId === currentIndexEdit) {
+                  return {
+                    ...session,
+                    Questions: ParseQuestions,
+                  };
+                }
+                return { ...session };
+              }),
+            );
+            setOpen(false);
+            setIsLoading(false);
+            return;
+          }
+          if (assessmentType !== '1-5') {
+            let Questions;
+            if (assessmentType === '+1/0') {
+              Questions = handleGenerateQuestion(data, 1, 0);
+            } else if (assessmentType === '+5/0') {
+              Questions = handleGenerateQuestion(data, 5, 0);
+            } else if (assessmentType === '+4/-1/0') {
+              Questions = handleGenerateQuestion(data, 4, -1);
+            } else {
+              toaster({
+                title: 'Error',
+                condition: 'warning',
+                description: 'Assestment Type tidak valid',
+                duration: 3000,
+              });
+              return;
+            }
+            Questions.forEach((item) => {
+              let isCorrect = false;
+              if (
+                assessmentType === '+1/0' &&
+                (!!item.Answers.find((item2) => item2.value === 1) || false)
+              ) {
+                isCorrect = true;
+              } else if (
+                assessmentType === '+4/-1/0' &&
+                (!!item.Answers.find((item2) => item2.value === 4) || false)
+              ) {
+                isCorrect = true;
+              } else if (
+                assessmentType === '+5/0' &&
+                (!!item.Answers.find((item2) => item2.value === 5) || false)
+              ) {
+                isCorrect = true;
+              }
+              if (!isCorrect) {
+                isAssesmentTypeValid = {
+                  value: false,
+                  number: item.number,
+                };
+              }
+            });
+            const ParseQuestions = await Promise.all(
+              Questions.map(async (item) => {
+                let questionValue = item.question;
+
+                const matches = [
+                  ...item.question.matchAll(
+                    /!\[.*?\]\((data:image\/.*?;base64,.*?)\)/g,
+                  ),
+                ];
+
+                for (const match of matches) {
+                  const fullMatch = match[0];
+                  const base64Data = match[1];
+
+                  const parsed = base64Data.match(
+                    /^data:(image\/\w+);base64,(.+)$/,
+                  );
+                  if (!parsed) continue;
+
+                  const mime = parsed[1];
+                  const ext = mime.split('/')[1];
+                  const base64 = parsed[2];
+
+                  const fileName = `${crypto.randomUUID()}.${ext}`;
+                  const buffer = Buffer.from(base64, 'base64');
+
+                  const { error } = await supabase.storage
+                    .from('dump-images')
+                    .upload(fileName, buffer, {
+                      contentType: mime,
+                      upsert: true,
+                    });
+
+                  if (error) {
+                    console.error('Upload error:', error);
+                    continue;
+                  }
+
+                  const { data: publicUrlData } = supabase.storage
+                    .from('dump-images')
+                    .getPublicUrl(fileName);
+
+                  const publicUrl = publicUrlData?.publicUrl || '';
+
+                  questionValue = questionValue.replace(
+                    fullMatch,
+                    `![Gambar](${publicUrl})`,
+                  );
+                }
+
+                return {
+                  ...item,
+                  question: await ParseMarkdownToHTML(questionValue, editor),
+                  Answers: await Promise.all(
+                    item.Answers.map(async (aItem) => {
+                      return {
+                        ...aItem,
+                        answer: await ParseMarkdownToHTML(aItem.answer, editor),
+                      };
+                    }),
+                  ),
+                  explanation: await ParseMarkdownToHTML(
+                    item.explanation || '',
+                    editor,
+                  ),
+                };
+              }),
+            );
+
+            if (!isAssesmentTypeValid.value) {
+              toaster({
+                title: `Number ${isAssesmentTypeValid.number}`,
+                condition: 'warning',
+                description: 'Jawaban benar tidak ditemukan',
+                duration: 3000,
+              });
+              return;
+            }
+            setQuestionIndex(0);
             setSessions((prev) =>
               prev.map((session, sessionId) => {
                 if (sessionId === currentIndexEdit) {
@@ -203,17 +342,17 @@ const ModalImportCSV = ({
 
             // Transformasi nilai sesuai assessmentType
             let transformedAnswers;
-            if (assessmentType === '+5/0') {
+            if ((assessmentType as string) === '+5/0') {
               transformedAnswers = answers.map((item) => ({
                 answer: item.answer,
                 value: item.value === 5 ? 5 : 0,
               }));
-            } else if (assessmentType === 'IRT') {
+            } else if ((assessmentType as string) === 'IRT') {
               transformedAnswers = answers.map((item) => ({
                 answer: item.answer,
                 value: item.value === 5 ? 1 : 0,
               }));
-            } else if (assessmentType === '+4/-1/0') {
+            } else if ((assessmentType as string) === '+4/-1/0') {
               transformedAnswers = answers.map((item) => ({
                 answer: item.answer,
                 value: item.value === 5 ? 4 : -1,
@@ -227,8 +366,11 @@ const ModalImportCSV = ({
               question: quest.Question,
               subCategory: quest.Subcategory,
               Answers: transformedAnswers,
+              courseChapterIds: [],
             };
           });
+
+          console.log({ fixData });
 
           if (!isValid) {
             toaster({
@@ -300,6 +442,11 @@ const ModalImportCSV = ({
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-semibold underline">Format CSV:</p>
           {assessmentType === 'IRT' ? (
+            <p className="font-semibold">
+              Number | Question | SubCategory | SubSubCategory | A | B | C | D |
+              E | Correct | Explanation
+            </p>
+          ) : assessmentType !== '1-5' ? (
             <p className="font-semibold">
               Number | Question | SubCategory | SubSubCategory | A | B | C | D |
               E | Correct | Explanation
@@ -380,6 +527,44 @@ const handleGenerateIRT = (data: any[]) => {
       subCategory: quest.SubCategory,
       subSubCategory: quest.SubSubCategory,
       explanation: quest.Explanation,
+      courseChapterIds: [],
+    };
+  });
+  return fixData;
+};
+
+const handleGenerateQuestion = (
+  data: any[],
+  correctValue: number,
+  wrongValue: number,
+) => {
+  const fixData: QuestionProps[] = data.map((quest: any) => {
+    const Correct = (quest.Correct as string).toLowerCase();
+
+    const getAnswers = [
+      { answer: quest.A as string, value: 0, type: 'a' },
+      { answer: quest.B as string, value: 0, type: 'b' },
+      { answer: quest.C as string, value: 0, type: 'c' },
+      { answer: quest.D as string, value: 0, type: 'd' },
+      { answer: quest.E as string, value: 0, type: 'e' },
+    ];
+
+    const Answers: QuestionProps['Answers'] = getAnswers.map((item) => {
+      const isCorrect = item.type === Correct;
+      return {
+        answer: item.answer,
+        value: isCorrect ? correctValue : wrongValue,
+      };
+    });
+
+    return {
+      Answers,
+      number: parseInt(quest.Number),
+      question: quest.Question,
+      subCategory: quest.SubCategory,
+      subSubCategory: quest.SubSubCategory,
+      explanation: quest.Explanation,
+      courseChapterIds: [],
     };
   });
   return fixData;

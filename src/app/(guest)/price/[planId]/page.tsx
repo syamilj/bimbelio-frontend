@@ -63,6 +63,7 @@ import { useState } from 'react';
 
 type PlanDataType = Plan & {
   PlanBenefit: PlanBenefit[];
+  discount: number | undefined;
   PlanLimitation: PlanLimitation;
   PlanSubscription: PlanSubscription & {
     PlanFeature: (PlanFeature & {

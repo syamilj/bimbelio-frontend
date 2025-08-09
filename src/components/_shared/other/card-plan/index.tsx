@@ -43,12 +43,14 @@ export function CardPlan({
   viewOnly,
   discount,
   onClose,
+  classOverlay,
 }: {
   plan: PlanDataType;
   hideFeatures?: string[];
   viewOnly?: boolean;
   discount?: number;
   onClose?: () => void;
+  classOverlay?: string;
 }) {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -452,11 +454,25 @@ export function CardPlan({
                 <div className="flex items-baseline gap-3">
                   {/* Current/Discounted Price */}
                   <div className="flex flex-col">
-                    <div
-                      className="text-3xl font-black"
-                      style={{ color: mainColor }}
-                    >
-                      {formatPrice(discount || plan.price)}
+                    <div className="flex items-center gap-2">
+                      {discount && (
+                        <div
+                          className="text-3xl font-black"
+                          style={{ color: mainColor }}
+                        >
+                          {formatPrice(discount)}
+                        </div>
+                      )}
+                      <div
+                        className={cn(
+                          'text-3xl font-black',
+                          discount &&
+                            'text-lg text-gray-500 line-through font-semibold',
+                        )}
+                        style={{ color: mainColor }}
+                      >
+                        {formatPrice(plan.price)}
+                      </div>
                     </div>
                     {plan.PlanBenefit.length > 0 && (
                       <div className="text-xs text-gray-500 mt-1">
@@ -609,7 +625,10 @@ export function CardPlan({
           <div className="mt-6 space-y-3">
             {/* Primary CTA */}
             {!viewOnly && (
-              <DialogPayment plan={plan}>
+              <DialogPayment
+                plan={plan}
+                classOverlay={classOverlay}
+              >
                 <Button
                   ref={buttonRef}
                   className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
@@ -655,6 +674,35 @@ export function CardPlan({
                         value: plan.price,
                         currency: 'IDR',
                         content_id: `plan_addtocart_${plan.id}`, // ✅ Required untuk TikTok VSA
+                      });
+
+                      pixel.meta.track(
+                        'AddPaymentInfo',
+                        {
+                          content_name: plan.name,
+                          content_type: 'product',
+                          value: plan.price,
+                          currency: 'IDR',
+                          contents: [{ id: plan.id, quantity: 1 }],
+                        },
+                        {
+                          // Advanced Matching jika user sudah login
+                          em: session?.user?.email,
+                          ph: session?.user?.phone || undefined,
+                          fn: session?.user?.name?.split(' ')[0],
+                          ln: session?.user?.name
+                            ?.split(' ')
+                            .slice(1)
+                            .join(' '),
+                        },
+                      );
+
+                      pixel.tiktok.track('AddPaymentInfo', {
+                        content_name: plan.name,
+                        content_type: 'product',
+                        value: plan.price,
+                        currency: 'IDR',
+                        content_id: `plan_addpaymentinfo_${plan.id}`, // ✅ Required untuk TikTok VSA
                       });
                     } catch (pixelError) {
                       console.warn(

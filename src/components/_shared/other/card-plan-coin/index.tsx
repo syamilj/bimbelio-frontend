@@ -12,11 +12,13 @@ export const CardPlanTopping = ({
   discount,
   viewOnly,
   onClose,
+  classOverlay,
 }: {
   plan: PlanDataType;
   viewOnly?: boolean;
   discount?: number;
   onClose?: () => void;
+  classOverlay?: string;
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   return (
@@ -152,7 +154,10 @@ export const CardPlanTopping = ({
       </div>
       <div className="px-6 pb-6">
         {!viewOnly && (
-          <DialogPayment plan={plan}>
+          <DialogPayment
+            plan={plan}
+            classOverlay={classOverlay}
+          >
             <Button
               variant="outline"
               className="w-full rounded-xl h-12 font-medium shadow-md transition-all duration-300 hover:shadow-lg bg-gradient-default text-white hover:text-white hover:opacity-85"
@@ -173,6 +178,21 @@ export const CardPlanTopping = ({
                     value: plan.price,
                     currency: 'IDR',
                     content_id: `coin_addtocart_${plan.id}`, // ✅ Required untuk TikTok VSA
+                  });
+                  pixel.meta.track('AddPaymentInfo', {
+                    content_name: plan.name,
+                    content_type: 'product',
+                    value: plan.price,
+                    currency: 'IDR',
+                    contents: [{ id: plan.id, quantity: 1 }],
+                  });
+
+                  pixel.tiktok.track('AddPaymentInfo', {
+                    content_name: plan.name,
+                    content_type: 'product',
+                    value: plan.price,
+                    currency: 'IDR',
+                    content_id: `coin_addpaymentinfo_${plan.id}`, // ✅ Required untuk TikTok VSA
                   });
                 } catch (pixelError) {
                   console.warn(

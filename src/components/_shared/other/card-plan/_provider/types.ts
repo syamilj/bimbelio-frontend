@@ -18,6 +18,7 @@ import {
 export type PlanDataType = Plan & {
   PlanBenefit: PlanBenefit[];
   PlanLimitation: PlanLimitation;
+  discount: number | undefined;
   PlanSubscription: PlanSubscription & {
     PlanFeature: (PlanFeature & {
       Pivot_Plan_Category: (Pivot_Plan_Category & {

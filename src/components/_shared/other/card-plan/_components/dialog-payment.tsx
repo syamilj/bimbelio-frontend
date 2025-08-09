@@ -52,12 +52,14 @@ export function DialogPayment({
   onOpen, // ✅ NEW: Handler untuk InitiateCheckout tracking
   type = 'plan',
   children,
+  classOverlay,
 }: {
   plan: PlanDataType;
   onClose?: () => void;
   onOpen?: () => void; // ✅ NEW: Callback saat dialog dibuka
   type?: 'limit' | 'plan';
   children: ReactNode;
+  classOverlay?: string;
 }) {
   const {
     setPagesSetting,
@@ -349,8 +351,9 @@ export function DialogPayment({
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
-        classOverlay="z-[9999999999999999]"
-        className="sm:max-w-4xl w-[95vw] max-w-[95vw] max-h-[90vh] p-0 bg-white overflow-hidden"
+        // classOverlay="z-[9999999999999999]"
+        classOverlay={classOverlay}
+        className="sm:max-w-7xl w-[95vw] max-h-[95vh] p-0 bg-gradient-to-br from-white via-gray-50 to-blue-50/30"
       >
         {/* Compact Header */}
         <div

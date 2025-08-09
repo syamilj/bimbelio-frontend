@@ -90,7 +90,7 @@ export function Payment() {
                 className="w-full"
                 defaultValue="snbt"
               >
-                <TabsList className="grid w-full max-w-md mx-auto grid-cols-4 mb-8 bg-[#e6f0ff] p-1 rounded-full">
+                <TabsList className="grid w-full max-w-md mx-auto grid-cols-5 mb-8 bg-[#e6f0ff] p-1 rounded-full">
                   {PricingData?.webSubCategory.map((ws) => (
                     <TabsTrigger
                       value={ws.webSubCategoryId}
@@ -137,11 +137,7 @@ export function Payment() {
                             <CardPlan
                               key={i}
                               plan={bundle}
-                              // onSelect={() => {
-                              //   setPlanData(bundle);
-                              //   setType('plan');
-                              //   handlePackageSelect(bundle.id);
-                              // }}
+                              classOverlay="z-[10001]"
                             />
                           ))}
                         </div>
@@ -158,6 +154,7 @@ export function Payment() {
                               //   setType('plan');
                               //   handlePackageSelect(plan.id);
                               // }}
+                              classOverlay="z-[10001]"
                             />
                           ))}
                         </div>

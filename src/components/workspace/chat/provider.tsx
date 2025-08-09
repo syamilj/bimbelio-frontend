@@ -15,7 +15,6 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
-  useEffect,
   useState,
 } from 'react';
 
@@ -160,7 +159,7 @@ export default function Provider({
 
   // Helper function untuk convert UIMessage ke MessageDataType
   const convertToMessageDataType = (messages: Message[]): MessageDataType[] => {
-    return messages.map(msg => ({
+    return messages.map((msg) => ({
       id: msg.id,
       createdAt: msg.createdAt,
       content: msg.content,
@@ -188,9 +187,9 @@ export default function Provider({
     appendMessagesEdit,
   };
 
-  useEffect(() => {
-    setMessageData([]);
-  }, [pathname]);
+  // useEffect(() => {
+  //   setMessageData([]);
+  // }, [pathname]);
 
   const Context = {
     messageData,

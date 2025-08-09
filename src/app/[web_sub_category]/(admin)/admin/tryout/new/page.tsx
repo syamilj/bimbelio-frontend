@@ -36,6 +36,9 @@ export interface QuestionProps {
   image?: string | null;
   explanation?: string;
   subCategory?: string;
+  subSubCategory?: string;
+  categoryId?: string;
+  courseChapterIds: string[];
   Answers: AnswerProps[];
 }
 
@@ -269,6 +272,8 @@ const NewTryOut = () => {
               number: quest.number,
               question: quest.question,
               subCategory: quest.subCategory,
+              subSubCategory: quest.subSubCategory,
+              courseChapterIds: quest.courseChapterIds,
             };
           }) || [],
         description: session.description,
@@ -420,9 +425,7 @@ const NewTryOut = () => {
         <div
           className={cn(
             'relative col-span-3 mt-4 h-[90vh] w-[60%] duration-300',
-            currentIndexEdit !== null &&
-              !showDetailTryout &&
-              '-ml-4 w-full',
+            currentIndexEdit !== null && !showDetailTryout && '-ml-4 w-full',
             currentIndexEdit === null && 'w-0',
           )}
         >

@@ -1,3 +1,11 @@
+export type Pivot_TryoutQuestion_CourseChapter = {
+  id: string;
+  createAt: Date;
+  updateAt: Date;
+  tryoutQuestionId: string;
+  courseChapterId: string;
+};
+
 export type Pivot_Plan_Category = {
   id: string;
   planFeatureId: string;
@@ -263,17 +271,30 @@ export type Message = {
 };
 
 export type Tryout = {
-  status: TryoutStatusEnum;
+  // status: TryoutStatusEnum;
+  // id: string;
+  // title: string;
+  // image: string | null;
+  // createAt: Date;
+  // updateAt: Date;
+  // restTime: number;
+  // startDate: Date;
+  // endDate: Date;
+  // resultDate: Date;
+  // website_sub_category_id: string;
+  website_sub_category_id: string;
   id: string;
   title: string;
-  image: string | null;
-  createAt: Date;
-  updateAt: Date;
   restTime: number;
-  startDate: Date;
-  endDate: Date;
-  resultDate: Date;
-  website_sub_category_id: string;
+  status: TryoutStatusEnum;
+  startDate: string;
+  endDate: string;
+  resultDate: string;
+  createAt: string;
+  updateAt: string;
+  image: string | null;
+  instagram: string | null;
+  tiktok: string | null;
 };
 
 export type TryoutRegistration = {
@@ -332,6 +353,7 @@ export type TryoutAnswer = {
   answer: string;
   questionId: string;
   website_sub_category_id: string;
+  image: string | null;
 };
 
 export type TryoutQuestion = {
@@ -523,13 +545,13 @@ export type Plan = {
 export type PlanStatusEnum = 'PUBLIC' | 'DRAFT' | 'COMING_SOON';
 
 export type PlanLimitation = {
-  id: string;
   chat: number;
   notes: number;
   vision: number;
   quiz: number;
   tryout: number;
   expireDays: number;
+  id: string;
   planId: string;
 };
 

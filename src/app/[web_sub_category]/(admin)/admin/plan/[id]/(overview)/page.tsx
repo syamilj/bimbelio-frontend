@@ -71,12 +71,7 @@ export default function UpdatePlanForm() {
       setCategoryIds,
       setLiveClassIds,
     },
-    useLimitation: {
-      limitRows,
-      setLimitRows,
-      expireTypeLimit,
-      setExpireTypeLimit,
-    },
+    useLimitation: { limitRows, setLimitRows, expireTypeLimit },
     useForm: {
       formData: { register, setValue },
       formDataValues: {
@@ -152,19 +147,10 @@ export default function UpdatePlanForm() {
               { id: 4, type: 'quiz', limit: limit.quiz.toString() },
               { id: 5, type: 'tryout', limit: limit.tryout.toString() },
             ]);
-
-            // Set duration limit dari existing data
-            const expireDays = limit.expireDays || 0;
-            if (expireDays % 365 === 0) {
-              setValue('durationLimit', (expireDays / 365).toString());
-              setExpireTypeLimit('year');
-            } else if (expireDays % 30 === 0) {
-              setValue('durationLimit', (expireDays / 30).toString());
-              setExpireTypeLimit('month');
-            } else {
-              setValue('durationLimit', expireDays.toString());
-              setExpireTypeLimit('days');
-            }
+            setValue(
+              'durationLimit',
+              planData.PlanLimitation.expireDays.toString(),
+            );
           }
           if (planData.PlanBenefit) {
             setBenefitRows(
