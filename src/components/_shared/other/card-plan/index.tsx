@@ -647,63 +647,6 @@ export function CardPlan({
                   onClick={() => {
                     // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"
                     try {
-                      pixel.meta.track(
-                        'AddToCart',
-                        {
-                          content_name: plan.name,
-                          content_type: 'product',
-                          value: plan.price,
-                          currency: 'IDR',
-                          contents: [{ id: plan.id, quantity: 1 }],
-                        },
-                        {
-                          // Advanced Matching jika user sudah login
-                          em: session?.user?.email,
-                          ph: session?.user?.phone || undefined,
-                          fn: session?.user?.name?.split(' ')[0],
-                          ln: session?.user?.name
-                            ?.split(' ')
-                            .slice(1)
-                            .join(' '),
-                        },
-                      );
-
-                      pixel.tiktok.track('AddToCart', {
-                        content_name: plan.name,
-                        content_type: 'product',
-                        value: plan.price,
-                        currency: 'IDR',
-                        content_id: `plan_addtocart_${plan.id}`, // ✅ Required untuk TikTok VSA
-                      });
-
-                      pixel.meta.track(
-                        'AddPaymentInfo',
-                        {
-                          content_name: plan.name,
-                          content_type: 'product',
-                          value: plan.price,
-                          currency: 'IDR',
-                          contents: [{ id: plan.id, quantity: 1 }],
-                        },
-                        {
-                          // Advanced Matching jika user sudah login
-                          em: session?.user?.email,
-                          ph: session?.user?.phone || undefined,
-                          fn: session?.user?.name?.split(' ')[0],
-                          ln: session?.user?.name
-                            ?.split(' ')
-                            .slice(1)
-                            .join(' '),
-                        },
-                      );
-
-                      pixel.tiktok.track('AddPaymentInfo', {
-                        content_name: plan.name,
-                        content_type: 'product',
-                        value: plan.price,
-                        currency: 'IDR',
-                        content_id: `plan_addpaymentinfo_${plan.id}`, // ✅ Required untuk TikTok VSA
-                      });
                     } catch (pixelError) {
                       console.warn(
                         'Pixel tracking error on add to cart:',
