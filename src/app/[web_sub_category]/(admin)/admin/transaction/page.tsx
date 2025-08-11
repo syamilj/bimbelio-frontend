@@ -42,7 +42,11 @@ export default function TransactionsPage() {
 
   const [isLoadingMessage, setIsLoadingMessage] = useState<null | string>(null);
   const [transactions, setTransactions] = useState<
-    (MidtransTransaction & { user: User; total_amount: number })[]
+    (MidtransTransaction & {
+      user: User;
+      total_amount: number;
+      status: string;
+    })[]
   >([]);
   const [take, setTake] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
@@ -196,7 +200,7 @@ export default function TransactionsPage() {
                     </TableCell>
                     <TableCell>
                       <Badge className={getStatusColor('Pending')}>
-                        {'Pending'}
+                        {transaction.status}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-black/70">
