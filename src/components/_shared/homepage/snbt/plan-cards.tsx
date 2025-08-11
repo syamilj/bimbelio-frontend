@@ -44,16 +44,30 @@ const PlanCards: React.FC = () => {
     (cat) => cat.webSubCategoryId === websiteSubCategory?.id,
   );
 
+  // Fallback: jika websiteSubCategory belum terset (incognito mode), ambil category pertama atau default SNBT
+  const fallbackCategory =
+    !currentCategory &&
+    PricingData?.webSubCategory &&
+    PricingData.webSubCategory.length > 0
+      ? PricingData.webSubCategory.find(
+          (cat) =>
+            cat.webSubCategoryName.toLowerCase().includes('snbt') ||
+            cat.webSubCategoryName.toLowerCase().includes('utbk'),
+        ) || PricingData.webSubCategory[0]
+      : null;
+
+  const finalCategory = currentCategory || fallbackCategory;
+
   // Gabungkan subscription dan bundle, ambil 3 teratas
   const allPlans = [
-    ...(currentCategory?.subscriptions || []),
-    ...(currentCategory?.bundles || []),
+    ...(finalCategory?.subscriptions || []),
+    ...(finalCategory?.bundles || []),
   ];
 
   const topPlans = allPlans.slice(0, 3);
 
   // Loading state
-  if (!PricingData || !websiteSubCategory) {
+  if (!PricingData) {
     return (
       <section className="py-24 px-4">
         <div className="max-w-7xl mx-auto">
@@ -88,8 +102,8 @@ const PlanCards: React.FC = () => {
     );
   }
 
-  // Empty state
-  if (topPlans.length === 0) {
+  // Empty state - hanya tampilkan jika benar-benar tidak ada data
+  if (topPlans.length === 0 && !fallbackCategory) {
     return (
       <section className="py-24 px-4">
         <div className="max-w-7xl mx-auto">
@@ -108,6 +122,22 @@ const PlanCards: React.FC = () => {
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Paket pembelajaran terbaik sedang disiapkan untuk kamu.
             </p>
+            {/* Debug info untuk development */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="mt-8 p-4 bg-gray-100 rounded-lg text-left max-w-2xl mx-auto">
+                <p className="text-sm font-mono">
+                  Debug: No plans found.
+                  <br />
+                  WebsiteSubCategory: {websiteSubCategory?.id || 'null'}
+                  <br />
+                  Available categories:{' '}
+                  {PricingData?.webSubCategory?.length || 0}
+                  <br />
+                  FallbackCategory:{' '}
+                  {(fallbackCategory as any)?.webSubCategoryName || 'none'}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>

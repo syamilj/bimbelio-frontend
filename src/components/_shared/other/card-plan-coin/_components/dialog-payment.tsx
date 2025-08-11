@@ -260,6 +260,23 @@ export function DialogPayment({
       open={isOpen}
       onOpenChange={(open) => {
         setIsOpen(open);
+        const purchaseValue = discountPrice || plan.price;
+        pixel.meta.track('InitiateCheckout', {
+          contents: [{ id: plan.id, quantity: 1 }],
+          content_name: plan.name,
+          content_type: 'product',
+          value: purchaseValue,
+          currency: 'IDR',
+          num_items: 1,
+        });
+
+        pixel.tiktok.track('InitiateCheckout', {
+          content_id: plan.id,
+          content_name: plan.name,
+          content_type: 'product',
+          value: purchaseValue,
+          currency: 'IDR',
+        });
         if (open) {
           if (voucherCodeQuery && plan) {
             setVoucherCode(voucherCodeQuery);

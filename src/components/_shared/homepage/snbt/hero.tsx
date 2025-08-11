@@ -3,17 +3,8 @@
 import ImageHero from '@/_assets/homepage/hero/bg-hero.webp';
 import MobilePoster from '@/_assets/homepage/hero/bimbelio-mobile.webp';
 import DesktopPoster from '@/_assets/homepage/hero/bimbelio.webp';
-import LogoIPDN from '@/_assets/homepage/hero/LOGO_KEDINASAN_IPDN.webp';
-import LogoSTAN from '@/_assets/homepage/hero/LOGO_KEDINASAN_STAN.webp';
-import LogoSTIS from '@/_assets/homepage/hero/LOGO_KEDINASAN_STIS.webp';
-import LogoITB from '@/_assets/homepage/hero/LOGO_PTN_ITB.webp';
-import LogoITS from '@/_assets/homepage/hero/LOGO_PTN_ITS.webp';
-import LogoUGM from '@/_assets/homepage/hero/LOGO_PTN_UGM.webp';
-import LogoUI from '@/_assets/homepage/hero/LOGO_PTN_UI.webp';
-import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
 import { SparklesText } from '@/components/magicui/sparkles-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { IPhoneFrame } from '@/components/ui/iphone-frame';
 import { cn } from '@/lib/utils';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
@@ -22,12 +13,8 @@ import {
   BarChart,
   BookOpen,
   Bot,
-  ChevronLeft,
-  ChevronRight,
   PhoneCallIcon,
   Play,
-  RotateCw,
-  Search,
   Target,
   Users,
 } from 'lucide-react';
@@ -35,7 +22,33 @@ import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+
+// Lazy loading untuk komponen berat
+const ConsultationDialog = lazy(
+  () => import('@/components/_shared/contact/consultation-dialog'),
+);
+
+// Dynamic imports untuk komponen yang tidak immediately visible
+const IPhoneFrame = lazy(() =>
+  import('@/components/ui/iphone-frame').then((module) => ({
+    default: module.IPhoneFrame,
+  })),
+);
+
+// Lazy import untuk browser icons yang tidak critical
+const ChevronLeft = lazy(() =>
+  import('lucide-react').then((module) => ({ default: module.ChevronLeft })),
+);
+const ChevronRight = lazy(() =>
+  import('lucide-react').then((module) => ({ default: module.ChevronRight })),
+);
+const RotateCw = lazy(() =>
+  import('lucide-react').then((module) => ({ default: module.RotateCw })),
+);
+const Search = lazy(() =>
+  import('lucide-react').then((module) => ({ default: module.Search })),
+);
 
 export interface Logo {
   src: string | StaticImageData;
@@ -56,17 +69,6 @@ const BADGE_ICONS: Record<string, React.ReactNode> = {
   AI: <Bot className="w-4 h-4 mr-2" />,
   'SMART Goals': <Target className="w-4 h-4 mr-2" />,
 };
-
-// Simplified Constants
-const LOGOS: Logo[] = [
-  { src: LogoITB, alt: 'Logo ITB', label: 'ITB' },
-  { src: LogoSTIS, alt: 'Logo STIS', label: 'STIS' },
-  { src: LogoITS, alt: 'Logo ITS', label: 'ITS' },
-  { src: LogoIPDN, alt: 'Logo IPDN', label: 'IPDN' },
-  { src: LogoSTAN, alt: 'Logo STAN', label: 'STAN' },
-  { src: LogoUGM, alt: 'Logo UGM', label: 'UGM' },
-  { src: LogoUI, alt: 'Logo UI', label: 'UI' },
-];
 
 const STATS: Stat[] = [
   { label: 'Blueprint Users', value: '15,000+' },
@@ -165,22 +167,29 @@ const HeroSection: React.FC = () => {
             mainColor={mainColor}
             secondaryColor={secondaryColor}
           />
-          <LogoSection
-            logos={LOGOS}
-            mainColor={mainColor}
-          />
-          <VideoSection isMobile={isMobile} />
+
+          <Suspense
+            fallback={
+              <div className="w-full h-96 bg-gray-100 rounded-2xl animate-pulse" />
+            }
+          >
+            <VideoSection isMobile={isMobile} />
+          </Suspense>
         </div>
       </div>
 
-      {/* Consultation Dialog */}
-      <ConsultationDialog
-        isOpen={isConsultationDialogOpen}
-        onOpenChange={setIsConsultationDialogOpen}
-        onContactSelect={handleContactSelect}
-        showStats={true}
-        showTelegramOption={false}
-      />
+      {/* Consultation Dialog dengan lazy loading */}
+      {isConsultationDialogOpen && (
+        <Suspense fallback={null}>
+          <ConsultationDialog
+            isOpen={isConsultationDialogOpen}
+            onOpenChange={setIsConsultationDialogOpen}
+            onContactSelect={handleContactSelect}
+            showStats={true}
+            showTelegramOption={false}
+          />
+        </Suspense>
+      )}
     </>
   );
 };
@@ -441,55 +450,107 @@ const StatsSection: React.FC<{
   </div>
 );
 
-//  Logo Section
+//  Logo Section dengan Lazy Loading yang Super Optimized
 const LogoSection: React.FC<{
   logos: Logo[];
   mainColor: string;
 }> = ({ logos, mainColor }) => {
+  const [isInView, setIsInView] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
+  const logoSectionRef = useRef<HTMLDivElement>(null);
   const doubled = [...logos, ...logos];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          // Delay rendering sedikit setelah masuk viewport untuk smooth loading
+          setTimeout(() => setShouldRender(true), 300);
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '150px 0px', // Load 150px sebelum masuk viewport
+      },
+    );
+
+    if (logoSectionRef.current) {
+      observer.observe(logoSectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: 1.5 }}
+    <div
+      ref={logoSectionRef}
       className="w-full mb-16"
     >
-      <div className="text-center mb-8">
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          Target PTN Idaman
-        </h3>
-        <p className="text-gray-600">
-          PTN impian yang dicapai karena sistem udah terbukti work!
-        </p>
-      </div>
+      {isInView && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-8"
+        >
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            Target PTN Idaman
+          </h3>
+          <p className="text-gray-600">
+            PTN impian yang dicapai karena sistem udah terbukti work!
+          </p>
+        </motion.div>
+      )}
 
-      {/*  logo slider */}
-      <div className="relative overflow-hidden py-4 rounded-2xl">
-        <div className="animate-smooth-marquee flex">
-          {doubled.map((logo, i) => (
-            <div
-              key={i}
-              className="shrink-0 mx-8 flex flex-col items-center group"
-            >
-              <div className="w-24 h-24 p-2 bg-white rounded-full shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                <Image
-                  src={logo.src || '/placeholder.svg'}
-                  alt={logo.alt}
-                  width={80}
-                  height={80}
-                  className="w-20 h-20 object-cover rounded-full"
-                  loading="lazy"
-                />
+      {/* Placeholder height untuk mencegah layout shift */}
+      <div className="relative overflow-hidden py-4 rounded-2xl min-h-[120px]">
+        {shouldRender ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="animate-smooth-marquee flex"
+          >
+            {doubled.map((logo, i) => (
+              <div
+                key={i}
+                className="shrink-0 mx-8 flex flex-col items-center group"
+              >
+                <div className="w-24 h-24 p-2 bg-white rounded-full shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                  <Image
+                    src={logo.src || '/placeholder.svg'}
+                    alt={logo.alt}
+                    width={80}
+                    height={80}
+                    className="w-20 h-20 object-cover rounded-full"
+                    loading="lazy"
+                    priority={false}
+                  />
+                </div>
+                <span className="text-sm font-semibold mt-3 text-main-default">
+                  {logo.label}
+                </span>
               </div>
-              <span className="text-sm font-semibold mt-3 text-main-default">
-                {logo.label}
-              </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </motion.div>
+        ) : (
+          // Ultra minimal loading skeleton
+          <div className="flex animate-pulse">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <div
+                key={i}
+                className="shrink-0 mx-8 flex flex-col items-center"
+              >
+                <div className="w-24 h-24 bg-gray-200 rounded-full"></div>
+                <div className="w-8 h-3 bg-gray-200 rounded mt-3"></div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -590,7 +651,7 @@ const VideoSection: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
   </motion.div>
 );
 
-//  Mobile Video
+//  Mobile Video dengan Ultra Optimized Loading
 const MobileVideo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -604,7 +665,7 @@ const MobileVideo: React.FC = () => {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 },
+      { threshold: 0.2, rootMargin: '50px 0px' }, // Load closer to viewport
     );
 
     if (videoRef.current) {
@@ -631,43 +692,62 @@ const MobileVideo: React.FC = () => {
 
   return (
     <div className="relative">
-      <IPhoneFrame>
-        <div className="relative w-full h-full">
-          <video
-            ref={videoRef}
-            className="w-full h-full object-cover"
-            muted
-            loop
-            playsInline
-            preload="none"
-            poster={MobilePoster.src}
-          >
-            <source
-              src="/hero/bimbelio-mobile.webm"
-              type="video/webm"
-            />
-          </video>
-        </div>
-      </IPhoneFrame>
+      <Suspense
+        fallback={
+          <div className="w-[280px] h-[500px] bg-gray-200 rounded-3xl animate-pulse" />
+        }
+      >
+        <IPhoneFrame>
+          <div className="relative w-full h-full">
+            {isInView ? (
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                muted
+                loop
+                playsInline
+                preload="none"
+                poster={MobilePoster.src}
+              >
+                <source
+                  src="/hero/bimbelio-mobile.webm"
+                  type="video/webm"
+                />
+              </video>
+            ) : (
+              <Image
+                src={MobilePoster}
+                alt="Mobile Video Placeholder"
+                fill
+                className="object-cover"
+                loading="lazy"
+              />
+            )}
+          </div>
+        </IPhoneFrame>
+      </Suspense>
     </div>
   );
 };
 
-//  Desktop Video
+//  Desktop Video dengan Super Optimized Loading
 const DesktopVideo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
+  const [showBrowserBar, setShowBrowserBar] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
+          // Delay browser bar untuk mengurangi initial load
+          setTimeout(() => setShowBrowserBar(true), 500);
           observer.disconnect();
         }
       },
-      { threshold: 0.1 },
+      { threshold: 0.2, rootMargin: '50px 0px' },
     );
 
     if (videoRef.current) {
@@ -695,38 +775,58 @@ const DesktopVideo: React.FC = () => {
   return (
     <div className="relative w-full h-full rounded-xl shadow-2xl overflow-hidden bg-white">
       <div className="flex flex-col w-full h-full">
-        {/*  browser bar */}
-        <div className="flex items-center bg-gray-50 px-4 py-3 border-b">
-          <div className="flex space-x-2 mr-4">
-            <div className="w-3 h-3 rounded-full bg-red-400"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-            <div className="w-3 h-3 rounded-full bg-green-400"></div>
+        {/* Optimized browser bar dengan lazy loading icons */}
+        {showBrowserBar && (
+          <div className="flex items-center bg-gray-50 px-4 py-3 border-b">
+            <div className="flex space-x-2 mr-4">
+              <div className="w-3 h-3 rounded-full bg-red-400"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+              <div className="w-3 h-3 rounded-full bg-green-400"></div>
+            </div>
+            <div className="flex space-x-2 mr-4 text-gray-400">
+              <Suspense
+                fallback={<div className="w-4 h-4 bg-gray-200 rounded" />}
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4" />
+                <RotateCw className="w-4 h-4" />
+              </Suspense>
+            </div>
+            <div className="flex-1 flex items-center bg-white rounded-lg px-3 py-2 text-sm border">
+              <Suspense
+                fallback={<div className="w-4 h-4 bg-gray-200 rounded mr-2" />}
+              >
+                <Search className="w-4 h-4 mr-2 text-gray-400" />
+              </Suspense>
+              <span className="text-gray-600">bimbelio.com</span>
+            </div>
           </div>
-          <div className="flex space-x-2 mr-4 text-gray-400">
-            <ChevronLeft className="w-4 h-4" />
-            <ChevronRight className="w-4 h-4" />
-            <RotateCw className="w-4 h-4" />
-          </div>
-          <div className="flex-1 flex items-center bg-white rounded-lg px-3 py-2 text-sm border">
-            <Search className="w-4 h-4 mr-2 text-gray-400" />
-            <span className="text-gray-600">bimbelio.com</span>
-          </div>
-        </div>
+        )}
 
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover"
-          loop
-          muted
-          playsInline
-          preload="none"
-          poster={DesktopPoster.src}
-        >
-          <source
-            src="/hero/bimbelio.webm"
-            type="video/webm"
+        {isInView ? (
+          <video
+            ref={videoRef}
+            className="w-full h-full object-cover"
+            loop
+            muted
+            playsInline
+            preload="none"
+            poster={DesktopPoster.src}
+          >
+            <source
+              src="/hero/bimbelio.webm"
+              type="video/webm"
+            />
+          </video>
+        ) : (
+          <Image
+            src={DesktopPoster}
+            alt="Desktop Video Placeholder"
+            fill
+            className="object-cover"
+            loading="lazy"
           />
-        </video>
+        )}
       </div>
     </div>
   );
