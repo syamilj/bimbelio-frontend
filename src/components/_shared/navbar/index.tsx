@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useMedia } from 'use-media';
 
 import UserAccountNav from '@/components/_shared/navbar/user-account-nav';
@@ -61,85 +61,63 @@ const GratisBadge: React.FC<{ label: string }> = ({ label }) => {
   );
 };
 
-const ScrollOffsetLink: React.FC<{
-  href: string;
-  children: React.ReactNode;
-  onClick?: () => void;
-}> = ({ href, children, onClick }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    onClick?.(); // Misalnya untuk menutup sheet di mobile
-
-    if (pathname?.includes('blog') || pathname?.includes('tryout')) {
-      router.push(`/${href}`);
-      return;
-    }
-
-    const targetId = href.substring(1);
-    const targetElement = document.getElementById(targetId);
-
-    if (targetElement) {
-      const offset = 200;
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-    }
-  };
-
-  return (
-    <a
-      href={pathname === '/' ? href : `/${href}`}
-      onClick={handleClick}
-      className="relative text-main-default duration-300 hover:underline"
-      aria-label={`Scroll to ${children}`}
-    >
-      {children}
-    </a>
-  );
-};
-
 /**
  * Komponen link universal untuk Desktop & Mobile.
- * Jika `item.isLink` true, akan langsung <Link href>.
- * Jika tidak, menggunakan <ScrollOffsetLink>.
+ * Menggunakan router untuk navigasi yang lebih konsisten.
  */
 const NavLink: React.FC<{
   item: NavItem;
   onClick?: () => void;
 }> = ({ item, onClick }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const linkClasses = cn(
-    'relative text-main-default transition-colors duration-300 hover:underline',
+    'relative text-main-default transition-colors duration-300 hover:underline bg-transparent border-none cursor-pointer',
     item.separator && 'ml-4 border-l border-gray-900 pl-4',
   );
 
-  if (item.isLink) {
-    return (
-      <Link
-        href={item.href}
-        onClick={onClick}
-        className={linkClasses}
-      >
-        {item.label}
-        <GratisBadge label={item.label} />
-      </Link>
-    );
-  }
+  const handleClick = () => {
+    onClick?.(); // Untuk menutup sheet di mobile
+
+    if (item.isLink) {
+      // Direct navigation untuk link pages
+      router.push(item.href);
+    } else {
+      // Scroll navigation untuk anchor links
+      if (pathname !== '/') {
+        // Jika tidak di homepage, navigasi ke homepage dengan hash
+        router.push(`/${item.href}`);
+      } else {
+        // Jika di homepage, lakukan scroll
+        const targetId = item.href.substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          const offset = 200;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth',
+          });
+        } else {
+          // Fallback: navigasi ke homepage dengan hash
+          router.push(`/${item.href}`);
+        }
+      }
+    }
+  };
 
   return (
-    <ScrollOffsetLink
-      href={item.href}
-      onClick={onClick}
+    <button
+      onClick={handleClick}
+      className={linkClasses}
     >
       {item.label}
       <GratisBadge label={item.label} />
-    </ScrollOffsetLink>
+    </button>
   );
 };
 
@@ -221,13 +199,15 @@ const MobileNav: React.FC<{
                       <div
                         key={item.href}
                         className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200"
-                        onClick={() => setIsSheetOpen(false)}
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-sm font-medium text-gray-600">
                             {index + 1}
                           </div>
-                          <NavLink item={item} />
+                          <NavLink
+                            item={item}
+                            onClick={() => setIsSheetOpen(false)}
+                          />
                         </div>
                         <div className="text-gray-400">
                           <svg
@@ -430,6 +410,42 @@ const Navbar: React.FC = () => {
   const { data: session } = useSession();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const isMobile = useMedia({ maxWidth: '768px' });
+  const pathname = usePathname();
+
+  // Handle scroll to hash on page load
+  useEffect(() => {
+    const handleHashScroll = () => {
+      const hash = window.location.hash;
+      if (hash && pathname === '/') {
+        const targetId = hash.substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          setTimeout(() => {
+            const offset = 200;
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition =
+              elementPosition + window.pageYOffset - offset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth',
+            });
+          }, 100); // Delay untuk memastikan page sudah render
+        }
+      }
+    };
+
+    // Run on mount
+    handleHashScroll();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashScroll);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashScroll);
+    };
+  }, [pathname]);
 
   return isMobile ? (
     <MobileNav

@@ -483,8 +483,8 @@ export const hideVideoLink = async ({
 
 export function constructMetadata({
   title = 'Bimbelio - Bimbel AI untuk PTN dan Kedinasan',
-  description = 'Bimbelio revolutionises the learning experience with active AI-based learning tools.',
-  image = '/logo.png',
+  description = 'Bimbelio merevolusi pengalaman belajar dengan alat pembelajaran aktif berbasis AI untuk persiapan PTN dan Kedinasan. Bimbel AI untuk suksesmu!',
+  image = '/og.webp',
   icons = '/favicon.ico',
   noIndex = false,
 }: {

@@ -257,13 +257,13 @@ export function CardPlan({
 
           {/* Enhanced Hero Image Section */}
           <div className="relative mt-12 mb-4">
-            <div className="relative w-full h-40 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
+            <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
               {plan.image ? (
                 <Image
                   src={plan.image}
                   alt={plan.name}
                   fill
-                  className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                  className="object-cover object-top transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                   priority
                   onError={(e) => {

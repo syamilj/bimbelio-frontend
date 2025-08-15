@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { signOut } from '@/lib/auth-helper';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response } from '@/lib/response';
 import { cn } from '@/lib/utils';
@@ -561,7 +562,12 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                           </>
                         )}
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600 focus:text-red-600">
+                        <DropdownMenuItem
+                          className="text-red-600 focus:text-red-600"
+                          onClick={() => {
+                            signOut({ callbackUrl: '/' });
+                          }}
+                        >
                           Keluar
                         </DropdownMenuItem>
                       </DropdownMenuContent>

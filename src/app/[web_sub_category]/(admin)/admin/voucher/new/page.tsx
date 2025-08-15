@@ -241,7 +241,10 @@ export default function CreateVoucher() {
                                   /\D/g,
                                   '',
                                 );
-                                if (parseInt(onlyNumbers) > 100) {
+                                if (
+                                  parseInt(onlyNumbers) > 100 &&
+                                  type === 'Percentage'
+                                ) {
                                   return;
                                 }
                                 if (parseInt(onlyNumbers) < 0) {

@@ -3,7 +3,6 @@
 import ImageHero from '@/_assets/homepage/hero/bg-hero.webp';
 import MobilePoster from '@/_assets/homepage/hero/bimbelio-mobile.webp';
 import DesktopPoster from '@/_assets/homepage/hero/bimbelio.webp';
-import { SparklesText } from '@/components/magicui/sparkles-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { cn } from '@/lib/utils';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -125,27 +124,17 @@ const HeroSection: React.FC = () => {
           style={{ y }}
           className="absolute inset-0 z-1"
         >
-          {/* Subtle gradient overlay */}
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              background: `radial-gradient(ellipse at center, ${mainColor}20 0%, transparent 70%)`,
-            }}
-          />
-
-          {/* Hero image with better masking */}
           <Image
             src={ImageHero || '/placeholder.svg'}
             alt="University Buildings Background"
             fill
-            className="object-cover opacity-15"
             priority
             sizes="100vw"
             loading="eager"
-            style={{
-              objectPosition: isMobile ? '75% top' : 'center top',
-              transform: isMobile ? 'translateY(-400px)' : 'translateY(-500px)',
-            }}
+            className="
+                        object-contain scale-200 object-[center_35%]          /* mobile */
+                        md:object-contain md:object-[center_top] md:scale-100  /* desktop sama seperti sebelumnya */
+                     "
           />
         </motion.div>
 
@@ -306,16 +295,14 @@ const HeadingSection: React.FC<{
         </div>
         {/* Baris 2: Sistem Belajar */}
         <div className="flex justify-center items-center gap-3 mt-1 md:mt-2 lg:mt-2 flex-wrap">
-          <SparklesText sparklesCount={8}>
-            <span
-              className="text-white bg-clip-padding px-4 py-2 rounded-lg md:text-5xl lg:text-5xl text-4xl"
-              style={{
-                backgroundColor: mainColor,
-              }}
-            >
-              Blueprint UTBK
-            </span>
-          </SparklesText>
+          <span
+            className="text-white bg-clip-padding px-4 py-2 rounded-lg md:text-5xl lg:text-5xl text-4xl"
+            style={{
+              backgroundColor: mainColor,
+            }}
+          >
+            Blueprint UTBK
+          </span>
         </div>
         {/* Baris 3: Pasti Naik 200+ Poin! */}
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap text-4xl sm:text-5xl">
