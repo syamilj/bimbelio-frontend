@@ -43,6 +43,7 @@ export default function ButtonUpgradeTryout({
   const [tryout, setTryout] = useState<any>();
 
   useEffect(() => {
+    if (!tryoutId) return;
     getGeneral(
       `/tryout/getTryoutDataById?userId=${session?.user.id}&tryoutId=${
         (tryoutId as string) || ''
@@ -51,7 +52,7 @@ export default function ButtonUpgradeTryout({
         setData: setTryout,
       },
     );
-  }, [params, session]);
+  }, [params, session, tryoutId]);
 
   const handleClick = () => {
     setShow(true);
