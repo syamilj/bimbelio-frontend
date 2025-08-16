@@ -69,6 +69,7 @@ export interface RankingTryoutProps {
     range: string;
     count: number;
   }[];
+  isIRT: boolean;
 }
 
 export default function LeaderboardClient() {
