@@ -294,14 +294,14 @@ const HeadingSection: React.FC<{
           <span className="text-gray-900">Sistem Belajar</span>
         </div>
         {/* Baris 2: Sistem Belajar */}
-        <div className="flex justify-center items-center gap-3 mt-1 md:mt-2 lg:mt-2 flex-wrap">
+        <div className="flex justify-center items-center px-4 mt-4 md:mt-6">
           <span
-            className="text-white bg-clip-padding px-4 py-2 rounded-lg md:text-5xl lg:text-5xl text-4xl"
+            className="text-white text-center px-3 py-2 rounded-lg text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg"
             style={{
               backgroundColor: mainColor,
             }}
           >
-            Blueprint UTBK
+            Blueprint TKA & UTBK
           </span>
         </div>
         {/* Baris 3: Pasti Naik 200+ Poin! */}

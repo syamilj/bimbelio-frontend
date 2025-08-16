@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     'UTBK',
     'Bimbel SNBT',
     'Bimbel UTBK',
+    'Bimbel TKA',
     'Ujian Mandiri',
     'Bimbel Ujian Mandiri',
     'Bimbel SIMAK UI',
