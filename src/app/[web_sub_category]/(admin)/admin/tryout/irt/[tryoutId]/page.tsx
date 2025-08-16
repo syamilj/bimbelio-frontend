@@ -15,9 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import LoadingPageWithText from '@/components/ui/spinner';
+import LoadingPageWithText, {
+  LoadingComponentWithText,
+} from '@/components/ui/spinner';
 
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { toaster } from '@/components/ui/toaster';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { useMutation } from '@/lib/fetch-helper/useMutation';
 import {
   Tryout,
   TryoutAnswer,
@@ -29,15 +33,10 @@ import {
   TryoutUserAnswer,
 } from '@/types/database';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { utils, writeFile } from 'xlsx';
-import ProcessData from '../_components/ProcessData';
+import { useState } from 'react';
 import ResultsOverview from '../_components/ResultsOverview';
-import Upload3PLData from '../_components/Upload3PLData';
-import UploadParticipantData from '../_components/UploadParticipantData';
-import UploadSummary from '../_components/UploadSummary';
 
-export interface OverallStatsProps {
+export type OverallStatsProps = {
   totalParticipants: number;
   averageScores: number;
   averageTheta: number;
@@ -46,9 +45,9 @@ export interface OverallStatsProps {
   medianScores: number;
   minTheta: number;
   maxTheta: number;
-}
+};
 
-export interface DataIRTProps {
+export type DataIRTProps = {
   participants: {
     p: string;
     theta: number;
@@ -60,7 +59,7 @@ export interface DataIRTProps {
     b: number;
     c: number;
   }[];
-}
+};
 
 type TryoutDataType = Tryout & {
   TryoutSession: (TryoutSession & {
@@ -81,163 +80,111 @@ export default function SNBTProcessor() {
   const params = useParams();
   const tryoutId = params?.tryoutId as string;
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [sessionIndex, setSessionIndex] = useState<number>(0);
+  // const [loading, setLoading] = useState<boolean>(false);
+  const [sessionId, setSessionId] = useState<string>('');
 
   // const { data: TryoutData } = api.irt.getTryoutDataForIrt.useQuery(
   //   { tryoutId: tryoutId as string },
   //   { refetchOnWindowFocus: false, enabled: !!tryoutId }
   // );
 
-  const [, setIsLoading] = useState<boolean>(false);
-  const [TryoutData, setTryoutData] = useState<TryoutDataType>();
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [TryoutData, setTryoutData] = useState<TryoutDataType>();
 
-  useEffect(() => {
-    getGeneral(`/irt/getTryoutDataForIrt?tryoutId=${tryoutId}`, {
-      setData: setTryoutData,
-      setLoading: setIsLoading,
-    });
-  }, [tryoutId]);
+  const {
+    data: TryoutData,
+    isLoading,
+    refetch: TryoutDataRefetch,
+  } = useGet<TryoutDataType>('/irt/getTryoutDataForIrt', {
+    params: {
+      tryoutId,
+    },
+  });
 
-  // const { mutateAsync: saveSessionIRT } = api.irt.saveIrtForSession.useMutation(
-  //   {
-  //     onSuccess() {
-  //       toaster({
-  //         title: "Berhasil",
-  //         condition: "success",
-  //         description: "Berhasil Menyimpan data IRT untuk sesi ini!",
-  //         duration: 4000,
-  //       });
-  //       setLoading(false);
-  //     },
-  //     onError() {
-  //       toaster({
-  //         title: "Gagal",
-  //         condition: "warning",
-  //         description: "Gagal Menyimpan data IRT untuk sesi ini!",
-  //         duration: 3000,
-  //       });
-  //       setLoading(false);
-  //     },
-  //   }
-  // );
+  // useEffect(() => {
+  //   getGeneral(`/irt/getTryoutDataForIrt?tryoutId=${tryoutId}`, {
+  //     setData: setTryoutData,
+  //     setLoading: setIsLoading,
+  //   });
+  // }, [tryoutId]);
 
-  const saveSessionIRT = async (payload: any) => {
-    await mutateGeneral('url', {
-      payload,
-      type: 'post',
-      setLoading: setLoading,
-    });
+  const isIrtBefore = () => {
+    if (!TryoutData) return false;
+    const session = TryoutData.TryoutSession.find(
+      (item) => item.id === sessionId,
+    );
+    if (!session) return false;
+    if (session.TryoutSessionParticipant.length > 0) {
+      let isDone = false;
+      outer: for (const participant of session.TryoutSessionParticipant) {
+        for (const uAnswer of participant.TryoutUserAnswer) {
+          if (
+            uAnswer.TryoutQuestion.a_discrimination &&
+            uAnswer.TryoutQuestion.b_difficulty &&
+            uAnswer.TryoutQuestion.c_guessing
+          ) {
+            isDone = true;
+            break outer;
+          }
+        }
+      }
+      // session.TryoutSessionParticipant[0].TryoutUserAnswer.forEach(
+      //   (uAnswer) => {
+      //     if (
+      //       uAnswer.TryoutQuestion.a_discrimination &&
+      //       uAnswer.TryoutQuestion.b_difficulty &&
+      //       uAnswer.TryoutQuestion.c_guessing
+      //     ) {
+      //       isDone = true;
+      //     }
+      //   },
+      // );
+      return isDone;
+    }
+    return false;
   };
 
-  const [participantFile, setParticipantFile] = useState<File | null>(null);
-  const [threePLFile, setThreePLFile] = useState<File | null>(null);
+  const { mutate: saveSessionIRT, isLoading: saveSessionIRTIsLoading } =
+    useMutation('/irt/saveIrtForSession', 'post', {
+      onSuccess() {
+        TryoutDataRefetch();
+      },
+    });
+
+  const { mutate: ProcessIRT, isLoading: ProcessIrtIsLoading } = useMutation<
+    DataIRTProps & {
+      overallStats: OverallStatsProps;
+    }
+  >('/irt/processIrtForSession', 'post', {
+    onSuccess({ data }) {
+      console.log({ data });
+      if (data?.overallStats) {
+        setOverallStats(data.overallStats);
+      }
+      if (data?.participants && data.question) {
+        setSaveDataIRT({
+          participants: data?.participants,
+          question: data?.question,
+        });
+      }
+    },
+  });
+
   const [overallStats, setOverallStats] = useState<OverallStatsProps | null>(
     null,
   );
   const [saveDataIRT, setSaveDataIRT] = useState<DataIRTProps | null>(null);
 
-  //=====
-
-  const processDataUserAnswer = (sessionIndex: number) => {
-    if (!TryoutData) return;
-    // const dummyData = data2;
-    const dummyData = TryoutData;
-    const SessionOne = dummyData.TryoutSession[sessionIndex];
-    const filterData = SessionOne.TryoutSessionParticipant.map(
-      (participant) => {
-        const question = participant.TryoutUserAnswer.map((uAnswer) => {
-          const isCorrect = () => {
-            if (uAnswer.TryoutAnswers?.value === 5) return 1;
-            return 0;
-          };
-          return {
-            q: uAnswer.TryoutQuestion.number,
-            correct: isCorrect(),
-          };
-        }).sort((a, b) => a.q - b.q);
-        return {
-          p: participant.userId,
-          question,
-        };
-      },
-    ).map((participant) => {
-      return {
-        p: participant.p,
-        question: participant.question,
-      };
-    });
-
-    const groupingByParticipant = filterData.reduce(
-      (
-        acc: {
-          [key: string]: {
-            q: number;
-            correct: number;
-          }[];
-        },
-        item,
-      ) => {
-        const key = item.p;
-        const question = item.question;
-        acc[key] = [...question];
-        return acc;
-      },
-      {},
-    );
-
-    const groupingArray = Object.keys(groupingByParticipant)
-      .map((key) => {
-        const question = groupingByParticipant[key];
-        const groupingByQuestion = question.reduce(
-          (acc: { [key: string]: number }, item) => {
-            const key = `q${item.q}`;
-            acc[key] = item.correct;
-            return acc;
-          },
-          {},
-        );
-        if (question.length == 0) {
-          return null;
-        }
-        return {
-          p: key,
-          ...groupingByQuestion,
-        };
-      })
-      .filter((item) => item);
-
-    return groupingArray.map((item) => {
-      return {
-        ...item,
-        p: item?.p,
-      };
-    });
-  };
-
-  const exportData = async (sessionIndex: number) => {
-    const fileName = `${
-      TryoutData?.TryoutSession[sessionIndex]?.TryoutCategory?.name ||
-      'default_category'
-    }_${
-      TryoutData?.TryoutSession[sessionIndex]?.TryoutSubCategory?.name ||
-      'default_subcategory'
-    }`;
-
-    const downloadData = processDataUserAnswer(sessionIndex) || null;
-
-    if (!downloadData) return;
-
-    let wb = utils.book_new(),
-      ws = utils.json_to_sheet(downloadData);
-    utils.book_append_sheet(wb, ws, 'items');
-    writeFile(wb, `${fileName}.csv`);
-  };
+  console.log({ overallStats });
 
   return (
     <div className="container mx-auto p-4 space-y-8">
       <LoadingPageWithText
-        loading={loading}
+        loading={ProcessIrtIsLoading}
+        heading="Sedang Memproses Data IRT"
+      />
+      <LoadingPageWithText
+        loading={saveSessionIRTIsLoading}
         heading="Sedang Menyimpan Data IRT"
       />
       <Card className="bg-linear-to-r from-blue-500 to-purple-600 text-white">
@@ -248,6 +195,9 @@ export default function SNBTProcessor() {
           </CardDescription>
         </CardHeader>
       </Card>
+      {isLoading && (
+        <LoadingComponentWithText heading="Mengambil Data Tryout..." />
+      )}
       {TryoutData && (
         <Card>
           <CardHeader>
@@ -255,9 +205,14 @@ export default function SNBTProcessor() {
             <div className="flex flex-col gap-2 pt-4">
               <h1 className="font-semibold text-lg">Pilih Sesi</h1>
               <Select
-                value={sessionIndex.toString()}
+                value={sessionId}
                 onValueChange={(value) =>
-                  value && setSessionIndex(parseInt(value))
+                  // value && setSessionIndex(parseInt(value))
+                  {
+                    setSessionId(value);
+                    setSaveDataIRT(null);
+                    setOverallStats(null);
+                  }
                 }
               >
                 <SelectTrigger className="font-medium text-base py-[.6rem] h-[unset]">
@@ -267,7 +222,7 @@ export default function SNBTProcessor() {
                   {TryoutData?.TryoutSession.map((item, index) => (
                     <SelectItem
                       key={index}
-                      value={index.toString()}
+                      value={item.id}
                       className="font-medium text-base"
                     >
                       {item.TryoutCategory.name} - {item.TryoutSubCategory.name}
@@ -276,46 +231,71 @@ export default function SNBTProcessor() {
                 </SelectContent>
               </Select>
               {TryoutData && (
-                <div className="flex gap-4 items-center">
+                <div className="flex flex-col gap-4">
                   <Button
                     className="bg-main hover:bg-main/85 w-fit"
                     onClick={() => {
-                      exportData(sessionIndex);
+                      // exportData(sessionIndex);
+                      if (!sessionId) {
+                        toaster({
+                          title: 'Error',
+                          condition: 'warning',
+                          description: 'Pilih Sesi Tryout!',
+                        });
+                        return;
+                      }
+                      ProcessIRT({
+                        payload: {
+                          sessionId,
+                          tryoutId,
+                        },
+                      });
                     }}
                   >
-                    Download CSV
+                    Process Data
                   </Button>
+
+                  {isIrtBefore() ? (
+                    <p className="text-green-600 font-semibold">
+                      Sesi ini sudah pernah di IRT sebelumnya
+                    </p>
+                  ) : (
+                    <p className="text-red-600 font-semibold">
+                      Sesi ini belum pernah di IRT sebelumnya
+                    </p>
+                  )}
                 </div>
               )}
             </div>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <div className="grid grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-2 gap-4">
               <UploadParticipantData setParticipantFile={setParticipantFile} />
               <Upload3PLData setThreePLFile={setThreePLFile} />
-            </div>
-            <UploadSummary
+            </div> */}
+            {/* <UploadSummary
               participantFile={participantFile}
               threePLFile={threePLFile}
-            />
-            {participantFile && threePLFile && (
+            /> */}
+            {/* {participantFile && threePLFile && (
               <ProcessData
                 setSaveDataIRT={setSaveDataIRT}
                 participantFile={participantFile}
                 setOverallStats={setOverallStats}
                 threePLFile={threePLFile}
               />
-            )}
+            )} */}
             {overallStats && <ResultsOverview overallStats={overallStats} />}
-            {participantFile && threePLFile && saveDataIRT && (
+            {saveDataIRT && (
               <Button
                 onClick={() => {
                   if (!TryoutData || !saveDataIRT || !tryoutId) return;
-                  setLoading(true);
                   saveSessionIRT({
-                    SaveDataIRT: saveDataIRT,
-                    sessionId: TryoutData.TryoutSession[sessionIndex].id,
-                    tryoutId: tryoutId as string,
+                    payload: {
+                      SaveDataIRT: saveDataIRT,
+                      sessionId,
+                      tryoutId: tryoutId as string,
+                    },
                   });
                 }}
               >
@@ -325,49 +305,6 @@ export default function SNBTProcessor() {
           </CardContent>
         </Card>
       )}
-
-      {/* <Tabs
-        value={currentStep.toString()}
-        onValueChange={(value) => setCurrentStep(parseInt(value))}
-      >
-        <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
-          {steps.map((step, index) => (
-            <TabsTrigger
-              key={index}
-              value={index.toString()}
-              disabled={index > currentStep}
-              className="text-sm sm:text-base"
-            >
-              {step.title}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {steps.map((step, index) => (
-          <TabsContent key={index} value={index.toString()}>
-            <Card>
-              <CardHeader>
-                <CardTitle>{step.title}</CardTitle>
-                <CardDescription>
-                  Langkah {index + 1} dari {steps.length}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <step.component
-                  onNext={handleNext}
-                  setParticipantFile={setParticipantFile}
-                  setThreePLFile={setThreePLFile}
-                  participantFile={participantFile}
-                  threePLFile={threePLFile}
-                  setResults={setResults}
-                  setOverallStats={setOverallStats}
-                  results={results}
-                  overallStats={overallStats}
-                />
-              </CardContent>
-            </Card>
-          </TabsContent>
-        ))}
-      </Tabs> */}
     </div>
   );
 }
