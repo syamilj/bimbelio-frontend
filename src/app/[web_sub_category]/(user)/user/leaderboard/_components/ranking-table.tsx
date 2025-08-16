@@ -332,7 +332,7 @@ export function RankingTable() {
                     <TableHead className="text-right font-bold text-gray-700 text-xs md:text-sm min-w-[100px]">
                       <SortButton
                         field="averageScore"
-                        label="Total"
+                        label={RankingTryout?.isIRT ? 'Rata-rata' : 'Total'}
                       />
                     </TableHead>
 
@@ -475,10 +475,15 @@ export function RankingTable() {
                             <div className="space-y-1">
                               <div className="font-bold text-sm md:text-lg">
                                 <span className="text-green-600">
-                                  {participant.totalScore.toFixed(0)}
+                                  {RankingTryout?.isIRT
+                                    ? participant.averageScore.toFixed(0)
+                                    : participant.totalScore.toFixed(0)}
                                 </span>
                                 <span className="text-gray-400 text-xs md:text-sm font-normal">
-                                  /{participant.maxScore}
+                                  /
+                                  {RankingTryout?.isIRT
+                                    ? 1000
+                                    : participant.maxScore}
                                 </span>
                               </div>
                               <div className="w-12 md:w-16 ml-auto bg-gray-200 rounded-full h-1 md:h-1.5 overflow-hidden">
