@@ -44,6 +44,7 @@ const navItems: NavItem[] = [
   { href: '/#hero', label: 'Beranda', isLink: true },
   // { href: "#materi", label: "Materi" },
   // { href: "#testimoni", label: "Testimoni" },
+  // { href: '/tutor', label: 'Tutor', isLink: true },
   { href: '/blog', label: 'Blog', isLink: true },
   { href: '/price', label: 'Paket', isLink: true },
   { href: '#tryout', label: 'Try Out' },
