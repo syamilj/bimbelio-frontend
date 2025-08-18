@@ -124,18 +124,21 @@ const HeroSection: React.FC = () => {
           style={{ y }}
           className="absolute inset-0 z-1"
         >
-          <Image
-            src={ImageHero || '/placeholder.svg'}
-            alt="University Buildings Background"
-            fill
-            priority
-            sizes="100vw"
-            loading="eager"
-            className="
-                        object-contain scale-200 object-[center_35%]          /* mobile */
-                        md:object-contain md:object-[center_top] md:scale-100  /* desktop sama seperti sebelumnya */
-                     "
-          />
+          {/* Fix: Add relative positioning untuk parent dari Image dengan fill */}
+          <div className="relative w-full h-full">
+            <Image
+              src={ImageHero || '/placeholder.svg'}
+              alt="University Buildings Background"
+              fill
+              priority
+              sizes="100vw"
+              loading="eager"
+              className="
+                          object-contain scale-200 object-[center_35%]          /* mobile */
+                          md:object-contain md:object-[center_top] md:scale-100  /* desktop sama seperti sebelumnya */
+                       "
+            />
+          </div>
         </motion.div>
 
         {/* Main Content - Ultra  Layout */}

@@ -1,6 +1,7 @@
 'use client';
 
 import { env } from '@/env.mjs';
+import dynamic from 'next/dynamic';
 import {
   createContext,
   Dispatch,
@@ -11,9 +12,12 @@ import {
   useState,
 } from 'react';
 import useMedia from 'use-media';
-import HistoryPayment from '../_shared/account/setting';
-import Login from '../_shared/auth/login';
 import { BlocknoteEditorType } from '../workspace/editor/provider';
+// Dynamic import komponen berat yang jarang muncul awal
+const Login = dynamic(() => import('../_shared/auth/login'), { ssr: false });
+const HistoryPayment = dynamic(() => import('../_shared/account/setting'), {
+  ssr: false,
+});
 
 export default function ProviderApp({ children }: { children: ReactNode }) {
   const isDekstop = useMedia({ minWidth: '768px' });
@@ -60,18 +64,21 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   //   if (isDekstop) setMinimizeSidebar(false);
   // }, [isDekstop]);
 
+  // Lazy load Midtrans Snap hanya saat popup transaksi dibuka
   useEffect(() => {
+    if (!transactionPopUp) return;
     const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
+    if (!snapScriptUrl) return;
     const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+    const id = 'midtrans-snap-script';
+    if (document.getElementById(id)) return; // sudah dimuat
     const script = document.createElement('script');
+    script.id = id;
     script.src = snapScriptUrl;
-    script.setAttribute('data-client-key', clientKey);
+    if (clientKey) script.setAttribute('data-client-key', clientKey);
     script.async = true;
     document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  }, [transactionPopUp]);
 
   useEffect(() => {
     if (showAuth.open) {

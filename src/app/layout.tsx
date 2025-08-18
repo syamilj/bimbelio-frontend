@@ -87,7 +87,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         {/* Meta Pixel Script - Load before interactive untuk detection yang lebih baik */}
         <Script
           id="facebook-pixel"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -107,7 +107,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         {/* TikTok Pixel Script - Load before interactive untuk detection yang lebih baik */}
         <Script
           id="tiktok-pixel"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function (w, d, t) {

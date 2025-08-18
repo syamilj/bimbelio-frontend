@@ -5,36 +5,21 @@ import { MetaPixelCustomDataType, MetaPixelEventType } from './types';
 let isMetaPixelInitialized = false;
 
 export const initMetaPixel = () => {
+  // ✅ Meta Pixel sudah di-load via layout.tsx untuk konsistensi dengan TikTok Pixel
+  // Fungsi ini hanya memastikan pixel sudah ready untuk tracking
   if (typeof window === 'undefined') return;
-  if (isMetaPixelInitialized || (window as any).fbq) return;
 
-  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-  if (!pixelId) return;
-
-  // Inject script
-  const script = document.createElement('script');
-  script.src = 'https://connect.facebook.net/en_US/fbevents.js';
-  script.async = true;
-  script.onload = () => {
-    if (!(window as any).fbq) {
-      const fbq = function (...args: any[]) {
-        (fbq as any).callMethod
-          ? (fbq as any).callMethod(...args)
-          : (fbq as any).queue.push(args);
-      };
-      (fbq as any).push = fbq;
-      (fbq as any).loaded = true;
-      (fbq as any).version = '2.0';
-      (fbq as any).queue = [];
-      (window as any).fbq = fbq;
-    }
-
-    (window as any).fbq('init', pixelId);
-    (window as any).fbq('track', 'PageView');
+  // Cek apakah Meta Pixel sudah tersedia (dari layout.tsx script)
+  if ((window as any).fbq) {
     isMetaPixelInitialized = true;
-  };
+    console.info('✅ Meta Pixel sudah tersedia dan ready untuk tracking');
+    return;
+  }
 
-  document.head.appendChild(script);
+  // Fallback: jika pixel belum dimuat (seharusnya tidak terjadi)
+  console.warn(
+    '⚠️ Meta Pixel belum dimuat - pastikan script di layout.tsx berfungsi',
+  );
 };
 
 // Semua event yang sudah di-track, untuk menghindari duplikasi
@@ -54,30 +39,40 @@ export const trackMetaEvent = (
     country: string; // hashed country
   }>,
 ) => {
-  if (typeof window === 'undefined' || !(window as any).fbq) return;
-  
+  if (typeof window === 'undefined' || !(window as any).fbq) {
+    console.warn('⚠️ Meta Pixel tidak tersedia untuk tracking event:', event);
+    return;
+  }
+
+  // Debug log untuk verifikasi pixel detection
+  console.info('✅ Meta Pixel detected, tracking event:', event, data);
+
   // Mencegah duplikasi untuk PageView
   if (event === 'PageView') {
     // PageView event hanya boleh sekali per halaman
     // layout.tsx sudah memanggil fbq('track', 'PageView')
-    console.info('Meta PageView sudah di-track di layout.tsx, mencegah duplikasi');
+    console.info(
+      'Meta PageView sudah di-track di layout.tsx, mencegah duplikasi',
+    );
     return;
   }
-  
+
   // Mencegah duplikasi untuk ViewContent pada konten yang sama
   if (event === 'ViewContent' && data?.content_name) {
     const eventKey = `ViewContent_${data.content_name}`;
-    
+
     // Periksa apakah event ini sudah di-track sebelumnya
     if (trackedMetaEvents[eventKey]) {
-      console.info(`Meta ViewContent untuk "${data.content_name}" sudah di-track sebelumnya`);
+      console.info(
+        `Meta ViewContent untuk "${data.content_name}" sudah di-track sebelumnya`,
+      );
       return;
     }
-    
+
     // Tandai event sudah di-track
     trackedMetaEvents[eventKey] = true;
   }
-  
+
   // Track event
   if (advancedMatching && Object.keys(advancedMatching).length > 0) {
     // Track dengan advanced matching data
@@ -86,9 +81,7 @@ export const trackMetaEvent = (
     // Track normal tanpa advanced matching
     (window as any).fbq('track', event, data || {});
   }
-};
-
-// ✅ Helper function untuk hash data user (Advanced Matching)
+}; // ✅ Helper function untuk hash data user (Advanced Matching)
 export const hashUserData = async (value: string): Promise<string> => {
   if (!value) return '';
 
