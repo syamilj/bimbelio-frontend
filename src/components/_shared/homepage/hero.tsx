@@ -1,6 +1,5 @@
 'use client';
 
-import ImageHero from '@/_assets/homepage/hero/bg-hero.webp';
 import MobilePoster from '@/_assets/homepage/hero/bimbelio-mobile.webp';
 import DesktopPoster from '@/_assets/homepage/hero/bimbelio.webp';
 import LogoIPDN from '@/_assets/homepage/hero/LOGO_KEDINASAN_IPDN.webp';
@@ -10,7 +9,7 @@ import LogoITB from '@/_assets/homepage/hero/LOGO_PTN_ITB.webp';
 import LogoITS from '@/_assets/homepage/hero/LOGO_PTN_ITS.webp';
 import LogoUGM from '@/_assets/homepage/hero/LOGO_PTN_UGM.webp';
 import LogoUI from '@/_assets/homepage/hero/LOGO_PTN_UI.webp';
-import { SparklesText } from '@/components/magicui/sparkles-text';
+// Dynamic import untuk efek non-kritis agar tidak blok hydrasi awal
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { IPhoneFrame } from '@/components/ui/iphone-frame';
 import { cn } from '@/lib/utils';
@@ -117,28 +116,16 @@ const HeroSection: React.FC = () => {
     >
       <GlobalStyles />
 
-      {/* Background: jadikan lebih ringan & non-priority agar tidak rebut LCP */}
-      <div className="absolute inset-0 z-1">
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            background: `radial-gradient(ellipse at center, ${mainColor}20 0%, transparent 70%)`,
-          }}
-        />
-        {/* Fix: Add relative positioning untuk parent dari Image dengan fill */}
-        <div className="relative w-full h-full">
-          <Image
-            src={ImageHero || '/placeholder.svg'}
-            alt="Background dekoratif"
-            fill
-            className="object-cover opacity-5"
-            // hilangkan priority agar LCP fokus ke poster utama
-            loading="lazy"
-            sizes="100vw"
-            style={{ objectPosition: 'center top' }}
-          />
-        </div>
-      </div>
+      {/* Background diganti CSS gradient + optional noise ringan (tanpa React Image) */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 30%, rgba(0,145,255,0.15), rgba(255,255,255,0) 70%), linear-gradient(to bottom, #ffffff, #ffffff)',
+          maskImage:
+            'radial-gradient(circle at 50% 40%, black, transparent 80%)',
+        }}
+      />
 
       {/* Main Content - Ultra  Layout */}
       <div className="relative z-30 mx-auto flex max-w-6xl flex-col items-center px-4 text-center pb-16">
@@ -151,7 +138,8 @@ const HeroSection: React.FC = () => {
             width={isMobile ? 560 : 960}
             height={isMobile ? 560 : 540}
             className="w-full h-auto object-contain mx-auto"
-            sizes="(max-width:768px) 90vw, 960px"
+            sizes="(max-width:600px) 92vw, (max-width:1200px) 960px, 960px"
+            placeholder="blur"
           />
         </div>
 
@@ -262,20 +250,16 @@ const HeadingSection: React.FC<{
         {/* Baris 1: LOLOS PTN & */}
         <div className="flex justify-center items-center gap-3 flex-wrap">
           <span className="text-gray-900">LOLOS</span>
-          <SparklesText sparklesCount={6}>
-            <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
-              PTN
-            </span>
-          </SparklesText>
+          <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
+            PTN
+          </span>
           <span className="text-gray-900">&</span>
         </div>
         {/* Baris 2: .Pasti. Kedinasan */}
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap">
-          <SparklesText sparklesCount={6}>
-            <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
-              Kedinasan.
-            </span>
-          </SparklesText>
+          <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
+            Kedinasan.
+          </span>
           <span className="text-gray-900"> Pasti.</span>
         </div>
       </h1>

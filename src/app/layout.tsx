@@ -84,6 +84,18 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       suppressHydrationWarning
     >
       <head>
+        {/* Resource Hints untuk percepat LCP */}
+        <link
+          rel="preconnect"
+          href="https://www.bimbelio.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/_next/static/media/bimbelio.webp"
+        />
+        {/* Catatan: path preload perlu disesuaikan saat build karena hashed file; untuk dev ini bisa dihapus jika error */}
         {/* Meta Pixel Script - Load before interactive untuk detection yang lebih baik */}
         <Script
           id="facebook-pixel"

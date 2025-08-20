@@ -66,6 +66,8 @@ const nextConfig = {
   // },
 
   images: {
+    // Tambah format modern untuk mengurangi ukuran transfer LCP image
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
