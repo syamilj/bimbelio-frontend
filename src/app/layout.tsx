@@ -93,7 +93,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <link
           rel="preload"
           as="image"
-          href="/_next/static/media/bimbelio.webp"
+          href="/_next/static/media/bg-hero.1f7c44df.webp"
         />
         {/* Catatan: path preload perlu disesuaikan saat build karena hashed file; untuk dev ini bisa dihapus jika error */}
         {/* Meta Pixel Script - Load before interactive untuk detection yang lebih baik */}
