@@ -271,7 +271,7 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          Bimbelio: Bimbel AI untuk UTBK/SNBT
+          Bimbelio: Bimbel AI untuk PTN dan Kedinasan
         </span>
       </motion.div>
     </motion.div>
