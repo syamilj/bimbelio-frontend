@@ -134,14 +134,6 @@ const HeroSection: React.FC = () => {
           style={{ y }}
           className="absolute inset-0 z-1"
         >
-          {/* Gradient placeholder background */}
-          <div
-            className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}10, ${secondaryColor}15)`,
-            }}
-          />
-
           {/* Lazy loaded background image */}
           {shouldLoadBg && (
             <div className="relative w-full h-full">
@@ -325,7 +317,7 @@ const HeadingSection: React.FC<{
               backgroundColor: mainColor,
             }}
           >
-            Whiteprint TKA & UTBK
+            Whiteprint TKA
           </span>
         </div>
         {/* Baris 3: Pasti Naik 200+ Poin! */}
