@@ -71,7 +71,7 @@ const BADGE_ICONS: Record<string, React.ReactNode> = {
 
 const STATS: Stat[] = [
   { label: 'Whiteprint Users', value: '15,000+' },
-  { label: 'Score Improvement', value: '+200' },
+  { label: 'Score Improvement', value: '90+' },
   { label: 'Whiteprint Success', value: '97%' },
 ];
 
@@ -320,7 +320,7 @@ const HeadingSection: React.FC<{
             Whiteprint TKA
           </span>
         </div>
-        {/* Baris 3: Pasti Naik 200+ Poin! */}
+        {/* Baris 3: Pasti Naik 90+ Poin! */}
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap text-4xl sm:text-5xl">
           <span
             className="bg-clip-text text-transparent font-black"
@@ -330,7 +330,7 @@ const HeadingSection: React.FC<{
               WebkitTextFillColor: 'transparent',
             }}
           >
-            Pasti Naik 200+ Poin!
+            Target Nilai 90+ Poin!
           </span>
         </div>
       </h1>
@@ -346,7 +346,7 @@ const HeadingSection: React.FC<{
             >
               Goal kita jelas:
             </span>{' '}
-            bantu kamu naik minimal 200 poin dari hasil tes awal.{' '}
+            bantu kamu untuk target dapatin nilai 99 poin dari hasil tes awal.{' '}
             <span
               className="font-bold"
               style={{ color: secondaryColor || mainColor }}
@@ -364,7 +364,7 @@ const HeadingSection: React.FC<{
             >
               Goal kita jelas:
             </span>{' '}
-            bantu kamu naik minimal 200 poin dari hasil tes awal.
+            bantu kamu dapatin target 90 poin dari hasil tes awal.
             <br />
             <span
               className="font-bold"
@@ -593,7 +593,7 @@ const CTASection: React.FC<{
         }}
       >
         <Play className="w-5 h-5 animate-gentle-float" />
-        <span>Mulai Whiteprint 200+ Poin</span>
+        <span>Mulai Whiteprint 90+ Poin</span>
         <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
       </motion.button>
 
