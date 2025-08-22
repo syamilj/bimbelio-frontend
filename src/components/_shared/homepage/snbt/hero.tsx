@@ -295,7 +295,8 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
 const HeadingSection: React.FC<{
   mainColor: string;
   secondaryColor: string;
-}> = ({ mainColor, secondaryColor }) => (
+  colorsLoaded: boolean;
+}> = ({ mainColor, secondaryColor, colorsLoaded }) => (
   <div className="mb-16 space-y-8 max-w-4xl">
     {/* Main heading -  and powerful */}
     <motion.div
@@ -312,10 +313,17 @@ const HeadingSection: React.FC<{
         {/* Baris 2: Sistem Belajar */}
         <div className="flex justify-center items-center px-4 mt-4 md:mt-6">
           <span
-            className="text-white text-center px-3 py-2 rounded-lg text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg"
-            style={{
-              backgroundColor: mainColor,
-            }}
+            className={cn(
+              "text-white text-center px-3 py-2 rounded-lg text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg transition-all duration-300",
+              !colorsLoaded && "bg-blue-500"
+            )}
+            style={
+              colorsLoaded
+                ? {
+                    backgroundColor: mainColor,
+                  }
+                : {}
+            }
           >
             Blueprint TKA & UTBK
           </span>
@@ -323,12 +331,21 @@ const HeadingSection: React.FC<{
         {/* Baris 3: Pasti Naik 200+ Poin! */}
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap text-4xl sm:text-5xl">
           <span
-            className="bg-clip-text text-transparent font-black"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor || mainColor}aa)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
+            className={cn(
+              "font-black transition-all duration-300",
+              colorsLoaded
+                ? "bg-clip-text text-transparent"
+                : "text-blue-600"
+            )}
+            style={
+              colorsLoaded
+                ? {
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor || mainColor}aa)`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }
+                : {}
+            }
           >
             Pasti Naik 200+ Poin!
           </span>
@@ -341,15 +358,21 @@ const HeadingSection: React.FC<{
           // Mobile: Gabungkan kedua tulisan
           <>
             <span
-              className="font-bold"
-              style={{ color: mainColor }}
+              className={cn(
+                "font-bold transition-colors duration-300",
+                !colorsLoaded && "text-blue-600"
+              )}
+              style={colorsLoaded ? { color: mainColor } : {}}
             >
               Goal kita jelas:
             </span>{' '}
             bantu kamu naik minimal 200 poin dari hasil tes awal.{' '}
             <span
-              className="font-bold"
-              style={{ color: secondaryColor || mainColor }}
+              className={cn(
+                "font-bold transition-colors duration-300",
+                !colorsLoaded && "text-blue-500"
+              )}
+              style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
             >
               Bukan sekadar janji motivasi
             </span>
@@ -359,16 +382,22 @@ const HeadingSection: React.FC<{
           // Desktop: Pisahkan dengan <br />
           <>
             <span
-              className="font-bold"
-              style={{ color: mainColor }}
+              className={cn(
+                "font-bold transition-colors duration-300",
+                !colorsLoaded && "text-blue-600"
+              )}
+              style={colorsLoaded ? { color: mainColor } : {}}
             >
               Goal kita jelas:
             </span>{' '}
             bantu kamu naik minimal 200 poin dari hasil tes awal.
             <br />
             <span
-              className="font-bold"
-              style={{ color: secondaryColor || mainColor }}
+              className={cn(
+                "font-bold transition-colors duration-300",
+                !colorsLoaded && "text-blue-500"
+              )}
+              style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
             >
               Bukan sekadar janji motivasi
             </span>
