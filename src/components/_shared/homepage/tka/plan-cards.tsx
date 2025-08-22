@@ -118,7 +118,7 @@ const PlanCards: React.FC = () => {
               style={{ backgroundColor: mainColor }}
             >
               <Crown className="w-4 h-4" />
-              Blueprint Plans
+              Whiteprint Plans
             </Badge>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
               Loading plans...
@@ -154,7 +154,7 @@ const PlanCards: React.FC = () => {
               style={{ backgroundColor: mainColor }}
             >
               <Crown className="w-4 h-4" />
-              Blueprint Plans
+              Whiteprint Plans
             </Badge>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
               Paket akan segera hadir
@@ -195,11 +195,11 @@ const PlanCards: React.FC = () => {
               style={{ backgroundColor: mainColor }}
             >
               <Crown className="w-4 h-4" />
-              Blueprint Plans
+              Whiteprint Plans
             </Badge>
 
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-              Pilih Blueprint yang{' '}
+              Pilih Whiteprint yang{' '}
               <span
                 className="bg-clip-text text-transparent"
                 style={{
@@ -272,7 +272,7 @@ const PlanCards: React.FC = () => {
               </h3>
 
               <p className="text-gray-700 leading-relaxed mb-6">
-                Kalau masih ada pertanyaan atau mau konsultasi Blueprint yang
+                Kalau masih ada pertanyaan atau mau konsultasi Whiteprint yang
                 paling cocok, tim kami siap bantu lewat WhatsApp atau telepon.
               </p>
 
