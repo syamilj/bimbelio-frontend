@@ -223,7 +223,7 @@ const PlanCards: React.FC = () => {
           {/* Plans Grid - Using CardPlan component */}
           <div
             className={`
-              grid gap-8 items-start
+              grid gap-8 items-start justify-items-stretch
               ${
                 topPlans.length === 1
                   ? 'grid-cols-1 max-w-md mx-auto'
@@ -232,6 +232,7 @@ const PlanCards: React.FC = () => {
                     : 'grid-cols-1 md:grid-cols-3'
               }
             `}
+            style={{ alignItems: 'flex-start' }}
           >
             {topPlans.map((plan, index) => (
               <motion.div
@@ -241,8 +242,10 @@ const PlanCards: React.FC = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 className={`
+                  flex flex-col
                   ${topPlans.length === 3 && index === 1 ? 'md:scale-105' : ''}
                 `}
+                style={{ alignSelf: 'flex-start' }}
               >
                 <CardPlan
                   plan={plan}

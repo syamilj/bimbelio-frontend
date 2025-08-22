@@ -79,6 +79,7 @@ const STATS: Stat[] = [
 const HeroSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [isMobile, setIsMobile] = useState(false);
+  const [shouldLoadBg, setShouldLoadBg] = useState(false);
   const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
     useState(false);
   const { scrollY } = useScroll();
@@ -93,6 +94,15 @@ const HeroSection: React.FC = () => {
     onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // Lazy load background after initial render
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShouldLoadBg(true);
+    }, 1500); // Delay 1.5 detik untuk prioritaskan konten utama
+
+    return () => clearTimeout(timer);
   }, []);
 
   const scrollTo = (id: string, offset = 100) => {
@@ -124,21 +134,32 @@ const HeroSection: React.FC = () => {
           style={{ y }}
           className="absolute inset-0 z-1"
         >
-          {/* Fix: Add relative positioning untuk parent dari Image dengan fill */}
-          <div className="relative w-full h-full">
-            <Image
-              src={ImageHero || '/placeholder.svg'}
-              alt="University Buildings Background"
-              fill
-              priority
-              sizes="100vw"
-              loading="eager"
-              className="
-                          object-contain scale-200 object-[center_35%]          /* mobile */
-                          md:object-contain md:object-[center_top] md:scale-100  /* desktop sama seperti sebelumnya */
-                       "
-            />
-          </div>
+          {/* Gradient placeholder background */}
+          <div
+            className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}10, ${secondaryColor}15)`,
+            }}
+          />
+
+          {/* Lazy loaded background image */}
+          {shouldLoadBg && (
+            <div className="relative w-full h-full">
+              <Image
+                src={ImageHero || '/placeholder.svg'}
+                alt="University Buildings Background"
+                fill
+                loading="lazy"
+                sizes="100vw"
+                className={`
+                  object-contain scale-200 object-[center_35%]          /* mobile */
+                  md:object-contain md:object-[center_top] md:scale-100  /* desktop sama seperti sebelumnya */
+                  transition-opacity duration-700 ease-in-out
+                  ${shouldLoadBg ? 'opacity-100' : 'opacity-0'}
+                `}
+              />
+            </div>
+          )}
         </motion.div>
 
         {/* Main Content - Ultra  Layout */}
