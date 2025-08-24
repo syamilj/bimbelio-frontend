@@ -39,8 +39,16 @@ export const middleware = async (req: NextRequest) => {
     }
 
     if (status === 200 && data) {
-      if (pathname.includes('admin') && data.role !== 'ADMIN') {
+      if (
+        pathname.includes('admin') &&
+        data.role !== 'ADMIN' &&
+        data.role !== 'SUPER_ADMIN'
+      ) {
         return NextResponse.redirect(new URL('/', req.url));
+      }
+
+      if (pathname.includes('admin/category') && data.role !== 'SUPER_ADMIN') {
+        return NextResponse.redirect(new URL('/404', req.url));
       }
     }
 

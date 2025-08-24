@@ -103,7 +103,7 @@ type MoreProps<Data = any, ErrorData = any> = {
   useEffectDependencies?: any[];
 };
 
-type ErrorType<Data = any> = {
+export type ErrorType<Data = any> = {
   data: Data;
   error: any;
   message: string;

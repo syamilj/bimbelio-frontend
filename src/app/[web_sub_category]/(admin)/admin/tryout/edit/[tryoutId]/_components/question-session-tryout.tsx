@@ -683,7 +683,8 @@ const QuestionSessionTryout = () => {
                         ? 5
                         : assessmentType === '+5/0'
                           ? 2
-                          : assessmentType === '+1/0'
+                          : assessmentType === '+1/0' ||
+                              assessmentType === '0-100'
                             ? 2
                             : assessmentType === 'IRT'
                               ? 2
@@ -701,7 +702,8 @@ const QuestionSessionTryout = () => {
                         assessmentType === '+5/0' &&
                           i * 5 === item2.value &&
                           'bg-main text-white md:hover:bg-main',
-                        assessmentType === '+1/0' &&
+                        (assessmentType === '+1/0' ||
+                          assessmentType === '0-100') &&
                           i * 1 === item2.value &&
                           'bg-main text-white md:hover:bg-main',
                         assessmentType === 'IRT' &&
@@ -726,7 +728,10 @@ const QuestionSessionTryout = () => {
                             answerIndex,
                             item2.value,
                           );
-                        } else if (assessmentType === '+1/0') {
+                        } else if (
+                          assessmentType === '+1/0' ||
+                          assessmentType === '0-100'
+                        ) {
                           onChangeAnswerValue(
                             i * 1,
                             questionIndex,

@@ -25,7 +25,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
-import { ArrowUpDown, Lock, Search, Trophy } from 'lucide-react';
+import { ArrowUpDown, Search, Trophy } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import ButtonUpgradeTryout from '../../try-out/_components/ui/button-upgrade-tryout';
 import { RankingTryoutProps } from './LeaderboardClient';
@@ -136,12 +136,13 @@ export function RankingTable() {
   const totalPages = Math.ceil(filteredAndSortedData.length / ITEMS_PER_PAGE);
 
   // Check if user has premium access (paid user)
-  const isPremiumUser = session?.user?.role === 'ADMIN';
+  const isAdmin =
+    session?.user?.role === 'ADMIN' || session?.user?.role === 'SUPER_ADMIN';
 
   // Mock data for non-premium users to show scrollable columns
   const mockSessionResults =
-    !isPremiumUser && RankingTryout?.rankingData?.[0]?.sessionResult
-      ? RankingTryout.rankingData[0].sessionResult
+    RankingTryout && RankingTryout?.rankingData.length > 0
+      ? RankingTryout?.rankingData[0].sessionResult
       : [];
 
   // Komponen SortButton untuk memicu sorting
@@ -276,12 +277,12 @@ export function RankingTable() {
 
       <CardContent className="p-3 md:p-6 space-y-4 md:space-y-6">
         {/* Premium Upgrade Banner - Moved to top */}
-        {!isPremiumUser && (
+        {/* {!isPremiumUser && (
           <ButtonUpgradeTryout
             tryoutId={RankingTryout?.tryoutId}
             variant="banner"
           />
-        )}
+        )} */}
 
         {/* Search Section */}
         <div className="flex items-center gap-4">
@@ -346,15 +347,14 @@ export function RankingTable() {
                         className="text-right font-bold text-gray-700 text-xs md:text-sm min-w-[120px] relative"
                       >
                         <div className="flex items-center justify-end gap-1 relative">
-                          {!isPremiumUser && (
+                          {/* {!isPremiumUser && (
                             <>
                               <Lock className="w-2 h-2 md:w-3 md:h-3 text-gray-400" />
-                              {/* Mobile lock overlay for enhanced effect */}
                               <div className="md:hidden absolute inset-0 bg-gray-100/80 rounded flex items-center justify-center">
                                 <Lock className="w-3 h-3 text-gray-500" />
                               </div>
                             </>
-                          )}
+                          )} */}
                           <SortButton
                             field={`category_${index}` as SortField}
                             label={
@@ -376,7 +376,7 @@ export function RankingTable() {
                           4 +
                           (RankingTryout?.rankingData?.[0]?.sessionResult
                             ?.length || 0) +
-                          (!isPremiumUser ? 3 : 0) // Add extra columns for non-premium
+                          (!isAdmin ? 3 : 0) // Add extra columns for non-premium
                         }
                         className="text-center h-32"
                       >
@@ -505,53 +505,34 @@ export function RankingTable() {
                                 key={sessionIndex}
                                 className="text-right py-3 md:py-4 relative"
                               >
-                                {isPremiumUser ? (
-                                  // Premium users see actual scores
-                                  session.isUnlocked ? (
-                                    <div className="space-y-1">
-                                      <div className="font-semibold text-xs md:text-sm">
-                                        <span className="text-green-600">
-                                          {session.totalScore.toFixed(0)}
-                                        </span>
-                                        <span className="text-gray-400 text-xs font-normal">
-                                          /{session.maxScore}
-                                        </span>
-                                      </div>
-                                      <div className="w-8 md:w-12 ml-auto bg-gray-200 rounded-full h-1 overflow-hidden">
-                                        <div
-                                          className="h-full rounded-full transition-all duration-300"
-                                          style={{
-                                            width: `${(session.totalScore / session.maxScore) * 100}%`,
-                                            backgroundColor: mainColor,
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <ButtonUpgradeTryout
-                                      tryoutId={RankingTryout?.tryoutId}
-                                    >
-                                      <span className="text-yellow-500 underline cursor-pointer text-xs">
-                                        Buka ini
+                                {session.isUnlocked ? (
+                                  <div className="space-y-1">
+                                    <div className="font-semibold text-xs md:text-sm">
+                                      <span className="text-green-600">
+                                        {session.totalScore.toFixed(0)}
                                       </span>
-                                    </ButtonUpgradeTryout>
-                                  )
-                                ) : (
-                                  // Non-premium users see locked content with enhanced mobile design
-                                  <div className="space-y-1 relative">
-                                    <div className="flex items-center justify-end gap-1">
-                                      <Lock className="w-2 h-2 md:w-3 md:h-3 text-gray-400" />
-                                      <span className="text-gray-400 font-mono text-xs">
-                                        ---
+                                      <span className="text-gray-400 text-xs font-normal">
+                                        /{session.maxScore}
                                       </span>
                                     </div>
                                     <div className="w-8 md:w-12 ml-auto bg-gray-200 rounded-full h-1 overflow-hidden">
-                                      <div className="w-full h-full bg-gray-300 rounded-full" />
-                                    </div>
-                                    <div className="text-xs text-gray-400 text-center">
-                                      Premium
+                                      <div
+                                        className="h-full rounded-full transition-all duration-300"
+                                        style={{
+                                          width: `${(session.totalScore / session.maxScore) * 100}%`,
+                                          backgroundColor: mainColor,
+                                        }}
+                                      />
                                     </div>
                                   </div>
+                                ) : (
+                                  <ButtonUpgradeTryout
+                                    tryoutId={RankingTryout?.tryoutId}
+                                  >
+                                    <span className="text-yellow-500 underline cursor-pointer text-xs">
+                                      Buka ini
+                                    </span>
+                                  </ButtonUpgradeTryout>
                                 )}
                               </TableCell>
                             ),
@@ -565,30 +546,6 @@ export function RankingTable() {
                 </TableBody>
               </Table>
             </div>
-
-            {/* Mobile scroll hint for non-premium users */}
-            {!isPremiumUser && (
-              <div className="md:hidden bg-linear-to-r from-gray-50 to-gray-100 p-3 border-t border-gray-200">
-                <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <div className="flex gap-1">
-                      <div className="w-1 h-1 bg-gray-400 rounded-full animate-pulse" />
-                      <div className="w-1 h-1 bg-gray-400 rounded-full animate-pulse animation-delay-200" />
-                      <div className="w-1 h-1 bg-gray-400 rounded-full animate-pulse animation-delay-500" />
-                    </div>
-                    <span>
-                      Scroll ke kanan untuk melihat mata pelajaran lain
-                    </span>
-                  </div>
-                  <ButtonUpgradeTryout
-                    variant="compact"
-                    className="h-6 text-xs px-2"
-                  >
-                    Unlock
-                  </ButtonUpgradeTryout>
-                </div>
-              </div>
-            )}
           </div>
         ) : (
           <Skeleton className="h-96 w-full rounded-xl" />

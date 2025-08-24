@@ -167,7 +167,7 @@ const ModalImportCSV = ({
           }
           if (assessmentType !== '1-5') {
             let Questions;
-            if (assessmentType === '+1/0') {
+            if (assessmentType === '+1/0' || assessmentType === '0-100') {
               Questions = handleGenerateQuestion(data, 1, 0);
             } else if (assessmentType === '+5/0') {
               Questions = handleGenerateQuestion(data, 5, 0);
@@ -185,7 +185,7 @@ const ModalImportCSV = ({
             Questions.forEach((item) => {
               let isCorrect = false;
               if (
-                assessmentType === '+1/0' &&
+                (assessmentType === '+1/0' || assessmentType === '0-100') &&
                 (!!item.Answers.find((item2) => item2.value === 1) || false)
               ) {
                 isCorrect = true;

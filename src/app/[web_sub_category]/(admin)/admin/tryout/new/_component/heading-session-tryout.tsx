@@ -111,6 +111,12 @@ const HeadingSessionTryout = ({
                   } else if (session.assessmentType === '+4/-1/0') {
                     if (answer.value === 5) value = 4;
                     else value = -1;
+                  } else if (session.assessmentType === '+1/0') {
+                    if (answer.value === 5) value = 1;
+                    else value = 0;
+                  } else if (session.assessmentType === '0-100') {
+                    if (answer.value === 5) value = 1;
+                    else value = 0;
                   }
                   return {
                     answer: answer.answer,
@@ -306,7 +312,7 @@ const HeadingSessionTryout = ({
         }),
       );
       return;
-    } else if (assessmentType === '+1/0') {
+    } else if (assessmentType === '+1/0' || assessmentType === '0-100') {
       setSessions((prev) =>
         prev.map((item, sessionIndex: number) => {
           if (
@@ -324,6 +330,13 @@ const HeadingSessionTryout = ({
                     Answers: item2.Answers?.map((answer) => {
                       if (item.assessmentType === '+4/-1/0') {
                         if (answer.value !== 4) {
+                          return { ...answer, value: 0 };
+                        }
+                      } else if (
+                        item.assessmentType === '+1/0' ||
+                        item.assessmentType === '0-100'
+                      ) {
+                        if (answer.value !== 1) {
                           return { ...answer, value: 0 };
                         }
                       } else {
@@ -571,6 +584,7 @@ const HeadingSessionTryout = ({
                   <SelectItem value="IRT">IRT</SelectItem>
                   <SelectItem value="+4/-1/0">+4/-1/0</SelectItem>
                   <SelectItem value="+1/0">+1/0</SelectItem>
+                  <SelectItem value="0-100">0-100</SelectItem>
                 </SelectContent>
               </Select>
             </div>

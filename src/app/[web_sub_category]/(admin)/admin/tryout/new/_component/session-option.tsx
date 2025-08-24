@@ -84,6 +84,21 @@ const SessionOption = ({
         ],
         courseChapterIds: [],
       };
+    } else if (assessmentType === '+1/0' || assessmentType === '0-100') {
+      newQuestion = {
+        number: EditSession.Questions?.length
+          ? EditSession.Questions?.length + 1
+          : 1,
+        question: '',
+        Answers: [
+          { answer: '', value: 0 },
+          { answer: '', value: 0 },
+          { answer: '', value: 0 },
+          { answer: '', value: 0 },
+          { answer: '', value: 1 },
+        ],
+        courseChapterIds: [],
+      };
     } else if (assessmentType === 'IRT') {
       newQuestion = {
         number: EditSession.Questions?.length

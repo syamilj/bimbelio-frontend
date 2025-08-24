@@ -81,7 +81,8 @@ const Sidebar = ({ category }: { category: any }) => {
 
   // Limitation countdown format helper
   const getLimitationStats = () => {
-    const isAdmin = session?.user.role === 'ADMIN';
+    const isAdmin =
+      session?.user.role === 'ADMIN' || session?.user.role === 'SUPER_ADMIN';
     if (isAdmin) return null;
 
     const limitations = [
@@ -454,21 +455,22 @@ const Sidebar = ({ category }: { category: any }) => {
                   align="end"
                   className="w-64 bg-white/95 backdrop-blur-xl border border-slate-200/50 shadow-2xl"
                 >
-                  {session?.user.role === 'ADMIN' && (
-                    <>
-                      <DropdownMenuItem
-                        className="focus:bg-slate-50 rounded-lg m-1"
-                        onClick={() => {
-                          setOpenMenu(false);
-                          router.push(`/${website_sub_category_id}/admin`);
-                        }}
-                      >
-                        <User className="h-4 w-4 mr-2" />
-                        Admin Panel
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                    </>
-                  )}
+                  {session?.user.role === 'ADMIN' ||
+                    (session?.user.role === 'SUPER_ADMIN' && (
+                      <>
+                        <DropdownMenuItem
+                          className="focus:bg-slate-50 rounded-lg m-1"
+                          onClick={() => {
+                            setOpenMenu(false);
+                            router.push(`/${website_sub_category_id}/admin`);
+                          }}
+                        >
+                          <User className="h-4 w-4 mr-2" />
+                          Admin Panel
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                      </>
+                    ))}
                   <DropdownMenuItem
                     className="focus:bg-slate-50 rounded-lg m-1"
                     onClick={() => {
