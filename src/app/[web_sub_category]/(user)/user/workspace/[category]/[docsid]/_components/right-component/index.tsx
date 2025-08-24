@@ -10,6 +10,7 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import OnBoarding from '@/components/workspace/_component/onboarding';
+import Quiz from '@/components/workspace/quiz';
 import { deleteGeneral, getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import {
@@ -18,6 +19,7 @@ import {
   IconRegenerateMessage,
   IconTabsChat,
   IconTabsNotes,
+  IconTabsQuiz,
   IconWarning,
 } from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
@@ -41,13 +43,13 @@ const TABS = [
     icon: <IconTabsChat w={18} />,
     isNew: false,
   },
-  // {
-  //   value: 'quiz',
-  //   title: 'Quiz',
-  //   tooltip: 'Generate Quiz with the document',
-  //   icon: <IconTabsQuiz w={18} />,
-  //   isNew: false,
-  // },
+  {
+    value: 'quiz',
+    title: 'Quiz',
+    tooltip: 'Generate Quiz with the document',
+    icon: <IconTabsQuiz w={18} />,
+    isNew: false,
+  },
 ];
 
 const tabNames = TABS.map((tab) => tab.value);
@@ -409,8 +411,8 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
             value: 'quiz',
             tw: ' break-words bg-bg-workspace sm:shadow-lg  h-[calc(100vh-3.5rem)] w-full ',
             children: (
-              // <Quiz />
-              <></>
+              <Quiz />
+              // <></>
             ),
           },
         ].map((item) => (

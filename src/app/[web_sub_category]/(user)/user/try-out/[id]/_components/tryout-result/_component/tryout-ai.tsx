@@ -16,9 +16,11 @@ import { ReactNode } from 'react';
 export const TryoutAI = ({
   participantId,
   children,
+  number,
 }: {
   participantId: string;
   children: ReactNode;
+  number: number;
 }) => {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -37,7 +39,7 @@ export const TryoutAI = ({
 
   const prevChatMessages = Messages || [];
 
-  console.log({ isLoadingPrevMessage, Messages, prevChatMessages });
+  if (!number) return 'Number is required2';
 
   return (
     <Sheet>
@@ -48,7 +50,7 @@ export const TryoutAI = ({
         </SheetClose>
         <Chat
           apiChat={`${env.NEXT_PUBLIC_API_URL}/ai/chatTryout?website_sub_category_id=${websiteSubCategory?.id}`}
-          body={{ participantId, userId: session?.user.id }}
+          body={{ participantId, userId: session?.user.id, number }}
           messages={{
             prevChatMessages,
             isLoadingPrevMessage,

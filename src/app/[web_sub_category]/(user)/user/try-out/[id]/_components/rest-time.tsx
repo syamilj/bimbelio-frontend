@@ -15,6 +15,7 @@ import {
   Users,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { TryoutDataType } from '../page';
 
 interface Props {
@@ -60,6 +61,8 @@ const RestTime = ({
     });
   };
 
+  console.log({ timeLeft, restTime });
+
   const handleContinue = () => {
     setLoading(true);
     createTryoutSessionParticipant({
@@ -67,6 +70,16 @@ const RestTime = ({
       userId: session?.user.id || '',
     });
   };
+
+  const handleContinueDebounced = useDebouncedCallback(() => {
+    handleContinue();
+  }, 200);
+
+  useEffect(() => {
+    if (restTime === 0) {
+      handleContinueDebounced();
+    }
+  }, [restTime, currentIndexSession, sessionData, session]);
 
   // Countdown timer
   useEffect(() => {

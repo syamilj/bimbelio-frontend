@@ -3,6 +3,7 @@
 import { signOut } from '@/lib/auth-helper';
 import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { responseError } from '@/lib/response';
+import { UserRoleEnum } from '@/types/database';
 import Cookies from 'js-cookie';
 import { Loader2 } from 'lucide-react';
 import {
@@ -110,7 +111,7 @@ type SessionProviderType = {
           id: string;
           name: string;
           email: string;
-          role: 'ADMIN' | 'PREMIUM' | 'USER';
+          role: UserRoleEnum;
           token: string;
           image: string | null;
           emailVerified: Date | null;

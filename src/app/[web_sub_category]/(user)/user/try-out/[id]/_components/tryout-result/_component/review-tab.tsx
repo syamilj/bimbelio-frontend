@@ -98,6 +98,8 @@ export function ReviewTab({
   const [userAnswerIndex, setUserAnswerIndex] = useState<number>(0);
   const [activeView, setActiveView] = useState<'question' | 'grid'>('question');
 
+  console.log({ userAnswerIndex });
+
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
@@ -146,7 +148,7 @@ export function ReviewTab({
       return value === 5;
     } else if (AssessmentType === '+4/-1/0') {
       return value === 4;
-    } else if (AssessmentType === '+1/0') {
+    } else if (AssessmentType === '+1/0' || AssessmentType === '0-100') {
       return value === 1;
     }
 
@@ -194,6 +196,8 @@ export function ReviewTab({
         return value === 5;
       } else if (AssessmentType === '+4/-1/0') {
         return value === 4;
+      } else if (AssessmentType === '+1/0' || AssessmentType === '0-100') {
+        return value === 1;
       }
       return false;
     }).length;
@@ -805,6 +809,12 @@ const CompactNavigation = ({
 
   const stats = getQuestionStats();
 
+  const questionNumber = userAnswerIndex + 1;
+
+  console.log({ userAnswerIndex });
+
+  console.log({ questionNumber });
+
   return (
     <div className="space-y-4">
       {/* Enhanced Navigation Header with Stats */}
@@ -994,7 +1004,10 @@ const CompactNavigation = ({
               </SheetFooter>
             </SheetContent>
           </Sheet> */}
-          <TryoutAI participantId={participantId}>
+          <TryoutAI
+            participantId={participantId}
+            number={questionNumber}
+          >
             <Button
               className="w-full h-10 rounded-xl font-medium text-white shadow-lg"
               style={{ backgroundColor: mainColor }}

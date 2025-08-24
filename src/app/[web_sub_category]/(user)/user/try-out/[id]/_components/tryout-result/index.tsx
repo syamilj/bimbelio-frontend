@@ -368,19 +368,21 @@ export default function TryoutResult({
 
             {/* Action Buttons */}
             <div className="flex items-center gap-3">
-              {isTesting && session?.user.role === 'ADMIN' && (
-                <Button
-                  onClick={() => {
-                    setTestAgainTryoutLoading(true);
-                    TestAgainTryout({ tryoutId, userId: session.user.id });
-                  }}
-                  variant="outline"
-                  className="rounded-xl border-2"
-                  style={{ borderColor: `${mainColor}30` }}
-                >
-                  Test Again
-                </Button>
-              )}
+              {isTesting &&
+                (session?.user.role === 'ADMIN' ||
+                  session?.user.role === 'SUPER_ADMIN') && (
+                  <Button
+                    onClick={() => {
+                      setTestAgainTryoutLoading(true);
+                      TestAgainTryout({ tryoutId, userId: session.user.id });
+                    }}
+                    variant="outline"
+                    className="rounded-xl border-2"
+                    style={{ borderColor: `${mainColor}30` }}
+                  >
+                    Test Again
+                  </Button>
+                )}
 
               {website_sub_category_id_params === 'simak-ui' && (
                 <Button

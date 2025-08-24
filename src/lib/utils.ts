@@ -130,8 +130,8 @@ export function formatPhoneNumber(phone: string): string {
   return withPrefix;
 }
 
-export function formatSchoolName(school: string): string {
-  if (!school) return '';
+export function formatSchoolName(school: string | undefined): string {
+  if (!school) return '-';
 
   // Remove extra spaces and convert to uppercase for processing
   let name = school.trim().toUpperCase();
