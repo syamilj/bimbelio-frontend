@@ -295,8 +295,8 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
 const HeadingSection: React.FC<{
   mainColor: string;
   secondaryColor: string;
-  colorsLoaded: boolean;
-}> = ({ mainColor, secondaryColor, colorsLoaded }) => (
+  colorsLoaded?: boolean;
+}> = ({ mainColor, secondaryColor, colorsLoaded = true }) => (
   <div className="mb-16 space-y-8 max-w-4xl">
     {/* Main heading -  and powerful */}
     <motion.div
@@ -314,8 +314,8 @@ const HeadingSection: React.FC<{
         <div className="flex justify-center items-center px-4 mt-4 md:mt-6">
           <span
             className={cn(
-              "text-white text-center px-3 py-2 rounded-lg text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg transition-all duration-300",
-              !colorsLoaded && "bg-blue-500"
+              'text-white text-center px-3 py-2 rounded-lg text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg transition-all duration-300',
+              !colorsLoaded && 'bg-blue-500',
             )}
             style={
               colorsLoaded
@@ -332,10 +332,8 @@ const HeadingSection: React.FC<{
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap text-4xl sm:text-5xl">
           <span
             className={cn(
-              "font-black transition-all duration-300",
-              colorsLoaded
-                ? "bg-clip-text text-transparent"
-                : "text-blue-600"
+              'font-black transition-all duration-300',
+              colorsLoaded ? 'bg-clip-text text-transparent' : 'text-blue-600',
             )}
             style={
               colorsLoaded
@@ -359,8 +357,8 @@ const HeadingSection: React.FC<{
           <>
             <span
               className={cn(
-                "font-bold transition-colors duration-300",
-                !colorsLoaded && "text-blue-600"
+                'font-bold transition-colors duration-300',
+                !colorsLoaded && 'text-blue-600',
               )}
               style={colorsLoaded ? { color: mainColor } : {}}
             >
@@ -369,8 +367,8 @@ const HeadingSection: React.FC<{
             bantu kamu naik minimal 200 poin dari hasil tes awal.{' '}
             <span
               className={cn(
-                "font-bold transition-colors duration-300",
-                !colorsLoaded && "text-blue-500"
+                'font-bold transition-colors duration-300',
+                !colorsLoaded && 'text-blue-500',
               )}
               style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
             >
@@ -383,8 +381,8 @@ const HeadingSection: React.FC<{
           <>
             <span
               className={cn(
-                "font-bold transition-colors duration-300",
-                !colorsLoaded && "text-blue-600"
+                'font-bold transition-colors duration-300',
+                !colorsLoaded && 'text-blue-600',
               )}
               style={colorsLoaded ? { color: mainColor } : {}}
             >
@@ -394,8 +392,8 @@ const HeadingSection: React.FC<{
             <br />
             <span
               className={cn(
-                "font-bold transition-colors duration-300",
-                !colorsLoaded && "text-blue-500"
+                'font-bold transition-colors duration-300',
+                !colorsLoaded && 'text-blue-500',
               )}
               style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
             >
