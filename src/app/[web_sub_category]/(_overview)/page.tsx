@@ -4,6 +4,7 @@ import { notFound, useParams } from 'next/navigation';
 import SIMAK_UI from './components/simak-ui';
 import SNBT from './components/snbt';
 import STAN from './components/stan';
+import TKA from './components/tka';
 import UM_UGM from './components/um-ugm';
 
 export default function LandingPageWebsiteCategory() {
@@ -25,6 +26,10 @@ export default function LandingPageWebsiteCategory() {
   }
   if (web_sub_category === 'um-ugm') {
     return <UM_UGM />;
+  }
+
+  if (web_sub_category === 'tka') {
+    return <TKA />;
   }
   return notFound();
 }

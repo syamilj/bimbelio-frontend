@@ -1,6 +1,5 @@
 'use client';
 
-import ImageHero from '@/_assets/homepage/hero/bg-hero.webp';
 import MobilePoster from '@/_assets/homepage/hero/bimbelio-mobile.webp';
 import DesktopPoster from '@/_assets/homepage/hero/bimbelio.webp';
 import LogoIPDN from '@/_assets/homepage/hero/LOGO_KEDINASAN_IPDN.webp';
@@ -10,12 +9,11 @@ import LogoITB from '@/_assets/homepage/hero/LOGO_PTN_ITB.webp';
 import LogoITS from '@/_assets/homepage/hero/LOGO_PTN_ITS.webp';
 import LogoUGM from '@/_assets/homepage/hero/LOGO_PTN_UGM.webp';
 import LogoUI from '@/_assets/homepage/hero/LOGO_PTN_UI.webp';
-import { SparklesText } from '@/components/magicui/sparkles-text';
+// Dynamic import untuk efek non-kritis agar tidak blok hydrasi awal
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { IPhoneFrame } from '@/components/ui/iphone-frame';
 import { cn } from '@/lib/utils';
 import { IconOpenAI } from '@/styles/icon';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   ArrowRight,
   ChevronLeft,
@@ -62,8 +60,9 @@ const STATS: Stat[] = [
 const HeroSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [isMobile, setIsMobile] = useState(false);
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 300], [0, -50]);
+  // STATE untuk defer / lazy rendering komponen non-kritis
+  const [showLogos, setShowLogos] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -74,6 +73,33 @@ const HeroSection: React.FC = () => {
     onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // Defer render LogoSection setelah idle untuk kurangi TBT awal
+  useEffect(() => {
+    const run = () => setShowLogos(true);
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        (window as any).requestIdleCallback(run, { timeout: 2000 });
+      } else {
+        setTimeout(run, 1200);
+      }
+    }
+  }, []);
+
+  // Video ditampilkan setelah user scroll pertama atau fallback timeout
+  useEffect(() => {
+    const reveal = () => setShowVideo(true);
+    const onScroll = () => {
+      reveal();
+      window.removeEventListener('scroll', onScroll);
+    };
+    window.addEventListener('scroll', onScroll, { once: true });
+    const t = setTimeout(reveal, 3000);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(t);
+    };
   }, []);
 
   const scrollTo = (id: string, offset = 100) => {
@@ -90,37 +116,33 @@ const HeroSection: React.FC = () => {
     >
       <GlobalStyles />
 
-      {/* Ultra  Background */}
-      <motion.div
-        style={{ y }}
-        className="absolute inset-0 z-1"
-      >
-        {/* Subtle gradient overlay */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            background: `radial-gradient(ellipse at center, ${mainColor}20 0%, transparent 70%)`,
-          }}
-        />
-
-        {/* Hero image with better masking */}
-        <Image
-          src={ImageHero || '/placeholder.svg'}
-          alt="University Buildings Background"
-          fill
-          className="object-cover opacity-5"
-          priority
-          sizes="100vw"
-          loading="eager"
-          style={{
-            objectPosition: isMobile ? '75% top' : 'center top',
-            transform: isMobile ? 'translateY(-400px)' : 'translateY(-500px)',
-          }}
-        />
-      </motion.div>
+      {/* Background diganti CSS gradient + optional noise ringan (tanpa React Image) */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 30%, rgba(0,145,255,0.15), rgba(255,255,255,0) 70%), linear-gradient(to bottom, #ffffff, #ffffff)',
+          maskImage:
+            'radial-gradient(circle at 50% 40%, black, transparent 80%)',
+        }}
+      />
 
       {/* Main Content - Ultra  Layout */}
       <div className="relative z-30 mx-auto flex max-w-6xl flex-col items-center px-4 text-center pb-16">
+        {/* LCP IMAGE: Poster utama sesuai device */}
+        <div className="mb-10 relative w-full max-w-3xl mx-auto">
+          <Image
+            src={isMobile ? MobilePoster : DesktopPoster}
+            alt="Bimbelio Adaptive Learning"
+            priority
+            width={isMobile ? 560 : 960}
+            height={isMobile ? 560 : 540}
+            className="w-full h-auto object-contain mx-auto"
+            sizes="(max-width:600px) 92vw, (max-width:1200px) 960px, 960px"
+            placeholder="blur"
+          />
+        </div>
+
         <BrandSection mainColor={mainColor} />
         <HeadingSection
           mainColor={mainColor}
@@ -130,17 +152,18 @@ const HeroSection: React.FC = () => {
           stats={STATS}
           mainColor={mainColor}
         />
-
         <CTASection
           onClick={() => scrollTo('tryout')}
           mainColor={mainColor}
           secondaryColor={secondaryColor}
         />
-        <LogoSection
-          logos={LOGOS}
-          mainColor={mainColor}
-        />
-        <VideoSection isMobile={isMobile} />
+        {showLogos && (
+          <LogoSection
+            logos={LOGOS}
+            mainColor={mainColor}
+          />
+        )}
+        {showVideo && <VideoSection isMobile={isMobile} />}
       </div>
     </div>
   );
@@ -206,29 +229,14 @@ const GlobalStyles: React.FC = () => (
 );
 
 //  Brand Section
-const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
-      className="flex mt-16 mb-8 flex-col items-center"
-    >
-      {/*  badge */}
-
-      {/* Powered by section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="flex items-center gap-2 text-gray-600 text-sm bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm"
-      >
-        <span>Powered by</span>
-        <IconOpenAI className="h-4 w-4" />
-      </motion.div>
-    </motion.div>
-  );
-};
+const BrandSection: React.FC<{ mainColor: string }> = () => (
+  <div className="flex mt-4 mb-6 flex-col items-center">
+    <div className="flex items-center gap-2 text-gray-600 text-sm bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm">
+      <span>Powered by</span>
+      <IconOpenAI className="h-4 w-4" />
+    </div>
+  </div>
+);
 
 //  Heading Section - Much simpler
 const HeadingSection: React.FC<{
@@ -237,30 +245,21 @@ const HeadingSection: React.FC<{
 }> = ({ mainColor, secondaryColor }) => (
   <div className="mb-16 space-y-8 max-w-4xl">
     {/* Main heading -  and powerful */}
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.5 }}
-      className="space-y-6"
-    >
+    <div className="space-y-6">
       <h1 className="text-center font-black leading-tight relative text-6xl">
         {/* Baris 1: LOLOS PTN & */}
         <div className="flex justify-center items-center gap-3 flex-wrap">
           <span className="text-gray-900">LOLOS</span>
-          <SparklesText sparklesCount={6}>
-            <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
-              PTN
-            </span>
-          </SparklesText>
+          <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
+            PTN
+          </span>
           <span className="text-gray-900">&</span>
         </div>
         {/* Baris 2: .Pasti. Kedinasan */}
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap">
-          <SparklesText sparklesCount={6}>
-            <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
-              Kedinasan.
-            </span>
-          </SparklesText>
+          <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
+            Kedinasan.
+          </span>
           <span className="text-gray-900"> Pasti.</span>
         </div>
       </h1>
@@ -268,7 +267,7 @@ const HeadingSection: React.FC<{
       <p className="text-xl md:text-2xl text-gray-600 font-medium leading-relaxed">
         Raih impianmu dengan Adaptive-AI terdepan di Indonesia
       </p>
-    </motion.div>
+    </div>
 
     {/*  feature pills */}
     {/* <motion.div
@@ -307,11 +306,8 @@ const StatsSection: React.FC<{
 }> = ({ stats, mainColor }) => (
   <div className="grid grid-cols-3 gap-8 mb-16 max-w-2xl w-full">
     {stats.map((stat, i) => (
-      <motion.div
+      <div
         key={i}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1 + i * 0.1 }}
         className="text-center"
       >
         <div className="text-3xl md:text-4xl font-black mb-2 text-main-default">
@@ -320,7 +316,7 @@ const StatsSection: React.FC<{
         <div className="text-sm md:text-base font-medium text-gray-600">
           {stat.label}
         </div>
-      </motion.div>
+      </div>
     ))}
   </div>
 );
@@ -333,12 +329,7 @@ const LogoSection: React.FC<{
   const doubled = [...logos, ...logos];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: 1.5 }}
-      className="w-full mb-16"
-    >
+    <div className="w-full mb-16 transition-opacity duration-500">
       <div className="text-center mb-8">
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
           Destinasi Impian Para Juara
@@ -373,7 +364,7 @@ const LogoSection: React.FC<{
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -383,18 +374,11 @@ const CTASection: React.FC<{
   mainColor: string;
   secondaryColor: string;
 }> = ({ onClick, mainColor, secondaryColor }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8, delay: 2 }}
-    className="w-full flex flex-col items-center mb-16 space-y-6"
-  >
+  <div className="w-full flex flex-col items-center mb-16 space-y-6">
     {/* Main CTA */}
-    <motion.button
+    <button
       onClick={onClick}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg text-white shadow-lg transition-all duration-300 bg-main-default"
+      className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg text-white shadow-lg transition-all duration-300 bg-main-default hover:scale-[1.02] active:scale-95"
       style={
         {
           // background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -404,7 +388,7 @@ const CTASection: React.FC<{
       <Play className="w-5 h-5" />
       <span>Mulai Try Out GRATIS</span>
       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-    </motion.button>
+    </button>
 
     {/* Trust indicators */}
     <div className="flex items-center gap-6 text-sm text-gray-600">
@@ -436,22 +420,19 @@ const CTASection: React.FC<{
         <span className="font-medium">4.9/5 rating</span>
       </div>
     </div>
-  </motion.div>
+  </div>
 );
 
 //  Video Section
 const VideoSection: React.FC<{ isMobile: boolean }> = ({ isMobile }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1, delay: 2.5 }}
+  <div
     className={cn(
-      'relative mx-auto',
+      'relative mx-auto transition-opacity duration-700',
       isMobile ? 'w-[280px] h-[500px]' : 'w-[900px] h-[506px]',
     )}
   >
     {isMobile ? <MobileVideo /> : <DesktopVideo />}
-  </motion.div>
+  </div>
 );
 
 //  Mobile Video

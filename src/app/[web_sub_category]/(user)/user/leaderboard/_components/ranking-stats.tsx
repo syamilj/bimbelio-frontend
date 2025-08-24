@@ -567,7 +567,7 @@ const AnalysisSubject = () => {
                       }
                     />
                     <Line
-                      dataKey="avgScore"
+                      dataKey={RankingTryout?.isIRT ? 'avgTheta' : 'avgScore'}
                       type="monotone"
                       stroke={mainColor}
                       strokeWidth={4}

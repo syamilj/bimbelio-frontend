@@ -79,6 +79,7 @@ const STATS: Stat[] = [
 const HeroSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [isMobile, setIsMobile] = useState(false);
+  const [shouldLoadBg, setShouldLoadBg] = useState(false);
   const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
     useState(false);
   const { scrollY } = useScroll();
@@ -93,6 +94,15 @@ const HeroSection: React.FC = () => {
     onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // Lazy load background after initial render
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShouldLoadBg(true);
+    }, 1500); // Delay 1.5 detik untuk prioritaskan konten utama
+
+    return () => clearTimeout(timer);
   }, []);
 
   const scrollTo = (id: string, offset = 100) => {
@@ -124,18 +134,24 @@ const HeroSection: React.FC = () => {
           style={{ y }}
           className="absolute inset-0 z-1"
         >
-          <Image
-            src={ImageHero || '/placeholder.svg'}
-            alt="University Buildings Background"
-            fill
-            priority
-            sizes="100vw"
-            loading="eager"
-            className="
-                        object-contain scale-200 object-[center_35%]          /* mobile */
-                        md:object-contain md:object-[center_top] md:scale-100  /* desktop sama seperti sebelumnya */
-                     "
-          />
+          {/* Lazy loaded background image */}
+          {shouldLoadBg && (
+            <div className="relative w-full h-full">
+              <Image
+                src={ImageHero || '/placeholder.svg'}
+                alt="University Buildings Background"
+                fill
+                loading="lazy"
+                sizes="100vw"
+                className={`
+                  object-contain scale-200 object-[center_35%]          /* mobile */
+                  md:object-contain md:object-[center_top] md:scale-100  /* desktop sama seperti sebelumnya */
+                  transition-opacity duration-700 ease-in-out
+                  ${shouldLoadBg ? 'opacity-100' : 'opacity-0'}
+                `}
+              />
+            </div>
+          )}
         </motion.div>
 
         {/* Main Content - Ultra  Layout */}
@@ -268,7 +284,7 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          Bimbelio: Bimbel AI untuk UTBK/SNBT
+          Bimbelio: Bimbel AI untuk PTN dan Kedinasan
         </span>
       </motion.div>
     </motion.div>
@@ -279,7 +295,8 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
 const HeadingSection: React.FC<{
   mainColor: string;
   secondaryColor: string;
-}> = ({ mainColor, secondaryColor }) => (
+  colorsLoaded: boolean;
+}> = ({ mainColor, secondaryColor, colorsLoaded }) => (
   <div className="mb-16 space-y-8 max-w-4xl">
     {/* Main heading -  and powerful */}
     <motion.div
@@ -294,25 +311,41 @@ const HeadingSection: React.FC<{
           <span className="text-gray-900">Sistem Belajar</span>
         </div>
         {/* Baris 2: Sistem Belajar */}
-        <div className="flex justify-center items-center gap-3 mt-1 md:mt-2 lg:mt-2 flex-wrap">
+        <div className="flex justify-center items-center px-4 mt-4 md:mt-6">
           <span
-            className="text-white bg-clip-padding px-4 py-2 rounded-lg md:text-5xl lg:text-5xl text-4xl"
-            style={{
-              backgroundColor: mainColor,
-            }}
+            className={cn(
+              "text-white text-center px-3 py-2 rounded-lg text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg transition-all duration-300",
+              !colorsLoaded && "bg-blue-500"
+            )}
+            style={
+              colorsLoaded
+                ? {
+                    backgroundColor: mainColor,
+                  }
+                : {}
+            }
           >
-            Blueprint UTBK
+            Blueprint TKA & UTBK
           </span>
         </div>
         {/* Baris 3: Pasti Naik 200+ Poin! */}
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap text-4xl sm:text-5xl">
           <span
-            className="bg-clip-text text-transparent font-black"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor || mainColor}aa)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
+            className={cn(
+              "font-black transition-all duration-300",
+              colorsLoaded
+                ? "bg-clip-text text-transparent"
+                : "text-blue-600"
+            )}
+            style={
+              colorsLoaded
+                ? {
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor || mainColor}aa)`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }
+                : {}
+            }
           >
             Pasti Naik 200+ Poin!
           </span>
@@ -325,15 +358,21 @@ const HeadingSection: React.FC<{
           // Mobile: Gabungkan kedua tulisan
           <>
             <span
-              className="font-bold"
-              style={{ color: mainColor }}
+              className={cn(
+                "font-bold transition-colors duration-300",
+                !colorsLoaded && "text-blue-600"
+              )}
+              style={colorsLoaded ? { color: mainColor } : {}}
             >
               Goal kita jelas:
             </span>{' '}
             bantu kamu naik minimal 200 poin dari hasil tes awal.{' '}
             <span
-              className="font-bold"
-              style={{ color: secondaryColor || mainColor }}
+              className={cn(
+                "font-bold transition-colors duration-300",
+                !colorsLoaded && "text-blue-500"
+              )}
+              style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
             >
               Bukan sekadar janji motivasi
             </span>
@@ -343,16 +382,22 @@ const HeadingSection: React.FC<{
           // Desktop: Pisahkan dengan <br />
           <>
             <span
-              className="font-bold"
-              style={{ color: mainColor }}
+              className={cn(
+                "font-bold transition-colors duration-300",
+                !colorsLoaded && "text-blue-600"
+              )}
+              style={colorsLoaded ? { color: mainColor } : {}}
             >
               Goal kita jelas:
             </span>{' '}
             bantu kamu naik minimal 200 poin dari hasil tes awal.
             <br />
             <span
-              className="font-bold"
-              style={{ color: secondaryColor || mainColor }}
+              className={cn(
+                "font-bold transition-colors duration-300",
+                !colorsLoaded && "text-blue-500"
+              )}
+              style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
             >
               Bukan sekadar janji motivasi
             </span>

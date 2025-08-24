@@ -50,6 +50,7 @@ const CountDownTryout = ({
       payload,
       type: 'post',
       onSuccess() {
+        localStorage.removeItem(`sessionAnswer-${sessionId}`);
         window.location.reload();
       },
     });

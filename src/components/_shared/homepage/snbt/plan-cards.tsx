@@ -39,31 +39,71 @@ const PlanCards: React.FC = () => {
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
 
-  // Ambil data plan dari API
-  const currentCategory = PricingData?.webSubCategory?.find(
-    (cat) => cat.webSubCategoryId === websiteSubCategory?.id,
+  // Selalu cari dan gunakan kategori dengan webSubCategoryId "all"
+  const getAllCategory = PricingData?.webSubCategory?.find(
+    (cat) => cat.webSubCategoryId.toLowerCase() === 'all',
   );
 
-  // Fallback: jika websiteSubCategory belum terset (incognito mode), ambil category pertama atau default SNBT
-  const fallbackCategory =
-    !currentCategory &&
-    PricingData?.webSubCategory &&
-    PricingData.webSubCategory.length > 0
-      ? PricingData.webSubCategory.find(
-          (cat) =>
-            cat.webSubCategoryName.toLowerCase().includes('snbt') ||
-            cat.webSubCategoryName.toLowerCase().includes('utbk'),
-        ) || PricingData.webSubCategory[0]
-      : null;
+  // Selalu gunakan kategori "all" untuk menampilkan semua plan
+  const getAllPlans = (): PlanDataType[] => {
+    // Strategy 1: Cari kategori dengan webSubCategoryId "all"
+    let categoryToUse = PricingData?.webSubCategory?.find(
+      (cat) => cat.webSubCategoryId.toLowerCase() === 'all',
+    );
 
-  const finalCategory = currentCategory || fallbackCategory;
+    // Strategy 2: Fallback ke kategori dengan nama "Semua" jika "all" tidak ada
+    if (!categoryToUse) {
+      categoryToUse = PricingData?.webSubCategory?.find(
+        (cat) => cat.webSubCategoryName.toLowerCase() === 'semua',
+      );
+    }
 
-  // Gabungkan subscription dan bundle, ambil 3 teratas
-  const allPlans = [
-    ...(finalCategory?.subscriptions || []),
-    ...(finalCategory?.bundles || []),
-  ];
+    // Strategy 3: Fallback ke gabungan semua kategori jika tidak ada kategori khusus
+    if (!categoryToUse && PricingData?.webSubCategory?.length) {
+      const allPlans: PlanDataType[] = [];
 
+      PricingData.webSubCategory.forEach((category) => {
+        if (category.subscriptions) {
+          allPlans.push(...category.subscriptions);
+        }
+        if (category.bundles) {
+          allPlans.push(...category.bundles);
+        }
+      });
+
+      // Tambahkan topping plans jika ada
+      if (PricingData.topping) {
+        allPlans.push(...PricingData.topping);
+      }
+
+      return allPlans;
+    }
+
+    if (!categoryToUse) return [];
+
+    const allPlans: PlanDataType[] = [];
+
+    // Tambahkan subscription plans dari kategori yang dipilih
+    if (categoryToUse.subscriptions) {
+      allPlans.push(...categoryToUse.subscriptions);
+    }
+
+    // Tambahkan bundle plans dari kategori yang dipilih
+    if (categoryToUse.bundles) {
+      allPlans.push(...categoryToUse.bundles);
+    }
+
+    // Tambahkan topping plans jika ada
+    if (PricingData?.topping) {
+      allPlans.push(...PricingData.topping);
+    }
+
+    return allPlans;
+  };
+
+  const allPlans = getAllPlans();
+
+  // Ambil 3 plan teratas (bisa berdasarkan urutan dari API atau kriteria lain)
   const topPlans = allPlans.slice(0, 3);
 
   // Loading state
@@ -103,7 +143,7 @@ const PlanCards: React.FC = () => {
   }
 
   // Empty state - hanya tampilkan jika benar-benar tidak ada data
-  if (topPlans.length === 0 && !fallbackCategory) {
+  if (topPlans.length === 0) {
     return (
       <section className="py-24 px-4">
         <div className="max-w-7xl mx-auto">
@@ -122,22 +162,6 @@ const PlanCards: React.FC = () => {
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Paket pembelajaran terbaik sedang disiapkan untuk kamu.
             </p>
-            {/* Debug info untuk development */}
-            {process.env.NODE_ENV === 'development' && (
-              <div className="mt-8 p-4 bg-gray-100 rounded-lg text-left max-w-2xl mx-auto">
-                <p className="text-sm font-mono">
-                  Debug: No plans found.
-                  <br />
-                  WebsiteSubCategory: {websiteSubCategory?.id || 'null'}
-                  <br />
-                  Available categories:{' '}
-                  {PricingData?.webSubCategory?.length || 0}
-                  <br />
-                  FallbackCategory:{' '}
-                  {(fallbackCategory as any)?.webSubCategoryName || 'none'}
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </section>
@@ -150,7 +174,7 @@ const PlanCards: React.FC = () => {
   };
 
   const handleContactSelect = (contactType: string) => {
-    console.log(`📊 Contact selected from plan cards: ${contactType}`);
+    // Contact selection handler
   };
 
   return (
@@ -189,7 +213,7 @@ const PlanCards: React.FC = () => {
             </h2>
 
             <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Sistem yang terukur untuk bantu ribuan siswa naik 200+ poin.{' '}
+              Sistem yang terukur untuk bantu ribuan siswa nilai 90+ poin.{' '}
               <span className="font-semibold">
                 Pilih sesuai kebutuhan & budget!
               </span>
@@ -199,15 +223,16 @@ const PlanCards: React.FC = () => {
           {/* Plans Grid - Using CardPlan component */}
           <div
             className={`
-          grid gap-8
-          ${
-            topPlans.length === 1
-              ? 'grid-cols-1 max-w-md mx-auto'
-              : topPlans.length === 2
-                ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'
-                : 'grid-cols-1 md:grid-cols-3'
-          }
-        `}
+              grid gap-8 items-start justify-items-stretch
+              ${
+                topPlans.length === 1
+                  ? 'grid-cols-1 max-w-md mx-auto'
+                  : topPlans.length === 2
+                    ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'
+                    : 'grid-cols-1 md:grid-cols-3'
+              }
+            `}
+            style={{ alignItems: 'flex-start' }}
           >
             {topPlans.map((plan, index) => (
               <motion.div
@@ -217,8 +242,10 @@ const PlanCards: React.FC = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 className={`
-                ${index === 1 ? 'md:scale-105' : ''}
-              `}
+                  flex flex-col
+                  ${topPlans.length === 3 && index === 1 ? 'md:scale-105' : ''}
+                `}
+                style={{ alignSelf: 'flex-start' }}
               >
                 <CardPlan
                   plan={plan}

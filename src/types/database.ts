@@ -385,7 +385,7 @@ export type User = {
   Role: UserRoleEnum;
 };
 
-export type UserRoleEnum = 'ADMIN' | 'USER' | 'PREMIUM';
+export type UserRoleEnum = 'SUPER_ADMIN' | 'ADMIN' | 'USER' | 'PREMIUM';
 
 export type UserTryout = {
   id: string;

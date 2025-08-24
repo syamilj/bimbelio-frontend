@@ -1,6 +1,7 @@
 // src/app/(admin)/admin/user/page.tsx
 'use client';
 
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,6 +19,7 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
+import ListPagination from '@/components/ui/list-pagination';
 import {
   Select,
   SelectContent,
@@ -35,10 +37,9 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { formatSchoolName } from '@/lib/utils';
 
-import { formatPhoneNumber, formatSchoolName } from '@/lib/utils';
 import { UserRoleEnum } from '@/types/database';
-import { eachDayOfInterval, format, subWeeks } from 'date-fns';
 import {
   ChevronDown,
   ChevronRight,
@@ -50,14 +51,13 @@ import {
   GraduationCap,
   Hash,
   Instagram,
-  Loader2,
   MessageCircle,
   Search,
   SortAsc,
   SortDesc,
   Users,
 } from 'lucide-react';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -71,18 +71,36 @@ import {
 } from 'recharts';
 
 export default function UserManagementDashboard() {
-  const [users, setUsers] = useState<User[]>([]);
+  const { data: session } = useSession();
+
+  const sessionRole = session?.user?.role;
+
   const [searchTerm, setSearchTerm] = useState('');
-  const [roleFilter, setRoleFilter] = useState('All');
-  const [sortOption, setSortOption] = useState('Latest');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [roleFilter, setRoleFilter] = useState<
+    undefined | 'ADMIN' | 'SUPER_ADMIN' | 'USER'
+  >();
+  const [sortOption, setSortOption] = useState<'LATEST' | 'OLDEST'>('OLDEST');
+  // const [currentPage, setCurrentPage] = useState(1);
   const [expandedProvinces, setExpandedProvinces] = useState<string[]>([]);
 
-  const {
-    data: usersData,
-    isLoading,
-    error,
-  } = useGet<UserDataType[]>('/user/getAllUsers');
+  const [take, setTake] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
+
+  const { data: usersData, totalPages } = useGet<UserDataType[]>(
+    '/user/getAllUsers',
+    {
+      params: {
+        take,
+        page,
+        role: roleFilter,
+        sort: sortOption,
+        search: searchTerm,
+      },
+      useEffectDependencies: [take, page, roleFilter, sortOption, searchTerm],
+    },
+  );
+
+  const { data: overviewData } = useGet<OverviewType>('/user/getUserOverview');
 
   const { data: channelData } = useGet<ChannelDataType[]>(
     '/user/getChannelAnalytics',
@@ -92,91 +110,18 @@ export default function UserManagementDashboard() {
     '/user/getRegionalAnalytics',
   );
 
-  useEffect(() => {
-    if (usersData) {
-      setUsers(
-        usersData.map((user) => ({
-          ...user,
-          createdAt: user.createdAt ? new Date(user.createdAt) : new Date(),
-          school: user.UserTryout?.schoolOrigin
-            ? formatSchoolName(user.UserTryout.schoolOrigin)
-            : '',
-          city: user.UserTryout?.kabupaten || '',
-          phone: user.UserTryout?.phone
-            ? formatPhoneNumber(user.UserTryout.phone)
-            : '',
-          tryoutCount: user.TryoutUnlock.length,
-        })),
-      );
-    }
-  }, [usersData]);
-
-  // Sort and filter users
-  const sortedUsers = [...users].sort((a, b) => {
-    if (sortOption === 'Latest') {
-      return b.createdAt.getTime() - a.createdAt.getTime();
-    } else {
-      return a.createdAt.getTime() - b.createdAt.getTime();
-    }
-  });
-
-  const filteredUsers = sortedUsers.filter(
-    (user) =>
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (roleFilter === 'All' || user.Role === roleFilter),
-  );
-
-  // Pagination
-  const pageSize = 20;
-  const totalPages = Math.ceil(filteredUsers.length / pageSize);
-  const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize,
-  );
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  // Verified and user type counts
-  const premiumUsers = users.filter((user) => user.Role === 'PREMIUM').length;
-  const tryoutUsers = users.filter((user) => user.UserTryout !== null).length;
-  const tryoutUsersCount = users.filter((user) => user.tryoutCount > 0).length;
-
-  // Calculate registration trend data for the last Week based on today's date
-  const today = new Date();
-  const oneWeekAgo = subWeeks(today, 1);
-
-  // Buat interval harian antara satu bulan yang lalu dan hari ini
-  const dailyIntervals = eachDayOfInterval({
-    start: oneWeekAgo,
-    end: today,
-  });
-
-  // Hitung registrasi untuk setiap hari
-  const registrationTrendData = dailyIntervals.map((day) => {
-    const count = users.filter(
-      (user) =>
-        format(user.createdAt, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd'),
-    ).length;
-    return {
-      name: format(day, 'dd MMM'),
-      total: count,
-    };
-  });
-
   // Loading and error handling
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-full p-6">
-        <Loader2 className="w-4 h-4 animate-spin" />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex justify-center items-center h-full p-6">
+  //       <Loader2 className="w-4 h-4 animate-spin" />
+  //     </div>
+  //   );
+  // }
 
-  if (error) {
-    return <div className="p-6 text-red-500">Error: {error.message}</div>;
-  }
+  // if (error) {
+  //   return <div className="p-6 text-red-500">Error: {error.message}</div>;
+  // }
 
   const getWhatsAppLink = (phone: string) => {
     // Remove any non-digit characters from the phone number
@@ -206,42 +151,46 @@ export default function UserManagementDashboard() {
 
         <TabsContent value="overview">
           <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Admin</CardTitle>
+                <Crown className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {overviewData?.totalAdmin || '-'}
+                </div>
+              </CardContent>
+            </Card>
             {/* Total Users */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total Users
-                </CardTitle>
+                <CardTitle className="text-sm font-medium">Users</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{users.length}</div>
+                <div className="text-2xl font-bold">
+                  {overviewData?.totalUsers || '-'}
+                </div>
               </CardContent>
             </Card>
 
             {/* Tryout Users */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Verified</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Verified Users
+                </CardTitle>
                 <GraduationCap className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{tryoutUsers}</div>
+                <div className="text-2xl font-bold">
+                  {overviewData?.totalVerifiedUsers || '-'}
+                </div>
               </CardContent>
             </Card>
 
             {/* Premium Users */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Premium Users
-                </CardTitle>
-                <Crown className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{premiumUsers}</div>
-              </CardContent>
-            </Card>
 
             {/* Tryout Users Count */}
             <Card>
@@ -252,7 +201,9 @@ export default function UserManagementDashboard() {
                 <GraduationCap className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{tryoutUsersCount}</div>
+                <div className="text-2xl font-bold">
+                  {overviewData?.totalTryoutUnlock || '-'}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -272,7 +223,7 @@ export default function UserManagementDashboard() {
                   height={300}
                 >
                   <LineChart
-                    data={registrationTrendData}
+                    data={overviewData?.registrationTrendData}
                     accessibilityLayer
                     margin={{
                       top: 20,
@@ -286,7 +237,11 @@ export default function UserManagementDashboard() {
                       tickLine={false}
                       axisLine={false}
                       tickMargin={8}
-                      interval={Math.floor(registrationTrendData.length / 30)} // Menampilkan label setiap 3 hari jika data 30 hari
+                      interval={Math.floor(
+                        overviewData?.registrationTrendData
+                          ? overviewData?.registrationTrendData.length / 30
+                          : 0,
+                      )} // Menampilkan label setiap 3 hari jika data 30 hari
                       tickFormatter={(value) => value}
                     />
                     <YAxis />
@@ -320,27 +275,47 @@ export default function UserManagementDashboard() {
 
           {/* Search and Filter */}
           <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+            <form
+              className="flex items-center space-x-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const Form = new FormData(e.currentTarget);
+                const searchValue = Form.get('searchInput') as string;
+                setSearchTerm(searchValue || '');
+              }}
+            >
               <Input
+                name="searchInput"
                 placeholder="Search users email..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value === '') {
+                    setSearchTerm('');
+                  }
+                }}
                 className="max-w-sm"
               />
               <Button
                 variant="outline"
-                onClick={() => setSearchTerm('')}
+                // onClick={() => setSearchTerm('')}
+                type="submit"
               >
                 <Search className="mr-2 h-4 w-4" />
                 Search
               </Button>
-            </div>
+            </form>
             {/* Filter and Sort Section */}
             <div className="flex space-x-4">
               {/* Role Filter */}
               <Select
                 value={roleFilter}
-                onValueChange={setRoleFilter}
+                onValueChange={(value) => {
+                  if (value === 'All') {
+                    setRoleFilter(undefined);
+                  } else {
+                    setRoleFilter(value as any);
+                  }
+                  setPage(1);
+                }}
               >
                 <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
                   <div className="flex items-center">
@@ -350,20 +325,20 @@ export default function UserManagementDashboard() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="All">All Roles</SelectItem>
-                  <SelectItem value="USER">User</SelectItem>
+                  <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
                   <SelectItem value="ADMIN">Admin</SelectItem>
-                  <SelectItem value="PREMIUM">Premium</SelectItem>
+                  <SelectItem value="USER">User</SelectItem>
                 </SelectContent>
               </Select>
 
               {/* Sort Option */}
               <Select
                 value={sortOption}
-                onValueChange={setSortOption}
+                onValueChange={(value: any) => setSortOption(value)}
               >
                 <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
                   <div className="flex items-center">
-                    {sortOption === 'Latest' ? (
+                    {sortOption === 'LATEST' ? (
                       <SortDesc className="mr-2 h-4 w-4 text-muted-foreground" />
                     ) : (
                       <SortAsc className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -372,8 +347,8 @@ export default function UserManagementDashboard() {
                   </div>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Latest">Latest</SelectItem>
-                  <SelectItem value="Oldest">Oldest</SelectItem>
+                  <SelectItem value="LATEST">Latest</SelectItem>
+                  <SelectItem value="OLDEST">Oldest</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -384,6 +359,7 @@ export default function UserManagementDashboard() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>No.</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>School</TableHead>
@@ -393,36 +369,43 @@ export default function UserManagementDashboard() {
                   <TableHead>Count</TableHead>
                   <TableHead>Status</TableHead> {/* Updated */}
                   <TableHead>WhatsApp</TableHead>
-                  <TableHead>Actions</TableHead>
+                  {sessionRole === 'SUPER_ADMIN' && (
+                    <TableHead>Actions</TableHead>
+                  )}
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedUsers.map((user) => (
+                {usersData?.map((user, uIndex) => (
                   <TableRow key={user.id}>
+                    <TableCell>{page * take - take + uIndex + 1}</TableCell>
                     <TableCell className="font-medium">{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.school}</TableCell>
-                    <TableCell>{user.city}</TableCell>
+                    <TableCell>
+                      {formatSchoolName(user.UserTryout?.schoolOrigin)}
+                    </TableCell>
+                    <TableCell>{user.UserTryout?.kabupaten || '-'}</TableCell>
                     <TableCell>{user.Role}</TableCell>
                     <TableCell>
                       <Badge
                         variant={
-                          user.Role === 'PREMIUM'
+                          user.Role !== 'USER'
                             ? 'default'
-                            : user.tryoutCount > 0
+                            : user.TryoutUnlock.length > 0
                               ? 'secondary'
                               : 'outline'
                         }
                       >
-                        {user.Role === 'PREMIUM'
+                        {user.Role !== 'USER'
                           ? 'Premium'
-                          : user.tryoutCount > 0
+                          : user.TryoutUnlock.length > 0
                             ? 'Tryout'
                             : 'User'}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {user.Role === 'PREMIUM' ? 'Unlimited' : user.tryoutCount}
+                      {user.Role === 'PREMIUM'
+                        ? 'Unlimited'
+                        : user.TryoutUnlock.length}
                     </TableCell>
                     <TableCell>
                       {' '}
@@ -434,57 +417,73 @@ export default function UserManagementDashboard() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <a
-                        href={getWhatsAppLink(user.phone)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center text-blue-600 hover:text-blue-800"
-                      >
-                        <MessageCircle className="mr-1 h-4 w-4" />
-                        Invite
-                      </a>
+                      {user.UserTryout?.phone && (
+                        <a
+                          href={getWhatsAppLink(user.UserTryout?.phone)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-blue-600 hover:text-blue-800"
+                        >
+                          <MessageCircle className="mr-1 h-4 w-4" />
+                          Invite
+                        </a>
+                      )}
                     </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                      >
-                        <Edit className="mr-1 h-4 w-4" />
-                        Edit
-                      </Button>
-                    </TableCell>
+                    {sessionRole === 'SUPER_ADMIN' && (
+                      <TableCell>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                        >
+                          <Edit className="mr-1 h-4 w-4" />
+                          Edit
+                        </Button>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-            <div className="flex items-center justify-between border-t p-4">
+            <ListPagination
+              className="px-4"
+              onSizeChange={(size) => {
+                setTake(size);
+              }}
+              onPageChange={(page) => {
+                setPage(page);
+              }}
+              currentPage={page}
+              totalPage={totalPages}
+              pageSize={take}
+            />
+            {/* <div className="flex items-center justify-between border-t p-4">
               <div>
-                Showing {(currentPage - 1) * pageSize + 1} to{' '}
-                {Math.min(currentPage * pageSize, filteredUsers.length)} of{' '}
+                Showing {(page - 1) * pageSize + 1} to{' '}
+                {Math.min(page * pageSize, filteredUsers.length)} of{' '}
                 {filteredUsers.length} users
               </div>
               <div className="flex items-center space-x-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
                 >
                   Previous
                 </Button>
                 <div className="text-sm font-medium">
-                  Page {currentPage} of {totalPages}
+                  Page {page} of {totalPages}
                 </div>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page === totalPages}
                 >
                   Next
                 </Button>
               </div>
-            </div>
+            </div> */}
           </div>
         </TabsContent>
 
@@ -670,17 +669,15 @@ export default function UserManagementDashboard() {
   );
 }
 
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  Role: 'ADMIN' | 'USER' | 'PREMIUM';
-  createdAt: Date;
-  UserTryout: { id: string } | null;
-  school: string;
-  city: string;
-  phone: string;
-  tryoutCount: number;
+type OverviewType = {
+  totalUsers: number;
+  totalVerifiedUsers: number;
+  totalAdmin: number;
+  totalTryoutUnlock: number;
+  registrationTrendData: {
+    name: string;
+    total: number;
+  }[];
 };
 
 type UserDataType = {

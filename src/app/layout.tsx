@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     'UTBK',
     'Bimbel SNBT',
     'Bimbel UTBK',
+    'Bimbel TKA',
     'Ujian Mandiri',
     'Bimbel Ujian Mandiri',
     'Bimbel SIMAK UI',
@@ -83,10 +84,22 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       suppressHydrationWarning
     >
       <head>
+        {/* Resource Hints untuk percepat LCP */}
+        <link
+          rel="preconnect"
+          href="https://www.bimbelio.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/_next/static/media/bg-hero.1f7c44df.webp"
+        />
+        {/* Catatan: path preload perlu disesuaikan saat build karena hashed file; untuk dev ini bisa dihapus jika error */}
         {/* Meta Pixel Script - Load before interactive untuk detection yang lebih baik */}
         <Script
           id="facebook-pixel"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -106,7 +119,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         {/* TikTok Pixel Script - Load before interactive untuk detection yang lebih baik */}
         <Script
           id="tiktok-pixel"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function (w, d, t) {
