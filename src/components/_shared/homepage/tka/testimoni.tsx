@@ -45,7 +45,7 @@ const Testimoni = () => {
       start: 5,
       heading: 'Whiteprint Changed Everything',
       comment:
-        'Honestly, gue almost gave up. Third attempt TKA, parents disappointed, future unclear. Whiteprint method literally turned everything around. Sekarang UGM Kedokteran. To all hopeless kids out there - your transformation story starts here!',
+        'Honestly, aku almost gave up. Third attempt TKA, parents disappointed, future unclear. Whiteprint method literally turned everything around. Sekarang UGM Kedokteran. To all hopeless kids out there - your transformation story starts here!',
       name: 'Muhammad Farid',
       profesi: 'UGM Medical Student',
       avatar: 'MF',

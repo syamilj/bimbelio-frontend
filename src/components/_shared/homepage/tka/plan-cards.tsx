@@ -208,7 +208,7 @@ const PlanCards: React.FC = () => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                pas buat lo!
+                pas buat kamu!
               </span>
             </h2>
 

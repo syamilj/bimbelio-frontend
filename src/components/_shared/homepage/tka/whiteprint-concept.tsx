@@ -43,7 +43,7 @@ const WhiteprintConcept: React.FC = () => {
       title: 'Diagnosis Tepat',
       subtitle: 'Tau kelemahan dalam 90 menit',
       description:
-        'Nggak perlu belajar semua materi dulu. Diagnosis ini kasih tau lo persis kurikulum mana yang lemah—jadi belajar langsung terarah!',
+        'Nggak perlu belajar semua materi dulu. Diagnosis ini kasih tau kamu persis kurikulum mana yang lemah—jadi belajar langsung terarah!',
       icon: <Brain className="w-8 h-8" />,
       gradient: `from-[${secondaryColor}] to-[${secondaryColor}80]`,
       features: [
@@ -380,7 +380,7 @@ const WhiteprintConcept: React.FC = () => {
                   className="font-bold px-2 py-1 rounded-xl"
                   style={{ background: 'white', color: mainColor }}
                 >
-                  Kapan giliran lo?
+                  Kapan giliran kamu?
                 </span>
               </p>
 

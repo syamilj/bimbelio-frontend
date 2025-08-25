@@ -50,7 +50,7 @@ const BentoGrid: React.FC = () => {
       title: 'Diagnosis Tepat',
       subtitle: 'Tau kelemahan dalam 90 menit',
       description:
-        'Nggak perlu belajar semua materi dulu. Diagnosis ini kasih tau lo persis kurikulum mana yang lemah—jadi belajar langsung terarah!',
+        'Nggak perlu belajar semua materi dulu. Diagnosis ini kasih tau kamu persis kurikulum mana yang lemah—jadi belajar langsung terarah!',
       icon: <Brain className="w-8 h-8" />,
       gradient: `from-[${mainColor}] to-[${mainColor}80]`,
       size: 'large',
@@ -69,7 +69,7 @@ const BentoGrid: React.FC = () => {
       title: 'Target Jelas',
       subtitle: 'Naik 200+ poin terukur',
       description:
-        'Bukan cuma prediksi skor aja. Ini kasih target yang realistis dan terarah—step by step menuju skor impian lo.',
+        'Bukan cuma prediksi skor aja. Ini kasih target yang realistis dan terarah—step by step menuju skor impian kamu.',
       icon: <Target className="w-6 h-6" />,
       gradient: `from-[${secondaryColor}] to-[${secondaryColor}80]`,
       size: 'medium',
@@ -156,7 +156,7 @@ const BentoGrid: React.FC = () => {
       title: 'Course Simplified',
       subtitle: 'Fokus yang penting aja',
       description:
-        'Course yang dirancang khusus buat efisiensi. Nggak ada materi yang nggak perlu—cuma yang bener-bener bikin skor lo naik.',
+        'Course yang dirancang khusus buat efisiensi. Nggak ada materi yang nggak perlu—cuma yang bener-bener bikin skor kamu naik.',
       icon: <Calendar className="w-6 h-6" />,
       gradient: `from-[${mainColor}] to-[${secondaryColor}]`,
       size: 'medium',
@@ -357,8 +357,8 @@ const BentoGrid: React.FC = () => {
             </h3>
 
             <p className="text-gray-600 mb-6 leading-relaxed">
-              Semua yang lo butuhin ada di sini. Nggak ada lagi belajar ngawang
-              atau buang waktu ke materi yang nggak penting.
+              Semua yang kamu butuhin ada di sini. Nggak ada lagi belajar
+              ngawang atau buang waktu ke materi yang nggak penting.
               <span className="font-semibold">
                 {' '}
                 Kamu belajar cara tercepat & terbukti buat ningkatin skor.
