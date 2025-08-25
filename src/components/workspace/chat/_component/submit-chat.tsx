@@ -183,17 +183,17 @@ const SubmitChat = () => {
           </div>
         )}
 
-        {session?.user.role === 'ADMIN' ||
-          (session?.user.role === 'SUPER_ADMIN' && (
-            <div className="mb-3 flex items-center gap-2 p-2 rounded-lg bg-green-50 border border-green-200">
-              <div className="flex items-center gap-1 text-green-700 text-sm">
-                <IconUnlimited w={14} />
-                <span>/</span>
-                <IconUnlimited w={14} />
-                <span className="font-medium ml-1">Admin - Unlimited</span>
-              </div>
+        {(session?.user.role === 'ADMIN' ||
+          session?.user.role === 'SUPER_ADMIN') && (
+          <div className="mb-3 flex items-center gap-2 p-2 rounded-lg bg-green-50 border border-green-200">
+            <div className="flex items-center gap-1 text-green-700 text-sm">
+              <IconUnlimited w={14} />
+              <span>/</span>
+              <IconUnlimited w={14} />
+              <span className="font-medium ml-1">Admin - Unlimited</span>
             </div>
-          ))}
+          </div>
+        )}
 
         {/* Chat Input */}
         <form
