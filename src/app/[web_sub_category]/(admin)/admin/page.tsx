@@ -37,7 +37,7 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { formatSchoolName } from '@/lib/utils';
+import { cn, formatSchoolName } from '@/lib/utils';
 
 import { UserRoleEnum } from '@/types/database';
 import {
@@ -412,6 +412,7 @@ export default function UserManagementDashboard() {
                       {/* Updated */}
                       <Badge
                         variant={user.UserTryout ? 'outline' : 'destructive'}
+                        className={cn(!user.UserTryout && 'text-white')}
                       >
                         {user.UserTryout ? 'Verified' : 'Unverified'}
                       </Badge>
