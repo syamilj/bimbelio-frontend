@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { formatDateTime } from '@/lib/utils/live-class';
 import { Video } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -86,11 +87,13 @@ export function JoinLiveClassModal({
   liveClass,
   onSuccess,
   children,
+  refetchAttendanceData,
 }: {
   onClose?: () => void;
   liveClass: LiveClassType;
   onSuccess?: (message: string) => void;
   children: React.ReactNode;
+  refetchAttendanceData: () => Promise<any>;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -114,10 +117,26 @@ export function JoinLiveClassModal({
   const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
   const canJoinNow = isLive || (isUpcoming && timeLeft.canJoinSoon);
 
+  const { mutate: AddAttendance } = useMutation(
+    '/liveClass/addLiveClassAttendance',
+    'post',
+    {
+      payload: {
+        liveClassId: liveClass.id,
+        status: 'PRESENT',
+        type: 'IN',
+      },
+      onSuccess() {
+        refetchAttendanceData();
+      },
+    },
+  );
+
   const handleJoin = async () => {
     setIsJoining(true);
     try {
       if (liveClass.link) {
+        await AddAttendance();
         window.open(liveClass.link, '_blank');
         if (onSuccess) onSuccess('Redirected to Meeting');
       }
@@ -255,28 +274,26 @@ export function JoinLiveClassModal({
           >
             Batal
           </Button>
-          <Button
-            onClick={handleJoin}
-            disabled={!canJoinNow || isJoining}
-            className="flex-1"
-            style={{
-              backgroundColor: canJoinNow ? mainColor : undefined,
-              opacity: canJoinNow ? 1 : 0.5,
-            }}
-          >
-            {isJoining ? (
-              'Bergabung...'
-            ) : isLive ? (
-              <>
-                <Video className="mr-2 h-4 w-4" />
-                Join Live
-              </>
-            ) : timeLeft.canJoinSoon ? (
-              'Bergabung'
-            ) : (
-              'Belum Bisa Join'
-            )}
-          </Button>
+          {liveClass.participantStatus !== 'Tidak Terdaftar' && (
+            <Button
+              onClick={handleJoin}
+              disabled={!canJoinNow || isJoining}
+              className="flex-1"
+            >
+              {isJoining ? (
+                'Bergabung...'
+              ) : isLive ? (
+                <>
+                  <Video className="mr-2 h-4 w-4" />
+                  Join Live
+                </>
+              ) : timeLeft.canJoinSoon ? (
+                'Bergabung'
+              ) : (
+                'Belum Bisa Join'
+              )}
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
