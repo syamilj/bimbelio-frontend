@@ -55,12 +55,13 @@ export type LiveClassReferenceTypeEnum = 'URL' | 'COURSE';
 export type LiveClass = {
   id: string;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   title: string;
   categoryId: string;
   image: string | null;
-  startDate: Date;
+  startDate: string;
+  endDate: string;
   link: string;
   instructorId: string;
   duration: number;

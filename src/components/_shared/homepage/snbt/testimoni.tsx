@@ -45,7 +45,7 @@ const Testimoni = () => {
       start: 5,
       heading: 'Blueprint Changed Everything',
       comment:
-        'Honestly, gue almost gave up. Third attempt UTBK, parents disappointed, future unclear. Blueprint method literally turned everything around. Sekarang UGM Kedokteran. To all hopeless kids out there - your transformation story starts here!',
+        'Honestly, aku almost gave up. Third attempt UTBK, parents disappointed, future unclear. Blueprint method literally turned everything around. Sekarang UGM Kedokteran. To all hopeless kids out there - your transformation story starts here!',
       name: 'Muhammad Farid',
       profesi: 'UGM Medical Student',
       avatar: 'MF',

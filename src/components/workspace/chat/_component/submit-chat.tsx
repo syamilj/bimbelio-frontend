@@ -130,13 +130,15 @@ const SubmitChat = () => {
 
   const isLimitReached =
     session?.user.role !== 'ADMIN' &&
+    session?.user.role !== 'SUPER_ADMIN' &&
     userLimitation &&
     userLimitation?.chat >= userLimitation?.Limit?.chat;
 
   const hasLimitWarning =
     userLimitation &&
     userLimitation?.chat < userLimitation?.chatLimit &&
-    session?.user.role !== 'ADMIN';
+    session?.user.role !== 'ADMIN' &&
+    session?.user.role !== 'SUPER_ADMIN';
 
   return (
     <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10">

@@ -30,7 +30,7 @@ const faqData: FAQItem[] = [
     category: 'general',
     question: 'Gue bener-bener hopeless sama UTBK, bisa gak sih?',
     answer:
-      'Listen up bro! Setiap hero punya starting point yang berbeda. Yang penting bukan seberapa jauh lo tertinggal, tapi seberapa committed lo untuk bangkit. Blueprint Bimbelio coba ngebantu ribuan anak yang feeling hopeless jadi top scorer. The journey starts ketika lo yakin!',
+      'Listen up bro! Setiap hero punya starting point yang berbeda. Yang penting bukan seberapa jauh kamu tertinggal, tapi seberapa committed kamu untuk bangkit. Blueprint Bimbelio coba ngebantu ribuan anak yang feeling hopeless jadi top scorer. The journey starts ketika kamu yakin!',
   },
   {
     id: 2,
@@ -42,7 +42,7 @@ const faqData: FAQItem[] = [
   {
     id: 3,
     category: 'general',
-    question: 'Mahal gak sih? Ortu gue budget terbatas nih',
+    question: 'Mahal gak sih? Ortu aku budget terbatas nih',
     answer:
       'We feel you! Makanya Bimbelio designed buat jadi investment terbaik dengan harga yang masuk akal. Dibanding bimbel offline yang jutaan, kita kasih value yang sama bahkan lebih dengan harga yang jauh lebih friendly. Plus, think about it - investasi sekarang vs ulang UTBK tahun depan?',
   },
@@ -53,7 +53,7 @@ const faqData: FAQItem[] = [
     category: 'blueprint',
     question: 'Blueprint concept itu gimana sih? Beda gak sama yang lain?',
     answer:
-      "Blueprint itu game-changer! Bukan sekedar ngasih soal random. Kita diagnose weakness lo, bikin personal roadmap, track progress real-time, dan kasih arena practice yang challenging. It's like having GPS for your UTBK journey - tau persis kemana harus melangkah!",
+      "Blueprint itu game-changer! Bukan sekedar ngasih soal random. Kita diagnose weakness kamu, bikin personal roadmap, track progress real-time, dan kasih arena practice yang challenging. It's like having GPS for your UTBK journey - tau persis kemana harus melangkah!",
   },
   {
     id: 5,
@@ -67,7 +67,7 @@ const faqData: FAQItem[] = [
     category: 'blueprint',
     question: 'Pretest itu wajib? Takut hasilnya jelek',
     answer:
-      'Pretest itu starting line bukan finish line! Hasilnya jelek? Perfect! Itu artinya lo punya huge potential untuk berkembang. Pikirin itu sebagai diagnosis sebelum treatment. Dokter butuh tau kondisi lo dulu sebelum kasih obat kan?',
+      'Pretest itu starting line bukan finish line! Hasilnya jelek? Perfect! Itu artinya kamu punya huge potential untuk berkembang. Pikirin itu sebagai diagnosis sebelum treatment. Dokter butuh tau kondisi kamu dulu sebelum kasih obat kan?',
   },
 
   // Tryout Questions
@@ -193,7 +193,7 @@ export default function FaqHomepage() {
 
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Real questions dari students, honest answers dari kita. No
-              bullshit, just facts yang lo butuhin buat decision.
+              bullshit, just facts yang kamu butuhin buat decision.
             </p>
           </motion.div>
 

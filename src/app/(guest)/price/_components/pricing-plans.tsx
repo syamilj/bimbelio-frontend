@@ -116,17 +116,19 @@ export default function PricingPlans() {
       </div>
       {/* Modern Category Tabs */}
       <div className="max-w-7xl mx-auto">
-        <Tabs className="w-full">
-          <TabsList
-            className="w-full flex overflow-x-auto mb-8 h-12 p-2 rounded-xl justify-center w-fit"
-            style={{
-              backgroundColor: `${mainColor}08`,
-            }}
-          >
-            {PricingData?.webSubCategory.map((ws) => (
-              <TabsTrigger
-                key={ws.webSubCategoryId}
-                value={ws.webSubCategoryId}
+        <Tabs
+          defaultValue="all"
+          className="w-full"
+        >
+          <div className="flex justify-center mb-8">
+            <TabsList
+              className="flex overflow-x-auto h-12 p-2 rounded-xl"
+              style={{
+                backgroundColor: `${mainColor}08`,
+              }}
+            >
+              {/* <TabsTrigger
+                value="all"
                 className="rounded-lg font-medium data-[state=active]:shadow-sm transition-all"
                 style={
                   {
@@ -135,10 +137,25 @@ export default function PricingPlans() {
                   } as React.CSSProperties
                 }
               >
-                {ws.webSubCategoryName}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+                Semua
+              </TabsTrigger> */}
+              {PricingData?.webSubCategory.map((ws) => (
+                <TabsTrigger
+                  key={ws.webSubCategoryId}
+                  value={ws.webSubCategoryId}
+                  className="rounded-lg font-medium data-[state=active]:shadow-sm transition-all"
+                  style={
+                    {
+                      '--tw-data-state-active-bg': mainColor,
+                      '--tw-data-state-active-color': 'white',
+                    } as React.CSSProperties
+                  }
+                >
+                  {ws.webSubCategoryName}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
           {PricingData?.webSubCategory.map((ws) => (
             <TabsContent

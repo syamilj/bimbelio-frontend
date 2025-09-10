@@ -1,6 +1,7 @@
 'use client';
 
 import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import ChooseWebCategory from '@/components/ui/choose-web-category';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
@@ -23,6 +24,7 @@ import { FC } from 'react';
 import ActiveLink from './active-link';
 
 const SidebarRoute: FC = () => {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const { minimizeSidebar } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -136,7 +138,18 @@ const SidebarRoute: FC = () => {
       description: 'Manajemen token',
       category: 'System',
     },
-  ];
+  ].filter((item) => {
+    if (
+      session?.user.role === 'ADMIN' &&
+      item.label === 'Document Categories'
+    ) {
+      return false;
+    }
+    if (session?.user.role === 'ADMIN' && item.label === 'Tryout Categories') {
+      return false;
+    }
+    return true;
+  });
 
   // Group routes by category
   const groupedRoutes = routes.reduce(
