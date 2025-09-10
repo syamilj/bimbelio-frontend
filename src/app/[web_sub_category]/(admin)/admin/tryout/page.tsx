@@ -52,6 +52,10 @@ export default function Page() {
     refetch,
   } = useGet<TryoutData[]>('/tryout/getTryout');
 
+  const { data: tryoutInfo, isLoading: tryoutInfoIsLoading } = useGet<
+    { title: string; total: number }[]
+  >('/tryout/getTryoutInfo');
+
   const exportData = async ({
     downloadData,
     fileName,
@@ -68,13 +72,13 @@ export default function Page() {
   return (
     <div className="mt-4 flex flex-col gap-8">
       <div className="grid grid-cols-3 gap-4">
-        {Array.from({ length: 3 }).map((_: any, i: number) => (
+        {tryoutInfo?.map((item, index) => (
           <div
-            key={i}
+            key={index}
             className="flex h-full w-full flex-col rounded-2xl bg-white p-8"
           >
-            <h1 className="font-regular text-[2rem]">80</h1>
-            <p className="text-main-gray-text">Peserta tryout saat ini</p>
+            <h1 className="font-regular text-[2rem]">{item.total}</h1>
+            <p className="text-main-gray-text">{item.title}</p>
           </div>
         ))}
       </div>

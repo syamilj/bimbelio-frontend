@@ -16,6 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { pixel } from '@/lib/pixel/_core';
 import {
   formatDateTime,
@@ -44,6 +45,7 @@ import {
   ExternalLink,
   FileText,
   Link as LinkIcon,
+  Loader2,
   PlayCircle,
   Star,
   Users,
@@ -52,7 +54,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { JoinLiveClassModal } from '../_components/join-live-class-modal';
 import { LiveClassRatingsDisplay } from '../_components/live-class-ratings-display';
 import { RatingModal } from '../_components/rating-modal';
@@ -91,6 +93,59 @@ export default function LiveClassStudentDetail() {
       id: classId,
     },
   });
+
+  const { data: attendanceInData, refetch: attendanceInDataRefetch } = useGet<{
+    IN: boolean;
+    OUT: boolean;
+  }>('/liveClass/getIsAttendanceIn', {
+    params: {
+      liveClassId: liveClass?.id,
+    },
+    useEffectDependencies: [liveClass],
+    enabled: !!liveClass,
+  });
+
+  const isAlreadyJoined = attendanceInData?.IN || false;
+
+  const isAlreadyAttendanceOut = attendanceInData?.OUT || false;
+
+  const { mutate: AddAttendance, isLoading: AddAttendanceIsLoading } =
+    useMutation('/liveClass/addLiveClassAttendance', 'post', {
+      payload: {
+        liveClassId: liveClass?.id,
+        status: 'PRESENT',
+        type: 'OUT',
+      },
+      onSuccess() {
+        attendanceInDataRefetch();
+      },
+    });
+
+  const [isShowAttendance, setIsShowAttendance] = useState<boolean>(false);
+
+  const handleShowAttendance = () => {
+    if (!liveClass) return false;
+    const currentDate = new Date();
+    const endDateMin = new Date(liveClass?.endDate);
+    endDateMin.setMinutes(endDateMin.getMinutes() - 5);
+    const endDatePlus = new Date(liveClass?.endDate);
+    endDatePlus.setMinutes(endDatePlus.getMinutes() + 5);
+
+    if (currentDate > endDateMin && currentDate < endDatePlus) {
+      setIsShowAttendance(true);
+      return;
+    }
+
+    setIsShowAttendance(false);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleShowAttendance();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [liveClass]);
 
   useEffect(() => {
     pixel.meta.track(
@@ -612,6 +667,7 @@ export default function LiveClassStudentDetail() {
                 {liveClass.link && (
                   <JoinLiveClassModal
                     liveClass={liveClass}
+                    refetchAttendanceData={attendanceInDataRefetch}
                     onSuccess={() => {
                       toaster({
                         title: 'Berhasil membuka Meeting!',
@@ -630,6 +686,25 @@ export default function LiveClassStudentDetail() {
                     </Button>
                   </JoinLiveClassModal>
                 )}
+
+                {isAlreadyJoined &&
+                  !isAlreadyAttendanceOut &&
+                  isShowAttendance && (
+                    <Button
+                      className="w-full"
+                      disabled={AddAttendanceIsLoading}
+                      onClick={() => {
+                        AddAttendance();
+                      }}
+                    >
+                      {/* <LinkIcon className="mr-2 h-4 w-4" /> */}
+                      {AddAttendanceIsLoading ? (
+                        <Loader2 className="animate-spin w-4 h-4" />
+                      ) : (
+                        'Klik untuk absensi keluar'
+                      )}
+                    </Button>
+                  )}
               </CardContent>
             </Card>
 
