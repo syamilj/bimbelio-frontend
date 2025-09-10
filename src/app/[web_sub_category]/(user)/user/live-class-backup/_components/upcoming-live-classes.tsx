@@ -24,7 +24,7 @@ export function UpcomingLiveClasses({
 }) {
   // Filter untuk kelas yang terdaftar dan akan berlangsung
   const upcomingClasses = data.sort(
-    (a, b) => a.startDate.getTime() - b.startDate.getTime(),
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
   );
 
   const getTimeUntilClass = (scheduleDate: Date) => {
