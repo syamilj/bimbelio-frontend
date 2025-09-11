@@ -220,7 +220,7 @@ export function Payment() {
                   className={`grid w-full max-w-md mx-auto mb-8 p-1 rounded-full`}
                   style={{
                     backgroundColor: `${mainColor}10`,
-                    gridTemplateColumns: `repeat(${Math.min(categoryCount, 5)}, 1fr)`,
+                    gridTemplateColumns: `repeat(${Math.min(categoryCount, 6)}, 1fr)`,
                   }}
                 >
                   {PricingData?.webSubCategory.map((ws) => (
