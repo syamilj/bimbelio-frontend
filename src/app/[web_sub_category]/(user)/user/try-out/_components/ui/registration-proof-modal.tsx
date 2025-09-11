@@ -1,6 +1,7 @@
 'use client';
 
 import { PaymentTryout } from '@/components/_shared/payment/payment-tryout';
+import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -80,6 +81,7 @@ export default function RegistrationProofModal({
   const { userLimitation, checkLimitation } = useUserLimitation();
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const { setTransactionPopUp } = useAppContext();
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -508,7 +510,10 @@ export default function RegistrationProofModal({
                 </div>
               </div>
               <Button
-                onClick={() => setShowDetail(null)}
+                onClick={() => {
+                  setShowDetail(null);
+                  setTransactionPopUp(true);
+                }}
                 className="bg-blue-500 hover:bg-blue-600 text-white"
               >
                 Top Up

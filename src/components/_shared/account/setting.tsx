@@ -215,7 +215,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                     style={{
                       borderColor:
                         page === tab.value ? mainColor : 'transparent',
-                      color: page === tab.value ? mainColor : undefined,
+                      // color: page === tab.value ? mainColor : undefined,
                     }}
                   >
                     {tab.icon}

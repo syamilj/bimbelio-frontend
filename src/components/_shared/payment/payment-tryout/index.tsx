@@ -66,7 +66,9 @@ export const PaymentTryout = ({
         titleTryout: tryoutData.title,
         tryoutId: tryoutData.id,
       });
-      window.snap.pay(`${res?.data?.token}`, {
+      const token = res?.data?.token;
+      console.log({ res, token });
+      window.snap.pay(`${token}`, {
         onClose: () => {
           setShow(false);
           setTransactionHistory(true);

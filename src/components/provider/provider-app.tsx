@@ -66,7 +66,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
 
   // Lazy load Midtrans Snap hanya saat popup transaksi dibuka
   useEffect(() => {
-    if (!transactionPopUp) return;
+    // if (!transactionPopUp) return;
     const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
     if (!snapScriptUrl) return;
     const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
@@ -78,7 +78,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     if (clientKey) script.setAttribute('data-client-key', clientKey);
     script.async = true;
     document.body.appendChild(script);
-  }, [transactionPopUp]);
+  }, []);
 
   useEffect(() => {
     if (showAuth.open) {
