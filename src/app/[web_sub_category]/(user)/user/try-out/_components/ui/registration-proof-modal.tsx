@@ -17,6 +17,7 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { toaster } from '@/components/ui/toaster';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { IconTailedArrowUp45, IconX } from '@/styles/icon';
 import type { Pricing } from '@/types/database';
@@ -82,6 +83,14 @@ export default function RegistrationProofModal({
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { setTransactionPopUp } = useAppContext();
+
+  const { data: TryoutIrtData, isLoading: TryoutIrtDataIsLoading } = useGet<{
+    isIrt: boolean;
+    isDone: boolean;
+  }>('/tryout/getIsTryoutIRT', {
+    params: { tryoutId: showDetail.id },
+    useEffectDependencies: [showDetail],
+  });
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -376,7 +385,6 @@ export default function RegistrationProofModal({
           </p>
         </div>
 
-        {/* Try Out Info */}
         <Card className="border-2 border-gray-100">
           <CardContent className="p-4">
             <div className="space-y-3">
@@ -426,6 +434,16 @@ export default function RegistrationProofModal({
             </div>
           </CardContent>
         </Card>
+
+        {TryoutIrtData?.isDone && TryoutIrtData.isIrt && (
+          <Card className="border-2 border-yellow-300 bg-yellow-50">
+            <CardContent className="p-4 text-sm text-yellow-800">
+              ⚠️ Penilaian tryout ini menggunakan sistem <b>IRT</b>. Karena Anda
+              mengerjakan setelah proses IRT selesai, maka nilai Anda hanya
+              berupa skor biasa (0-1000) dan tidak akan dihitung di leaderboard.
+            </CardContent>
+          </Card>
+        )}
 
         {/* Action Button */}
         <Button
