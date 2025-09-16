@@ -24,6 +24,7 @@ import Logo from '@/components/ui/logo';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { cn } from '@/lib/utils';
+import { hexToRgba } from '@/styles/main-styles';
 import { Badge } from '../../ui/badge';
 
 interface NavbarProps {
@@ -73,6 +74,17 @@ const NavLink: React.FC<{
   const router = useRouter();
   const pathname = usePathname();
 
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors
+  const isMainLandingPage = window.location.pathname === '/';
+  const mainColor = isMainLandingPage
+    ? '#0091FF'
+    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const secondaryColor = isMainLandingPage
+    ? '#5aa4dd'
+    : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
+
   const linkClasses = cn(
     'relative text-main-default transition-colors duration-300 hover:underline bg-transparent border-none cursor-pointer',
     item.separator && 'ml-4 border-l border-gray-900 pl-4',
@@ -115,6 +127,7 @@ const NavLink: React.FC<{
     <button
       onClick={handleClick}
       className={linkClasses}
+      style={{ color: mainColor }}
     >
       {item.label}
       <GratisBadge label={item.label} />
@@ -134,8 +147,13 @@ const MobileNav: React.FC<{
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const isMainLandingPage = window.location.pathname === '/';
+  const mainColor = isMainLandingPage
+    ? '#0091FF'
+    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const secondaryColor = isMainLandingPage
+    ? '#5aa4dd'
+    : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
   return (
     <div className="fixed left-0 top-0 z-50 w-full">
@@ -144,34 +162,65 @@ const MobileNav: React.FC<{
         <div className="px-4 py-3 relative bg-transparent">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5">
-            <div className="absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-6 translate-x-6 bg-main-default" />
-            <div className="absolute bottom-0 left-0 w-12 h-12 rounded-full translate-y-3 -translate-x-3 bg-main-default" />
+            <div
+              className="absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-6 translate-x-6"
+              style={{
+                backgroundColor: mainColor,
+              }}
+            />
+            <div
+              className="absolute bottom-0 left-0 w-12 h-12 rounded-full translate-y-3 -translate-x-3"
+              style={{
+                backgroundColor: mainColor,
+              }}
+            />
           </div>
 
           <div className="relative z-10 flex items-center justify-between">
             <Logo
               href="/"
-              className="text-xl font-bold text-main-default"
+              className="text-xl font-bold"
+              style={{
+                color: mainColor,
+              }}
             />
 
-            {!session && (
-              <Button
-                className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0 bg-gradient-default"
-                onClick={() =>
-                  setShowAuth((prev) => ({
-                    ...prev,
-                    open: true,
-                    redirect: website_sub_category_id
-                      ? `${website_sub_category_id}/user/dashboard`
-                      : '/choice/user/dashboard',
-                  }))
-                }
-              >
-                Daftar/Masuk
-              </Button>
-            )}
-
-            {session && (
+            <div className="flex items-center gap-2">
+              {!session && (
+                <Button
+                  className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
+                  style={{
+                    backgroundImage: `linear-gradient(145deg, ${
+                      secondaryColor
+                    }, ${mainColor})`,
+                  }}
+                  onClick={() =>
+                    setShowAuth((prev) => ({
+                      ...prev,
+                      open: true,
+                      redirect: website_sub_category_id
+                        ? `${website_sub_category_id}/user/dashboard`
+                        : '/choice/user/dashboard',
+                    }))
+                  }
+                >
+                  Masuk
+                </Button>
+              )}
+              {session && (
+                <Link href={`${website_sub_category_id}/user/dashboard`}>
+                  <Button
+                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
+                    style={{
+                      backgroundImage: `linear-gradient(145deg, ${
+                        secondaryColor
+                      }, ${mainColor})`,
+                    }}
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
+              )}
               <Sheet
                 open={isSheetOpen}
                 onOpenChange={setIsSheetOpen}
@@ -180,7 +229,11 @@ const MobileNav: React.FC<{
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="relative w-10 h-10 rounded-xl transition-all duration-300 hover:scale-105 text-main-default bg-main-default/10"
+                    className="relative w-10 h-10 rounded-xl transition-all duration-300 hover:scale-105"
+                    style={{
+                      backgroundColor: hexToRgba(mainColor, 0.1),
+                      color: mainColor,
+                    }}
                   >
                     {isSheetOpen ? <X size={20} /> : <Menu size={20} />}
                   </Button>
@@ -326,7 +379,7 @@ const MobileNav: React.FC<{
                   </div>
                 </SheetContent>
               </Sheet>
-            )}
+            </div>
           </div>
         </div>
       </Card>
@@ -344,8 +397,13 @@ const DesktopNav: React.FC<{
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const isMainLandingPage = window.location.pathname === '/';
+  const mainColor = isMainLandingPage
+    ? '#0091FF'
+    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const secondaryColor = isMainLandingPage
+    ? '#5aa4dd'
+    : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
   return (
     <div className="fixed left-0 top-0 z-50 w-full bg-transparent">
@@ -374,7 +432,8 @@ const DesktopNav: React.FC<{
               <div className="flex items-center">
                 <Logo
                   href="/"
-                  className="text-xl font-bold text-main-default"
+                  className="text-xl font-bold"
+                  style={{ color: mainColor }}
                 />
               </div>
 
@@ -389,7 +448,10 @@ const DesktopNav: React.FC<{
                       <NavLink item={item} />
                     </div>
                     {/* Hover indicator */}
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300 group-hover:w-8 bg-main-default" />
+                    <div
+                      className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300 group-hover:w-8"
+                      style={{ backgroundColor: mainColor }}
+                    />
                   </div>
                 ))}
               </nav>
@@ -400,7 +462,12 @@ const DesktopNav: React.FC<{
                   <UserAccountNav user={session.user} />
                 ) : (
                   <Button
-                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0 bg-gradient-default"
+                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
+                    style={{
+                      backgroundImage: `linear-gradient(145deg, ${
+                        secondaryColor
+                      }, ${mainColor})`,
+                    }}
                     onClick={() =>
                       setShowAuth((prev) => ({
                         ...prev,
@@ -419,7 +486,14 @@ const DesktopNav: React.FC<{
           </div>
 
           {/* Bottom accent line */}
-          <div className="h-1 bg-gradient-default" />
+          <div
+            className="h-1"
+            style={{
+              backgroundImage: `linear-gradient(145deg, ${
+                secondaryColor
+              }, ${mainColor})`,
+            }}
+          />
         </Card>
       </div>
     </div>

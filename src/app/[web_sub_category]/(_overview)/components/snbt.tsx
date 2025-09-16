@@ -1,12 +1,23 @@
 'use client';
 import Footer from '@/components/_shared/footer';
-import BentoGrid from '@/components/_shared/homepage/snbt/bento-grid';
-import BlueprintConcept from '@/components/_shared/homepage/snbt/blueprint-concept';
-import FaqHomepage from '@/components/_shared/homepage/snbt/FaqHomepage';
 import HeroSection from '@/components/_shared/homepage/snbt/hero';
-import PlanCards from '@/components/_shared/homepage/snbt/plan-cards';
-import Tryout from '@/components/_shared/homepage/snbt/tryout';
-import WhyUs from '@/components/_shared/homepage/snbt/why-us';
+import { lazy, Suspense } from 'react';
+
+// Lazy loading untuk semua komponen homepage yang tidak immediately visible
+const BentoGrid = lazy(
+  () => import('@/components/_shared/homepage/snbt/bento-grid'),
+);
+const BlueprintConcept = lazy(
+  () => import('@/components/_shared/homepage/snbt/blueprint-concept'),
+);
+const FaqHomepage = lazy(
+  () => import('@/components/_shared/homepage/snbt/FaqHomepage'),
+);
+const PlanCards = lazy(
+  () => import('@/components/_shared/homepage/snbt/plan-cards'),
+);
+const Tryout = lazy(() => import('@/components/_shared/homepage/snbt/tryout'));
+const WhyUs = lazy(() => import('@/components/_shared/homepage/snbt/why-us'));
 
 export default function SNBT() {
   return (
@@ -19,15 +30,58 @@ export default function SNBT() {
       </div>
       <div className="min-h-screen">
         <div className="flex w-full flex-col gap-20">
-          {/* <h1 className="text-center mt-40 text-xl font-medium">SNBT</h1> */}
+          {/* Hero section loads immediately */}
           <HeroSection />
-          <PlanCards />
-          <Tryout />
-          <BentoGrid />
-          <BlueprintConcept />
-          <WhyUs />
-          {/* <Testimoni /> */}
-          <FaqHomepage />
+
+          {/* All other sections load lazily */}
+          <Suspense
+            fallback={
+              <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+            }
+          >
+            <PlanCards />
+          </Suspense>
+
+          <Suspense
+            fallback={
+              <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+            }
+          >
+            <Tryout />
+          </Suspense>
+
+          <Suspense
+            fallback={
+              <div className="w-full h-96 bg-gray-100 rounded-2xl animate-pulse" />
+            }
+          >
+            <BentoGrid />
+          </Suspense>
+
+          <Suspense
+            fallback={
+              <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+            }
+          >
+            <BlueprintConcept />
+          </Suspense>
+
+          <Suspense
+            fallback={
+              <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+            }
+          >
+            <WhyUs />
+          </Suspense>
+
+          <Suspense
+            fallback={
+              <div className="w-full h-96 bg-gray-100 rounded-2xl animate-pulse" />
+            }
+          >
+            <FaqHomepage />
+          </Suspense>
+
           <Footer />
         </div>
       </div>

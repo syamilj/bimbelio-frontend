@@ -86,8 +86,13 @@ const HeroSection: React.FC = () => {
   const y = useTransform(scrollY, [0, 300], [0, -50]);
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const isMainLandingPage = window.location.pathname === '/';
+  const mainColor = isMainLandingPage
+    ? '#0091FF'
+    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const secondaryColor = isMainLandingPage
+    ? '#5aa4dd'
+    : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768);
