@@ -36,8 +36,13 @@ interface Feature {
 const BentoGrid: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
+  const isMainLandingPage = window.location.pathname === '/';
+  const mainColor = isMainLandingPage
+    ? '#0091FF'
+    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const secondaryColor = isMainLandingPage
+    ? '#5aa4dd'
+    : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
   // Navigation handler untuk button CTA
   const handlePricingNavigation = () => {

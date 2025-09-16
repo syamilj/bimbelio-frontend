@@ -28,8 +28,13 @@ const WhyUs = () => {
   const [active, setActive] = useState<number>(1);
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const isMainLandingPage = window.location.pathname === '/';
+  const mainColor = isMainLandingPage
+    ? '#0091FF'
+    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const secondaryColor = isMainLandingPage
+    ? '#5aa4dd'
+    : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
   const heading = [
     {

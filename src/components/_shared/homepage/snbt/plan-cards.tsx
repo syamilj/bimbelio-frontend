@@ -36,8 +36,13 @@ const PlanCards: React.FC = () => {
     '/plan/getAllPlanByWebCategory',
   );
 
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
+  const isMainLandingPage = window.location.pathname === '/';
+  const mainColor = isMainLandingPage
+    ? '#0091FF'
+    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const secondaryColor = isMainLandingPage
+    ? '#5aa4dd'
+    : (websiteSubCategory?.secondary_color ?? '#7C3AED');
 
   // Selalu cari dan gunakan kategori dengan webSubCategoryId "all"
   const getAllCategory = PricingData?.webSubCategory?.find(
