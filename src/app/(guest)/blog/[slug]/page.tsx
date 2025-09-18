@@ -1,74 +1,56 @@
-'use client';
-
-import BlogClient from '@/app/(guest)/blog/_components/BlogContent';
-import { useGet } from '@/lib/fetch-helper/useGet';
-import { BlogPost } from '@/types/database';
-import { Loader2 } from 'lucide-react';
-import { useParams } from 'next/navigation';
-
+import { env } from '@/env.mjs';
+import axios from 'axios';
+import { Metadata } from 'next';
 import { Fragment } from 'react';
+import BlogClient from '../_components/BlogContent';
 
-// // 1) fetch blog
-// async function getBlogBySlug(slug: string) {
-//   return prisma.blogPost.findUnique({ where: { slug } });
-// }
+type Props = {
+  params: {
+    slug: string;
+  };
+};
 
-// // 2) generateStaticParams
-// export async function generateStaticParams() {
-//   const allBlogs = await prisma.blogPost.findMany({ select: { slug: true } });
-//   return allBlogs.map((b) => ({ slug: b.slug }));
-// }
-
-// // 3) generateMetadata
-// export async function generateMetadata(
-//   props: BlogPageProps,
-// ): Promise<Metadata> {
-//   const params = await props.params;
-//   const blog = await getBlogBySlug(params.slug);
-//   if (!blog) {
-//     return {
-//       title: 'Blog Not Found | Bimbelio',
-//       description: 'Maaf, artikel tidak ditemukan.',
-//       openGraph: {
-//         title: 'Blog Not Found | Bimbelio',
-//         description: 'Maaf, artikel tidak ditemukan.',
-//       },
-//       twitter: { card: 'summary_large_image' },
-//     };
-//   }
-//   return {
-//     title: `${blog.title} | Bimbelio Blog`,
-//     description:
-//       blog.description ?? `Baca tentang ${blog.title} di Bimbelio Artikel`,
-//     openGraph: {
-//       title: `${blog.title} | Bimbelio Artikel`,
-//       description:
-//         blog.description ?? `Baca tentang ${blog.title} di Bimbelio Artikel`,
-//       images: [blog.thumbnail],
-//       type: 'article',
-//     },
-//     twitter: { card: 'summary_large_image' },
-//   };
-// }
-
-// 4) page.tsx
-export default function BlogServerPage() {
-  const params = useParams();
-  const { data: blog, isLoading } = useGet<BlogPost>('/blog/getBlogBySlug', {
-    params: { slug: params.slug },
-    useEffectDependencies: [params],
-  });
-
-  // const params = await props.params;
-  // const blog = await getBlogBySlug(params.slug);
-
-  if (isLoading) {
-    return (
-      <div className="flex w-full h-[90vh] justify-center items-center">
-        <Loader2 className="animate-spin w-6 h-6" />
-      </div>
+// Fungsi untuk fetch data dari API
+async function getBlogBySlug(slug: string) {
+  try {
+    const response = await axios.get(
+      `${env.NEXT_PUBLIC_API_URL}/blog/getBlogBySlug`,
+      {
+        params: { slug },
+      },
     );
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching blog:', error);
+    return null;
   }
+}
+
+// Generate metadata dinamis berdasarkan slug
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const blog = await getBlogBySlug((await params).slug);
+
+  return {
+    title: blog?.title,
+    description: blog?.description,
+    openGraph: {
+      title: blog?.title,
+      description: blog?.description,
+      images: [
+        {
+          url: blog?.thumbnail || '',
+          width: 1200,
+          height: 630,
+          alt: blog?.title,
+        },
+      ],
+    },
+  };
+}
+
+// Halaman blog menggunakan Server Component
+export default async function BlogServerPage({ params }: Props) {
+  const blog = await getBlogBySlug((await params).slug);
 
   if (!blog) {
     return (
@@ -77,12 +59,16 @@ export default function BlogServerPage() {
       </div>
     );
   }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: blog.title,
-    // ... dll
+    description: blog.description,
+    image: blog.thumbnail,
+    datePublished: blog.createdAt,
   };
+
   return (
     <Fragment>
       <script
