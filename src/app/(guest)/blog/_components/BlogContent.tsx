@@ -62,6 +62,7 @@ interface BlogPost {
   publishedAt: Date | null;
   updatedAt: Date;
   isEditorPick: boolean | null;
+  website_sub_category_id: string;
 }
 
 // Tipe agar login & signUp modal tetap berfungsi
@@ -94,8 +95,8 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
 
   // const incrementViewsMutation = api.blog.incrementViews.useMutation();
 
-  const { mutate: updateViews } = useMutation('/blog/incrementViews', 'put', {
-    payload: {
+  const { mutate: updateViews } = useMutation('/blog/incrementViews', 'post', {
+    params: {
       id: blog.id,
     },
     hideToast: true,
