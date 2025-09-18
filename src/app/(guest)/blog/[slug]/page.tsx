@@ -4,13 +4,6 @@ import { Metadata } from 'next';
 import { Fragment } from 'react';
 import BlogClient from '../_components/BlogContent';
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
-
-// Fungsi untuk fetch data dari API
 async function getBlogBySlug(slug: string) {
   try {
     const response = await axios.get(
@@ -26,8 +19,13 @@ async function getBlogBySlug(slug: string) {
   }
 }
 
-// Generate metadata dinamis berdasarkan slug
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{
+    slug: string;
+  }>;
+}): Promise<Metadata> {
   const blog = await getBlogBySlug((await params).slug);
 
   return {
@@ -48,8 +46,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Halaman blog menggunakan Server Component
-export default async function BlogServerPage({ params }: Props) {
+export default async function BlogServerPage({
+  params,
+}: {
+  params: Promise<{
+    slug: string;
+  }>;
+}) {
   const blog = await getBlogBySlug((await params).slug);
 
   if (!blog) {
