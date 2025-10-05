@@ -507,6 +507,45 @@ export type WebsiteSubCategory = {
 
 export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS';
 
+export type SubscriptionPending = {
+  id: string;
+  createdAt: string;
+  userId: string;
+  planId: string | null;
+  planSlug: string;
+  planName: string;
+  planTier: string;
+  planDescription: string;
+  planPrice: number;
+  telegram_user_id: string | null;
+  telegram_username: string | null;
+  telegram_invite_link: string | null;
+  updatedAt: string;
+  websiteSubCategoryId: string;
+};
+
+export type SubscriptionPendingFeature = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  type: FeatureTypeEnum;
+  validFrom: string;
+  validUntil: string;
+  subscriptionPendingId: string | null;
+};
+
+export type SubscriptionPendingLimitation = {
+  id: string;
+  validFrom: string;
+  validUntil: string;
+  subscriptionPendingId: string;
+  chat: number;
+  notes: number;
+  vision: number;
+  quiz: number;
+  tryout: number;
+};
+
 export type Subscription = {
   id: string;
   createdAt: Date;
@@ -551,7 +590,10 @@ export type PlanLimitation = {
   vision: number;
   quiz: number;
   tryout: number;
-  expireDays: number;
+  expireDays?: number;
+  validFrom?: string;
+  validUntil?: string;
+  isTimebound: boolean;
   id: string;
   planId: string;
 };
@@ -562,7 +604,7 @@ export type PlanSubscription = {
   updatedAt: Date;
   planId: string;
   tier: string;
-  expireDays: number;
+  expireDays?: number;
   websiteSubCategoryId: string;
 };
 
@@ -573,6 +615,9 @@ export type PlanFeature = {
   type: FeatureTypeEnum;
   liveClassesPerWeek?: number;
   planSubscriptionId: string;
+  validFrom?: string;
+  validUntil?: string;
+  isTimebound: boolean;
 };
 
 export type TryoutUserAnswer = {

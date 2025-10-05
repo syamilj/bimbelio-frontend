@@ -16,7 +16,7 @@ import {
 import { useCompletion } from 'ai/react';
 import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useProvider } from '../provider';
 import IndividualQuizQuestion from './individual-quiz-question';
 import IndividualQuizReport from './individual-quiz-report';
@@ -77,7 +77,6 @@ const IndividualQuiz = () => {
       //   });
       // });
       // await trpc.quiz.getQuiz.refetch();
-      console.log('refetch quiz');
       QuizRefetch();
     },
 
@@ -96,10 +95,6 @@ const IndividualQuiz = () => {
       Authorization: `Bearer ${Cookies.get('token')}`,
     },
   });
-
-  useEffect(() => {
-    console.log('completion', completion);
-  }, []);
 
   const toggleAttempt = () => {
     setHasAttempted((prev) => !prev);

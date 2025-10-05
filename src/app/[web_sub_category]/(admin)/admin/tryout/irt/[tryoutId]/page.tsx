@@ -157,7 +157,6 @@ export default function SNBTProcessor() {
     }
   >('/irt/processIrtForSession', 'post', {
     onSuccess({ data }) {
-      console.log({ data });
       if (data?.overallStats) {
         setOverallStats(data.overallStats);
       }
@@ -174,8 +173,6 @@ export default function SNBTProcessor() {
     null,
   );
   const [saveDataIRT, setSaveDataIRT] = useState<DataIRTProps | null>(null);
-
-  console.log({ overallStats });
 
   return (
     <div className="container mx-auto p-4 space-y-8">

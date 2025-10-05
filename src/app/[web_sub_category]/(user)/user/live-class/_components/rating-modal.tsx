@@ -79,7 +79,6 @@ export function RatingModal({
 
     setIsSubmitting(true);
     try {
-      console.log({ rating, review });
       const payload = {
         instructorId: liveClass.instructorId,
         liveClassId: liveClass.id,

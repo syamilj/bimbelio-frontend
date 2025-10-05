@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { pixel } from '@/lib/pixel/_core';
 import { cn } from '@/lib/utils';
-import { CrownIcon, LockIcon, PlayIcon } from 'lucide-react';
+import { CrownIcon, LockIcon, PlayIcon, Sparkles } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
@@ -44,6 +44,7 @@ const DocViewerPage = () => {
 
   const [doc, setDoc] = useState<DocDataType>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [status, setStatus] = useState<number>(200);
   const [error, setError] = useState<string | null>(null);
   const [tryoutId, setTryoutId] = useState<string | null>(null);
   const [tryoutLink, setTryoutLink] = useState<string | null>(null);
@@ -57,13 +58,14 @@ const DocViewerPage = () => {
         docId: docId,
         userId: userId,
       },
-      onError({ data: resData, message }) {
+      onError({ data: resData, message, status }) {
         const data = resData as {
           tryoutId: string;
           website_sub_category_id: string;
         };
         // const
         setError(message);
+        setStatus(status);
         setTryoutId(data.tryoutId);
         setTryoutLink(
           `/${data.website_sub_category_id}/user/try-out?id=${data.tryoutId}`,
@@ -82,7 +84,8 @@ const DocViewerPage = () => {
     }
   }, [tab]);
 
-  const { mobileScreen, setSidebarMobile } = useAppContext();
+  const { mobileScreen, setSidebarMobile, setTransactionPopUp } =
+    useAppContext();
 
   const updateHistory = async (payload: { documentId: string }) => {
     await mutateGeneral('/document/updateHistory', {
@@ -156,27 +159,40 @@ const DocViewerPage = () => {
               dan fitur premium lainnya
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <ButtonUpgradeTryout tryoutId={tryoutId || ''}>
+              {status === 400 && (
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <ButtonUpgradeTryout tryoutId={tryoutId || ''}>
+                    <Button
+                      size="lg"
+                      className="bg-linear-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-8 py-3"
+                    >
+                      <CrownIcon className="mr-2 h-5 w-5" />
+                      Beli Tryout
+                    </Button>
+                  </ButtonUpgradeTryout>
+                  <Link href={tryoutLink || ''}>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="border-yellow-300 text-yellow-700 hover:bg-yellow-50 px-8 py-3"
+                    >
+                      <PlayIcon className="mr-2 h-5 w-5" />
+                      Ikut Tryout
+                    </Button>
+                  </Link>
+                </div>
+              )}
+              {status === 401 && (
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
-                    size="lg"
-                    className="bg-linear-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-8 py-3"
+                    className="hidden md:flex items-center gap-1 lg:gap-2 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto w-full bg-main"
+                    onClick={() => setTransactionPopUp(true)}
                   >
-                    <CrownIcon className="mr-2 h-5 w-5" />
-                    Beli Tryout
+                    <Sparkles className="w-3 h-3 lg:w-4 lg:h-4" />
+                    <span className="hidden lg:inline">Beli Subscription</span>
                   </Button>
-                </ButtonUpgradeTryout>
-                <Link href={tryoutLink || ''}>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-yellow-300 text-yellow-700 hover:bg-yellow-50 px-8 py-3"
-                  >
-                    <PlayIcon className="mr-2 h-5 w-5" />
-                    Ikut Tryout
-                  </Button>
-                </Link>
-              </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

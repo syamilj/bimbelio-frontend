@@ -51,7 +51,6 @@ export default function ProviderCheckPayment({
   const handleCheckPayment = useDebouncedCallback(
     async (order_id: string, transaction_status: string) => {
       const res = await checkPayment(order_id);
-      console.log({ res });
       const inviteLink = res?.data?.inviteLink as string | undefined;
       if (
         res &&

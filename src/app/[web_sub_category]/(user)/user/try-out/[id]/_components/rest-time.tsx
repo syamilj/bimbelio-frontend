@@ -61,8 +61,6 @@ const RestTime = ({
     });
   };
 
-  console.log({ timeLeft, restTime });
-
   const handleContinue = () => {
     setLoading(true);
     createTryoutSessionParticipant({

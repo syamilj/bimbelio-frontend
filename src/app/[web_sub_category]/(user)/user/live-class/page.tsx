@@ -136,8 +136,6 @@ export default function LiveClassStudentDashboard() {
     params: { take: 100, page: 1 },
   });
 
-  console.log({ LiveClassRegistered, LiveClassInvited });
-
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
   useEffect(() => {

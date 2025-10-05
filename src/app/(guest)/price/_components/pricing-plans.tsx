@@ -52,8 +52,6 @@ export default function PricingPlans() {
     },
   );
 
-  console.log({ PricingData });
-
   const topping = PricingData?.topping || [];
 
   useEffect(() => {

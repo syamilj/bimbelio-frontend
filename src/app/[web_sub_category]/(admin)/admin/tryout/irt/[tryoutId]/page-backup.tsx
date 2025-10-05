@@ -229,8 +229,6 @@ export default function SNBTProcessor() {
     writeFile(wb, `${fileName}.csv`);
   };
 
-  console.log({ saveDataIRT });
-
   return (
     <div className="container mx-auto p-4 space-y-8">
       <LoadingPageWithText
