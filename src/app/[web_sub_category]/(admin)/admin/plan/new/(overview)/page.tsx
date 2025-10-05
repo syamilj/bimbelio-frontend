@@ -66,35 +66,43 @@ export default function CreatePlanForm() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (validityType === 'duration' && !duration) {
+    if (activeTab.feature && validityType === 'duration' && !duration) {
       toaster({
         title: 'Error',
         condition: 'warning',
         description: 'Duration Feature belum terisi!',
         duration: 3000,
       });
+      setIsLoading(false);
       return;
     }
-    if (validityType === 'timeline' && (!timelineStart || !timelineEnd)) {
+    if (
+      activeTab.feature &&
+      validityType === 'timeline' &&
+      (!timelineStart || !timelineEnd)
+    ) {
       toaster({
         title: 'Error',
         condition: 'warning',
         description: 'Timeline Feature belum terisi',
         duration: 3000,
       });
+      setIsLoading(false);
       return;
     }
 
-    if (validityTypeLimit === 'duration' && !durationLimit) {
+    if (activeTab.limit && validityTypeLimit === 'duration' && !durationLimit) {
       toaster({
         title: 'Error',
         condition: 'warning',
         description: 'Duration Limit belum terisi!',
         duration: 3000,
       });
+      setIsLoading(false);
       return;
     }
     if (
+      activeTab.limit &&
       validityTypeLimit === 'timeline' &&
       (!timelineLimitStart || !timelineLimitEnd)
     ) {
@@ -104,6 +112,7 @@ export default function CreatePlanForm() {
         description: 'Timeline Limit belum terisi',
         duration: 3000,
       });
+      setIsLoading(false);
       return;
     }
     try {

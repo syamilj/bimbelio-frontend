@@ -26,6 +26,7 @@ export const Login = () => {
   const handleSubmit = async (googleToken: any) => {
     setLoading(true);
     try {
+      // Get Google token
       const { credential } = googleToken as { credential: string };
       const res = await axios.post(
         `${env.NEXT_PUBLIC_API_URL}/auth/google?website_sub_category_id=${website_sub_category_id || webCategoryData[0].WebsiteSubCategory[0].id}`,
