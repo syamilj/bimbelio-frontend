@@ -569,8 +569,8 @@ export default function CardTryOut({
                   <Link
                     href={
                       isTesting
-                        ? `/${website_sub_category_id}/admin/tryout/testing/try-out/${showDetail.id}`
-                        : `/${website_sub_category_id}/user/try-out/${showDetail.id}`
+                        ? `/${showDetail.WebsiteSubCategory?.id || website_sub_category_id}/admin/tryout/testing/try-out/${showDetail.id}`
+                        : `/${showDetail.WebsiteSubCategory?.id || website_sub_category_id}/user/try-out/${showDetail.id}`
                     }
                     className="inline-flex items-center gap-2 w-full h-12 justify-center rounded-xl text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                     style={{
