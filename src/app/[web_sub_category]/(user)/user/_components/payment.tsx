@@ -13,6 +13,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+import { EmptyPlan } from '@/components/_shared/empty/empty-plan';
 import { CardPlan } from '@/components/_shared/other/card-plan';
 import { CardPlanTopping } from '@/components/_shared/other/card-plan-coin';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
@@ -300,39 +301,60 @@ export function Payment() {
                       </TabsList>
 
                       <TabsContent value="bundle">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                          {ws.bundles.map((bundle, i) => (
-                            <CardPlan
-                              key={i}
-                              plan={bundle}
-                              classOverlay="z-[10001]"
-                            />
-                          ))}
-                        </div>
+                        {ws.bundles.length === 0 ? (
+                          <EmptyPlan
+                            type="bundle"
+                            categoryName={ws.webSubCategoryName}
+                          />
+                        ) : (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                            {ws.bundles.map((bundle, i) => (
+                              <CardPlan
+                                key={i}
+                                plan={bundle}
+                                classOverlay="z-[10001]"
+                              />
+                            ))}
+                          </div>
+                        )}
                       </TabsContent>
 
                       <TabsContent value="subscription">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                          {ws.subscriptions.map((plan, i) => (
-                            <CardPlan
-                              key={i}
-                              plan={plan}
-                              classOverlay="z-[10001]"
-                            />
-                          ))}
-                        </div>
+                        {ws.subscriptions.length === 0 ? (
+                          <EmptyPlan
+                            type="subscription"
+                            categoryName={ws.webSubCategoryName}
+                          />
+                        ) : (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                            {ws.subscriptions.map((plan, i) => (
+                              <CardPlan
+                                key={i}
+                                plan={plan}
+                                classOverlay="z-[10001]"
+                              />
+                            ))}
+                          </div>
+                        )}
                       </TabsContent>
 
                       <TabsContent value="coin">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-                          {topping.map((pack) => (
-                            <CardPlanTopping
-                              plan={pack}
-                              key={pack.name}
-                              classOverlay="z-[10001]"
-                            />
-                          ))}
-                        </div>
+                        {topping.length === 0 ? (
+                          <EmptyPlan
+                            type="coin"
+                            categoryName={ws.webSubCategoryName}
+                          />
+                        ) : (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                            {topping.map((pack) => (
+                              <CardPlanTopping
+                                plan={pack}
+                                key={pack.name}
+                                classOverlay="z-[10001]"
+                              />
+                            ))}
+                          </div>
+                        )}
                       </TabsContent>
                     </Tabs>
                   </TabsContent>
