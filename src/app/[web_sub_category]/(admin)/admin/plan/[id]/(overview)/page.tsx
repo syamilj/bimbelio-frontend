@@ -1,5 +1,6 @@
 'use client';
 
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -19,10 +20,16 @@ import LoadingPageWithText, {
 } from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
+import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { responseError, throwError } from '@/lib/response';
-import { cn, formatCurrency, parseCurrency } from '@/lib/utils';
+import {
+  cn,
+  formatCurrency,
+  getDateForInputDateTime,
+  parseCurrency,
+} from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import {
   Category,
@@ -36,7 +43,7 @@ import {
   PlanLimitation,
   PlanSubscription,
 } from '@/types/database';
-import { Plus, Trash2 } from 'lucide-react';
+import { InfoIcon, Plus, Trash2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import { LimitType, useProvider } from '../_provider/provider';
@@ -70,8 +77,16 @@ export default function UpdatePlanForm() {
       liveClassIds,
       setCategoryIds,
       setLiveClassIds,
+      validityType,
+      setValidityType,
     },
-    useLimitation: { limitRows, setLimitRows, expireTypeLimit },
+    useLimitation: {
+      limitRows,
+      setLimitRows,
+      expireTypeLimit,
+      validityTypeLimit,
+      setValidityTypeLimit,
+    },
     useForm: {
       formData: { register, setValue },
       formDataValues: {
@@ -79,7 +94,11 @@ export default function UpdatePlanForm() {
         course,
         description,
         duration,
+        timelineStart,
+        timelineEnd,
         durationLimit,
+        timelineLimitEnd,
+        timelineLimitStart,
         liveClass,
         materiPremium,
         originalPrice,
@@ -97,7 +116,6 @@ export default function UpdatePlanForm() {
     `/plan/getSinglePlan?id=${id}`,
     {
       onSuccess({ data: planData }) {
-        console.log({ planData });
         if (planData) {
           setValue('name', planData.name);
           setValue('description', planData.description);
@@ -106,12 +124,39 @@ export default function UpdatePlanForm() {
             setValue('originalPrice', planData.originalPrice.toString());
           }
           if (planData.PlanSubscription) {
+            if (planData.PlanSubscription.expireDays) {
+              setValue(
+                'duration',
+                planData.PlanSubscription.expireDays.toString(),
+              );
+              const isTimebound = planData.PlanSubscription.PlanFeature.some(
+                (item) => item.isTimebound,
+              );
+              if (!isTimebound) {
+                setValidityType('duration');
+              }
+            } else if (
+              planData.PlanSubscription.PlanFeature.length > 0 &&
+              planData.PlanSubscription.PlanFeature.some(
+                (item) => item.isTimebound && item.validFrom && item.validUntil,
+              )
+            ) {
+              setValue(
+                'timelineStart',
+                getDateForInputDateTime(
+                  planData.PlanSubscription.PlanFeature[0].validFrom || '',
+                ),
+              );
+              setValue(
+                'timelineEnd',
+                getDateForInputDateTime(
+                  planData.PlanSubscription.PlanFeature[0].validUntil || '',
+                ),
+              );
+              setValidityType('timeline');
+            }
             setActiveTab((prev) => ({ ...prev, feature: true }));
             setValue('tier', planData.PlanSubscription.tier);
-            setValue(
-              'duration',
-              planData.PlanSubscription.expireDays.toString(),
-            );
             planData.PlanSubscription.PlanFeature.forEach((item) => {
               if (item.type === 'COURSE') {
                 setValue('course', true);
@@ -138,6 +183,34 @@ export default function UpdatePlanForm() {
             });
           }
           if (planData.PlanLimitation) {
+            if (
+              planData.PlanLimitation.isTimebound === false &&
+              planData.PlanLimitation.expireDays
+            ) {
+              setValue(
+                'durationLimit',
+                planData.PlanLimitation.expireDays.toString(),
+              );
+              setValidityTypeLimit('duration');
+            } else if (
+              planData.PlanLimitation.isTimebound === true &&
+              planData.PlanLimitation.validFrom &&
+              planData.PlanLimitation.validUntil
+            ) {
+              setValue(
+                'timelineLimitStart',
+                getDateForInputDateTime(
+                  planData.PlanLimitation.validFrom || '',
+                ),
+              );
+              setValue(
+                'timelineLimitEnd',
+                getDateForInputDateTime(
+                  planData.PlanLimitation.validUntil || '',
+                ),
+              );
+              setValidityTypeLimit('timeline');
+            }
             setActiveTab((prev) => ({ ...prev, limit: true }));
             const limit = planData.PlanLimitation;
             setLimitRows([
@@ -147,10 +220,6 @@ export default function UpdatePlanForm() {
               { id: 4, type: 'quiz', limit: limit.quiz.toString() },
               { id: 5, type: 'tryout', limit: limit.tryout.toString() },
             ]);
-            setValue(
-              'durationLimit',
-              planData.PlanLimitation.expireDays.toString(),
-            );
           }
           if (planData.PlanBenefit) {
             setBenefitRows(
@@ -174,6 +243,56 @@ export default function UpdatePlanForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (activeTab.feature && validityType === 'duration' && !duration) {
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: 'Duration Feature belum terisi!',
+        duration: 3000,
+      });
+      setIsLoading(false);
+      return;
+    }
+    if (
+      activeTab.feature &&
+      validityType === 'timeline' &&
+      (!timelineStart || !timelineEnd)
+    ) {
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: 'Timeline Feature belum terisi',
+        duration: 3000,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (activeTab.limit && validityTypeLimit === 'duration' && !durationLimit) {
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: 'Duration Limit belum terisi!',
+        duration: 3000,
+      });
+      setIsLoading(false);
+      return;
+    }
+    if (
+      activeTab.limit &&
+      validityTypeLimit === 'timeline' &&
+      (!timelineLimitStart || !timelineLimitEnd)
+    ) {
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: 'Timeline Limit belum terisi',
+        duration: 3000,
+      });
+      setIsLoading(false);
+      return;
+    }
     try {
       const limitRowsData = limitRows.reduce(
         (acc, row) => {
@@ -186,13 +305,11 @@ export default function UpdatePlanForm() {
 
       let imageUrl = previewImage;
       if (image) {
-        console.log({ image });
         const filePath = `plan/${name}-${crypto.randomUUID().slice(0, 4)}`;
         const { data, error } = await supabase.storage
           .from('img')
           .upload(filePath, image);
         if (error) {
-          console.log({ data, error });
           throw throwError(400, 'Gagal mengupload image');
         }
         if (data) {
@@ -201,7 +318,6 @@ export default function UpdatePlanForm() {
             .getPublicUrl(filePath);
           imageUrl = publicUrlData.publicUrl;
         }
-        console.log({ data, error });
       }
 
       const payload = {
@@ -219,27 +335,38 @@ export default function UpdatePlanForm() {
               quiz: limitRowsData?.quiz || 0,
               tryout: limitRowsData?.tryout || 0,
               vision: limitRowsData?.vision || 0,
-              expireDays:
-                expireTypeLimit === 'days'
+              expireDays: !durationLimit
+                ? undefined
+                : expireTypeLimit === 'days'
                   ? parseInt(durationLimit)
                   : expireTypeLimit === 'month'
                     ? parseInt(durationLimit) * 30
                     : expireTypeLimit === 'year'
                       ? parseInt(durationLimit) * 365
                       : 0,
+              isTimebound: validityTypeLimit === 'timeline',
+              validFrom:
+                timelineLimitStart &&
+                new Date(timelineLimitStart).toISOString(),
+              validUntil:
+                timelineLimitEnd && new Date(timelineLimitEnd).toISOString(),
             }
           : undefined,
         planSubscription: activeTab.feature
           ? {
               tier,
-              expireDays:
-                expireType === 'days'
+              expireDays: !duration
+                ? undefined
+                : expireType === 'days'
                   ? parseInt(duration)
                   : expireType === 'month'
                     ? parseInt(duration) * 30
                     : expireType === 'year'
                       ? parseInt(duration) * 365
                       : 0,
+              isTimebound: validityType === 'timeline',
+              validFrom: timelineStart && new Date(timelineStart).toISOString(),
+              validUntil: timelineEnd && new Date(timelineEnd).toISOString(),
               planfeature: [
                 { type: course ? 'COURSE' : null, categoryIds },
                 { type: materiPremium ? 'DOCUMENT' : null },
@@ -251,15 +378,18 @@ export default function UpdatePlanForm() {
               ].filter((item) => item.type),
             }
           : undefined,
-        planBenefit: benefitRows.map((row) => ({
-          id: row.id,
-          order: row.order,
-          title: row.title,
-          description: row.description,
-        })),
+        planBenefit: benefitRows
+          .filter(
+            (item) => item.title.length > 0 && item.description.length > 0,
+          )
+          .map((row) => ({
+            id: row.id,
+            order: row.order,
+            title: row.title,
+            description: row.description,
+          })),
       };
 
-      console.log({ payload });
       // return;
 
       await mutateGeneral('/plan/editPlan', {
@@ -483,6 +613,8 @@ const SectionLimit = () => {
       setLimitRows,
       expireTypeLimit,
       setExpireTypeLimit,
+      setValidityTypeLimit,
+      validityTypeLimit,
     },
     useForm: {
       formData: { register },
@@ -713,59 +845,128 @@ const SectionLimit = () => {
               </div>
             );
           })}
-          <div className="ml-6 col-span-1 md:col-span-2">
-            <Label
-              htmlFor="durationLimit"
-              className="block mb-2"
-            >
-              Duration <span className="text-red-500">*</span>
-            </Label>
-            <div className="flex gap-2">
-              <Input
-                id="durationLimit"
-                {...register('durationLimit')}
-                type="number"
-                placeholder="0"
-                className="flex-1"
-                required
-              />
-              <div className="flex">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={cn(
-                    'rounded-r-none ',
-                    expireTypeLimit === 'days' && 'bg-main text-white',
-                  )}
-                  onClick={() => setExpireTypeLimit('days')}
-                >
-                  days
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={cn(
-                    'rounded-none border-l-0 border-r-0',
-                    expireTypeLimit === 'month' && 'bg-main text-white',
-                  )}
-                  onClick={() => setExpireTypeLimit('month')}
-                >
-                  month
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={cn(
-                    'rounded-l-none',
-                    expireTypeLimit === 'year' && 'bg-main text-white',
-                  )}
-                  onClick={() => setExpireTypeLimit('year')}
-                >
-                  year
-                </Button>
-              </div>
+
+          <div className="ml-6">
+            <div className="flex">
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  'rounded-r-none',
+                  validityTypeLimit === 'duration' &&
+                    'bg-main text-white hover:text-white',
+                )}
+                onClick={() => setValidityTypeLimit('duration')}
+              >
+                Duration
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  'rounded-l-none',
+                  validityTypeLimit === 'timeline' &&
+                    'bg-main text-white hover:text-white',
+                )}
+                onClick={() => setValidityTypeLimit('timeline')}
+              >
+                Timeline
+              </Button>
             </div>
           </div>
+          {validityTypeLimit === 'timeline' && (
+            <div className="ml-6 space-y-4">
+              <Alert className="bg-yellow-50 border-yellow-400">
+                <AlertDescription className="flex items-center gap-2 text-yellow-600">
+                  <InfoIcon className="h-4 w-4" />
+                  Timeline memiliki waktu tetap. Pengguna hanya bisa mengakses
+                  fitur selama periode yang ditentukan, terlepas dari kapan
+                  mereka membeli.
+                </AlertDescription>
+              </Alert>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="block mb-2">Valid From</Label>
+                  <Input
+                    type="datetime-local"
+                    {...register('timelineLimitStart')}
+                  />
+                </div>
+                <div>
+                  <Label className="block mb-2">Valid Until</Label>
+                  <Input
+                    type="datetime-local"
+                    {...register('timelineLimitEnd')}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          {validityTypeLimit === 'duration' && (
+            <div className="ml-6 space-y-4">
+              <Alert className="bg-yellow-50 border-yellow-400">
+                <AlertDescription className="flex items-center gap-2 text-yellow-600">
+                  <InfoIcon className="h-4 w-4" />
+                  Duration akan menghitung masa aktif fitur mulai dari saat
+                  pengguna melakukan pembelian. Misalnya jika duration 30 hari,
+                  maka fitur akan aktif selama 30 hari sejak pembelian.
+                </AlertDescription>
+              </Alert>
+              <div className="col-span-1 md:col-span-2">
+                <Label
+                  htmlFor="durationLimit"
+                  className="block mb-2"
+                >
+                  Duration <span className="text-red-500">*</span>
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="durationLimit"
+                    {...register('durationLimit')}
+                    type="number"
+                    placeholder="0"
+                    className="flex-1"
+                    required
+                  />
+                  <div className="flex">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={cn(
+                        'rounded-r-none ',
+                        expireTypeLimit === 'days' && 'bg-main text-white',
+                      )}
+                      onClick={() => setExpireTypeLimit('days')}
+                    >
+                      days
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={cn(
+                        'rounded-none border-l-0 border-r-0',
+                        expireTypeLimit === 'month' && 'bg-main text-white',
+                      )}
+                      onClick={() => setExpireTypeLimit('month')}
+                    >
+                      month
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={cn(
+                        'rounded-l-none',
+                        expireTypeLimit === 'year' && 'bg-main text-white',
+                      )}
+                      onClick={() => setExpireTypeLimit('year')}
+                    >
+                      year
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -789,6 +990,8 @@ const SectionFeature = () => {
       liveClassIds,
       setLiveClassIds,
       categoryIds,
+      validityType,
+      setValidityType,
     },
     useForm: {
       formData: { register, setValue },
@@ -820,8 +1023,6 @@ const SectionFeature = () => {
     },
     useEffectDependencies: [searchTerm],
   });
-
-  console.log({ LiveClass, searchTerm });
 
   return (
     <div className="rounded-xl shadow-cardSoft2 p-4">
@@ -925,58 +1126,129 @@ const SectionFeature = () => {
               </div>
 
               <div className="ml-6">
-                <Label
-                  htmlFor="duration"
-                  className="block mb-2"
-                >
-                  Duration <span className="text-red-500">*</span>
-                </Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="duration"
-                    {...register('duration')}
-                    type="number"
-                    placeholder="0"
-                    className="flex-1"
-                    required
-                  />
-                  <div className="flex">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className={cn(
-                        'rounded-r-none ',
-                        expireType === 'days' && 'bg-main text-white',
-                      )}
-                      onClick={() => setExpireType('days')}
-                    >
-                      days
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className={cn(
-                        'rounded-none border-l-0 border-r-0',
-                        expireType === 'month' && 'bg-main text-white',
-                      )}
-                      onClick={() => setExpireType('month')}
-                    >
-                      month
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className={cn(
-                        'rounded-l-none',
-                        expireType === 'year' && 'bg-main text-white',
-                      )}
-                      onClick={() => setExpireType('year')}
-                    >
-                      year
-                    </Button>
-                  </div>
+                <div className="flex">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={cn(
+                      'rounded-r-none',
+                      validityType === 'duration' &&
+                        'bg-main text-white hover:text-white',
+                    )}
+                    onClick={() => setValidityType('duration')}
+                  >
+                    Duration
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className={cn(
+                      'rounded-l-none',
+                      validityType === 'timeline' &&
+                        'bg-main text-white hover:text-white',
+                    )}
+                    onClick={() => setValidityType('timeline')}
+                  >
+                    Timeline
+                  </Button>
                 </div>
               </div>
+
+              {validityType === 'timeline' && (
+                <div className="ml-6 space-y-4">
+                  <Alert className="bg-yellow-50 border-yellow-400">
+                    <AlertDescription className="flex items-center gap-2 text-yellow-600">
+                      <InfoIcon className="h-4 w-4" />
+                      Timeline memiliki waktu tetap. Pengguna hanya bisa
+                      mengakses fitur selama periode yang ditentukan, terlepas
+                      dari kapan mereka membeli.
+                    </AlertDescription>
+                  </Alert>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label className="block mb-2">Valid From</Label>
+                      <Input
+                        type="datetime-local"
+                        {...register('timelineStart')}
+                      />
+                    </div>
+                    <div>
+                      <Label className="block mb-2">Valid Until</Label>
+                      <Input
+                        type="datetime-local"
+                        {...register('timelineEnd')}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {validityType === 'duration' && (
+                <div className="ml-6 space-y-4">
+                  <Alert className="bg-yellow-50 border-yellow-400">
+                    <AlertDescription className="flex items-center gap-2 text-yellow-600">
+                      <InfoIcon className="h-4 w-4" />
+                      Duration akan menghitung masa aktif fitur mulai dari saat
+                      pengguna melakukan pembelian. Misalnya jika duration 30
+                      hari, maka fitur akan aktif selama 30 hari sejak
+                      pembelian.
+                    </AlertDescription>
+                  </Alert>
+                  <div className="">
+                    <Label
+                      htmlFor="duration"
+                      className="block mb-2"
+                    >
+                      Duration <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="duration"
+                        {...register('duration')}
+                        type="number"
+                        placeholder="0"
+                        className="flex-1"
+                        required
+                      />
+                      <div className="flex">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className={cn(
+                            'rounded-r-none ',
+                            expireType === 'days' && 'bg-main text-white',
+                          )}
+                          onClick={() => setExpireType('days')}
+                        >
+                          days
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className={cn(
+                            'rounded-none border-l-0 border-r-0',
+                            expireType === 'month' && 'bg-main text-white',
+                          )}
+                          onClick={() => setExpireType('month')}
+                        >
+                          month
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className={cn(
+                            'rounded-l-none',
+                            expireType === 'year' && 'bg-main text-white',
+                          )}
+                          onClick={() => setExpireType('year')}
+                        >
+                          year
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </TabsContent>
             <TabsContent
               value="liveclass"

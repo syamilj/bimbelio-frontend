@@ -91,10 +91,8 @@ const MainContent = () => {
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
 
   useEffect(() => {
-    console.log('masuk1');
     if (prevChatMessages && prevChatMessages?.length > 0 && !firstMessage) {
       setMessageData([GreetingMessage, ...prevChatMessages]);
-      console.log('masuk2', prevChatMessages);
     }
   }, [prevChatMessages, firstMessage, setMessageData]);
 
@@ -127,10 +125,6 @@ const MainContent = () => {
   const isMessages = messageData?.length !== 0;
   const isNoMessages =
     messageData?.length === 0 && prevChatMessages?.length === 0 && !newChat;
-
-  console.log({
-    messageData,
-  });
 
   if (isUserDocLoading === true) {
     return <SpinnerCentered />;

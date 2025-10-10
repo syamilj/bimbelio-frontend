@@ -370,8 +370,6 @@ const ModalImportCSV = ({
             };
           });
 
-          console.log({ fixData });
-
           if (!isValid) {
             toaster({
               title: 'Upss',

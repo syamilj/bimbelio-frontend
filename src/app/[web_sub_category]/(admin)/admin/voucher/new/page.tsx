@@ -97,7 +97,6 @@ export default function CreateVoucher() {
         voucherPlanType: planType,
         planIds: planType === 'ALL_PLAN' ? [] : selectedPlanIds,
       };
-      console.log({ payload });
       await SaveVoucher({ payload });
     } catch (error) {
       responseError(error);

@@ -1,7 +1,7 @@
 'use client';
 
-import { DialogPayment } from '@/components/_shared/other/card-plan/_components/dialog-payment';
 import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
+import { DialogPayment } from '@/components/_shared/other/card-plan/_components/dialog-payment';
 import { SparklesText } from '@/components/magicui/sparkles-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
@@ -18,6 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { pixel } from '@/lib/pixel/_core';
 import { cn, formatDate } from '@/lib/utils';
+import { formatDateRange } from '@/lib/utils/date';
 import {
   Category,
   Instructor,
@@ -223,7 +224,12 @@ export default function PlanDetailPage() {
                         )}
                       </div>
                       <div className="text-xs text-gray-500">
-                        {plan.PlanSubscription?.expireDays || 365} hari akses
+                        {plan.PlanSubscription?.expireDays
+                          ? `${plan.PlanSubscription?.expireDays} hari akses`
+                          : formatDateRange(
+                              plan.PlanSubscription.PlanFeature[0].validFrom,
+                              plan.PlanSubscription.PlanFeature[0].validUntil,
+                            )}
                       </div>
                     </motion.div>
 
@@ -556,7 +562,15 @@ export default function PlanDetailPage() {
                           </motion.div>
                         </CardHeader>
                         <CardContent>
-                          <div className="grid md:grid-cols-3 gap-6">
+                          <div
+                            className={cn(
+                              'grid md:grid-cols-3 gap-6',
+                              plan.PlanSubscription.PlanFeature.length === 1 &&
+                                'md:grid-cols-1',
+                              plan.PlanSubscription.PlanFeature.length === 2 &&
+                                'md:grid-cols-2',
+                            )}
+                          >
                             {plan.PlanSubscription.PlanFeature.map(
                               (feature, index) => (
                                 <motion.div
@@ -904,7 +918,10 @@ export default function PlanDetailPage() {
                                 ([key]) =>
                                   key !== 'id' &&
                                   key !== 'planId' &&
-                                  key !== 'expireDays',
+                                  key !== 'expireDays' &&
+                                  key !== 'validFrom' &&
+                                  key !== 'validUntil' &&
+                                  key !== 'isTimebound',
                               )
                               .map(([key, value], index) => (
                                 <motion.div
@@ -1906,7 +1923,10 @@ export default function PlanDetailPage() {
                               ([key]) =>
                                 key !== 'id' &&
                                 key !== 'planId' &&
-                                key !== 'expireDays',
+                                key !== 'expireDays' &&
+                                key !== 'validFrom' &&
+                                key !== 'validUntil' &&
+                                key !== 'isTimebound',
                             )
                             .map(([key, value], index) => (
                               <motion.div

@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import LoadingPage from '@/components/ui/Loading-Page';
 import Logo from '@/components/ui/logo';
 import { env } from '@/env.mjs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking login success
+import { responseError } from '@/lib/response';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -17,22 +19,25 @@ export const Login = () => {
   const {
     useAuth: { setShowAuth, showAuth },
   } = useAppContext();
-  const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const { webCategoryData } = useWebsiteSubCategory();
 
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (googleToken: any) => {
     setLoading(true);
     try {
+      // Get Google token
       const { credential } = googleToken as { credential: string };
-      const res = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/google`, {
-        token: credential,
-      });
+      const res = await axios.post(
+        `${env.NEXT_PUBLIC_API_URL}/auth/google?website_sub_category_id=${website_sub_category_id || webCategoryData[0].WebsiteSubCategory[0].id}`,
+        {
+          token: credential,
+        },
+      );
 
       Cookies.set('token', res.data.data.token);
+
+      console.log('Login Success: ', res);
 
       // ✅ Track login success dengan Advanced Matching
       try {
@@ -81,6 +86,8 @@ export const Login = () => {
           : origin;
       }
     } catch (error) {
+      responseError(error, true);
+      console.log({ error });
       setLoading(false);
       return;
     }

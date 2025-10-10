@@ -385,7 +385,6 @@ const DialogImportVouchers = ({
               planIds: item?.PlanIds || [],
             };
           });
-          console.log({ data, fixData });
 
           await SaveVouchers({
             payload: {

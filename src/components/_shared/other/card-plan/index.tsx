@@ -132,6 +132,12 @@ export function CardPlan({
     }
   }, [planIdQuery, session, voucherCodeQuery]);
 
+  const tabCount =
+    (plan.PlanBenefit.length > 0 ? 1 : 0) +
+    (plan.PlanLimitation ? 1 : 0) +
+    (plan.PlanSubscription ? 1 : 0) +
+    1;
+
   const Context = {
     useState: {
       activeTab,
@@ -474,18 +480,19 @@ export function CardPlan({
                         {formatPrice(plan.price)}
                       </div>
                     </div>
-                    {plan.PlanBenefit.length > 0 && (
-                      <div className="text-xs text-gray-500 mt-1">
-                        ~
-                        {formatPrice(
-                          Math.floor(
-                            (discount || plan.price) /
-                              plan.PlanSubscription.expireDays,
-                          ),
-                        )}{' '}
-                        per hari
-                      </div>
-                    )}
+                    {plan.PlanBenefit.length > 0 &&
+                      plan.PlanSubscription.expireDays && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          ~
+                          {formatPrice(
+                            Math.floor(
+                              (discount || plan.price) /
+                                plan.PlanSubscription.expireDays,
+                            ),
+                          )}{' '}
+                          per hari
+                        </div>
+                      )}
                   </div>
 
                   {/* Original Price */}
@@ -544,7 +551,14 @@ export function CardPlan({
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-4 mb-4 h-8 bg-gray-100 p-1 rounded-xl">
+            <TabsList
+              className={cn(
+                'grid w-full mb-4 h-8 bg-gray-100 p-1 rounded-xl grid-cols-4',
+              )}
+              style={{
+                gridTemplateColumns: `repeat(${tabCount}, minmax(0, 1fr))`,
+              }}
+            >
               <TabsTrigger
                 value="overview"
                 className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
@@ -560,36 +574,42 @@ export function CardPlan({
                 />
                 <span className="hidden sm:inline">Overview</span>
               </TabsTrigger>
-              <TabsTrigger
-                value="features"
-                className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-              >
-                <Sparkles
-                  size={14}
-                  className="mr-1"
-                />
-                <span className="hidden sm:inline">Fitur</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="benefits"
-                className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-              >
-                <Gift
-                  size={14}
-                  className="mr-1"
-                />
-                <span className="hidden sm:inline">Benefit</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="limitations"
-                className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-              >
-                <Clock
-                  size={14}
-                  className="mr-1"
-                />
-                <span className="hidden sm:inline">Limits</span>
-              </TabsTrigger>
+              {plan.PlanSubscription && (
+                <TabsTrigger
+                  value="features"
+                  className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+                >
+                  <Sparkles
+                    size={14}
+                    className="mr-1"
+                  />
+                  <span className="hidden sm:inline">Fitur</span>
+                </TabsTrigger>
+              )}
+              {plan.PlanLimitation && (
+                <TabsTrigger
+                  value="limitations"
+                  className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+                >
+                  <Clock
+                    size={14}
+                    className="mr-1"
+                  />
+                  <span className="hidden sm:inline">Limits</span>
+                </TabsTrigger>
+              )}
+              {plan.PlanBenefit.length > 0 && (
+                <TabsTrigger
+                  value="benefits"
+                  className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+                >
+                  <Gift
+                    size={14}
+                    className="mr-1"
+                  />
+                  <span className="hidden sm:inline">Benefit</span>
+                </TabsTrigger>
+              )}
             </TabsList>
 
             {/* Tab Content */}

@@ -3,7 +3,14 @@
 import { signOut } from '@/lib/auth-helper';
 import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { responseError } from '@/lib/response';
-import { UserRoleEnum } from '@/types/database';
+import {
+  Subscription,
+  SubscriptionFeature,
+  SubscriptionPending,
+  SubscriptionPendingFeature,
+  SubscriptionPendingLimitation,
+  UserRoleEnum,
+} from '@/types/database';
 import Cookies from 'js-cookie';
 import { Loader2 } from 'lucide-react';
 import {
@@ -34,12 +41,35 @@ export default function ProviderSessionAuth({
 
     if (token) {
       axiosInstanceWithToken
-        .post(
-          `/auth/verifyToken?website_sub_category_id=${website_sub_category_id}`,
-        )
+        .post(`/auth/verifyToken`)
         .then((res) => {
           const resData = res.data;
           const userData = resData.data;
+          const subsListData = userData.subsData;
+          const subsPendingListData = userData.subsPendingData;
+          console.log({ userData, subsListData, subsPendingListData, res });
+          let tier, feature, subsList, subsPendingList;
+          if (
+            Object.keys(userData.subsList).includes(website_sub_category_id!)
+          ) {
+            tier = userData.subsList[website_sub_category_id!].tier;
+            feature = userData.subsList[website_sub_category_id!].feature;
+            subsList = subsListData[website_sub_category_id!] || [];
+          } else {
+            tier = null;
+            feature = { document: false, course: false, liveClass: false };
+            subsList = [];
+          }
+
+          if (
+            Object.keys(subsPendingListData).includes(website_sub_category_id!)
+          ) {
+            subsPendingList =
+              subsPendingListData[website_sub_category_id!] || [];
+          } else {
+            subsPendingList = [];
+          }
+
           setData({
             expires: undefined,
             user: {
@@ -47,19 +77,17 @@ export default function ProviderSessionAuth({
               email: userData.email,
               name: userData.name,
               role: userData.role,
-              token: userData.token,
+              token: token,
               type: userData.type,
               userTryOutId: userData.userTryOutId,
               emailVerified: userData.emailVerified,
               expire: userData.expire,
               image: userData.image,
-              tier: userData.tier,
               phone: userData.phone,
-              feature: {
-                document: userData.feature.document,
-                course: userData.feature.course,
-                liveClass: userData.feature.liveClass,
-              },
+              subsList,
+              subsPendingList,
+              tier,
+              feature,
             },
           });
         })
@@ -68,6 +96,7 @@ export default function ProviderSessionAuth({
           if (status === 401) {
             signOut();
           }
+          console.log({ error });
           console.error('Token verification failed:', message);
         })
         .finally(() => {
@@ -77,8 +106,6 @@ export default function ProviderSessionAuth({
       setIsLoading(false);
     }
   }, []);
-
-  console.log(data);
 
   const Context = {
     data,
@@ -121,6 +148,13 @@ type SessionProviderType = {
           tier: string;
           phone: string | null;
           feature: { document: boolean; course: boolean; liveClass: boolean };
+          subsList: (Subscription & {
+            SubscriptionFeature: SubscriptionFeature[];
+          })[];
+          subsPendingList: (SubscriptionPending & {
+            SubscriptionPendingFeature: SubscriptionPendingFeature[];
+            SubscriptionPendingLimitation?: SubscriptionPendingLimitation;
+          })[];
         };
         expires: string | undefined;
       }

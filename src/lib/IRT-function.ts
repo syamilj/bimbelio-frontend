@@ -176,7 +176,6 @@ export const processData = async (
     setCurrentStep('Membaca file respons peserta');
     const participantAnswerRows: { [key: string]: string }[] =
       await readCSV(participantFile);
-    console.log({ participantAnswerRows, parameterIrtRows });
     const participants = participantAnswerRows.map((row) => row.p);
     const participantAnswer = participantAnswerRows.map((row) => {
       const data = Object.keys(row).filter((key) => key.startsWith('q'));

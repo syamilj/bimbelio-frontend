@@ -16,6 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CardPlan } from '@/components/_shared/other/card-plan';
 import { CardPlanTopping } from '@/components/_shared/other/card-plan-coin';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
+import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { pixel } from '@/lib/pixel/_core';
 import { AlertCircle, Loader2Icon } from 'lucide-react';
@@ -109,6 +110,12 @@ export function Payment() {
       setSelectedPlanType(DEFAULT_PLAN_TYPE);
     }
   }, [selectedCategory]);
+
+  useEffect(() => {
+    if (website_sub_category_id_params) {
+      setSelectedCategory(website_sub_category_id_params);
+    }
+  }, [website_sub_category_id_params]);
 
   const topping = PricingData?.topping || [];
 

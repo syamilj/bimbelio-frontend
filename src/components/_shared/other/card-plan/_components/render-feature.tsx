@@ -3,6 +3,7 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
+import { formatDateRange } from '@/lib/utils/date';
 import { BookOpen, Calendar, FileText, Star, Users, Video } from 'lucide-react';
 import { useProvider } from '../_provider/provider';
 
@@ -100,7 +101,12 @@ export const RenderFeatureTab = () => {
                 />
                 <span className="text-sm font-semibold text-indigo-800">
                   Durasi Akses:{' '}
-                  {formatDuration(plan.PlanSubscription.expireDays)}
+                  {plan.PlanSubscription.expireDays
+                    ? formatDuration(plan.PlanSubscription.expireDays)
+                    : formatDateRange(
+                        plan.PlanSubscription.PlanFeature[0].validFrom,
+                        plan.PlanSubscription.PlanFeature[0].validUntil,
+                      )}
                 </span>
               </div>
               <p className="text-xs text-indigo-600 mt-1">
@@ -255,7 +261,13 @@ export const RenderFeatureTab = () => {
               className="text-indigo-600"
             />
             <span className="text-sm font-semibold text-indigo-800">
-              Durasi Akses: {formatDuration(plan.PlanSubscription.expireDays)}
+              Durasi Akses:{' '}
+              {plan.PlanSubscription.expireDays
+                ? formatDuration(plan.PlanSubscription.expireDays)
+                : formatDateRange(
+                    plan.PlanSubscription.PlanFeature[0].validFrom,
+                    plan.PlanSubscription.PlanFeature[0].validUntil,
+                  )}
             </span>
           </div>
           <p className="text-xs text-indigo-600 mt-1">

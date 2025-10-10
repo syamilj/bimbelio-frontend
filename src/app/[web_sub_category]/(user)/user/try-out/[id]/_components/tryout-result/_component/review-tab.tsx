@@ -98,8 +98,6 @@ export function ReviewTab({
   const [userAnswerIndex, setUserAnswerIndex] = useState<number>(0);
   const [activeView, setActiveView] = useState<'question' | 'grid'>('question');
 
-  console.log({ userAnswerIndex });
-
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
@@ -810,10 +808,6 @@ const CompactNavigation = ({
   const stats = getQuestionStats();
 
   const questionNumber = userAnswerIndex + 1;
-
-  console.log({ userAnswerIndex });
-
-  console.log({ questionNumber });
 
   return (
     <div className="space-y-4">

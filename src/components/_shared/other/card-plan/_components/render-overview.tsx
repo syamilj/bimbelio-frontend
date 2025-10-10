@@ -4,6 +4,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { formatDateRange } from '@/lib/utils/date';
 import {
   Award,
   BookOpen,
@@ -74,7 +75,7 @@ export const RenderOverviewTab = () => {
           )}
 
           {/* Subscription Stats (jika ada) */}
-          {plan.PlanSubscription && (
+          {/* {plan.PlanSubscription && (
             <div className="text-center">
               <Calendar
                 size={20}
@@ -85,7 +86,7 @@ export const RenderOverviewTab = () => {
               </div>
               <div className="text-xs text-green-600">Duration</div>
             </div>
-          )}
+          )} */}
 
           {/* Features Count (jika ada) */}
           {plan.PlanSubscription.PlanFeature &&
@@ -123,27 +124,35 @@ export const RenderOverviewTab = () => {
                 size={14}
                 className="text-emerald-600"
               />
-              Global Access
+              Global Access - Semua Kategori
             </h4>
-            <div className="flex gap-2 flex-wrap">
+            <div className="space-y-2">
               {isCourse && (
-                <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300">
-                  <BookOpen
-                    size={12}
-                    className="mr-1"
-                  />
-                  All Courses
-                </Badge>
+                <div className="flex items-center gap-2 text-sm text-emerald-700">
+                  <BookOpen size={14} />
+                  <span>✓ Semua Video Course tersedia</span>
+                </div>
               )}
               {isDocument && (
-                <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300">
-                  <FileText
-                    size={12}
-                    className="mr-1"
-                  />
-                  All Documents
-                </Badge>
+                <div className="flex items-center gap-2 text-sm text-emerald-700">
+                  <FileText size={14} />
+                  <span>✓ Semua Dokumen & Materi tersedia</span>
+                </div>
               )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar
+                size={16}
+                className="text-emerald-700"
+              />
+              <span className="text-sm text-emerald-700">
+                {plan.PlanSubscription.expireDays
+                  ? formatDuration(plan.PlanSubscription.expireDays)
+                  : formatDateRange(
+                      plan.PlanSubscription.PlanFeature[0].validFrom,
+                      plan.PlanSubscription.PlanFeature[0].validUntil,
+                    )}
+              </span>
             </div>
           </div>
         )}

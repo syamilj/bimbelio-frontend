@@ -44,10 +44,15 @@ type FormDataType = {
   materiPremium: boolean;
   liveClass: boolean;
   liveClassesPerWeek: string;
-  duration: string;
-  durationLimit: string;
+  duration?: string;
+  timelineStart?: string;
+  timelineEnd?: string;
+  durationLimit?: string;
+  timelineLimitStart?: string;
+  timelineLimitEnd?: string;
   status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
 };
+type ValidityType = 'duration' | 'timeline';
 
 export default function Provider({ children }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -80,6 +85,10 @@ export default function Provider({ children }: Props) {
     { id: 1, title: '', description: '', order: 1 },
   ]);
 
+  const [validityType, setValidityType] = useState<ValidityType>('duration');
+  const [validityTypeLimit, setValidityTypeLimit] =
+    useState<ValidityType>('duration');
+
   const formData = useForm<FormDataType>({
     defaultValues: {
       image: undefined,
@@ -108,7 +117,11 @@ export default function Provider({ children }: Props) {
   const liveClass = formData.watch('liveClass');
   const liveClassesPerWeek = formData.watch('liveClassesPerWeek');
   const duration = formData.watch('duration');
+  const timelineStart = formData.watch('timelineStart');
+  const timelineEnd = formData.watch('timelineEnd');
   const durationLimit = formData.watch('durationLimit');
+  const timelineLimitStart = formData.watch('timelineLimitStart');
+  const timelineLimitEnd = formData.watch('timelineLimitEnd');
   const status = formData.watch('status');
   const image = formData.watch('image');
 
@@ -123,9 +136,13 @@ export default function Provider({ children }: Props) {
     liveClass,
     liveClassesPerWeek,
     duration,
+    timelineStart,
+    timelineEnd,
     image,
     status,
     durationLimit,
+    timelineLimitStart,
+    timelineLimitEnd,
   };
 
   const Context = {
@@ -142,6 +159,8 @@ export default function Provider({ children }: Props) {
       setLimitRows,
       expireTypeLimit,
       setExpireTypeLimit,
+      validityTypeLimit,
+      setValidityTypeLimit,
     },
     useFeature: {
       categoryIds,
@@ -156,6 +175,8 @@ export default function Provider({ children }: Props) {
       setExpireType,
       liveClassIds,
       setLiveClassIds,
+      validityType,
+      setValidityType,
     },
     useForm: {
       formData,
@@ -194,6 +215,8 @@ type ProviderType = {
     setLimitRows: Dispatch<SetStateAction<LimitRowType>>;
     expireTypeLimit: 'days' | 'month' | 'year';
     setExpireTypeLimit: Dispatch<SetStateAction<'days' | 'month' | 'year'>>;
+    validityTypeLimit: ValidityType;
+    setValidityTypeLimit: Dispatch<SetStateAction<ValidityType>>;
   };
   useFeature: {
     categoryIds: string[];
@@ -218,6 +241,8 @@ type ProviderType = {
         }[]
       >
     >;
+    validityType: ValidityType;
+    setValidityType: Dispatch<SetStateAction<ValidityType>>;
   };
   useForm: {
     formData: UseFormReturn<FormDataType, any, FormDataType>;
@@ -231,10 +256,14 @@ type ProviderType = {
       materiPremium: boolean;
       liveClass: boolean;
       liveClassesPerWeek: string;
-      duration: string;
-      durationLimit: string;
+      duration?: string;
+      timelineStart?: string;
+      timelineEnd?: string;
       image: File | undefined;
       status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
+      durationLimit?: string;
+      timelineLimitStart?: string;
+      timelineLimitEnd?: string;
     };
   };
 };
