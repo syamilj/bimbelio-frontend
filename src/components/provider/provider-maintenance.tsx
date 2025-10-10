@@ -9,7 +9,7 @@ import {
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
-const isMaintenance = false;
+const isMaintenance = true;
 
 export default function ProviderMaintenance({
   children,
