@@ -94,6 +94,7 @@ export default function ProviderSessionAuth({
         .catch((error) => {
           const { message, status } = responseError(error);
           if (status === 401) {
+            responseError(error, true);
             signOut();
           }
           console.log({ error });
