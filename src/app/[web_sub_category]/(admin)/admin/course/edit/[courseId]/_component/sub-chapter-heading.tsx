@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -11,6 +12,7 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { getDateForInputDateTime } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import { Crown, FileText, Play, Video } from 'lucide-react';
 import React, { SetStateAction } from 'react';
@@ -254,6 +256,92 @@ const SubChapterHeading = ({
             </p>
           </div>
         </div>
+        {/* Status Setting */}
+        <div className="space-y-2">
+          <Label htmlFor="status">Status Publikasi *</Label>
+          <Select
+            value={EditSubChapter.status || 'DRAFT'}
+            onValueChange={(value) => {
+              setSubChapter((prev) =>
+                prev.map((sChapter, index) => {
+                  if (index === currentIndexEdit) {
+                    return {
+                      ...sChapter,
+                      status: value as 'DRAFT' | 'PUBLISH',
+                    };
+                  }
+                  return sChapter;
+                }),
+              );
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Pilih status..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="DRAFT">Draft</SelectItem>
+              <SelectItem value="PUBLISH">Publish</SelectItem>
+              <SelectItem value="UPCOMING">Upcoming</SelectItem>
+            </SelectContent>
+          </Select>
+          <p className="text-sm text-gray-500">
+            {EditSubChapter.status === 'PUBLISH'
+              ? 'Konten akan langsung tersedia untuk pengguna'
+              : 'Konten masih dalam tahap draft dan belum dipublikasikan'}
+          </p>
+        </div>
+
+        {/* Schedule Setting */}
+        {EditSubChapter.status === 'PUBLISH' && (
+          <div className="space-y-2">
+            <Label htmlFor="schedule">Jadwal Publikasi (Opsional)</Label>
+            <Input
+              id="schedule"
+              type="datetime-local"
+              value={
+                EditSubChapter.publishedAt
+                  ? getDateForInputDateTime(EditSubChapter.publishedAt)
+                  : ''
+              }
+              onChange={(e) => {
+                setSubChapter((prev) =>
+                  prev.map((sChapter, index) => {
+                    if (index === currentIndexEdit) {
+                      return {
+                        ...sChapter,
+                        publishedAt: e.target.value,
+                      };
+                    }
+                    return sChapter;
+                  }),
+                );
+              }}
+            />
+            <p className="text-sm text-gray-500">
+              {EditSubChapter.publishedAt
+                ? `Konten akan dipublikasikan pada ${new Date(EditSubChapter.publishedAt).toLocaleString('id-ID')}`
+                : 'Tentukan waktu publikasi konten (kosongkan jika ingin publish sekarang)'}
+            </p>
+            {EditSubChapter.publishedAt && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setSubChapter((prev) =>
+                    prev.map((sChapter, index) => {
+                      if (index === currentIndexEdit) {
+                        return { ...sChapter, publishedAt: undefined };
+                      }
+                      return sChapter;
+                    }),
+                  );
+                }}
+              >
+                Hapus Jadwal
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -53,6 +53,8 @@ export interface SubChapterProps {
   documentTitle?: string;
   materi?: string;
   tryoutSessionId?: string;
+  status?: 'DRAFT' | 'PUBLISH' | 'UPCOMING';
+  publishedAt?: Date | string;
   Questions: QuestionProps[];
 }
 
@@ -137,7 +139,7 @@ const Index = () => {
       setChapter({ ...saveData.chapter });
       setSubChapter([...saveData.subChapter]);
     }
-    document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
   }, []);
 
   useEffect(() => {
@@ -214,47 +216,49 @@ const Index = () => {
           value: true,
           message: `Pilih Type SubChapter ke ${index + 1}`,
         };
-      } else if (
-        (sChapter.type === 'DOCUMENT' && !sChapter.document) ||
-        sChapter.document?.length === 0
-      ) {
-        checkDocument = {
-          value: true,
-          message: `Pada sub chapter ${index + 1}, Document masih kosong`,
-        };
-      } else if (
-        (sChapter.type === 'VIDEO' && !sChapter.video) ||
-        sChapter.video?.length === 0
-      ) {
-        checkVideo = {
-          value: true,
-          message: `Pada sub chapter ${index + 1}, Video masih kosong`,
-        };
-      } else if (
-        (sChapter.type === 'MATERI' && !sChapter.materi) ||
-        sChapter.materi?.length === 0
-      ) {
-        checkMateri = {
-          value: true,
-          message: `Pada sub chapter ${index + 1}, Materi masih kosong`,
-        };
-      } else if (sChapter.type === 'TRYOUT') {
-        sChapter.Questions.forEach((quest, qIndex) => {
-          if (quest.question.length === 0) {
-            checkQuestion = {
-              value: true,
-              message: `Pada sub chapter ${index + 1}, Soal ${qIndex + 1} masih kosong`,
-            };
-          }
-          quest.Answers.forEach((answer) => {
-            if (answer.answer.length === 0) {
-              checkAnswers = {
+      } else if (sChapter.status !== 'UPCOMING') {
+        if (
+          (sChapter.type === 'DOCUMENT' && !sChapter.document) ||
+          sChapter.document?.length === 0
+        ) {
+          checkDocument = {
+            value: true,
+            message: `Pada sub chapter ${index + 1}, Document masih kosong`,
+          };
+        } else if (
+          (sChapter.type === 'VIDEO' && !sChapter.video) ||
+          sChapter.video?.length === 0
+        ) {
+          checkVideo = {
+            value: true,
+            message: `Pada sub chapter ${index + 1}, Video masih kosong`,
+          };
+        } else if (
+          (sChapter.type === 'MATERI' && !sChapter.materi) ||
+          sChapter.materi?.length === 0
+        ) {
+          checkMateri = {
+            value: true,
+            message: `Pada sub chapter ${index + 1}, Materi masih kosong`,
+          };
+        } else if (sChapter.type === 'TRYOUT') {
+          sChapter.Questions.forEach((quest, qIndex) => {
+            if (quest.question.length === 0) {
+              checkQuestion = {
                 value: true,
-                message: `Pada sub chapter ${index + 1}, Pada soal ${qIndex + 1} Jawaban masih ada yang kosong`,
+                message: `Pada sub chapter ${index + 1}, Soal ${qIndex + 1} masih kosong`,
               };
             }
+            quest.Answers.forEach((answer) => {
+              if (answer.answer.length === 0) {
+                checkAnswers = {
+                  value: true,
+                  message: `Pada sub chapter ${index + 1}, Pada soal ${qIndex + 1} Jawaban masih ada yang kosong`,
+                };
+              }
+            });
           });
-        });
+        }
       }
     });
     if (showToast(checkTitleSubChapter)) return;
@@ -302,6 +306,11 @@ const Index = () => {
         premium: sChapter.premium !== undefined ? sChapter.premium : true,
         video: sChapter.video,
         materi: sChapter.materi,
+        status: sChapter.status,
+        publishedAt:
+          sChapter.publishedAt && sChapter.status === 'PUBLISH'
+            ? sChapter.publishedAt
+            : null,
         Questions: sChapter.Questions.map((quest) => {
           return {
             id: quest.id || 'new',

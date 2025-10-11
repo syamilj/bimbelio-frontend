@@ -143,6 +143,8 @@ export default function Provider({ children }: Props) {
             document: findData.document,
             video: findData.video,
             materi: findData.materi,
+            status: findData.status,
+            publishedAt: findData.publishedAt,
             TryoutSession: findData.TryoutSession,
             CourseProgress: findData.CourseProgress,
           });
@@ -160,6 +162,10 @@ export default function Provider({ children }: Props) {
               document: Course[0].CourseSubChapter[0].document,
               video: Course[0].CourseSubChapter[0].video,
               materi: Course[0].CourseSubChapter[0].materi,
+              status: Course[0].CourseSubChapter[0].status,
+              publishedAt: Course[0].CourseSubChapter[0].publishedAt
+                ? new Date(Course[0].CourseSubChapter[0].publishedAt)
+                : null,
               TryoutSession: Course[0].CourseSubChapter[0].TryoutSession,
               CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
             });
@@ -184,6 +190,10 @@ export default function Provider({ children }: Props) {
             document: Course[0].CourseSubChapter[0].document,
             video: Course[0].CourseSubChapter[0].video,
             materi: Course[0].CourseSubChapter[0].materi,
+            status: Course[0].CourseSubChapter[0].status,
+            publishedAt: Course[0].CourseSubChapter[0].publishedAt
+              ? new Date(Course[0].CourseSubChapter[0].publishedAt)
+              : null,
             TryoutSession: Course[0].CourseSubChapter[0].TryoutSession,
             CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
           });
@@ -369,6 +379,8 @@ export type Data = {
   document: string | null;
   premium: boolean;
   materi: string | null;
+  status: 'DRAFT' | 'PUBLISH' | 'UPCOMING';
+  publishedAt: Date | null;
   TryoutSession: CourseType[0]['CourseSubChapter'][0]['TryoutSession'];
   CourseProgress: CourseProgress[];
 };

@@ -5,6 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { LoadingPopUp } from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
@@ -300,18 +307,20 @@ const SubChapterOption = ({
 
             <div>
               <Label htmlFor="type">Tipe Materi *</Label>
-              <select
-                id="type"
-                className="w-full p-2 border border-gray-300 rounded-md"
+              <Select
                 value={EditSubChapter.type || ''}
-                onChange={(e) => handleChangeType(e.target.value as any)}
+                onValueChange={(value) => handleChangeType(value as any)}
               >
-                <option value="">Pilih tipe...</option>
-                <option value="VIDEO">Video</option>
-                <option value="DOCUMENT">Dokumen</option>
-                <option value="MATERI">Artikel</option>
-                <option value="TRYOUT">Try Out</option>
-              </select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih tipe..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="VIDEO">Video</SelectItem>
+                  <SelectItem value="DOCUMENT">Dokumen</SelectItem>
+                  <SelectItem value="MATERI">Artikel</SelectItem>
+                  <SelectItem value="TRYOUT">Try Out</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
@@ -450,30 +459,122 @@ const SubChapterOption = ({
             value="settings"
             className="mt-6"
           >
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="premium"
-                  checked={EditSubChapter.premium}
-                  onChange={(e) => {
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="premium"
+                    checked={EditSubChapter.premium}
+                    onChange={(e) => {
+                      setSubChapter((prev) =>
+                        prev.map((sChapter, index) => {
+                          if (index === currentIndexEdit) {
+                            return { ...sChapter, premium: e.target.checked };
+                          }
+                          return sChapter;
+                        }),
+                      );
+                    }}
+                  />
+                  <Label htmlFor="premium">Konten Premium</Label>
+                </div>
+                <p className="text-sm text-gray-500">
+                  {EditSubChapter.premium
+                    ? 'Hanya bisa diakses pengguna premium'
+                    : 'Dapat diakses semua pengguna'}
+                </p>
+              </div>
+              {/* Status Setting */}
+              <div className="space-y-2">
+                <Label htmlFor="status">Status Publikasi *</Label>
+                <Select
+                  value={EditSubChapter.status || 'DRAFT'}
+                  onValueChange={(value) => {
                     setSubChapter((prev) =>
                       prev.map((sChapter, index) => {
                         if (index === currentIndexEdit) {
-                          return { ...sChapter, premium: e.target.checked };
+                          return {
+                            ...sChapter,
+                            status: value as 'DRAFT' | 'PUBLISH',
+                          };
                         }
                         return sChapter;
                       }),
                     );
                   }}
-                />
-                <Label htmlFor="premium">Konten Premium</Label>
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih status..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="DRAFT">Draft</SelectItem>
+                    <SelectItem value="PUBLISH">Publish</SelectItem>{' '}
+                    <SelectItem value="UPCOMING">Upcoming</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-sm text-gray-500">
+                  {EditSubChapter.status === 'PUBLISH'
+                    ? 'Konten akan langsung tersedia untuk pengguna'
+                    : 'Konten masih dalam tahap draft dan belum dipublikasikan'}
+                </p>
               </div>
-              <p className="text-sm text-gray-500">
-                {EditSubChapter.premium
-                  ? 'Hanya bisa diakses pengguna premium'
-                  : 'Dapat diakses semua pengguna'}
-              </p>
+
+              {/* Schedule Setting */}
+              {EditSubChapter.status === 'PUBLISH' && (
+                <div className="space-y-2">
+                  <Label htmlFor="schedule">Jadwal Publikasi (Opsional)</Label>
+                  <Input
+                    id="schedule"
+                    type="datetime-local"
+                    value={
+                      EditSubChapter.publishedAt
+                        ? typeof EditSubChapter.publishedAt === 'string'
+                          ? EditSubChapter.publishedAt
+                          : new Date(EditSubChapter.publishedAt)
+                              .toISOString()
+                              .slice(0, 16)
+                        : ''
+                    }
+                    onChange={(e) => {
+                      setSubChapter((prev) =>
+                        prev.map((sChapter, index) => {
+                          if (index === currentIndexEdit) {
+                            return {
+                              ...sChapter,
+                              publishedAt: e.target.value,
+                            };
+                          }
+                          return sChapter;
+                        }),
+                      );
+                    }}
+                  />
+                  <p className="text-sm text-gray-500">
+                    {EditSubChapter.publishedAt
+                      ? `Konten akan dipublikasikan pada ${new Date(EditSubChapter.publishedAt).toLocaleString('id-ID')}`
+                      : 'Tentukan waktu publikasi konten (kosongkan jika ingin publish sekarang)'}
+                  </p>
+                  {EditSubChapter.publishedAt && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSubChapter((prev) =>
+                          prev.map((sChapter, index) => {
+                            if (index === currentIndexEdit) {
+                              return { ...sChapter, publishedAt: undefined };
+                            }
+                            return sChapter;
+                          }),
+                        );
+                      }}
+                    >
+                      Hapus Jadwal
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>

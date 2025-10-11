@@ -9,6 +9,8 @@ import CourseLocked from '../z_other/course-locked';
 import HeaderCourse from '../z_other/header';
 import NavigationButtons from '../z_other/navigation';
 import CourseReport from '../z_other/report';
+import CourseScheduled from './_components/course-scheduled';
+import CourseUpcoming from './_components/course-upcoming';
 import DocumentType from './_components/type-document';
 import MateriType from './_components/type-materi';
 import TryoutType from './_components/type-tryout';
@@ -25,6 +27,11 @@ export default function LeftComponent() {
   const userId = session?.user.id;
 
   const isLocked = CourseData?.premium && !session?.user.feature.course;
+
+  const isNotYet =
+    !!CourseData?.publishedAt && new Date(CourseData?.publishedAt) > new Date();
+
+  const isUpcoming = CourseData?.status === 'UPCOMING';
 
   // Handle start course flow
   const handleStartCourse = () => {
@@ -116,6 +123,17 @@ export default function LeftComponent() {
         />
         {isLocked ? (
           <CourseLocked />
+        ) : isUpcoming ? (
+          <CourseUpcoming
+            courseTitle={CourseData?.title}
+            courseDescription={CourseData?.description}
+          />
+        ) : isNotYet && CourseData?.publishedAt ? (
+          <CourseScheduled
+            publishedAt={CourseData.publishedAt}
+            courseTitle={CourseData.title}
+            courseDescription={CourseData.description}
+          />
         ) : sub === 'report' ? (
           <CourseReport />
         ) : (
@@ -133,7 +151,7 @@ export default function LeftComponent() {
         )}
       </div>
 
-      {!isLocked && (
+      {!isLocked && !isNotYet && !isUpcoming && (
         <div className="absolute items-center justify-center hidden md:flex w-full bottom-6 md:left-2 z-100">
           <NavigationButtons />
         </div>

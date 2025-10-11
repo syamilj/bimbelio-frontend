@@ -50,6 +50,7 @@ const ChapterOption = ({
         description: '',
         spendTime: '',
         premium: false,
+        status: 'DRAFT',
         Questions: [],
       },
     ]);
