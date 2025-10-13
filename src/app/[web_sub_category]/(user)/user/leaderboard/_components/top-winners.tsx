@@ -22,8 +22,10 @@ type TryoutTop3Type = {
 };
 
 export function TopWinners() {
-  const { selectedTryOut: tryoutId } = useLeaderboardContext();
+  const { selectedTryOut: tryoutId, RankingTryout } = useLeaderboardContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
+
+  const isIrt = RankingTryout?.isIRT || false;
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -274,7 +276,9 @@ export function TopWinners() {
                         >
                           <Star className="w-3 h-3 md:w-4 md:h-4" />
                           <span className="text-xs md:text-sm">
-                            {winner.totalScore.toFixed(0)}
+                            {isIrt
+                              ? winner.averageScore.toFixed(0)
+                              : winner.totalScore.toFixed(0)}
                           </span>
 
                           {/* Animated background for winner */}
