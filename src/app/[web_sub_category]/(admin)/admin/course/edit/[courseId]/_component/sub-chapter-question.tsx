@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import ReactMarkdown from '@/components/ui/react-markdown';
 import {
   Select,
   SelectContent,
@@ -13,9 +14,19 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { env } from '@/env.mjs';
+import { cn, replaceLatexNotation } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
-import { AlertCircle, ArrowUpDown, ImageIcon, Trash2 } from 'lucide-react';
+import {
+  AlertCircle,
+  CircleCheck,
+  CircleX,
+  Eye,
+  EyeOff,
+  ImageIcon,
+  Trash2,
+  Upload,
+} from 'lucide-react';
 import React, { SetStateAction, useCallback, useState } from 'react';
 import { SubChapterProps } from '../page';
 
@@ -541,7 +552,7 @@ const SubChapterQuestion = ({
               <Select
                 value={`${currentQuestion.number}`}
                 onValueChange={(value) => {
-                  changeQuestionOrder(value, questionIndex);
+                  value && changeQuestionOrder(value, questionIndex);
                 }}
               >
                 <SelectTrigger className="w-32">
@@ -561,9 +572,7 @@ const SubChapterQuestion = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {
-                  deleteQuestion(questionIndex);
-                }}
+                onClick={() => deleteQuestion(questionIndex)}
                 className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
               >
                 <Trash2 className="h-4 w-4" />
@@ -574,174 +583,364 @@ const SubChapterQuestion = ({
         </CardHeader>
       </Card>
 
-      {/* Question Content */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Left Column - Question and Image */}
-        <div className="space-y-6">
-          {/* Question */}
-          <div className="rounded-lg border bg-white p-4 shadow-sm">
-            <Label className="mb-2 block text-sm font-medium text-gray-700">
-              Soal
-            </Label>
-            <Textarea
-              placeholder="Tulis soal di sini..."
-              className="resize-none"
-              value={currentQuestion.question}
-              onChange={(e) => onChangeQuestion(e, questionIndex)}
-              required
-            />
-          </div>
-
-          {/* Image Upload */}
-          <div className="rounded-lg border bg-white p-4 shadow-sm">
-            <Label className="mb-2 block text-sm font-medium text-gray-700">
-              Gambar
-            </Label>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  document.getElementById(`image-${questionIndex}`)?.click();
-                }}
-                className="flex items-center gap-2"
-              >
-                <ImageIcon className="h-4 w-4" />
-                {currentQuestion.image ? 'Ubah Gambar' : 'Unggah Gambar'}
-              </Button>
-              {currentQuestion.image && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    deleteImageQuestion(questionIndex);
-                  }}
-                  className="flex items-center gap-2 text-red-600 hover:text-red-700"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Hapus Gambar
-                </Button>
-              )}
-              <input
-                id={`image-${questionIndex}`}
-                type="file"
-                className="hidden"
-                onChange={(e) => {
-                  onChangeQuestionImage(e, questionIndex);
-                }}
-              />
-            </div>
-            {currentQuestion.image && (
-              <div className="mt-4">
-                <img
-                  src={`${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image}`}
-                  alt="Preview"
-                  className="h-32 w-full rounded-md object-cover"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Right Column - Settings and Preview */}
-        <div className="space-y-6">
-          {/* Subcategory and SubSubcategory */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label className="mb-2 block text-sm font-medium text-gray-700">
-                Subkategori
-              </Label>
+      {/* Question Categories */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Kategori Soal</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="sub-category">Sub Kategori</Label>
               <Input
-                placeholder="Subkategori soal"
-                value={currentQuestion.subCategory}
+                id="sub-category"
+                placeholder="Contoh: Aljabar, Geometri"
+                value={currentQuestion.subCategory || ''}
                 onChange={(e) => onChangeSubcategoryQuestion(e, questionIndex)}
               />
             </div>
-            <div>
-              <Label className="mb-2 block text-sm font-medium text-gray-700">
-                SubSubkategori
-              </Label>
+            <div className="space-y-2">
+              <Label htmlFor="sub-sub-category">Sub Sub Kategori</Label>
               <Input
-                placeholder="SubSubkategori soal"
-                value={currentQuestion.subSubCategory}
+                id="sub-sub-category"
+                placeholder="Contoh: Persamaan Linear"
+                value={currentQuestion.subSubCategory || ''}
                 onChange={(e) =>
                   onChangeSubSubCategoryQuestion(e, questionIndex)
                 }
               />
             </div>
           </div>
+        </CardContent>
+      </Card>
 
-          {/* Explanation */}
-          <div className="rounded-lg border bg-white p-4 shadow-sm">
-            <Label className="mb-2 block text-sm font-medium text-gray-700">
-              Penjelasan
-            </Label>
-            <Textarea
-              placeholder="Tulis penjelasan di sini..."
-              className="resize-none"
-              value={currentQuestion.explanation}
-              onChange={(e) => onChangeExplanation(e, questionIndex)}
-              required
-            />
+      {/* Question Content */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base">Soal</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                setShowPreview(
+                  showPreview === questionIndex ? 99999 : questionIndex,
+                )
+              }
+              className="gap-2"
+            >
+              {showPreview === questionIndex ? (
+                <>
+                  <EyeOff className="h-4 w-4" />
+                  Edit
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4" />
+                  Preview
+                </>
+              )}
+            </Button>
           </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {showPreview === questionIndex ? (
+            <div className="min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50">
+              <ReactMarkdown
+                value={replaceLatexNotation(currentQuestion.question)}
+              />
+            </div>
+          ) : (
+            <Textarea
+              placeholder="Tulis soal di sini... Mendukung Markdown dan LaTeX"
+              value={currentQuestion.question}
+              onChange={(e) => onChangeQuestion(e, questionIndex)}
+              className="min-h-[200px] font-mono"
+            />
+          )}
 
-          {/* Answer Options */}
-          <div className="space-y-4">
-            {currentQuestion.Answers?.map((item2, answerIndex: number) => (
-              <div
-                key={answerIndex}
-                className="rounded-lg border bg-white p-4 shadow-sm"
-              >
-                <div className="flex items-center justify-between">
-                  <Label className="block text-sm font-medium text-gray-700">
-                    Jawaban {answerIndex + 1}
-                  </Label>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      changeAnswerOrder(`${answerIndex + 1}`, answerIndex);
-                    }}
-                    className="gap-2"
-                  >
-                    <ArrowUpDown className="h-4 w-4" />
-                    Urutkan
-                  </Button>
-                </div>
-                <Textarea
-                  placeholder="Tulis jawaban di sini..."
-                  className="mt-2 resize-none"
-                  value={item2.answer}
-                  onChange={(e) => {
-                    onChangeAnswer(e.target.value, questionIndex, answerIndex);
-                  }}
-                  required
-                />
-                <div className="mt-2 flex gap-2">
-                  {Array.from({ length: 5 }).map((_, i) => (
+          {/* Image Upload Section */}
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+            <div className="text-center">
+              <ImageIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+              {currentQuestion.image ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-green-600 font-medium">
+                    Gambar terupload: {currentQuestion.image}
+                  </p>
+                  <div className="flex justify-center gap-2">
                     <Button
-                      key={i}
-                      variant={item2.value === i + 1 ? 'default' : 'outline'}
+                      variant="outline"
                       size="sm"
                       onClick={() => {
-                        onChangeAnswerValue(
-                          i + 1,
-                          questionIndex,
-                          answerIndex,
-                          item2.value,
-                        );
+                        const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image} "")`;
+                        addImageToQuestion(image, questionIndex);
                       }}
-                      className="flex-1"
+                      className="gap-2"
                     >
-                      {i + 1}
+                      <ImageIcon className="h-4 w-4" />
+                      Sisipkan ke Soal
                     </Button>
-                  ))}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        document
+                          .getElementById(`image-${questionIndex}`)
+                          ?.click()
+                      }
+                      className="gap-2"
+                    >
+                      <Upload className="h-4 w-4" />
+                      Ganti Gambar
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => deleteImageQuestion(questionIndex)}
+                      className="gap-2 text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Hapus
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-500">
+                    Upload gambar untuk soal (opsional)
+                  </p>
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      document.getElementById(`image-${questionIndex}`)?.click()
+                    }
+                    className="gap-2"
+                  >
+                    <Upload className="h-4 w-4" />
+                    Upload Gambar
+                  </Button>
+                </div>
+              )}
+              <input
+                id={`image-${questionIndex}`}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => onChangeQuestionImage(e, questionIndex)}
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Answer Options */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Pilihan Jawaban</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {currentQuestion.Answers?.map((answer, answerIndex) => (
+            <div
+              key={answerIndex}
+              className="space-y-3"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Select
+                    value={`${answerIndex + 1}`}
+                    onValueChange={(value) =>
+                      changeAnswerOrder(value, answerIndex)
+                    }
+                  >
+                    <SelectTrigger className="w-20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[1, 2, 3, 4, 5].map((num) => (
+                        <SelectItem
+                          key={num}
+                          value={`${num}`}
+                        >
+                          {String.fromCharCode(64 + num)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Label className="font-medium">
+                    {String.fromCharCode(65 + answerIndex)}.
+                  </Label>
                 </div>
               </div>
-            ))}
+
+              <div className="space-y-3">
+                {showAnswerPreview === answerIndex ? (
+                  <div className="min-h-[80px] p-3 border border-gray-200 rounded-lg bg-gray-50">
+                    <ReactMarkdown
+                      value={replaceLatexNotation(answer.answer)}
+                    />
+                  </div>
+                ) : (
+                  <Textarea
+                    placeholder="Tulis pilihan jawaban..."
+                    value={answer.answer}
+                    onChange={(e) =>
+                      onChangeAnswer(e.target.value, questionIndex, answerIndex)
+                    }
+                    className="min-h-[80px]"
+                  />
+                )}
+
+                <div className="flex items-center justify-between">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setShowAnswerPreview(
+                        showAnswerPreview === answerIndex ? 99999 : answerIndex,
+                      )
+                    }
+                    className="gap-2"
+                  >
+                    {showAnswerPreview === answerIndex ? (
+                      <>
+                        <EyeOff className="h-4 w-4" />
+                        Edit
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="h-4 w-4" />
+                        Preview
+                      </>
+                    )}
+                  </Button>
+
+                  {/* Score Buttons */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Poin:</span>
+                    {Array.from({
+                      length: assessmentType === '1-5' ? 5 : 2,
+                    }).map((_, i) => {
+                      const isSelected =
+                        assessmentType === '1-5'
+                          ? i + 1 === answer.value
+                          : assessmentType === '+5/0'
+                            ? i * 5 === answer.value
+                            : assessmentType === 'IRT'
+                              ? i * 5 === answer.value
+                              : i * 5 - 1 === answer.value;
+
+                      return (
+                        <Button
+                          key={i}
+                          variant={isSelected ? 'default' : 'outline'}
+                          size="sm"
+                          className={cn(
+                            'w-10 h-10 p-0',
+                            isSelected && 'bg-green-500 hover:bg-green-600',
+                          )}
+                          onClick={() => {
+                            if (assessmentType === '1-5') {
+                              onChangeAnswerValue(
+                                i + 1,
+                                questionIndex,
+                                answerIndex,
+                                answer.value,
+                              );
+                            } else if (
+                              assessmentType === '+5/0' ||
+                              assessmentType === 'IRT'
+                            ) {
+                              onChangeAnswerValue(
+                                i * 5,
+                                questionIndex,
+                                answerIndex,
+                                answer.value,
+                              );
+                            } else if (assessmentType === '+4/-1/0') {
+                              onChangeAnswerValue(
+                                i * 5 - 1,
+                                questionIndex,
+                                answerIndex,
+                                answer.value,
+                              );
+                            }
+                          }}
+                        >
+                          {assessmentType === '1-5' ? (
+                            i + 1
+                          ) : assessmentType === '+5/0' ? (
+                            i * 5
+                          ) : assessmentType === 'IRT' && i === 0 ? (
+                            <CircleX className="w-4 h-4" />
+                          ) : assessmentType === 'IRT' && i === 1 ? (
+                            <CircleCheck className="w-4 h-4" />
+                          ) : assessmentType === '+4/-1/0' && i === 0 ? (
+                            <CircleX className="w-4 h-4" />
+                          ) : assessmentType === '+4/-1/0' && i === 1 ? (
+                            <CircleCheck className="w-4 h-4" />
+                          ) : (
+                            i + 1
+                          )}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Explanation */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base">Pembahasan</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                setShowExplanationPreview(
+                  showExplanationPreview === questionIndex
+                    ? 99999
+                    : questionIndex,
+                )
+              }
+              className="gap-2"
+            >
+              {showExplanationPreview === questionIndex ? (
+                <>
+                  <EyeOff className="h-4 w-4" />
+                  Edit
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4" />
+                  Preview
+                </>
+              )}
+            </Button>
           </div>
-        </div>
-      </div>
+        </CardHeader>
+        <CardContent>
+          {showExplanationPreview === questionIndex ? (
+            <div className="min-h-[150px] p-4 border border-gray-200 rounded-lg bg-gray-50">
+              <ReactMarkdown
+                value={replaceLatexNotation(currentQuestion.explanation || '')}
+              />
+            </div>
+          ) : (
+            <Textarea
+              placeholder="Tulis pembahasan dan penjelasan jawaban yang benar..."
+              value={currentQuestion.explanation || ''}
+              onChange={(e) => onChangeExplanation(e, questionIndex)}
+              className="min-h-[150px]"
+            />
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

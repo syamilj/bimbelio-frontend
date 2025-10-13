@@ -142,7 +142,8 @@ export default function LeftComponent() {
               <DocumentType />
             ) : CourseData?.type === 'VIDEO' ? (
               <VideoType />
-            ) : CourseData?.type === 'TRYOUT' ? (
+            ) : CourseData?.type === 'TRYOUT' ||
+              CourseData?.type === 'PROGRESS_TEST' ? (
               <TryoutType />
             ) : CourseData?.type === 'MATERI' ? (
               <MateriType />

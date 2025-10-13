@@ -373,7 +373,7 @@ export type Data = {
   chapterTitle: string;
   spendTime: number;
   description: string;
-  type: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI';
+  type: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI' | 'PROGRESS_TEST';
   // tryoutSessionId: string | null;
   video: string | null;
   document: string | null;

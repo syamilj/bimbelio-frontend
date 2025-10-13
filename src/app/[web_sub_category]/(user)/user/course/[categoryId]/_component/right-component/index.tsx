@@ -69,6 +69,7 @@ export default function RightComponent() {
 
   if (
     CourseData?.type === 'TRYOUT' ||
+    CourseData?.type === 'PROGRESS_TEST' ||
     CourseData?.type === 'MATERI' ||
     isLocked
   ) {

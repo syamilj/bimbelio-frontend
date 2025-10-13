@@ -45,7 +45,7 @@ export interface SubChapterProps {
   number?: string;
   title?: string;
   spendTime?: number | string;
-  type?: 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI';
+  type?: 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI' | 'PROGRESS_TEST';
   description?: string;
   video?: string;
   premium?: boolean;
@@ -323,7 +323,7 @@ const Index = () => {
             TryoutAnswers: quest.Answers.map((answer) => {
               return {
                 id: answer.id || 'new',
-                answer: answer.answer,
+                answer: answer.answer.toString(),
                 value: answer.value,
               };
             }),

@@ -50,7 +50,7 @@ const SubChapterHeading = ({
   };
 
   const handleChangeType = async (
-    value: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI',
+    value: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI' | 'PROGRESS_TEST',
   ) => {
     if (!value || value.length === 0) return;
 
@@ -222,6 +222,12 @@ const SubChapterHeading = ({
                   <div className="flex items-center gap-2">
                     <Play className="h-4 w-4" />
                     Tryout
+                  </div>
+                </SelectItem>
+                <SelectItem value="PROGRESS_TEST">
+                  <div className="flex items-center gap-2">
+                    <Play className="h-4 w-4" />
+                    Uji Progress
                   </div>
                 </SelectItem>
               </SelectContent>
