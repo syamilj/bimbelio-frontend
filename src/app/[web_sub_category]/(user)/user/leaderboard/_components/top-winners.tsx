@@ -343,7 +343,9 @@ export function TopWinners() {
                   </div>
                   <div className="space-y-1">
                     <div className="text-lg md:text-2xl font-bold text-yellow-600">
-                      {TryoutTop3[0]?.totalScore.toFixed(0) || 0}
+                      {isIrt
+                        ? TryoutTop3[0]?.averageScore.toFixed(0) || 0
+                        : TryoutTop3[0]?.totalScore.toFixed(0) || 0}
                     </div>
                     <div className="text-xs text-gray-500">Skor Tertinggi</div>
                   </div>
@@ -352,7 +354,8 @@ export function TopWinners() {
                       {TryoutTop3.length > 0
                         ? Math.round(
                             TryoutTop3.reduce(
-                              (acc, w) => acc + w.totalScore,
+                              (acc, w) =>
+                                acc + (isIrt ? w.averageScore : w.totalScore),
                               0,
                             ) / TryoutTop3.length,
                           )
