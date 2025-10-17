@@ -138,7 +138,8 @@ const SubmitChat = () => {
     userLimitation &&
     userLimitation?.chat < userLimitation?.chatLimit &&
     session?.user.role !== 'ADMIN' &&
-    session?.user.role !== 'SUPER_ADMIN';
+    session?.user.role !== 'SUPER_ADMIN' &&
+    session?.user.role !== 'PREMIUM';
 
   return (
     <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10">

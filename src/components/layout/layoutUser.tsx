@@ -45,6 +45,7 @@ import Link from 'next/link';
 import ProviderCheckLimitation from '../provider/provider-check-limitation';
 import ProviderCheckSubscriptionPending from '../provider/provider-check-subscription-pending';
 import { useUserLimitation } from '../provider/provider-limitation';
+import { Badge } from '../ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 interface LayoutUserClientProps {
@@ -444,13 +445,15 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                       )}
 
                       {/* Status Badge - Compact for desktop */}
-                      {userTier === 'ADMIN' ? (
+                      {userTier === 'ADMIN' ||
+                      userTier === 'SUPER_ADMIN' ||
+                      userTier === 'PREMIUM' ? (
                         <div
                           className="hidden md:flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1 lg:py-1.5 rounded-xl text-white text-xs lg:text-sm font-semibold shadow-sm"
                           style={{ backgroundColor: mainColor }}
                         >
                           <Crown className="w-3 h-3 lg:w-4 lg:h-4" />
-                          <span className="hidden lg:inline">Admin</span>
+                          <span className="hidden lg:inline">{userTier}</span>
                         </div>
                       ) : (
                         <Tooltip delayDuration={100}>
@@ -557,6 +560,13 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                                   <p className="text-xs text-gray-500 text-center">
                                     Tidak ada subscription aktif
                                   </p>
+                                )}
+                                {userTier !== 'USER' && (
+                                  <div className="flex justify-center w-full">
+                                    <Badge className="bg-amber-400 text-white">
+                                      {userTier}
+                                    </Badge>
+                                  </div>
                                 )}
                               </div>
 
