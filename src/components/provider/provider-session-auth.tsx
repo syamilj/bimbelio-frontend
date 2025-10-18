@@ -70,6 +70,15 @@ export default function ProviderSessionAuth({
             subsPendingList = [];
           }
 
+          if (
+            userData.specialRole &&
+            (userData.role === 'ADMIN' ||
+              userData.role === 'SUPER_ADMIN' ||
+              userData.role === 'PREMIUM')
+          ) {
+            tier = userData.specialRole.tier;
+            feature = userData.specialRole.feature;
+          }
           setData({
             expires: undefined,
             user: {
@@ -107,6 +116,8 @@ export default function ProviderSessionAuth({
       setIsLoading(false);
     }
   }, []);
+
+  console.log('session : ', data);
 
   const Context = {
     data,
