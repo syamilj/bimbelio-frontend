@@ -36,6 +36,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn, formatSchoolName } from '@/lib/utils';
 
@@ -44,8 +45,11 @@ import {
   ChevronDown,
   ChevronRight,
   Crown,
+  Download,
   Edit,
   Facebook,
+  FileSpreadsheet,
+  FileText,
   Filter,
   Globe,
   GraduationCap,
@@ -69,6 +73,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import * as XLSX from 'xlsx';
 
 export default function UserManagementDashboard() {
   const { data: session } = useSession();
@@ -79,12 +84,13 @@ export default function UserManagementDashboard() {
   const [roleFilter, setRoleFilter] = useState<
     undefined | 'ADMIN' | 'SUPER_ADMIN' | 'USER'
   >();
-  const [sortOption, setSortOption] = useState<'LATEST' | 'OLDEST'>('OLDEST');
+  const [sortOption, setSortOption] = useState<'LATEST' | 'OLDEST'>('LATEST');
   // const [currentPage, setCurrentPage] = useState(1);
   const [expandedProvinces, setExpandedProvinces] = useState<string[]>([]);
 
   const [take, setTake] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
+  const [isExporting, setIsExporting] = useState<'EXCEL' | 'CSV' | null>(null);
 
   const { data: usersData, totalPages } = useGet<UserDataType[]>(
     '/user/getAllUsers',
@@ -127,6 +133,117 @@ export default function UserManagementDashboard() {
     // Remove any non-digit characters from the phone number
     const sanitizedPhone = phone.replace(/\D/g, '');
     return `https://wa.me/${sanitizedPhone}?text=Selamat%20datang%20di%20grup%20tryout%20premium%20kami!`;
+  };
+
+  const prepareExportData = (users: UserDataType[]) => {
+    return users.map((user, index) => ({
+      'No.': index + 1,
+      Name: user.name,
+      Email: user.email,
+      School: formatSchoolName(user.UserTryout?.schoolOrigin),
+      City: user.UserTryout?.kabupaten || '-',
+      Province: user.UserTryout?.provinsi || '-',
+      Role: user.Role,
+      Status:
+        user.Role !== 'USER'
+          ? 'Premium'
+          : user.TryoutUnlock.length > 0
+            ? 'Tryout'
+            : 'User',
+      // 'Tryout Count':
+      //   user.Role === 'PREMIUM'
+      //     ? 'Unlimited'
+      //     : user.TryoutUnlock.length.toString(),
+      Verification: user.UserTryout ? 'Verified' : 'Unverified',
+      Phone: user.UserTryout?.phone || '-',
+      Channel: user.UserTryout?.channel || '-',
+      'Registration Date': new Date(user.createdAt).toLocaleDateString('id-ID'),
+    }));
+  };
+
+  const exportToExcel = async () => {
+    try {
+      setIsExporting('EXCEL');
+
+      const response = await getGeneral('/user/getAllUsers');
+      const { data } = response!;
+
+      // const data = await response.json();
+      const allUsers = data || [];
+
+      const exportData = prepareExportData(allUsers);
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(exportData);
+
+      const colWidths = [
+        { wch: 5 }, // No.
+        { wch: 25 }, // Name
+        { wch: 30 }, // Email
+        { wch: 30 }, // School
+        { wch: 20 }, // City
+        { wch: 20 }, // Province
+        { wch: 12 }, // Role
+        { wch: 12 }, // Status
+        { wch: 12 }, // Tryout Count
+        { wch: 12 }, // Verification
+        { wch: 15 }, // Phone
+        { wch: 15 }, // Channel
+        { wch: 15 }, // Registration Date
+      ];
+      ws['!cols'] = colWidths;
+
+      XLSX.utils.book_append_sheet(wb, ws, 'Users Data');
+
+      const timestamp = new Date().toISOString().split('T')[0];
+      XLSX.writeFile(wb, `Bimbelio_Users_Data_${timestamp}.xlsx`);
+    } catch (error) {
+      console.error('Error exporting to Excel:', error);
+      alert('Failed to export data to Excel');
+    } finally {
+      setIsExporting(null);
+    }
+  };
+
+  const exportToCSV = async () => {
+    try {
+      setIsExporting('CSV');
+
+      // Fetch all users without pagination for export
+
+      const response = await getGeneral('/user/getAllUsers');
+      const { data } = response!;
+      // const data = await response.json();
+      const allUsers = data || [];
+
+      const exportData = prepareExportData(allUsers);
+
+      // Create workbook and worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      XLSX.utils.book_append_sheet(wb, ws, 'Users Data');
+
+      // Generate CSV
+      const csv = XLSX.utils.sheet_to_csv(ws);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+      // Create download link
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      const timestamp = new Date().toISOString().split('T')[0];
+
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Bimbelio_Users_Data_${timestamp}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error exporting to CSV:', error);
+      alert('Failed to export data to CSV');
+    } finally {
+      setIsExporting(null);
+    }
   };
 
   const chartConfig: ChartConfig = {
@@ -274,7 +391,7 @@ export default function UserManagementDashboard() {
           </Card>
 
           {/* Search and Filter */}
-          <div className="mb-6 flex items-center justify-between">
+          <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <form
               className="flex items-center space-x-2"
               onSubmit={(e) => {
@@ -303,54 +420,96 @@ export default function UserManagementDashboard() {
                 Search
               </Button>
             </form>
-            {/* Filter and Sort Section */}
-            <div className="flex space-x-4">
-              {/* Role Filter */}
-              <Select
-                value={roleFilter}
-                onValueChange={(value) => {
-                  if (value === 'All') {
-                    setRoleFilter(undefined);
-                  } else {
-                    setRoleFilter(value as any);
-                  }
-                  setPage(1);
-                }}
-              >
-                <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
-                  <div className="flex items-center">
-                    <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <SelectValue placeholder="All Roles" />
-                  </div>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="All">All Roles</SelectItem>
-                  <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
-                  <SelectItem value="ADMIN">Admin</SelectItem>
-                  <SelectItem value="USER">User</SelectItem>
-                </SelectContent>
-              </Select>
 
-              {/* Sort Option */}
-              <Select
-                value={sortOption}
-                onValueChange={(value: any) => setSortOption(value)}
-              >
-                <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
-                  <div className="flex items-center">
-                    {sortOption === 'LATEST' ? (
-                      <SortDesc className="mr-2 h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <SortAsc className="mr-2 h-4 w-4 text-muted-foreground" />
-                    )}
-                    <SelectValue placeholder="Sort by" />
-                  </div>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="LATEST">Latest</SelectItem>
-                  <SelectItem value="OLDEST">Oldest</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Export Buttons */}
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={exportToExcel}
+                  disabled={isExporting === 'EXCEL'}
+                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  {isExporting === 'EXCEL' ? (
+                    <>
+                      <Download className="mr-2 h-4 w-4 animate-bounce" />
+                      Exporting...
+                    </>
+                  ) : (
+                    <>
+                      <FileSpreadsheet className="mr-2 h-4 w-4" />
+                      Export Excel
+                    </>
+                  )}
+                </Button>
+                <Button
+                  onClick={exportToCSV}
+                  disabled={isExporting === 'CSV'}
+                  variant="outline"
+                  className="border-2 border-blue-500 text-blue-600 hover:bg-blue-50 hover:border-blue-600 transition-all duration-300"
+                >
+                  {isExporting === 'CSV' ? (
+                    <>
+                      <Download className="mr-2 h-4 w-4 animate-bounce" />
+                      Exporting...
+                    </>
+                  ) : (
+                    <>
+                      <FileText className="mr-2 h-4 w-4" />
+                      Export CSV
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {/* Filter and Sort Section */}
+              <div className="flex space-x-2">
+                {/* Role Filter */}
+                <Select
+                  value={roleFilter}
+                  onValueChange={(value) => {
+                    if (value === 'All') {
+                      setRoleFilter(undefined);
+                    } else {
+                      setRoleFilter(value as any);
+                    }
+                    setPage(1);
+                  }}
+                >
+                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
+                    <div className="flex items-center">
+                      <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
+                      <SelectValue placeholder="All Roles" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Roles</SelectItem>
+                    <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
+                    <SelectItem value="ADMIN">Admin</SelectItem>
+                    <SelectItem value="USER">User</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                {/* Sort Option */}
+                <Select
+                  value={sortOption}
+                  onValueChange={(value: any) => setSortOption(value)}
+                >
+                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
+                    <div className="flex items-center">
+                      {sortOption === 'LATEST' ? (
+                        <SortDesc className="mr-2 h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <SortAsc className="mr-2 h-4 w-4 text-muted-foreground" />
+                      )}
+                      <SelectValue placeholder="Sort by" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="LATEST">Latest</SelectItem>
+                    <SelectItem value="OLDEST">Oldest</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
@@ -367,6 +526,7 @@ export default function UserManagementDashboard() {
                   <TableHead>Role</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Count</TableHead>
+                  <TableHead>Telp</TableHead>
                   <TableHead>Status</TableHead> {/* Updated */}
                   <TableHead>WhatsApp</TableHead>
                   {sessionRole === 'SUPER_ADMIN' && (
@@ -407,9 +567,8 @@ export default function UserManagementDashboard() {
                         ? 'Unlimited'
                         : user.TryoutUnlock.length}
                     </TableCell>
+                    <TableCell>{user.UserTryout?.phone || '-'}</TableCell>
                     <TableCell>
-                      {' '}
-                      {/* Updated */}
                       <Badge
                         variant={user.UserTryout ? 'outline' : 'destructive'}
                         className={cn(!user.UserTryout && 'text-white')}

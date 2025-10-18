@@ -23,7 +23,6 @@ import {
   MessageCircle,
   TrendingUp,
   Trophy,
-  Users,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -470,12 +469,12 @@ const EnhancedTryOutCard = ({
             >
               📚 {totalQuestions} soal
             </Badge>
-            <Badge
+            {/* <Badge
               variant="secondary"
               className="text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
             >
               👥 {totalParticipants} peserta
-            </Badge>
+            </Badge> */}
           </div>
         </div>
       </div>
@@ -495,7 +494,7 @@ const EnhancedTryOutCard = ({
             </div>
 
             {/* Enhanced Stats Grid */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <div
                 className="text-center p-3 rounded-xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
@@ -528,7 +527,7 @@ const EnhancedTryOutCard = ({
                   {totalQuestions}
                 </div>
               </div>
-              <div
+              {/* <div
                 className="text-center p-3 rounded-xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
@@ -543,7 +542,7 @@ const EnhancedTryOutCard = ({
                 >
                   {totalParticipants}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
