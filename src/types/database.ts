@@ -561,6 +561,11 @@ export type Subscription = {
   planDescription: string;
   planPrice: number;
   planExpire: Date;
+
+  discord_user_id: string;
+  discord_username: string;
+  discord_display_name: string;
+  discord_invite_link: string;
 };
 
 export type SubscriptionFeature = {
@@ -576,6 +581,7 @@ export type Plan = {
   slug: string;
   name: string;
   description: string;
+  roleDiscord: string | null;
   image: string | null;
   originalPrice: number | null;
   price: number;

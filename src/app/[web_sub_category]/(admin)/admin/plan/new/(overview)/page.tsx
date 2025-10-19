@@ -41,6 +41,7 @@ export default function CreatePlanForm() {
     useForm: {
       formData: { register, setValue },
       formDataValues: {
+        roleDiscord,
         name,
         course,
         description,
@@ -149,6 +150,7 @@ export default function CreatePlanForm() {
         originalPrice: originalPrice.length > 0 ? parseFloat(originalPrice) : 0,
         status,
         image: imageUrl,
+        roleDiscord,
         planLimitation: activeTab.limit
           ? {
               chat: limitRowsData?.chat || 0,
@@ -238,18 +240,33 @@ export default function CreatePlanForm() {
       <div className="space-y-6">
         {/* Basic Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="col-span-2">
-            <Label
-              htmlFor="name"
-              className="block mb-2"
-            >
-              Name <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              {...register('name')}
-              placeholder="Pricing Name"
-              required
-            />
+          <div className="grid grid-cols-2 col-span-2 gap-4">
+            <div className="col-span-1">
+              <Label
+                htmlFor="name"
+                className="block mb-2"
+              >
+                Name <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                {...register('name')}
+                placeholder="Pricing Name"
+                required
+              />
+            </div>
+            <div className="col-span-1">
+              <Label
+                htmlFor="roleDiscord"
+                className="block mb-2"
+              >
+                Role Discord <span className="text-gray-500">(optional)</span>
+              </Label>
+              <Input
+                {...register('roleDiscord')}
+                placeholder="Role Discord..."
+                required
+              />
+            </div>
           </div>
           <div className="col-span-2">
             <Label

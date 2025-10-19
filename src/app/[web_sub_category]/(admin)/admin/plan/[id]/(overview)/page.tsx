@@ -90,6 +90,7 @@ export default function UpdatePlanForm() {
     useForm: {
       formData: { register, setValue },
       formDataValues: {
+        roleDiscord,
         name,
         course,
         description,
@@ -120,6 +121,9 @@ export default function UpdatePlanForm() {
           setValue('name', planData.name);
           setValue('description', planData.description);
           setValue('price', planData.price.toString());
+          if (planData.roleDiscord) {
+            setValue('roleDiscord', planData.roleDiscord);
+          }
           if (planData.originalPrice) {
             setValue('originalPrice', planData.originalPrice.toString());
           }
@@ -324,6 +328,7 @@ export default function UpdatePlanForm() {
         id: planData?.id,
         name,
         description,
+        roleDiscord,
         price: price.length > 0 ? parseFloat(price) : 0,
         originalPrice: originalPrice.length > 0 ? parseFloat(originalPrice) : 0,
         status,
@@ -420,18 +425,33 @@ export default function UpdatePlanForm() {
       <div className="space-y-6">
         {/* Basic Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="col-span-2">
-            <Label
-              htmlFor="name"
-              className="block mb-2"
-            >
-              Name <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              {...register('name')}
-              placeholder="Pricing Name"
-              required
-            />
+          <div className="grid grid-cols-2 col-span-2 gap-4">
+            <div className="col-span-1">
+              <Label
+                htmlFor="name"
+                className="block mb-2"
+              >
+                Name <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                {...register('name')}
+                placeholder="Pricing Name"
+                required
+              />
+            </div>
+            <div className="col-span-1">
+              <Label
+                htmlFor="roleDiscord"
+                className="block mb-2"
+              >
+                Role Discord <span className="text-gray-500">(optional)</span>
+              </Label>
+              <Input
+                {...register('roleDiscord')}
+                placeholder="Role Discord..."
+                required
+              />
+            </div>
           </div>
           <div className="col-span-2">
             <Label

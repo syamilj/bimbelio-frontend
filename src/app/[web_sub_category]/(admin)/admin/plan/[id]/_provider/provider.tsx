@@ -34,6 +34,7 @@ type BenefitRowType = {
 }[];
 
 type FormDataType = {
+  roleDiscord: string | undefined;
   image: File | undefined;
   previewImage: string;
   name: string;
@@ -89,6 +90,7 @@ export default function Provider({ children }: Props) {
 
   const formData = useForm<FormDataType>({
     defaultValues: {
+      roleDiscord: undefined,
       image: undefined,
       name: '',
       tier: '',
@@ -107,6 +109,7 @@ export default function Provider({ children }: Props) {
   });
 
   const name = formData.watch('name');
+  const roleDiscord = formData.watch('roleDiscord');
   const tier = formData.watch('tier');
   const description = formData.watch('description');
   const price = formData.watch('price');
@@ -126,6 +129,7 @@ export default function Provider({ children }: Props) {
   const previewImage = formData.watch('previewImage');
 
   const formDataValues = {
+    roleDiscord,
     name,
     tier,
     description,
@@ -250,6 +254,7 @@ type ProviderType = {
   useForm: {
     formData: UseFormReturn<FormDataType, any, FormDataType>;
     formDataValues: {
+      roleDiscord: string | undefined;
       name: string;
       tier: string;
       description: string;
