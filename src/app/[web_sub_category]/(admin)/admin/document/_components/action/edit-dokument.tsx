@@ -9,7 +9,6 @@ import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { getDateForInput, getHours } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import { Category, Subcategory } from '@/types/database';
-import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../../provider';
@@ -27,9 +26,12 @@ export default function EditDocument() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [file, setFile] = useState<File | undefined>();
-  const [docxUrl, setDocxUrl] = useState<File | undefined>();
+  const [docxFile, setDocxFile] = useState<File | undefined>();
   const [fileUrl, setFileUrl] = useState<string | undefined>();
   const [fileName, setFileName] = useState<string>('');
+  const [video, setVideo] = useState<File | undefined>();
+  const [videoName, setVideoName] = useState<string>('');
+  const [option, setOption] = useState<'doc' | 'video'>('doc');
   const [category, setCategory] = useState<string>('');
   const [subCategory, setSubCategory] = useState<string>('');
   const [premium, setPremium] = useState<boolean>(false);
@@ -72,10 +74,8 @@ export default function EditDocument() {
     isDocsChange: boolean;
     img: string;
     premium: boolean;
-    dateTo?: string;
-    dateToUnlock?: string;
-    description?: string;
-    tokenTo?: string;
+    titleVideo?: string;
+    urlVideo?: string;
   }) => {
     await mutateGeneral('/document/editDocument', {
       payload,
@@ -85,19 +85,30 @@ export default function EditDocument() {
         fetchDocument();
         await supabase.storage
           .from('dump-embedding')
-          .remove([`${fileName || docxUrl?.name}`]);
-        setDocxUrl(undefined);
+          .remove([`${fileName || docxFile?.name}`]);
+        setDocxFile(undefined);
+        setVideo(undefined);
+        setFile(undefined);
+        setThumbnail(undefined);
       },
     });
   };
 
   useEffect(() => {
     if (editData) {
+      console.log({ editData });
       setFileUrl(editData?.url);
       setFileName(editData?.title);
       setPremium(editData?.premium);
       setCategory(editData?.categoryId);
       setSubCategory(editData?.subCategoryId);
+      if (editData?.video) {
+        setVideoName(editData?.video?.title);
+        setOption('video');
+      } else {
+        setVideoName('');
+        setOption('doc');
+      }
       if (editData?.dateTo) {
         setTo(true);
         // setDateTo(editData?.dateTo);
@@ -117,381 +128,97 @@ export default function EditDocument() {
   const EditDocument = async () => {
     try {
       setLoading(true);
-      if (!to) {
-        if (fileName === '') {
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: 'Pilih kategori dan subkategori!',
-            duration: 2000,
-          });
-          return;
-        }
-        if (category === '' || subCategory === '') {
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: 'Pilih kategori dan subkategori!',
-            duration: 2000,
-          });
-          return;
-        }
-      } else {
-        if (subCategory === '' || category === '') {
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: 'Pilih kategori dan subkategori!',
-            duration: 2000,
-          });
-          return;
-        }
-        if (fileName === '') {
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: 'Masukan title try out!',
-            duration: 2000,
-          });
-          return;
-        }
-        if (description === '') {
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: 'Masukan deskripsi try out!',
-            duration: 2000,
-          });
-          return;
-        }
-        if (token === '') {
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: 'Masukan id try out!',
-            duration: 2000,
-          });
-          return;
-        }
-        if (dateTo === '') {
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: 'Masukan tanggal try out berakhir!',
-            duration: 2000,
-          });
-          return;
-        }
-        if (dateTo.includes('none')) {
-          const string = dateTo.split('-');
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: `${string[1]}`,
-            duration: 2000,
-          });
-          return;
-        }
-        if (dateToUnlock === '') {
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: 'Masukan tanggal unlock try out!',
-            duration: 2000,
-          });
-          return;
-        }
-        if (dateToUnlock.includes('none')) {
-          const string = dateToUnlock.split('-');
-          setLoading(false);
-          toaster({
-            title: 'Upss',
-            condition: 'warning',
-            description: `${string[1]}`,
-            duration: 2000,
-          });
-          return;
-        }
-        // if (hourToUnlock === 0) {
-        //   setLoading(false);
-        //   toaster({
-        //     title: 'Upss',
-        //     condition: 'warning',
-        //     description: 'Masukan jam unlock try out!',
-        //     duration: 2000,
-        //   });
-        //   return;
-        // }
-        // if (durationTo === 0) {
-        //   setLoading(false);
-        //   toaster({
-        //     title: 'Upss',
-        //     condition: 'warning',
-        //     description: 'Masukan jam unlock try out!',
-        //     duration: 2000,
-        //   });
-        //   return;
-        // }
+      if (fileName === '') {
+        setLoading(false);
+        toaster({
+          title: 'Upss',
+          condition: 'warning',
+          description: 'Pilih kategori dan subkategori!',
+          duration: 2000,
+        });
+        return;
       }
-      if (fileName != `${editData?.title}`) {
-        let response;
-        let fileData;
-        if (!file) {
-          response = await fetch(
-            `${env.NEXT_PUBLIC_API_URL}/document/pdf?title=${editData?.title}`,
-            {
-              method: 'POST',
-              headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-          if (!response.ok) {
-            toaster({
-              title: 'Gagal',
-              description: `${response?.statusText}`,
-              condition: 'warning',
-            });
-            setLoading(false);
-            return;
-          }
-          fileData = await response.blob();
-        } else {
-          fileData = file;
-        }
-        const response2 = await fetch(
-          `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${editData?.title}`,
-        );
-        if (!response2.ok) {
-          toaster({
-            title: 'Gagal',
-            description: `${response2?.statusText}`,
-            condition: 'warning',
-          });
-          setLoading(false);
-          return;
-        }
-        const imgData = await response2.blob();
-        const { data: saveNewPdf, error: errorSaveNewPdf } =
-          await supabase.storage.from('pdf').upload(fileName, fileData);
-        const { data: saveNewImg, error: errorSaveNewImg } =
-          await supabase.storage
-            .from('img')
-            .upload(fileName, !thumbnail ? imgData : thumbnail);
-        if (saveNewPdf && saveNewImg) {
-          await supabase.storage.from('pdf').remove([`${editData?.title}`]);
-          await supabase.storage.from('img').remove([`${editData?.title}`]);
-          if (!to) {
-            await editDocument({
-              id: editData?.id,
-              title: fileName,
-              categoryId: category,
-              subCategoryId: subCategory,
-              url: `${fileName}`,
-              img: `${fileName}`,
-              premium: premium,
-              isDocsChange: file ? true : false,
-            });
-          } else {
-            await editDocument({
-              id: editData?.id,
-              title: fileName,
-              categoryId: category,
-              subCategoryId: subCategory,
-              url: `${fileName}`,
-              img: `${fileName}`,
-              premium: premium,
-              dateTo,
-              dateToUnlock,
-              description,
-              tokenTo: token,
-              isDocsChange: file ? true : false,
-              // hourToUnlock: parseInt(`${hourToUnlock}`),
-              // durationTo: parseInt(`${durationTo}`),
-            });
-          }
-        }
-        if (errorSaveNewPdf) {
-          toaster({
-            title: 'Gagal',
-            description: `${errorSaveNewPdf?.message}`,
-            condition: 'warning',
-          });
-          setLoading(false);
-        }
-        if (errorSaveNewImg) {
-          toaster({
-            title: 'Gagal',
-            description: `${errorSaveNewPdf?.message}`,
-            condition: 'warning',
-          });
-          setLoading(false);
-        }
-      } else {
-        if (!thumbnail) {
-          if (file) {
-            const { error: errorSaveNewPdf } = await supabase.storage
-              .from('pdf')
-              .update(`document/${fileName}`, file, {
-                cacheControl: '3600',
-                upsert: true,
-              });
-            if (errorSaveNewPdf) {
-              toaster({
-                title: 'Gagal',
-                description: `${errorSaveNewPdf?.message}`,
-                condition: 'warning',
-              });
-              setLoading(false);
-              return;
-            }
-          }
-          if (docxUrl) {
-            const { error: mdError } = await supabase.storage
-              .from('dump-embedding')
-              .upload(`${fileName || docxUrl.name}`, docxUrl);
-
-            if (mdError) {
-              toaster({
-                title: 'Gagal',
-                description: `${mdError?.message}`,
-                condition: 'warning',
-              });
-              setLoading(false);
-              return;
-            }
-          }
-          if (!to) {
-            await editDocument({
-              id: editData?.id,
-              title: fileName,
-              categoryId: category,
-              subCategoryId: subCategory,
-              url: `${fileName}`,
-              img: `${fileName}`,
-              premium: premium,
-              isDocsChange: file ? true : false,
-              docxUrl: docxUrl
-                ? `${fileName !== '' ? fileName : docxUrl.name}`
-                : undefined,
-            });
-          } else {
-            await editDocument({
-              id: editData?.id,
-              title: fileName,
-              categoryId: category,
-              subCategoryId: subCategory,
-              url: `${fileName}`,
-              img: `${fileName}`,
-              premium: premium,
-              dateTo,
-              dateToUnlock,
-              description,
-              tokenTo: token,
-              isDocsChange: file ? true : false,
-              docxUrl: docxUrl
-                ? `${fileName !== '' ? fileName : docxUrl.name}`
-                : undefined,
-              // hourToUnlock: parseInt(`${hourToUnlock}`),
-              // durationTo: parseInt(`${durationTo}`),
-            });
-          }
-        } else {
-          if (file) {
-            const { error: errorSaveNewPdf } = await supabase.storage
-              .from('pdf')
-              .update(`document/${fileName}`, file, {
-                cacheControl: '3600',
-                upsert: true,
-              });
-            if (errorSaveNewPdf) {
-              toaster({
-                title: 'Gagal',
-                description: `${errorSaveNewPdf?.message}`,
-                condition: 'warning',
-              });
-              setLoading(false);
-              return;
-            }
-          }
-          if (docxUrl) {
-            const { error: mdError } = await supabase.storage
-              .from('dump-embedding')
-              .upload(`${fileName || docxUrl.name}`, docxUrl);
-
-            if (mdError) {
-              toaster({
-                title: 'Gagal',
-                description: `${mdError?.message}`,
-                condition: 'warning',
-              });
-              setLoading(false);
-              return;
-            }
-          }
-          const { error: errorUpdateImg } = await supabase.storage
-            .from('img')
-            .update(`document/${fileName}`, thumbnail, {
-              cacheControl: '3600',
-              upsert: true,
-            });
-          if (errorUpdateImg) {
-            toaster({
-              title: 'Gagal',
-              description: `${errorUpdateImg?.message}`,
-              condition: 'warning',
-            });
-            setLoading(false);
-            return;
-          }
-          if (!to) {
-            await editDocument({
-              id: editData?.id,
-              title: fileName,
-              categoryId: category,
-              subCategoryId: subCategory,
-              url: `${fileName}`,
-              img: `${fileName}`,
-              premium: premium,
-              isDocsChange: file ? true : false,
-              docxUrl: docxUrl
-                ? `${fileName !== '' ? fileName : docxUrl.name}`
-                : undefined,
-            });
-          } else {
-            await editDocument({
-              id: editData?.id,
-              title: fileName,
-              categoryId: category,
-              subCategoryId: subCategory,
-              url: `${fileName}`,
-              img: `${fileName}`,
-              premium: premium,
-              dateTo,
-              dateToUnlock,
-              description,
-              tokenTo: token,
-              isDocsChange: file ? true : false,
-              docxUrl: docxUrl
-                ? `${fileName !== '' ? fileName : docxUrl.name}`
-                : undefined,
-              // hourToUnlock: parseInt(`${hourToUnlock}`),
-              // durationTo: parseInt(`${durationTo}`),
-            });
-          }
-        }
+      if (category === '' || subCategory === '') {
+        setLoading(false);
+        toaster({
+          title: 'Upss',
+          condition: 'warning',
+          description: 'Pilih kategori dan subkategori!',
+          duration: 2000,
+        });
+        return;
       }
-      return;
+
+      if (file) {
+        await supabase.storage
+          .from('pdf')
+          .remove([`document/${editData?.title}`]);
+        await supabase.storage.from('pdf').upload(`document/${fileName}`, file);
+      } else {
+        await supabase.storage
+          .from('pdf')
+          .move(`document/${editData?.title}`, `document/${fileName}`);
+      }
+      if (thumbnail) {
+        await supabase.storage
+          .from('img')
+          .remove([`document/${editData?.title}`]);
+        await supabase.storage
+          .from('img')
+          .upload(`document/${fileName}`, thumbnail);
+      } else {
+        await supabase.storage
+          .from('img')
+          .move(`document/${editData?.title}`, `document/${fileName}`);
+      }
+
+      if (video && option === 'video') {
+        console.log(editData?.video?.title, ' | ', videoName);
+        const deleted = await supabase.storage
+          .from('video')
+          .remove([`document/${editData?.video?.title}`]);
+        const data = await supabase.storage
+          .from('video')
+          .upload(`document/${videoName}`, video);
+        console.log({ data, deleted });
+      } else if (!video && option === 'video') {
+        console.log(editData?.video?.title, ' | ', videoName);
+        await supabase.storage
+          .from('video')
+          .move(`document/${editData?.video?.title}`, `document/${videoName}`);
+      }
+
+      if (option === 'doc' && editData?.video) {
+        await supabase.storage
+          .from('video')
+          .remove([`document/${editData?.video?.title}`]);
+      }
+
+      await editDocument({
+        id: editData?.id,
+        title: fileName,
+        categoryId: category,
+        subCategoryId: subCategory,
+        url: `${fileName}`,
+        img: `${fileName}`,
+        premium: premium,
+        isDocsChange: file ? true : false,
+        titleVideo:
+          option === 'doc'
+            ? undefined
+            : videoName !== ''
+              ? videoName
+              : editData.video?.title,
+        urlVideo:
+          option === 'doc'
+            ? undefined
+            : videoName !== ''
+              ? videoName
+              : editData.video?.title,
+        docxUrl: docxFile
+          ? `${fileName !== '' ? fileName : docxFile?.name}`
+          : undefined,
+      });
     } catch (error) {
       setLoading(false);
       return;
@@ -538,8 +265,8 @@ export default function EditDocument() {
                   contentText="Pilih docx untuk diupload (.pdf)"
                   inputId="editDocxFile"
                   buttonText="Upload md"
-                  file={docxUrl}
-                  setFile={setDocxUrl}
+                  file={docxFile}
+                  setFile={setDocxFile}
                 />
               </div>
             )}
@@ -614,11 +341,14 @@ export default function EditDocument() {
               className="flex flex-col gap-[.5rem]"
             >
               <p>Subkategori</p>
-              <div className="flex w-full justify-between gap-4">
+              <div
+                id="row"
+                className="flex w-full justify-start gap-4 overflow-y-auto pb-[.5rem]"
+              >
                 {subCategoryData?.map((item: any, i: any) => (
                   <div
                     key={i}
-                    className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${subCategory === item.id && 'border-main bg-main text-white'}`}
+                    className={`w-fit shrink-0 cursor-pointer rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${subCategory === item.id && 'border-main bg-main text-white'}`}
                     onClick={() => setSubCategory(item.id)}
                   >
                     {item.name}
@@ -672,6 +402,25 @@ export default function EditDocument() {
                 /> */}
               </>
             )}
+            <div
+              id="line"
+              className="my-[0] h-px w-full bg-main-gray-input"
+            />
+
+            <div className="flex w-full justify-between gap-4">
+              <div
+                className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'doc' && 'border-main bg-main text-white'}`}
+                onClick={() => setOption('doc')}
+              >
+                Dokumen
+              </div>
+              <div
+                className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${option === 'video' && 'border-main bg-main text-white'}`}
+                onClick={() => setOption('video')}
+              >
+                Video
+              </div>
+            </div>
             <div id="thumbnail">
               {fileName && (
                 <UploadImage
@@ -684,6 +433,41 @@ export default function EditDocument() {
                 />
               )}
             </div>
+            {option === 'video' && (
+              <>
+                <div id="video">
+                  <UploadFile
+                    heading="Video"
+                    contentText={
+                      videoName
+                        ? videoName
+                        : 'Pilih video untuk diupload (.mp4, max 20mb)'
+                    }
+                    inputId="videoFile"
+                    buttonText="Ubah Video"
+                    file={video}
+                    setFile={setVideo}
+                  />
+                </div>
+
+                <div
+                  id="judul-video"
+                  className="flex flex-col gap-[.5rem]"
+                >
+                  <p>
+                    Judul Video{' '}
+                    <span className="text-main-gray-text">(opsional)</span>
+                  </p>
+                  <input
+                    type="text"
+                    className="font-regular w-full rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-black outline-none"
+                    placeholder="Masukan judul dokumen"
+                    onChange={(e) => setVideoName(e.target.value)}
+                    value={videoName}
+                  />
+                </div>
+              </>
+            )}
             <div
               id="action"
               className="mt-4 flex gap-4"

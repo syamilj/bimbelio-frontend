@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -20,6 +21,7 @@ interface auth {
 }
 
 export default function LayoutGuest({ children }: LayoutGuestProps) {
+  const pathname = usePathname();
   const {
     useAuth: { showAuth, setShowAuth },
   } = useAppContext();
@@ -32,7 +34,7 @@ export default function LayoutGuest({ children }: LayoutGuestProps) {
   return (
     <GuestContext.Provider value={Context}>
       <div className="min-h-screen">
-        <Navbar />
+        {pathname !== '/discord' && <Navbar />}
         <main className="relative">{children}</main>
         <FloatingContactButton />
       </div>
