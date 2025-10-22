@@ -1,5 +1,6 @@
 'use client';
 
+import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import {
   createContext,
   Dispatch,
@@ -53,6 +54,7 @@ type FormDataType = {
   timelineLimitStart?: string;
   timelineLimitEnd?: string;
   status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
+  maxUsers?: string;
 };
 type ValidityType = 'duration' | 'timeline';
 
@@ -62,6 +64,9 @@ export default function Provider({ children }: Props) {
     feature: false,
     limit: false,
   });
+  const [selectedWebSubCategoryIds, setSelectedWebSubCategoryIds] = useState<
+    string[]
+  >(website_sub_category_id_params ? [website_sub_category_id_params] : []);
 
   const [limitRows, setLimitRows] = useState<LimitRowType>([
     { id: 1, type: 'chat', limit: '' },
@@ -105,6 +110,7 @@ export default function Provider({ children }: Props) {
       durationLimit: '',
       status: '',
       previewImage: '',
+      maxUsers: undefined,
     },
   });
 
@@ -125,6 +131,7 @@ export default function Provider({ children }: Props) {
   const timelineLimitStart = formData.watch('timelineLimitStart');
   const timelineLimitEnd = formData.watch('timelineLimitEnd');
   const status = formData.watch('status');
+  const maxUsers = formData.watch('maxUsers');
   const image = formData.watch('image');
   const previewImage = formData.watch('previewImage');
 
@@ -148,6 +155,7 @@ export default function Provider({ children }: Props) {
     image,
     status,
     previewImage,
+    maxUsers,
   };
 
   const Context = {
@@ -184,6 +192,8 @@ export default function Provider({ children }: Props) {
       setLiveClassIds,
       validityType,
       setValidityType,
+      selectedWebSubCategoryIds,
+      setSelectedWebSubCategoryIds,
     },
     useForm: {
       formData,
@@ -250,6 +260,8 @@ type ProviderType = {
     >;
     validityType: ValidityType;
     setValidityType: Dispatch<SetStateAction<ValidityType>>;
+    selectedWebSubCategoryIds: string[];
+    setSelectedWebSubCategoryIds: Dispatch<SetStateAction<string[]>>;
   };
   useForm: {
     formData: UseFormReturn<FormDataType, any, FormDataType>;
@@ -273,6 +285,7 @@ type ProviderType = {
       image: File | undefined;
       status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
       previewImage: string;
+      maxUsers: string | undefined;
     };
   };
 };

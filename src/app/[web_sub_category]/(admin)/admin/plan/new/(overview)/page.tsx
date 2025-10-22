@@ -1,5 +1,6 @@
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +9,14 @@ import { ComboboxSelect2 } from '@/components/ui/combobox-select-2';
 import { Input } from '@/components/ui/input';
 import { InputImage } from '@/components/ui/input-image';
 import { Label } from '@/components/ui/label';
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectGroup,
+  MultiSelectItem,
+  MultiSelectTrigger,
+  MultiSelectValue,
+} from '@/components/ui/multi-select';
 import {
   Select,
   SelectContent,
@@ -19,6 +28,7 @@ import LoadingPageWithText from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
+import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { responseError, throwError } from '@/lib/response';
@@ -36,7 +46,13 @@ export default function CreatePlanForm() {
     isLoading,
     setIsLoading,
     useBenefit: { benefitRows },
-    useFeature: { categoryIds, expireType, liveClassIds, validityType },
+    useFeature: {
+      categoryIds,
+      expireType,
+      liveClassIds,
+      validityType,
+      selectedWebSubCategoryIds,
+    },
     useLimitation: { limitRows, expireTypeLimit, validityTypeLimit },
     useForm: {
       formData: { register, setValue },
@@ -59,6 +75,7 @@ export default function CreatePlanForm() {
         durationLimit,
         timelineLimitEnd,
         timelineLimitStart,
+        maxUsers,
       },
     },
   } = useProvider();
@@ -147,6 +164,7 @@ export default function CreatePlanForm() {
         name,
         description,
         price: price.length > 0 ? parseFloat(price) : 0,
+        maxUsers: maxUsers ? parseInt(maxUsers) : undefined,
         originalPrice: originalPrice.length > 0 ? parseFloat(originalPrice) : 0,
         status,
         image: imageUrl,
@@ -187,6 +205,7 @@ export default function CreatePlanForm() {
                     : expireType === 'year'
                       ? parseInt(duration) * 365
                       : 0,
+              websiteSubCategoryIds: selectedWebSubCategoryIds,
               isTimebound: validityType === 'timeline',
               validFrom: timelineStart && new Date(timelineStart).toISOString(),
               validUntil: timelineEnd && new Date(timelineEnd).toISOString(),
@@ -264,7 +283,6 @@ export default function CreatePlanForm() {
               <Input
                 {...register('roleDiscord')}
                 placeholder="Role Discord..."
-                required
               />
             </div>
           </div>
@@ -302,31 +320,40 @@ export default function CreatePlanForm() {
               }}
             />
           </div>
-          <div className="col-span-1">
-            <Label
-              htmlFor="status"
-              className="block mb-2"
-            >
-              Status <span className="text-red-500">*</span>
-            </Label>
-            {/* <Textarea
-              {...register('description')}
-              placeholder="Description"
-              required
-            /> */}
-            <Select
-              value={status}
-              onValueChange={(value) => setValue('status', value as any)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Pilih status plan" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="DRAFT">Draft</SelectItem>
-                <SelectItem value="PUBLIC">Public</SelectItem>
-                <SelectItem value="COMING_SOON">Coming Soon</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="col-span-1 flex flex-col gap-4">
+            <div className="">
+              <Label
+                htmlFor="maxUsers"
+                className="block mb-2"
+              >
+                Max Users <span className="text-gray-500">(optional)</span>
+              </Label>
+              <Input
+                {...register('maxUsers')}
+                placeholder="Max Users..."
+              />
+            </div>
+            <div className="">
+              <Label
+                htmlFor="status"
+                className="block mb-2"
+              >
+                Status <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={status}
+                onValueChange={(value) => setValue('status', value as any)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Pilih status plan" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="DRAFT">Draft</SelectItem>
+                  <SelectItem value="PUBLIC">Public</SelectItem>
+                  <SelectItem value="COMING_SOON">Coming Soon</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
@@ -826,11 +853,15 @@ const SectionFeature = () => {
       setLiveClassIds,
       validityType,
       setValidityType,
+      selectedWebSubCategoryIds,
+      setSelectedWebSubCategoryIds,
     },
     useForm: {
       formData: { register, setValue },
     },
   } = useProvider();
+
+  const { webCategoryData } = useWebsiteSubCategory();
 
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
@@ -853,6 +884,7 @@ const SectionFeature = () => {
       take: 10,
       page: 1,
       search: searchTerm,
+      website_sub_category_id: 'ALL',
     },
     useEffectDependencies: [searchTerm],
   });
@@ -879,6 +911,44 @@ const SectionFeature = () => {
       </div>
       {activeTab.feature && (
         <div className="space-y-4">
+          <div className="flex flex-col gap-2">
+            <p>Pilih subscription ini berlaku untuk webcategory apa?</p>
+            <MultiSelect
+              values={selectedWebSubCategoryIds}
+              onValuesChange={(value) => {
+                if (!website_sub_category_id_params) return;
+                const isThere = value.find(
+                  (item) => item === website_sub_category_id_params,
+                );
+                if (isThere) {
+                  setSelectedWebSubCategoryIds(value);
+                } else {
+                  setSelectedWebSubCategoryIds([
+                    website_sub_category_id_params,
+                    ...value,
+                  ]);
+                }
+              }}
+            >
+              <MultiSelectTrigger className="w-full max-w-[400px]">
+                <MultiSelectValue placeholder="Pilih web sub category..." />
+              </MultiSelectTrigger>
+              <MultiSelectContent>
+                <MultiSelectGroup>
+                  {webCategoryData.length > 0 &&
+                    webCategoryData[0].WebsiteSubCategory.map((webSub) => (
+                      <MultiSelectItem
+                        key={webSub.id}
+                        value={webSub.id}
+                        disabled={webSub.id === website_sub_category_id_params}
+                      >
+                        {webSub.name}
+                      </MultiSelectItem>
+                    ))}
+                </MultiSelectGroup>
+              </MultiSelectContent>
+            </MultiSelect>
+          </div>
           <div className="ml-6 flex flex-wrap gap-6">
             <div className="flex items-center">
               <Checkbox
@@ -1137,7 +1207,14 @@ const SectionFeature = () => {
                         className="min-w-[200px]"
                         options={
                           LiveClass
-                            ? LiveClass.map((item) => ({
+                            ? LiveClass.filter((item) => {
+                                if (liveClassIds.length > 0) {
+                                  return !liveClassIds
+                                    .map((item) => item.value)
+                                    .includes(item.id);
+                                }
+                                return true;
+                              }).map((item) => ({
                                 label: item.title,
                                 value: item.id,
                               }))

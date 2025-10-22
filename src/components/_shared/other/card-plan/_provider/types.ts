@@ -16,6 +16,7 @@ import {
 } from '@/types/database';
 
 export type PlanDataType = Plan & {
+  totalUsers: number;
   PlanBenefit: PlanBenefit[];
   PlanLimitation: PlanLimitation;
   discount: number | undefined;

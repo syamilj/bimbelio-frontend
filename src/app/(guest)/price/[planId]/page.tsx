@@ -63,6 +63,7 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 type PlanDataType = Plan & {
+  totalUsers: number;
   PlanBenefit: PlanBenefit[];
   discount: number | undefined;
   PlanLimitation: PlanLimitation;
@@ -233,6 +234,28 @@ export default function PlanDetailPage() {
                       </div>
                     </motion.div>
 
+                    {plan.maxUsers && (
+                      <div className="w-fit mb-4 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-amber-100 rounded-lg">
+                            <Users className="w-4 h-4 text-amber-600" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm font-semibold text-amber-800">
+                              Kuota Terbatas
+                            </p>
+                            <p className="text-xs text-amber-700">
+                              {plan.totalUsers || 0} / {plan.maxUsers} pengguna
+                              aktif
+                            </p>
+                          </div>
+                          <Badge className="bg-amber-500 text-white text-xs font-bold px-2 py-1 ml-8">
+                            LIMITED
+                          </Badge>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Compact CTA buttons */}
                     <motion.div
                       initial={{ opacity: 0, y: 15 }}
@@ -240,17 +263,29 @@ export default function PlanDetailPage() {
                       transition={{ duration: 0.5, delay: 0.4 }}
                       className="flex flex-col sm:flex-row gap-3"
                     >
-                      <DialogPayment plan={plan}>
+                      {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
                         <Button
-                          className="px-6 py-2 rounded-xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm"
+                          className="px-6 py-2 rounded-xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm cursor-not-allowed"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
                         >
-                          <Play className="w-4 h-4 mr-2" />
-                          Mulai Sekarang
+                          <Users className="w-4 h-4 mr-2" />
+                          Kuota Penuh
                         </Button>
-                      </DialogPayment>
+                      ) : (
+                        <DialogPayment plan={plan}>
+                          <Button
+                            className="px-6 py-2 rounded-xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm"
+                            style={{
+                              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                            }}
+                          >
+                            <Play className="w-4 h-4 mr-2" />
+                            Mulai Sekarang
+                          </Button>
+                        </DialogPayment>
+                      )}
                       <Button
                         variant="outline"
                         onClick={handleConsultationClick}
@@ -2185,17 +2220,29 @@ export default function PlanDetailPage() {
 
                     {/* Compact Action Buttons */}
                     <div className="space-y-2">
-                      <DialogPayment plan={plan}>
+                      {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
                         <Button
-                          className="w-full py-3 text-sm font-bold rounded-xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                          className="w-full py-3 text-sm font-bold rounded-xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-not-allowed"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
                         >
-                          <Play className="w-4 h-4 mr-2" />
-                          Mulai Sekarang
+                          <Users className="w-4 h-4 mr-2" />
+                          Kuota Penuh
                         </Button>
-                      </DialogPayment>
+                      ) : (
+                        <DialogPayment plan={plan}>
+                          <Button
+                            className="w-full py-3 text-sm font-bold rounded-xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                            style={{
+                              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                            }}
+                          >
+                            <Play className="w-4 h-4 mr-2" />
+                            Mulai Sekarang
+                          </Button>
+                        </DialogPayment>
+                      )}
 
                       <Button
                         onClick={handleConsultationClick}

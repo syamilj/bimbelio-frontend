@@ -586,6 +586,7 @@ export type Plan = {
   originalPrice: number | null;
   price: number;
   status: PlanStatusEnum;
+  maxUsers: number | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -614,6 +615,14 @@ export type PlanSubscription = {
   tier: string;
   expireDays?: number;
   websiteSubCategoryId: string;
+};
+
+export type PlanSubscriptionBundle = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  websiteSubCategoryId: string;
+  planSubscriptionId: string;
 };
 
 export type PlanFeature = {
