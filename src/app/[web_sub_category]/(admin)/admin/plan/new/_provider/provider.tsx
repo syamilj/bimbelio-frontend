@@ -1,5 +1,6 @@
 'use client';
 
+import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import {
   createContext,
   Dispatch,
@@ -34,6 +35,7 @@ type BenefitRowType = {
 }[];
 
 type FormDataType = {
+  roleDiscord: string | undefined;
   image: File | undefined;
   name: string;
   tier: string;
@@ -51,6 +53,7 @@ type FormDataType = {
   timelineLimitStart?: string;
   timelineLimitEnd?: string;
   status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
+  maxUsers?: string;
 };
 type ValidityType = 'duration' | 'timeline';
 
@@ -60,6 +63,9 @@ export default function Provider({ children }: Props) {
     feature: false,
     limit: false,
   });
+  const [selectedWebSubCategoryIds, setSelectedWebSubCategoryIds] = useState<
+    string[]
+  >(website_sub_category_id_params ? [website_sub_category_id_params] : []);
 
   const [limitRows, setLimitRows] = useState<LimitRowType>([
     { id: 1, type: 'chat', limit: '' },
@@ -91,6 +97,7 @@ export default function Provider({ children }: Props) {
 
   const formData = useForm<FormDataType>({
     defaultValues: {
+      roleDiscord: undefined,
       image: undefined,
       name: '',
       tier: '',
@@ -104,10 +111,12 @@ export default function Provider({ children }: Props) {
       duration: '',
       durationLimit: '',
       status: '',
+      maxUsers: undefined,
     },
   });
 
   const name = formData.watch('name');
+  const roleDiscord = formData.watch('roleDiscord');
   const tier = formData.watch('tier');
   const description = formData.watch('description');
   const price = formData.watch('price');
@@ -122,10 +131,12 @@ export default function Provider({ children }: Props) {
   const durationLimit = formData.watch('durationLimit');
   const timelineLimitStart = formData.watch('timelineLimitStart');
   const timelineLimitEnd = formData.watch('timelineLimitEnd');
+  const maxUsers = formData.watch('maxUsers');
   const status = formData.watch('status');
   const image = formData.watch('image');
 
   const formDataValues = {
+    roleDiscord,
     name,
     tier,
     description,
@@ -143,6 +154,7 @@ export default function Provider({ children }: Props) {
     durationLimit,
     timelineLimitStart,
     timelineLimitEnd,
+    maxUsers,
   };
 
   const Context = {
@@ -177,6 +189,8 @@ export default function Provider({ children }: Props) {
       setLiveClassIds,
       validityType,
       setValidityType,
+      selectedWebSubCategoryIds,
+      setSelectedWebSubCategoryIds,
     },
     useForm: {
       formData,
@@ -243,10 +257,13 @@ type ProviderType = {
     >;
     validityType: ValidityType;
     setValidityType: Dispatch<SetStateAction<ValidityType>>;
+    selectedWebSubCategoryIds: string[];
+    setSelectedWebSubCategoryIds: Dispatch<SetStateAction<string[]>>;
   };
   useForm: {
     formData: UseFormReturn<FormDataType, any, FormDataType>;
     formDataValues: {
+      roleDiscord: string | undefined;
       name: string;
       tier: string;
       description: string;
@@ -264,6 +281,7 @@ type ProviderType = {
       durationLimit?: string;
       timelineLimitStart?: string;
       timelineLimitEnd?: string;
+      maxUsers: string | undefined;
     };
   };
 };

@@ -22,6 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response } from '@/lib/response';
@@ -470,7 +471,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                             </div>
                           </TooltipTrigger>
                           <TooltipContent
-                            className="min-w-xs p-3"
+                            className="min-w-xs max-w-[350px] p-3"
                             side="bottom"
                             align="end"
                           >
@@ -561,7 +562,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                                     Tidak ada subscription aktif
                                   </p>
                                 )}
-                                {userTier !== 'USER' && (
+                                {userSession?.user.role !== 'USER' && (
                                   <div className="flex justify-center w-full">
                                     <Badge className="bg-amber-400 text-white">
                                       {userTier}
@@ -734,9 +735,28 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                                 )}
                             </div>
 
-                            <div className="flex items-center mt-4 pt-3 border-t border-gray-200">
+                            <div className="flex flex-col gap-2 mt-4 pt-3 border-t border-gray-200">
+                              {/* Button Lihat Detail Subscription */}
                               <Button
-                                className="hidden md:flex items-center gap-1 lg:gap-2 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto w-full"
+                                asChild
+                                variant="outline"
+                                className="w-full items-center gap-2 rounded-xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
+                                style={{
+                                  borderColor: mainColor,
+                                  color: mainColor,
+                                }}
+                              >
+                                <Link
+                                  href={`/${website_sub_category_id_params}/user/subscription`}
+                                >
+                                  <Settings className="w-3 h-3 lg:w-4 lg:h-4" />
+                                  <span>Kelola Subscription</span>
+                                </Link>
+                              </Button>
+
+                              {/* Button Beli Subscription */}
+                              <Button
+                                className="w-full items-center gap-1 lg:gap-2 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
                                 style={{ backgroundColor: mainColor }}
                                 onClick={() => setTransactionPopUp(true)}
                               >
@@ -744,6 +764,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                                 <span className="hidden lg:inline">
                                   Beli Subscription
                                 </span>
+                                <span className="lg:hidden">Beli</span>
                               </Button>
                             </div>
                           </TooltipContent>

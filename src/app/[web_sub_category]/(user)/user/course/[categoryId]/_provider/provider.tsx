@@ -143,6 +143,8 @@ export default function Provider({ children }: Props) {
             document: findData.document,
             video: findData.video,
             materi: findData.materi,
+            status: findData.status,
+            publishedAt: findData.publishedAt,
             TryoutSession: findData.TryoutSession,
             CourseProgress: findData.CourseProgress,
           });
@@ -160,6 +162,10 @@ export default function Provider({ children }: Props) {
               document: Course[0].CourseSubChapter[0].document,
               video: Course[0].CourseSubChapter[0].video,
               materi: Course[0].CourseSubChapter[0].materi,
+              status: Course[0].CourseSubChapter[0].status,
+              publishedAt: Course[0].CourseSubChapter[0].publishedAt
+                ? new Date(Course[0].CourseSubChapter[0].publishedAt)
+                : null,
               TryoutSession: Course[0].CourseSubChapter[0].TryoutSession,
               CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
             });
@@ -184,6 +190,10 @@ export default function Provider({ children }: Props) {
             document: Course[0].CourseSubChapter[0].document,
             video: Course[0].CourseSubChapter[0].video,
             materi: Course[0].CourseSubChapter[0].materi,
+            status: Course[0].CourseSubChapter[0].status,
+            publishedAt: Course[0].CourseSubChapter[0].publishedAt
+              ? new Date(Course[0].CourseSubChapter[0].publishedAt)
+              : null,
             TryoutSession: Course[0].CourseSubChapter[0].TryoutSession,
             CourseProgress: Course[0].CourseSubChapter[0].CourseProgress,
           });
@@ -239,8 +249,26 @@ export default function Provider({ children }: Props) {
   const [showList, setShowList] = useState<boolean>(false);
   const [showAI, setShowAI] = useState<boolean>(false);
 
-  const isLocked =
-    (CourseData?.premium && !session?.user?.feature?.course) || false;
+  const courseFeatures = session?.user?.feature.course;
+
+  const isPremium = CourseData?.premium || false;
+  const isAdmin = courseFeatures === 'ALLOW';
+  const isBuy =
+    !!categoryId &&
+    !!courseFeatures &&
+    Array.isArray(courseFeatures) &&
+    courseFeatures.includes(categoryId);
+
+  const isLocked = (isPremium && !isAdmin && !isBuy) || false;
+
+  console.log({
+    isLocked,
+    isBuy,
+    isAdmin,
+    isPremium,
+    courseFeatures,
+    categoryId,
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -363,12 +391,14 @@ export type Data = {
   chapterTitle: string;
   spendTime: number;
   description: string;
-  type: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI';
+  type: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI' | 'PROGRESS_TEST';
   // tryoutSessionId: string | null;
   video: string | null;
   document: string | null;
   premium: boolean;
   materi: string | null;
+  status: 'DRAFT' | 'PUBLISH' | 'UPCOMING';
+  publishedAt: Date | null;
   TryoutSession: CourseType[0]['CourseSubChapter'][0]['TryoutSession'];
   CourseProgress: CourseProgress[];
 };

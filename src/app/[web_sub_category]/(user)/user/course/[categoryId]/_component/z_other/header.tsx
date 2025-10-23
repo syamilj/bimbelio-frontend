@@ -39,10 +39,12 @@ import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id'
 import { motion } from 'framer-motion';
 import {
   BookAIcon,
+  CalendarClock,
   CircleChevronUp,
   GaugeIcon,
   GemIcon,
   List,
+  Rocket,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -112,7 +114,14 @@ export default function HeaderCourse({
                   <div className="ml-[.5rem] flex flex-col gap-[.5rem]">
                     {chapter.CourseSubChapter.map((sChapter, sIndex) => (
                       <div className="relative flex items-center">
-                        <div className="absolute right-4 z-2">
+                        <div className="absolute right-4 z-2 flex items-center gap-2">
+                          {sChapter.status === 'UPCOMING' && (
+                            <Rocket className="w-4 h-4 text-purple-500" />
+                          )}
+                          {sChapter.publishedAt &&
+                            new Date(sChapter.publishedAt) > new Date() && (
+                              <CalendarClock className="w-4 h-4 text-orange-500" />
+                            )}
                           {sChapter.premium && (
                             <div
                               className="flex items-center gap-1 bg-main text-xs text-white px-3 p-1 rounded-3xl cursor-pointer hover:bg-main/90"

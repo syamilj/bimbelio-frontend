@@ -1,4 +1,5 @@
 'use client';
+import { EmptyPlan } from '@/components/_shared/empty/empty-plan';
 import { CardPlan } from '@/components/_shared/other/card-plan';
 import { CardPlanTopping } from '@/components/_shared/other/card-plan-coin';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
@@ -199,29 +200,43 @@ export default function PricingPlans() {
                 </TabsList>
 
                 <TabsContent value="subscription">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    {ws.subscriptions.map((plan, i) => {
-                      return (
-                        <CardPlan
-                          key={i}
-                          plan={plan}
-                          discount={plan.discount}
-                        />
-                      );
-                    })}
-                  </div>
+                  {ws.subscriptions.length === 0 ? (
+                    <EmptyPlan
+                      type="subscription"
+                      categoryName={ws.webSubCategoryName}
+                    />
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                      {ws.subscriptions.map((plan, i) => {
+                        return (
+                          <CardPlan
+                            key={i}
+                            plan={plan}
+                            discount={plan.discount}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
                 </TabsContent>
 
                 <TabsContent value="bundle">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    {ws.bundles.map((bundle, i) => (
-                      <CardPlan
-                        key={i}
-                        plan={bundle}
-                        discount={bundle.discount}
-                      />
-                    ))}
-                  </div>
+                  {ws.bundles.length === 0 ? (
+                    <EmptyPlan
+                      type="bundle"
+                      categoryName={ws.webSubCategoryName}
+                    />
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                      {ws.bundles.map((bundle, i) => (
+                        <CardPlan
+                          key={i}
+                          plan={bundle}
+                          discount={bundle.discount}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </TabsContent>
@@ -255,14 +270,18 @@ export default function PricingPlans() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {topping.map((pack) => (
-            <CardPlanTopping
-              plan={pack}
-              key={pack.name}
-            />
-          ))}
-        </div>
+        {topping.length === 0 ? (
+          <EmptyPlan type="coin" />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {topping.map((pack) => (
+              <CardPlanTopping
+                plan={pack}
+                key={pack.name}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

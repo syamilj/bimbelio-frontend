@@ -76,9 +76,9 @@ export const getParticipantStatusText = (
   status: string | undefined,
 ): string => {
   switch (status) {
-    case 'REGISTERED':
+    case 'Terdaftar':
       return 'Terdaftar';
-    case 'INVITED':
+    case 'Diundang':
       return 'Diundang';
     case 'EXPIRED':
       return 'Kedaluwarsa';

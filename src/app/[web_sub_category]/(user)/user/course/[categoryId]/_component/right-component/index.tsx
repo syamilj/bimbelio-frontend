@@ -58,6 +58,7 @@ const tabNames = TABS.map((tab) => tab.value);
 
 export default function RightComponent() {
   const {
+    isLocked,
     useData: { CourseData },
     useOther: { setShowAI, showAI },
   } = useProvider();
@@ -65,10 +66,9 @@ export default function RightComponent() {
   const { data: session } = useSession();
   const userId = session?.user.id;
 
-  const isLocked = CourseData?.premium && !session?.user.feature.course;
-
   if (
     CourseData?.type === 'TRYOUT' ||
+    CourseData?.type === 'PROGRESS_TEST' ||
     CourseData?.type === 'MATERI' ||
     isLocked
   ) {

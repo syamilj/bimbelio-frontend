@@ -545,6 +545,27 @@ export function CardPlan({
             </div>
           </div>
 
+          {plan.maxUsers && (
+            <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-100 rounded-lg">
+                  <Users className="w-4 h-4 text-amber-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-amber-800">
+                    Kuota Terbatas
+                  </p>
+                  <p className="text-xs text-amber-700">
+                    {plan.totalUsers || 0} / {plan.maxUsers} pengguna aktif
+                  </p>
+                </div>
+                <Badge className="bg-amber-500 text-white text-xs font-bold px-2 py-1">
+                  LIMITED
+                </Badge>
+              </div>
+            </div>
+          )}
+
           {/* Enhanced Tabs - Marketplace Style */}
           <Tabs
             value={activeTab}
@@ -645,44 +666,64 @@ export function CardPlan({
           <div className="mt-6 space-y-3">
             {/* Primary CTA */}
             {!viewOnly && (
-              <DialogPayment
-                plan={plan}
-                classOverlay={classOverlay}
-              >
-                <Button
-                  ref={buttonRef}
-                  className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
-                  size="lg"
-                  style={{
-                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}40`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}30`;
-                  }}
-                  onClick={() => {
-                    // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"
-                    try {
-                    } catch (pixelError) {
-                      console.warn(
-                        'Pixel tracking error on add to cart:',
-                        pixelError,
-                      );
-                    }
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                  <ShoppingCart
-                    size={20}
-                    className="mr-3"
-                  />
-                  <span>Beli Sekarang</span>
-                </Button>
-              </DialogPayment>
+              <>
+                {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
+                  <Button
+                    ref={buttonRef}
+                    className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group cursor-not-allowed"
+                    size="lg"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    <Users
+                      size={20}
+                      className="mr-3"
+                    />
+                    <span>Kuota Penuh</span>
+                  </Button>
+                ) : (
+                  <DialogPayment
+                    plan={plan}
+                    classOverlay={classOverlay}
+                  >
+                    <Button
+                      ref={buttonRef}
+                      className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
+                      size="lg"
+                      style={{
+                        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}40`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}30`;
+                      }}
+                      onClick={() => {
+                        // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"
+                        try {
+                        } catch (pixelError) {
+                          console.warn(
+                            'Pixel tracking error on add to cart:',
+                            pixelError,
+                          );
+                        }
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                      <ShoppingCart
+                        size={20}
+                        className="mr-3"
+                      />
+                      <span>Beli Sekarang</span>
+                    </Button>
+                  </DialogPayment>
+                )}
+              </>
             )}
 
             {/* Secondary CTA */}

@@ -24,7 +24,7 @@ import { useState } from 'react';
 interface SubChapter {
   id: string;
   title: string;
-  type: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI';
+  type: 'TRYOUT' | 'VIDEO' | 'DOCUMENT' | 'MATERI' | 'PROGRESS_TEST';
   spendTime: number;
   number: number;
   premium: boolean;
@@ -88,7 +88,14 @@ const StartCourse = ({ courseData, onStart }: Props) => {
           icon: <Trophy className="w-4 h-4" />,
           color: 'text-orange-600',
           bgColor: 'bg-orange-50',
-          label: 'Try Out',
+          label: 'Quiz',
+        };
+      case 'PROGRESS_TEST':
+        return {
+          icon: <Trophy className="w-4 h-4" />,
+          color: 'text-orange-600',
+          bgColor: 'bg-orange-50',
+          label: 'Uji Progress',
         };
       case 'MATERI':
         return {

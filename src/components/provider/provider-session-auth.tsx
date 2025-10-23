@@ -103,6 +103,7 @@ export default function ProviderSessionAuth({
         .catch((error) => {
           const { message, status } = responseError(error);
           if (status === 401) {
+            responseError(error, true);
             signOut();
           }
           console.log({ error });
@@ -158,7 +159,11 @@ type SessionProviderType = {
           type: string;
           tier: string;
           phone: string | null;
-          feature: { document: boolean; course: boolean; liveClass: boolean };
+          feature: {
+            document: boolean;
+            course: string[] | 'ALLOW';
+            liveClass: boolean;
+          };
           subsList: (Subscription & {
             SubscriptionFeature: SubscriptionFeature[];
           })[];

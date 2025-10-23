@@ -163,6 +163,8 @@ export type CourseSubChapter = {
   type: TypeCourseEnum;
   tryoutSessionId: string | null;
   materi: string | null;
+  status: 'DRAFT' | 'PUBLISH' | 'UPCOMING';
+  publishedAt: string | null;
 };
 
 export type CourseProgress = {
@@ -559,6 +561,11 @@ export type Subscription = {
   planDescription: string;
   planPrice: number;
   planExpire: Date;
+
+  discord_user_id: string;
+  discord_username: string;
+  discord_display_name: string;
+  discord_invite_link: string;
 };
 
 export type SubscriptionFeature = {
@@ -574,10 +581,12 @@ export type Plan = {
   slug: string;
   name: string;
   description: string;
+  roleDiscord: string | null;
   image: string | null;
   originalPrice: number | null;
   price: number;
   status: PlanStatusEnum;
+  maxUsers: number | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -606,6 +615,14 @@ export type PlanSubscription = {
   tier: string;
   expireDays?: number;
   websiteSubCategoryId: string;
+};
+
+export type PlanSubscriptionBundle = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  websiteSubCategoryId: string;
+  planSubscriptionId: string;
 };
 
 export type PlanFeature = {

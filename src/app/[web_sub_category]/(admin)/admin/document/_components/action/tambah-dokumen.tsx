@@ -29,7 +29,7 @@ export default function TambahDokumen() {
   const [video, setVideo] = useState<File | undefined>();
   const [fileName, setFileName] = useState<string>('');
   const [videoName, setVideoName] = useState<string>('');
-  const [option, setOption] = useState<string>('doc');
+  const [option, setOption] = useState<'doc' | 'video'>('doc');
   const [category, setCategory] = useState<string>('');
   const [to, setTo] = useState<boolean>(false);
   const [subCategory, setSubCategory] = useState<string>('');
@@ -85,7 +85,7 @@ export default function TambahDokumen() {
         setThumbnail(undefined);
         setCategory('');
         setSubCategory('');
-        setOption('Doc');
+        setOption('doc');
         setFileName('');
         setPremium(false);
         setTo(false);
@@ -146,7 +146,7 @@ export default function TambahDokumen() {
         setVideo(undefined);
         setCategory('');
         setSubCategory('');
-        setOption('Doc');
+        setOption('doc');
         setFileName('');
         setVideoName('');
         setPremium(false);
@@ -638,11 +638,14 @@ export default function TambahDokumen() {
               className="flex flex-col gap-[.5rem]"
             >
               <p>Subkategori</p>
-              <div className="flex w-full justify-between gap-4">
+              <div
+                id="row"
+                className="flex w-full justify-start gap-4 overflow-y-auto pb-[.5rem]"
+              >
                 {subCategoryData?.map((item: any, i: any) => (
                   <div
                     key={i}
-                    className={`w-full cursor-pointer rounded-[.5rem] border border-main-gray-input py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${subCategory === item.id && 'border-main bg-main text-white'}`}
+                    className={`w-fit shrink-0 cursor-pointer rounded-[.5rem] border border-main-gray-input px-4 py-[.5rem] text-center text-main-gray-text duration-200 hover:border-transparent hover:bg-main-hover hover:text-white ${subCategory === item.id && 'border-main bg-main text-white'}`}
                     onClick={() => setSubCategory(item.id)}
                   >
                     {item.name}

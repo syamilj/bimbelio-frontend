@@ -269,7 +269,10 @@ const SubChapterOption = ({
             <TabsTrigger value="details">Detail</TabsTrigger>
             <TabsTrigger
               value="questions"
-              disabled={EditSubChapter.type !== 'TRYOUT'}
+              disabled={
+                EditSubChapter.type !== 'TRYOUT' &&
+                EditSubChapter.type !== 'PROGRESS_TEST'
+              }
             >
               Soal
             </TabsTrigger>
@@ -309,7 +312,8 @@ const SubChapterOption = ({
             value="questions"
             className="mt-6"
           >
-            {EditSubChapter.type === 'TRYOUT' ? (
+            {EditSubChapter.type === 'TRYOUT' ||
+            EditSubChapter.type === 'PROGRESS_TEST' ? (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-medium">
