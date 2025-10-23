@@ -1,7 +1,6 @@
 import {
   CourseChapter,
   CourseStatusEnum,
-  CourseSubChapter,
   TypeCourseEnum,
 } from '@/types/database';
 
@@ -157,154 +156,154 @@ export const mockCourseChapters: CourseChapter[] = [
   },
 ];
 
-export const mockCourseSubChapters: CourseSubChapter[] = [
-  // Matematika - Aljabar Linear
-  {
-    id: 'sub-math-1-1',
-    number: 1,
-    website_sub_category_id: 'snbt',
-    title: 'Pengantar Matriks',
-    document: '/materials/math/matrix-intro.pdf',
-    description: 'Konsep dasar matriks dan operasi-operasinya',
-    premium: false,
-    video: null,
-    courseChapterId: 'ch-math-1',
-    spendTime: 30,
-    type: 'DOCUMENT' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi:
-      'Pengenalan konsep matriks, operasi penjumlahan, pengurangan, dan perkalian matriks',
-  },
-  {
-    id: 'sub-math-1-2',
-    number: 2,
-    website_sub_category_id: 'snbt',
-    title: 'Video: Operasi Matriks',
-    document: null,
-    description: 'Tutorial video operasi matriks',
-    premium: true,
-    video: '/materials/math/matrix-operations.mp4',
-    courseChapterId: 'ch-math-1',
-    spendTime: 15,
-    type: 'VIDEO' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi: null,
-  },
-  {
-    id: 'sub-math-1-3',
-    number: 3,
-    website_sub_category_id: 'snbt',
-    title: 'Determinan dan Invers',
-    document: '/materials/math/determinant.pdf',
-    description: 'Cara menghitung determinan dan matriks invers',
-    premium: false,
-    video: null,
-    courseChapterId: 'ch-math-1',
-    spendTime: 45,
-    type: 'DOCUMENT' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi:
-      'Penghitungan determinan matriks 2x2 dan 3x3, mencari matriks invers',
-  },
+// export const mockCourseSubChapters: CourseSubChapter[] = [
+//   // Matematika - Aljabar Linear
+//   {
+//     id: 'sub-math-1-1',
+//     number: 1,
+//     website_sub_category_id: 'snbt',
+//     title: 'Pengantar Matriks',
+//     document: '/materials/math/matrix-intro.pdf',
+//     description: 'Konsep dasar matriks dan operasi-operasinya',
+//     premium: false,
+//     video: null,
+//     courseChapterId: 'ch-math-1',
+//     spendTime: 30,
+//     type: 'DOCUMENT' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi:
+//       'Pengenalan konsep matriks, operasi penjumlahan, pengurangan, dan perkalian matriks',
+//   },
+//   {
+//     id: 'sub-math-1-2',
+//     number: 2,
+//     website_sub_category_id: 'snbt',
+//     title: 'Video: Operasi Matriks',
+//     document: null,
+//     description: 'Tutorial video operasi matriks',
+//     premium: true,
+//     video: '/materials/math/matrix-operations.mp4',
+//     courseChapterId: 'ch-math-1',
+//     spendTime: 15,
+//     type: 'VIDEO' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi: null,
+//   },
+//   {
+//     id: 'sub-math-1-3',
+//     number: 3,
+//     website_sub_category_id: 'snbt',
+//     title: 'Determinan dan Invers',
+//     document: '/materials/math/determinant.pdf',
+//     description: 'Cara menghitung determinan dan matriks invers',
+//     premium: false,
+//     video: null,
+//     courseChapterId: 'ch-math-1',
+//     spendTime: 45,
+//     type: 'DOCUMENT' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi:
+//       'Penghitungan determinan matriks 2x2 dan 3x3, mencari matriks invers',
+//   },
 
-  // Matematika - Kalkulus Dasar
-  {
-    id: 'sub-math-2-1',
-    number: 1,
-    website_sub_category_id: 'snbt',
-    title: 'Limit Fungsi',
-    document: '/materials/math/limits.pdf',
-    description: 'Konsep limit dan kontinuitas fungsi',
-    premium: false,
-    video: null,
-    courseChapterId: 'ch-math-2',
-    spendTime: 40,
-    type: 'DOCUMENT' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi: 'Pengertian limit, sifat-sifat limit, dan kontinuitas fungsi',
-  },
-  {
-    id: 'sub-math-2-2',
-    number: 2,
-    website_sub_category_id: 'snbt',
-    title: 'Video: Turunan Fungsi',
-    document: null,
-    description: 'Penjelasan konsep turunan',
-    premium: true,
-    video: '/materials/math/derivatives.mp4',
-    courseChapterId: 'ch-math-2',
-    spendTime: 20,
-    type: 'VIDEO' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi: null,
-  },
+//   // Matematika - Kalkulus Dasar
+//   {
+//     id: 'sub-math-2-1',
+//     number: 1,
+//     website_sub_category_id: 'snbt',
+//     title: 'Limit Fungsi',
+//     document: '/materials/math/limits.pdf',
+//     description: 'Konsep limit dan kontinuitas fungsi',
+//     premium: false,
+//     video: null,
+//     courseChapterId: 'ch-math-2',
+//     spendTime: 40,
+//     type: 'DOCUMENT' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi: 'Pengertian limit, sifat-sifat limit, dan kontinuitas fungsi',
+//   },
+//   {
+//     id: 'sub-math-2-2',
+//     number: 2,
+//     website_sub_category_id: 'snbt',
+//     title: 'Video: Turunan Fungsi',
+//     document: null,
+//     description: 'Penjelasan konsep turunan',
+//     premium: true,
+//     video: '/materials/math/derivatives.mp4',
+//     courseChapterId: 'ch-math-2',
+//     spendTime: 20,
+//     type: 'VIDEO' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi: null,
+//   },
 
-  // Fisika - Mekanika
-  {
-    id: 'sub-physics-1-1',
-    number: 1,
-    website_sub_category_id: 'snbt',
-    title: 'Kinematika Gerak Lurus',
-    document: '/materials/physics/kinematics.pdf',
-    description: 'Gerak lurus beraturan dan berubah beraturan',
-    premium: false,
-    video: null,
-    courseChapterId: 'ch-physics-1',
-    spendTime: 35,
-    type: 'DOCUMENT' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi: 'GLB, GLBB, persamaan gerak, dan grafik gerak',
-  },
-  {
-    id: 'sub-physics-1-2',
-    number: 2,
-    website_sub_category_id: 'snbt',
-    title: 'Video: Hukum Newton',
-    document: null,
-    description: 'Penjelasan hukum-hukum Newton',
-    premium: true,
-    video: '/materials/physics/newton-laws.mp4',
-    courseChapterId: 'ch-physics-1',
-    spendTime: 25,
-    type: 'VIDEO' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi: null,
-  },
+//   // Fisika - Mekanika
+//   {
+//     id: 'sub-physics-1-1',
+//     number: 1,
+//     website_sub_category_id: 'snbt',
+//     title: 'Kinematika Gerak Lurus',
+//     document: '/materials/physics/kinematics.pdf',
+//     description: 'Gerak lurus beraturan dan berubah beraturan',
+//     premium: false,
+//     video: null,
+//     courseChapterId: 'ch-physics-1',
+//     spendTime: 35,
+//     type: 'DOCUMENT' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi: 'GLB, GLBB, persamaan gerak, dan grafik gerak',
+//   },
+//   {
+//     id: 'sub-physics-1-2',
+//     number: 2,
+//     website_sub_category_id: 'snbt',
+//     title: 'Video: Hukum Newton',
+//     document: null,
+//     description: 'Penjelasan hukum-hukum Newton',
+//     premium: true,
+//     video: '/materials/physics/newton-laws.mp4',
+//     courseChapterId: 'ch-physics-1',
+//     spendTime: 25,
+//     type: 'VIDEO' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi: null,
+//   },
 
-  // Bahasa Indonesia - Teks Argumentasi
-  {
-    id: 'sub-indo-1-1',
-    number: 1,
-    website_sub_category_id: 'snbt',
-    title: 'Struktur Teks Argumentasi',
-    document: '/materials/indo/argumentation.pdf',
-    description: 'Komponen-komponen dalam teks argumentasi',
-    premium: false,
-    video: null,
-    courseChapterId: 'ch-indo-1',
-    spendTime: 30,
-    type: 'DOCUMENT' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi: 'Tesis, argumen, dan reiterasi dalam teks argumentasi',
-  },
+//   // Bahasa Indonesia - Teks Argumentasi
+//   {
+//     id: 'sub-indo-1-1',
+//     number: 1,
+//     website_sub_category_id: 'snbt',
+//     title: 'Struktur Teks Argumentasi',
+//     document: '/materials/indo/argumentation.pdf',
+//     description: 'Komponen-komponen dalam teks argumentasi',
+//     premium: false,
+//     video: null,
+//     courseChapterId: 'ch-indo-1',
+//     spendTime: 30,
+//     type: 'DOCUMENT' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi: 'Tesis, argumen, dan reiterasi dalam teks argumentasi',
+//   },
 
-  // Kimia - Ikatan Kimia
-  {
-    id: 'sub-chemistry-1-1',
-    number: 1,
-    website_sub_category_id: 'snbt',
-    title: 'Jenis-jenis Ikatan',
-    document: '/materials/chemistry/chemical-bonds.pdf',
-    description: 'Ikatan ionik, kovalen, dan logam',
-    premium: false,
-    video: null,
-    courseChapterId: 'ch-chemistry-1',
-    spendTime: 40,
-    type: 'DOCUMENT' as TypeCourseEnum,
-    tryoutSessionId: null,
-    materi: 'Pembentukan ikatan ionik, kovalen, dan metalik',
-  },
-];
+//   // Kimia - Ikatan Kimia
+//   {
+//     id: 'sub-chemistry-1-1',
+//     number: 1,
+//     website_sub_category_id: 'snbt',
+//     title: 'Jenis-jenis Ikatan',
+//     document: '/materials/chemistry/chemical-bonds.pdf',
+//     description: 'Ikatan ionik, kovalen, dan logam',
+//     premium: false,
+//     video: null,
+//     courseChapterId: 'ch-chemistry-1',
+//     spendTime: 40,
+//     type: 'DOCUMENT' as TypeCourseEnum,
+//     tryoutSessionId: null,
+//     materi: 'Pembentukan ikatan ionik, kovalen, dan metalik',
+//   },
+// ];
 
 // Mock courses data untuk form references
 export const mockCourses = [
@@ -921,11 +920,11 @@ export const getCourseChapterById = (chapterId: string) => {
   return mockCourseChapters.find((chapter) => chapter.id === chapterId);
 };
 
-export const getCourseSubChapterById = (subChapterId: string) => {
-  return mockCourseSubChapters.find(
-    (subChapter) => subChapter.id === subChapterId,
-  );
-};
+// export const getCourseSubChapterById = (subChapterId: string) => {
+//   return mockCourseSubChapters.find(
+//     (subChapter) => subChapter.id === subChapterId,
+//   );
+// };
 
 export const getCoursesBySubject = (subject: string) => {
   return mockCourses.filter((course) => course.subject === subject);
@@ -939,9 +938,9 @@ export const getAllCourseChapters = () => {
   return mockCourseChapters;
 };
 
-export const getAllCourseSubChapters = () => {
-  return mockCourseSubChapters;
-};
+// export const getAllCourseSubChapters = () => {
+//   return mockCourseSubChapters;
+// };
 
 // Mock tutors untuk form - diupdate agar konsisten dengan yang ada di live class
 export const mockTutorsForForm = [
