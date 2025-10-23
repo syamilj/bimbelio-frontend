@@ -159,7 +159,11 @@ type SessionProviderType = {
           type: string;
           tier: string;
           phone: string | null;
-          feature: { document: boolean; course: boolean; liveClass: boolean };
+          feature: {
+            document: boolean;
+            course: string[] | 'ALLOW';
+            liveClass: boolean;
+          };
           subsList: (Subscription & {
             SubscriptionFeature: SubscriptionFeature[];
           })[];

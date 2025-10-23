@@ -249,8 +249,26 @@ export default function Provider({ children }: Props) {
   const [showList, setShowList] = useState<boolean>(false);
   const [showAI, setShowAI] = useState<boolean>(false);
 
-  const isLocked =
-    (CourseData?.premium && !session?.user?.feature?.course) || false;
+  const courseFeatures = session?.user?.feature.course;
+
+  const isPremium = CourseData?.premium || false;
+  const isAdmin = courseFeatures === 'ALLOW';
+  const isBuy =
+    !!categoryId &&
+    !!courseFeatures &&
+    Array.isArray(courseFeatures) &&
+    courseFeatures.includes(categoryId);
+
+  const isLocked = (isPremium && !isAdmin && !isBuy) || false;
+
+  console.log({
+    isLocked,
+    isBuy,
+    isAdmin,
+    isPremium,
+    courseFeatures,
+    categoryId,
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 

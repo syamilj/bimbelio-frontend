@@ -40,6 +40,7 @@ import {
   getDateForInputDateTime,
   parseCurrency,
 } from '@/lib/utils';
+import { getSlug } from '@/lib/utils/slug';
 import { supabase } from '@/supabaseClient';
 import {
   Category,
@@ -462,6 +463,10 @@ export default function UpdatePlanForm() {
               </Label>
               <Input
                 {...register('name')}
+                onChange={(e) => {
+                  setValue('name', e.target.value);
+                  setValue('roleDiscord', getSlug(e.target.value));
+                }}
                 placeholder="Pricing Name"
                 required
               />
@@ -1058,7 +1063,14 @@ const SectionFeature = () => {
 
   const { webCategoryData } = useWebsiteSubCategory();
 
-  const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
+  const { data: Categories } = useGet<
+    { categoryName: string; data: Category[] }[]
+  >('/category/getAllCategoriesForPlanAdmin', {
+    params: {
+      website_sub_category_id: selectedWebSubCategoryIds.join(','),
+    },
+    useEffectDependencies: [selectedWebSubCategoryIds],
+  });
 
   const [searchTerm, setSearchTerm] = useState<string>('');
 
@@ -1439,32 +1451,62 @@ const SectionFeature = () => {
             </TabsContent>
             <TabsContent
               value="course"
-              className="space-y-4 ml-8"
+              className="flex gap-4 ml-8"
             >
-              {Categories?.map((category) => (
+              {Categories?.map((webSub) => (
                 <div
-                  key={category.id}
-                  className="flex items-center"
+                  key={webSub.categoryName}
+                  className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
                 >
-                  <Checkbox
-                    checked={categoryIds.includes(category.id)}
-                    onCheckedChange={(value) => {
-                      if (value === true) {
-                        setCategoryIds((prev) => [...prev, category.id]);
-                      }
-                      if (value === false) {
-                        setCategoryIds((prev) =>
-                          prev.filter((id) => id !== category.id),
-                        );
-                      }
-                    }}
-                  />
-                  <Label
-                    htmlFor="categoryIds"
-                    className="ml-2"
-                  >
-                    {category.name}
-                  </Label>
+                  {/* Category Header */}
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 border-b border-gray-100">
+                    <h3 className="font-semibold text-gray-800 text-sm uppercase tracking-wide">
+                      {webSub.categoryName}
+                    </h3>
+                  </div>
+
+                  {/* Category Options */}
+                  <div className="p-4 space-y-3">
+                    {webSub.data.map((category) => {
+                      // const isSelected = categoryIds.includes(category.id);
+
+                      return (
+                        <div
+                          key={category.id}
+                          className={
+                            'flex items-center p-3 rounded-lg border transition-all duration-200 gap-2'
+                          }
+                        >
+                          <Checkbox
+                            checked={categoryIds.includes(category.id)}
+                            onCheckedChange={(value) => {
+                              if (value === true) {
+                                setCategoryIds((prev) => [
+                                  ...prev,
+                                  category.id,
+                                ]);
+                              }
+                              if (value === false) {
+                                setCategoryIds((prev) =>
+                                  prev.filter((id) => id !== category.id),
+                                );
+                              }
+                            }}
+                          />
+                          <Label
+                            htmlFor={`category-${category.id}`}
+                            className={`
+                             flex-1 text-sm font-medium cursor-pointer select-none
+                           `}
+                          >
+                            {category.name}
+                          </Label>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Selection Summary */}
                 </div>
               ))}
             </TabsContent>

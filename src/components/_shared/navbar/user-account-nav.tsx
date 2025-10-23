@@ -214,7 +214,8 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             </DropdownMenuItem>
           </motion.div>
 
-          {session?.user?.role == 'ADMIN' && (
+          {(session?.user?.role == 'ADMIN' ||
+            session?.user?.role == 'SUPER_ADMIN') && (
             <motion.div
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}

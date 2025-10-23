@@ -58,14 +58,13 @@ const tabNames = TABS.map((tab) => tab.value);
 
 export default function RightComponent() {
   const {
+    isLocked,
     useData: { CourseData },
     useOther: { setShowAI, showAI },
   } = useProvider();
   const isDekstop = useMedia({ minWidth: '768px' });
   const { data: session } = useSession();
   const userId = session?.user.id;
-
-  const isLocked = CourseData?.premium && !session?.user.feature.course;
 
   if (
     CourseData?.type === 'TRYOUT' ||

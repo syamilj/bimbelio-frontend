@@ -18,6 +18,7 @@ import VideoType from './_components/type-video';
 
 export default function LeftComponent() {
   const {
+    isLocked,
     useParams: { sub },
     useData: { CourseData, showStartCourse, setShowStartCourse, Course },
     useDoc: { doc },
@@ -25,8 +26,6 @@ export default function LeftComponent() {
   const { mobileScreen, setMobileScreen } = useAppContext();
   const { data: session } = useSession();
   const userId = session?.user.id;
-
-  const isLocked = CourseData?.premium && !session?.user.feature.course;
 
   const isNotYet =
     !!CourseData?.publishedAt && new Date(CourseData?.publishedAt) > new Date();
