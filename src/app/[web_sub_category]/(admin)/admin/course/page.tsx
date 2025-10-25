@@ -1,5 +1,6 @@
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -54,6 +55,7 @@ interface Course {
   Category: {
     name: string;
   };
+  visibleAtWebSubIds: string[];
   CourseSubChapter: SubChapter[];
 }
 
@@ -61,6 +63,11 @@ export default function Index() {
   const { data: category, isLoading: isCategoryLoading } = useGet<Category[]>(
     '/category/getAllCategoryAdminCourse',
   );
+
+  const {
+    type: { isCore },
+    sharingWebSubIds,
+  } = useWebsiteSubCategory();
 
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -277,6 +284,18 @@ export default function Index() {
                             <Users className="h-4 w-4" />
                             <span>{course.Category.name}</span>
                           </div>
+                          {isCore && (
+                            <div className="flex items-center gap-1">
+                              <Users className="h-4 w-4" />
+                              <span>
+                                [{' '}
+                                {course.visibleAtWebSubIds.length > 0
+                                  ? course.visibleAtWebSubIds.join(' | ')
+                                  : sharingWebSubIds.join(' | ')}{' '}
+                                ]
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
 

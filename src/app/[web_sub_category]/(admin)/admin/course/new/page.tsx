@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import LoadingPageWithText, { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
@@ -57,6 +58,7 @@ export interface SubChapterProps {
 const Index = () => {
   const router = useRouter();
 
+  const [visibleAtWebSubIds, setVisibleAtWebSubIds] = useState<string[]>([]);
   const [showDetailSubChapter, setShowDetailSubChapter] =
     useState<boolean>(true);
   const [currentIndexEdit, setCurrentIndexEdit] = useState<number | null>(null);
@@ -327,6 +329,8 @@ const Index = () => {
       status: chapter.status,
       number: chapter.number,
       CourseSubChapter,
+      visibleAtWebSubIds:
+        visibleAtWebSubIds.length > 0 ? visibleAtWebSubIds : undefined,
     };
 
     createCourse({ payload: course });
@@ -423,6 +427,10 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
+                <MultiSelectVisibleAt
+                  value={visibleAtWebSubIds}
+                  onValuesChange={setVisibleAtWebSubIds}
+                />
                 <ChapterOption
                   chapter={chapter}
                   subChapter={subChapter}

@@ -6,6 +6,7 @@ import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 
+import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import { getDateForInput, getHours } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import { Category, Subcategory } from '@/types/database';
@@ -24,6 +25,7 @@ export default function EditDocument() {
   } = useProvider();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [visibleAtWebSubIds, setVisibleAtWebSubIds] = useState<string[]>([]);
 
   const [file, setFile] = useState<File | undefined>();
   const [docxFile, setDocxFile] = useState<File | undefined>();
@@ -76,6 +78,7 @@ export default function EditDocument() {
     premium: boolean;
     titleVideo?: string;
     urlVideo?: string;
+    visibleAtWebSubIds?: string[];
   }) => {
     await mutateGeneral('/document/editDocument', {
       payload,
@@ -102,6 +105,9 @@ export default function EditDocument() {
       setPremium(editData?.premium);
       setCategory(editData?.categoryId);
       setSubCategory(editData?.subCategoryId);
+      if (editData?.visibleAtWebSubIds) {
+        setVisibleAtWebSubIds(editData?.visibleAtWebSubIds || []);
+      }
       if (editData?.video) {
         setVideoName(editData?.video?.title);
         setOption('video');
@@ -218,6 +224,8 @@ export default function EditDocument() {
         docxUrl: docxFile
           ? `${fileName !== '' ? fileName : docxFile?.name}`
           : undefined,
+        visibleAtWebSubIds:
+          visibleAtWebSubIds.length > 0 ? visibleAtWebSubIds : undefined,
       });
     } catch (error) {
       setLoading(false);
@@ -244,6 +252,10 @@ export default function EditDocument() {
         <div className="flex flex-col gap-4 p-8">
           <h1 className="text-[1.2rem] font-semibold">Edit Material</h1>
           <div className="flex flex-col gap-4 text-[.9rem] font-medium">
+            <MultiSelectVisibleAt
+              value={visibleAtWebSubIds}
+              onValuesChange={setVisibleAtWebSubIds}
+            />
             <div id="file">
               <UploadFile
                 heading="Dokumen"

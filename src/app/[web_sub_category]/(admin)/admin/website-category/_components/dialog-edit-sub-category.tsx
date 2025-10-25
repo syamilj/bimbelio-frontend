@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { MultiSelectWebsub } from '@/components/ui/multi-select-websub';
 import {
   Select,
   SelectContent,
@@ -21,7 +22,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
+import {
+  WebsiteCategory,
+  WebsiteSubCategory,
+  WebsiteSubCategoryTypeEnum,
+} from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAdminWebCategory } from '../provider';
@@ -30,12 +35,14 @@ interface Props {
   children: React.ReactNode;
   subCategory: WebsiteSubCategory | null;
   categories: WebsiteCategory[];
+  subCategories: WebsiteSubCategory[];
 }
 
 export function DialogEditSubCategory({
   subCategory,
   categories,
   children,
+  subCategories,
 }: Props) {
   const { getData } = useAdminWebCategory();
   const [open, setOpen] = useState(false);
@@ -44,8 +51,12 @@ export function DialogEditSubCategory({
 
   const [name, setName] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [type, setType] = useState<WebsiteSubCategoryTypeEnum>('GENERAL');
   const [mainColor, setMainColor] = useState('#0062FA');
   const [secondaryColor, setSecondaryColor] = useState('#0091FF');
+  const [sharingWebSubIds, setSharingWebSubIds] = useState<string[]>([]);
+
+  console.log({ subCategory });
 
   useEffect(() => {
     if (subCategory) {
@@ -53,6 +64,8 @@ export function DialogEditSubCategory({
       setCategoryId(subCategory.website_category_id);
       setMainColor(subCategory.main_color);
       setSecondaryColor(subCategory.secondary_color);
+      setType(subCategory.type);
+      setSharingWebSubIds(subCategory.sharing_website_sub_category_ids);
     }
   }, [subCategory]);
 
@@ -74,6 +87,9 @@ export function DialogEditSubCategory({
           name,
           main_color: mainColor,
           secondary_color: secondaryColor,
+          type,
+          sharing_website_sub_category_ids:
+            sharingWebSubIds.length > 0 ? sharingWebSubIds : undefined,
         },
         type: 'put',
         onSuccess: async () => {
@@ -133,6 +149,42 @@ export function DialogEditSubCategory({
               </SelectContent>
             </Select>
           </div>
+          <div className="grid gap-2">
+            <Label htmlFor="web-category">Type</Label>
+            <Select
+              value={type}
+              onValueChange={(value: WebsiteSubCategoryTypeEnum) =>
+                setType(value)
+              }
+              required
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                {(['GENERAL', 'CORE'] as WebsiteSubCategoryTypeEnum[]).map(
+                  (type) => (
+                    <SelectItem
+                      key={type}
+                      value={type}
+                    >
+                      {type}
+                    </SelectItem>
+                  ),
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+          {type === 'CORE' && (
+            <div className="grid gap-2">
+              <Label htmlFor="web-category">Web Category</Label>
+              <MultiSelectWebsub
+                value={sharingWebSubIds}
+                onValuesChange={setSharingWebSubIds}
+                optionsData={subCategories}
+              />
+            </div>
+          )}
           <div className="grid gap-2">
             <Label htmlFor="sub-main-color">Main Color</Label>
             <ColorPicker

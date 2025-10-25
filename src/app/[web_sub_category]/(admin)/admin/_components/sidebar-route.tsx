@@ -27,7 +27,10 @@ const SidebarRoute: FC = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
   const { minimizeSidebar } = useAppContext();
-  const { websiteSubCategory } = useWebsiteSubCategory();
+  const {
+    websiteSubCategory,
+    type: { isCore },
+  } = useWebsiteSubCategory();
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -146,6 +149,21 @@ const SidebarRoute: FC = () => {
       return false;
     }
     if (session?.user.role === 'ADMIN' && item.label === 'Tryout Categories') {
+      return false;
+    }
+    if (session?.user.role === 'ADMIN' && item.label === 'Web Category') {
+      return false;
+    }
+    if (isCore) {
+      const label = item.label;
+      if (
+        label === 'Courses' ||
+        label === 'Documents' ||
+        label === 'Document Categories' ||
+        label === 'Web Category'
+      ) {
+        return true;
+      }
       return false;
     }
     return true;

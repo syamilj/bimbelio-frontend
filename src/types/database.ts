@@ -223,6 +223,7 @@ export type Category = {
   name: string;
   nomor: number;
   to: boolean;
+  visibleAtWebSubIds: string[];
 };
 
 export type Subcategory = {
@@ -230,6 +231,7 @@ export type Subcategory = {
   id: string;
   name: string;
   categoryId: string;
+  visibleAtWebSubIds: string[];
 };
 
 export type Highlight = {
@@ -460,6 +462,7 @@ export type Document = {
   premium: boolean | null;
   videoId: string | null;
   website_sub_category_id: string;
+  visibleAtWebSubIds: string[];
 };
 
 export type Video = {
@@ -505,7 +508,11 @@ export type WebsiteSubCategory = {
   main_color: string;
   secondary_color: string;
   website_category_id: string;
+  sharing_website_sub_category_ids: string[];
+  type: WebsiteSubCategoryTypeEnum;
 };
+
+export type WebsiteSubCategoryTypeEnum = 'CORE' | 'GENERAL';
 
 export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS';
 

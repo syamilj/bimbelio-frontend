@@ -1,3 +1,4 @@
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -21,6 +22,10 @@ export default function Table() {
       errorMessage,
     },
   } = useProvider();
+  const {
+    type: { isCore },
+    sharingWebSubIds,
+  } = useWebsiteSubCategory();
 
   const [deleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
 
@@ -112,6 +117,11 @@ export default function Table() {
               <th className="bg-white p-[.7rem] text-center font-semibold">
                 Dipilih User
               </th>
+              {isCore && (
+                <th className="bg-white p-[.7rem] text-center font-semibold">
+                  Visible At
+                </th>
+              )}
               <th className="bg-white p-[.7rem] text-center font-semibold">
                 Premium
               </th>
@@ -169,6 +179,13 @@ export default function Table() {
                   <td className="bg-white p-[.5rem] text-center">
                     {item._count.userDocuments}
                   </td>
+                  {isCore && (
+                    <td className="bg-white p-[.5rem] text-center">
+                      {item.visibleAtWebSubIds.length > 0
+                        ? item.visibleAtWebSubIds.join(', ')
+                        : sharingWebSubIds.join(',')}
+                    </td>
+                  )}
                   <td className="bg-white p-[.5rem]">
                     <div className="flex w-full items-center justify-center">
                       {item.premium ? (
