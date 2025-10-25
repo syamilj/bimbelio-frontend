@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -21,6 +22,7 @@ interface PostUpCategoryModalProps {
 }
 
 function PostUpCategoryModal({ refetchCategories }: PostUpCategoryModalProps) {
+  const [visibleAtWebSubIds, setVisibleAtWebSubIds] = useState<string[]>([]);
   const [kategori, setKategori] = useState('');
 
   const [open, setOpen] = useState(false);
@@ -37,7 +39,7 @@ function PostUpCategoryModal({ refetchCategories }: PostUpCategoryModalProps) {
     useState<boolean>(false);
   const addKategori = async ({ name }: { name: string }) => {
     await mutateGeneral('/category/addCategory', {
-      payload: { name },
+      payload: { name, visibleAtWebSubIds },
       type: 'post',
       setLoading: setIsKategoriUploading,
       onSuccess: () => {
@@ -78,6 +80,10 @@ function PostUpCategoryModal({ refetchCategories }: PostUpCategoryModalProps) {
                   onChange={onTextChange}
                   placeholder={kategori ? '' : 'Tryout'}
                   className="w-full"
+                />
+                <MultiSelectVisibleAt
+                  value={visibleAtWebSubIds}
+                  onValuesChange={setVisibleAtWebSubIds}
                 />
               </div>
 

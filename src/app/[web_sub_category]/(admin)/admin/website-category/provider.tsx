@@ -17,7 +17,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   const [subCategories, setSubCategories] = useState<WebsiteSubCategory[]>([]);
 
   const getData = async () => {
-    await getGeneral('/website-category/getWebsiteCategory', {
+    await getGeneral('/website-category/getWebsiteCategory?viewCore=true', {
       onSuccess({ data }) {
         const getData: (WebsiteCategory & {
           WebsiteSubCategory: WebsiteSubCategory[];
@@ -41,6 +41,9 @@ export default function Provider({ children }: { children: React.ReactNode }) {
                 main_color: sub.main_color,
                 secondary_color: sub.secondary_color,
                 website_category_id: sub.website_category_id,
+                sharing_website_sub_category_ids:
+                  sub.sharing_website_sub_category_ids,
+                type: sub.type,
                 createdAt: sub.createdAt,
                 updatedAt: sub.updatedAt,
               };

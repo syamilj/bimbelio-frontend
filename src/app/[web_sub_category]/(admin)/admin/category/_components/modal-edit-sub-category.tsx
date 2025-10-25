@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -20,6 +21,7 @@ interface ModalEditSubKategoriProps {
   open: boolean;
   setOpen: any;
   refetchSubCategories: () => void;
+  visibleAtWebSubIdsData: string[];
 }
 
 function ModalEditSubKategori({
@@ -29,7 +31,9 @@ function ModalEditSubKategori({
   open,
   setOpen,
   categoryId,
+  visibleAtWebSubIdsData,
 }: ModalEditSubKategoriProps) {
+  const [visibleAtWebSubIds, setVisibleAtWebSubIds] = useState<string[]>([]);
   const [kategori, setKategori] = useState('');
 
   // const [open, setOpen] = useState(openValue);
@@ -56,7 +60,7 @@ function ModalEditSubKategori({
     categoryId: string;
   }) => {
     await mutateGeneral('/category/editSubcategory', {
-      payload: { id, name, categoryId },
+      payload: { id, name, categoryId, visibleAtWebSubIds },
       type: 'put',
       setLoading: setIsKategoriUploading,
       onSuccess: () => {
@@ -81,7 +85,10 @@ function ModalEditSubKategori({
 
   useLayoutEffect(() => {
     setKategori(name);
-  }, [name]);
+    setVisibleAtWebSubIds(visibleAtWebSubIdsData || []);
+  }, [name, visibleAtWebSubIdsData]);
+
+  console.log({ visibleAtWebSubIds });
 
   return (
     <Dialog
@@ -91,7 +98,7 @@ function ModalEditSubKategori({
       <DialogContent hideClose={true}>
         <DialogHeader>
           <DialogTitle>
-            <p className="mb-4 text-center text-xl">Edit Kategori</p>
+            <p className="mb-4 text-center text-xl">Edit Sub Kategori</p>
           </DialogTitle>
           <div>
             <Input
@@ -99,6 +106,10 @@ function ModalEditSubKategori({
               onChange={onTextChange}
               placeholder={kategori ? '' : 'Tryout'}
               className="w-full"
+            />
+            <MultiSelectVisibleAt
+              value={visibleAtWebSubIds}
+              onValuesChange={setVisibleAtWebSubIds}
             />
           </div>
 

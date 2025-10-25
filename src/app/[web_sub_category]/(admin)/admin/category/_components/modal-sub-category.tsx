@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import {
   Select,
   SelectContent,
@@ -30,6 +31,7 @@ interface PostUpSubCategoryModalProps {
 function PostUpSubCategoryModal({
   refetchSubCategories,
 }: PostUpSubCategoryModalProps) {
+  const [visibleAtWebSubIds, setVisibleAtWebSubIds] = useState<string[]>([]);
   const [kategori, setKategori] = useState<string>('');
   const [subKategori, setSubKategori] = useState<string>('');
   const [open, setOpen] = useState(false);
@@ -82,7 +84,7 @@ function PostUpSubCategoryModal({
     name: string;
   }) => {
     await mutateGeneral('/category/addSubcategory', {
-      payload: { categoryId, name },
+      payload: { categoryId, name, visibleAtWebSubIds },
       type: 'post',
       setLoading: setIsSubKategoriUploading,
       onSuccess: () => {
@@ -152,6 +154,10 @@ function PostUpSubCategoryModal({
                 value={subKategori}
                 onChange={(e) => setSubKategori(e.target.value)}
                 placeholder="Subkategori"
+              />
+              <MultiSelectVisibleAt
+                value={visibleAtWebSubIds}
+                onValuesChange={setVisibleAtWebSubIds}
               />
             </div>
 
