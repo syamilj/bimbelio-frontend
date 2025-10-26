@@ -199,7 +199,7 @@ const WhyUs = () => {
       </motion.div>
 
       {/* Enhanced Content Sections */}
-      <div className="container p-8">
+      <div className="container p-8 mx-auto">
         {active === 1 && <EvaluationSection mainColor={mainColor} />}
         {active === 2 && <AIModelSection mainColor={mainColor} />}
         {active === 3 && (

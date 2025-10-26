@@ -114,7 +114,10 @@ const PlanCards: React.FC = () => {
   // Loading state
   if (!PricingData) {
     return (
-      <section className="py-24 px-4">
+      <section
+        id="product"
+        className="py-24 px-4"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge

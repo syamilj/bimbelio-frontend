@@ -107,109 +107,118 @@ export const Login = () => {
         )}
 
         {/* Main Modal */}
-        <div className="relative z-10 w-full max-w-md mx-4 bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header */}
-          <div
-            className="p-6 pb-8 text-center relative"
-            // style={{ backgroundColor: `${mainColor}05` }}
+        <div className="relative z-10 w-full max-w-md mx-4 bg-white rounded-3xl shadow-2xl overflow-hidden">
+          {/* Gradient Header Background */}
+          <div className="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-main-default to-blue-600" />
+          {/* Close button - Floating */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowAuth((prev) => ({ ...prev, open: false }))}
+            className="absolute top-6 right-4 w-9 h-9 rounded-full hover:bg-main-default/10 cursor-pointer z-[1] transition-all duration-200 hover:scale-110"
           >
-            {/* Close button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowAuth((prev) => ({ ...prev, open: false }))}
-              className="absolute top-4 right-4 w-8 h-8 rounded-lg hover:bg-gray-100"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-
-            <div className="space-y-4">
-              <Logo
-                className="text-2xl font-bold text-main-default"
-                // style={{ color: mainColor }}
-              />
+            <X className="w-5 h-5 text-main-default" />
+          </Button>{' '}
+          <div className="space-y-4 mt-8 ml-4">
+            <Logo
+              className="text-2xl font-bold text-main-default"
+              // style={{ color: mainColor }}
+            />
+          </div>
+          {/* Header Section */}
+          <div className="pt-4 pb-4 px-6 text-center relative bg-gradient-to-b from-main-default/5 to-white">
+            <div className="space-y-3 mb-2">
               <div>
-                <h1
-                  className="text-xl font-bold text-main-default"
-                  // style={{ color: mainColor }}
-                >
+                <h1 className="text-2xl font-bold text-main-default mb-2">
                   Selamat Datang Kembali!
                 </h1>
-                <p className="text-gray-600 mt-1">
-                  Masuk untuk melanjutkan perjalanan belajar Anda
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  Lanjutkan perjalanan belajar Anda dengan akses ke ribuan
+                  materi berkualitas
                 </p>
               </div>
             </div>
           </div>
-
           {/* Content */}
-          <div className="p-6 space-y-6">
-            {/* Google Login */}
+          <div className="px-6 pb-8 pt-6 space-y-6">
+            {/* Main Login Section */}
             <div className="space-y-4">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                  Masuk dengan Akun Anda
-                </h3>
-              </div>
-
+              {/* Google Login Button Container */}
               <div className="flex justify-center">
-                {/* <div
-                  className="p-4 rounded-xl border-2 hover:shadow-md transition-all border-main-default bg-main-default"
-                  // style={{
-                  //   borderColor: `${mainColor}20`,
-                  //   backgroundColor: `${mainColor}02`,
-                  // }}
-                >
-                  <GoogleButton handleSubmit={handleSubmit} />
-                </div> */}
-
                 <GoogleButton handleSubmit={handleSubmit} />
               </div>
 
-              <div className="text-center">
-                <p className="text-sm text-gray-500">
-                  Gunakan akun Google untuk masuk dengan mudah dan aman
-                </p>
-              </div>
+              <p className="text-xs text-center text-gray-500 px-2">
+                Masuk aman dengan autentikasi Google dua faktor
+              </p>
             </div>
 
-            {/* Features */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg bg-blue-50 text-center">
-                <div className="font-medium text-blue-700 text-sm">Try Out</div>
-                <div className="text-xs text-blue-600">Gratis!</div>
-              </div>
-              <div className="p-3 rounded-lg bg-green-50 text-center">
-                <div className="font-medium text-green-700 text-sm">
-                  AI Learning
+            {/* Features Grid - Enhanced */}
+            <div className="grid grid-cols-2 gap-3 my-6">
+              <div className="relative overflow-hidden p-4 rounded-xl bg-gradient-to-br from-main-default/10 to-main-default/5 border border-main-default/20 hover:shadow-md transition-all duration-300 cursor-default group">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-main-default/20 rounded-full opacity-20 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-300" />
+                <div className="relative z-10">
+                  <div className="font-semibold text-main-default text-sm mb-1">
+                    Try Out Gratis
+                  </div>
+                  <div className="text-xs text-main-default/80 font-medium">
+                    Tanpa biaya
+                  </div>
                 </div>
-                <div className="text-xs text-green-600">Terdepan</div>
+              </div>
+
+              <div className="relative overflow-hidden p-4 rounded-xl bg-gradient-to-br from-main-default/10 to-main-default/5 border border-main-default/20 hover:shadow-md transition-all duration-300 cursor-default group">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-main-default/20 rounded-full opacity-20 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-300" />
+                <div className="relative z-10">
+                  <div className="font-semibold text-main-default text-sm mb-1">
+                    AI Learning
+                  </div>
+                  <div className="text-xs text-main-default/80 font-medium">
+                    Teknologi terdepan
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden p-4 rounded-xl bg-gradient-to-br from-main-default/10 to-main-default/5 border border-main-default/20 hover:shadow-md transition-all duration-300 cursor-default group">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-main-default/20 rounded-full opacity-20 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-300" />
+                <div className="relative z-10">
+                  <div className="font-semibold text-main-default text-sm mb-1">
+                    10.000+ Soal
+                  </div>
+                  <div className="text-xs text-main-default/80 font-medium">
+                    Bermutu tinggi
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden p-4 rounded-xl bg-gradient-to-br from-main-default/10 to-main-default/5 border border-main-default/20 hover:shadow-md transition-all duration-300 cursor-default group">
+                <div className="absolute top-0 right-0 w-12 h-12 bg-main-default/20 rounded-full opacity-20 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-300" />
+                <div className="relative z-10">
+                  <div className="font-semibold text-main-default text-sm mb-1">
+                    Mentor Terbaik
+                  </div>
+                  <div className="text-xs text-main-default/80 font-medium">
+                    Berpengalaman
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="text-center space-y-3">
-              {/* <p className="text-sm text-gray-600">
-                Belum punya akun?{' '}
-                <button
-                  type="button"
-                  className="font-semibold underline hover:no-underline"
-                  style={{ color: mainColor }}
-                  onClick={() =>
-                    setShowAuth((prev) => ({
-                      ...prev,
-                      signUp: true,
-                      open: false,
-                    }))
-                  }
-                >
-                  Daftar sekarang
-                </button>
-              </p> */}
-
-              <p className="text-xs text-gray-500">
-                Dengan melanjutkan, Anda setuju dengan Ketentuan Layanan dan
-                Kebijakan Privasi Bimbelio
+            <div className="space-y-4 pt-4 border-t border-main-default/10">
+              <p className="text-xs text-center text-gray-500 leading-relaxed px-2">
+                Dengan melanjutkan, Anda setuju dengan{' '}
+                <span className="text-main-default font-medium">
+                  Ketentuan Layanan
+                </span>
+                {' dan '}
+                <span className="text-main-default font-medium">
+                  Kebijakan Privasi
+                </span>{' '}
+                Bimbelio
+              </p>
+              <p className="text-xs text-center text-main-default/70">
+                🔒 Data Anda dilindungi dengan enkripsi tingkat enterprise
               </p>
             </div>
           </div>
@@ -228,7 +237,10 @@ const GoogleButton = ({
   handleSubmit: (googleToken: any) => void;
 }) => {
   return (
-    <div className="w-full flex justify-center">
+    <div
+      className="w-full flex justify-center"
+      id="google-button"
+    >
       <GoogleLogin
         onSuccess={handleSubmit}
         onError={() => console.log('Login Failed')}

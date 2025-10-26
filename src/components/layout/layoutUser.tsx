@@ -10,6 +10,7 @@ import Sidebar from '@/app/[web_sub_category]/(user)/user/_components/sidebar';
 import { useAppContext } from '@/components/provider/provider-app';
 
 import SearchDeskstop from '@/app/[web_sub_category]/(user)/user/_components/search-dekstop';
+import SidebarUser from '@/app/[web_sub_category]/(user)/user/_components/sidebar';
 import ProviderCheckSubscription from '@/components/provider/provider-check-subscription';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -47,6 +48,7 @@ import ProviderCheckLimitation from '../provider/provider-check-limitation';
 import ProviderCheckSubscriptionPending from '../provider/provider-check-subscription-pending';
 import { useUserLimitation } from '../provider/provider-limitation';
 import { Badge } from '../ui/badge';
+import { SidebarProvider } from '../ui/sidebar';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 interface LayoutUserClientProps {
@@ -73,6 +75,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [category, setCategory] = useState<CategoryType[]>([]);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     axiosInstance.get('/category/getAllCategories').then((res) => {
@@ -90,6 +93,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     setTransactionPopUp,
     setPagesSetting,
     setTransactionHistory,
+    setMinimizeSidebar,
   } = useAppContext();
 
   // State
@@ -251,11 +255,14 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   ];
   // MAIN LAYOUT --------------------------------------------------
   return (
-    <Suspense>
-      <ProviderCheckSubscriptionPending>
-        <ProviderCheckSubscription>
-          <ProviderCheckLimitation>
-            <div className="h-full min-h-screen overflow-x-hidden bg-gray-50">
+    <SidebarProvider
+      open={!minimizeSidebar}
+      onOpenChange={(open) => setMinimizeSidebar(!open)}
+    >
+      <Suspense>
+        <ProviderCheckSubscriptionPending>
+          <ProviderCheckSubscription>
+            <ProviderCheckLimitation>
               {/* MODERN HEADER */}
               {!inWorkspace && (
                 <header
@@ -272,7 +279,10 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                         variant="ghost"
                         size="icon"
                         className="md:hidden w-9 h-9 rounded-xl shrink-0 hover:bg-gray-100 border border-gray-200"
-                        onClick={() => setSidebarMobile(true)}
+                        onClick={() => {
+                          // setSidebarMobile(true);
+                          setIsMobileSidebarOpen(true);
+                        }}
                       >
                         <Menu className="w-5 h-5 text-gray-700" />
                       </Button>
@@ -894,7 +904,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
               )}
 
               {/* SIDEBAR (Desktop) */}
-              <div
+              {/* <div
                 className={cn(
                   'fixed inset-y-0 left-0 transition-all duration-300 z-50',
                   // In workspace: always show sidebar (minimized or expanded)
@@ -911,7 +921,13 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                 <div className="h-full">
                   <Sidebar category={category} />
                 </div>
-              </div>
+              </div> */}
+
+              <SidebarUser
+                category={category}
+                isMobileSidebarOpen={isMobileSidebarOpen}
+                setIsMobileSidebarOpen={setIsMobileSidebarOpen}
+              />
 
               {/* SIDEBAR (Mobile) - Fixed to slide from left */}
               {/* SIDEBAR (Mobile) */}
@@ -923,7 +939,11 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                       : 'left-[-310px] w-[300px] z-10000'
                   }`}
                 >
-                  <Sidebar category={category} />
+                  <Sidebar
+                    category={category}
+                    isMobileSidebarOpen={isMobileSidebarOpen}
+                    setIsMobileSidebarOpen={setIsMobileSidebarOpen}
+                  />
                 </div>
               )}
               {/* Overlay Mobile */}
@@ -937,21 +957,21 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
               {/* MAIN CONTENT */}
               <main
                 className={cn(
-                  'relative mt-0 pr-0 pt-0 duration-300 md:pl-[75px] min-h-screen',
+                  'relative mt-0 pr-0 pt-0 duration-300 md:pl-0 min-h-screen w-full bg-gray-50',
                   // docViewer => full fixed
                   componentName === 'DocViewerPage' &&
                     'fixed left-0 top-0 h-full w-full',
                   // not in workspace => push down margin
                   !inWorkspace &&
-                    'mt-[80px] pt-4 md:pl-[calc(75px+3rem)] md:pr-10 md:pt-12  min-h-[calc(100vh-80px)]',
+                    'mt-[80px] pt-4 md:pl-10 md:pr-10 md:pt-12  min-h-[calc(100vh-80px)]',
                 )}
               >
                 {children}
               </main>
-            </div>
-          </ProviderCheckLimitation>
-        </ProviderCheckSubscription>
-      </ProviderCheckSubscriptionPending>
-    </Suspense>
+            </ProviderCheckLimitation>
+          </ProviderCheckSubscription>
+        </ProviderCheckSubscriptionPending>
+      </Suspense>
+    </SidebarProvider>
   );
 }

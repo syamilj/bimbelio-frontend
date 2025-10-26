@@ -211,7 +211,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="flex items-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-b-2 rounded-none border-b-2 border-transparent"
+                    className="flex items-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-b-2 rounded-none border-b-2 border-transparent cursor-pointer hover:bg-main/20 hover:text-main"
                     style={{
                       borderColor:
                         page === tab.value ? mainColor : 'transparent',
