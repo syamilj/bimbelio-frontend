@@ -4,7 +4,11 @@ import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
 import { getMainStyles } from '@/styles/main-styles';
-import { WebsiteCategory, WebsiteSubCategory } from '@/types/database';
+import {
+  WebsiteCategory,
+  WebsiteSubCategory,
+  WebsiteSubCategoryTypeEnum,
+} from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useParams, usePathname } from 'next/navigation';
 import NextTopLoader from 'nextjs-toploader';
@@ -12,7 +16,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { DialogWebCategory } from '../ui/choose-web-category/dialog-web-category';
 import { useSession } from './provider-session-auth';
 
-const initialValue = {
+const initialValue: WebsiteSubCategory = {
   id: 'guest',
   main_color: '#0091FF',
   secondary_color: '#5aa4dd',
@@ -20,6 +24,8 @@ const initialValue = {
   createdAt: new Date(),
   updatedAt: new Date(),
   website_category_id: 'guest',
+  sharing_website_sub_category_ids: [],
+  type: 'GENERAL',
 };
 
 export default function ProviderWebsiteCategory({
@@ -39,6 +45,12 @@ export default function ProviderWebsiteCategory({
 
   const [websiteSubCategory, setWebsiteSubCategory] =
     useState<WebsiteSubCategory | null>(null);
+
+  const websiteSubCategoryType = websiteSubCategory?.type || 'GENERAL';
+  const sharingWebSubIds =
+    websiteSubCategory?.sharing_website_sub_category_ids || [];
+
+  console.log({ websiteSubCategory, websiteSubCategoryType });
 
   const getWebSubCategory = () => {
     const website_sub_category_id = localStorage.getItem(
@@ -106,6 +118,12 @@ export default function ProviderWebsiteCategory({
     setIsLoading,
     webCategoryData,
     setWebCategoryData,
+    websiteSubCategoryType,
+    sharingWebSubIds: websiteSubCategoryType === 'CORE' ? sharingWebSubIds : [],
+    type: {
+      isCore: websiteSubCategoryType === 'CORE',
+      isGeneral: websiteSubCategoryType === 'GENERAL',
+    },
   };
 
   if (isLoading) {
@@ -188,6 +206,12 @@ interface WebsiteSubCategoryContextType {
       })[]
     >
   >;
+  websiteSubCategoryType: WebsiteSubCategoryTypeEnum;
+  type: {
+    isCore: boolean;
+    isGeneral: boolean;
+  };
+  sharingWebSubIds: string[];
 }
 
 const WebsiteSubCategoryContext = createContext<

@@ -141,7 +141,10 @@ const Content = () => {
       <div>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Sub Web Category</h2>
-          <DialogAddSubCategory categories={categories}>
+          <DialogAddSubCategory
+            categories={categories}
+            subCategories={subCategories}
+          >
             <Button className="bg-main hover:bg-main/80 duration-300">
               <PlusCircle className="mr-2 h-4 w-4" /> Add Sub Web Category
             </Button>
@@ -203,6 +206,7 @@ const Content = () => {
                         <DialogEditSubCategory
                           categories={categories}
                           subCategory={subCategory}
+                          subCategories={subCategories}
                         >
                           <Button
                             variant="ghost"

@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -16,6 +17,7 @@ import { useLayoutEffect, useState } from 'react';
 interface ModalEditKategoriProps {
   id: string;
   name: string;
+  visibleAtWebSubIdsData: string[];
   open: boolean;
   setOpen: any;
   refetchCategories: () => void;
@@ -27,7 +29,9 @@ function ModalEditKategori({
   name,
   open,
   setOpen,
+  visibleAtWebSubIdsData,
 }: ModalEditKategoriProps) {
+  const [visibleAtWebSubIds, setVisibleAtWebSubIds] = useState<string[]>([]);
   const [kategori, setKategori] = useState('');
 
   // const [open, setOpen] = useState(openValue);
@@ -46,7 +50,7 @@ function ModalEditKategori({
     useState<boolean>(false);
   const editKategori = async ({ id, name }: { id: string; name: string }) => {
     await mutateGeneral('/category/editCategory', {
-      payload: { id, name },
+      payload: { id, name, visibleAtWebSubIds },
       type: 'put',
       setLoading: setIsKategoriUploading,
       onSuccess: () => {
@@ -71,7 +75,8 @@ function ModalEditKategori({
 
   useLayoutEffect(() => {
     setKategori(name);
-  }, [name]);
+    setVisibleAtWebSubIds(visibleAtWebSubIdsData || []);
+  }, [name, visibleAtWebSubIdsData]);
 
   return (
     <Dialog
@@ -89,6 +94,10 @@ function ModalEditKategori({
               onChange={onTextChange}
               placeholder={kategori ? '' : 'Tryout'}
               className="w-full"
+            />
+            <MultiSelectVisibleAt
+              value={visibleAtWebSubIds}
+              onValuesChange={setVisibleAtWebSubIds}
             />
           </div>
 

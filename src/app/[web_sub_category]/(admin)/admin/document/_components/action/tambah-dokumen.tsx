@@ -4,6 +4,7 @@ import type React from 'react';
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import LoadingPage from '@/components/ui/Loading-Page';
+import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import { toaster } from '@/components/ui/toaster';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { getDateForInput, getHours } from '@/lib/utils';
@@ -23,6 +24,7 @@ export default function TambahDokumen() {
   } = useProvider();
   const { data: session } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
+  const [visibleAtWebSubIds, setVisibleAtWebSubIds] = useState<string[]>([]);
   const [file, setFile] = useState<File | undefined>();
   const [docxFile, setDocxFile] = useState<File | undefined>();
   const [thumbnail, setThumbnail] = useState<File | undefined>();
@@ -70,6 +72,7 @@ export default function TambahDokumen() {
     dateToUnlock?: string;
     description?: string;
     tokenTo?: string;
+    visibleAtWebSubIds?: string[];
   }) => {
     await mutateGeneral('/document/addDocument', {
       payload: {
@@ -130,6 +133,7 @@ export default function TambahDokumen() {
     dateToUnlock?: string;
     description?: string;
     tokenTo?: string;
+    visibleAtWebSubIds?: string[];
   }) => {
     await mutateGeneral('/document/addDocumentWithVideo', {
       payload: {
@@ -365,35 +369,19 @@ export default function TambahDokumen() {
         }
 
         if (pdf && img) {
-          if (!to) {
-            await addDokumen({
-              title: fileName !== '' ? fileName : file.name,
-              categoryId: category,
-              subCategoryId: subCategory,
-              url: `${fileName !== '' ? fileName : file.name}`,
-              img: `${fileName !== '' ? fileName : file.name}`,
-              docxUrl: docxFile
-                ? `${fileName !== '' ? fileName : docxFile.name}`
-                : undefined,
-              premium: premium,
-            });
-          } else {
-            await addDokumen({
-              title: fileName !== '' ? fileName : file.name,
-              categoryId: category,
-              subCategoryId: subCategory,
-              url: `${fileName !== '' ? fileName : file.name}`,
-              docxUrl: docxFile
-                ? `${fileName !== '' ? fileName : docxFile.name}`
-                : undefined,
-              img: `${fileName !== '' ? fileName : file.name}`,
-              premium: premium,
-              dateTo,
-              dateToUnlock,
-              description,
-              tokenTo: token,
-            });
-          }
+          await addDokumen({
+            title: fileName !== '' ? fileName : file.name,
+            categoryId: category,
+            subCategoryId: subCategory,
+            url: `${fileName !== '' ? fileName : file.name}`,
+            img: `${fileName !== '' ? fileName : file.name}`,
+            docxUrl: docxFile
+              ? `${fileName !== '' ? fileName : docxFile.name}`
+              : undefined,
+            premium: premium,
+            visibleAtWebSubIds:
+              visibleAtWebSubIds.length > 0 ? visibleAtWebSubIds : undefined,
+          });
         }
 
         if (pdfError) {
@@ -450,39 +438,21 @@ export default function TambahDokumen() {
         }
 
         if (pdf && img && videoSave) {
-          if (!to) {
-            await addDocumentWithVideo({
-              titleDocs: fileName !== '' ? fileName : file.name,
-              categoryId: category,
-              subCategoryId: subCategory,
-              urlDocs: `${fileName !== '' ? fileName : file.name}`,
-              docxUrl: docxFile
-                ? `${fileName !== '' ? fileName : docxFile.name}`
-                : undefined,
-              img: `${fileName !== '' ? fileName : file.name}`,
-              titleVideo: videoName !== '' ? videoName : video.name,
-              urlVideo: `${videoName !== '' ? videoName : video.name}`,
-              premium: premium,
-            });
-          } else {
-            await addDocumentWithVideo({
-              titleDocs: fileName !== '' ? fileName : file.name,
-              categoryId: category,
-              subCategoryId: subCategory,
-              urlDocs: `${fileName !== '' ? fileName : file.name}`,
-              docxUrl: docxFile
-                ? `${fileName !== '' ? fileName : docxFile.name}`
-                : undefined,
-              img: `${fileName !== '' ? fileName : file.name}`,
-              titleVideo: videoName !== '' ? videoName : video.name,
-              urlVideo: `${videoName !== '' ? videoName : video.name}`,
-              premium: premium,
-              dateTo,
-              dateToUnlock,
-              description,
-              tokenTo: token,
-            });
-          }
+          await addDocumentWithVideo({
+            titleDocs: fileName !== '' ? fileName : file.name,
+            categoryId: category,
+            subCategoryId: subCategory,
+            urlDocs: `${fileName !== '' ? fileName : file.name}`,
+            docxUrl: docxFile
+              ? `${fileName !== '' ? fileName : docxFile.name}`
+              : undefined,
+            img: `${fileName !== '' ? fileName : file.name}`,
+            titleVideo: videoName !== '' ? videoName : video.name,
+            urlVideo: `${videoName !== '' ? videoName : video.name}`,
+            premium: premium,
+            visibleAtWebSubIds:
+              visibleAtWebSubIds.length > 0 ? visibleAtWebSubIds : undefined,
+          });
         }
 
         if (pdfError) {
@@ -542,6 +512,10 @@ export default function TambahDokumen() {
           <h1 className="text-[1.2rem] font-semibold">Tambah Material</h1>
 
           <div className="flex flex-col gap-4 text-[.9rem] font-medium">
+            <MultiSelectVisibleAt
+              value={visibleAtWebSubIds}
+              onValuesChange={setVisibleAtWebSubIds}
+            />
             <div id="file">
               <UploadFile
                 heading="Pdf"

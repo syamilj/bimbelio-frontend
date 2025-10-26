@@ -1,5 +1,6 @@
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Spinner } from '@/components/ui/spinner';
 import {
   Table,
@@ -19,6 +20,10 @@ import ModalEditSubKategori from './_components/modal-edit-sub-category';
 import PostUpSubCategoryModal from './_components/modal-sub-category';
 
 export default function Kategori() {
+  const {
+    type: { isCore },
+    sharingWebSubIds,
+  } = useWebsiteSubCategory();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     null,
   );
@@ -31,14 +36,16 @@ export default function Kategori() {
     id: string;
     name: string;
     open: boolean;
-  }>({ id: '', name: '', open: false });
+    visibleAtWebSubIds: string[];
+  }>({ id: '', name: '', open: false, visibleAtWebSubIds: [] });
 
   const [editSubKategoriData, setEditSubKategoriData] = useState<{
     id: string;
     name: string;
     open: boolean;
     categoryId: string;
-  }>({ id: '', name: '', open: false, categoryId: '' });
+    visibleAtWebSubIds: string[];
+  }>({ id: '', name: '', open: false, categoryId: '', visibleAtWebSubIds: [] });
 
   // const {
   //   data: categories,
@@ -64,6 +71,7 @@ export default function Kategori() {
       name: string;
       id: string;
       total: number;
+      visibleAtWebSubIds: string[];
     }[]
   >([]);
   const [isCategoriesLoading, setIsCategoriesLoading] = useState<boolean>(true);
@@ -171,6 +179,7 @@ export default function Kategori() {
             }}
             id={editKategoriData.id}
             name={editKategoriData.name}
+            visibleAtWebSubIdsData={editKategoriData.visibleAtWebSubIds}
             open={editKategoriData.open}
             setOpen={setEditKategoriData}
           />
@@ -181,6 +190,7 @@ export default function Kategori() {
             open={editSubKategoriData.open}
             categoryId={editSubKategoriData.categoryId}
             setOpen={setEditSubKategoriData}
+            visibleAtWebSubIdsData={editSubKategoriData.visibleAtWebSubIds}
           />
         </span>
       </div>
@@ -189,6 +199,9 @@ export default function Kategori() {
           <TableRow>
             <TableHead className="w-[100px]">No</TableHead>
             <TableHead>Kategori</TableHead>
+            {isCore && (
+              <TableHead className="text-center">Visible At</TableHead>
+            )}
             <TableHead className="text-right">Aksi</TableHead>
           </TableRow>
         </TableHeader>
@@ -197,6 +210,13 @@ export default function Kategori() {
             <TableRow key={category.id}>
               <TableCell className="font-medium">{index + 1}</TableCell>
               <TableCell>{category.name}</TableCell>
+              {isCore && (
+                <TableCell className="text-center">
+                  {category.visibleAtWebSubIds.length > 0
+                    ? category.visibleAtWebSubIds.join(', ')
+                    : sharingWebSubIds.join(',')}
+                </TableCell>
+              )}
               <TableCell className="text-right">
                 <button
                   className="p-1 duration-300 ease-in-out active:scale-110"
@@ -217,6 +237,7 @@ export default function Kategori() {
                     setEditKategoriData({
                       id: category.id,
                       name: category.name,
+                      visibleAtWebSubIds: category.visibleAtWebSubIds,
                       open: true,
                     });
                   }}
@@ -239,6 +260,9 @@ export default function Kategori() {
             <TableHead className="w-[100px]">No</TableHead>
             <TableHead>Kategori</TableHead>
             <TableHead>Subkategori</TableHead>
+            {isCore && (
+              <TableHead className="text-center">Visible At</TableHead>
+            )}
             <TableHead className="text-right">Aksi</TableHead>
           </TableRow>
         </TableHeader>
@@ -248,6 +272,13 @@ export default function Kategori() {
               <TableCell className="font-medium">{index + 1}</TableCell>
               <TableCell>{cat.category.name}</TableCell>
               <TableCell>{cat.name}</TableCell>
+              {isCore && (
+                <TableCell className="text-center">
+                  {cat.visibleAtWebSubIds.length > 0
+                    ? cat.visibleAtWebSubIds.join(', ')
+                    : sharingWebSubIds.join(',')}
+                </TableCell>
+              )}
               <TableCell className="text-right">
                 <button
                   className="p-1 duration-300 ease-in-out active:scale-110"
@@ -264,11 +295,13 @@ export default function Kategori() {
                 <button
                   className="p-1 duration-300 ease-in-out active:scale-110"
                   onClick={() => {
+                    console.log({ cat });
                     setEditSubKategoriData({
                       id: cat.id,
                       name: cat.name,
                       open: true,
                       categoryId: cat.categoryId,
+                      visibleAtWebSubIds: cat.visibleAtWebSubIds,
                     });
                   }}
                 >
@@ -284,7 +317,7 @@ export default function Kategori() {
       </Table>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 bg-opacity-75">
           <div className="flex flex-col items-center rounded-xl bg-white p-6 shadow-lg">
             <p>Are you sure you want to delete this category?</p>
             <div className="mt-4 grid grid-cols-2 gap-4">
