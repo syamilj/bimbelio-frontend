@@ -75,7 +75,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [category, setCategory] = useState<CategoryType[]>([]);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  // const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     axiosInstance.get('/category/getAllCategories').then((res) => {
@@ -280,8 +280,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                         size="icon"
                         className="md:hidden w-9 h-9 rounded-xl shrink-0 hover:bg-gray-100 border border-gray-200"
                         onClick={() => {
-                          // setSidebarMobile(true);
-                          setIsMobileSidebarOpen(true);
+                          setSidebarMobile(true);
                         }}
                       >
                         <Menu className="w-5 h-5 text-gray-700" />
@@ -925,8 +924,8 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
               <SidebarUser
                 category={category}
-                isMobileSidebarOpen={isMobileSidebarOpen}
-                setIsMobileSidebarOpen={setIsMobileSidebarOpen}
+                isMobileSidebarOpen={sidebarMobile}
+                setIsMobileSidebarOpen={setSidebarMobile}
               />
 
               {/* SIDEBAR (Mobile) - Fixed to slide from left */}
@@ -941,23 +940,23 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                 >
                   <Sidebar
                     category={category}
-                    isMobileSidebarOpen={isMobileSidebarOpen}
-                    setIsMobileSidebarOpen={setIsMobileSidebarOpen}
+                    isMobileSidebarOpen={sidebarMobile}
+                    setIsMobileSidebarOpen={setSidebarMobile}
                   />
                 </div>
               )}
               {/* Overlay Mobile */}
-              {sidebarMobile && (
+              {/* {sidebarMobile && (
                 <div
                   className="fixed left-0 top-0 z-9999 h-full w-full bg-[#00000063] backdrop-blur-[5px] duration-100 md:hidden"
                   onClick={() => setSidebarMobile(false)}
                 />
-              )}
+              )} */}
 
               {/* MAIN CONTENT */}
               <main
                 className={cn(
-                  'relative mt-0 pr-0 pt-0 duration-300 md:pl-0 min-h-screen w-full bg-gray-50',
+                  'relative mt-0 pr-0 pt-0 duration-300 md:pl-20 min-h-screen w-full bg-gray-50',
                   // docViewer => full fixed
                   componentName === 'DocViewerPage' &&
                     'fixed left-0 top-0 h-full w-full',
