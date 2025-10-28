@@ -198,7 +198,8 @@ const ProblemSection: React.FC = () => {
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
             >
-              REALITA YANG PERLU DIHADAPI
+              <BarChart3 className="w-4 h-4 mr-2 inline" />
+              Realita Yang Harus Lo Hadapi
             </Badge>
           </motion.div>
 
@@ -211,7 +212,7 @@ const ProblemSection: React.FC = () => {
             className="mb-8"
           >
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-              Pernah Merasa
+              Gue Tau Banget —
             </h2>
             <h2
               className="text-4xl md:text-5xl font-black bg-clip-text text-transparent"
@@ -221,7 +222,7 @@ const ProblemSection: React.FC = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Seperti Ini?
+              Struggle Lo Kayak Gini
             </h2>
           </motion.div>
 
@@ -248,8 +249,8 @@ const ProblemSection: React.FC = () => {
               >
                 1 dari 10
               </span>{' '}
-              yang beneran lolos ke PTN impian lo. Sisanya? Ngalamin hal yang
-              sama kayak lo.
+              yang beneran lolos ke PTN impian. Sisanya? Ngalamin struggle yang
+              sama kayak lo sekarang.
             </p>
             <p>
               Tapi tunggu,{' '}

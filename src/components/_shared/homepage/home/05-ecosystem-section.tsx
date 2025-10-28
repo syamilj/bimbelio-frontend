@@ -8,6 +8,7 @@ import {
   Bot,
   FileText,
   FolderKanban,
+  Layers,
   Library,
   MessageCircle,
   Network,
@@ -382,18 +383,22 @@ export default function EcosystemSection() {
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
             >
+              <Layers className="w-4 h-4 mr-2 inline" />
               Platform Ecosystem
             </Badge>
             <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">
-              Ekosistem Platform: Semua Kebutuhan Ada
+              Oke Timeline Udah Jelas —
+              <br />
+              <span style={{ color: mainColor }}>Tapi Belajar Dimana?</span>
             </h3>
           </div>
           <p className="mx-auto mb-12 max-w-3xl text-center text-gray-600">
-            Nggak cuma "dapat kelas doang". Kamu dapat akses ke{' '}
+            Lo nggak cuma "dapat kelas doang". Ada{' '}
             <span className="font-semibold text-gray-900">
-              semua platform ini
+              ekosistem lengkap
             </span>{' '}
-            — dari belajar, latihan, sampai komunitas.
+            yang gue siapin — dari belajar, latihan, sampai komunitas. Semua
+            tools buat execute PRINTS System ada di sini.
           </p>
 
           <div className="grid gap-6 lg:grid-cols-3">

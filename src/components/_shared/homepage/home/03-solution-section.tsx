@@ -209,7 +209,8 @@ export const SolutionSection: React.FC = () => {
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
             >
-              SOLUSI TERINTEGRASI
+              <Lightbulb className="w-4 h-4 mr-2 inline" />
+              Solusi Terintegrasi
             </Badge>
           </motion.div>
 
@@ -222,7 +223,7 @@ export const SolutionSection: React.FC = () => {
             className="mb-8"
           >
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-              PRINTS System —
+              Makanya Gue Bikin —
             </h2>
             <h2
               className="text-4xl md:text-5xl font-black bg-clip-text text-transparent"
@@ -232,7 +233,7 @@ export const SolutionSection: React.FC = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Strategi Belajar yang Terbukti Bekerja
+              PRINTS System
             </h2>
           </motion.div>
 
@@ -246,8 +247,15 @@ export const SolutionSection: React.FC = () => {
           >
             <p>
               Bukan soal IQ atau talent. Bukan sekadar nonton video atau
-              menghapal soal. Ribuan siswa biasa yang ngga ngerti matematika
-              bisa masuk PTN top karena tahu{' '}
+              menghapal soal.{' '}
+              <span
+                className="font-bold"
+                style={{ color: mainColor }}
+              >
+                Ribuan siswa biasa yang nggak ngerti matematika bisa masuk PTN
+                top
+              </span>{' '}
+              karena tahu{' '}
               <span
                 className="font-bold"
                 style={{ color: mainColor }}

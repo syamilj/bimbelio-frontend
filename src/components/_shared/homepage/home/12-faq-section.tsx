@@ -136,6 +136,8 @@ export default function FAQSection() {
           </Badge>
 
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
+            Masih Ada Yang —
+            <br />
             <span
               className="bg-clip-text text-transparent"
               style={{
@@ -144,16 +146,16 @@ export default function FAQSection() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Pertanyaan
-            </span>{' '}
-            yang sering ditanya
+              Bikin Lo Ragu?
+            </span>
           </h2>
 
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-            Semua keraguan kamu, kami jawab dengan jujur dan transparan.
+            Gue jawab semua keraguan lo dengan{' '}
+            <span className="font-bold">jujur dan transparan</span>.
             <br />
             <span className="font-bold text-gray-900">
-              Nggak ada yang disembunyikan.
+              Nggak ada yang disembunyikan. Ini commitment gue ke lo.
             </span>
           </p>
 

@@ -161,7 +161,7 @@ export default function ProgramsSection() {
           </Badge>
 
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-            Kapan mulai?
+            PRINTS Bagus —
             <br />
             <span
               className="bg-clip-text text-transparent"
@@ -171,7 +171,7 @@ export default function ProgramsSection() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              5 Program — Pilih yang sesuai target kamu
+              Tapi Kapan Mulainya?
             </span>
           </h2>
 
@@ -190,9 +190,9 @@ export default function ProgramsSection() {
             >
               Kedinasan (Jul 2026)
             </span>
-            , setiap program punya fokus jelas. Kamu bisa ikut{' '}
-            <span className="font-bold">1 program atau combine</span> sesuai
-            target ujian.
+            , ada <span className="font-bold">5 program bertahap</span> yang
+            sesuai sama PRINTS System. Lo bisa ikut semua atau pilih yang match
+            sama target ujian lo.
           </p>
         </motion.div>
 

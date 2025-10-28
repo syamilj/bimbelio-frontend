@@ -118,7 +118,7 @@ const TryoutSection: React.FC = () => {
           </Badge>
 
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Arena Perang{' '}
+            Btw —{' '}
             <span
               className="bg-clip-text text-transparent"
               style={{
@@ -127,12 +127,15 @@ const TryoutSection: React.FC = () => {
                 backgroundClip: 'text',
               }}
             >
-              Heroes
+              Lo Juga Dapet Bonus Ini Loh
             </span>
           </h2>
           <p className="text-lg max-w-2xl mx-auto leading-relaxed mb-6 text-gray-600">
-            Transform dari hopeless warrior jadi hero yang siap hancurin ujian!
+            Try Out IRT-based udah{' '}
+            <span className="font-bold">included di paket lo</span>, nggak perlu
+            bayar lagi!
             <br />
+            Latihan rutin, track progress, dan siap tempur di hari H.
             <span className="font-semibold text-gray-900">
               Mental kuat + Strategy tepat = Victory guaranteed!
             </span>

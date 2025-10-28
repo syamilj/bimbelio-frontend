@@ -12,24 +12,15 @@ const BentoGrid = lazy(
 const BlueprintConcept = lazy(
   () => import('@/components/_shared/homepage/home/blueprint-concept'),
 );
-const FaqHomepage = lazy(
-  () => import('@/components/_shared/homepage/home/FaqHomepage'),
-);
 const PlanCards = lazy(
   () => import('@/components/_shared/homepage/home/plan-cards'),
 );
 const Tryout = lazy(() => import('@/components/_shared/homepage/home/tryout'));
-const WhyUs = lazy(() => import('@/components/_shared/homepage/home/why-us'));
 
 export default function TutorPage() {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
 
-  const handleConsultation = () => {
-    router.push('/consultation');
-  };
 
   return (
     <div

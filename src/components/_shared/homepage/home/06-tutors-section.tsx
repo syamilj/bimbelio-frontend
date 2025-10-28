@@ -139,7 +139,8 @@ export default function TutorsSection() {
           </Badge>
 
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-            Belajar dari{' '}
+            Platform Canggih —
+            <br />
             <span
               className="bg-clip-text text-transparent"
               style={{
@@ -148,14 +149,22 @@ export default function TutorsSection() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              yang Pernah Lolos Duluan
+              Tapi Siapa Yang Ngajarin?
             </span>
           </h2>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            <span className="font-bold">Kamu nggak belajar sendiri.</span> Ada
-            Tutor yang ngajar materi, Mentor yang bimbing strategi, dan AI yang
-            support 24/7.
+            <span className="font-bold">Tools doang nggak cukup.</span> Lo butuh
+            human support yang beneran paham struggle lo. Ada Tutor yang ngajar
+            materi, Mentor yang bimbing strategi, dan AI yang support 24/7. Ini
+            bukan cuma "ngajar" — ini{' '}
+            <span
+              className="font-bold"
+              style={{ color: mainColor }}
+            >
+              mentoring 360°
+            </span>
+            .
           </p>
         </motion.div>
 

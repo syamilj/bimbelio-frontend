@@ -2,7 +2,7 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
-import { Award, Circle, Info, Target, UserPlus } from 'lucide-react';
+import { Award, Circle, Info, Plus, Target, UserPlus } from 'lucide-react';
 
 export default function AddOnPremiumSection() {
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -103,27 +103,27 @@ export default function AddOnPremiumSection() {
                 color: 'white',
               }}
             >
-              + LAYANAN TAMBAHAN
+              <Plus className="w-4 h-4 mr-2 inline" />
+              Layanan Tambahan
             </Badge>
           </div>
 
           <h2 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">
-            Ingin hasil maksimal?{' '}
+            Program Utama Udah Lengkap — <br />
             <span className="bg-gradient-to-r from-orange-500 to-orange-300 bg-clip-text text-transparent">
-              Layanan Add-On Premium
+              Tapi Kalau Mau Hasil Maksimal?
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-4xl text-lg text-gray-600 md:text-xl">
-            Program utama sudah memberikan{' '}
+            Paket lo udah dapat{' '}
             <span className="font-semibold text-gray-900">
-              ekosistem pembelajaran yang komprehensif
+              PRINTS System + 3-Layer Support + semua platform
             </span>
-            . Namun bagi kamu yang menginginkan{' '}
+            . Tapi kalau lo mau{' '}
             <span className="font-semibold text-gray-900">
               dukungan ekstra intensif atau jaminan kelulusan
             </span>
-            , tersedia layanan add-on premium yang bisa dipilih sesuai
-            kebutuhan.
+            , ada add-on premium yang bisa lo pilih sesuai kebutuhan.
           </p>
         </motion.div>
 

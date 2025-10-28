@@ -745,7 +745,7 @@ const HeadingSection: React.FC<{
         </div>
       </h1>
 
-      {/* Value proposition - Liveclass concept */}
+      {/* Value proposition - Problem Hook & Liveclass concept */}
       <div className="space-y-4 mt-10 px-4">
         <p className="text-lg md:text-xl lg:text-2xl text-gray-700 font-semibold leading-relaxed text-center">
           <span
@@ -755,20 +755,22 @@ const HeadingSection: React.FC<{
             )}
             style={colorsLoaded ? { color: mainColor } : {}}
           >
-            Liveclass bukan cuma nonton video.
+            Lo capek nggak sih belajar sendiri tanpa arah jelas?
           </span>{' '}
-          Ini kelas interaktif dengan tutor alumni PTN, live di Zoom, bisa tanya
-          langsung, diskusi real-time.
+          Gue tau banget struggle lo — makanya gue bikin Liveclass: kelas
+          interaktif dengan tutor alumni PTN, live di Zoom, bisa tanya langsung.
         </p>
 
         <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-center">
-          <span className="font-bold text-gray-800">Livestream?</span> Itu buat
-          yang ikut dari rumah, tetap dapat rekaman lengkap, TO berkala, dan AI
-          Mentor 24/7.{' '}
+          <span className="font-bold text-gray-800">
+            Nggak bisa hadir live?
+          </span>{' '}
+          Tenang, ada Livestream buat yang ikut dari rumah. Tetap dapet rekaman
+          lengkap, TO berkala, dan AI Mentor 24/7.{' '}
           <span className="font-bold text-gray-800">
             Harga ratusan ribu dengan cicilan 3x
           </span>{' '}
-          — tanpa biaya tersembunyi, tanpa ribet.
+          — nggak pakai biaya tersembunyi, nggak ribet.
         </p>
 
         <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-center">
@@ -782,7 +784,8 @@ const HeadingSection: React.FC<{
           >
             Satu akun, semua jalur
           </span>{' '}
-          — UTBK, SIMAK UI, UM UGM, sampai kedinasan.
+          — UTBK, SIMAK UI, UM UGM, sampai kedinasan. Gue bakal temenin lo dari
+          awal sampai lolos.
         </p>
       </div>
     </motion.div>

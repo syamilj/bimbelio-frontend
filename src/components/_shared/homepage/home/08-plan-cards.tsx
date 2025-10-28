@@ -221,7 +221,8 @@ const PlanCards: React.FC = () => {
             </Badge>
 
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-              Mulai dari{' '}
+              Udah Kebayang Sistemnya Kan —
+              <br />
               <span
                 className="bg-clip-text text-transparent"
                 style={{
@@ -230,15 +231,16 @@ const PlanCards: React.FC = () => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                Rp799 ribu / bulan
+                Sekarang Pilih Paket Mana?
               </span>
             </h2>
 
             <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
-              Harga terjangkau dengan opsi cicilan 3x tanpa bunga.
+              <span className="font-semibold">Mulai dari Rp799 ribu</span>{' '}
+              dengan cicilan 3x tanpa bunga.
               <span className="font-semibold block mt-2">
-                Semua paket sudah include Tutor Expert, Mentor Guidance, dan AI
-                Support 24/7.
+                Semua paket udah include PRINTS System, 3-Layer Support (Tutor +
+                Mentor + AI), dan akses ke semua platform.
               </span>
             </p>
 

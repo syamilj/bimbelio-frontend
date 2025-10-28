@@ -159,7 +159,8 @@ export default function ComparisonSection() {
           </Badge>
 
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-            Bandingkan sendiri —{' '}
+            Masih Ragu? —
+            <br />
             <span
               className="bg-clip-text text-transparent"
               style={{
@@ -168,13 +169,13 @@ export default function ComparisonSection() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              biar makin yakin
+              Ini Data Perbandingannya
             </span>
           </h2>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
-            Data speaks louder. Ini perbandingan jujur antara program kami dan
-            alternatif lain di pasaran.
+            Data speaks louder. Ini perbandingan jujur antara program gue dan
+            alternatif lain di pasaran — biar lo makin yakin.
           </p>
 
           {/* Info Pills */}

@@ -128,26 +128,17 @@ export default function MentorAISection() {
               Layer 2 - Mentor System
             </Badge>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-              Mentor —{' '}
-              <span
-                className="bg-clip-text text-transparent"
-                style={{
-                  background: 'linear-gradient(135deg, #00C853, #00A843)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Guidance 360°
-              </span>
+              Layer 1 Udah Kenal —
+              <br />
+              <span style={{ color: '#00C853' }}>Layer 2 & 3 Gimana?</span>
             </h2>
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-4xl mx-auto">
-              Selain tutor yang ngajar materi, ada{' '}
-              <span className="font-bold">mentor dedicated</span> yang guide
-              kamu dalam strategic planning, time management, mental coaching,
-              dan persiapan karir pasca-PTN.{' '}
-              <span className="font-black">
-                Bukan cuma belajar soal, tapi strategi menang!
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Tutor ngajarin materi. Tapi lo juga butuh{' '}
+              <span className="font-bold">
+                strategic planning & instant support
               </span>
+              . Makanya ada Mentor buat bimbing strategi lo, dan AI buat jawab
+              pertanyaan kapan aja.
             </p>
           </div>
 
