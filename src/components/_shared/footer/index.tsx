@@ -2,7 +2,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import Logo from '@/components/ui/logo';
 import { IconOpenAI } from '@/styles/icon';
-import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react';
 
 export default function Footer() {
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -23,100 +22,6 @@ export default function Footer() {
           className="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl opacity-10 animate-pulse"
           style={{ backgroundColor: secondaryColor }}
         />
-      </div>
-
-      {/* Top Section - Contact CTA */}
-      <div
-        className="relative w-full py-8 md:py-12 border-b"
-        style={{ borderColor: `${mainColor}20` }}
-      >
-        <div className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8">
-          <div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 p-6 md:p-8 rounded-2xl"
-            style={{
-              backgroundColor: `${mainColor}08`,
-              borderColor: `${mainColor}20`,
-              border: '2px solid',
-            }}
-          >
-            {/* Contact Info 1 */}
-            <div className="flex items-start gap-4">
-              <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{
-                  backgroundColor: `${mainColor}20`,
-                  color: mainColor,
-                }}
-              >
-                <Mail className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-900 mb-1">Email Kami</h4>
-                <p className="text-sm text-gray-600">info@bimbelio.com</p>
-                <a
-                  href="mailto:info@bimbelio.com"
-                  className="text-sm font-semibold mt-2 flex items-center gap-1 group transition-colors"
-                  style={{ color: mainColor }}
-                >
-                  Kirim Email
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-              </div>
-            </div>
-
-            {/* Contact Info 2 */}
-            <div className="flex items-start gap-4">
-              <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{
-                  backgroundColor: `${mainColor}20`,
-                  color: mainColor,
-                }}
-              >
-                <Phone className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-900 mb-1">Hubungi Kami</h4>
-                <p className="text-sm text-gray-600">+62 21 1234 5678</p>
-                <a
-                  href="https://wa.me/6212112345678"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-semibold mt-2 flex items-center gap-1 group transition-colors"
-                  style={{ color: mainColor }}
-                >
-                  Chat WhatsApp
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-              </div>
-            </div>
-
-            {/* Contact Info 3 */}
-            <div className="flex items-start gap-4">
-              <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{
-                  backgroundColor: `${mainColor}20`,
-                  color: mainColor,
-                }}
-              >
-                <MapPin className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-900 mb-1">Kunjungi Kami</h4>
-                <p className="text-sm text-gray-600">Jakarta Selatan</p>
-                <a
-                  href="#"
-                  className="text-sm font-semibold mt-2 flex items-center gap-1 group transition-colors"
-                  style={{ color: mainColor }}
-                >
-                  Lihat Lokasi
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Main Footer Content */}

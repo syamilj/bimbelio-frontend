@@ -1,6 +1,5 @@
 'use client';
 
-import ImageHero from '@/_assets/homepage/hero/bg-hero.webp';
 import MobilePoster from '@/_assets/homepage/hero/bimbelio-mobile.webp';
 import DesktopPoster from '@/_assets/homepage/hero/bimbelio.webp';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -79,7 +78,6 @@ const STATS: Stat[] = [
 const HeroSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [isMobile, setIsMobile] = useState(false);
-  const [shouldLoadBg, setShouldLoadBg] = useState(false);
   const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
     useState(false);
   const { scrollY } = useScroll();
@@ -99,15 +97,6 @@ const HeroSection: React.FC = () => {
     onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, []);
-
-  // Lazy load background after initial render
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShouldLoadBg(true);
-    }, 1500); // Delay 1.5 detik untuk prioritaskan konten utama
-
-    return () => clearTimeout(timer);
   }, []);
 
   const scrollTo = (id: string, offset = 100) => {
@@ -134,30 +123,254 @@ const HeroSection: React.FC = () => {
       >
         <GlobalStyles />
 
-        {/* Ultra  Background */}
-        <motion.div
-          style={{ y }}
-          className="absolute inset-0 z-1"
-        >
-          {/* Lazy loaded background image */}
-          {shouldLoadBg && (
-            <div className="relative w-full h-full">
-              <Image
-                src={ImageHero || '/placeholder.svg'}
-                alt="University Buildings Background"
-                fill
-                loading="lazy"
-                sizes="100vw"
-                className={`
-                  object-contain scale-200 object-[center_35%]          /* mobile */
-                  md:object-contain md:object-[center_top] md:scale-100  /* desktop sama seperti sebelumnya */
-                  transition-opacity duration-700 ease-in-out
-                  ${shouldLoadBg ? 'opacity-100' : 'opacity-0'}
-                `}
-              />
-            </div>
-          )}
-        </motion.div>
+        {/* Modern Geometric Background - Random & Colorful */}
+        <div className="absolute inset-0 z-1 bg-white">
+          {/* Random Geometric Shapes - Colorful & Solid */}
+
+          {/* Shape 1: Large Blue Circle - Top Right */}
+          <div
+            className="absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-25 shape-float-1"
+            style={{
+              backgroundColor: '#0EA5E9',
+              boxShadow: '0 8px 32px rgba(14, 165, 233, 0.3)',
+            }}
+          />
+
+          {/* Shape 2: Medium Yellow Square - Top Left */}
+          <div
+            className="absolute top-32 left-20 w-40 h-40 rounded-2xl opacity-28 shape-float-2"
+            style={{
+              backgroundColor: '#FFC208',
+              boxShadow: '0 6px 28px rgba(255, 194, 8, 0.35)',
+              transform: 'rotate(15deg)',
+            }}
+          />
+
+          {/* Shape 3: Small Pink Circle - Mid Right */}
+          <div
+            className="absolute top-1/4 right-1/4 w-24 h-24 rounded-full opacity-30 shape-float-3"
+            style={{
+              backgroundColor: '#EC4899',
+              boxShadow: '0 4px 20px rgba(236, 72, 153, 0.4)',
+            }}
+          />
+
+          {/* Shape 4: Triangle/Diamond - Mid Left */}
+          <div
+            className="absolute top-1/3 left-1/3 w-32 h-32 opacity-24 shape-float-4"
+            style={{
+              backgroundColor: '#8B5CF6',
+              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.35)',
+              transform: 'rotate(45deg)',
+              borderRadius: '12px',
+            }}
+          />
+
+          {/* Shape 5: Medium Green Circle - Bottom Left */}
+          <div
+            className="absolute bottom-1/4 left-16 w-48 h-48 rounded-full opacity-26 shape-float-5"
+            style={{
+              backgroundColor: '#10B981',
+              boxShadow: '0 10px 36px rgba(16, 185, 129, 0.32)',
+            }}
+          />
+
+          {/* Shape 6: Small Orange Square - Bottom Center */}
+          <div
+            className="absolute bottom-32 left-1/2 w-28 h-28 rounded-2xl opacity-32 shape-float-6"
+            style={{
+              backgroundColor: '#F97316',
+              boxShadow: '0 6px 26px rgba(249, 115, 22, 0.38)',
+              transform: 'rotate(-12deg)',
+            }}
+          />
+
+          {/* Shape 7: Large Indigo Rounded Square - Center Right */}
+          <div
+            className="absolute top-1/2 right-20 w-56 h-56 rounded-3xl opacity-22 shape-float-7"
+            style={{
+              backgroundColor: '#6366F1',
+              boxShadow: '0 12px 40px rgba(99, 102, 241, 0.28)',
+              transform: 'rotate(8deg)',
+            }}
+          />
+
+          {/* Shape 8: Small Cyan Circle - Top Center */}
+          <div
+            className="absolute top-24 left-1/2 w-20 h-20 rounded-full opacity-34 shape-float-8"
+            style={{
+              backgroundColor: '#06B6D4',
+              boxShadow: '0 4px 18px rgba(6, 182, 212, 0.42)',
+            }}
+          />
+
+          {/* Shape 5: Medium Green Circle - Bottom Left */}
+          <motion.div
+            animate={{
+              y: [0, 25, 0],
+              x: [0, 15, 0],
+            }}
+            transition={{
+              duration: 11,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 1.5,
+            }}
+            className="absolute bottom-1/4 left-16 w-48 h-48 rounded-full opacity-9"
+            style={{ backgroundColor: '#10B981' }}
+          />
+
+          {/* Shape 6: Small Orange Square - Bottom Center */}
+          <motion.div
+            animate={{
+              rotate: [-12, -22, -12],
+              scale: [1, 1.05, 1],
+            }}
+            transition={{
+              duration: 7,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 3,
+            }}
+            className="absolute bottom-32 left-1/2 w-28 h-28 rounded-2xl opacity-11"
+            style={{ backgroundColor: '#F97316', transform: 'rotate(-12deg)' }}
+          />
+
+          {/* Shape 7: Large Indigo Rounded Square - Center Right */}
+          <motion.div
+            animate={{
+              y: [0, -18, 0],
+              rotate: [8, 18, 8],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 2.5,
+            }}
+            className="absolute top-1/2 right-20 w-56 h-56 rounded-3xl opacity-7"
+            style={{ backgroundColor: '#6366F1', transform: 'rotate(8deg)' }}
+          />
+
+          {/* Shape 8: Small Cyan Circle - Top Center */}
+          <motion.div
+            animate={{
+              y: [0, 12, 0],
+              x: [0, -5, 0],
+            }}
+            transition={{
+              duration: 8.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 0.8,
+            }}
+            className="absolute top-20 left-1/2 w-20 h-20 rounded-full opacity-13"
+            style={{ backgroundColor: '#06B6D4' }}
+          />
+
+          {/* Shape 9: Pill Shape - Mid Bottom */}
+          <div
+            className="absolute bottom-1/3 right-1/3 opacity-27 shape-float-9"
+            style={{
+              backgroundColor: '#EF4444',
+              boxShadow: '0 8px 30px rgba(239, 68, 68, 0.36)',
+              width: '80px',
+              height: '160px',
+              borderRadius: '40px',
+              transform: 'rotate(25deg)',
+            }}
+          />
+
+          {/* Shape 10: Small Lime Square - Random Position */}
+          <div
+            className="absolute top-2/3 left-1/4 w-24 h-24 rounded-2xl opacity-29 shape-float-10"
+            style={{
+              backgroundColor: '#84CC16',
+              boxShadow: '0 5px 22px rgba(132, 204, 22, 0.38)',
+              transform: 'rotate(-15deg)',
+            }}
+          />
+
+          {/* Shape 11: Medium Teal Rounded - Bottom Right */}
+          <div
+            className="absolute bottom-20 right-1/4 w-36 h-36 rounded-2xl opacity-23 shape-float-11"
+            style={{
+              backgroundColor: '#14B8A6',
+              boxShadow: '0 10px 34px rgba(20, 184, 166, 0.33)',
+            }}
+          />
+
+          {/* Shape 12: Tiny Rose Circle - Random */}
+          <div
+            className="absolute top-1/2 left-2/3 w-16 h-16 rounded-full opacity-35 shape-float-12"
+            style={{
+              backgroundColor: '#F43F5E',
+              boxShadow: '0 4px 16px rgba(244, 63, 94, 0.44)',
+            }}
+          />
+
+          {/* Shape 10: Small Lime Square - Random Position */}
+          <motion.div
+            animate={{
+              y: [0, -15, 0],
+              rotate: [-15, -5, -15],
+            }}
+            transition={{
+              duration: 9.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 2.2,
+            }}
+            className="absolute top-2/3 left-1/4 w-24 h-24 rounded-2xl opacity-10"
+            style={{ backgroundColor: '#84CC16', transform: 'rotate(-15deg)' }}
+          />
+
+          {/* Shape 11: Medium Teal Rounded - Bottom Right */}
+          <motion.div
+            animate={{
+              scale: [1, 1.08, 1],
+              y: [0, 20, 0],
+            }}
+            transition={{
+              duration: 13,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 3.5,
+            }}
+            className="absolute bottom-20 right-1/4 w-36 h-36 rounded-2xl opacity-8"
+            style={{ backgroundColor: '#14B8A6' }}
+          />
+
+          {/* Shape 12: Tiny Rose Circle - Random */}
+          <motion.div
+            animate={{
+              x: [0, -10, 0],
+              y: [0, 8, 0],
+            }}
+            transition={{
+              duration: 7.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 1.2,
+            }}
+            className="absolute top-1/2 left-1/3 w-16 h-16 rounded-full opacity-14"
+            style={{ backgroundColor: '#F43F5E' }}
+          />
+
+          {/* Subtle grid for structure */}
+          <div className="absolute inset-0 opacity-[0.015]">
+            <div
+              className="w-full h-full"
+              style={{
+                backgroundImage: `
+                  linear-gradient(#0EA5E9 1px, transparent 1px),
+                  linear-gradient(90deg, #0EA5E9 1px, transparent 1px)
+                `,
+                backgroundSize: '80px 80px',
+              }}
+            />
+          </div>
+        </div>
 
         {/* Main Content - Ultra  Layout */}
         <div className="relative z-30 mx-auto flex max-w-6xl flex-col items-center px-4 text-center pb-16">
@@ -240,6 +453,126 @@ const GlobalStyles: React.FC = () => (
       }
     }
 
+    @keyframes float-1 {
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+      50% {
+        transform: translate(-15px, -20px);
+      }
+    }
+
+    @keyframes float-2 {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(15deg);
+      }
+      50% {
+        transform: translate(20px, 15px) rotate(25deg);
+      }
+    }
+
+    @keyframes float-3 {
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+      50% {
+        transform: translate(-10px, 18px) scale(1.05);
+      }
+    }
+
+    @keyframes float-4 {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(45deg);
+      }
+      50% {
+        transform: translate(-12px, -15px) rotate(55deg);
+      }
+    }
+
+    @keyframes float-5 {
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+      50% {
+        transform: translate(18px, 22px);
+      }
+    }
+
+    @keyframes float-6 {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(-12deg) scale(1);
+      }
+      50% {
+        transform: translate(15px, -18px) rotate(-22deg) scale(1.08);
+      }
+    }
+
+    @keyframes float-7 {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(8deg);
+      }
+      50% {
+        transform: translate(-20px, -25px) rotate(18deg);
+      }
+    }
+
+    @keyframes float-8 {
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+      50% {
+        transform: translate(-8px, 15px);
+      }
+    }
+
+    @keyframes float-9 {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(25deg);
+      }
+      50% {
+        transform: translate(14px, -12px) rotate(35deg);
+      }
+    }
+
+    @keyframes float-10 {
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(-15deg);
+      }
+      50% {
+        transform: translate(-16px, 20px) rotate(-5deg);
+      }
+    }
+
+    @keyframes float-11 {
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+      50% {
+        transform: translate(22px, 18px) scale(1.1);
+      }
+    }
+
+    @keyframes float-12 {
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+      50% {
+        transform: translate(-10px, -14px);
+      }
+    }
+
     .animate-gentle-float {
       animation: gentle-float 6s ease-in-out infinite;
     }
@@ -259,6 +592,43 @@ const GlobalStyles: React.FC = () => (
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+    }
+
+    .shape-float-1 {
+      animation: float-1 8s ease-in-out infinite;
+    }
+    .shape-float-2 {
+      animation: float-2 10s ease-in-out infinite 1s;
+    }
+    .shape-float-3 {
+      animation: float-3 6s ease-in-out infinite 0.5s;
+    }
+    .shape-float-4 {
+      animation: float-4 9s ease-in-out infinite 2s;
+    }
+    .shape-float-5 {
+      animation: float-5 11s ease-in-out infinite 1.5s;
+    }
+    .shape-float-6 {
+      animation: float-6 7s ease-in-out infinite 3s;
+    }
+    .shape-float-7 {
+      animation: float-7 12s ease-in-out infinite 2.5s;
+    }
+    .shape-float-8 {
+      animation: float-8 8.5s ease-in-out infinite 0.8s;
+    }
+    .shape-float-9 {
+      animation: float-9 10.5s ease-in-out infinite 1.8s;
+    }
+    .shape-float-10 {
+      animation: float-10 9.5s ease-in-out infinite 2.2s;
+    }
+    .shape-float-11 {
+      animation: float-11 13s ease-in-out infinite 3.5s;
+    }
+    .shape-float-12 {
+      animation: float-12 7.5s ease-in-out infinite 1.2s;
     }
   `}</style>
 );
@@ -333,7 +703,7 @@ const HeadingSection: React.FC<{
           <span className="text-gray-900">Mau</span>
           <span
             className={cn(
-              'text-white text-center px-3 md:px-4 py-1.5 md:py-2 rounded-xl font-extrabold leading-tight shadow-xl transition-all duration-300',
+              'text-white text-center px-3 md:px-4 py-1.5 md:py-2 rounded-2xl font-extrabold leading-tight shadow-md transition-all duration-300',
               !colorsLoaded && 'bg-blue-500',
             )}
             style={
@@ -358,7 +728,7 @@ const HeadingSection: React.FC<{
           <span className="text-gray-900">Mahasiswa</span>
           <span
             className={cn(
-              'text-white text-center px-3 md:px-4 py-1.5 md:py-2 rounded-xl font-extrabold leading-tight shadow-xl transition-all duration-300',
+              'text-white text-center px-3 md:px-4 py-1.5 md:py-2 rounded-2xl font-extrabold leading-tight shadow-md transition-all duration-300',
               !colorsLoaded && 'bg-blue-500',
             )}
             style={
@@ -426,7 +796,7 @@ const HeadingSection: React.FC<{
     >
       {/* Liveclass Card */}
       <div
-        className="relative p-6 rounded-2xl bg-white shadow-lg border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        className="relative p-6 rounded-2xl bg-white shadow-lg border-2 hover:shadow-md transition-all duration-300 hover:-translate-y-1"
         style={{
           borderColor: `${mainColor}40`,
         }}
@@ -500,7 +870,7 @@ const HeadingSection: React.FC<{
 
       {/* Livestream Card */}
       <div
-        className="relative p-6 rounded-2xl bg-white shadow-lg border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        className="relative p-6 rounded-2xl bg-white shadow-lg border-2 hover:shadow-md transition-all duration-300 hover:-translate-y-1"
         style={{
           borderColor: `${secondaryColor || mainColor}40`,
         }}
@@ -610,7 +980,7 @@ const HeadingSection: React.FC<{
           }}
         >
           <div
-            className="p-2 rounded-lg"
+            className="p-2 rounded-2xl"
             style={{
               backgroundColor: `${mainColor}15`,
               color: mainColor,
@@ -649,7 +1019,7 @@ const StatsSection: React.FC<{
       {stats.map((stat, idx) => (
         <div
           key={idx}
-          className="text-center p-4 md:p-6 rounded-2xl bg-white/90 backdrop-blur-sm shadow-md hover:shadow-xl transition-all duration-300 border-2 hover:-translate-y-1"
+          className="text-center p-4 md:p-6 rounded-2xl bg-white/90 backdrop-blur-sm shadow-md hover:shadow-md transition-all duration-300 border-2 hover:-translate-y-1"
           style={{
             borderColor: `${mainColor}20`,
           }}
@@ -672,7 +1042,7 @@ const StatsSection: React.FC<{
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, delay: 1.4 }}
-      className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-white shadow-lg border-2"
+      className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white shadow-lg border-2"
       style={{
         borderColor: `${mainColor}30`,
       }}
@@ -833,7 +1203,7 @@ const CTASection: React.FC<{
         onClick={handleClick}
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.97 }}
-        className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg text-white shadow-xl transition-all duration-300 cursor-pointer"
+        className="group flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg text-white shadow-md transition-all duration-300 cursor-pointer"
         style={{
           background: `linear-gradient(90deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
           boxShadow: `0 4px 24px 0 ${mainColor}33`,
@@ -1028,7 +1398,7 @@ const DesktopVideo: React.FC = () => {
         {/* Optimized browser bar dengan lazy loading icons */}
         {showBrowserBar && (
           <div className="flex items-center bg-white px-4 py-3 border-b">
-            <div className="flex-1 flex items-center bg-white rounded-lg px-3 py-2 text-sm border">
+            <div className="flex-1 flex items-center bg-white rounded-2xl px-3 py-2 text-sm border">
               <Suspense
                 fallback={<div className="w-4 h-4 bg-gray-200 rounded mr-2" />}
               >

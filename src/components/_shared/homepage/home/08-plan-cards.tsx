@@ -8,7 +8,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { motion } from 'framer-motion';
-import { Crown } from 'lucide-react';
+import {
+  CheckCircle2,
+  CreditCard,
+  Crown,
+  MessageCircle,
+  Shield,
+} from 'lucide-react';
 import React, { useState } from 'react';
 
 type PricingDataType = {
@@ -121,12 +127,13 @@ const PlanCards: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge
-              variant="outline"
-              className="mb-6 px-6 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit mx-auto"
-              style={{ backgroundColor: mainColor }}
+              className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
             >
-              <Crown className="w-4 h-4" />
-              Blueprint Plans
+              <Crown className="w-4 h-4 mr-2 inline" />
+              Pilih Blueprint Kamu
             </Badge>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
               Loading plans...
@@ -138,10 +145,15 @@ const PlanCards: React.FC = () => {
                 key={index}
                 className="bg-white rounded-3xl p-8 border-2 border-gray-200 animate-pulse"
               >
+                <div className="h-1.5 bg-gray-200 rounded mb-6"></div>
                 <div className="h-6 bg-gray-200 rounded mb-4"></div>
                 <div className="h-8 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                <div className="h-24 bg-gray-200 rounded"></div>
+                <div className="h-4 bg-gray-200 rounded mb-6"></div>
+                <div className="space-y-2">
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                </div>
               </div>
             ))}
           </div>
@@ -157,12 +169,13 @@ const PlanCards: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <Badge
-              variant="outline"
-              className="mb-6 px-6 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit mx-auto"
-              style={{ backgroundColor: mainColor }}
+              className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
             >
-              <Crown className="w-4 h-4" />
-              Blueprint Plans
+              <Crown className="w-4 h-4 mr-2 inline" />
+              Pilih Blueprint Kamu
             </Badge>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
               Paket akan segera hadir
@@ -198,16 +211,17 @@ const PlanCards: React.FC = () => {
             className="text-center mb-16"
           >
             <Badge
-              variant="outline"
-              className="mb-6 px-6 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit mx-auto"
-              style={{ backgroundColor: mainColor }}
+              className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
             >
-              <Crown className="w-4 h-4" />
-              Blueprint Plans
+              <Crown className="w-4 h-4 mr-2 inline" />
+              Pilih Blueprint Kamu
             </Badge>
 
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-              Pilih Blueprint yang{' '}
+              Mulai dari{' '}
               <span
                 className="bg-clip-text text-transparent"
                 style={{
@@ -216,16 +230,54 @@ const PlanCards: React.FC = () => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                pas buat kamu!
+                Rp799 ribu / bulan
               </span>
             </h2>
 
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Sistem yang terukur untuk bantu ribuan siswa nilai 90+ poin.{' '}
-              <span className="font-semibold">
-                Pilih sesuai kebutuhan & budget!
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+              Harga terjangkau dengan opsi cicilan 3x tanpa bunga.
+              <span className="font-semibold block mt-2">
+                Semua paket sudah include Tutor Expert, Mentor Guidance, dan AI
+                Support 24/7.
               </span>
             </p>
+
+            {/* Info Pills */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <div
+                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-md"
+                style={{
+                  backgroundColor: mainColor + '15',
+                  border: `1.5px solid ${mainColor}30`,
+                  color: mainColor,
+                }}
+              >
+                <CreditCard className="w-4 h-4" />
+                <span>Cicilan 3x</span>
+              </div>
+              <div
+                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-md"
+                style={{
+                  backgroundColor: '#00C85315',
+                  border: '1.5px solid #00C85330',
+                  color: '#00C853',
+                }}
+              >
+                <Shield className="w-4 h-4" />
+                <span>Garansi Uang Kembali</span>
+              </div>
+              <div
+                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-md"
+                style={{
+                  backgroundColor: '#9C27B015',
+                  border: '1.5px solid #9C27B030',
+                  color: '#9C27B0',
+                }}
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>3-Layer Support</span>
+              </div>
+            </div>
           </motion.div>
 
           {/* Plans Grid - Using CardPlan component */}
@@ -273,29 +325,68 @@ const PlanCards: React.FC = () => {
             className="text-center mt-16"
           >
             <div
-              className="rounded-3xl p-8 max-w-2xl mx-auto"
+              className="rounded-3xl p-8 max-w-4xl mx-auto border-2 shadow-md"
               style={{
-                background: `linear-gradient(to right, ${mainColor}08, ${secondaryColor}08)`,
+                backgroundColor: `${mainColor}08`,
+                borderColor: `${mainColor}30`,
               }}
             >
-              <h3 className="text-2xl font-black text-gray-900 mb-4">
-                Masih bingung? Konsultasi langsung aja!
-              </h3>
+              <div className="mb-4 flex items-center justify-center gap-3">
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-2xl shadow-lg"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                >
+                  <MessageCircle className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-2xl font-black text-gray-900">
+                  Masih ragu? Konsultasi gratis!
+                </h3>
+              </div>
 
-              <p className="text-gray-700 leading-relaxed mb-6">
-                Kalau masih ada pertanyaan atau mau konsultasi Blueprint yang
-                paling cocok, tim kami siap bantu lewat WhatsApp atau telepon.
+              <p className="text-gray-700 leading-relaxed mb-6 max-w-3xl mx-auto">
+                Nggak yakin paket mana yang cocok? Tim kami siap bantu kamu via
+                chat, WhatsApp, atau telepon. Kami juga bisa jelasin cicilan 3x
+                dan benefit setiap paket sesuai goals & schedule kamu.
               </p>
 
-              <Button
-                onClick={handleConsultationClick}
-                className="px-8 py-3 rounded-full font-semibold text-white hover:scale-105 transition-all duration-300"
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                }}
-              >
-                Konsultasi Sekarang
-              </Button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button
+                  onClick={handleConsultationClick}
+                  className="px-8 py-6 rounded-2xl font-bold text-white hover:shadow-md transition-all duration-300 text-base"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                >
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Konsultasi Gratis (via Chat)
+                </Button>
+
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <CheckCircle2
+                    className="w-4 h-4"
+                    style={{ color: '#00C853' }}
+                  />
+                  <span className="font-semibold">Response dalam 5 menit</span>
+                </div>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="mt-6 pt-6 border-t-2 border-gray-200 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-600">
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-green-500" />
+                  <span className="font-semibold">1000+ Siswa Aktif</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-blue-500" />
+                  <span className="font-semibold">Rating 4.9/5.0</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-purple-500" />
+                  <span className="font-semibold">Trusted Partner PTN</span>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
