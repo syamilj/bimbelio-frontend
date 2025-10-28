@@ -4,6 +4,7 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
@@ -155,81 +156,70 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
 
   return (
     <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="w-full max-w-4xl h-full max-h-[90vh] m-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
-        {/* Header */}
+      <div className="w-full max-w-4xl h-full max-h-[90vh] m-4 bg-white rounded-3xl shadow-2xl overflow-hidden">
+        {/* Header with Gradient */}
         <div
-          className="flex items-center justify-between p-6 border-b border-gray-200 relative overflow-hidden"
-          style={{ backgroundColor: `${mainColor}05` }}
+          className="relative px-8 py-4 text-white overflow-hidden"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
         >
-          <div className="relative z-10">
-            <h1
-              className="text-2xl font-bold flex items-center gap-3"
-              style={{ color: mainColor }}
-            >
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: `${mainColor}15` }}
-              >
-                <Settings
-                  className="w-5 h-5"
-                  style={{ color: mainColor }}
-                />
-              </div>
-              Pengaturan Profil
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Kelola akun dan preferensi Anda
-            </p>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTransactionHistory(false)}
-            className="rounded-xl hover:bg-gray-100"
-          >
-            <X className="w-5 h-5" />
-          </Button>
+          {/* Decorative circles */}
+          <div className="absolute -right-20 -top-20 w-40 h-40 rounded-full opacity-20 bg-white" />
+          <div className="absolute -left-10 -bottom-10 w-32 h-32 rounded-full opacity-10 bg-white" />
 
-          {/* Decorative elements */}
-          <div
-            className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-            style={{ backgroundColor: mainColor }}
-          />
+          <div className="relative z-10 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl md:text-3xl font-black mb-2 flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <Settings className="w-6 h-6" />
+                </div>
+                Pengaturan Profil
+              </h1>
+              <p className="text-white/80">Kelola akun dan preferensi Anda</p>
+            </div>
+            <Button
+              onClick={() => setTransactionHistory(false)}
+              className="rounded-xl bg-white/20 hover:bg-white/30 text-white border-0"
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
 
         {/* Content */}
-        <div className="flex h-full">
+        <div className="flex h-full flex-col overflow-hidden">
           <Tabs
             value={page}
             onValueChange={setPage}
-            className="w-full flex flex-col"
+            className="w-full flex flex-col flex-1 overflow-hidden"
           >
-            {/* Sidebar Tabs */}
-            <div className="flex border-b border-gray-200 bg-gray-50/50">
+            {/* Tabs Navigation */}
+            <div className="border-b border-gray-200 bg-gray-50/50">
               <TabsList className="grid w-full grid-cols-3 bg-transparent p-0 h-auto">
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="flex items-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-b-2 rounded-none border-b-2 border-transparent cursor-pointer hover:bg-main/20 hover:text-main"
+                    className="flex items-center justify-center gap-2 px-6 py-4 text-sm font-semibold transition-all duration-300 data-[state=active]:bg-white rounded-none border-b-2 cursor-pointer hover:bg-gray-100/50 relative text-[#666]"
+                    isActiveClassName="bg-main/20 text-main"
                     style={{
                       borderColor:
                         page === tab.value ? mainColor : 'transparent',
-                      // color: page === tab.value ? mainColor : undefined,
                     }}
                   >
                     {tab.icon}
-                    <span className="hidden sm:inline">{tab.label}</span>
+                    <span>{tab.label}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>
             </div>
 
             {/* Tab Contents */}
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-hidden">
               <TabsContent
                 value="account"
-                className="mt-0 h-full"
+                className="mt-0 h-full overflow-y-auto"
               >
                 <AccountTab
                   session={session}
@@ -240,12 +230,13 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                   loading={loading}
                   handleChangeProfile={handleChangeProfile}
                   mainColor={mainColor}
+                  secondaryColor={secondaryColor}
                 />
               </TabsContent>
 
               <TabsContent
                 value="subscription"
-                className="mt-0 h-full"
+                className="mt-0 h-full overflow-y-auto"
               >
                 <SubscriptionTab
                   data={data}
@@ -253,16 +244,18 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                   setTransactionPopUp={setTransactionPopUp}
                   setTransactionHistory={setTransactionHistory}
                   mainColor={mainColor}
+                  secondaryColor={secondaryColor}
                 />
               </TabsContent>
 
               <TabsContent
                 value="history"
-                className="mt-0 h-full"
+                className="mt-0 h-full overflow-y-auto"
               >
                 <HistoryTab
                   data={data}
                   mainColor={mainColor}
+                  secondaryColor={secondaryColor}
                 />
               </TabsContent>
             </div>
@@ -283,97 +276,118 @@ const AccountTab = ({
   loading,
   handleChangeProfile,
   mainColor,
+  secondaryColor,
 }: any) => (
-  <div className="p-6 space-y-6">
-    <Card className="border-2 border-gray-100 rounded-2xl shadow-sm">
+  <div className="p-8 space-y-6 mb-50">
+    <div
+      className="rounded-3xl p-8 text-white overflow-hidden relative"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+      }}
+    >
+      <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-10 bg-white" />
+      <div className="absolute -left-8 -bottom-8 w-32 h-32 rounded-full opacity-20 bg-white" />
+
+      <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-8">
+        <div className="relative">
+          <input
+            id="ubahFotoProfile"
+            type="file"
+            className="absolute inset-0 w-0 h-0 opacity-0"
+            onChange={(e) => {
+              if (e.target.files) {
+                setProfile(e.target.files[0]);
+              }
+            }}
+          />
+          <div
+            className="w-24 h-24 rounded-2xl overflow-hidden border-4 border-white shadow-xl hover:shadow-2xl transition-all cursor-pointer"
+            onClick={() => document.getElementById('ubahFotoProfile')?.click()}
+          >
+            <Image
+              src={preview || profileImage || male}
+              alt="Profile"
+              width={96}
+              height={96}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          {profile && (
+            <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center bg-green-500 text-white text-sm font-bold shadow-lg">
+              ✓
+            </div>
+          )}
+        </div>
+
+        <div className="flex-1">
+          <h3 className="text-2xl font-bold mb-2">{session?.user?.name}</h3>
+          <p className="text-white/80 mb-4">{session?.user.email}</p>
+          <div className="flex gap-3 flex-wrap">
+            <Button
+              onClick={() =>
+                document.getElementById('ubahFotoProfile')?.click()
+              }
+              className="rounded-xl text-white font-semibold bg-white/20 hover:bg-white/30 border-0 backdrop-blur-sm transition-all"
+            >
+              <User className="w-4 h-4 mr-2" />
+              Ubah Foto
+            </Button>
+
+            {profile && !loading && (
+              <>
+                <Button
+                  onClick={() => setProfile(undefined)}
+                  className="rounded-xl bg-white/10 hover:bg-white/20 text-white border-0 backdrop-blur-sm font-semibold transition-all"
+                >
+                  Batal
+                </Button>
+                <Button
+                  onClick={handleChangeProfile}
+                  className="rounded-xl text-white font-semibold bg-white/40 hover:bg-white/50 border-0 backdrop-blur-sm transition-all"
+                >
+                  Simpan
+                </Button>
+              </>
+            )}
+
+            {loading && (
+              <div className="flex items-center px-4 bg-white/10 rounded-xl backdrop-blur-sm">
+                <Spinner />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Account Details Card */}
+    <Card className="border-0 rounded-2xl shadow-md hover:shadow-lg transition-all">
       <CardHeader className="pb-4">
         <CardTitle
           className="text-lg font-bold flex items-center gap-2"
           style={{ color: mainColor }}
         >
-          <User className="w-5 h-5" />
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-white"
+            style={{ backgroundColor: mainColor }}
+          >
+            <User className="w-4 h-4" />
+          </div>
           Informasi Akun
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          <div className="relative">
-            <input
-              id="ubahFotoProfile"
-              type="file"
-              className="absolute inset-0 w-0 h-0 opacity-0"
-              onChange={(e) => {
-                if (e.target.files) {
-                  setProfile(e.target.files[0]);
-                }
-              }}
-            />
-            <div className="w-20 h-20 rounded-2xl overflow-hidden border-4 border-gray-100 shadow-lg">
-              <Image
-                src={preview || profileImage || male}
-                alt="Profile"
-                width={80}
-                height={80}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {profile && (
-              <div
-                className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
-                style={{ backgroundColor: mainColor }}
-              >
-                ✓
-              </div>
-            )}
-          </div>
-
-          <div className="flex-1 space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {session?.user?.name}
-              </h3>
-              <p className="text-gray-600">{session?.user.email}</p>
-            </div>
-
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() =>
-                  document.getElementById('ubahFotoProfile')?.click()
-                }
-                className="rounded-xl border-2 hover:shadow-md transition-all duration-200"
-                style={{ borderColor: `${mainColor}40`, color: mainColor }}
-              >
-                <User className="w-4 h-4 mr-2" />
-                Ubah Foto
-              </Button>
-
-              {profile && !loading && (
-                <>
-                  <Button
-                    variant="ghost"
-                    onClick={() => setProfile(undefined)}
-                    className="rounded-xl"
-                  >
-                    Batal
-                  </Button>
-                  <Button
-                    onClick={handleChangeProfile}
-                    className="rounded-xl text-white"
-                    style={{ backgroundColor: mainColor }}
-                  >
-                    Simpan
-                  </Button>
-                </>
-              )}
-
-              {loading && (
-                <div className="flex items-center px-4">
-                  <Spinner />
-                </div>
-              )}
-            </div>
-          </div>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-gray-600">Nama Lengkap</p>
+          <p className="text-lg font-semibold text-gray-900">
+            {session?.user?.name}
+          </p>
+        </div>
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-gray-600">Email</p>
+          <p className="text-lg font-semibold text-gray-900">
+            {session?.user.email}
+          </p>
         </div>
       </CardContent>
     </Card>
@@ -387,11 +401,12 @@ const SubscriptionTab = ({
   setTransactionPopUp,
   setTransactionHistory,
   mainColor,
+  secondaryColor,
 }: any) => (
-  <div className="p-6 space-y-6">
-    <div className="text-center mb-6">
+  <div className="p-8 space-y-6">
+    <div className="text-center mb-8">
       <h2
-        className="text-xl font-bold mb-2"
+        className="text-2xl font-bold mb-2"
         style={{ color: mainColor }}
       >
         Subscription & Coin
@@ -400,14 +415,19 @@ const SubscriptionTab = ({
     </div>
 
     {data?.waiting?.length > 0 ? (
-      <Card className="border-2 border-yellow-200 bg-yellow-50 rounded-2xl">
-        <CardHeader>
-          <CardTitle className="text-lg text-yellow-700 flex items-center gap-2">
+      <Card
+        className="border-0 rounded-2xl shadow-lg overflow-hidden"
+        style={{
+          borderTop: `4px solid ${mainColor}`,
+        }}
+      >
+        <CardHeader className="bg-gradient-to-r from-yellow-50 to-orange-50">
+          <CardTitle className="text-lg text-orange-700 flex items-center gap-2">
             <CreditCard className="w-5 h-5" />
             Tagihan Pending
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pt-6">
           {data.waiting.map((item: any, i: number) => (
             <PaymentCard
               key={i}
@@ -419,10 +439,10 @@ const SubscriptionTab = ({
         </CardContent>
       </Card>
     ) : (
-      <Card className="border-2 border-gray-100 rounded-2xl">
-        <CardContent className="p-6">
+      <Card className="border-0 rounded-2xl shadow-md">
+        <CardContent className="p-8">
           <Plans />
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-8 pt-8 border-t border-gray-200">
             <ButtonPayment text="Upgrade Subscription" />
           </div>
         </CardContent>
@@ -432,37 +452,101 @@ const SubscriptionTab = ({
 );
 
 // History Tab Component
-const HistoryTab = ({ data, mainColor }: any) => (
-  <div className="p-6 space-y-6">
-    <Card className="border-2 border-gray-100 rounded-2xl">
-      <CardHeader>
-        <CardTitle
-          className="text-lg font-bold flex items-center gap-2"
+const HistoryTab = ({ data, mainColor, secondaryColor }: any) => (
+  <div className="p-8 space-y-6 mb-30">
+    <div className="text-center mb-8 sticky top-0 bg-white pt-2 z-10">
+      <h2
+        className="text-2xl font-bold mb-2"
+        style={{ color: mainColor }}
+      >
+        Riwayat Transaksi
+      </h2>
+      <p className="text-gray-600">Lihat semua transaksi Anda</p>
+    </div>
+
+    {data?.riwayat?.length > 0 ? (
+      <div className="space-y-4 pb-4">
+        {data.riwayat.map((item: any, i: number) => (
+          <Card
+            key={i}
+            className="border-0 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+            style={{
+              borderLeft: `4px solid ${mainColor}`,
+            }}
+          >
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div
+                    className="p-3 rounded-lg"
+                    style={{
+                      backgroundColor: `${mainColor}20`,
+                    }}
+                  >
+                    <CreditCard
+                      className="w-6 h-6"
+                      style={{ color: mainColor }}
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">
+                      {item.item_details?.[0]?.name || 'Transaksi'}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {getDateString(item.transaction_time)} •{' '}
+                      {getHours(item.transaction_time)}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p
+                    className="font-bold text-lg"
+                    style={{ color: mainColor }}
+                  >
+                    {item.transaction_details.gross_amount.toLocaleString(
+                      'id-ID',
+                      {
+                        style: 'currency',
+                        currency: 'IDR',
+                      },
+                    )}
+                  </p>
+                  <Badge
+                    className="mt-2"
+                    style={{
+                      backgroundColor: item.settlement_time
+                        ? '#10b981'
+                        : '#f59e0b',
+                      color: 'white',
+                    }}
+                  >
+                    {item.settlement_time ? 'Berhasil' : 'Pending'}
+                  </Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    ) : (
+      <div
+        className="rounded-2xl p-12 text-center"
+        style={{
+          background: `linear-gradient(135deg, ${mainColor}10, ${secondaryColor}10)`,
+        }}
+      >
+        <History
+          className="w-16 h-16 mx-auto mb-4"
           style={{ color: mainColor }}
-        >
-          <History className="w-5 h-5" />
-          Riwayat Transaksi
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4 max-h-96 overflow-y-auto">
-          {data?.riwayat?.length > 0 ? (
-            data.riwayat.map((item: any, i: number) => (
-              <TransactionCard
-                key={i}
-                item={item}
-                mainColor={mainColor}
-              />
-            ))
-          ) : (
-            <div className="text-center py-12 text-gray-500">
-              <History className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>Belum ada riwayat transaksi</p>
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+        />
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          Belum ada riwayat transaksi
+        </h3>
+        <p className="text-gray-600">
+          Semua transaksi Anda akan ditampilkan di sini
+        </p>
+      </div>
+    )}
   </div>
 );
 

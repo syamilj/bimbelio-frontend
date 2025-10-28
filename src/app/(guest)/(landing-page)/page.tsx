@@ -1,25 +1,25 @@
 'use client';
 import Footer from '@/components/_shared/footer';
-import HeroSection from '@/components/_shared/homepage/snbt/hero';
+import HeroSection from '@/components/_shared/homepage/main/hero';
 import { lazy, Suspense } from 'react';
 
 // Lazy loading untuk semua komponen homepage yang tidak immediately visible
 const BentoGrid = lazy(
-  () => import('@/components/_shared/homepage/snbt/bento-grid'),
+  () => import('@/components/_shared/homepage/main/bento-grid'),
 );
 const BlueprintConcept = lazy(
-  () => import('@/components/_shared/homepage/snbt/blueprint-concept'),
+  () => import('@/components/_shared/homepage/main/blueprint-concept'),
 );
 const FaqHomepage = lazy(
-  () => import('@/components/_shared/homepage/snbt/FaqHomepage'),
+  () => import('@/components/_shared/homepage/main/FaqHomepage'),
 );
 const PlanCards = lazy(
-  () => import('@/components/_shared/homepage/snbt/plan-cards'),
+  () => import('@/components/_shared/homepage/main/plan-cards'),
 );
-const Tryout = lazy(() => import('@/components/_shared/homepage/snbt/tryout'));
-const WhyUs = lazy(() => import('@/components/_shared/homepage/snbt/why-us'));
+const Tryout = lazy(() => import('@/components/_shared/homepage/main/tryout'));
+const WhyUs = lazy(() => import('@/components/_shared/homepage/main/why-us'));
 
-export default function SNBT() {
+export default function LandingPage() {
   return (
     <div
       id="homepage"

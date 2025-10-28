@@ -21,8 +21,8 @@ export default function PricingFeatures() {
 
   // Dynamic coin colors based on theme
   const coinColors = {
-    Notes: mainColor,
-    Chat: secondaryColor,
+    Notes: `${mainColor}dd`,
+    Chat: `${secondaryColor}dd`,
     Quiz: `${mainColor}dd`,
     Tryout: `${mainColor}aa`,
     Vision: `${secondaryColor}dd`,

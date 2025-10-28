@@ -22,7 +22,7 @@ import { TypeCourseEnum } from '@/types/database';
 
 import {
   ArrowRightIcon,
-  BrainCircuitIcon,
+  BookOpenIcon,
   CheckCircleIcon,
   CheckIcon,
   ClockIcon,
@@ -109,7 +109,7 @@ export default function ModulPembelajaranSection() {
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
         >
-          <BrainCircuitIcon className="w-6 h-6 text-white" />
+          <BookOpenIcon className="w-6 h-6 text-white" />
         </div>
         <h2
           className="text-2xl md:text-3xl font-bold"
@@ -291,7 +291,7 @@ export default function ModulPembelajaranSection() {
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
                         >
-                          <BrainCircuitIcon className="w-7 h-7 text-white" />
+                          <BookOpenIcon className="w-7 h-7 text-white" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
@@ -460,7 +460,7 @@ export default function ModulPembelajaranSection() {
                                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                               }}
                             >
-                              <BrainCircuitIcon className="w-6 h-6 text-white" />
+                              <BookOpenIcon className="w-6 h-6 text-white" />
                             </div>
                             <div>
                               <DialogTitle

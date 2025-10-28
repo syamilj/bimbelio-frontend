@@ -30,6 +30,7 @@ import {
   Sparkles,
   Trash2,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -380,14 +381,15 @@ export default function AIChatPage() {
                   ))
                 ) : filteredHistory.length > 0 ? (
                   filteredHistory.map((chat) => (
-                    <div
+                    <Link
                       key={chat.id}
+                      href={`/${website_sub_category_id}/user/chat/${chat.id}`}
                       className="flex items-center justify-between p-4 rounded-xl border-2 hover:shadow-md transition-all cursor-pointer bg-white"
                       style={{ borderColor: `${mainColor}15` }}
                       onClick={() => {
-                        router.push(
-                          `/${website_sub_category_id}/user/chat/${chat.id}`,
-                        );
+                        // router.push(
+                        //   `/${website_sub_category_id}/user/chat/${chat.id}`,
+                        // );
                         setIsHistoryOpen(false);
                       }}
                     >
@@ -421,7 +423,7 @@ export default function AIChatPage() {
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
-                    </div>
+                    </Link>
                   ))
                 ) : (
                   <div className="text-center py-8 text-gray-500">

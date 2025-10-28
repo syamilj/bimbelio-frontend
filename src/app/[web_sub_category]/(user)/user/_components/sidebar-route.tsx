@@ -91,8 +91,8 @@ const navSections: NavSection[] = [
         isNew: true,
       },
       {
-        title: 'Live Class',
-        url: (subCategoryId: string) => `/${subCategoryId}/user/live-class`,
+        title: 'Live Learning',
+        url: (subCategoryId: string) => `/${subCategoryId}/user/live-learning`,
         icon: Video,
         isNew: true,
       },

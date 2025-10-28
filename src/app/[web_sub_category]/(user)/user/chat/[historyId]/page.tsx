@@ -20,7 +20,7 @@ export default function ChatPage({
     <ChatProvider>
       <div
         className={cn(
-          'absolute inset-0 top-0 bg-gray-50 overflow-hidden',
+          'absolute inset-0 top-0 bg-gray-50 overflow-hidden mt-[-13px]',
           !minimizeSidebar && 'md:left-0',
           minimizeSidebar && ' md:left-[40px]',
         )}

@@ -62,7 +62,7 @@ import {
   NotificationBadge,
   PreviewContent,
 } from './_components/live-class-shared-components';
-import './live-class-enhanced.css'; // Keep the CSS import here if it's specific to the dashboard layout
+import './live-learning-enhanced.css'; // Keep the CSS import here if it's specific to the dashboard layout
 
 export type LiveClassAvailableType = LiveClass & {
   Instructor: Instructor;
@@ -186,7 +186,7 @@ export default function LiveClassStudentDashboard() {
                     style={{ color: mainColor }}
                   />
                 </div>
-                Live Class Dashboard
+                Live Learning Dashboard
               </CardTitle>
               <CardDescription className="text-lg mt-3 text-gray-600">
                 Ikuti kelas langsung dengan tutor ahli dan tingkatkan persiapan

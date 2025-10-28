@@ -20,14 +20,6 @@ import {
 } from '@/components/ui/chart';
 import { LoadingRetro } from '@/components/ui/loading-retro';
 import { Progress } from '@/components/ui/progress';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Provider dan Hooks
@@ -43,18 +35,21 @@ import {
   ActivityIcon,
   Award,
   Brain,
+  Calendar,
   CalendarRangeIcon,
   ChevronUp,
   Clock,
   FileText,
+  Flame,
   Highlighter,
   Home,
   LibraryBigIcon,
-  Loader2Icon,
+  LineChart as LineChartIcon,
   PenTool,
   Target,
   TrendingUp,
   Trophy,
+  Zap,
 } from 'lucide-react';
 
 // Komponen Chart dari recharts
@@ -82,6 +77,173 @@ const defaultChartConfig = {
   peringkat: { label: 'Peringkat', color: 'var(--chart-2)' },
 };
 
+type LearningDataType = {
+  documentsRead: number;
+  notesCreated: number;
+  highlightsMade: number;
+  quizStudied: number;
+  studyTimeByCategory: {
+    name: string;
+    value: number;
+  }[];
+  documentsReadIncrease: number;
+  notesCreatedIncrease: number;
+  highlightsMadeIncrease: number;
+  quizStudiedIncrease: number;
+  learningStreak: number;
+  longestStreak: number;
+  topCategories: {
+    name: string;
+    count: number;
+  }[];
+  recentDocuments: {
+    title: string;
+    lastAccessed: string;
+  }[];
+  mostActiveHours: {
+    hour: number;
+    activity: number;
+  }[];
+  quizAccuracy: number;
+  totalStudyTime: number;
+  averageSessionDuration: number;
+  dailyStreak: {
+    date: string;
+    completed: boolean;
+  }[];
+  weeklyProgress: {
+    documentsRead: number;
+    notesCreated: number;
+    highlightsMade: number;
+    quizStudied: number;
+    date: string;
+  }[];
+};
+
+type ReportDataType = {
+  userHeader: {
+    name: string;
+    status: UserRoleEnum;
+    daysLeft: number;
+    avatarUrl: string | null;
+  };
+  studyHabits: {
+    totalHoursStudied: number;
+    hoursThisWeek: number;
+    longestStreak: number;
+    averageDailyStudyTime: number;
+    mostProductiveDay: string;
+    mostEffectiveTime: string;
+  };
+  learningReport: {
+    totalScore: any;
+    scoreIncrease: number;
+    scoreIncreasePercentage: number;
+    rank: number;
+    rankIncrease: number;
+    documentsRead: number;
+    notesCreated: number;
+    highlightsMade: number;
+    quizStudied: number;
+  };
+  tryoutCategory: {
+    id: string;
+    name: string;
+    TryoutSessionResult: {
+      id: string;
+      totalScore: number;
+      categoryId: string;
+      tryoutResultId: string;
+      sessionId: string;
+      startSession: Date;
+      endSession: Date;
+      theta: number | null;
+    }[];
+  }[];
+  scoreDevelopmentData: {
+    total: number;
+    date: string;
+  }[];
+  dataScoreDistribution: {
+    scoreRange: string;
+    totalParticipants: number;
+    highestScore: number;
+    lowestScore: number;
+    averageScore: number;
+    percentage: number;
+  }[];
+  analysisByCategoryTryout: {
+    data: {
+      subCategory: string;
+      accuracy: number;
+    }[];
+    category: string;
+  }[];
+  tryoutHistory: {
+    history: {
+      rank: number;
+      duration: string;
+      show: boolean;
+      change: number;
+      Tryout: {
+        id: string;
+        image: string | null;
+        createAt: Date;
+        updateAt: Date;
+        title: string;
+        restTime: number;
+        status: TryoutStatusEnum;
+        startDate: Date;
+        endDate: Date;
+        resultDate: Date;
+      };
+      TryoutSessionResult: ({
+        TryoutSession: {
+          thresholdValue: number | null;
+        };
+        TryoutCategory: {
+          id: string;
+          name: string;
+        };
+      } & {
+        id: string;
+        totalScore: number;
+        categoryId: string;
+        tryoutResultId: string;
+        sessionId: string;
+        startSession: Date;
+        endSession: Date;
+        theta: number | null;
+      })[];
+      userId: string;
+      id: string;
+      tryoutId: string;
+      totalScore: number;
+      startTryout: Date;
+      endTryout: Date;
+    }[];
+    chart: {
+      tanggal: Date;
+      skorTotal: number;
+      peringkat: number;
+      perubahan: number;
+    }[];
+  };
+  quizHistory: {
+    history: {
+      userId: string;
+      id: string;
+      createAt: Date;
+      accuracy: number;
+    }[];
+    chart: {
+      tanggal: Date;
+      accuracy: number;
+      perubahan: number;
+    }[];
+  };
+};
+
 interface StatCardProps {
   icon: React.ReactNode;
   title: string;
@@ -98,32 +260,32 @@ interface StudyHabitStatProps {
   value: string;
 }
 
-interface LearningData {
-  documentsRead: number;
-  documentsReadIncrease: number;
-  notesCreated: number;
-  notesCreatedIncrease: number;
-  highlightsMade: number;
-  highlightsMadeIncrease: number;
-  quizStudied: number;
-  quizStudiedIncrease: number;
-  studyTimeByCategory: { name: string; value: number }[];
-  learningStreak: number;
-  longestStreak: number;
-  dailyStreak: { date: string; completed: boolean }[];
-  weeklyProgress: {
-    date: string;
-    documentsRead: number;
-    notesCreated: number;
-    highlightsMade: number;
-    quizStudied: number;
-  }[];
-  recentDocuments: { title: string; lastAccessed: string }[];
-  mostActiveHours: { hour: number; activity: number }[];
-  quizAccuracy: number;
-  totalStudyTime: number;
-  averageSessionDuration: number;
-}
+// interface LearningData {
+//   documentsRead: number;
+//   documentsReadIncrease: number;
+//   notesCreated: number;
+//   notesCreatedIncrease: number;
+//   highlightsMade: number;
+//   highlightsMadeIncrease: number;
+//   quizStudied: number;
+//   quizStudiedIncrease: number;
+//   studyTimeByCategory: { name: string; value: number }[];
+//   learningStreak: number;
+//   longestStreak: number;
+//   dailyStreak: { date: string; completed: boolean }[];
+//   weeklyProgress: {
+//     date: string;
+//     documentsRead: number;
+//     notesCreated: number;
+//     highlightsMade: number;
+//     quizStudied: number;
+//   }[];
+//   recentDocuments: { title: string; lastAccessed: string }[];
+//   mostActiveHours: { hour: number; activity: number }[];
+//   quizAccuracy: number;
+//   totalStudyTime: number;
+//   averageSessionDuration: number;
+// }
 
 interface ActivitySummaryProps {
   icon: React.ReactNode;
@@ -139,6 +301,334 @@ interface CalendarView {
 }
 
 // =====================================================================
+// KOMPONEN UTAMA DASHBOARD
+// =====================================================================
+
+export default function DashboardClient() {
+  const { data: session } = useSession();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+
+  // Get dynamic colors
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  // ...existing state and useEffect code...
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
+  const [reportData, setReportData] = useState<ReportDataType | undefined>();
+  const [isLoadingLearningData, setIsLoadingLearningData] =
+    useState<boolean>(true);
+  const [learningData, setLearningData] = useState<
+    LearningDataType | undefined
+  >();
+
+  const getLearningReport = async () => {
+    await getGeneral(`/report/getLearningReport?userId=${session?.user.id}`, {
+      setData: setLearningData,
+      setLoading: setIsLoadingLearningData,
+      onError({ message }) {
+        setError(message);
+      },
+    });
+  };
+
+  useEffect(() => {
+    getLearningReport();
+    getGeneral(`/report/getReportData?userId=${session?.user.id}`, {
+      setData: setReportData,
+      setLoading: setIsLoading,
+    });
+  }, []);
+
+  if (isLoading || isLoadingLearningData) {
+    return (
+      <div className="absolute left-0 top-0 w-full h-[calc(100vh-80px)]">
+        <LoadingRetro />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mt-[-80px] flex h-screen items-center justify-center">
+        Error: {error}
+      </div>
+    );
+  }
+
+  if (!reportData || !learningData) {
+    return (
+      <div className="mt-[-80px] flex h-screen items-center justify-center">
+        Tidak ada data yang ditemukan
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto max-w-7xl px-4 py-8">
+        {/* Modern Header Section - Card Style */}
+        <div className="mb-12 grid gap-6 grid-cols-1 md:grid-cols-3">
+          {/* Welcome Card */}
+          <div className="md:col-span-2 bg-white border-2 border-gray-100 rounded-3xl p-8 shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <p className="text-gray-600 text-sm font-medium mb-2">
+                  Selamat Datang Kembali,
+                </p>
+                <h1
+                  className="text-3xl md:text-4xl font-black"
+                  style={{ color: mainColor }}
+                >
+                  {session?.user?.name || 'User'}
+                </h1>
+              </div>
+              <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center text-white"
+                style={{ backgroundColor: mainColor }}
+              >
+                <Home className="w-8 h-8" />
+              </div>
+            </div>
+            <p className="text-gray-600 text-base">
+              Pantau kemajuan belajarmu dengan data real-time dan tingkatkan
+              persiapan ujianmu
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Badge className="bg-blue-50 text-blue-700 border border-blue-200 font-medium px-4 py-2">
+                <Zap className="w-3 h-3 mr-2" />
+                Terus Semangat!
+              </Badge>
+              <Badge className="bg-green-50 text-green-700 border border-green-200 font-medium px-4 py-2">
+                <TrendingUp className="w-3 h-3 mr-2" />
+                Progres Positif
+              </Badge>
+            </div>
+          </div>
+
+          {/* Rank Card */}
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-3xl p-8 shadow-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <Trophy className="w-6 h-6 text-purple-600" />
+              <p className="text-purple-700 font-bold">Peringkat Anda</p>
+            </div>
+            <div className="text-4xl font-black text-purple-700 mb-2">
+              #{reportData?.learningReport?.rank || '0'}
+            </div>
+            <p className="text-sm text-purple-600">
+              {reportData?.learningReport?.rankIncrease > 0 ? '↑' : '↓'}{' '}
+              {Math.abs(reportData?.learningReport?.rankIncrease || 0)} posisi
+            </p>
+          </div>
+        </div>
+
+        {/* Quick Stats Grid */}
+        <section className="mb-12">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-5 text-center">
+              <Clock className="w-5 h-5 text-blue-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-blue-700">
+                {reportData?.studyHabits?.totalHoursStudied.toFixed(0) || '0'}
+              </div>
+              <p className="text-xs text-blue-600 font-medium mt-1">
+                Jam Belajar
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 text-center">
+              <Award className="w-5 h-5 text-green-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-green-700">
+                {reportData?.learningReport?.totalScore || '0'}
+              </div>
+              <p className="text-xs text-green-600 font-medium mt-1">
+                Nilai Total
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-2xl p-5 text-center">
+              <Target className="w-5 h-5 text-orange-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-orange-700">
+                {reportData?.tryoutHistory?.history.length || '0'}
+              </div>
+              <p className="text-xs text-orange-600 font-medium mt-1">
+                Try Out Selesai
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-br from-pink-50 to-pink-100 border-2 border-pink-200 rounded-2xl p-5 text-center">
+              <Brain className="w-5 h-5 text-pink-600 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-pink-700">
+                {reportData?.studyHabits?.longestStreak || '0'}
+              </div>
+              <p className="text-xs text-pink-600 font-medium mt-1">
+                Streak Terpanjang
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Study Habits & Learning Activity */}
+        <section className="mb-12 grid gap-6 grid-cols-1">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <Clock
+                className="w-6 h-6"
+                style={{ color: mainColor }}
+              />
+              <h2
+                className="text-xl md:text-2xl font-bold"
+                style={{ color: mainColor }}
+              >
+                Kebiasaan Belajar
+              </h2>
+            </div>
+            <StudyHabitsCard
+              studyHabits={reportData?.studyHabits}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <ActivityIcon
+                className="w-6 h-6"
+                style={{ color: mainColor }}
+              />
+              <h2
+                className="text-xl md:text-2xl font-bold"
+                style={{ color: mainColor }}
+              >
+                Aktivitas Belajar
+              </h2>
+            </div>
+            <LearningActivityCard
+              data={learningData as LearningDataType}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          </div>
+        </section>
+
+        {/* Progress & Score Development */}
+        <section className="mb-12 grid gap-6 grid-cols-1">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <LineChartIcon
+                className="w-6 h-6"
+                style={{ color: mainColor }}
+              />
+              <h2
+                className="text-xl md:text-2xl font-bold"
+                style={{ color: mainColor }}
+              >
+                Progres Mingguan
+              </h2>
+            </div>
+            <WeeklyProgressCard
+              data={learningData as LearningDataType}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <TrendingUp
+                className="w-6 h-6"
+                style={{ color: mainColor }}
+              />
+              <h2
+                className="text-xl md:text-2xl font-bold"
+                style={{ color: mainColor }}
+              >
+                Perkembangan Nilai
+              </h2>
+            </div>
+            <ScoreDevelopmentCard
+              scoreDevelopmentData={reportData?.scoreDevelopmentData}
+              tryoutCategory={reportData?.tryoutCategory}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          </div>
+        </section>
+
+        {/* Tryout & Quiz History */}
+        <section className="mb-12 grid gap-6 grid-cols-1">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <Target
+                className="w-6 h-6"
+                style={{ color: mainColor }}
+              />
+              <h2
+                className="text-xl md:text-2xl font-bold"
+                style={{ color: mainColor }}
+              >
+                Try Out
+              </h2>
+            </div>
+            <TryoutHistoryCard
+              tryoutHistory={reportData?.tryoutHistory}
+              tryoutCategory={reportData?.tryoutCategory}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          </div>
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <Brain
+                className="w-6 h-6"
+                style={{ color: mainColor }}
+              />
+              <h2
+                className="text-xl md:text-2xl font-bold"
+                style={{ color: mainColor }}
+              >
+                Quiz
+              </h2>
+            </div>
+            <QuizHistoryCard
+              quizHistory={reportData?.quizHistory}
+              mainColor={mainColor}
+              secondaryColor={secondaryColor}
+            />
+          </div>
+        </section>
+
+        {/* Calendar Section */}
+        <section className="mb-12">
+          <div className="flex items-center gap-3 mb-4">
+            <CalendarRangeIcon
+              className="w-6 h-6"
+              style={{ color: mainColor }}
+            />
+            <h2
+              className="text-xl md:text-2xl font-bold"
+              style={{ color: mainColor }}
+            >
+              Kalender & Jadwal
+            </h2>
+          </div>
+          <CalendarComponent
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
+        </section>
+
+        {/* Test Analysis */}
+        {/* <section className="mb-8">
+          <TestAnalysisCard
+            analysisByCategoryTryout={reportData?.analysisByCategoryTryout}
+            tryoutCategory={reportData?.tryoutCategory}
+            mainColor={mainColor}
+            secondaryColor={secondaryColor}
+          />
+        </section> */}
+      </div>
+    </div>
+  );
+}
+// =====================================================================
 // KOMPOEN DASAR
 // =====================================================================
 
@@ -151,17 +641,17 @@ export const StatCard: React.FC<StatCardProps> = ({
   changeLabel,
   mainColor = '#0091FF',
 }) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
+  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 group h-full">
     <CardHeader
-      className="pb-3 relative overflow-hidden"
+      className="pb-4 relative overflow-hidden h-20"
       style={{ backgroundColor: `${mainColor}08` }}
     >
       <div className="flex items-center justify-between relative z-10">
-        <CardTitle className="text-sm font-semibold text-gray-700">
+        <CardTitle className="text-sm font-bold text-gray-700 truncate">
           {title}
         </CardTitle>
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm text-white"
+          className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md text-white flex-shrink-0 group-hover:scale-110 transition-transform"
           style={{ backgroundColor: mainColor }}
         >
           {icon}
@@ -169,31 +659,31 @@ export const StatCard: React.FC<StatCardProps> = ({
       </div>
       {/* Decorative element */}
       <div
-        className="absolute -right-4 -top-4 w-12 h-12 rounded-full opacity-10"
+        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10 group-hover:opacity-20 transition-opacity"
         style={{ backgroundColor: mainColor }}
       />
     </CardHeader>
-    <CardContent className="pt-4">
-      <div className="space-y-3">
+    <CardContent className="pt-6 pb-6 space-y-4">
+      <div>
         <div
-          className="text-2xl md:text-3xl font-bold"
+          className="text-3xl md:text-4xl font-black mb-2"
           style={{ color: mainColor }}
         >
           {value}
         </div>
-        <div className="flex items-center text-sm">
-          <div className="flex items-center gap-1 text-green-600">
-            <ChevronUp className="w-4 h-4" />
-            <span className="font-medium">
-              +{change} {changeLabel || ''}
-            </span>
-          </div>
-          {changePercentage !== undefined && (
-            <span className="ml-2 text-gray-500 text-xs">
-              ({changePercentage.toFixed(1)}%)
-            </span>
-          )}
+      </div>
+      <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-1 text-green-600 font-semibold">
+          <ChevronUp className="w-4 h-4" />
+          <span>
+            +{change} {changeLabel || ''}
+          </span>
         </div>
+        {changePercentage !== undefined && (
+          <span className="text-gray-500 text-xs">
+            ({changePercentage.toFixed(1)}%)
+          </span>
+        )}
       </div>
     </CardContent>
   </Card>
@@ -286,165 +776,48 @@ export const TryoutHistoryCard: React.FC<{
   tryoutCategory: any;
   mainColor: string;
   secondaryColor: string;
-}> = ({ tryoutHistory, tryoutCategory, mainColor, secondaryColor }) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-    <CardHeader
-      className="pb-4 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-      }}
-    >
-      <div className="relative z-10">
-        <CardTitle
-          className="text-xl font-bold flex items-center gap-3"
-          style={{ color: mainColor }}
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
-            <Target
-              className="w-5 h-5"
-              style={{ color: mainColor }}
-            />
-          </div>
+}> = ({ tryoutHistory, tryoutCategory, mainColor, secondaryColor }) => {
+  // Get badge color based on score
+  const getScoreBadgeColor = (score: number) => {
+    if (score >= 80) return { bg: 'bg-green-100', text: 'text-green-700' };
+    if (score >= 60) return { bg: 'bg-blue-100', text: 'text-blue-700' };
+    if (score >= 40) return { bg: 'bg-yellow-100', text: 'text-yellow-700' };
+    return { bg: 'bg-red-100', text: 'text-red-700' };
+  };
+
+  const getRankBadgeColor = (rank: number) => {
+    if (rank <= 3) return { bg: '#FFD700', text: '#333' }; // Gold
+    if (rank <= 10) return { bg: '#C0C0C0', text: '#333' }; // Silver
+    if (rank <= 30) return { bg: '#CD7F32', text: '#fff' }; // Bronze
+    return { bg: mainColor, text: '#fff' };
+  };
+
+  return (
+    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-bold flex items-center gap-2">
+          <Target
+            className="w-5 h-5"
+            style={{ color: mainColor }}
+          />
           Try Out
         </CardTitle>
-        <CardDescription className="text-gray-600 mt-2">
-          Rekap dan evaluasi tryout kamu.
-        </CardDescription>
-      </div>
-      {/* Decorative elements */}
-      <div
-        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-        style={{ backgroundColor: mainColor }}
-      />
-    </CardHeader>
+        <CardDescription>Rekap dan evaluasi tryout kamu</CardDescription>
+      </CardHeader>
 
-    <CardContent className="p-6">
-      <Tabs defaultValue="grafik">
-        <TabsList className="grid w-full grid-cols-2 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
-          <TabsTrigger
-            value="grafik"
-            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
-            style={
-              {
-                '--tw-bg-opacity': '1',
-              } as React.CSSProperties & { [key: string]: string }
-            }
-            data-active-bg={mainColor}
-          >
-            <span className="font-medium">Grafik</span>
-          </TabsTrigger>
-          <TabsTrigger
-            value="detail"
-            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
-            style={
-              {
-                '--tw-bg-opacity': '1',
-              } as React.CSSProperties & { [key: string]: string }
-            }
-            data-active-bg={mainColor}
-          >
-            <span className="font-medium">Detail</span>
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="detail">
-          <div className="max-h-[400px] overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow style={{ backgroundColor: `${mainColor}08` }}>
-                  <TableHead className="font-bold text-gray-800">
-                    Judul
-                  </TableHead>
-                  <TableHead className="font-bold text-gray-800">
-                    Tanggal
-                  </TableHead>
-                  <TableHead className="font-bold text-gray-800">
-                    Nilai Total
-                  </TableHead>
-                  {tryoutCategory?.map((category: any, index: number) => (
-                    <TableHead
-                      key={index}
-                      className="text-center font-bold text-gray-800"
-                    >
-                      {category.name}
-                    </TableHead>
-                  ))}
-                  <TableHead className="text-center font-bold text-gray-800">
-                    Peringkat
-                  </TableHead>
-                  <TableHead className="text-center font-bold text-gray-800">
-                    Action
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {tryoutHistory?.history?.map((tryout: any, index: number) => (
-                  <TableRow
-                    key={index}
-                    className="hover:bg-gray-50 transition-colors"
-                  >
-                    <TableCell className="font-medium">
-                      {tryout.Tryout.title}
-                    </TableCell>
-                    <TableCell>
-                      {getDateString(tryout.startTryout)},{' '}
-                      {getHours(tryout.startTryout)}
-                    </TableCell>
-                    <TableCell>
-                      {tryout.show ? `${tryout.totalScore} poin` : '...?'}
-                    </TableCell>
-                    {tryoutCategory?.map((category: any, idx: number) => {
-                      const thisSession = tryout.TryoutSessionResult.find(
-                        (item: any) => item.categoryId === category.id,
-                      );
-                      return (
-                        <TableCell
-                          key={idx}
-                          className="text-center"
-                        >
-                          {!tryout.show
-                            ? '...?'
-                            : thisSession
-                              ? `${thisSession.totalScore} / ${thisSession.TryoutSession.thresholdValue}`
-                              : '-'}
-                        </TableCell>
-                      );
-                    })}
-                    <TableCell className="text-center">
-                      {tryout.show ? tryout.rank : '...?'}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <Button
-                        asChild
-                        size="sm"
-                        className="rounded-xl"
-                        style={{ backgroundColor: mainColor }}
-                      >
-                        <Link
-                          href={`/${website_sub_category_id}/user/try-out/${tryout.Tryout?.id}`}
-                        >
-                          Lihat Pembahasan
-                        </Link>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+      <CardContent className="p-6 space-y-4">
+        {/* Chart Section */}
+        <div className="mb-6">
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            Tren Nilai & Peringkat
           </div>
-        </TabsContent>
-
-        <TabsContent value="grafik">
           <ChartContainer
             config={defaultChartConfig}
-            className="min-h-[200px] w-full"
+            className="min-h-[200px] max-h-[500px] w-full overflow-y-auto"
           >
             <ResponsiveContainer
               width="100%"
-              height={400}
+              height={300}
             >
               <LineChart data={tryoutHistory?.chart}>
                 <XAxis
@@ -459,141 +832,210 @@ export const TryoutHistoryCard: React.FC<{
                 <YAxis
                   yAxisId="left"
                   orientation="left"
-                  stroke="#8884d8"
+                  stroke={mainColor}
                 />
                 <YAxis
                   yAxisId="right"
                   orientation="right"
-                  stroke="#82ca9d"
+                  stroke={secondaryColor}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend />
                 <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="NilaiTotal"
-                  stroke="#8884d8"
-                  name="Nilai Total"
-                />
-                <Line
                   yAxisId="left"
                   type="monotone"
+                  dataKey="NilaiTotal"
+                  stroke={mainColor}
+                  name="Nilai Total"
+                  strokeWidth={2}
+                />
+                <Line
+                  yAxisId="right"
+                  type="monotone"
                   dataKey="peringkat"
-                  stroke="#82ca9d"
+                  stroke={secondaryColor}
                   name="Peringkat"
+                  strokeWidth={2}
                 />
               </LineChart>
             </ResponsiveContainer>
           </ChartContainer>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Grafik ini menunjukkan perkembangan nilai total dan peringkat dalam
-            tryout.
-          </p>
-        </TabsContent>
-      </Tabs>
-    </CardContent>
-  </Card>
-);
+        </div>
+
+        {/* List View */}
+        <div>
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            Daftar Try Out
+          </div>
+          <div className="space-y-2 max-h-[400px] overflow-y-auto">
+            {tryoutHistory?.history?.length > 0 ? (
+              tryoutHistory.history.map((tryout: any, index: number) => {
+                const scoreBadge = getScoreBadgeColor(
+                  tryout.show ? tryout.totalScore : 0,
+                );
+                const rankBadge = getRankBadgeColor(
+                  tryout.show ? tryout.rank : 999,
+                );
+
+                return (
+                  <div
+                    key={index}
+                    className="p-3 rounded-xl border border-gray-200 hover:shadow-md transition-all"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-800 text-sm">
+                          {tryout.Tryout.title}
+                        </h4>
+                        <p className="text-xs text-gray-500">
+                          {getDateString(tryout.startTryout)},{' '}
+                          {getHours(tryout.startTryout)}
+                        </p>
+                      </div>
+                      {tryout.show && (
+                        <div
+                          className="px-2 py-1 rounded-lg text-white text-xs font-bold"
+                          style={{
+                            backgroundColor: rankBadge.bg,
+                            color: rankBadge.text,
+                          }}
+                        >
+                          #{tryout.rank}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Score and Categories */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-600">
+                          Nilai Total
+                        </span>
+                        <div
+                          className={`${scoreBadge.bg} ${scoreBadge.text} px-2 py-1 rounded-lg text-xs font-bold`}
+                        >
+                          {tryout.show
+                            ? `${tryout.totalScore} poin`
+                            : 'Proses...'}
+                        </div>
+                      </div>
+
+                      {/* Category Scores */}
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        {tryoutCategory?.map((category: any, idx: number) => {
+                          const session = tryout.TryoutSessionResult.find(
+                            (item: any) => item.categoryId === category.id,
+                          );
+                          return (
+                            <div
+                              key={idx}
+                              className="p-2 bg-gray-50 rounded-lg"
+                            >
+                              <span className="text-gray-600">
+                                {category.name}
+                              </span>
+                              <div
+                                className="font-bold"
+                                style={{ color: mainColor }}
+                              >
+                                {!tryout.show
+                                  ? '...?'
+                                  : session
+                                    ? `${session.totalScore}/${session.TryoutSession.thresholdValue}`
+                                    : '-'}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Action Button */}
+                    <Button
+                      asChild
+                      size="sm"
+                      className="w-full mt-3 rounded-lg text-white"
+                      style={{ backgroundColor: mainColor }}
+                    >
+                      <Link
+                        href={`/${website_sub_category_id}/user/try-out/${tryout.Tryout?.id}`}
+                      >
+                        Lihat Pembahasan
+                      </Link>
+                    </Button>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center py-6 text-gray-500">
+                <p className="text-sm">Belum ada data try out</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 export const QuizHistoryCard: React.FC<{
   quizHistory: any;
   mainColor: string;
   secondaryColor: string;
-}> = ({ quizHistory, mainColor, secondaryColor }) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-    <CardHeader
-      className="pb-4 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-      }}
-    >
-      <div className="relative z-10">
-        <CardTitle
-          className="text-xl font-bold flex items-center gap-3"
-          style={{ color: mainColor }}
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
-            <Brain
-              className="w-5 h-5"
-              style={{ color: mainColor }}
-            />
-          </div>
+}> = ({ quizHistory, mainColor, secondaryColor }) => {
+  // Get badge based on accuracy
+  const getAccuracyBadge = (accuracy: number) => {
+    if (accuracy >= 90)
+      return {
+        bg: 'bg-emerald-100',
+        text: 'text-emerald-700',
+        label: 'Sempurna',
+      };
+    if (accuracy >= 75)
+      return { bg: 'bg-green-100', text: 'text-green-700', label: 'Bagus' };
+    if (accuracy >= 60)
+      return { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Cukup' };
+    if (accuracy >= 40)
+      return {
+        bg: 'bg-yellow-100',
+        text: 'text-yellow-700',
+        label: 'Perlu Latihan',
+      };
+    return {
+      bg: 'bg-red-100',
+      text: 'text-red-700',
+      label: 'Tingkatkan',
+    };
+  };
+
+  return (
+    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-bold flex items-center gap-2">
+          <Brain
+            className="w-5 h-5"
+            style={{ color: mainColor }}
+          />
           Quiz
         </CardTitle>
-        <CardDescription className="text-gray-600 mt-2">
-          Statistik dan rekap quiz yang telah kamu kerjakan.
+        <CardDescription>
+          Statistik dan rekap quiz yang telah kamu kerjakan
         </CardDescription>
-      </div>
-      {/* Decorative elements */}
-      <div
-        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-        style={{ backgroundColor: mainColor }}
-      />
-    </CardHeader>
+      </CardHeader>
 
-    <CardContent className="p-6">
-      <Tabs defaultValue="grafik">
-        <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100 rounded-xl p-1 h-12">
-          <TabsTrigger
-            value="grafik"
-            className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
-            style={
-              {
-                '--tw-bg-opacity': '1',
-              } as React.CSSProperties & { [key: string]: string }
-            }
-            data-active-bg={mainColor}
-          >
-            Grafik
-          </TabsTrigger>
-          <TabsTrigger
-            value="detail"
-            className="rounded-xl data-[state=active]:text-white data-[state=active]:shadow-sm"
-            style={
-              {
-                '--tw-gradient-from': mainColor,
-                '--tw-gradient-to': secondaryColor,
-              } as React.CSSProperties
-            }
-          >
-            Detail
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="detail">
-          <div className="max-h-[400px] overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Tanggal</TableHead>
-                  <TableHead className="text-center">Akurasi</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {quizHistory?.history?.map((quiz: any, index: number) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      {getDateString(quiz.createAt)}, {getHours(quiz.createAt)}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {quiz.accuracy.toFixed(2)}%
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+      <CardContent className="p-6 space-y-4">
+        {/* Chart Section */}
+        <div className="mb-4">
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            Tren Akurasi
           </div>
-        </TabsContent>
-        <TabsContent value="grafik">
           <ChartContainer
             config={defaultChartConfig}
-            className="min-h-[200px] w-full"
+            className="min-h-[200px] max-h-[500px] w-full overflow-y-auto"
           >
             <ResponsiveContainer
               width="100%"
-              height={400}
+              height={250}
             >
               <LineChart data={quizHistory?.chart}>
                 <XAxis
@@ -608,12 +1050,13 @@ export const QuizHistoryCard: React.FC<{
                 <YAxis
                   yAxisId="left"
                   orientation="left"
-                  stroke="#8884d8"
+                  stroke={mainColor}
+                  domain={[0, 100]}
                 />
                 <YAxis
                   yAxisId="right"
                   orientation="right"
-                  stroke="#82ca9d"
+                  stroke={secondaryColor}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend />
@@ -621,28 +1064,147 @@ export const QuizHistoryCard: React.FC<{
                   yAxisId="left"
                   type="monotone"
                   dataKey="accuracy"
-                  stroke="#8884d8"
-                  name="Akurasi"
+                  stroke={mainColor}
+                  name="Akurasi (%)"
+                  strokeWidth={2}
                 />
                 <Line
                   yAxisId="right"
                   type="monotone"
                   dataKey="perubahan"
-                  stroke="#82ca9d"
+                  stroke={secondaryColor}
                   name="Perubahan"
+                  strokeWidth={2}
                 />
               </LineChart>
             </ResponsiveContainer>
           </ChartContainer>
-          <p className="mt-4 text-sm text-muted-foreground">
-            Grafik ini menunjukkan perkembangan akurasi dan perubahan dalam
-            quiz.
-          </p>
-        </TabsContent>
-      </Tabs>
-    </CardContent>
-  </Card>
-);
+        </div>
+
+        {/* Quiz List */}
+        <div>
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            Riwayat Quiz
+          </div>
+          <div className="space-y-2 max-h-[350px] overflow-y-auto">
+            {quizHistory?.history && quizHistory.history.length > 0 ? (
+              quizHistory.history.map((quiz: any, index: number) => {
+                const badge = getAccuracyBadge(quiz.accuracy);
+                const trend =
+                  index > 0
+                    ? quiz.accuracy - quizHistory.history[index - 1].accuracy
+                    : 0;
+
+                return (
+                  <div
+                    key={index}
+                    className="p-3 rounded-xl border border-gray-200 hover:shadow-md transition-all"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex-1">
+                        <p className="text-xs text-gray-500">
+                          {getDateString(quiz.createAt)},{' '}
+                          {getHours(quiz.createAt)}
+                        </p>
+                      </div>
+                      <div
+                        className={`${badge.bg} ${badge.text} px-2 py-1 rounded-lg text-xs font-bold`}
+                      >
+                        {quiz.accuracy.toFixed(1)}%
+                      </div>
+                    </div>
+
+                    {/* Accuracy Bar */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-gray-600">{badge.label}</span>
+                        {trend !== 0 && (
+                          <span
+                            className={
+                              trend >= 0
+                                ? 'text-green-600 font-bold'
+                                : 'text-red-600 font-bold'
+                            }
+                          >
+                            {trend >= 0 ? '↑' : '↓'}{' '}
+                            {Math.abs(trend).toFixed(1)}%
+                          </span>
+                        )}
+                      </div>
+                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full transition-all rounded-full"
+                          style={{
+                            width: `${quiz.accuracy}%`,
+                            background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center py-6 text-gray-500">
+                <p className="text-sm">Belum ada data quiz</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Statistics Summary */}
+        {quizHistory?.history && quizHistory.history.length > 0 && (
+          <div
+            className="p-3 rounded-xl border-2"
+            style={{
+              borderColor: `${mainColor}30`,
+              backgroundColor: `${mainColor}05`,
+            }}
+          >
+            <div className="grid grid-cols-3 gap-2 text-xs">
+              <div className="text-center">
+                <span className="text-gray-600 block mb-1">Total Quiz</span>
+                <span
+                  className="text-lg font-bold"
+                  style={{ color: mainColor }}
+                >
+                  {quizHistory.history.length}
+                </span>
+              </div>
+              <div className="text-center">
+                <span className="text-gray-600 block mb-1">Rata-rata</span>
+                <span
+                  className="text-lg font-bold"
+                  style={{ color: mainColor }}
+                >
+                  {(
+                    quizHistory.history.reduce(
+                      (sum: number, q: any) => sum + q.accuracy,
+                      0,
+                    ) / quizHistory.history.length
+                  ).toFixed(1)}
+                  %
+                </span>
+              </div>
+              <div className="text-center">
+                <span className="text-gray-600 block mb-1">Tertinggi</span>
+                <span
+                  className="text-lg font-bold"
+                  style={{ color: mainColor }}
+                >
+                  {Math.max(
+                    ...quizHistory.history.map((q: any) => q.accuracy),
+                  ).toFixed(1)}
+                  %
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
 
 // export const TestAnalysisCard: React.FC<{
 //   analysisByCategoryTryout: any;
@@ -820,183 +1382,362 @@ export const ScoreDevelopmentCard: React.FC<{
   tryoutCategory: any;
   mainColor: string;
   secondaryColor: string;
-}> = ({ scoreDevelopmentData, tryoutCategory, mainColor, secondaryColor }) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-    <CardHeader
-      className="pb-4 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-      }}
-    >
-      <div className="relative z-10">
-        <CardTitle
-          className="text-xl font-bold flex items-center gap-3"
-          style={{ color: mainColor }}
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
-            <TrendingUp
-              className="w-5 h-5"
-              style={{ color: mainColor }}
-            />
-          </div>
+}> = ({ scoreDevelopmentData, tryoutCategory, mainColor, secondaryColor }) => {
+  // Get latest and previous scores
+  const getScoreStats = () => {
+    if (scoreDevelopmentData.length < 2) return [];
+
+    const stats = tryoutCategory?.map((category: any) => {
+      const categoryKey = category.name.toUpperCase();
+      const scores = scoreDevelopmentData
+        .map((d: any) => d[categoryKey])
+        .filter((s: any) => s !== undefined);
+
+      if (scores.length === 0) return null;
+
+      const latest = scores[scores.length - 1];
+      const previous = scores[Math.max(0, scores.length - 2)];
+      const trend = latest - previous;
+      const trendPercent =
+        previous > 0
+          ? Math.round(((trend / previous) * 100 + Number.EPSILON) * 100) / 100
+          : 0;
+
+      return {
+        name: category.name,
+        latest,
+        trend,
+        trendPercent,
+      };
+    });
+
+    return stats.filter((s: any) => s !== null);
+  };
+
+  const stats = getScoreStats();
+
+  // Get total trend
+  const totalScores = scoreDevelopmentData
+    .map((d: any) => d.total)
+    .filter((s: any) => s !== undefined);
+  const totalLatest = totalScores[totalScores.length - 1];
+  const totalPrevious = totalScores[Math.max(0, totalScores.length - 2)];
+  const totalTrend = totalLatest - totalPrevious;
+
+  return (
+    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-bold flex items-center gap-2">
+          <TrendingUp
+            className="w-5 h-5"
+            style={{ color: mainColor }}
+          />
           Perkembangan Nilai
         </CardTitle>
-        <CardDescription className="text-gray-600 mt-2">
-          Grafik perkembangan nilai tryout kamu.
+        <CardDescription>
+          Tren nilai tryout berdasarkan kategori
         </CardDescription>
-      </div>
-      {/* Decorative elements */}
-      <div
-        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-        style={{ backgroundColor: mainColor }}
-      />
-    </CardHeader>
+      </CardHeader>
 
-    <CardContent className="p-6">
-      <ChartContainer
-        config={defaultChartConfig}
-        className="min-h-[200px] w-full"
-      >
-        <ResponsiveContainer
-          width="100%"
-          height={400}
-        >
-          <LineChart data={scoreDevelopmentData}>
-            <XAxis dataKey="date" />
-            <YAxis />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <Legend />
-            {tryoutCategory?.map((category: any, index: number) => (
-              <Line
-                key={index}
-                type="monotone"
-                dataKey={category.name.toUpperCase()}
-                stroke={
-                  index === 0
-                    ? mainColor
-                    : index === 1
-                      ? secondaryColor
-                      : '#ffc658'
-                }
-                name={category.name}
-                strokeWidth={3}
-              />
+      <CardContent className="p-6 space-y-6">
+        {/* Main Chart */}
+        <div className="mb-4">
+          <ChartContainer
+            config={defaultChartConfig}
+            className="min-h-[200px] max-h-[500px] w-full overflow-y-auto"
+          >
+            <ResponsiveContainer
+              width="100%"
+              height={300}
+            >
+              <LineChart data={scoreDevelopmentData}>
+                <XAxis dataKey="date" />
+                <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Legend />
+                {tryoutCategory?.map((category: any, index: number) => (
+                  <Line
+                    key={index}
+                    type="monotone"
+                    dataKey={category.name.toUpperCase()}
+                    stroke={
+                      index === 0
+                        ? mainColor
+                        : index === 1
+                          ? secondaryColor
+                          : '#ffc658'
+                    }
+                    name={category.name}
+                    strokeWidth={2}
+                  />
+                ))}
+                <Line
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#ff7300"
+                  name="Total"
+                  strokeWidth={3}
+                  strokeDasharray="5 5"
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </div>
+
+        {/* Category Stats Cards */}
+        <div>
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            Performa Per Kategori
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {stats.map((stat: any, idx: number) => (
+              <div
+                key={idx}
+                className="p-4 rounded-xl border-2 transition-all hover:shadow-md"
+                style={{ borderColor: `${mainColor}20` }}
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <span className="text-sm font-semibold text-gray-700">
+                    {stat.name}
+                  </span>
+                  <div
+                    className={`text-xs font-bold px-2 py-1 rounded-full ${
+                      stat.trend >= 0
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'
+                    }`}
+                  >
+                    {stat.trend >= 0 ? '↑' : '↓'} {Math.abs(stat.trendPercent)}%
+                  </div>
+                </div>
+                <div
+                  className="text-2xl font-bold"
+                  style={{ color: mainColor }}
+                >
+                  {stat.latest.toFixed(0)}
+                </div>
+                <div className="text-xs text-gray-600 mt-1">
+                  {stat.trend >= 0 ? '+' : ''}
+                  {stat.trend.toFixed(0)} dari tryout terakhir
+                </div>
+              </div>
             ))}
-            <Line
-              type="monotone"
-              dataKey="total"
-              stroke="#ff7300"
-              name="Total"
-              strokeWidth={4}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </ChartContainer>
-    </CardContent>
-  </Card>
-);
+          </div>
+        </div>
+
+        {/* Total Score Highlight */}
+        <div
+          className="p-4 rounded-xl border-2 md:col-span-2 lg:col-span-3"
+          style={{
+            borderColor: `${mainColor}40`,
+            backgroundColor: `${mainColor}08`,
+          }}
+        >
+          <div className="flex justify-between items-center">
+            <div>
+              <span className="text-sm font-medium text-gray-700 block mb-1">
+                Total Nilai Keseluruhan
+              </span>
+              <div
+                className="text-3xl font-bold"
+                style={{ color: mainColor }}
+              >
+                {totalLatest.toFixed(0)}
+              </div>
+            </div>
+            <div className="text-right">
+              <div
+                className={`text-lg font-bold ${
+                  totalTrend >= 0 ? 'text-green-600' : 'text-red-600'
+                }`}
+              >
+                {totalTrend >= 0 ? '+' : ''}
+                {totalTrend.toFixed(0)}
+              </div>
+              <div
+                className={`text-sm ${
+                  totalTrend >= 0 ? 'text-green-600' : 'text-red-600'
+                }`}
+              >
+                {totalTrend >= 0 ? 'Meningkat' : 'Menurun'}
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 // =====================================================================
 // KOMPOEN LEARNING PROGRESS CARD (Gabungan Study Habits + Semua Sub-Komponen)
 // =====================================================================
 export const LearningActivityCard: React.FC<{
-  data: LearningData;
+  data: LearningDataType;
   mainColor: string;
   secondaryColor: string;
-}> = ({ data, mainColor, secondaryColor }) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-    <CardHeader
-      className="pb-4 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-      }}
-    >
-      <div className="relative z-10">
-        <CardTitle
-          className="text-xl font-bold flex items-center gap-3"
-          style={{ color: mainColor }}
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
-            <ActivityIcon
-              className="w-5 h-5"
-              style={{ color: mainColor }}
-            />
-          </div>
+}> = ({ data, mainColor, secondaryColor }) => {
+  const activities = [
+    {
+      icon: FileText,
+      value: data.documentsRead,
+      label: 'Dokumen',
+      increase: data.documentsReadIncrease,
+      color: '#3B82F6',
+      lightColor: '#DBEAFE',
+    },
+    {
+      icon: PenTool,
+      value: data.notesCreated,
+      label: 'Catatan',
+      increase: data.notesCreatedIncrease,
+      color: '#8B5CF6',
+      lightColor: '#EDE9FE',
+    },
+    {
+      icon: Highlighter,
+      value: data.highlightsMade,
+      label: 'Highlight',
+      increase: data.highlightsMadeIncrease,
+      color: '#EC4899',
+      lightColor: '#FCE7F3',
+    },
+    {
+      icon: Brain,
+      value: data.quizStudied,
+      label: 'Quiz',
+      increase: data.quizStudiedIncrease,
+      color: '#F59E0B',
+      lightColor: '#FFFBEB',
+    },
+  ];
+
+  return (
+    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-bold flex items-center gap-2">
+          <ActivityIcon
+            className="w-5 h-5"
+            style={{ color: mainColor }}
+          />
           Aktivitas Belajar
         </CardTitle>
-        <CardDescription className="text-gray-600 mt-2">
-          Statistik kegiatan belajar kamu minggu ini.
-        </CardDescription>
-      </div>
-      {/* Decorative elements */}
-      <div
-        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-        style={{ backgroundColor: mainColor }}
-      />
-    </CardHeader>
+        <CardDescription>Statistik kegiatan belajar kamu</CardDescription>
+      </CardHeader>
 
-    <CardContent className="p-6">
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <ActivitySummary
-          icon={
-            <FileText
-              className="h-8 w-8"
-              style={{ color: mainColor }}
-            />
-          }
-          value={data.documentsRead}
-          label="Dokumen Dibaca"
-          increase={data.documentsReadIncrease}
-          mainColor={mainColor}
-        />
-        <ActivitySummary
-          icon={
-            <PenTool
-              className="h-8 w-8"
-              style={{ color: mainColor }}
-            />
-          }
-          value={data.notesCreated}
-          label="Catatan Dibuat"
-          increase={data.notesCreatedIncrease}
-          mainColor={mainColor}
-        />
-        <ActivitySummary
-          icon={
-            <Highlighter
-              className="h-8 w-8"
-              style={{ color: mainColor }}
-            />
-          }
-          value={data.highlightsMade}
-          label="Highlight Dibuat"
-          increase={data.highlightsMadeIncrease}
-          mainColor={mainColor}
-        />
-        <ActivitySummary
-          icon={
-            <Brain
-              className="h-8 w-8"
-              style={{ color: mainColor }}
-            />
-          }
-          value={data.quizStudied}
-          label="Quiz Dibuat"
-          increase={data.quizStudiedIncrease}
-          mainColor={mainColor}
-        />
-      </div>
-    </CardContent>
-  </Card>
-);
+      <CardContent className="p-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {activities.map((activity, idx) => {
+            const Icon = activity.icon;
+            // Calculate progress percentage (max 100 items, normalized)
+            const maxValue = 100;
+            const progressPercent = Math.min(
+              (activity.value / maxValue) * 100,
+              100,
+            );
+            const circumference = 2 * Math.PI * 45; // radius 45
+            const offset =
+              circumference - (progressPercent / 100) * circumference;
 
-export const LearningConsistencyCard: React.FC<{ data: LearningData }> = ({
+            return (
+              <div
+                key={idx}
+                className="flex flex-col items-center p-4 rounded-xl transition-all hover:shadow-md"
+                style={{ backgroundColor: activity.lightColor }}
+              >
+                {/* Circular Progress */}
+                <div className="relative w-24 h-24 mb-3">
+                  <svg
+                    className="w-full h-full transform -rotate-90"
+                    viewBox="0 0 100 100"
+                  >
+                    {/* Background circle */}
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      stroke="#E5E7EB"
+                      strokeWidth="3"
+                    />
+                    {/* Progress circle */}
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      fill="none"
+                      stroke={activity.color}
+                      strokeWidth="3"
+                      strokeDasharray={circumference}
+                      strokeDashoffset={offset}
+                      strokeLinecap="round"
+                      className="transition-all duration-500"
+                    />
+                  </svg>
+                  {/* Center value */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <Icon
+                      size={20}
+                      style={{ color: activity.color }}
+                      className="mb-1"
+                    />
+                    <span
+                      className="text-sm font-bold"
+                      style={{ color: activity.color }}
+                    >
+                      {activity.value}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Label */}
+                <p className="text-sm font-semibold text-gray-700 text-center">
+                  {activity.label}
+                </p>
+
+                {/* Change indicator */}
+                <div
+                  className={`text-xs font-medium mt-1 ${
+                    activity.increase >= 0 ? 'text-green-600' : 'text-red-600'
+                  }`}
+                >
+                  {activity.increase >= 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(activity.increase)}%
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Summary */}
+        <div
+          className="mt-6 p-4 rounded-xl border-2"
+          style={{
+            borderColor: `${mainColor}30`,
+            backgroundColor: `${mainColor}05`,
+          }}
+        >
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-700 font-medium">
+              Total Aktivitas Minggu Ini
+            </span>
+            <span
+              className="text-lg font-bold"
+              style={{ color: mainColor }}
+            >
+              {data.documentsRead +
+                data.notesCreated +
+                data.highlightsMade +
+                data.quizStudied}
+            </span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const LearningConsistencyCard: React.FC<{ data: LearningDataType }> = ({
   data,
 }) => (
   <Card>
@@ -1037,103 +1778,152 @@ export const LearningConsistencyCard: React.FC<{ data: LearningData }> = ({
 );
 
 export const WeeklyProgressCard: React.FC<{
-  data: LearningData;
+  data: LearningDataType;
   mainColor: string;
   secondaryColor: string;
-}> = ({ data, mainColor, secondaryColor }) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-    <CardHeader
-      className="pb-4 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-      }}
-    >
-      <div className="relative z-10">
-        <CardTitle
-          className="text-xl font-bold flex items-center gap-3"
-          style={{ color: mainColor }}
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
-            <Loader2Icon
-              className="w-5 h-5"
-              style={{ color: mainColor }}
-            />
-          </div>
+}> = ({ data, mainColor, secondaryColor }) => {
+  const days = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+  const colors = [mainColor, secondaryColor, '#ffc658', '#ff7300'];
+
+  // Transform data for display
+  const weekData = data.weeklyProgress.map((item: any, idx: number) => ({
+    date: days[idx % 7],
+    doc: item.documentsRead || 0,
+    note: item.notesCreated || 0,
+    highlight: item.highlightsMade || 0,
+    quiz: item.quizStudied || 0,
+  }));
+
+  return (
+    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-bold flex items-center gap-2">
+          <TrendingUp
+            className="w-5 h-5"
+            style={{ color: mainColor }}
+          />
           Progres Mingguan
         </CardTitle>
-        <CardDescription className="text-gray-600 mt-2">
-          Aktivitas belajar selama 7 hari terakhir.
+        <CardDescription>
+          Aktivitas belajar selama 7 hari terakhir
         </CardDescription>
-      </div>
-      {/* Decorative elements */}
-      <div
-        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-        style={{ backgroundColor: mainColor }}
-      />
-    </CardHeader>
+      </CardHeader>
 
-    <CardContent className="p-6">
-      <ChartContainer
-        config={defaultChartConfig}
-        className="min-h-[200px] w-full"
-      >
-        <ResponsiveContainer
-          width="100%"
-          height={400}
-        >
-          <LineChart data={[...data.weeklyProgress]}>
-            <XAxis
-              dataKey="date"
-              tickFormatter={(date) => {
-                const parsedDate = new Date(date);
-                return new Intl.DateTimeFormat('id', {
-                  day: 'numeric',
-                  month: 'short',
-                }).format(parsedDate);
-              }}
-            />
-            <YAxis />
-            <ChartTooltip content={<ChartTooltipContent />} />
-            <Line
-              type="monotone"
-              dataKey="documentsRead"
-              stroke={mainColor}
-              name="Dokumen Dibaca"
-              strokeWidth={3}
-            />
-            <Line
-              type="monotone"
-              dataKey="notesCreated"
-              stroke={secondaryColor}
-              name="Catatan Dibuat"
-              strokeWidth={3}
-            />
-            <Line
-              type="monotone"
-              dataKey="highlightsMade"
-              stroke="#ffc658"
-              name="Highlight Dibuat"
-              strokeWidth={3}
-            />
-            <Line
-              type="monotone"
-              dataKey="quizStudied"
-              stroke="#ff7300"
-              name="Quiz Dibuat"
-              strokeWidth={3}
-            />
-            <Legend />
-          </LineChart>
-        </ResponsiveContainer>
-      </ChartContainer>
-    </CardContent>
-  </Card>
-);
+      <CardContent className="p-6 space-y-6">
+        {/* Full Week Chart */}
+        <div>
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            Ringkasan Harian
+          </div>
+          <ChartContainer
+            config={defaultChartConfig}
+            className="min-h-[200px] max-h-[500px] w-full overflow-y-auto"
+          >
+            <ResponsiveContainer
+              width="100%"
+              height={300}
+            >
+              <BarChart data={weekData}>
+                <XAxis dataKey="date" />
+                <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Bar
+                  dataKey="doc"
+                  fill={colors[0]}
+                  name="Dokumen"
+                  radius={[4, 4, 0, 0]}
+                />
+                <Bar
+                  dataKey="note"
+                  fill={colors[1]}
+                  name="Catatan"
+                  radius={[4, 4, 0, 0]}
+                />
+                <Bar
+                  dataKey="highlight"
+                  fill={colors[2]}
+                  name="Highlight"
+                  radius={[4, 4, 0, 0]}
+                />
+                <Bar
+                  dataKey="quiz"
+                  fill={colors[3]}
+                  name="Quiz"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </div>
 
-export const RecentDocumentsCard: React.FC<{ data: LearningData }> = ({
+        {/* Daily Breakdown Mini Cards */}
+        <div>
+          <div className="text-sm font-semibold text-gray-700 mb-3">
+            Performa Per Hari
+          </div>
+          <div className="grid grid-cols-7 gap-2">
+            {weekData.map((day: any, idx: number) => {
+              const total = day.doc + day.note + day.highlight + day.quiz;
+              const maxTotal = 20;
+              const percentage = Math.min((total / maxTotal) * 100, 100);
+
+              return (
+                <div
+                  key={idx}
+                  className="text-center"
+                >
+                  <div className="text-xs font-semibold text-gray-700 mb-2">
+                    {day.date}
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-600 mb-1">
+                    <span className="font-medium">{total}</span>
+                  </div>
+                  <div className="h-16 relative bg-gray-100 rounded-lg p-1 flex flex-col justify-end">
+                    <div
+                      className="w-full rounded transition-all"
+                      style={{
+                        height: `${percentage}%`,
+                        background: `linear-gradient(180deg, ${mainColor}, ${secondaryColor})`,
+                      }}
+                    />
+                  </div>
+                  {percentage > 0 && (
+                    <div className="text-xs text-green-600 font-bold mt-1">
+                      ✓
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-3 rounded-lg bg-gray-50">
+          {[
+            { label: 'Dokumen', color: colors[0] },
+            { label: 'Catatan', color: colors[1] },
+            { label: 'Highlight', color: colors[2] },
+            { label: 'Quiz', color: colors[3] },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              className="flex items-center gap-2 text-xs"
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: item.color }}
+              />
+              <span className="text-gray-700">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const RecentDocumentsCard: React.FC<{ data: LearningDataType }> = ({
   data,
 }) => (
   <Card>
@@ -1161,7 +1951,9 @@ export const RecentDocumentsCard: React.FC<{ data: LearningData }> = ({
   </Card>
 );
 
-export const MostActiveCard: React.FC<{ data: LearningData }> = ({ data }) => (
+export const MostActiveCard: React.FC<{ data: LearningDataType }> = ({
+  data,
+}) => (
   <Card>
     <CardHeader>
       <CardTitle>Jam Belajar Paling Aktif</CardTitle>
@@ -1176,7 +1968,7 @@ export const MostActiveCard: React.FC<{ data: LearningData }> = ({ data }) => (
       >
         <ResponsiveContainer
           width="100%"
-          height={400}
+          height={300}
         >
           <BarChart data={data.mostActiveHours}>
             <XAxis dataKey="hour" />
@@ -1197,104 +1989,207 @@ export const StudyHabitsCard: React.FC<{
   studyHabits: any;
   mainColor: string;
   secondaryColor: string;
-}> = ({ studyHabits, mainColor, secondaryColor }) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-    <CardHeader
-      className="pb-4 relative overflow-hidden"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-      }}
-    >
-      <div className="relative z-10">
-        <CardTitle
-          className="text-xl font-bold flex items-center gap-3"
-          style={{ color: mainColor }}
-        >
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
+}> = ({ studyHabits, mainColor, secondaryColor }) => {
+  const milestones = [
+    {
+      label: 'Mulai',
+      value: 0,
+      icon: Clock,
+      color: 'text-gray-400',
+    },
+    {
+      label: '10 Jam',
+      value: 10,
+      icon: Award,
+      color: 'text-blue-500',
+      achieved: studyHabits.totalHoursStudied >= 10,
+    },
+    {
+      label: '30 Jam',
+      value: 30,
+      icon: Trophy,
+      color: 'text-yellow-500',
+      achieved: studyHabits.totalHoursStudied >= 30,
+    },
+    {
+      label: studyHabits.totalHoursStudied.toFixed(0) + ' Jam',
+      value: studyHabits.totalHoursStudied,
+      icon: Zap,
+      color: 'text-orange-500',
+      achieved: true,
+    },
+  ];
+
+  const progress = Math.min((studyHabits.totalHoursStudied / 50) * 100, 100);
+
+  return (
+    <div className="space-y-6">
+      {/* Timeline Progress */}
+      <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg font-bold flex items-center gap-2">
             <LibraryBigIcon
               className="w-5 h-5"
               style={{ color: mainColor }}
             />
-          </div>
-          Kebiasaan Belajar
-        </CardTitle>
-        <CardDescription className="text-gray-600 mt-2">
-          Ringkasan aktivitas dan performa belajar kamu.
-        </CardDescription>
-      </div>
-      {/* Decorative elements */}
-      <div
-        className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-        style={{ backgroundColor: mainColor }}
-      />
-    </CardHeader>
+            Kebiasaan Belajar
+          </CardTitle>
+          <CardDescription>Progres perjalanan belajar kamu</CardDescription>
+        </CardHeader>
 
-    <CardContent className="p-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="text-center space-y-2">
-          <div
-            className="text-2xl font-bold"
-            style={{ color: mainColor }}
-          >
-            {studyHabits.totalHoursStudied.toFixed(1)} jam
+        <CardContent className="p-6 space-y-6">
+          {/* Progress Bar */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">
+                Total Jam Belajar
+              </span>
+              <span
+                className="text-sm font-bold"
+                style={{ color: mainColor }}
+              >
+                {studyHabits.totalHoursStudied.toFixed(1)} / 50 jam
+              </span>
+            </div>
+            <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full transition-all duration-500 rounded-full"
+                style={{
+                  width: `${progress}%`,
+                  background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+                }}
+              />
+            </div>
           </div>
-          <div className="text-sm text-gray-600">Total Jam Belajar</div>
-        </div>
-        <div className="text-center space-y-2">
-          <div
-            className="text-2xl font-bold"
-            style={{ color: mainColor }}
-          >
-            {studyHabits.longestStreak} hari
-          </div>
-          <div className="text-sm text-gray-600">Streak Terpanjang</div>
-        </div>
-        <div className="text-center space-y-2">
-          <div
-            className="text-2xl font-bold"
-            style={{ color: mainColor }}
-          >
-            {studyHabits.averageDailyStudyTime.toFixed(1)} jam
-          </div>
-          <div className="text-sm text-gray-600">Rata-rata Harian</div>
-        </div>
-        <div className="text-center space-y-2">
-          <div
-            className="text-2xl font-bold"
-            style={{ color: mainColor }}
-          >
-            {studyHabits.hoursThisWeek} jam
-          </div>
-          <div className="text-sm text-gray-600">Minggu Ini</div>
-        </div>
-      </div>
 
-      <div className="mt-6 space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Hari paling produktif:</span>
-          <Badge
-            className="text-white border-0"
-            style={{ backgroundColor: mainColor }}
+          {/* Milestone Timeline */}
+          <div className="flex justify-between items-start">
+            {milestones.map((milestone, idx) => {
+              const Icon = milestone.icon;
+              return (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center flex-1"
+                >
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-all ${
+                      milestone.achieved ? 'shadow-lg' : 'bg-gray-200'
+                    }`}
+                    style={{
+                      backgroundColor: milestone.achieved
+                        ? `${mainColor}20`
+                        : undefined,
+                    }}
+                  >
+                    <Icon
+                      size={18}
+                      className={
+                        milestone.achieved ? milestone.color : 'text-gray-400'
+                      }
+                    />
+                  </div>
+                  <span className="text-xs font-semibold text-center text-gray-700">
+                    {milestone.label}
+                  </span>
+                  {milestone.achieved && (
+                    <span className="text-xs text-green-600 mt-1">✓</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 gap-3">
+            <div
+              className="p-3 rounded-xl"
+              style={{ backgroundColor: `${mainColor}10` }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <Flame
+                  size={16}
+                  style={{ color: mainColor }}
+                />
+                <span className="text-xs text-gray-600">Streak</span>
+              </div>
+              <div
+                className="text-xl font-bold"
+                style={{ color: mainColor }}
+              >
+                {studyHabits.longestStreak} hari
+              </div>
+            </div>
+            <div
+              className="p-3 rounded-xl"
+              style={{ backgroundColor: `${secondaryColor}10` }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <Clock
+                  size={16}
+                  style={{ color: secondaryColor }}
+                />
+                <span className="text-xs text-gray-600">Rata-rata</span>
+              </div>
+              <div
+                className="text-xl font-bold"
+                style={{ color: secondaryColor }}
+              >
+                {studyHabits.averageDailyStudyTime.toFixed(1)} jam
+              </div>
+            </div>
+            <div
+              className="p-3 rounded-xl col-span-2"
+              style={{ backgroundColor: `${mainColor}08` }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <Calendar
+                  size={16}
+                  style={{ color: mainColor }}
+                />
+                <span className="text-xs text-gray-600">Minggu ini</span>
+              </div>
+              <div className="flex justify-between items-end">
+                <div
+                  className="text-2xl font-bold"
+                  style={{ color: mainColor }}
+                >
+                  {studyHabits.hoursThisWeek} jam
+                </div>
+                <Badge
+                  className="text-white border-0"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  Hari terbaik: {studyHabits.mostProductiveDay}
+                </Badge>
+              </div>
+            </div>
+          </div>
+
+          {/* Effective Time */}
+          <div
+            className="p-4 rounded-xl border-2"
+            style={{
+              borderColor: `${mainColor}30`,
+              backgroundColor: `${mainColor}05`,
+            }}
           >
-            {studyHabits.mostProductiveDay}
-          </Badge>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Waktu belajar efektif:</span>
-          <Badge
-            className="text-white border-0"
-            style={{ backgroundColor: mainColor }}
-          >
-            {studyHabits.mostEffectiveTime}
-          </Badge>
-        </div>
-      </div>
-    </CardContent>
-  </Card>
-);
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">
+                Waktu Belajar Paling Efektif
+              </span>
+              <Badge
+                className="text-white border-0"
+                style={{ backgroundColor: mainColor }}
+              >
+                {studyHabits.mostEffectiveTime}
+              </Badge>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
 // =====================================================================
 // BAGIAN CALENDAR
@@ -1356,20 +2251,20 @@ export const CalendarComponent: React.FC<{
 
       <CardContent className="p-6">
         <Tabs defaultValue="schedule">
-          <TabsList className="grid w-full grid-cols-3 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
+          <TabsList
+            className="grid w-full grid-cols-3 mb-6 md:mb-8 rounded-xl p-1 h-11 md:h-12 border-0"
+            style={{ backgroundColor: `${mainColor}08` }}
+          >
             {calendarViews.map(({ value, label }, index) => (
               <TabsTrigger
                 key={value}
                 value={value}
-                className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
-                style={
-                  {
-                    '--tw-bg-opacity': '1',
-                  } as React.CSSProperties & { [key: string]: string }
-                }
-                data-active-bg={mainColor}
+                className="rounded-lg font-semibold transition-all duration-200 text-gray-700 data-[state=active]:text-white data-[state=active]:shadow-md"
+                style={{
+                  backgroundColor: 'transparent',
+                }}
               >
-                <span className="font-medium">{label}</span>
+                <span className="font-medium text-xs md:text-sm">{label}</span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -1410,335 +2305,4 @@ export const CalendarComponent: React.FC<{
       </CardContent>
     </Card>
   );
-};
-
-// =====================================================================
-// KOMPONEN UTAMA DASHBOARD
-// =====================================================================
-
-export default function DashboardClient() {
-  const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
-
-  // ...existing state and useEffect code...
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
-  const [reportData, setReportData] = useState<ReportDataType | undefined>();
-  const [isLoadingLearningData, setIsLoadingLearningData] =
-    useState<boolean>(true);
-  const [learningData, setLearningData] = useState<
-    LearningDataType | undefined
-  >();
-
-  const getLearningReport = async () => {
-    await getGeneral(`/report/getLearningReport?userId=${session?.user.id}`, {
-      setData: setLearningData,
-      setLoading: setIsLoadingLearningData,
-      onError({ message }) {
-        setError(message);
-      },
-    });
-  };
-
-  useEffect(() => {
-    getLearningReport();
-    getGeneral(`/report/getReportData?userId=${session?.user.id}`, {
-      setData: setReportData,
-      setLoading: setIsLoading,
-    });
-  }, []);
-
-  if (isLoading || isLoadingLearningData) {
-    return (
-      <div className="absolute left-0 top-0 w-full h-[calc(100vh-80px)]">
-        <LoadingRetro />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="mt-[-80px] flex h-screen items-center justify-center">
-        Error: {error}
-      </div>
-    );
-  }
-
-  if (!reportData || !learningData) {
-    return (
-      <div className="mt-[-80px] flex h-screen items-center justify-center">
-        Tidak ada data yang ditemukan
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto max-w-7xl px-4 py-6">
-        {/* Enhanced Header Section */}
-        <div className="text-center mb-8">
-          <div
-            className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 md:mb-6 rounded-2xl flex items-center justify-center shadow-lg"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          >
-            <Home className="w-8 h-8 md:w-10 md:h-10 text-white" />
-          </div>
-          <h1
-            className="text-2xl md:text-3xl font-bold mb-2"
-            style={{ color: mainColor }}
-          >
-            Dashboard
-          </h1>
-          <p className="text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base">
-            Pantau kemajuan dan tingkatkan persiapan ujian kamu
-          </p>
-        </div>
-
-        {/* Performance Summary */}
-        <section className="mb-8">
-          <PerformanceSummary
-            learningReport={reportData?.learningReport}
-            studyHabits={reportData?.studyHabits}
-            tryoutHistory={reportData?.tryoutHistory}
-            mainColor={mainColor}
-          />
-        </section>
-
-        {/* Calendar Section */}
-        <section className="mb-8">
-          <CalendarComponent
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-        </section>
-
-        {/* Study Habits & Learning Activity */}
-        <section className="mb-8 grid gap-6 grid-cols-1 lg:grid-cols-2">
-          <StudyHabitsCard
-            studyHabits={reportData?.studyHabits}
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-          <LearningActivityCard
-            data={learningData as LearningData}
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-        </section>
-
-        {/* Progress & Score Development */}
-        <section className="mb-8 grid gap-6 grid-cols-1 lg:grid-cols-2">
-          <WeeklyProgressCard
-            data={learningData as LearningData}
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-          <ScoreDevelopmentCard
-            scoreDevelopmentData={reportData?.scoreDevelopmentData}
-            tryoutCategory={reportData?.tryoutCategory}
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-        </section>
-
-        {/* Tryout & Quiz History */}
-        <section className="mb-8 grid gap-6 grid-cols-1 lg:grid-cols-2">
-          <TryoutHistoryCard
-            tryoutHistory={reportData?.tryoutHistory}
-            tryoutCategory={reportData?.tryoutCategory}
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-          <QuizHistoryCard
-            quizHistory={reportData?.quizHistory}
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-        </section>
-
-        {/* Test Analysis */}
-        {/* <section className="mb-8">
-          <TestAnalysisCard
-            analysisByCategoryTryout={reportData?.analysisByCategoryTryout}
-            tryoutCategory={reportData?.tryoutCategory}
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-        </section> */}
-      </div>
-    </div>
-  );
-}
-
-type LearningDataType = {
-  documentsRead: number;
-  notesCreated: number;
-  highlightsMade: number;
-  quizStudied: number;
-  studyTimeByCategory: {
-    name: string;
-    value: number;
-  }[];
-  documentsReadIncrease: number;
-  notesCreatedIncrease: number;
-  highlightsMadeIncrease: number;
-  quizStudiedIncrease: number;
-  learningStreak: number;
-  longestStreak: number;
-  topCategories: {
-    name: string;
-    count: number;
-  }[];
-  recentDocuments: {
-    title: string;
-    lastAccessed: string;
-  }[];
-  mostActiveHours: {
-    hour: number;
-    activity: number;
-  }[];
-  quizAccuracy: number;
-  totalStudyTime: number;
-  averageSessionDuration: number;
-  dailyStreak: {
-    date: string;
-    completed: boolean;
-  }[];
-  weeklyProgress: {
-    documentsRead: number;
-    notesCreated: number;
-    highlightsMade: number;
-    quizStudied: number;
-    date: string;
-  }[];
-};
-
-type ReportDataType = {
-  userHeader: {
-    name: string;
-    status: UserRoleEnum;
-    daysLeft: number;
-    avatarUrl: string | null;
-  };
-  studyHabits: {
-    totalHoursStudied: number;
-    hoursThisWeek: number;
-    longestStreak: number;
-    averageDailyStudyTime: number;
-    mostProductiveDay: string;
-    mostEffectiveTime: string;
-  };
-  learningReport: {
-    totalScore: any;
-    scoreIncrease: number;
-    scoreIncreasePercentage: number;
-    rank: number;
-    rankIncrease: number;
-    documentsRead: number;
-    notesCreated: number;
-    highlightsMade: number;
-    quizStudied: number;
-  };
-  tryoutCategory: {
-    id: string;
-    name: string;
-    TryoutSessionResult: {
-      id: string;
-      totalScore: number;
-      categoryId: string;
-      tryoutResultId: string;
-      sessionId: string;
-      startSession: Date;
-      endSession: Date;
-      theta: number | null;
-    }[];
-  }[];
-  scoreDevelopmentData: {
-    total: number;
-    date: string;
-  }[];
-  dataScoreDistribution: {
-    scoreRange: string;
-    totalParticipants: number;
-    highestScore: number;
-    lowestScore: number;
-    averageScore: number;
-    percentage: number;
-  }[];
-  analysisByCategoryTryout: {
-    data: {
-      subCategory: string;
-      accuracy: number;
-    }[];
-    category: string;
-  }[];
-  tryoutHistory: {
-    history: {
-      rank: number;
-      duration: string;
-      show: boolean;
-      change: number;
-      Tryout: {
-        id: string;
-        image: string | null;
-        createAt: Date;
-        updateAt: Date;
-        title: string;
-        restTime: number;
-        status: TryoutStatusEnum;
-        startDate: Date;
-        endDate: Date;
-        resultDate: Date;
-      };
-      TryoutSessionResult: ({
-        TryoutSession: {
-          thresholdValue: number | null;
-        };
-        TryoutCategory: {
-          id: string;
-          name: string;
-        };
-      } & {
-        id: string;
-        totalScore: number;
-        categoryId: string;
-        tryoutResultId: string;
-        sessionId: string;
-        startSession: Date;
-        endSession: Date;
-        theta: number | null;
-      })[];
-      userId: string;
-      id: string;
-      tryoutId: string;
-      totalScore: number;
-      startTryout: Date;
-      endTryout: Date;
-    }[];
-    chart: {
-      tanggal: Date;
-      skorTotal: number;
-      peringkat: number;
-      perubahan: number;
-    }[];
-  };
-  quizHistory: {
-    history: {
-      userId: string;
-      id: string;
-      createAt: Date;
-      accuracy: number;
-    }[];
-    chart: {
-      tanggal: Date;
-      accuracy: number;
-      perubahan: number;
-    }[];
-  };
 };

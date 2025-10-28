@@ -24,7 +24,6 @@ import Logo from '@/components/ui/logo';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { hexToRgba } from '@/styles/main-styles';
-import { Badge } from '../../ui/badge';
 
 interface NavbarProps {
   showAuth: { open: boolean; redirect: string | null };
@@ -62,107 +61,11 @@ const navItems: NavItem[] = [
   },
   { href: '/blog', label: 'Blog', isLink: true },
   { href: '/price', label: 'Produk', isLink: true },
+  { href: '/tryout', label: 'Tryout', isLink: true },
   { href: '/tutor', label: 'Tutor', isLink: true },
   { href: '/about', label: 'About', isLink: true },
   { href: '/beasiswa', label: 'Beasiswa', isLink: true },
 ];
-
-const GratisBadge: React.FC<{ label: string }> = ({ label }) => {
-  if (label.toLowerCase() !== 'try out') return null;
-  return (
-    <Badge
-      variant="secondary"
-      className="absolute -top-3 -right-8 bg-green-500 hover:bg-green-500 px-1.5 py-0 text-[10px] font-bold text-white rounded-full"
-    >
-      GRATIS
-    </Badge>
-  );
-};
-
-/**
- * Gradient Background Component untuk navbar
- */
-const GradientBackground: React.FC<{ mainColor: string }> = ({ mainColor }) => {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none"></div>
-  );
-};
-
-/**
- * Komponen link universal untuk Desktop & Mobile.
- * Menggunakan router untuk navigasi yang lebih konsisten.
- */
-const NavLink: React.FC<{
-  item: NavItem;
-  onClick?: () => void;
-}> = ({ item, onClick }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
-
-  const handleClick = (href: string, isLink?: boolean) => {
-    onClick?.(); // Untuk menutup sheet di mobile
-
-    if (isLink) {
-      // Direct navigation untuk link pages
-      router.push(href);
-    } else {
-      // Scroll navigation untuk anchor links
-      if (pathname !== '/') {
-        // Jika tidak di homepage, navigasi ke homepage dengan hash
-        router.push(`/${href}`);
-      } else {
-        // Jika di homepage, lakukan scroll
-        const targetId = href.substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-          const offset = 200;
-          const elementPosition = targetElement.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth',
-          });
-        } else {
-          // Fallback: navigasi ke homepage dengan hash
-          router.push(`/${href}`);
-        }
-      }
-    }
-  };
-
-  if (item.isLink) {
-    return (
-      <Link
-        href={item.href}
-        className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-300"
-        style={{ color: mainColor }}
-      >
-        {item.label}
-      </Link>
-    );
-  }
-
-  return (
-    <button
-      onClick={() => handleClick(item.href, item.isLink)}
-      className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-300"
-      style={{ color: mainColor }}
-    >
-      {item.label}
-      <GratisBadge label={item.label} />
-    </button>
-  );
-};
 
 const MobileNav: React.FC<{
   navItems: NavItem[];
