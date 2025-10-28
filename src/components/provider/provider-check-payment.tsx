@@ -46,6 +46,7 @@ export default function ProviderCheckPayment({
     async (order_id: string, transaction_status: string) => {
       const res = await checkPayment(order_id);
       const inviteLink = res?.data?.inviteLink as string | undefined;
+      console.log(res);
       if (
         res &&
         new Date(res?.data?.expired_time) > new Date() &&

@@ -412,6 +412,7 @@ export function Payment() {
                         key={i}
                         plan={bundle}
                         discount={bundle.discount}
+                        classOverlay="z-[10001]"
                       />
                     ))}
                   </div>

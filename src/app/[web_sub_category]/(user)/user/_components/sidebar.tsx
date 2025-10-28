@@ -256,7 +256,7 @@ const SidebarUser = ({
 
         <SidebarFooter className="border-t border-slate-200/50 bg-white/80 backdrop-blur-xl">
           {/* Premium Card */}
-          {!session?.user.tier && (
+          {!session?.user.tier && !minimizeSidebar && (
             <div
               className="p-4 rounded-lg text-white shadow-lg cursor-pointer hover:shadow-xl mb-4"
               style={{
@@ -305,60 +305,64 @@ const SidebarUser = ({
                 {session?.user.email}
               </p>
             </div>
-            <DropdownMenu
-              open={openMenu}
-              onOpenChange={setOpenMenu}
-            >
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-lg"
-                >
-                  <Settings className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="w-56"
+            {!minimizeSidebar && (
+              <DropdownMenu
+                open={openMenu}
+                onOpenChange={setOpenMenu}
               >
-                <DropdownMenuItem
-                  onClick={() => {
-                    setPagesSetting('account');
-                    setTransactionHistory(true);
-                  }}
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 rounded-lg"
+                  >
+                    <Settings className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-56"
                 >
-                  <User className="w-4 h-4 mr-2" />
-                  Profil
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setPagesSetting('account');
-                    setTransactionHistory(true);
-                  }}
-                >
-                  <Settings className="w-4 h-4 mr-2" />
-                  Pengaturan
-                </DropdownMenuItem>
-                {!session?.user.tier && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => setTransactionPopUp(true)}>
-                      <Crown className="w-4 h-4 mr-2" />
-                      Upgrade
-                    </DropdownMenuItem>
-                  </>
-                )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="text-red-600"
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Keluar
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setPagesSetting('account');
+                      setTransactionHistory(true);
+                    }}
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Profil
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setPagesSetting('account');
+                      setTransactionHistory(true);
+                    }}
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    Pengaturan
+                  </DropdownMenuItem>
+                  {!session?.user.tier && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => setTransactionPopUp(true)}
+                      >
+                        <Crown className="w-4 h-4 mr-2" />
+                        Upgrade
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="text-red-600"
+                    onClick={() => signOut({ callbackUrl: '/' })}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Keluar
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </SidebarFooter>
         <SidebarRail />
