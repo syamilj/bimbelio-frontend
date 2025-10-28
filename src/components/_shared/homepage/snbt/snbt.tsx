@@ -1,12 +1,12 @@
 'use client';
 import Footer from '@/components/_shared/footer';
-import BentoGrid from './bento-grid';
-import BlueprintConcept from './blueprint-concept';
-import FaqHomepage from './FaqHomepage';
-import HeroSection from './hero';
+import BentoGrid from '../home/bento-grid';
+import BlueprintConcept from '../home/blueprint-concept';
+import FaqHomepage from '../home/FaqHomepage';
+import HeroSection from '../home/hero';
+import Tryout from '../home/tryout';
+import WhyUs from '../home/why-us';
 import Testimoni from './testimoni';
-import Tryout from './tryout';
-import WhyUs from './why-us';
 
 export default function SNBT() {
   return (

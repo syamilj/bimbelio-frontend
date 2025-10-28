@@ -70,9 +70,9 @@ const BADGE_ICONS: Record<string, React.ReactNode> = {
 };
 
 const STATS: Stat[] = [
-  { label: 'Blueprint Users', value: '15,000+' },
-  { label: 'Score Improvement', value: '+200' },
-  { label: 'Blueprint Success', value: '97%' },
+  { label: 'Live Session', value: '198+' },
+  { label: 'Try Out Berkala', value: '100+' },
+  { label: 'Rekaman Lengkap', value: '300+' },
 ];
 
 // Component
@@ -272,7 +272,24 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
       transition={{ duration: 0.8, ease: 'easeOut' }}
       className="flex mt-16 mb-8 flex-col items-center"
     >
-      {/*  badge */}
+      {/* New badge - Launching soon */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-full border-2 shadow-sm bg-white/90 backdrop-blur-sm"
+        style={{
+          borderColor: `${mainColor}30`,
+        }}
+      >
+        <div
+          className="w-2 h-2 rounded-full animate-pulse"
+          style={{ backgroundColor: mainColor }}
+        />
+        <span className="text-sm font-bold text-gray-700">
+          Mulai Sekarang. 36 Minggu ke Depan.
+        </span>
+      </motion.div>
 
       {/* Powered by section */}
       <motion.div
@@ -289,7 +306,7 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          Bimbelio: Bimbel AI untuk PTN dan Kedinasan
+          Bimbelio: Satu Akun untuk UTBK, Mandiri, Kedinasan
         </span>
       </motion.div>
     </motion.div>
@@ -302,186 +319,384 @@ const HeadingSection: React.FC<{
   secondaryColor: string;
   colorsLoaded?: boolean;
 }> = ({ mainColor, secondaryColor, colorsLoaded = true }) => (
-  <div className="mb-16 space-y-8 max-w-4xl">
-    {/* Main heading -  and powerful */}
+  <div className="mb-16 space-y-8 max-w-5xl">
+    {/* Main heading - Liveclass vs Livestream concept */}
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.5 }}
       className="space-y-6"
     >
-      <h1 className="text-center font-black leading-tight relative text-4xl sm:text-5xl">
-        {/* Baris 1: Blueprint */}
-        <div className="flex justify-center items-center gap-3 flex-wrap">
-          <span className="text-gray-900">Sistem Belajar</span>
-        </div>
-        {/* Baris 2: Sistem Belajar */}
-        <div className="flex justify-center items-center px-4 mt-4 md:mt-6">
+      <h1 className="text-center font-black leading-tight relative space-y-3">
+        {/* Baris 1: Mau Jadi Penonton */}
+        <div className="flex justify-center items-center gap-2 md:gap-3 flex-wrap text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+          <span className="text-gray-900">Mau</span>
           <span
             className={cn(
-              'text-white text-center px-3 py-2 rounded-lg text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg transition-all duration-300',
+              'text-white text-center px-3 md:px-4 py-1.5 md:py-2 rounded-xl font-extrabold leading-tight shadow-xl transition-all duration-300',
               !colorsLoaded && 'bg-blue-500',
             )}
             style={
               colorsLoaded
                 ? {
-                    backgroundColor: mainColor,
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }
                 : {}
             }
           >
-            Blueprint TKA & UTBK
+            Jadi Penonton
           </span>
         </div>
-        {/* Baris 3: Pasti Naik 200+ Poin! */}
-        <div className="flex justify-center items-center gap-3 mt-4 flex-wrap text-4xl sm:text-5xl">
+
+        {/* Baris 2: atau */}
+        <div className="flex justify-center items-center text-2xl sm:text-3xl md:text-4xl py-2">
+          <span className="text-gray-500 font-semibold">atau</span>
+        </div>
+
+        {/* Baris 3: Mahasiswa PTN Favorit? */}
+        <div className="flex justify-center items-center gap-2 md:gap-3 flex-wrap text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+          <span className="text-gray-900">Mahasiswa</span>
           <span
             className={cn(
-              'font-black transition-all duration-300',
-              colorsLoaded ? 'bg-clip-text text-transparent' : 'text-blue-600',
+              'text-white text-center px-3 md:px-4 py-1.5 md:py-2 rounded-xl font-extrabold leading-tight shadow-xl transition-all duration-300',
+              !colorsLoaded && 'bg-blue-500',
             )}
             style={
               colorsLoaded
                 ? {
-                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor || mainColor}aa)`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }
                 : {}
             }
           >
-            Pasti Naik 200+ Poin!
+            PTN Favorit
           </span>
+          <span className="text-gray-900">?</span>
         </div>
       </h1>
 
-      {/* Penjelasan goal - versi mobile dan desktop */}
-      <p className="text-xl md:text-2xl text-gray-600 font-medium leading-relaxed">
-        {typeof window !== 'undefined' && window.innerWidth < 768 ? (
-          // Mobile: Gabungkan kedua tulisan
-          <>
-            <span
-              className={cn(
-                'font-bold transition-colors duration-300',
-                !colorsLoaded && 'text-blue-600',
-              )}
-              style={colorsLoaded ? { color: mainColor } : {}}
-            >
-              Goal kita jelas:
-            </span>{' '}
-            bantu kamu naik minimal 200 poin dari hasil tes awal.{' '}
-            <span
-              className={cn(
-                'font-bold transition-colors duration-300',
-                !colorsLoaded && 'text-blue-500',
-              )}
-              style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
-            >
-              Bukan sekadar janji motivasi
-            </span>
-            , tapi sistem yang terukur!
-          </>
-        ) : (
-          // Desktop: Pisahkan dengan <br />
-          <>
-            <span
-              className={cn(
-                'font-bold transition-colors duration-300',
-                !colorsLoaded && 'text-blue-600',
-              )}
-              style={colorsLoaded ? { color: mainColor } : {}}
-            >
-              Goal kita jelas:
-            </span>{' '}
-            bantu kamu naik minimal 200 poin dari hasil tes awal.
-            <br />
-            <span
-              className={cn(
-                'font-bold transition-colors duration-300',
-                !colorsLoaded && 'text-blue-500',
-              )}
-              style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
-            >
-              Bukan sekadar janji motivasi
-            </span>
-            , tapi sistem yang terukur!
-          </>
-        )}
-      </p>
+      {/* Value proposition - Liveclass concept */}
+      <div className="space-y-4 mt-10 px-4">
+        <p className="text-lg md:text-xl lg:text-2xl text-gray-700 font-semibold leading-relaxed text-center">
+          <span
+            className={cn(
+              'font-black transition-colors duration-300',
+              !colorsLoaded && 'text-blue-600',
+            )}
+            style={colorsLoaded ? { color: mainColor } : {}}
+          >
+            Liveclass bukan cuma nonton video.
+          </span>{' '}
+          Ini kelas interaktif dengan tutor alumni PTN, live di Zoom, bisa tanya
+          langsung, diskusi real-time.
+        </p>
+
+        <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-center">
+          <span className="font-bold text-gray-800">Livestream?</span> Itu buat
+          yang ikut dari rumah, tetap dapat rekaman lengkap, TO berkala, dan AI
+          Mentor 24/7.{' '}
+          <span className="font-bold text-gray-800">
+            Harga ratusan ribu dengan cicilan 3x
+          </span>{' '}
+          — tanpa biaya tersembunyi, tanpa ribet.
+        </p>
+
+        <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-center">
+          Pilih yang sesuai ritme lo.{' '}
+          <span
+            className={cn(
+              'font-bold transition-colors duration-300',
+              !colorsLoaded && 'text-blue-500',
+            )}
+            style={colorsLoaded ? { color: secondaryColor || mainColor } : {}}
+          >
+            Satu akun, semua jalur
+          </span>{' '}
+          — UTBK, SIMAK UI, UM UGM, sampai kedinasan.
+        </p>
+      </div>
     </motion.div>
 
-    {/*  feature pills */}
-    {/* <motion.div
+    {/* Program comparison cards - Liveclass vs Livestream */}
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.8, duration: 0.6 }}
-      className="flex flex-wrap justify-center gap-3"
+      className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4"
+    >
+      {/* Liveclass Card */}
+      <div
+        className="relative p-6 rounded-2xl bg-white shadow-lg border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        style={{
+          borderColor: `${mainColor}40`,
+        }}
+      >
+        <div className="absolute -top-3 left-6">
+          <span
+            className="px-4 py-1 rounded-full text-xs font-black text-white shadow-md"
+            style={{ backgroundColor: mainColor }}
+          >
+            PREMIUM
+          </span>
+        </div>
+        <h3 className="text-2xl font-black text-gray-900 mb-2 mt-2">
+          Liveclass
+        </h3>
+        <p className="text-sm text-gray-600 mb-4">
+          UTBK Materi + Intensif + Super
+        </p>
+        <div className="space-y-3">
+          <div className="flex items-start gap-3">
+            <div
+              className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ backgroundColor: `${mainColor}20` }}
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: mainColor }}
+              />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-gray-800">Maks. 50 siswa</p>
+              <p className="text-xs text-gray-600">
+                Batch eksklusif, perhatian personal
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div
+              className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ backgroundColor: `${mainColor}20` }}
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: mainColor }}
+              />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-gray-800">72+ Sessions</p>
+              <p className="text-xs text-gray-600">Live interaktif di Zoom</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div
+              className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ backgroundColor: `${mainColor}20` }}
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: mainColor }}
+              />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-gray-800">
+                1-on-1 Konseling
+              </p>
+              <p className="text-xs text-gray-600">Dengan tutor alumni PTN</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Livestream Card */}
+      <div
+        className="relative p-6 rounded-2xl bg-white shadow-lg border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        style={{
+          borderColor: `${secondaryColor || mainColor}40`,
+        }}
+      >
+        <div className="absolute -top-3 left-6">
+          <span
+            className="px-4 py-1 rounded-full text-xs font-black text-white shadow-md"
+            style={{ backgroundColor: secondaryColor || mainColor }}
+          >
+            ALL-ACCESS
+          </span>
+        </div>
+        <h3 className="text-2xl font-black text-gray-900 mb-2 mt-2">
+          Livestream
+        </h3>
+        <p className="text-sm text-gray-600 mb-4">
+          UTBK + Ujian Mandiri + Kedinasan
+        </p>
+        <div className="space-y-3">
+          <div className="flex items-start gap-3">
+            <div
+              className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ backgroundColor: `${secondaryColor || mainColor}20` }}
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: secondaryColor || mainColor }}
+              />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-gray-800">Skala Besar</p>
+              <p className="text-xs text-gray-600">
+                Unlimited peserta, fleksibel
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div
+              className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ backgroundColor: `${secondaryColor || mainColor}20` }}
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: secondaryColor || mainColor }}
+              />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-gray-800">198+ Sessions</p>
+              <p className="text-xs text-gray-600">
+                Rekaman lengkap semua jalur
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div
+              className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{ backgroundColor: `${secondaryColor || mainColor}20` }}
+            >
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: secondaryColor || mainColor }}
+              />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-gray-800">Grup Diskusi</p>
+              <p className="text-xs text-gray-600">Belajar bareng komunitas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+
+    {/* Key differentiators */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.0, duration: 0.6 }}
+      className="flex flex-wrap justify-center gap-4 pt-6"
     >
       {[
-        { icon: <Sparkles className="w-4 h-4" />, text: 'AI Powered' },
-        { icon: <Users className="w-4 h-4" />, text: '15K+ Students' },
-        { icon: <TrendingUp className="w-4 h-4" />, text: '95% Success' },
-        { icon: <Award className="w-4 h-4" />, text: 'Top Rated' },
-      ].map((pill, index) => (
+        {
+          icon: <BarChart className="w-5 h-5" />,
+          title: 'TO IRT-Based',
+          desc: 'Analisis pola kesalahan akurat',
+        },
+        {
+          icon: <Bot className="w-5 h-5" />,
+          title: 'AI Mentor 24/7',
+          desc: 'Instant jawab pertanyaan',
+        },
+        {
+          icon: <Target className="w-5 h-5" />,
+          title: 'Progress Tracking',
+          desc: 'Weekly report jelas',
+        },
+        {
+          icon: <Users className="w-5 h-5" />,
+          title: 'Expert Tutors',
+          desc: 'Fresh graduates',
+        },
+      ].map((item, index) => (
         <div
           key={index}
-          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border"
-          style={
-            {
-              borderColor: `${mainColor} ${secondaryColor}`,
-            } as React.CSSProperties
-          }
+          className="flex flex-col items-center gap-2 px-6 py-4 rounded-2xl bg-white shadow-md border-2 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 min-w-[160px]"
+          style={{
+            borderColor: `${mainColor}20`,
+          }}
         >
-          <div style={{ color: mainColor }}>{pill.icon}</div>
-          <span className="font-medium text-gray-700 text-sm">{pill.text}</span>
+          <div
+            className="p-2 rounded-lg"
+            style={{
+              backgroundColor: `${mainColor}15`,
+              color: mainColor,
+            }}
+          >
+            {item.icon}
+          </div>
+          <div className="text-center">
+            <div
+              className="font-bold text-sm mb-1"
+              style={{ color: mainColor }}
+            >
+              {item.title}
+            </div>
+            <div className="text-xs text-gray-600">{item.desc}</div>
+          </div>
         </div>
       ))}
-    </motion.div> */}
+    </motion.div>
   </div>
 );
 
-//  Stats Section
-// Stats Section dengan badge fitur tambahan
-// Stats Section dengan badge fitur + ikon
-// StatsSection dengan desain lebih menarik & interaktif
+//  Stats Section - Focus on program content
 const StatsSection: React.FC<{
   stats: Stat[];
   mainColor: string;
 }> = ({ stats = STATS, mainColor }) => (
-  <div className="flex flex-col items-center mb-16 w-full">
-    {/* Stat utama */}
-
-    {/* Badge fitur dengan ikon */}
-    <div className="flex flex-wrap justify-center gap-4">
-      {[
-        'Pretest',
-        'Uji Progress',
-        'Try Out',
-        'Liveclass',
-        'AI',
-        'SMART Goals',
-      ].map((badge, idx) => (
-        <motion.span
-          key={badge}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 + idx * 0.1 }}
-          className="flex shadow items-center px-5 py-2 rounded-full font-semibold text-sm bg-white/50 hover:scale-105 transition-transform cursor-pointer"
+  <div className="flex flex-col items-center mb-12 w-full">
+    {/* Content Stats with Icons */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 1.2 }}
+      className="grid grid-cols-3 gap-4 md:gap-8 mb-10 w-full max-w-3xl"
+    >
+      {stats.map((stat, idx) => (
+        <div
+          key={idx}
+          className="text-center p-4 md:p-6 rounded-2xl bg-white/90 backdrop-blur-sm shadow-md hover:shadow-xl transition-all duration-300 border-2 hover:-translate-y-1"
           style={{
-            borderColor: mainColor,
-            color: mainColor,
+            borderColor: `${mainColor}20`,
           }}
         >
-          <span
-            className="rounded-full"
+          <div
+            className="text-3xl md:text-5xl font-black mb-2"
             style={{ color: mainColor }}
           >
-            {BADGE_ICONS[badge]}
-          </span>
-          {badge}
-        </motion.span>
+            {stat.value}
+          </div>
+          <div className="text-xs md:text-sm font-bold text-gray-700">
+            {stat.label}
+          </div>
+        </div>
       ))}
-    </div>
+    </motion.div>
+
+    {/* Timeline badge */}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: 1.4 }}
+      className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-white shadow-lg border-2"
+      style={{
+        borderColor: `${mainColor}30`,
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <div
+          className="w-3 h-3 rounded-full"
+          style={{ backgroundColor: mainColor }}
+        />
+        <span className="text-sm md:text-base font-bold text-gray-700">
+          Livestream mulai 21 November
+        </span>
+      </div>
+      <div className="h-6 w-px bg-gray-300" />
+      <div className="flex items-center gap-2">
+        <div
+          className="w-3 h-3 rounded-full"
+          style={{ backgroundColor: mainColor }}
+        />
+        <span className="text-sm md:text-base font-bold text-gray-700">
+          Liveclass mulai 8 Januari 2025
+        </span>
+      </div>
+    </motion.div>
   </div>
 );
 
@@ -625,7 +840,7 @@ const CTASection: React.FC<{
         }}
       >
         <Play className="w-5 h-5 animate-gentle-float" />
-        <span>Mulai Blueprint 200+ Poin</span>
+        <span>Mulai Blueprint sekarang!</span>
         <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
       </motion.button>
 
@@ -808,25 +1023,11 @@ const DesktopVideo: React.FC = () => {
   }, [isInView, isLoaded]);
 
   return (
-    <div className="relative w-full h-full rounded-xl shadow-2xl overflow-hidden bg-white">
+    <div className="relative w-full h-full rounded-2xl shadow-sm overflow-hidden bg-white">
       <div className="flex flex-col w-full h-full">
         {/* Optimized browser bar dengan lazy loading icons */}
         {showBrowserBar && (
-          <div className="flex items-center bg-gray-50 px-4 py-3 border-b">
-            <div className="flex space-x-2 mr-4">
-              <div className="w-3 h-3 rounded-full bg-red-400"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-              <div className="w-3 h-3 rounded-full bg-green-400"></div>
-            </div>
-            <div className="flex space-x-2 mr-4 text-gray-400">
-              <Suspense
-                fallback={<div className="w-4 h-4 bg-gray-200 rounded" />}
-              >
-                <ChevronLeft className="w-4 h-4" />
-                <ChevronRight className="w-4 h-4" />
-                <RotateCw className="w-4 h-4" />
-              </Suspense>
-            </div>
+          <div className="flex items-center bg-white px-4 py-3 border-b">
             <div className="flex-1 flex items-center bg-white rounded-lg px-3 py-2 text-sm border">
               <Suspense
                 fallback={<div className="w-4 h-4 bg-gray-200 rounded mr-2" />}
@@ -868,3 +1069,4 @@ const DesktopVideo: React.FC = () => {
 };
 
 export default HeroSection;
+export { HeroSection };

@@ -116,7 +116,7 @@ const WhyUs = () => {
   return (
     <section
       id="whyUs"
-      className="py-16 md:py-24 relative overflow-hidden bg-gray-50"
+      className="py-16 md:py-24 relative overflow-hidden bg-white"
     >
       {/* Enhanced Header */}
       <motion.div
@@ -169,12 +169,12 @@ const WhyUs = () => {
                 className={`flex flex-col items-center gap-3 rounded-2xl px-6 py-4 text-center transition-all duration-300 min-w-[200px] ${
                   active === 1 + i
                     ? 'text-white shadow-lg bg-gradient-default'
-                    : 'text-gray-600 hover:bg-gray-50 bg-transparent'
+                    : 'text-gray-600 hover:bg-white bg-transparent'
                 }`}
                 onClick={() => setActive(1 + i)}
               >
                 <div
-                  className={`p-2 rounded-xl ${active === 1 + i ? 'bg-white/20' : 'bg-gray-100'}`}
+                  className={`p-2 rounded-2xl ${active === 1 + i ? 'bg-white/20' : 'bg-gray-100'}`}
                 >
                   <div
                     className={cn(
@@ -291,14 +291,14 @@ const ComparisonSection = ({
                 <p className="text-sm opacity-90">Heroes Factory</p>
               </div>
             </div>
-            <div className="p-6 text-center bg-gray-50">
+            <div className="p-6 text-center bg-white">
               <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-200 flex items-center justify-center">
                 <span className="text-xl">📖</span>
               </div>
               <h3 className="text-lg font-bold text-gray-700">Self Study</h3>
               <p className="text-sm text-gray-500">Hope & Pray Method</p>
             </div>
-            <div className="p-6 text-center bg-gray-50">
+            <div className="p-6 text-center bg-white">
               <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-200 flex items-center justify-center">
                 <span className="text-xl">🏫</span>
               </div>
@@ -316,7 +316,7 @@ const ComparisonSection = ({
               transition={{ duration: 0.5, delay: i * 0.1 }}
               viewport={{ once: true }}
               className={`grid grid-cols-4 border-b border-gray-100 ${
-                i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
+                i % 2 === 0 ? 'bg-white' : 'bg-white/50'
               }`}
             >
               <div className="p-6 flex items-center gap-3">
@@ -348,6 +348,7 @@ const ComparisonSection = ({
 );
 
 export default WhyUs;
+export { WhyUs };
 
 // Enhanced Chart Components with better styling
 export function ChartTwo() {

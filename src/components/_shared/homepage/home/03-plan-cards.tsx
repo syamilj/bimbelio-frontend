@@ -314,3 +314,4 @@ const PlanCards: React.FC = () => {
 };
 
 export default PlanCards;
+export { PlanCards };

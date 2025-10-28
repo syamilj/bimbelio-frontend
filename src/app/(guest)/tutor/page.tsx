@@ -7,19 +7,19 @@ import { useRouter } from 'next/navigation';
 import { lazy, Suspense } from 'react';
 
 const BentoGrid = lazy(
-  () => import('@/components/_shared/homepage/snbt/bento-grid'),
+  () => import('@/components/_shared/homepage/home/bento-grid'),
 );
 const BlueprintConcept = lazy(
-  () => import('@/components/_shared/homepage/snbt/blueprint-concept'),
+  () => import('@/components/_shared/homepage/home/blueprint-concept'),
 );
 const FaqHomepage = lazy(
-  () => import('@/components/_shared/homepage/snbt/FaqHomepage'),
+  () => import('@/components/_shared/homepage/home/FaqHomepage'),
 );
 const PlanCards = lazy(
-  () => import('@/components/_shared/homepage/snbt/plan-cards'),
+  () => import('@/components/_shared/homepage/home/plan-cards'),
 );
-const Tryout = lazy(() => import('@/components/_shared/homepage/snbt/tryout'));
-const WhyUs = lazy(() => import('@/components/_shared/homepage/snbt/why-us'));
+const Tryout = lazy(() => import('@/components/_shared/homepage/home/tryout'));
+const WhyUs = lazy(() => import('@/components/_shared/homepage/home/why-us'));
 
 export default function TutorPage() {
   const { websiteSubCategory } = useWebsiteSubCategory();
