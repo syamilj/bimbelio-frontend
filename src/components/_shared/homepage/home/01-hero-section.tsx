@@ -657,25 +657,6 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
           style={{ backgroundColor: mainColor }}
         />
         <span className="text-sm font-bold text-gray-700">
-          Mulai Sekarang. 36 Minggu ke Depan.
-        </span>
-      </motion.div>
-
-      {/* Powered by section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="flex items-center gap-2 text-gray-600 text-sm bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm"
-      >
-        <span
-          className="font-semibold bg-clip-text text-transparent"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}, ${mainColor}aa)`,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-        >
           Bimbelio: Satu Akun untuk UTBK, Mandiri, Kedinasan
         </span>
       </motion.div>
@@ -758,7 +739,8 @@ const HeadingSection: React.FC<{
             Lo capek nggak sih belajar sendiri tanpa arah jelas?
           </span>{' '}
           Gue tau banget struggle lo — makanya gue bikin Liveclass: kelas
-          interaktif dengan tutor alumni PTN, live di Zoom, bisa tanya langsung.
+          interaktif dengan tutor alumni PTN, live di Google Meet, bisa tanya
+          langsung.
         </p>
 
         <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-center">
@@ -848,7 +830,9 @@ const HeadingSection: React.FC<{
             </div>
             <div className="flex-1">
               <p className="text-sm font-bold text-gray-800">72+ Sessions</p>
-              <p className="text-xs text-gray-600">Live interaktif di Zoom</p>
+              <p className="text-xs text-gray-600">
+                Live interaktif di Google Meet
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3">

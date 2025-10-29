@@ -57,7 +57,11 @@ export default function EcosystemSection() {
       description: 'Build pemahaman kuat',
       color: '#F59E0B',
       features: [
-        { label: 'Live Class', badge: 'Zoom Meet', badgeColor: '#3B82F6' },
+        {
+          label: 'Live Class',
+          badge: 'Google Meet',
+          badgeColor: '#3B82F6',
+        },
         { label: 'Video Library', badge: 'LMS', badgeColor: '#8B5CF6' },
         { label: 'Tanya AI', badge: 'Chat 24/7', badgeColor: '#10B981' },
       ],

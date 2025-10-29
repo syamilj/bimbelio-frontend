@@ -10,7 +10,6 @@ import MentorAISection from '@/components/_shared/homepage/home/07-mentor-ai-sec
 import PlanCardsSection from '@/components/_shared/homepage/home/08-plan-cards';
 import TryoutSection from '@/components/_shared/homepage/home/09-tryout-section';
 import ComparisonSection from '@/components/_shared/homepage/home/10-comparison-section';
-import AddOnPremiumSection from '@/components/_shared/homepage/home/11-addon-premium-section';
 import FaqSection from '@/components/_shared/homepage/home/12-faq-section';
 
 export default function LandingPage() {
@@ -52,7 +51,7 @@ export default function LandingPage() {
           <ComparisonSection />
 
           {/* 11 Add-On Premium section */}
-          <AddOnPremiumSection />
+          {/* <AddOnPremiumSection /> */}
 
           {/* 12 FAQ section */}
           <FaqSection />
