@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { DialogJoinDiscord } from '../_shared/dialog/dialog-join-discord';
+import { DialogOnBoarding } from '../_shared/dialog/dialog-on-boarding';
 import { toaster } from '../ui/toaster';
 
 export default function ProviderCheckPayment({
@@ -52,6 +53,7 @@ export default function ProviderCheckPayment({
         new Date(res?.data?.expired_time) > new Date() &&
         transaction_status === 'settlement'
       ) {
+        document.getElementById('openOnBoarding')?.click();
         toaster({
           title: 'Pembelian Berhasil',
           condition: 'success',
@@ -73,12 +75,12 @@ export default function ProviderCheckPayment({
     }
   }, [order_id, transaction_status]);
 
-  useEffect(() => {
-    if (inviteLink) {
-      document.getElementById('openJoin')?.click();
-    }
-    return () => {};
-  }, [inviteLink]);
+  // useEffect(() => {
+  //   if (inviteLink) {
+  //     // document.getElementById('openJoin')?.click();
+  //   }
+  //   return () => {};
+  // }, [inviteLink]);
 
   if (isLoading) {
     return (
@@ -138,6 +140,14 @@ export default function ProviderCheckPayment({
     <>
       <Payment />
       {children}
+      <DialogOnBoarding inviteLink={inviteLink}>
+        <button
+          id="openOnBoarding"
+          hidden
+        >
+          Open
+        </button>
+      </DialogOnBoarding>
       <DialogJoinDiscord inviteLink={inviteLink || ''}>
         <button
           id="openJoin"

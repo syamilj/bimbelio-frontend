@@ -428,7 +428,7 @@ export default function DashboardClient() {
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-5 text-center">
               <Clock className="w-5 h-5 text-blue-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-blue-700">
-                {reportData?.studyHabits?.totalHoursStudied.toFixed(0) || '0'}
+                {reportData?.studyHabits?.totalHoursStudied?.toFixed(0) || '0'}
               </div>
               <p className="text-xs text-blue-600 font-medium mt-1">
                 Jam Belajar
@@ -681,7 +681,7 @@ export const StatCard: React.FC<StatCardProps> = ({
         </div>
         {changePercentage !== undefined && (
           <span className="text-gray-500 text-xs">
-            ({changePercentage.toFixed(1)}%)
+            ({changePercentage?.toFixed(1)}%)
           </span>
         )}
       </div>
@@ -1110,7 +1110,7 @@ export const QuizHistoryCard: React.FC<{
                       <div
                         className={`${badge.bg} ${badge.text} px-2 py-1 rounded-lg text-xs font-bold`}
                       >
-                        {quiz.accuracy.toFixed(1)}%
+                        {quiz.accuracy?.toFixed(1)}%
                       </div>
                     </div>
 
@@ -1127,7 +1127,7 @@ export const QuizHistoryCard: React.FC<{
                             }
                           >
                             {trend >= 0 ? '↑' : '↓'}{' '}
-                            {Math.abs(trend).toFixed(1)}%
+                            {Math.abs(trend)?.toFixed(1)}%
                           </span>
                         )}
                       </div>
@@ -1182,7 +1182,7 @@ export const QuizHistoryCard: React.FC<{
                       (sum: number, q: any) => sum + q.accuracy,
                       0,
                     ) / quizHistory.history.length
-                  ).toFixed(1)}
+                  )?.toFixed(1)}
                   %
                 </span>
               </div>
@@ -1194,7 +1194,7 @@ export const QuizHistoryCard: React.FC<{
                 >
                   {Math.max(
                     ...quizHistory.history.map((q: any) => q.accuracy),
-                  ).toFixed(1)}
+                  )?.toFixed(1)}
                   %
                 </span>
               </div>
@@ -1344,7 +1344,7 @@ export const QuizHistoryCard: React.FC<{
 //                             {item.subCategory}
 //                           </TableCell>
 //                           <TableCell className="font-medium">
-//                             {item.accuracy.toFixed(2)}%
+//                             {item.accuracy?.toFixed(2)}%
 //                           </TableCell>
 //                           <TableCell>
 //                             <Badge
@@ -1514,11 +1514,11 @@ export const ScoreDevelopmentCard: React.FC<{
                   className="text-2xl font-bold"
                   style={{ color: mainColor }}
                 >
-                  {stat.latest.toFixed(0)}
+                  {stat?.latest?.toFixed(0)}
                 </div>
                 <div className="text-xs text-gray-600 mt-1">
-                  {stat.trend >= 0 ? '+' : ''}
-                  {stat.trend.toFixed(0)} dari tryout terakhir
+                  {stat?.trend >= 0 ? '+' : ''}
+                  {stat?.trend?.toFixed(0)} dari tryout terakhir
                 </div>
               </div>
             ))}
@@ -1542,7 +1542,7 @@ export const ScoreDevelopmentCard: React.FC<{
                 className="text-3xl font-bold"
                 style={{ color: mainColor }}
               >
-                {totalLatest.toFixed(0)}
+                {totalLatest?.toFixed(0)}
               </div>
             </div>
             <div className="text-right">
@@ -1552,7 +1552,7 @@ export const ScoreDevelopmentCard: React.FC<{
                 }`}
               >
                 {totalTrend >= 0 ? '+' : ''}
-                {totalTrend.toFixed(0)}
+                {totalTrend?.toFixed(0)}
               </div>
               <div
                 className={`text-sm ${
@@ -2012,7 +2012,7 @@ export const StudyHabitsCard: React.FC<{
       achieved: studyHabits.totalHoursStudied >= 30,
     },
     {
-      label: studyHabits.totalHoursStudied.toFixed(0) + ' Jam',
+      label: studyHabits.totalHoursStudied?.toFixed(0) + ' Jam',
       value: studyHabits.totalHoursStudied,
       icon: Zap,
       color: 'text-orange-500',
@@ -2048,7 +2048,7 @@ export const StudyHabitsCard: React.FC<{
                 className="text-sm font-bold"
                 style={{ color: mainColor }}
               >
-                {studyHabits.totalHoursStudied.toFixed(1)} / 50 jam
+                {studyHabits.totalHoursStudied?.toFixed(1)} / 50 jam
               </span>
             </div>
             <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -2134,7 +2134,7 @@ export const StudyHabitsCard: React.FC<{
                 className="text-xl font-bold"
                 style={{ color: secondaryColor }}
               >
-                {studyHabits.averageDailyStudyTime.toFixed(1)} jam
+                {studyHabits.averageDailyStudyTime?.toFixed(1)} jam
               </div>
             </div>
             <div

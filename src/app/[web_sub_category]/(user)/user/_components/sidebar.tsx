@@ -152,11 +152,11 @@ const SidebarUser = ({
 
   return (
     <Fragment>
-      {/* Desktop Sidebar - Using shadcn/ui Sidebar */}
       <SidebarUI
-        variant="sidebar"
+        // variant="sidebar"
+        variant="floating"
         collapsible={'icon'}
-        className="hidden md:flex border-r border-slate-200/60 z-[50]"
+        className="hidden md:flex z-[50]"
         style={
           {
             '--sidebar-width': '16rem',
@@ -164,7 +164,7 @@ const SidebarUser = ({
           } as React.CSSProperties
         }
       >
-        <SidebarHeader className="border-b border-slate-200/50 bg-white/80 backdrop-blur-xl h-20 flex items-center">
+        <SidebarHeader className="border-b border-slate-200/50 bg-white/80 backdrop-blur-xl h-20 flex items-center rounded-xl">
           <div
             className={cn(
               'flex items-center justify-between gap-2 w-full px-2',
@@ -254,7 +254,7 @@ const SidebarUser = ({
           </div>
         </SidebarContent>
 
-        <SidebarFooter className="border-t border-slate-200/50 bg-white/80 backdrop-blur-xl">
+        <SidebarFooter className="border-t border-slate-200/50 bg-white/80 backdrop-blur-xl rounded-xl">
           {/* Premium Card */}
           {!session?.user.tier && !minimizeSidebar && (
             <div
