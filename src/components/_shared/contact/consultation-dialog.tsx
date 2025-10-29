@@ -203,41 +203,6 @@ const ConsultationDialog = ({
             </div>
           </div>
 
-          {/* Quick Stats - Compact Layout */}
-          {showStats && (
-            <div className="flex justify-center gap-4 text-center py-2">
-              <div>
-                <div
-                  className="font-bold text-base leading-tight"
-                  style={{ color: mainColor }}
-                >
-                  {CONTACT_CONFIG.stats.responseTime}
-                </div>
-                <div className="text-xs text-gray-600">Response</div>
-              </div>
-              <div className="w-px bg-gray-200" />
-              <div>
-                <div
-                  className="font-bold text-base leading-tight"
-                  style={{ color: mainColor }}
-                >
-                  {CONTACT_CONFIG.stats.studentsServed}
-                </div>
-                <div className="text-xs text-gray-600">Siswa</div>
-              </div>
-              <div className="w-px bg-gray-200" />
-              <div>
-                <div
-                  className="font-bold text-base leading-tight"
-                  style={{ color: mainColor }}
-                >
-                  {CONTACT_CONFIG.stats.satisfactionRate}
-                </div>
-                <div className="text-xs text-gray-600">Rating</div>
-              </div>
-            </div>
-          )}
-
           {/* Divider - hanya tampil jika telegram option enabled */}
           {showTelegramOption && (
             <div className="relative">

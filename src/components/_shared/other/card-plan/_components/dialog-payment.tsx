@@ -287,7 +287,7 @@ export function DialogPayment({
 
     await handlePayment(
       telp,
-      plan.PlanSubscription.websiteSubCategoryId,
+      plan.PlanSubscription?.websiteSubCategoryId,
       voucherCode,
     );
     setTransactionPopUp(false);

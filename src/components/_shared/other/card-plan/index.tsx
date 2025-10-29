@@ -75,12 +75,14 @@ export function CardPlan({
   const [liveClassDetails, setLiveClassDetails] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const isCourse = plan.PlanSubscription.PlanFeature.some(
-    (item) => item.type === 'COURSE',
-  );
-  const isDocument = plan.PlanSubscription.PlanFeature.some(
-    (item) => item.type === 'DOCUMENT',
-  );
+  const isCourse =
+    plan.PlanSubscription?.PlanFeature?.some(
+      (item) => item.type === 'COURSE',
+    ) ?? false;
+  const isDocument =
+    plan.PlanSubscription?.PlanFeature?.some(
+      (item) => item.type === 'DOCUMENT',
+    ) ?? false;
 
   // Enhanced marketplace indicators
   const isPopular =
@@ -344,14 +346,14 @@ export function CardPlan({
                       backgroundColor: `${mainColor}05`,
                     }}
                   >
-                    {plan.PlanSubscription.WebsiteSubCategory.name}
+                    {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Paket'}
                   </Badge>
                 )}
                 <Badge
                   variant="outline"
                   className="text-xs text-gray-600 border-gray-300"
                 >
-                  {plan.PlanSubscription.tier}
+                  {plan.PlanSubscription?.tier || 'Standar'}
                 </Badge>
               </div>
 
@@ -481,13 +483,13 @@ export function CardPlan({
                       </div>
                     </div>
                     {plan.PlanBenefit.length > 0 &&
-                      plan.PlanSubscription.expireDays && (
+                      plan.PlanSubscription?.expireDays && (
                         <div className="text-xs text-gray-500 mt-1">
                           ~
                           {formatPrice(
                             Math.floor(
                               (discount || plan.price) /
-                                plan.PlanSubscription.expireDays,
+                                (plan.PlanSubscription?.expireDays || 1),
                             ),
                           )}{' '}
                           per hari

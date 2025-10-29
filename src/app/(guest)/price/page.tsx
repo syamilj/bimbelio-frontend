@@ -12,13 +12,32 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <div className="relative bg-bg-workspace min-h-screen pt-16">
-      {/* Background gradient overlay matching homepage */}
-      <div className="absolute top-0 -z-10 h-full w-full">
-        <div className="absolute bottom-auto left-auto right-32 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(109,244,152,0.53)] opacity-60 blur-[80px]" />
+    <div className="relative bg-gradient-to-b from-gray-50 to-white min-h-screen pt-16">
+      {/* Enhanced Background decorative shapes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        {/* Large blue circle - top right */}
+        <div
+          className="absolute -top-16 -right-16 w-96 h-96 rounded-full opacity-10 blur-3xl"
+          style={{ backgroundColor: '#0091FF' }}
+        />
+
+        {/* Pink rotated square - top left */}
+        <div
+          className="absolute top-32 left-20 w-40 h-40 rounded-2xl opacity-8 blur-2xl"
+          style={{
+            backgroundColor: '#5aa4dd',
+            transform: 'rotate(15deg)',
+          }}
+        />
+
+        {/* Small circle - bottom center */}
+        <div
+          className="absolute bottom-20 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full opacity-5 blur-3xl"
+          style={{ backgroundColor: '#0091FF' }}
+        />
       </div>
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-4 py-16">
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 py-20 md:py-24">
         <PricingPlans />
         <PricingFeatures />
         {/* <PricingFaq /> */}
