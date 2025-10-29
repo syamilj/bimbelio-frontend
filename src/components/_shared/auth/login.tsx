@@ -140,7 +140,7 @@ export const Login = () => {
             </div>
           </div>
           {/* Content */}
-          <div className="px-6 pb-8 pt-6 space-y-6">
+          <div className="px-6 pb-8 space-y-6">
             {/* Main Login Section */}
             <div className="space-y-4">
               {/* Google Login Button Container */}
@@ -149,59 +149,8 @@ export const Login = () => {
               </div>
 
               <p className="text-xs text-center text-gray-500 px-2">
-                Masuk aman dengan autentikasi Google dua faktor
+                Masuk aman dengan autentikasi Google
               </p>
-            </div>
-
-            {/* Features Grid - Enhanced */}
-            <div className="grid grid-cols-2 gap-3 my-6">
-              <div className="relative overflow-hidden p-4 rounded-xl bg-gradient-to-br from-main-default/10 to-main-default/5 border border-main-default/20 hover:shadow-md transition-all duration-300 cursor-default group">
-                <div className="absolute top-0 right-0 w-12 h-12 bg-main-default/20 rounded-full opacity-20 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-300" />
-                <div className="relative z-10">
-                  <div className="font-semibold text-main-default text-sm mb-1">
-                    Try Out Gratis
-                  </div>
-                  <div className="text-xs text-main-default/80 font-medium">
-                    Tanpa biaya
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative overflow-hidden p-4 rounded-xl bg-gradient-to-br from-main-default/10 to-main-default/5 border border-main-default/20 hover:shadow-md transition-all duration-300 cursor-default group">
-                <div className="absolute top-0 right-0 w-12 h-12 bg-main-default/20 rounded-full opacity-20 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-300" />
-                <div className="relative z-10">
-                  <div className="font-semibold text-main-default text-sm mb-1">
-                    AI Learning
-                  </div>
-                  <div className="text-xs text-main-default/80 font-medium">
-                    Teknologi terdepan
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative overflow-hidden p-4 rounded-xl bg-gradient-to-br from-main-default/10 to-main-default/5 border border-main-default/20 hover:shadow-md transition-all duration-300 cursor-default group">
-                <div className="absolute top-0 right-0 w-12 h-12 bg-main-default/20 rounded-full opacity-20 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-300" />
-                <div className="relative z-10">
-                  <div className="font-semibold text-main-default text-sm mb-1">
-                    10.000+ Soal
-                  </div>
-                  <div className="text-xs text-main-default/80 font-medium">
-                    Bermutu tinggi
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative overflow-hidden p-4 rounded-xl bg-gradient-to-br from-main-default/10 to-main-default/5 border border-main-default/20 hover:shadow-md transition-all duration-300 cursor-default group">
-                <div className="absolute top-0 right-0 w-12 h-12 bg-main-default/20 rounded-full opacity-20 -mr-6 -mt-6 group-hover:scale-150 transition-transform duration-300" />
-                <div className="relative z-10">
-                  <div className="font-semibold text-main-default text-sm mb-1">
-                    Mentor Terbaik
-                  </div>
-                  <div className="text-xs text-main-default/80 font-medium">
-                    Berpengalaman
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Footer */}
@@ -216,9 +165,6 @@ export const Login = () => {
                   Kebijakan Privasi
                 </span>{' '}
                 Bimbelio
-              </p>
-              <p className="text-xs text-center text-main-default/70">
-                🔒 Data Anda dilindungi dengan enkripsi tingkat enterprise
               </p>
             </div>
           </div>

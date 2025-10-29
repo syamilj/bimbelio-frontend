@@ -15,21 +15,21 @@ import {
   ArrowRight,
   Award,
   BookOpen,
-  Bot,
   Calendar,
+  CheckCircle2,
   Clock,
   Crown,
-  FileText,
-  MessageCircle,
-  TrendingUp,
-  Trophy,
+  Shield,
+  Target,
+  Users,
+  Zap,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-const FeaturedTryoutSection = () => {
+const TryoutSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { data: session } = useSession();
   const { setShowAuth } = useGuest();
@@ -108,16 +108,17 @@ const FeaturedTryoutSection = () => {
           className="text-center mb-12"
         >
           <Badge
-            variant="outline"
-            className="mb-4 px-4 py-1.5 text-xs font-semibold text-white border-none items-center gap-2 mx-auto"
-            style={{ backgroundColor: mainColor }}
+            className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
           >
-            <Crown className="w-3 h-3" />
-            Arena Battle
+            <Target className="w-4 h-4 mr-2 inline" />
+            Arena Try Out
           </Badge>
 
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Arena Perang{' '}
+            Btw —{' '}
             <span
               className="bg-clip-text text-transparent"
               style={{
@@ -126,53 +127,68 @@ const FeaturedTryoutSection = () => {
                 backgroundClip: 'text',
               }}
             >
-              Heroes
+              Lo Juga Dapet Bonus Ini Loh
             </span>
           </h2>
-          <p
-            className="text-lg max-w-2xl mx-auto leading-relaxed mb-6"
-            style={{ color: `${mainColor}90` }}
-          >
-            Transform dari hopeless warrior jadi hero yang siap hancurin ujian!
+          <p className="text-lg max-w-2xl mx-auto leading-relaxed mb-6 text-gray-600">
+            Try Out IRT-based udah{' '}
+            <span className="font-bold">included di paket lo</span>, nggak perlu
+            bayar lagi!
             <br />
-            <span
-              className="font-semibold"
-              style={{ color: mainColor }}
-            >
+            Latihan rutin, track progress, dan siap tempur di hari H.
+            <span className="font-semibold text-gray-900">
               Mental kuat + Strategy tepat = Victory guaranteed!
             </span>
           </p>
 
-          {/* Compact Stats */}
+          {/* Info Pills */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex justify-center items-center gap-6 text-sm"
+            className="flex flex-wrap items-center justify-center gap-3 mb-6"
           >
-            <div className="flex items-center gap-1">
-              <div
-                className="text-2xl font-bold"
+            <div
+              className="flex items-center gap-2 px-4 py-2 rounded-full shadow-md"
+              style={{
+                backgroundColor: `${mainColor}15`,
+                border: `1.5px solid ${mainColor}30`,
+              }}
+            >
+              <Target
+                className="w-4 h-4"
+                style={{ color: mainColor }}
+              />
+              <span
+                className="text-sm font-semibold"
                 style={{ color: mainColor }}
               >
-                {cards.length}
-              </div>
-              <span className="text-gray-500">Arena</span>
+                {cards.length} Try Out Tersedia
+              </span>
             </div>
-            <div className="w-px h-6 bg-gray-300" />
-            <div className="flex items-center gap-1">
-              <div className="text-2xl font-bold text-green-600">FREE</div>
-              <span className="text-gray-500">Gratis</span>
+            <div
+              className="flex items-center gap-2 px-4 py-2 rounded-full shadow-md"
+              style={{
+                backgroundColor: '#00C85315',
+                border: '1.5px solid #00C85330',
+              }}
+            >
+              <Award className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-semibold text-green-600">
+                100% Gratis
+              </span>
             </div>
-            <div className="w-px h-6 bg-gray-300" />
-            <div className="flex items-center gap-1">
-              <div
-                className="text-2xl font-bold"
-                style={{ color: secondaryColor }}
-              >
-                24/7
-              </div>
-              <span className="text-gray-500">Akses</span>
+            <div
+              className="flex items-center gap-2 px-4 py-2 rounded-full shadow-md"
+              style={{
+                backgroundColor: '#9C27B015',
+                border: '1.5px solid #9C27B030',
+              }}
+            >
+              <Zap className="w-4 h-4 text-purple-600" />
+              <span className="text-sm font-semibold text-purple-600">
+                Akses 24/7
+              </span>
             </div>
           </motion.div>
         </motion.div>
@@ -198,8 +214,25 @@ const FeaturedTryoutSection = () => {
             ? Array.from({ length: 6 }).map((_, index) => (
                 <motion.div
                   key={index}
-                  className="h-96 bg-white rounded-3xl border-2 border-gray-100 animate-pulse"
-                />
+                  className="h-96 bg-white rounded-3xl border-2 border-gray-100 animate-pulse overflow-hidden"
+                >
+                  {/* Top accent bar */}
+                  <div
+                    className="h-1.5 bg-gray-200 mb-6"
+                    style={{
+                      background: `linear-gradient(135deg, #e5e7eb, #d1d5db)`,
+                    }}
+                  />
+                  <div className="p-6 space-y-4">
+                    <div className="h-48 bg-gray-200 rounded-2xl" />
+                    <div className="h-6 bg-gray-200 rounded w-3/4" />
+                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                    <div className="space-y-2">
+                      <div className="h-4 bg-gray-200 rounded" />
+                      <div className="h-4 bg-gray-200 rounded" />
+                    </div>
+                  </div>
+                </motion.div>
               ))
             : cards?.map((tryOut, index) => (
                 <motion.div
@@ -236,38 +269,83 @@ const FeaturedTryoutSection = () => {
               transition: { duration: 0.6, delay: 0.8 },
             },
           }}
-          className="text-center"
+          className="max-w-4xl mx-auto"
         >
-          {session ? (
-            <Link
-              href={`${website_sub_category_id}/user/try-out`}
-              className="group inline-flex items-center gap-3 px-6 py-3 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-xl text-white"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              Lihat Semua Try Out
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          ) : (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-3 px-6 py-3 rounded-xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-xl text-white"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-              onClick={() => {
-                router.push(
-                  `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
-                );
-                setShowAuth((prev) => ({ ...prev, open: true }));
-              }}
-            >
-              Lihat Semua Try Out
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </motion.button>
-          )}
+          <div className="bg-white rounded-3xl border-2 border-gray-100 shadow-md p-8">
+            {/* Icon Header */}
+            <div className="mb-4 flex items-center justify-center gap-3">
+              <div
+                className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-lg"
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
+              >
+                <Target className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900">
+                Siap Tempur di Arena?
+              </h3>
+            </div>
+
+            <p className="text-center text-gray-600 mb-6 max-w-2xl mx-auto">
+              Akses semua try out gratis dan buktikan kemampuanmu bersama ribuan
+              peserta lainnya
+            </p>
+
+            {/* CTA Button */}
+            {session ? (
+              <Link
+                href={`${website_sub_category_id}/user/try-out`}
+                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
+              >
+                <Target className="w-5 h-5" />
+                Lihat Semua Try Out
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
+                onClick={() => {
+                  router.push(
+                    `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
+                  );
+                  setShowAuth((prev) => ({ ...prev, open: true }));
+                }}
+              >
+                <Target className="w-5 h-5" />
+                Lihat Semua Try Out
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+            )}
+
+            {/* Trust Indicators */}
+            <div className="mt-6 pt-6 border-t-2 border-gray-100 flex flex-wrap items-center justify-center gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-green-500" />
+                <span className="font-semibold text-gray-700">100% Gratis</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-blue-500" />
+                <span className="font-semibold text-gray-700">
+                  Peringkat Real-time
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-purple-500" />
+                <span className="font-semibold text-gray-700">
+                  Pembahasan Lengkap
+                </span>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
@@ -320,22 +398,22 @@ const EnhancedTryOutCard = ({
       whileHover={{ scale: 1.02, y: -4 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
-      className="w-full group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl border-0 transition-all duration-500"
+      className="w-full group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-gray-100 transition-all duration-500"
       style={{
         boxShadow: isPopular
           ? `0 8px 32px ${mainColor}30`
           : `0 4px 24px ${mainColor}15`,
       }}
     >
-      {/* Status Bar - Plan Card Style */}
-      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white/50 to-transparent">
-        {isPopular && (
-          <div
-            className="h-full bg-gradient-to-r from-green-500 to-emerald-500 animate-pulse"
-            style={{ width: '70%' }}
-          />
-        )}
-      </div>
+      {/* Top Accent Bar - Consistent Style */}
+      <div
+        className="h-1.5"
+        style={{
+          background: isPopular
+            ? 'linear-gradient(135deg, #00C853, #10B981)'
+            : `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+        }}
+      />
 
       {/* Header Section - Plan Card Style */}
       <div className="relative p-6 bg-gradient-to-br from-white/90 to-white/80 backdrop-blur-sm">
@@ -376,7 +454,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Hero Image Section */}
         <div className="relative mt-12 mb-4">
-          <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
+          <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-md transition-all duration-500">
             <Image
               src={
                 `${env.NEXT_PUBLIC_SUPABASE_IMG_URL || '/placeholder.svg'}/tryout/${tryOut.image}` ||
@@ -442,7 +520,7 @@ const EnhancedTryOutCard = ({
 
             {/* Enhanced Title Overlay */}
             <div className="absolute bottom-4 left-4 right-4 text-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-              <h3 className="text-lg text-center font-bold text-white leading-tight backdrop-blur-sm bg-black/20 rounded-lg p-2">
+              <h3 className="text-lg text-center font-bold text-white leading-tight backdrop-blur-sm bg-black/20 rounded-2xl p-2">
                 {tryOut.title}
               </h3>
             </div>
@@ -496,7 +574,7 @@ const EnhancedTryOutCard = ({
             {/* Enhanced Stats Grid */}
             <div className="grid grid-cols-2 gap-3">
               <div
-                className="text-center p-3 rounded-xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-2xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <Clock
@@ -512,7 +590,7 @@ const EnhancedTryOutCard = ({
                 </div>
               </div>
               <div
-                className="text-center p-3 rounded-xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-2xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <BookOpen
@@ -528,7 +606,7 @@ const EnhancedTryOutCard = ({
                 </div>
               </div>
               {/* <div
-                className="text-center p-3 rounded-xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-2xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <Users
@@ -549,7 +627,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Date Info */}
         <div className="mb-6 grid grid-cols-2 gap-3">
-          <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-200">
+          <div className="text-center p-4 rounded-2xl bg-white border border-gray-200">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Calendar className="w-4 h-4 text-blue-600" />
               <span className="text-sm font-medium text-gray-700">
@@ -569,7 +647,7 @@ const EnhancedTryOutCard = ({
               })}
             </div>
           </div>
-          <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-200">
+          <div className="text-center p-4 rounded-2xl bg-white border border-gray-200">
             <div className="flex items-center justify-center gap-2 mb-2">
               <BookOpen className="w-4 h-4 text-purple-600" />
               <span className="text-sm font-medium text-gray-700">
@@ -586,67 +664,88 @@ const EnhancedTryOutCard = ({
           </div>
         </div>
 
-        {/* Plan Card Style CTA Section */}
+        {/* Enhanced Features Section */}
         <div className="space-y-3">
-          {/* Compact Features Section */}
-          <div className="bg-gray-50 rounded-xl p-3 space-y-3">
-            {/* Feature Chips - 2 rows */}
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
-                <Trophy
-                  size={12}
-                  className="text-blue-600 flex-shrink-0"
-                />
-                <span className="font-medium text-gray-800">
-                  Peringkat Nasional
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
-                <FileText
-                  size={12}
-                  className="text-green-600 flex-shrink-0"
-                />
-                <span className="font-medium text-gray-800">Format Resmi</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
-                <Bot
-                  size={12}
-                  className="text-purple-600 flex-shrink-0"
-                />
-                <span className="font-medium text-gray-800">Bimbot AI</span>
-              </div>
-              <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
-                <TrendingUp
-                  size={12}
-                  className="text-orange-600 flex-shrink-0"
-                />
-                <span className="font-medium text-gray-800">Laporan Skor</span>
-              </div>
-            </div>
-
-            {/* Grup Belajar - Compact */}
-            <div className="flex items-center justify-center gap-2 bg-white rounded-lg p-2">
-              <MessageCircle
-                size={12}
-                className="text-blue-600"
+          {/* Features with checkmarks */}
+          <div className="bg-white rounded-2xl p-4 space-y-2">
+            <div className="flex items-start gap-2">
+              <CheckCircle2
+                className="w-4 h-4 flex-shrink-0 mt-0.5"
+                style={{ color: mainColor }}
               />
-              <span className="text-xs font-medium text-gray-800">Grup:</span>
-              <a
-                href="https://t.me/bimbelio"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-blue-600 hover:text-blue-800 font-medium underline"
-              >
-                t.me/bimbelio
-              </a>
+              <span className="text-xs font-medium text-gray-700">
+                Peringkat Nasional Real-time
+              </span>
             </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle2
+                className="w-4 h-4 flex-shrink-0 mt-0.5"
+                style={{ color: mainColor }}
+              />
+              <span className="text-xs font-medium text-gray-700">
+                Format Ujian Resmi PTN
+              </span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle2
+                className="w-4 h-4 flex-shrink-0 mt-0.5"
+                style={{ color: mainColor }}
+              />
+              <span className="text-xs font-medium text-gray-700">
+                Pembahasan AI & Expert
+              </span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle2
+                className="w-4 h-4 flex-shrink-0 mt-0.5"
+                style={{ color: mainColor }}
+              />
+              <span className="text-xs font-medium text-gray-700">
+                Laporan Analisis Lengkap
+              </span>
+            </div>
+          </div>
+
+          {/* Community Badge */}
+          <div
+            className="flex items-center justify-center gap-2 rounded-2xl p-3 shadow-sm"
+            style={{
+              backgroundColor: `${mainColor}08`,
+              border: `1.5px solid ${mainColor}20`,
+            }}
+          >
+            <Users
+              className="w-4 h-4"
+              style={{ color: mainColor }}
+            />
+            <span
+              className="text-xs font-semibold"
+              style={{ color: mainColor }}
+            >
+              Grup Belajar:
+            </span>
+            <a
+              href="https://t.me/bimbelio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-bold underline hover:opacity-80 transition-opacity"
+              style={{ color: mainColor }}
+            >
+              t.me/bimbelio
+            </a>
+          </div>
+
+          {/* Trust Badge */}
+          <div className="flex items-center justify-center gap-2 text-xs text-gray-600">
+            <Shield className="w-3 h-3 text-green-600" />
+            <span className="font-medium">100% Gratis & Terpercaya</span>
           </div>
 
           {/* Primary CTA */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group rounded-xl"
+            className="w-full h-14 text-lg font-bold shadow-md hover:shadow-sm transition-all duration-300 text-white border-0 relative overflow-hidden group rounded-2xl"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -680,4 +779,5 @@ const EnhancedTryOutCard = ({
   );
 };
 
-export default FeaturedTryoutSection;
+export default TryoutSection;
+export { TryoutSection };

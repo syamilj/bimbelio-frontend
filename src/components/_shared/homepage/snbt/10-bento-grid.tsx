@@ -240,7 +240,7 @@ const BentoGrid: React.FC = () => {
               viewport={{ once: true }}
               className={`
                 group relative overflow-hidden rounded-3xl bg-white border border-gray-200 hover:border-gray-300
-                transition-all duration-500 hover:shadow-2xl hover:-translate-y-2
+                transition-all duration-500 hover:shadow-sm hover:-translate-y-2
                 ${feature.size === 'large' ? 'md:col-span-2' : ''}
                 ${feature.size === 'medium' ? 'md:col-span-1' : ''}
               `}
@@ -289,7 +289,7 @@ const BentoGrid: React.FC = () => {
                     {feature.metrics.map((metric, idx) => (
                       <div
                         key={idx}
-                        className="bg-gray-50 rounded-xl p-3 text-center"
+                        className="bg-white rounded-2xl p-3 text-center"
                       >
                         <div className="text-lg font-black text-gray-900">
                           {metric.value}
@@ -388,3 +388,4 @@ const BentoGrid: React.FC = () => {
 };
 
 export default BentoGrid;
+export { BentoGrid };

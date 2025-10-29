@@ -106,7 +106,7 @@ const BlueprintConcept: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 px-4 bg-gray-50 relative overflow-hidden">
+    <section className="py-24 px-4 bg-white relative overflow-hidden">
       {/* Emotional Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div
@@ -366,7 +366,7 @@ const BlueprintConcept: React.FC = () => {
               <h3 className="text-3xl md:text-5xl font-black text-white mb-6">
                 Siap Jadi yang{' '}
                 <span
-                  className="bg-white px-2 py-1 rounded-xl font-black"
+                  className="bg-white px-2 py-1 rounded-2xl font-black"
                   style={{
                     color: mainColor,
                   }}
@@ -382,7 +382,7 @@ const BlueprintConcept: React.FC = () => {
                 tercepat & terukur.
                 <br />
                 <span
-                  className="font-bold px-2 py-1 rounded-xl"
+                  className="font-bold px-2 py-1 rounded-2xl"
                   style={{ background: 'white', color: mainColor }}
                 >
                   Kapan giliran kamu?
@@ -391,7 +391,7 @@ const BlueprintConcept: React.FC = () => {
 
               <Button
                 size="lg"
-                className="text-xl font-bold px-12 py-6 rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300"
+                className="text-xl font-bold px-12 py-6 rounded-2xl shadow-sm hover:scale-105 transition-all duration-300"
                 style={{
                   backgroundColor: mainColor,
                   color: 'white',
@@ -414,3 +414,4 @@ const BlueprintConcept: React.FC = () => {
 };
 
 export default BlueprintConcept;
+export { BlueprintConcept };

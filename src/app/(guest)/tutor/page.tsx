@@ -9,12 +9,6 @@ import { Suspense } from 'react';
 export default function TutorPage() {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
-
-  const handleConsultation = () => {
-    router.push('/consultation');
-  };
 
   return (
     <div

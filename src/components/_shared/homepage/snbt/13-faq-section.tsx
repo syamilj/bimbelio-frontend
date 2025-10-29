@@ -111,7 +111,7 @@ const categories = [
   { id: 'community', label: 'Community', icon: Users },
 ];
 
-export default function FaqHomepage() {
+export default function FaqSection() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
@@ -246,7 +246,7 @@ export default function FaqHomepage() {
               >
                 <button
                   onClick={() => toggleExpanded(item.id)}
-                  className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                  className="w-full p-6 text-left flex items-center justify-between hover:bg-white transition-colors duration-200"
                 >
                   <h3 className="text-lg font-semibold text-gray-900 pr-4">
                     {item.question}
