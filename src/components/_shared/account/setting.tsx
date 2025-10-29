@@ -176,7 +176,7 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                 </div>
                 Pengaturan Profil
               </h1>
-              <p className="text-white/80">Kelola akun dan preferensi Anda</p>
+              <p className="text-white/80">Kelola akun dan preferensi Kamu</p>
             </div>
             <Button
               onClick={() => setTransactionHistory(false)}
@@ -411,7 +411,7 @@ const SubscriptionTab = ({
       >
         Subscription & Coin
       </h2>
-      <p className="text-gray-600">Kelola langganan dan tagihan Anda</p>
+      <p className="text-gray-600">Kelola langganan dan tagihan Kamu</p>
     </div>
 
     {data?.waiting?.length > 0 ? (
@@ -461,7 +461,7 @@ const HistoryTab = ({ data, mainColor, secondaryColor }: any) => (
       >
         Riwayat Transaksi
       </h2>
-      <p className="text-gray-600">Lihat semua transaksi Anda</p>
+      <p className="text-gray-600">Lihat semua transaksi Kamu</p>
     </div>
 
     {data?.riwayat?.length > 0 ? (
@@ -543,7 +543,7 @@ const HistoryTab = ({ data, mainColor, secondaryColor }: any) => (
           Belum ada riwayat transaksi
         </h3>
         <p className="text-gray-600">
-          Semua transaksi Anda akan ditampilkan di sini
+          Semua transaksi Kamu akan ditampilkan di sini
         </p>
       </div>
     )}

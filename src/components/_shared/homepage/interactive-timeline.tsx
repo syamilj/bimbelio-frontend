@@ -332,7 +332,7 @@ const InteractiveTimeline = () => {
                     }}
                   >
                     <Users className="w-5 h-5" />
-                    Mulai Perjalanan Saya
+                    Mulai Perjalanan Aku
                     <ArrowRight className="w-5 h-5" />
                   </button>
                 </motion.div>

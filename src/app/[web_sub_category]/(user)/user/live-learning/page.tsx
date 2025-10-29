@@ -190,7 +190,7 @@ export default function LiveClassStudentDashboard() {
               </CardTitle>
               <CardDescription className="text-lg mt-3 text-gray-600">
                 Ikuti kelas langsung dengan tutor ahli dan tingkatkan persiapan
-                ujian Anda
+                ujian Kamu
               </CardDescription>
             </div>
             {/* DECORATIVE ELEMENTS */}
@@ -209,7 +209,7 @@ export default function LiveClassStudentDashboard() {
               <StatsCard
                 title="Total Kelas"
                 value={liveClasses.length}
-                description="Kelas tersedia untuk Anda"
+                description="Kelas tersedia untuk Kamu"
                 icon={BookOpen}
                 gradient="from-blue-500 to-blue-600"
                 bgColor="bg-blue-50"
@@ -513,7 +513,7 @@ export default function LiveClassStudentDashboard() {
                   Fitur Multi-Plan Tidak Tersedia
                 </h3>
                 <p className="text-orange-600">
-                  Terjadi kesalahan saat memuat data multi-plan. Anda masih
+                  Terjadi kesalahan saat memuat data multi-plan. Kamu masih
                   dapat menggunakan tab lain.
                 </p>
               </div>
@@ -659,7 +659,7 @@ export default function LiveClassStudentDashboard() {
               <EmptyState
                 icon={Users}
                 title="Belum ada kelas terdaftar"
-                description="Kelas yang sudah Anda daftarkan akan muncul di sini."
+                description="Kelas yang sudah Kamu daftarkan akan muncul di sini."
               />
             )}
           </TabsContent>

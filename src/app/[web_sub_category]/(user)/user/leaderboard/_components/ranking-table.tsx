@@ -448,7 +448,7 @@ export function RankingTable() {
                                       className="ml-1 md:ml-2 px-1 md:px-2 py-0.5 md:py-1 text-xs font-bold rounded-full text-white"
                                       style={{ backgroundColor: mainColor }}
                                     >
-                                      Anda
+                                      Kamu
                                     </span>
                                   )}
                                 </div>

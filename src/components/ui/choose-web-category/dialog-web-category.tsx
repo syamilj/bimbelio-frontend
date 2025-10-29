@@ -219,7 +219,7 @@ export function DialogWebCategory({
               </div>
               <h3 className="font-semibold text-lg mb-2">Tidak ada hasil</h3>
               <p className="text-muted-foreground text-sm">
-                Tidak ada kategori yang sesuai dengan pencarian Anda
+                Tidak ada kategori yang sesuai dengan pencarian Kamu
               </p>
             </div>
           )}

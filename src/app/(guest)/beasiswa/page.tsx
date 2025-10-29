@@ -182,7 +182,7 @@ export default function BeasiswaPage() {
                         Hubungi Tim Kami
                       </h3>
                       <p className="text-sm text-gray-600">
-                        Jika Anda memiliki pertanyaan tentang beasiswa, hubungi
+                        Jika Kamu memiliki pertanyaan tentang beasiswa, hubungi
                         tim support kami.
                       </p>
                     </div>
@@ -370,7 +370,7 @@ export default function BeasiswaPage() {
                 step: 1,
                 title: 'Cari Program Beasiswa',
                 description:
-                  'Lihat daftar program beasiswa yang tersedia dan pilih yang sesuai dengan kriteria Anda.',
+                  'Lihat daftar program beasiswa yang tersedia dan pilih yang sesuai dengan kriteria Kamu.',
               },
               {
                 step: 2,
@@ -382,7 +382,7 @@ export default function BeasiswaPage() {
                 step: 3,
                 title: 'Menunggu Hasil',
                 description:
-                  'Tim penyeleksi akan meninjau aplikasi Anda dan memberitahu hasil dalam waktu yang ditentukan.',
+                  'Tim penyeleksi akan meninjau aplikasi Kamu dan memberitahu hasil dalam waktu yang ditentukan.',
               },
             ].map((item, idx) => (
               <motion.div

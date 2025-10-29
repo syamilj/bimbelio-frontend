@@ -736,9 +736,9 @@ const HeadingSection: React.FC<{
             )}
             style={colorsLoaded ? { color: mainColor } : {}}
           >
-            Lo capek nggak sih belajar sendiri tanpa arah jelas?
+            Kamu capek nggak sih belajar sendiri tanpa arah jelas?
           </span>{' '}
-          Gue tau banget struggle lo — makanya gue bikin Liveclass: kelas
+          Aku tau banget struggle kamu — makanya aku bikin Liveclass: kelas
           interaktif dengan tutor alumni PTN, live di Google Meet, bisa tanya
           langsung.
         </p>
@@ -756,7 +756,7 @@ const HeadingSection: React.FC<{
         </p>
 
         <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-center">
-          Pilih yang sesuai ritme lo.{' '}
+          Pilih yang sesuai ritme kamu.{' '}
           <span
             className={cn(
               'font-bold transition-colors duration-300',
@@ -766,8 +766,8 @@ const HeadingSection: React.FC<{
           >
             Satu akun, semua jalur
           </span>{' '}
-          — UTBK, SIMAK UI, UM UGM, sampai kedinasan. Gue bakal temenin lo dari
-          awal sampai lolos.
+          — UTBK, SIMAK UI, UM UGM, sampai kedinasan. Aku bakal temenin kamu
+          dari awal sampai lolos.
         </p>
       </div>
     </motion.div>

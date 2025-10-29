@@ -985,7 +985,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                   </h2>
 //                   <p className="text-xs text-gray-500 truncate">
 //                     {sub === 'report'
-//                       ? 'Analisis progres pembelajaran Anda'
+//                       ? 'Analisis progres pembelajaran Kamu'
 //                       : CourseData?.title}
 //                   </p>
 //                 </div>

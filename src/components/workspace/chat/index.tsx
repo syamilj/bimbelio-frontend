@@ -204,7 +204,7 @@ const FormMessageEdit = () => {
 const GreetingMessage: MessageDataType = {
   id: 'id',
   content:
-    'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+    'Selamat datang di **Bimbelio**! Aku siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
   role: 'assistant',
   createdAt: null,
   like: false,

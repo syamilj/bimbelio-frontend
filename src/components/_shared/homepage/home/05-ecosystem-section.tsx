@@ -400,11 +400,11 @@ export default function EcosystemSection() {
             </h3>
           </div>
           <p className="mx-auto mb-12 max-w-3xl text-center text-gray-600">
-            Lo nggak cuma "dapat kelas doang". Ada{' '}
+            Kamu nggak cuma "dapat kelas doang". Ada{' '}
             <span className="font-semibold text-gray-900">
               ekosistem lengkap
             </span>{' '}
-            yang gue siapin — dari belajar, latihan, sampai komunitas. Semua
+            yang aku siapin — dari belajar, latihan, sampai komunitas. Semua
             tools buat execute PRINTS System ada di sini.
           </p>
 

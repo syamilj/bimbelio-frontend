@@ -70,15 +70,15 @@ export default function AboutPage() {
   const features = [
     {
       icon: Brain,
-      title: 'AI yang Ngerti Lo',
+      title: 'AI yang Ngerti Kamu',
       description:
-        'Bukan AI biasa — ini AI yang belajar dari progress lo dan kasih rekomendasi materi yang pas banget',
+        'Bukan AI biasa — ini AI yang belajar dari progress kamu dan kasih rekomendasi materi yang pas banget',
     },
     {
       icon: Target,
-      title: 'Fokus ke Target Lo',
+      title: 'Fokus ke Target Kamu',
       description:
-        'Mau SNBT, SIMAK UI, UM-UGM, atau Kedinasan? Semua materi udah gue sesuaikan sama pola soal terbaru',
+        'Mau SNBT, SIMAK UI, UM-UGM, atau Kedinasan? Semua materi udah aku sesuaikan sama pola soal terbaru',
     },
     {
       icon: Award,
@@ -90,7 +90,7 @@ export default function AboutPage() {
       icon: TrendingUp,
       title: 'Hasil yang Keliatan',
       description:
-        'Ribuan alumni gue udah lolos. Lo bisa cek sendiri testimoni dan data passing rate yang transparan',
+        'Ribuan alumni aku udah lolos. Kamu bisa cek sendiri testimoni dan data passing rate yang transparan',
     },
   ];
 
@@ -99,7 +99,7 @@ export default function AboutPage() {
       name: 'SNBT',
       fullName: 'Seleksi Nasional Berdasarkan Tes',
       description:
-        'Jalur utama masuk PTN — gue kasih lo ribuan soal latihan yang mirip banget sama aslinya',
+        'Jalur utama masuk PTN — aku kasih kamu ribuan soal latihan yang mirip banget sama aslinya',
       icon: Target,
       imageUrl: '/tutors/LOGO_SNBT.webp',
       stat1Label: 'Bank Soal',
@@ -114,7 +114,7 @@ export default function AboutPage() {
       name: 'SIMAK UI',
       fullName: 'SIMAK Universitas Indonesia',
       description:
-        'Mau masuk UI lewat jalur mandiri? Soal-soal spesifik UI udah gue siapin lengkap',
+        'Mau masuk UI lewat jalur mandiri? Soal-soal spesifik UI udah aku siapin lengkap',
       icon: School,
       imageUrl: '/tutors/LOGO_PTN_UI.webp',
       stat1Label: 'Bank Soal',
@@ -129,7 +129,7 @@ export default function AboutPage() {
       name: 'UM-UGM',
       fullName: 'Ujian Mandiri Universitas Gadjah Mada',
       description:
-        'Target UGM? Gue punya bank soal UM-UGM dari tahun-tahun sebelumnya buat lo pelajari',
+        'Target UGM? Aku punya bank soal UM-UGM dari tahun-tahun sebelumnya buat kamu pelajari',
       icon: BookOpen,
       imageUrl: '/tutors/LOGO_PTN_UGM.webp',
       stat1Label: 'Bank Soal',
@@ -144,7 +144,7 @@ export default function AboutPage() {
       name: 'Kedinasan',
       fullName: 'IPDN, STAN, STIS & Lainnya',
       description:
-        'IPDN, STAN, STIS? Semua pola soal kedinasan udah gue cover di sini',
+        'IPDN, STAN, STIS? Semua pola soal kedinasan udah aku cover di sini',
       icon: Building2,
       imageUrl: '/tutors/LOGO_KEDINASAN_STAN.webp',
       stat1Label: 'Bank Soal',
@@ -161,25 +161,25 @@ export default function AboutPage() {
     {
       title: 'Terus Berinovasi',
       description:
-        'Gue selalu cari cara terbaru biar lo belajar lebih efektif — makanya gue pakai AI dan teknologi canggih',
+        'Aku selalu cari cara terbaru biar kamu belajar lebih efektif — makanya aku pakai AI dan teknologi canggih',
       icon: Lightbulb,
     },
     {
-      title: 'All-In Buat Lo',
+      title: 'All-In Buat Kamu',
       description:
-        'Gue komit bantu lo sampe beneran lolos. Sukses lo adalah bukti kesuksesan gue juga',
+        'Aku komit bantu kamu sampe beneran lolos. Sukses kamu adalah bukti kesuksesan aku juga',
       icon: Shield,
     },
     {
       title: 'Kualitas Nomor 1',
       description:
-        'Gue gak mau asal-asalan — dari materi, soal, sampai mentor, semua gue pastikan berkualitas tinggi',
+        'Aku gak mau asal-asalan — dari materi, soal, sampai mentor, semua aku pastikan berkualitas tinggi',
       icon: CheckCircle,
     },
     {
-      title: 'Percepat Progres Lo',
+      title: 'Percepat Progres Kamu',
       description:
-        'Gue bikin sistem yang ngebuat lo belajar lebih cepet dan efisien daripada belajar sendiri',
+        'Aku bikin sistem yang ngebuat kamu belajar lebih cepet dan efisien daripada belajar sendiri',
       icon: Rocket,
     },
   ];
@@ -230,12 +230,12 @@ export default function AboutPage() {
                   backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
               >
-                Siapa Sih Gue?
+                Siapa Sih Aku?
               </span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
-              Gue Bimbelio — platform bimbel + AI yang bikin persiapan SNBT,
+              Aku Bimbelio — platform bimbel + AI yang bikin persiapan SNBT,
               SIMAK UI, UM-UGM, sama Kedinasan jadi gak ribet dan super
               terstruktur. Kenalan yuk!
             </p>
@@ -350,13 +350,13 @@ export default function AboutPage() {
                   MISSION
                 </Badge>
                 <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
-                  Kenapa Gue Ada?
+                  Kenapa Aku Ada?
                 </h2>
                 <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-                  Gue tau banget gimana rasanya belajar sendiri tanpa arah
-                  jelas. Makanya gue ada — buat kasih lo sistem belajar yang
+                  Aku tau banget gimana rasanya belajar sendiri tanpa arah
+                  jelas. Makanya aku ada — buat kasih kamu sistem belajar yang
                   terstruktur, didukung AI canggih dan mentor berpengalaman.
-                  Target lo lolos ujian? Gue bantu maksimalin peluang lo.
+                  Target kamu lolos ujian? Aku bantu maksimalin peluang kamu.
                 </p>
               </div>
 
@@ -373,13 +373,13 @@ export default function AboutPage() {
                   VISION
                 </Badge>
                 <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">
-                  Mau Jadi Apa Gue?
+                  Mau Jadi Apa Aku?
                 </h2>
                 <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-                  Gue pengen jadi platform bimbel #1 di Indonesia yang ngebantu
+                  Aku pengen jadi platform bimbel #1 di Indonesia yang ngebantu
                   ribuan — bahkan jutaan siswa lolos ke universitas impian
                   mereka. Bukan cuma soal lulus, tapi soal ngasih pengalaman
-                  belajar yang bener-bener ngerti struggle lo.
+                  belajar yang bener-bener ngerti struggle kamu.
                 </p>
               </div>
             </motion.div>
@@ -420,7 +420,7 @@ export default function AboutPage() {
                         Update Terus Menerus
                       </h3>
                       <p className="text-sm text-gray-600 leading-relaxed">
-                        Gue selalu tambahin fitur baru biar lo makin dimudahin
+                        Aku selalu tambahin fitur baru biar kamu makin dimudahin
                       </p>
                     </div>
                   </div>
@@ -437,7 +437,7 @@ export default function AboutPage() {
                         Komunitas yang Solid
                       </h3>
                       <p className="text-sm text-gray-600 leading-relaxed">
-                        Lo belajar bareng ribuan siswa lain yang seperjuangan
+                        Kamu belajar bareng ribuan siswa lain yang seperjuangan
                       </p>
                     </div>
                   </div>
@@ -456,7 +456,7 @@ export default function AboutPage() {
                         Bukti Nyata
                       </h3>
                       <p className="text-sm text-gray-600 leading-relaxed">
-                        Ribuan alumni gue udah lolos ke PTN dan kedinasan impian
+                        Ribuan alumni aku udah lolos ke PTN dan kedinasan impian
                       </p>
                     </div>
                   </div>
@@ -495,11 +495,12 @@ export default function AboutPage() {
               KEUNGGULAN KAMI
             </Badge>
             <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              Kenapa Harus Pilih Gue?
+              Kenapa Harus Pilih Aku?
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Gue gabungin yang terbaik dari dua dunia: mentor expert yang
-              ngerti struggle lo + AI canggih yang personalize belajar lo 24/7
+              Aku gabungin yang terbaik dari dua dunia: mentor expert yang
+              ngerti struggle kamu + AI canggih yang personalize belajar kamu
+              24/7
             </p>
           </motion.div>
 
@@ -631,10 +632,10 @@ export default function AboutPage() {
               SPESIALISASI
             </Badge>
             <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              Ujian Apa Aja yang Gue Cover?
+              Ujian Apa Aja yang Aku Cover?
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Gue fokus ke 4 ujian besar yang paling banyak lo butuhin — semua
+              Aku fokus ke 4 ujian besar yang paling banyak kamu butuhin — semua
               udah ada materinya lengkap dan update terus
             </p>
           </motion.div>
@@ -841,11 +842,11 @@ export default function AboutPage() {
               NILAI-NILAI KAMI
             </Badge>
             <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">
-              Prinsip Gue Dalam Ngajarin Lo
+              Prinsip Aku Dalam Ngajarin Kamu
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Ini nilai-nilai yang gue pegang teguh setiap kali bikin fitur atau
-              konten buat lo
+              Ini nilai-nilai yang aku pegang teguh setiap kali bikin fitur atau
+              konten buat kamu
             </p>
           </motion.div>
 
@@ -1007,8 +1008,8 @@ export default function AboutPage() {
               </span>
             </h2>
             <p className="text-lg md:text-2xl text-gray-700 mb-10 leading-relaxed max-w-3xl mx-auto">
-              Ribuan siswa udah percaya sama gue dan berhasil lolos
-              PTN/kedinasan impian mereka. Sekarang giliran lo — yuk mulai
+              Ribuan siswa udah percaya sama aku dan berhasil lolos
+              PTN/kedinasan impian mereka. Sekarang giliran kamu — yuk mulai
               perjalanan belajar yang bener-bener terstruktur!
             </p>
 

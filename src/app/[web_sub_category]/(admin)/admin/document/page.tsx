@@ -598,7 +598,7 @@ export default function Dokumen() {
 //         <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-[#ffffff7a]">
 //           <div className="flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-lg">
 //             <p className="text-center">
-//               Apakah anda yakin ingin menghapus dokumen <br /> &quot;
+//               Apakah kamu yakin ingin menghapus dokumen <br /> &quot;
 //               {deleteData.title}&quot; ?
 //             </p>
 //             <div className="flex w-full justify-center gap-[.5rem]">

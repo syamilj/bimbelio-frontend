@@ -73,7 +73,7 @@ const Header = ({ current, total, name, done = false }: HeaderProps) => {
                   </h1>
                   {done && (
                     <p className="text-sm text-gray-600">
-                      Selamat! Anda telah menyelesaikan try out
+                      Selamat! Kamu telah menyelesaikan try out
                     </p>
                   )}
                 </div>

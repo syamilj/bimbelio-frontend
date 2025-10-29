@@ -127,13 +127,13 @@ const TryoutSection: React.FC = () => {
                 backgroundClip: 'text',
               }}
             >
-              Lo Juga Dapet Bonus Ini Loh
+              Kamu Juga Dapet Bonus Ini Loh
             </span>
           </h2>
           <p className="text-lg max-w-2xl mx-auto leading-relaxed mb-6 text-gray-600">
             Try Out IRT-based udah{' '}
-            <span className="font-bold">included di paket lo</span>, nggak perlu
-            bayar lagi!
+            <span className="font-bold">included di paket kamu</span>, nggak
+            perlu bayar lagi!
             <br />
             Latihan rutin, track progress, dan siap tempur di hari H.
             <span className="font-semibold text-gray-900">

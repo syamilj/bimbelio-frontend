@@ -100,24 +100,24 @@ const ProblemSection: React.FC = () => {
         title: 'Navigate',
         subtitle: 'Peta belajar yang jelas',
         description:
-          'Galau jurusan? Takut kelamaan di satu bab? Navigator guide lo dari Core → Intensif → Super Intensif. Ada peta, nggak nyasar.',
+          'Galau jurusan? Takut kelamaan di satu bab? Navigator guide kamu dari Core → Intensif → Super Intensif. Ada peta, nggak nyasar.',
         color: '#F59E0B', // Orange
         iconBg: '#FEF3C7',
         painPoints: [
           {
             title: 'Bingung Dari Mana Mulai',
             description:
-              'Materi banyak banget, bab-nya juga nggak terhitung. Mana yang harus dikerjain duluan? Mulai dari mana? Prioritas apa? Waktu lo terbatas, tapi materi unlimited.',
+              'Materi banyak banget, bab-nya juga nggak terhitung. Mana yang harus dikerjain duluan? Mulai dari mana? Prioritas apa? Waktu kamu terbatas, tapi materi unlimited.',
           },
           {
             title: 'Galau Pilih Jurusan yang Pas',
             description:
-              'Tahu sih harus milih jurusan, tapi gue nggak confident mana yang cocok buat lo. Takut sesal, takut salah pilih, takut nggak lolos juga.',
+              'Tahu sih harus milih jurusan, tapi aku nggak confident mana yang cocok buat kamu. Takut sesal, takut salah pilih, takut nggak lolos juga.',
           },
           {
             title: 'Takut Membuang-buang Waktu',
             description:
-              'Takut fokus ke hal yang akhirnya gue nggak penting pas tes. Takut effort sekarang nggak ada hasil di hari H. Panik terus-terusan nih.',
+              'Takut fokus ke hal yang akhirnya aku nggak penting pas tes. Takut effort sekarang nggak ada hasil di hari H. Panik terus-terusan nih.',
           },
         ],
       },
@@ -126,24 +126,24 @@ const ProblemSection: React.FC = () => {
         title: 'Test',
         subtitle: 'Latihan soal yang cerdas',
         description:
-          'Video ngeboseninใ TO pakai IRT system — ngasih soal yang pas sama level lo. Progress terlihat real-time, bukan cuma berasa aja.',
+          'Video ngeboseninใ TO pakai IRT system — ngasih soal yang pas sama level kamu. Progress terlihat real-time, bukan cuma berasa aja.',
         color: '#EC4899', // Pink
         iconBg: '#FCE7F3',
         painPoints: [
           {
             title: 'Nilai Stuck di Zone Nyaman',
             description:
-              'Nilai kok 400-500an gitu aja. Udah coba semua metode, tapi nilai lo tetap mandeg. Parah banget sih kalau SNBT momentum tapi nilai gue nggak naik-naik.',
+              'Nilai kok 400-500an gitu aja. Udah coba semua metode, tapi nilai kamu tetap mandeg. Parah banget sih kalau SNBT momentum tapi nilai aku nggak naik-naik.',
           },
           {
             title: 'Progres Itu Invisible & Mengecewakan',
             description:
-              'Belajar terus-terusan tapi gue nggak bisa lihat kemajuan yang nyata. Belum tahu soal mana yang udah dikuasai lo, mana yang masih lemah. Jadi kayak buta arah.',
+              'Belajar terus-terusan tapi aku nggak bisa lihat kemajuan yang nyata. Belum tahu soal mana yang udah dikuasai kamu, mana yang masih lemah. Jadi kayak buta arah.',
           },
           {
             title: 'Materi Itu Overwhelming Banget',
             description:
-              'Nonton video berjam-jam, tapi tetap aja merasa belum paham. Teori membludak, praktik minim. Jenuh banget apalagi info yang nggak nyangkut di otak lo.',
+              'Nonton video berjam-jam, tapi tetap aja merasa belum paham. Teori membludak, praktik minim. Jenuh banget apalagi info yang nggak nyangkut di otak kamu.',
           },
         ],
       },
@@ -159,12 +159,12 @@ const ProblemSection: React.FC = () => {
           {
             title: 'Stamina & Mental Turun Drastis',
             description:
-              'Awalnya semangat lo membara, cita-cita tinggi banget. Tapi lama-lama? Males banget. Burnout di tengah jalan, stres berlebihan, mimpi buruk soal tes.',
+              'Awalnya semangat kamu membara, cita-cita tinggi banget. Tapi lama-lama? Males banget. Burnout di tengah jalan, stres berlebihan, mimpi buruk soal tes.',
           },
           {
             title: 'Biaya Bimbel Bikin Kantong Jebol',
             description:
-              'Les bimbel bisa 10+ juta per paket. Terus kursus online, buku soal, expert session... Eh kok hasilnya gue nggak sebanding? Sakit hati kalau nggak lolos.',
+              'Les bimbel bisa 10+ juta per paket. Terus kursus online, buku soal, expert session... Eh kok hasilnya aku nggak sebanding? Sakit hati kalau nggak lolos.',
           },
         ],
       },
@@ -202,7 +202,7 @@ const ProblemSection: React.FC = () => {
               }}
             >
               <BarChart3 className="w-4 h-4 mr-2 inline" />
-              Realita Yang Harus Lo Hadapi
+              Realita Yang Harus Kamu Hadapi
             </Badge>
           </motion.div>
 
@@ -215,7 +215,7 @@ const ProblemSection: React.FC = () => {
             className="mb-8"
           >
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-              Gue Tau Banget —
+              Aku Tau Banget —
             </h2>
             <h2
               className="text-4xl md:text-5xl font-black bg-clip-text text-transparent"
@@ -225,7 +225,7 @@ const ProblemSection: React.FC = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Struggle Lo Kayak Gini
+              Struggle Kamu Kayak Gini
             </h2>
           </motion.div>
 
@@ -253,7 +253,7 @@ const ProblemSection: React.FC = () => {
                 1 dari 10
               </span>{' '}
               yang beneran lolos ke PTN impian. Sisanya? Ngalamin struggle yang
-              sama kayak lo sekarang.
+              sama kayak kamu sekarang.
             </p>
             <p>
               Tapi tunggu,{' '}
@@ -261,10 +261,10 @@ const ProblemSection: React.FC = () => {
                 className="font-bold"
                 style={{ color: secondaryColor }}
               >
-                masalahnya bukan soal effort atau IQ lo kok
+                masalahnya bukan soal effort atau IQ kamu kok
               </span>
               . Ribuan siswa yang IQ-nya standar aja bisa masuk PTN top dengan
-              nilai 600+. Mereka tau sesuatu yang lo belum tau.
+              nilai 600+. Mereka tau sesuatu yang kamu belum tau.
             </p>
             <p>
               Mereka tau{' '}
@@ -533,7 +533,8 @@ const ProblemSection: React.FC = () => {
           </h3>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
             Setiap siswa punya masalah berbeda. Cek 3 kategori utama di bawah -
-            kemungkinan besar lo ngalamin minimal 1 masalah di setiap kategori.
+            kemungkinan besar kamu ngalamin minimal 1 masalah di setiap
+            kategori.
           </p>
         </motion.div>
 

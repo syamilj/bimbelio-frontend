@@ -118,15 +118,15 @@ export default function AddOnPremiumSection() {
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-4xl text-lg text-gray-600 md:text-xl">
-            Paket lo udah dapat{' '}
+            Paket kamu udah dapat{' '}
             <span className="font-semibold text-gray-900">
               PRINTS System + 3-Layer Support + semua platform
             </span>
-            . Tapi kalau lo mau{' '}
+            . Tapi kalau kamu mau{' '}
             <span className="font-semibold text-gray-900">
               dukungan ekstra intensif atau jaminan kelulusan
             </span>
-            , ada add-on premium yang bisa lo pilih sesuai kebutuhan.
+            , ada add-on premium yang bisa kamu pilih sesuai kebutuhan.
           </p>
         </motion.div>
 

@@ -160,10 +160,10 @@ export function RatingModal({
             </DialogTitle>
             <DialogDescription className="text-base mt-2 text-gray-600">
               {existingRating ? (
-                <>Ubah rating Anda untuk kelas "{liveClass.title}"</>
+                <>Ubah rating Kamu untuk kelas "{liveClass.title}"</>
               ) : (
                 <>
-                  Bagaimana pengalaman Anda mengikuti kelas "{liveClass.title}"?
+                  Bagaimana pengalaman Kamu mengikuti kelas "{liveClass.title}"?
                 </>
               )}
               {existingRating && (
@@ -234,7 +234,7 @@ export function RatingModal({
                 >
                   {displayRating > 0
                     ? getRatingText(displayRating)
-                    : 'Pilih rating Anda'}
+                    : 'Pilih rating Kamu'}
                 </p>
                 {displayRating > 0 && (
                   <p className="text-sm text-gray-600">
@@ -260,7 +260,7 @@ export function RatingModal({
             <div className="relative">
               <Textarea
                 id="review"
-                placeholder="Ceritakan pengalaman Anda mengikuti kelas ini..."
+                placeholder="Ceritakan pengalaman Kamu mengikuti kelas ini..."
                 value={review}
                 onChange={(e) => setReview(e.target.value)}
                 rows={4}

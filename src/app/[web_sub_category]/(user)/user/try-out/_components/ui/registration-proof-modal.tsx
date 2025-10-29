@@ -438,8 +438,8 @@ export default function RegistrationProofModal({
         {TryoutIrtData?.isDone && TryoutIrtData.isIrt && (
           <Card className="border-2 border-yellow-300 bg-yellow-50">
             <CardContent className="p-4 text-sm text-yellow-800">
-              ⚠️ Penilaian tryout ini menggunakan sistem <b>IRT</b>. Karena Anda
-              mengerjakan setelah proses IRT selesai, maka nilai Anda hanya
+              ⚠️ Penilaian tryout ini menggunakan sistem <b>IRT</b>. Karena Kamu
+              mengerjakan setelah proses IRT selesai, maka nilai Kamu hanya
               berupa skor biasa (0-1000) dan tidak akan dihitung di leaderboard.
             </CardContent>
           </Card>

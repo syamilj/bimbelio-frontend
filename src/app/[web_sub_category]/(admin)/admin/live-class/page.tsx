@@ -34,7 +34,7 @@ export default function LiveClassDashboard() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Live Class</h1>
           <p className="text-muted-foreground">
-            Kelola dan pantau semua live class Anda
+            Kelola dan pantau semua live class Kamu
           </p>
         </div>
         <Link href={`/${website_sub_category_id}/admin/live-class/new`}>

@@ -177,8 +177,8 @@ export default function ComparisonSection() {
           </h2>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
-            Data speaks louder. Ini perbandingan jujur antara program gue dan
-            alternatif lain di pasaran — biar lo makin yakin.
+            Data speaks louder. Ini perbandingan jujur antara program aku dan
+            alternatif lain di pasaran — biar kamu makin yakin.
           </p>
 
           {/* Info Pills */}
@@ -447,12 +447,12 @@ export default function ComparisonSection() {
 
             <p className="text-center text-gray-600 mb-6 max-w-2xl mx-auto leading-relaxed">
               <span className="font-bold text-gray-900">
-                Bimbelio kasih lo fleksibilitas online + kualitas premium
+                Bimbelio kasih kamu fleksibilitas online + kualitas premium
               </span>{' '}
               dengan harga yang masuk akal. Nggak perlu keluar jutaan buat
               bimbel offline, tapi tetap dapet{' '}
               <span className="font-bold text-gray-900">live interaction</span>{' '}
-              yang nggak lo dapet di video biasa.
+              yang nggak kamu dapet di video biasa.
             </p>
 
             {/* Trust Indicators */}

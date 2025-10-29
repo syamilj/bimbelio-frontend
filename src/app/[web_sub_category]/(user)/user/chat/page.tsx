@@ -202,7 +202,7 @@ export default function AIChatPage() {
             Bimbot AI Assistant
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-            Tanyakan apapun tentang materi pembelajaran. Saya siap membantu Anda
+            Tanyakan apapun tentang materi pembelajaran. Aku siap membantu Kamu
             belajar lebih efektif!
           </p>
         </div>

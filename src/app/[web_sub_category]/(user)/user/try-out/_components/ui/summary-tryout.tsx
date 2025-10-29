@@ -149,7 +149,7 @@ const SummaryTryout = () => {
             Try Out Dashboard
           </CardTitle>
           <CardDescription className="text-base text-gray-600">
-            Ringkasan performa dan progress try out Anda
+            Ringkasan performa dan progress try out Kamu
           </CardDescription>
         </div>
 

@@ -27,7 +27,7 @@ const faqData: FAQItem[] = [
   {
     id: 1,
     category: 'general',
-    question: 'Gue bener-bener hopeless sama TKA, bisa gak sih?',
+    question: 'Aku bener-bener hopeless sama TKA, bisa gak sih?',
     answer:
       'Listen up bro! Setiap hero punya starting point yang berbeda. Yang penting bukan seberapa jauh kamu tertinggal, tapi seberapa committed kamu untuk bangkit. Whiteprint Bimbelio coba ngebantu ribuan anak yang feeling hopeless jadi top scorer. The journey starts ketika kamu yakin!',
   },

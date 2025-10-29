@@ -66,7 +66,7 @@ export default function TutorsSection() {
       university: 'UI 2024',
       major: 'Teknik Elektro',
       quote:
-        'Gue dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
+        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
       badge: 'UI 2024',
       color: '#0091FF',
     },
@@ -75,7 +75,7 @@ export default function TutorsSection() {
       university: 'UI 2024',
       major: 'Teknik Elektro',
       quote:
-        'Gue dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
+        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
       badge: 'UI 2024',
       color: '#FFA500',
     },
@@ -84,7 +84,7 @@ export default function TutorsSection() {
       university: 'UI 2024',
       major: 'Teknik Elektro',
       quote:
-        'Gue dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
+        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
       badge: 'UI 2024',
       color: '#00C853',
     },
@@ -93,7 +93,7 @@ export default function TutorsSection() {
       university: 'UI 2024',
       major: 'Teknik Elektro',
       quote:
-        'Gue dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
+        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
       badge: 'UI 2024',
       color: '#E91E63',
     },
@@ -102,7 +102,7 @@ export default function TutorsSection() {
       university: 'UI 2024',
       major: 'Teknik Elektro',
       quote:
-        'Gue dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
+        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
       badge: 'UI 2024',
       color: '#9C27B0',
     },
@@ -111,7 +111,7 @@ export default function TutorsSection() {
       university: 'UI 2024',
       major: 'Teknik Elektro',
       quote:
-        'Gue dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
+        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
       badge: 'UI 2024',
       color: '#0091FF',
     },
@@ -157,10 +157,10 @@ export default function TutorsSection() {
           </h2>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            <span className="font-bold">Tools doang nggak cukup.</span> Lo butuh
-            human support yang beneran paham struggle lo. Ada Tutor yang ngajar
-            materi, Mentor yang bimbing strategi, dan AI yang support 24/7. Ini
-            bukan cuma "ngajar" — ini{' '}
+            <span className="font-bold">Tools doang nggak cukup.</span> Kamu
+            butuh human support yang beneran paham struggle kamu. Ada Tutor yang
+            ngajar materi, Mentor yang bimbing strategi, dan AI yang support
+            24/7. Ini bukan cuma "ngajar" — ini{' '}
             <span
               className="font-bold"
               style={{ color: mainColor }}
@@ -402,7 +402,7 @@ export default function TutorsSection() {
               <span className="font-black text-gray-900">
                 Tutor ngajar, Mentor bimbing, AI selalu ada
               </span>{' '}
-              — lo nggak akan struggle sendirian lagi. Sistem 3 layer ini yang
+              — kamu nggak akan struggle sendirian lagi. Sistem 3 layer ini yang
               bikin Bimbelio beda dari bimbel lain.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">

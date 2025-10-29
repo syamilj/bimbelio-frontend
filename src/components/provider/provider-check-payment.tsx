@@ -100,7 +100,7 @@ export default function ProviderCheckPayment({
                 Memverifikasi Pembayaran
               </h3>
               <p className="text-sm text-gray-600">
-                Mohon tunggu sebentar, kami sedang memproses pembayaran Anda
+                Mohon tunggu sebentar, kami sedang memproses pembayaran Kamu
               </p>
             </div>
 

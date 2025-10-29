@@ -79,7 +79,7 @@ export default function Riwayat() {
               </div>
             </div>
             <p className="text-gray-600 dark:text-gray-400">
-              Lanjutkan pembelajaran dari materi yang terakhir Anda akses
+              Lanjutkan pembelajaran dari materi yang terakhir Kamu akses
             </p>
           </div>
         </div>

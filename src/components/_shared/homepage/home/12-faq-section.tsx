@@ -149,16 +149,16 @@ export default function FAQSection() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Bikin Lo Ragu?
+              Bikin Kamu Ragu?
             </span>
           </h2>
 
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-            Gue jawab semua keraguan lo dengan{' '}
+            Aku jawab semua keraguan kamu dengan{' '}
             <span className="font-bold">jujur dan transparan</span>.
             <br />
             <span className="font-bold text-gray-900">
-              Nggak ada yang disembunyikan. Ini commitment gue ke lo.
+              Nggak ada yang disembunyikan. Ini commitment aku ke kamu.
             </span>
           </p>
 

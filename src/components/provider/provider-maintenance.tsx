@@ -238,7 +238,7 @@ export default function ProviderMaintenance({
                     Butuh Bantuan?
                   </h3>
                   <p className="text-gray-600">
-                    Tim support kami siap membantu Anda 24/7
+                    Tim support kami siap membantu Kamu 24/7
                   </p>
                 </div>
 
@@ -289,7 +289,7 @@ export default function ProviderMaintenance({
               © 2024 Bimbelio - Revolusi Persiapan Belajar dengan AI
             </p>
             <p className="text-sm">
-              Terima kasih atas kesabaran Anda. Kami akan segera kembali dengan
+              Terima kasih atas kesabaran Kamu. Kami akan segera kembali dengan
               fitur yang lebih canggih! 🚀
             </p>
           </div>
