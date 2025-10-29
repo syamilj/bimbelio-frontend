@@ -196,7 +196,7 @@ const HeroSection: React.FC = () => {
             onOpenChange={setIsConsultationDialogOpen}
             onContactSelect={handleContactSelect}
             showStats={true}
-            showTelegramOption={false}
+            showDiscordOption={false}
           />
         </Suspense>
       )}
@@ -632,7 +632,7 @@ const CTASection: React.FC<{
       {/* Sub CTA Buttons */}
       <div className="flex justify-center mt-2">
         <a
-          href="https://t.me/bimbelio"
+          href="https://bit.ly/bimbelio"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-white shadow border transition-transform duration-200 hover:scale-105"

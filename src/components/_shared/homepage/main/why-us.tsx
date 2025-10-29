@@ -85,7 +85,7 @@ const WhyUs = () => {
     },
     {
       heading: 'Community Support',
-      one: 'Exclusive Telegram heroes',
+      one: 'Exclusive Discord heroes',
       two: 'No real community',
       three: 'Limited class interaction',
       icon: '�',

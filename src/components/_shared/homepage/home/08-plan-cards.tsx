@@ -400,7 +400,7 @@ const PlanCards: React.FC = () => {
         onOpenChange={setIsConsultationDialogOpen}
         onContactSelect={handleContactSelect}
         showStats={true}
-        showTelegramOption={false}
+        showDiscordOption={false}
       />
     </>
   );

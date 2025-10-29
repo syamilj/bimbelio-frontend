@@ -91,9 +91,9 @@ const FloatingContactButton = () => {
     },
   ];
 
-  // Telegram option - Alternatif
-  const telegramOption: ContactOption = {
-    id: 'telegram',
+  // Discord option - Alternatif
+  const discordOption: ContactOption = {
+    id: 'discord',
     title: 'Grup Belajar',
     description: 'Join komunitas study buddies yang supportive 24/7',
     icon: <Users className="w-5 h-5" />,
@@ -102,22 +102,22 @@ const FloatingContactButton = () => {
       try {
         pixel.meta.track('Lead', {
           content_type: 'community',
-          content_name: 'telegram_group',
+          content_name: 'discord_group',
           value: 0, // ✅ Free community join - no monetary value
         });
 
         pixel.tiktok.track('Lead', {
-          content_name: 'telegram_group',
-          content_id: 'telegram_group_join', // ✅ Required for TikTok VSA
+          content_name: 'discord_group',
+          content_id: 'discord_group_join', // ✅ Required for TikTok VSA
         });
       } catch (error) {
         console.warn('Pixel tracking error:', error);
       }
 
-      window.open('https://t.me/bimbelio', '_blank');
+      window.open('https://bit.ly/bimbelio', '_blank');
       setIsDialogOpen(false);
     },
-    color: '#0088CC', // Telegram blue
+    color: '#0088CC', // Discord blue
   };
 
   const handleMainButtonClick = () => {
@@ -268,13 +268,13 @@ const FloatingContactButton = () => {
               </div>
             </div>
 
-            {/* Grup Telegram - Alternatif */}
+            {/* Grup Discord - Alternatif */}
             <div>
               <h3 className="text-sm font-semibold text-gray-900 mb-3 text-center">
                 Mulai dari Komunitas
               </h3>
               <Button
-                onClick={telegramOption.action}
+                onClick={discordOption.action}
                 className={cn(
                   'w-full h-auto p-4 rounded-xl text-left',
                   'flex items-center gap-4 bg-white border-2',
@@ -282,30 +282,30 @@ const FloatingContactButton = () => {
                   'border-blue-200 bg-blue-50/30 hover:bg-blue-50/50',
                 )}
                 style={{
-                  borderColor: `${telegramOption.color}30`,
+                  borderColor: `${discordOption.color}30`,
                 }}
                 variant="outline"
               >
                 {/* Icon */}
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md"
-                  style={{ backgroundColor: telegramOption.color }}
+                  style={{ backgroundColor: discordOption.color }}
                 >
-                  {telegramOption.icon}
+                  {discordOption.icon}
                 </div>
 
                 {/* Content */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-semibold text-gray-900 text-sm">
-                      {telegramOption.title}
+                      {discordOption.title}
                     </h3>
                     <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">
                       Gratis
                     </span>
                   </div>
                   <p className="text-xs text-gray-600 leading-relaxed">
-                    {telegramOption.description}
+                    {discordOption.description}
                   </p>
                 </div>
               </Button>

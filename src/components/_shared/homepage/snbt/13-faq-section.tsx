@@ -90,9 +90,9 @@ const faqData: FAQItem[] = [
   {
     id: 9,
     category: 'community',
-    question: 'Grup Telegram eksklusif itu ngapain aja?',
+    question: 'Grup Discord eksklusif itu ngapain aja?',
     answer:
-      "Grup Telegram kita itu energy booster! Daily motivation, sharing strategies, tanya-jawab sama mentor, celebration milestones, bahkan late-night study sessions bareng. It's like having study buddies yang always got your back 24/7!",
+      "Grup Discord kita itu energy booster! Daily motivation, sharing strategies, tanya-jawab sama mentor, celebration milestones, bahkan late-night study sessions bareng. It's like having study buddies yang always got your back 24/7!",
   },
   {
     id: 10,

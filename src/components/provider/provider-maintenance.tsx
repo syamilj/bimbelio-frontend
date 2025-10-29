@@ -244,7 +244,7 @@ export default function ProviderMaintenance({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <a
-                    href="https://t.me/bimbelio"
+                    href="https://bit.ly/bimbelio"
                     target="_blank"
                     className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
                   >
@@ -252,9 +252,7 @@ export default function ProviderMaintenance({
                       <MessageCircle className="w-6 h-6 text-blue-600" />
                     </div>
                     <div className="flex-1">
-                      <div className="font-semibold text-gray-900">
-                        Telegram
-                      </div>
+                      <div className="font-semibold text-gray-900">Discord</div>
                       <div className="text-sm text-gray-600">Bimbelio</div>
                     </div>
                     <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />

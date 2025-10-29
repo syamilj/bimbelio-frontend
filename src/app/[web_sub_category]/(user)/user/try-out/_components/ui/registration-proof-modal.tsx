@@ -208,11 +208,11 @@ export default function RegistrationProofModal({
 
     // Add WhatsApp group join task
     items.push({
-      id: 'telegram_join',
+      id: 'discord_join',
       title: 'Join Grup Belajar',
-      instruction: 'Klik Join Group di Telegram',
+      instruction: 'Klik Join Group di Discord',
       icon: <Users className="h-5 w-5" />,
-      link: 'https://t.me/bimbelio',
+      link: 'https://bit.ly/bimbelio',
       points: 15,
       required: true,
       step: items.length + 1,

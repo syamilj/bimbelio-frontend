@@ -725,13 +725,13 @@ const EnhancedTryOutCard = ({
               Grup Belajar:
             </span>
             <a
-              href="https://t.me/bimbelio"
+              href="https://bit.ly/bimbelio"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold underline hover:opacity-80 transition-opacity"
               style={{ color: mainColor }}
             >
-              t.me/bimbelio
+              bit.ly/bimbelio
             </a>
           </div>
 

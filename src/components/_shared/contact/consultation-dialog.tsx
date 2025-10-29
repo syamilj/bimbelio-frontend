@@ -29,7 +29,7 @@ interface ConsultationDialogProps {
   title?: string;
   description?: string;
   showStats?: boolean;
-  showTelegramOption?: boolean;
+  showDiscordOption?: boolean;
   onContactSelect?: (contactType: string) => void;
 }
 
@@ -94,9 +94,9 @@ const useContactOptions = (
     },
   ];
 
-  // Telegram option - sama seperti di FloatingContactButton
-  const telegramOption: ContactOption = {
-    id: 'telegram',
+  // Discord option - sama seperti di FloatingContactButton
+  const discordOption: ContactOption = {
+    id: 'discord',
     title: 'Grup Belajar',
     description: 'Join komunitas study buddies yang supportive 24/7',
     icon: <Users className="w-5 h-5" />,
@@ -104,26 +104,26 @@ const useContactOptions = (
       try {
         pixel.meta.track('Lead', {
           content_type: 'community',
-          content_name: 'telegram_group',
+          content_name: 'discord_group',
           value: 0,
         });
 
         pixel.tiktok.track('Lead', {
-          content_name: 'telegram_group',
-          content_id: 'telegram_group_join',
+          content_name: 'discord_group',
+          content_id: 'discord_group_join',
         });
       } catch (error) {
         console.warn('Pixel tracking error:', error);
       }
 
-      window.open('https://t.me/bimbelio', '_blank');
+      window.open('https://bit.ly/bimbelio', '_blank');
       onDialogClose();
-      onContactSelect?.('telegram');
+      onContactSelect?.('discord');
     },
     color: '#0088CC',
   };
 
-  return { consultationOptions, telegramOption, mainColor };
+  return { consultationOptions, discordOption, mainColor };
 };
 
 const ConsultationDialog = ({
@@ -132,10 +132,10 @@ const ConsultationDialog = ({
   title = 'Wujudkan Impian PTN-mu!',
   description = 'Pilih langkah pertama untuk memulai journey menuju PTN idaman',
   showStats = true,
-  showTelegramOption = true,
+  showDiscordOption = true,
   onContactSelect,
 }: ConsultationDialogProps) => {
-  const { consultationOptions, telegramOption, mainColor } = useContactOptions(
+  const { consultationOptions, discordOption, mainColor } = useContactOptions(
     () => onOpenChange(false),
     onContactSelect,
   );
@@ -203,8 +203,8 @@ const ConsultationDialog = ({
             </div>
           </div>
 
-          {/* Divider - hanya tampil jika telegram option enabled */}
-          {showTelegramOption && (
+          {/* Divider - hanya tampil jika discord option enabled */}
+          {showDiscordOption && (
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200" />
@@ -215,14 +215,14 @@ const ConsultationDialog = ({
             </div>
           )}
 
-          {/* Grup Telegram - Alternatif - conditional rendering */}
-          {showTelegramOption && (
+          {/* Grup Discord - Alternatif - conditional rendering */}
+          {showDiscordOption && (
             <div>
               <h3 className="text-sm font-semibold text-gray-900 mb-3 text-center">
                 Mulai dari Komunitas
               </h3>
               <Button
-                onClick={telegramOption.action}
+                onClick={discordOption.action}
                 className={cn(
                   'w-full h-auto p-4 rounded-xl text-left',
                   'flex items-center gap-4 bg-white border-2',
@@ -230,30 +230,30 @@ const ConsultationDialog = ({
                   'border-blue-200 bg-blue-50/30 hover:bg-blue-50/50',
                 )}
                 style={{
-                  borderColor: `${telegramOption.color}30`,
+                  borderColor: `${discordOption.color}30`,
                 }}
                 variant="outline"
               >
                 {/* Icon */}
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md"
-                  style={{ backgroundColor: telegramOption.color }}
+                  style={{ backgroundColor: discordOption.color }}
                 >
-                  {telegramOption.icon}
+                  {discordOption.icon}
                 </div>
 
                 {/* Content */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="font-semibold text-gray-900 text-sm">
-                      {telegramOption.title}
+                      {discordOption.title}
                     </h3>
                     <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">
                       Gratis
                     </span>
                   </div>
                   <p className="text-xs text-gray-600 leading-relaxed">
-                    {telegramOption.description}
+                    {discordOption.description}
                   </p>
                 </div>
               </Button>
