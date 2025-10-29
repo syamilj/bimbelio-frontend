@@ -2,7 +2,6 @@
 
 import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
 import { Button } from '@/components/ui/button';
-import { CONTACT_CONFIG } from '@/config/contact';
 import { pixel } from '@/lib/pixel/_core';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -331,30 +330,6 @@ export default function FaqHomepage() {
                   <ArrowRight className="w-5 h-5 ml-3" />
                 </Button>
               </motion.div>
-
-              {/* Quick Stats - Compact */}
-              <div className="flex justify-center gap-6 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="text-xl font-bold text-white">
-                    {CONTACT_CONFIG.stats.responseTime}
-                  </div>
-                  <div className="text-xs text-blue-200">Respons</div>
-                </div>
-                <div className="w-px bg-white/30" />
-                <div className="flex flex-col items-center">
-                  <div className="text-xl font-bold text-white">
-                    {CONTACT_CONFIG.stats.studentsServed}
-                  </div>
-                  <div className="text-xs text-blue-200">Siswa</div>
-                </div>
-                <div className="w-px bg-white/30" />
-                <div className="flex flex-col items-center">
-                  <div className="text-xl font-bold text-white">
-                    {CONTACT_CONFIG.stats.satisfactionRate}
-                  </div>
-                  <div className="text-xs text-blue-200">Rating</div>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
