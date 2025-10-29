@@ -294,27 +294,6 @@ const ConsultationDialog = ({
               </Button>
             </div>
           )}
-
-          {/* Additional Info - Blueprint Personal */}
-          <div className="p-3 bg-gray-50 rounded-xl">
-            <div className="flex items-start gap-3">
-              <div
-                className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold mt-0.5"
-                style={{ backgroundColor: mainColor }}
-              >
-                💡
-              </div>
-              <div className="flex-1">
-                <span className="font-semibold text-gray-900 text-sm">
-                  Blueprint Personal 100% Gratis
-                </span>
-                <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-                  Tim kami akan membantu kamu bikin strategi belajar yang tepat
-                  untuk mencapai target PTN idamanmu
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </DialogContent>
     </Dialog>
