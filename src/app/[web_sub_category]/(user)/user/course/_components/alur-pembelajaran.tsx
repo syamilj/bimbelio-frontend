@@ -2,7 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 const learningSteps = [
   {
@@ -82,35 +82,19 @@ export function AlurPembelajaranSection() {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   return (
-    <section className="space-y-6 pt-8">
-      {/* Section Header - Enhanced */}
-      <div className="text-center space-y-4">
-        <div className="flex items-center justify-center gap-3">
-          <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg animate-bounce"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          >
-            <BookOpen className="w-6 h-6 text-white" />
-          </div>
-          <h2
-            className="text-2xl md:text-3xl font-bold"
-            style={{ color: mainColor }}
-          >
-            Alur Pembelajaran Bimbelio
-          </h2>
-        </div>
+    <section className="mb-12">
+      {/* Section Header - Match Dashboard Style */}
+      <div className="flex items-center gap-3 mb-6">
         <div
-          className="w-20 h-1 mx-auto rounded-full"
-          style={{ backgroundColor: secondaryColor }}
-        />
-        <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base">
-          Lalui setiap tahap, dan lihat bagaimana perkembanganmu naik pesat!
-        </p>
+          className="w-10 h-10 rounded-xl flex items-center justify-center"
+          style={{ backgroundColor: mainColor }}
+        >
+          <BookOpen className="w-5 h-5 text-white" />
+        </div>
+        <h2 className="text-2xl font-black text-gray-900">Alur Pembelajaran</h2>
       </div>
 
-      {/* Learning Steps */}
+      {/* Learning Steps - Clean Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {learningSteps.map((item, index) => (
           <LearningPathCard
@@ -123,36 +107,6 @@ export function AlurPembelajaranSection() {
             isLast={index === learningSteps.length - 1}
           />
         ))}
-      </div>
-
-      {/* Bottom CTA - Enhanced */}
-      <div
-        className="mt-12 p-8 rounded-2xl text-center relative overflow-hidden group"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-        }}
-      >
-        <div className="relative z-10 space-y-4">
-          <div className="flex items-center justify-center gap-2">
-            <BookOpen className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-            <h3 className="text-xl font-bold text-white">
-              Siap Memulai Perjalanan Belajar?
-            </h3>
-          </div>
-          <p className="text-white/90 max-w-2xl mx-auto">
-            Ikuti alur pembelajaran yang telah dirancang khusus untuk
-            mempersiapkan kamu menghadapi SNBT dengan percaya diri
-          </p>
-          <div className="flex items-center justify-center gap-2 text-white text-sm font-medium">
-            <span>12 Tahap Pembelajaran</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            <span>Target SNBT Tercapai</span>
-          </div>
-        </div>
-
-        {/* Decorative elements */}
-        <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors" />
-        <div className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors" />
       </div>
     </section>
   );
@@ -176,73 +130,49 @@ function LearningPathCard({
   const numValue = parseInt(number);
   const difficultyLevel =
     numValue <= 4 ? 'Dasar' : numValue <= 8 ? 'Menengah' : 'Lanjut';
-  const progressPercent = (numValue / 12) * 100;
+
+  const getBadgeColor = () => {
+    if (numValue <= 4) {
+      return {
+        bg: 'linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))',
+        border: 'rgb(191 219 254)',
+        text: 'text-blue-700',
+      };
+    } else if (numValue <= 8) {
+      return {
+        bg: 'linear-gradient(to bottom right, rgb(255 247 237), rgb(254 237 219))',
+        border: 'rgb(254 215 170)',
+        text: 'text-orange-700',
+      };
+    } else {
+      return {
+        bg: 'linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))',
+        border: 'rgb(187 247 208)',
+        text: 'text-green-700',
+      };
+    }
+  };
+
+  const badgeStyle = getBadgeColor();
 
   return (
-    <Card className="group bg-white shadow-xl border-0 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 relative">
-      {/* Connection line to next card - Desktop only */}
-      {!isLast && (
-        <div className="absolute -right-3 top-1/2 transform -translate-y-1/2 z-10 hidden lg:block">
-          <div
-            className="w-6 h-1 opacity-20 group-hover:opacity-50 transition-all duration-300"
-            style={{ backgroundColor: mainColor }}
-          />
-          <ArrowRight
-            className="w-4 h-4 absolute -right-2 -top-1.5 opacity-20 group-hover:opacity-100 transition-all group-hover:translate-x-1"
-            style={{ color: mainColor }}
-          />
-        </div>
-      )}
-
-      {/* Floating sparkles - animated */}
-      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div
-          className="w-2.5 h-2.5 rounded-full animate-bounce"
-          style={{ backgroundColor: mainColor }}
-        />
-      </div>
-      <div className="absolute top-8 right-8 opacity-0 group-hover:opacity-75 transition-opacity duration-500">
-        <div
-          className="w-1.5 h-1.5 rounded-full animate-pulse"
-          style={{
-            backgroundColor: secondaryColor,
-            animationDelay: '200ms',
-          }}
-        />
-      </div>
-
-      {/* Content Area */}
-      <CardContent className="p-6 relative space-y-4">
-        {/* Header with step number and difficulty */}
+    <Card className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
+      <CardContent className="p-6 space-y-4">
+        {/* Header with step number */}
         <div className="flex items-start justify-between gap-4">
-          {/* Step Number - Enhanced */}
-          <div className="relative shrink-0">
-            <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg text-white font-bold text-2xl group-hover:scale-110 transition-all duration-300 relative overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              <span className="relative z-10">{number}</span>
-              {/* Animated shine effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 -skew-x-12 animate-shimmer" />
-            </div>
-
-            {/* Pulse ring animation */}
-            <div
-              className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-50 animate-pulse"
-              style={{
-                backgroundColor: mainColor,
-                boxShadow: `inset 0 0 0 2px ${mainColor}`,
-              }}
-            />
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold text-xl flex-shrink-0"
+            style={{ backgroundColor: mainColor }}
+          >
+            {number}
           </div>
 
           {/* Difficulty Badge */}
           <div
-            className="px-4 py-2 rounded-full text-xs font-bold text-white group-hover:scale-110 transition-all duration-300"
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold border-2 ${badgeStyle.text}`}
             style={{
-              background: `linear-gradient(135deg, ${secondaryColor}, ${mainColor})`,
+              background: badgeStyle.bg,
+              borderColor: badgeStyle.border,
             }}
           >
             {difficultyLevel}
@@ -251,100 +181,12 @@ function LearningPathCard({
 
         {/* Title and Description */}
         <div className="space-y-2">
-          <h3
-            className="font-bold text-lg leading-tight group-hover:scale-105 transition-transform duration-300 origin-left"
-            style={{ color: mainColor }}
-          >
+          <h3 className="font-bold text-base leading-tight text-gray-900">
             {title}
           </h3>
-          <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 transition-colors">
-            {description}
-          </p>
+          <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
         </div>
-
-        {/* Progress Bar */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <div
-              className="w-2 h-2 rounded-full animate-pulse"
-              style={{ backgroundColor: mainColor }}
-            />
-            <span className="text-xs text-gray-500 font-medium">
-              Tahap {number}/12
-            </span>
-          </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div
-              className="h-full transition-all duration-500 group-hover:shadow-lg rounded-full"
-              style={{
-                width: `${progressPercent}%`,
-                background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Features/Stats Grid */}
-        <div className="grid grid-cols-2 gap-3 pt-2">
-          <div
-            className="p-3 rounded-lg transition-all duration-300 group-hover:shadow-md"
-            style={{
-              backgroundColor: `${mainColor}10`,
-            }}
-          >
-            <div
-              className="text-xs font-bold"
-              style={{ color: mainColor }}
-            >
-              {numValue <= 4 ? '4 Jam' : numValue <= 8 ? '6 Jam' : '8 Jam'}
-            </div>
-            <div className="text-xs text-gray-600">Durasi</div>
-          </div>
-          <div
-            className="p-3 rounded-lg transition-all duration-300 group-hover:shadow-md"
-            style={{
-              backgroundColor: `${mainColor}10`,
-            }}
-          >
-            <div
-              className="text-xs font-bold"
-              style={{ color: mainColor }}
-            >
-              {numValue <= 4 ? '~20' : numValue <= 8 ? '~30' : '~40'}
-            </div>
-            <div className="text-xs text-gray-600">Soal</div>
-          </div>
-        </div>
-
-        {/* Hover effect overlay */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none rounded-2xl"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-          }}
-        />
-
-        {/* Bottom accent line */}
-        <div
-          className="absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-500"
-          style={{ backgroundColor: mainColor }}
-        />
       </CardContent>
-
-      {/* Custom CSS for animations */}
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%) skewX(-12deg);
-          }
-          100% {
-            transform: translateX(200%) skewX(-12deg);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
     </Card>
   );
 }

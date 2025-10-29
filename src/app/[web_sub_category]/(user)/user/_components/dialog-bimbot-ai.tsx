@@ -8,7 +8,8 @@ import { MessageDataType } from '@/components/workspace/chat/provider';
 import { env } from '@/env.mjs';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { ChatHistory } from '@/types/database';
-import { Loader2, Plus, Send, SendIcon, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { BotMessageSquare, Loader2, Plus, SendIcon } from 'lucide-react';
 import { Dispatch, useEffect, useState } from 'react';
 
 export const DialogBimbotAI = () => {
@@ -23,92 +24,30 @@ export const DialogBimbotAI = () => {
       onOpenChange={setIsOpen}
     >
       <DialogTrigger asChild>
-        <button
-          className="fixed z-30 bottom-6 right-6 group"
+        <motion.div
+          className="fixed bottom-6 right-6 shadow-lg p-2 rounded-full z-30 cursor-pointer"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
           onClick={() => setIsOpen(true)}
+          whileTap={{ scale: 1.2 }}
+          transition={{ type: 'spring', stiffness: 300 }}
         >
-          {/* Background glow effect */}
-          <div
-            className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-300 group-hover:scale-150 animate-pulse"
-            style={{ backgroundColor: mainColor }}
+          {/* Icon */}
+          <BotMessageSquare
+            className="text-white w-8 h-8 transform scale-x-[-1]"
+            strokeWidth={2.1}
           />
 
-          {/* Main button container */}
-          <div
-            className="relative w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 group-hover:scale-110 flex items-center justify-center cursor-pointer overflow-hidden group"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          >
-            {/* Animated background shimmer */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -skew-x-12 animate-shimmer" />
-
-            {/* Floating particles background */}
-            <div className="absolute inset-0 rounded-full">
-              <Sparkles className="absolute w-3 h-3 text-yellow-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse top-1 left-1" />
-              <Sparkles
-                className="absolute w-2 h-2 text-yellow-200 opacity-0 group-hover:opacity-75 transition-opacity duration-500 animate-pulse bottom-2 right-2"
-                style={{ animationDelay: '200ms' }}
-              />
-            </div>
-
-            {/* Main icon */}
-            <Send className="w-7 h-7 text-white relative z-10 group-hover:scale-125 transition-transform duration-300 group-hover:rotate-12" />
-
-            {/* Pulsing dot indicator */}
-            <div className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-green-400 shadow-lg animate-pulse" />
-          </div>
-
-          {/* Label badge */}
-          <div
-            className="absolute -top-3 -right-2 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-100 scale-75 origin-bottom-right whitespace-nowrap"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          >
-            💬 Tanya AI
-          </div>
-
-          {/* Top right accent sparkle */}
-          <div
-            className="absolute -top-2 -right-2 w-5 h-5 rounded-full border-2 border-dashed opacity-0 group-hover:opacity-40 transition-opacity duration-300"
-            style={{ borderColor: mainColor }}
-          />
-        </button>
+          {/* Badge AI */}
+          <span className="absolute -top-1 left-[-4px] bg-red-500 rounded-full px-[0.35rem] py-1 text-white font-bold text-xs shadow-md">
+            AI
+          </span>
+        </motion.div>
       </DialogTrigger>
       <DialogContent className="overflow-hidden fixed md:left-[unset] md:right-[1rem] md:bottom-[1rem] md:top-[unset] px-2 py-4 md:px-6 md:py-6 md:translate-x-0 md:translate-y-0 flex flex-col rounded-2xl max-w-2xl h-[85vh]">
         <ChatContent />
       </DialogContent>
-
-      {/* Custom CSS animations */}
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%) skewX(-12deg);
-          }
-          100% {
-            transform: translateX(200%) skewX(-12deg);
-          }
-        }
-
-        :global(.animate-shimmer) {
-          animation: shimmer 2s infinite;
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-8px);
-          }
-        }
-
-        :global(.animate-float) {
-          animation: float 3s ease-in-out infinite;
-        }
-      `}</style>
     </Dialog>
   );
 };

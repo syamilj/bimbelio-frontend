@@ -3,10 +3,15 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useMedia } from 'use-media';
 
-import UserAccountNav from '@/components/_shared/navbar/user-account-nav';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Sheet,
   SheetContent,
@@ -15,7 +20,15 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
-import { ArrowRight, LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronRight,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  ShoppingBag,
+  X,
+} from 'lucide-react';
 
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
@@ -525,7 +538,7 @@ const MobileNav: React.FC<{
   return (
     <div className="fixed left-0 top-0 z-50 w-full">
       {/* Enhanced Mobile Header */}
-      <Card className="mx-3 mt-3 shadow-xl border-2 border-white/20 rounded-2xl backdrop-blur-xl overflow-hidden">
+      <Card className="mx-3 mt-3 shadow-xl border rounded-2xl backdrop-blur-xl overflow-hidden">
         <div className="px-4 py-3 relative bg-transparent">
           {/* Background Pattern */}
           {/* <div className="absolute inset-0 opacity-5">
@@ -547,41 +560,56 @@ const MobileNav: React.FC<{
             />
 
             <div className="flex items-center gap-2">
-              {!session && (
-                <Button
-                  className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
-                  style={{
-                    backgroundImage: `linear-gradient(145deg, ${
-                      secondaryColor
-                    }, ${mainColor})`,
-                  }}
-                  onClick={() =>
-                    setShowAuth((prev) => ({
-                      ...prev,
-                      open: true,
-                      redirect: website_sub_category_id
-                        ? `${website_sub_category_id}/user/dashboard`
-                        : '/choice/user/dashboard',
-                    }))
-                  }
-                >
-                  Masuk
-                </Button>
-              )}
-              {session && (
-                <Link href={`${website_sub_category_id}/user/dashboard`}>
+              {/* Combined Button: Shop (1/4) + Login/Dashboard (3/4) */}
+              <div className="flex items-center rounded-2xl shadow-lg overflow-hidden">
+                {/* Shop Button - 1/4 */}
+                <Link href="/price">
                   <Button
-                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
+                    className="px-3 py-2.5 rounded-none text-sm font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 active:scale-95"
                     style={{
-                      backgroundImage: `linear-gradient(145deg, ${
-                        secondaryColor
-                      }, ${mainColor})`,
+                      backgroundColor: '#f59e0b', // Yellow/amber for shopping
                     }}
                   >
-                    Dashboard
+                    <ShoppingBag className="w-4 h-4" />
                   </Button>
                 </Link>
-              )}
+
+                {/* Divider */}
+                <div className="w-px h-8 bg-white/20" />
+
+                {/* Login/Dashboard Button - 3/4 */}
+                {!session && (
+                  <Button
+                    className="px-6 py-2.5 rounded-none text-sm font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 active:scale-95"
+                    style={{
+                      backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                    }}
+                    onClick={() =>
+                      setShowAuth((prev) => ({
+                        ...prev,
+                        open: true,
+                        redirect: website_sub_category_id
+                          ? `${website_sub_category_id}/user/dashboard`
+                          : '/choice/user/dashboard',
+                      }))
+                    }
+                  >
+                    Masuk
+                  </Button>
+                )}
+                {session && (
+                  <Link href={`${website_sub_category_id}/user/dashboard`}>
+                    <Button
+                      className="px-6 py-2.5 rounded-none text-sm font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 active:scale-95"
+                      style={{
+                        backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                      }}
+                    >
+                      Dashboard
+                    </Button>
+                  </Link>
+                )}
+              </div>
               <Sheet
                 open={isSheetOpen}
                 onOpenChange={setIsSheetOpen}
@@ -857,11 +885,11 @@ const MobileNav: React.FC<{
                           </div>
 
                           {/* Action Buttons - Simple Grid */}
-                          <div className="grid grid-cols-2 gap-3">
+                          <div className="grid grid-cols-2 gap-2">
                             <Link
                               href={`/${website_sub_category_id}/user/try-out`}
                               onClick={() => setIsSheetOpen(false)}
-                              className="flex items-center justify-center gap-2 p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+                              className="flex items-center justify-center gap-2 p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
                             >
                               <LayoutDashboard className="w-4 h-4 text-gray-600" />
                               <span className="text-sm font-medium text-gray-700">
@@ -874,7 +902,7 @@ const MobileNav: React.FC<{
                                 signOut({ callbackUrl: '/' });
                                 setIsSheetOpen(false);
                               }}
-                              className="flex items-center justify-center gap-2 p-3 rounded-xl bg-red-50 hover:bg-red-100 transition-colors"
+                              className="flex items-center justify-center gap-2 p-2 rounded-xl bg-red-50 hover:bg-red-100 transition-colors"
                             >
                               <LogOut className="w-4 h-4 text-red-600" />
                               <span className="text-sm font-medium text-red-700">
@@ -969,7 +997,7 @@ const DesktopNav: React.FC<{
   return (
     <div className="fixed left-0 top-0 z-50 w-full bg-transparent pointer-events-none">
       <div className="mx-auto max-w-4xl px-4 pt-4 pointer-events-auto">
-        <Card className="border-2 shadow-md border-white/30 rounded-3xl backdrop-blur-xl overflow-visible bg-white pb-1">
+        <Card className="border-2 shadow-md border rounded-2xl backdrop-blur-xl overflow-visible bg-white">
           <div
             className="px-6 py-4 md:py-1 lg:py-1 relative rounded-3xl z-[3] bg-transparent"
             // style={{
@@ -1309,44 +1337,238 @@ const DesktopNav: React.FC<{
               </NavigationMenu>
 
               {/* Auth Section */}
-              <div className="flex items-center gap-4">
-                {session ? (
-                  <UserAccountNav user={session.user} />
+              <div className="flex items-center gap-2 p-2">
+                {!session ? (
+                  /* 2-Part Combined Button: Shop + Login (Not Logged In) */
+                  <div className="flex items-center rounded-xl shadow-md overflow-hidden">
+                    {/* Shop Button */}
+                    <Link href="/price">
+                      <Button
+                        className="px-3 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
+                        style={{
+                          backgroundColor: '#f59e0b',
+                        }}
+                      >
+                        <ShoppingBag className="w-4 h-4" />
+                      </Button>
+                    </Link>
+
+                    {/* Divider */}
+                    <div className="w-px h-5 bg-white/20" />
+
+                    {/* Login Button */}
+                    <Button
+                      className="px-4 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
+                      style={{
+                        backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                      }}
+                      onClick={() =>
+                        setShowAuth((prev) => ({
+                          ...prev,
+                          open: true,
+                          redirect: website_sub_category_id
+                            ? `${website_sub_category_id}/user/dashboard`
+                            : '/choice/user/dashboard',
+                        }))
+                      }
+                    >
+                      Daftar/Masuk
+                    </Button>
+                  </div>
                 ) : (
-                  <Button
-                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
-                    style={{
-                      backgroundImage: `linear-gradient(145deg, ${
-                        secondaryColor
-                      }, ${mainColor})`,
-                    }}
-                    onClick={() =>
-                      setShowAuth((prev) => ({
-                        ...prev,
-                        open: true,
-                        redirect: website_sub_category_id
-                          ? `${website_sub_category_id}/user/dashboard`
-                          : '/choice/user/dashboard',
-                      }))
-                    }
-                  >
-                    Daftar/Masuk
-                  </Button>
+                  /* Logged In: 2-Part Combined + 1 Separate Hamburger */
+                  <div className="flex items-center gap-2 p-1">
+                    {/* Combined: Shop + Dashboard (2 parts) */}
+                    <div className="flex items-center rounded-xl shadow-md overflow-hidden">
+                      {/* Shop Button */}
+                      <Link href="/price">
+                        <Button
+                          className="px-3 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
+                          style={{
+                            backgroundColor: '#f59e0b',
+                          }}
+                        >
+                          <ShoppingBag className="w-4 h-4" />
+                        </Button>
+                      </Link>
+
+                      {/* Divider */}
+                      <div className="w-px h-5 bg-white/20" />
+
+                      {/* Dashboard Button */}
+                      <Link href={`${website_sub_category_id}/user/dashboard`}>
+                        <Button
+                          className="px-4 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
+                          style={{
+                            backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                          }}
+                        >
+                          Dashboard
+                        </Button>
+                      </Link>
+                    </div>
+
+                    {/* Separate: Hamburger Menu (1 part) */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="px-2 py-2 rounded-xl border-0 transition-all duration-300 hover:brightness-110 h-8 shadow-md"
+                          style={{
+                            backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                            color: '#ffffff',
+                          }}
+                        >
+                          <Menu className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="w-80 p-0 border shadow-xl rounded-3xl overflow-hidden"
+                        sideOffset={12}
+                      >
+                        {/* Header - User Profile Section */}
+                        <div className="p-5 bg-white border-b border-gray-100">
+                          <div className="flex items-center gap-3">
+                            <div className="relative">
+                              <Avatar className="h-16 w-16 ring-2 ring-gray-100">
+                                <AvatarImage
+                                  src={session?.user?.image ?? ''}
+                                  alt={session?.user?.name ?? ''}
+                                  className="object-cover"
+                                />
+                                <AvatarFallback
+                                  className="text-white text-xl font-bold"
+                                  style={{
+                                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                                  }}
+                                >
+                                  {session?.user?.name
+                                    ? session.user.name[0].toUpperCase()
+                                    : 'U'}
+                                </AvatarFallback>
+                              </Avatar>
+                              {/* Status indicator */}
+                              <div className="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-2 border-white rounded-full" />
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <p className="text-lg font-bold text-gray-900 truncate">
+                                {session?.user?.name}
+                              </p>
+                              <p className="text-sm text-gray-500 truncate">
+                                {session?.user?.email}
+                              </p>
+                              <div className="mt-1.5">
+                                <span
+                                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold text-white"
+                                  style={{ backgroundColor: mainColor }}
+                                >
+                                  <span className="w-1.5 h-1.5 bg-white rounded-full" />
+                                  Online
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Menu Items */}
+                        <div className="p-2 bg-white">
+                          {/* Dashboard */}
+                          <DropdownMenuItem
+                            asChild
+                            className="p-0"
+                          >
+                            <Link
+                              href={`/${website_sub_category_id}/user/dashboard`}
+                              className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-gray-50"
+                            >
+                              <div
+                                className="w-11 h-11 rounded-xl flex items-center justify-center"
+                                style={{ backgroundColor: `${mainColor}15` }}
+                              >
+                                <LayoutDashboard
+                                  className="h-5 w-5"
+                                  style={{ color: mainColor }}
+                                />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-base font-bold text-gray-900">
+                                  Dashboard
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  Akses panel utama
+                                </p>
+                              </div>
+                              <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                            </Link>
+                          </DropdownMenuItem>
+
+                          {/* Admin Panel - Only for Admin/Super Admin */}
+                          {(session?.user?.role === 'ADMIN' ||
+                            session?.user?.role === 'SUPER_ADMIN') && (
+                            <DropdownMenuItem
+                              asChild
+                              className="p-0 mt-1"
+                            >
+                              <Link
+                                href={`/${website_sub_category_id}/admin`}
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-gray-50"
+                              >
+                                <div
+                                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                                  style={{ backgroundColor: `${mainColor}15` }}
+                                >
+                                  <LayoutDashboard
+                                    className="h-5 w-5"
+                                    style={{ color: mainColor }}
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-base font-bold text-gray-900">
+                                    Admin Panel
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    Kelola sistem
+                                  </p>
+                                </div>
+                                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                              </Link>
+                            </DropdownMenuItem>
+                          )}
+
+                          {/* Divider */}
+                          <div className="my-2 h-px bg-gray-200" />
+
+                          {/* Logout */}
+                          <DropdownMenuItem
+                            className="p-0"
+                            onSelect={(event) => {
+                              event.preventDefault();
+                              signOut({ callbackUrl: '/' });
+                            }}
+                          >
+                            <div className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-red-50 cursor-pointer w-full">
+                              <div className="w-11 h-11 rounded-xl bg-red-100 flex items-center justify-center">
+                                <LogOut className="h-5 w-5 text-red-600" />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-base font-bold text-red-600">
+                                  Keluar
+                                </p>
+                                <p className="text-xs text-red-500">
+                                  Logout dari akun
+                                </p>
+                              </div>
+                            </div>
+                          </DropdownMenuItem>
+                        </div>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 )}
               </div>
             </div>
-          </div>
-
-          {/* Bottom accent line */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 z-[2] rounded-3xl overflow-hidden">
-            <div
-              className="h-1 absolute z-[1] bottom-0 w-full left-0"
-              style={{
-                backgroundImage: `linear-gradient(145deg, ${
-                  secondaryColor
-                }, ${mainColor})`,
-              }}
-            />
           </div>
         </Card>
       </div>

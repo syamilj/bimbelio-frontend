@@ -177,7 +177,7 @@ const FloatingContactButton = () => {
             transition={{
               duration: 2,
               repeat: Infinity,
-              repeatDelay: 3,
+              repeatDelay: 1,
             }}
             className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm shadow-md"
             style={{
