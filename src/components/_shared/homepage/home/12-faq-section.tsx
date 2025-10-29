@@ -115,7 +115,10 @@ export default function FAQSection() {
   ];
 
   return (
-    <section className="py-24 px-4 bg-white">
+    <section
+      id="faq"
+      className="py-24 px-4 bg-white"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div

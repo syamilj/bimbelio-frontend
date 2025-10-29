@@ -13,11 +13,6 @@ export const CONTACT_CONFIG = {
     number: '+6285161112223',
   },
   // Stats yang ditampilkan di dialog
-  stats: {
-    responseTime: '<5 menit',
-    studentsServed: '15K+',
-    satisfactionRate: '95%',
-  },
   // Jadwal operasional (opsional untuk info tambahan)
   operationalHours: {
     weekdays: '08:00 - 21:00 WIB',

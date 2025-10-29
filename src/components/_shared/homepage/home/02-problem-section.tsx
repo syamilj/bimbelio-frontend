@@ -173,7 +173,10 @@ const ProblemSection: React.FC = () => {
   );
 
   return (
-    <section className="py-20 md:py-24 px-4 md:px-8 bg-white">
+    <section
+      id="problem"
+      className="py-20 md:py-24 px-4 md:px-8 bg-white"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <motion.div

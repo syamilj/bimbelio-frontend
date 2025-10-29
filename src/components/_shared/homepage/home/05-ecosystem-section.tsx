@@ -190,7 +190,10 @@ export default function EcosystemSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white py-20">
+    <section
+      id="ecosystem"
+      className="relative overflow-hidden bg-white py-20"
+    >
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <div

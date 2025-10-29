@@ -121,7 +121,7 @@ const PlanCards: React.FC = () => {
   if (!PricingData) {
     return (
       <section
-        id="product"
+        id="programs"
         className="py-24 px-4"
       >
         <div className="max-w-7xl mx-auto">

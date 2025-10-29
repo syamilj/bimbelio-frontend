@@ -106,7 +106,10 @@ export default function MentorAISection() {
   ];
 
   return (
-    <section className="py-24 px-4 bg-white">
+    <section
+      id="mentor"
+      className="py-24 px-4 bg-white"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Layer 2: Mentor Section */}
         <motion.div
