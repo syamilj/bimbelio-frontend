@@ -747,7 +747,7 @@ const HeadingSection: React.FC<{
 
       {/* Value proposition - Problem Hook & Liveclass concept */}
       <div className="space-y-4 mt-10 px-4">
-        <p className="text-lg md:text-xl lg:text-2xl text-gray-700 font-semibold leading-relaxed text-center">
+        <p className="text-base md:text-lg lg:text-xl text-gray-700 font-semibold leading-relaxed text-center">
           <span
             className={cn(
               'font-black transition-colors duration-300',

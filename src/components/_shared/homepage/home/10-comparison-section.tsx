@@ -173,7 +173,7 @@ export default function ComparisonSection() {
             </span>
           </h2>
 
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
+          <p className="text-base text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
             Data speaks louder. Ini perbandingan jujur antara program gue dan
             alternatif lain di pasaran — biar lo makin yakin.
           </p>

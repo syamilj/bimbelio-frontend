@@ -223,7 +223,7 @@ export default function EcosystemSection() {
               Ekosistem yang support kamu 24/7
             </span>
           </h2>
-          <p className="mx-auto mt-4 max-w-4xl text-lg text-gray-600 md:text-xl">
+          <p className="mx-auto mt-4 max-w-4xl text-base text-gray-600 md:text-lg">
             PRINTS System bukan cuma teori. Ini{' '}
             <span className="font-semibold text-gray-900">
               ekosistem lengkap

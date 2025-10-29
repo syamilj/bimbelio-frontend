@@ -453,6 +453,53 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                         })}
                       </div>
                     )}
+
+                    {item.title === 'Live Learning' && (
+                      <div className="mt-2 ml-3 space-y-1 pl-3 border-l-2 border-slate-200/60">
+                        {[
+                          {
+                            name: 'Liveclass',
+                            href: `/${webSubCategoryId}/user/live-learning/liveclass`,
+                          },
+                          {
+                            name: 'Livestream',
+                            href: `/${webSubCategoryId}/user/live-learning/livestream`,
+                          },
+                        ].map((cat) => {
+                          const isSubActive = pathname?.includes(
+                            `category=${cat.name}`,
+                          );
+                          return (
+                            <Link
+                              key={cat.name}
+                              href={cat.href}
+                              onClick={handleLinkClick}
+                            >
+                              <div
+                                className={cn(
+                                  'flex items-center gap-2.5 p-2 rounded-lg group cursor-pointer',
+                                  isSubActive
+                                    ? 'bg-white/80 text-slate-800 shadow-sm border border-slate-200/70'
+                                    : 'hover:bg-white/70 text-slate-600 hover:text-slate-800',
+                                )}
+                              >
+                                <div
+                                  className={cn(
+                                    'w-2 h-2 rounded-full transition-colors',
+                                    isSubActive
+                                      ? 'bg-slate-600'
+                                      : 'bg-slate-400 group-hover:bg-slate-600',
+                                  )}
+                                />
+                                <span className="text-xs font-medium truncate">
+                                  {cat.name}
+                                </span>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 );
               })}

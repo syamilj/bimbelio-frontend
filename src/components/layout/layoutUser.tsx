@@ -172,13 +172,13 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                 {!inWorkspace && <HeaderUser />}
                 <main
                   className={cn(
-                    'relative mt-0 pr-0 pt-0 duration-300 md:pl-20 min-h-screen w-full bg-gray-50',
+                    'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 min-h-screen w-full bg-gray-50',
                     // docViewer => full fixed
                     componentName === 'DocViewerPage' &&
                       'fixed left-0 top-0 h-full w-full',
                     // not in workspace => push down margin
                     !inWorkspace &&
-                      'mt-[80px] pt-4 md:pl-10 md:pr-10 md:pt-12  min-h-[calc(100vh-80px)]',
+                      'mt-[80px] pt-4 md:pl-12 md:pr-10 md:pt-12 min-h-[calc(100vh-80px)]',
                   )}
                 >
                   {children}
@@ -328,8 +328,8 @@ const HeaderUser = () => {
   return (
     <header
       className={cn(
-        'fixed left-2 md:left-0 right-2 md:right-4 top-2 z-40 h-16 bg-white/95 backdrop-blur-lg border rounded-xl border-gray-200 shadow-sm transition-all duration-300',
-        !minimizeSidebar ? 'md:left-[16.5rem]' : 'md:left-[6rem]',
+        'fixed left-2 md:left-0 right-2 md:right-2 top-2 z-40 h-16 bg-white/95 backdrop-blur-lg border rounded-xl border-gray-200 shadow-sm transition-all duration-300',
+        !minimizeSidebar ? 'md:left-[18rem]' : 'md:left-[6rem]',
       )}
     >
       <div className="flex items-center justify-between h-full px-3 md:px-6">

@@ -150,7 +150,7 @@ export default function FAQSection() {
             </span>
           </h2>
 
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+          <p className="text-base text-gray-600 max-w-2xl mx-auto mb-6">
             Gue jawab semua keraguan lo dengan{' '}
             <span className="font-bold">jujur dan transparan</span>.
             <br />

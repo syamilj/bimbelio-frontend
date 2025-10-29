@@ -243,7 +243,7 @@ export const SolutionSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto space-y-4 text-lg text-gray-700 leading-relaxed"
+            className="max-w-4xl mx-auto space-y-4 text-base text-gray-700 leading-relaxed"
           >
             <p>
               Bukan soal IQ atau talent. Bukan sekadar nonton video atau

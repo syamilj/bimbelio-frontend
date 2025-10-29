@@ -70,10 +70,14 @@ type InstructorsType = (Instructor & {
 export default function CreateLiveClassForm() {
   const router = useRouter();
 
+  const [type, setType] = useState<'LIVECLASS' | 'LIVESTREAM' | undefined>();
+
   const [agendas, setAgendas] = useState<AgendaType[]>([]);
   const [references, setReferences] = useState<ReferenceType[]>([]);
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState<
+    string | undefined
+  >();
   const [selectedPlanIds, setSelectedPlanIds] = useState<string[]>([]);
 
   const [instructorId, setInstructorId] = useState<string>('');
@@ -180,6 +184,7 @@ export default function CreateLiveClassForm() {
           link,
           isRecord,
           instructorId,
+          type,
         },
         liveClassAgenda: agendas,
         liveClassReference: references,
@@ -226,10 +231,10 @@ export default function CreateLiveClassForm() {
         </Button>
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Buat Live Class Baru
+            Buat Live Learning Baru
           </h1>
           <p className="text-muted-foreground">
-            Isi form di bawah untuk membuat live class baru
+            Isi form di bawah untuk membuat live learning baru
           </p>
         </div>
       </div>
@@ -262,6 +267,7 @@ export default function CreateLiveClassForm() {
                 <Label htmlFor="categoryId">Mata Pelajaran *</Label>
                 <Select
                   name="categoryId"
+                  value={selectedCategoryId}
                   onValueChange={(value) => setSelectedCategoryId(value)}
                   required
                 >
@@ -282,15 +288,49 @@ export default function CreateLiveClassForm() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="description">Deskripsi *</Label>
-              <Textarea
-                id="description"
-                name="description"
-                placeholder="Jelaskan materi yang akan dibahas dalam live class ini..."
-                rows={3}
-                required
-              />
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="description">Deskripsi *</Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  placeholder="Jelaskan materi yang akan dibahas dalam live class ini..."
+                  rows={3}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="type">Tipe Live Learning *</Label>
+                <Select
+                  name="type"
+                  value={type}
+                  onValueChange={(value) => setType(value as any)}
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih tipe live learning" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      {
+                        id: 'LIVECLASS',
+                        name: 'Liveclass',
+                      },
+                      {
+                        id: 'LIVESTREAM',
+                        name: 'Livestream',
+                      },
+                    ]?.map((subject) => (
+                      <SelectItem
+                        key={subject.id}
+                        value={subject.id}
+                      >
+                        {subject.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -522,10 +562,10 @@ export default function CreateLiveClassForm() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
-              Agenda Live Class (Opsional)
+              Agenda Live Learning (Opsional)
             </CardTitle>
             <p className="text-sm text-muted-foreground mt-1">
-              Buat agenda atau rundown untuk live class ini
+              Buat agenda atau rundown untuk live learning ini
             </p>
           </CardHeader>
           <CardContent className="space-y-4">

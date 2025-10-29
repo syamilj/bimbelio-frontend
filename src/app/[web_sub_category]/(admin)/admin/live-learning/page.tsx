@@ -32,15 +32,15 @@ export default function LiveClassDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Live Class</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Live Learning</h1>
           <p className="text-muted-foreground">
-            Kelola dan pantau semua live class Anda
+            Kelola dan pantau semua live learning Anda
           </p>
         </div>
-        <Link href={`/${website_sub_category_id}/admin/live-class/new`}>
+        <Link href={`/${website_sub_category_id}/admin/live-learning/new`}>
           <Button className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
-            Buat Live Class
+            Buat Live Learning
           </Button>
         </Link>
       </div>

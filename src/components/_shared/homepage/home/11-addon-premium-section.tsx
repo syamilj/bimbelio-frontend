@@ -114,7 +114,7 @@ export default function AddOnPremiumSection() {
               Tapi Kalau Mau Hasil Maksimal?
             </span>
           </h2>
-          <p className="mx-auto mt-4 max-w-4xl text-lg text-gray-600 md:text-xl">
+          <p className="mx-auto mt-4 max-w-4xl text-base text-gray-600 md:text-lg">
             Paket lo udah dapat{' '}
             <span className="font-semibold text-gray-900">
               PRINTS System + 3-Layer Support + semua platform

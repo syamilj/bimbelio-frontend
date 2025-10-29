@@ -175,7 +175,7 @@ export default function ProgramsSection() {
             </span>
           </h2>
 
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Dari{' '}
             <span
               className="font-bold"

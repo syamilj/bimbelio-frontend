@@ -132,7 +132,7 @@ export default function MentorAISection() {
               <br />
               <span style={{ color: '#00C853' }}>Layer 2 & 3 Gimana?</span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Tutor ngajarin materi. Tapi lo juga butuh{' '}
               <span className="font-bold">
                 strategic planning & instant support

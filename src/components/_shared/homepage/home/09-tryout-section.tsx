@@ -130,7 +130,8 @@ const TryoutSection: React.FC = () => {
               Lo Juga Dapet Bonus Ini Loh
             </span>
           </h2>
-          <p className="text-lg max-w-2xl mx-auto leading-relaxed mb-6 text-gray-600">
+
+          <p className="text-base max-w-2xl mx-auto leading-relaxed mb-6 text-gray-600">
             Try Out IRT-based udah{' '}
             <span className="font-bold">included di paket lo</span>, nggak perlu
             bayar lagi!
