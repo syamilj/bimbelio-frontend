@@ -642,7 +642,7 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
       transition={{ duration: 0.8, ease: 'easeOut' }}
       className="flex mt-16 mb-8 flex-col items-center"
     >
-      {/* New badge - Launching soon */}
+      {/* New badge with AI-Powered tag inside */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -652,12 +652,19 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
           borderColor: `${mainColor}30`,
         }}
       >
-        <div
-          className="w-2 h-2 rounded-full animate-pulse"
-          style={{ backgroundColor: mainColor }}
-        />
+        {/* AI-Powered mini badge inside */}
+        <span
+          className="px-2 py-0.5 rounded-full text-[10px] font-black text-white uppercase tracking-wide inline-flex items-center gap-1"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${mainColor}dd)`,
+          }}
+        >
+          <Bot className="w-4 h-4" />
+          AI-Powered
+        </span>
+
         <span className="text-sm font-bold text-gray-700">
-          Bimbelio: Satu Akun untuk UTBK, Mandiri, Kedinasan
+          Satu Akun untuk UTBK, Mandiri, Kedinasan
         </span>
       </motion.div>
     </motion.div>
@@ -1204,7 +1211,7 @@ const CTASection: React.FC<{
       {/* Sub CTA Buttons */}
       <div className="flex justify-center mt-2">
         <a
-          href="https://bit.ly/bimbelio"
+          href="https://discord.com/invite/5Fy3fnVaE9"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-white shadow border transition-transform duration-200 hover:scale-105"

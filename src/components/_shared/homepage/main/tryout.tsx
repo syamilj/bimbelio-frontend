@@ -632,12 +632,12 @@ const EnhancedTryOutCard = ({
               />
               <span className="text-xs font-medium text-gray-800">Grup:</span>
               <a
-                href="https://bit.ly/bimbelio"
+                href="https://discord.com/invite/5Fy3fnVaE9"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-blue-600 hover:text-blue-800 font-medium underline"
               >
-                bit.ly/bimbelio
+                discord.com/invite/5Fy3fnVaE9
               </a>
             </div>
           </div>

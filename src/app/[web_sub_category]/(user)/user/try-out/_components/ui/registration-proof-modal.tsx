@@ -212,7 +212,7 @@ export default function RegistrationProofModal({
       title: 'Join Grup Belajar',
       instruction: 'Klik Join Group di Discord',
       icon: <Users className="h-5 w-5" />,
-      link: 'https://bit.ly/bimbelio',
+      link: 'https://discord.com/invite/5Fy3fnVaE9',
       points: 15,
       required: true,
       step: items.length + 1,

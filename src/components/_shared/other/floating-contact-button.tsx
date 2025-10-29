@@ -114,7 +114,7 @@ const FloatingContactButton = () => {
         console.warn('Pixel tracking error:', error);
       }
 
-      window.open('https://bit.ly/bimbelio', '_blank');
+      window.open('https://discord.com/invite/5Fy3fnVaE9', '_blank');
       setIsDialogOpen(false);
     },
     color: '#0088CC', // Discord blue
@@ -144,26 +144,117 @@ const FloatingContactButton = () => {
 
   return (
     <>
-      {/* Main Floating Button */}
+      {/* Main Floating Button with Text Bubble */}
       <motion.div
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
+        initial={{ scale: 0, opacity: 0, x: 100 }}
+        animate={{ scale: 1, opacity: 1, x: 0 }}
         transition={{
           type: 'spring',
           stiffness: 260,
           damping: 20,
-          delay: 1, // Muncul setelah page load
+          delay: 1.2, // Muncul setelah page load
         }}
-        className="fixed bottom-6 right-6 z-50"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-3"
       >
+        {/* Text Bubble - Animated */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{
+            delay: 1.5,
+            duration: 0.5,
+          }}
+          className="hidden md:flex items-center gap-2 bg-white px-4 py-3 rounded-2xl shadow-xl border-2"
+          style={{
+            borderColor: `${mainColor}30`,
+          }}
+        >
+          {/* Question Mark Badge */}
+          <motion.div
+            animate={{
+              rotate: [0, -10, 10, -10, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatDelay: 3,
+            }}
+            className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm shadow-md"
+            style={{
+              background: `linear-gradient(135deg, #FFA500, #FF6347)`,
+            }}
+          >
+            ?
+          </motion.div>
+
+          {/* Text Content */}
+          <div className="flex flex-col">
+            <span className="text-xs font-extrabold text-gray-900 leading-tight">
+              Bingung?
+            </span>
+            <span
+              className="text-sm font-black leading-tight"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Konsultasi Langsung!
+            </span>
+          </div>
+
+          {/* Arrow Pointer */}
+          <div
+            className="absolute -right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 rotate-45 border-r-2 border-b-2 bg-white"
+            style={{
+              borderColor: `${mainColor}30`,
+            }}
+          />
+        </motion.div>
+
+        {/* Mobile Text Bubble - Simplified */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 1.5,
+            duration: 0.5,
+          }}
+          className="md:hidden bg-white px-3 py-2 rounded-xl shadow-lg border-2"
+          style={{
+            borderColor: `${mainColor}30`,
+          }}
+        >
+          <span
+            className="text-xs font-black"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            Konsultasi!
+          </span>
+          <div
+            className="absolute -right-1.5 top-1/2 transform -translate-y-1/2 w-3 h-3 rotate-45 border-r-2 border-b-2 bg-white"
+            style={{
+              borderColor: `${mainColor}30`,
+            }}
+          />
+        </motion.div>
+
+        {/* Circular Button */}
         <motion.button
           onClick={handleMainButtonClick}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className={cn(
-            'relative w-14 h-14 md:w-16 md:h-16 rounded-full shadow-lg backdrop-blur-sm',
+            'relative w-14 h-14 md:w-16 md:h-16 rounded-full shadow-xl backdrop-blur-sm',
             'flex items-center justify-center text-white font-semibold',
-            'transition-all duration-300 hover:shadow-xl',
+            'transition-all duration-300 hover:shadow-2xl',
             'focus:outline-none focus:ring-4 focus:ring-offset-2',
             // Mobile optimizations
             'touch-manipulation select-none',
@@ -177,21 +268,33 @@ const FloatingContactButton = () => {
           role="button"
         >
           {/* Pulse animation ring */}
-          <div
-            className="absolute inset-0 rounded-full animate-ping opacity-20"
+          <motion.div
+            className="absolute inset-0 rounded-full opacity-30"
             style={{ backgroundColor: mainColor }}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0, 0.3],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
           />
 
-          {/* Icon */}
-          <PhoneCall className="w-6 h-6 md:w-7 md:h-7 relative z-10" />
-
-          {/* Tooltip - hanya di desktop */}
-          <div className="hidden md:block absolute right-16 top-1/2 transform -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            <div className="bg-gray-900 text-white text-xs px-3 py-1 rounded-lg whitespace-nowrap">
-              Konsultasi Gratis
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1 w-2 h-2 bg-gray-900 rotate-45" />
-            </div>
-          </div>
+          {/* Icon with bounce animation */}
+          <motion.div
+            animate={{
+              y: [0, -3, 0],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          >
+            <PhoneCall className="w-6 h-6 md:w-7 md:h-7 relative z-10" />
+          </motion.div>
         </motion.button>
       </motion.div>
 

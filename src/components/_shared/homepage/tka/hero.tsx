@@ -600,7 +600,7 @@ const CTASection: React.FC<{
       {/* Sub CTA Buttons */}
       <div className="flex justify-center mt-2">
         <a
-          href="https://bit.ly/bimbelio"
+          href="https://discord.com/invite/5Fy3fnVaE9"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-white shadow border transition-transform duration-200 hover:scale-105"

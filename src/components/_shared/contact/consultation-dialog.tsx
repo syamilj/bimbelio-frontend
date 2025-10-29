@@ -116,7 +116,7 @@ const useContactOptions = (
         console.warn('Pixel tracking error:', error);
       }
 
-      window.open('https://bit.ly/bimbelio', '_blank');
+      window.open('https://discord.com/invite/5Fy3fnVaE9', '_blank');
       onDialogClose();
       onContactSelect?.('discord');
     },

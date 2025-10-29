@@ -6,11 +6,8 @@ import { motion } from 'framer-motion';
 import {
   Calendar,
   CheckCircle2,
-  Globe,
   HelpCircle,
-  Mail,
   MessageCircle,
-  Phone,
   PiggyBank,
   PlayCircle,
   Shield,
@@ -44,7 +41,7 @@ export default function FAQSection() {
     ? '#5aa4dd'
     : (websiteSubCategory?.secondary_color ?? '#7C3AED');
 
-  // Top 6 Questions
+  // Top 6 Questions - Updated without guarantee/proof claims
   const questions: Question[] = [
     {
       icon: <Trophy className="w-6 h-6" />,
@@ -75,10 +72,10 @@ export default function FAQSection() {
       color: '#E91E63',
     },
     {
-      icon: <Trophy className="w-6 h-6" />,
-      title: 'Garansi lolos ada?',
+      icon: <Shield className="w-6 h-6" />,
+      title: 'PRINTS System itu apa?',
       description:
-        'Kami fokus kasih skill & mindset yang tepat. 90% alumni kami lolos PTN favorit karena PRINTS System.',
+        'Framework belajar cerdas: Prioritize materi penting, Rhythm konsisten, Iterate dengan AI feedback, Navigate roadmap jelas, Test IRT-based, Support 24/7.',
       color: '#9C27B0',
     },
     {
@@ -288,7 +285,7 @@ export default function FAQSection() {
           </div>
         </motion.div>
 
-        {/* Contact Section */}
+        {/* Contact Section - Redirect to FloatingContactButton */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -313,39 +310,22 @@ export default function FAQSection() {
             </div>
 
             <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-              Tim support kami siap bantu! Hubungi via WhatsApp, Instagram, atau
-              langsung konsultasi gratis.
+              Lihat tombol floating di kanan bawah layar! Klik untuk langsung
+              chat WhatsApp, Instagram, atau konsultasi gratis.
             </p>
 
-            {/* Contact Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
-              <a
-                href="https://wa.me/6282123345789"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 rounded-full font-bold text-white transition-all duration-300 shadow-lg hover:shadow-md"
-              >
-                <Phone className="w-5 h-5" />
-                WhatsApp
-              </a>
-
-              <a
-                href="https://bimbelio.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-full font-bold text-white transition-all duration-300 shadow-lg hover:shadow-md"
-              >
-                <Globe className="w-5 h-5" />
-                Website
-              </a>
-
-              <a
-                href="mailto:hello@bimbelio.co"
-                className="flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 rounded-full font-bold text-white transition-all duration-300 shadow-lg hover:shadow-md"
-              >
-                <Mail className="w-5 h-5" />
-                Email
-              </a>
+            {/* Visual Indicator */}
+            <div className="flex items-center justify-center gap-3 mb-8">
+              <div className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-50 to-blue-50 rounded-full border-2 border-green-200">
+                <div className="relative">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-ping absolute" />
+                  <div className="w-3 h-3 bg-green-500 rounded-full relative" />
+                </div>
+                <span className="text-sm font-bold text-gray-700">
+                  Tombol Floating di Kanan Bawah
+                </span>
+                <span className="text-2xl">👉</span>
+              </div>
             </div>
 
             {/* Trust Indicators */}
