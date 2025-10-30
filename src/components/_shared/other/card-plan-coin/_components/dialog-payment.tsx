@@ -57,8 +57,12 @@ export function DialogPayment({
   children: ReactNode;
   classOverlay?: string;
 }) {
-  const { setPagesSetting, setTransactionHistory, setTransactionPopUp } =
-    useAppContext();
+  const {
+    setPagesSetting,
+    setTransactionHistory,
+    setTransactionPopUp,
+    useAuth: { setShowAuth },
+  } = useAppContext();
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -289,10 +293,10 @@ export function DialogPayment({
             setTelp(formatPhoneNumber(session.user.phone));
           }
           if (!session) {
-            // setShowAuth({
-            //   redirect: `/price?planId=${plan.id}${voucherCodeQuery ? `&voucherCode=${voucherCodeQuery}` : ''}`,
-            //   open: true,
-            // });
+            setShowAuth({
+              redirect: `/price?planId=${plan.id}${voucherCodeQuery ? `&voucherCode=${voucherCodeQuery}` : ''}`,
+              open: true,
+            });
             setIsOpen(false);
             return;
           }

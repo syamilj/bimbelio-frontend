@@ -226,7 +226,7 @@ const DetailTransaction = ({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-md space-y-4">
+      <DialogContent className="mb:max-w-md space-y-4">
         <DialogHeader>
           <DialogTitle>Detail Transaksi</DialogTitle>
         </DialogHeader>

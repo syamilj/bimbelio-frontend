@@ -409,7 +409,7 @@ export default function AIChatPage() {
           open={isHistoryOpen}
           onOpenChange={setIsHistoryOpen}
         >
-          <DialogContent className="max-w-2xl max-h-[80vh] p-0 overflow-hidden mx-4 rounded-3xl">
+          <DialogContent className="sm:max-w-2xl max-h-[80vh] p-0 overflow-hidden mx-4 rounded-3xl">
             <DialogHeader className="p-6 pb-4 border-b">
               <DialogTitle className="text-xl font-black">
                 Riwayat Percakapan

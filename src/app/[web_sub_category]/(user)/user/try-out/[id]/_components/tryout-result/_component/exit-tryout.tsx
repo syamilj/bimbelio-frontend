@@ -62,7 +62,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogContent className="max-w-md mx-4 rounded-3xl border-0 shadow-2xl">
+      <DialogContent className="mb:max-w-md mx-4 rounded-3xl border-0 shadow-2xl">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}

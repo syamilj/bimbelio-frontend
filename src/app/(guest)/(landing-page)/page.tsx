@@ -1,5 +1,4 @@
 'use client';
-import Footer from '@/components/_shared/footer';
 import HeroSection from '@/components/_shared/homepage/home/01-hero-section';
 import ProblemSection from '@/components/_shared/homepage/home/02-problem-section';
 import SolutionSection from '@/components/_shared/homepage/home/03-solution-section';
@@ -57,7 +56,7 @@ export default function LandingPage() {
           <FaqSection />
 
           {/* 13 Footer */}
-          <Footer />
+          {/* <Footer /> */}
         </div>
       </div>
     </div>

@@ -332,6 +332,7 @@ export function DialogPayment({
           if (session?.user.phone) {
             setTelp(formatPhoneNumber(session.user.phone));
           }
+          console.log({ session });
           if (!session) {
             setShowAuth({
               redirect: `/price?planId=${plan.id}${voucherCodeQuery ? `&voucherCode=${voucherCodeQuery}` : ''}`,

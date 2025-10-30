@@ -62,7 +62,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogContent className="max-w-md mx-4 rounded-3xl border-0 shadow-2xl">
+      <DialogContent className="mb:max-w-md mx-4 rounded-3xl border-0 shadow-2xl">
         <DialogTitle className="sr-only">
           {done ? 'Keluar Try Out' : 'Yakin Ingin Keluar?'}
         </DialogTitle>

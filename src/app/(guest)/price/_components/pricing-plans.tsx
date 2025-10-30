@@ -84,6 +84,8 @@ export default function PricingPlans() {
 
   const topping = PricingData?.topping || [];
 
+  console.log({ PricingData });
+
   // Search and Filter State
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<
@@ -139,7 +141,8 @@ export default function PricingPlans() {
           matchesPlanType = true;
         } else if (
           selectedPlanTypes.includes('bundle') &&
-          !plan.PlanSubscription
+          plan.PlanSubscription &&
+          plan.PlanLimitation
         ) {
           matchesPlanType = true;
         } else if (
@@ -341,6 +344,7 @@ export default function PricingPlans() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="text-center mb-16"
+        id="price-plan"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -1079,6 +1083,7 @@ export default function PricingPlans() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
         className="relative max-w-7xl mx-auto"
+        id="price-coin"
       >
         {/* Background Decoration */}
         <div className="absolute inset-0 -z-10">

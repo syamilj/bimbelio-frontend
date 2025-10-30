@@ -317,7 +317,7 @@ export const DialogOnBoarding = ({
       onOpenChange={onOpenChange ? onOpenChange : setOpen}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-md md:max-w-lg">
+      <DialogContent className="md:max-w-lg">
         {/* Header dengan progress indicator */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gray-200 rounded-t-lg overflow-hidden">
           <div

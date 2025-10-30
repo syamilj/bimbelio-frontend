@@ -748,7 +748,7 @@ const PopUpPrediction = () => {
       onOpenChange={setOpen}
     >
       <DialogContent
-        className="bg-transparent border-none shadow-none max-w-lg"
+        className="bg-transparent border-none shadow-none sm:max-w-lg"
         hideClose
       >
         <DialogTitle className="sr-only">Prediksi Kelulusan UI</DialogTitle>

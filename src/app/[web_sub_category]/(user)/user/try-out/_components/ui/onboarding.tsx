@@ -58,7 +58,7 @@ const OnBoarding = ({ open, type }: Props) => {
       }}
     >
       <DialogContent
-        className="w-[90%] max-w-[690px] md:w-full"
+        className="w-[90%] md:max-w-[690px] md:w-full"
         classOverlay="z-10000"
       >
         {type === 'chat' ? (

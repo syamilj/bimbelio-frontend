@@ -145,7 +145,7 @@ const ConsultationDialog = ({
       open={isOpen}
       onOpenChange={onOpenChange}
     >
-      <DialogContent className="max-w-md max-h-[90vh] overflow-hidden flex flex-col items-center justify-center">
+      <DialogContent className="mb:max-w-md max-h-[90vh] overflow-hidden flex flex-col items-center justify-center">
         <DialogHeader className="pb-4 w-full">
           <DialogTitle className="text-center text-xl font-bold text-gray-900">
             {title}

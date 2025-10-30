@@ -303,7 +303,6 @@ const SidebarUser = ({
                       setPagesSetting('account');
                       setTransactionHistory(true);
                     }}
-                    className="font-bold"
                   >
                     <User className="w-4 h-4 mr-2" />
                     Profil
@@ -313,7 +312,6 @@ const SidebarUser = ({
                       setPagesSetting('account');
                       setTransactionHistory(true);
                     }}
-                    className="font-bold"
                   >
                     <Settings className="w-4 h-4 mr-2" />
                     Pengaturan
@@ -332,7 +330,7 @@ const SidebarUser = ({
                   )}
                   <DropdownMenuSeparator className="bg-gray-100" />
                   <DropdownMenuItem
-                    className="text-red-600 font-bold"
+                    className="text-red-600"
                     onClick={() => signOut({ callbackUrl: '/' })}
                   >
                     <LogOut className="w-4 h-4 mr-2" />

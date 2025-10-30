@@ -172,7 +172,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
           {/* Section Header - Compact */}
           {!minimizeSidebar && (
             <div className="px-2 py-1 mb-1">
-              <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-wider">
+              <h3 className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
                 {section.title}
               </h3>
               <div className="mt-0.5 h-px bg-gradient-to-r from-slate-200 via-slate-300 to-transparent opacity-60"></div>
@@ -260,12 +260,12 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                           className="bg-slate-900 text-white border-2 border-slate-700 rounded-2xl shadow-sm"
                         >
                           <div className="text-sm space-y-1">
-                            <p className="font-bold">{item.title}</p>
+                            <p className="font-semibold">{item.title}</p>
                             <div className="flex items-center gap-2">
                               {item.badge && (
                                 <Badge
                                   className={cn(
-                                    'text-[10px] px-2 py-0.5 rounded-xl font-bold',
+                                    'text-[10px] px-2 py-0.5 rounded-xl font-semibold',
                                     item.badge === 'AI'
                                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0'
                                       : item.badge === 'Soon'
@@ -277,7 +277,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                 </Badge>
                               )}
                               {item.isNew && (
-                                <span className="text-emerald-400 text-[10px] font-bold">
+                                <span className="text-emerald-400 text-[10px] font-semibold">
                                   NEW
                                 </span>
                               )}
@@ -327,7 +327,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                     >
                       <div
                         className={cn(
-                          'flex items-center font-bold ease-out group/item cursor-pointer',
+                          'flex items-center font-semibold ease-out group/item cursor-pointer',
                           minimizeSidebar
                             ? 'justify-center p-1.5'
                             : 'gap-2.5 mx-1 px-3 py-2 rounded-2xl',
@@ -369,7 +369,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                           <div className="flex items-center gap-1.5">
                             <span
                               className={cn(
-                                'text-sm font-black truncate',
+                                'text-sm font-semibold truncate',
                                 isActive ? 'text-white' : 'text-slate-800',
                               )}
                             >
@@ -378,7 +378,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                             {item.badge && (
                               <Badge
                                 className={cn(
-                                  'text-[10px] px-1.5 py-0.5 rounded-xl font-bold',
+                                  'text-[10px] px-1.5 py-0.5 rounded-xl font-semibold',
                                   item.badge === 'AI'
                                     ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0'
                                     : item.badge === 'Soon'
@@ -444,7 +444,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                       : 'bg-slate-400 group-hover:bg-slate-600',
                                   )}
                                 />
-                                <span className="text-xs font-bold truncate">
+                                <span className="text-xs font-semibold truncate">
                                   {cat.name}
                                 </span>
                               </div>

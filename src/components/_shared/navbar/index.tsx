@@ -122,35 +122,35 @@ const navItems: NavItem[] = [
         title: 'Informasi',
         items: [
           {
-            href: '/#mentor',
+            href: '#mentor-ai',
             label: 'Bimbot AI',
             description: 'Tanya jawab dengan AI',
             icon: 'Bot',
             badge: { text: 'NEW', variant: 'info' },
-            isLink: true,
+            // isLink: true,
           },
           {
-            href: '/#tryout',
+            href: '#tryout',
             label: 'Try Out Online',
             description: 'Simulasi ujian real-time',
             icon: 'Timer',
             badge: { text: 'GRATIS', variant: 'info' },
-            isLink: true,
+            // isLink: true,
           },
           {
-            href: '/#ecosystem',
+            href: '#ecosystem',
             label: 'Analisis',
             description: 'Laporan detail kemampuan',
             icon: 'TrendingUp',
             badge: { text: 'PREMIUM', variant: 'premium' },
-            isLink: true,
+            // isLink: true,
           },
         ],
       },
     ],
   },
   {
-    href: '/tutors',
+    href: '/',
     label: 'Tutor',
     isLink: true,
     submenuColumns: [
@@ -158,27 +158,27 @@ const navItems: NavItem[] = [
         title: '3-Layer System',
         items: [
           {
-            href: '/#tutors',
+            href: '#tutors',
             label: 'Tutor',
             description: 'Diajar oleh yang terbaik',
             icon: 'UserCheck',
             badge: { text: 'TOP ONLY', variant: 'warning' },
-            isLink: true,
+            // isLink: true,
           },
           {
-            href: '/#mentor',
+            href: '#mentor',
             label: 'Mentor',
             description: 'Dibimbing oleh yang relevan',
             icon: 'UserCheck',
-            isLink: true,
+            // isLink: true,
           },
           {
-            href: '/#mentor',
+            href: '#mentor-ai',
             label: 'Bimbot AI',
             description: '24/7 AI yang membantu belajar',
             icon: 'BotMessageSquare',
             badge: { text: 'AI', variant: 'premium' },
-            isLink: true,
+            // isLink: true,
           },
         ],
       },
@@ -190,77 +190,77 @@ const navItems: NavItem[] = [
     isLink: true,
     badge: { text: 'PROMO', variant: 'warning' },
     submenuColumns: [
+      // {
+      //   title: 'PTN',
+      //   items: [
+      //     {
+      //       href: '/price',
+      //       label: 'SNBT',
+      //       description: 'Persiapan SNBT 2026',
+      //       icon: 'Target',
+      //       badge: { text: 'POPULER', variant: 'warning' },
+      //       isLink: true,
+      //     },
+      //     {
+      //       href: '/price',
+      //       label: 'SIMAK UI',
+      //       description: 'Ujian Mandiri UI',
+      //       icon: 'School',
+      //       isLink: true,
+      //     },
+      //     {
+      //       href: '/price',
+      //       label: 'UM UGM',
+      //       description: 'Ujian Mandiri UGM',
+      //       icon: 'BookOpen',
+      //       isLink: true,
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: 'Kedinasan',
+      //   items: [
+      //     {
+      //       href: '/price',
+      //       label: 'IPDN',
+      //       description: 'Institut Pemerintahan',
+      //       icon: 'Building2',
+      //       isLink: true,
+      //     },
+      //     {
+      //       href: '/price',
+      //       label: 'STAN',
+      //       description: 'Sekolah Tinggi Akuntansi',
+      //       icon: 'Calculator',
+      //       badge: { text: 'PREMIUM', variant: 'premium' },
+      //       isLink: true,
+      //     },
+      //     {
+      //       href: '/price',
+      //       label: 'STIS',
+      //       description: 'Sekolah Tinggi Statistik',
+      //       icon: 'BarChart',
+      //       isLink: true,
+      //     },
+      //   ],
+      // },
       {
-        title: 'PTN',
+        title: 'Product',
         items: [
           {
-            href: '/price',
-            label: 'SNBT',
-            description: 'Persiapan SNBT 2026',
-            icon: 'Target',
-            badge: { text: 'POPULER', variant: 'warning' },
-            isLink: true,
-          },
-          {
-            href: '/price',
-            label: 'SIMAK UI',
-            description: 'Ujian Mandiri UI',
-            icon: 'School',
-            isLink: true,
-          },
-          {
-            href: '/price',
-            label: 'UM UGM',
-            description: 'Ujian Mandiri UGM',
-            icon: 'BookOpen',
-            isLink: true,
-          },
-        ],
-      },
-      {
-        title: 'Kedinasan',
-        items: [
-          {
-            href: '/price',
-            label: 'IPDN',
-            description: 'Institut Pemerintahan',
-            icon: 'Building2',
-            isLink: true,
-          },
-          {
-            href: '/price',
-            label: 'STAN',
-            description: 'Sekolah Tinggi Akuntansi',
-            icon: 'Calculator',
-            badge: { text: 'PREMIUM', variant: 'premium' },
-            isLink: true,
-          },
-          {
-            href: '/price',
-            label: 'STIS',
-            description: 'Sekolah Tinggi Statistik',
-            icon: 'BarChart',
-            isLink: true,
-          },
-        ],
-      },
-      {
-        title: 'Lainnya',
-        items: [
-          {
-            href: '/#tryout',
-            label: 'Try Out',
-            description: 'Latihan tanpa bayar',
-            icon: 'Gift',
-            badge: { text: 'GRATIS', variant: 'success' },
-            isLink: true,
-          },
-          {
-            href: '/price',
+            href: '#price-plan',
             label: 'Private',
             description: 'Kelas eksklusif',
             badge: { text: '1-ON-1', variant: 'premium' },
             icon: 'UserPlus',
+            isLink: true,
+          },
+          {
+            href: '#price-coin',
+            label: 'Try Out',
+            description: 'Latihan tanpa bayar',
+            icon: 'Gift',
+            badge: { text: 'GRATIS', variant: 'success' },
             isLink: true,
           },
         ],
@@ -273,7 +273,7 @@ const navItems: NavItem[] = [
     isLink: true,
   },
   {
-    href: '/#hero',
+    href: '/discord',
     label: 'Lainnya',
     isLink: false,
     submenuColumns: [
@@ -288,26 +288,26 @@ const navItems: NavItem[] = [
             badge: { text: 'GRATIS', variant: 'success' },
             isLink: true,
           },
-          {
-            href: '#hero',
-            label: 'Beasiswa',
-            description: 'Informasi beasiswa',
-            icon: 'Award',
-            badge: { text: 'GRATIS', variant: 'success' },
-            isLink: false,
-          },
+          // {
+          //   href: '#hero',
+          //   label: 'Beasiswa',
+          //   description: 'Informasi beasiswa',
+          //   icon: 'Award',
+          //   badge: { text: 'GRATIS', variant: 'success' },
+          //   isLink: false,
+          // },
         ],
       },
       {
         title: 'Bantuan',
         items: [
-          {
-            href: '/#faq',
-            label: 'FAQ',
-            description: 'Tanya jawab seputar Bimbelio',
-            icon: 'MessageSquare',
-            isLink: true,
-          },
+          // {
+          //   href: '/#faq',
+          //   label: 'FAQ',
+          //   description: 'Tanya jawab seputar Bimbelio',
+          //   icon: 'MessageSquare',
+          //   // isLink: true,
+          // },
           {
             href: '/#contact',
             label: 'Konsultasi',
@@ -962,34 +962,41 @@ const DesktopNav: React.FC<{
     ? '#5aa4dd'
     : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
-  const handleNavigation = (href: string, isLink?: boolean) => {
+  const handleScrollToTarget = (href: string) => {
+    const targetId = href.substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      const offset = 200;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleNavigation = (LinkId: string, href: string, isLink?: boolean) => {
+    const Link = document.getElementById(LinkId);
     // Special: if href indicates contact, open floating contact dialog instead
     if (/contact|konsultasi/i.test(href)) {
       openContactDialog();
       return;
     }
     if (isLink) {
-      // Show loading spinner
-      setIsNavigating(true);
-      router.push(href);
+      if (
+        href.startsWith('#price') &&
+        pathname.toLowerCase().includes('price')
+      ) {
+        handleScrollToTarget(href);
+      } else {
+        Link?.click();
+      }
     } else {
       if (pathname !== '/') {
-        // Show loading spinner for page navigation
-        setIsNavigating(true);
-        router.push(`/${href}`);
+        Link?.click();
       } else {
-        // Scroll tanpa loading (same page)
-        const targetId = href.substring(1);
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          const offset = 200;
-          const elementPosition = targetElement.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - offset;
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth',
-          });
-        }
+        handleScrollToTarget(href);
       }
     }
   };
@@ -1060,11 +1067,20 @@ const DesktopNav: React.FC<{
                                 ) {
                                   openContactDialog();
                                 } else {
-                                  handleNavigation(item.href, item.isLink);
+                                  handleNavigation(
+                                    `desktop-toplink-${itemIndex}-${item.href}`,
+                                    item.href,
+                                    item.isLink,
+                                  );
                                 }
                               }
                             }}
                           >
+                            <Link
+                              id={`desktop-toplink-${itemIndex}-${item.href}`}
+                              hidden
+                              href={item.href}
+                            ></Link>
                             <span className="flex items-center gap-1 relative">
                               {item.label}
                               {/* Top-level badge - superscript style */}
@@ -1137,11 +1153,14 @@ const DesktopNav: React.FC<{
                                                   )
                                                 : null;
 
+                                              const LinkId = `desktop-submenu-link-${itemIndex}-${colIndex}-${subItemIndex}-${subItem.href}`;
+
                                               return (
                                                 <button
                                                   key={`desktop-submenu-${itemIndex}-${colIndex}-${subItemIndex}-${subItem.href}`}
                                                   onClick={() => {
                                                     handleNavigation(
+                                                      LinkId,
                                                       subItem.href,
                                                       subItem.isLink,
                                                     );
@@ -1170,6 +1189,11 @@ const DesktopNav: React.FC<{
                                                       'transparent';
                                                   }}
                                                 >
+                                                  <Link
+                                                    id={LinkId}
+                                                    href={`${item.href}`}
+                                                    hidden
+                                                  ></Link>
                                                   <div className="flex items-start gap-3">
                                                     {/* Icon */}
                                                     {IconComponent && (
@@ -1252,6 +1276,7 @@ const DesktopNav: React.FC<{
                                         key={`desktop-single-submenu-${itemIndex}-${singleSubIndex}-${subItem.href}`}
                                         onClick={() => {
                                           handleNavigation(
+                                            `desktop-single-submenu-${itemIndex}-${singleSubIndex}-${subItem.href}`,
                                             subItem.href,
                                             subItem.isLink,
                                           );
@@ -1279,6 +1304,11 @@ const DesktopNav: React.FC<{
                                             'transparent';
                                         }}
                                       >
+                                        <Link
+                                          id={`desktop-single-submenu-${itemIndex}-${singleSubIndex}-${subItem.href}`}
+                                          hidden
+                                          href={item.href}
+                                        ></Link>
                                         <div className="font-bold flex items-center justify-between">
                                           <span>{subItem.label}</span>
                                           <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />

@@ -45,7 +45,7 @@ export const DialogBimbotAI = () => {
           </span>
         </motion.div>
       </DialogTrigger>
-      <DialogContent className="overflow-hidden fixed md:left-[unset] md:right-[1rem] md:bottom-[1rem] md:top-[unset] px-2 py-4 md:px-6 md:py-6 md:translate-x-0 md:translate-y-0 flex flex-col rounded-2xl max-w-2xl h-[85vh]">
+      <DialogContent className="overflow-hidden fixed md:left-[unset] md:right-[1rem] md:bottom-[1rem] md:top-[unset] px-2 py-4 md:px-6 md:py-6 md:translate-x-0 md:translate-y-0 flex flex-col rounded-2xl sm:max-w-2xl h-[85vh]">
         <ChatContent />
       </DialogContent>
     </Dialog>

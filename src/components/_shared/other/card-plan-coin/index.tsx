@@ -1,3 +1,5 @@
+import { useAppContext } from '@/components/provider/provider-app';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,7 +13,10 @@ import {
   FileText,
   MessageSquare,
   PenTool,
+  Users,
 } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 import { PlanDataType } from '../card-plan/_provider/types';
 import { DialogPayment } from './_components/dialog-payment';
 
@@ -28,9 +33,38 @@ export const CardPlanTopping = ({
   onClose?: () => void;
   classOverlay?: string;
 }) => {
+  const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const planIdQuery = searchParams.get('planId');
+  const voucherCodeQuery = searchParams.get('voucherCode');
+  const {
+    useAuth: { setShowAuth },
+    setTransactionPopUp,
+  } = useAppContext();
+
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!session && planIdQuery) {
+      setShowAuth({
+        redirect: `/price?planId=${planIdQuery}${voucherCodeQuery ? `&voucherCode=${voucherCodeQuery}` : ''}`,
+        open: true,
+      });
+    }
+    console.log({
+      planIdQuery,
+      planId: plan.id,
+      type: 'coin',
+    });
+    if (planIdQuery === plan.id && session) {
+      buttonRef.current?.click();
+      router.replace(window.location.pathname);
+    }
+  }, [planIdQuery, session, voucherCodeQuery]);
 
   return (
     <motion.div
@@ -86,7 +120,12 @@ export const CardPlanTopping = ({
                 {Object.keys(plan.PlanLimitation)
                   .filter(
                     (key) =>
-                      key !== 'id' && key !== 'expireDays' && key !== 'planId',
+                      key !== 'id' &&
+                      key !== 'expireDays' &&
+                      key !== 'planId' &&
+                      key !== 'isTimebound' &&
+                      key !== 'validFrom' &&
+                      key !== 'validUntil',
                   )
                   .map((key) => {
                     const total = (plan.PlanLimitation as any)[key];
@@ -176,20 +215,41 @@ export const CardPlanTopping = ({
 
           {/* Action Button */}
           {!viewOnly && (
-            <DialogPayment
-              plan={plan}
-              classOverlay={classOverlay}
-            >
-              <Button
-                className="w-full h-12 rounded-xl font-bold text-white shadow-md hover:shadow-lg transition-all"
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                }}
-              >
-                <Coins className="w-5 h-5 mr-2" />
-                Beli Sekarang
-              </Button>
-            </DialogPayment>
+            <>
+              {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
+                <Button
+                  ref={buttonRef}
+                  className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group cursor-not-allowed"
+                  size="lg"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                >
+                  <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  <Users
+                    size={20}
+                    className="mr-3"
+                  />
+                  <span>Kuota Penuh</span>
+                </Button>
+              ) : (
+                <DialogPayment
+                  plan={plan}
+                  classOverlay={classOverlay}
+                >
+                  <Button
+                    ref={buttonRef}
+                    className="w-full h-12 rounded-xl font-bold text-white shadow-md hover:shadow-lg transition-all"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
+                  >
+                    <Coins className="w-5 h-5 mr-2" />
+                    Beli Sekarang
+                  </Button>
+                </DialogPayment>
+              )}
+            </>
           )}
         </CardContent>
       </Card>

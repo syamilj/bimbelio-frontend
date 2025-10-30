@@ -128,6 +128,11 @@ export function CardPlan({
         open: true,
       });
     }
+    console.log({
+      planIdQuery,
+      planId: plan.id,
+      type: 'paket',
+    });
     if (planIdQuery === plan.id && session) {
       buttonRef.current?.click();
       router.replace(window.location.pathname);
@@ -696,14 +701,6 @@ export function CardPlan({
                       size="lg"
                       style={{
                         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                        e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}40`;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}30`;
                       }}
                       onClick={() => {
                         // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"

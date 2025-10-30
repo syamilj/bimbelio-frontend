@@ -143,7 +143,7 @@ const SubmitTryout = ({
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-md rounded-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="mb:max-w-md rounded-2xl max-h-[90vh] overflow-y-auto">
         <AnimatePresence mode="wait">
           {step === 1 ? (
             <motion.div
