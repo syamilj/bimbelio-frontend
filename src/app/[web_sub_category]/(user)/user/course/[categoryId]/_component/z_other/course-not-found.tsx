@@ -118,7 +118,7 @@ export default function CourseNotFound() {
               Oops! Course Tidak Ditemukan
             </h1>
             <p className="text-lg md:text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
-              Course yang Anda cari mungkin sudah tidak tersedia atau telah
+              Course yang Kamu cari mungkin sudah tidak tersedia atau telah
               dipindahkan. Mari jelajahi opsi pembelajaran lainnya!
             </p>
           </motion.div>
@@ -245,7 +245,7 @@ export default function CourseNotFound() {
                       Butuh Bantuan?
                     </h3>
                     <p className="text-gray-600 mb-6">
-                      Tim support kami siap membantu Anda menemukan course yang
+                      Tim support kami siap membantu Kamu menemukan course yang
                       tepat atau menyelesaikan masalah teknis
                     </p>
                   </div>

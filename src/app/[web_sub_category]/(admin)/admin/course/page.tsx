@@ -220,7 +220,7 @@ export default function Index() {
               <p className="text-gray-500 mb-4">
                 {searchQuery
                   ? 'Coba kata kunci lain'
-                  : 'Buat kursus pertama Anda'}
+                  : 'Buat kursus pertama Kamu'}
               </p>
               {!searchQuery && (
                 <Button asChild>

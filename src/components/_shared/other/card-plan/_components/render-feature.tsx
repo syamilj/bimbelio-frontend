@@ -27,8 +27,8 @@ export const RenderFeatureTab = () => {
     useData: { plan, isCourse, isDocument },
   } = useProvider();
   if (
-    !plan.PlanSubscription.PlanFeature ||
-    plan.PlanSubscription.PlanFeature.length === 0
+    !plan.PlanSubscription?.PlanFeature ||
+    plan.PlanSubscription?.PlanFeature.length === 0
   ) {
     if (plan.Pivot_LiveClass_Plan && plan.Pivot_LiveClass_Plan.length > 0) {
       // Show LiveClass features instead
@@ -84,7 +84,8 @@ export const RenderFeatureTab = () => {
                         className="mr-1"
                       />
                       {/* {getCategoryName(assignment.LiveClass.categoryId)} */}
-                      {plan.PlanSubscription.WebsiteSubCategory?.name}
+                      {plan.PlanSubscription?.WebsiteSubCategory?.name ||
+                        'Kategori'}
                     </Badge>
                   )}
                 </div>
@@ -101,12 +102,14 @@ export const RenderFeatureTab = () => {
                 />
                 <span className="text-sm font-semibold text-indigo-800">
                   Durasi Akses:{' '}
-                  {plan.PlanSubscription.expireDays
+                  {plan.PlanSubscription?.expireDays
                     ? formatDuration(plan.PlanSubscription.expireDays)
-                    : formatDateRange(
-                        plan.PlanSubscription.PlanFeature[0].validFrom,
-                        plan.PlanSubscription.PlanFeature[0].validUntil,
-                      )}
+                    : plan.PlanSubscription?.PlanFeature?.[0]
+                      ? formatDateRange(
+                          plan.PlanSubscription.PlanFeature[0].validFrom,
+                          plan.PlanSubscription.PlanFeature[0].validUntil,
+                        )
+                      : 'Tidak terbatas'}
                 </span>
               </div>
               <p className="text-xs text-indigo-600 mt-1">
@@ -264,10 +267,12 @@ export const RenderFeatureTab = () => {
               Durasi Akses:{' '}
               {plan.PlanSubscription.expireDays
                 ? formatDuration(plan.PlanSubscription.expireDays)
-                : formatDateRange(
-                    plan.PlanSubscription.PlanFeature[0].validFrom,
-                    plan.PlanSubscription.PlanFeature[0].validUntil,
-                  )}
+                : plan.PlanSubscription?.PlanFeature?.[0]
+                  ? formatDateRange(
+                      plan.PlanSubscription.PlanFeature[0].validFrom,
+                      plan.PlanSubscription.PlanFeature[0].validUntil,
+                    )
+                  : 'Tidak terbatas'}
             </span>
           </div>
           <p className="text-xs text-indigo-600 mt-1">

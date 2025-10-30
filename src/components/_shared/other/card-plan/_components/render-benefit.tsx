@@ -21,7 +21,7 @@ export const RenderBenefitTab = () => {
           Semua Keuntungan
         </h4>
         <p className="text-xs text-pink-600">
-          {plan.PlanBenefit.length} benefit eksklusif yang akan Anda dapatkan
+          {plan.PlanBenefit.length} benefit eksklusif yang akan Kamu dapatkan
         </p>
       </div>
 

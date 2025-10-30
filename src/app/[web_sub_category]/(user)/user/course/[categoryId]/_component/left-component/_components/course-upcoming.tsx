@@ -170,7 +170,7 @@ export default function CourseUpcoming({
                 ) : (
                   <>
                     <Bell className="w-4 h-4 mr-2" />
-                    Beritahu Saya
+                    Beritahu Aku
                   </>
                 )}
               </Button>

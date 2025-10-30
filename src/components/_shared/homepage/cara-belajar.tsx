@@ -124,7 +124,7 @@ const learningSteps = [
   {
     icon: <UsersIcon className="size-6" />,
     title: 'Kelas Real-time',
-    badge: 'Via Zoom',
+    badge: 'Via Google Meet',
     description: 'Ikuti kelas langsung interaktif dengan tutor ahli.',
     stats: [
       { icon: <UsersIcon className="size-3 mr-1" />, value: '20+ tutor' },

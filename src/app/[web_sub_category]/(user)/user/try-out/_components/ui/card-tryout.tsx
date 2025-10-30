@@ -261,25 +261,26 @@ export default function CardTryOut({
   const getBadgeValue = (item: CardTryoutProps) => {
     if (item.isRegistered) {
       return {
-        className: 'bg-green-500 text-white border-0 shadow-sm',
+        className: 'bg-green-50 text-green-700 border-green-200 font-medium',
         title: 'Terdaftar',
         icon: <CheckCircle className="w-3 h-3" />,
       };
     } else if (!item.isRegistered) {
       return {
-        className: 'bg-amber-500 text-white border-0 shadow-sm',
+        className: 'bg-blue-50 text-blue-700 border-blue-200 font-medium',
         title: 'Belum Daftar',
         icon: <Star className="w-3 h-3" />,
       };
     } else if (item.isActive) {
       return {
-        className: 'bg-red-500 text-white border-0 shadow-sm animate-pulse',
+        className:
+          'bg-orange-50 text-orange-700 border-orange-200 font-medium animate-pulse',
         title: 'Berlangsung',
         icon: <Play className="w-3 h-3" />,
       };
     }
     return {
-      className: 'bg-gray-500 text-white border-0 shadow-sm',
+      className: 'bg-gray-50 text-gray-700 border-gray-200 font-medium',
       title: 'Unknown',
       icon: <Star className="w-3 h-3" />,
     };
@@ -324,7 +325,7 @@ export default function CardTryOut({
           return (
             <Card
               key={i}
-              className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-white rounded-2xl"
+              className="group relative overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] bg-white rounded-3xl"
             >
               {/* Status Badge */}
               <div className="absolute top-4 right-4 z-20">
@@ -338,9 +339,9 @@ export default function CardTryOut({
 
               {/* Free Badge */}
               <div className="absolute top-4 left-4 z-20">
-                <Badge className="bg-linear-to-r from-emerald-500 to-green-600 text-white border-0 shadow-sm flex items-center gap-1">
+                <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 font-bold flex items-center gap-1">
                   <Award className="w-3 h-3" />
-                  <span className="text-xs font-bold">GRATIS</span>
+                  <span className="text-xs">GRATIS</span>
                 </Badge>
               </div>
 
@@ -382,92 +383,106 @@ export default function CardTryOut({
 
                 {/* Content Section */}
                 <div className="p-4 lg:p-6 space-y-4">
-                  {/* Stats Grid */}
+                  {/* Stats Grid - Match Course Gradient Style */}
                   <div className="grid grid-cols-3 gap-3">
-                    {[
-                      {
-                        title: 'Durasi',
-                        icon: Clock,
-                        value: `${item.TryoutSession.reduce((acc, s) => acc + s.duration, 0)} min`,
-                      },
-                      {
-                        title: 'Soal',
-                        icon: BookOpen,
-                        value: item.TryoutSession.reduce(
+                    {/* Durasi - Blue */}
+                    <div
+                      className="p-3 rounded-2xl border-2 text-center"
+                      style={{
+                        background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
+                        borderColor: 'rgb(191 219 254)',
+                      }}
+                    >
+                      <Clock className="w-4 h-4 text-blue-600 mx-auto mb-1" />
+                      <div className="text-sm font-bold text-blue-700">
+                        {item.TryoutSession.reduce(
+                          (acc, s) => acc + s.duration,
+                          0,
+                        )}
+                      </div>
+                      <div className="text-xs text-blue-600 font-medium">
+                        Menit
+                      </div>
+                    </div>
+
+                    {/* Soal - Green */}
+                    <div
+                      className="p-3 rounded-2xl border-2 text-center"
+                      style={{
+                        background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
+                        borderColor: 'rgb(187 247 208)',
+                      }}
+                    >
+                      <BookOpen className="w-4 h-4 text-green-600 mx-auto mb-1" />
+                      <div className="text-sm font-bold text-green-700">
+                        {item.TryoutSession.reduce(
                           (acc, s) => acc + s._count.TryoutQuestion,
                           0,
-                        ),
-                      },
-                      {
-                        title: 'Peserta',
-                        icon: Users,
-                        value: item._count.TryoutRegistration,
-                      },
-                    ].map((stat, idx) => (
-                      <div
-                        key={idx}
-                        className="text-center p-3 rounded-xl border border-gray-100"
-                        style={{ backgroundColor: `${mainColor}05` }}
-                      >
-                        <div className="flex justify-center mb-1">
-                          <stat.icon
-                            className="w-4 h-4"
-                            style={{ color: mainColor }}
-                          />
-                        </div>
-                        <div
-                          className="text-lg font-bold"
-                          style={{ color: mainColor }}
-                        >
-                          {stat.value}
-                        </div>
-                        <div className="text-xs text-gray-600">
-                          {stat.title}
-                        </div>
+                        )}
                       </div>
-                    ))}
+                      <div className="text-xs text-green-600 font-medium">
+                        Soal
+                      </div>
+                    </div>
+
+                    {/* Peserta - Purple */}
+                    <div
+                      className="p-3 rounded-2xl border-2 text-center"
+                      style={{
+                        background: `linear-gradient(to bottom right, rgb(250 245 255), rgb(243 232 255))`,
+                        borderColor: 'rgb(233 213 255)',
+                      }}
+                    >
+                      <Users className="w-4 h-4 text-purple-600 mx-auto mb-1" />
+                      <div className="text-sm font-bold text-purple-700">
+                        {item._count.TryoutRegistration}
+                      </div>
+                      <div className="text-xs text-purple-600 font-medium">
+                        Peserta
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Dates Section */}
+                  {/* Dates Section - Match Course Style */}
                   <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { label: 'Mulai', date: item.startDate, icon: Calendar },
-                      { label: 'Selesai', date: item.endDate, icon: Calendar },
-                    ].map((dateInfo, idx) => (
-                      <div
-                        key={idx}
-                        className="p-3 rounded-xl border border-gray-100 text-center"
-                        style={{ backgroundColor: `${mainColor}03` }}
-                      >
-                        <div className="flex justify-center mb-1">
-                          <dateInfo.icon
-                            className="w-4 h-4"
-                            style={{ color: mainColor }}
-                          />
-                        </div>
-                        <div className="text-xs text-gray-600 mb-1">
-                          {dateInfo.label}
-                        </div>
-                        <div
-                          className="text-sm font-semibold"
-                          style={{ color: mainColor }}
-                        >
-                          {getDateString(dateInfo.date)}
-                        </div>
+                    {/* Tanggal Mulai - Orange */}
+                    <div
+                      className="p-3 rounded-2xl border-2 text-center"
+                      style={{
+                        background: `linear-gradient(to bottom right, rgb(255 247 237), rgb(254 237 213))`,
+                        borderColor: 'rgb(254 215 170)',
+                      }}
+                    >
+                      <Calendar className="w-4 h-4 text-orange-600 mx-auto mb-1" />
+                      <div className="text-xs text-orange-600 font-medium mb-1">
+                        Mulai
                       </div>
-                    ))}
+                      <div className="text-sm font-bold text-orange-700">
+                        {getDateString(item.startDate)}
+                      </div>
+                    </div>
+
+                    {/* Tanggal Selesai - Pink */}
+                    <div
+                      className="p-3 rounded-2xl border-2 text-center"
+                      style={{
+                        background: `linear-gradient(to bottom right, rgb(253 242 248), rgb(252 231 243))`,
+                        borderColor: 'rgb(251 207 232)',
+                      }}
+                    >
+                      <Calendar className="w-4 h-4 text-pink-600 mx-auto mb-1" />
+                      <div className="text-xs text-pink-600 font-medium mb-1">
+                        Selesai
+                      </div>
+                      <div className="text-sm font-bold text-pink-700">
+                        {getDateString(item.endDate)}
+                      </div>
+                    </div>
                   </div>
 
                   {/* Tags */}
                   <div className="flex justify-center">
-                    <Badge
-                      className="flex items-center gap-1 text-xs"
-                      style={{
-                        backgroundColor: `${mainColor}15`,
-                        color: mainColor,
-                        border: `1px solid ${mainColor}30`,
-                      }}
-                    >
+                    <Badge className="flex items-center gap-1 text-xs bg-gray-50 text-gray-700 border-gray-200 font-medium">
                       <Tag className="w-3 h-3" />
                       Try Out Online
                     </Badge>
@@ -480,7 +495,7 @@ export default function CardTryOut({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                        className="w-full h-12 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
                         style={{
                           background: `linear-gradient(135deg, ${item.WebsiteSubCategory?.main_color || mainColor}, ${item.WebsiteSubCategory?.secondary_color || secondaryColor})`,
                         }}

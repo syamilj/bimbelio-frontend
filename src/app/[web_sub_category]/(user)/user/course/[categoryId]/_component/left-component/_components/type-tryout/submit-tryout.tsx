@@ -122,7 +122,7 @@ const SubmitTryout = ({
             </span>
           </button>
         </DialogTrigger>
-        <DialogContent className="w-full max-w-[450px] p-0 gap-0 overflow-hidden">
+        <DialogContent className="w-full mb:max-w-[450px] p-0 gap-0 overflow-hidden">
           {step === 1 ? (
             <>
               {/* Header with gradient */}

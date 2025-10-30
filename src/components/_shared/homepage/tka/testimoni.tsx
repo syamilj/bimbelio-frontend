@@ -17,7 +17,7 @@ const Testimoni = () => {
       start: 5,
       heading: 'From Zero to Hero',
       comment:
-        'Gue dulu literally the worst student in class. TKA pertama cuma dapet 350. Pakai Whiteprint Bimbelio, second attempt langsung tembus 650! Sekarang kuliah di ITB. This is real transformation, bukan fake promise!',
+        'Aku dulu literally the worst student in class. TKA pertama cuma dapet 350. Pakai Whiteprint Bimbelio, second attempt langsung tembus 650! Sekarang kuliah di ITB. This is real transformation, bukan fake promise!',
       name: 'Rizky Pratama',
       profesi: 'ITB Student (2024)',
       avatar: 'RP',

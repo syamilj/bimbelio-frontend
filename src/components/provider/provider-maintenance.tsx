@@ -238,13 +238,13 @@ export default function ProviderMaintenance({
                     Butuh Bantuan?
                   </h3>
                   <p className="text-gray-600">
-                    Tim support kami siap membantu Anda 24/7
+                    Tim support kami siap membantu Kamu 24/7
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <a
-                    href="https://t.me/bimbelio"
+                    href="https://discord.com/invite/5Fy3fnVaE9"
                     target="_blank"
                     className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
                   >
@@ -252,9 +252,7 @@ export default function ProviderMaintenance({
                       <MessageCircle className="w-6 h-6 text-blue-600" />
                     </div>
                     <div className="flex-1">
-                      <div className="font-semibold text-gray-900">
-                        Telegram
-                      </div>
+                      <div className="font-semibold text-gray-900">Discord</div>
                       <div className="text-sm text-gray-600">Bimbelio</div>
                     </div>
                     <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
@@ -291,7 +289,7 @@ export default function ProviderMaintenance({
               © 2024 Bimbelio - Revolusi Persiapan Belajar dengan AI
             </p>
             <p className="text-sm">
-              Terima kasih atas kesabaran Anda. Kami akan segera kembali dengan
+              Terima kasih atas kesabaran Kamu. Kami akan segera kembali dengan
               fitur yang lebih canggih! 🚀
             </p>
           </div>

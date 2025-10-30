@@ -56,7 +56,7 @@ export default function CourseLocked() {
     {
       icon: <Trophy className="w-6 h-6" />,
       title: 'Quiz Adaptif',
-      description: 'Latihan soal yang menyesuaikan kemampuan Anda',
+      description: 'Latihan soal yang menyesuaikan kemampuan Kamu',
       gradient: 'from-orange-500 to-orange-600',
       iconColor: 'text-orange-600',
       bgColor: 'bg-orange-50',
@@ -140,7 +140,7 @@ export default function CourseLocked() {
             </h1>
             <p className="text-lg md:text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
               Dapatkan akses unlimited ke semua fitur premium dan percepat
-              perjalanan belajar Anda
+              perjalanan belajar Kamu
             </p>
 
             {/* Special Badge */}

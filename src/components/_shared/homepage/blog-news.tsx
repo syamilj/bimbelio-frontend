@@ -56,7 +56,7 @@ const BlogNews = () => {
       id: 3,
       title: 'Cara Menggunakan AI untuk Belajar Lebih Efektif',
       excerpt:
-        'Manfaatkan kekuatan AI dalam pembelajaran untuk meningkatkan efisiensi dan hasil belajar Anda.',
+        'Manfaatkan kekuatan AI dalam pembelajaran untuk meningkatkan efisiensi dan hasil belajar Kamu.',
       author: 'Prof. Ahmad Hidayat',
       date: '10 Desember 2024',
       readTime: '5 menit',
@@ -416,7 +416,7 @@ const BlogNews = () => {
                 </div>
                 <h3 className="font-bold text-gray-900 mb-2">Newsletter</h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Dapatkan tips dan artikel terbaru langsung di inbox Anda
+                  Dapatkan tips dan artikel terbaru langsung di inbox Kamu
                 </p>
                 <motion.div
                   whileHover={{ scale: 1.05 }}

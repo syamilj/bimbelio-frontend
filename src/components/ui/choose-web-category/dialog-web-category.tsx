@@ -65,7 +65,7 @@ export function DialogWebCategory({
       open={isOpen}
       onOpenChange={onOpenChange}
     >
-      <DialogContent className="max-w-xl w-full sm:space-x-2 p-0 overflow-hidden bg-background border shadow-xl">
+      <DialogContent className="w-full sm:space-x-2 p-0 overflow-hidden bg-background border shadow-xl">
         {/* Header */}
         <DialogHeader className="relative p-6 pb-4 border-b border-gray-200 bg-linear-to-r from-gray-50 to-gray-100 dark:to-gray-800">
           <div className="flex items-center justify-between">
@@ -219,7 +219,7 @@ export function DialogWebCategory({
               </div>
               <h3 className="font-semibold text-lg mb-2">Tidak ada hasil</h3>
               <p className="text-muted-foreground text-sm">
-                Tidak ada kategori yang sesuai dengan pencarian Anda
+                Tidak ada kategori yang sesuai dengan pencarian Kamu
               </p>
             </div>
           )}

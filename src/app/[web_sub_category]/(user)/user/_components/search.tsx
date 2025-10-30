@@ -85,20 +85,20 @@ const Search = ({}: any) => {
     >
       <div
         // id="border"
-        className="flex w-full justify-between gap-2 rounded-xl md:w-[unset] md:rounded-xl"
+        className="flex w-full justify-between gap-2 rounded-2xl md:w-[unset] md:rounded-2xl border-2 border-gray-100 bg-white"
       >
         <input
           id="searchValue"
           type="text"
           // placeholder="Coming Soon..."
-          className="w-full rounded-xl px-4 py-[.8rem] text-sm outline-none md:w-[unset] md:rounded-xl md:py-[.5rem]"
+          className="w-full rounded-2xl px-4 py-[.8rem] text-sm outline-none md:w-[unset] md:rounded-2xl md:py-[.5rem]"
           disabled
         />
         <div className="hidden items-center justify-center gap-[.7rem] pr-4 md:flex">
-          <p>di</p>
-          <div className="font-regular">
+          <p className="text-gray-600 font-medium">di</p>
+          <div className="font-medium">
             <select
-              className="outline-none"
+              className="outline-none text-gray-600"
               onChange={(e) => setCategoryId(e.target.value)}
             >
               <option value="">Seluruh Kategori</option>
@@ -122,7 +122,11 @@ const Search = ({}: any) => {
               <div
                 className={`px-6 py-[.7rem] ${
                   categoryId === '' && 'bg-main text-white'
-                } shrink-0 rounded-xl text-main-gray-text`}
+                } shrink-0 rounded-2xl text-main-gray-text font-bold border-2 ${
+                  categoryId === ''
+                    ? 'border-transparent shadow-sm'
+                    : 'border-gray-100 bg-white'
+                }`}
                 onClick={() => {
                   setCategoryId('');
                 }}
@@ -134,7 +138,11 @@ const Search = ({}: any) => {
                   key={i}
                   className={`px-6 py-[.7rem] ${
                     categoryId === item.id && 'bg-main text-white'
-                  } shrink-0 rounded-xl text-main-gray-text`}
+                  } shrink-0 rounded-2xl text-main-gray-text font-bold border-2 ${
+                    categoryId === item.id
+                      ? 'border-transparent shadow-sm'
+                      : 'border-gray-100 bg-white'
+                  }`}
                   onClick={() => {
                     setCategoryId(item.id);
                   }}
@@ -149,7 +157,7 @@ const Search = ({}: any) => {
       <button
         type="submit"
         id="border"
-        className="flex h-0 w-0 cursor-pointer items-center justify-center overflow-hidden text-sm rounded-xl bg-main p-0 font-semibold text-white md:h-[unset] md:w-[unset] md:px-4"
+        className="flex h-0 w-0 cursor-pointer items-center justify-center overflow-hidden text-sm rounded-2xl bg-main p-0 font-bold text-white md:h-[unset] md:w-[unset] md:px-4"
       >
         Cari
       </button>

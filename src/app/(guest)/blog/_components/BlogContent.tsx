@@ -4,7 +4,6 @@ import AdminImage from '@/_assets/logo-minimize.png';
 import Footer from '@/components/_shared/footer';
 import Navbar from '@/components/_shared/navbar';
 import ToC from '@/components/_shared/other/ToC';
-import { SparklesText } from '@/components/magicui/sparkles-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -263,19 +262,22 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <Card className="bg-white/80 backdrop-blur-sm shadow-lg border-0 overflow-hidden">
-                  <CardHeader
-                    className="text-regular font-semibold px-4 py-3 bg-gradient-to-r from-white/50 to-white/30"
+                <Card
+                  className="bg-white shadow-lg border-2 overflow-hidden rounded-2xl"
+                  style={{ borderColor: `${mainColor}20` }}
+                >
+                  {/* Top Accent Bar */}
+                  <div
+                    className="h-2 w-full"
                     style={{
-                      background: `linear-gradient(135deg, ${mainColor}10, ${secondaryColor}05)`,
+                      background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
                     }}
-                  >
-                    <SparklesText className="text-sm font-semibold">
-                      Artikel Lainnya
-                    </SparklesText>
+                  />
+                  <CardHeader className="px-4 py-4">
+                    <div className="text-base font-black">Artikel Lainnya</div>
                   </CardHeader>
                   <CardContent className="px-2 py-4">
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {sortPosts(blogs ?? [], 'recent')
                         .filter((post) => post.slug !== blog.slug)
                         .slice(0, 5)
@@ -288,23 +290,27 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                             whileHover={{ x: 5 }}
                           >
                             <Link href={`/blog/${post.slug}`}>
-                              <div className="group flex items-start space-x-3 p-2 rounded-lg hover:bg-white/60 hover:backdrop-blur-sm transition-all duration-300">
+                              <div
+                                className="group flex items-start space-x-3 p-3 rounded-xl hover:shadow-md transition-all duration-300 border-2 border-transparent hover:border-opacity-50"
+                                style={
+                                  {
+                                    '--hover-border': `${mainColor}20`,
+                                  } as React.CSSProperties
+                                }
+                              >
                                 <span
-                                  className="text-l font-bold transition-colors group-hover:text-white px-2 py-1 rounded-full text-xs"
-                                  style={{
-                                    backgroundColor: `${mainColor}20`,
-                                    color: mainColor,
-                                  }}
+                                  className="text-base font-black px-3 py-2 rounded-xl text-white shadow-sm"
+                                  style={{ backgroundColor: mainColor }}
                                 >
                                   {index + 1}
                                 </span>
-                                <div className="mb-2 flex-1">
-                                  <p className="line-clamp-2 text-sm font-medium transition-colors group-hover:text-main-gray-text">
+                                <div className="flex-1">
+                                  <p className="line-clamp-2 text-sm font-bold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug">
                                     {post.title}
                                   </p>
-                                  <div className="mt-1 flex items-center space-x-2 text-sm text-muted-foreground">
-                                    <EyeIcon className="h-4 w-4" />
-                                    <span>
+                                  <div className="mt-2 flex items-center space-x-2 text-xs text-gray-500">
+                                    <EyeIcon className="h-3 w-3" />
+                                    <span className="font-medium">
                                       {post.views.toLocaleString()} dilihat
                                     </span>
                                   </div>
@@ -338,100 +344,112 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <SparklesText className="mt-10 md:mt-2 text-3xl font-bold text-center leading-tight lg:text-4xl">
+                <h1 className="mt-10 md:mt-2 text-3xl font-bold text-center leading-tight lg:text-4xl">
                   {blog.title}
-                </SparklesText>
+                </h1>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg border-0"
-                style={{
-                  background: `linear-gradient(135deg, white 0%, ${mainColor}05 100%)`,
-                }}
+                className="relative p-6 rounded-2xl bg-white shadow-lg border-2 overflow-hidden"
+                style={{ borderColor: `${mainColor}20` }}
               >
-                <div className="flex items-center space-x-4">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    <Avatar
-                      className="h-12 w-12 border-2 shadow-lg"
-                      style={{ borderColor: mainColor }}
+                {/* Top Accent Bar */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-2 w-full"
+                  style={{
+                    background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                />
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-2">
+                  <div className="flex items-center space-x-4">
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
                     >
-                      <Image
-                        src={AdminImage}
-                        alt="Admin avatar"
-                        sizes="(max-width: 768px) 100vw,
-                               (max-width: 1200px) 50vw,
-                               33vw"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </Avatar>
-                  </motion.div>
-                  <div>
-                    <span
-                      className="text-sm font-semibold"
-                      style={{ color: mainColor }}
-                    >
-                      Bimbelio
-                    </span>
-                    <span className="block text-xs text-main-gray-text">
-                      @admin
-                    </span>
+                      <Avatar
+                        className="h-14 w-14 border-2 shadow-lg"
+                        style={{ borderColor: mainColor }}
+                      >
+                        <Image
+                          src={AdminImage}
+                          alt="Admin avatar"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </Avatar>
+                    </motion.div>
+                    <div>
+                      <span
+                        className="text-base font-black"
+                        style={{ color: mainColor }}
+                      >
+                        Bimbelio
+                      </span>
+                      <span className="block text-xs text-gray-600 font-medium">
+                        @admin
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex flex-wrap items-center gap-4">
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 }}
-                    className="flex items-center space-x-1 text-main-gray-text bg-white/60 px-3 py-2 rounded-lg"
-                  >
-                    <CalendarIcon className="h-4 w-4" />
-                    <span className="text-sm">
-                      {getDateString(blog.createdAt)}
-                    </span>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.7 }}
-                    className="flex items-center space-x-1 text-main-gray-text bg-white/60 px-3 py-2 rounded-lg"
-                  >
-                    <EyeIcon className="h-4 w-4" />
-                    <span className="text-sm">
-                      {viewCount.toLocaleString()} dilihat
-                    </span>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.8 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="rounded-xl border-0 shadow-md bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
-                      onClick={handleShare}
-                      style={
-                        {
-                          '--hover-bg': `${mainColor}10`,
-                          color: mainColor,
-                        } as React.CSSProperties
-                      }
+                  <div className="flex flex-wrap items-center gap-3">
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="flex items-center space-x-2 text-gray-700 px-4 py-2 rounded-xl shadow-sm"
+                      style={{ backgroundColor: `${mainColor}08` }}
                     >
-                      <ShareIcon className="mr-2 h-4 w-4" />
-                      Bagikan
-                    </Button>
-                  </motion.div>
+                      <CalendarIcon
+                        className="h-4 w-4"
+                        style={{ color: mainColor }}
+                      />
+                      <span className="text-sm font-medium">
+                        {getDateString(blog.createdAt)}
+                      </span>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.7 }}
+                      className="flex items-center space-x-2 text-gray-700 px-4 py-2 rounded-xl shadow-sm"
+                      style={{ backgroundColor: `${secondaryColor}08` }}
+                    >
+                      <EyeIcon
+                        className="h-4 w-4"
+                        style={{ color: secondaryColor }}
+                      />
+                      <span className="text-sm font-medium">
+                        {viewCount.toLocaleString()} dilihat
+                      </span>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.8 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-xl border-0 shadow-md font-bold hover:shadow-lg transition-all duration-300"
+                        onClick={handleShare}
+                        style={{
+                          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                          color: 'white',
+                        }}
+                      >
+                        <ShareIcon className="mr-2 h-4 w-4" />
+                        Bagikan
+                      </Button>
+                    </motion.div>
+                  </div>
                 </div>
               </motion.div>
 
@@ -447,17 +465,18 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.7 + index * 0.1 }}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     <Badge
                       variant="secondary"
-                      className="px-3 py-1 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border-0 hover:shadow-md transition-all duration-300"
+                      className="px-4 py-2 rounded-full shadow-md border-0 hover:shadow-lg transition-all duration-300 font-bold text-sm"
                       style={{
                         backgroundColor: `${mainColor}15`,
                         color: mainColor,
                       }}
                     >
-                      {tag}
+                      #{tag}
                     </Badge>
                   </motion.div>
                 ))}
@@ -486,9 +505,19 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border-0"
+              className="relative bg-white rounded-2xl shadow-lg p-8 border-2 overflow-hidden"
+              style={{ borderColor: `${mainColor}20` }}
             >
-              <ReactMarkdownBlog value={processedContent} />
+              {/* Top Accent Bar */}
+              <div
+                className="absolute top-0 left-0 right-0 h-2 w-full"
+                style={{
+                  background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+                }}
+              />
+              <div className="pt-4">
+                <ReactMarkdownBlog value={processedContent} />
+              </div>
             </motion.div>
           </motion.article>
 
@@ -504,12 +533,19 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border-0 p-2"
-                style={{
-                  background: `linear-gradient(135deg, white 0%, ${mainColor}05 100%)`,
-                }}
+                className="bg-white rounded-2xl shadow-lg border-2 overflow-hidden"
+                style={{ borderColor: `${mainColor}20` }}
               >
-                <ToC headings={headings} />
+                {/* Top Accent Bar */}
+                <div
+                  className="h-2 w-full"
+                  style={{
+                    background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
+                  }}
+                />
+                <div className="p-4">
+                  <ToC headings={headings} />
+                </div>
               </motion.div>
             </div>
           </motion.aside>

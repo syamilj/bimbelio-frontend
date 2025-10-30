@@ -4,6 +4,7 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
@@ -155,81 +156,69 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
 
   return (
     <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="w-full max-w-4xl h-full max-h-[90vh] m-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
-        {/* Header */}
+      <div className="w-full max-w-4xl h-full max-h-[90vh] m-4 bg-white rounded-3xl shadow-2xl overflow-hidden border-2 border-gray-100">
+        {/* Header with Gradient */}
         <div
-          className="flex items-center justify-between p-6 border-b border-gray-200 relative overflow-hidden"
-          style={{ backgroundColor: `${mainColor}05` }}
+          className="relative px-8 py-6 text-white overflow-hidden"
+          style={{
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          }}
         >
-          <div className="relative z-10">
-            <h1
-              className="text-2xl font-bold flex items-center gap-3"
-              style={{ color: mainColor }}
+          <div className="relative z-10 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl md:text-3xl font-black mb-2 flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
+                  <Settings className="w-6 h-6" />
+                </div>
+                Pengaturan Profil
+              </h1>
+              <p className="text-white/90 font-medium">
+                Kelola akun dan preferensi Kamu
+              </p>
+            </div>
+            <Button
+              onClick={() => setTransactionHistory(false)}
+              className="rounded-2xl bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 shadow-sm hover:shadow-md"
             >
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: `${mainColor}15` }}
-              >
-                <Settings
-                  className="w-5 h-5"
-                  style={{ color: mainColor }}
-                />
-              </div>
-              Pengaturan Profil
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Kelola akun dan preferensi Anda
-            </p>
+              <X className="w-5 h-5" />
+            </Button>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTransactionHistory(false)}
-            className="rounded-xl hover:bg-gray-100"
-          >
-            <X className="w-5 h-5" />
-          </Button>
-
-          {/* Decorative elements */}
-          <div
-            className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-            style={{ backgroundColor: mainColor }}
-          />
         </div>
 
         {/* Content */}
-        <div className="flex h-full">
+        <div className="flex h-full flex-col overflow-hidden">
           <Tabs
             value={page}
             onValueChange={setPage}
-            className="w-full flex flex-col"
+            className="w-full flex flex-col flex-1 overflow-hidden"
           >
-            {/* Sidebar Tabs */}
-            <div className="flex border-b border-gray-200 bg-gray-50/50">
+            {/* Tabs Navigation */}
+            <div className="border-b-2 border-gray-100 bg-gray-50/50">
               <TabsList className="grid w-full grid-cols-3 bg-transparent p-0 h-auto">
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="flex items-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-b-2 rounded-none border-b-2 border-transparent"
+                    className="flex items-center justify-center gap-2 px-6 py-4 text-sm font-bold transition-all duration-300 data-[state=active]:bg-white rounded-none border-b-2 cursor-pointer hover:bg-gray-100/50 relative text-gray-600"
+                    isActiveClassName="bg-main/20 text-main"
                     style={{
                       borderColor:
                         page === tab.value ? mainColor : 'transparent',
-                      // color: page === tab.value ? mainColor : undefined,
+                      color: page === tab.value ? mainColor : undefined,
                     }}
                   >
                     {tab.icon}
-                    <span className="hidden sm:inline">{tab.label}</span>
+                    <span>{tab.label}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>
             </div>
 
             {/* Tab Contents */}
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-hidden">
               <TabsContent
                 value="account"
-                className="mt-0 h-full"
+                className="mt-0 h-full overflow-y-auto"
               >
                 <AccountTab
                   session={session}
@@ -240,12 +229,13 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                   loading={loading}
                   handleChangeProfile={handleChangeProfile}
                   mainColor={mainColor}
+                  secondaryColor={secondaryColor}
                 />
               </TabsContent>
 
               <TabsContent
                 value="subscription"
-                className="mt-0 h-full"
+                className="mt-0 h-full overflow-y-auto"
               >
                 <SubscriptionTab
                   data={data}
@@ -253,16 +243,18 @@ const HistoryPayment = ({ pages }: { pages?: string }) => {
                   setTransactionPopUp={setTransactionPopUp}
                   setTransactionHistory={setTransactionHistory}
                   mainColor={mainColor}
+                  secondaryColor={secondaryColor}
                 />
               </TabsContent>
 
               <TabsContent
                 value="history"
-                className="mt-0 h-full"
+                className="mt-0 h-full overflow-y-auto"
               >
                 <HistoryTab
                   data={data}
                   mainColor={mainColor}
+                  secondaryColor={secondaryColor}
                 />
               </TabsContent>
             </div>
@@ -283,97 +275,117 @@ const AccountTab = ({
   loading,
   handleChangeProfile,
   mainColor,
+  secondaryColor,
 }: any) => (
-  <div className="p-6 space-y-6">
-    <Card className="border-2 border-gray-100 rounded-2xl shadow-sm">
-      <CardHeader className="pb-4">
-        <CardTitle
-          className="text-lg font-bold flex items-center gap-2"
-          style={{ color: mainColor }}
-        >
-          <User className="w-5 h-5" />
-          Informasi Akun
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          <div className="relative">
-            <input
-              id="ubahFotoProfile"
-              type="file"
-              className="absolute inset-0 w-0 h-0 opacity-0"
-              onChange={(e) => {
-                if (e.target.files) {
-                  setProfile(e.target.files[0]);
-                }
-              }}
+  <div className="p-8 space-y-6 mb-50">
+    <div
+      className="rounded-3xl p-8 text-white overflow-hidden relative border-2 border-white/20 shadow-lg"
+      style={{
+        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+      }}
+    >
+      <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-8">
+        <div className="relative">
+          <input
+            id="ubahFotoProfile"
+            type="file"
+            className="absolute inset-0 w-0 h-0 opacity-0"
+            onChange={(e) => {
+              if (e.target.files) {
+                setProfile(e.target.files[0]);
+              }
+            }}
+          />
+          <div
+            className="w-24 h-24 rounded-2xl overflow-hidden border-4 border-white shadow-xl hover:shadow-2xl transition-all cursor-pointer"
+            onClick={() => document.getElementById('ubahFotoProfile')?.click()}
+          >
+            <Image
+              src={preview || profileImage || male}
+              alt="Profile"
+              width={96}
+              height={96}
+              className="w-full h-full object-cover"
             />
-            <div className="w-20 h-20 rounded-2xl overflow-hidden border-4 border-gray-100 shadow-lg">
-              <Image
-                src={preview || profileImage || male}
-                alt="Profile"
-                width={80}
-                height={80}
-                className="w-full h-full object-cover"
-              />
+          </div>
+          {profile && (
+            <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center bg-green-500 text-white text-sm font-bold shadow-lg">
+              ✓
             </div>
-            {profile && (
-              <div
-                className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
-                style={{ backgroundColor: mainColor }}
-              >
-                ✓
+          )}
+        </div>
+
+        <div className="flex-1">
+          <h3 className="text-2xl font-black mb-2">{session?.user?.name}</h3>
+          <p className="text-white/90 mb-4 font-medium">
+            {session?.user.email}
+          </p>
+          <div className="flex gap-3 flex-wrap">
+            <Button
+              onClick={() =>
+                document.getElementById('ubahFotoProfile')?.click()
+              }
+              className="rounded-2xl text-white font-bold bg-white/20 hover:bg-white/30 border-2 border-white/30 backdrop-blur-sm transition-all shadow-sm hover:shadow-md"
+            >
+              <User className="w-4 h-4 mr-2" />
+              Ubah Foto
+            </Button>
+
+            {profile && !loading && (
+              <>
+                <Button
+                  onClick={() => setProfile(undefined)}
+                  className="rounded-2xl bg-white/10 hover:bg-white/20 text-white border-2 border-white/20 backdrop-blur-sm font-bold transition-all shadow-sm"
+                >
+                  Batal
+                </Button>
+                <Button
+                  onClick={handleChangeProfile}
+                  className="rounded-2xl text-white font-bold bg-white/40 hover:bg-white/50 border-2 border-white/30 backdrop-blur-sm transition-all shadow-sm hover:shadow-md"
+                >
+                  Simpan
+                </Button>
+              </>
+            )}
+
+            {loading && (
+              <div className="flex items-center px-4 bg-white/10 rounded-2xl backdrop-blur-sm border-2 border-white/20">
+                <Spinner />
               </div>
             )}
           </div>
+        </div>
+      </div>
+    </div>
 
-          <div className="flex-1 space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {session?.user?.name}
-              </h3>
-              <p className="text-gray-600">{session?.user.email}</p>
-            </div>
-
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() =>
-                  document.getElementById('ubahFotoProfile')?.click()
-                }
-                className="rounded-xl border-2 hover:shadow-md transition-all duration-200"
-                style={{ borderColor: `${mainColor}40`, color: mainColor }}
-              >
-                <User className="w-4 h-4 mr-2" />
-                Ubah Foto
-              </Button>
-
-              {profile && !loading && (
-                <>
-                  <Button
-                    variant="ghost"
-                    onClick={() => setProfile(undefined)}
-                    className="rounded-xl"
-                  >
-                    Batal
-                  </Button>
-                  <Button
-                    onClick={handleChangeProfile}
-                    className="rounded-xl text-white"
-                    style={{ backgroundColor: mainColor }}
-                  >
-                    Simpan
-                  </Button>
-                </>
-              )}
-
-              {loading && (
-                <div className="flex items-center px-4">
-                  <Spinner />
-                </div>
-              )}
-            </div>
+    {/* Account Details Card */}
+    <Card className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all">
+      <CardHeader className="pb-4">
+        <CardTitle
+          className="text-lg font-black flex items-center gap-2"
+          style={{ color: mainColor }}
+        >
+          <div
+            className="w-8 h-8 rounded-2xl flex items-center justify-center text-white"
+            style={{ backgroundColor: mainColor }}
+          >
+            <User className="w-4 h-4" />
           </div>
+          Informasi Akun
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <p className="text-sm font-bold text-gray-500">Nama Lengkap</p>
+          <p className="text-lg font-black text-gray-900">
+            {session?.user?.name}
+          </p>
+        </div>
+        <div className="space-y-2">
+          <p className="text-sm font-bold text-gray-500">Email</p>
+          <p className="text-lg font-black text-gray-900">
+            {session?.user.email}
+          </p>
         </div>
       </CardContent>
     </Card>
@@ -387,27 +399,35 @@ const SubscriptionTab = ({
   setTransactionPopUp,
   setTransactionHistory,
   mainColor,
+  secondaryColor,
 }: any) => (
-  <div className="p-6 space-y-6">
-    <div className="text-center mb-6">
+  <div className="p-8 space-y-6">
+    <div className="text-center mb-8">
       <h2
-        className="text-xl font-bold mb-2"
+        className="text-2xl font-black mb-2"
         style={{ color: mainColor }}
       >
         Subscription & Coin
       </h2>
-      <p className="text-gray-600">Kelola langganan dan tagihan Anda</p>
+      <p className="text-gray-500 font-medium">
+        Kelola langganan dan tagihan Kamu
+      </p>
     </div>
 
     {data?.waiting?.length > 0 ? (
-      <Card className="border-2 border-yellow-200 bg-yellow-50 rounded-2xl">
-        <CardHeader>
-          <CardTitle className="text-lg text-yellow-700 flex items-center gap-2">
+      <Card
+        className="border-2 border-gray-100 rounded-3xl shadow-sm overflow-hidden"
+        style={{
+          borderTop: `4px solid ${mainColor}`,
+        }}
+      >
+        <CardHeader className="bg-gradient-to-r from-yellow-50 to-orange-50 border-b-2 border-orange-100">
+          <CardTitle className="text-lg text-orange-700 font-black flex items-center gap-2">
             <CreditCard className="w-5 h-5" />
             Tagihan Pending
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pt-6">
           {data.waiting.map((item: any, i: number) => (
             <PaymentCard
               key={i}
@@ -419,10 +439,10 @@ const SubscriptionTab = ({
         </CardContent>
       </Card>
     ) : (
-      <Card className="border-2 border-gray-100 rounded-2xl">
-        <CardContent className="p-6">
+      <Card className="border-2 border-gray-100 rounded-3xl shadow-sm">
+        <CardContent className="p-8">
           <Plans />
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-8 pt-8 border-t-2 border-gray-100">
             <ButtonPayment text="Upgrade Subscription" />
           </div>
         </CardContent>
@@ -432,52 +452,119 @@ const SubscriptionTab = ({
 );
 
 // History Tab Component
-const HistoryTab = ({ data, mainColor }: any) => (
-  <div className="p-6 space-y-6">
-    <Card className="border-2 border-gray-100 rounded-2xl">
-      <CardHeader>
-        <CardTitle
-          className="text-lg font-bold flex items-center gap-2"
+const HistoryTab = ({ data, mainColor, secondaryColor }: any) => (
+  <div className="p-8 space-y-6 mb-30">
+    <div className="text-center mb-8 sticky top-0 bg-white pt-2 z-10">
+      <h2
+        className="text-2xl font-black mb-2"
+        style={{ color: mainColor }}
+      >
+        Riwayat Transaksi
+      </h2>
+      <p className="text-gray-500 font-medium">Lihat semua transaksi Kamu</p>
+    </div>
+
+    {data?.riwayat?.length > 0 ? (
+      <div className="space-y-4 pb-4">
+        {data.riwayat.map((item: any, i: number) => (
+          <Card
+            key={i}
+            className="border-2 border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+            style={{
+              borderLeft: `4px solid ${mainColor}`,
+            }}
+          >
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div
+                    className="p-3 rounded-2xl"
+                    style={{
+                      backgroundColor: `${mainColor}20`,
+                    }}
+                  >
+                    <CreditCard
+                      className="w-6 h-6"
+                      style={{ color: mainColor }}
+                    />
+                  </div>
+                  <div>
+                    <p className="font-black text-gray-900">
+                      {item.item_details?.[0]?.name || 'Transaksi'}
+                    </p>
+                    <p className="text-sm text-gray-500 font-medium">
+                      {getDateString(item.transaction_time)} •{' '}
+                      {getHours(item.transaction_time)}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p
+                    className="font-black text-lg"
+                    style={{ color: mainColor }}
+                  >
+                    {item.transaction_details.gross_amount.toLocaleString(
+                      'id-ID',
+                      {
+                        style: 'currency',
+                        currency: 'IDR',
+                      },
+                    )}
+                  </p>
+                  <Badge
+                    className="mt-2 font-bold text-xs rounded-xl"
+                    style={{
+                      backgroundColor: item.settlement_time
+                        ? '#10b981'
+                        : '#f59e0b',
+                      color: 'white',
+                    }}
+                  >
+                    {item.settlement_time ? 'Berhasil' : 'Pending'}
+                  </Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    ) : (
+      <div
+        className="rounded-3xl p-12 text-center border-2 border-gray-100"
+        style={{
+          background: `linear-gradient(135deg, ${mainColor}10, ${secondaryColor}10)`,
+        }}
+      >
+        <History
+          className="w-16 h-16 mx-auto mb-4"
           style={{ color: mainColor }}
-        >
-          <History className="w-5 h-5" />
-          Riwayat Transaksi
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4 max-h-96 overflow-y-auto">
-          {data?.riwayat?.length > 0 ? (
-            data.riwayat.map((item: any, i: number) => (
-              <TransactionCard
-                key={i}
-                item={item}
-                mainColor={mainColor}
-              />
-            ))
-          ) : (
-            <div className="text-center py-12 text-gray-500">
-              <History className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>Belum ada riwayat transaksi</p>
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+        />
+        <h3 className="text-lg font-black text-gray-900 mb-2">
+          Belum ada riwayat transaksi
+        </h3>
+        <p className="text-gray-500 font-medium">
+          Semua transaksi Kamu akan ditampilkan di sini
+        </p>
+      </div>
+    )}
   </div>
 );
 
 // Payment Card Component
 const PaymentCard = ({ item, handlePay, mainColor }: any) => (
-  <Card className="border border-gray-200 rounded-xl">
+  <Card className="border-2 border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-all">
     <CardContent className="p-4 space-y-4">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold">{item.item_details[0]?.name || '-'}</h3>
+          <h3 className="font-black text-gray-900">
+            {item.item_details[0]?.name || '-'}
+          </h3>
           <Crown className="w-4 h-4 text-yellow-500" />
         </div>
         <Button
           variant="ghost"
           size="sm"
+          className="rounded-xl"
         >
           <IconCopy className="w-4 h-4" />
         </Button>
@@ -485,8 +572,8 @@ const PaymentCard = ({ item, handlePay, mainColor }: any) => (
 
       <div className="grid grid-cols-2 gap-4 text-sm">
         <div>
-          <p className="text-gray-600">Nominal</p>
-          <p className="font-bold text-lg">
+          <p className="text-gray-500 font-bold">Nominal</p>
+          <p className="font-black text-lg text-gray-900">
             {item.transaction_details.gross_amount.toLocaleString('id-ID', {
               style: 'currency',
               currency: 'IDR',
@@ -494,8 +581,8 @@ const PaymentCard = ({ item, handlePay, mainColor }: any) => (
           </p>
         </div>
         <div>
-          <p className="text-gray-600">Batas Waktu</p>
-          <p className="font-medium">
+          <p className="text-gray-500 font-bold">Batas Waktu</p>
+          <p className="font-bold text-gray-900">
             {getDateString(item.expired_time)} •{' '}
             {getHoursDetail(item.expired_time)}
           </p>
@@ -504,7 +591,7 @@ const PaymentCard = ({ item, handlePay, mainColor }: any) => (
 
       <Button
         onClick={() => handlePay(item.token)}
-        className="w-full rounded-xl text-white"
+        className="w-full rounded-2xl text-white font-bold border-2 shadow-sm hover:shadow-md"
         style={{ backgroundColor: mainColor }}
       >
         Bayar Sekarang
@@ -557,13 +644,13 @@ const Plans = () => {
   const role = session?.user.role;
   const tier = session?.user.tier;
   return (
-    <div className="flex flex-col gap-6 rounded-3xl bg-bg-layout p-4">
+    <div className="flex flex-col gap-6 rounded-3xl bg-gray-50 p-6 border-2 border-gray-100">
       <div
         id="heading"
         className="flex flex-col"
       >
         <div className="flex items-center gap-[.5rem]">
-          <p className="font-semibold">{tier ? tier : 'Gratis'}</p>
+          <p className="font-black text-gray-900">{tier ? tier : 'Gratis'}</p>
           {tier && <IconCrown className="text-main-yellow" />}
         </div>
       </div>
@@ -572,75 +659,67 @@ const Plans = () => {
         className="grid grid-cols-2 gap-y-8"
       >
         <div className="flex flex-col gap-[.2rem]">
-          <p className="text-[.8rem] text-main-gray-text">Akses bahan ajar</p>
-          <h1 className="text-[1rem] font-medium">
+          <p className="text-[.8rem] text-gray-500 font-bold">
+            Akses bahan ajar
+          </p>
+          <h1 className="text-[1rem] font-black text-gray-900">
             {!features?.course ? 'Terbatas' : 'Semua'}
           </h1>
         </div>
         <div className="flex flex-col gap-[.2rem]">
-          <p className="text-[.8rem] text-main-gray-text">Akses Document</p>
-          <h1 className="text-[1rem] font-medium">
+          <p className="text-[.8rem] text-gray-500 font-bold">Akses Document</p>
+          <h1 className="text-[1rem] font-black text-gray-900">
             {!features?.document ? 'Terbatas' : 'Semua'}
           </h1>
         </div>
         <div className="flex flex-col gap-[.2rem]">
-          <p className="text-[.8rem] text-main-gray-text">Chat AI</p>
-          <h1 className="text-[1rem] font-medium">
+          <p className="text-[.8rem] text-gray-500 font-bold">Chat AI</p>
+          <h1 className="text-[1rem] font-black text-gray-900">
             {role === 'ADMIN' ? '-' : userLimitation?.chat}/
             {userLimitation?.chatLimit
               ? userLimitation?.chatLimit
               : 'Unlimited'}{' '}
-            <span className="font-regular text-[.8rem] text-main-gray-disabled">
-              coin
-            </span>
+            <span className="font-medium text-[.8rem] text-gray-400">coin</span>
           </h1>
         </div>
         <div className="flex flex-col gap-[.2rem]">
-          <p className="text-[.8rem] text-main-gray-text">Notes</p>
-          <h1 className="text-[1rem] font-medium">
+          <p className="text-[.8rem] text-gray-500 font-bold">Notes</p>
+          <h1 className="text-[1rem] font-black text-gray-900">
             {role === 'ADMIN' ? '-' : userLimitation?.notes}/
             {userLimitation?.notesLimit
               ? userLimitation?.notesLimit
               : 'Unlimited'}{' '}
-            <span className="font-regular text-[.8rem] text-main-gray-disabled">
-              coin
-            </span>
+            <span className="font-medium text-[.8rem] text-gray-400">coin</span>
           </h1>
         </div>
         <div className="flex flex-col gap-[.2rem]">
-          <p className="text-[.8rem] text-main-gray-text">Quiz</p>
-          <h1 className="text-[1rem] font-medium">
+          <p className="text-[.8rem] text-gray-500 font-bold">Quiz</p>
+          <h1 className="text-[1rem] font-black text-gray-900">
             {role === 'ADMIN' ? '-' : userLimitation?.quiz}/
             {userLimitation?.quizLimit
               ? userLimitation?.quizLimit
               : 'Unlimited'}{' '}
-            <span className="font-regular text-[.8rem] text-main-gray-disabled">
-              coin
-            </span>
+            <span className="font-medium text-[.8rem] text-gray-400">coin</span>
           </h1>
         </div>
         <div className="flex flex-col gap-[.2rem]">
-          <p className="text-[.8rem] text-main-gray-text">Tryout</p>
-          <h1 className="text-[1rem] font-medium">
+          <p className="text-[.8rem] text-gray-500 font-bold">Tryout</p>
+          <h1 className="text-[1rem] font-black text-gray-900">
             {role === 'ADMIN' ? '-' : userLimitation?.tryout}/
             {userLimitation?.tryoutLimit
               ? userLimitation?.tryoutLimit
               : 'Unlimited'}{' '}
-            <span className="font-regular text-[.8rem] text-main-gray-disabled">
-              coin
-            </span>
+            <span className="font-medium text-[.8rem] text-gray-400">coin</span>
           </h1>
         </div>
         <div className="flex flex-col gap-[.2rem]">
-          <p className="text-[.8rem] text-main-gray-text">Vision</p>
-          <h1 className="text-[1rem] font-medium">
+          <p className="text-[.8rem] text-gray-500 font-bold">Vision</p>
+          <h1 className="text-[1rem] font-black text-gray-900">
             {role === 'ADMIN' ? '-' : userLimitation?.vision}/
             {userLimitation?.visionLimit
               ? userLimitation?.visionLimit
               : 'Unlimited'}{' '}
-            <span className="font-regular text-[.8rem] text-main-gray-disabled">
-              coin
-            </span>
+            <span className="font-medium text-[.8rem] text-gray-400">coin</span>
           </h1>
         </div>
       </div>

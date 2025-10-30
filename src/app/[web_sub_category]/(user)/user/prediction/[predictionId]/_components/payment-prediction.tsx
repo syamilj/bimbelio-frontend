@@ -71,7 +71,7 @@ const Step1 = ({ setStep }: { setStep: Dispatch<SetStateAction<number>> }) => {
 
   return (
     <div className="flex flex-col gap-8 p-6">
-      <p className="">Akses lengkap seluruh detail prediksi kelulusan Anda:</p>
+      <p className="">Akses lengkap seluruh detail prediksi kelulusan Kamu:</p>
       <div className="-mt-4 grid grid-cols-5 gap-y-2 text-[.9rem]">
         <p className="col-span-2 text-main-gray-text">Jenis Prediksi</p>
         <p className="col-span-3">: UTBK + SIMAK UI</p>

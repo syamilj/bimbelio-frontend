@@ -50,7 +50,7 @@ export const RenderOverviewTab = () => {
           variant="destructive"
           className={`flex items-center gap-2 text-white`}
         >
-          {plan.PlanSubscription.tier}
+          {plan.PlanSubscription?.tier || 'Standar'}
         </Badge>
       </div>
 
@@ -89,15 +89,15 @@ export const RenderOverviewTab = () => {
           )} */}
 
           {/* Features Count (jika ada) */}
-          {plan.PlanSubscription.PlanFeature &&
-            plan.PlanSubscription.PlanFeature.length > 0 && (
+          {plan.PlanSubscription?.PlanFeature &&
+            plan.PlanSubscription?.PlanFeature.length > 0 && (
               <div className="text-center">
                 <Star
                   size={20}
                   className="mx-auto mb-1 text-purple-600"
                 />
                 <div className="text-lg font-bold text-purple-600">
-                  {plan.PlanSubscription.PlanFeature.length}
+                  {plan.PlanSubscription?.PlanFeature.length}
                 </div>
                 <div className="text-xs text-purple-600">Features</div>
               </div>
@@ -146,12 +146,14 @@ export const RenderOverviewTab = () => {
                 className="text-emerald-700"
               />
               <span className="text-sm text-emerald-700">
-                {plan.PlanSubscription.expireDays
+                {plan.PlanSubscription?.expireDays
                   ? formatDuration(plan.PlanSubscription.expireDays)
-                  : formatDateRange(
-                      plan.PlanSubscription.PlanFeature[0].validFrom,
-                      plan.PlanSubscription.PlanFeature[0].validUntil,
-                    )}
+                  : plan.PlanSubscription?.PlanFeature?.[0]
+                    ? formatDateRange(
+                        plan.PlanSubscription.PlanFeature[0].validFrom,
+                        plan.PlanSubscription.PlanFeature[0].validUntil,
+                      )
+                    : 'Tidak terbatas'}
               </span>
             </div>
           </div>
@@ -164,10 +166,11 @@ export const RenderOverviewTab = () => {
           <div className="text-center">
             <div className="text-sm font-semibold text-indigo-700 flex items-center justify-center gap-2">
               <MapPin size={14} />
-              Platform: {plan.PlanSubscription.WebsiteSubCategory?.name}
+              Platform:{' '}
+              {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Platform'}
             </div>
             <div className="text-xs text-indigo-600 mt-1">
-              Tier: {plan.PlanSubscription.tier}
+              Tier: {plan.PlanSubscription?.tier || 'Standar'}
             </div>
           </div>
         </div>

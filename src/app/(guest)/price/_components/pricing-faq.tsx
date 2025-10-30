@@ -12,7 +12,7 @@ export default function PricingFaq() {
     {
       question: 'Apa itu sistem coin di Bimbelio?',
       answer:
-        'Bimbelio menggunakan 5 jenis coin berbeda (Notes Coin, Chat Coin, Quiz Coin, Tryout Coin, dan Vision Coin) sebagai metode pembayaran internal untuk mengakses fitur-fitur interaktif. Setiap paket berlangganan memberikan jumlah coin bulanan yang berbeda untuk masing-masing jenis, dan Anda dapat membeli coin tambahan jika diperlukan.',
+        'Bimbelio menggunakan 5 jenis coin berbeda (Notes Coin, Chat Coin, Quiz Coin, Tryout Coin, dan Vision Coin) sebagai metode pembayaran internal untuk mengakses fitur-fitur interaktif. Setiap paket berlangganan memberikan jumlah coin bulanan yang berbeda untuk masing-masing jenis, dan Kamu dapat membeli coin tambahan jika diperlukan.',
     },
     {
       question: 'Apa perbedaan antara kelima jenis coin?',
@@ -22,12 +22,12 @@ export default function PricingFaq() {
     {
       question: 'Bagaimana cara menggunakan coin?',
       answer:
-        'Coin akan otomatis digunakan saat Anda mengakses fitur yang memerlukan coin. Misalnya, saat Anda membuat notes baru, sistem akan mengurangi jumlah coin sesuai dengan biaya yang ditentukan untuk fitur tersebut berdasarkan paket berlangganan Anda.',
+        'Coin akan otomatis digunakan saat Kamu mengakses fitur yang memerlukan coin. Misalnya, saat Kamu membuat notes baru, sistem akan mengurangi jumlah coin sesuai dengan biaya yang ditentukan untuk fitur tersebut berdasarkan paket berlangganan Kamu.',
     },
     {
       question: 'Apakah coin yang tidak terpakai akan hangus?',
       answer:
-        'Coin bonus dari paket berlangganan akan diperbarui setiap bulan dan tidak terakumulasi. Namun, coin yang Anda beli secara terpisah tidak akan hangus dan dapat digunakan kapan saja.',
+        'Coin bonus dari paket berlangganan akan diperbarui setiap bulan dan tidak terakumulasi. Namun, coin yang Kamu beli secara terpisah tidak akan hangus dan dapat digunakan kapan saja.',
     },
     {
       question: 'Apa perbedaan antara paket berlangganan dan paket bundle?',
@@ -37,22 +37,22 @@ export default function PricingFaq() {
     {
       question: 'Bagaimana cara berlangganan paket di Bimbelio?',
       answer:
-        "Anda dapat berlangganan dengan memilih paket yang sesuai, mengklik tombol 'Berlangganan Sekarang', dan mengikuti petunjuk pembayaran. Kami menerima berbagai metode pembayaran termasuk kartu kredit, transfer bank, dan e-wallet.",
+        "Kamu dapat berlangganan dengan memilih paket yang sesuai, mengklik tombol 'Berlangganan Sekarang', dan mengikuti petunjuk pembayaran. Kami menerima berbagai metode pembayaran termasuk kartu kredit, transfer bank, dan e-wallet.",
     },
     {
       question: 'Apakah saya bisa mengubah paket berlangganan saya?',
       answer:
-        'Ya, Anda dapat mengupgrade atau downgrade paket berlangganan Anda kapan saja. Perubahan akan berlaku pada periode penagihan berikutnya. Jika Anda mengupgrade, Anda akan mendapatkan akses ke fitur tambahan segera setelah pembayaran berhasil.',
+        'Ya, Kamu dapat mengupgrade atau downgrade paket berlangganan Kamu kapan saja. Perubahan akan berlaku pada periode penagihan berikutnya. Jika Kamu mengupgrade, Kamu akan mendapatkan akses ke fitur tambahan segera setelah pembayaran berhasil.',
     },
     {
       question: 'Bagaimana cara membeli coin tambahan?',
       answer:
-        "Anda dapat membeli coin tambahan melalui halaman akun Anda. Pilih paket coin yang Anda inginkan, klik 'Beli Sekarang', dan ikuti petunjuk pembayaran. Coin akan segera tersedia setelah pembayaran berhasil.",
+        "Kamu dapat membeli coin tambahan melalui halaman akun Kamu. Pilih paket coin yang Kamu inginkan, klik 'Beli Sekarang', dan ikuti petunjuk pembayaran. Coin akan segera tersedia setelah pembayaran berhasil.",
     },
     {
       question: 'Apakah ada pengembalian dana jika saya tidak puas?',
       answer:
-        'Kami menawarkan jaminan uang kembali dalam 7 hari untuk pelanggan baru. Jika Anda tidak puas dengan layanan kami, Anda dapat meminta pengembalian dana penuh dalam 7 hari pertama berlangganan.',
+        'Kami menawarkan jaminan uang kembali dalam 7 hari untuk pelanggan baru. Jika Kamu tidak puas dengan layanan kami, Kamu dapat meminta pengembalian dana penuh dalam 7 hari pertama berlangganan.',
     },
   ];
 
