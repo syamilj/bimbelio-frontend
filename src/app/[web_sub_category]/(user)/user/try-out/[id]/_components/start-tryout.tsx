@@ -112,7 +112,7 @@ const StartTryout = ({
     {
       icon: <AlertCircle className="w-5 h-5" />,
       title: 'Tidak Dapat Mengulang',
-      description: 'Setelah selesai, Anda tidak dapat mengulang sesi yang sama',
+      description: 'Setelah selesai, Kamu tidak dapat mengulang sesi yang sama',
       highlight: 'Final',
     },
   ];
@@ -269,7 +269,7 @@ const StartTryout = ({
                   {/* Description */}
                   <div className="text-center">
                     <p className="text-gray-600 leading-relaxed">
-                      Siap memulai try out? Pastikan Anda sudah memahami semua
+                      Siap memulai try out? Pastikan Kamu sudah memahami semua
                       aturan dan memiliki koneksi internet yang stabil. Semoga
                       berhasil!
                     </p>
@@ -346,8 +346,8 @@ const StartTryout = ({
                         htmlFor="agree-rules"
                         className="text-sm text-gray-700 leading-relaxed cursor-pointer"
                       >
-                        Saya telah membaca dan memahami semua aturan dan
-                        ketentuan try out ini. Saya setuju untuk mematuhi semua
+                        Aku telah membaca dan memahami semua aturan dan
+                        ketentuan try out ini. Aku setuju untuk mematuhi semua
                         aturan yang berlaku dan siap memulai try out dengan
                         sportif.
                       </label>
@@ -503,7 +503,7 @@ const StartTryout = ({
 
                     {!agreedToRules && (
                       <p className="text-xs text-red-500">
-                        Anda harus menyetujui aturan terlebih dahulu
+                        Kamu harus menyetujui aturan terlebih dahulu
                       </p>
                     )}
                   </div>

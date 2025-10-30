@@ -165,7 +165,7 @@ export const RenderLimitationTab = () => {
             />
             <span className="text-sm font-semibold text-indigo-800">
               Durasi Akses:{' '}
-              {formatDuration(plan.PlanSubscription.expireDays || 0)}
+              {formatDuration(plan.PlanSubscription?.expireDays || 0)}
             </span>
           </div>
           <p className="text-xs text-indigo-600 mt-1">

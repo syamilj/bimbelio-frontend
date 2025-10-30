@@ -106,7 +106,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
           Ringkasan Hasil
         </h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Berikut adalah ringkasan lengkap dari performa Anda dalam try out ini
+          Berikut adalah ringkasan lengkap dari performa Kamu dalam try out ini
         </p>
       </motion.div>
 

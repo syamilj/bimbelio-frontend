@@ -140,17 +140,18 @@ const Content = () => {
   return (
     <div className="relative">
       {tryoutAccount?.userTryOutId ? (
-        <div className="container mx-auto max-w-7xl px-4 py-6">
-          <DialogRecomendation
-            openExternal={open}
-            setOpenExternal={setOpen}
-          />
-          <OnBoarding
-            open={onBoarding.tryout}
-            type="tryout"
-          />
+        <div className="min-h-screen bg-white">
+          <div className="container mx-auto max-w-7xl px-4 py-8">
+            <DialogRecomendation
+              openExternal={open}
+              setOpenExternal={setOpen}
+            />
+            <OnBoarding
+              open={onBoarding.tryout}
+              type="tryout"
+            />
 
-          <div className="space-y-8">
+            {/* Sections with consistent mb-12 spacing */}
             <SummaryTryout />
             <Terbaru id={tryoutAccount.userTryOutId} />
             <Upcoming id={tryoutAccount.userTryOutId} />

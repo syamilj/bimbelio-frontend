@@ -122,9 +122,9 @@ const SidebarRoute: FC = () => {
     },
     {
       icon: Video,
-      href: `/${website_sub_category_id}/admin/live-class`,
-      label: 'Live Class',
-      description: 'Kelola live class',
+      href: `/${website_sub_category_id}/admin/live-learning`,
+      label: 'Live Learning',
+      description: 'Kelola live learning',
       category: 'Education',
     },
     {

@@ -83,7 +83,7 @@ const Challenge = ({
       case 'SHORT_ANSWER':
         return {
           title: 'Jawaban Singkat',
-          description: 'Ketik jawaban singkat Anda',
+          description: 'Ketik jawaban singkat Kamu',
           icon: <RotateCcw className="w-4 h-4" />,
           color: '#F59E0B',
         };

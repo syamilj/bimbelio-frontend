@@ -57,8 +57,12 @@ export function DialogPayment({
   children: ReactNode;
   classOverlay?: string;
 }) {
-  const { setPagesSetting, setTransactionHistory, setTransactionPopUp } =
-    useAppContext();
+  const {
+    setPagesSetting,
+    setTransactionHistory,
+    setTransactionPopUp,
+    useAuth: { setShowAuth },
+  } = useAppContext();
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -289,10 +293,10 @@ export function DialogPayment({
             setTelp(formatPhoneNumber(session.user.phone));
           }
           if (!session) {
-            // setShowAuth({
-            //   redirect: `/price?planId=${plan.id}${voucherCodeQuery ? `&voucherCode=${voucherCodeQuery}` : ''}`,
-            //   open: true,
-            // });
+            setShowAuth({
+              redirect: `/price?planId=${plan.id}${voucherCodeQuery ? `&voucherCode=${voucherCodeQuery}` : ''}`,
+              open: true,
+            });
             setIsOpen(false);
             return;
           }
@@ -540,7 +544,7 @@ export function DialogPayment({
                           Voucher berhasil diterapkan!
                         </p>
                         <p className="text-xs text-green-700">
-                          Anda hemat {formatPrice(plan.price - discountPrice)}
+                          Kamu hemat {formatPrice(plan.price - discountPrice)}
                         </p>
                       </div>
                     </div>
@@ -671,7 +675,7 @@ export function DialogPayment({
                 {/* Security Note - Compact */}
                 <div className="text-center pt-2 border-t border-gray-100">
                   <p className="text-xs text-gray-500">
-                    Dengan melanjutkan, Anda menyetujui{' '}
+                    Dengan melanjutkan, Kamu menyetujui{' '}
                     <a
                       href="#"
                       className="text-blue-600 hover:underline"

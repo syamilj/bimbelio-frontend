@@ -9,6 +9,7 @@ import {
   useContext,
 } from 'react';
 import { OneTapLogin } from '../_shared/auth/one-tap-login';
+import Footer from '../_shared/footer';
 import Navbar from '../_shared/navbar';
 import FloatingContactButton from '../_shared/other/floating-contact-button';
 import { useAppContext } from '../provider/provider-app';
@@ -116,7 +117,11 @@ export default function LayoutGuest({ children }: LayoutGuestProps) {
       <OneTapLogin />
       <div className="min-h-screen">
         {pathname !== '/discord' && <Navbar />}
-        <main className="relative">{children}</main>
+        <main className="relative">
+          {children}
+
+          <Footer />
+        </main>
         <FloatingContactButton />
       </div>
     </GuestContext.Provider>

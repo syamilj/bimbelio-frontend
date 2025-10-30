@@ -88,7 +88,7 @@ export default function Kategori() {
   >([]);
 
   const fetchSubCategories = async () => {
-    await getGeneral('/category/getAllSubcategories', {
+    await getGeneral('/category/getAllSubcategories?isAdmin=true', {
       setData: setSubcategories,
     });
   };

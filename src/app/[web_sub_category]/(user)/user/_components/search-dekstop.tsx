@@ -103,12 +103,14 @@ const SearchDeskstop = () => {
       >
         <div
           className={cn(
-            'relative flex items-center overflow-hidden bg-white shadow-lg border-2 transition-all duration-300',
-            isMobile ? 'rounded-xl' : 'rounded-full',
-            isFocused ? 'shadow-xl scale-[1.02]' : 'shadow-lg',
+            'relative flex items-center overflow-hidden bg-white shadow-sm border-2 transition-all duration-300',
+            isMobile ? 'rounded-2xl' : 'rounded-full',
+            isFocused
+              ? 'shadow-md scale-[1.01] border-2'
+              : 'shadow-sm border-2',
           )}
           style={{
-            borderColor: isFocused ? `${mainColor}60` : 'transparent',
+            borderColor: isFocused ? mainColor : '#f3f4f6',
           }}
         >
           {/* Search Icon */}
@@ -140,20 +142,20 @@ const SearchDeskstop = () => {
 
           {/* Category Filter - Desktop */}
           {!isMobile && (
-            <div className="hidden md:flex items-center gap-3 px-4 border-l border-gray-200 dark:border-gray-700">
+            <div className="hidden md:flex items-center gap-3 px-4 border-l-2 border-gray-100">
               <Filter className="w-4 h-4 text-gray-400" />
               <div className="min-w-[150px]">
                 <Select
                   value={categoryId === '' ? 'all' : categoryId}
                   onValueChange={handleCategoryChange}
                 >
-                  <SelectTrigger className="border-none shadow-none bg-transparent text-gray-600 focus:ring-0 h-auto p-0">
+                  <SelectTrigger className="border-none shadow-none bg-transparent text-gray-600 focus:ring-0 h-auto p-0 font-medium">
                     <SelectValue placeholder="Semua Kategori" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-xl border shadow-xl">
+                  <SelectContent className="rounded-2xl border-2 border-gray-100 shadow-sm">
                     <SelectItem
                       value="all"
-                      className="rounded-lg"
+                      className="rounded-xl font-medium"
                     >
                       <div className="flex items-center gap-2">
                         <div
@@ -167,7 +169,7 @@ const SearchDeskstop = () => {
                       <SelectItem
                         key={item.id}
                         value={item.id ?? ''} // pastikan item.id ada!
-                        className="rounded-lg"
+                        className="rounded-xl font-medium"
                       >
                         <div className="flex items-center gap-2">
                           <div
@@ -190,10 +192,10 @@ const SearchDeskstop = () => {
               type="submit"
               disabled={!searchValue.trim()}
               className={cn(
-                'shadow-lg transition-all duration-300 p-0',
-                isMobile ? 'w-8 h-8 rounded-lg' : 'w-12 h-12 rounded-full',
+                'shadow-sm transition-all duration-300 p-0',
+                isMobile ? 'w-8 h-8 rounded-xl' : 'w-12 h-12 rounded-full',
                 searchValue.trim()
-                  ? 'hover:shadow-xl hover:scale-105'
+                  ? 'hover:shadow-md hover:scale-105'
                   : 'opacity-50 cursor-not-allowed',
               )}
               style={{ backgroundColor: mainColor }}
@@ -211,10 +213,10 @@ const SearchDeskstop = () => {
         <div className="flex items-center gap-2 pb-2">
           <button
             className={cn(
-              'px-3 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200',
+              'px-3 py-2 rounded-xl whitespace-nowrap text-sm font-bold transition-all duration-200 border-2',
               categoryId === ''
-                ? 'text-white shadow-md'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700',
+                ? 'text-white shadow-sm border-transparent'
+                : 'bg-white text-gray-600 hover:bg-gray-50 border-gray-100',
             )}
             style={{
               backgroundColor: categoryId === '' ? mainColor : undefined,
@@ -227,10 +229,10 @@ const SearchDeskstop = () => {
             <button
               key={item.id}
               className={cn(
-                'px-3 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-all duration-200',
+                'px-3 py-2 rounded-xl whitespace-nowrap text-sm font-bold transition-all duration-200 border-2',
                 categoryId === item.id
-                  ? 'text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700',
+                  ? 'text-white shadow-sm border-transparent'
+                  : 'bg-white text-gray-600 hover:bg-gray-50 border-gray-100',
               )}
               style={{
                 backgroundColor: categoryId === item.id ? mainColor : undefined,

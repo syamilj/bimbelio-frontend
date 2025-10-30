@@ -421,7 +421,7 @@ const DialogImportVouchers = ({
       onOpenChange={setOpen}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="w-[600px]">
+      <DialogContent className="sm:w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-center text-lg font-semibold mb-2">
             Import Soal dari CSV

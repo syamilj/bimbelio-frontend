@@ -29,7 +29,7 @@ export const DialogJoinDiscord = ({
       onOpenChange={setOpen}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="rounded-2xl shadow-2xl border-0 max-w-md overflow-hidden">
+      <DialogContent className="rounded-2xl shadow-2xl border-0 mb:max-w-md overflow-hidden">
         {/* Discord-themed gradient header */}
         <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-br from-[#5865F2] via-[#4752C4] to-[#3c45a5]" />
 

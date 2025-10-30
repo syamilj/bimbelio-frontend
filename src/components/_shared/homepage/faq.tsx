@@ -58,7 +58,7 @@ const FAQ = () => {
     {
       question: 'Bagaimana AI di Bimbelio membantu pembelajaran saya?',
       answer:
-        'AI Bimbelio menganalisis pola belajar dan kemampuan Anda, kemudian memberikan rekomendasi materi yang tepat, menyesuaikan tingkat kesulitan soal, dan memberikan feedback yang personal. AI juga dapat menjawab pertanyaan Anda secara real-time melalui fitur chat.',
+        'AI Bimbelio menganalisis pola belajar dan kemampuan Kamu, kemudian memberikan rekomendasi materi yang tepat, menyesuaikan tingkat kesulitan soal, dan memberikan feedback yang personal. AI juga dapat menjawab pertanyaan Kamu secara real-time melalui fitur chat.',
       category: 'AI Features',
       icon: '⚡',
       color: '#8B5CF6',
@@ -68,7 +68,7 @@ const FAQ = () => {
     {
       question: 'Apakah saya bisa mengakses Bimbelio di smartphone?',
       answer:
-        'Ya, platform Bimbelio dapat diakses melalui browser di smartphone, tablet, atau komputer. Semua fitur telah dioptimalkan untuk penggunaan mobile sehingga Anda bisa belajar kapan saja dan dimana saja.',
+        'Ya, platform Bimbelio dapat diakses melalui browser di smartphone, tablet, atau komputer. Semua fitur telah dioptimalkan untuk penggunaan mobile sehingga Kamu bisa belajar kapan saja dan dimana saja.',
       category: 'Aksesibilitas',
       icon: '📱',
       color: '#EC4899',
@@ -78,7 +78,7 @@ const FAQ = () => {
     {
       question: 'Bagaimana cara mendaftar dan memulai belajar di Bimbelio?',
       answer:
-        'Pendaftaran sangat mudah! Klik tombol "Daftar Sekarang", isi data diri Anda, dan langsung mulai dengan try out gratis untuk mengetahui level kemampuan Anda. Setelah itu, Anda akan mendapatkan rekomendasi pembelajaran yang personal.',
+        'Pendaftaran sangat mudah! Klik tombol "Daftar Sekarang", isi data diri Kamu, dan langsung mulai dengan try out gratis untuk mengetahui level kemampuan Kamu. Setelah itu, Kamu akan mendapatkan rekomendasi pembelajaran yang personal.',
       category: 'Getting Started',
       icon: '🚀',
       color: '#06B6D4',
@@ -372,7 +372,7 @@ const FAQ = () => {
                 Masih ada pertanyaan lain?
               </h3>
               <p className="text-lg text-gray-600">
-                Tim support ahli kami siap membantu Anda kapan saja
+                Tim support ahli kami siap membantu Kamu kapan saja
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

@@ -1,12 +1,17 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMedia } from 'use-media';
 
-import UserAccountNav from '@/components/_shared/navbar/user-account-nav';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Sheet,
   SheetContent,
@@ -15,41 +20,362 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
-import { LayoutDashboard, LogOut, Menu, X } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronRight,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  ShoppingBag,
+  X,
+} from 'lucide-react';
 
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import Logo from '@/components/ui/logo';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { Spinner } from '@/components/ui/spinner';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { cn } from '@/lib/utils';
 import { hexToRgba } from '@/styles/main-styles';
+import type { LucideIcon } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { Badge } from '../../ui/badge';
 
-interface NavbarProps {
-  showAuth: { open: boolean; redirect: string | null };
-  setShowAuth: Dispatch<
-    SetStateAction<{ open: boolean; redirect: string | null }>
-  >;
+// Enhanced types untuk multi-column submenu
+interface SubmenuItem {
+  href: string;
+  label: string;
+  isLink?: boolean;
+  description?: string;
+  icon?: string; // Nama icon dari Lucide, e.g. 'BookOpen', 'Target'
+  badge?: {
+    text: string; // e.g. 'GRATIS', 'NEW', 'PREMIUM'
+    variant?: 'success' | 'info' | 'warning' | 'premium'; // Color variants
+  };
+  // Optional action for special behaviours (e.g. open contact modal)
+  action?: 'openContact';
+}
+
+interface SubmenuColumn {
+  title?: string; // Column header, optional
+  items: SubmenuItem[];
 }
 
 interface NavItem {
   href: string;
   label: string;
   isLink?: boolean;
-  separator?: boolean; // Tambahkan separator jika diperlukan
+  submenu?: SubmenuItem[]; // Simple single column (backward compatible)
+  submenuColumns?: SubmenuColumn[]; // Advanced multi-column layout
+  // Optional badge at top-level menu
+  badge?: {
+    text: string;
+    variant?: 'success' | 'info' | 'warning' | 'premium';
+  };
+  // Optional action for top-level menu
+  action?: 'openContact';
 }
 
 const navItems: NavItem[] = [
-  { href: '/#hero', label: 'Beranda', isLink: true },
-  // { href: "#materi", label: "Materi" },
-  // { href: "#testimoni", label: "Testimoni" },
-  // { href: '/tutor', label: 'Tutor', isLink: true },
-  { href: '/blog', label: 'Blog', isLink: true },
-  { href: '/price', label: 'Paket', isLink: true },
-  { href: '#tryout', label: 'Try Out' },
+  {
+    href: '/',
+    label: 'Fitur',
+    isLink: false,
+    // Multi-column submenu dengan headers dan icons
+    submenuColumns: [
+      {
+        title: 'Metode Belajar',
+        items: [
+          {
+            href: '#solution',
+            label: 'PRINTS',
+            description: 'Metode pembelajaran',
+            badge: { text: 'FRAMEWORK', variant: 'success' },
+            icon: 'Sparkles',
+          },
+          {
+            href: '#timeline',
+            label: 'Timeline',
+            badge: { text: 'KALENDER', variant: 'info' },
+            description: 'Jadwal belajar terstruktur',
+            icon: 'Calendar',
+          },
+          {
+            href: '#ecosystem',
+            label: 'Ekosistem',
+            description: 'Lingkungan belajar lengkap',
+            icon: 'Layers',
+          },
+        ],
+      },
+      {
+        title: 'Informasi',
+        items: [
+          {
+            href: '#mentor-ai',
+            label: 'Bimbot AI',
+            description: 'Tanya jawab dengan AI',
+            icon: 'Bot',
+            badge: { text: 'NEW', variant: 'info' },
+            // isLink: true,
+          },
+          {
+            href: '#tryout',
+            label: 'Try Out Online',
+            description: 'Simulasi ujian real-time',
+            icon: 'Timer',
+            badge: { text: 'GRATIS', variant: 'info' },
+            // isLink: true,
+          },
+          {
+            href: '#ecosystem',
+            label: 'Analisis',
+            description: 'Laporan detail kemampuan',
+            icon: 'TrendingUp',
+            badge: { text: 'PREMIUM', variant: 'premium' },
+            // isLink: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    href: '/',
+    label: 'Tutor',
+    isLink: true,
+    submenuColumns: [
+      {
+        title: '3-Layer System',
+        items: [
+          {
+            href: '#tutors',
+            label: 'Tutor',
+            description: 'Diajar oleh yang terbaik',
+            icon: 'UserCheck',
+            badge: { text: 'TOP ONLY', variant: 'warning' },
+            // isLink: true,
+          },
+          {
+            href: '#mentor',
+            label: 'Mentor',
+            description: 'Dibimbing oleh yang relevan',
+            icon: 'UserCheck',
+            // isLink: true,
+          },
+          {
+            href: '#mentor-ai',
+            label: 'Bimbot AI',
+            description: '24/7 AI yang membantu belajar',
+            icon: 'BotMessageSquare',
+            badge: { text: 'AI', variant: 'premium' },
+            // isLink: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    href: '/price',
+    label: 'Program',
+    isLink: true,
+    badge: { text: 'PROMO', variant: 'warning' },
+    submenuColumns: [
+      // {
+      //   title: 'PTN',
+      //   items: [
+      //     {
+      //       href: '/price',
+      //       label: 'SNBT',
+      //       description: 'Persiapan SNBT 2026',
+      //       icon: 'Target',
+      //       badge: { text: 'POPULER', variant: 'warning' },
+      //       isLink: true,
+      //     },
+      //     {
+      //       href: '/price',
+      //       label: 'SIMAK UI',
+      //       description: 'Ujian Mandiri UI',
+      //       icon: 'School',
+      //       isLink: true,
+      //     },
+      //     {
+      //       href: '/price',
+      //       label: 'UM UGM',
+      //       description: 'Ujian Mandiri UGM',
+      //       icon: 'BookOpen',
+      //       isLink: true,
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: 'Kedinasan',
+      //   items: [
+      //     {
+      //       href: '/price',
+      //       label: 'IPDN',
+      //       description: 'Institut Pemerintahan',
+      //       icon: 'Building2',
+      //       isLink: true,
+      //     },
+      //     {
+      //       href: '/price',
+      //       label: 'STAN',
+      //       description: 'Sekolah Tinggi Akuntansi',
+      //       icon: 'Calculator',
+      //       badge: { text: 'PREMIUM', variant: 'premium' },
+      //       isLink: true,
+      //     },
+      //     {
+      //       href: '/price',
+      //       label: 'STIS',
+      //       description: 'Sekolah Tinggi Statistik',
+      //       icon: 'BarChart',
+      //       isLink: true,
+      //     },
+      //   ],
+      // },
+      {
+        title: 'Product',
+        items: [
+          {
+            href: '#price-plan',
+            label: 'Private',
+            description: 'Kelas eksklusif',
+            badge: { text: '1-ON-1', variant: 'premium' },
+            icon: 'UserPlus',
+            isLink: true,
+          },
+          {
+            href: '#price-coin',
+            label: 'Try Out',
+            description: 'Latihan tanpa bayar',
+            icon: 'Gift',
+            badge: { text: 'GRATIS', variant: 'success' },
+            isLink: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    href: '/blog',
+    label: 'Blog',
+    isLink: true,
+  },
+  {
+    href: '/discord',
+    label: 'Lainnya',
+    isLink: false,
+    submenuColumns: [
+      {
+        title: 'Belajar Bareng',
+        items: [
+          {
+            href: '/discord',
+            label: 'Discord',
+            description: 'Grup belajar online',
+            icon: 'Users',
+            badge: { text: 'GRATIS', variant: 'success' },
+            isLink: true,
+          },
+          // {
+          //   href: '#hero',
+          //   label: 'Beasiswa',
+          //   description: 'Informasi beasiswa',
+          //   icon: 'Award',
+          //   badge: { text: 'GRATIS', variant: 'success' },
+          //   isLink: false,
+          // },
+        ],
+      },
+      {
+        title: 'Bantuan',
+        items: [
+          // {
+          //   href: '/#faq',
+          //   label: 'FAQ',
+          //   description: 'Tanya jawab seputar Bimbelio',
+          //   icon: 'MessageSquare',
+          //   // isLink: true,
+          // },
+          {
+            href: '/#contact',
+            label: 'Konsultasi',
+            description: 'Hubungi tim kami untuk bantuan',
+            icon: 'PhoneCall',
+            badge: { text: 'GRATIS', variant: 'success' },
+            isLink: true,
+          },
+        ],
+      },
+    ],
+  },
 ];
+
+// Helper: Get Lucide icon component by name
+const getIconComponent = (iconName?: string): LucideIcon | null => {
+  if (!iconName) return null;
+  return (LucideIcons as any)[iconName] || null;
+};
+
+// Helper: Get badge styling based on variant
+const getBadgeStyles = (variant?: string) => {
+  const styles = {
+    success: {
+      bg: '#10b981',
+      text: 'white',
+    },
+    info: {
+      bg: '#3b82f6',
+      text: 'white',
+    },
+    warning: {
+      bg: '#f59e0b',
+      text: 'white',
+    },
+    premium: {
+      bg: 'linear-gradient(135deg, #ffd700, #ffed4e)',
+      text: '#000',
+    },
+  };
+  return styles[variant as keyof typeof styles] || styles.info;
+};
+
+// Helper: open the floating contact dialog by programmatically clicking the floating button
+const openContactDialog = () => {
+  try {
+    const btn = document.querySelector(
+      'button[aria-label="Buka menu konsultasi"]',
+    ) as HTMLElement | null;
+    if (btn) {
+      btn.click();
+      return true;
+    }
+    // fallback: try PhoneCall aria label
+    const altBtn = document.querySelector(
+      'button[role="button"]',
+    ) as HTMLElement | null;
+    if (altBtn) {
+      altBtn.click();
+      return true;
+    }
+    console.warn('Floating contact button not found');
+    return false;
+  } catch (error) {
+    console.warn('Error opening contact dialog', error);
+    return false;
+  }
+};
 
 const GratisBadge: React.FC<{ label: string }> = ({ label }) => {
   if (label.toLowerCase() !== 'try out') return null;
@@ -87,49 +413,59 @@ const NavLink: React.FC<{
 
   const linkClasses = cn(
     'relative text-main-default transition-colors duration-300 hover:underline bg-transparent border-none cursor-pointer',
-    item.separator && 'ml-4 border-l border-gray-900 pl-4',
+    // item.separator && 'ml-4 border-l border-gray-900 pl-4',
   );
 
   const handleClick = () => {
     onClick?.(); // Untuk menutup sheet di mobile
+    // Special action: open contact dialog if label/href/action indicates so
+    if (
+      item.action === 'openContact' ||
+      /contact|konsultasi/i.test(item.href || item.label)
+    ) {
+      openContactDialog();
+      return;
+    }
 
     if (item.isLink) {
       // Direct navigation untuk link pages
       router.push(item.href);
-    } else {
-      // Scroll navigation untuk anchor links
-      if (pathname !== '/') {
-        // Jika tidak di homepage, navigasi ke homepage dengan hash
-        router.push(`/${item.href}`);
-      } else {
-        // Jika di homepage, lakukan scroll
-        const targetId = item.href.substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-          const offset = 200;
-          const elementPosition = targetElement.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth',
-          });
-        } else {
-          // Fallback: navigasi ke homepage dengan hash
-          router.push(`/${item.href}`);
-        }
-      }
+      return;
     }
+
+    // Non isLink - don't navigate (user requested non-clickable)
+    if (!item.isLink) return;
   };
 
   return (
     <button
       onClick={handleClick}
-      className={linkClasses}
+      className={cn(
+        linkClasses,
+        item.isLink ? 'cursor-pointer' : 'cursor-default',
+      )}
       style={{ color: mainColor }}
     >
-      {item.label}
+      <span className="relative inline-block">
+        {item.label}
+        {/* Top-level badge - superscript style for mobile */}
+        {item.badge &&
+          (() => {
+            const bs = getBadgeStyles(item.badge!.variant);
+            return (
+              <span
+                className="absolute -top-2 -right-0 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap"
+                style={{
+                  background: bs.bg,
+                  color: bs.text,
+                  transform: 'translateX(100%)',
+                }}
+              >
+                {item.badge!.text}
+              </span>
+            );
+          })()}
+      </span>
       <GratisBadge label={item.label} />
     </button>
   );
@@ -140,11 +476,15 @@ const MobileNav: React.FC<{
   isSheetOpen: boolean;
   setIsSheetOpen: (open: boolean) => void;
   session: any;
-}> = ({ navItems, isSheetOpen, setIsSheetOpen, session }) => {
+  setIsNavigating: (loading: boolean) => void;
+}> = ({ navItems, isSheetOpen, setIsSheetOpen, session, setIsNavigating }) => {
   const {
     useAuth: { setShowAuth },
   } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Get dynamic colors
   const isMainLandingPage = window.location.pathname === '/';
@@ -155,26 +495,60 @@ const MobileNav: React.FC<{
     ? '#5aa4dd'
     : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
+  const handleNavigation = (
+    href: string,
+    isLink?: boolean,
+    action?: 'openContact',
+  ) => {
+    setIsSheetOpen(false);
+
+    // Special: contact action
+    if (action === 'openContact' || /contact|konsultasi/i.test(href)) {
+      openContactDialog();
+      return;
+    }
+
+    if (isLink) {
+      // Show loading spinner
+      setIsNavigating(true);
+      // Navigate
+      router.push(href);
+    } else {
+      if (pathname !== '/') {
+        // Show loading spinner for page navigation
+        setIsNavigating(true);
+        router.push(`/${href}`);
+      } else {
+        // Scroll tanpa loading (same page)
+        const targetId = href.substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          const offset = 200;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth',
+          });
+        }
+      }
+    }
+  };
+
   return (
     <div className="fixed left-0 top-0 z-50 w-full">
       {/* Enhanced Mobile Header */}
-      <Card className="mx-3 mt-3 shadow-xl border-2 border-white/20 rounded-2xl backdrop-blur-xl overflow-hidden">
+      <Card className="mx-3 mt-3 shadow-xl border rounded-2xl backdrop-blur-xl overflow-hidden">
         <div className="px-4 py-3 relative bg-transparent">
           {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <div
-              className="absolute top-0 right-0 w-20 h-20 rounded-full -translate-y-6 translate-x-6"
-              style={{
-                backgroundColor: mainColor,
-              }}
-            />
+          {/* <div className="absolute inset-0 opacity-5">
             <div
               className="absolute bottom-0 left-0 w-12 h-12 rounded-full translate-y-3 -translate-x-3"
               style={{
                 backgroundColor: mainColor,
               }}
             />
-          </div>
+          </div> */}
 
           <div className="relative z-10 flex items-center justify-between">
             <Logo
@@ -186,41 +560,56 @@ const MobileNav: React.FC<{
             />
 
             <div className="flex items-center gap-2">
-              {!session && (
-                <Button
-                  className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
-                  style={{
-                    backgroundImage: `linear-gradient(145deg, ${
-                      secondaryColor
-                    }, ${mainColor})`,
-                  }}
-                  onClick={() =>
-                    setShowAuth((prev) => ({
-                      ...prev,
-                      open: true,
-                      redirect: website_sub_category_id
-                        ? `${website_sub_category_id}/user/dashboard`
-                        : '/choice/user/dashboard',
-                    }))
-                  }
-                >
-                  Masuk
-                </Button>
-              )}
-              {session && (
-                <Link href={`${website_sub_category_id}/user/dashboard`}>
+              {/* Combined Button: Shop (1/4) + Login/Dashboard (3/4) */}
+              <div className="flex items-center rounded-2xl shadow-lg overflow-hidden">
+                {/* Shop Button - 1/4 */}
+                <Link href="/price">
                   <Button
-                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
+                    className="px-3 py-2.5 rounded-none text-sm font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 active:scale-95"
                     style={{
-                      backgroundImage: `linear-gradient(145deg, ${
-                        secondaryColor
-                      }, ${mainColor})`,
+                      backgroundColor: '#f59e0b', // Yellow/amber for shopping
                     }}
                   >
-                    Dashboard
+                    <ShoppingBag className="w-4 h-4" />
                   </Button>
                 </Link>
-              )}
+
+                {/* Divider */}
+                <div className="w-px h-8 bg-white/20" />
+
+                {/* Login/Dashboard Button - 3/4 */}
+                {!session && (
+                  <Button
+                    className="px-6 py-2.5 rounded-none text-sm font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 active:scale-95"
+                    style={{
+                      backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                    }}
+                    onClick={() =>
+                      setShowAuth((prev) => ({
+                        ...prev,
+                        open: true,
+                        redirect: website_sub_category_id
+                          ? `${website_sub_category_id}/user/dashboard`
+                          : '/choice/user/dashboard',
+                      }))
+                    }
+                  >
+                    Masuk
+                  </Button>
+                )}
+                {session && (
+                  <Link href={`${website_sub_category_id}/user/dashboard`}>
+                    <Button
+                      className="px-6 py-2.5 rounded-none text-sm font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 active:scale-95"
+                      style={{
+                        backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                      }}
+                    >
+                      Dashboard
+                    </Button>
+                  </Link>
+                )}
+              </div>
               <Sheet
                 open={isSheetOpen}
                 onOpenChange={setIsSheetOpen}
@@ -264,40 +653,205 @@ const MobileNav: React.FC<{
                   </div>
 
                   {/* Clean Content */}
-                  <div className="px-6 pb-6 space-y-4">
-                    {/* Navigation Items - Simple List */}
+                  <div className="px-6 pb-6 space-y-3 max-h-[60vh] overflow-y-auto">
+                    {/* Navigation Items - Expandable Accordion */}
                     <div className="space-y-2">
-                      {navItems.map((item, index) => (
-                        <div
-                          key={item.href}
-                          className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-sm font-medium text-gray-600">
-                              {index + 1}
-                            </div>
-                            <NavLink
-                              item={item}
-                              onClick={() => setIsSheetOpen(false)}
-                            />
-                          </div>
-                          <div className="text-gray-400">
-                            <svg
-                              className="w-4 h-4"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
+                      {navItems.map((item, index) => {
+                        const hasSubmenu = item.submenu || item.submenuColumns;
+                        const isExpanded = expandedItem === index;
+                        const badgeStyles = item.badge
+                          ? getBadgeStyles(item.badge.variant)
+                          : null;
+
+                        return (
+                          <div
+                            key={`mobile-nav-${index}-${item.href}`}
+                            className="rounded-xl overflow-hidden"
+                            style={{
+                              backgroundColor: isExpanded
+                                ? hexToRgba(mainColor, 0.05)
+                                : 'transparent',
+                            }}
+                          >
+                            {/* Top-level menu item */}
+                            <button
+                              onClick={() => {
+                                if (hasSubmenu) {
+                                  setExpandedItem(isExpanded ? null : index);
+                                } else {
+                                  handleNavigation(
+                                    item.href,
+                                    item.isLink,
+                                    item.action,
+                                  );
+                                }
+                              }}
+                              className="w-full flex items-center justify-between p-4 rounded-xl transition-all duration-200"
+                              style={{
+                                backgroundColor: isExpanded
+                                  ? 'transparent'
+                                  : hexToRgba(mainColor, 0.03),
+                              }}
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 5l7 7-7 7"
-                              />
-                            </svg>
+                              <div className="flex items-center gap-3">
+                                {/* Number badge */}
+                                <div
+                                  className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white shadow-sm"
+                                  style={{
+                                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                                  }}
+                                >
+                                  {index + 1}
+                                </div>
+
+                                {/* Label with badge */}
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className="font-semibold text-base"
+                                    style={{ color: mainColor }}
+                                  >
+                                    {item.label}
+                                  </span>
+                                  {/* Top-level badge */}
+                                  {item.badge && badgeStyles && (
+                                    <span
+                                      className="text-[9px] font-black px-2 py-0.5 rounded-full shadow-sm"
+                                      style={{
+                                        background: badgeStyles.bg,
+                                        color: badgeStyles.text,
+                                      }}
+                                    >
+                                      {item.badge.text}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Right indicator */}
+                              <div className="text-gray-400">
+                                {hasSubmenu ? (
+                                  <svg
+                                    className={cn(
+                                      'w-5 h-5 transition-transform duration-200',
+                                      isExpanded && 'rotate-180',
+                                    )}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M19 9l-7 7-7-7"
+                                    />
+                                  </svg>
+                                ) : (
+                                  <ArrowRight
+                                    className="w-5 h-5"
+                                    style={{ color: mainColor }}
+                                  />
+                                )}
+                              </div>
+                            </button>
+
+                            {/* Submenu expansion */}
+                            {hasSubmenu && isExpanded && (
+                              <div className="px-4 pb-3 pt-1 space-y-1">
+                                {/* Get all submenu items from either structure */}
+                                {(() => {
+                                  const allItems: SubmenuItem[] = [];
+                                  if (item.submenuColumns) {
+                                    item.submenuColumns.forEach((col) => {
+                                      allItems.push(...col.items);
+                                    });
+                                  } else if (item.submenu) {
+                                    allItems.push(...item.submenu);
+                                  }
+
+                                  return allItems.map((subItem, subIndex) => {
+                                    const IconComponent = getIconComponent(
+                                      subItem.icon,
+                                    );
+                                    const subBadgeStyles = subItem.badge
+                                      ? getBadgeStyles(subItem.badge.variant)
+                                      : null;
+
+                                    return (
+                                      <button
+                                        key={`${subItem.href}-${subIndex}`}
+                                        onClick={() =>
+                                          handleNavigation(
+                                            subItem.href,
+                                            subItem.isLink,
+                                            subItem.action,
+                                          )
+                                        }
+                                        className="w-full flex items-start gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-white"
+                                        style={{
+                                          backgroundColor: hexToRgba(
+                                            mainColor,
+                                            0.02,
+                                          ),
+                                        }}
+                                      >
+                                        {/* Icon */}
+                                        {IconComponent && (
+                                          <div
+                                            className="mt-0.5 p-2 rounded-lg shrink-0"
+                                            style={{
+                                              backgroundColor: hexToRgba(
+                                                mainColor,
+                                                0.1,
+                                              ),
+                                            }}
+                                          >
+                                            <IconComponent
+                                              className="w-4 h-4"
+                                              style={{ color: mainColor }}
+                                            />
+                                          </div>
+                                        )}
+
+                                        {/* Content */}
+                                        <div className="flex-1 text-left min-w-0">
+                                          <div className="flex items-center gap-2 mb-1">
+                                            <span className="font-bold text-sm text-gray-900">
+                                              {subItem.label}
+                                            </span>
+                                            {/* Submenu badge */}
+                                            {subItem.badge &&
+                                              subBadgeStyles && (
+                                                <span
+                                                  className="text-[9px] font-black px-1.5 py-0.5 rounded-full"
+                                                  style={{
+                                                    background:
+                                                      subBadgeStyles.bg,
+                                                    color: subBadgeStyles.text,
+                                                  }}
+                                                >
+                                                  {subItem.badge.text}
+                                                </span>
+                                              )}
+                                          </div>
+                                          {subItem.description && (
+                                            <p className="text-xs text-gray-500 leading-snug">
+                                              {subItem.description}
+                                            </p>
+                                          )}
+                                        </div>
+
+                                        {/* Arrow */}
+                                        <ArrowRight className="w-4 h-4 text-gray-400 shrink-0 mt-1" />
+                                      </button>
+                                    );
+                                  });
+                                })()}
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     {/* User Profile Section - Clean Version */}
@@ -331,11 +885,11 @@ const MobileNav: React.FC<{
                           </div>
 
                           {/* Action Buttons - Simple Grid */}
-                          <div className="grid grid-cols-2 gap-3">
+                          <div className="grid grid-cols-2 gap-2">
                             <Link
                               href={`/${website_sub_category_id}/user/try-out`}
                               onClick={() => setIsSheetOpen(false)}
-                              className="flex items-center justify-center gap-2 p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+                              className="flex items-center justify-center gap-2 p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
                             >
                               <LayoutDashboard className="w-4 h-4 text-gray-600" />
                               <span className="text-sm font-medium text-gray-700">
@@ -348,7 +902,7 @@ const MobileNav: React.FC<{
                                 signOut({ callbackUrl: '/' });
                                 setIsSheetOpen(false);
                               }}
-                              className="flex items-center justify-center gap-2 p-3 rounded-xl bg-red-50 hover:bg-red-100 transition-colors"
+                              className="flex items-center justify-center gap-2 p-2 rounded-xl bg-red-50 hover:bg-red-100 transition-colors"
                             >
                               <LogOut className="w-4 h-4 text-red-600" />
                               <span className="text-sm font-medium text-red-700">
@@ -390,11 +944,14 @@ const MobileNav: React.FC<{
 const DesktopNav: React.FC<{
   navItems: NavItem[];
   session: any;
-}> = ({ navItems, session }) => {
+  setIsNavigating: (loading: boolean) => void;
+}> = ({ navItems, session, setIsNavigating }) => {
   const {
     useAuth: { setShowAuth },
   } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Get dynamic colors
   const isMainLandingPage = window.location.pathname === '/';
@@ -405,18 +962,57 @@ const DesktopNav: React.FC<{
     ? '#5aa4dd'
     : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
+  const handleScrollToTarget = (href: string) => {
+    const targetId = href.substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      const offset = 200;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleNavigation = (LinkId: string, href: string, isLink?: boolean) => {
+    const Link = document.getElementById(LinkId);
+    // Special: if href indicates contact, open floating contact dialog instead
+    if (/contact|konsultasi/i.test(href)) {
+      openContactDialog();
+      return;
+    }
+    if (isLink) {
+      if (
+        href.startsWith('#price') &&
+        pathname.toLowerCase().includes('price')
+      ) {
+        handleScrollToTarget(href);
+      } else {
+        Link?.click();
+      }
+    } else {
+      if (pathname !== '/') {
+        Link?.click();
+      } else {
+        handleScrollToTarget(href);
+      }
+    }
+  };
+
   return (
-    <div className="fixed left-0 top-0 z-50 w-full bg-transparent">
-      <div className="mx-auto max-w-4xl px-4 pt-4">
-        <Card className="shadow-2xl border-2 border-white/30 rounded-3xl backdrop-blur-xl overflow-hidden">
+    <div className="fixed left-0 top-0 z-50 w-full bg-transparent pointer-events-none">
+      <div className="mx-auto max-w-4xl px-4 pt-4 pointer-events-auto">
+        <Card className="border-2 shadow-md border rounded-2xl backdrop-blur-xl overflow-visible bg-white">
           <div
-            className="px-6 py-4 md:py-1 lg:py-1 relative"
-            style={{
-              background: `linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))`,
-            }}
+            className="px-6 py-4 md:py-1 lg:py-1 relative rounded-3xl z-[3] bg-transparent"
+            // style={{
+            //   background: `linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))`,
+            // }}
           >
             {/* Subtle background pattern */}
-            <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0 opacity-5 overflow-hidden rounded-t-3xl">
               <div
                 className="absolute top-0 right-0 w-32 h-32 rounded-full -translate-y-12 translate-x-12"
                 style={{ backgroundColor: mainColor }}
@@ -427,7 +1023,7 @@ const DesktopNav: React.FC<{
               />
             </div>
 
-            <div className="relative z-10 flex items-center justify-between">
+            <div className="relative z-10 flex items-center justify-between overflow-visible">
               {/* Logo */}
               <div className="flex items-center">
                 <Logo
@@ -438,62 +1034,572 @@ const DesktopNav: React.FC<{
               </div>
 
               {/* Navigation Links */}
-              <nav className="hidden md:flex items-center gap-2">
-                {navItems.map((item, index) => (
-                  <div
-                    key={item.href}
-                    className="relative group"
-                  >
-                    <div className="px-2 text-sm py-1 rounded-xl transition-all duration-300 hover:bg-gray-50 hover:shadow-sm">
-                      <NavLink item={item} />
-                    </div>
-                    {/* Hover indicator */}
-                    <div
-                      className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300 group-hover:w-8"
-                      style={{ backgroundColor: mainColor }}
-                    />
-                  </div>
-                ))}
-              </nav>
+              <NavigationMenu className="hidden md:block overflow-visible">
+                <NavigationMenuList className="gap-0 overflow-visible">
+                  {navItems.map((item, itemIndex) => (
+                    <NavigationMenuItem
+                      key={`desktop-nav-${itemIndex}-${item.href}`}
+                      className="overflow-visible"
+                    >
+                      {item.submenu || item.submenuColumns ? (
+                        <>
+                          <NavigationMenuTrigger
+                            className={cn(
+                              'px-4 py-2 text-sm font-semibold text-gray-700 rounded-lg transition-all duration-300',
+                              item.isLink
+                                ? 'hover:text-gray-900 hover:bg-gray-50 cursor-pointer'
+                                : 'cursor-default',
+                            )}
+                            style={{
+                              color: mainColor,
+                            }}
+                            onClick={(e: any) => {
+                              // If this top-level menu also represents a link, navigate
+                              if (item.isLink) {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                // special case: open contact dialog
+                                if (
+                                  item.action === 'openContact' ||
+                                  /contact|konsultasi/i.test(
+                                    item.href || item.label,
+                                  )
+                                ) {
+                                  openContactDialog();
+                                } else {
+                                  handleNavigation(
+                                    `desktop-toplink-${itemIndex}-${item.href}`,
+                                    item.href,
+                                    item.isLink,
+                                  );
+                                }
+                              }
+                            }}
+                          >
+                            <Link
+                              id={`desktop-toplink-${itemIndex}-${item.href}`}
+                              hidden
+                              href={item.href}
+                            ></Link>
+                            <span className="flex items-center gap-1 relative">
+                              {item.label}
+                              {/* Top-level badge - superscript style */}
+                              {item.badge &&
+                                (() => {
+                                  const bs = getBadgeStyles(
+                                    item.badge!.variant,
+                                  );
+                                  return (
+                                    <span
+                                      className="absolute -top-2.5 left-full -ml-4 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap"
+                                      style={{
+                                        background: bs.bg,
+                                        color: bs.text,
+                                      }}
+                                    >
+                                      {item.badge!.text}
+                                    </span>
+                                  );
+                                })()}
+                            </span>
+                          </NavigationMenuTrigger>
+                          <NavigationMenuContent className="overflow-hidden border-0 p-0 shadow-none !rounded-2xl !bg-transparent">
+                            {/* Multi-column layout */}
+                            {item.submenuColumns ? (
+                              <div
+                                className="p-4 bg-white z-50 overflow-visible"
+                                style={{
+                                  width: `${item.submenuColumns.length * 280}px`,
+                                }}
+                              >
+                                <div
+                                  className={`grid gap-6`}
+                                  style={{
+                                    gridTemplateColumns: `repeat(${item.submenuColumns.length}, 1fr)`,
+                                  }}
+                                >
+                                  {item.submenuColumns.map(
+                                    (column, colIndex) => (
+                                      <div
+                                        key={colIndex}
+                                        className={cn(
+                                          'space-y-2',
+                                          colIndex !==
+                                            item.submenuColumns!.length - 1 &&
+                                            'border-r border-gray-100 pr-6',
+                                        )}
+                                      >
+                                        {/* Column Header */}
+                                        {column.title && (
+                                          <div className="px-3 pb-2 border-b border-gray-100">
+                                            <h3
+                                              className="text-xs font-bold uppercase tracking-wider"
+                                              style={{ color: mainColor }}
+                                            >
+                                              {column.title}
+                                            </h3>
+                                          </div>
+                                        )}
+
+                                        {/* Column Items */}
+                                        <div className="space-y-1">
+                                          {column.items.map(
+                                            (subItem, subItemIndex) => {
+                                              const IconComponent =
+                                                getIconComponent(subItem.icon);
+                                              const badgeStyles = subItem.badge
+                                                ? getBadgeStyles(
+                                                    subItem.badge.variant,
+                                                  )
+                                                : null;
+
+                                              const LinkId = `desktop-submenu-link-${itemIndex}-${colIndex}-${subItemIndex}-${subItem.href}`;
+
+                                              return (
+                                                <button
+                                                  key={`desktop-submenu-${itemIndex}-${colIndex}-${subItemIndex}-${subItem.href}`}
+                                                  onClick={() => {
+                                                    handleNavigation(
+                                                      LinkId,
+                                                      subItem.href,
+                                                      subItem.isLink,
+                                                    );
+                                                  }}
+                                                  className="group w-full text-left px-3 py-2.5 text-sm rounded-2xl transition-all duration-200 relative"
+                                                  style={{
+                                                    color: mainColor,
+                                                  }}
+                                                  onMouseEnter={(
+                                                    e: React.MouseEvent<HTMLButtonElement>,
+                                                  ) => {
+                                                    (
+                                                      e.currentTarget as any
+                                                    ).style.backgroundColor =
+                                                      hexToRgba(
+                                                        mainColor,
+                                                        0.08,
+                                                      );
+                                                  }}
+                                                  onMouseLeave={(
+                                                    e: React.MouseEvent<HTMLButtonElement>,
+                                                  ) => {
+                                                    (
+                                                      e.currentTarget as any
+                                                    ).style.backgroundColor =
+                                                      'transparent';
+                                                  }}
+                                                >
+                                                  <Link
+                                                    id={LinkId}
+                                                    href={`${item.href}`}
+                                                    hidden
+                                                  ></Link>
+                                                  <div className="flex items-start gap-3">
+                                                    {/* Icon */}
+                                                    {IconComponent && (
+                                                      <div
+                                                        className="mt-0.5 p-1.5 rounded-lg transition-all duration-200 group-hover:scale-110"
+                                                        style={{
+                                                          backgroundColor:
+                                                            hexToRgba(
+                                                              mainColor,
+                                                              0.1,
+                                                            ),
+                                                        }}
+                                                      >
+                                                        <IconComponent
+                                                          className="w-4 h-4"
+                                                          style={{
+                                                            color: mainColor,
+                                                          }}
+                                                        />
+                                                      </div>
+                                                    )}
+
+                                                    {/* Content */}
+                                                    <div className="flex-1 min-w-0">
+                                                      <div className="flex items-center gap-2 mb-0.5">
+                                                        <span className="font-bold text-sm">
+                                                          {subItem.label}
+                                                        </span>
+                                                        {/* Badge */}
+                                                        {subItem.badge &&
+                                                          badgeStyles && (
+                                                            <span
+                                                              className="px-2 py-0.5 rounded-full text-[10px] font-black tracking-wide"
+                                                              style={{
+                                                                background:
+                                                                  badgeStyles.bg,
+                                                                color:
+                                                                  badgeStyles.text,
+                                                              }}
+                                                            >
+                                                              {
+                                                                subItem.badge
+                                                                  .text
+                                                              }
+                                                            </span>
+                                                          )}
+                                                      </div>
+                                                      {subItem.description && (
+                                                        <p className="text-xs text-gray-500 leading-snug">
+                                                          {subItem.description}
+                                                        </p>
+                                                      )}
+                                                    </div>
+
+                                                    {/* Arrow indicator */}
+                                                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200 shrink-0 mt-1" />
+                                                  </div>
+                                                </button>
+                                              );
+                                            },
+                                          )}
+                                        </div>
+                                      </div>
+                                    ),
+                                  )}
+                                </div>
+                              </div>
+                            ) : (
+                              /* Single column (backward compatible) */
+                              <div
+                                className="w-64 p-3 bg-white rounded-xl shadow-2xl border z-50 overflow-visible"
+                                style={{
+                                  borderColor: hexToRgba(mainColor, 0.2),
+                                }}
+                              >
+                                <div className="space-y-1">
+                                  {item.submenu!.map(
+                                    (subItem, singleSubIndex) => (
+                                      <button
+                                        key={`desktop-single-submenu-${itemIndex}-${singleSubIndex}-${subItem.href}`}
+                                        onClick={() => {
+                                          handleNavigation(
+                                            `desktop-single-submenu-${itemIndex}-${singleSubIndex}-${subItem.href}`,
+                                            subItem.href,
+                                            subItem.isLink,
+                                          );
+                                        }}
+                                        className="group w-full text-left px-4 py-3 text-sm rounded-lg transition-all duration-200"
+                                        style={{
+                                          color: mainColor,
+                                        }}
+                                        onMouseEnter={(
+                                          e: React.MouseEvent<HTMLButtonElement>,
+                                        ) => {
+                                          (
+                                            e.currentTarget as any
+                                          ).style.backgroundColor = hexToRgba(
+                                            mainColor,
+                                            0.08,
+                                          );
+                                        }}
+                                        onMouseLeave={(
+                                          e: React.MouseEvent<HTMLButtonElement>,
+                                        ) => {
+                                          (
+                                            e.currentTarget as any
+                                          ).style.backgroundColor =
+                                            'transparent';
+                                        }}
+                                      >
+                                        <Link
+                                          id={`desktop-single-submenu-${itemIndex}-${singleSubIndex}-${subItem.href}`}
+                                          hidden
+                                          href={item.href}
+                                        ></Link>
+                                        <div className="font-bold flex items-center justify-between">
+                                          <span>{subItem.label}</span>
+                                          <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                                        </div>
+                                        {subItem.description && (
+                                          <p className="text-xs text-gray-500 mt-1">
+                                            {subItem.description}
+                                          </p>
+                                        )}
+                                      </button>
+                                    ),
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </NavigationMenuContent>
+                        </>
+                      ) : (
+                        <NavigationMenuLink
+                          asChild
+                          className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900 rounded-lg transition-all duration-300 hover:bg-gray-50"
+                        >
+                          <Link
+                            href={item.href}
+                            style={{
+                              color: mainColor,
+                            }}
+                          >
+                            <span className="flex items-center gap-1 relative">
+                              {item.label}
+                              {/* Top-level badge - superscript style */}
+                              {item.badge &&
+                                (() => {
+                                  const bs = getBadgeStyles(
+                                    item.badge!.variant,
+                                  );
+                                  return (
+                                    <span
+                                      className="absolute -top-2.5 left-full ml-0.5 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap"
+                                      style={{
+                                        background: bs.bg,
+                                        color: bs.text,
+                                      }}
+                                    >
+                                      {item.badge!.text}
+                                    </span>
+                                  );
+                                })()}
+                            </span>
+                          </Link>
+                        </NavigationMenuLink>
+                      )}
+                    </NavigationMenuItem>
+                  ))}
+                </NavigationMenuList>
+              </NavigationMenu>
 
               {/* Auth Section */}
-              <div className="flex items-center gap-4">
-                {session ? (
-                  <UserAccountNav user={session.user} />
+              <div className="flex items-center gap-2 p-2">
+                {!session ? (
+                  /* 2-Part Combined Button: Shop + Login (Not Logged In) */
+                  <div className="flex items-center rounded-xl shadow-md overflow-hidden">
+                    {/* Shop Button */}
+                    <Link href="/price">
+                      <Button
+                        className="px-3 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
+                        style={{
+                          backgroundColor: '#f59e0b',
+                        }}
+                      >
+                        <ShoppingBag className="w-4 h-4" />
+                      </Button>
+                    </Link>
+
+                    {/* Divider */}
+                    <div className="w-px h-5 bg-white/20" />
+
+                    {/* Login Button */}
+                    <Button
+                      className="px-4 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
+                      style={{
+                        backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                      }}
+                      onClick={() =>
+                        setShowAuth((prev) => ({
+                          ...prev,
+                          open: true,
+                          redirect: website_sub_category_id
+                            ? `${website_sub_category_id}/user/dashboard`
+                            : '/choice/user/dashboard',
+                        }))
+                      }
+                    >
+                      Daftar/Masuk
+                    </Button>
+                  </div>
                 ) : (
-                  <Button
-                    className="px-4 py-2.5 rounded-2xl text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-0"
-                    style={{
-                      backgroundImage: `linear-gradient(145deg, ${
-                        secondaryColor
-                      }, ${mainColor})`,
-                    }}
-                    onClick={() =>
-                      setShowAuth((prev) => ({
-                        ...prev,
-                        open: true,
-                        redirect: website_sub_category_id
-                          ? `${website_sub_category_id}/user/dashboard`
-                          : '/choice/user/dashboard',
-                      }))
-                    }
-                  >
-                    Daftar/Masuk
-                  </Button>
+                  /* Logged In: 2-Part Combined + 1 Separate Hamburger */
+                  <div className="flex items-center gap-2 p-1">
+                    {/* Combined: Shop + Dashboard (2 parts) */}
+                    <div className="flex items-center rounded-xl shadow-md overflow-hidden">
+                      {/* Shop Button */}
+                      <Link href="/price">
+                        <Button
+                          className="px-3 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
+                          style={{
+                            backgroundColor: '#f59e0b',
+                          }}
+                        >
+                          <ShoppingBag className="w-4 h-4" />
+                        </Button>
+                      </Link>
+
+                      {/* Divider */}
+                      <div className="w-px h-5 bg-white/20" />
+
+                      {/* Dashboard Button */}
+                      <Link href={`${website_sub_category_id}/user/dashboard`}>
+                        <Button
+                          className="px-4 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
+                          style={{
+                            backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                          }}
+                        >
+                          Dashboard
+                        </Button>
+                      </Link>
+                    </div>
+
+                    {/* Separate: Hamburger Menu (1 part) */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="px-2 py-2 rounded-xl border-0 transition-all duration-300 hover:brightness-110 h-8 shadow-md"
+                          style={{
+                            backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
+                            color: '#ffffff',
+                          }}
+                        >
+                          <Menu className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="w-80 p-0 border shadow-xl rounded-3xl overflow-hidden"
+                        sideOffset={12}
+                      >
+                        {/* Header - User Profile Section */}
+                        <div className="p-5 bg-white border-b border-gray-100">
+                          <div className="flex items-center gap-3">
+                            <div className="relative">
+                              <Avatar className="h-16 w-16 ring-2 ring-gray-100">
+                                <AvatarImage
+                                  src={session?.user?.image ?? ''}
+                                  alt={session?.user?.name ?? ''}
+                                  className="object-cover"
+                                />
+                                <AvatarFallback
+                                  className="text-white text-xl font-bold"
+                                  style={{
+                                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                                  }}
+                                >
+                                  {session?.user?.name
+                                    ? session.user.name[0].toUpperCase()
+                                    : 'U'}
+                                </AvatarFallback>
+                              </Avatar>
+                              {/* Status indicator */}
+                              <div className="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-2 border-white rounded-full" />
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                              <p className="text-lg font-bold text-gray-900 truncate">
+                                {session?.user?.name}
+                              </p>
+                              <p className="text-sm text-gray-500 truncate">
+                                {session?.user?.email}
+                              </p>
+                              <div className="mt-1.5">
+                                <span
+                                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold text-white"
+                                  style={{ backgroundColor: mainColor }}
+                                >
+                                  <span className="w-1.5 h-1.5 bg-white rounded-full" />
+                                  Online
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Menu Items */}
+                        <div className="p-2 bg-white">
+                          {/* Dashboard */}
+                          <DropdownMenuItem
+                            asChild
+                            className="p-0"
+                          >
+                            <Link
+                              href={`/${website_sub_category_id}/user/dashboard`}
+                              className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-gray-50"
+                            >
+                              <div
+                                className="w-11 h-11 rounded-xl flex items-center justify-center"
+                                style={{ backgroundColor: `${mainColor}15` }}
+                              >
+                                <LayoutDashboard
+                                  className="h-5 w-5"
+                                  style={{ color: mainColor }}
+                                />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-base font-bold text-gray-900">
+                                  Dashboard
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  Akses panel utama
+                                </p>
+                              </div>
+                              <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                            </Link>
+                          </DropdownMenuItem>
+
+                          {/* Admin Panel - Only for Admin/Super Admin */}
+                          {(session?.user?.role === 'ADMIN' ||
+                            session?.user?.role === 'SUPER_ADMIN') && (
+                            <DropdownMenuItem
+                              asChild
+                              className="p-0 mt-1"
+                            >
+                              <Link
+                                href={`/${website_sub_category_id}/admin`}
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-gray-50"
+                              >
+                                <div
+                                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                                  style={{ backgroundColor: `${mainColor}15` }}
+                                >
+                                  <LayoutDashboard
+                                    className="h-5 w-5"
+                                    style={{ color: mainColor }}
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-base font-bold text-gray-900">
+                                    Admin Panel
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    Kelola sistem
+                                  </p>
+                                </div>
+                                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                              </Link>
+                            </DropdownMenuItem>
+                          )}
+
+                          {/* Divider */}
+                          <div className="my-2 h-px bg-gray-200" />
+
+                          {/* Logout */}
+                          <DropdownMenuItem
+                            className="p-0"
+                            onSelect={(event) => {
+                              event.preventDefault();
+                              signOut({ callbackUrl: '/' });
+                            }}
+                          >
+                            <div className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-red-50 cursor-pointer w-full">
+                              <div className="w-11 h-11 rounded-xl bg-red-100 flex items-center justify-center">
+                                <LogOut className="h-5 w-5 text-red-600" />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-base font-bold text-red-600">
+                                  Keluar
+                                </p>
+                                <p className="text-xs text-red-500">
+                                  Logout dari akun
+                                </p>
+                              </div>
+                            </div>
+                          </DropdownMenuItem>
+                        </div>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 )}
               </div>
             </div>
           </div>
-
-          {/* Bottom accent line */}
-          <div
-            className="h-1"
-            style={{
-              backgroundImage: `linear-gradient(145deg, ${
-                secondaryColor
-              }, ${mainColor})`,
-            }}
-          />
         </Card>
       </div>
     </div>
@@ -503,8 +1609,14 @@ const DesktopNav: React.FC<{
 const Navbar: React.FC = () => {
   const { data: session } = useSession();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const isMobile = useMedia({ maxWidth: '768px' });
   const pathname = usePathname();
+
+  // Reset navigating state when pathname changes
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [pathname]);
 
   // Handle scroll to hash on page load
   useEffect(() => {
@@ -541,18 +1653,34 @@ const Navbar: React.FC = () => {
     };
   }, [pathname]);
 
-  return isMobile ? (
-    <MobileNav
-      navItems={navItems}
-      isSheetOpen={isSheetOpen}
-      setIsSheetOpen={setIsSheetOpen}
-      session={session}
-    />
-  ) : (
-    <DesktopNav
-      navItems={navItems}
-      session={session}
-    />
+  return (
+    <>
+      {/* Loading Overlay */}
+      {isNavigating && (
+        <div className="fixed inset-0 z-[9999] bg-white/90 backdrop-blur-sm flex items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <Spinner />
+            <p className="text-sm font-semibold text-gray-800">Memuat...</p>
+          </div>
+        </div>
+      )}
+
+      {isMobile ? (
+        <MobileNav
+          navItems={navItems}
+          isSheetOpen={isSheetOpen}
+          setIsSheetOpen={setIsSheetOpen}
+          session={session}
+          setIsNavigating={setIsNavigating}
+        />
+      ) : (
+        <DesktopNav
+          navItems={navItems}
+          session={session}
+          setIsNavigating={setIsNavigating}
+        />
+      )}
+    </>
   );
 };
 

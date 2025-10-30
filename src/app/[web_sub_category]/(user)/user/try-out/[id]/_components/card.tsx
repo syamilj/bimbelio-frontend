@@ -109,7 +109,7 @@ const Card: React.FC<CardProps> = ({
               value={inputValue || ''}
               onChange={(e) => onInput(e.target.value)}
               disabled={disabled}
-              placeholder="Ketik jawaban Anda di sini..."
+              placeholder="Ketik jawaban Kamu di sini..."
               className={cn(
                 'w-full h-12 rounded-xl border-2 px-4 transition-all duration-200 text-base',
                 disabled

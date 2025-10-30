@@ -116,7 +116,7 @@ export default function ThreeQuestions() {
               <span style={{ color: mainColor }}>{session?.user.name}</span>
             </h1>
             <p className="text-gray-600 text-lg">
-              Bagaimana kami dapat membantu Anda hari ini?
+              Bagaimana kami dapat membantu Kamu hari ini?
             </p>
           </div>
         </div>

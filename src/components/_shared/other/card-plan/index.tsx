@@ -75,12 +75,14 @@ export function CardPlan({
   const [liveClassDetails, setLiveClassDetails] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const isCourse = plan.PlanSubscription.PlanFeature.some(
-    (item) => item.type === 'COURSE',
-  );
-  const isDocument = plan.PlanSubscription.PlanFeature.some(
-    (item) => item.type === 'DOCUMENT',
-  );
+  const isCourse =
+    plan.PlanSubscription?.PlanFeature?.some(
+      (item) => item.type === 'COURSE',
+    ) ?? false;
+  const isDocument =
+    plan.PlanSubscription?.PlanFeature?.some(
+      (item) => item.type === 'DOCUMENT',
+    ) ?? false;
 
   // Enhanced marketplace indicators
   const isPopular =
@@ -126,6 +128,11 @@ export function CardPlan({
         open: true,
       });
     }
+    console.log({
+      planIdQuery,
+      planId: plan.id,
+      type: 'paket',
+    });
     if (planIdQuery === plan.id && session) {
       buttonRef.current?.click();
       router.replace(window.location.pathname);
@@ -344,14 +351,14 @@ export function CardPlan({
                       backgroundColor: `${mainColor}05`,
                     }}
                   >
-                    {plan.PlanSubscription.WebsiteSubCategory.name}
+                    {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Paket'}
                   </Badge>
                 )}
                 <Badge
                   variant="outline"
                   className="text-xs text-gray-600 border-gray-300"
                 >
-                  {plan.PlanSubscription.tier}
+                  {plan.PlanSubscription?.tier || 'Standar'}
                 </Badge>
               </div>
 
@@ -481,13 +488,13 @@ export function CardPlan({
                       </div>
                     </div>
                     {plan.PlanBenefit.length > 0 &&
-                      plan.PlanSubscription.expireDays && (
+                      plan.PlanSubscription?.expireDays && (
                         <div className="text-xs text-gray-500 mt-1">
                           ~
                           {formatPrice(
                             Math.floor(
                               (discount || plan.price) /
-                                plan.PlanSubscription.expireDays,
+                                (plan.PlanSubscription?.expireDays || 1),
                             ),
                           )}{' '}
                           per hari
@@ -694,14 +701,6 @@ export function CardPlan({
                       size="lg"
                       style={{
                         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                        e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}40`;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}30`;
                       }}
                       onClick={() => {
                         // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"

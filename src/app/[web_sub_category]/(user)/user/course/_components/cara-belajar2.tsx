@@ -7,9 +7,11 @@ import { pixel } from '@/lib/pixel/_core';
 import {
   BotMessageSquareIcon,
   ChartColumnIcon,
+  CheckCircle2,
   FileTextIcon,
   NotepadTextIcon,
   Sparkles,
+  TrendingUp,
 } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -22,6 +24,9 @@ const supportFeatures = [
     gradient: 'from-blue-500 to-blue-600',
     bgColor: 'bg-blue-50',
     borderColor: 'border-blue-200',
+    feature1: 'Respons Instan',
+    feature2: '24/7 Tersedia',
+    badge: 'Chat',
   },
   {
     icon: <NotepadTextIcon className="size-6 text-white" />,
@@ -31,6 +36,9 @@ const supportFeatures = [
     gradient: 'from-green-500 to-green-600',
     bgColor: 'bg-green-50',
     borderColor: 'border-green-200',
+    feature1: 'Auto Organize',
+    feature2: 'Smart Summary',
+    badge: 'Notes',
   },
   {
     icon: <FileTextIcon className="size-6 text-white" />,
@@ -40,6 +48,9 @@ const supportFeatures = [
     gradient: 'from-purple-500 to-purple-600',
     bgColor: 'bg-purple-50',
     borderColor: 'border-purple-200',
+    feature1: 'Adaptive Level',
+    feature2: 'Smart Feedback',
+    badge: 'Quiz',
   },
   {
     icon: <ChartColumnIcon className="size-6 text-white" />,
@@ -49,6 +60,9 @@ const supportFeatures = [
     gradient: 'from-orange-500 to-orange-600',
     bgColor: 'bg-orange-50',
     borderColor: 'border-orange-200',
+    feature1: 'Analisis Detail',
+    feature2: 'Rekomendasi Aksi',
+    badge: 'Reports',
   },
 ];
 
@@ -59,6 +73,7 @@ export default function CaraBelajarSection2() {
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
   useEffect(() => {
     pixel.meta.track(
       'ViewContent',
@@ -83,108 +98,73 @@ export default function CaraBelajarSection2() {
   }, [session]);
 
   return (
-    <section className="space-y-6 pt-8">
-      {/* Section Header */}
-      <div className="text-center space-y-4">
+    <section className="mb-12">
+      {/* Section Header - Match Dashboard Style */}
+      <div className="flex items-center gap-3 mb-6">
         <div
-          className="w-12 h-12 mx-auto rounded-xl flex items-center justify-center shadow-lg"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-          }}
+          className="w-10 h-10 rounded-xl flex items-center justify-center"
+          style={{ backgroundColor: mainColor }}
         >
-          <Sparkles className="w-6 h-6 text-white" />
+          <Sparkles className="w-5 h-5 text-white" />
         </div>
-        <h2
-          className="text-2xl md:text-3xl font-bold"
-          style={{ color: mainColor }}
-        >
+        <h2 className="text-2xl font-black text-gray-900">
           Fitur Pendukung Belajar
         </h2>
-        <div
-          className="w-20 h-1 mx-auto rounded-full"
-          style={{ backgroundColor: secondaryColor }}
-        />
-        <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base">
-          Manfaatkan teknologi AI terdepan untuk pengalaman belajar yang lebih
-          optimal
-        </p>
       </div>
 
-      {/* Feature Cards */}
+      {/* Feature Cards Grid - Clean Style */}
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {supportFeatures.map((feature, index) => (
           <Card
             key={index}
-            className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group hover:-translate-y-1"
+            className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <CardHeader
-              className="pb-4 relative overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-              }}
-            >
-              <div className="relative z-10">
-                <div className="flex items-center justify-center mb-3">
-                  <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-linear-to-br ${feature.gradient}`}
-                  >
-                    {feature.icon}
-                  </div>
-                </div>
-                <CardTitle
-                  className="text-lg font-bold text-center"
-                  style={{ color: mainColor }}
+            {/* Enhanced Header with gradient background */}
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div
+                  className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br ${feature.gradient}`}
                 >
-                  {feature.title}
-                </CardTitle>
+                  {feature.icon}
+                </div>
               </div>
-              {/* Decorative elements */}
-              <div
-                className="absolute -right-4 -top-4 w-12 h-12 rounded-full opacity-10"
-                style={{ backgroundColor: mainColor }}
-              />
+              <CardTitle className="text-base font-bold text-gray-900">
+                {feature.title}
+              </CardTitle>
             </CardHeader>
 
-            <CardContent className="p-6 text-center">
+            <CardContent className="p-6 pt-0 space-y-4">
+              {/* Description */}
               <p className="text-sm text-gray-600 leading-relaxed">
                 {feature.description}
               </p>
 
-              {/* Feature highlight */}
-              <div className="mt-4 pt-4 border-t border-gray-100">
+              {/* Feature highlights */}
+              <div className="grid grid-cols-2 gap-3">
                 <div
-                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium"
-                  style={{
-                    backgroundColor: `${mainColor}15`,
-                    color: mainColor,
-                  }}
+                  className={`p-3 rounded-2xl border-2 ${feature.borderColor} ${feature.bgColor}`}
                 >
-                  <Sparkles className="w-3 h-3" />
-                  AI Powered
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-green-600" />
+                    <span className="text-xs font-semibold text-gray-700">
+                      {feature.feature1}
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className={`p-3 rounded-2xl border-2 ${feature.borderColor} ${feature.bgColor}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-blue-600" />
+                    <span className="text-xs font-semibold text-gray-700">
+                      {feature.feature2}
+                    </span>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
         ))}
-      </div>
-
-      {/* Bottom CTA */}
-      <div
-        className="mt-8 p-6 rounded-2xl text-center"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}10, ${secondaryColor}10)`,
-        }}
-      >
-        <h3
-          className="text-lg font-bold mb-2"
-          style={{ color: mainColor }}
-        >
-          Siap untuk Pengalaman Belajar yang Lebih Canggih?
-        </h3>
-        <p className="text-gray-600 text-sm">
-          Semua fitur AI ini dirancang khusus untuk membantu kamu meraih target
-          SNBT impian
-        </p>
       </div>
     </section>
   );

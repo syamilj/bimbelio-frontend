@@ -296,14 +296,14 @@ export default function HeaderCourse({
             className="text-main-gray-text"
           />
         </div>
-        <div
+        {/* <div
           className="md:hidden"
           onClick={() => setSidebarMobile(true)}
         >
-          {/* <p className="font-semibold">
+          <p className="font-semibold">
             <AnimatedGradientText>Limitasi</AnimatedGradientText>
-          </p> */}
-        </div>
+          </p>
+        </div> */}
         <div className="flex items-center justify-center gap-4 md:hidden">
           {/* Chat limit */}
           <div className="flex items-center gap-[.5rem]">
@@ -985,7 +985,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                   </h2>
 //                   <p className="text-xs text-gray-500 truncate">
 //                     {sub === 'report'
-//                       ? 'Analisis progres pembelajaran Anda'
+//                       ? 'Analisis progres pembelajaran Kamu'
 //                       : CourseData?.title}
 //                   </p>
 //                 </div>

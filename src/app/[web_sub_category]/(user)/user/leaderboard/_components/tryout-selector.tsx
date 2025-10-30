@@ -76,36 +76,22 @@ export function TryOutSelector() {
   }
 
   return (
-    <Card className="h-full bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-      <CardHeader
-        className="pb-4 relative overflow-hidden"
-        style={{ backgroundColor: `${mainColor}05` }}
-      >
-        <div className="relative z-10">
-          <CardTitle
-            className="text-lg font-bold flex items-center gap-2"
-            style={{ color: mainColor }}
-          >
+    <Card className="h-full bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
+      <CardHeader className="pb-4">
+        <div>
+          <CardTitle className="text-lg font-black text-gray-900 flex items-center gap-2">
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: `${mainColor}15` }}
+              style={{ backgroundColor: mainColor }}
             >
-              <Calendar
-                className="w-4 h-4"
-                style={{ color: mainColor }}
-              />
+              <Calendar className="w-4 h-4 text-white" />
             </div>
             Pilih Try Out
           </CardTitle>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-gray-500 mt-1 font-medium">
             Pilih try out untuk melihat leaderboard
           </p>
         </div>
-        {/* Decorative elements */}
-        <div
-          className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-10"
-          style={{ backgroundColor: mainColor }}
-        />
       </CardHeader>
 
       <CardContent className="p-0 grow overflow-hidden">
@@ -116,26 +102,28 @@ export function TryOutSelector() {
                 key={tryOut.id}
                 variant="ghost"
                 className={cn(
-                  'w-full h-auto justify-start p-4 text-left rounded-xl border-2 transition-all duration-200 hover:shadow-md',
+                  'w-full h-auto justify-start p-4 text-left rounded-2xl border-2 transition-all duration-300 hover:shadow-sm',
                   selectedTryOut === tryOut.id
-                    ? 'shadow-md border-transparent'
-                    : 'border-gray-200 hover:border-gray-300 bg-white',
+                    ? 'shadow-sm'
+                    : 'border-gray-100 hover:border-gray-200 bg-white',
                 )}
                 style={{
                   backgroundColor:
                     selectedTryOut === tryOut.id ? mainColor : undefined,
                   color: selectedTryOut === tryOut.id ? 'white' : undefined,
+                  borderColor:
+                    selectedTryOut === tryOut.id ? mainColor : undefined,
                 }}
                 onClick={() => setSelectedTryOut(tryOut.id)}
               >
                 <div className="flex w-full flex-col items-start gap-2">
-                  <span className="font-medium text-sm leading-tight">
+                  <span className="font-bold text-sm leading-tight">
                     {tryOut.title}
                   </span>
                   <div className="flex items-center justify-between w-full">
                     <div
                       className={cn(
-                        'flex items-center gap-1 text-xs',
+                        'flex items-center gap-1 text-xs font-medium',
                         selectedTryOut === tryOut.id
                           ? 'text-white/80'
                           : 'text-gray-500',
@@ -146,10 +134,10 @@ export function TryOutSelector() {
                     </div>
                     <div
                       className={cn(
-                        'flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-xl',
+                        'flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg',
                         selectedTryOut === tryOut.id
                           ? 'bg-white/20 text-white'
-                          : 'bg-gray-100 text-gray-600',
+                          : 'bg-gray-50 text-gray-700 border border-gray-200',
                       )}
                     >
                       <Users className="w-3 h-3" />
@@ -164,7 +152,7 @@ export function TryOutSelector() {
               Array.from({ length: 6 }).map((_, index) => (
                 <div
                   key={index}
-                  className="p-4 rounded-xl border-2 border-gray-200 bg-white"
+                  className="p-4 rounded-2xl border-2 border-gray-100 bg-white"
                 >
                   <Skeleton className="h-4 w-3/4 mb-3 rounded-lg" />
                   <div className="flex justify-between items-center">

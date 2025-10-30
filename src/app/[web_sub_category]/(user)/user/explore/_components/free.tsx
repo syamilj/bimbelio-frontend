@@ -33,32 +33,22 @@ export default function Free() {
   return (
     <div className="space-y-6">
       {/* Section Header */}
-      <div className="relative">
-        <div className="flex items-center gap-4 mb-6">
-          <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
-            style={{ backgroundColor: mainColor }}
-          >
-            <Gift className="w-6 h-6 text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Coba Gratis
-              </h2>
-              <Sparkles className="w-6 h-6 text-yellow-500" />
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">
-              Mulai belajar dengan materi gratis pilihan terbaik
-            </p>
-          </div>
-        </div>
-
-        {/* Decorative gradient line */}
+      <div className="flex items-center gap-4">
         <div
-          className="absolute left-6 top-14 w-0.5 h-8 rounded-full opacity-20"
+          className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
           style={{ backgroundColor: mainColor }}
-        />
+        >
+          <Gift className="w-6 h-6 text-white" />
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-black text-gray-900">Coba Gratis</h2>
+            <Sparkles className="w-5 h-5 text-yellow-500" />
+          </div>
+          <p className="text-sm text-gray-500 font-medium mt-1">
+            Mulai belajar dengan materi gratis pilihan terbaik
+          </p>
+        </div>
       </div>
 
       {/* Content */}
@@ -81,16 +71,10 @@ export default function Free() {
       {isLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_: any, i: number) => (
-            <div
+            <Skeleton
               key={i}
-              className="relative"
-            >
-              <Skeleton className="h-[200px] rounded-2xl bg-linear-to-br from-emerald-100 to-green-100" />
-              <div
-                className="absolute top-3 right-3 w-3 h-3 rounded-full animate-pulse"
-                style={{ backgroundColor: mainColor }}
-              />
-            </div>
+              className="h-[200px] rounded-2xl"
+            />
           ))}
         </div>
       )}

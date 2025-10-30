@@ -163,7 +163,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
       icon: <Clock className="w-5 h-5" />,
       title: 'Belajar Sesuai Tempo',
       description:
-        'Tidak ada batasan waktu, belajar sesuai kecepatan Anda sendiri',
+        'Tidak ada batasan waktu, belajar sesuai kecepatan Kamu sendiri',
     },
     {
       icon: <Target className="w-5 h-5" />,
@@ -225,7 +225,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
                     <span className="text-center">Roadmap Pembelajaran</span>
                   </CardTitle>
                   <p className="text-xs md:text-sm text-gray-600 mt-1">
-                    Jelajahi perjalanan pembelajaran Anda step by step
+                    Jelajahi perjalanan pembelajaran Kamu step by step
                   </p>
 
                   {/* Quick Stats inside roadmap */}
@@ -443,7 +443,7 @@ const StartCourse = ({ courseData, onStart }: Props) => {
                       Mulai Sekarang!
                     </h2>
                     <p className="text-xs md:text-sm text-gray-600">
-                      Siap untuk memulai perjalanan pembelajaran Anda?
+                      Siap untuk memulai perjalanan pembelajaran Kamu?
                     </p>
                   </div>
 
@@ -461,8 +461,8 @@ const StartCourse = ({ courseData, onStart }: Props) => {
                         htmlFor="agree-guidelines"
                         className="text-xs text-gray-700 cursor-pointer leading-relaxed"
                       >
-                        Saya berkomitmen untuk mengikuti panduan pembelajaran
-                        dan menyelesaikan course ini dengan maksimal
+                        Aku berkomitmen untuk mengikuti panduan pembelajaran dan
+                        menyelesaikan course ini dengan maksimal
                       </label>
                     </div>
                   </div>

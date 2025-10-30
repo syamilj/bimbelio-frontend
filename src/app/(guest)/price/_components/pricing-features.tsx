@@ -21,8 +21,8 @@ export default function PricingFeatures() {
 
   // Dynamic coin colors based on theme
   const coinColors = {
-    Notes: mainColor,
-    Chat: secondaryColor,
+    Notes: `${mainColor}dd`,
+    Chat: `${secondaryColor}dd`,
     Quiz: `${mainColor}dd`,
     Tryout: `${mainColor}aa`,
     Vision: `${secondaryColor}dd`,
@@ -103,23 +103,19 @@ export default function PricingFeatures() {
 
   return (
     <div className="mt-20 relative">
-      {/* Background decoration */}
-      <div className="absolute inset-0 -z-10 opacity-30">
+      {/* Enhanced Background decoration */}
+      <div className="absolute inset-0 -z-10 opacity-30 pointer-events-none">
         <div
-          className="absolute top-20 right-10 w-64 h-64 rounded-full blur-3xl"
-          style={{
-            background: `radial-gradient(circle, ${mainColor}20 0%, transparent 70%)`,
-          }}
+          className="absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl opacity-10"
+          style={{ backgroundColor: mainColor }}
         />
         <div
-          className="absolute bottom-20 left-10 w-48 h-48 rounded-full blur-3xl"
-          style={{
-            background: `radial-gradient(circle, ${secondaryColor}20 0%, transparent 70%)`,
-          }}
+          className="absolute bottom-20 left-10 w-64 h-64 rounded-full blur-3xl opacity-8"
+          style={{ backgroundColor: secondaryColor }}
         />
       </div>
 
-      {/* Header - Enhanced homepage style */}
+      {/* Enhanced Header - Homepage style */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -127,50 +123,63 @@ export default function PricingFeatures() {
         viewport={{ once: true }}
         className="text-center mb-16"
       >
-        {/* Badge - Enhanced with icon */}
+        {/* Gradient Badge */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white border-none mb-8 shadow-lg"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            boxShadow: `0 8px 32px ${mainColor}30`,
-          }}
         >
-          <Sparkles
-            size={16}
-            className="animate-pulse"
-          />
-          Sistem Coin Interaktif
-        </motion.div>
-
-        <h2 className="text-4xl md:text-6xl font-black leading-tight text-gray-900 mb-8">
-          5 Jenis Coin untuk{' '}
-          <span
-            className="bg-clip-text text-transparent block mt-2"
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white border-none mb-8 shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
             }}
           >
-            Fitur Berbeda
-          </span>
-        </h2>
+            <Sparkles size={16} />
+            Sistem Coin Interaktif
+          </div>
+        </motion.div>
 
-        <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl font-black leading-tight text-gray-900 mb-2"
+        >
+          5 Jenis Coin untuk
+        </motion.h2>
+
+        <motion.h3
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl font-black mb-8 bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          Fitur Berbeda
+        </motion.h3>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          viewport={{ once: true }}
+          className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+        >
           Sistem coin yang smart untuk mengakses fitur-fitur AI yang akan{' '}
-          <span
-            className="font-bold"
-            style={{ color: mainColor }}
-          >
+          <span className="font-bold text-gray-900">
             maksimalkan persiapan ujianmu
           </span>
-        </p>
+        </motion.p>
       </motion.div>
 
-      {/* Enhanced Coin Grid - Redesigned layout */}
+      {/* Enhanced Coin Grid with Top Accent Bars */}
       <div className="max-w-7xl mx-auto mb-20">
         {/* First row - 3 main coins */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -182,58 +191,56 @@ export default function PricingFeatures() {
               transition={{ duration: 0.7, delay: index * 0.15 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.03, y: -8 }}
-              className="group relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-white/20 flex flex-col overflow-hidden"
-              style={{
-                boxShadow: `0 8px 40px ${mainColor}12, 0 2px 16px ${mainColor}08`,
-              }}
+              className="group relative bg-white rounded-2xl overflow-hidden border-2 shadow-lg"
+              style={{ borderColor: `${mainColor}20` }}
             >
-              {/* Accent gradient top */}
+              {/* Top Accent Bar */}
               <div
-                className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
+                className="h-2 w-full"
                 style={{
-                  background: `linear-gradient(135deg, ${feature.color}, ${feature.color}aa)`,
+                  background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
                 }}
               />
 
-              {/* Icon with enhanced styling */}
-              <div className="flex items-center mb-6">
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mr-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
-                  style={{
-                    background: `linear-gradient(135deg, ${feature.color}, ${feature.color}dd)`,
-                  }}
-                >
-                  <div className="w-7 h-7 text-white">{feature.icon}</div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-black text-gray-900 group-hover:text-gray-700 transition-colors">
-                    {feature.title}
-                  </h3>
-                </div>
-              </div>
-
-              <p className="text-gray-600 mb-8 leading-relaxed flex-grow">
-                {feature.description}
-              </p>
-
-              {/* Usage info with enhanced styling */}
-              <div className="mt-auto">
-                <div
-                  className="flex items-center justify-between p-4 rounded-2xl border"
-                  style={{
-                    background: `linear-gradient(135deg, ${feature.color}08, ${feature.color}15)`,
-                    borderColor: `${feature.color}30`,
-                  }}
-                >
-                  <span className="text-sm font-medium text-gray-700">
-                    Biaya penggunaan
-                  </span>
-                  <span
-                    className="text-sm font-bold px-3 py-1 rounded-full bg-white shadow-sm"
-                    style={{ color: feature.color }}
+              <div className="p-8 flex flex-col">
+                {/* Icon with enhanced styling */}
+                <div className="flex items-center mb-6">
+                  <div
+                    className="p-3 rounded-2xl flex items-center justify-center mr-4 shadow-md group-hover:scale-110 transition-transform duration-300"
+                    style={{ backgroundColor: `${mainColor}15` }}
                   >
-                    {feature.usage}
-                  </span>
+                    {feature.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-gray-900 group-hover:text-gray-700 transition-colors">
+                      {feature.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-gray-600 mb-8 leading-relaxed flex-grow">
+                  {feature.description}
+                </p>
+
+                {/* Usage info with enhanced styling */}
+                <div className="mt-auto">
+                  <div
+                    className="flex items-center justify-between p-4 rounded-xl border-2 shadow-sm"
+                    style={{
+                      backgroundColor: `${mainColor}08`,
+                      borderColor: `${mainColor}20`,
+                    }}
+                  >
+                    <span className="text-sm font-bold text-gray-700">
+                      Biaya penggunaan
+                    </span>
+                    <span
+                      className="text-sm font-black px-4 py-2 rounded-xl bg-white shadow-sm"
+                      style={{ color: mainColor }}
+                    >
+                      {feature.usage}
+                    </span>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -250,58 +257,54 @@ export default function PricingFeatures() {
               transition={{ duration: 0.7, delay: (index + 3) * 0.15 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.03, y: -8 }}
-              className="group relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 border border-white/20 flex flex-col overflow-hidden"
-              style={{
-                boxShadow: `0 8px 40px ${mainColor}12, 0 2px 16px ${mainColor}08`,
-              }}
+              className="group relative bg-white rounded-2xl overflow-hidden border-2 shadow-lg"
+              style={{ borderColor: `${secondaryColor}20` }}
             >
-              {/* Accent gradient top */}
+              {/* Top Accent Bar */}
               <div
-                className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
-                style={{
-                  background: `linear-gradient(135deg, ${feature.color}, ${feature.color}aa)`,
-                }}
+                className="h-2 w-full"
+                style={{ backgroundColor: secondaryColor }}
               />
 
-              {/* Icon with enhanced styling */}
-              <div className="flex items-center mb-6">
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mr-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
-                  style={{
-                    background: `linear-gradient(135deg, ${feature.color}, ${feature.color}dd)`,
-                  }}
-                >
-                  <div className="w-7 h-7 text-white">{feature.icon}</div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-black text-gray-900 group-hover:text-gray-700 transition-colors">
-                    {feature.title}
-                  </h3>
-                </div>
-              </div>
-
-              <p className="text-gray-600 mb-8 leading-relaxed flex-grow">
-                {feature.description}
-              </p>
-
-              {/* Usage info with enhanced styling */}
-              <div className="mt-auto">
-                <div
-                  className="flex items-center justify-between p-4 rounded-2xl border"
-                  style={{
-                    background: `linear-gradient(135deg, ${feature.color}08, ${feature.color}15)`,
-                    borderColor: `${feature.color}30`,
-                  }}
-                >
-                  <span className="text-sm font-medium text-gray-700">
-                    Biaya penggunaan
-                  </span>
-                  <span
-                    className="text-sm font-bold px-3 py-1 rounded-full bg-white shadow-sm"
-                    style={{ color: feature.color }}
+              <div className="p-8 flex flex-col">
+                {/* Icon with enhanced styling */}
+                <div className="flex items-center mb-6">
+                  <div
+                    className="p-3 rounded-2xl flex items-center justify-center mr-4 shadow-md group-hover:scale-110 transition-transform duration-300"
+                    style={{ backgroundColor: `${secondaryColor}15` }}
                   >
-                    {feature.usage}
-                  </span>
+                    {feature.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-gray-900 group-hover:text-gray-700 transition-colors">
+                      {feature.title}
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-gray-600 mb-8 leading-relaxed flex-grow">
+                  {feature.description}
+                </p>
+
+                {/* Usage info with enhanced styling */}
+                <div className="mt-auto">
+                  <div
+                    className="flex items-center justify-between p-4 rounded-xl border-2 shadow-sm"
+                    style={{
+                      backgroundColor: `${secondaryColor}08`,
+                      borderColor: `${secondaryColor}20`,
+                    }}
+                  >
+                    <span className="text-sm font-bold text-gray-700">
+                      Biaya penggunaan
+                    </span>
+                    <span
+                      className="text-sm font-black px-4 py-2 rounded-xl bg-white shadow-sm"
+                      style={{ color: secondaryColor }}
+                    >
+                      {feature.usage}
+                    </span>
+                  </div>
                 </div>
               </div>
             </motion.div>

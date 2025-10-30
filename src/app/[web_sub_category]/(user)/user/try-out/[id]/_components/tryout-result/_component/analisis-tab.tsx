@@ -402,7 +402,7 @@ export function AnalisisTab({
         </h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
           Analisis komprehensif peluang kelulusan berdasarkan passing grade
-          universitas dan jurusan target Anda
+          universitas dan jurusan target Kamu
         </p>
       </motion.div>
 
@@ -503,7 +503,7 @@ export function AnalisisTab({
                 <Card className="border-2 border-green-200 bg-green-50 rounded-2xl overflow-hidden shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                     <CardTitle className="text-sm font-semibold text-green-700">
-                      Ranking Anda
+                      Ranking Kamu
                     </CardTitle>
                     <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center">
                       <Crown className="h-5 w-5 text-white" />
@@ -649,7 +649,7 @@ export function AnalisisTab({
 
                                 <div className="space-y-4">
                                   <div className="flex justify-between text-sm font-medium">
-                                    <span>Skor Anda: {userScore}</span>
+                                    <span>Skor Kamu: {userScore}</span>
                                     <span>Passing Grade: {passingUniv}</span>
                                   </div>
                                   <Progress
@@ -708,7 +708,7 @@ export function AnalisisTab({
 
                                 <div className="space-y-4">
                                   <div className="flex justify-between text-sm font-medium">
-                                    <span>Skor Anda: {userScore}</span>
+                                    <span>Skor Kamu: {userScore}</span>
                                     <span>Passing Grade: {passingMajor}</span>
                                   </div>
                                   <Progress
@@ -768,7 +768,7 @@ export function AnalisisTab({
                     Rekomendasi Universitas & Jurusan
                   </h2>
                   <p className="text-gray-600">
-                    Berdasarkan skor Anda, berikut adalah rekomendasi
+                    Berdasarkan skor Kamu, berikut adalah rekomendasi
                     universitas dan jurusan dengan peluang kelulusan tinggi
                   </p>
                 </div>
@@ -797,7 +797,7 @@ export function AnalisisTab({
                           <CardContent>
                             <div className="space-y-4">
                               <div className="flex justify-between text-sm font-medium">
-                                <span>Skor Anda: {userScore}</span>
+                                <span>Skor Kamu: {userScore}</span>
                                 <span>Passing Grade: {item.averageScore}</span>
                               </div>
                               <Progress
@@ -835,7 +835,7 @@ export function AnalisisTab({
                           <CardContent>
                             <div className="space-y-4">
                               <div className="flex justify-between text-sm">
-                                <span>Skor Anda: ---</span>
+                                <span>Skor Kamu: ---</span>
                                 <span>Passing Grade: ---</span>
                               </div>
                               <Progress
