@@ -137,27 +137,29 @@ export default function LeaderboardClient() {
         RankingTryoutIsLoading,
       }}
     >
-      <div>
-        <div className="container mx-auto max-w-7xl px-4 py-6">
+      <div className="min-h-screen bg-white">
+        <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Header Section */}
-          <div className="text-center mb-8">
-            <div
-              className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 md:mb-6 rounded-2xl flex items-center justify-center shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              <Trophy className="w-8 h-8 md:w-10 md:h-10 text-white" />
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-6">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: mainColor }}
+              >
+                <Trophy className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h1
+                  className="text-3xl font-black mb-1"
+                  style={{ color: mainColor }}
+                >
+                  Peringkat Try-Out
+                </h1>
+                <p className="text-gray-600 text-sm font-medium">
+                  Lihat peringkat dan performa terbaik dari semua peserta
+                </p>
+              </div>
             </div>
-            <h1
-              className="text-2xl md:text-3xl font-bold mb-2"
-              style={{ color: mainColor }}
-            >
-              Peringkat
-            </h1>
-            <p className="text-gray-600 mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base">
-              Lihat peringkat dan performa terbaik dari semua peserta try out
-            </p>
           </div>
 
           {/* Main Content */}

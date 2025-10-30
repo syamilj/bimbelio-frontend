@@ -100,42 +100,23 @@ export function TopWinners() {
   };
 
   return (
-    <Card className="h-full bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-      <CardHeader
-        className="pb-4 md:pb-6 text-center relative overflow-hidden border-b border-gray-100"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-        }}
-      >
-        <div className="relative z-10">
-          <CardTitle
-            className="text-lg md:text-xl font-bold flex items-center justify-center gap-2 mb-2"
-            style={{ color: mainColor }}
-          >
-            <Trophy className="w-5 h-5 md:w-6 md:h-6" />
+    <Card className="h-full bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
+      <CardHeader className="pb-6 text-center border-b-2 border-gray-100">
+        <div>
+          <CardTitle className="text-xl font-black text-gray-900 flex items-center justify-center gap-2 mb-2">
+            <Trophy
+              className="w-6 h-6"
+              style={{ color: mainColor }}
+            />
             Hall of Fame
           </CardTitle>
-          <p className="text-sm md:text-base text-gray-600">
+          <p className="text-sm text-gray-500 font-medium">
             Peraih skor terbaik dalam try out ini
           </p>
         </div>
-
-        {/* Enhanced decorative elements */}
-        <div
-          className="absolute -right-6 -top-6 w-16 h-16 rounded-full opacity-10"
-          style={{ backgroundColor: mainColor }}
-        />
-        <div
-          className="absolute -left-4 -bottom-4 w-12 h-12 rounded-full opacity-10"
-          style={{ backgroundColor: secondaryColor }}
-        />
-        <div
-          className="absolute right-8 bottom-2 w-2 h-2 rounded-full opacity-20"
-          style={{ backgroundColor: mainColor }}
-        />
       </CardHeader>
 
-      <CardContent className="p-4 md:p-8">
+      <CardContent className="p-8">
         {!TryoutTop3IsLoading ? (
           TryoutTop3 && TryoutTop3.length > 0 ? (
             <div className="relative">

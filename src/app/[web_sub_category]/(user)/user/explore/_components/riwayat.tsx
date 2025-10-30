@@ -63,29 +63,24 @@ export default function Riwayat() {
   return (
     <div className="space-y-6">
       {/* Section Header */}
-      <div className="relative">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-lg">
-            <History className="w-6 h-6 text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Riwayat Terakhir
-              </h2>
-              <RotateCcw className="w-6 h-6 text-purple-500" />
-              <div className="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-medium rounded-full">
-                Lanjutkan
-              </div>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">
-              Lanjutkan pembelajaran dari materi yang terakhir Kamu akses
-            </p>
-          </div>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-sm">
+          <History className="w-6 h-6 text-white" />
         </div>
-
-        {/* Decorative gradient line */}
-        <div className="absolute left-6 top-14 w-0.5 h-8 rounded-full bg-linear-to-b from-purple-500 to-indigo-600 opacity-20" />
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-black text-gray-900">
+              Riwayat Terakhir
+            </h2>
+            <RotateCcw className="w-5 h-5 text-purple-500" />
+            <div className="px-2 py-1 bg-purple-50 text-purple-700 text-xs font-bold rounded-full border border-purple-200">
+              Lanjutkan
+            </div>
+          </div>
+          <p className="text-sm text-gray-500 font-medium mt-1">
+            Lanjutkan pembelajaran dari materi yang terakhir Kamu akses
+          </p>
+        </div>
       </div>
 
       {/* Content */}
@@ -108,14 +103,10 @@ export default function Riwayat() {
       {isLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_: any, i: number) => (
-            <div
+            <Skeleton
               key={i}
-              className="relative"
-            >
-              <Skeleton className="h-[200px] rounded-2xl bg-linear-to-br from-purple-100 to-indigo-100" />
-              <div className="absolute top-3 left-3 w-5 h-5 rounded-lg bg-linear-to-br from-purple-400 to-indigo-500 animate-pulse" />
-              <div className="absolute bottom-3 right-3 w-2 h-2 rounded-full bg-purple-500 animate-ping" />
-            </div>
+              className="h-[200px] rounded-2xl"
+            />
           ))}
         </div>
       )}

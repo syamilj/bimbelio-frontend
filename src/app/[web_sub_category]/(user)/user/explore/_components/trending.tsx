@@ -33,29 +33,22 @@ export default function Trending() {
   return (
     <div className="space-y-6">
       {/* Section Header */}
-      <div className="relative">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-lg">
-            <TrendingUp className="w-6 h-6 text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Trending
-              </h2>
-              <Fire className="w-6 h-6 text-orange-500" />
-              <div className="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full animate-pulse">
-                🔥 Hot
-              </div>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">
-              Materi paling populer dan banyak dipelajari saat ini
-            </p>
-          </div>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-sm">
+          <TrendingUp className="w-6 h-6 text-white" />
         </div>
-
-        {/* Decorative gradient line */}
-        <div className="absolute left-6 top-14 w-0.5 h-8 rounded-full bg-linear-to-b from-orange-500 to-red-500 opacity-20" />
+        <div className="flex-1">
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-black text-gray-900">Trending</h2>
+            <Fire className="w-5 h-5 text-orange-500" />
+            <div className="px-2 py-1 bg-orange-50 text-orange-700 text-xs font-bold rounded-full border border-orange-200">
+              🔥 Hot
+            </div>
+          </div>
+          <p className="text-sm text-gray-500 font-medium mt-1">
+            Materi paling populer dan banyak dipelajari saat ini
+          </p>
+        </div>
       </div>
 
       {/* Content */}
@@ -78,16 +71,10 @@ export default function Trending() {
       {isLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_: any, i: number) => (
-            <div
+            <Skeleton
               key={i}
-              className="relative"
-            >
-              <Skeleton className="h-[200px] rounded-2xl bg-linear-to-br from-orange-100 to-red-100" />
-              <div className="absolute top-3 right-3 w-4 h-4 rounded-full bg-linear-to-br from-orange-400 to-red-400 animate-pulse" />
-              <div className="absolute top-3 left-3 text-orange-500 animate-bounce">
-                🔥
-              </div>
-            </div>
+              className="h-[200px] rounded-2xl"
+            />
           ))}
         </div>
       )}

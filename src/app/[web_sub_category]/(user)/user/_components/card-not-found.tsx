@@ -7,13 +7,11 @@ const CardNotFound = ({ title }: { title?: string }) => {
   return (
     <div
       id="card"
-      className={
-        'relative flex h-[160px] cursor-default flex-col items-center justify-center overflow-hidden rounded-xl bg-white duration-300 mb:h-[200px] md:h-[200px] md2:h-[180px] xl:h-[250px] xxxl:h-[300px]'
-      }
+      className="relative flex h-[160px] cursor-default flex-col items-center justify-center overflow-hidden rounded-2xl bg-white border-2 border-gray-100 shadow-sm duration-300 mb:h-[200px] md:h-[200px] md2:h-[180px] xl:h-[250px] xxxl:h-[300px]"
     >
-      <div className="-mt-8 flex flex-col items-center text-center text-[.9rem] text-main">
+      <div className="-mt-8 flex flex-col items-center text-center text-[.9rem] text-gray-500">
         <IconDataNotFound w={isMobile ? 70 : 130} />
-        {title ? <p className=" text-main-gray-text2">{title}</p> : <p></p>}
+        {title ? <p className="text-gray-500 font-medium">{title}</p> : <p></p>}
       </div>
     </div>
   );

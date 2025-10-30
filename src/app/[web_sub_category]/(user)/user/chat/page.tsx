@@ -185,30 +185,63 @@ export default function AIChatPage() {
   }, [session]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto max-w-5xl px-4 py-8">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <div
-            className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg"
-            style={{ backgroundColor: mainColor }}
-          >
-            <Bot className="w-10 h-10 text-white" />
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto max-w-7xl px-4 py-8">
+        {/* Header Section - Match Dashboard Style */}
+        <section className="mb-12">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-3 mb-8">
+            {/* Welcome Card */}
+            <div className="md:col-span-2 bg-white border-2 border-gray-100 rounded-3xl p-8 shadow-sm hover:shadow-md transition-all">
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <p className="text-gray-600 text-sm font-medium mb-2">
+                    Selamat Datang di
+                  </p>
+                  <h1
+                    className="text-3xl md:text-4xl font-black"
+                    style={{ color: mainColor }}
+                  >
+                    Bimbot AI Assistant
+                  </h1>
+                </div>
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-white"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  <Bot className="w-8 h-8" />
+                </div>
+              </div>
+              <p className="text-gray-600 text-base mb-6">
+                Tanyakan apapun tentang materi pembelajaran. Aku siap membantu
+                Kamu belajar lebih efektif!
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <div className="bg-blue-50 text-blue-700 border border-blue-200 font-medium px-4 py-2 rounded-full text-sm">
+                  <Sparkles className="w-3 h-3 inline mr-2" />
+                  AI Powered
+                </div>
+                <div className="bg-green-50 text-green-700 border border-green-200 font-medium px-4 py-2 rounded-full text-sm">
+                  24/7 Available
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Stats Card */}
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-3xl p-8 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                <MessageSquare className="w-6 h-6 text-purple-600" />
+                <p className="text-purple-700 font-bold">Chat History</p>
+              </div>
+              <div className="text-4xl font-black text-purple-700 mb-2">
+                {chatHistory?.length || 0}
+              </div>
+              <p className="text-sm text-purple-600">Percakapan tersimpan</p>
+            </div>
           </div>
-          <h1
-            className="text-3xl md:text-4xl font-bold mb-3"
-            style={{ color: mainColor }}
-          >
-            Bimbot AI Assistant
-          </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-            Tanyakan apapun tentang materi pembelajaran. Aku siap membantu Kamu
-            belajar lebih efektif!
-          </p>
-        </div>
+        </section>
 
         {/* Enhanced Chat Input with Animation */}
-        <div className="mb-10">
+        <section className="mb-12">
           <PlaceholdersAndVanishInput
             placeholders={placeholders}
             onChange={handleInputChange}
@@ -231,82 +264,85 @@ export default function AIChatPage() {
               </div>
             </div>
           )}
-        </div>
+        </section>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 max-w-2xl mx-auto">
-          <Button
-            variant="outline"
-            className="h-16 justify-start gap-4 rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white"
-            onClick={() => setIsHistoryOpen(true)}
-            style={{ borderColor: `${mainColor}20` }}
-          >
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: `${mainColor}15` }}
+        {/* Quick Actions - Match Dashboard Style */}
+        <section className="mb-12">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mb-8">
+            {/* Lanjutkan Percakapan - Blue */}
+            <button
+              onClick={() => setIsHistoryOpen(true)}
+              className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-5 text-center hover:shadow-md transition-all"
             >
-              <Clock
-                className="w-5 h-5"
-                style={{ color: mainColor }}
-              />
-            </div>
-            <div className="text-left">
-              <div className="font-semibold">Lanjutkan Percakapan</div>
-              <div className="text-sm text-gray-500">Buka riwayat chat</div>
-            </div>
-          </Button>
+              <Clock className="w-5 h-5 text-blue-600 mx-auto mb-2" />
+              <div className="text-sm font-bold text-blue-700">Lanjutkan</div>
+              <p className="text-xs text-blue-600 font-medium mt-1">
+                Chat History
+              </p>
+            </button>
 
-          <Button
-            variant="outline"
-            className="h-16 justify-start gap-4 rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white"
-            style={{ borderColor: `${mainColor}20` }}
-          >
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: `${mainColor}15` }}
-            >
-              <Sparkles
-                className="w-5 h-5"
-                style={{ color: mainColor }}
-              />
-            </div>
-            <div className="text-left">
-              <div className="font-semibold">Eksplorasi Materi</div>
-              <div className="text-sm text-gray-500">Temukan topik baru</div>
-            </div>
-          </Button>
-        </div>
+            {/* Eksplorasi Materi - Green */}
+            <button className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 text-center hover:shadow-md transition-all">
+              <Sparkles className="w-5 h-5 text-green-600 mx-auto mb-2" />
+              <div className="text-sm font-bold text-green-700">Eksplorasi</div>
+              <p className="text-xs text-green-600 font-medium mt-1">
+                Topik Baru
+              </p>
+            </button>
+
+            {/* Chat Aktif - Orange */}
+            <button className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-2xl p-5 text-center hover:shadow-md transition-all">
+              <MessageSquare className="w-5 h-5 text-orange-600 mx-auto mb-2" />
+              <div className="text-sm font-bold text-orange-700">
+                {chatHistory?.length || 0}
+              </div>
+              <p className="text-xs text-orange-600 font-medium mt-1">
+                Total Chat
+              </p>
+            </button>
+
+            {/* AI Powered - Purple */}
+            <button className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-2xl p-5 text-center hover:shadow-md transition-all">
+              <Bot className="w-5 h-5 text-purple-600 mx-auto mb-2" />
+              <div className="text-sm font-bold text-purple-700">24/7</div>
+              <p className="text-xs text-purple-600 font-medium mt-1">
+                Siap Bantu
+              </p>
+            </button>
+          </div>
+        </section>
 
         {/* Suggested Topics */}
-        <div className="max-w-4xl mx-auto mb-12">
-          <h3 className="text-xl font-semibold mb-6 text-center text-gray-900">
-            Topik Populer
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <section className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: mainColor }}
+            >
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-2xl font-black text-gray-900">Topik Populer</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {placeholders.slice(0, 6).map((topic, index) => (
               <button
                 key={topic}
                 onClick={() => setNewChatInput(topic)}
-                className="p-4 text-left rounded-xl border-2 hover:shadow-lg transition-all duration-200 bg-white group"
-                style={{
-                  borderColor: `${mainColor}15`,
-                }}
+                className="p-6 text-left rounded-3xl border-2 border-gray-100 hover:shadow-md transition-all duration-200 bg-white group"
               >
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-4">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"
-                    style={{ backgroundColor: `${mainColor}15` }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"
+                    style={{ backgroundColor: mainColor }}
                   >
-                    <span
-                      className="text-sm font-bold"
-                      style={{ color: mainColor }}
-                    >
+                    <span className="text-sm font-bold text-white">
                       {index + 1}
                     </span>
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900 mb-1">
-                      {topic.length > 40 ? topic.slice(0, 40) + '...' : topic}
+                  <div className="flex-1">
+                    <p className="font-bold text-gray-900 mb-2 line-clamp-2">
+                      {topic}
                     </p>
                     <p className="text-xs text-gray-500">
                       Klik untuk mulai chat
@@ -316,56 +352,75 @@ export default function AIChatPage() {
               </button>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* Stats or Features */}
-        <div
-          className="rounded-2xl p-8 text-white text-center"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-          }}
-        >
-          <h3 className="text-2xl font-bold mb-6">Powered by Advanced AI</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">24/7</div>
-              <div className="text-white/90 font-medium">Siap Membantu</div>
-              <div className="text-sm text-white/70 mt-1">
-                Kapan saja dibutuhkan
+        {/* Stats or Features - Simplified */}
+        <section className="mb-12">
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+            {/* 24/7 Available */}
+            <div
+              className="p-6 rounded-2xl border-2 text-center"
+              style={{
+                background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
+                borderColor: 'rgb(191 219 254)',
+              }}
+            >
+              <div className="text-4xl font-black text-blue-700 mb-2">24/7</div>
+              <div className="text-sm font-bold text-blue-600 mb-1">
+                Siap Membantu
               </div>
+              <div className="text-xs text-blue-600">Kapan saja dibutuhkan</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">∞</div>
-              <div className="text-white/90 font-medium">
+
+            {/* Unlimited Topics */}
+            <div
+              className="p-6 rounded-2xl border-2 text-center"
+              style={{
+                background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
+                borderColor: 'rgb(187 247 208)',
+              }}
+            >
+              <div className="text-4xl font-black text-green-700 mb-2">∞</div>
+              <div className="text-sm font-bold text-green-600 mb-1">
                 Topik Pembelajaran
               </div>
-              <div className="text-sm text-white/70 mt-1">
-                Tanpa batas materi
-              </div>
+              <div className="text-xs text-green-600">Tanpa batas materi</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">🚀</div>
-              <div className="text-white/90 font-medium">Respons Cepat</div>
-              <div className="text-sm text-white/70 mt-1">Jawaban instan</div>
+
+            {/* Fast Response */}
+            <div
+              className="p-6 rounded-2xl border-2 text-center"
+              style={{
+                background: `linear-gradient(to bottom right, rgb(250 245 255), rgb(243 232 255))`,
+                borderColor: 'rgb(233 213 255)',
+              }}
+            >
+              <div className="text-4xl font-black text-purple-700 mb-2">🚀</div>
+              <div className="text-sm font-bold text-purple-600 mb-1">
+                Respons Cepat
+              </div>
+              <div className="text-xs text-purple-600">Jawaban instan</div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Chat History Dialog */}
         <Dialog
           open={isHistoryOpen}
           onOpenChange={setIsHistoryOpen}
         >
-          <DialogContent className="max-w-2xl max-h-[80vh] p-0 overflow-hidden mx-4">
+          <DialogContent className="max-w-2xl max-h-[80vh] p-0 overflow-hidden mx-4 rounded-3xl">
             <DialogHeader className="p-6 pb-4 border-b">
-              <DialogTitle className="text-xl">Riwayat Percakapan</DialogTitle>
+              <DialogTitle className="text-xl font-black">
+                Riwayat Percakapan
+              </DialogTitle>
               <div className="relative mt-4">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Cari percakapan..."
                   value={searchHistory}
                   onChange={(e) => setSearchHistory(e.target.value)}
-                  className="pl-10 h-10 rounded-xl"
+                  className="pl-10 h-10 rounded-xl border-2"
                 />
               </div>
             </DialogHeader>
@@ -376,7 +431,7 @@ export default function AIChatPage() {
                   Array.from({ length: 5 }).map((_, index) => (
                     <Skeleton
                       key={index}
-                      className="h-16 w-full rounded-xl"
+                      className="h-20 w-full rounded-2xl"
                     />
                   ))
                 ) : filteredHistory.length > 0 ? (
@@ -384,27 +439,20 @@ export default function AIChatPage() {
                     <Link
                       key={chat.id}
                       href={`/${website_sub_category_id}/user/chat/${chat.id}`}
-                      className="flex items-center justify-between p-4 rounded-xl border-2 hover:shadow-md transition-all cursor-pointer bg-white"
-                      style={{ borderColor: `${mainColor}15` }}
+                      className="flex items-center justify-between p-4 rounded-2xl border-2 border-gray-100 hover:shadow-md transition-all cursor-pointer bg-white"
                       onClick={() => {
-                        // router.push(
-                        //   `/${website_sub_category_id}/user/chat/${chat.id}`,
-                        // );
                         setIsHistoryOpen(false);
                       }}
                     >
                       <div className="flex items-start gap-4 flex-1">
                         <div
                           className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ backgroundColor: `${mainColor}15` }}
+                          style={{ backgroundColor: mainColor }}
                         >
-                          <MessageSquare
-                            className="w-5 h-5"
-                            style={{ color: mainColor }}
-                          />
+                          <MessageSquare className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-sm line-clamp-2 mb-1 text-gray-800">
+                          <h4 className="font-bold text-sm line-clamp-2 mb-1 text-gray-900">
                             {chat.title}
                           </h4>
                           <p className="text-xs text-gray-500">
@@ -415,8 +463,9 @@ export default function AIChatPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="shrink-0 text-gray-500 hover:text-red-600"
+                        className="shrink-0 text-gray-500 hover:text-red-600 rounded-xl"
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           deleteChat({ id: chat.id });
                         }}

@@ -172,7 +172,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
           {/* Section Header - Compact */}
           {!minimizeSidebar && (
             <div className="px-2 py-1 mb-1">
-              <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+              <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-wider">
                 {section.title}
               </h3>
               <div className="mt-0.5 h-px bg-gradient-to-r from-slate-200 via-slate-300 to-transparent opacity-60"></div>
@@ -257,15 +257,15 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                         <TooltipContent
                           side="right"
                           sideOffset={12}
-                          className="bg-slate-900 text-white border border-slate-700"
+                          className="bg-slate-900 text-white border-2 border-slate-700 rounded-2xl shadow-sm"
                         >
                           <div className="text-sm space-y-1">
-                            <p className="font-semibold">{item.title}</p>
+                            <p className="font-bold">{item.title}</p>
                             <div className="flex items-center gap-2">
                               {item.badge && (
                                 <Badge
                                   className={cn(
-                                    'text-[10px] px-2 py-0.5 rounded font-semibold',
+                                    'text-[10px] px-2 py-0.5 rounded-xl font-bold',
                                     item.badge === 'AI'
                                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0'
                                       : item.badge === 'Soon'
@@ -277,7 +277,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                 </Badge>
                               )}
                               {item.isNew && (
-                                <span className="text-emerald-400 text-[10px] font-semibold">
+                                <span className="text-emerald-400 text-[10px] font-bold">
                                   NEW
                                 </span>
                               )}
@@ -327,17 +327,17 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                     >
                       <div
                         className={cn(
-                          'flex items-center font-medium ease-out group/item cursor-pointer',
+                          'flex items-center font-bold ease-out group/item cursor-pointer',
                           minimizeSidebar
                             ? 'justify-center p-1.5'
-                            : 'gap-2.5 mx-1 px-3 py-2 rounded-xl',
+                            : 'gap-2.5 mx-1 px-3 py-2 rounded-2xl',
                           isActive
                             ? minimizeSidebar
                               ? ''
-                              : 'text-white shadow-xl bg-gradient-to-br border-2 border-white/30 ring-2 ring-white/20'
+                              : 'text-white shadow-sm bg-gradient-to-br border-2 border-white/30'
                             : minimizeSidebar
                               ? ''
-                              : 'text-slate-700 hover:bg-white/90 hover:text-slate-900 hover:shadow-lg hover:scale-[1.01] bg-white/40 backdrop-blur-sm border border-slate-200/50 hover:border-slate-300/70',
+                              : 'text-slate-700 hover:bg-white/90 hover:text-slate-900 hover:shadow-md hover:scale-[1.01] bg-white/40 backdrop-blur-sm border-2 border-slate-200/50 hover:border-slate-300/70',
                         )}
                         style={{
                           background:
@@ -346,15 +346,15 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                               : undefined,
                           boxShadow:
                             isActive && !minimizeSidebar
-                              ? `0 8px 32px -8px ${mainColor}40, 0 0 0 1px ${mainColor}20`
+                              ? `0 4px 16px -4px ${mainColor}40`
                               : undefined,
                         }}
                       >
                         <div
                           className={cn(
-                            'w-8 h-8 rounded-xl flex items-center justify-center shadow-md border',
+                            'w-8 h-8 rounded-2xl flex items-center justify-center shadow-sm border-2',
                             isActive
-                              ? 'bg-white/30 text-white border-white/40 shadow-lg'
+                              ? 'bg-white/30 text-white border-white/40 shadow-md'
                               : 'bg-white/90 border-slate-200/50 group-hover/item:bg-white border-white/20',
                           )}
                         >
@@ -369,7 +369,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                           <div className="flex items-center gap-1.5">
                             <span
                               className={cn(
-                                'text-sm font-semibold truncate',
+                                'text-sm font-black truncate',
                                 isActive ? 'text-white' : 'text-slate-800',
                               )}
                             >
@@ -378,7 +378,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                             {item.badge && (
                               <Badge
                                 className={cn(
-                                  'text-[10px] px-1.5 py-0.5 rounded-md font-semibold',
+                                  'text-[10px] px-1.5 py-0.5 rounded-xl font-bold',
                                   item.badge === 'AI'
                                     ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0'
                                     : item.badge === 'Soon'
@@ -430,10 +430,10 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                             >
                               <div
                                 className={cn(
-                                  'flex items-center gap-2.5 p-2 rounded-lg group cursor-pointer',
+                                  'flex items-center gap-2.5 p-2 rounded-2xl group cursor-pointer border-2',
                                   isSubActive
-                                    ? 'bg-white/80 text-slate-800 shadow-sm border border-slate-200/70'
-                                    : 'hover:bg-white/70 text-slate-600 hover:text-slate-800',
+                                    ? 'bg-white/80 text-slate-800 shadow-sm border-slate-200/70'
+                                    : 'hover:bg-white/70 text-slate-600 hover:text-slate-800 border-transparent',
                                 )}
                               >
                                 <div
@@ -444,7 +444,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                       : 'bg-slate-400 group-hover:bg-slate-600',
                                   )}
                                 />
-                                <span className="text-xs font-medium truncate">
+                                <span className="text-xs font-bold truncate">
                                   {cat.name}
                                 </span>
                               </div>

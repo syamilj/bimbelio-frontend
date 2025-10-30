@@ -66,43 +66,22 @@ export function RankingStats() {
   ];
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-      <CardHeader
-        className="pb-6 border-b border-gray-100 relative overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
-        }}
-      >
-        <div className="relative z-10">
-          <CardTitle
-            className="text-2xl font-bold flex items-center gap-3"
-            style={{ color: mainColor }}
-          >
+    <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
+      <CardHeader className="pb-6 border-b-2 border-gray-100">
+        <div>
+          <CardTitle className="text-xl font-black text-gray-900 flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-              style={{ backgroundColor: `${mainColor}15` }}
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm"
+              style={{ backgroundColor: mainColor }}
             >
-              <BarChart2
-                className="w-5 h-5"
-                style={{ color: mainColor }}
-              />
+              <BarChart2 className="w-5 h-5 text-white" />
             </div>
             Analisis Performa
           </CardTitle>
-          <CardDescription className="text-base mt-2 text-gray-600">
+          <CardDescription className="text-sm mt-2 text-gray-500 font-medium">
             Statistik dan analisis mendalam dari hasil try out
           </CardDescription>
         </div>
-
-        {/* Decorative elements */}
-        <div
-          className="absolute -right-8 -top-8 w-20 h-20 rounded-full opacity-5"
-          style={{ backgroundColor: mainColor }}
-        />
-        <div
-          className="absolute -left-6 -bottom-6 w-16 h-16 rounded-full opacity-5"
-          style={{ backgroundColor: secondaryColor }}
-        />
       </CardHeader>
 
       <CardContent className="p-6">

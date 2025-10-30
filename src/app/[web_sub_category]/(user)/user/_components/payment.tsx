@@ -219,7 +219,7 @@ export function Payment() {
           <ScrollArea className="max-h-[85vh]">
             <div className="space-y-8 p-6 sm:p-8">
               <DialogHeader>
-                <DialogTitle className="text-center text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+                <DialogTitle className="text-center text-3xl font-black leading-tight tracking-tight sm:text-4xl text-gray-900">
                   Tingkatkan Persiapan{' '}
                   <span
                     className="bg-clip-text text-transparent"
@@ -232,7 +232,7 @@ export function Payment() {
                     kamu
                   </span>
                 </DialogTitle>
-                <DialogDescription className="mx-auto mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
+                <DialogDescription className="mx-auto mt-3 max-w-2xl text-base text-gray-500 sm:text-lg">
                   Akses fitur premium untuk memaksimalkan potensi kelulusanmu
                 </DialogDescription>
               </DialogHeader>
@@ -245,7 +245,7 @@ export function Payment() {
                     <div className="flex-1">
                       <Label
                         htmlFor="search-paket"
-                        className="mb-2 block"
+                        className="mb-2 block font-bold text-gray-900"
                       >
                         Cari Paket
                       </Label>
@@ -255,14 +255,14 @@ export function Payment() {
                         placeholder="Cari berdasarkan nama atau deskripsi..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full"
+                        className="w-full border-2 rounded-2xl shadow-sm focus:shadow-md"
                       />
                     </div>
 
                     {/* Filter Hover Popover */}
                     <div className="relative group">
                       <Button
-                        className="flex items-center gap-2 text-white whitespace-nowrap"
+                        className="flex items-center gap-2 text-white whitespace-nowrap font-bold rounded-2xl border-2 shadow-sm hover:shadow-md"
                         style={{
                           backgroundColor: mainColor,
                         }}
@@ -272,7 +272,7 @@ export function Payment() {
                         {selectedCategories.length > 0 && (
                           <Badge
                             variant="secondary"
-                            className="ml-2"
+                            className="ml-2 font-bold text-xs"
                           >
                             {selectedCategories.length}
                           </Badge>
@@ -280,11 +280,11 @@ export function Payment() {
                       </Button>
 
                       {/* Hover Dropdown Content */}
-                      <div className="absolute right-0 top-full w-80 bg-white rounded-lg shadow-lg border border-gray-200 p-6 space-y-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none group-hover:pointer-events-auto">
+                      <div className="absolute right-0 top-full w-80 bg-white rounded-2xl shadow-lg border-2 border-gray-100 p-6 space-y-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none group-hover:pointer-events-auto">
                         {/* Category Filter */}
                         {categoryOptions.length > 0 && (
                           <div className="space-y-3">
-                            <Label className="text-base font-semibold">
+                            <Label className="text-base font-black text-gray-900">
                               Filter Kategori
                             </Label>
                             <div className="grid grid-cols-2 gap-2">
@@ -298,7 +298,7 @@ export function Payment() {
                                   }
                                   size="sm"
                                   onClick={() => toggleCategory(category.id)}
-                                  className="justify-start"
+                                  className="justify-start font-bold rounded-xl border-2"
                                   style={
                                     selectedCategories.includes(category.id)
                                       ? { backgroundColor: mainColor }
@@ -317,7 +317,7 @@ export function Payment() {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => setSelectedCategories([])}
-                                className="text-xs"
+                                className="text-xs font-bold"
                               >
                                 Bersihkan Kategori
                               </Button>
@@ -326,8 +326,8 @@ export function Payment() {
                         )}
 
                         {/* Sort Options */}
-                        <div className="space-y-3 border-t pt-4">
-                          <Label className="text-base font-semibold">
+                        <div className="space-y-3 border-t-2 pt-4">
+                          <Label className="text-base font-black text-gray-900">
                             Urutkan Berdasarkan
                           </Label>
                           <div className="space-y-2">
@@ -346,7 +346,7 @@ export function Payment() {
                                 }
                                 size="sm"
                                 onClick={() => setSortBy(option)}
-                                className="w-full justify-start"
+                                className="w-full justify-start font-bold rounded-xl border-2"
                                 style={
                                   sortBy === option
                                     ? { backgroundColor: mainColor }
@@ -372,7 +372,7 @@ export function Payment() {
                               setSelectedCategories([]);
                               setSortBy('name');
                             }}
-                            className="w-full border-t pt-4 mt-2"
+                            className="w-full border-t-2 pt-4 mt-2 font-bold rounded-xl border-2"
                           >
                             Reset Semua Filter
                           </Button>
@@ -383,17 +383,17 @@ export function Payment() {
 
                   {/* Results Summary */}
                   <div className="flex items-center justify-between text-sm">
-                    <div className="font-medium text-gray-700">
+                    <div className="font-bold text-gray-900">
                       Hasil Pencarian:{' '}
                       <span
                         style={{ color: mainColor }}
-                        className="font-bold"
+                        className="font-black"
                       >
                         {filteredAndSortedPlans.length} paket
                       </span>
                     </div>
                     {selectedCategories.length > 0 && (
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 font-medium">
                         Filter Kategori Aktif: {selectedCategories.length}
                       </p>
                     )}

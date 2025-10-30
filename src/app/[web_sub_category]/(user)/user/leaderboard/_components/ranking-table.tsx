@@ -253,29 +253,20 @@ export function RankingTable() {
   };
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-      <CardHeader
-        className="pb-4 border-b border-gray-100"
-        style={{ backgroundColor: `${mainColor}03` }}
-      >
-        <CardTitle
-          className="text-lg md:text-xl font-bold flex items-center gap-2"
-          style={{ color: mainColor }}
-        >
+    <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
+      <CardHeader className="pb-4 border-b-2 border-gray-100">
+        <CardTitle className="text-xl font-black text-gray-900 flex items-center gap-3">
           <div
-            className="w-6 h-6 md:w-8 md:h-8 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: `${mainColor}15` }}
+            className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm"
+            style={{ backgroundColor: mainColor }}
           >
-            <Trophy
-              className="w-3 h-3 md:w-4 md:h-4"
-              style={{ color: mainColor }}
-            />
+            <Trophy className="w-5 h-5 text-white" />
           </div>
-          Peringkat
+          Tabel Peringkat
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="p-3 md:p-6 space-y-4 md:space-y-6">
+      <CardContent className="p-6 space-y-6">
         {/* Premium Upgrade Banner - Moved to top */}
         {/* {!isPremiumUser && (
           <ButtonUpgradeTryout
@@ -294,9 +285,9 @@ export function RankingTable() {
                 placeholder="Cari nama peserta..."
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 h-10 md:h-11 rounded-xl border-2 border-gray-200 focus:border-2 bg-gray-50 focus:bg-white transition-all text-sm md:text-base"
+                className="pl-10 h-11 rounded-2xl border-2 border-gray-200 focus:border-2 bg-white transition-all"
                 style={{
-                  borderColor: searchTerm ? `${mainColor}40` : undefined,
+                  borderColor: searchTerm ? mainColor : undefined,
                 }}
               />
             </div>
