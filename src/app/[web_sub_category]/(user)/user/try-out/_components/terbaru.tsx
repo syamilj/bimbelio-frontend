@@ -1,7 +1,6 @@
 import CardNotFound from '@/app/[web_sub_category]/(user)/user/_components/card-not-found';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { Play } from 'lucide-react';
@@ -37,53 +36,47 @@ export default function Terbaru({ id }: { id: string }) {
   if (cards?.length === 0 && !isLoading) return null;
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
-      <CardHeader
-        className="pb-4 border-b border-gray-100"
-        style={{ backgroundColor: `${mainColor}05` }}
-      >
-        <CardTitle className="text-xl font-bold flex items-center gap-3">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: `${mainColor}15` }}
-          >
-            <Play
-              className="w-4 h-4"
-              style={{ color: mainColor }}
+    <section className="mb-12">
+      {/* Section Header - Match Dashboard Style */}
+      <div className="flex items-center gap-3 mb-6">
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center"
+          style={{ backgroundColor: mainColor }}
+        >
+          <Play className="w-5 h-5 text-white" />
+        </div>
+        <h2 className="text-2xl font-black text-gray-900">
+          Sedang Berlangsung
+        </h2>
+      </div>
+
+      {/* Cards Grid */}
+      {!isLoading && cards && cards.length > 0 && (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <CardTryOut
+            data={cards}
+            userTryOutId={id}
+            refresh={getData}
+          />
+        </div>
+      )}
+
+      {!isLoading && cards?.length === 0 && (
+        <div className="flex justify-center">
+          <CardNotFound />
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, i: number) => (
+            <Skeleton
+              key={i}
+              className="h-80 w-full rounded-3xl"
             />
-          </div>
-          <span style={{ color: mainColor }}>Sedang Berlangsung</span>
-        </CardTitle>
-      </CardHeader>
-
-      <CardContent className="p-6">
-        {!isLoading && cards && cards.length > 0 && (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 ">
-            <CardTryOut
-              data={cards}
-              userTryOutId={id}
-              refresh={getData}
-            />
-          </div>
-        )}
-
-        {!isLoading && cards?.length === 0 && (
-          <div className="flex justify-center">
-            <CardNotFound />
-          </div>
-        )}
-
-        {isLoading && (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 ">
-            {Array.from({ length: 4 }).map((_, i: number) => (
-              <Skeleton
-                key={i}
-                className="h-80 w-full rounded-xl"
-              />
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }

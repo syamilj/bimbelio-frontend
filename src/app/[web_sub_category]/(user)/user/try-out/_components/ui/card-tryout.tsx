@@ -324,7 +324,7 @@ export default function CardTryOut({
           return (
             <Card
               key={i}
-              className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-white rounded-2xl"
+              className="group relative overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] bg-white rounded-3xl"
             >
               {/* Status Badge */}
               <div className="absolute top-4 right-4 z-20">
@@ -480,7 +480,7 @@ export default function CardTryOut({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                        className="w-full h-12 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
                         style={{
                           background: `linear-gradient(135deg, ${item.WebsiteSubCategory?.main_color || mainColor}, ${item.WebsiteSubCategory?.secondary_color || secondaryColor})`,
                         }}
