@@ -7,17 +7,17 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import {
-  Sparkles,
-  Star,
-  Trophy,
-  Target,
-  Zap,
   Award,
   Crown,
   Gift,
-  TrendingUp,
   Heart,
-  Rocket
+  Rocket,
+  Sparkles,
+  Star,
+  Target,
+  TrendingUp,
+  Trophy,
+  Zap,
 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction } from 'react';
@@ -62,7 +62,7 @@ export default function DialogRecomendation({
         }
       }}
     >
-      <DialogContent className="max-w-[1200px] w-[90%] xl:w-full overflow-y-auto max-h-[90vh] bg-white border-0 shadow-2xl rounded-3xl">
+      <DialogContent className="md:max-w-[1200px] w-[90%] xl:w-full overflow-y-auto max-h-[90vh] bg-white border-0 shadow-2xl rounded-3xl">
         {/* Enhanced Header Section */}
         <div className="relative text-center mb-8 pt-6 px-4 overflow-hidden">
           {/* Animated Background Elements */}
@@ -136,7 +136,7 @@ export default function DialogRecomendation({
             <div
               className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 rounded-2xl shadow-2xl relative z-10 group hover:scale-105 transition-transform duration-300"
               style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
             >
               <Trophy className="w-10 h-10 lg:w-12 lg:h-12 text-white" />
@@ -145,7 +145,7 @@ export default function DialogRecomendation({
               <div
                 className="absolute inset-0 rounded-2xl opacity-30 animate-pulse"
                 style={{
-                  boxShadow: `0 0 30px ${mainColor}, 0 0 60px ${mainColor}40`
+                  boxShadow: `0 0 30px ${mainColor}, 0 0 60px ${mainColor}40`,
                 }}
               />
             </div>
@@ -165,7 +165,7 @@ export default function DialogRecomendation({
               <span
                 className="bg-linear-to-r bg-clip-text text-transparent"
                 style={{
-                  backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
+                  backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
               >
                 Rekomendasi Try Out Terbaik
@@ -190,7 +190,8 @@ export default function DialogRecomendation({
             </div>
 
             <p className="text-gray-600 text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
-              Tingkatkan kemampuanmu dengan try out berkualitas dari berbagai kategori
+              Tingkatkan kemampuanmu dengan try out berkualitas dari berbagai
+              kategori
             </p>
           </div>
 
@@ -198,7 +199,9 @@ export default function DialogRecomendation({
           <div className="flex items-center justify-center mb-6">
             <div
               className="h-1 w-16 lg:w-20 rounded-full"
-              style={{ background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})` }}
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
             />
             <div
               className="mx-3 w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center shadow-lg"
@@ -211,7 +214,9 @@ export default function DialogRecomendation({
             </div>
             <div
               className="h-1 w-16 lg:w-20 rounded-full"
-              style={{ background: `linear-gradient(135deg, ${secondaryColor}, ${mainColor})` }}
+              style={{
+                background: `linear-gradient(135deg, ${secondaryColor}, ${mainColor})`,
+              }}
             />
           </div>
 
@@ -220,7 +225,7 @@ export default function DialogRecomendation({
             {[
               { icon: TrendingUp, label: 'Berkualitas', color: mainColor },
               { icon: Zap, label: 'Gratis', color: secondaryColor },
-              { icon: Heart, label: 'Terpercaya', color: mainColor }
+              { icon: Heart, label: 'Terpercaya', color: mainColor },
             ].map((item, index) => (
               <div
                 key={index}
@@ -333,8 +338,8 @@ export default function DialogRecomendation({
                 <Star
                   key={i}
                   className={cn(
-                    "w-3 h-3 transition-all duration-300",
-                    i < 5 ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                    'w-3 h-3 transition-all duration-300',
+                    i < 5 ? 'text-yellow-400 fill-current' : 'text-gray-300',
                   )}
                 />
               ))}
@@ -348,7 +353,8 @@ export default function DialogRecomendation({
         {/* Custom CSS for animations */}
         <style jsx>{`
           @keyframes float {
-            0%, 100% {
+            0%,
+            100% {
               transform: translateY(0px);
             }
             50% {

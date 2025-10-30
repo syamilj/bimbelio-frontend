@@ -363,7 +363,7 @@ export function Payment() {
         onOpenChange={setTransactionPopUp}
       >
         <DialogContent
-          className="max-w-[95vw] h-[95vh] p-0"
+          className="md:max-w-[95vw] h-[95vh] p-0"
           classOverlay="z-10000"
         >
           {isLoading && (
