@@ -67,8 +67,11 @@ export type LiveClass = {
   duration: number;
   maxParticipant: number | null;
   isRecord: boolean;
+  type: LiveClassTypeEnum;
   websiteSubCategoryId: string;
 };
+export type LiveClassTypeEnum = 'LIVECLASS' | 'LIVESTREAM';
+
 export type LiveClassInvited = {
   id: string;
   createdAt: Date;

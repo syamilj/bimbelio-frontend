@@ -229,7 +229,7 @@ const PlanCards: React.FC = () => {
               </span>
             </h2>
 
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-base text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
               <span className="font-semibold">Mulai dari Rp799 ribu</span>{' '}
               dengan cicilan 3x tanpa bunga.
               <span className="font-semibold block mt-2">

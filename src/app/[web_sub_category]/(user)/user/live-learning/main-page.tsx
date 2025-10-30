@@ -64,7 +64,7 @@ import {
   PreviewContent,
 } from './_components/live-class-shared-components';
 
-export type LiveClassAvailableType = LiveClass & {
+export type LiveLearningDataType = LiveClass & {
   Instructor: Instructor;
   Category: Category;
   LiveClassReference: (LiveClassReference & {
@@ -83,7 +83,11 @@ export type LiveClassAvailableType = LiveClass & {
   }[];
 };
 
-export default function LiveClassStudentDashboard() {
+export default function LiveLearningDashboard({
+  type,
+}: {
+  type: 'LIVECLASS' | 'LIVESTREAM';
+}) {
   // === DESIGN SYSTEM PATTERNS FROM LEADERBOARD ===
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -105,17 +109,25 @@ export default function LiveClassStudentDashboard() {
     isLoading: LiveClassAvailableIsLoading,
     error: LiveClassAvailableError,
     totalData: LiveClassAvailableTotalData,
-  } = useGet<LiveClassAvailableType[]>('/liveClass/getAllLiveClassAvailable', {
-    params: { take: 100, page: 1 },
+  } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassAvailable', {
+    params: {
+      type,
+    },
+    useEffectDependencies: [type],
   });
+
+  console.log({ LiveClassAvailableTotalData });
 
   const {
     data: LiveClassCompleted,
     isLoading: LiveClassCompletedIsLoading,
     error: LiveClassCompletedError,
     totalData: LiveClassCompletedTotalData,
-  } = useGet<LiveClassAvailableType[]>('/liveClass/getAllLiveClassCompleted', {
-    params: { take: 100, page: 1 },
+  } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassCompleted', {
+    params: {
+      type,
+    },
+    useEffectDependencies: [type],
   });
 
   const {
@@ -123,8 +135,11 @@ export default function LiveClassStudentDashboard() {
     isLoading: LiveClassRegisteredIsLoading,
     error: LiveClassRegisteredError,
     totalData: LiveClassRegisteredTotalData,
-  } = useGet<LiveClassAvailableType[]>('/user/getUserLiveClassRegistered', {
-    params: { take: 100, page: 1 },
+  } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassRegistered', {
+    params: {
+      type,
+    },
+    useEffectDependencies: [type],
   });
 
   const {
@@ -132,11 +147,21 @@ export default function LiveClassStudentDashboard() {
     isLoading: LiveClassInvitedIsLoading,
     error: LiveClassInvitedError,
     totalData: LiveClassInviteTotalData,
-  } = useGet<LiveClassAvailableType[]>('/user/getUserLiveClassInvited', {
-    params: { take: 100, page: 1 },
+  } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassInvited', {
+    params: {
+      type,
+    },
+    useEffectDependencies: [type],
   });
 
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
+
+  console.log({
+    LiveClassAvailable,
+    LiveClassRegistered,
+    LiveClassCompleted,
+    LiveClassInvited,
+  });
 
   useEffect(() => {
     pixel.meta.track(
@@ -186,11 +211,11 @@ export default function LiveClassStudentDashboard() {
                     style={{ color: mainColor }}
                   />
                 </div>
-                Live Learning Dashboard
+                {type === 'LIVECLASS' ? 'Liveclass' : 'Livestream'} Dashboard
               </CardTitle>
               <CardDescription className="text-lg mt-3 text-gray-600">
                 Ikuti kelas langsung dengan tutor ahli dan tingkatkan persiapan
-                ujian Kamu
+                ujian Anda
               </CardDescription>
             </div>
             {/* DECORATIVE ELEMENTS */}
@@ -205,57 +230,11 @@ export default function LiveClassStudentDashboard() {
           </CardHeader>
           {/* STATS CARDS - LEADERBOARD PATTERN */}
           <CardContent className="p-6">
-            {/* <div className="grid gap-4 md:gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
-              <StatsCard
-                title="Total Kelas"
-                value={liveClasses.length}
-                description="Kelas tersedia untuk Kamu"
-                icon={BookOpen}
-                gradient="from-blue-500 to-blue-600"
-                bgColor="bg-blue-50"
-                borderColor="border-blue-200"
-                textColor="text-blue-700"
-              />
-              <StatsCard
-                title="Diundang"
-                value={invitedClasses.length}
-                description="Siap untuk diikuti"
-                icon={Video}
-                gradient="from-green-500 to-green-600"
-                bgColor="bg-green-50"
-                borderColor="border-green-200"
-                textColor="text-green-700"
-              />
-              <StatsCard
-                title="Terdaftar"
-                value={registeredClasses.length}
-                description="Menunggu undangan"
-                icon={Users}
-                gradient="from-yellow-500 to-yellow-600"
-                bgColor="bg-yellow-50"
-                borderColor="border-yellow-200"
-                textColor="text-yellow-700"
-              />
-              <StatsCard
-                title="Live Now"
-                value={
-                  liveClasses.filter((lc) => lc.status === 'Sedang Berlangsung')
-                    .length
-                }
-                description="Sedang berlangsung"
-                icon={Zap}
-                gradient="from-red-500 to-red-600"
-                bgColor="bg-red-50"
-                borderColor="border-red-200"
-                textColor="text-red-700"
-              />
-            </div> */}
-            {/* Quick Actions for Upcoming Classes */}
             <div className="mt-6 p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
               <div className="flex items-center gap-2 mb-3">
                 <Timer className="w-5 h-5 text-blue-600" />
                 <h3 className="text-lg font-semibold text-blue-900">
-                  Kelas Mendatang
+                  {type === 'LIVECLASS' ? 'Liveclass' : 'Livestream'} Mendatang
                 </h3>
               </div>
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -427,10 +406,14 @@ export default function LiveClassStudentDashboard() {
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline font-medium">
-                LiveClass Tersedia
+                {type === 'LIVECLASS' ? 'Liveclass' : 'Livestream'} Tersedia
               </span>
               <span className="sm:hidden font-medium">Semua</span>
-              <NotificationBadge count={LiveClassAvailableTotalData || 0} />
+              <NotificationBadge
+                count={
+                  LiveClassAvailableTotalData || LiveClassAvailable?.length || 0
+                }
+              />
             </TabsTrigger>
             <TabsTrigger
               value="registered"
@@ -446,7 +429,11 @@ export default function LiveClassStudentDashboard() {
               <span className="hidden sm:inline font-medium">Terdaftar</span>
               <span className="sm:hidden font-medium">Daftar</span>
               <NotificationBadge
-                count={LiveClassRegisteredTotalData}
+                count={
+                  LiveClassRegisteredTotalData ||
+                  LiveClassRegistered?.length ||
+                  0
+                }
                 variant="yellow"
               />
             </TabsTrigger>
@@ -464,7 +451,9 @@ export default function LiveClassStudentDashboard() {
               <span className="hidden sm:inline font-medium">Diundang</span>
               <span className="sm:hidden font-medium">Live</span>
               <NotificationBadge
-                count={LiveClassInviteTotalData}
+                count={
+                  LiveClassInviteTotalData || LiveClassInvited?.length || 0
+                }
                 variant="green"
               />
             </TabsTrigger>
@@ -482,7 +471,9 @@ export default function LiveClassStudentDashboard() {
               <span className="hidden sm:inline font-medium">Selesai</span>
               <span className="sm:hidden font-medium">Selesai</span>
               <NotificationBadge
-                count={LiveClassCompletedTotalData || 0}
+                count={
+                  LiveClassCompletedTotalData || LiveClassCompleted?.length || 0
+                }
                 variant="green"
               />
             </TabsTrigger>
@@ -513,7 +504,7 @@ export default function LiveClassStudentDashboard() {
                   Fitur Multi-Plan Tidak Tersedia
                 </h3>
                 <p className="text-orange-600">
-                  Terjadi kesalahan saat memuat data multi-plan. Kamu masih
+                  Terjadi kesalahan saat memuat data multi-plan. Anda masih
                   dapat menggunakan tab lain.
                 </p>
               </div>
@@ -659,7 +650,7 @@ export default function LiveClassStudentDashboard() {
               <EmptyState
                 icon={Users}
                 title="Belum ada kelas terdaftar"
-                description="Kelas yang sudah Kamu daftarkan akan muncul di sini."
+                description="Kelas yang sudah Anda daftarkan akan muncul di sini."
               />
             )}
           </TabsContent>
@@ -750,7 +741,7 @@ export default function LiveClassStudentDashboard() {
   );
 }
 
-const UpcomingCard = ({ liveClass }: { liveClass: LiveClassAvailableType }) => {
+const UpcomingCard = ({ liveClass }: { liveClass: LiveLearningDataType }) => {
   const timeLeft = useCountdown(liveClass.startDate);
 
   return (
@@ -845,9 +836,9 @@ function LiveClassCard({
   viewMode = 'list',
   variant = 'accessible', // NEW: Default variant
 }: {
-  liveClass: LiveClassAvailableType;
-  onJoin: (liveClass: LiveClassAvailableType) => void;
-  onRate: (liveClass: LiveClassAvailableType) => void;
+  liveClass: LiveLearningDataType;
+  onJoin: (liveClass: LiveLearningDataType) => void;
+  onRate: (liveClass: LiveLearningDataType) => void;
   onUpgrade?: (liveClass: any) => void;
   showPlanInfo?: boolean;
   viewMode?: 'list' | 'grid' | 'calendar';

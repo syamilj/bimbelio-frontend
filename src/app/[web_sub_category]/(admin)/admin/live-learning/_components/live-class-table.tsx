@@ -32,6 +32,7 @@ import {
   formatDateTime,
   formatDuration,
 } from '@/lib/mock-data/live-class';
+import { cn } from '@/lib/utils';
 import { Category, Instructor, LiveClass } from '@/types/database';
 import {
   Clock,
@@ -120,12 +121,14 @@ export function LiveClassTable({
   });
 
   const handleEdit = (classId: string) => {
-    router.push(`/${website_sub_category_id}/admin/live-class/edit/${classId}`);
+    router.push(
+      `/${website_sub_category_id}/admin/live-learning/edit/${classId}`,
+    );
   };
 
   const handleManageParticipants = (classId: string) => {
     router.push(
-      `/${website_sub_category_id}/admin/live-class/participants?classId=${classId}`,
+      `/${website_sub_category_id}/admin/live-learning/participants?classId=${classId}`,
     );
   };
 
@@ -181,6 +184,9 @@ export function LiveClassTable({
                   </TableHead>
                   <TableHead className="font-semibold text-gray-700 py-4">
                     Durasi
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700 py-4">
+                    Tipe
                   </TableHead>
                   {/* <TableHead className="font-semibold text-gray-700 py-4">
                     Peserta
@@ -278,6 +284,21 @@ export function LiveClassTable({
                           )}
                         </div>
                       </TableCell> */}
+                      <TableCell>
+                        <Badge
+                          className={cn(
+                            `rounded-lg`,
+                            liveClass.type === 'LIVECLASS' &&
+                              'bg-green-100 text-green-800',
+                            liveClass.type === 'LIVESTREAM' &&
+                              'bg-red-100 text-red-800',
+                          )}
+                        >
+                          {liveClass?.type === 'LIVECLASS'
+                            ? 'Live Class'
+                            : 'Live Stream'}
+                        </Badge>
+                      </TableCell>
                       <TableCell>
                         <Badge
                           className={`rounded-lg ${getStatusColor(liveClass?.status)}`}

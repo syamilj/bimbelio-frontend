@@ -235,7 +235,7 @@ const ProblemSection: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto space-y-4 text-lg text-gray-700 leading-relaxed"
+            className="max-w-4xl mx-auto space-y-4 text-base text-gray-700 leading-relaxed"
           >
             <p>
               Jangan merasa sendirian. Dari{' '}
@@ -531,7 +531,7 @@ const ProblemSection: React.FC = () => {
           <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
             Tapi Tunggu... Coba Lihat
           </h3>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
             Setiap siswa punya masalah berbeda. Cek 3 kategori utama di bawah -
             kemungkinan besar kamu ngalamin minimal 1 masalah di setiap
             kategori.
@@ -663,7 +663,7 @@ const ProblemSection: React.FC = () => {
               borderColor: `${mainColor}30`,
             }}
           >
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-base text-gray-700 leading-relaxed">
               <span className="font-bold text-gray-900">
                 Ngalamin salah satu dari masalah di atas?
               </span>{' '}

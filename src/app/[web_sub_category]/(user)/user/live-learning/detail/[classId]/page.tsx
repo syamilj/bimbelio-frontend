@@ -55,9 +55,9 @@ import {
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { JoinLiveClassModal } from '../_components/join-live-class-modal';
-import { LiveClassRatingsDisplay } from '../_components/live-class-ratings-display';
-import { RatingModal } from '../_components/rating-modal';
+import { JoinLiveClassModal } from '../../_components/join-live-class-modal';
+import { LiveClassRatingsDisplay } from '../../_components/live-class-ratings-display';
+import { RatingModal } from '../../_components/rating-modal';
 
 export type LiveClassType = LiveClass & {
   Category: Category;

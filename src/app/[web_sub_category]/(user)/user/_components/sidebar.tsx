@@ -22,7 +22,10 @@ import {
   SidebarRail,
   Sidebar as SidebarUI,
 } from '@/components/ui/sidebar';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import {
+  website_sub_category_id,
+  website_sub_category_id_params,
+} from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { cn } from '@/lib/utils';
 import {
@@ -30,15 +33,14 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Crown,
+  LayoutDashboardIcon,
   LogOut,
-  MessageSquare,
-  PenTool,
   Settings,
   Stars,
-  Trophy,
   User,
   Zap,
 } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import SidebarRoute from './sidebar-route';
@@ -86,70 +88,6 @@ const SidebarUser = ({
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  // Limitation countdown format helper
-  const getLimitationStats = () => {
-    const isAdmin =
-      session?.user.role === 'ADMIN' || session?.user.role === 'SUPER_ADMIN';
-    if (isAdmin) return null;
-
-    const limitations = [
-      {
-        icon: MessageSquare,
-        label: 'Chat',
-        remaining: Math.max(
-          0,
-          (userLimitation?.chatLimit || 0) - (userLimitation?.chat || 0),
-        ),
-        total: userLimitation?.chatLimit || 0,
-        color: '#10b981',
-      },
-      {
-        icon: PenTool,
-        label: 'Vision',
-        remaining: Math.max(
-          0,
-          (userLimitation?.visionLimit || 0) - (userLimitation?.vision || 0),
-        ),
-        total: userLimitation?.visionLimit || 0,
-        color: '#06b6d4',
-      },
-      {
-        icon: PenTool,
-        label: 'Notes',
-        remaining: Math.max(
-          0,
-          (userLimitation?.notesLimit || 0) - (userLimitation?.notes || 0),
-        ),
-        total: userLimitation?.notesLimit || 0,
-        color: '#f59e0b',
-      },
-      {
-        icon: Trophy,
-        label: 'Quiz',
-        remaining: Math.max(
-          0,
-          (userLimitation?.quizLimit || 0) - (userLimitation?.quiz || 0),
-        ),
-        total: userLimitation?.quizLimit || 0,
-        color: '#8b5cf6',
-      },
-      {
-        icon: Trophy,
-        label: 'Tryout',
-        remaining: Math.max(
-          0,
-          (userLimitation?.tryoutLimit || 0) - (userLimitation?.tryout || 0),
-        ),
-        total: userLimitation?.tryoutLimit || 0,
-        color: '#ef4444',
-      },
-    ];
-
-    return limitations.filter((item) => item.total > 0);
-  };
-
-  const limitationStats = getLimitationStats();
-
   return (
     <Fragment>
       <SidebarUI
@@ -159,10 +97,12 @@ const SidebarUser = ({
         className="hidden md:flex z-[50]"
         style={
           {
-            '--sidebar-width': '16rem',
+            '--sidebar-width': '18rem',
             '--sidebar-width-icon': '5rem',
           } as React.CSSProperties
         }
+        // onMouseOver={() => setMinimizeSidebar(false)}
+        // onMouseLeave={() => setMinimizeSidebar(true)}
       >
         <SidebarHeader className="border-b-2 border-slate-200/50 bg-white/80 backdrop-blur-xl h-20 flex items-center rounded-2xl">
           <div
@@ -174,7 +114,7 @@ const SidebarUser = ({
             {!minimizeSidebar && (
               <Logo href={`/${website_sub_category_id}/user/dashboard`} />
             )}
-            <div
+            {/* <div
               onClick={() => setMinimizeSidebar(!minimizeSidebar)}
               className={cn(
                 'h-12 w-12 rounded-2xl transition-all duration-300 ease-in-out',
@@ -193,6 +133,45 @@ const SidebarUser = ({
                   <ChevronsRight className="w-6 h-6 transition-all duration-300 group-hover:translate-x-0.5 text-blue-600 group-hover:text-blue-700" />
                 ) : (
                   <ChevronsLeft className="w-6 h-6 transition-all duration-300 group-hover:-translate-x-0.5 text-blue-600 group-hover:text-blue-700" />
+                )}
+              </div>
+            </div> */}
+            <div
+              onClick={() => setMinimizeSidebar(!minimizeSidebar)}
+              className={cn(
+                'h-12 w-12 rounded-xl transition-all duration-300 ease-in-out',
+                'border-2',
+                'shadow-sm hover:shadow-lg',
+                'flex items-center justify-center',
+                'active:scale-95',
+                'group cursor-pointer',
+              )}
+              style={{
+                backgroundColor: `${mainColor}10`,
+                backgroundImage: `linear-gradient(135deg, ${mainColor}15, ${secondaryColor}10)`,
+                borderColor: mainColor,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = secondaryColor;
+                e.currentTarget.style.boxShadow = `0 10px 25px -5px ${mainColor}30`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = mainColor;
+                e.currentTarget.style.boxShadow =
+                  '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
+              }}
+            >
+              <div className="relative w-6 h-6 flex items-center justify-center">
+                {minimizeSidebar ? (
+                  <ChevronsRight
+                    className="w-6 h-6 transition-all duration-300 group-hover:translate-x-0.5"
+                    style={{ color: mainColor }}
+                  />
+                ) : (
+                  <ChevronsLeft
+                    className="w-6 h-6 transition-all duration-300 group-hover:-translate-x-0.5"
+                    style={{ color: mainColor }}
+                  />
                 )}
               </div>
             </div>
@@ -310,6 +289,15 @@ const SidebarUser = ({
                   align="end"
                   className="w-56 border-2 border-gray-100 rounded-2xl shadow-sm"
                 >
+                  {(session?.user.role === 'ADMIN' ||
+                    session?.user.role === 'SUPER_ADMIN') && (
+                    <Link href={`/${website_sub_category_id_params}/admin`}>
+                      <DropdownMenuItem>
+                        <LayoutDashboardIcon className="w-4 h-4 mr-2" />
+                        Admin Panel
+                      </DropdownMenuItem>
+                    </Link>
+                  )}
                   <DropdownMenuItem
                     onClick={() => {
                       setPagesSetting('account');
@@ -544,6 +532,7 @@ const SidebarUser = ({
           </div>
         </SheetContent>
       </Sheet>
+
       <DialogWebCategory
         items={webCategoryData}
         value={websiteSubCategory?.id}
