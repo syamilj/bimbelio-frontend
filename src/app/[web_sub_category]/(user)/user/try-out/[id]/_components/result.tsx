@@ -197,7 +197,7 @@
 //             {[
 //               {
 //                 icon: Trophy,
-//                 label: 'Peringkat Anda',
+//                 label: 'Peringkat Kamu',
 //                 value: `#${sessionResult.rank}`,
 //                 color: '#FFD700',
 //               },
@@ -471,7 +471,7 @@
 //             Selamat! 🎉
 //           </h1>
 //           <p className="text-xl text-gray-600 mb-6">
-//             Anda telah menyelesaikan try out dengan hasil yang{' '}
+//             Kamu telah menyelesaikan try out dengan hasil yang{' '}
 //             <span
 //               className="font-bold"
 //               style={{ color: mainColor }}

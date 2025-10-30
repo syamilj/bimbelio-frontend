@@ -8,13 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { motion } from 'framer-motion';
-import {
-  CheckCircle2,
-  CreditCard,
-  Crown,
-  MessageCircle,
-  Shield,
-} from 'lucide-react';
+import { CheckCircle2, CreditCard, Crown, MessageCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
 type PricingDataType = {
@@ -121,7 +115,7 @@ const PlanCards: React.FC = () => {
   if (!PricingData) {
     return (
       <section
-        id="product"
+        id="programs"
         className="py-24 px-4"
       >
         <div className="max-w-7xl mx-auto">
@@ -260,17 +254,6 @@ const PlanCards: React.FC = () => {
               <div
                 className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-md"
                 style={{
-                  backgroundColor: '#00C85315',
-                  border: '1.5px solid #00C85330',
-                  color: '#00C853',
-                }}
-              >
-                <Shield className="w-4 h-4" />
-                <span>Garansi Uang Kembali</span>
-              </div>
-              <div
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-md"
-                style={{
                   backgroundColor: '#9C27B015',
                   border: '1.5px solid #9C27B030',
                   color: '#9C27B0',
@@ -373,22 +356,6 @@ const PlanCards: React.FC = () => {
                   <span className="font-semibold">Response dalam 5 menit</span>
                 </div>
               </div>
-
-              {/* Trust Indicators */}
-              <div className="mt-6 pt-6 border-t-2 border-gray-200 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-600">
-                <div className="flex items-center gap-1.5">
-                  <div className="h-2 w-2 rounded-full bg-green-500" />
-                  <span className="font-semibold">1000+ Siswa Aktif</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="h-2 w-2 rounded-full bg-blue-500" />
-                  <span className="font-semibold">Rating 4.9/5.0</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="h-2 w-2 rounded-full bg-purple-500" />
-                  <span className="font-semibold">Trusted Partner PTN</span>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
@@ -400,7 +367,7 @@ const PlanCards: React.FC = () => {
         onOpenChange={setIsConsultationDialogOpen}
         onContactSelect={handleContactSelect}
         showStats={true}
-        showTelegramOption={false}
+        showDiscordOption={false}
       />
     </>
   );

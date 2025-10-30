@@ -57,7 +57,11 @@ export default function EcosystemSection() {
       description: 'Build pemahaman kuat',
       color: '#F59E0B',
       features: [
-        { label: 'Live Class', badge: 'Zoom Meet', badgeColor: '#3B82F6' },
+        {
+          label: 'Live Class',
+          badge: 'Google Meet',
+          badgeColor: '#3B82F6',
+        },
         { label: 'Video Library', badge: 'LMS', badgeColor: '#8B5CF6' },
         { label: 'Tanya AI', badge: 'Chat 24/7', badgeColor: '#10B981' },
       ],
@@ -190,7 +194,10 @@ export default function EcosystemSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white py-20">
+    <section
+      id="ecosystem"
+      className="relative overflow-hidden bg-white py-20"
+    >
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <div
@@ -393,11 +400,11 @@ export default function EcosystemSection() {
             </h3>
           </div>
           <p className="mx-auto mb-12 max-w-3xl text-center text-gray-600">
-            Lo nggak cuma "dapat kelas doang". Ada{' '}
+            Kamu nggak cuma "dapat kelas doang". Ada{' '}
             <span className="font-semibold text-gray-900">
               ekosistem lengkap
             </span>{' '}
-            yang gue siapin — dari belajar, latihan, sampai komunitas. Semua
+            yang aku siapin — dari belajar, latihan, sampai komunitas. Semua
             tools buat execute PRINTS System ada di sini.
           </p>
 

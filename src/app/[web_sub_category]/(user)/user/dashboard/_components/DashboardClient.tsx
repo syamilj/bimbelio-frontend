@@ -410,7 +410,7 @@ export default function DashboardClient() {
           <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-3xl p-8 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <Trophy className="w-6 h-6 text-purple-600" />
-              <p className="text-purple-700 font-bold">Peringkat Anda</p>
+              <p className="text-purple-700 font-bold">Peringkat Kamu</p>
             </div>
             <div className="text-4xl font-black text-purple-700 mb-2">
               #{reportData?.learningReport?.rank || '0'}

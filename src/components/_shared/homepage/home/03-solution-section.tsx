@@ -74,7 +74,7 @@ export const SolutionSection: React.FC = () => {
         title: 'Rhythm',
         subtitle: 'Konsisten tanpa burnout',
         description:
-          'Stamina drop? Rhythm builder bikin lo belajar 2 jam/hari yang efektif — bukan 14 jam seminggu sekali yang akhirnya zonk.',
+          'Stamina drop? Rhythm builder bikin kamu belajar 2 jam/hari yang efektif — bukan 14 jam seminggu sekali yang akhirnya zonk.',
         icon: <Clock className="w-8 h-8" />,
         color: PILLAR_COLORS.violet,
       },
@@ -83,7 +83,7 @@ export const SolutionSection: React.FC = () => {
         title: 'Iterate',
         subtitle: 'Coba, evaluasi, improve',
         description:
-          'Nilai nggak naik-naik? Sistem iterate bantu lo analisis kesalahan → perbaiki strategi → coba lagi. Loop sampai berhasil.',
+          'Nilai nggak naik-naik? Sistem iterate bantu kamu analisis kesalahan → perbaiki strategi → coba lagi. Loop sampai berhasil.',
         icon: <RefreshCw className="w-8 h-8" />,
         color: PILLAR_COLORS.emerald,
       },
@@ -92,7 +92,7 @@ export const SolutionSection: React.FC = () => {
         title: 'Navigate',
         subtitle: 'Peta belajar yang jelas',
         description:
-          'Galau jurusan? Takut kelamaan di satu bab? Navigator guide lo dari Core → Intensif → Super Intensif. Ada peta, nggak nyasar.',
+          'Galau jurusan? Takut kelamaan di satu bab? Navigator guide kamu dari Core → Intensif → Super Intensif. Ada peta, nggak nyasar.',
         icon: <Map className="w-8 h-8" />,
         color: PILLAR_COLORS.amber,
       },
@@ -101,7 +101,7 @@ export const SolutionSection: React.FC = () => {
         title: 'Test',
         subtitle: 'Latihan soal yang cerdas',
         description:
-          'Video ngebosenin? TO pakai IRT system — ngasih soal yang pas sama level lo. Progress terlihat real-time, bukan cuma berasa aja.',
+          'Video ngebosenin? TO pakai IRT system — ngasih soal yang pas sama level kamu. Progress terlihat real-time, bukan cuma berasa aja.',
         icon: <FileCheck className="w-8 h-8" />,
         color: PILLAR_COLORS.rose,
       },
@@ -184,7 +184,10 @@ export const SolutionSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 md:py-24 px-4 md:px-8 bg-white">
+    <section
+      id="solution"
+      className="py-20 md:py-24 px-4 md:px-8 bg-white"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <motion.div
@@ -223,7 +226,7 @@ export const SolutionSection: React.FC = () => {
             className="mb-8"
           >
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-              Makanya Gue Bikin —
+              Makanya Aku Bikin —
             </h2>
             <h2
               className="text-4xl md:text-5xl font-black bg-clip-text text-transparent"
@@ -313,7 +316,7 @@ export const SolutionSection: React.FC = () => {
               </h3>
               <p className="text-sm md:text-base text-gray-600">
                 PRINTS System dirancang khusus untuk mengatasi semua pain points
-                lo
+                kamu
               </p>
             </div>
           </div>
@@ -384,7 +387,7 @@ export const SolutionSection: React.FC = () => {
             </h3>
             <p className="text-base md:text-lg text-gray-600">
               Setiap pilar dirancang untuk mengatasi masalah spesifik dalam
-              perjalanan belajar lo
+              perjalanan belajar kamu
             </p>
           </div>
 
@@ -484,7 +487,7 @@ export const SolutionSection: React.FC = () => {
             >
               paket berlangganan
             </span>{' '}
-            yang cocok untuk lo.
+            yang cocok untuk kamu.
           </p>
         </motion.div>
       </div>

@@ -106,7 +106,10 @@ export default function MentorAISection() {
   ];
 
   return (
-    <section className="py-24 px-4 bg-white">
+    <section
+      id="mentor"
+      className="py-24 px-4 bg-white"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Layer 2: Mentor Section */}
         <motion.div
@@ -132,12 +135,12 @@ export default function MentorAISection() {
               <br />
               <span style={{ color: '#00C853' }}>Layer 2 & 3 Gimana?</span>
             </h2>
-            <p className="text-base text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Tutor ngajarin materi. Tapi lo juga butuh{' '}
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Tutor ngajarin materi. Tapi kamu juga butuh{' '}
               <span className="font-bold">
                 strategic planning & instant support
               </span>
-              . Makanya ada Mentor buat bimbing strategi lo, dan AI buat jawab
+              . Makanya ada Mentor buat bimbing strategi kamu, dan AI buat jawab
               pertanyaan kapan aja.
             </p>
           </div>
@@ -335,7 +338,7 @@ export default function MentorAISection() {
                 3 layers bekerja bareng
               </span>{' '}
               — Tutor ngajarin materi, Mentor guide strategi, AI support 24/7.
-              Lo nggak akan merasa{' '}
+              Kamu nggak akan merasa{' '}
               <span className="font-bold">sendirian lagi</span> dalam perjalanan
               ke PTN impian!
             </p>

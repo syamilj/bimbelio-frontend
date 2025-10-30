@@ -540,7 +540,7 @@ export function DialogPayment({
                           Voucher berhasil diterapkan!
                         </p>
                         <p className="text-xs text-green-700">
-                          Anda hemat {formatPrice(plan.price - discountPrice)}
+                          Kamu hemat {formatPrice(plan.price - discountPrice)}
                         </p>
                       </div>
                     </div>
@@ -671,7 +671,7 @@ export function DialogPayment({
                 {/* Security Note - Compact */}
                 <div className="text-center pt-2 border-t border-gray-100">
                   <p className="text-xs text-gray-500">
-                    Dengan melanjutkan, Anda menyetujui{' '}
+                    Dengan melanjutkan, Kamu menyetujui{' '}
                     <a
                       href="#"
                       className="text-blue-600 hover:underline"

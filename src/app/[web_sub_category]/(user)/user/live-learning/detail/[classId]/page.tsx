@@ -672,7 +672,7 @@ export default function LiveClassStudentDetail() {
                       toaster({
                         title: 'Berhasil membuka Meeting!',
                         description:
-                          'Pastikan Anda login dengan email terdaftar',
+                          'Pastikan Kamu login dengan email terdaftar',
                         condition: 'success',
                       });
                     }}
@@ -867,7 +867,7 @@ function ErrorState({ onBack }: { onBack: () => void }) {
         Live Class Tidak Ditemukan
       </h3>
       <p className="text-gray-600 mb-6">
-        Live class yang Anda cari tidak ada atau Anda tidak memiliki akses.
+        Live class yang Kamu cari tidak ada atau Kamu tidak memiliki akses.
       </p>
       <Button
         onClick={onBack}

@@ -322,7 +322,7 @@ export default function TryoutResult({
               Memproses Hasil Try Out
             </h3>
             <p className="text-gray-600">
-              Mohon tunggu sebentar, kami sedang menyiapkan hasil Anda...
+              Mohon tunggu sebentar, kami sedang menyiapkan hasil Kamu...
             </p>
           </div>
         </motion.div>
@@ -361,7 +361,7 @@ export default function TryoutResult({
                   Hasil Try Out
                 </h1>
                 <p className="text-sm text-gray-600">
-                  Review dan analisis performa Anda
+                  Review dan analisis performa Kamu
                 </p>
               </div>
             </div>

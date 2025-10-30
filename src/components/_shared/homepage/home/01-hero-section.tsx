@@ -409,7 +409,7 @@ const HeroSection: React.FC = () => {
             onOpenChange={setIsConsultationDialogOpen}
             onContactSelect={handleContactSelect}
             showStats={true}
-            showTelegramOption={false}
+            showDiscordOption={false}
           />
         </Suspense>
       )}
@@ -642,7 +642,7 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
       transition={{ duration: 0.8, ease: 'easeOut' }}
       className="flex mt-16 mb-8 flex-col items-center"
     >
-      {/* New badge - Launching soon */}
+      {/* New badge with AI-Powered tag inside */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -652,31 +652,19 @@ const BrandSection: React.FC<{ mainColor: string }> = ({ mainColor }) => {
           borderColor: `${mainColor}30`,
         }}
       >
-        <div
-          className="w-2 h-2 rounded-full animate-pulse"
-          style={{ backgroundColor: mainColor }}
-        />
-        <span className="text-sm font-bold text-gray-700">
-          Mulai Sekarang. 36 Minggu ke Depan.
-        </span>
-      </motion.div>
-
-      {/* Powered by section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="flex items-center gap-2 text-gray-600 text-sm bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm"
-      >
+        {/* AI-Powered mini badge inside */}
         <span
-          className="font-semibold bg-clip-text text-transparent"
+          className="px-2 py-0.5 rounded-full text-[10px] font-black text-white uppercase tracking-wide inline-flex items-center gap-1"
           style={{
-            background: `linear-gradient(135deg, ${mainColor}, ${mainColor}aa)`,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            background: `linear-gradient(135deg, ${mainColor}, ${mainColor}dd)`,
           }}
         >
-          Bimbelio: Satu Akun untuk UTBK, Mandiri, Kedinasan
+          <Bot className="w-4 h-4" />
+          AI-Powered
+        </span>
+
+        <span className="text-sm font-bold text-gray-700">
+          Satu Akun untuk UTBK, Mandiri, Kedinasan
         </span>
       </motion.div>
     </motion.div>
@@ -755,10 +743,11 @@ const HeadingSection: React.FC<{
             )}
             style={colorsLoaded ? { color: mainColor } : {}}
           >
-            Lo capek nggak sih belajar sendiri tanpa arah jelas?
+            Kamu capek nggak sih belajar sendiri tanpa arah jelas?
           </span>{' '}
-          Gue tau banget struggle lo — makanya gue bikin Liveclass: kelas
-          interaktif dengan tutor alumni PTN, live di Zoom, bisa tanya langsung.
+          Aku tau banget struggle kamu — makanya aku bikin Liveclass: kelas
+          interaktif dengan tutor alumni PTN, live di Google Meet, bisa tanya
+          langsung.
         </p>
 
         <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-center">
@@ -774,7 +763,7 @@ const HeadingSection: React.FC<{
         </p>
 
         <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed text-center">
-          Pilih yang sesuai ritme lo.{' '}
+          Pilih yang sesuai ritme kamu.{' '}
           <span
             className={cn(
               'font-bold transition-colors duration-300',
@@ -784,8 +773,8 @@ const HeadingSection: React.FC<{
           >
             Satu akun, semua jalur
           </span>{' '}
-          — UTBK, SIMAK UI, UM UGM, sampai kedinasan. Gue bakal temenin lo dari
-          awal sampai lolos.
+          — UTBK, SIMAK UI, UM UGM, sampai kedinasan. Aku bakal temenin kamu
+          dari awal sampai lolos.
         </p>
       </div>
     </motion.div>
@@ -848,7 +837,9 @@ const HeadingSection: React.FC<{
             </div>
             <div className="flex-1">
               <p className="text-sm font-bold text-gray-800">72+ Sessions</p>
-              <p className="text-xs text-gray-600">Live interaktif di Zoom</p>
+              <p className="text-xs text-gray-600">
+                Live interaktif di Google Meet
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3">
@@ -1220,7 +1211,7 @@ const CTASection: React.FC<{
       {/* Sub CTA Buttons */}
       <div className="flex justify-center mt-2">
         <a
-          href="https://t.me/bimbelio"
+          href="https://discord.com/invite/5Fy3fnVaE9"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold bg-white shadow border transition-transform duration-200 hover:scale-105"

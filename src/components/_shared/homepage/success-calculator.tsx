@@ -480,7 +480,7 @@ const SuccessCalculator = () => {
                               </div>
                             </div>
                             <div>
-                              <span className="text-gray-600">Skor Anda:</span>
+                              <span className="text-gray-600">Skor Kamu:</span>
                               <div className="font-bold text-gray-900">
                                 {currentScore[0]}
                               </div>

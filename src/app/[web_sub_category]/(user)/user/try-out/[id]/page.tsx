@@ -242,7 +242,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
               Akses Ditolak
             </h2>
             <p className="text-gray-600">
-              Anda tidak terdaftar untuk mengikuti try out ini
+              Kamu tidak terdaftar untuk mengikuti try out ini
             </p>
           </div>
         </motion.div>
@@ -310,7 +310,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
             <h2 className="text-xl font-bold text-gray-900 mb-2">
               Sesi Telah Selesai
             </h2>
-            <p className="text-gray-600">Anda telah menyelesaikan sesi ini</p>
+            <p className="text-gray-600">Kamu telah menyelesaikan sesi ini</p>
           </div>
         </motion.div>
       </div>

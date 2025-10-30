@@ -127,14 +127,14 @@ const TryoutSection: React.FC = () => {
                 backgroundClip: 'text',
               }}
             >
-              Lo Juga Dapet Bonus Ini Loh
+              Kamu Juga Dapet Bonus Ini Loh
             </span>
           </h2>
 
           <p className="text-base max-w-2xl mx-auto leading-relaxed mb-6 text-gray-600">
             Try Out IRT-based udah{' '}
-            <span className="font-bold">included di paket lo</span>, nggak perlu
-            bayar lagi!
+            <span className="font-bold">included di paket kamu</span>, nggak
+            perlu bayar lagi!
             <br />
             Latihan rutin, track progress, dan siap tempur di hari H.
             <span className="font-semibold text-gray-900">
@@ -726,13 +726,13 @@ const EnhancedTryOutCard = ({
               Grup Belajar:
             </span>
             <a
-              href="https://t.me/bimbelio"
+              href="https://discord.com/invite/5Fy3fnVaE9"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold underline hover:opacity-80 transition-opacity"
               style={{ color: mainColor }}
             >
-              t.me/bimbelio
+              discord.com/invite/5Fy3fnVaE9
             </a>
           </div>
 

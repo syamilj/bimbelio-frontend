@@ -2,7 +2,6 @@
 
 import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
 import { Button } from '@/components/ui/button';
-import { CONTACT_CONFIG } from '@/config/contact';
 import { pixel } from '@/lib/pixel/_core';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -28,7 +27,7 @@ const faqData: FAQItem[] = [
   {
     id: 1,
     category: 'general',
-    question: 'Gue bener-bener hopeless sama UTBK, bisa gak sih?',
+    question: 'Aku bener-bener hopeless sama UTBK, bisa gak sih?',
     answer:
       'Listen up bro! Setiap hero punya starting point yang berbeda. Yang penting bukan seberapa jauh kamu tertinggal, tapi seberapa committed kamu untuk bangkit. Blueprint Bimbelio coba ngebantu ribuan anak yang feeling hopeless jadi top scorer. The journey starts ketika kamu yakin!',
   },
@@ -90,9 +89,9 @@ const faqData: FAQItem[] = [
   {
     id: 9,
     category: 'community',
-    question: 'Grup Telegram eksklusif itu ngapain aja?',
+    question: 'Grup Discord eksklusif itu ngapain aja?',
     answer:
-      "Grup Telegram kita itu energy booster! Daily motivation, sharing strategies, tanya-jawab sama mentor, celebration milestones, bahkan late-night study sessions bareng. It's like having study buddies yang always got your back 24/7!",
+      "Grup Discord kita itu energy booster! Daily motivation, sharing strategies, tanya-jawab sama mentor, celebration milestones, bahkan late-night study sessions bareng. It's like having study buddies yang always got your back 24/7!",
   },
   {
     id: 10,
@@ -331,30 +330,6 @@ export default function FaqSection() {
                   <ArrowRight className="w-5 h-5 ml-3" />
                 </Button>
               </motion.div>
-
-              {/* Quick Stats - Compact */}
-              <div className="flex justify-center gap-6 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="text-xl font-bold text-white">
-                    {CONTACT_CONFIG.stats.responseTime}
-                  </div>
-                  <div className="text-xs text-blue-200">Respons</div>
-                </div>
-                <div className="w-px bg-white/30" />
-                <div className="flex flex-col items-center">
-                  <div className="text-xl font-bold text-white">
-                    {CONTACT_CONFIG.stats.studentsServed}
-                  </div>
-                  <div className="text-xs text-blue-200">Siswa</div>
-                </div>
-                <div className="w-px bg-white/30" />
-                <div className="flex flex-col items-center">
-                  <div className="text-xl font-bold text-white">
-                    {CONTACT_CONFIG.stats.satisfactionRate}
-                  </div>
-                  <div className="text-xs text-blue-200">Rating</div>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>

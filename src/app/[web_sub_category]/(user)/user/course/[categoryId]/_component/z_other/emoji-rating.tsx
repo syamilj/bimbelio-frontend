@@ -97,7 +97,7 @@ export default function EmojiRating() {
       {isSubmitted && (
         <div className="text-center">
           <p className="text-xs text-green-600">
-            Terima kasih atas penilaian Anda!
+            Terima kasih atas penilaian Kamu!
           </p>
         </div>
       )}

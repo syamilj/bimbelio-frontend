@@ -133,7 +133,7 @@ export const Login = () => {
                   Selamat Datang Kembali!
                 </h1>
                 <p className="text-gray-500 text-sm leading-relaxed">
-                  Lanjutkan perjalanan belajar Anda dengan akses ke ribuan
+                  Lanjutkan perjalanan belajar Kamu dengan akses ke ribuan
                   materi berkualitas
                 </p>
               </div>
@@ -156,7 +156,7 @@ export const Login = () => {
             {/* Footer */}
             <div className="space-y-4 pt-4 border-t border-main-default/10">
               <p className="text-xs text-center text-gray-500 leading-relaxed px-2">
-                Dengan melanjutkan, Anda setuju dengan{' '}
+                Dengan melanjutkan, Kamu setuju dengan{' '}
                 <span className="text-main-default font-medium">
                   Ketentuan Layanan
                 </span>

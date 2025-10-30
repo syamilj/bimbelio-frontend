@@ -50,7 +50,7 @@ export default function NotFound() {
               Oops! Halaman Tidak Ditemukan
             </h2>
             <p className="text-lg text-slate-600 leading-relaxed">
-              Maaf, halaman yang Anda cari tidak tersedia atau mungkin telah
+              Maaf, halaman yang Kamu cari tidak tersedia atau mungkin telah
               dipindahkan. Silakan periksa URL atau kembali ke halaman utama.
             </p>
           </div>

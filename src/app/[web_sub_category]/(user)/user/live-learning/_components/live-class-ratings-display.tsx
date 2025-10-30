@@ -266,7 +266,7 @@ export function LiveClassRatingsDisplay({
                   className="text-white font-semibold"
                   style={{ backgroundColor: mainColor }}
                 >
-                  Rating Anda
+                  Rating Kamu
                 </Badge>
                 <div className="flex items-center gap-1">
                   {renderStars(userRating.score)}

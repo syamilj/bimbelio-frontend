@@ -529,9 +529,9 @@ export type SubscriptionPending = {
   planTier: string;
   planDescription: string;
   planPrice: number;
-  telegram_user_id: string | null;
-  telegram_username: string | null;
-  telegram_invite_link: string | null;
+  discord_user_id: string | null;
+  discord_username: string | null;
+  discord_invite_link: string | null;
   updatedAt: string;
   websiteSubCategoryId: string;
 };

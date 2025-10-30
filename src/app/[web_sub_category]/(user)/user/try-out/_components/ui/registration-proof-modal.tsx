@@ -208,11 +208,11 @@ export default function RegistrationProofModal({
 
     // Add WhatsApp group join task
     items.push({
-      id: 'telegram_join',
+      id: 'discord_join',
       title: 'Join Grup Belajar',
-      instruction: 'Klik Join Group di Telegram',
+      instruction: 'Klik Join Group di Discord',
       icon: <Users className="h-5 w-5" />,
-      link: 'https://t.me/bimbelio',
+      link: 'https://discord.com/invite/5Fy3fnVaE9',
       points: 15,
       required: true,
       step: items.length + 1,
@@ -438,8 +438,8 @@ export default function RegistrationProofModal({
         {TryoutIrtData?.isDone && TryoutIrtData.isIrt && (
           <Card className="border-2 border-yellow-300 bg-yellow-50">
             <CardContent className="p-4 text-sm text-yellow-800">
-              ⚠️ Penilaian tryout ini menggunakan sistem <b>IRT</b>. Karena Anda
-              mengerjakan setelah proses IRT selesai, maka nilai Anda hanya
+              ⚠️ Penilaian tryout ini menggunakan sistem <b>IRT</b>. Karena Kamu
+              mengerjakan setelah proses IRT selesai, maka nilai Kamu hanya
               berupa skor biasa (0-1000) dan tidak akan dihitung di leaderboard.
             </CardContent>
           </Card>

@@ -140,7 +140,10 @@ export default function ProgramsSection() {
   ];
 
   return (
-    <section className="py-24 px-4 bg-white">
+    <section
+      id="timeline"
+      className="py-24 px-4 bg-white"
+    >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -191,8 +194,8 @@ export default function ProgramsSection() {
               Kedinasan (Jul 2026)
             </span>
             , ada <span className="font-bold">5 program bertahap</span> yang
-            sesuai sama PRINTS System. Lo bisa ikut semua atau pilih yang match
-            sama target ujian lo.
+            sesuai sama PRINTS System. Kamu bisa ikut semua atau pilih yang
+            match sama target ujian kamu.
           </p>
         </motion.div>
 

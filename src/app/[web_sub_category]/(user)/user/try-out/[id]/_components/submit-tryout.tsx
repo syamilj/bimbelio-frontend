@@ -285,7 +285,7 @@ const SubmitTryout = ({
                           Semua soal sudah terjawab!
                         </h4>
                         <p className="text-green-700 text-sm">
-                          Anda telah menyelesaikan semua soal dalam sesi ini.
+                          Kamu telah menyelesaikan semua soal dalam sesi ini.
                           Siap untuk melanjutkan!
                         </p>
                       </div>
@@ -333,7 +333,7 @@ const SubmitTryout = ({
                   Konfirmasi Pengumpulan
                 </DialogTitle>
                 <p className="text-gray-600 text-center">
-                  Setelah dikumpulkan, Anda tidak dapat mengubah jawaban lagi
+                  Setelah dikumpulkan, Kamu tidak dapat mengubah jawaban lagi
                 </p>
               </DialogHeader>
 
@@ -395,8 +395,8 @@ const SubmitTryout = ({
                     </h4>
                     <p className="text-orange-700 text-sm">
                       Setelah mengklik "Kumpulkan Jawaban", sesi ini akan
-                      berakhir dan Anda tidak dapat mengubah jawaban lagi.
-                      Pastikan Anda sudah yakin dengan semua jawaban yang
+                      berakhir dan Kamu tidak dapat mengubah jawaban lagi.
+                      Pastikan Kamu sudah yakin dengan semua jawaban yang
                       dipilih.
                     </p>
                   </div>
