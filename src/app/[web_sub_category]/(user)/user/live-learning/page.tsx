@@ -1,6 +1,9 @@
 'use client';
 
+import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -9,35 +12,165 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { Input } from '@/components/ui/input';
 import {
-  AlertCircle,
-  ArrowRight,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { pixel } from '@/lib/pixel/_core';
+import { formatDateTime, formatDuration } from '@/lib/utils';
+import { getStatusColor } from '@/lib/utils/live-class';
+import {
+  Category,
+  CourseSubChapter,
+  Instructor,
+  LiveClass,
+  LiveClassAgenda,
+  LiveClassInvited,
+  LiveClassReference,
+} from '@/types/database';
+import {
   Award,
-  CheckCircle2,
+  BookOpen,
+  Calendar,
+  Check,
   Clock,
-  MessageCircle,
+  Crown,
+  Eye,
   PlayCircle,
-  Radio,
-  Tv,
+  Search,
+  Star,
+  Target,
+  Timer,
   Users,
-  Zap,
+  Video,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { CalendarView } from './_components/live-class-calendar-view';
+import { useCountdown } from './_components/live-class-hooks';
+import {
+  CountdownTimer,
+  EmptyState,
+  MarketingCTA,
+  NotificationBadge,
+  PreviewContent,
+} from './_components/live-class-shared-components';
+import './live-learning-enhanced.css'; // Keep the CSS import here if it's specific to the dashboard layout
 
-export default function LiveLearningPage() {
+export type LiveClassAvailableType = LiveClass & {
+  Instructor: Instructor;
+  Category: Category;
+  LiveClassReference: (LiveClassReference & {
+    CourseSubChapter: CourseSubChapter;
+  })[];
+  LiveClassAgenda: LiveClassAgenda[];
+  endDate: string;
+  status: string;
+  participants: {
+    id: string;
+    email: string;
+    name: string;
+    subs: string;
+    image: string | null;
+    inviteStatus: LiveClassInvited | null;
+  }[];
+};
+
+export default function LiveClassStudentDashboard() {
+  // === DESIGN SYSTEM PATTERNS FROM LEADERBOARD ===
+  const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
+  const [activeTab, setActiveTab] = useState('available');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [viewMode, setViewMode] = useState<'list' | 'grid' | 'calendar'>(
+    'grid',
+  );
+  const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  const {
+    data: LiveClassAvailable,
+    isLoading: LiveClassAvailableIsLoading,
+    error: LiveClassAvailableError,
+    totalData: LiveClassAvailableTotalData,
+  } = useGet<LiveClassAvailableType[]>('/liveClass/getAllLiveClassAvailable', {
+    params: { take: 100, page: 1 },
+  });
+
+  const {
+    data: LiveClassCompleted,
+    isLoading: LiveClassCompletedIsLoading,
+    error: LiveClassCompletedError,
+    totalData: LiveClassCompletedTotalData,
+  } = useGet<LiveClassAvailableType[]>('/liveClass/getAllLiveClassCompleted', {
+    params: { take: 100, page: 1 },
+  });
+
+  const {
+    data: LiveClassRegistered,
+    isLoading: LiveClassRegisteredIsLoading,
+    error: LiveClassRegisteredError,
+    totalData: LiveClassRegisteredTotalData,
+  } = useGet<LiveClassAvailableType[]>('/user/getUserLiveClassRegistered', {
+    params: { take: 100, page: 1 },
+  });
+
+  const {
+    data: LiveClassInvited,
+    isLoading: LiveClassInvitedIsLoading,
+    error: LiveClassInvitedError,
+    totalData: LiveClassInviteTotalData,
+  } = useGet<LiveClassAvailableType[]>('/user/getUserLiveClassInvited', {
+    params: { take: 100, page: 1 },
+  });
+
+  const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
+
+  useEffect(() => {
+    pixel.meta.track(
+      'ViewContent',
+      {
+        content_name: 'Live Class Page',
+        content_type: 'page',
+      },
+      // ✅ Advanced Matching untuk Meta Pixel
+      session?.user
+        ? {
+            em: session.user.email,
+            ph: session.user.phone || undefined,
+            fn: session.user.name?.split(' ')[0],
+            ln: session.user.name?.split(' ').slice(1).join(' '),
+          }
+        : undefined,
+    );
+    pixel.tiktok.track('ViewContent', {
+      content_name: 'Live Class Page',
+      content_id: 'live_class_page_main', // ✅ Required untuk TikTok VSA
+    });
+  }, [session]);
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto max-w-7xl px-4 py-8 md:py-12">
-        {/* HEADER SECTION */}
-        <div className="text-center mb-12 md:mb-16">
-          <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4"
-            style={{ backgroundColor: `${mainColor}15` }}
+      <div className="container mx-auto max-w-7xl px-4 py-6">
+        {/* ENHANCED HEADER - LEADERBOARD PATTERN */}
+        <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden mb-8">
+          <CardHeader
+            className="pb-6 border-b border-gray-100 relative overflow-hidden"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+            }}
           >
             <div className="relative z-10">
               <CardTitle
@@ -62,7 +195,7 @@ export default function LiveLearningPage() {
             </div>
             {/* DECORATIVE ELEMENTS */}
             <div
-              className="w-2 h-2 rounded-full"
+              className="absolute -right-8 -top-8 w-20 h-20 rounded-full opacity-5"
               style={{ backgroundColor: mainColor }}
             />
             <div
@@ -292,23 +425,68 @@ export default function LiveLearningPage() {
               }
               data-active-bg={mainColor}
             >
-              Live Learning Platform
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4 leading-tight">
-            Belajar Langsung dengan <br />
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
+              <BookOpen className="w-4 h-4" />
+              <span className="hidden sm:inline font-medium">
+                LiveClass Tersedia
+              </span>
+              <span className="sm:hidden font-medium">Semua</span>
+              <NotificationBadge count={LiveClassAvailableTotalData || 0} />
+            </TabsTrigger>
+            <TabsTrigger
+              value="registered"
+              className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              style={
+                { '--tw-bg-opacity': '1' } as React.CSSProperties & {
+                  [key: string]: string;
+                }
+              }
+              data-active-bg={mainColor}
             >
-              Tutor Berpengalaman
-            </span>
-          </h1>
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline font-medium">Terdaftar</span>
+              <span className="sm:hidden font-medium">Daftar</span>
+              <NotificationBadge
+                count={LiveClassRegisteredTotalData}
+                variant="yellow"
+              />
+            </TabsTrigger>
+            <TabsTrigger
+              value="invited"
+              className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              style={
+                { '--tw-bg-opacity': '1' } as React.CSSProperties & {
+                  [key: string]: string;
+                }
+              }
+              data-active-bg={mainColor}
+            >
+              <Video className="w-4 h-4" />
+              <span className="hidden sm:inline font-medium">Diundang</span>
+              <span className="sm:hidden font-medium">Live</span>
+              <NotificationBadge
+                count={LiveClassInviteTotalData}
+                variant="green"
+              />
+            </TabsTrigger>
+            <TabsTrigger
+              value="completed"
+              className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              style={
+                { '--tw-bg-opacity': '1' } as React.CSSProperties & {
+                  [key: string]: string;
+                }
+              }
+              data-active-bg={mainColor}
+            >
+              <Check className="w-4 h-4" />
+              <span className="hidden sm:inline font-medium">Selesai</span>
+              <span className="sm:hidden font-medium">Selesai</span>
+              <NotificationBadge
+                count={LiveClassCompletedTotalData || 0}
+                variant="green"
+              />
+            </TabsTrigger>
+          </TabsList>
 
           <TabsContent
             value="available"
@@ -1036,477 +1214,346 @@ function LiveClassCard({
           <p className="text-gray-600 text-sm mb-5 line-clamp-2 leading-relaxed">
             {liveClass.description}
           </p>
-        </div>
 
-        {/* MAIN CARDS SECTION */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
-          {/* LIVECLASS CARD */}
-          <Card className="group relative hover:shadow-2xl transition-all duration-500 border-0 rounded-3xl overflow-hidden bg-white">
-            {/* Animated gradient background */}
-            <div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}05, ${secondaryColor}05)`,
-              }}
-            />
-
-            {/* Top accent bar */}
-            <div
-              className="h-3 w-full"
-              style={{
-                background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            />
-
-            <CardHeader className="pb-4 relative z-10">
-              <div className="flex items-start justify-between mb-6">
-                <div className="relative">
-                  <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl"
-                    style={{
-                      backgroundColor: `${mainColor}20`,
-                      border: `2px solid ${mainColor}40`,
-                    }}
-                  >
-                    <PlayCircle
-                      className="w-8 h-8"
-                      style={{ color: mainColor }}
-                    />
-                  </div>
-                  <div
-                    className="absolute -bottom-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: mainColor }}
-                  >
-                    <Zap className="w-3 h-3 text-white" />
-                  </div>
-                </div>
-                <div
-                  className="px-4 py-2 rounded-full text-xs font-bold text-white shadow-lg"
-                  style={{ backgroundColor: mainColor }}
-                >
-                  ⚡ Interaktif
-                </div>
-              </div>
-              <CardTitle className="text-3xl font-black text-gray-900 mb-2">
-                Liveclass
-              </CardTitle>
-              <CardDescription className="text-base text-gray-600">
-                Kelas live dengan interaksi langsung bersama tutor
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-6 relative z-10">
-              {/* Features List */}
-              <div className="space-y-4">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${mainColor}15` }}
-                    >
-                      <MessageCircle
-                        className="w-5 h-5"
-                        style={{ color: mainColor }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">
-                      Tanya Jawab Real-Time
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Interaksi langsung dengan tutor selama kelas berlangsung
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${mainColor}15` }}
-                    >
-                      <Users
-                        className="w-5 h-5"
-                        style={{ color: mainColor }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">Komunitas Belajar</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Belajar bersama siswa lain dengan tujuan sama
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${mainColor}15` }}
-                    >
-                      <Clock
-                        className="w-5 h-5"
-                        style={{ color: mainColor }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">Jadwal Teratur</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Kelas dengan jadwal tetap yang konsisten
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${mainColor}15` }}
-                    >
-                      <Award
-                        className="w-5 h-5"
-                        style={{ color: mainColor }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">
-                      Sertifikat Kehadiran
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Dapatkan sertifikat setelah menyelesaikan kelas
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-
-              {/* CTA Button */}
-              <Link
-                href={`/${website_sub_category_id}/user/live-learning/liveclass`}
-                className="block"
-              >
-                <Button
-                  className="w-full h-13 text-base font-bold rounded-xl group/btn text-white shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
-                  style={{ backgroundColor: mainColor }}
-                >
-                  <span className="relative z-10">Jelajahi Liveclass</span>
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* LIVESTREAM CARD */}
-          <Card className="group relative hover:shadow-2xl transition-all duration-500 border-0 rounded-3xl overflow-hidden bg-white">
-            {/* Animated gradient background */}
-            <div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              style={{
-                background: `linear-gradient(135deg, ${secondaryColor}05, ${mainColor}05)`,
-              }}
-            />
-
-            {/* Top accent bar */}
-            <div
-              className="h-3 w-full"
-              style={{
-                background: `linear-gradient(90deg, ${secondaryColor}, ${mainColor})`,
-              }}
-            />
-
-            <CardHeader className="pb-4 relative z-10">
-              <div className="flex items-start justify-between mb-6">
-                <div className="relative">
-                  <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl"
-                    style={{
-                      backgroundColor: `${secondaryColor}20`,
-                      border: `2px solid ${secondaryColor}40`,
-                    }}
-                  >
-                    <Tv
-                      className="w-8 h-8"
-                      style={{ color: secondaryColor }}
-                    />
-                  </div>
-                  <div
-                    className="absolute -bottom-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: secondaryColor }}
-                  >
-                    <Radio className="w-3 h-3 text-white" />
-                  </div>
-                </div>
-                <div
-                  className="px-4 py-2 rounded-full text-xs font-bold text-white shadow-lg"
-                  style={{ backgroundColor: secondaryColor }}
-                >
-                  📡 Live Broadcast
-                </div>
-              </div>
-              <CardTitle className="text-3xl font-black text-gray-900 mb-2">
-                Livestream
-              </CardTitle>
-              <CardDescription className="text-base text-gray-600">
-                Siaran langsung untuk jangkauan peserta yang lebih luas
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-6 relative z-10">
-              {/* Features List */}
-              <div className="space-y-4">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${secondaryColor}15` }}
-                    >
-                      <Radio
-                        className="w-5 h-5"
-                        style={{ color: secondaryColor }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">Broadcast HD</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Siaran berkualitas tinggi dari studio profesional
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${secondaryColor}15` }}
-                    >
-                      <Users
-                        className="w-5 h-5"
-                        style={{ color: secondaryColor }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">Akses Massal</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Ribuan peserta bisa menonton bersamaan
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${secondaryColor}15` }}
-                    >
-                      <Clock
-                        className="w-5 h-5"
-                        style={{ color: secondaryColor }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">Rekaman On-Demand</p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Tonton ulang kapan saja sesuai kenyamanan
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${secondaryColor}15` }}
-                    >
-                      <Award
-                        className="w-5 h-5"
-                        style={{ color: secondaryColor }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">
-                      Materi Berkualitas
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Konten expert yang sesuai kebutuhan ujian
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
-
-              {/* CTA Button */}
-              <Link
-                href={`/${website_sub_category_id}/user/live-learning/livestream`}
-                className="block"
-              >
-                <Button
-                  className="w-full h-13 text-base font-bold rounded-xl group/btn text-white shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
-                  style={{ backgroundColor: secondaryColor }}
-                >
-                  <span className="relative z-10">Jelajahi Livestream</span>
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* COMPARISON SECTION */}
-        <Card className="border-0 rounded-3xl overflow-hidden shadow-lg mb-12">
-          <CardHeader
-            className="pb-4"
-            style={{ backgroundColor: `${mainColor}08` }}
-          >
-            <CardTitle className="text-2xl md:text-3xl font-bold text-gray-900">
-              Perbandingan Liveclass vs Livestream
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6 md:p-8">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-4 px-4 font-semibold text-gray-900">
-                      Fitur
-                    </th>
-                    <th className="text-center py-4 px-4 font-semibold text-gray-900">
-                      Liveclass
-                    </th>
-                    <th className="text-center py-4 px-4 font-semibold text-gray-900">
-                      Livestream
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-4 px-4 text-gray-900 font-medium">
-                      Interaksi Langsung
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex justify-center">
-                        <CheckCircle2 className="w-6 h-6 text-green-500" />
-                      </div>
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex justify-center">
-                        <AlertCircle className="w-6 h-6 text-amber-500" />
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-4 px-4 text-gray-900 font-medium">
-                      Jangkauan Peserta
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <span className="text-gray-600">Terbatas</span>
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <span className="text-gray-900 font-semibold">
-                        Ribuan Orang
-                      </span>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-4 px-4 text-gray-900 font-medium">
-                      Jadwal Kelas
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex justify-center">
-                        <CheckCircle2 className="w-6 h-6 text-green-500" />
-                      </div>
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex justify-center">
-                        <CheckCircle2 className="w-6 h-6 text-green-500" />
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-4 px-4 text-gray-900 font-medium">
-                      Rekaman
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex justify-center">
-                        <AlertCircle className="w-6 h-6 text-amber-500" />
-                      </div>
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex justify-center">
-                        <CheckCircle2 className="w-6 h-6 text-green-500" />
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-gray-50">
-                    <td className="py-4 px-4 text-gray-900 font-medium">
-                      Sertifikat
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex justify-center">
-                        <CheckCircle2 className="w-6 h-6 text-green-500" />
-                      </div>
-                    </td>
-                    <td className="py-4 px-4 text-center">
-                      <div className="flex justify-center">
-                        <CheckCircle2 className="w-6 h-6 text-green-500" />
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          {/* Preview Content for marketing variant */}
+          {liveClassWithAccess.needsUpgrade && showPlanInfo ? (
+            <div className="mb-6">
+              <PreviewContent liveClass={liveClass} />
             </div>
-          </CardContent>
-        </Card>
+          ) : (
+            <div className="grid gap-4 mb-6 lg:grid-cols-2">
+              {/* Agenda Items - Modern card */}
+              {liveClass.LiveClassAgenda &&
+                liveClass.LiveClassAgenda.length > 0 && (
+                  <div className="bg-linear-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-6 h-6 rounded-lg bg-blue-500 flex items-center justify-center">
+                        <Target className="h-3 w-3 text-white" />
+                      </div>
+                      <span className="text-sm font-semibold text-blue-800">
+                        Agenda Pembelajaran ({liveClass.LiveClassAgenda.length})
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      {liveClass.LiveClassAgenda.slice(0, 2).map(
+                        (agenda, index) => (
+                          <div
+                            key={agenda.id}
+                            className="bg-white/70 rounded-lg p-3 border border-white/50"
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                                {agenda.order || index + 1}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-blue-800 font-medium text-sm line-clamp-1">
+                                  {agenda.title}
+                                </p>
+                                {agenda.description && (
+                                  <p className="text-blue-600 text-xs mt-1 line-clamp-1">
+                                    {agenda.description}
+                                  </p>
+                                )}
+                                <div className="flex items-center gap-2 mt-2">
+                                  <span className="text-xs bg-blue-200 text-blue-700 px-2 py-1 rounded-full font-medium">
+                                    {agenda.duration} menit
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ),
+                      )}
+                      {liveClass.LiveClassAgenda.length > 2 && (
+                        <div className="text-center py-2">
+                          <span className="text-xs text-blue-600 font-medium">
+                            +{liveClass.LiveClassAgenda.length - 2} agenda
+                            lainnya
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              {/* Reference Items - Modern card */}
+              {liveClass.LiveClassReference &&
+                liveClass.LiveClassReference.length > 0 && (
+                  <div className="bg-linear-to-br from-emerald-50 to-emerald-100 rounded-xl p-4 border border-emerald-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-6 h-6 rounded-lg bg-emerald-500 flex items-center justify-center">
+                        <BookOpen className="h-3 w-3 text-white" />
+                      </div>
+                      <span className="text-sm font-semibold text-emerald-800">
+                        Materi Referensi ({liveClass.LiveClassReference.length})
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      {liveClass.LiveClassReference.slice(0, 2).map((ref) => (
+                        <div
+                          key={ref.id}
+                          className="bg-white/70 rounded-lg p-3 border border-white/50"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                              {ref.urlType === 'VIDEO' && (
+                                <span className="text-emerald-600">🎥</span>
+                              )}
+                              {ref.urlType === 'DOCUMENT' && (
+                                <span className="text-emerald-600">📄</span>
+                              )}
+                              {ref.urlType === 'WEBSITE' && (
+                                <span className="text-emerald-600">🌐</span>
+                              )}
+                              {ref.urlType === 'ARTICLE' && (
+                                <span className="text-emerald-600">📰</span>
+                              )}
+                              {ref.urlType === 'AUDIO' && (
+                                <span className="text-emerald-600">🎵</span>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-emerald-800 font-semibold text-base line-clamp-1 mb-1 flex items-center gap-2">
+                                {/* Icon sesuai tipe materi */}
+                                {ref.urlType === 'VIDEO' && (
+                                  <Video className="h-4 w-4 text-emerald-600" />
+                                )}
+                                {ref.urlType === 'DOCUMENT' && (
+                                  <BookOpen className="h-4 w-4 text-emerald-600" />
+                                )}
+                                {ref.urlType === 'WEBSITE' && (
+                                  <Eye className="h-4 w-4 text-emerald-600" />
+                                )}
+                                {ref.urlType === 'ARTICLE' && (
+                                  <Award className="h-4 w-4 text-emerald-600" />
+                                )}
+                                {ref.urlType === 'AUDIO' && (
+                                  <PlayCircle className="h-4 w-4 text-emerald-600" />
+                                )}
+                                {ref.CourseSubChapter?.title || ref.title}
+                              </p>
+                              <div className="flex flex-wrap gap-2 mb-1">
+                                {ref.CourseSubChapter?.spendTime && (
+                                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full border border-emerald-200 font-medium flex items-center gap-1">
+                                    <Clock className="h-3 w-3" />
+                                    {ref.CourseSubChapter.spendTime} menit
+                                  </span>
+                                )}
+                                {ref.CourseSubChapter?.premium ? (
+                                  <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full border border-yellow-200 font-medium flex items-center gap-1">
+                                    <Star className="h-3 w-3" />
+                                    Premium
+                                  </span>
+                                ) : (
+                                  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded-full border border-gray-200 font-medium flex items-center gap-1">
+                                    <BookOpen className="h-3 w-3" />
+                                    Gratis
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 mt-2">
+                                <Badge
+                                  variant="outline"
+                                  className="text-xs text-emerald-700 border-emerald-300 bg-emerald-50 flex items-center gap-1"
+                                >
+                                  <Target className="h-3 w-3" />
+                                  {ref.type}
+                                </Badge>
+                                {ref.url && (
+                                  <a
+                                    href={ref.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-emerald-600 underline hover:text-emerald-800 transition-colors flex items-center gap-1"
+                                  >
+                                    <Eye className="h-3 w-3" />
+                                    Lihat Materi
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {liveClass.LiveClassReference.length > 2 && (
+                        <div className="text-center py-2">
+                          <span className="text-xs text-emerald-600 font-medium">
+                            +{liveClass.LiveClassReference.length - 2} referensi
+                            lainnya
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+            </div>
+          )}
 
-        {/* CTA SECTION */}
-        <div className="text-center">
-          <p className="text-gray-600 text-lg mb-6">
-            Pilih metode pembelajaran yang paling sesuai dengan gaya belajar
-            Anda
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href={`/${website_sub_category_id}/user/live-learning/liveclass`}
-            >
-              <Button
-                size="lg"
-                className="h-12 px-8 text-base font-semibold rounded-xl text-white"
-                style={{ backgroundColor: mainColor }}
+          {/* Plan Information - Modern design */}
+          {showPlanInfo && liveClassWithAccess.userAccess && (
+            <div className="mb-6">
+              <div className="bg-linear-to-r from-orange-50 to-yellow-50 rounded-xl p-4 border border-orange-200">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-6 h-6 rounded-lg bg-orange-500 flex items-center justify-center">
+                    <Target className="h-3 w-3 text-white" />
+                  </div>
+                  <span className="text-sm font-semibold text-orange-800">
+                    Status Akses
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {liveClassWithAccess.requiredPlans?.length > 0 ? (
+                    liveClassWithAccess.requiredPlans
+                      .slice(0, 2)
+                      .map((plan: any, index: number) => (
+                        <div
+                          key={index}
+                          className={`px-3 py-2 rounded-lg border text-sm font-medium ${
+                            liveClassWithAccess.userAccess.canRegister
+                              ? 'bg-green-100 text-green-800 border-green-300'
+                              : 'bg-orange-100 text-orange-800 border-orange-300'
+                          }`}
+                        >
+                          <span className="mr-2">
+                            {liveClassWithAccess.userAccess.canRegister
+                              ? '✅'
+                              : '🔒'}
+                          </span>
+                          {typeof plan === 'string' ? plan : plan.name}
+                        </div>
+                      ))
+                  ) : (
+                    <div className="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg border border-gray-300 text-sm font-medium">
+                      <span className="mr-2">📖</span>
+                      Gratis untuk Semua
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          {/* Modern Actions & Stats Section */}
+          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+            {/* Action Buttons */}
+            <div className="flex gap-3">
+              {liveClassWithAccess.needsUpgrade && showPlanInfo ? (
+                <MarketingCTA
+                  liveClass={liveClass}
+                  compact={false}
+                />
+              ) : (
+                <>
+                  {/* {liveClass.canJoin && (
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onJoin(liveClass);
+                      }}
+                      size="lg"
+                      className={`h-11 px-6 font-semibold rounded-xl shadow-lg transition-all duration-300 ${
+                        isLive
+                          ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-xl'
+                      }`}
+                    >
+                      {isLive ? (
+                        <>
+                          <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></div>
+                          <Video className="mr-2 h-4 w-4" />
+                          Join Live
+                        </>
+                      ) : (
+                        <>
+                          <PlayCircle className="mr-2 h-4 w-4" />
+                          Daftar Kelas
+                        </>
+                      )}
+                    </Button>
+                  )} */}
+                  {showPlanInfo &&
+                    liveClassWithAccess.needsUpgrade &&
+                    onUpgrade && (
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onUpgrade(liveClass);
+                        }}
+                        className="h-11 px-6 border-2 border-orange-300 text-orange-700 hover:bg-orange-50 font-semibold rounded-xl transition-all duration-300 hover:shadow-lg"
+                      >
+                        <div className="w-4 h-4 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
+                          <span className="text-white text-xs">🔒</span>
+                        </div>
+                        Upgrade Plan
+                      </Button>
+                    )}
+                  {liveClass.status === 'Selesai' && (
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRate(liveClass);
+                      }}
+                      className="h-11 px-6 border-2 border-yellow-300 text-yellow-700 hover:bg-yellow-50 font-semibold rounded-xl transition-all duration-300 hover:shadow-lg"
+                    >
+                      <Star className="mr-2 h-4 w-4" />
+                      Beri Rating
+                    </Button>
+                  )}
+                </>
+              )}
+            </div>
+            {/* Stats & Detail Button */}
+            <div className="flex items-center gap-4">
+              {/* Enhanced Stats */}
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
+                  <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
+                    <Users className="h-3 w-3 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium">Peserta</p>
+                    <p className="text-sm font-bold text-gray-800">
+                      {liveClass.participants?.length || 0}
+                    </p>
+                  </div>
+                </div>
+                {/* {liveClass.ratingStats &&
+                  liveClass.ratingStats.totalRatings > 0 && (
+                    <div className="flex items-center gap-2 bg-yellow-50 px-3 py-2 rounded-lg">
+                      <div className="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center">
+                        <Star className="h-3 w-3 text-yellow-600 fill-yellow-400" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-500 font-medium">
+                          Rating
+                        </p>
+                        <p className="text-sm font-bold text-gray-800">
+                          {liveClass.ratingStats.averageRating.toFixed(1)}
+                        </p>
+                      </div>
+                    </div>
+                  )} */}
+              </div>
+              {/* Modern Detail Button */}
+              <Link
+                href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
               >
-                Mulai Liveclass
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-            <Link
-              href={`/${website_sub_category_id}/user/live-learning/livestream`}
-            >
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-12 px-8 text-base font-semibold rounded-xl border-2"
-                style={{
-                  color: secondaryColor,
-                  borderColor: secondaryColor,
-                }}
-              >
-                Mulai Livestream
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-700 hover:text-blue-600 hover:bg-blue-50 font-semibold rounded-xl transition-all duration-300 hover:shadow-lg group bg-transparent"
+                >
+                  <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                  <span className="hidden sm:inline">Lihat Detail</span>
+                  <span className="sm:hidden">Detail</span>
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
