@@ -81,12 +81,12 @@ export default function ComparisonSection() {
     },
     {
       aspek: 'Harga',
-      liveclass: 'Rp999k',
+      liveclass: 'Rp1.499k',
       livestream: 'Rp799k',
     },
     {
       aspek: 'Cicilan',
-      liveclass: '3× Rp333k',
+      liveclass: '3× Rp499k',
       livestream: '3× Rp266k',
     },
   ];
@@ -125,7 +125,7 @@ export default function ComparisonSection() {
     },
     {
       aspek: 'Harga',
-      bimbelio: 'Rp 799-999k',
+      bimbelio: 'Rp 799-1.499k',
       videoOnDemand: 'Rp 200-500k',
       bimbelOffline: 'Rp 3-8 juta',
     },

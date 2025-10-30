@@ -836,7 +836,7 @@ const HeadingSection: React.FC<{
               />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-bold text-gray-800">72+ Sessions</p>
+              <p className="text-sm font-bold text-gray-800">198+ Sessions</p>
               <p className="text-xs text-gray-600">
                 Live interaktif di Google Meet
               </p>
@@ -1057,7 +1057,7 @@ const StatsSection: React.FC<{
           style={{ backgroundColor: mainColor }}
         />
         <span className="text-sm md:text-base font-bold text-gray-700">
-          Liveclass mulai 8 Januari 2025
+          Liveclass mulai 21 November
         </span>
       </div>
     </motion.div>
@@ -1204,7 +1204,7 @@ const CTASection: React.FC<{
         }}
       >
         <Play className="w-5 h-5 animate-gentle-float" />
-        <span>Mulai Blueprint sekarang!</span>
+        <span>Mulai sekarang!</span>
         <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
       </motion.button>
 
