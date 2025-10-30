@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getStatusColor } from '@/lib/utils/live-class';
 import { CalendarIcon, Clock, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { LiveClassAvailableType } from '../liveclass/page';
+import { LiveClassAvailableType } from '../page';
 
 interface CalendarViewProps {
   liveClass: any[];
@@ -95,10 +95,10 @@ export function CalendarView({
     <div className="grid gap-6 lg:grid-cols-3">
       {/* Calendar */}
       <div className="lg:col-span-2">
-        <Card className="border-0 shadow-lg rounded-2xl overflow-hidden">
-          <CardHeader className="bg-linear-to-r from-blue-50 to-indigo-50 border-b">
+        <Card className="border-2 border-gray-100 shadow-sm rounded-3xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-gray-100">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl font-bold text-gray-900">
+              <CardTitle className="text-xl font-black text-gray-900">
                 {monthName}
               </CardTitle>
               <div className="flex gap-2">
@@ -106,7 +106,7 @@ export function CalendarView({
                   variant="outline"
                   size="sm"
                   onClick={() => navigateMonth('prev')}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 rounded-2xl font-bold border-2"
                 >
                   ←
                 </Button>
@@ -114,7 +114,7 @@ export function CalendarView({
                   variant="outline"
                   size="sm"
                   onClick={() => navigateMonth('next')}
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 rounded-2xl font-bold border-2"
                 >
                   →
                 </Button>
@@ -127,7 +127,7 @@ export function CalendarView({
               {['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].map((day) => (
                 <div
                   key={day}
-                  className="p-2 text-center text-sm font-medium text-gray-500"
+                  className="p-2 text-center text-sm font-black text-gray-500"
                 >
                   {day}
                 </div>
@@ -153,17 +153,17 @@ export function CalendarView({
                   <button
                     key={index}
                     onClick={() => setSelectedDate(day)}
-                    className={`calendar-day p-2 h-20 border rounded-lg transition-all hover:shadow-md relative ${
+                    className={`calendar-day p-2 h-20 border-2 rounded-2xl transition-all hover:shadow-sm relative ${
                       isSelected
                         ? 'selected bg-blue-100 border-blue-300'
                         : isToday
                           ? 'bg-blue-50 border-blue-200'
                           : dayClasses.length > 0
                             ? 'has-events bg-green-50 border-green-200 hover:bg-green-100'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-gray-50 border-gray-100'
                     }`}
                   >
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-sm font-black text-gray-900">
                       {day.getDate()}
                     </div>
                     {dayClasses.length > 0 && (
@@ -202,9 +202,9 @@ export function CalendarView({
 
       {/* Selected Date Details */}
       <div className="space-y-4">
-        <Card className="border-0 shadow-lg rounded-2xl">
-          <CardHeader className="bg-linear-to-r from-gray-50 to-gray-100 border-b">
-            <CardTitle className="text-lg font-bold">
+        <Card className="border-2 border-gray-100 shadow-sm rounded-3xl">
+          <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-100">
+            <CardTitle className="text-lg font-black text-gray-900">
               {selectedDate
                 ? selectedDate.toLocaleDateString('id-ID', {
                     weekday: 'long',
@@ -221,19 +221,19 @@ export function CalendarView({
                 {selectedDateClasses.map((liveClass, index) => (
                   <div
                     key={index}
-                    className="p-3 border rounded-lg hover:shadow-md transition-shadow"
+                    className="p-3 border-2 border-gray-100 rounded-2xl hover:shadow-sm transition-shadow"
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-semibold text-sm line-clamp-2 flex-1 pr-2">
+                      <h4 className="font-black text-sm line-clamp-2 flex-1 pr-2 text-gray-900">
                         {liveClass.title}
                       </h4>
                       <div className="flex flex-col items-end gap-1">
                         <Badge
-                          className={`${getStatusColor(liveClass.status)} text-xs shrink-0`}
+                          className={`${getStatusColor(liveClass.status)} text-xs shrink-0 font-bold rounded-xl border-2`}
                         >
                           {liveClass.status}
                         </Badge>
-                        <div className="text-xs font-mono text-gray-500">
+                        <div className="text-xs font-mono text-gray-500 font-bold">
                           #{liveClass.id.slice(-6).toUpperCase()}
                         </div>
                       </div>
@@ -297,17 +297,19 @@ export function CalendarView({
         </Card>
 
         {/* Calendar Legend */}
-        <Card className="border-0 shadow-lg rounded-2xl">
-          <CardHeader>
-            <CardTitle className="text-lg font-bold">Keterangan</CardTitle>
+        <Card className="border-2 border-gray-100 shadow-sm rounded-3xl">
+          <CardHeader className="border-b-2 border-gray-100">
+            <CardTitle className="text-lg font-black text-gray-900">
+              Keterangan
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div className="flex items-center gap-2 text-sm">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+            <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
+              <div className="w-3 h-3 bg-blue-500 rounded-full border-2 border-blue-600"></div>
               <span>Akan Datang</span>
             </div>
-            <div className="flex items-center gap-2 text-sm">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+            <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
+              <div className="w-3 h-3 bg-red-500 rounded-full border-2 border-red-600"></div>
               <span>Sedang Berlangsung</span>
             </div>
             <div className="flex items-center gap-2 text-sm">

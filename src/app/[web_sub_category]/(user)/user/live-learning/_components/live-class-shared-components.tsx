@@ -38,7 +38,7 @@ export function NotificationBadge({
 
   return (
     <span
-      className={`inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-medium rounded-full border ${getVariantStyles()} ${pulse ? 'animate-pulse' : ''}`}
+      className={`inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-black rounded-full border-2 ${getVariantStyles()} ${pulse ? 'animate-pulse' : ''}`}
     >
       {count > 99 ? '99+' : count}
     </span>
@@ -62,28 +62,30 @@ export function CountdownTimer({ timeLeft }: CountdownTimerProps) {
   return (
     <div className="flex gap-1 text-center">
       {timeLeft.days > 0 && (
-        <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
-          <div className="text-sm font-bold text-gray-900">{timeLeft.days}</div>
-          <div className="text-xs text-gray-500">hari</div>
+        <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+          <div className="text-sm font-black text-gray-900">
+            {timeLeft.days}
+          </div>
+          <div className="text-xs text-gray-500 font-bold">hari</div>
         </div>
       )}
-      <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
-        <div className="text-sm font-bold text-gray-900">
+      <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+        <div className="text-sm font-black text-gray-900">
           {timeLeft.hours.toString().padStart(2, '0')}
         </div>
-        <div className="text-xs text-gray-500">jam</div>
+        <div className="text-xs text-gray-500 font-bold">jam</div>
       </div>
-      <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
-        <div className="text-sm font-bold text-gray-900">
+      <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+        <div className="text-sm font-black text-gray-900">
           {timeLeft.minutes.toString().padStart(2, '0')}
         </div>
-        <div className="text-xs text-gray-500">mnt</div>
+        <div className="text-xs text-gray-500 font-bold">mnt</div>
       </div>
-      <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
-        <div className="text-sm font-bold text-gray-900">
+      <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+        <div className="text-sm font-black text-gray-900">
           {timeLeft.seconds.toString().padStart(2, '0')}
         </div>
-        <div className="text-xs text-gray-500">dtk</div>
+        <div className="text-xs text-gray-500 font-bold">dtk</div>
       </div>
     </div>
   );
@@ -112,23 +114,23 @@ export function StatsCard({
 }: StatsCardProps) {
   return (
     <Card
-      className={`stats-card border-2 transition-all duration-300 hover:shadow-lg rounded-xl overflow-hidden ${bgColor} ${borderColor}`}
+      className={`stats-card border-2 transition-all duration-300 hover:shadow-md rounded-2xl overflow-hidden ${bgColor} ${borderColor}`}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 md:pb-3">
-        <CardTitle className={`text-xs md:text-sm font-semibold ${textColor}`}>
+        <CardTitle className={`text-xs md:text-sm font-black ${textColor}`}>
           {title}
         </CardTitle>
         <div
-          className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-linear-to-br ${gradient} text-white shadow-sm`}
+          className={`w-8 h-8 md:w-10 md:h-10 rounded-2xl flex items-center justify-center bg-gradient-to-br ${gradient} text-white shadow-sm border-2 border-white`}
         >
           <Icon className="w-4 h-4 md:w-5 md:h-5" />
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
+        <div className="text-xl md:text-2xl lg:text-3xl font-black text-gray-900 mb-1 md:mb-2">
           {value}
         </div>
-        <p className={`text-xs md:text-sm font-medium opacity-80 ${textColor}`}>
+        <p className={`text-xs md:text-sm font-bold opacity-80 ${textColor}`}>
           {description}
         </p>
       </CardContent>
@@ -147,16 +149,16 @@ export function MarketingCTA({
 }: MarketingCTAProps) {
   if (compact) {
     return (
-      <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+      <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-3 shadow-sm">
         <div className="flex items-center gap-2 mb-2">
           <Crown className="w-4 h-4 text-orange-600" />
-          <span className="text-sm font-medium text-orange-800">
+          <span className="text-sm font-bold text-orange-800">
             Premium Required
           </span>
         </div>
         <ButtonPayment
           type="modal"
-          className="w-full h-8 text-xs bg-orange-600 hover:bg-orange-700 text-white rounded-md"
+          className="w-full h-8 text-xs bg-orange-600 hover:bg-orange-700 text-white rounded-2xl font-bold border-2"
         >
           Upgrade Sekarang
         </ButtonPayment>
@@ -165,16 +167,16 @@ export function MarketingCTA({
   }
 
   return (
-    <div className="bg-linear-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-4">
+    <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 rounded-2xl p-4 shadow-sm">
       <div className="flex items-start gap-3 mb-3">
-        <div className="w-10 h-10 rounded-full bg-linear-to-br from-orange-500 to-red-500 flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shrink-0 border-2 border-orange-600 shadow-sm">
           <Crown className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h4 className="font-semibold text-gray-900 text-base">
+          <h4 className="font-black text-gray-900 text-base">
             Upgrade ke Premium
           </h4>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-gray-500 mt-1 font-medium">
             Dapatkan akses penuh ke semua fitur kelas
           </p>
         </div>
@@ -182,7 +184,7 @@ export function MarketingCTA({
 
       <ButtonPayment
         type="modal"
-        className="w-full h-10 bg-linear-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg font-medium shadow-md transition-all duration-200"
+        className="w-full h-10 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-2xl font-black shadow-sm transition-all duration-200 border-2"
       >
         Upgrade Sekarang
       </ButtonPayment>
@@ -196,27 +198,27 @@ interface PreviewContentProps {
 
 export function PreviewContent({ liveClass }: PreviewContentProps) {
   return (
-    <div className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3 sm:p-5 space-y-3 sm:space-y-4">
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-3 sm:p-5 space-y-3 sm:space-y-4 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-blue-500 flex items-center justify-center shrink-0">
+          <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-2xl bg-blue-500 flex items-center justify-center shrink-0 border-2 border-blue-600 shadow-sm">
             <Eye className="w-3 h-3 text-white" />
           </div>
-          <span className="font-semibold text-blue-900 text-sm sm:text-base">
+          <span className="font-black text-blue-900 text-sm sm:text-base">
             Preview Kelas
           </span>
         </div>
-        <Badge className="bg-blue-100 text-blue-700 border-blue-300 text-xs w-fit">
+        <Badge className="bg-blue-100 text-blue-700 border-2 border-blue-300 text-xs w-fit font-bold rounded-xl">
           Terbatas
         </Badge>
       </div>
 
       {/* Agenda Preview - Responsive Design */}
       {liveClass.LiveClassAgenda && liveClass.LiveClassAgenda.length > 0 && (
-        <div className="bg-white rounded-lg p-3 sm:p-4 border border-blue-100 shadow-sm">
+        <div className="bg-white rounded-2xl p-3 sm:p-4 border-2 border-blue-100 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
             <BookOpen className="w-4 h-4 text-blue-600 shrink-0" />
-            <span className="font-medium text-gray-800 text-sm">
+            <span className="font-bold text-gray-900 text-sm">
               Agenda Pembelajaran
             </span>
           </div>
@@ -225,17 +227,17 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
               (agenda: any, index: number) => (
                 <div
                   key={index}
-                  className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-blue-50 rounded-lg"
+                  className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-blue-50 rounded-2xl border-2 border-blue-100"
                 >
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center mt-0.5 shrink-0">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-500 text-white text-xs font-black flex items-center justify-center mt-0.5 shrink-0 border-2 border-blue-600">
                     {index + 1}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-800 text-xs sm:text-sm leading-tight">
+                    <p className="font-bold text-gray-900 text-xs sm:text-sm leading-tight">
                       {agenda.title}
                     </p>
                     {agenda.duration && (
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 mt-1 font-medium">
                         {agenda.duration} menit
                       </p>
                     )}
@@ -244,10 +246,10 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
               ),
             )}
             {liveClass.LiveClassAgenda.length > 2 && (
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-2 p-2 sm:p-3 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-2 p-2 sm:p-3 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
                 <div className="flex items-center justify-center sm:justify-start gap-2">
                   <Lock className="w-4 h-4 text-gray-400 shrink-0" />
-                  <span className="text-xs sm:text-sm text-gray-500 font-medium">
+                  <span className="text-xs sm:text-sm text-gray-500 font-bold">
                     +{liveClass.LiveClassAgenda.length - 2} agenda lainnya
                   </span>
                 </div>

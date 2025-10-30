@@ -162,24 +162,24 @@ export default function LiveClassStudentDashboard() {
   }, [session]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <div className="container mx-auto max-w-7xl px-4 py-6">
         {/* ENHANCED HEADER - LEADERBOARD PATTERN */}
-        <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden mb-8">
+        <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden mb-8">
           <CardHeader
-            className="pb-6 border-b border-gray-100 relative overflow-hidden"
+            className="pb-6 border-b-2 border-gray-100 relative overflow-hidden"
             style={{
               background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
             }}
           >
             <div className="relative z-10">
-              <CardTitle
-                className="text-3xl font-bold flex items-center gap-4"
-                style={{ color: mainColor }}
-              >
+              <CardTitle className="text-3xl font-black flex items-center gap-4 text-gray-900">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
-                  style={{ backgroundColor: `${mainColor}15` }}
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border-2"
+                  style={{
+                    backgroundColor: `${mainColor}15`,
+                    borderColor: `${mainColor}30`,
+                  }}
                 >
                   <PlayCircle
                     className="w-6 h-6"
@@ -188,20 +188,11 @@ export default function LiveClassStudentDashboard() {
                 </div>
                 Live Learning Dashboard
               </CardTitle>
-              <CardDescription className="text-lg mt-3 text-gray-600">
+              <CardDescription className="text-lg mt-3 text-gray-500 font-medium">
                 Ikuti kelas langsung dengan tutor ahli dan tingkatkan persiapan
                 ujian Kamu
               </CardDescription>
             </div>
-            {/* DECORATIVE ELEMENTS */}
-            <div
-              className="absolute -right-8 -top-8 w-20 h-20 rounded-full opacity-5"
-              style={{ backgroundColor: mainColor }}
-            />
-            <div
-              className="absolute -left-6 -bottom-6 w-16 h-16 rounded-full opacity-5"
-              style={{ backgroundColor: secondaryColor }}
-            />
           </CardHeader>
           {/* STATS CARDS - LEADERBOARD PATTERN */}
           <CardContent className="p-6">
@@ -251,10 +242,10 @@ export default function LiveClassStudentDashboard() {
               />
             </div> */}
             {/* Quick Actions for Upcoming Classes */}
-            <div className="mt-6 p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+            <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200">
               <div className="flex items-center gap-2 mb-3">
                 <Timer className="w-5 h-5 text-blue-600" />
-                <h3 className="text-lg font-semibold text-blue-900">
+                <h3 className="text-lg font-black text-blue-900">
                   Kelas Mendatang
                 </h3>
               </div>
@@ -267,7 +258,7 @@ export default function LiveClassStudentDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="mb-6">
+        <Card className="mb-6 border-2 border-gray-100 rounded-3xl shadow-sm">
           <CardContent className="p-4">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-4">
@@ -278,7 +269,7 @@ export default function LiveClassStudentDashboard() {
                       placeholder="Cari berdasarkan judul, deskripsi, atau nama tutor..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
+                      className="pl-10 border-2 rounded-2xl shadow-sm"
                     />
                   </div>
                 </div>
@@ -286,10 +277,10 @@ export default function LiveClassStudentDashboard() {
                   value={selectedSubject}
                   onValueChange={setSelectedSubject}
                 >
-                  <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectTrigger className="w-full sm:w-[200px] border-2 rounded-2xl shadow-sm font-bold">
                     <SelectValue placeholder="Pilih mata pelajaran" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-2 border-gray-100 rounded-2xl shadow-sm">
                     <SelectItem value="all">Semua Mata Pelajaran</SelectItem>
                     {Categories?.map((subject) => (
                       <SelectItem
@@ -305,10 +296,10 @@ export default function LiveClassStudentDashboard() {
                   value={selectedStatus}
                   onValueChange={setSelectedStatus}
                 >
-                  <SelectTrigger className="w-full sm:w-[150px]">
+                  <SelectTrigger className="w-full sm:w-[150px] border-2 rounded-2xl shadow-sm font-bold">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border-2 border-gray-100 rounded-2xl shadow-sm">
                     <SelectItem value="all">Semua Status</SelectItem>
                     <SelectItem value="SCHEDULED">Terjadwal</SelectItem>
                     <SelectItem value="ONGOING">Berlangsung</SelectItem>
@@ -317,19 +308,19 @@ export default function LiveClassStudentDashboard() {
                 </Select>
               </div>
 
-              <div className="flex items-center justify-between border-t pt-4">
+              <div className="flex items-center justify-between border-t-2 border-gray-100 pt-4">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-black text-gray-900">
                       Tampilan:
                     </span>
-                    <div className="flex bg-gray-100 rounded-lg p-1">
+                    <div className="flex bg-gray-100 rounded-2xl p-1 border-2 border-gray-200">
                       <button
                         onClick={() => setViewMode('list')}
-                        className={`px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                        className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
                           viewMode === 'list'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
+                            ? 'bg-white text-gray-900 shadow-sm border-2 border-gray-200'
+                            : 'text-gray-600 hover:text-gray-900 border-2 border-transparent'
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -339,10 +330,10 @@ export default function LiveClassStudentDashboard() {
                       </button>
                       <button
                         onClick={() => setViewMode('grid')}
-                        className={`px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                        className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
                           viewMode === 'grid'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
+                            ? 'bg-white text-gray-900 shadow-sm border-2 border-gray-200'
+                            : 'text-gray-600 hover:text-gray-900 border-2 border-transparent'
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -352,10 +343,10 @@ export default function LiveClassStudentDashboard() {
                       </button>
                       <button
                         onClick={() => setViewMode('calendar')}
-                        className={`px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                        className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
                           viewMode === 'calendar'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
+                            ? 'bg-white text-gray-900 shadow-sm border-2 border-gray-200'
+                            : 'text-gray-600 hover:text-gray-900 border-2 border-transparent'
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -414,10 +405,10 @@ export default function LiveClassStudentDashboard() {
           value={activeTab}
           onValueChange={setActiveTab}
         >
-          <TabsList className="grid w-full grid-cols-4 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
+          <TabsList className="grid w-full grid-cols-4 mb-6 md:mb-8 bg-gray-50 rounded-2xl p-1 h-11 md:h-12 border-2 border-gray-100">
             <TabsTrigger
               value="available"
-              className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               style={
                 { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                   [key: string]: string;
@@ -426,15 +417,15 @@ export default function LiveClassStudentDashboard() {
               data-active-bg={mainColor}
             >
               <BookOpen className="w-4 h-4" />
-              <span className="hidden sm:inline font-medium">
+              <span className="hidden sm:inline font-bold">
                 LiveClass Tersedia
               </span>
-              <span className="sm:hidden font-medium">Semua</span>
+              <span className="sm:hidden font-bold">Semua</span>
               <NotificationBadge count={LiveClassAvailableTotalData || 0} />
             </TabsTrigger>
             <TabsTrigger
               value="registered"
-              className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               style={
                 { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                   [key: string]: string;
@@ -443,8 +434,8 @@ export default function LiveClassStudentDashboard() {
               data-active-bg={mainColor}
             >
               <Users className="w-4 h-4" />
-              <span className="hidden sm:inline font-medium">Terdaftar</span>
-              <span className="sm:hidden font-medium">Daftar</span>
+              <span className="hidden sm:inline font-bold">Terdaftar</span>
+              <span className="sm:hidden font-bold">Daftar</span>
               <NotificationBadge
                 count={LiveClassRegisteredTotalData}
                 variant="yellow"
@@ -452,7 +443,7 @@ export default function LiveClassStudentDashboard() {
             </TabsTrigger>
             <TabsTrigger
               value="invited"
-              className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               style={
                 { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                   [key: string]: string;
@@ -461,8 +452,8 @@ export default function LiveClassStudentDashboard() {
               data-active-bg={mainColor}
             >
               <Video className="w-4 h-4" />
-              <span className="hidden sm:inline font-medium">Diundang</span>
-              <span className="sm:hidden font-medium">Live</span>
+              <span className="hidden sm:inline font-bold">Diundang</span>
+              <span className="sm:hidden font-bold">Live</span>
               <NotificationBadge
                 count={LiveClassInviteTotalData}
                 variant="green"
@@ -470,7 +461,7 @@ export default function LiveClassStudentDashboard() {
             </TabsTrigger>
             <TabsTrigger
               value="completed"
-              className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               style={
                 { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                   [key: string]: string;
@@ -479,8 +470,8 @@ export default function LiveClassStudentDashboard() {
               data-active-bg={mainColor}
             >
               <Check className="w-4 h-4" />
-              <span className="hidden sm:inline font-medium">Selesai</span>
-              <span className="sm:hidden font-medium">Selesai</span>
+              <span className="hidden sm:inline font-bold">Selesai</span>
+              <span className="sm:hidden font-bold">Selesai</span>
               <NotificationBadge
                 count={LiveClassCompletedTotalData || 0}
                 variant="green"
@@ -493,7 +484,7 @@ export default function LiveClassStudentDashboard() {
             className="space-y-4"
           >
             {LiveClassAvailableError ? (
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 text-center">
+              <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-6 text-center">
                 <div className="text-orange-500 mb-3">
                   <svg
                     className="h-12 w-12 mx-auto"
@@ -509,10 +500,10 @@ export default function LiveClassStudentDashboard() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-orange-800 mb-2">
+                <h3 className="text-lg font-black text-orange-900 mb-2">
                   Fitur Multi-Plan Tidak Tersedia
                 </h3>
-                <p className="text-orange-600">
+                <p className="text-orange-700 font-medium">
                   Terjadi kesalahan saat memuat data multi-plan. Kamu masih
                   dapat menggunakan tab lain.
                 </p>
@@ -522,11 +513,11 @@ export default function LiveClassStudentDashboard() {
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="border rounded-lg p-4 animate-pulse"
+                    className="border-2 border-gray-100 rounded-2xl p-4 animate-pulse"
                   >
-                    <div className="h-6 bg-gray-200 rounded w-48 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-4"></div>
-                    <div className="h-10 bg-gray-200 rounded w-24"></div>
+                    <div className="h-6 bg-gray-200 rounded-xl w-48 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded-xl w-full mb-4"></div>
+                    <div className="h-10 bg-gray-200 rounded-2xl w-24"></div>
                   </div>
                 ))}
               </div>
@@ -754,21 +745,21 @@ const UpcomingCard = ({ liveClass }: { liveClass: LiveClassAvailableType }) => {
   const timeLeft = useCountdown(liveClass.startDate);
 
   return (
-    <div className="quick-action-card bg-white rounded-lg border p-3 hover:shadow-md transition-shadow">
+    <div className="quick-action-card bg-white rounded-2xl border-2 border-gray-100 p-3 hover:shadow-md transition-shadow shadow-sm">
       <div className="flex items-start justify-between mb-2">
-        <h4 className="font-semibold text-sm line-clamp-2 flex-1 pr-2">
+        <h4 className="font-black text-sm line-clamp-2 flex-1 pr-2 text-gray-900">
           {liveClass.title}
         </h4>
         <div className="flex flex-col items-end gap-1">
-          <Badge className="status-badge text-xs bg-blue-100 text-blue-800 border-blue-300 shrink-0">
+          <Badge className="status-badge text-xs bg-blue-100 text-blue-800 border-2 border-blue-300 shrink-0 font-bold rounded-xl">
             {liveClass.status}
           </Badge>
-          <div className="text-xs font-mono text-gray-500">
+          <div className="text-xs font-mono text-gray-500 font-bold">
             #{liveClass.id.slice(-6).toUpperCase()}
           </div>
         </div>
       </div>
-      <div className="text-xs text-gray-600 mb-2">
+      <div className="text-xs text-gray-600 mb-2 font-medium">
         <div className="flex items-center gap-1 mb-1">
           <Clock className="h-3 w-3" />
           <span>{formatDateTime(liveClass.startDate)}</span>
@@ -780,25 +771,27 @@ const UpcomingCard = ({ liveClass }: { liveClass: LiveClassAvailableType }) => {
       </div>
       {!timeLeft.isExpired && (
         <div className="mb-3">
-          <div className="text-xs text-gray-500 mb-1">Dimulai dalam:</div>
+          <div className="text-xs text-gray-500 mb-1 font-bold">
+            Dimulai dalam:
+          </div>
           <div className="flex gap-1">
             {timeLeft.days > 0 && (
-              <div className="bg-gray-100 rounded px-2 py-1">
-                <div className="text-xs font-bold">{timeLeft.days}</div>
-                <div className="text-xs text-gray-500">hari</div>
+              <div className="bg-gray-100 rounded-xl px-2 py-1 border-2 border-gray-200">
+                <div className="text-xs font-black">{timeLeft.days}</div>
+                <div className="text-xs text-gray-500 font-bold">hari</div>
               </div>
             )}
-            <div className="bg-gray-100 rounded px-2 py-1">
-              <div className="text-xs font-bold">
+            <div className="bg-gray-100 rounded-xl px-2 py-1 border-2 border-gray-200">
+              <div className="text-xs font-black">
                 {timeLeft.hours.toString().padStart(2, '0')}
               </div>
-              <div className="text-xs text-gray-500">jam</div>
+              <div className="text-xs text-gray-500 font-bold">jam</div>
             </div>
-            <div className="bg-gray-100 rounded px-2 py-1">
-              <div className="text-xs font-bold">
+            <div className="bg-gray-100 rounded-xl px-2 py-1 border-2 border-gray-200">
+              <div className="text-xs font-black">
                 {timeLeft.minutes.toString().padStart(2, '0')}
               </div>
-              <div className="text-xs text-gray-500">mnt</div>
+              <div className="text-xs text-gray-500 font-bold">mnt</div>
             </div>
           </div>
         </div>
@@ -826,7 +819,7 @@ const UpcomingCard = ({ liveClass }: { liveClass: LiveClassAvailableType }) => {
           <Button
             variant="outline"
             size="sm"
-            className="h-7 px-2 bg-transparent"
+            className="h-7 px-2 bg-transparent border-2 rounded-2xl font-bold"
           >
             <Eye className="h-3 w-3" />
           </Button>
@@ -861,24 +854,24 @@ function LiveClassCard({
   // Grid view - more compact card
   if (viewMode === 'grid') {
     return (
-      <Card className="live-class-card hover:shadow-xl transition-all duration-300 border-0 rounded-2xl overflow-hidden group">
+      <Card className="live-class-card hover:shadow-md transition-all duration-300 border-2 border-gray-100 rounded-3xl overflow-hidden group shadow-sm">
         <CardContent className="p-0">
           {/* Header with gradient and status */}
-          <div className="relative p-4 bg-linear-to-br from-blue-50 to-indigo-50">
+          <div className="relative p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
             <div className="flex justify-between items-start mb-3">
               <Badge
-                className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm`}
+                className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm font-bold text-xs rounded-xl`}
               >
                 {liveClass.status}
               </Badge>
               {isLive && (
                 <div className="live-indicator flex items-center gap-1 text-red-600">
                   <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                  <span className="text-xs font-medium">LIVE</span>
+                  <span className="text-xs font-black">LIVE</span>
                 </div>
               )}
             </div>
-            <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+            <h3 className="font-black text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors text-gray-900">
               {liveClass.title}
             </h3>
             {/* Countdown for upcoming classes */}
@@ -892,21 +885,21 @@ function LiveClassCard({
           <div className="p-4 space-y-3">
             {/* Header with ID */}
             <div className="flex items-start justify-between mb-2">
-              <h4 className="font-semibold text-sm line-clamp-2 flex-1 pr-2">
+              <h4 className="font-black text-sm line-clamp-2 flex-1 pr-2 text-gray-900">
                 {liveClass.title}
               </h4>
               <Badge
                 variant="secondary"
-                className="text-xs font-mono bg-gray-100 text-gray-600 border-gray-300 shrink-0 ml-2"
+                className="text-xs font-mono bg-gray-100 text-gray-600 border-2 border-gray-300 shrink-0 ml-2 font-bold rounded-xl"
               >
                 #{liveClass.id.slice(-6).toUpperCase()}
               </Badge>
             </div>
             {/* Instructor */}
             <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-8 w-8 border-2 border-gray-100">
                 <AvatarImage src={liveClass.Instructor.image || undefined} />
-                <AvatarFallback className="text-xs">
+                <AvatarFallback className="text-xs font-black">
                   {liveClass.Instructor.name
                     .split(' ')
                     .map((n) => n[0])
@@ -914,17 +907,17 @@ function LiveClassCard({
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col gap-1 text-sm">
-                <span className="font-medium text-gray-800 line-clamp-1">
+                <span className="font-black text-gray-900 line-clamp-1">
                   {liveClass.Instructor.name}
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {liveClass.Instructor.certificate && (
-                    <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-full border border-green-200 line-clamp-1 max-w-[150px] truncate">
+                    <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-xl border-2 border-green-200 line-clamp-1 max-w-[150px] truncate font-bold">
                       {liveClass.Instructor.certificate}
                     </span>
                   )}
                   {liveClass.Instructor.lastEducation && (
-                    <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-200 line-clamp-1 max-w-[150px] truncate">
+                    <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-xl border-2 border-blue-200 line-clamp-1 max-w-[150px] truncate font-bold">
                       {liveClass.Instructor.lastEducation}
                     </span>
                   )}
@@ -932,7 +925,7 @@ function LiveClassCard({
               </div>
             </div>
             {/* Time info */}
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-2 text-sm text-gray-500 font-medium">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 shrink-0" />
                 <span className="truncate">
@@ -947,13 +940,13 @@ function LiveClassCard({
 
             {/* Preview Content for marketing variant */}
             {liveClassWithAccess.needsUpgrade && showPlanInfo && (
-              <div className="border-t pt-3">
+              <div className="border-t-2 border-gray-100 pt-3">
                 <PreviewContent liveClass={liveClass} />
               </div>
             )}
             {/* Plan info */}
             {showPlanInfo && liveClassWithAccess.userAccess && (
-              <div className="border-t pt-3">
+              <div className="border-t-2 border-gray-100 pt-3">
                 <div className="flex flex-wrap gap-1">
                   {liveClassWithAccess.requiredPlans?.length > 0 ? (
                     liveClassWithAccess.requiredPlans
@@ -966,10 +959,10 @@ function LiveClassCard({
                               ? 'default'
                               : 'outline'
                           }
-                          className={`text-xs ${
+                          className={`text-xs font-bold rounded-xl ${
                             liveClassWithAccess.userAccess.canRegister
-                              ? 'bg-green-100 text-green-800 border-green-300'
-                              : 'bg-orange-100 text-orange-800 border-orange-300'
+                              ? 'bg-green-100 text-green-800 border-2 border-green-300'
+                              : 'bg-orange-100 text-orange-800 border-2 border-orange-300'
                           }`}
                         >
                           <span className="mr-1">
@@ -983,7 +976,7 @@ function LiveClassCard({
                   ) : (
                     <Badge
                       variant="secondary"
-                      className="text-xs"
+                      className="text-xs font-bold rounded-xl border-2"
                     >
                       📖 Free
                     </Badge>
@@ -992,7 +985,7 @@ function LiveClassCard({
               </div>
             )}
             {/* Actions with Enhanced Layout */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-100">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t-2 border-gray-100">
               <div className="flex gap-2 flex-1">
                 {liveClassWithAccess.needsUpgrade && showPlanInfo ? (
                   <MarketingCTA
@@ -1028,7 +1021,7 @@ function LiveClassCard({
                         <Button
                           variant="outline"
                           onClick={() => onUpgrade(liveClass)}
-                          className="flex-1 h-10 text-sm border-orange-300 text-orange-600 hover:bg-orange-50"
+                          className="flex-1 h-10 text-sm border-2 border-orange-300 text-orange-600 hover:bg-orange-50 rounded-2xl font-bold"
                         >
                           🔒 Upgrade Plan
                         </Button>
@@ -1037,18 +1030,18 @@ function LiveClassCard({
                 )}
               </div>
               <div className="flex gap-2">
-                <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg">
+                <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-2xl border-2 border-gray-100">
                   <div className="flex gap-2 text-xs text-gray-500 text-center">
                     <Users className="h-3 w-3 mx-auto mb-1" />
-                    <div className="font-medium text-gray-700">
+                    <div className="font-black text-gray-900">
                       {liveClass.participants?.length || 0}
                     </div>
                   </div>
                   {/* {liveClass.ratingStats &&
                     liveClass.ratingStats.totalRatings > 0 && (
-                      <div className="text-xs text-gray-500 text-center border-l border-gray-200 pl-2">
+                      <div className="text-xs text-gray-500 text-center border-l-2 border-gray-200 pl-2">
                         <Star className="h-3 w-3 mx-auto mb-1 fill-yellow-400 text-yellow-400" />
-                        <div className="font-medium text-gray-700">
+                        <div className="font-black text-gray-900">
                           {liveClass.ratingStats.averageRating.toFixed(1)}
                         </div>
                       </div>
@@ -1059,7 +1052,7 @@ function LiveClassCard({
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-10 ml-2 px-4 bg-transparent"
+                      className="h-10 ml-2 px-4 bg-transparent border-2 rounded-2xl font-bold"
                     >
                       <Eye className="mr-1 h-4 w-4" />
                       <span className="hidden sm:inline">Detail</span>
@@ -1076,7 +1069,7 @@ function LiveClassCard({
 
   // List view - Modern redesigned layout
   return (
-    <Card className="hover:shadow-xl transition-all duration-500 border border-gray-100 rounded-2xl overflow-hidden cursor-pointer group bg-white hover:border-blue-200">
+    <Card className="hover:shadow-md transition-all duration-500 border-2 border-gray-100 rounded-3xl overflow-hidden cursor-pointer group bg-white hover:border-blue-200 shadow-sm">
       <CardContent className="p-0">
         {/* Modern Header with Floating Elements */}
         <div className="relative bg-linear-to-r from-slate-50 via-blue-50 to-indigo-50 p-6">

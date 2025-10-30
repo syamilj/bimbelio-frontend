@@ -11,12 +11,12 @@ import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id'
 import { cn } from '@/lib/utils';
 import {
   BookOpen,
+  Bot,
   ChevronDown,
   ChevronUp,
   Crown,
   Home,
   Lock,
-  MessageCircle,
   Search,
   TrendingUp,
   Trophy,
@@ -104,7 +104,7 @@ const navSections: NavSection[] = [
       {
         title: 'Chat',
         url: (subCategoryId: string) => `/${subCategoryId}/user/chat`,
-        icon: MessageCircle,
+        icon: Bot,
         badge: 'AI',
         isAI: true,
       },

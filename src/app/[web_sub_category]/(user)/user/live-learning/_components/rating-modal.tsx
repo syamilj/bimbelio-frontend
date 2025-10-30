@@ -18,7 +18,7 @@ import { getRatingText } from '@/lib/utils/live-class';
 import { LiveClassRating } from '@/types/database';
 import { Heart, Send, Star, ThumbsUp } from 'lucide-react';
 import { useState } from 'react';
-import { LiveClassType } from '../[classId]/page';
+import { LiveClassType } from '../detail/[classId]/page';
 
 export function RatingModal({
   onClose,
@@ -132,19 +132,19 @@ export function RatingModal({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-lg overflow-hidden border-0 shadow-xl rounded-2xl">
+      <DialogContent className="sm:max-w-lg overflow-hidden border-2 border-gray-100 shadow-sm rounded-3xl">
         {/* ENHANCED HEADER WITH GRADIENT */}
-        <DialogHeader className="relative pb-6 border-b border-gray-100">
+        <DialogHeader className="relative pb-6 border-b-2 border-gray-100">
           <div
-            className="absolute inset-0 opacity-5 rounded-t-2xl"
+            className="absolute inset-0 opacity-5 rounded-t-3xl"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           />
           <div className="relative z-10">
-            <DialogTitle className="flex items-center gap-3 text-xl font-bold">
+            <DialogTitle className="flex items-center gap-3 text-xl font-black">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm border-2 border-gray-100"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Heart
@@ -158,7 +158,7 @@ export function RatingModal({
                   : 'Beri Rating & Review'}
               </span>
             </DialogTitle>
-            <DialogDescription className="text-base mt-2 text-gray-600">
+            <DialogDescription className="text-base mt-2 text-gray-500 font-medium">
               {existingRating ? (
                 <>Ubah rating Kamu untuk kelas "{liveClass.title}"</>
               ) : (
@@ -167,8 +167,8 @@ export function RatingModal({
                 </>
               )}
               {existingRating && (
-                <div className="mt-2 px-3 py-2 bg-blue-50 rounded-lg border border-blue-200">
-                  <span className="text-sm text-blue-700 font-medium">
+                <div className="mt-2 px-3 py-2 bg-blue-50 rounded-2xl border-2 border-blue-200">
+                  <span className="text-sm text-blue-700 font-bold">
                     Rating sebelumnya: {existingRating.score} ⭐
                   </span>
                 </div>
@@ -181,7 +181,7 @@ export function RatingModal({
           {/* ENHANCED RATING STARS SECTION */}
           <div className="text-center">
             <div
-              className="p-6 rounded-2xl border-2 relative overflow-hidden"
+              className="p-6 rounded-3xl border-2 relative overflow-hidden"
               style={{
                 backgroundColor:
                   displayRating > 0
@@ -207,7 +207,7 @@ export function RatingModal({
                     onClick={() => handleStarClick(star)}
                     onMouseEnter={() => handleStarHover(star)}
                     onMouseLeave={handleStarLeave}
-                    className="p-2 hover:scale-110 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 rounded-xl hover:bg-white/50"
+                    className="p-2 hover:scale-110 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 rounded-2xl hover:bg-white/50"
                     type="button"
                     disabled={isSubmitting}
                   >
@@ -224,7 +224,7 @@ export function RatingModal({
 
               <div className="text-center">
                 <p
-                  className="text-lg font-semibold mb-1"
+                  className="text-lg font-black mb-1"
                   style={{
                     color:
                       displayRating > 0
@@ -237,7 +237,7 @@ export function RatingModal({
                     : 'Pilih rating Kamu'}
                 </p>
                 {displayRating > 0 && (
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-500 font-medium">
                     {displayRating} dari 5 bintang
                   </p>
                 )}
@@ -249,7 +249,7 @@ export function RatingModal({
           <div className="space-y-3">
             <label
               htmlFor="review"
-              className="text-sm font-semibold text-gray-700 flex items-center gap-2"
+              className="text-sm font-black text-gray-900 flex items-center gap-2"
             >
               <ThumbsUp
                 className="h-4 w-4"
@@ -265,7 +265,7 @@ export function RatingModal({
                 onChange={(e) => setReview(e.target.value)}
                 rows={4}
                 maxLength={500}
-                className="border-2 border-gray-200 rounded-xl focus:border-2 transition-colors resize-none"
+                className="border-2 border-gray-200 rounded-2xl focus:border-2 transition-colors resize-none shadow-sm"
                 style={
                   {
                     '--tw-ring-color': `${mainColor}20`,
@@ -274,7 +274,7 @@ export function RatingModal({
                 }
               />
               <div className="absolute bottom-3 right-3">
-                <span className="text-xs text-gray-500 bg-white/80 px-2 py-1 rounded-lg">
+                <span className="text-xs text-gray-500 bg-white/80 px-2 py-1 rounded-xl font-bold">
                   {review.length}/500
                 </span>
               </div>
@@ -283,7 +283,7 @@ export function RatingModal({
 
           {/* ENHANCED CLASS INFO CARD */}
           <div
-            className="p-4 rounded-xl border-2 relative overflow-hidden"
+            className="p-4 rounded-2xl border-2 relative overflow-hidden shadow-sm"
             style={{
               backgroundColor: `${mainColor}05`,
               borderColor: `${mainColor}15`,
@@ -293,31 +293,29 @@ export function RatingModal({
               className="absolute -right-3 -top-3 w-8 h-8 rounded-full opacity-10"
               style={{ backgroundColor: mainColor }}
             />
-            <h4 className="font-semibold text-gray-900 mb-2">
-              {liveClass.title}
-            </h4>
-            <p className="text-sm text-gray-600">
+            <h4 className="font-black text-gray-900 mb-2">{liveClass.title}</h4>
+            <p className="text-sm text-gray-500 font-medium">
               Tutor:{' '}
-              <span className="font-medium">{liveClass.Instructor.name}</span> •{' '}
+              <span className="font-bold">{liveClass.Instructor.name}</span> •{' '}
               {liveClass.Category.name}
             </p>
           </div>
         </div>
 
         {/* ENHANCED FOOTER */}
-        <DialogFooter className="gap-3 pt-4 border-t border-gray-100">
+        <DialogFooter className="gap-3 pt-4 border-t-2 border-gray-100">
           <Button
             variant="outline"
             onClick={handleClose}
             disabled={isSubmitting}
-            className="px-6 py-2 h-11 border-2 hover:bg-gray-50 transition-colors rounded-xl"
+            className="px-6 py-2 h-11 border-2 hover:bg-gray-50 transition-colors rounded-2xl font-bold"
           >
             Batal
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={rating === 0 || isSubmitting}
-            className="px-6 py-2 h-11 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 h-11 text-white font-black rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor:
                 rating > 0 ? getRatingColor(displayRating) : mainColor,

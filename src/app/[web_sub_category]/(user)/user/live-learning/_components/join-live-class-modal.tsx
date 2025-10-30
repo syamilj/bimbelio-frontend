@@ -16,7 +16,7 @@ import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { formatDateTime } from '@/lib/utils/live-class';
 import { Video } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { LiveClassType } from '../[classId]/page';
+import { LiveClassType } from '../detail/[classId]/page';
 
 // Custom hook untuk countdown dengan dependency yang stabil
 function useCountdown(targetDate: string | Date) {
@@ -157,11 +157,11 @@ export function JoinLiveClassModal({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-md overflow-hidden border-0 shadow-xl rounded-2xl">
+      <DialogContent className="sm:max-w-md overflow-hidden border-2 border-gray-100 shadow-sm rounded-3xl">
         {/* Header */}
-        <DialogHeader className="relative pb-4 border-b border-gray-100 text-center">
+        <DialogHeader className="relative pb-4 border-b-2 border-gray-100 text-center">
           <div
-            className="absolute inset-0 opacity-5 rounded-t-2xl"
+            className="absolute inset-0 opacity-5 rounded-t-3xl"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -169,7 +169,7 @@ export function JoinLiveClassModal({
           <div className="relative z-10">
             <div className="flex justify-center mb-3">
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border-2 border-gray-100"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Video
@@ -179,12 +179,12 @@ export function JoinLiveClassModal({
               </div>
             </div>
             <DialogTitle
-              className="text-xl text-center font-bold"
+              className="text-xl text-center font-black"
               style={{ color: mainColor }}
             >
               {isLive ? 'Join Live Class' : 'Ready to Join'}
             </DialogTitle>
-            <DialogDescription className="text-sm text-center mt-1 text-gray-600">
+            <DialogDescription className="text-sm text-center mt-1 text-gray-500 font-medium">
               {isLive ? 'Kelas sedang berlangsung!' : 'Bergabung ke live class'}
             </DialogDescription>
           </div>
@@ -193,10 +193,8 @@ export function JoinLiveClassModal({
         <div className="space-y-4 py-4">
           {/* Live Class Info */}
           <div className="text-center py-2">
-            <h4 className="font-semibold text-gray-900 mb-2">
-              {liveClass.title}
-            </h4>
-            <div className="text-sm text-gray-600 space-y-1">
+            <h4 className="font-black text-gray-900 mb-2">{liveClass.title}</h4>
+            <div className="text-sm text-gray-500 space-y-1 font-medium">
               <p>{formatDateTime(liveClass.startDate)}</p>
               <p>
                 {liveClass.duration} menit • {liveClass.Instructor.name}
@@ -206,45 +204,47 @@ export function JoinLiveClassModal({
 
           {/* Status Display */}
           {isLive && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-center">
+            <div className="p-3 bg-red-50 border-2 border-red-200 rounded-2xl text-center">
               <div className="flex justify-center items-center gap-2 text-red-600 mb-1">
                 <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
-                <span className="font-bold">LIVE NOW</span>
+                <span className="font-black">LIVE NOW</span>
               </div>
-              <p className="text-sm text-red-700">Kelas sedang berlangsung</p>
+              <p className="text-sm text-red-700 font-medium">
+                Kelas sedang berlangsung
+              </p>
             </div>
           )}
 
           {/* Countdown Timer */}
           {isUpcoming && (
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-center">
-              <p className="text-sm font-medium text-blue-700 mb-2">
+            <div className="p-3 bg-blue-50 border-2 border-blue-200 rounded-2xl text-center">
+              <p className="text-sm font-bold text-blue-700 mb-2">
                 {timeLeft.canJoinSoon
                   ? 'Dapat bergabung dalam:'
                   : 'Dimulai dalam:'}
               </p>
               <div className="flex justify-center gap-2">
-                <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
-                  <div className="text-sm font-bold text-gray-900">
+                <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+                  <div className="text-sm font-black text-gray-900">
                     {timeLeft.hours.toString().padStart(2, '0')}
                   </div>
-                  <div className="text-xs text-gray-500">jam</div>
+                  <div className="text-xs text-gray-500 font-bold">jam</div>
                 </div>
-                <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
-                  <div className="text-sm font-bold text-gray-900">
+                <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+                  <div className="text-sm font-black text-gray-900">
                     {timeLeft.minutes.toString().padStart(2, '0')}
                   </div>
-                  <div className="text-xs text-gray-500">mnt</div>
+                  <div className="text-xs text-gray-500 font-bold">mnt</div>
                 </div>
-                <div className="bg-white rounded-lg px-2 py-1 shadow-sm border">
-                  <div className="text-sm font-bold text-gray-900">
+                <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+                  <div className="text-sm font-black text-gray-900">
                     {timeLeft.seconds.toString().padStart(2, '0')}
                   </div>
-                  <div className="text-xs text-gray-500">dtk</div>
+                  <div className="text-xs text-gray-500 font-bold">dtk</div>
                 </div>
               </div>
               {!timeLeft.canJoinSoon && (
-                <p className="text-xs text-blue-600 mt-2">
+                <p className="text-xs text-blue-600 mt-2 font-medium">
                   Tombol join akan aktif 5 menit sebelum dimulai
                 </p>
               )}
@@ -253,24 +253,24 @@ export function JoinLiveClassModal({
 
           {/* Access Info */}
           {userEmail && (
-            <div className="p-3 bg-green-50 border border-green-200 rounded-xl text-center">
-              <p className="text-sm font-medium text-green-800 mb-1">
+            <div className="p-3 bg-green-50 border-2 border-green-200 rounded-2xl text-center">
+              <p className="text-sm font-bold text-green-800 mb-1">
                 Email Terdaftar
               </p>
-              <p className="text-xs text-green-700">{userEmail}</p>
+              <p className="text-xs text-green-700 font-medium">{userEmail}</p>
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <DialogFooter className="flex gap-3 pt-4 border-t border-gray-100">
+        <DialogFooter className="flex gap-3 pt-4 border-t-2 border-gray-100">
           <Button
             variant="outline"
             onClick={() => {
               setIsOpen(false);
               if (onClose) onClose();
             }}
-            className="flex-1"
+            className="flex-1 rounded-2xl font-bold border-2"
           >
             Batal
           </Button>
@@ -278,7 +278,7 @@ export function JoinLiveClassModal({
             <Button
               onClick={handleJoin}
               disabled={!canJoinNow || isJoining}
-              className="flex-1"
+              className="flex-1 rounded-2xl font-bold border-2"
             >
               {isJoining ? (
                 'Bergabung...'
