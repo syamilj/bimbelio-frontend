@@ -90,7 +90,7 @@ const OnBoarding = ({ open, type }: Props) => {
       open={open}
       onOpenChange={handleClose}
     >
-      <DialogContent className="sm:max-w-2xl w-[95%] mx-auto rounded-2xl overflow-hidden border-0 p-0">
+      <DialogContent className="md:max-w-2xl w-[95%] mx-auto rounded-2xl overflow-hidden border-0 p-0">
         {/* Header */}
         <DialogHeader
           className="pb-4 px-6 pt-6 relative overflow-hidden"

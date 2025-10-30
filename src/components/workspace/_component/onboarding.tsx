@@ -62,7 +62,7 @@ const OnBoarding = ({ open, type }: Props) => {
         handleClose();
       }}
     >
-      <DialogContent className="w-[90%] max-w-[690px] md:w-full">
+      <DialogContent className="w-[90%] md:max-w-[690px] md:w-full">
         {type === 'chat' ? (
           <ChatAI />
         ) : type === 'notes' ? (
