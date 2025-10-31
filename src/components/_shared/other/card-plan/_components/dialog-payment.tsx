@@ -354,7 +354,7 @@ export function DialogPayment({
       <DialogContent
         // classOverlay="z-[9999999999999999]"
         classOverlay={classOverlay}
-        className="sm:max-w-7xl w-[95vw] max-h-[95vh] p-0 bg-gradient-to-br from-white via-gray-50 to-blue-50/30"
+        className="md:max-w-7xl w-[95vw] max-h-[95vh] p-0 bg-gradient-to-br from-white via-gray-50 to-blue-50/30"
       >
         {/* Compact Header */}
         <div

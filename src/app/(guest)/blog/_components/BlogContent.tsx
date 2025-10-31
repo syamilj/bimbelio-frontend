@@ -1,7 +1,6 @@
 'use client';
 
 import AdminImage from '@/_assets/logo-minimize.png';
-import Footer from '@/components/_shared/footer';
 import Navbar from '@/components/_shared/navbar';
 import ToC from '@/components/_shared/other/ToC';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -581,8 +580,6 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
           </motion.div>
         </motion.div>
       )}
-
-      <Footer />
     </Fragment>
   );
 }

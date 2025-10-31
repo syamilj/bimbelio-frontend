@@ -40,6 +40,13 @@ import { InfoIcon, Plus, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { LimitType, useProvider } from '../_provider/provider';
 
+const sanitizeFileName = (fileName: string): string => {
+  return fileName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Ganti karakter spesial dengan dash
+    .replace(/^-|-$/g, ''); // Hapus dash di awal/akhir
+};
+
 const listLimit: LimitType[] = ['chat', 'notes', 'vision', 'quiz', 'tryout'];
 export default function CreatePlanForm() {
   const {
@@ -146,7 +153,7 @@ export default function CreatePlanForm() {
 
       let imageUrl = undefined;
       if (image) {
-        const filePath = `plan/${name}-${crypto.randomUUID().slice(0, 4)}`;
+        const filePath = `plan/${sanitizeFileName(name)}-${crypto.randomUUID().slice(0, 4)}`;
         const { data, error } = await supabase.storage
           .from('img')
           .upload(filePath, image);

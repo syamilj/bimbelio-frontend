@@ -26,7 +26,7 @@ const ModalDeleteChapter = ({ onClick, open, setOpen, isLoading }: Props) => {
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="md:max-w-md">
         <DialogHeader className="text-center space-y-4">
           <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
             <AlertTriangle className="w-8 h-8 text-red-600" />
