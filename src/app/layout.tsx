@@ -11,6 +11,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import '../styles/globals.css';
 
+//
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -33,6 +34,8 @@ export const metadata: Metadata = {
     'Bimbel UM UGM',
     'Bimbel STAN',
     'Bimbel IPDN',
+    'Bimbel SBMPTN',
+    'Bimbel Kedinasan',
   ],
   authors: [{ name: 'Bimbelio', url: 'https://www.bimbelio.com' }],
   creator: 'Bimbelio',
