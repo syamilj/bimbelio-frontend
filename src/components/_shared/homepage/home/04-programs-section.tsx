@@ -4,6 +4,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 import { ArrowDown, Calendar, CheckCircle2 } from 'lucide-react';
+import Image from 'next/image';
 
 interface Program {
   id: number;
@@ -24,14 +25,9 @@ interface Program {
 export default function ProgramsSection() {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
-  const isMainLandingPage =
-    typeof window !== 'undefined' && window.location.pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
-  const secondaryColor = isMainLandingPage
-    ? '#5aa4dd'
-    : (websiteSubCategory?.secondary_color ?? '#7C3AED');
+  // Gunakan default main landing page colors jika websiteSubCategory null
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color ?? '#5aa4dd';
 
   const programs: Program[] = [
     {
@@ -230,9 +226,12 @@ export default function ProgramsSection() {
                               // Single Logo
                               <div className="relative">
                                 <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
-                                  <img
+                                  <Image
                                     src={program.logos[0]}
                                     alt={program.title}
+                                    width={64}
+                                    height={64}
+                                    loading="lazy"
                                     className="w-full h-full object-contain p-2"
                                   />
                                 </div>
@@ -250,9 +249,12 @@ export default function ProgramsSection() {
                                       zIndex: program.logos.length - idx,
                                     }}
                                   >
-                                    <img
+                                    <Image
                                       src={logo}
                                       alt={`${program.title} ${idx + 1}`}
+                                      width={48}
+                                      height={48}
+                                      loading="lazy"
                                       className="w-full h-full object-contain p-1.5"
                                     />
                                   </div>
@@ -447,9 +449,12 @@ export default function ProgramsSection() {
                               {/* Logo Section */}
                               <div className="flex-shrink-0">
                                 <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
-                                  <img
+                                  <Image
                                     src={program.logos[0]}
                                     alt={program.title}
+                                    width={80}
+                                    height={80}
+                                    loading="lazy"
                                     className="w-full h-full object-contain p-2"
                                   />
                                 </div>
@@ -629,9 +634,12 @@ export default function ProgramsSection() {
                               <div className="flex-shrink-0">
                                 {program.logos.length === 1 ? (
                                   <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
-                                    <img
+                                    <Image
                                       src={program.logos[0]}
                                       alt={program.title}
+                                      width={80}
+                                      height={80}
+                                      loading="lazy"
                                       className="w-full h-full object-contain p-2"
                                     />
                                   </div>
@@ -648,9 +656,12 @@ export default function ProgramsSection() {
                                           zIndex: program.logos.length - idx,
                                         }}
                                       >
-                                        <img
+                                        <Image
                                           src={logo}
                                           alt={`${program.title} ${idx + 1}`}
+                                          width={56}
+                                          height={56}
+                                          loading="lazy"
                                           className="w-full h-full object-contain p-1.5"
                                         />
                                       </div>
@@ -846,9 +857,12 @@ export default function ProgramsSection() {
                                   zIndex: programs[4].logos.length - idx,
                                 }}
                               >
-                                <img
+                                <Image
                                   src={logo}
                                   alt={`${programs[4].title} ${idx + 1}`}
+                                  width={56}
+                                  height={56}
+                                  loading="lazy"
                                   className="w-full h-full object-contain p-1.5"
                                 />
                               </div>

@@ -1,15 +1,57 @@
 'use client';
 import HeroSection from '@/components/_shared/homepage/home/01-hero-section';
-import ProblemSection from '@/components/_shared/homepage/home/02-problem-section';
-import SolutionSection from '@/components/_shared/homepage/home/03-solution-section';
-import ProgramsSection from '@/components/_shared/homepage/home/04-programs-section';
-import EcosystemSection from '@/components/_shared/homepage/home/05-ecosystem-section';
-import TutorsSection from '@/components/_shared/homepage/home/06-tutors-section';
-import MentorAISection from '@/components/_shared/homepage/home/07-mentor-ai-section';
-import PlanCardsSection from '@/components/_shared/homepage/home/08-plan-cards';
-import TryoutSection from '@/components/_shared/homepage/home/09-tryout-section';
-import ComparisonSection from '@/components/_shared/homepage/home/10-comparison-section';
-import FaqSection from '@/components/_shared/homepage/home/12-faq-section';
+import dynamic from 'next/dynamic';
+
+// Lazy load sections below the fold untuk optimasi performance
+const ProblemSection = dynamic(
+  () => import('@/components/_shared/homepage/home/02-problem-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const SolutionSection = dynamic(
+  () => import('@/components/_shared/homepage/home/03-solution-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const ProgramsSection = dynamic(
+  () => import('@/components/_shared/homepage/home/04-programs-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const EcosystemSection = dynamic(
+  () => import('@/components/_shared/homepage/home/05-ecosystem-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const TutorsSection = dynamic(
+  () => import('@/components/_shared/homepage/home/06-tutors-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const MentorAISection = dynamic(
+  () => import('@/components/_shared/homepage/home/07-mentor-ai-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const PlanCardsSection = dynamic(
+  () => import('@/components/_shared/homepage/home/08-plan-cards'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const TryoutSection = dynamic(
+  () => import('@/components/_shared/homepage/home/09-tryout-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const ComparisonSection = dynamic(
+  () => import('@/components/_shared/homepage/home/10-comparison-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
+const FaqSection = dynamic(
+  () => import('@/components/_shared/homepage/home/12-faq-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
 
 export default function LandingPage() {
   return (

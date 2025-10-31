@@ -84,18 +84,43 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       suppressHydrationWarning
     >
       <head>
-        {/* Resource Hints untuk percepat LCP */}
+        {/* Preconnect untuk critical external origins - OPTIMASI LCP */}
         <link
           rel="preconnect"
-          href="https://www.bimbelio.com"
-          crossOrigin="anonymous"
+          href="https://be.bimbelio.com"
         />
         <link
-          rel="preload"
-          as="image"
-          href="/_next/static/media/bg-hero.1f7c44df.webp"
+          rel="preconnect"
+          href="https://app.midtrans.com"
         />
-        {/* Catatan: path preload perlu disesuaikan saat build karena hashed file; untuk dev ini bisa dihapus jika error */}
+        <link
+          rel="preconnect"
+          href="https://snap-assets.al-pc-id-p.cdn.gtflabs.io"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
+        {/* DNS Prefetch untuk third-party domains */}
+        <link
+          rel="dns-prefetch"
+          href="https://connect.facebook.net"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://analytics.tiktok.com"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://static.cloudflareinsights.com"
+        />
+
         {/* Meta Pixel Script - Load before interactive untuk detection yang lebih baik */}
         <Script
           id="facebook-pixel"
