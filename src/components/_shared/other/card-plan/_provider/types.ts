@@ -12,6 +12,7 @@ import {
   PlanFeature,
   PlanLimitation,
   PlanSubscription,
+  PlanSubscriptionBundle,
   WebsiteSubCategory,
 } from '@/types/database';
 
@@ -21,6 +22,7 @@ export type PlanDataType = Plan & {
   PlanLimitation: PlanLimitation;
   discount: number | undefined;
   PlanSubscription: PlanSubscription & {
+    PlanSubscriptionBundle: PlanSubscriptionBundle[];
     PlanFeature: (PlanFeature & {
       Pivot_Plan_Category: (Pivot_Plan_Category & {
         Category: Category;

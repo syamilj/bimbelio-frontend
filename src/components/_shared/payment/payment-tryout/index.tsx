@@ -93,7 +93,7 @@ export const PaymentTryout = ({
       onOpenChange={setShow}
     >
       <DialogContent
-        className="sm:max-w-[425px] w-[95vw] p-0 rounded-3xl"
+        className="md:max-w-[425px] w-[95vw] p-0 rounded-3xl"
         hideClose
       >
         <div className="overflow-hidden rounded-3xl bg-white">

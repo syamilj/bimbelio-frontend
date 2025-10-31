@@ -350,7 +350,7 @@ export default function ModulPembelajaranSection() {
                         </Button>
                       </DialogTrigger>
 
-                      <DialogContent className="sm:max-w-[700px] max-h-[85vh]">
+                      <DialogContent className="md:max-w-[700px] max-h-[85vh]">
                         <DialogHeader>
                           <div className="flex items-center gap-4">
                             <div

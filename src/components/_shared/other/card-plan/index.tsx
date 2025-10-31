@@ -162,6 +162,14 @@ export function CardPlan({
     },
   };
 
+  // console.log({
+  //   plan: plan.PlanSubscription.PlanSubscriptionBundle,
+  // });
+
+  const platfroms = plan.PlanSubscription.PlanSubscriptionBundle.map((item) =>
+    item.websiteSubCategoryId.toUpperCase(),
+  );
+
   return (
     <ProviderContext.Provider value={Context}>
       <motion.div
@@ -341,17 +349,47 @@ export function CardPlan({
             {/* Category & Platform Tags */}
             <div className="flex items-center justify-between mt-3">
               <div className="flex items-center gap-2">
-                {plan.PlanSubscription?.WebsiteSubCategory && (
+                {platfroms.length === 0 &&
+                  plan.PlanSubscription?.WebsiteSubCategory && (
+                    <Badge
+                      variant="outline"
+                      className="text-xs font-medium border-2"
+                      style={{
+                        borderColor: `${mainColor}30`,
+                        color: mainColor,
+                        backgroundColor: `${mainColor}05`,
+                      }}
+                    >
+                      {plan.PlanSubscription?.WebsiteSubCategory?.name ||
+                        'Paket'}
+                    </Badge>
+                  )}
+                {platfroms.length > 0 &&
+                  platfroms.slice(0, 2).map((platform) => (
+                    <Badge
+                      key={platform}
+                      variant="outline"
+                      className="text-xs font-medium border-2 whitespace-nowrap"
+                      style={{
+                        borderColor: `${mainColor}30`,
+                        color: mainColor,
+                        backgroundColor: `${mainColor}05`,
+                      }}
+                    >
+                      {platform}
+                    </Badge>
+                  ))}
+                {platfroms.length > 2 && (
                   <Badge
                     variant="outline"
-                    className="text-xs font-medium border-2"
+                    className="text-xs font-medium border-2 whitespace-nowrap"
                     style={{
                       borderColor: `${mainColor}30`,
                       color: mainColor,
                       backgroundColor: `${mainColor}05`,
                     }}
                   >
-                    {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Paket'}
+                    +{platfroms.length - 2}
                   </Badge>
                 )}
                 <Badge
@@ -463,7 +501,7 @@ export function CardPlan({
               </div>
 
               {/* Price Display - Enhanced */}
-              <div className="flex items-end justify-between">
+              <div className="flex items-end justify-between relative">
                 <div className="flex items-baseline gap-3">
                   {/* Current/Discounted Price */}
                   <div className="flex flex-col">
@@ -524,7 +562,7 @@ export function CardPlan({
 
                 {/* Savings Badge */}
                 {getDiscountPercentage() > 0 && (
-                  <div className="text-right">
+                  <div className="text-right absolute right-[-1rem] top-[calc(100%+10px)]">
                     <Badge className="bg-red-500 text-white font-bold text-sm">
                       -{getDiscountPercentage()}%
                     </Badge>
