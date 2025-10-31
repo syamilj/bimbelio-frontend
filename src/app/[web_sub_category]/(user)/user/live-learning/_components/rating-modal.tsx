@@ -132,7 +132,7 @@ export function RatingModal({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-lg overflow-hidden border-2 border-gray-100 shadow-sm rounded-3xl">
+      <DialogContent className="md:max-w-lg overflow-hidden border-2 border-gray-100 shadow-sm rounded-3xl">
         {/* ENHANCED HEADER WITH GRADIENT */}
         <DialogHeader className="relative pb-6 border-b-2 border-gray-100">
           <div
