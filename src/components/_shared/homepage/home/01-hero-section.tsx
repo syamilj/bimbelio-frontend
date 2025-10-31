@@ -23,16 +23,10 @@ const HeroSection: React.FC = () => {
   const router = useRouter();
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
 
-  // Get dynamic colors
-  // safe access to window to avoid potential SSR/undefined access
-  const isMainLandingPage =
-    typeof window !== 'undefined' && window.location.pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
-  const secondaryColor = isMainLandingPage
-    ? '#5aa4dd'
-    : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
+  // Get dynamic colors - gunakan default main landing page colors
+  // websiteSubCategory akan null di main landing page
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color ?? '#5aa4dd';
 
   // Navigasi ke /price
   const handleCTAClick = () => {
@@ -51,9 +45,12 @@ const HeroSection: React.FC = () => {
             src={HeroBgWeb}
             alt="ALLPRINTS Hero Background"
             fill
-            quality={95}
+            priority
+            quality={75}
+            fetchPriority="high"
             className="object-cover object-center md:object-center"
             placeholder="blur"
+            sizes="100vw"
             style={{
               objectPosition: 'center center', // Mobile: center, Desktop: center
             }}
@@ -93,7 +90,9 @@ const HeroSection: React.FC = () => {
               width={1200}
               height={600}
               priority
-              quality={95}
+              quality={85}
+              fetchPriority="high"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               className="w-full h-auto"
               placeholder="blur"
             />
