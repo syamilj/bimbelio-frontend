@@ -76,6 +76,13 @@ type PlanDataType = Plan & {
   PlanBenefit?: PlanBenefit[];
 };
 
+const sanitizeFileName = (fileName: string): string => {
+  return fileName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Ganti karakter spesial dengan dash
+    .replace(/^-|-$/g, ''); // Hapus dash di awal/akhir
+};
+
 export default function UpdatePlanForm() {
   const { id } = useParams();
   const {
@@ -335,7 +342,7 @@ export default function UpdatePlanForm() {
 
       let imageUrl = previewImage;
       if (image) {
-        const filePath = `plan/${name}-${crypto.randomUUID().slice(0, 4)}`;
+        const filePath = `plan/${sanitizeFileName(name)}-${crypto.randomUUID().slice(0, 4)}`;
         const { data, error } = await supabase.storage
           .from('img')
           .upload(filePath, image);
