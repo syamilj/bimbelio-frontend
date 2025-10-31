@@ -30,6 +30,7 @@ import {
   PlanFeature,
   PlanLimitation,
   PlanSubscription,
+  PlanSubscriptionBundle,
   WebsiteSubCategory,
 } from '@/types/database';
 import { motion } from 'framer-motion';
@@ -68,6 +69,7 @@ type PlanDataType = Plan & {
   discount: number | undefined;
   PlanLimitation: PlanLimitation;
   PlanSubscription: PlanSubscription & {
+    PlanSubscriptionBundle: PlanSubscriptionBundle[];
     PlanFeature: (PlanFeature & {
       Pivot_Plan_Category: (Pivot_Plan_Category & {
         Category: Category;
