@@ -157,7 +157,7 @@ export function JoinLiveClassModal({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-md overflow-hidden border-2 border-gray-100 shadow-sm rounded-3xl">
+      <DialogContent className="md:max-w-md overflow-hidden border-2 border-gray-100 shadow-sm rounded-3xl">
         {/* Header */}
         <DialogHeader className="relative pb-4 border-b-2 border-gray-100 text-center">
           <div

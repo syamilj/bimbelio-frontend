@@ -42,6 +42,10 @@ export const RenderOverviewTab = () => {
     return `${days} Hari`;
   };
 
+  const platfroms = plan.PlanSubscription.PlanSubscriptionBundle.map((item) =>
+    item.websiteSubCategoryId.toUpperCase(),
+  );
+
   return (
     <div className="space-y-4">
       {/* Plan Type Badge */}
@@ -164,12 +168,37 @@ export const RenderOverviewTab = () => {
       {plan.PlanSubscription && (
         <div className="p-3 bg-linear-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
           <div className="text-center">
-            <div className="text-sm font-semibold text-indigo-700 flex items-center justify-center gap-2">
+            <div className="text-sm font-semibold text-indigo-700 flex items-center justify-center gap-2 mb-2">
               <MapPin size={14} />
-              Platform:{' '}
-              {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Platform'}
+              Platform
             </div>
-            <div className="text-xs text-indigo-600 mt-1">
+
+            {platfroms.length === 0 && (
+              <div className="text-xs text-indigo-600">
+                {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Platform'}
+              </div>
+            )}
+
+            {platfroms.length > 0 && (
+              <div
+                className={
+                  platfroms.length > 3
+                    ? 'grid grid-cols-2 gap-2 mb-2'
+                    : 'flex flex-wrap justify-center gap-2 mb-2'
+                }
+              >
+                {platfroms.map((platform) => (
+                  <div
+                    key={platform}
+                    className="inline-block px-2 py-1 bg-white border border-indigo-300 rounded-2xl text-xs font-medium text-indigo-700"
+                  >
+                    {platform}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="text-xs text-indigo-600">
               Tier: {plan.PlanSubscription?.tier || 'Standar'}
             </div>
           </div>
