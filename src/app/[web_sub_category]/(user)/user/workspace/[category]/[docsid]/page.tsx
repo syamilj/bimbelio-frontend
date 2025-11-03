@@ -96,6 +96,7 @@ const DocViewerPage = () => {
       },
       toast: {
         hideSuccess: true,
+        hideError: true,
       },
       type: 'put',
       onSuccess: () => {

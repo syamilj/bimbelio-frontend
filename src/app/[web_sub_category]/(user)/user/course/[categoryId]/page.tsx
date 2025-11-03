@@ -109,6 +109,7 @@ const WorkspaceCourse = () => {
       },
       toast: {
         hideSuccess: true,
+        hideError: true,
       },
       onSuccess() {
         //     await trpc.document.getHistoryByUser.refetch();
