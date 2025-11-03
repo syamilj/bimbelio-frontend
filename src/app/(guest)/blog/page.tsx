@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -25,12 +24,11 @@ import { getDateString } from '@/lib/utils';
 import { BlogStatusEnum } from '@/types/database';
 import { motion } from 'framer-motion';
 import {
+  ArrowRightIcon,
   BookOpen,
   CalendarIcon,
-  ClockIcon,
   EyeIcon,
   SearchIcon,
-  ShareIcon,
   StarIcon,
   TagIcon,
   TrendingUp,
@@ -444,6 +442,8 @@ function BlogPostCard({ post }: { post: BlogPost }) {
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
+  const readingTime = estimateReadingTime(post.value);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -453,10 +453,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
       viewport={{ once: true }}
     >
       <Link href={`/blog/${post.slug}`}>
-        <Card
-          className="group h-full cursor-pointer border-2 shadow-lg rounded-2xl overflow-hidden bg-white transition-all duration-300 hover:shadow-xl hover:border-opacity-50"
-          style={{ borderColor: `${mainColor}20` }}
-        >
+        <Card className="group h-full cursor-pointer border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden bg-white">
           {/* Top Accent Bar */}
           <div
             className="h-2 w-full"
@@ -465,124 +462,127 @@ function BlogPostCard({ post }: { post: BlogPost }) {
             }}
           />
 
-          <div className="relative aspect-video overflow-hidden">
+          {/* Image Section - Larger */}
+          <div className="relative aspect-video overflow-hidden bg-gray-200">
             <Image
               src={post.thumbnail}
               alt={post.title}
               layout="fill"
               objectFit="cover"
-              className="transition-transform duration-700 group-hover:scale-110"
+              className="transition-transform duration-500 group-hover:scale-110"
             />
 
-            {/* Gradient overlay on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Overlay Gradient - Always visible */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
+            {/* Editor's Pick Badge - Top Right */}
             {post.isEditorPick && (
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: 'spring' }}
-                className="absolute right-3 top-3"
+                transition={{ delay: 0.1, type: 'spring' }}
+                className="absolute right-4 top-4 z-20"
               >
-                <Badge className="bg-yellow-500 hover:bg-yellow-500 text-yellow-950 font-black shadow-lg border-0">
-                  <StarIcon className="mr-1 h-3 w-3 fill-current" />
-                  Pilihan Editor
+                <Badge className="bg-yellow-500 hover:bg-yellow-600 text-yellow-950 font-black shadow-lg border-0 px-3 py-1.5 text-sm">
+                  <StarIcon className="mr-1.5 h-4 w-4 fill-current" />
+                  Editor
                 </Badge>
               </motion.div>
             )}
+
+            {/* Title & Tag Overlay - Bottom */}
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="mb-2"
+              >
+                {post.tags.length > 0 && (
+                  <Badge className="text-xs px-2.5 py-0.5 rounded-full border-0 font-bold shadow-sm bg-white/20 backdrop-blur-sm text-white">
+                    #{post.tags[0]}
+                  </Badge>
+                )}
+              </motion.div>
+              <h3 className="line-clamp-2 text-xl font-black leading-tight drop-shadow-lg">
+                {post.title}
+              </h3>
+            </div>
           </div>
 
-          <CardContent className="p-6 flex flex-col h-full">
-            {/* Tags */}
-            <div className="mb-4 flex flex-wrap gap-2">
-              {post.tags.slice(0, 2).map((tag, index) => (
-                <motion.div
-                  key={tag}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Badge
-                    variant="outline"
-                    className="text-xs px-2 py-1 rounded-full border-0 font-bold"
-                    style={{
-                      backgroundColor: `${mainColor}15`,
-                      color: mainColor,
-                    }}
-                  >
-                    #{tag}
-                  </Badge>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Title */}
-            <CardTitle className="mb-3 line-clamp-2 text-xl font-black leading-tight text-gray-900 group-hover:text-gray-600 transition-colors">
-              {post.title}
-            </CardTitle>
-
+          {/* Content Section */}
+          <div className="p-5 flex flex-col flex-grow">
             {/* Description */}
-            <CardDescription className="mb-6 line-clamp-3 text-gray-600 leading-relaxed flex-grow">
+            <p className="text-sm text-gray-600 leading-relaxed line-clamp-4 flex-grow mb-4">
               {post.description}
-            </CardDescription>
+            </p>
 
-            {/* Meta info */}
-            <div className="mt-auto space-y-4">
-              <div className="flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center gap-1">
-                  <CalendarIcon className="h-4 w-4" />
-                  <span>{getDateString(post.createdAt.toString())}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <EyeIcon className="h-4 w-4" />
-                  <span>{post.views.toLocaleString()}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 text-sm text-gray-500">
-                  <ClockIcon className="h-4 w-4" />
-                  <span>{estimateReadingTime(post.value)} menit baca</span>
-                </div>
-
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="p-2 rounded-full transition-colors"
-                  style={{ backgroundColor: `${mainColor}15` }}
-                >
-                  <ShareIcon
-                    className="h-4 w-4"
-                    style={{ color: mainColor }}
-                  />
-                </motion.div>
-              </div>
-            </div>
-          </CardContent>
-
-          {/* Read more CTA */}
-          <CardFooter className="p-6 pt-0">
-            <Button
-              className="w-full rounded-xl font-bold transition-all duration-300 border-0 shadow-md hover:shadow-lg group-hover:scale-105"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                color: 'white',
-              }}
-            >
-              Baca Selengkapnya
-              <motion.span
-                className="ml-2 inline-block"
-                animate={{ x: [0, 4, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
+            {/* Info Badges Row - Horizontal Inside Card */}
+            <div className="grid grid-cols-3 gap-2.5 mb-4">
+              {/* Date Badge */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="p-3 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all"
+                style={{
+                  background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
+                  borderColor: 'rgb(191 219 254)',
                 }}
               >
-                →
-              </motion.span>
+                <p className="text-xs font-medium text-blue-600">
+                  Dipublikasikan
+                </p>
+                <p className="text-sm font-bold text-blue-700 line-clamp-1">
+                  {getDateString(post.createdAt.toString())}
+                </p>
+              </motion.div>
+
+              {/* Reading Time Badge */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="p-3 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all"
+                style={{
+                  background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
+                  borderColor: 'rgb(187 247 208)',
+                }}
+              >
+                <p className="text-xs font-medium text-green-600">Waktu Baca</p>
+                <p className="text-sm font-bold text-green-700">
+                  {readingTime} menit
+                </p>
+              </motion.div>
+
+              {/* Views Badge */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="p-3 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all"
+                style={{
+                  background: `linear-gradient(to bottom right, rgb(254 249 195), rgb(254 240 138))`,
+                  borderColor: 'rgb(253 224 71)',
+                }}
+              >
+                <p className="text-xs font-medium text-yellow-600">
+                  Telah Dibaca
+                </p>
+                <p className="text-sm font-bold text-yellow-700">
+                  {post.views > 1000
+                    ? (post.views / 1000).toFixed(1) + 'k'
+                    : post.views.toLocaleString()}{' '}
+                  kali
+                </p>
+              </motion.div>
+            </div>
+
+            {/* CTA Button */}
+            <Button
+              className="w-full rounded-2xl font-bold text-base transition-all duration-300 border-0 shadow-md hover:shadow-lg text-white py-2.5"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
+            >
+              <ArrowRightIcon className="w-5 h-5 mr-2" />
+              Baca Selengkapnya
             </Button>
-          </CardFooter>
+          </div>
         </Card>
       </Link>
     </motion.div>
