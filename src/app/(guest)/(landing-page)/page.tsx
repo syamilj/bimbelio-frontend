@@ -28,28 +28,23 @@ const TutorsSection = dynamic(
   { loading: () => <div className="min-h-[400px]" /> },
 );
 
-const MentorAISection = dynamic(
-  () => import('@/components/_shared/homepage/home/07-mentor-ai-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
-);
-
 const PlanCardsSection = dynamic(
-  () => import('@/components/_shared/homepage/home/08-plan-cards'),
+  () => import('@/components/_shared/homepage/home/07-plan-cards'),
   { loading: () => <div className="min-h-[400px]" /> },
 );
 
 const TryoutSection = dynamic(
-  () => import('@/components/_shared/homepage/home/09-tryout-section'),
+  () => import('@/components/_shared/homepage/home/08-tryout-section'),
   { loading: () => <div className="min-h-[400px]" /> },
 );
 
 const ComparisonSection = dynamic(
-  () => import('@/components/_shared/homepage/home/10-comparison-section'),
+  () => import('@/components/_shared/homepage/home/09-comparison-section'),
   { loading: () => <div className="min-h-[400px]" /> },
 );
 
 const FaqSection = dynamic(
-  () => import('@/components/_shared/homepage/home/12-faq-section'),
+  () => import('@/components/_shared/homepage/home/11-faq-section'),
   { loading: () => <div className="min-h-[400px]" /> },
 );
 
@@ -78,9 +73,6 @@ export default function LandingPage() {
 
           {/* 06 Tutors section */}
           <TutorsSection />
-
-          {/* 07 Mentor AI section */}
-          <MentorAISection />
 
           {/* 08 Plan Cards section */}
           <PlanCardsSection />

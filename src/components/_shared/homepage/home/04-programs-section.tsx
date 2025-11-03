@@ -47,7 +47,7 @@ export default function ProgramsSection() {
         percentage: '60%',
       },
       color: '#0091FF',
-      logos: ['/tutors/LOGO_SNBT.webp'],
+      logos: ['/hero/LOGO_SNBT.webp'],
     },
     {
       id: 2,
@@ -66,7 +66,7 @@ export default function ProgramsSection() {
         percentage: '30%',
       },
       color: '#FFA500',
-      logos: ['/tutors/LOGO_SNBT.webp'],
+      logos: ['/hero/LOGO_SNBT.webp'],
     },
     {
       id: 3,
@@ -85,7 +85,7 @@ export default function ProgramsSection() {
         percentage: '100%',
       },
       color: '#00C853',
-      logos: ['/tutors/LOGO_SNBT.webp'],
+      logos: ['/hero/LOGO_SNBT.webp'],
     },
     {
       id: 4,
@@ -105,9 +105,9 @@ export default function ProgramsSection() {
       },
       color: '#9C27B0',
       logos: [
-        '/tutors/LOGO_PTN_UI.webp',
-        '/tutors/LOGO_PTN_UGM.webp',
-        '/tutors/LOGO_PTN_ITB.webp',
+        '/hero/LOGO_PTN_UI.webp',
+        '/hero/LOGO_PTN_UGM.webp',
+        '/hero/LOGO_PTN_ITB.webp',
       ],
     },
     {
@@ -128,9 +128,9 @@ export default function ProgramsSection() {
       },
       color: '#E91E63',
       logos: [
-        '/tutors/LOGO_KEDINASAN_STAN.webp',
-        '/tutors/LOGO_KEDINASAN_STIS.webp',
-        '/tutors/LOGO_KEDINASAN_IPDN.webp',
+        '/hero/LOGO_KEDINASAN_STAN.webp',
+        '/hero/LOGO_KEDINASAN_STIS.webp',
+        '/hero/LOGO_KEDINASAN_IPDN.webp',
       ],
     },
   ];
