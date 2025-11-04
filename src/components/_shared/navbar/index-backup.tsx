@@ -110,7 +110,7 @@ const MobileNav: React.FC<{
                       ...prev,
                       open: true,
                       redirect: website_sub_category_id
-                        ? `${website_sub_category_id}/user/dashboard`
+                        ? `/${website_sub_category_id}/user/dashboard`
                         : '/choice/user/dashboard',
                     }))
                   }
@@ -309,7 +309,7 @@ const MobileNav: React.FC<{
                             ...prev,
                             open: true,
                             redirect: website_sub_category_id
-                              ? `${website_sub_category_id}/user/dashboard`
+                              ? `/${website_sub_category_id}/user/dashboard`
                               : '/choice/user/dashboard',
                           }));
                           setIsSheetOpen(false);
@@ -491,7 +491,7 @@ const DesktopNav: React.FC<{
                       ...prev,
                       open: true,
                       redirect: website_sub_category_id
-                        ? `${website_sub_category_id}/user/dashboard`
+                        ? `/${website_sub_category_id}/user/dashboard`
                         : '/choice/user/dashboard',
                     }))
                   }

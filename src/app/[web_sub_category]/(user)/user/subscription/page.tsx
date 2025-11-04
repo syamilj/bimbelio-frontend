@@ -203,7 +203,7 @@ export default function SubscriptionPage() {
                         asChild
                         className="w-full bg-main text-white shadow-md"
                       >
-                        <Link href={`/price/${sub.planId}`}>
+                        <Link href={`/price/${sub.planSlug}`}>
                           <TrendingUp className="w-4 h-4 mr-2" />
                           Lihat Detail Paket
                         </Link>

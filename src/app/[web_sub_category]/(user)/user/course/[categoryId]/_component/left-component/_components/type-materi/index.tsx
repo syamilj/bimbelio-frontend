@@ -1,20 +1,13 @@
 //src/components/workspace-course/_component/type-materi/index.tsx
 
 import ReactMarkdownBlog from '@/components/ui/react-markdown-blog';
-import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { IconCheckList } from '@/styles/icon';
 import 'katex/dist/katex.min.css';
 import { ClockIcon, Loader } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { useProvider } from '../../../../_provider/provider';
 import EmojiRating from '../../../z_other/emoji-rating';
 import SubmitCourse from '../../../z_other/submit-course';
-// MarkdownPreview (SSG) pakai dynamic import
-const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
-  ssr: false,
-  loading: () => <SpinnerPageCentered />,
-});
 
 export default function MateriType() {
   const {

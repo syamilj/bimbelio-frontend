@@ -24,27 +24,11 @@ import { useCreateBlockNote } from '@blocknote/react';
 import 'katex/dist/katex.min.css';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import {
-  CalendarIcon,
-  ChevronUpIcon,
-  EyeIcon,
-  Loader2,
-  ShareIcon,
-} from 'lucide-react';
-import dynamic from 'next/dynamic';
+import { CalendarIcon, ChevronUpIcon, EyeIcon, ShareIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
-
-const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), {
-  ssr: false,
-  loading: () => (
-    <div className="flex justify-center items-center w-full">
-      <Loader2 className="w-4 h-4 animate-spin" />
-    </div>
-  ),
-});
 
 // Samakan interface BlogPost dengan data yang di-pass server
 interface BlogPost {
