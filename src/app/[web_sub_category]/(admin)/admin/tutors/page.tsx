@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { Category, Instructor } from '@/types/database';
+import { Category, Instructor, InstructorCertificate } from '@/types/database';
 import { Plus, Search, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -14,6 +14,7 @@ import { TutorTable } from './_components/tutor-table';
 export type InstructorsType = (Instructor & {
   Category: Category[];
   totalLiveClass: number;
+  InstructorCertificate: InstructorCertificate[];
 })[];
 
 export default function TutorDashboard() {

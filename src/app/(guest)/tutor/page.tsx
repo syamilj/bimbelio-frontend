@@ -10,6 +10,8 @@ export default function TutorPage() {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
 
+  return null;
+
   return (
     <div
       id="tutor"

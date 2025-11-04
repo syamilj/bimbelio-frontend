@@ -104,6 +104,14 @@ export type Instructor = {
   certificate: string | null;
 };
 
+export type InstructorCertificate = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  instructorId: string;
+  title: string;
+};
+
 export type Pivot_LiveClass_Plan = {
   id: string;
   planId: string;
