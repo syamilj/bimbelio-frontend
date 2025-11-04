@@ -335,42 +335,6 @@ export default function PlanDetailPage() {
                     </motion.div>
                   </motion.div>
                 </div>
-
-                {/* Compact stats row */}
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-200/50"
-                >
-                  <div className="text-center">
-                    <div
-                      className="text-lg font-bold"
-                      style={{ color: mainColor }}
-                    >
-                      15K+
-                    </div>
-                    <div className="text-xs text-gray-600">Users</div>
-                  </div>
-                  <div className="text-center">
-                    <div
-                      className="text-lg font-bold"
-                      style={{ color: mainColor }}
-                    >
-                      +200
-                    </div>
-                    <div className="text-xs text-gray-600">Score</div>
-                  </div>
-                  <div className="text-center">
-                    <div
-                      className="text-lg font-bold"
-                      style={{ color: mainColor }}
-                    >
-                      97%
-                    </div>
-                    <div className="text-xs text-gray-600">Success</div>
-                  </div>
-                </motion.div>
               </CardContent>
             </Card>
           </motion.div>
@@ -2258,39 +2222,6 @@ export default function PlanDetailPage() {
                         <MessageCircle className="w-4 h-4 mr-2" />
                         Konsultasi
                       </Button>
-                    </div>
-
-                    {/* Compact Trust Indicators */}
-                    <div className="pt-3 border-t border-gray-100">
-                      <div className="grid grid-cols-3 gap-2 text-center">
-                        <div>
-                          <div
-                            className="text-lg font-bold"
-                            style={{ color: mainColor }}
-                          >
-                            97%
-                          </div>
-                          <div className="text-xs text-gray-600">Success</div>
-                        </div>
-                        <div>
-                          <div
-                            className="text-lg font-bold"
-                            style={{ color: mainColor }}
-                          >
-                            +200
-                          </div>
-                          <div className="text-xs text-gray-600">Score</div>
-                        </div>
-                        <div>
-                          <div
-                            className="text-lg font-bold"
-                            style={{ color: mainColor }}
-                          >
-                            24/7
-                          </div>
-                          <div className="text-xs text-gray-600">Support</div>
-                        </div>
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
