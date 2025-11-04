@@ -292,11 +292,15 @@ export function LiveClassTable({
                               'bg-green-100 text-green-800',
                             liveClass.type === 'LIVESTREAM' &&
                               'bg-red-100 text-red-800',
+                            liveClass.type === 'WEBINAR' &&
+                              'bg-blue-100 text-blue-800',
                           )}
                         >
                           {liveClass?.type === 'LIVECLASS'
                             ? 'Live Class'
-                            : 'Live Stream'}
+                            : liveClass?.type === 'LIVESTREAM'
+                              ? 'Live Stream'
+                              : 'Webinar'}
                         </Badge>
                       </TableCell>
                       <TableCell>

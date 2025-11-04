@@ -149,16 +149,24 @@ export function RankingTable() {
   const SortButton = ({
     field,
     label,
+    isMapel = false,
   }: {
     field: SortField;
     label: string;
+    isMapel?: boolean;
   }) => (
     <Button
       variant="ghost"
       onClick={() => handleSort(field)}
-      className="hover:bg-transparent p-0 h-8 font-medium text-muted-foreground"
+      className={cn(
+        !isMapel &&
+          'hover:bg-transparent p-0 h-8 font-medium text-muted-foreground',
+        isMapel &&
+          'hover:bg-transparent p-2 h-auto font-medium text-muted-foreground whitespace-normal break-words flex flex-col items-end justify-end',
+      )}
     >
-      {label}
+      {!isMapel && `${label}`}
+      {isMapel && <span className="text-xs md:text-sm">{label}</span>}
       <ArrowUpDown
         className={cn(
           'ml-2 h-4 w-4 transition-transform duration-200',
@@ -167,6 +175,8 @@ export function RankingTable() {
       />
     </Button>
   );
+
+  // Komponen SortButton untuk memicu sorting
 
   // Render manual pagination items (1, 2, 3, ...)
   const renderPaginationItems = () => {
@@ -335,24 +345,13 @@ export function RankingTable() {
                     )?.map((session, index) => (
                       <TableHead
                         key={index}
-                        className="text-right font-bold text-gray-700 text-xs md:text-sm min-w-[120px] relative"
+                        className="text-right font-bold text-gray-700 text-xs md:text-sm min-w-[140px] relative"
                       >
-                        <div className="flex items-center justify-end gap-1 relative">
-                          {/* {!isPremiumUser && (
-                            <>
-                              <Lock className="w-2 h-2 md:w-3 md:h-3 text-gray-400" />
-                              <div className="md:hidden absolute inset-0 bg-gray-100/80 rounded flex items-center justify-center">
-                                <Lock className="w-3 h-3 text-gray-500" />
-                              </div>
-                            </>
-                          )} */}
+                        <div className="flex items-center justify-end gap-1 relative h-auto">
                           <SortButton
                             field={`category_${index}` as SortField}
-                            label={
-                              session?.subCategory?.length > 8
-                                ? session.subCategory.substring(0, 8) + '...'
-                                : session?.subCategory || `Mapel ${index + 1}`
-                            }
+                            label={session?.subCategory || `Mapel ${index + 1}`}
+                            isMapel={true}
                           />
                         </div>
                       </TableHead>

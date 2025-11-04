@@ -86,7 +86,7 @@ export type LiveLearningDataType = LiveClass & {
 export default function LiveLearningDashboard({
   type,
 }: {
-  type: 'LIVECLASS' | 'LIVESTREAM';
+  type: 'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR';
 }) {
   // === DESIGN SYSTEM PATTERNS FROM LEADERBOARD ===
   const { data: session } = useSession();
@@ -187,7 +187,7 @@ export default function LiveLearningDashboard({
   }, [session]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 py-6">
         {/* ENHANCED HEADER - LEADERBOARD PATTERN */}
         <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden mb-8">
@@ -208,7 +208,12 @@ export default function LiveLearningDashboard({
                     style={{ color: mainColor }}
                   />
                 </div>
-                {type === 'LIVECLASS' ? 'Liveclass' : 'Livestream'} Dashboard
+                {type === 'LIVECLASS'
+                  ? 'Liveclass'
+                  : type === 'LIVESTREAM'
+                    ? 'Livestream'
+                    : 'Webinar'}{' '}
+                Dashboard
               </CardTitle>
               <CardDescription className="text-lg mt-3 text-gray-500 font-medium">
                 Ikuti kelas langsung dengan tutor ahli dan tingkatkan persiapan
@@ -222,7 +227,12 @@ export default function LiveLearningDashboard({
               <div className="flex items-center gap-2 mb-3">
                 <Timer className="w-5 h-5 text-blue-600" />
                 <h3 className="text-lg font-black text-blue-900">
-                  {type === 'LIVECLASS' ? 'Liveclass' : 'Livestream'} Mendatang
+                  {type === 'LIVECLASS'
+                    ? 'Liveclass'
+                    : type === 'LIVESTREAM'
+                      ? 'Livestream'
+                      : 'Webinar'}{' '}
+                  Mendatang
                 </h3>
               </div>
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -394,7 +404,12 @@ export default function LiveLearningDashboard({
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline font-bold">
-                {type === 'LIVECLASS' ? 'Liveclass' : 'Livestream'} Tersedia
+                {type === 'LIVECLASS'
+                  ? 'Liveclass'
+                  : type === 'LIVESTREAM'
+                    ? 'Livestream'
+                    : 'Webinar'}{' '}
+                Tersedia
               </span>
               <span className="sm:hidden font-bold">Semua</span>
               <NotificationBadge
@@ -1033,7 +1048,7 @@ function LiveClassCard({
                       </div>
                     )} */}
                   <Link
-                    href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
+                    href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
                   >
                     <Button
                       variant="outline"
@@ -1517,7 +1532,7 @@ function LiveClassCard({
               </div>
               {/* Modern Detail Button */}
               <Link
-                href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
+                href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
               >
                 <Button
                   variant="outline"

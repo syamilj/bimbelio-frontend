@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { supabase } from '@/supabaseClient';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useAdminWebCategory } from '../provider';
@@ -18,14 +19,23 @@ import { useAdminWebCategory } from '../provider';
 interface Props {
   children: React.ReactNode;
   id: string;
+  name?: string;
   title: string;
   description: string;
   type: 'category' | 'sub-category';
 }
 
+const sanitizeFileName = (fileName: string): string => {
+  return fileName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Ganti karakter spesial dengan dash
+    .replace(/^-|-$/g, ''); // Hapus dash di awal/akhir
+};
+
 export function DialogDelete({
   id,
   description,
+  name,
   title,
   type,
   children,
@@ -35,6 +45,11 @@ export function DialogDelete({
 
   const [isLoading, setIsLoading] = useState(false);
   const handleConfirm = async () => {
+    if (name) {
+      await supabase.storage
+        .from('img')
+        .remove([`website-sub-category/${sanitizeFileName(name)}`]);
+    }
     await deleteGeneral(
       `/website-category/${
         type === 'category' ? 'deleteCategory' : 'deleteSubCategory'

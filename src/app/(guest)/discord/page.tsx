@@ -15,7 +15,7 @@ export default function DiscordJoinPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#5865F2] via-blue-600 to-purple-700 flex items-center justify-center fixed w-full top-0 left-0">
+    <div className="min-h-screen bg-gradient-to-br from-[#5865F2] via-blue-600 to-purple-700 flex items-center justify-center fixed w-full top-0 left-0 z-[1]">
       <div className="text-center">
         {/* Loading Animation */}
         <div className="mb-8 flex justify-center">

@@ -140,7 +140,7 @@ const Content = () => {
   return (
     <div className="relative">
       {tryoutAccount?.userTryOutId ? (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen">
           <div className="container mx-auto max-w-7xl px-4 py-8">
             <DialogRecomendation
               openExternal={open}

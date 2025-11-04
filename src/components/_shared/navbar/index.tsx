@@ -45,11 +45,12 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import { hexToRgba } from '@/styles/main-styles';
 import type { LucideIcon } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
-import { Badge } from '../../ui/badge';
+import { PlanDataType } from '../other/card-plan/_provider/types';
 
 // Enhanced types untuk multi-column submenu
 interface SubmenuItem {
@@ -377,100 +378,6 @@ const openContactDialog = () => {
   }
 };
 
-const GratisBadge: React.FC<{ label: string }> = ({ label }) => {
-  if (label.toLowerCase() !== 'try out') return null;
-  return (
-    <Badge
-      variant="secondary"
-      className="absolute -top-3 -right-8 bg-green-500 hover:bg-green-500 px-1.5 py-0 text-[10px] font-bold text-white rounded-full"
-    >
-      GRATIS
-    </Badge>
-  );
-};
-
-/**
- * Komponen link universal untuk Desktop & Mobile.
- * Menggunakan router untuk navigasi yang lebih konsisten.
- */
-const NavLink: React.FC<{
-  item: NavItem;
-  onClick?: () => void;
-}> = ({ item, onClick }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const { websiteSubCategory } = useWebsiteSubCategory();
-
-  // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
-  const secondaryColor = isMainLandingPage
-    ? '#5aa4dd'
-    : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
-
-  const linkClasses = cn(
-    'relative text-main-default transition-colors duration-300 hover:underline bg-transparent border-none cursor-pointer',
-    // item.separator && 'ml-4 border-l border-gray-900 pl-4',
-  );
-
-  const handleClick = () => {
-    onClick?.(); // Untuk menutup sheet di mobile
-    // Special action: open contact dialog if label/href/action indicates so
-    if (
-      item.action === 'openContact' ||
-      /contact|konsultasi/i.test(item.href || item.label)
-    ) {
-      openContactDialog();
-      return;
-    }
-
-    if (item.isLink) {
-      // Direct navigation untuk link pages
-      router.push(item.href);
-      return;
-    }
-
-    // Non isLink - don't navigate (user requested non-clickable)
-    if (!item.isLink) return;
-  };
-
-  return (
-    <button
-      onClick={handleClick}
-      className={cn(
-        linkClasses,
-        item.isLink ? 'cursor-pointer' : 'cursor-default',
-      )}
-      style={{ color: mainColor }}
-    >
-      <span className="relative inline-block">
-        {item.label}
-        {/* Top-level badge - superscript style for mobile */}
-        {item.badge &&
-          (() => {
-            const bs = getBadgeStyles(item.badge!.variant);
-            return (
-              <span
-                className="absolute -top-2 -right-0 text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-sm whitespace-nowrap"
-                style={{
-                  background: bs.bg,
-                  color: bs.text,
-                  transform: 'translateX(100%)',
-                }}
-              >
-                {item.badge!.text}
-              </span>
-            );
-          })()}
-      </span>
-      <GratisBadge label={item.label} />
-    </button>
-  );
-};
-
 const MobileNav: React.FC<{
   navItems: NavItem[];
   isSheetOpen: boolean;
@@ -495,44 +402,46 @@ const MobileNav: React.FC<{
     ? '#5aa4dd'
     : (websiteSubCategory?.secondary_color ?? '#5aa4dd');
 
+  const handleScrollToTarget = (href: string) => {
+    const targetId = href.substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      const offset = 200;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const handleNavigation = (
+    LinkId: string,
     href: string,
     isLink?: boolean,
     action?: 'openContact',
   ) => {
-    setIsSheetOpen(false);
-
-    // Special: contact action
+    const Link = document.getElementById(LinkId);
+    // Special: if href indicates contact, open floating contact dialog instead
     if (action === 'openContact' || /contact|konsultasi/i.test(href)) {
       openContactDialog();
       return;
     }
-
     if (isLink) {
-      // Show loading spinner
-      setIsNavigating(true);
-      // Navigate
-      router.push(href);
+      if (href.startsWith('#price') && pathname.toLowerCase() === '/price') {
+        handleScrollToTarget(href);
+      } else {
+        Link?.click();
+      }
     } else {
       if (pathname !== '/') {
-        // Show loading spinner for page navigation
-        setIsNavigating(true);
-        router.push(`/${href}`);
+        Link?.click();
       } else {
-        // Scroll tanpa loading (same page)
-        const targetId = href.substring(1);
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-          const offset = 200;
-          const elementPosition = targetElement.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - offset;
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth',
-          });
-        }
+        handleScrollToTarget(href);
       }
     }
+    setIsSheetOpen(false);
   };
 
   return (
@@ -674,12 +583,18 @@ const MobileNav: React.FC<{
                             }}
                           >
                             {/* Top-level menu item */}
+                            <Link
+                              id={`mobile-nav-${index}-${item.href}`}
+                              hidden
+                              href={item.href}
+                            ></Link>
                             <button
                               onClick={() => {
                                 if (hasSubmenu) {
                                   setExpandedItem(isExpanded ? null : index);
                                 } else {
                                   handleNavigation(
+                                    `mobile-nav-${index}-${item.href}`,
                                     item.href,
                                     item.isLink,
                                     item.action,
@@ -779,9 +694,10 @@ const MobileNav: React.FC<{
 
                                     return (
                                       <button
-                                        key={`${subItem.href}-${subIndex}`}
+                                        key={`mobile-sub-menu-${subItem.href}-${subIndex}`}
                                         onClick={() =>
                                           handleNavigation(
+                                            `mobile-sub-menu-${subItem.href}-${subIndex}`,
                                             subItem.href,
                                             subItem.isLink,
                                             subItem.action,
@@ -795,6 +711,15 @@ const MobileNav: React.FC<{
                                           ),
                                         }}
                                       >
+                                        <Link
+                                          id={`mobile-sub-menu-${subItem.href}-${subIndex}`}
+                                          href={
+                                            subItem.href.startsWith('/price/')
+                                              ? `${subItem.href}`
+                                              : `${item.href}`
+                                          }
+                                          hidden
+                                        ></Link>
                                         {/* Icon */}
                                         {IconComponent && (
                                           <div
@@ -978,16 +903,14 @@ const DesktopNav: React.FC<{
 
   const handleNavigation = (LinkId: string, href: string, isLink?: boolean) => {
     const Link = document.getElementById(LinkId);
+    console.log({ href, LinkId, isLink, Link });
     // Special: if href indicates contact, open floating contact dialog instead
     if (/contact|konsultasi/i.test(href)) {
       openContactDialog();
       return;
     }
     if (isLink) {
-      if (
-        href.startsWith('#price') &&
-        pathname.toLowerCase().includes('price')
-      ) {
+      if (href.startsWith('#price') && pathname.toLowerCase() === '/price') {
         handleScrollToTarget(href);
       } else {
         Link?.click();
@@ -1191,7 +1114,11 @@ const DesktopNav: React.FC<{
                                                 >
                                                   <Link
                                                     id={LinkId}
-                                                    href={`${item.href}`}
+                                                    href={
+                                                      column.title === 'Program'
+                                                        ? `${subItem.href}`
+                                                        : `${item.href}`
+                                                    }
                                                     hidden
                                                   ></Link>
                                                   <div className="flex items-start gap-3">
@@ -1606,12 +1533,69 @@ const DesktopNav: React.FC<{
   );
 };
 
+type PricingDataType = {
+  // webSubCategory: {
+  //   webSubCategoryId: string;
+  //   webSubCategoryName: string;
+  //   main_color: string;
+  //   secondary_color: string;
+  //   bundles: PlanType[];
+  //   subscriptions: PlanType[];
+  // }[];
+  plans: PlanDataType[];
+  topping: PlanDataType[];
+  productCompare?: {
+    subscription: PlanDataType[];
+    bundles: PlanDataType[];
+    listCompare: string[];
+  };
+};
+
 const Navbar: React.FC = () => {
   const { data: session } = useSession();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const isMobile = useMedia({ maxWidth: '768px' });
   const pathname = usePathname();
+
+  const [navData, setNavData] = useState<NavItem[]>(navItems);
+
+  const { data: PricingData } = useGet<PricingDataType>(
+    '/plan/getAllPlanByWebCategory',
+  );
+
+  const plans = PricingData?.plans || [];
+
+  useEffect(() => {
+    if (plans.length === 0) return;
+    setNavData((prev) =>
+      prev.map((navitem) => {
+        if (navitem.label === 'Program') {
+          const subMenuColumns = navitem.submenuColumns || [];
+
+          return {
+            ...navitem,
+            submenuColumns: [
+              {
+                title: 'Program',
+                items: plans.map((plan, index) => ({
+                  href: `/price/${plan.id}`,
+                  label: `Program ${index + 1}`,
+                  description: plan.name,
+                  // badge: { text: '1-ON-1', variant: 'premium' },
+                  icon: 'UserPlus',
+                  isLink: true,
+                })),
+              },
+              ...subMenuColumns,
+            ],
+          };
+        }
+
+        return navitem;
+      }),
+    );
+  }, [plans]);
 
   // Reset navigating state when pathname changes
   useEffect(() => {
@@ -1667,7 +1651,7 @@ const Navbar: React.FC = () => {
 
       {isMobile ? (
         <MobileNav
-          navItems={navItems}
+          navItems={navData}
           isSheetOpen={isSheetOpen}
           setIsSheetOpen={setIsSheetOpen}
           session={session}
@@ -1675,7 +1659,7 @@ const Navbar: React.FC = () => {
         />
       ) : (
         <DesktopNav
-          navItems={navItems}
+          navItems={navData}
           session={session}
           setIsNavigating={setIsNavigating}
         />

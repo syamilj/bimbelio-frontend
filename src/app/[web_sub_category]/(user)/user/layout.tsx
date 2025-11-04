@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function LayoutUser({ children }: { children: ReactNode }) {
   return (
-    <div className={cn('min-h-screen bg-gray-50 font-sans antialiased')}>
+    <div className={cn('min-h-screen bg-background font-sans antialiased')}>
       <TooltipProvider>
         <LayoutUserClient>{children}</LayoutUserClient>
         <DialogBimbotAI />

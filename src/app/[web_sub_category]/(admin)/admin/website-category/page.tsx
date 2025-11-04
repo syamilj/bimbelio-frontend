@@ -218,6 +218,7 @@ const Content = () => {
 
                         <DialogDelete
                           id={subCategory.id}
+                          name={subCategory.name}
                           title="Delete Sub Web Category"
                           description="Are you sure you want to delete this subcategory?"
                           type="sub-category"

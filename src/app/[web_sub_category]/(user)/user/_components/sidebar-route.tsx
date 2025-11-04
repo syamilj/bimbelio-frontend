@@ -458,6 +458,11 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                       <div className="mt-2 ml-3 space-y-1 pl-3 border-l-2 border-slate-200/60">
                         {[
                           {
+                            name: 'Webinar',
+                            href: `/${webSubCategoryId}/user/live-learning/webinar`,
+                            badge: 'Gratis',
+                          },
+                          {
                             name: 'Liveclass',
                             href: `/${webSubCategoryId}/user/live-learning/liveclass`,
                           },

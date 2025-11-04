@@ -162,7 +162,7 @@ export default function LiveClassStudentDashboard() {
   }, [session]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 py-6">
         {/* ENHANCED HEADER - LEADERBOARD PATTERN */}
         <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden mb-8">

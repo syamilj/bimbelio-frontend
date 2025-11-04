@@ -172,7 +172,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                 {!inWorkspace && <HeaderUser />}
                 <main
                   className={cn(
-                    'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 min-h-screen w-full bg-gray-50',
+                    'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 min-h-screen w-full ',
                     // docViewer => full fixed
                     componentName === 'DocViewerPage' &&
                       'fixed left-0 top-0 h-full w-full',

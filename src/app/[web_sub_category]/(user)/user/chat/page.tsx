@@ -185,7 +185,7 @@ export default function AIChatPage() {
   }, [session]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 py-8">
         {/* Header Section - Match Dashboard Style */}
         <section className="mb-12">

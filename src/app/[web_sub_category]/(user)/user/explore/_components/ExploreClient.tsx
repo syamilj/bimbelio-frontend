@@ -53,7 +53,7 @@ export default function ExploreClient() {
   }, [session]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-12">
         {/* Search Section */}
         <div className="hidden w-full justify-center md:flex">
