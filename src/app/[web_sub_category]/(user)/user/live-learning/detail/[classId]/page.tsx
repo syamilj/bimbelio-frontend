@@ -231,7 +231,7 @@ export default function LiveClassStudentDetail() {
                 </div>
               </div>
 
-              <CardTitle className="text-3xl font-black flex items-center gap-4 text-gray-900">
+              <CardTitle className="text-3xl font-bold flex items-center gap-4 text-gray-900">
                 <div
                   className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border-2"
                   style={{
@@ -318,7 +318,7 @@ export default function LiveClassStudentDetail() {
             {/* Instructor Info */}
             <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 font-black text-gray-900">
+                <CardTitle className="flex items-center gap-2 font-bold text-gray-900">
                   <Users className="h-5 w-5" />
                   Tutor
                 </CardTitle>
@@ -329,7 +329,7 @@ export default function LiveClassStudentDetail() {
                     <AvatarImage
                       src={liveClass.Instructor?.image || undefined}
                     />
-                    <AvatarFallback className="font-black">
+                    <AvatarFallback className="font-semibold">
                       {liveClass.Instructor?.name
                         ?.split(' ')
                         .map((n) => n[0])
@@ -337,7 +337,7 @@ export default function LiveClassStudentDetail() {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <h3 className="font-black text-lg text-gray-900">
+                    <h3 className="font-semibold text-lg text-gray-900">
                       {liveClass.Instructor?.name}
                     </h3>
                     <p className="text-muted-foreground">
@@ -354,7 +354,7 @@ export default function LiveClassStudentDetail() {
             {/* Class Details */}
             <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
               <CardHeader className="border-b-2 border-gray-100">
-                <CardTitle className="font-black text-gray-900">
+                <CardTitle className="font-bold text-gray-900">
                   Detail Kelas
                 </CardTitle>
               </CardHeader>
@@ -402,7 +402,7 @@ export default function LiveClassStudentDetail() {
                           >
                             <div className="flex items-start gap-3">
                               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center shrink-0 mt-1 border-2 border-blue-200">
-                                <span className="text-xs font-black text-blue-600">
+                                <span className="text-xs font-bold text-blue-600">
                                   {index + 1}
                                 </span>
                               </div>
@@ -601,7 +601,7 @@ export default function LiveClassStudentDetail() {
             {/* Action Card */}
             <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
               <CardHeader className="border-b-2 border-gray-100">
-                <CardTitle className="text-lg font-black text-gray-900">
+                <CardTitle className="text-lg font-bold text-gray-900">
                   Status Partisipasi
                 </CardTitle>
               </CardHeader>
@@ -707,7 +707,7 @@ export default function LiveClassStudentDetail() {
             {/* Info Card */}
             <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
               <CardHeader className="border-b-2 border-gray-100">
-                <CardTitle className="text-lg font-black text-gray-900">
+                <CardTitle className="text-lg font-bold text-gray-900">
                   Informasi Kelas
                 </CardTitle>
               </CardHeader>
@@ -773,7 +773,7 @@ function StatsCard({
       className={`border-2 transition-all duration-300 hover:shadow-md hover:scale-105 rounded-2xl overflow-hidden shadow-sm ${bgColor} ${borderColor}`}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 md:pb-3">
-        <CardTitle className={`text-xs md:text-sm font-black ${textColor}`}>
+        <CardTitle className={`text-xs md:text-sm font-bold ${textColor}`}>
           {title}
         </CardTitle>
         <div
@@ -783,7 +783,7 @@ function StatsCard({
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="text-xl md:text-2xl lg:text-3xl font-black text-gray-900 mb-1 md:mb-2">
+        <div className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 md:mb-2">
           {value}
         </div>
         <p className={`text-xs md:text-sm font-bold opacity-80 ${textColor}`}>
@@ -861,7 +861,7 @@ function ErrorState({ onBack }: { onBack: () => void }) {
   return (
     <div className="text-center py-12">
       <AlertTriangle className="h-16 w-16 mx-auto text-red-500 mb-4" />
-      <h3 className="text-xl font-black text-gray-900 mb-2">
+      <h3 className="text-xl font-bold text-gray-900 mb-2">
         Live Class Tidak Ditemukan
       </h3>
       <p className="text-gray-500 mb-6 font-medium">

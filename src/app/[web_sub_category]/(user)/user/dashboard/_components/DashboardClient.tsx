@@ -365,7 +365,7 @@ export default function DashboardClient() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 py-8">
         {/* Modern Header Section - Card Style */}
         <div className="mb-12 grid gap-6 grid-cols-1 md:grid-cols-3">

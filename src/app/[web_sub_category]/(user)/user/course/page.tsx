@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Course() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen">
       <div className="container mx-auto max-w-7xl px-4 py-8">
         {/* Hero Header Section */}
         <HeaderSection />

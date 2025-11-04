@@ -70,7 +70,7 @@ export type LiveClass = {
   type: LiveClassTypeEnum;
   websiteSubCategoryId: string;
 };
-export type LiveClassTypeEnum = 'LIVECLASS' | 'LIVESTREAM';
+export type LiveClassTypeEnum = 'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR';
 
 export type LiveClassInvited = {
   id: string;
@@ -506,6 +506,7 @@ export type WebsiteCategory = {
 export type WebsiteSubCategory = {
   id: string;
   name: string;
+  image?: string;
   createdAt: Date;
   updatedAt: Date;
   main_color: string;

@@ -38,6 +38,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
               return {
                 id: sub.id,
                 name: sub.name,
+                image: sub.image,
                 main_color: sub.main_color,
                 secondary_color: sub.secondary_color,
                 website_category_id: sub.website_category_id,

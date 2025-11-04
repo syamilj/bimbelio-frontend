@@ -83,7 +83,7 @@ export default function HeaderSection() {
                 (headingData.completedSubChapters /
                   headingData.totalSubChapters) *
                   100,
-              )}
+              ) || '-'}
               %
             </div>
             <p className="text-sm text-purple-600">

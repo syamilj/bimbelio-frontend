@@ -89,6 +89,10 @@ export default function UpdateLiveClassForm() {
   const { classId } = useParams();
   const router = useRouter();
 
+  const [type, setType] = useState<
+    'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR' | undefined
+  >();
+
   const [agendas, setAgendas] = useState<AgendaType[]>([]);
   const [references, setReferences] = useState<ReferenceType[]>([]);
 
@@ -119,6 +123,8 @@ export default function UpdateLiveClassForm() {
         LiveClass.Pivot_LiveClass_Plan.map((item) => item.planId),
       );
       setInstructorId(LiveClass.Instructor.id);
+
+      setType(LiveClass.type);
 
       setValueForm('title', LiveClass.title);
       setSelectedCategoryId(LiveClass.categoryId);
@@ -202,7 +208,7 @@ export default function UpdateLiveClassForm() {
   const { mutate } = useMutation('/liveClass/updateLiveClass', 'put');
 
   const validateSubmit = () => {
-    if (selectedPlanIds.length === 0) {
+    if (selectedPlanIds.length === 0 && type !== 'WEBINAR') {
       toaster({
         title: 'Error',
         condition: 'warning',
@@ -240,7 +246,7 @@ export default function UpdateLiveClassForm() {
         formData.get('record-live-class') === 'on' ? true : false;
 
       const payload = {
-        planIds: selectedPlanIds,
+        planIds: type === 'WEBINAR' ? [] : selectedPlanIds,
         liveClass: {
           id: LiveClass?.id,
           title,
@@ -252,6 +258,7 @@ export default function UpdateLiveClassForm() {
           link,
           isRecord,
           instructorId,
+          type,
         },
         liveClassAgenda: agendas,
         liveClassReference: references,
@@ -361,86 +368,127 @@ export default function UpdateLiveClassForm() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="description">Deskripsi *</Label>
-              <Textarea
-                id="description"
-                name="description"
-                placeholder="Jelaskan materi yang akan dibahas dalam live class ini..."
-                rows={3}
-                required
-              />
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="description">Deskripsi *</Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  placeholder="Jelaskan materi yang akan dibahas dalam live class ini..."
+                  rows={3}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="type">Tipe Live Learning *</Label>
+                <Select
+                  name="type"
+                  value={type}
+                  onValueChange={(value) => value && setType(value as any)}
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih tipe live learning" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      {
+                        id: 'WEBINAR',
+                        name: 'Webinar',
+                      },
+                      {
+                        id: 'LIVECLASS',
+                        name: 'Liveclass',
+                      },
+                      {
+                        id: 'LIVESTREAM',
+                        name: 'Livestream',
+                      },
+                    ]?.map((subject) => (
+                      <SelectItem
+                        key={subject.id}
+                        value={subject.id}
+                      >
+                        {subject.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Pilih Plan
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <div className="space-y-4">
-              <Label className="text-xl font-semibold">
-                Bundles{' '}
-                <span className="text-gray-400 text-xs font-medium">
-                  ( Subscription + Coin )
-                </span>
-              </Label>
-              <div className="flex justify-start gap-4 flex-wrap">
-                {bundles?.map((item) => {
-                  const isSelected = selectedPlanIds.some(
-                    (id) => id === item.id,
-                  );
-                  return (
-                    <CardSubs
-                      key={item.id}
-                      data={item}
-                      onClick={() => {
-                        if (!isSelected) {
-                          setSelectedPlanIds((prev) => [...prev, item.id]);
-                        } else {
-                          setSelectedPlanIds((prev) =>
-                            prev.filter((id) => id !== item.id),
-                          );
-                        }
-                      }}
-                      isSelected={isSelected}
-                    />
-                  );
-                })}
+        {type !== 'WEBINAR' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Pilih Plan
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div className="space-y-4">
+                <Label className="text-xl font-semibold">
+                  Bundles{' '}
+                  <span className="text-gray-400 text-xs font-medium">
+                    ( Subscription + Coin )
+                  </span>
+                </Label>
+                <div className="flex justify-start gap-4 flex-wrap">
+                  {bundles?.map((item) => {
+                    const isSelected = selectedPlanIds.some(
+                      (id) => id === item.id,
+                    );
+                    return (
+                      <CardSubs
+                        key={item.id}
+                        data={item}
+                        onClick={() => {
+                          if (!isSelected) {
+                            setSelectedPlanIds((prev) => [...prev, item.id]);
+                          } else {
+                            setSelectedPlanIds((prev) =>
+                              prev.filter((id) => id !== item.id),
+                            );
+                          }
+                        }}
+                        isSelected={isSelected}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <div className="space-y-4">
-              <Label className="text-xl font-semibold">Subscription</Label>
-              <div className="flex justify-start gap-4 flex-wrap">
-                {subscription?.map((item) => {
-                  const isSelected = selectedPlanIds.some(
-                    (id) => id === item.id,
-                  );
-                  return (
-                    <CardSubs
-                      key={item.id}
-                      data={item}
-                      onClick={() => {
-                        if (!isSelected) {
-                          setSelectedPlanIds((prev) => [...prev, item.id]);
-                        } else {
-                          setSelectedPlanIds((prev) =>
-                            prev.filter((id) => id !== item.id),
-                          );
-                        }
-                      }}
-                      isSelected={isSelected}
-                    />
-                  );
-                })}
+              <div className="space-y-4">
+                <Label className="text-xl font-semibold">Subscription</Label>
+                <div className="flex justify-start gap-4 flex-wrap">
+                  {subscription?.map((item) => {
+                    const isSelected = selectedPlanIds.some(
+                      (id) => id === item.id,
+                    );
+                    return (
+                      <CardSubs
+                        key={item.id}
+                        data={item}
+                        onClick={() => {
+                          if (!isSelected) {
+                            setSelectedPlanIds((prev) => [...prev, item.id]);
+                          } else {
+                            setSelectedPlanIds((prev) =>
+                              prev.filter((id) => id !== item.id),
+                            );
+                          }
+                        }}
+                        isSelected={isSelected}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Tutor Selection */}
         <Card>
           <CardHeader>

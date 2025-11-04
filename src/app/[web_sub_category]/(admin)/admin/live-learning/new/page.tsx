@@ -70,7 +70,9 @@ type InstructorsType = (Instructor & {
 export default function CreateLiveClassForm() {
   const router = useRouter();
 
-  const [type, setType] = useState<'LIVECLASS' | 'LIVESTREAM' | undefined>();
+  const [type, setType] = useState<
+    'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR' | undefined
+  >();
 
   const [agendas, setAgendas] = useState<AgendaType[]>([]);
   const [references, setReferences] = useState<ReferenceType[]>([]);
@@ -135,7 +137,7 @@ export default function CreateLiveClassForm() {
   const { mutate } = useMutation('/liveClass/addLiveClass', 'post');
 
   const validateSubmit = () => {
-    if (selectedPlanIds.length === 0) {
+    if (selectedPlanIds.length === 0 && type !== 'WEBINAR') {
       toaster({
         title: 'Error',
         condition: 'warning',
@@ -173,7 +175,7 @@ export default function CreateLiveClassForm() {
         formData.get('record-live-class') === 'on' ? true : false;
 
       const payload = {
-        planIds: selectedPlanIds,
+        planIds: type === 'WEBINAR' ? [] : selectedPlanIds,
         liveClass: {
           title,
           categoryId,
@@ -313,6 +315,10 @@ export default function CreateLiveClassForm() {
                   <SelectContent>
                     {[
                       {
+                        id: 'WEBINAR',
+                        name: 'Webinar',
+                      },
+                      {
                         id: 'LIVECLASS',
                         name: 'Liveclass',
                       },
@@ -335,73 +341,76 @@ export default function CreateLiveClassForm() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Pilih Plan
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <div className="space-y-4">
-              <Label className="text-xl font-semibold">
-                Bundles{' '}
-                <span className="text-gray-400 text-xs font-medium">
-                  ( Subscription + Coin )
-                </span>
-              </Label>
-              <div className="flex justify-start gap-4 flex-wrap">
-                {bundles?.map((item) => {
-                  const isSelected = selectedPlanIds.some(
-                    (id) => id === item.id,
-                  );
-                  return (
-                    <CardSubs
-                      key={item.id}
-                      data={item}
-                      onClick={() => {
-                        if (!isSelected) {
-                          setSelectedPlanIds((prev) => [...prev, item.id]);
-                        } else {
-                          setSelectedPlanIds((prev) =>
-                            prev.filter((id) => id !== item.id),
-                          );
-                        }
-                      }}
-                      isSelected={isSelected}
-                    />
-                  );
-                })}
+        {type !== 'WEBINAR' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Pilih Plan
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <div className="space-y-4">
+                <Label className="text-xl font-semibold">
+                  Bundles{' '}
+                  <span className="text-gray-400 text-xs font-medium">
+                    ( Subscription + Coin )
+                  </span>
+                </Label>
+                <div className="flex justify-start gap-4 flex-wrap">
+                  {bundles?.map((item) => {
+                    const isSelected = selectedPlanIds.some(
+                      (id) => id === item.id,
+                    );
+                    return (
+                      <CardSubs
+                        key={item.id}
+                        data={item}
+                        onClick={() => {
+                          if (!isSelected) {
+                            setSelectedPlanIds((prev) => [...prev, item.id]);
+                          } else {
+                            setSelectedPlanIds((prev) =>
+                              prev.filter((id) => id !== item.id),
+                            );
+                          }
+                        }}
+                        isSelected={isSelected}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <div className="space-y-4">
-              <Label className="text-xl font-semibold">Subscription</Label>
-              <div className="flex justify-start gap-4 flex-wrap">
-                {subscription?.map((item) => {
-                  const isSelected = selectedPlanIds.some(
-                    (id) => id === item.id,
-                  );
-                  return (
-                    <CardSubs
-                      key={item.id}
-                      data={item}
-                      onClick={() => {
-                        if (!isSelected) {
-                          setSelectedPlanIds((prev) => [...prev, item.id]);
-                        } else {
-                          setSelectedPlanIds((prev) =>
-                            prev.filter((id) => id !== item.id),
-                          );
-                        }
-                      }}
-                      isSelected={isSelected}
-                    />
-                  );
-                })}
+              <div className="space-y-4">
+                <Label className="text-xl font-semibold">Subscription</Label>
+                <div className="flex justify-start gap-4 flex-wrap">
+                  {subscription?.map((item) => {
+                    const isSelected = selectedPlanIds.some(
+                      (id) => id === item.id,
+                    );
+                    return (
+                      <CardSubs
+                        key={item.id}
+                        data={item}
+                        onClick={() => {
+                          if (!isSelected) {
+                            setSelectedPlanIds((prev) => [...prev, item.id]);
+                          } else {
+                            setSelectedPlanIds((prev) =>
+                              prev.filter((id) => id !== item.id),
+                            );
+                          }
+                        }}
+                        isSelected={isSelected}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Tutor Selection */}
         <Card>
           <CardHeader>

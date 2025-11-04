@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { InputImage } from '@/components/ui/input-image';
 import { Label } from '@/components/ui/label';
 import { MultiSelectWebsub } from '@/components/ui/multi-select-websub';
 import {
@@ -21,7 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { supabase } from '@/supabaseClient';
 import {
   WebsiteCategory,
   WebsiteSubCategory,
@@ -38,6 +41,12 @@ interface Props {
   subCategories: WebsiteSubCategory[];
 }
 
+const sanitizeFileName = (fileName: string): string => {
+  return fileName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-') // Ganti karakter spesial dengan dash
+    .replace(/^-|-$/g, ''); // Hapus dash di awal/akhir
+};
 export function DialogEditSubCategory({
   subCategory,
   categories,
@@ -50,6 +59,8 @@ export function DialogEditSubCategory({
   const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState('');
+  const [imgUrl, setImgUrl] = useState<string | undefined>(undefined);
+  const [image, setImage] = useState<File | null>(null);
   const [categoryId, setCategoryId] = useState('');
   const [type, setType] = useState<WebsiteSubCategoryTypeEnum>('GENERAL');
   const [mainColor, setMainColor] = useState('#0062FA');
@@ -66,6 +77,7 @@ export function DialogEditSubCategory({
       setSecondaryColor(subCategory.secondary_color);
       setType(subCategory.type);
       setSharingWebSubIds(subCategory.sharing_website_sub_category_ids);
+      setImgUrl(subCategory.image || undefined);
     }
   }, [subCategory]);
 
@@ -81,6 +93,41 @@ export function DialogEditSubCategory({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (subCategory) {
+      setIsLoading(true);
+      let imgUrl: undefined | string = undefined;
+      const filePath = `website-sub-category/${sanitizeFileName(name)}`;
+      if (image) {
+        await supabase.storage
+          .from('img')
+          .remove([
+            `website-sub-category/${sanitizeFileName(subCategory?.name)}`,
+          ]);
+        const { data, error } = await supabase.storage
+          .from('img')
+          .upload(filePath, image);
+        if (data) {
+          imgUrl = supabase.storage.from('img').getPublicUrl(filePath)
+            .data.publicUrl;
+        }
+        if (error) {
+          toaster({
+            title: 'Error',
+            description: `Failed to upload image: ${error.message}`,
+            condition: 'warning',
+            duration: 3000,
+          });
+          console.error('Error uploading image:', error.message);
+          setIsLoading(false);
+          return;
+        }
+      } else {
+        await supabase.storage
+          .from('img')
+          .move(
+            `website-sub-category/${sanitizeFileName(subCategory?.name)}`,
+            filePath,
+          );
+      }
       await mutateGeneral('/website-category/editSubCategory', {
         payload: {
           id: subCategory.id,
@@ -90,6 +137,7 @@ export function DialogEditSubCategory({
           type,
           sharing_website_sub_category_ids:
             sharingWebSubIds.length > 0 ? sharingWebSubIds : undefined,
+          image: imgUrl,
         },
         type: 'put',
         onSuccess: async () => {
@@ -125,6 +173,16 @@ export function DialogEditSubCategory({
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="sub-name">Image (optional)</Label>
+            <InputImage
+              placeholder="Input image"
+              preview={imgUrl}
+              onChange={(file) => {
+                if (file) setImage(file);
+              }}
             />
           </div>
           <div className="grid gap-2">

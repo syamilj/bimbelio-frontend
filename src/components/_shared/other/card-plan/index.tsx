@@ -166,9 +166,10 @@ export function CardPlan({
   //   plan: plan.PlanSubscription.PlanSubscriptionBundle,
   // });
 
-  const platfroms = plan.PlanSubscription.PlanSubscriptionBundle.map((item) =>
-    item.websiteSubCategoryId.toUpperCase(),
-  );
+  const platfroms =
+    plan.PlanSubscription?.PlanSubscriptionBundle?.map((item) =>
+      item.websiteSubCategoryId.toUpperCase(),
+    ) || [];
 
   return (
     <ProviderContext.Provider value={Context}>

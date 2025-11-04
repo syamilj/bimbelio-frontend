@@ -42,9 +42,10 @@ export const RenderOverviewTab = () => {
     return `${days} Hari`;
   };
 
-  const platfroms = plan.PlanSubscription.PlanSubscriptionBundle.map((item) =>
-    item.websiteSubCategoryId.toUpperCase(),
-  );
+  const platfroms =
+    plan.PlanSubscription?.PlanSubscriptionBundle?.map((item) =>
+      item.websiteSubCategoryId.toUpperCase(),
+    ) || [];
 
   return (
     <div className="space-y-4">

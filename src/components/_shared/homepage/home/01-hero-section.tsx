@@ -38,8 +38,15 @@ const HeroSection: React.FC = () => {
     <>
       <div
         id="hero"
-        className="relative w-full overflow-hidden pt-16 md:pt-20"
+        className="relative w-full overflow-hidden pt-16 md:pt-20 pb-[100px] md:pb-0"
       >
+        <div
+          className="absolute block md:hidden left-0 right-0 h-[50px] z-[1] bottom-0"
+          style={{
+            backgroundImage:
+              'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 1) 100%)',
+          }}
+        />
         {/* Background Image with responsive height - Mobile center position */}
         <div className="absolute inset-0 z-0 min-h-[850px]">
           <Image
