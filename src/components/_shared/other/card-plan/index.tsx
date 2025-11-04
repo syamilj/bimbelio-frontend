@@ -766,7 +766,7 @@ export function CardPlan({
 
             {/* Secondary CTA */}
             {!viewOnly && (
-              <Link href={`/price/${plan.id}`}>
+              <Link href={`/price/${plan.slug}`}>
                 <Button
                   variant="outline"
                   size="lg"

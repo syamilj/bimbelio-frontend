@@ -606,7 +606,7 @@ const HeaderUser = () => {
                               size="sm"
                               className="w-full mt-2 h-7 text-xs"
                             >
-                              <Link href={`/price/${sub.planId}`}>
+                              <Link href={`/price/${sub.planSlug}`}>
                                 Lihat Detail
                               </Link>
                             </Button>

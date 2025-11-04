@@ -277,6 +277,8 @@ export default function UpdatePlanForm() {
     },
   );
 
+  console.log({ planData });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
