@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { InputTags } from '@/components/ui/input-tags';
 import { Label } from '@/components/ui/label';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
@@ -37,6 +38,7 @@ export default function CreateTutorForm() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const [selectedSubjects, setSelectedSubject] = useState<string[]>([]);
+  const [certificateList, setCertificateList] = useState<string[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -81,7 +83,6 @@ export default function CreateTutorForm() {
       const description = formData.get('description');
       const profile = formData.get('profile');
       const lastEducation = formData.get('last-education');
-      const certificate = formData.get('certificate');
       const status = formData.get('status') === 'on' ? true : false;
       const categoryIds = selectedSubjects;
 
@@ -118,7 +119,7 @@ export default function CreateTutorForm() {
           profile,
           status,
           lastEducation,
-          certificate,
+          certificateList,
           categoryIds,
         },
       });
@@ -235,6 +236,16 @@ export default function CreateTutorForm() {
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
+                    <Label htmlFor="bio">
+                      Sertifikat <span className="text-red-500">*</span>
+                    </Label>
+                    <InputTags
+                      value={certificateList}
+                      onChange={setCertificateList}
+                      placeholder="Tambahkan Sertifikat"
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="last-education">
                       Pendidikan Terakhir{' '}
                       <span className="text-red-500">*</span>
@@ -247,7 +258,7 @@ export default function CreateTutorForm() {
                     />
                   </div>
 
-                  <div className="space-y-2">
+                  {/* <div className="space-y-2">
                     <Label htmlFor="certificate">Sertifikat</Label>
                     <Input
                       id="certificate"
@@ -255,7 +266,7 @@ export default function CreateTutorForm() {
                       name="certificate"
                       placeholder="Sertifikat..."
                     />
-                  </div>
+                  </div> */}
                 </div>
               </CardContent>
             </Card>
