@@ -3,7 +3,18 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
-import { Brain, GraduationCap, Sparkles, Users } from 'lucide-react';
+import {
+  Brain,
+  CheckCircle2,
+  Clock,
+  GraduationCap,
+  MessageCircle,
+  Sparkles,
+  Target,
+  TrendingUp,
+  Users,
+  Zap,
+} from 'lucide-react';
 
 interface Layer {
   layer: string;
@@ -19,6 +30,22 @@ interface Tutor {
   major: string;
   quote: string;
   badge: string;
+  color: string;
+  image?: string;
+}
+
+interface MentorFeature {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  bullets: string[];
+  color: string;
+}
+
+interface AIFeature {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
   color: string;
 }
 
@@ -52,7 +79,7 @@ export default function TutorsSection() {
     },
     {
       layer: 'LAYER 3',
-      title: 'AI',
+      title: 'Bimbot AI',
       description: 'Support instant 24/7',
       icon: <Sparkles className="w-8 h-8" />,
       color: '#9C27B0',
@@ -62,58 +89,115 @@ export default function TutorsSection() {
   // Tutors data - placeholder dengan data dummy
   const tutors: Tutor[] = [
     {
-      name: 'Rafi Mahendra',
-      university: 'UI 2024',
-      major: 'Teknik Elektro',
+      name: 'Kak Ashel',
+      university: 'Universitas Indonesia',
+      major: 'Sastra Arab',
+      quote: 'Bahasa itu bukan soal hafalan, tapi feeling. Let me show you!',
+      badge: 'UI 2022',
+      color: '#0091FF',
+      image: '/tutors/ashel.webp', // Placeholder - ganti dengan path image sebenarnya
+    },
+    {
+      name: 'Kak Erich',
+      university: 'Universitas Indonesia',
+      major: 'Ilmu Komputer',
       quote:
-        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
-      badge: 'UI 2024',
+        'Matematika UTBK itu pattern recognition. Pola ketemu, soal selesai!',
+      badge: 'UI 2022',
+      color: '#FFA500',
+      image: '/tutors/erich.webp', // Placeholder - ganti dengan path image sebenarnya
+    },
+    {
+      name: 'Kak Rheza',
+      university: 'Universitas Indonesia',
+      major: 'Kedokteran',
+      quote:
+        'Penalaran Umum bukan IQ test. Ada triknya, dan aku tau rahasianya.',
+      badge: 'UI 2020',
+      color: '#00C853',
+      image: '/tutors/rheza.webp', // Placeholder - ganti dengan path image sebenarnya
+    },
+    {
+      name: 'Kak Okky',
+      university: 'Universitas Indonesia',
+      major: 'Sastra Arab',
+      quote: 'Baca cepat, tangkep inti, jawab tepat. Itu rahasianya!',
+      badge: 'UI 2019',
+      color: '#E91E63',
+      image: '/tutors/okky.webp', // Placeholder - ganti dengan path image sebenarnya
+    },
+    {
+      name: 'Kak Syamil',
+      university: 'Universitas Indonesia',
+      major: 'Manajemen',
+      quote: 'PPU itu bukan tes wawasan, tapi strategi eliminasi yang smart.',
+      badge: 'UI 2019',
+      color: '#9C27B0',
+      image: '/tutors/syamil.webp', // Placeholder - ganti dengan path image sebenarnya
+    },
+  ];
+
+  // Layer 2: Mentor Features
+  const mentorFeatures: MentorFeature[] = [
+    {
+      icon: <Target className="w-6 h-6" />,
+      title: 'Strategic Planning',
+      description:
+        'Fokus mana dulu, skip mana yang gak penting, prioritas sesuai target PTN-mu.',
+      bullets: [
+        'Analisis kekuatan & kelemahan',
+        'Roadmap personalized 36 minggu',
+      ],
       color: '#0091FF',
     },
     {
-      name: 'Rafi Mahendra',
-      university: 'UI 2024',
-      major: 'Teknik Elektro',
-      quote:
-        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
-      badge: 'UI 2024',
-      color: '#FFA500',
-    },
-    {
-      name: 'Rafi Mahendra',
-      university: 'UI 2024',
-      major: 'Teknik Elektro',
-      quote:
-        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
-      badge: 'UI 2024',
+      icon: <Clock className="w-6 h-6" />,
+      title: 'Time Management',
+      description:
+        'Fokus mana dulu, skip mana yang gak penting, prioritas sesuai target PTN-mu.',
+      bullets: ['Weekly planner template', 'Produktivitas tanpa burnout'],
       color: '#00C853',
     },
     {
-      name: 'Rafi Mahendra',
-      university: 'UI 2024',
-      major: 'Teknik Elektro',
-      quote:
-        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
-      badge: 'UI 2024',
-      color: '#E91E63',
+      icon: <MessageCircle className="w-6 h-6" />,
+      title: 'Mental Coaching',
+      description:
+        'Jaga motivasi, atasi stress, dan bangun mindset winner untuk jangka panjang.',
+      bullets: ['Strategi atasi tekanan UTBK', 'Growth mindset & resilience'],
+      color: '#FFA500',
     },
     {
-      name: 'Rafi Mahendra',
-      university: 'UI 2024',
-      major: 'Teknik Elektro',
-      quote:
-        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
-      badge: 'UI 2024',
+      icon: <TrendingUp className="w-6 h-6" />,
+      title: 'Karir Pasca-PTN',
+      description:
+        'Persiapan kehidupan kampus, networking, dan strategi karir setelah lulus PTN.',
+      bullets: [
+        'Tips adaptasi kuliah semester 1',
+        'Roadmap karir sesuai jurusan',
+      ],
       color: '#9C27B0',
     },
+  ];
+
+  // Layer 3: AI Features
+  const aiFeatures: AIFeature[] = [
     {
-      name: 'Rafi Mahendra',
-      university: 'UI 2024',
-      major: 'Teknik Elektro',
-      quote:
-        'Aku dulu juga struggle di Fisika, tapi akhirnya nemu cara yang works!',
-      badge: 'UI 2024',
+      icon: <Zap className="w-8 h-8" />,
+      title: 'Instant Response',
+      description: 'Tanya jam 2 pagi pun dijawab instant. No waiting time.',
+      color: '#FFA500',
+    },
+    {
+      icon: <Target className="w-8 h-8" />,
+      title: 'Error Analysis',
+      description: 'Analisis pola kesalahan & kasih tips improve specific.',
       color: '#0091FF',
+    },
+    {
+      icon: <Clock className="w-8 h-8" />,
+      title: 'Smart Drill Recommendation',
+      description: 'Rekomendasikan latihan soal sesuai kelemahanmu.',
+      color: '#9C27B0',
     },
   ];
 
@@ -123,56 +207,62 @@ export default function TutorsSection() {
       className="py-24 px-4 bg-white"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* ========== HEADER SECTION ========== */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
           <Badge
-            className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
+            className="mb-8 px-6 py-2 text-sm font-bold text-white border-none inline-flex items-center gap-2"
+            style={{ backgroundColor: mainColor }}
           >
-            <Users className="w-4 h-4 mr-2 inline" />
+            <Users className="w-4 h-4" />
             3-Layer Support System
           </Badge>
 
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-            Platform Canggih —
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
+            Platform Canggih
+            <span className="block">Tapi Siapa Yang Ngajarin?</span>
             <br />
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Tapi Siapa Yang Ngajarin?
+            <span style={{ color: mainColor }}>
+              3 Layer Support yang Saling Melengkapi
             </span>
           </h2>
 
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            <span className="font-bold">Tools doang nggak cukup.</span> Kamu
-            butuh human support yang beneran paham struggle kamu. Ada Tutor yang
-            ngajar materi, Mentor yang bimbing strategi, dan AI yang support
-            24/7. Ini bukan cuma "ngajar" — ini{' '}
-            <span
-              className="font-bold"
-              style={{ color: mainColor }}
-            >
-              mentoring 360°
+          <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
+            <span className="font-bold text-gray-900">
+              Tools doang nggak cukup.
+            </span>{' '}
+            Kamu butuh
+            <span className="block mt-1">
+              <span className="font-bold">Tutor</span> yang ngajar materi,{' '}
+              <span className="font-bold">Mentor</span> yang bimbing strategi,
+              dan <span className="font-bold">Bimbot AI</span> yang support
+              24/7.
             </span>
-            .
           </p>
+
+          {/* Three Dots Indicator */}
+          <div className="flex items-center justify-center gap-2">
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, delay: i * 0.2, repeat: Infinity }}
+                className="w-2 h-2 rounded-full"
+                style={{
+                  backgroundColor: [mainColor, '#00C853', '#9C27B0'][i],
+                }}
+              />
+            ))}
+          </div>
         </motion.div>
 
-        {/* 3 Layers System */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+        {/* ========== 3 LAYERS SYSTEM CARDS ========== */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-28 justify-items-center">
           {layers.map((layer, index) => (
             <motion.div
               key={index}
@@ -180,23 +270,19 @@ export default function TutorsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300 border-2 border-gray-100"
+              className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 w-full max-w-sm"
             >
               {/* Top Accent Bar */}
               <div
-                className="h-1.5 w-full"
-                style={{
-                  backgroundColor: layer.color,
-                }}
+                className="h-2 w-full"
+                style={{ backgroundColor: layer.color }}
               />
 
-              <div className="p-6">
+              <div className="p-6 text-center">
                 {/* Icon */}
                 <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg"
-                  style={{
-                    background: `linear-gradient(135deg, ${layer.color}, ${layer.color}dd)`,
-                  }}
+                  className="w-16 h-16 rounded-xl flex items-center justify-center text-white mb-4 shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300 mx-auto"
+                  style={{ backgroundColor: layer.color }}
                 >
                   {layer.icon}
                 </div>
@@ -204,7 +290,7 @@ export default function TutorsSection() {
                 {/* Content */}
                 <div className="space-y-3">
                   <div>
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center justify-center gap-2 mb-2">
                       <div
                         className="h-1 w-1 rounded-full"
                         style={{ backgroundColor: layer.color }}
@@ -230,19 +316,19 @@ export default function TutorsSection() {
 
                   {/* Divider */}
                   <div
-                    className="h-0.5 w-12 rounded-full"
+                    className="h-0.5 w-12 rounded-full mx-auto"
                     style={{ backgroundColor: layer.color + '40' }}
                   />
 
                   {/* Info Box */}
                   <div
-                    className="rounded-2xl p-3"
+                    className="rounded-lg p-3 text-center"
                     style={{
-                      backgroundColor: layer.color + '10',
-                      border: `1.5px solid ${layer.color}30`,
+                      backgroundColor: layer.color + '08',
+                      border: `1.5px solid ${layer.color}20`,
                     }}
                   >
-                    <p className="text-xs font-semibold text-gray-700 text-center">
+                    <p className="text-xs font-semibold text-gray-700">
                       {index === 0 && 'Live Class & Video Content'}
                       {index === 1 && 'Strategic Guidance & Planning'}
                       {index === 2 && 'Instant Help Anytime'}
@@ -254,115 +340,244 @@ export default function TutorsSection() {
           ))}
         </div>
 
-        {/* Tutors Section */}
+        {/* ========== LAYER 1: TIM TUTOR BIMBELIO ========== */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-12"
+          className="mb-24"
         >
-          <div className="flex items-center gap-4 mb-8">
-            <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
+          {/* Header */}
+          <div className="text-center mb-14">
+            <Badge
+              className="mb-6 border-none px-6 py-2 text-sm font-bold text-white inline-flex items-center gap-2"
+              style={{ backgroundColor: mainColor }}
             >
-              <GraduationCap className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="text-2xl md:text-3xl font-black text-gray-900">
-                Layer 1: Tim Tutor Bimbelio
-              </h3>
-              <Badge
-                className="mt-1 px-3 py-1 text-xs font-bold text-white border-none"
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                }}
-              >
-                6 Tutor • Fresh Graduates 2024
-              </Badge>
-            </div>
+              <GraduationCap className="w-4 h-4" />
+              Layer 1 - Tim Tutor Bimbelio
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+              Expert Teaching —{' '}
+              <span style={{ color: mainColor }}>Bimbelio Tutors</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              Fresh graduates dari UI/UGM/ITB yang beneran paham struggle UTBK.{' '}
+              <span className="font-bold">
+                Mereka bukan hanya ngajar, tapi jadi mentor yang relate-able dan
+                supportif.
+              </span>{' '}
+              Sharing real experience, proven strategies, dan personal guidance
+              untuk sukses di PTN.
+            </p>
           </div>
 
-          <p className="text-base text-gray-600 mb-10 max-w-3xl">
-            Mereka yang bakal ngajar materi UTBK di live class & livestream.
-            Fresh graduates dari UI/UGM/ITB 2024 — relate-able bantu
-            struggle-mu.
-          </p>
-
-          {/* Tutors Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Tutors Grid - Improved Layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
             {tutors.map((tutor, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.08 }}
+                viewport={{ once: true }}
+                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col"
+              >
+                {/* Top Section - Image with Overlay */}
+                <div
+                  className="relative h-64 overflow-hidden bg-gradient-to-br"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, ${tutor.color}40 0%, ${tutor.color}10 100%)`,
+                  }}
+                >
+                  {/* Background Accent */}
+                  <div
+                    className="absolute inset-0 opacity-5"
+                    style={{ backgroundColor: tutor.color }}
+                  />
+
+                  {/* Image */}
+                  {tutor.image ? (
+                    <img
+                      src={tutor.image}
+                      alt={tutor.name}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Brain className="w-20 h-20 text-gray-300" />
+                    </div>
+                  )}
+
+                  {/* Badge - Top Right Corner with UI Logo */}
+                  <div className="absolute top-3 right-3 z-20">
+                    <div
+                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg shadow-lg backdrop-blur-sm bg-white"
+                      style={{
+                        border: `2px solid ${tutor.color}`,
+                      }}
+                    >
+                      <img
+                        src="/tutors/ui.webp"
+                        alt="UI"
+                        className="h-4 w-auto"
+                      />
+                      <span
+                        className="text-xs font-black"
+                        style={{ color: tutor.color }}
+                      >
+                        {tutor.badge}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Color Indicator Bar */}
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-1"
+                    style={{ backgroundColor: tutor.color }}
+                  />
+                </div>
+
+                {/* Bottom Section */}
+                <div className="p-5 bg-white flex flex-col flex-1">
+                  {/* Name */}
+                  <h4 className="text-lg font-black text-gray-900 mb-2">
+                    {tutor.name}
+                  </h4>
+
+                  {/* Major - with icon */}
+                  <div className="flex items-center gap-2 mb-4 pb-4 border-b border-gray-100">
+                    <GraduationCap
+                      className="w-4 h-4 flex-shrink-0"
+                      style={{ color: tutor.color }}
+                    />
+                    <p
+                      className="text-xs font-bold uppercase tracking-wide"
+                      style={{ color: tutor.color }}
+                    >
+                      {tutor.major}
+                    </p>
+                  </div>
+
+                  {/* Quote */}
+                  <p
+                    className="text-sm leading-relaxed italic font-medium flex-1"
+                    style={{
+                      color:
+                        tutor.color === '#9C27B0'
+                          ? '#6B21A8'
+                          : tutor.color === '#00C853'
+                            ? '#059669'
+                            : tutor.color === '#E91E63'
+                              ? '#BE185D'
+                              : tutor.color === '#FFA500'
+                                ? '#D97706'
+                                : '#1E40AF',
+                    }}
+                  >
+                    &quot;{tutor.quote}&quot;
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ========== LAYER 2: MENTOR SYSTEM ========== */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mb-24"
+        >
+          {/* Header */}
+          <div className="text-center mb-14">
+            <Badge
+              className="mb-6 border-none px-6 py-2 text-sm font-bold text-white inline-flex items-center gap-2"
+              style={{ backgroundColor: '#00C853' }}
+            >
+              <Users className="w-4 h-4" />
+              Layer 2 - Mentor System
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+              Beyond Teaching —{' '}
+              <span style={{ color: '#00C853' }}>Strategic Guidance</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              Tutor ngajarin materi, tapi kamu butuh lebih dari itu.{' '}
+              <span className="font-bold">
+                Mentor system kami memberikan strategic planning, time
+                management, mental coaching, dan career guidance
+              </span>{' '}
+              untuk memastikan kamu siap 100% untuk PTN impian.
+            </p>
+          </div>
+
+          {/* Mentor Features Grid - Improved 2-column Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+            {mentorFeatures.map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group"
+                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
-                {/* Top Accent Bar */}
+                {/* Top Colored Bar */}
                 <div
                   className="h-1.5 w-full"
-                  style={{ backgroundColor: tutor.color }}
+                  style={{ backgroundColor: feature.color }}
                 />
 
-                {/* Top Section with Color - Image Placeholder */}
-                <div
-                  className="h-48 flex items-end justify-center p-6 relative"
-                  style={{
-                    background: `linear-gradient(135deg, ${tutor.color}, ${tutor.color}dd)`,
-                  }}
-                >
-                  {/* Badge */}
-                  <div className="absolute top-4 right-4">
-                    <span
-                      className="px-3 py-1.5 rounded-full text-xs font-black shadow-md"
-                      style={{
-                        backgroundColor: 'white',
-                        color: tutor.color,
-                      }}
+                <div className="p-7">
+                  {/* Icon & Title Row */}
+                  <div className="flex items-start gap-4 mb-5">
+                    {/* Icon Container */}
+                    <div
+                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-md flex-shrink-0 group-hover:shadow-lg transition-shadow"
+                      style={{ backgroundColor: feature.color }}
                     >
-                      {tutor.badge}
-                    </span>
-                  </div>
+                      {feature.icon}
+                    </div>
 
-                  {/* Image Placeholder */}
-                  <div className="w-32 h-32 bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-white border-2 border-white border-opacity-30 shadow-md">
-                    <Brain className="w-12 h-12" />
-                  </div>
-                </div>
-
-                {/* Bottom Section with Info */}
-                <div className="p-6">
-                  <div className="mb-4">
-                    <h4 className="text-xl font-black text-gray-900 mb-1">
-                      {tutor.name}
-                    </h4>
-                    <div className="flex items-center gap-2">
-                      <GraduationCap
-                        className="w-4 h-4"
-                        style={{ color: tutor.color }}
-                      />
-                      <p className="text-sm font-bold text-gray-600">
-                        {tutor.major}
+                    {/* Title & Description */}
+                    <div className="flex-1">
+                      <h3 className="text-xl font-black text-gray-900 mb-1">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {feature.description}
                       </p>
                     </div>
                   </div>
 
-                  {/* Quote */}
+                  {/* Divider */}
                   <div
-                    className="p-4 rounded-2xl border-2"
-                    style={{
-                      backgroundColor: tutor.color + '08',
-                      borderColor: tutor.color + '30',
-                    }}
-                  >
-                    <p className="text-sm text-gray-700 italic leading-relaxed">
-                      "{tutor.quote}"
-                    </p>
+                    className="h-0.5 w-8 rounded-full mb-5"
+                    style={{ backgroundColor: feature.color + '40' }}
+                  />
+
+                  {/* Bullets with improved styling */}
+                  <div className="space-y-3">
+                    {feature.bullets.map((bullet, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-3 rounded-lg transition-colors duration-200"
+                        style={{
+                          backgroundColor: feature.color + '08',
+                        }}
+                      >
+                        <CheckCircle2
+                          className="w-5 h-5 mt-0.5 flex-shrink-0"
+                          style={{ color: feature.color }}
+                        />
+                        <span className="text-sm font-semibold text-gray-800 leading-relaxed">
+                          {bullet}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </motion.div>
@@ -370,74 +585,185 @@ export default function TutorsSection() {
           </div>
         </motion.div>
 
-        {/* Bottom CTA */}
+        {/* ========== LAYER 3: AI MENTOR ========== */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="mb-24"
+          id="mentor-ai"
+        >
+          {/* Header */}
+          <div className="text-center mb-14">
+            <Badge
+              className="mb-6 border-none px-6 py-2 text-sm font-bold text-white inline-flex items-center gap-2"
+              style={{ backgroundColor: '#9C27B0' }}
+            >
+              <Sparkles className="w-4 h-4" />
+              Layer 3 - Bimbot AI
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+              Always Available —{' '}
+              <span style={{ color: '#9C27B0' }}>Bimbot AI 24/7</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              Tutor & Mentor butuh sleep, tapi{' '}
+              <span className="font-bold">
+                Bimbot AI siap standby kapan saja.
+              </span>{' '}
+              Instant jawab pertanyaan, analisis error pattern, dan
+              rekomendasikan drill soal yang paling cocok untuk kelemahan
+              spesifik kamu.
+            </p>
+          </div>
+
+          {/* AI Features Grid - Enhanced 3-Column Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
+            {aiFeatures.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col"
+              >
+                {/* Top Colored Bar */}
+                <div
+                  className="h-1.5 w-full"
+                  style={{ backgroundColor: feature.color }}
+                />
+
+                {/* Content */}
+                <div className="p-8 text-center flex flex-col flex-1">
+                  {/* Icon Container */}
+                  <div
+                    className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-5 shadow-md group-hover:shadow-lg transition-shadow group-hover:scale-110 duration-300"
+                    style={{ backgroundColor: feature.color }}
+                  >
+                    <div className="text-white text-2xl">{feature.icon}</div>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-black text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-600 leading-relaxed mb-6 flex-1">
+                    {feature.description}
+                  </p>
+
+                  {/* AI Badge */}
+                  <div
+                    className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold shadow-sm"
+                    style={{
+                      backgroundColor: feature.color + '15',
+                      border: `1.5px solid ${feature.color}30`,
+                      color: feature.color,
+                    }}
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>AI-Powered</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ========== BOTTOM CTA ========== */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          className="text-center"
         >
           <div
-            className="rounded-3xl p-8 max-w-4xl mx-auto border-2 shadow-md"
+            className="rounded-3xl p-8 md:p-12 max-w-5xl mx-auto border-2 shadow-lg overflow-hidden relative"
             style={{
               borderColor: `${mainColor}30`,
-              background: `linear-gradient(to right, ${mainColor}08, ${secondaryColor}08)`,
+              backgroundColor: `${mainColor}05`,
             }}
           >
-            <div className="mb-4 flex items-center justify-center gap-3">
-              <div
-                className="flex h-12 w-12 items-center justify-center rounded-2xl shadow-lg"
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                }}
-              >
-                <Users className="h-6 w-6 text-white" />
+            {/* Background Accent Elements */}
+            <div
+              className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10"
+              style={{ backgroundColor: mainColor, filter: 'blur(40px)' }}
+            />
+            <div
+              className="absolute bottom-0 left-0 w-40 h-40 rounded-full opacity-10"
+              style={{ backgroundColor: '#00C853', filter: 'blur(50px)' }}
+            />
+
+            {/* Content */}
+            <div className="relative z-10">
+              <div className="mb-6 flex items-center justify-center gap-3">
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-xl shadow-md"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  <CheckCircle2 className="h-6 w-6 text-white" />
+                </div>
+                <h4 className="text-2xl md:text-3xl font-black text-gray-900">
+                  The Complete Support System
+                </h4>
               </div>
-              <h4 className="text-xl font-bold text-gray-900">
-                3 Layers of Support
-              </h4>
-            </div>
-            <p className="mb-6 text-lg leading-relaxed text-gray-700">
-              <span className="font-black text-gray-900">
-                Tutor ngajar, Mentor bimbing, AI selalu ada
-              </span>{' '}
-              — kamu nggak akan struggle sendirian lagi. Sistem 3 layer ini yang
-              bikin Bimbelio beda dari bimbel lain.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <div
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-md"
-                style={{
-                  backgroundColor: layers[0].color + '15',
-                  border: `1.5px solid ${layers[0].color}30`,
-                  color: layers[0].color,
-                }}
-              >
-                <GraduationCap className="w-4 h-4" />
-                <span>Live Teaching</span>
-              </div>
-              <div
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-md"
-                style={{
-                  backgroundColor: layers[1].color + '15',
-                  border: `1.5px solid ${layers[1].color}30`,
-                  color: layers[1].color,
-                }}
-              >
-                <Users className="w-4 h-4" />
-                <span>Personal Guidance</span>
-              </div>
-              <div
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-md"
-                style={{
-                  backgroundColor: layers[2].color + '15',
-                  border: `1.5px solid ${layers[2].color}30`,
-                  color: layers[2].color,
-                }}
-              >
-                <Sparkles className="w-4 h-4" />
-                <span>AI Assistant</span>
+
+              <p className="mb-8 text-lg md:text-xl leading-relaxed text-gray-700 max-w-3xl mx-auto">
+                <span className="font-black text-gray-900">
+                  3 layer support system yang saling melengkapi
+                </span>
+                — dari Tutor yang ngajarin materi, Mentor yang guide strategi,
+                hingga Bimbot AI yang support 24/7. Kamu
+                <span className="block mt-1 font-bold text-gray-900">
+                  nggak akan merasa sendirian
+                </span>
+                dalam perjalanan ke PTN impian.
+              </p>
+
+              {/* Badges - Feature Pills */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 flex-wrap">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
+                  style={{
+                    backgroundColor: layers[0].color + '20',
+                    border: `2px solid ${layers[0].color}40`,
+                    color: layers[0].color,
+                  }}
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  <span>Live Teaching</span>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
+                  style={{
+                    backgroundColor: layers[1].color + '20',
+                    border: `2px solid ${layers[1].color}40`,
+                    color: layers[1].color,
+                  }}
+                >
+                  <Users className="w-4 h-4" />
+                  <span>Personal Guidance</span>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
+                  style={{
+                    backgroundColor: layers[2].color + '20',
+                    border: `2px solid ${layers[2].color}40`,
+                    color: layers[2].color,
+                  }}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>Bimbot AI 24/7</span>
+                </motion.div>
               </div>
             </div>
           </div>

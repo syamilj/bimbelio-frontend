@@ -101,7 +101,7 @@ export default function AboutPage() {
       description:
         'Jalur utama masuk PTN — aku kasih kamu ribuan soal latihan yang mirip banget sama aslinya',
       icon: Target,
-      imageUrl: '/tutors/LOGO_SNBT.webp',
+      imageUrl: '/hero/LOGO_SNBT.webp',
       stat1Label: 'Bank Soal',
       stat1Value: '5,000+',
       stat1Desc: 'Soal latihan tersedia',
@@ -116,7 +116,7 @@ export default function AboutPage() {
       description:
         'Mau masuk UI lewat jalur mandiri? Soal-soal spesifik UI udah aku siapin lengkap',
       icon: School,
-      imageUrl: '/tutors/LOGO_PTN_UI.webp',
+      imageUrl: '/hero/LOGO_PTN_UI.webp',
       stat1Label: 'Bank Soal',
       stat1Value: '3,500+',
       stat1Desc: 'Soal spesifik UI',
@@ -131,7 +131,7 @@ export default function AboutPage() {
       description:
         'Target UGM? Aku punya bank soal UM-UGM dari tahun-tahun sebelumnya buat kamu pelajari',
       icon: BookOpen,
-      imageUrl: '/tutors/LOGO_PTN_UGM.webp',
+      imageUrl: '/hero/LOGO_PTN_UGM.webp',
       stat1Label: 'Bank Soal',
       stat1Value: '2,800+',
       stat1Desc: 'Soal tahun lalu',
@@ -146,7 +146,7 @@ export default function AboutPage() {
       description:
         'IPDN, STAN, STIS? Semua pola soal kedinasan udah aku cover di sini',
       icon: Building2,
-      imageUrl: '/tutors/LOGO_KEDINASAN_STAN.webp',
+      imageUrl: '/hero/LOGO_KEDINASAN_STAN.webp',
       stat1Label: 'Bank Soal',
       stat1Value: '4,200+',
       stat1Desc: 'Multi instansi',

@@ -6,12 +6,11 @@ import SolutionSection from '../home/03-solution-section';
 import ProgramsSection from '../home/04-programs-section';
 import EcosystemSection from '../home/05-ecosystem-section';
 import TutorsSection from '../home/06-tutors-section';
-import MentorAISection from '../home/07-mentor-ai-section';
-import PlanCards from '../home/08-plan-cards';
-import TryoutSection from '../home/09-tryout-section';
-import ComparisonSection from '../home/10-comparison-section';
-import AddOnPremiumSection from '../home/11-addon-premium-section';
-import FaqSimpleSection from '../home/12-faq-section';
+import PlanCards from '../home/07-plan-cards';
+import TryoutSection from '../home/08-tryout-section';
+import ComparisonSection from '../home/09-comparison-section';
+import AddOnPremiumSection from '../home/10-addon-premium-section';
+import FaqSimpleSection from '../home/11-faq-section';
 import BentoGrid from './10-bento-grid';
 import WhyUs from './10-why-us';
 import BlueprintConcept from './11-blueprint-concept';
@@ -37,7 +36,6 @@ export default function SNBT() {
           <ProgramsSection />
           <ComparisonSection />
           <TutorsSection />
-          <MentorAISection />
           <TryoutSection />
           <BentoGrid />
           <BlueprintConcept />
