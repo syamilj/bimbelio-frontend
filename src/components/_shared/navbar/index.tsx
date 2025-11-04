@@ -120,42 +120,6 @@ const navItems: NavItem[] = [
         ],
       },
       {
-        title: 'Informasi',
-        items: [
-          {
-            href: '#mentor-ai',
-            label: 'Bimbot AI',
-            description: 'Tanya jawab dengan AI',
-            icon: 'Bot',
-            badge: { text: 'NEW', variant: 'info' },
-            // isLink: true,
-          },
-          {
-            href: '#tryout',
-            label: 'Try Out Online',
-            description: 'Simulasi ujian real-time',
-            icon: 'Timer',
-            badge: { text: 'GRATIS', variant: 'info' },
-            // isLink: true,
-          },
-          {
-            href: '#ecosystem',
-            label: 'Analisis',
-            description: 'Laporan detail kemampuan',
-            icon: 'TrendingUp',
-            badge: { text: 'PREMIUM', variant: 'premium' },
-            // isLink: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    href: '/',
-    label: 'Tutor',
-    isLink: true,
-    submenuColumns: [
-      {
         title: '3-Layer System',
         items: [
           {
@@ -183,6 +147,27 @@ const navItems: NavItem[] = [
           },
         ],
       },
+      {
+        title: 'Informasi',
+        items: [
+          {
+            href: '#tryout',
+            label: 'Try Out Online',
+            description: 'Simulasi ujian real-time',
+            icon: 'Timer',
+            badge: { text: 'GRATIS', variant: 'info' },
+            // isLink: true,
+          },
+          {
+            href: '#ecosystem',
+            label: 'Analisis',
+            description: 'Laporan detail kemampuan',
+            icon: 'TrendingUp',
+            badge: { text: 'PREMIUM', variant: 'premium' },
+            // isLink: true,
+          },
+        ],
+      },
     ],
   },
   {
@@ -191,60 +176,6 @@ const navItems: NavItem[] = [
     isLink: true,
     badge: { text: 'PROMO', variant: 'warning' },
     submenuColumns: [
-      // {
-      //   title: 'PTN',
-      //   items: [
-      //     {
-      //       href: '/price',
-      //       label: 'SNBT',
-      //       description: 'Persiapan SNBT 2026',
-      //       icon: 'Target',
-      //       badge: { text: 'POPULER', variant: 'warning' },
-      //       isLink: true,
-      //     },
-      //     {
-      //       href: '/price',
-      //       label: 'SIMAK UI',
-      //       description: 'Ujian Mandiri UI',
-      //       icon: 'School',
-      //       isLink: true,
-      //     },
-      //     {
-      //       href: '/price',
-      //       label: 'UM UGM',
-      //       description: 'Ujian Mandiri UGM',
-      //       icon: 'BookOpen',
-      //       isLink: true,
-      //     },
-      //   ],
-      // },
-      // {
-      //   title: 'Kedinasan',
-      //   items: [
-      //     {
-      //       href: '/price',
-      //       label: 'IPDN',
-      //       description: 'Institut Pemerintahan',
-      //       icon: 'Building2',
-      //       isLink: true,
-      //     },
-      //     {
-      //       href: '/price',
-      //       label: 'STAN',
-      //       description: 'Sekolah Tinggi Akuntansi',
-      //       icon: 'Calculator',
-      //       badge: { text: 'PREMIUM', variant: 'premium' },
-      //       isLink: true,
-      //     },
-      //     {
-      //       href: '/price',
-      //       label: 'STIS',
-      //       description: 'Sekolah Tinggi Statistik',
-      //       icon: 'BarChart',
-      //       isLink: true,
-      //     },
-      //   ],
-      // },
       {
         title: 'Product',
         items: [
@@ -269,9 +200,49 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    href: '/blog',
-    label: 'Blog',
+    href: '/calendar',
+    label: 'Kalender',
     isLink: true,
+    badge: { text: 'EVENT', variant: 'info' },
+    submenuColumns: [
+      {
+        title: 'Jadwal Event',
+        items: [
+          {
+            href: '/calendar',
+            label: 'Semua Event',
+            description: 'Lihat seluruh jadwal event',
+            icon: 'Calendar',
+            badge: { text: 'GRATIS', variant: 'success' },
+            isLink: true,
+          },
+          {
+            href: '/calendar?type=webinar',
+            label: 'Webinar',
+            description: 'Sesi belajar online bersama expert',
+            icon: 'Video',
+            badge: { text: 'LIVE', variant: 'info' },
+            isLink: true,
+          },
+          {
+            href: '/calendar?type=live-class',
+            label: 'Live Class',
+            description: 'Sesi belajar langsung bersama tutor',
+            icon: 'Video',
+            badge: { text: 'LIVE', variant: 'info' },
+            isLink: true,
+          },
+          {
+            href: '/calendar?type=ujian',
+            label: 'Try Out',
+            description: 'Try Out online dengan timer',
+            icon: 'Clock',
+            badge: { text: 'GRATIS', variant: 'success' },
+            isLink: true,
+          },
+        ],
+      },
+    ],
   },
   {
     href: '/discord',
@@ -279,8 +250,16 @@ const navItems: NavItem[] = [
     isLink: false,
     submenuColumns: [
       {
-        title: 'Belajar Bareng',
+        title: 'Lainnya',
         items: [
+          {
+            href: '/blog',
+            label: 'Blog',
+            description: 'Insight & tips belajar',
+            icon: 'Users',
+            badge: { text: 'GRATIS', variant: 'success' },
+            isLink: true,
+          },
           {
             href: '/discord',
             label: 'Discord',
@@ -289,26 +268,6 @@ const navItems: NavItem[] = [
             badge: { text: 'GRATIS', variant: 'success' },
             isLink: true,
           },
-          // {
-          //   href: '#hero',
-          //   label: 'Beasiswa',
-          //   description: 'Informasi beasiswa',
-          //   icon: 'Award',
-          //   badge: { text: 'GRATIS', variant: 'success' },
-          //   isLink: false,
-          // },
-        ],
-      },
-      {
-        title: 'Bantuan',
-        items: [
-          // {
-          //   href: '/#faq',
-          //   label: 'FAQ',
-          //   description: 'Tanya jawab seputar Bimbelio',
-          //   icon: 'MessageSquare',
-          //   // isLink: true,
-          // },
           {
             href: '/#contact',
             label: 'Konsultasi',

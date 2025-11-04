@@ -25,7 +25,7 @@ import 'katex/dist/katex.min.css';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
-  CalendarIcon,
+  BookOpen,
   ChevronUpIcon,
   EyeIcon,
   Loader2,
@@ -239,11 +239,11 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               >
                 <Button
                   variant="ghost"
-                  className="flex w-full items-center space-x-2 hover:bg-white/80 hover:backdrop-blur-sm hover:shadow-md rounded-xl transition-all duration-300"
+                  className="flex w-full items-center space-x-2 hover:shadow-md rounded-xl transition-all duration-300 border-2 border-gray-100 hover:border-opacity-50"
                   onClick={() => router.push('/blog')}
                   style={
                     {
-                      '--hover-bg': `${mainColor}15`,
+                      '--hover-bg': `${mainColor}08`,
                     } as React.CSSProperties
                   }
                 >
@@ -252,7 +252,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     className="font-medium"
                     aria-hidden="true"
                   />
-                  <span>Lihat semua posting</span>
+                  <span className="text-sm font-bold">Lihat semua posting</span>
                 </Button>
               </motion.div>
 
@@ -262,7 +262,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <Card
-                  className="bg-white shadow-lg border-2 overflow-hidden rounded-2xl"
+                  className="bg-white shadow-sm border-2 overflow-hidden rounded-3xl hover:shadow-md transition-all"
                   style={{ borderColor: `${mainColor}20` }}
                 >
                   {/* Top Accent Bar */}
@@ -272,53 +272,75 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                       background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
                     }}
                   />
-                  <CardHeader className="px-4 py-4">
-                    <div className="text-base font-black">Artikel Lainnya</div>
+
+                  {/* Header dengan icon */}
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                        <BookOpen className="w-4 h-4 text-white" />
+                      </div>
+                      <h3 className="text-lg font-black text-gray-900">
+                        Artikel Terkait
+                      </h3>
+                    </div>
                   </CardHeader>
-                  <CardContent className="px-2 py-4">
-                    <div className="space-y-3">
-                      {sortPosts(blogs ?? [], 'recent')
-                        .filter((post) => post.slug !== blog.slug)
-                        .slice(0, 5)
-                        .map((post, index) => (
-                          <motion.div
-                            key={post.slug}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.4, delay: index * 0.1 }}
-                            whileHover={{ x: 5 }}
-                          >
-                            <Link href={`/blog/${post.slug}`}>
-                              <div
-                                className="group flex items-start space-x-3 p-3 rounded-xl hover:shadow-md transition-all duration-300 border-2 border-transparent hover:border-opacity-50"
-                                style={
-                                  {
-                                    '--hover-border': `${mainColor}20`,
-                                  } as React.CSSProperties
-                                }
+
+                  <CardContent className="p-4 space-y-2.5">
+                    {sortPosts(blogs ?? [], 'recent')
+                      .filter((post) => post.slug !== blog.slug)
+                      .slice(0, 5)
+                      .map((post, index) => (
+                        <motion.div
+                          key={post.slug}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.4, delay: index * 0.1 }}
+                          whileHover={{ x: 4 }}
+                        >
+                          <Link href={`/blog/${post.slug}`}>
+                            <div
+                              className="group flex items-start gap-2.5 p-3 rounded-2xl hover:shadow-md transition-all duration-300 border-2 border-transparent hover:border-opacity-40"
+                              style={
+                                {
+                                  '--hover-border': `${mainColor}30`,
+                                } as React.CSSProperties
+                              }
+                            >
+                              {/* Ranking Badge */}
+                              <span
+                                className="text-xs font-black px-2.5 py-1.5 rounded-lg text-white shadow-sm flex-shrink-0"
+                                style={{ backgroundColor: mainColor }}
                               >
-                                <span
-                                  className="text-base font-black px-3 py-2 rounded-xl text-white shadow-sm"
-                                  style={{ backgroundColor: mainColor }}
-                                >
-                                  {index + 1}
-                                </span>
-                                <div className="flex-1">
-                                  <p className="line-clamp-2 text-sm font-bold text-gray-900 group-hover:text-gray-600 transition-colors leading-snug">
-                                    {post.title}
-                                  </p>
-                                  <div className="mt-2 flex items-center space-x-2 text-xs text-gray-500">
+                                {index + 1}
+                              </span>
+
+                              {/* Content */}
+                              <div className="flex-1 min-w-0">
+                                <p className="line-clamp-2 text-sm font-bold text-gray-900 group-hover:text-opacity-70 transition-colors leading-snug">
+                                  {post.title}
+                                </p>
+                                <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
+                                  <div className="flex items-center gap-1">
                                     <EyeIcon className="h-3 w-3" />
                                     <span className="font-medium">
-                                      {post.views.toLocaleString()} dilihat
+                                      {post.views > 1000
+                                        ? (post.views / 1000).toFixed(1) + 'k'
+                                        : post.views}
                                     </span>
                                   </div>
+                                  <span className="text-gray-400">•</span>
+                                  <span className="font-medium">
+                                    {getDateString(post.createdAt)}
+                                  </span>
                                 </div>
                               </div>
-                            </Link>
-                          </motion.div>
-                        ))}
-                    </div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      ))}
                   </CardContent>
                 </Card>
               </motion.div>
@@ -352,127 +374,133 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="relative p-6 rounded-2xl bg-white shadow-lg border-2 overflow-hidden"
+                className="relative rounded-3xl bg-white shadow-lg border-2 overflow-hidden w-full"
                 style={{ borderColor: `${mainColor}20` }}
               >
                 {/* Top Accent Bar */}
                 <div
-                  className="absolute top-0 left-0 right-0 h-2 w-full"
+                  className="h-2 w-full"
                   style={{
                     background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
                   }}
                 />
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-2">
-                  <div className="flex items-center space-x-4">
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
-                    >
-                      <Avatar
-                        className="h-14 w-14 border-2 shadow-lg"
-                        style={{ borderColor: mainColor }}
+                <div className="p-6 space-y-5">
+                  {/* Author Section */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
                       >
-                        <Image
-                          src={AdminImage}
-                          alt="Admin avatar"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </Avatar>
-                    </motion.div>
-                    <div>
-                      <span
-                        className="text-base font-black"
-                        style={{ color: mainColor }}
-                      >
-                        Bimbelio
-                      </span>
-                      <span className="block text-xs text-gray-600 font-medium">
-                        @admin
-                      </span>
+                        <Avatar
+                          className="h-16 w-16 border-2 shadow-md"
+                          style={{ borderColor: mainColor }}
+                        >
+                          <Image
+                            src={AdminImage}
+                            alt="Admin avatar"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            style={{ objectFit: 'cover' }}
+                          />
+                        </Avatar>
+                      </motion.div>
+                      <div>
+                        <span
+                          className="text-base font-black block"
+                          style={{ color: mainColor }}
+                        >
+                          Bimbelio
+                        </span>
+                        <span className="text-xs text-gray-500 font-medium">
+                          @admin
+                        </span>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-3">
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.6 }}
-                      className="flex items-center space-x-2 text-gray-700 px-4 py-2 rounded-xl shadow-sm"
-                      style={{ backgroundColor: `${mainColor}08` }}
-                    >
-                      <CalendarIcon
-                        className="h-4 w-4"
-                        style={{ color: mainColor }}
-                      />
-                      <span className="text-sm font-medium">
-                        {getDateString(blog.createdAt)}
-                      </span>
-                    </motion.div>
-
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.7 }}
-                      className="flex items-center space-x-2 text-gray-700 px-4 py-2 rounded-xl shadow-sm"
-                      style={{ backgroundColor: `${secondaryColor}08` }}
-                    >
-                      <EyeIcon
-                        className="h-4 w-4"
-                        style={{ color: secondaryColor }}
-                      />
-                      <span className="text-sm font-medium">
-                        {viewCount.toLocaleString()} dilihat
-                      </span>
-                    </motion.div>
 
                     <motion.div
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.8 }}
+                      transition={{ delay: 0.6 }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <Button
-                        variant="outline"
                         size="sm"
-                        className="rounded-xl border-0 shadow-md font-bold hover:shadow-lg transition-all duration-300"
+                        className="rounded-xl border-0 shadow-md font-bold hover:shadow-lg transition-all duration-300 text-white px-4 py-2"
                         onClick={handleShare}
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                          color: 'white',
                         }}
                       >
-                        <ShareIcon className="mr-2 h-4 w-4" />
+                        <ShareIcon className="w-4 h-4 mr-2" />
                         Bagikan
                       </Button>
+                    </motion.div>
+                  </div>
+
+                  {/* Meta Info Grid - 2 columns */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="p-4 rounded-2xl border-2 flex flex-col items-center justify-center text-center"
+                      style={{
+                        background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
+                        borderColor: 'rgb(191 219 254)',
+                      }}
+                    >
+                      <p className="text-xs font-medium text-blue-600">
+                        Dipublikasikan
+                      </p>
+                      <p className="text-sm font-bold text-blue-700">
+                        {getDateString(blog.createdAt)}
+                      </p>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                      className="p-4 rounded-2xl border-2 flex flex-col items-center justify-center text-center"
+                      style={{
+                        background: `linear-gradient(to bottom right, rgb(254 249 195), rgb(254 240 138))`,
+                        borderColor: 'rgb(253 224 71)',
+                      }}
+                    >
+                      <p className="text-xs font-medium text-yellow-600">
+                        Telah Dibaca
+                      </p>
+                      <p className="text-sm font-bold text-yellow-700">
+                        {viewCount.toLocaleString()} kali
+                      </p>
                     </motion.div>
                   </div>
                 </div>
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="flex flex-wrap items-center justify-center gap-3"
+                transition={{ duration: 0.8, delay: 0.7 }}
+                className="flex flex-wrap items-center justify-center gap-3 py-4"
               >
                 {blog.tags.map((tag, index) => (
                   <motion.div
                     key={tag}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.7 + index * 0.1 }}
-                    whileHover={{ scale: 1.1 }}
+                    transition={{ delay: 0.8 + index * 0.1 }}
+                    whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <Badge
-                      variant="secondary"
-                      className="px-4 py-2 rounded-full shadow-md border-0 hover:shadow-lg transition-all duration-300 font-bold text-sm"
+                      className="px-4 py-2 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 font-bold text-base border-2 cursor-pointer"
                       style={{
                         backgroundColor: `${mainColor}15`,
                         color: mainColor,
+                        borderColor: `${mainColor}30`,
                       }}
                     >
                       #{tag}
@@ -499,22 +527,40 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               </motion.div>
             </motion.header>
 
+            {/* Section Header - Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.75 }}
+              className="flex items-center gap-3 px-4"
+            >
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: mainColor }}
+              >
+                <BookOpen className="w-5 h-5 text-white" />
+              </div>
+              <h2 className="text-2xl font-black text-gray-900">
+                Konten Artikel
+              </h2>
+            </motion.div>
+
             {/* Content dengan backdrop blur effect */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="relative bg-white rounded-2xl shadow-lg p-8 border-2 overflow-hidden"
+              className="relative bg-white rounded-3xl shadow-md border-2 overflow-hidden hover:shadow-lg transition-all"
               style={{ borderColor: `${mainColor}20` }}
             >
               {/* Top Accent Bar */}
               <div
-                className="absolute top-0 left-0 right-0 h-2 w-full"
+                className="h-2 w-full"
                 style={{
                   background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
                 }}
               />
-              <div className="pt-4">
+              <div className="p-8 md:p-10 prose prose-lg max-w-none">
                 <ReactMarkdownBlog value={processedContent} />
               </div>
             </motion.div>
