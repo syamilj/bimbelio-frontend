@@ -3,13 +3,25 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // Tambahkan ini untuk hapus console di production
+  // OPTIMASI: Production build optimizations
+  swcMinify: true,
+  productionBrowserSourceMaps: false,
+
+  // OPTIMASI: Disable unused libraries
+  experimental: {
+    optimizePackageImports: [
+      '@radix-ui/react-select',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-tabs',
+      'lucide-react',
+    ],
+  },
+
+  // OPTIMASI: Compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-    // Jika ingin mengecualikan beberapa jenis console:
-    // removeConsole: {
-    //   exclude: ['error', 'warn']
-    // }
+    removeDebugger: process.env.NODE_ENV === 'production',
   },
 
   // async rewrites() {
@@ -66,7 +78,7 @@ const nextConfig = {
   // },
 
   images: {
-    // Tambah format modern untuk mengurangi ukuran transfer LCP image
+    // OPTIMASI: Modern image formats untuk reduce file size (50% lebih kecil dari PNG/JPG)
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
@@ -74,6 +86,12 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+    // OPTIMASI: Device sizes untuk responsive images
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // OPTIMASI: Minimize cumulative layout shift (CLS)
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   eslint: {
     ignoreDuringBuilds: true,
