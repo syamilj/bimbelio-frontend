@@ -180,35 +180,35 @@ const HeroSection: React.FC = () => {
 
           {/* CTA Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
             className="w-full flex flex-col items-center gap-3 md:gap-4"
           >
             {/* Main CTA - Redesigned dengan warna gradient lebih menarik */}
             <button
               onClick={handleCTAClick}
-              className="group relative flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black text-base md:text-lg text-white shadow-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border-2 border-white/20"
+              className="group relative flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black text-base md:text-lg text-white shadow-2xl hover:shadow-2xl transition-shadow duration-300 cursor-pointer overflow-hidden border-2 border-white/20 will-change-transform"
               style={{
                 background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 50%, ${mainColor} 100%)`,
                 boxShadow: `0 12px 48px -10px ${mainColor}70, 0 0 0 1px ${mainColor}30`,
               }}
             >
-              {/* Animated gradient overlay */}
+              {/* Animated gradient overlay - OPTIMASI: use will-change for performance */}
               <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 will-change-opacity"
                 style={{
                   background: `linear-gradient(135deg, ${secondaryColor} 0%, ${mainColor} 100%)`,
                 }}
               />
 
-              {/* Shine effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              {/* Shine effect - OPTIMASI: simplify untuk reduce repaints */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 will-change-transform" />
 
               <span className="relative z-10 tracking-wide">
                 Mulai Sekarang!
               </span>
-              <ArrowRight className="relative z-10 w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-2 transition-transform duration-300" />
+              <ArrowRight className="relative z-10 w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-1 transition-transform duration-300" />
             </button>
 
             {/* Sub CTA Buttons - Redesigned dengan style modern */}
