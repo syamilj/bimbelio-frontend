@@ -12,7 +12,9 @@ export const responseError = (
       title: toastTitle || 'Gagal',
       condition: 'warning',
       description:
-        toastMessage || (error as any)?.response?.data?.message || 'Gagal',
+        toastMessage ||
+        (error as any)?.response?.data?.message ||
+        'Internal Server Error',
       duration: 2500,
     });
   }
