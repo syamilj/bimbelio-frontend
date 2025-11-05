@@ -31,24 +31,24 @@ export function SpinnerPageCentered({ className }: { className?: string }) {
   );
 }
 
-export function PageError({
-  className,
-  message,
-}: {
-  className?: string;
-  message?: any;
-}) {
-  return (
-    <div
-      className={cn(
-        'fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-white',
-        className,
-      )}
-    >
-      {message ? JSON.stringify(message) : 'Page Error, Please Refresh'}
-    </div>
-  );
-}
+// export function PageError({
+//   className,
+//   message,
+// }: {
+//   className?: string;
+//   message?: any;
+// }) {
+//   return (
+//     <div
+//       className={cn(
+//         'fixed left-0 top-0 z-1000 flex h-full w-full items-center justify-center bg-white',
+//         className,
+//       )}
+//     >
+//       {message ? JSON.stringify(message) : 'Page Error, Please Refresh'}
+//     </div>
+//   );
+// }
 
 export function SpinnerCentered() {
   return (

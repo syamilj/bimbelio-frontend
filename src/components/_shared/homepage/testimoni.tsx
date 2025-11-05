@@ -282,7 +282,7 @@ const Testimoni = () => {
           </div>
 
           <div className="relative z-10 space-y-6">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-main-default">
+            <h3 className="text-2xl md:text-3xl font-bold text-main-default">
               Bergabunglah dengan Revolusi Pembelajaran AI
             </h3>
             <p className="text-lg text-gray-600">

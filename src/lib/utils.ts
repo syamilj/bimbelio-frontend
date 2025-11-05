@@ -1,11 +1,9 @@
 // utils.ts
 import { clsx, type ClassValue } from 'clsx';
 import Cookies from 'js-cookie';
-import { Metadata } from 'next';
 import { twMerge } from 'tailwind-merge';
 
 import { toaster } from '@/components/ui/toaster';
-import { env } from '@/env.mjs';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -72,35 +70,35 @@ export const copyTextToClipboard = (text: string | undefined) => {
   }
 };
 
-export const DateTimeWithZone = (date: any) => {
-  if (env.NODE_ENV === 'production') {
-    // // Buat objek Date dari string ISO 8601
-    const dateObj = new Date(date);
+// export const DateTimeWithZone = (date: any) => {
+//   if (env.NODE_ENV === 'production') {
+//     // // Buat objek Date dari string ISO 8601
+//     const dateObj = new Date(date);
 
-    // Kurangi 7 jam (dalam milidetik: 7 * 60 * 60 * 1000)
-    dateObj.setHours(dateObj.getHours() - 7);
+//     // Kurangi 7 jam (dalam milidetik: 7 * 60 * 60 * 1000)
+//     dateObj.setHours(dateObj.getHours() - 7);
 
-    // Format ulang ke ISO 8601 untuk pengiriman
-    const send = dateObj.toISOString().slice(0, 16); // Mengambil bagian 'YYYY-MM-DDTHH:MM'
+//     // Format ulang ke ISO 8601 untuk pengiriman
+//     const send = dateObj.toISOString().slice(0, 16); // Mengambil bagian 'YYYY-MM-DDTHH:MM'
 
-    return send;
-  } else {
-    return date;
-  }
-};
+//     return send;
+//   } else {
+//     return date;
+//   }
+// };
 
-export const newDateWithTimeZone = () => {
-  // if (env.NODE_ENV === 'production') {
-  //   const dateObj = new Date();
-  //   dateObj.setHours(dateObj.getHours() - 7);
-  //   const send = dateObj.toISOString().slice(0, 16);
-  //   return new Date(send);
-  // } else {
-  //   return new Date();
-  // }
+// export const newDateWithTimeZone = () => {
+//   // if (env.NODE_ENV === 'production') {
+//   //   const dateObj = new Date();
+//   //   dateObj.setHours(dateObj.getHours() - 7);
+//   //   const send = dateObj.toISOString().slice(0, 16);
+//   //   return new Date(send);
+//   // } else {
+//   //   return new Date();
+//   // }
 
-  return new Date();
-};
+//   return new Date();
+// };
 
 export const getInitials = (input: string): string => {
   // Split the input string by spaces
@@ -115,20 +113,20 @@ export const getInitials = (input: string): string => {
   return initials.join('');
 };
 
-export function formatPhoneNumber(phone: string): string {
-  // Remove any non-digit characters
-  const cleaned = phone.replace(/\D/g, '');
+// export function formatPhoneNumber(phone: string): string {
+//   // Remove any non-digit characters
+//   const cleaned = phone.replace(/\D/g, '');
 
-  // Remove leading zeros if present
-  const withoutLeadingZero = cleaned.replace(/^0+/, '');
+//   // Remove leading zeros if present
+//   const withoutLeadingZero = cleaned.replace(/^0+/, '');
 
-  // Add +62 prefix if not present
-  const withPrefix = withoutLeadingZero.startsWith('62')
-    ? withoutLeadingZero
-    : `62${withoutLeadingZero}`;
+//   // Add +62 prefix if not present
+//   const withPrefix = withoutLeadingZero.startsWith('62')
+//     ? withoutLeadingZero
+//     : `62${withoutLeadingZero}`;
 
-  return withPrefix;
-}
+//   return withPrefix;
+// }
 
 export function formatSchoolName(school: string | undefined): string {
   if (!school) return '-';
@@ -262,99 +260,99 @@ export const getDateStringShort = (date: any) => {
 
 import { Dispatch, SetStateAction } from 'react';
 
-export const getError = (error: any) => {
-  // if (error instanceof TRPCError) {
-  //   if (error.code === "CLIENT_CLOSED_REQUEST") {
-  //     throw new TRPCError({
-  //       code: "CLIENT_CLOSED_REQUEST",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "CONFLICT") {
-  //     throw new TRPCError({
-  //       code: "CONFLICT",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "FORBIDDEN") {
-  //     throw new TRPCError({
-  //       code: "FORBIDDEN",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "METHOD_NOT_SUPPORTED") {
-  //     throw new TRPCError({
-  //       code: "METHOD_NOT_SUPPORTED",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "NOT_FOUND") {
-  //     throw new TRPCError({
-  //       code: "NOT_FOUND",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "NOT_IMPLEMENTED") {
-  //     throw new TRPCError({
-  //       code: "NOT_IMPLEMENTED",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "PARSE_ERROR") {
-  //     throw new TRPCError({
-  //       code: "PARSE_ERROR",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "PAYLOAD_TOO_LARGE") {
-  //     throw new TRPCError({
-  //       code: "PAYLOAD_TOO_LARGE",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "PRECONDITION_FAILED") {
-  //     throw new TRPCError({
-  //       code: "PRECONDITION_FAILED",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "TIMEOUT") {
-  //     throw new TRPCError({
-  //       code: "TIMEOUT",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "TOO_MANY_REQUESTS") {
-  //     throw new TRPCError({
-  //       code: "TOO_MANY_REQUESTS",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "UNAUTHORIZED") {
-  //     throw new TRPCError({
-  //       code: "UNAUTHORIZED",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "UNPROCESSABLE_CONTENT") {
-  //     throw new TRPCError({
-  //       code: "UNPROCESSABLE_CONTENT",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   if (error.code === "BAD_REQUEST") {
-  //     throw new TRPCError({
-  //       code: "BAD_REQUEST",
-  //       message: message ? message : "-",
-  //     });
-  //   }
-  //   throw new TRPCError({
-  //     code: "INTERNAL_SERVER_ERROR",
-  //     message: "Internal Server Error",
-  //   });
-  // }
-  return error;
-};
+// export const getError = (error: any) => {
+//   // if (error instanceof TRPCError) {
+//   //   if (error.code === "CLIENT_CLOSED_REQUEST") {
+//   //     throw new TRPCError({
+//   //       code: "CLIENT_CLOSED_REQUEST",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "CONFLICT") {
+//   //     throw new TRPCError({
+//   //       code: "CONFLICT",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "FORBIDDEN") {
+//   //     throw new TRPCError({
+//   //       code: "FORBIDDEN",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "METHOD_NOT_SUPPORTED") {
+//   //     throw new TRPCError({
+//   //       code: "METHOD_NOT_SUPPORTED",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "NOT_FOUND") {
+//   //     throw new TRPCError({
+//   //       code: "NOT_FOUND",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "NOT_IMPLEMENTED") {
+//   //     throw new TRPCError({
+//   //       code: "NOT_IMPLEMENTED",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "PARSE_ERROR") {
+//   //     throw new TRPCError({
+//   //       code: "PARSE_ERROR",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "PAYLOAD_TOO_LARGE") {
+//   //     throw new TRPCError({
+//   //       code: "PAYLOAD_TOO_LARGE",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "PRECONDITION_FAILED") {
+//   //     throw new TRPCError({
+//   //       code: "PRECONDITION_FAILED",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "TIMEOUT") {
+//   //     throw new TRPCError({
+//   //       code: "TIMEOUT",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "TOO_MANY_REQUESTS") {
+//   //     throw new TRPCError({
+//   //       code: "TOO_MANY_REQUESTS",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "UNAUTHORIZED") {
+//   //     throw new TRPCError({
+//   //       code: "UNAUTHORIZED",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "UNPROCESSABLE_CONTENT") {
+//   //     throw new TRPCError({
+//   //       code: "UNPROCESSABLE_CONTENT",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   if (error.code === "BAD_REQUEST") {
+//   //     throw new TRPCError({
+//   //       code: "BAD_REQUEST",
+//   //       message: message ? message : "-",
+//   //     });
+//   //   }
+//   //   throw new TRPCError({
+//   //     code: "INTERNAL_SERVER_ERROR",
+//   //     message: "Internal Server Error",
+//   //   });
+//   // }
+//   return error;
+// };
 
 // export const Limitation = {
 //   free: {
@@ -481,83 +479,83 @@ export const hideVideoLink = async ({
   }
 };
 
-export function constructMetadata({
-  title = 'Bimbelio - Bimbel AI untuk PTN dan Kedinasan',
-  description = 'Bimbelio merevolusi pengalaman belajar dengan alat pembelajaran aktif berbasis AI untuk persiapan PTN dan Kedinasan. Bimbel AI untuk suksesmu!',
-  image = '/og.webp',
-  icons = '/favicon.ico',
-  noIndex = false,
-}: {
-  title?: string;
-  description?: string;
-  image?: string;
-  icons?: string;
-  noIndex?: boolean;
-} = {}): Metadata {
-  const baseUrl = 'https://www.bimbelio.com';
-  const imageUrl = new URL(image, baseUrl).toString();
-  const iconUrl = new URL(icons, baseUrl).toString();
+// export function constructMetadata({
+//   title = 'Bimbelio - Bimbel AI untuk PTN dan Kedinasan',
+//   description = 'Bimbelio merevolusi pengalaman belajar dengan alat pembelajaran aktif berbasis AI untuk persiapan PTN dan Kedinasan. Bimbel AI untuk suksesmu!',
+//   image = '/og.webp',
+//   icons = '/favicon.ico',
+//   noIndex = false,
+// }: {
+//   title?: string;
+//   description?: string;
+//   image?: string;
+//   icons?: string;
+//   noIndex?: boolean;
+// } = {}): Metadata {
+//   const baseUrl = 'https://www.bimbelio.com';
+//   const imageUrl = new URL(image, baseUrl).toString();
+//   const iconUrl = new URL(icons, baseUrl).toString();
 
-  return {
-    title,
-    description,
-    openGraph: {
-      type: 'website',
-      url: baseUrl,
-      title,
-      description,
-      siteName: 'Bimbelio',
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: 'Bimbelio Logo',
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [imageUrl],
-      creator: '@syamiljihad',
-    },
-    icons: {
-      icon: [
-        {
-          url: iconUrl,
-        },
-      ],
-    },
-    metadataBase: new URL(baseUrl),
-    themeColor: '#FFF',
-    ...(noIndex && {
-      robots: {
-        index: false,
-        follow: false,
-      },
-    }),
-  };
-}
+//   return {
+//     title,
+//     description,
+//     openGraph: {
+//       type: 'website',
+//       url: baseUrl,
+//       title,
+//       description,
+//       siteName: 'Bimbelio',
+//       images: [
+//         {
+//           url: imageUrl,
+//           width: 1200,
+//           height: 630,
+//           alt: 'Bimbelio Logo',
+//         },
+//       ],
+//     },
+//     twitter: {
+//       card: 'summary_large_image',
+//       title,
+//       description,
+//       images: [imageUrl],
+//       creator: '@syamiljihad',
+//     },
+//     icons: {
+//       icon: [
+//         {
+//           url: iconUrl,
+//         },
+//       ],
+//     },
+//     metadataBase: new URL(baseUrl),
+//     themeColor: '#FFF',
+//     ...(noIndex && {
+//       robots: {
+//         index: false,
+//         follow: false,
+//       },
+//     }),
+//   };
+// }
 
-export const TncTryout = [
-  {
-    category: 'twk',
-    value:
-      '- TWK\n- Jumlah Soal: 30\n- Penilaian: Benar 5, Salah 0\n- Materi: Pancasila, UUD 1945, NKRI, Bhinneka Tunggal Ika, Sejarah Perjuangan Bangsa\n- Passing Grade: 65\n- Tujuan: Mengukur wawasan kebangsaan, nasionalisme, dan pemahaman terhadap ideologi negara',
-  },
-  {
-    category: 'tiu',
-    value:
-      '- TIU\n- Jumlah Soal: 35\n- Penilaian: Benar 5, Salah 0\n- Materi: Kemampuan Verbal (sinonim, antonim, analogi), Kemampuan Numerik (aritmetika, seri angka), Kemampuan Logika (penalaran, silogisme)\n- Passing Grade: 80\n- Tujuan: Mengukur kemampuan berpikir logis, numerik, dan verbal',
-  },
-  {
-    category: 'tkp',
-    value:
-      '- TKP\n- Jumlah Soal: 45\n- Penilaian: Skor 1-5 per jawaban (Tidak ada jawaban bernilai 0)\n- Materi: Integritas, Adaptasi, Pelayanan Publik, Kerjasama, Kepemimpinan, Pengendalian Diri\n- Passing Grade: 166\n- Tujuan: Mengukur karakteristik pribadi peserta terkait integritas, etika kerja, dan kemampuan sosial',
-  },
-];
+// export const TncTryout = [
+//   {
+//     category: 'twk',
+//     value:
+//       '- TWK\n- Jumlah Soal: 30\n- Penilaian: Benar 5, Salah 0\n- Materi: Pancasila, UUD 1945, NKRI, Bhinneka Tunggal Ika, Sejarah Perjuangan Bangsa\n- Passing Grade: 65\n- Tujuan: Mengukur wawasan kebangsaan, nasionalisme, dan pemahaman terhadap ideologi negara',
+//   },
+//   {
+//     category: 'tiu',
+//     value:
+//       '- TIU\n- Jumlah Soal: 35\n- Penilaian: Benar 5, Salah 0\n- Materi: Kemampuan Verbal (sinonim, antonim, analogi), Kemampuan Numerik (aritmetika, seri angka), Kemampuan Logika (penalaran, silogisme)\n- Passing Grade: 80\n- Tujuan: Mengukur kemampuan berpikir logis, numerik, dan verbal',
+//   },
+//   {
+//     category: 'tkp',
+//     value:
+//       '- TKP\n- Jumlah Soal: 45\n- Penilaian: Skor 1-5 per jawaban (Tidak ada jawaban bernilai 0)\n- Materi: Integritas, Adaptasi, Pelayanan Publik, Kerjasama, Kepemimpinan, Pengendalian Diri\n- Passing Grade: 166\n- Tujuan: Mengukur karakteristik pribadi peserta terkait integritas, etika kerja, dan kemampuan sosial',
+//   },
+// ];
 
 export const Provinces = [
   {

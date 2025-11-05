@@ -56,59 +56,59 @@ export const METADATA_USER = {
   },
 };
 
-export const METADATA_ADMIN = {
-  //TODO - Dashboard Page
-  dashboard: {
-    title: `Dashboard ${siteName}`,
-    description:
-      'Lihat perkembangan belajarmu dan rekomendasi materi belajar berdasarkan kebutuhan',
-    openGraph: {
-      title: `Dashboard ${siteName}`,
-      description:
-        'Lihat perkembangan belajarmu dan rekomendasi materi belajar berdasarkan kebutuhan',
-    },
-  },
+// export const METADATA_ADMIN = {
+//   //TODO - Dashboard Page
+//   dashboard: {
+//     title: `Dashboard ${siteName}`,
+//     description:
+//       'Lihat perkembangan belajarmu dan rekomendasi materi belajar berdasarkan kebutuhan',
+//     openGraph: {
+//       title: `Dashboard ${siteName}`,
+//       description:
+//         'Lihat perkembangan belajarmu dan rekomendasi materi belajar berdasarkan kebutuhan',
+//     },
+//   },
 
-  //TODO - Blog Page
-  blog: {
-    title: `Blog ${siteName}`,
-    description:
-      'Baca artikel terbaru seputar PTN, Kedinasan, dan belajar online',
-    openGraph: {
-      title: `Blog ${siteName}`,
-      description:
-        'Baca artikel terbaru seputar PTN, Kedinasan, dan belajar online',
-    },
-  },
+//   //TODO - Blog Page
+//   blog: {
+//     title: `Blog ${siteName}`,
+//     description:
+//       'Baca artikel terbaru seputar PTN, Kedinasan, dan belajar online',
+//     openGraph: {
+//       title: `Blog ${siteName}`,
+//       description:
+//         'Baca artikel terbaru seputar PTN, Kedinasan, dan belajar online',
+//     },
+//   },
 
-  //TODO - Leaderboard Page
-  leaderboard: {
-    title: `Leaderboard ${siteName}`,
-    description:
-      'Lihat peringkatmu dan teman-temanmu dalam belajar PTN dan Kedinasan',
-    openGraph: {
-      title: `Leaderboard ${siteName}`,
-      description:
-        'Lihat peringkatmu dan teman-temanmu dalam belajar PTN dan Kedinasan',
-    },
-  },
+//   //TODO - Leaderboard Page
+//   leaderboard: {
+//     title: `Leaderboard ${siteName}`,
+//     description:
+//       'Lihat peringkatmu dan teman-temanmu dalam belajar PTN dan Kedinasan',
+//     openGraph: {
+//       title: `Leaderboard ${siteName}`,
+//       description:
+//         'Lihat peringkatmu dan teman-temanmu dalam belajar PTN dan Kedinasan',
+//     },
+//   },
 
-  //TODO - Try Out Page
-  tryOut: {
-    title: `Try Out ${siteName}`,
-    description: 'Uji kemampuanmu dengan Try Out PTN dan Kedinasan terbaru',
-  },
+//   //TODO - Try Out Page
+//   tryOut: {
+//     title: `Try Out ${siteName}`,
+//     description: 'Uji kemampuanmu dengan Try Out PTN dan Kedinasan terbaru',
+//   },
 
-  //TODO - Explore Page
-  explore: {
-    title: `Explore ${siteName}`,
-    description: 'Temukan materi belajar yang sesuai dengan kebutuhanmu',
-  },
-  openGraph: {
-    title: `Explore ${siteName}`,
-    description: 'Temukan materi belajar yang sesuai dengan kebutuhanmu',
-  },
-};
+//   //TODO - Explore Page
+//   explore: {
+//     title: `Explore ${siteName}`,
+//     description: 'Temukan materi belajar yang sesuai dengan kebutuhanmu',
+//   },
+//   openGraph: {
+//     title: `Explore ${siteName}`,
+//     description: 'Temukan materi belajar yang sesuai dengan kebutuhanmu',
+//   },
+// };
 
 export const METADATA_GUEST = {
   //TODO - Blog Page
