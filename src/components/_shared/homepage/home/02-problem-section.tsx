@@ -15,6 +15,7 @@ import {
   Video,
   Wallet,
 } from 'lucide-react';
+import Image from 'next/image';
 import { useMemo } from 'react';
 
 interface PainPoint {
@@ -370,10 +371,12 @@ const ProblemSection: React.FC = () => {
                           }}
                         >
                           {data.imageUrl ? (
-                            <img
+                            <Image
                               src={data.imageUrl}
                               alt={data.examShortName}
                               className="w-full h-full object-cover"
+                              width={44}
+                              height={44}
                             />
                           ) : (
                             <div className="text-center">
