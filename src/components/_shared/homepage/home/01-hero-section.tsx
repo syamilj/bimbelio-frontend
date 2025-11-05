@@ -9,6 +9,7 @@ import type React from 'react';
 import { lazy, Suspense, useState } from 'react';
 
 // Import gambar hero
+import HeroBgWeb from '@/../public/hero/hero-bg-web.webp';
 import HeroHeadingWeb from '@/../public/hero/hero-heading-web.webp';
 
 // Lazy loading untuk komponen berat
@@ -48,7 +49,7 @@ const HeroSection: React.FC = () => {
         />
         {/* Background Image with responsive height - Mobile center position */}
         <div className="absolute inset-0 z-0 min-h-[850px]">
-          {/* <Image
+          <Image
             src={HeroBgWeb}
             alt="ALLPRINTS Hero Background"
             fill
@@ -61,7 +62,7 @@ const HeroSection: React.FC = () => {
             style={{
               objectPosition: 'center center', // Mobile: center, Desktop: center
             }}
-          /> */}
+          />
 
           {/* Gradient Fade Out - MOBILE ONLY (Lebih Kuat & Terlihat) */}
           <div
@@ -84,6 +85,7 @@ const HeroSection: React.FC = () => {
 
         {/* Main Content - Margin lebih kecil di mobile */}
         <div className="relative z-20 mx-auto flex max-w-2xl flex-col items-center text-center pt-36 md:pt-8 lg:pt-12 pb-24 md:pb-32">
+          {/* Hero Heading - Image dengan Text Skeleton untuk SEO */}
           <div className="w-full max-w-5xl mb-6 md:mb-10 relative">
             <div
               className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}

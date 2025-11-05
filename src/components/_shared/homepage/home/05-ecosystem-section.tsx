@@ -1,7 +1,7 @@
 'use client';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import {
   BarChart3,
   BookOpen,
@@ -212,13 +212,7 @@ export default function EcosystemSection() {
 
       <div className="container mx-auto max-w-7xl px-4">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
-        >
+        <div className="mb-16 text-center">
           <h2 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">
             Ini dia sistem beraksi —{' '}
             <span
@@ -241,16 +235,10 @@ export default function EcosystemSection() {
               Semua tools udah siap, kamu tinggal pakai.
             </span>
           </p>
-        </motion.div>
+        </div>
 
         {/* Journey Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           <div className="mb-8 text-center">
             <Badge
               className="mb-4 border-none px-6 py-2 text-sm font-bold text-white"
@@ -275,12 +263,8 @@ export default function EcosystemSection() {
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {phases.map((phase, index) => (
-              <motion.div
+              <div
                 key={phase.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="group relative overflow-hidden rounded-3xl border-2 border-gray-200 bg-white shadow-lg transition-all duration-300 hover:border-gray-300 hover:shadow-2xl"
               >
                 {/* Top Accent Bar */}
@@ -371,18 +355,13 @@ export default function EcosystemSection() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Platform Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
+        <div>
           <div className="mb-8 text-center">
             <Badge
               className="mb-4 border-none px-6 py-2 text-sm font-bold text-white"
@@ -410,12 +389,8 @@ export default function EcosystemSection() {
 
           <div className="grid gap-6 lg:grid-cols-3">
             {platforms.map((platform, index) => (
-              <motion.div
+              <div
                 key={platform.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="group overflow-hidden rounded-3xl border-2 border-gray-200 bg-white shadow-lg transition-all duration-300 hover:border-gray-300 hover:shadow-2xl"
               >
                 {/* Top Accent Bar */}
@@ -526,19 +501,13 @@ export default function EcosystemSection() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 text-center"
-        >
+        <div className="mt-16 text-center">
           <div
             className="mx-auto max-w-4xl rounded-3xl border-2 p-8 shadow-md"
             style={{
@@ -577,7 +546,7 @@ export default function EcosystemSection() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

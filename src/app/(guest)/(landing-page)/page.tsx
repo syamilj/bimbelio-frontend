@@ -2,56 +2,64 @@
 
 import dynamic from 'next/dynamic';
 
-// Hero section load langsung (critical for LCP) dengan SSR true
+// TIER 1: SSR = true (Critical LCP - Hero must render on server)
 const HeroSection = dynamic(
   () => import('@/components/_shared/homepage/home/01-hero-section'),
   { ssr: true },
 );
 
-// Lazy load sections below the fold untuk optimasi performance
+// TIER 2: SSR = true (Above fold, important for initial render)
 const ProblemSection = dynamic(
   () => import('@/components/_shared/homepage/home/02-problem-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: true, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 2: SSR = true (Important section, keep on server)
 const SolutionSection = dynamic(
   () => import('@/components/_shared/homepage/home/03-solution-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: true, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 2: SSR = true (Program showcase, pre-render on server)
 const ProgramsSection = dynamic(
   () => import('@/components/_shared/homepage/home/04-programs-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: true, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 3: SSR = false (Below fold, non-critical - defer to client)
 const EcosystemSection = dynamic(
   () => import('@/components/_shared/homepage/home/05-ecosystem-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 2: SSR = true (Tutors showcase - SEO important)
 const TutorsSection = dynamic(
   () => import('@/components/_shared/homepage/home/06-tutors-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: true, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 3: SSR = false (Pricing table - below fold, heavy)
 const PlanCardsSection = dynamic(
   () => import('@/components/_shared/homepage/home/07-plan-cards'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 3: SSR = false (Tryout section - heavy component, below fold)
 const TryoutSection = dynamic(
   () => import('@/components/_shared/homepage/home/08-tryout-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 3: SSR = false (Comparison - non-critical, heavy)
 const ComparisonSection = dynamic(
   () => import('@/components/_shared/homepage/home/09-comparison-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 3: SSR = false (FAQ - interactive, client-side better)
 const FaqSection = dynamic(
   () => import('@/components/_shared/homepage/home/11-faq-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
 export default function LandingPage() {
