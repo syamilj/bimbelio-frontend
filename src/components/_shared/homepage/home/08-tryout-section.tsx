@@ -10,7 +10,6 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { WebsiteSubCategory } from '@/types/database';
-import { motion, useAnimation, useInView } from 'framer-motion';
 import {
   ArrowRight,
   Award,
@@ -36,15 +35,8 @@ const TryoutSection: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const href = searchParams?.get('href');
-  const controls = useAnimation();
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
-  useEffect(() => {
-    if (isInView) {
-      controls.start('visible');
-    }
-  }, [controls, isInView]);
+  const ref = useRef(null);
 
   const [cards, setCards] = useState<
     (CardTryoutProps & { WebsiteSubCategory: WebsiteSubCategory })[]
@@ -98,15 +90,7 @@ const TryoutSection: React.FC = () => {
         ref={ref}
       >
         {/* Enhanced Header */}
-        <motion.div
-          initial="hidden"
-          animate={controls}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { duration: 0.8 } },
-          }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <Badge
             className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
             style={{
@@ -143,12 +127,7 @@ const TryoutSection: React.FC = () => {
           </p>
 
           {/* Info Pills */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-3 mb-6"
-          >
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
             <div
               className="flex items-center gap-2 px-4 py-2 rounded-full shadow-md"
               style={{
@@ -191,19 +170,11 @@ const TryoutSection: React.FC = () => {
                 Akses 24/7
               </span>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Enhanced Cards Grid */}
-        <motion.div
-          animate={controls}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: { duration: 0.8, staggerChildren: 0.1 },
-            },
-          }}
+        <div
           className={cn(
             cards.length === 1 && !isLoading
               ? 'flex justify-center gap-6 mb-8'
@@ -213,7 +184,7 @@ const TryoutSection: React.FC = () => {
           {/* Loading State */}
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => (
-                <motion.div
+                <div
                   key={index}
                   className="h-96 bg-white rounded-3xl border-2 border-gray-100 animate-pulse overflow-hidden"
                 >
@@ -233,20 +204,11 @@ const TryoutSection: React.FC = () => {
                       <div className="h-4 bg-gray-200 rounded" />
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))
             : cards?.map((tryOut, index) => (
-                <motion.div
+                <div
                   key={tryOut.id}
-                  variants={{
-                    hidden: { opacity: 0, y: 30 },
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                      transition: { duration: 0.6 },
-                    },
-                  }}
-                  whileHover={{ y: -10, scale: 1.02 }}
                   className="h-full"
                 >
                   <EnhancedTryOutCard
@@ -254,24 +216,12 @@ const TryoutSection: React.FC = () => {
                     mainColor={mainColor}
                     secondaryColor={secondaryColor}
                   />
-                </motion.div>
+                </div>
               ))}
-        </motion.div>
+        </div>
 
         {/* Enhanced CTA */}
-        <motion.div
-          initial="hidden"
-          animate={controls}
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.6, delay: 0.8 },
-            },
-          }}
-          className="max-w-4xl mx-auto"
-        >
+        <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-3xl border-2 border-gray-100 shadow-md p-8">
             {/* Icon Header */}
             <div className="mb-4 flex items-center justify-center gap-3">
@@ -307,9 +257,7 @@ const TryoutSection: React.FC = () => {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             ) : (
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -324,7 +272,7 @@ const TryoutSection: React.FC = () => {
                 <Target className="w-5 h-5" />
                 Lihat Semua Try Out
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
+              </button>
             )}
 
             {/* Trust Indicators */}
@@ -347,7 +295,7 @@ const TryoutSection: React.FC = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -393,12 +341,7 @@ const EnhancedTryOutCard = ({
   const isPopular = totalParticipants > 100;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.02, y: -4 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
+    <div
       className="w-full group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-gray-100 transition-all duration-500"
       style={{
         boxShadow: isPopular
@@ -743,9 +686,7 @@ const EnhancedTryOutCard = ({
           </div>
 
           {/* Primary CTA */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             className="w-full h-14 text-lg font-bold shadow-md hover:shadow-sm transition-all duration-300 text-white border-0 relative overflow-hidden group rounded-2xl"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -773,10 +714,10 @@ const EnhancedTryOutCard = ({
           >
             <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
             <span>Daftar Sekarang</span>
-          </motion.button>
+          </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

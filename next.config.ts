@@ -3,33 +3,13 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // OPTIMASI: Production build optimizations
-  // Next.js 15: swcMinify & productionBrowserSourceMaps sudah default optimal
-  productionBrowserSourceMaps: false,
-
-  // OPTIMASI: Disable unused libraries
-  experimental: {
-    optimizePackageImports: [
-      '@radix-ui/react-select',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-tabs',
-      'lucide-react',
-    ],
-  },
-
-  // OPTIMASI: Compiler optimizations
+  // Tambahkan ini untuk hapus console di production
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-    styledComponents: true, // Optimize CSS-in-JS
-  },
-
-  // OPTIMASI: Reduce initial JS bundle
-  webpack: (config: any, { isServer }: any) => {
-    if (!isServer) {
-      config.optimization.splitChunks.chunks = 'all';
-    }
-    return config;
+    // Jika ingin mengecualikan beberapa jenis console:
+    // removeConsole: {
+    //   exclude: ['error', 'warn']
+    // }
   },
 
   // async rewrites() {
@@ -86,7 +66,7 @@ const nextConfig = {
   // },
 
   images: {
-    // OPTIMASI: Modern image formats untuk reduce file size (50% lebih kecil dari PNG/JPG)
+    // Tambah format modern untuk mengurangi ukuran transfer LCP image
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
@@ -94,12 +74,6 @@ const nextConfig = {
         hostname: '**',
       },
     ],
-    // OPTIMASI: Device sizes untuk responsive images
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // OPTIMASI: Minimize cumulative layout shift (CLS)
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   eslint: {
     ignoreDuringBuilds: true,
@@ -108,35 +82,26 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // OPTIMASI: Next.js compiled assets - cache aggressive di browser
         source: '/_next/static/:path*',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
         ],
       },
       {
-        // OPTIMASI: Static images & media - permanent cache
-        source: '/:path*.(svg|jpg|jpeg|png|webp|gif|ico|woff2|woff|ttf)',
+        // Gambar & ikon di root/public (gunakan wildcard multi level)
+        source: '/:path*.(svg|jpg|jpeg|png|webp|gif|ico)',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
         ],
       },
       {
-        // OPTIMASI: Hero video assets - permanent cache
+        // Video hero
         source: '/hero/:path*',
         headers: [
           {
@@ -146,17 +111,12 @@ const nextConfig = {
         ],
       },
       {
-        // OPTIMASI: Reduce redirect chains - preload critical resources with high priority
-        source: '/(.*)',
+        // JS & CSS di public (bila ada) - catatan: next build assets sudah diatur di _next/static
+        source: '/:path*.(js|css)',
         headers: [
           {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on',
-          },
-          {
-            key: 'Link',
-            value:
-              '</fonts/Inter.woff2>;rel=preload;as=font;type=font/woff2;crossorigin, </hero/hero-bg-web.webp>;rel=preload;as=image;type=image/webp;imagesrcset="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1920px", </hero/hero-heading-web.webp>;rel=preload;as=image;type=image/webp',
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

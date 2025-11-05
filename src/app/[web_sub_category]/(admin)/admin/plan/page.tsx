@@ -16,6 +16,7 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
   Plan,
+  PlanBenefit,
   PlanFeature,
   PlanLimitation,
   PlanSubscription,
@@ -42,6 +43,7 @@ export default function PlanList() {
         PlanFeature: PlanFeature[];
       };
       PlanLimitation?: PlanLimitation;
+      PlanBenefit: PlanBenefit[];
     })[]
   >([]);
 
@@ -50,6 +52,8 @@ export default function PlanList() {
       setData: setPlans,
     });
   };
+
+  console.log({ plans });
 
   useEffect(() => {
     getData();
@@ -78,6 +82,19 @@ export default function PlanList() {
     (plan) =>
       (plan.PlanSubscription?.PlanFeature?.length ?? 0) > 0 &&
       !!plan.PlanLimitation,
+  );
+  const benefitOnly = filteredPlans.filter(
+    (plan) =>
+      !plan.PlanLimitation &&
+      (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
+      plan.PlanBenefit.length > 0,
+  );
+
+  const other = filteredPlans.filter(
+    (plan) =>
+      !plan.PlanLimitation &&
+      (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
+      plan.PlanBenefit.length === 0,
   );
 
   return (
@@ -127,6 +144,18 @@ export default function PlanList() {
             plans={coinPlans}
             getData={getData}
             type="coin"
+          />
+          <PlanTable
+            title="📀 Benefit Only"
+            plans={benefitOnly}
+            getData={getData}
+            type="subscription"
+          />
+          <PlanTable
+            title="📀 Lainnya"
+            plans={other}
+            getData={getData}
+            type="subscription"
           />
         </CardContent>
       </Card>

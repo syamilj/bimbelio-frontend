@@ -2,7 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import { ArrowDown, Calendar, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -142,13 +142,7 @@ export default function ProgramsSection() {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <Badge
             className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
             style={{
@@ -193,7 +187,7 @@ export default function ProgramsSection() {
             sesuai sama PRINTS System. Kamu bisa ikut semua atau pilih yang
             match sama target ujian kamu.
           </p>
-        </motion.div>
+        </div>
 
         {/* Programs List with Arrows */}
         <div className="space-y-0">
@@ -202,13 +196,7 @@ export default function ProgramsSection() {
             {programs.map((program, index) => (
               <div key={program.id}>
                 {/* Program Card */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300"
-                >
+                <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300">
                   {/* Top Accent Bar */}
                   <div
                     className="h-1.5 w-full"
@@ -386,17 +374,11 @@ export default function ProgramsSection() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Mobile Arrow - Single arrow between programs */}
                 {index < programs.length - 1 && (
-                  <motion.div
-                    initial={{ opacity: 0, scaleY: 0 }}
-                    whileInView={{ opacity: 1, scaleY: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 + 0.3 }}
-                    viewport={{ once: true }}
-                    className="flex justify-center py-4"
-                  >
+                  <div className="flex justify-center py-4">
                     <div className="flex flex-col items-center">
                       {/* Vertical Line */}
                       <div
@@ -415,7 +397,7 @@ export default function ProgramsSection() {
                         <ArrowDown className="w-4 h-4" />
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 )}
               </div>
             ))}
@@ -428,13 +410,7 @@ export default function ProgramsSection() {
               <div className="space-y-0">
                 {[programs[0], programs[2]].map((program, colIndex) => (
                   <div key={program.id}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: colIndex * 0.1 }}
-                      viewport={{ once: true }}
-                      className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300"
-                    >
+                    <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300">
                       {/* Top Accent Bar */}
                       <div
                         className="h-1.5 w-full"
@@ -572,17 +548,11 @@ export default function ProgramsSection() {
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
 
                     {/* Arrow for column 1 - only after program 1 */}
                     {program.id === 1 && (
-                      <motion.div
-                        initial={{ opacity: 0, scaleY: 0 }}
-                        whileInView={{ opacity: 1, scaleY: 1 }}
-                        transition={{ duration: 0.4, delay: 0.3 }}
-                        viewport={{ once: true }}
-                        className="flex justify-center py-4"
-                      >
+                      <div className="flex justify-center py-4">
                         <div className="flex flex-col items-center">
                           <div
                             className="w-1 h-8 rounded-full"
@@ -599,7 +569,7 @@ export default function ProgramsSection() {
                             <ArrowDown className="w-4 h-4" />
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     )}
                   </div>
                 ))}
@@ -609,16 +579,7 @@ export default function ProgramsSection() {
               <div className="space-y-0">
                 {[programs[1], programs[3]].map((program, colIndex) => (
                   <div key={program.id}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.6,
-                        delay: colIndex * 0.1 + 0.1,
-                      }}
-                      viewport={{ once: true }}
-                      className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300"
-                    >
+                    <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300">
                       {/* Top Accent Bar */}
                       <div
                         className="h-1.5 w-full"
@@ -790,17 +751,11 @@ export default function ProgramsSection() {
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
 
                     {/* Arrow for column 2 - only after program 2 */}
                     {program.id === 2 && (
-                      <motion.div
-                        initial={{ opacity: 0, scaleY: 0 }}
-                        whileInView={{ opacity: 1, scaleY: 1 }}
-                        transition={{ duration: 0.4, delay: 0.4 }}
-                        viewport={{ once: true }}
-                        className="flex justify-center py-4"
-                      >
+                      <div className="flex justify-center py-4">
                         <div className="flex flex-col items-center">
                           <div
                             className="w-1 h-8 rounded-full"
@@ -817,7 +772,7 @@ export default function ProgramsSection() {
                             <ArrowDown className="w-4 h-4" />
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     )}
                   </div>
                 ))}
@@ -825,13 +780,7 @@ export default function ProgramsSection() {
             </div>
 
             {/* Program 5 - Full width below */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="mt-8 max-w-3xl mx-auto"
-            >
+            <div className="mt-8 max-w-3xl mx-auto">
               <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300">
                 {/* Top Accent Bar */}
                 <div
@@ -984,7 +933,7 @@ export default function ProgramsSection() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

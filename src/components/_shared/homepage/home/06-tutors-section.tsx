@@ -2,7 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import {
   Brain,
   CheckCircle2,
@@ -209,13 +209,7 @@ export default function TutorsSection() {
     >
       <div className="max-w-7xl mx-auto">
         {/* ========== HEADER SECTION ========== */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
+        <div className="text-center mb-20">
           <Badge
             className="mb-8 px-6 py-2 text-sm font-bold text-white border-none inline-flex items-center gap-2"
             style={{ backgroundColor: mainColor }}
@@ -249,10 +243,8 @@ export default function TutorsSection() {
           {/* Three Dots Indicator */}
           <div className="flex items-center justify-center gap-2">
             {[0, 1, 2].map((i) => (
-              <motion.div
+              <div
                 key={i}
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, delay: i * 0.2, repeat: Infinity }}
                 className="w-2 h-2 rounded-full"
                 style={{
                   backgroundColor: [mainColor, '#00C853', '#9C27B0'][i],
@@ -260,17 +252,13 @@ export default function TutorsSection() {
               />
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* ========== 3 LAYERS SYSTEM CARDS ========== */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-28 justify-items-center">
           {layers.map((layer, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
               className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 w-full max-w-sm"
             >
               {/* Top Accent Bar */}
@@ -337,18 +325,12 @@ export default function TutorsSection() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* ========== LAYER 1: TIM TUTOR BIMBELIO ========== */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-24"
-        >
+        <div className="mb-24">
           {/* Header */}
           <div className="text-center mb-14">
             <Badge
@@ -376,12 +358,8 @@ export default function TutorsSection() {
           {/* Tutors Grid - Improved Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
             {tutors.map((tutor, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.08 }}
-                viewport={{ once: true }}
                 className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col"
               >
                 {/* Top Section - Image with Overlay */}
@@ -485,19 +463,13 @@ export default function TutorsSection() {
                     &quot;{tutor.quote}&quot;
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* ========== LAYER 2: MENTOR SYSTEM ========== */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-24"
-        >
+        <div className="mb-24">
           {/* Header */}
           <div className="text-center mb-14">
             <Badge
@@ -524,12 +496,8 @@ export default function TutorsSection() {
           {/* Mentor Features Grid - Improved 2-column Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
             {mentorFeatures.map((feature, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
                 className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 {/* Top Colored Bar */}
@@ -587,17 +555,13 @@ export default function TutorsSection() {
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* ========== LAYER 3: AI MENTOR ========== */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
+        <div
           className="mb-24"
           id="mentor-ai"
         >
@@ -628,12 +592,8 @@ export default function TutorsSection() {
           {/* AI Features Grid - Enhanced 3-Column Layout */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
             {aiFeatures.map((feature, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
                 className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col"
               >
                 {/* Top Colored Bar */}
@@ -675,19 +635,13 @@ export default function TutorsSection() {
                     <span>AI-Powered</span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* ========== BOTTOM CTA ========== */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
+        <div className="text-center">
           <div
             className="rounded-3xl p-8 md:p-12 max-w-5xl mx-auto border-2 shadow-lg overflow-hidden relative"
             style={{
@@ -733,8 +687,7 @@ export default function TutorsSection() {
 
               {/* Badges - Feature Pills */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 flex-wrap">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
+                <div
                   className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
                   style={{
                     backgroundColor: layers[0].color + '20',
@@ -744,10 +697,9 @@ export default function TutorsSection() {
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>Live Teaching</span>
-                </motion.div>
+                </div>
 
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
+                <div
                   className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
                   style={{
                     backgroundColor: layers[1].color + '20',
@@ -757,10 +709,9 @@ export default function TutorsSection() {
                 >
                   <Users className="w-4 h-4" />
                   <span>Personal Guidance</span>
-                </motion.div>
+                </div>
 
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
+                <div
                   className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
                   style={{
                     backgroundColor: layers[2].color + '20',
@@ -770,11 +721,11 @@ export default function TutorsSection() {
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>Bimbot AI 24/7</span>
-                </motion.div>
+                </div>
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
