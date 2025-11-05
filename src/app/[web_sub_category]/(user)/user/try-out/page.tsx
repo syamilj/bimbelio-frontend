@@ -21,7 +21,7 @@ import UpcomingOtherWeb from './_components/upcoming-other-web';
 export default function TryOutPage() {
   const Router = useRouter();
   const pathname = usePathname();
-  const isTesting = pathname?.toLowerCase().includes('testing') || false;
+  // const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const searchParams = useSearchParams();
   const payment = searchParams?.get('payment');
 

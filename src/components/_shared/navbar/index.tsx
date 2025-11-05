@@ -42,7 +42,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { Spinner } from '@/components/ui/spinner';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
@@ -342,8 +341,7 @@ const MobileNav: React.FC<{
   isSheetOpen: boolean;
   setIsSheetOpen: (open: boolean) => void;
   session: any;
-  setIsNavigating: (loading: boolean) => void;
-}> = ({ navItems, isSheetOpen, setIsSheetOpen, session, setIsNavigating }) => {
+}> = ({ navItems, isSheetOpen, setIsSheetOpen, session }) => {
   const {
     useAuth: { setShowAuth },
   } = useAppContext();
@@ -828,13 +826,12 @@ const MobileNav: React.FC<{
 const DesktopNav: React.FC<{
   navItems: NavItem[];
   session: any;
-  setIsNavigating: (loading: boolean) => void;
-}> = ({ navItems, session, setIsNavigating }) => {
+}> = ({ navItems, session }) => {
   const {
     useAuth: { setShowAuth },
   } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const router = useRouter();
+  // const router = useRouter();
   const pathname = usePathname();
 
   // Get dynamic colors
@@ -1513,7 +1510,7 @@ type PricingDataType = {
 const Navbar: React.FC = () => {
   const { data: session } = useSession();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
+  // const [isNavigating, setIsNavigating] = useState(false);
   const isMobile = useMedia({ maxWidth: '768px' });
   const pathname = usePathname();
 
@@ -1557,9 +1554,9 @@ const Navbar: React.FC = () => {
   }, [plans]);
 
   // Reset navigating state when pathname changes
-  useEffect(() => {
-    setIsNavigating(false);
-  }, [pathname]);
+  // useEffect(() => {
+  //   setIsNavigating(false);
+  // }, [pathname]);
 
   // Handle scroll to hash on page load
   useEffect(() => {
@@ -1599,14 +1596,14 @@ const Navbar: React.FC = () => {
   return (
     <>
       {/* Loading Overlay */}
-      {isNavigating && (
+      {/* {isNavigating && (
         <div className="fixed inset-0 z-[9999] bg-white/90 backdrop-blur-sm flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <Spinner />
             <p className="text-sm font-semibold text-gray-800">Memuat...</p>
           </div>
         </div>
-      )}
+      )} */}
 
       {isMobile ? (
         <MobileNav
@@ -1614,13 +1611,12 @@ const Navbar: React.FC = () => {
           isSheetOpen={isSheetOpen}
           setIsSheetOpen={setIsSheetOpen}
           session={session}
-          setIsNavigating={setIsNavigating}
+          // setIsNavigating={setIsNavigating}
         />
       ) : (
         <DesktopNav
           navItems={navData}
           session={session}
-          setIsNavigating={setIsNavigating}
         />
       )}
     </>

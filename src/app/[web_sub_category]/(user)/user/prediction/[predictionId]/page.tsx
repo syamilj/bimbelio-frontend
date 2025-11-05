@@ -26,7 +26,6 @@ export default function UTBKSIMAKPredictor() {
   const { data: session } = useSession();
   const {
     currentStep,
-    setCurrentStep,
     useParams: { predictionId },
     isFinish,
   } = useProvider();

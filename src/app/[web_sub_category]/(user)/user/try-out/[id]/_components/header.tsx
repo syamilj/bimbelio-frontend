@@ -57,7 +57,7 @@ const TryoutHeader = ({
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   // Progress calculation
   const questionProgress = (currentQuestion / totalQuestions) * 100;

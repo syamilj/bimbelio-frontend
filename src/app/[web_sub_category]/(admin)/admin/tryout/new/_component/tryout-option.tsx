@@ -17,7 +17,7 @@ import {
 } from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
 import { Loader2 } from 'lucide-react';
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { SessionProps, TryoutProps } from '../page';
 // import Image from 'next/image';
 // import { env } from '@/env.mjs';
@@ -76,7 +76,7 @@ const TryoutOption = ({
   const [showDateTryout, setShowDateTryout] = useState<boolean>(true);
   const [prevIndexEdit, setPrevIndexEdit] = useState<number | null>(null);
   // const [thumbnail, setThumbnail] = useState<File | undefined>();
-  const [thumbnailName, setThumbnailName] = useState<string>('');
+  // const [thumbnailName, setThumbnailName] = useState<string>('');
 
   const addSesi = () => {
     setSessions((prev) => {
@@ -118,9 +118,9 @@ const TryoutOption = ({
   //   }
   // }, [thumbnail]);
 
-  useEffect(() => {
-    if (tryout && tryout.image) setThumbnailName(tryout.image);
-  }, [tryout]);
+  // useEffect(() => {
+  //   if (tryout && tryout.image) setThumbnailName(tryout.image);
+  // }, [tryout]);
 
   return (
     <div className="flex w-full flex-col gap-4 p-4 text-[.9rem]">

@@ -463,7 +463,7 @@ export function CardPlan({
             {/* Key Features Preview - Marketplace Style */}
             <div className="flex flex-wrap gap-1.5">
               {plan.PlanSubscription?.PlanFeature?.slice(0, 3).map(
-                (feature, index) => (
+                (feature) => (
                   <Badge
                     key={feature.id}
                     variant="secondary"

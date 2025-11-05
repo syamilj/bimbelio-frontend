@@ -80,7 +80,7 @@ export default function PricingPlans() {
     },
   );
 
-  const topping = PricingData?.topping || [];
+  // const topping = PricingData?.topping || [];
 
   console.log({ PricingData });
 

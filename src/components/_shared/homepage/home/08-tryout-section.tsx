@@ -206,7 +206,7 @@ const TryoutSection: React.FC = () => {
                   </div>
                 </div>
               ))
-            : cards?.map((tryOut, index) => (
+            : cards?.map((tryOut) => (
                 <div
                   key={tryOut.id}
                   className="h-full"

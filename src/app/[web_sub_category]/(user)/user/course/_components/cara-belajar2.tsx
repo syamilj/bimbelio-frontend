@@ -72,7 +72,7 @@ export default function CaraBelajarSection2() {
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   useEffect(() => {
     pixel.meta.track(

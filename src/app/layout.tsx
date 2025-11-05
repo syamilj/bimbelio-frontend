@@ -163,6 +163,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <Script
           async
           src={'https://www.googletagmanager.com/gtag/js?id=G-PVEJ5PSRCH'}
+          strategy="afterInteractive"
         />
         <Script
           id="gtag-init"

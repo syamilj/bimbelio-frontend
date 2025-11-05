@@ -36,9 +36,9 @@ export default function MateriType() {
   const isDone = CourseData && CourseData.CourseProgress.length > 0;
 
   // Markdown setting
-  const remarkMathOptions = {
-    singleDollarTextMath: false,
-  };
+  // const remarkMathOptions = {
+  //   singleDollarTextMath: false,
+  // };
 
   // Jika belum ada CourseData? materi, jangan render apapun
   if (!CourseData?.materi) return null;

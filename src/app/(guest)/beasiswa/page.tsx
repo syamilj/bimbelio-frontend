@@ -223,7 +223,7 @@ export default function BeasiswaPage() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              {scholarships.map((scholarship, index) => (
+              {scholarships.map((scholarship) => (
                 <motion.div
                   key={scholarship.id}
                   variants={itemVariants}

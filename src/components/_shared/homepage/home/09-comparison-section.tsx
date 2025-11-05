@@ -2,7 +2,6 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-// import { motion } from 'framer-motion';
 import { CheckCircle2, Scale, Shield, TrendingUp, X, Zap } from 'lucide-react';
 
 export default function ComparisonSection() {

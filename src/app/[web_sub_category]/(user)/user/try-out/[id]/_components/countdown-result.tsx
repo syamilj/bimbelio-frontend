@@ -164,7 +164,7 @@ const CountdownResult = ({
             </motion.div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {timeUnits.map((unit, index) => {
+              {timeUnits.map((unit) => {
                 const IconComponent = unit.icon;
                 return (
                   <motion.div

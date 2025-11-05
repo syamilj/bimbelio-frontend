@@ -236,7 +236,9 @@ export default function VoucherPage() {
                               >
                                 <div className="flex items-center justify-start flex-wrap gap-2">
                                   {voucher.Pivot_Voucher_Plan.map((item) => (
-                                    <Badge>{item.Plan.name}</Badge>
+                                    <Badge key={item.id}>
+                                      {item.Plan.name}
+                                    </Badge>
                                   ))}
                                 </div>
                               </TooltipContent>
@@ -432,11 +434,11 @@ const DialogImportVouchers = ({
           <p className="font-semibold">
             Title | Code | Tipe{' '}
             <span className="text-xs text-gray-500 my-auto">
-              ("Percentage" / "Fixed"){' '}
+              (&quot;Percentage&quot; / &quot;Fixed&quot;){' '}
             </span>{' '}
             | Discount | Limit | Plan_Type{' '}
             <span className="text-xs text-gray-500 my-auto">
-              ("ALL_PLAN" / "SELECTED_PLAN")
+              (&quot;ALL_PLAN&quot; / &quot;SELECTED_PLAN&quot;)
             </span>{' '}
             | PlanIds
           </p>

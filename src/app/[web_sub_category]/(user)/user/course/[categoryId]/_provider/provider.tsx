@@ -42,7 +42,7 @@ type Props = {
 };
 
 export default function Provider({ children }: Props) {
-  const { mobileScreen, setMobileScreen } = useAppContext();
+  const { setMobileScreen } = useAppContext();
 
   const router = useRouter();
   const params = useParams();

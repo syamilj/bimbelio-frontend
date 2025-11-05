@@ -165,7 +165,7 @@ const MobileNav: React.FC<{
 
                   {/* Navigation Items */}
                   <div className="px-4 py-6 space-y-2">
-                    {navItems.map((item, idx) => (
+                    {navItems.map((item) => (
                       <div key={item.href}>
                         {item.submenu ? (
                           <div className="space-y-2">

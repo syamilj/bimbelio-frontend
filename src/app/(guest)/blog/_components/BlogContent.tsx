@@ -13,12 +13,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
 import { ParseHTMLtoMarkdown } from '@/lib/utils/editor';
-import {
-  addIdsToHeadings,
-  extractHeadings,
-  Heading,
-  removeIdsFromContent,
-} from '@/lib/utils/toc';
+import { addIdsToHeadings, extractHeadings, Heading } from '@/lib/utils/toc';
 import { IconLeft } from '@/styles/icon';
 import { useCreateBlockNote } from '@blocknote/react';
 import 'katex/dist/katex.min.css';
@@ -45,12 +40,6 @@ interface BlogPost {
   updatedAt: Date;
   isEditorPick: boolean | null;
   website_sub_category_id: string;
-}
-
-// Tipe agar login & signUp modal tetap berfungsi
-interface Auth {
-  login: boolean;
-  signUp: boolean;
 }
 
 // Menerima prop `blog` (server) agar bisa di-render di client
@@ -118,7 +107,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
     const contentWithIds = addIdsToHeadings(convertToMarkdown);
     const extracted = extractHeadings(contentWithIds);
     setHeadings(extracted.filter((heading) => heading.level === 2));
-    const cleanContent = removeIdsFromContent(contentWithIds);
+    // const cleanContent = removeIdsFromContent(contentWithIds);
     // const convertToHtml = await ParseMarkdownToHTML(cleanContent, editor);
     setProcessedContent(blog.value);
 

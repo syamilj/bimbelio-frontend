@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react';
 import { FormEvent } from 'react';
 
 export default function Page() {
-  const { mutate, isLoading, success } = useMutation<{ token: string }>(
+  const { mutate, isLoading } = useMutation<{ token: string }>(
     '/auth/loginUserAccount',
     'post',
     {

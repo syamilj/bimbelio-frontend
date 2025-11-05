@@ -6,19 +6,13 @@ import { Button } from '@/components/ui/button';
 import LoadingPageWithText from '@/components/ui/spinner';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../../_provider/provider';
-import { Data } from '../../page';
-
-interface NavigationButtonsProps {
-  data: Data;
-}
 
 const NavigationButtons = () => {
   const {
@@ -32,7 +26,7 @@ const NavigationButtons = () => {
 
   const params = useParams();
   const searchParams = useSearchParams();
-  const router = useRouter();
+  // const router = useRouter();
 
   const isDone = CourseData && CourseData.CourseProgress?.length > 0;
   const categoryId = params?.categoryId as string | undefined;
@@ -45,20 +39,20 @@ const NavigationButtons = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false); // Status lokal submit
 
-  const { mutate: saveProgress } = useMutation(
-    '/course/saveProgressCourse',
-    'post',
-    {
-      onSuccess() {
-        // await trpc.course.getCourseUserByCategoryId.invalidate();
-        setLoading(false);
-        setSubmitted(true); // Tandai bahwa submit telah berhasil
-      },
-      onError() {
-        setLoading(false);
-      },
-    },
-  );
+  // const { mutate: saveProgress } = useMutation(
+  //   '/course/saveProgressCourse',
+  //   'post',
+  //   {
+  //     onSuccess() {
+  //       // await trpc.course.getCourseUserByCategoryId.invalidate();
+  //       setLoading(false);
+  //       setSubmitted(true); // Tandai bahwa submit telah berhasil
+  //     },
+  //     onError() {
+  //       setLoading(false);
+  //     },
+  //   },
+  // );
 
   // const { data: courseChapters } = api.course.getCourseChapters.useQuery(
   //   { categoryId: categoryId! },

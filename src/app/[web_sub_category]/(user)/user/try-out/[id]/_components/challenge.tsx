@@ -40,7 +40,7 @@ const Challenge = ({
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const handleSelect = (id: string, answer: string, index: number) => {
     if (sessionAnswer[index].answerId === id) {
@@ -194,8 +194,14 @@ const Challenge = ({
               {type === 'TRUE_FALSE' && (
                 <>
                   <li>• Perhatikan kata kunci dalam pernyataan</li>
-                  <li>• Hati-hati dengan kata "selalu", "tidak pernah"</li>
-                  <li>• Pastikan pernyataan 100% benar untuk pilih "Benar"</li>
+                  <li>
+                    • Hati-hati dengan kata &quot;selalu&quot;, &quot;tidak
+                    pernah&quot;
+                  </li>
+                  <li>
+                    • Pastikan pernyataan 100% benar untuk pilih
+                    &quot;Benar&quot;
+                  </li>
                 </>
               )}
               {type === 'SHORT_ANSWER' && (

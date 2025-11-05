@@ -46,7 +46,7 @@ export function RatingModal({
   //   review?: string;
   // } | null>(null);
 
-  const { data: existingRating, isLoading } = useGet<LiveClassRating>(
+  const { data: existingRating } = useGet<LiveClassRating>(
     `/liveClass/getIsUserRatingLiveClass`,
     {
       params: { id: liveClass.id },
@@ -109,9 +109,9 @@ export function RatingModal({
 
   const displayRating = hoveredRating || rating;
 
-  const getRatingDescription = (rating: number): string => {
-    return rating > 0 ? getRatingText(rating) : 'Pilih rating';
-  };
+  // const getRatingDescription = (rating: number): string => {
+  //   return rating > 0 ? getRatingText(rating) : 'Pilih rating';
+  // };
 
   // Enhanced color mapping for rating
   const getRatingColor = (starRating: number): string => {
@@ -160,10 +160,11 @@ export function RatingModal({
             </DialogTitle>
             <DialogDescription className="text-base mt-2 text-gray-500 font-medium">
               {existingRating ? (
-                <>Ubah rating Kamu untuk kelas "{liveClass.title}"</>
+                <>Ubah rating Kamu untuk kelas &quot;{liveClass.title}&quot;</>
               ) : (
                 <>
-                  Bagaimana pengalaman Kamu mengikuti kelas "{liveClass.title}"?
+                  Bagaimana pengalaman Kamu mengikuti kelas &quot;
+                  {liveClass.title}&quot;?
                 </>
               )}
               {existingRating && (

@@ -311,7 +311,7 @@ const TryoutType = () => {
                   </p>
                   <RadioGroup
                     value={getRadioGroupValue()}
-                    onValueChange={(value) => {}}
+                    onValueChange={() => {}}
                   >
                     {TryoutSession.TryoutQuestion[
                       currentIndexQuestion

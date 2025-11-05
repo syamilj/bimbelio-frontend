@@ -2,7 +2,6 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-// import { motion } from 'framer-motion';
 import { ArrowDown, Calendar, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -408,7 +407,7 @@ export default function ProgramsSection() {
             <div className="grid grid-cols-2 gap-8">
               {/* Column 1: Programs 1, 3 */}
               <div className="space-y-0">
-                {[programs[0], programs[2]].map((program, colIndex) => (
+                {[programs[0], programs[2]].map((program) => (
                   <div key={program.id}>
                     <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300">
                       {/* Top Accent Bar */}
@@ -577,7 +576,7 @@ export default function ProgramsSection() {
 
               {/* Column 2: Programs 2, 4 */}
               <div className="space-y-0">
-                {[programs[1], programs[3]].map((program, colIndex) => (
+                {[programs[1], programs[3]].map((program) => (
                   <div key={program.id}>
                     <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-md transition-all duration-300">
                       {/* Top Accent Bar */}

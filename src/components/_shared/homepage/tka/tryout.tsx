@@ -197,7 +197,7 @@ const FeaturedTryoutSection = () => {
                   className="h-96 bg-white rounded-3xl border-2 border-gray-100 animate-pulse"
                 />
               ))
-            : cards?.map((tryOut, index) => (
+            : cards?.map((tryOut) => (
                 <motion.div
                   key={tryOut.id}
                   variants={{

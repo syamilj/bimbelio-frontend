@@ -115,12 +115,12 @@ export default function UpdateTutorForm() {
       if (profile) {
         const existhingImageName = Instructor?.image?.split('/tutor/')[1];
 
-        const deleteData = await supabase.storage
+        await supabase.storage
           .from('img')
           .remove([`tutor/${existhingImageName}`]);
 
         const filePath = `tutor/${email}-${crypto.randomUUID().slice(0, 4)}`;
-        const { data, error } = await supabase.storage
+        const { data: _, error } = await supabase.storage
           .from('img')
           .upload(filePath, profile);
 

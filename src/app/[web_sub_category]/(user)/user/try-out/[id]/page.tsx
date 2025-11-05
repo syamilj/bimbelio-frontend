@@ -3,7 +3,7 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
-import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { pixel } from '@/lib/pixel/_core';
 import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';
 import { motion } from 'framer-motion';
@@ -29,7 +29,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [loading, setLoading] = useState<boolean>(true);
   const [tryoutData, setTryoutData] = useState<TryoutDataType>();
@@ -50,20 +50,20 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     getTryoutById();
   }, [sessionUser, tryoutId]);
 
-  const FinishTryOutLate = async (payload: {
-    userId: string;
-    sessionId: string;
-    answer: any[];
-  }) => {
-    await mutateGeneral(`/tryoutSession/finishSessionLate`, {
-      payload,
-      type: 'post',
-      onSuccess() {
-        getTryoutById();
-        window.location.reload();
-      },
-    });
-  };
+  // const FinishTryOutLate = async (payload: {
+  //   userId: string;
+  //   sessionId: string;
+  //   answer: any[];
+  // }) => {
+  //   await mutateGeneral(`/tryoutSession/finishSessionLate`, {
+  //     payload,
+  //     type: 'post',
+  //     onSuccess() {
+  //       getTryoutById();
+  //       window.location.reload();
+  //     },
+  //   });
+  // };
 
   const getIsTryoutDone = () => {
     let done = true;

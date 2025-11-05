@@ -39,7 +39,6 @@ export const CardPlanTopping = ({
   const voucherCodeQuery = searchParams.get('voucherCode');
   const {
     useAuth: { setShowAuth },
-    setTransactionPopUp,
   } = useAppContext();
 
   const { websiteSubCategory } = useWebsiteSubCategory();

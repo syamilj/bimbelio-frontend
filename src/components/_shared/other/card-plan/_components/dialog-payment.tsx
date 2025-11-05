@@ -151,11 +151,11 @@ export function DialogPayment({
   };
 
   // Mock marketplace data
-  const checkoutData = {
-    deliveryTime: 'Akses instan setelah pembayaran',
-    support: 'Support 24/7',
-    securePayment: 'Pembayaran aman dengan SSL',
-  };
+  // const checkoutData = {
+  //   deliveryTime: 'Akses instan setelah pembayaran',
+  //   support: 'Support 24/7',
+  //   securePayment: 'Pembayaran aman dengan SSL',
+  // };
 
   const applyVoucherCode = async (planId: string) => {
     await checkVoucherCode({ payload: { voucherCode, planId } });
@@ -193,8 +193,8 @@ export function DialogPayment({
 
       // ✅ ENRICHED PURCHASE EVENT DATA - Lebih lengkap untuk tracking yang optimal
       const purchaseValue = discountPrice || plan.price;
-      const categoryName =
-        plan.PlanSubscription?.WebsiteSubCategory?.name || 'Unknown';
+      // const categoryName =
+      //   plan.PlanSubscription?.WebsiteSubCategory?.name || 'Unknown';
 
       // ✅ ADVANCED MATCHING - Enhanced Meta tracking dengan user data
       const advancedMatchingData: any = {};

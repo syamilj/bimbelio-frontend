@@ -52,9 +52,9 @@ export default function Page() {
     refetch,
   } = useGet<TryoutData[]>('/tryout/getTryout');
 
-  const { data: tryoutInfo, isLoading: tryoutInfoIsLoading } = useGet<
-    { title: string; total: number }[]
-  >('/tryout/getTryoutInfo');
+  const { data: tryoutInfo } = useGet<{ title: string; total: number }[]>(
+    '/tryout/getTryoutInfo',
+  );
 
   const exportData = async ({
     downloadData,

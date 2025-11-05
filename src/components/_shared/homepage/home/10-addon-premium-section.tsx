@@ -7,7 +7,7 @@ import { Award, Circle, Info, Plus, Target, UserPlus } from 'lucide-react';
 export default function AddOnPremiumSection() {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   // Color variants
   const color20 = mainColor + '33';

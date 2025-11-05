@@ -40,9 +40,9 @@ const PlanCards: React.FC = () => {
   const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
 
   // Selalu cari dan gunakan kategori dengan webSubCategoryId "all"
-  const getAllCategory = PricingData?.webSubCategory?.find(
-    (cat) => cat.webSubCategoryId.toLowerCase() === 'all',
-  );
+  // const getAllCategory = PricingData?.webSubCategory?.find(
+  //   (cat) => cat.webSubCategoryId.toLowerCase() === 'all',
+  // );
 
   // Selalu gunakan kategori "all" untuk menampilkan semua plan
   const getAllPlans = (): PlanDataType[] => {

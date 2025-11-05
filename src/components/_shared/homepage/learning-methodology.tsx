@@ -4,7 +4,7 @@ import AnimatedGradientText from '@/components/magicui/animated-gradient-text';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ArrowRight,
   Award,
@@ -26,7 +26,7 @@ const LearningMethodology = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [activeMethod, setActiveMethod] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  // const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';

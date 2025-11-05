@@ -45,7 +45,7 @@ export default function Upload3PLData({
       complete: function (results: any) {
         const data: any[] = results.data;
         data.forEach((item) => {
-          const keys = Object.keys(item);
+          // const keys = Object.keys(item);
           if (!item.question) {
             error = {
               value: true,

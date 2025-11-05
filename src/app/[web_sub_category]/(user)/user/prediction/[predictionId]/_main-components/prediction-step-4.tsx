@@ -39,11 +39,11 @@ import { StatusIndicator } from '../_components/status-indicator';
 
 export default function PredictionStep4() {
   const {
-    useScoreUtbk: { utbkAvg, utbkScore, utbkPercentage },
+    useScoreUtbk: { utbkAvg, utbkPercentage },
     useScoreSimak: {
       simakAvgSNBT,
       simakPercentageRAW,
-      simakScoreRAW,
+      // simakScoreRAW,
       simakMaxScoreRAW,
     },
     useScoreFinal: { finalPercentage, finalScore },
@@ -51,7 +51,7 @@ export default function PredictionStep4() {
     simakScores,
     utbkScores,
     TryoutData,
-    setCurrentStep,
+    // setCurrentStep,
   } = useProvider();
 
   const [open, setOpen] = useState<string>('');

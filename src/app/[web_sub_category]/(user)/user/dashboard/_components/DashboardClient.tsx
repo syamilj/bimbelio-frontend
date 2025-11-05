@@ -1576,7 +1576,7 @@ export const LearningActivityCard: React.FC<{
   data: LearningDataType;
   mainColor: string;
   secondaryColor: string;
-}> = ({ data, mainColor, secondaryColor }) => {
+}> = ({ data, mainColor }) => {
   const activities = [
     {
       icon: FileText,
@@ -2255,7 +2255,7 @@ export const CalendarComponent: React.FC<{
             className="grid w-full grid-cols-3 mb-6 md:mb-8 rounded-xl p-1 h-11 md:h-12 border-0"
             style={{ backgroundColor: `${mainColor}08` }}
           >
-            {calendarViews.map(({ value, label }, index) => (
+            {calendarViews.map(({ value, label }) => (
               <TabsTrigger
                 key={value}
                 value={value}

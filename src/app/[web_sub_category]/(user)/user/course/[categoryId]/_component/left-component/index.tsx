@@ -23,7 +23,7 @@ export default function LeftComponent() {
     useData: { CourseData, showStartCourse, setShowStartCourse, Course },
     useDoc: { doc },
   } = useProvider();
-  const { mobileScreen, setMobileScreen } = useAppContext();
+  const { mobileScreen } = useAppContext();
   const { data: session } = useSession();
   const userId = session?.user.id;
 

@@ -486,108 +486,108 @@ const StatsSection: React.FC<{
 );
 
 //  Logo Section dengan Lazy Loading yang Super Optimized
-const LogoSection: React.FC<{
-  logos: Logo[];
-  mainColor: string;
-}> = ({ logos, mainColor }) => {
-  const [isInView, setIsInView] = useState(false);
-  const [shouldRender, setShouldRender] = useState(false);
-  const logoSectionRef = useRef<HTMLDivElement>(null);
-  const doubled = [...logos, ...logos];
+// const LogoSection: React.FC<{
+//   logos: Logo[];
+//   mainColor: string;
+// }> = ({ logos, mainColor }) => {
+//   const [isInView, setIsInView] = useState(false);
+//   const [shouldRender, setShouldRender] = useState(false);
+//   const logoSectionRef = useRef<HTMLDivElement>(null);
+//   const doubled = [...logos, ...logos];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          // Delay rendering sedikit setelah masuk viewport untuk smooth loading
-          setTimeout(() => setShouldRender(true), 300);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '150px 0px', // Load 150px sebelum masuk viewport
-      },
-    );
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       ([entry]) => {
+//         if (entry.isIntersecting) {
+//           setIsInView(true);
+//           // Delay rendering sedikit setelah masuk viewport untuk smooth loading
+//           setTimeout(() => setShouldRender(true), 300);
+//           observer.disconnect();
+//         }
+//       },
+//       {
+//         threshold: 0.1,
+//         rootMargin: '150px 0px', // Load 150px sebelum masuk viewport
+//       },
+//     );
 
-    if (logoSectionRef.current) {
-      observer.observe(logoSectionRef.current);
-    }
+//     if (logoSectionRef.current) {
+//       observer.observe(logoSectionRef.current);
+//     }
 
-    return () => observer.disconnect();
-  }, []);
+//     return () => observer.disconnect();
+//   }, []);
 
-  return (
-    <div
-      ref={logoSectionRef}
-      className="w-full mb-16"
-    >
-      {isInView && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-8"
-        >
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">
-            Target PTN Idaman
-          </h3>
-          <p className="text-gray-600">
-            PTN impian yang dicapai karena sistem udah terbukti work!
-          </p>
-        </motion.div>
-      )}
+//   return (
+//     <div
+//       ref={logoSectionRef}
+//       className="w-full mb-16"
+//     >
+//       {isInView && (
+//         <motion.div
+//           initial={{ opacity: 0 }}
+//           animate={{ opacity: 1 }}
+//           transition={{ duration: 0.8 }}
+//           className="text-center mb-8"
+//         >
+//           <h3 className="text-2xl font-bold text-gray-900 mb-2">
+//             Target PTN Idaman
+//           </h3>
+//           <p className="text-gray-600">
+//             PTN impian yang dicapai karena sistem udah terbukti work!
+//           </p>
+//         </motion.div>
+//       )}
 
-      {/* Placeholder height untuk mencegah layout shift */}
-      <div className="relative overflow-hidden py-4 rounded-2xl min-h-[120px]">
-        {shouldRender ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="animate-smooth-marquee flex"
-          >
-            {doubled.map((logo, i) => (
-              <div
-                key={i}
-                className="shrink-0 mx-8 flex flex-col items-center group"
-              >
-                <div className="w-24 h-24 p-2 bg-white rounded-full shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                  <Image
-                    src={logo.src || '/placeholder.svg'}
-                    alt={logo.alt}
-                    width={80}
-                    height={80}
-                    className="w-20 h-20 object-cover rounded-full"
-                    loading="lazy"
-                    priority={false}
-                  />
-                </div>
-                <span className="text-sm font-semibold mt-3 text-main-default">
-                  {logo.label}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-        ) : (
-          // Ultra minimal loading skeleton
-          <div className="flex animate-pulse">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <div
-                key={i}
-                className="shrink-0 mx-8 flex flex-col items-center"
-              >
-                <div className="w-24 h-24 bg-gray-200 rounded-full"></div>
-                <div className="w-8 h-3 bg-gray-200 rounded mt-3"></div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+//       {/* Placeholder height untuk mencegah layout shift */}
+//       <div className="relative overflow-hidden py-4 rounded-2xl min-h-[120px]">
+//         {shouldRender ? (
+//           <motion.div
+//             initial={{ opacity: 0, y: 20 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.6 }}
+//             className="animate-smooth-marquee flex"
+//           >
+//             {doubled.map((logo, i) => (
+//               <div
+//                 key={i}
+//                 className="shrink-0 mx-8 flex flex-col items-center group"
+//               >
+//                 <div className="w-24 h-24 p-2 bg-white rounded-full shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+//                   <Image
+//                     src={logo.src || '/placeholder.svg'}
+//                     alt={logo.alt}
+//                     width={80}
+//                     height={80}
+//                     className="w-20 h-20 object-cover rounded-full"
+//                     loading="lazy"
+//                     priority={false}
+//                   />
+//                 </div>
+//                 <span className="text-sm font-semibold mt-3 text-main-default">
+//                   {logo.label}
+//                 </span>
+//               </div>
+//             ))}
+//           </motion.div>
+//         ) : (
+//           // Ultra minimal loading skeleton
+//           <div className="flex animate-pulse">
+//             {Array.from({ length: 7 }).map((_, i) => (
+//               <div
+//                 key={i}
+//                 className="shrink-0 mx-8 flex flex-col items-center"
+//               >
+//                 <div className="w-24 h-24 bg-gray-200 rounded-full"></div>
+//                 <div className="w-8 h-3 bg-gray-200 rounded mt-3"></div>
+//               </div>
+//             ))}
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
 
 //  CTA Section
 // CTASection dengan routing ke /price

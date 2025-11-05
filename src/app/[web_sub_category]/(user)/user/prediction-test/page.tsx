@@ -1559,7 +1559,7 @@ export default function UTBKSIMAKPredictor() {
                       Prediksi Kelulusan per Jurusan
                     </h3>
 
-                    {selectedPrograms.map((sp, index) => {
+                    {selectedPrograms.map((sp) => {
                       const statusCounts = sp.customPassingGrades.reduce(
                         (acc, pg) => {
                           const status = getPassingGradeStatus(pg).status;

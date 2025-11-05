@@ -122,7 +122,7 @@ export default function Provider({ children }: Props) {
   const {
     data: PredictionData,
     isLoading: PredictionDataIsLoading,
-    error,
+    // error,
   } = useGet<
     Prediction & {
       isLock: boolean;

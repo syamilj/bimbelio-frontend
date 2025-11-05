@@ -29,7 +29,7 @@ export default function HeaderSection() {
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   return (
     <section className="mb-12">

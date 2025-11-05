@@ -21,7 +21,6 @@ import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { getSubjectList } from '@/lib/mock-data/live-class';
 import { cn } from '@/lib/utils';
 import {
   Category,
@@ -92,12 +91,13 @@ export default function CreateLiveClassForm() {
   });
 
   // Get subjects dynamically from mock data
-  const subjects = getSubjectList();
+  // const subjects = getSubjectList();
 
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
-  const { data: Instructors, isLoading: InstructorsLoading } =
-    useGet<InstructorsType>('/instructor/getAllInstructor');
+  const { data: Instructors } = useGet<InstructorsType>(
+    '/instructor/getAllInstructor',
+  );
 
   const { data: CourseOptions } = useGet<
     (CourseChapter & {
@@ -669,7 +669,10 @@ export default function CreateLiveClassForm() {
             {agendas.length === 0 && (
               <div className="text-center py-8 text-gray-500">
                 <FileText className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                <p>Belum ada agenda. Klik "Tambah Agenda" untuk memulai.</p>
+                <p>
+                  Belum ada agenda. Klik &quot;Tambah Agenda&quot; untuk
+                  memulai.
+                </p>
               </div>
             )}
           </CardContent>

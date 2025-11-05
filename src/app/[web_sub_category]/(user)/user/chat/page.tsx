@@ -45,11 +45,11 @@ export default function AIChatPage() {
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(true);
-  const [isLoadingDeleteChat, setIsLoadingDeleteChat] =
+  const [_isLoadingDeleteChat, setIsLoadingDeleteChat] =
     useState<boolean>(false);
 
   const createNewChat = async (payload: { title: string }) => {
@@ -104,18 +104,18 @@ export default function AIChatPage() {
     refetch();
   }, [session]);
 
-  const handleNewChat = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    if (newChatInput.trim()) {
-      const res = await createNewChat({ title: newChatInput.slice(0, 50) });
-      router.push(
-        `/${website_sub_category_id}/user/chat/${res.id}?new=${newChatInput}`,
-      );
-    } else {
-      setLoading(false);
-    }
-  };
+  // const handleNewChat = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   if (newChatInput.trim()) {
+  //     const res = await createNewChat({ title: newChatInput.slice(0, 50) });
+  //     router.push(
+  //       `/${website_sub_category_id}/user/chat/${res.id}?new=${newChatInput}`,
+  //     );
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // };
 
   const filteredHistory =
     chatHistory?.filter((chat) =>
@@ -152,14 +152,14 @@ export default function AIChatPage() {
     setNewChatInput(e.target.value);
   };
 
-  const suggestedTopics = [
-    'Matematika Dasar',
-    'Fisika Kuantum',
-    'Kimia Organik',
-    'Bahasa Inggris',
-    'Sejarah Indonesia',
-    'Biologi Sel',
-  ];
+  // const suggestedTopics = [
+  //   'Matematika Dasar',
+  //   'Fisika Kuantum',
+  //   'Kimia Organik',
+  //   'Bahasa Inggris',
+  //   'Sejarah Indonesia',
+  //   'Biologi Sel',
+  // ];
 
   useEffect(() => {
     pixel.meta.track(

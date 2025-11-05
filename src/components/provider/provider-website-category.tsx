@@ -85,11 +85,12 @@ export default function ProviderWebsiteCategory({
   };
 
   useEffect(() => {
+    if (pathname === '/') return;
     getWebSubCategory();
     getGeneral('/website-category/getWebsiteCategory', {
       setData: setWebCategoryData,
     });
-  }, [session]);
+  }, [session, pathname]);
 
   useEffect(() => {
     if (webCategoryData.length === 0 || !web_sub_category) return;

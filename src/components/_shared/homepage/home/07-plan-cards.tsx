@@ -7,7 +7,6 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGet } from '@/lib/fetch-helper/useGet';
-// import { motion } from 'framer-motion';
 import { CheckCircle2, CreditCard, Crown, MessageCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -45,9 +44,9 @@ const PlanCards: React.FC = () => {
     : (websiteSubCategory?.secondary_color ?? '#7C3AED');
 
   // Selalu cari dan gunakan kategori dengan webSubCategoryId "all"
-  const getAllCategory = PricingData?.webSubCategory?.find(
-    (cat) => cat.webSubCategoryId.toLowerCase() === 'all',
-  );
+  // const getAllCategory = PricingData?.webSubCategory?.find(
+  //   (cat) => cat.webSubCategoryId.toLowerCase() === 'all',
+  // );
 
   // Selalu gunakan kategori "all" untuk menampilkan semua plan
   const getAllPlans = (): PlanDataType[] => {
