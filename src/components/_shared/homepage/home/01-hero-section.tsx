@@ -9,7 +9,6 @@ import type React from 'react';
 import { lazy, Suspense, useState } from 'react';
 
 // Import gambar hero
-import HeroBgWeb from '@/../public/hero/hero-bg-web.webp';
 import HeroHeadingWeb from '@/../public/hero/hero-heading-web.webp';
 
 // Lazy loading untuk komponen berat
@@ -49,7 +48,7 @@ const HeroSection: React.FC = () => {
         />
         {/* Background Image with responsive height - Mobile center position */}
         <div className="absolute inset-0 z-0 min-h-[850px]">
-          <Image
+          {/* <Image
             src={HeroBgWeb}
             alt="ALLPRINTS Hero Background"
             fill
@@ -62,7 +61,7 @@ const HeroSection: React.FC = () => {
             style={{
               objectPosition: 'center center', // Mobile: center, Desktop: center
             }}
-          />
+          /> */}
 
           {/* Gradient Fade Out - MOBILE ONLY (Lebih Kuat & Terlihat) */}
           <div
@@ -85,13 +84,10 @@ const HeroSection: React.FC = () => {
 
         {/* Main Content - Margin lebih kecil di mobile */}
         <div className="relative z-20 mx-auto flex max-w-2xl flex-col items-center text-center pt-36 md:pt-8 lg:pt-12 pb-24 md:pb-32">
-          {/* Hero Heading - Image dengan Text Skeleton untuk SEO */}
           <div className="w-full max-w-5xl mb-6 md:mb-10 relative">
-            {/* Text Skeleton - Hidden ketika image sudah loaded */}
             <div
               className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}
             >
-              {/* Background Grid Pattern */}
               <div
                 className="absolute inset-0 opacity-10"
                 style={{
@@ -102,32 +98,25 @@ const HeroSection: React.FC = () => {
                 }}
               />
 
-              {/* Main Content */}
               <div className="relative z-10 space-y-4">
-                {/* Badge */}
                 <div className="inline-flex items-center justify-center gap-2 bg-blue-600 px-4 py-2 rounded-full">
                   <span className="text-sm font-bold text-white">
                     Active AI-Based Learning
                   </span>
                 </div>
 
-                {/* Main Heading */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-lg">
                   <span className="text-yellow-400">ALL</span>
                   <span className="text-yellow-300">PRINTS</span>
                 </h1>
 
-                {/* Subheading */}
                 <p className="text-lg md:text-xl text-white font-semibold">
                   Satu Akun Untuk SNBT, Mandiri PTN & Kedinasan
                 </p>
 
-                {/* Teachers Info */}
                 <div className="bg-yellow-400 text-slate-900 rounded-xl px-6 py-4 font-bold text-center">
                   Pengajar 100% UI, UGM, ITB, & Juara OSN
                 </div>
-
-                {/* Timeline Section */}
                 <div className="bg-slate-700/50 border-2 border-yellow-400/30 rounded-xl p-6 space-y-3">
                   <div className="text-white">
                     <p className="text-sm font-semibold mb-2">Full timeline:</p>
@@ -140,7 +129,6 @@ const HeroSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 3-Layer Support */}
                 <div className="bg-blue-700/40 border-2 border-blue-400/50 rounded-lg px-4 py-3 text-center">
                   <p className="text-sm md:text-base text-white font-bold">
                     <span className="text-white font-black">
@@ -152,7 +140,6 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Actual Image - akan ditampilkan ketika sudah loaded */}
             <Image
               src={HeroHeadingWeb}
               alt="Bimbel AI untuk SNBT, Ujian Mandiri, KEDINASAN"
