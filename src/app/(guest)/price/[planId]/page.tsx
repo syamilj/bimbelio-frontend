@@ -55,7 +55,7 @@ export default function PlanDetailPage() {
 
   return (
     <>
-      <div className="min-h-screen ">
+      <div className="min-h-screen pt-[50px]">
         {/* Hero Section - Compact SNBT Style */}
         <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <Hero

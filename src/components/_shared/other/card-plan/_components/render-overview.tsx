@@ -2,6 +2,7 @@
 
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatDateRange } from '@/lib/utils/date';
@@ -27,6 +28,11 @@ export const RenderOverviewTab = () => {
     useState: { setShowAllBenefits, showAllBenefits },
   } = useProvider();
 
+  const { webCategoryData } = useWebsiteSubCategory();
+
+  const webSubData =
+    webCategoryData.length > 0 ? webCategoryData[0].WebsiteSubCategory : [];
+
   const formatDuration = (days: number) => {
     if (days === 7) return '1 Minggu';
     if (days === 14) return '2 Minggu';
@@ -42,10 +48,13 @@ export const RenderOverviewTab = () => {
     return `${days} Hari`;
   };
 
-  const platfroms =
-    plan.PlanSubscription?.PlanSubscriptionBundle?.map((item) =>
-      item.websiteSubCategoryId.toUpperCase(),
-    ) || [];
+  const platfroms = plan.PlanSubscription
+    ? plan.PlanSubscription?.PlanSubscriptionBundle?.map((item) =>
+        item.websiteSubCategoryId.toUpperCase(),
+      )
+    : plan.PlanLimitation
+      ? webSubData.map((item) => item.id.toUpperCase())
+      : [];
 
   return (
     <div className="space-y-4">
@@ -55,7 +64,11 @@ export const RenderOverviewTab = () => {
           variant="destructive"
           className={`flex items-center gap-2 text-white`}
         >
-          {plan.PlanSubscription?.tier || 'Standar'}
+          {plan.PlanSubscription?.tier
+            ? plan.PlanSubscription?.tier
+            : plan.PlanLimitation
+              ? 'Koin'
+              : 'Standar'}
         </Badge>
       </div>
 
@@ -251,7 +264,12 @@ export const RenderOverviewTab = () => {
             )}
 
             <div className="text-xs text-indigo-600">
-              Tier: {plan.PlanSubscription?.tier || 'Standar'}
+              Tier:{' '}
+              {plan.PlanSubscription?.tier
+                ? plan.PlanSubscription?.tier
+                : plan.PlanLimitation
+                  ? 'Koin'
+                  : 'Standar'}
             </div>
           </div>
         </div>

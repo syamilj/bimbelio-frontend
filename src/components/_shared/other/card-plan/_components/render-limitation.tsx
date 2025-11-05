@@ -64,7 +64,7 @@ export const RenderLimitationTab = () => {
       case 'quiz':
         return 'Quiz Attempt';
       case 'tryout':
-        return 'Tryout Test';
+        return 'Tryout';
       default:
         return type.charAt(0).toUpperCase() + type.slice(1);
     }

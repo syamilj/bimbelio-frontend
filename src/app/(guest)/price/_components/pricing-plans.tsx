@@ -145,7 +145,8 @@ export default function PricingPlans() {
           matchesPlanType = true;
         } else if (
           selectedPlanTypes.includes('topping') &&
-          plan.name?.toLowerCase().includes('coin')
+          !plan.PlanSubscription &&
+          plan.PlanLimitation
         ) {
           // Check if it's a coin/topping plan by name
           matchesPlanType = true;
@@ -573,18 +574,18 @@ export default function PricingPlans() {
                             <div className="space-y-2">
                               {[
                                 {
-                                  id: 'subscription',
-                                  label: 'Subscription',
-                                  desc: 'Akses berlangganan',
-                                },
-                                {
                                   id: 'bundle',
                                   label: 'Bundle',
                                   desc: 'Paket bundel',
                                 },
                                 {
+                                  id: 'subscription',
+                                  label: 'Subscription',
+                                  desc: 'Akses berlangganan',
+                                },
+                                {
                                   id: 'topping',
-                                  label: 'Topping',
+                                  label: 'Koin',
                                   desc: 'Tambahan coin',
                                 },
                               ].map((type) => (
