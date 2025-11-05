@@ -145,8 +145,8 @@ const HeroSection: React.FC = () => {
             <Image
               src={HeroHeadingWeb}
               alt="Bimbel AI untuk SNBT, Ujian Mandiri, KEDINASAN"
-              width={1200}
-              height={600}
+              width={672}
+              height={443}
               priority
               quality={85}
               fetchPriority="high"
