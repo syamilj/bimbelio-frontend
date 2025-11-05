@@ -9,6 +9,7 @@ import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { Suspense } from 'react';
 import '../styles/globals.css';
 
 //
@@ -213,7 +214,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               <ProviderWebsiteCategory>
                 <ProviderLimitation>
                   <ProviderApp>
-                    <ProviderCheckPayment>{children}</ProviderCheckPayment>
+                    <Suspense fallback={null}>
+                      <ProviderCheckPayment>{children}</ProviderCheckPayment>
+                    </Suspense>
                   </ProviderApp>
                 </ProviderLimitation>
               </ProviderWebsiteCategory>
