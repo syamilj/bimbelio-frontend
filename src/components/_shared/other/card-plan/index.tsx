@@ -10,7 +10,7 @@ import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import {
-  Clock,
+  Coins,
   Crown,
   Eye,
   Gift,
@@ -658,11 +658,11 @@ export function CardPlan({
                   value="limitations"
                   className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
                 >
-                  <Clock
+                  <Coins
                     size={14}
                     className="mr-1"
                   />
-                  <span className="hidden sm:inline">Limits</span>
+                  <span className="hidden sm:inline">Koin</span>
                 </TabsTrigger>
               )}
               {plan.PlanBenefit.length > 0 && (

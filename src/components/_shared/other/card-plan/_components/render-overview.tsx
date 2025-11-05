@@ -75,7 +75,7 @@ export const RenderOverviewTab = () => {
                   ? '∞'
                   : 'Limited'}
               </div>
-              <div className="text-xs text-blue-600">Usage Limits</div>
+              <div className="text-xs text-blue-600">Usage Koin</div>
             </div>
           )}
 
@@ -145,22 +145,73 @@ export const RenderOverviewTab = () => {
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-2">
+          </div>
+        )}
+
+        {(isCourse || isDocument) && (
+          <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+            <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
               <Calendar
                 size={16}
                 className="text-emerald-700"
               />
-              <span className="text-sm text-emerald-700">
-                {plan.PlanSubscription?.expireDays
-                  ? formatDuration(plan.PlanSubscription.expireDays)
-                  : plan.PlanSubscription?.PlanFeature?.[0]
-                    ? formatDateRange(
-                        plan.PlanSubscription.PlanFeature[0].validFrom,
-                        plan.PlanSubscription.PlanFeature[0].validUntil,
-                      )
-                    : 'Tidak terbatas'}
-              </span>
+              Durasi Fitur:
+            </h4>
+            <div className="text-sm text-emerald-700 font-semibold">
+              {plan.PlanSubscription?.expireDays
+                ? formatDuration(plan.PlanSubscription.expireDays)
+                : plan.PlanSubscription?.PlanFeature?.[0]
+                  ? formatDateRange(
+                      plan.PlanSubscription.PlanFeature[0].validFrom,
+                      plan.PlanSubscription.PlanFeature[0].validUntil,
+                    )
+                  : 'Tidak terbatas'}
             </div>
+            <p className="text-xs text-emerald-600 mt-1">
+              Akses fitur berlaku selama periode aktif
+            </p>
+          </div>
+        )}
+
+        {plan.PlanLimitation && (
+          <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+            {plan.PlanSubscription?.expireDays &&
+              !plan.PlanLimitation.isTimebound && (
+                <div className="flex items-center gap-2">
+                  <Calendar
+                    size={16}
+                    className="text-indigo-600"
+                  />
+                  <span className="text-sm font-semibold text-indigo-800">
+                    Durasi Koin:{' '}
+                    {formatDuration(plan.PlanSubscription?.expireDays || 0)}
+                  </span>
+                </div>
+              )}
+            {plan.PlanLimitation.isTimebound &&
+              plan.PlanLimitation.validFrom &&
+              plan.PlanLimitation.validUntil && (
+                <>
+                  <div className="flex items-start gap-2">
+                    <Calendar
+                      size={16}
+                      className="text-indigo-600 mt-0.5"
+                    />
+                    <span className="text-sm font-semibold text-indigo-800">
+                      Durasi Koin: <br />
+                    </span>
+                  </div>
+                  <div className="text-sm font-semibold text-indigo-800">
+                    {formatDateRange(
+                      plan.PlanLimitation.validFrom,
+                      plan.PlanLimitation.validUntil,
+                    )}
+                  </div>
+                </>
+              )}
+            <p className="text-xs text-indigo-600 mt-1">
+              Akses koin berlaku selama periode aktif
+            </p>
           </div>
         )}
       </div>

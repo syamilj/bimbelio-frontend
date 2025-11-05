@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { pixel } from '@/lib/pixel/_core';
+import { formatDateDifference } from '@/lib/utils/date';
 import { motion } from 'framer-motion';
 import {
   Clock,
@@ -119,7 +120,10 @@ export default function CompactSidebar({
                     className="font-bold text-sm"
                     style={{ color: mainColor }}
                   >
-                    {plan.PlanSubscription.expireDays} hari
+                    {plan.PlanSubscription.expireDays &&
+                      `${plan.PlanSubscription.expireDays} hari`}
+                    {plan.PlanSubscription.PlanFeature.length > 0 &&
+                      `${formatDateDifference(plan.PlanSubscription.PlanFeature[0].validFrom, plan.PlanSubscription.PlanFeature[0].validUntil)}`}
                   </span>
                 </div>
               )}

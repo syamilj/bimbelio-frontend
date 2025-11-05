@@ -1,7 +1,6 @@
 'use client';
 import { EmptyPlan } from '@/components/_shared/empty/empty-plan';
 import { CardPlan } from '@/components/_shared/other/card-plan';
-import { CardPlanTopping } from '@/components/_shared/other/card-plan-coin';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -26,7 +25,6 @@ import {
   TrendingUp,
   Video,
   Wallet,
-  Zap,
 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -1078,14 +1076,13 @@ export default function PricingPlans() {
         )}
       </div>
       {/* Enhanced Coin Topping Section */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
         className="relative max-w-7xl mx-auto"
         id="price-coin"
       >
-        {/* Background Decoration */}
         <div className="absolute inset-0 -z-10">
           <div
             className="absolute top-1/4 left-0 w-72 h-72 rounded-full blur-3xl opacity-10"
@@ -1171,7 +1168,7 @@ export default function PricingPlans() {
             </div>
           </div>
         )}
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 }

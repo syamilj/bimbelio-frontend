@@ -70,6 +70,13 @@ export default function ProviderSessionAuth({
             subsPendingList = [];
           }
 
+          if (Object.keys(subsPendingListData).includes('all')) {
+            subsPendingList = [
+              ...subsPendingList,
+              ...subsPendingListData['all'],
+            ];
+          }
+
           if (
             userData.specialRole &&
             (userData.role === 'ADMIN' ||
