@@ -4,7 +4,7 @@ const nextConfig = {
   reactStrictMode: true,
 
   // OPTIMASI: Production build optimizations
-  swcMinify: true,
+  // Next.js 15: swcMinify & productionBrowserSourceMaps sudah default optimal
   productionBrowserSourceMaps: false,
 
   // OPTIMASI: Disable unused libraries
@@ -21,7 +21,6 @@ const nextConfig = {
   // OPTIMASI: Compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-    removeDebugger: process.env.NODE_ENV === 'production',
     styledComponents: true, // Optimize CSS-in-JS
   },
 
