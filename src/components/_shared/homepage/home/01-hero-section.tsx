@@ -57,18 +57,18 @@ const HeroSection: React.FC = () => {
               'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 1) 100%)',
           }}
         />
-        {/* Background Image with responsive height - OPTIMASI: Aggressive quality reduction */}
+        {/* Background Image with responsive height - OPTIMASI: Aggressive quality reduction untuk LCP */}
         <div className="absolute inset-0 z-0 min-h-[850px]">
           <Image
             src={HeroBgWeb}
             alt="ALLPRINTS Hero Background"
             fill
             priority
-            quality={50}
+            quality={30}
             fetchPriority="high"
             className="object-cover object-center md:object-center"
             placeholder="blur"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1920px"
+            sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, (max-width: 1280px) 1280px, 1920px"
             style={{
               objectPosition: 'center center',
             }}
@@ -162,16 +162,16 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Actual Image - OPTIMASI: Lazy load heading image setelah LCP */}
+            {/* Actual Image - OPTIMASI: Aggressive quality reduction untuk mobile LCP */}
             <Image
               src={HeroHeadingWeb}
               alt="Bimbel AI untuk SNBT, Ujian Mandiri, KEDINASAN"
               width={1200}
               height={600}
               loading="lazy"
-              quality={45}
+              quality={30}
               fetchPriority="auto"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 1200px"
+              sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1200px"
               className="w-full h-auto"
               placeholder="blur"
               onLoadingComplete={() => setImageLoaded(true)}
