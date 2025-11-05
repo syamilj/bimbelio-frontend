@@ -7,7 +7,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import { CheckCircle2, CreditCard, Crown, MessageCircle } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -197,13 +197,7 @@ const PlanCards: React.FC = () => {
       <section className="py-24 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+          <div className="text-center mb-16">
             <Badge
               className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
               style={{
@@ -263,7 +257,7 @@ const PlanCards: React.FC = () => {
                 <span>3-Layer Support</span>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Plans Grid - Using CardPlan component */}
           <div
@@ -280,12 +274,8 @@ const PlanCards: React.FC = () => {
             style={{ alignItems: 'flex-start' }}
           >
             {topPlans.map((plan, index) => (
-              <motion.div
+              <div
                 key={plan.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
                 className={`
                   flex flex-col
                   ${topPlans.length === 3 && index === 1 ? 'md:scale-105' : ''}
@@ -297,18 +287,12 @@ const PlanCards: React.FC = () => {
                   hideFeatures={['comparison']}
                   viewOnly={false}
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
 
           {/* Bottom Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="text-center mt-16"
-          >
+          <div className="text-center mt-16">
             <div
               className="rounded-3xl p-8 max-w-4xl mx-auto border-2 shadow-md"
               style={{
@@ -357,7 +341,7 @@ const PlanCards: React.FC = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 

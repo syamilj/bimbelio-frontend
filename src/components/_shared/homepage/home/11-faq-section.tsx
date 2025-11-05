@@ -2,7 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import {
   Calendar,
   CheckCircle2,
@@ -118,13 +118,7 @@ export default function FAQSection() {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <Badge
             className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
             style={{
@@ -204,17 +198,13 @@ export default function FAQSection() {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Questions Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
           {questions.map((question, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
               className="bg-white rounded-2xl p-6 border-2 hover:shadow-md transition-all duration-300"
               style={{
                 borderColor: `${question.color}20`,
@@ -237,18 +227,12 @@ export default function FAQSection() {
               <p className="text-sm text-gray-600 leading-relaxed">
                 {question.description}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Solutions Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-16"
-        >
+        <div className="mb-16">
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
               Takut Nggak Konsisten?
@@ -260,12 +244,8 @@ export default function FAQSection() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
             {solutions.map((solution, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
                 className="rounded-2xl p-6 text-white relative overflow-hidden"
                 style={{
                   background: solution.color,
@@ -280,19 +260,13 @@ export default function FAQSection() {
                 <p className="text-sm opacity-95 relative z-10">
                   {solution.description}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Contact Section - Redirect to FloatingContactButton */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto"
-        >
+        <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-3xl border-2 border-gray-100 shadow-md p-8 md:p-12">
             {/* Icon Header */}
             <div className="mb-4 flex items-center justify-center gap-3">
@@ -350,7 +324,7 @@ export default function FAQSection() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

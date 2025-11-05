@@ -1,7 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import { ArrowRight, PhoneCallIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -86,12 +86,7 @@ const HeroSection: React.FC = () => {
         {/* Main Content - Margin lebih kecil di mobile */}
         <div className="relative z-20 mx-auto flex max-w-2xl flex-col items-center text-center pt-36 md:pt-8 lg:pt-12 pb-24 md:pb-32">
           {/* Hero Heading - Image dengan Text Skeleton untuk SEO */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-full max-w-5xl mb-6 md:mb-10 relative"
-          >
+          <div className="w-full max-w-5xl mb-6 md:mb-10 relative">
             {/* Text Skeleton - Hidden ketika image sudah loaded */}
             <div
               className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}
@@ -171,15 +166,10 @@ const HeroSection: React.FC = () => {
               placeholder="blur"
               onLoadingComplete={() => setImageLoaded(true)}
             />
-          </motion.div>
+          </div>
 
           {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="w-full flex flex-col items-center gap-3 md:gap-4"
-          >
+          <div className="w-full flex flex-col items-center gap-3 md:gap-4">
             {/* Main CTA - Redesigned dengan warna gradient lebih menarik */}
             <button
               onClick={handleCTAClick}
@@ -267,7 +257,7 @@ const HeroSection: React.FC = () => {
                 <span className="relative z-10 font-black">Konsultasi</span>
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </>

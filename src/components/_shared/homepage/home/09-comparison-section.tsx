@@ -2,7 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import { CheckCircle2, Scale, Shield, TrendingUp, X, Zap } from 'lucide-react';
 
 export default function ComparisonSection() {
@@ -144,13 +144,7 @@ export default function ComparisonSection() {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <Badge
             className="mb-6 px-6 py-2 text-sm font-bold text-white border-none"
             style={{
@@ -226,16 +220,10 @@ export default function ComparisonSection() {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Table 1: Liveclass vs Livestream */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
               Liveclass vs Livestream
@@ -276,12 +264,8 @@ export default function ComparisonSection() {
                 </thead>
                 <tbody>
                   {liveclassComparison.map((row, index) => (
-                    <motion.tr
+                    <tr
                       key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.4, delay: index * 0.05 }}
-                      viewport={{ once: true }}
                       className={`${
                         index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                       } hover:bg-blue-50 transition-colors`}
@@ -295,21 +279,16 @@ export default function ComparisonSection() {
                       <td className="px-6 py-4 text-center text-gray-700 text-sm md:text-base border-b border-gray-200">
                         {row.livestream}
                       </td>
-                    </motion.tr>
+                    </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Table 2: Bimbelio vs Alternatif Lain */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
+        <div>
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
               Bimbelio vs Alternatif Lain
@@ -353,12 +332,8 @@ export default function ComparisonSection() {
                 </thead>
                 <tbody>
                   {bimbelioComparison.map((row, index) => (
-                    <motion.tr
+                    <tr
                       key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.4, delay: index * 0.05 }}
-                      viewport={{ once: true }}
                       className={`${
                         index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                       } hover:bg-blue-50 transition-colors`}
@@ -414,21 +389,15 @@ export default function ComparisonSection() {
                           </span>
                         )}
                       </td>
-                    </motion.tr>
+                    </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-        </motion.div>
+        </div>
         {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="mt-16 max-w-4xl mx-auto"
-        >
+        <div className="mt-16 max-w-4xl mx-auto">
           <div className="bg-white rounded-3xl border-2 border-gray-100 shadow-md p-8">
             {/* Icon Header */}
             <div className="mb-4 flex items-center justify-center gap-3">
@@ -477,7 +446,7 @@ export default function ComparisonSection() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

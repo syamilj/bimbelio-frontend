@@ -2,7 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import {
   CheckCircle2,
   Clock,
@@ -190,21 +190,9 @@ export const SolutionSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex justify-center mb-6"
-          >
+          <div className="flex justify-center mb-6">
             <Badge
               variant="outline"
               className="px-6 py-2 text-sm font-bold text-white border-none"
@@ -215,16 +203,10 @@ export const SolutionSection: React.FC = () => {
               <Lightbulb className="w-4 h-4 mr-2 inline" />
               Solusi Terintegrasi
             </Badge>
-          </motion.div>
+          </div>
 
           {/* Main Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="mb-8"
-          >
+          <div className="mb-8">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
               Makanya Aku Bikin —
             </h2>
@@ -238,16 +220,10 @@ export const SolutionSection: React.FC = () => {
             >
               PRINTS System
             </h2>
-          </motion.div>
+          </div>
 
           {/* Subtext */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto space-y-4 text-base text-gray-700 leading-relaxed"
-          >
+          <div className="max-w-4xl mx-auto space-y-4 text-base text-gray-700 leading-relaxed">
             <p>
               Bukan soal IQ atau talent. Bukan sekadar nonton video atau
               menghapal soal.{' '}
@@ -289,17 +265,11 @@ export const SolutionSection: React.FC = () => {
                 yang jelas, bukan sekadar kerja keras tanpa arah.&quot;
               </span>
             </p>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Problem to Solution Mapping */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           {/* Header Icon + Title */}
           <div className="flex justify-center items-center gap-4 mb-8">
             <div
@@ -323,12 +293,8 @@ export const SolutionSection: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {problemMappings.map((mapping, idx) => (
-              <motion.div
+              <div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true }}
                 className="group relative bg-white rounded-2xl border-2 hover:shadow-md transition-all duration-300 overflow-hidden"
                 style={{
                   borderColor: `${mainColor}20`,
@@ -367,19 +333,13 @@ export const SolutionSection: React.FC = () => {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* PRINTS Pillars Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           {/* Section Title */}
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
@@ -393,12 +353,8 @@ export const SolutionSection: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {printsPillars.map((pillar, idx) => (
-              <motion.div
+              <div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                viewport={{ once: true }}
                 className="group relative bg-white rounded-2xl border-2 hover:shadow-md transition-all duration-300 overflow-hidden"
                 style={{
                   borderColor: `${pillar.color}20`,
@@ -458,21 +414,15 @@ export const SolutionSection: React.FC = () => {
                     />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Social Proof Section */}
 
         {/* CTA line */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-16 pt-8 border-t border-gray-200 text-center"
-        >
+        <div className="mt-16 pt-8 border-t border-gray-200 text-center">
           <p className="text-sm md:text-base text-gray-600">
             <span
               className="font-black"
@@ -489,7 +439,7 @@ export const SolutionSection: React.FC = () => {
             </span>{' '}
             yang cocok untuk kamu.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -2,7 +2,7 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import {
   AlertTriangle,
   BarChart3,
@@ -199,21 +199,9 @@ const ProblemSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex justify-center mb-6"
-          >
+          <div className="flex justify-center mb-6">
             <Badge
               variant="outline"
               className="px-6 py-2 text-sm font-bold text-white border-none"
@@ -224,16 +212,10 @@ const ProblemSection: React.FC = () => {
               <BarChart3 className="w-4 h-4 mr-2 inline" />
               Realita Yang Harus Kamu Hadapi
             </Badge>
-          </motion.div>
+          </div>
 
           {/* Main Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="mb-8"
-          >
+          <div className="mb-8">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
               Aku Tau Banget —
             </h2>
@@ -247,16 +229,10 @@ const ProblemSection: React.FC = () => {
             >
               Struggle Kamu Kayak Gini
             </h2>
-          </motion.div>
+          </div>
 
           {/* Subtext - Bullet Points */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto"
-          >
+          <div className="max-w-4xl mx-auto">
             {/* Intro Text */}
             <p className="text-base text-gray-700 leading-relaxed mb-6">
               Jangan merasa sendirian. Dari{' '}
@@ -320,17 +296,11 @@ const ProblemSection: React.FC = () => {
                 keras.&quot;
               </span>
             </p>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* STATISTIK KOMPETISI TABLE */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-20"
-        >
+        <div className="mb-20">
           {/* Table Header */}
           <div className="flex justify-center items-center gap-4 mb-8">
             <div
@@ -380,12 +350,8 @@ const ProblemSection: React.FC = () => {
               {/* Table Body */}
               <tbody>
                 {competitionData.map((data, idx) => (
-                  <motion.tr
+                  <tr
                     key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: idx * 0.1 }}
-                    viewport={{ once: true }}
                     className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
                   >
                     {/* Ujian Column */}
@@ -457,18 +423,14 @@ const ProblemSection: React.FC = () => {
                         {data.ratio}
                       </div>
                     </td>
-                  </motion.tr>
+                  </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
           {/* Info Box */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
+          <div
             className="mt-8 p-6 rounded-2xl border-l-4"
             style={{
               backgroundColor: `${mainColor}08`,
@@ -490,33 +452,23 @@ const ProblemSection: React.FC = () => {
                 maksimalin score.
               </p>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Pain Points Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <p className="text-base md:text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
             Ini masalahnya — tanpa basa-basi. Kalau kamu ngerasa salah satu atau
             beberapa dari ini, berarti strategi belajarmu butuh di-upgrade.
           </p>
-        </motion.div>
+        </div>
 
         {/* Pain Points Grid - 2 Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-16">
           {problemCards.flatMap((card) =>
             card.painPoints.map((painPoint, idx) => (
-              <motion.div
+              <div
                 key={`${card.title}-${idx}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.05 }}
-                viewport={{ once: true }}
                 className="group relative bg-white rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
               >
                 {/* Left Border Accent */}
@@ -547,19 +499,13 @@ const ProblemSection: React.FC = () => {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             )),
           )}
         </div>
 
         {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
+        <div className="text-center mt-12">
           <div
             className="mx-auto max-w-3xl rounded-3xl border-2 p-8 shadow-md"
             style={{
@@ -576,7 +522,7 @@ const ProblemSection: React.FC = () => {
               💪
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

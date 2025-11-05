@@ -2,12 +2,13 @@
 
 import dynamic from 'next/dynamic';
 
-// Lazy load sections below the fold untuk optimasi performance
+// Hero section load langsung (critical for LCP) dengan SSR true
 const HeroSection = dynamic(
   () => import('@/components/_shared/homepage/home/01-hero-section'),
-  { loading: () => <div className="min-h-[400px]" /> },
+  { ssr: true },
 );
 
+// Lazy load sections below the fold untuk optimasi performance
 const ProblemSection = dynamic(
   () => import('@/components/_shared/homepage/home/02-problem-section'),
   { loading: () => <div className="min-h-[400px]" /> },
