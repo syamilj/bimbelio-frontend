@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import type { StaticImageData } from 'next/image';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type React from 'react';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 

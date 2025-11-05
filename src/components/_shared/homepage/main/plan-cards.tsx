@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { motion } from 'framer-motion';
 import { Crown } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 
 type PricingDataType = {

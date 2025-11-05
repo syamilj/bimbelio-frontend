@@ -17,7 +17,7 @@ import {
   Target,
   Video,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 
 interface Feature {
