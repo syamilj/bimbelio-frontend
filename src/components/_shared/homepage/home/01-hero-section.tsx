@@ -6,7 +6,7 @@ import { ArrowRight, PhoneCallIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 
 // Import gambar hero
 import HeroBgWeb from '@/../public/hero/hero-bg-web.webp';
@@ -26,8 +26,16 @@ const HeroSection: React.FC = () => {
 
   // Get dynamic colors - gunakan default main landing page colors
   // websiteSubCategory akan null di main landing page
-  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color ?? '#5aa4dd';
+  // const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
+  // const secondaryColor = websiteSubCategory?.secondary_color ?? '#5aa4dd';
+
+  const { mainColor, secondaryColor } = useMemo(
+    () => ({
+      mainColor: websiteSubCategory?.main_color ?? '#0091FF',
+      secondaryColor: websiteSubCategory?.secondary_color ?? '#5aa4dd',
+    }),
+    [websiteSubCategory?.main_color, websiteSubCategory?.secondary_color],
+  );
 
   // Navigasi ke /price
   const handleCTAClick = () => {
@@ -54,7 +62,7 @@ const HeroSection: React.FC = () => {
             alt="ALLPRINTS Hero Background"
             fill
             priority
-            quality={75}
+            quality={60}
             fetchPriority="high"
             className="object-cover object-center md:object-center"
             placeholder="blur"
@@ -86,10 +94,10 @@ const HeroSection: React.FC = () => {
         {/* Main Content - Margin lebih kecil di mobile */}
         <div className="relative z-20 mx-auto flex max-w-2xl flex-col items-center text-center pt-36 md:pt-8 lg:pt-12 pb-24 md:pb-32">
           {/* Hero Heading - Image dengan Text Skeleton untuk SEO */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <div
+            // initial={{ opacity: 0, y: 30 }}
+            // animate={{ opacity: 1, y: 0 }}
+            // transition={{ duration: 0.8, delay: 0.2 }}
             className="w-full max-w-5xl mb-6 md:mb-10 relative"
           >
             {/* Text Skeleton - Hidden ketika image sudah loaded */}
@@ -164,14 +172,14 @@ const HeroSection: React.FC = () => {
               width={1200}
               height={600}
               priority
-              quality={85}
+              quality={70}
               fetchPriority="high"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               className="w-full h-auto"
               placeholder="blur"
               onLoadingComplete={() => setImageLoaded(true)}
             />
-          </motion.div>
+          </div>
 
           {/* CTA Buttons */}
           <motion.div
@@ -257,12 +265,14 @@ const HeroSection: React.FC = () => {
                   style={{ backgroundColor: mainColor }}
                 />
                 {/* Lazy-loaded dialog dengan Suspense wrapper */}
-                <Suspense fallback={null}>
-                  <ConsultationDialog
-                    isOpen={isConsultationOpen}
-                    onOpenChange={setIsConsultationOpen}
-                  />
-                </Suspense>
+                {isConsultationOpen && (
+                  <Suspense fallback={null}>
+                    <ConsultationDialog
+                      isOpen={isConsultationOpen}
+                      onOpenChange={setIsConsultationOpen}
+                    />
+                  </Suspense>
+                )}
                 <PhoneCallIcon className="relative z-10 w-3 h-3 md:w-4 md:h-4 group-hover:rotate-12 transition-transform duration-300" />
                 <span className="relative z-10 font-black">Konsultasi</span>
               </button>

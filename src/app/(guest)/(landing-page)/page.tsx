@@ -1,8 +1,13 @@
 'use client';
-import HeroSection from '@/components/_shared/homepage/home/01-hero-section';
+
 import dynamic from 'next/dynamic';
 
 // Lazy load sections below the fold untuk optimasi performance
+const HeroSection = dynamic(
+  () => import('@/components/_shared/homepage/home/01-hero-section'),
+  { loading: () => <div className="min-h-[400px]" /> },
+);
+
 const ProblemSection = dynamic(
   () => import('@/components/_shared/homepage/home/02-problem-section'),
   { loading: () => <div className="min-h-[400px]" /> },
