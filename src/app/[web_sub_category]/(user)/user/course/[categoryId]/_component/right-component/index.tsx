@@ -54,7 +54,7 @@ const TABS = [
   // },
 ];
 
-const tabNames = TABS.map((tab) => tab.value);
+// const tabNames = TABS.map((tab) => tab.value);
 
 export default function RightComponent() {
   const {
@@ -137,7 +137,7 @@ const Sidebar = ({
   className?: string;
   onClose?: () => void;
 }) => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const {
     useData: { CourseData },
     useDoc: { docId },

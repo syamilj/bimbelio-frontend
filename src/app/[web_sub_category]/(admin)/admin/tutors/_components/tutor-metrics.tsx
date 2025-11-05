@@ -33,15 +33,15 @@ type MetricsType = {
 };
 
 export function TutorMetrics({ instructor }: Props) {
-  const activeInstructors = instructor.filter((tutor) => tutor.status).length;
-  const inactiveInstructors = instructor.filter(
-    (tutor) => !tutor.status,
-  ).length;
-  const totalClasses = instructor.reduce(
-    (sum, tutor) => sum + tutor.totalLiveClass,
-    0,
-  );
-  const averageRating = '5.0';
+  // const activeInstructors = instructor.filter((tutor) => tutor.status).length;
+  // const inactiveInstructors = instructor.filter(
+  //   (tutor) => !tutor.status,
+  // ).length;
+  // const totalClasses = instructor.reduce(
+  //   (sum, tutor) => sum + tutor.totalLiveClass,
+  //   0,
+  // );
+  // const averageRating = '5.0';
 
   const { data: SummaryInstructor } = useGet<{
     totalTutors: number;

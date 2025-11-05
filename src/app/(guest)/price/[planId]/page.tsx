@@ -28,7 +28,7 @@ export default function PlanDetailPage() {
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const { data: plan, isLoading: planIsLoading } = useGet<PlanDataType>(
     `/plan/getSinglePlan?slug=${planId}`,

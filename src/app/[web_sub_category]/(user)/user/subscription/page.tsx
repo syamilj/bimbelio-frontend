@@ -103,7 +103,7 @@ export default function SubscriptionPage() {
             </CardHeader>
             <CardContent className="p-4">
               <div className="space-y-3">
-                {userSession.user.subsList.map((sub, index) => (
+                {userSession.user.subsList.map((sub) => (
                   <div
                     key={sub.id}
                     className="relative overflow-hidden rounded-xl border-2 border-green-200 bg-gradient-to-br from-white to-green-50 p-4 shadow-md hover:shadow-xl transition-all duration-300"

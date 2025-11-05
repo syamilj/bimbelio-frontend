@@ -40,7 +40,9 @@ import { useDebouncedCallback } from 'use-debounce';
 export default function TransactionsPage() {
   const [isExporting, setIsExporting] = useState(false);
 
-  const [isLoadingMessage, setIsLoadingMessage] = useState<null | string>(null);
+  const [_isLoadingMessage, setIsLoadingMessage] = useState<null | string>(
+    null,
+  );
   const [transactions, setTransactions] = useState<
     (MidtransTransaction & {
       user: User;
@@ -330,7 +332,7 @@ const DetailTransaction = ({
 
         <div>
           <div className="font-semibold mb-2">Item</div>
-          {transaction.item_details.map((item, idx) => (
+          {transaction.item_details.map((item) => (
             <div
               key={item.id}
               className="border p-2 rounded mb-2"

@@ -21,7 +21,7 @@ export default function Trending() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Get dynamic colors
-  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  // const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   useEffect(() => {
     getGeneral('/document/getPopularDocuments', {

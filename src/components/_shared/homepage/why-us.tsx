@@ -192,13 +192,7 @@ const WhyUs = () => {
       <div className="container">
         {active === 1 && <EvaluationSection mainColor={mainColor} />}
         {active === 2 && <AIModelSection mainColor={mainColor} />}
-        {active === 3 && (
-          <ComparisonSection
-            data={data}
-            mainColor={mainColor}
-            secondaryColor={secondaryColor}
-          />
-        )}
+        {active === 3 && <ComparisonSection data={data} />}
       </div>
     </section>
   );
@@ -244,15 +238,7 @@ const AIModelSection = ({ mainColor }: { mainColor: string }) => (
 );
 
 // Enhanced Comparison Section
-const ComparisonSection = ({
-  data,
-  mainColor,
-  secondaryColor,
-}: {
-  data: any[];
-  mainColor: string;
-  secondaryColor: string;
-}) => (
+const ComparisonSection = ({ data }: { data: any[] }) => (
   <Card className="border-2 border-gray-100 rounded-3xl shadow-xl overflow-hidden">
     <CardHeader className="text-center py-8 bg-main-default/10">
       <CardTitle className="text-2xl font-bold text-main-default">

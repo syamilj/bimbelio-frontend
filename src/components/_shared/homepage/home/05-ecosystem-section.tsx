@@ -1,7 +1,6 @@
 'use client';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-// import { motion } from 'framer-motion';
 import {
   BarChart3,
   BookOpen,
@@ -379,7 +378,7 @@ export default function EcosystemSection() {
             </h3>
           </div>
           <p className="mx-auto mb-12 max-w-3xl text-center text-gray-600">
-            Kamu nggak cuma "dapat kelas doang". Ada{' '}
+            Kamu nggak cuma &quot;dapat kelas doang&quot;. Ada{' '}
             <span className="font-semibold text-gray-900">
               ekosistem lengkap
             </span>{' '}
@@ -388,7 +387,7 @@ export default function EcosystemSection() {
           </p>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            {platforms.map((platform, index) => (
+            {platforms.map((platform) => (
               <div
                 key={platform.title}
                 className="group overflow-hidden rounded-3xl border-2 border-gray-200 bg-white shadow-lg transition-all duration-300 hover:border-gray-300 hover:shadow-2xl"

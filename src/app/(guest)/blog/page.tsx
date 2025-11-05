@@ -39,11 +39,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 
-interface Auth {
-  login: boolean;
-  signUp: boolean;
-}
-
 interface BlogPost {
   id: string;
   title: string;
@@ -75,7 +70,7 @@ export default function BlogClient() {
   const {
     data: blogs,
     isLoading,
-    refetch,
+    // refetch,
   } = useGet<BlogPost[]>('/blog/getBlog');
 
   const sortedBlogs = useCallback(() => {
@@ -347,7 +342,7 @@ export default function BlogClient() {
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className="grid gap-6 md:grid-cols-2"
                   >
-                    {filteredPosts.map((post: BlogPost, index) => (
+                    {filteredPosts.map((post: BlogPost) => (
                       <BlogPostCard
                         key={post.id}
                         post={post}

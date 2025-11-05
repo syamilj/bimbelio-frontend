@@ -69,22 +69,10 @@ export type Data = {
 
 const WorkspaceCourse = () => {
   const {
-    useData: {
-      CourseData,
-      CourseLoading,
-      setIndexChapter,
-      Course,
-      CourseProgress,
-      showStartCourse,
-    },
-    useDoc: { doc, docId },
-    useParams: { sub, tab },
-    useOther: { setShowAI, setShowList, showAI, showList },
+    useData: { CourseData, CourseLoading, Course, showStartCourse },
+    useDoc: { docId },
   } = useProvider();
-  const isDekstop = useMedia({ minWidth: '768px' });
   const { data: session } = useSession();
-
-  const userId = session?.user.id;
 
   const params = useParams();
   const categoryId = Array.isArray(params?.categoryId)
@@ -95,8 +83,6 @@ const WorkspaceCourse = () => {
   // const [showAI, setShowAI] = useState<boolean>(false);
 
   const [isHistoryUpdated, setIsHistoryUpdated] = useState(false);
-
-  const { mobileScreen, setMobileScreen } = useAppContext();
 
   const isMobile = useMedia({ maxWidth: '768px' });
 

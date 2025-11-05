@@ -86,7 +86,7 @@ export default function ModulPembelajaranSection() {
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const handleStartCourse = (categoryId: string) => {
     setLoadingCourseId(categoryId);
@@ -114,7 +114,7 @@ export default function ModulPembelajaranSection() {
       {/* Module Cards - Clean Dashboard Style */}
       {!isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CategoryCard?.map((category, index) => {
+          {CategoryCard?.map((category) => {
             const getActionButton = () => {
               if (category.completedChapters === 0) {
                 return (
@@ -600,7 +600,7 @@ const DetailContent = ({
       {/* Sub Chapter List - Dropdown */}
       {expandedChapter === index && (
         <div className="mt-2 ml-4 space-y-2 border-l-2 border-gray-200 pl-4">
-          {chapter.CourseSubChapter.map((subChapter, j) => (
+          {chapter.CourseSubChapter.map((subChapter) => (
             <div
               key={subChapter.id}
               className="p-3 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"

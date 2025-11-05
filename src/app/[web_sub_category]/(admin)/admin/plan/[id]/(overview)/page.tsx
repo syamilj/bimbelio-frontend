@@ -1059,12 +1059,7 @@ const SectionFeature = () => {
     setActiveTab,
     useFeature: {
       setCategoryIds,
-      isCourseActive,
-      isDocumentActive,
       isLiveClassActive,
-      setIsCourseActive,
-      setIsDocumentActive,
-      setIsLiveClassActive,
       setExpireType,
       expireType,
       liveClassIds,
@@ -1096,9 +1091,9 @@ const SectionFeature = () => {
 
   const {
     data: LiveClass,
-    isLoading: LiveClassIsLoading,
-    totalPages,
-    refetch: LiveClassRefetch,
+    // isLoading: LiveClassIsLoading,
+    // totalPages,
+    // refetch: LiveClassRefetch,
   } = useGet<
     (LiveClass & {
       Instructor: Instructor;

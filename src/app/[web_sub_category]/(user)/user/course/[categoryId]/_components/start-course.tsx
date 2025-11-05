@@ -1,6 +1,5 @@
 'use client';
 
-import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -56,7 +55,7 @@ interface Props {
 }
 
 const StartCourse = ({ courseData, onStart }: Props) => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors

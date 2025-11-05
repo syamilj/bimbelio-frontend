@@ -22,7 +22,7 @@ export default function PredictionStep3() {
     setSIMAKScores,
     useScoreSimak: {
       simakAvgSNBT,
-      simakScoreSNBT,
+      // simakScoreSNBT,
       simakScoreRAW,
       simakMaxScoreRAW,
     },

@@ -35,9 +35,9 @@ import { useParams } from 'next/navigation';
 export default function Detail() {
   const { voucherId }: { voucherId: string } = useParams();
   const [searchTerm, setSearchTerm] = useState('');
-  const [type, setType] = useState<'ALL' | 'Percentage' | 'Fixed_Amount'>(
-    'ALL',
-  );
+  // const [type, setType] = useState<'ALL' | 'Percentage' | 'Fixed_Amount'>(
+  //   'ALL',
+  // );
   const [take, setTake] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
 
@@ -301,7 +301,7 @@ const DetailTransaction = ({
 
         <div>
           <div className="font-semibold mb-2">Item</div>
-          {transaction.item_details.map((item, idx) => (
+          {transaction.item_details.map((item) => (
             <div
               key={item.id}
               className="border p-2 rounded mb-2"

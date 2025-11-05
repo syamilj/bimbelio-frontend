@@ -445,7 +445,9 @@ const EnhancedPricing = () => {
                         ),
                       )}
                     </div>
-                    <p className="text-gray-700 italic">"{testimonial.text}"</p>
+                    <p className="text-gray-700 italic">
+                      &quot;{testimonial.text}&quot;
+                    </p>
                     <div className="flex items-center justify-center gap-3">
                       <div className="text-3xl">{testimonial.avatar}</div>
                       <div>

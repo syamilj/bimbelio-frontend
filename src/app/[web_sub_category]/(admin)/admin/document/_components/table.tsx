@@ -31,7 +31,7 @@ export default function Table() {
 
   const fileDownload = async (fileName: string) => {
     try {
-      const { data, error } = await supabase.storage
+      const { data } = await supabase.storage
         .from('pdf')
         .download(`document/${fileName}`);
 

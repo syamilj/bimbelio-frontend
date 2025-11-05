@@ -97,8 +97,8 @@ export default function LiveClassStudentDashboard() {
   const [viewMode, setViewMode] = useState<'list' | 'grid' | 'calendar'>(
     'grid',
   );
-  const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  // const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
+  // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const {
     data: LiveClassAvailable,
@@ -111,8 +111,8 @@ export default function LiveClassStudentDashboard() {
 
   const {
     data: LiveClassCompleted,
-    isLoading: LiveClassCompletedIsLoading,
-    error: LiveClassCompletedError,
+    // isLoading: LiveClassCompletedIsLoading,
+    // error: LiveClassCompletedError,
     totalData: LiveClassCompletedTotalData,
   } = useGet<LiveClassAvailableType[]>('/liveClass/getAllLiveClassCompleted', {
     params: { take: 100, page: 1 },
@@ -120,8 +120,8 @@ export default function LiveClassStudentDashboard() {
 
   const {
     data: LiveClassRegistered,
-    isLoading: LiveClassRegisteredIsLoading,
-    error: LiveClassRegisteredError,
+    // isLoading: LiveClassRegisteredIsLoading,
+    // error: LiveClassRegisteredError,
     totalData: LiveClassRegisteredTotalData,
   } = useGet<LiveClassAvailableType[]>('/user/getUserLiveClassRegistered', {
     params: { take: 100, page: 1 },
@@ -129,8 +129,8 @@ export default function LiveClassStudentDashboard() {
 
   const {
     data: LiveClassInvited,
-    isLoading: LiveClassInvitedIsLoading,
-    error: LiveClassInvitedError,
+    // isLoading: LiveClassInvitedIsLoading,
+    // error: LiveClassInvitedError,
     totalData: LiveClassInviteTotalData,
   } = useGet<LiveClassAvailableType[]>('/user/getUserLiveClassInvited', {
     params: { take: 100, page: 1 },
@@ -251,7 +251,10 @@ export default function LiveClassStudentDashboard() {
               </div>
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {LiveClassAvailable?.map((liveClass) => (
-                  <UpcomingCard liveClass={liveClass} />
+                  <UpcomingCard
+                    key={liveClass.id}
+                    liveClass={liveClass}
+                  />
                 ))}
               </div>
             </div>

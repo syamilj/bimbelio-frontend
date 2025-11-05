@@ -188,7 +188,8 @@ const ChatAI = () => {
                 Ajukan Pertanyaan Spesifik
               </h4>
               <p className="text-sm text-blue-700">
-                Contoh: "Jelaskan rumus integral by parts dengan contoh soal"
+                Contoh: &quot;Jelaskan rumus integral by parts dengan contoh
+                soal&quot;
               </p>
             </div>
           </div>

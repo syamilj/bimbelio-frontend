@@ -5,14 +5,13 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { LiveClassStatus } from '@/lib/mock-data/live-class';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LiveClassFilters } from './_components/live-class-filters';
 import { LiveClassMetrics } from './_components/live-class-metrics';
 import { LiveClassTable } from './_components/live-class-table';
 
 export default function LiveClassDashboard() {
-  const router = useRouter();
+  // const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<LiveClassStatus | 'ALL'>(
     'ALL',

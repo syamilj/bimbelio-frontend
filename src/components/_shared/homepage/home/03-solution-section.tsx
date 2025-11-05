@@ -2,7 +2,6 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
-// import { motion } from 'framer-motion';
 import {
   CheckCircle2,
   Clock,
@@ -10,7 +9,6 @@ import {
   Lightbulb,
   Map,
   RefreshCw,
-  Sparkles,
   Target,
   Users,
 } from 'lucide-react';
@@ -128,60 +126,60 @@ export const SolutionSection: React.FC = () => {
     [],
   );
 
-  const socialProofStats: SocialProofStat[] = useMemo(
-    () => [
-      {
-        value: '95%',
-        label: 'Siswa Lolos',
-        icon: <CheckCircle2 className="w-5 h-5" />,
-      },
-      {
-        value: '5000+',
-        label: 'Siswa Aktif',
-        icon: <Users className="w-5 h-5" />,
-      },
-      {
-        value: '4.9/5',
-        label: 'Rating',
-        icon: <Sparkles className="w-5 h-5" />,
-      },
-    ],
-    [],
-  );
+  // const socialProofStats: SocialProofStat[] = useMemo(
+  //   () => [
+  //     {
+  //       value: '95%',
+  //       label: 'Siswa Lolos',
+  //       icon: <CheckCircle2 className="w-5 h-5" />,
+  //     },
+  //     {
+  //       value: '5000+',
+  //       label: 'Siswa Aktif',
+  //       icon: <Users className="w-5 h-5" />,
+  //     },
+  //     {
+  //       value: '4.9/5',
+  //       label: 'Rating',
+  //       icon: <Sparkles className="w-5 h-5" />,
+  //     },
+  //   ],
+  //   [],
+  // );
 
   // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  // const containerVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       staggerChildren: 0.1,
+  //       delayChildren: 0.2,
+  //     },
+  //   },
+  // };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+  // const itemVariants = {
+  //   hidden: { opacity: 0, y: 20 },
+  //   visible: {
+  //     opacity: 1,
+  //     y: 0,
+  //     transition: {
+  //       duration: 0.5,
+  //     },
+  //   },
+  // };
 
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-      },
-    },
-  };
+  // const cardVariants = {
+  //   hidden: { opacity: 0, scale: 0.95 },
+  //   visible: {
+  //     opacity: 1,
+  //     scale: 1,
+  //     transition: {
+  //       duration: 0.6,
+  //     },
+  //   },
+  // };
 
   return (
     <section

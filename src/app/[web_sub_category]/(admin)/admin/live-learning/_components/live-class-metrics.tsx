@@ -2,10 +2,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import {
-  mockLiveClasses,
-  mockLiveClassParticipants,
-} from '@/lib/mock-data/live-class';
 import { Calendar, Clock, LucideProps, TrendingUp, Users } from 'lucide-react';
 import {
   ForwardRefExoticComponent,
@@ -27,34 +23,34 @@ type MetricsType = {
 
 export function LiveClassMetrics() {
   // Calculate metrics from mock data
-  const totalClasses = mockLiveClasses.length;
-  const activeClasses = mockLiveClasses.filter(
-    (c) => c.status === 'ONGOING',
-  ).length;
-  const scheduledClasses = mockLiveClasses.filter(
-    (c) => c.status === 'SCHEDULED',
-  ).length;
-  const completedToday = mockLiveClasses.filter((c) => {
-    const today = new Date();
-    const classDate = new Date(c.scheduleDate);
-    return (
-      c.status === 'COMPLETED' &&
-      classDate.toDateString() === today.toDateString()
-    );
-  }).length;
-  const averageParticipants = Math.round(
-    mockLiveClasses.reduce((sum, c) => sum + c.currentParticipants, 0) /
-      totalClasses,
-  );
+  // const totalClasses = mockLiveClasses.length;
+  // const activeClasses = mockLiveClasses.filter(
+  //   (c) => c.status === 'ONGOING',
+  // ).length;
+  // const scheduledClasses = mockLiveClasses.filter(
+  //   (c) => c.status === 'SCHEDULED',
+  // ).length;
+  // const completedToday = mockLiveClasses.filter((c) => {
+  //   const today = new Date();
+  //   const classDate = new Date(c.scheduleDate);
+  //   return (
+  //     c.status === 'COMPLETED' &&
+  //     classDate.toDateString() === today.toDateString()
+  //   );
+  // }).length;
+  // const averageParticipants = Math.round(
+  //   mockLiveClasses.reduce((sum, c) => sum + c.currentParticipants, 0) /
+  //     totalClasses,
+  // );
 
-  // Calculate participant metrics
-  const totalParticipants = mockLiveClassParticipants.length;
-  const registeredParticipants = mockLiveClassParticipants.filter(
-    (p) => p.status === 'registered',
-  ).length;
-  const invitedParticipants = mockLiveClassParticipants.filter(
-    (p) => p.status === 'invited',
-  ).length;
+  // // Calculate participant metrics
+  // const totalParticipants = mockLiveClassParticipants.length;
+  // const registeredParticipants = mockLiveClassParticipants.filter(
+  //   (p) => p.status === 'registered',
+  // ).length;
+  // const invitedParticipants = mockLiveClassParticipants.filter(
+  //   (p) => p.status === 'invited',
+  // ).length;
 
   const { data: SummaryLiveClass } = useGet<{
     total: number;

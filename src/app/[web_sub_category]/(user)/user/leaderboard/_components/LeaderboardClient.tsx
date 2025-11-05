@@ -79,7 +79,7 @@ export default function LeaderboardClient() {
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  // const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   // const { data: RankingTryout, isLoading: RankingTryoutIsLoading } =
   //   api.leaderboard.getTryoutRankingResult.useQuery(

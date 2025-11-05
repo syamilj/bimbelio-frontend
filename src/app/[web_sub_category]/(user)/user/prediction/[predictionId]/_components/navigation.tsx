@@ -1,4 +1,3 @@
-import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -9,22 +8,21 @@ import {
   School,
   Target,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { validateSubtest } from '../../_provider/helper';
 import { useProvider } from '../../_provider/provider';
 import SubmitPrediction from './submit-prediction';
 
 export default function Navigation() {
-  const session = useSession();
-  const router = useRouter();
+  // const session = useSession();
+  // const router = useRouter();
   const {
     currentStep,
     setCurrentStep,
     selectedPrograms,
     utbkScores,
     simakScores,
-    useScoreUtbk: { utbkAvg },
-    useScoreSimak: { simakScoreSNBT, simakAvgSNBT },
+    // useScoreUtbk: { utbkAvg },
+    // useScoreSimak: { simakScoreSNBT, simakAvgSNBT },
     useParams: { predictionId },
     isFinish,
   } = useProvider();

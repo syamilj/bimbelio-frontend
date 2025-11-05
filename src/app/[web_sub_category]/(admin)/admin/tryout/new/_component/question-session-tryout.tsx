@@ -128,65 +128,65 @@ const QuestionSessionTryout = ({
     );
   };
 
-  const addImageToQuestion = (image: string, questionIndex: number) => {
-    setSessions((prev) => {
-      return prev.map((item, sessionIndex) => {
-        if (
-          sessionIndex === currentIndexEdit &&
-          item.Questions &&
-          item.Questions.length > 0
-        ) {
-          return {
-            ...item,
-            Questions: item.Questions.map((item2, qIndex) => {
-              if (qIndex === questionIndex) {
-                return { ...item2, question: `${item2.question}\n\n${image}` };
-              }
-              return item2;
-            }),
-          };
-        }
-        return item;
-      });
-    });
-  };
+  // const addImageToQuestion = (image: string, questionIndex: number) => {
+  //   setSessions((prev) => {
+  //     return prev.map((item, sessionIndex) => {
+  //       if (
+  //         sessionIndex === currentIndexEdit &&
+  //         item.Questions &&
+  //         item.Questions.length > 0
+  //       ) {
+  //         return {
+  //           ...item,
+  //           Questions: item.Questions.map((item2, qIndex) => {
+  //             if (qIndex === questionIndex) {
+  //               return { ...item2, question: `${item2.question}\n\n${image}` };
+  //             }
+  //             return item2;
+  //           }),
+  //         };
+  //       }
+  //       return item;
+  //     });
+  //   });
+  // };
 
-  const deleteImageQuestion = async (questionIndex: number) => {
-    if (EditSession?.Questions && EditSession.Questions[questionIndex].image) {
-      const title = EditSession.Questions[questionIndex].image;
-      const deleteImage = await supabase?.storage
-        .from('to-question')
-        .remove([`${title}`]);
-      if (deleteImage?.data) {
-        setSessions((prev) =>
-          prev.map((session, sessionIndex) => {
-            if (
-              sessionIndex === currentIndexEdit &&
-              session.Questions &&
-              session.Questions.length > 0
-            ) {
-              return {
-                ...session,
-                Questions: session.Questions.map((question, qindex) => {
-                  if (qindex === questionIndex) {
-                    return {
-                      ...question,
-                      image: null,
-                    };
-                  }
-                  return { ...question };
-                }),
-              };
-            }
-            return { ...session };
-          }),
-        );
-      }
-      if (deleteImage?.error) {
-        alert('Failed delete image, try again');
-      }
-    }
-  };
+  // const deleteImageQuestion = async (questionIndex: number) => {
+  //   if (EditSession?.Questions && EditSession.Questions[questionIndex].image) {
+  //     const title = EditSession.Questions[questionIndex].image;
+  //     const deleteImage = await supabase?.storage
+  //       .from('to-question')
+  //       .remove([`${title}`]);
+  //     if (deleteImage?.data) {
+  //       setSessions((prev) =>
+  //         prev.map((session, sessionIndex) => {
+  //           if (
+  //             sessionIndex === currentIndexEdit &&
+  //             session.Questions &&
+  //             session.Questions.length > 0
+  //           ) {
+  //             return {
+  //               ...session,
+  //               Questions: session.Questions.map((question, qindex) => {
+  //                 if (qindex === questionIndex) {
+  //                   return {
+  //                     ...question,
+  //                     image: null,
+  //                   };
+  //                 }
+  //                 return { ...question };
+  //               }),
+  //             };
+  //           }
+  //           return { ...session };
+  //         }),
+  //       );
+  //     }
+  //     if (deleteImage?.error) {
+  //       alert('Failed delete image, try again');
+  //     }
+  //   }
+  // };
 
   const onChangeSubcategoryQuestion = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -264,93 +264,93 @@ const QuestionSessionTryout = ({
     [currentIndexEdit, setSessions],
   );
 
-  const onChangeQuestionImage = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    if (EditSession === null) return;
-    const image = e.target.files ? e.target.files[0] : null;
-    if (image && EditSession.Questions && EditSession.Questions[index].image) {
-      const filename = `${EditSession.Questions[index].image}`;
-      const upload = await supabase?.storage
-        .from('to-question')
-        .upload(`${filename}`, image);
-      if (upload?.data) {
-      }
-      if (upload?.error) {
-        if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
-            .from('to-question')
-            .update(`${filename}`, image);
-          if (update?.data) {
-          }
-          if (update?.error) {
-          }
-        }
-      }
-      setSessions((prev) => {
-        return prev.map((item, sessionIndex) => {
-          if (
-            sessionIndex === currentIndexEdit &&
-            item.Questions &&
-            item.Questions.length > 0
-          ) {
-            return {
-              ...item,
-              Questions: item.Questions.map((item2, qIndex) => {
-                if (qIndex === index) {
-                  return { ...item2, image: filename };
-                }
-                return item2;
-              }),
-            };
-          }
-          return item;
-        });
-      });
-      return;
-    }
-    if (image) {
-      const filename = `${crypto.randomUUID()}-${index + 1}`;
-      const upload = await supabase?.storage
-        .from('to-question')
-        .upload(`${filename}`, image);
-      if (upload?.data) {
-      }
-      if (upload?.error) {
-        if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
-            .from('to-question')
-            .update(`${filename}`, image);
-          if (update?.data) {
-          }
-          if (update?.error) {
-          }
-        }
-      }
-      setSessions((prev) => {
-        return prev.map((item, sessionIndex) => {
-          if (
-            sessionIndex === currentIndexEdit &&
-            item.Questions &&
-            item.Questions.length > 0
-          ) {
-            return {
-              ...item,
-              Questions: item.Questions.map((item2, qIndex) => {
-                if (qIndex === index) {
-                  return { ...item2, image: filename };
-                }
-                return item2;
-              }),
-            };
-          }
-          return item;
-        });
-      });
-      return;
-    }
-  };
+  // const onChangeQuestionImage = async (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   index: number,
+  // ) => {
+  //   if (EditSession === null) return;
+  //   const image = e.target.files ? e.target.files[0] : null;
+  //   if (image && EditSession.Questions && EditSession.Questions[index].image) {
+  //     const filename = `${EditSession.Questions[index].image}`;
+  //     const upload = await supabase?.storage
+  //       .from('to-question')
+  //       .upload(`${filename}`, image);
+  //     if (upload?.data) {
+  //     }
+  //     if (upload?.error) {
+  //       if (upload.error.message === 'The resource already exists') {
+  //         const update = await supabase?.storage
+  //           .from('to-question')
+  //           .update(`${filename}`, image);
+  //         if (update?.data) {
+  //         }
+  //         if (update?.error) {
+  //         }
+  //       }
+  //     }
+  //     setSessions((prev) => {
+  //       return prev.map((item, sessionIndex) => {
+  //         if (
+  //           sessionIndex === currentIndexEdit &&
+  //           item.Questions &&
+  //           item.Questions.length > 0
+  //         ) {
+  //           return {
+  //             ...item,
+  //             Questions: item.Questions.map((item2, qIndex) => {
+  //               if (qIndex === index) {
+  //                 return { ...item2, image: filename };
+  //               }
+  //               return item2;
+  //             }),
+  //           };
+  //         }
+  //         return item;
+  //       });
+  //     });
+  //     return;
+  //   }
+  //   if (image) {
+  //     const filename = `${crypto.randomUUID()}-${index + 1}`;
+  //     const upload = await supabase?.storage
+  //       .from('to-question')
+  //       .upload(`${filename}`, image);
+  //     if (upload?.data) {
+  //     }
+  //     if (upload?.error) {
+  //       if (upload.error.message === 'The resource already exists') {
+  //         const update = await supabase?.storage
+  //           .from('to-question')
+  //           .update(`${filename}`, image);
+  //         if (update?.data) {
+  //         }
+  //         if (update?.error) {
+  //         }
+  //       }
+  //     }
+  //     setSessions((prev) => {
+  //       return prev.map((item, sessionIndex) => {
+  //         if (
+  //           sessionIndex === currentIndexEdit &&
+  //           item.Questions &&
+  //           item.Questions.length > 0
+  //         ) {
+  //           return {
+  //             ...item,
+  //             Questions: item.Questions.map((item2, qIndex) => {
+  //               if (qIndex === index) {
+  //                 return { ...item2, image: filename };
+  //               }
+  //               return item2;
+  //             }),
+  //           };
+  //         }
+  //         return item;
+  //       });
+  //     });
+  //     return;
+  //   }
+  // };
 
   const onChangeAnswerValue = (
     value: number,

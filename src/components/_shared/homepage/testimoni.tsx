@@ -204,7 +204,7 @@ const Testimoni = () => {
                     className="text-xl font-bold leading-tight"
                     style={{ color: item.iconColor }}
                   >
-                    "{item.heading}"
+                    &quot;{item.heading}&quot;
                   </h3>
 
                   <p className="text-gray-600 leading-relaxed text-sm">

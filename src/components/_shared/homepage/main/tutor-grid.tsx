@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { motion } from 'framer-motion';
 import { Star, Target, Users } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 
 type TutorDataType = {
@@ -32,7 +31,7 @@ type TutorDataType = {
 
 const TutorGridSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const router = useRouter();
+  // const router = useRouter();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#7C3AED';
 

@@ -27,7 +27,6 @@ import {
   useState,
 } from 'react';
 import { NonUndefined } from 'react-hook-form';
-import { calculateSubtestScore } from '../../_provider/helper';
 import { UniversityType } from '../../_provider/provider';
 import PaymentPrediction from './payment-prediction';
 import ScoreCard from './score-card';
@@ -65,10 +64,10 @@ export default function ExampleResult() {
   const simakMaxScoreRAW = 520;
 
   // SIMAK SCORE SNBT
-  const simakScoreSNBT = simakScores.reduce(
-    (acc, item) => acc + calculateSubtestScore(item.value),
-    0,
-  );
+  // const simakScoreSNBT = simakScores.reduce(
+  //   (acc, item) => acc + calculateSubtestScore(item.value),
+  //   0,
+  // );
 
   const { maxScore, minScore } = calculateSIMAKBounds();
   const simakAvgSNBT = convertSIMAKToSNBT(simakScoreRAW, minScore, maxScore);
@@ -352,16 +351,16 @@ const BySimakScore = ({
         finalScore,
         finalPercentage,
       );
-      const userValueFinal =
-        pg.tipe === 'PERCENTAGE' ? finalPercentage : finalScore;
+      // const userValueFinal =
+      //   pg.tipe === 'PERCENTAGE' ? finalPercentage : finalScore;
 
       const statusSimak = getPassingGradeStatus(
         pg,
         simakAvgSNBT,
         simakPercentageRAW,
       );
-      const userValueSimak =
-        pg.tipe === 'PERCENTAGE' ? simakPercentageRAW : simakAvgSNBT;
+      // const userValueSimak =
+      //   pg.tipe === 'PERCENTAGE' ? simakPercentageRAW : simakAvgSNBT;
 
       const titleFinalScore = 'UTBK + SIMAK UI';
       const titleSimakScore = 'SIMAK UI';

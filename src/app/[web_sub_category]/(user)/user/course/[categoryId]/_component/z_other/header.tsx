@@ -113,7 +113,10 @@ export default function HeaderCourse({
                 <AccordionContent className="pb-0">
                   <div className="ml-[.5rem] flex flex-col gap-[.5rem]">
                     {chapter.CourseSubChapter.map((sChapter, sIndex) => (
-                      <div className="relative flex items-center">
+                      <div
+                        key={sIndex}
+                        className="relative flex items-center"
+                      >
                         <div className="absolute right-4 z-2 flex items-center gap-2">
                           {sChapter.status === 'UPCOMING' && (
                             <Rocket className="w-4 h-4 text-purple-500" />

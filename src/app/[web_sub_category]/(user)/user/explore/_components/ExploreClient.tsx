@@ -13,7 +13,7 @@ import Trending from './trending';
 
 export default function ExploreClient() {
   const { data: session } = useSession();
-  const [category, setCategory] = useState<
+  const [_category, setCategory] = useState<
     Omit<Category, 'to' | 'website_sub_category_id'>[]
   >([]);
 

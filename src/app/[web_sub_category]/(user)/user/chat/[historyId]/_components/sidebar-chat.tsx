@@ -12,14 +12,14 @@ import { cn, getDateStringShort, getHours } from '@/lib/utils';
 import { ChatHistory } from '@/types/database';
 import { Bot, Clock, Edit3, MessageSquare, Plus, X } from 'lucide-react';
 import Link from 'next/link';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function SidebarChat() {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const params = useParams();
+  // const params = useParams();
   const router = useRouter();
   const pathname = usePathname();
   const { isMinimized, setIsMinimized } = useChatContext();

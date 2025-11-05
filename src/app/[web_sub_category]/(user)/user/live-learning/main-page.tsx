@@ -101,8 +101,8 @@ export default function LiveLearningDashboard({
   const [viewMode, setViewMode] = useState<'list' | 'grid' | 'calendar'>(
     'grid',
   );
-  const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  // const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
+  // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const {
     data: LiveClassAvailable,
@@ -120,8 +120,8 @@ export default function LiveLearningDashboard({
 
   const {
     data: LiveClassCompleted,
-    isLoading: LiveClassCompletedIsLoading,
-    error: LiveClassCompletedError,
+    // isLoading: LiveClassCompletedIsLoading,
+    // error: LiveClassCompletedError,
     totalData: LiveClassCompletedTotalData,
   } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassCompleted', {
     params: {
@@ -132,8 +132,8 @@ export default function LiveLearningDashboard({
 
   const {
     data: LiveClassRegistered,
-    isLoading: LiveClassRegisteredIsLoading,
-    error: LiveClassRegisteredError,
+    // isLoading: LiveClassRegisteredIsLoading,
+    // error: LiveClassRegisteredError,
     totalData: LiveClassRegisteredTotalData,
   } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassRegistered', {
     params: {
@@ -144,8 +144,8 @@ export default function LiveLearningDashboard({
 
   const {
     data: LiveClassInvited,
-    isLoading: LiveClassInvitedIsLoading,
-    error: LiveClassInvitedError,
+    // isLoading: LiveClassInvitedIsLoading,
+    // error: LiveClassInvitedError,
     totalData: LiveClassInviteTotalData,
   } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassInvited', {
     params: {
@@ -237,7 +237,10 @@ export default function LiveLearningDashboard({
               </div>
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {LiveClassAvailable?.map((liveClass) => (
-                  <UpcomingCard liveClass={liveClass} />
+                  <UpcomingCard
+                    key={liveClass.id}
+                    liveClass={liveClass}
+                  />
                 ))}
               </div>
             </div>

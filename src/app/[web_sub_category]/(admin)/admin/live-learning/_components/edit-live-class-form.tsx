@@ -176,9 +176,9 @@ export function EditLiveClassForm({ classId }: EditLiveClassFormProps) {
     }
   }, [classId]);
 
-  const selectedTutor = mockTutorsForForm.find(
-    (t) => t.id === formData.tutorId,
-  );
+  // const selectedTutor = mockTutorsForForm.find(
+  //   (t) => t.id === formData.tutorId,
+  // );
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -485,7 +485,7 @@ export function EditLiveClassForm({ classId }: EditLiveClassFormProps) {
             Live Class Tidak Ditemukan
           </h3>
           <p className="text-gray-500 mb-4">
-            Live class dengan ID "{classId}" tidak ditemukan.
+            Live class dengan ID &quot;{classId}&quot; tidak ditemukan.
           </p>
           <Button onClick={handleCancel}>
             <ArrowLeft className="h-4 w-4 mr-2" />

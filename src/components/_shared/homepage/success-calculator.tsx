@@ -40,7 +40,7 @@ const SuccessCalculator = () => {
   const [currentScore, setCurrentScore] = useState([450]);
   const [targetUniversity, setTargetUniversity] = useState('');
   const [studyTime, setStudyTime] = useState([3]);
-  const [targetScore, setTargetScore] = useState(600);
+  // const [targetScore, setTargetScore] = useState(600);
   const [showResult, setShowResult] = useState(false);
   const [calculationStep, setCalculationStep] = useState(0);
 

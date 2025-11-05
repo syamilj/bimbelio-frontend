@@ -105,7 +105,7 @@ export default function TambahDokumen() {
       async onError() {
         if (file && thumbnail && option === 'doc') {
           const documentFileName = fileName || file.name;
-          const sPdf = await supabase.storage
+          await supabase.storage
             .from('pdf')
             .remove([`document/${documentFileName}`]);
           await supabase.storage

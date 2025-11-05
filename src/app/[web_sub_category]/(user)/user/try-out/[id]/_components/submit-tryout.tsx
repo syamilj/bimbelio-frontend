@@ -394,8 +394,8 @@ const SubmitTryout = ({
                       Perhatian!
                     </h4>
                     <p className="text-orange-700 text-sm">
-                      Setelah mengklik "Kumpulkan Jawaban", sesi ini akan
-                      berakhir dan Kamu tidak dapat mengubah jawaban lagi.
+                      Setelah mengklik &quot;Kumpulkan Jawaban&quot;, sesi ini
+                      akan berakhir dan Kamu tidak dapat mengubah jawaban lagi.
                       Pastikan Kamu sudah yakin dengan semua jawaban yang
                       dipilih.
                     </p>

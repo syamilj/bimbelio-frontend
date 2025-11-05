@@ -866,7 +866,6 @@ const SectionFeature = () => {
       categoryIds,
       setCategoryIds,
       isCourseActive,
-      isDocumentActive,
       isLiveClassActive,
       setIsCourseActive,
       setIsDocumentActive,
@@ -900,9 +899,9 @@ const SectionFeature = () => {
 
   const {
     data: LiveClass,
-    isLoading: LiveClassIsLoading,
-    totalPages,
-    refetch: LiveClassRefetch,
+    // isLoading: LiveClassIsLoading,
+    // totalPages,
+    // refetch: LiveClassRefetch,
   } = useGet<
     (LiveClass & {
       Instructor: Instructor;

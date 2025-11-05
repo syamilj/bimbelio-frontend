@@ -308,7 +308,7 @@ export function LiveClassRatingsDisplay({
           </h4>
 
           <div className="space-y-4">
-            {ratings.slice(0, 5).map((rating, index) => (
+            {ratings.slice(0, 5).map((rating) => (
               <div
                 key={rating.id}
                 className="border-2 border-gray-100 rounded-2xl p-4 hover:shadow-sm transition-shadow"

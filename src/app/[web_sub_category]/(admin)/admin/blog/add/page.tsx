@@ -55,32 +55,28 @@ const AddBlogAdmin = () => {
   const [searchTag, setSearchTag] = useState<string>('');
   const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null);
 
-  const { mutate: createBlog, isLoading: isDeleting } = useMutation(
-    '/blog/createBlog',
-    'post',
-    {
-      payload: {
-        title,
-        description,
-        value,
-        tags,
-        status,
-        publishedAt: status === 'SCHEDULED' ? publishedAt : null,
-        isEditorPick,
-      },
-      onSuccess() {
-        localStorage.removeItem('temporary-add-blog');
-        setValue('');
-        setTitle('');
-        setDescription('');
-        setThumbnail(undefined);
-        setLoading(false);
-      },
-      onError() {
-        setLoading(false);
-      },
+  const { mutate: createBlog } = useMutation('/blog/createBlog', 'post', {
+    payload: {
+      title,
+      description,
+      value,
+      tags,
+      status,
+      publishedAt: status === 'SCHEDULED' ? publishedAt : null,
+      isEditorPick,
     },
-  );
+    onSuccess() {
+      localStorage.removeItem('temporary-add-blog');
+      setValue('');
+      setTitle('');
+      setDescription('');
+      setThumbnail(undefined);
+      setLoading(false);
+    },
+    onError() {
+      setLoading(false);
+    },
+  });
 
   // const { data: tagsData } = api.blog.getTags.useQuery(undefined, {
   //   refetchOnWindowFocus: false,
@@ -457,9 +453,9 @@ const InputTextarea = ({
 
 const InputImageFile = ({
   heading,
-  placeholder,
+  // placeholder,
   setValue,
-  value,
+  // value,
 }: {
   heading: string;
   placeholder: string;

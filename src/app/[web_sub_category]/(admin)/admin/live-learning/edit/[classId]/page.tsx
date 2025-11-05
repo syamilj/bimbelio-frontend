@@ -167,8 +167,9 @@ export default function UpdateLiveClassForm() {
 
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
-  const { data: Instructors, isLoading: InstructorsLoading } =
-    useGet<InstructorsType>('/instructor/getAllInstructor');
+  const { data: Instructors } = useGet<InstructorsType>(
+    '/instructor/getAllInstructor',
+  );
 
   const { data: CourseOptions } = useGet<
     (CourseChapter & {
@@ -750,7 +751,10 @@ export default function UpdateLiveClassForm() {
             {agendas.length === 0 && (
               <div className="text-center py-8 text-gray-500">
                 <FileText className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                <p>Belum ada agenda. Klik "Tambah Agenda" untuk memulai.</p>
+                <p>
+                  Belum ada agenda. Klik &quot;Tambah Agenda&quot; untuk
+                  memulai.
+                </p>
               </div>
             )}
           </CardContent>

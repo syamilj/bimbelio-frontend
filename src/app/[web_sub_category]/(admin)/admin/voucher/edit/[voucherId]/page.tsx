@@ -43,12 +43,12 @@ export default function CreateVoucher() {
 
   const {
     register,
-    handleSubmit: SubmitForm,
+    // handleSubmit: SubmitForm,
     control,
-    reset,
+    // reset,
     watch,
     setValue,
-    formState: { isSubmitting },
+    // formState: { isSubmitting },
   } = useForm<VoucherPayloadType>({
     defaultValues: {
       title: '',

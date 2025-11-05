@@ -58,9 +58,9 @@ export default function TutorsSection() {
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');
-  const secondaryColor = isMainLandingPage
-    ? '#5aa4dd'
-    : (websiteSubCategory?.secondary_color ?? '#7C3AED');
+  // const secondaryColor = isMainLandingPage
+  //   ? '#5aa4dd'
+  //   : (websiteSubCategory?.secondary_color ?? '#7C3AED');
 
   // 3 Layers System
   const layers: Layer[] = [

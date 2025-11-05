@@ -21,16 +21,6 @@ import { ArrowLeft, Save, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
-interface FormData {
-  fullName: string;
-  email: string;
-  phone: string;
-  bio: string;
-  subjects: string[];
-  avatar?: File;
-  isActive: boolean;
-}
-
 export default function CreateTutorForm() {
   const router = useRouter();
 

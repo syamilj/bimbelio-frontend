@@ -162,7 +162,10 @@ export default function UTBKSIMAKPredictor() {
                           </div>
 
                           {psItem.PredictionScoreDetail.map((psdItem) => (
-                            <div className="flex justify-between items-center mb-2">
+                            <div
+                              key={psdItem.id}
+                              className="flex justify-between items-center mb-2"
+                            >
                               <div className="flex items-center ml-2">
                                 <span className="text-sm">
                                   {psdItem.subCategory}

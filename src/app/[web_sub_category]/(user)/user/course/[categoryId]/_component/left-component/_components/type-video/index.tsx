@@ -43,9 +43,9 @@ const VideoType = () => {
   const isDone =
     CourseData && CourseData.CourseProgress.length > 0 ? true : false;
 
-  const remarkMathOptions = {
-    singleDollarTextMath: false,
-  };
+  // const remarkMathOptions = {
+  //   singleDollarTextMath: false,
+  // };
 
   return (
     <div

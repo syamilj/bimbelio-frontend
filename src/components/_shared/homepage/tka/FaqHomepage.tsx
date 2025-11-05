@@ -126,23 +126,23 @@ export default function FaqHomepage() {
   };
 
   // Pixel tracking function untuk konsultasi
-  const trackContactEvent = (contactType: string) => {
-    try {
-      pixel.meta.track('Contact', {
-        content_type: 'contact',
-        content_name: contactType,
-      });
+  // const trackContactEvent = (contactType: string) => {
+  //   try {
+  //     pixel.meta.track('Contact', {
+  //       content_type: 'contact',
+  //       content_name: contactType,
+  //     });
 
-      pixel.tiktok.track('Contact', {
-        content_name: contactType,
-        content_id: `contact_${contactType.toLowerCase()}`,
-      });
+  //     pixel.tiktok.track('Contact', {
+  //       content_name: contactType,
+  //       content_id: `contact_${contactType.toLowerCase()}`,
+  //     });
 
-      console.log(`📊 Pixel tracked: ${contactType} contact initiated`);
-    } catch (error) {
-      console.warn('Pixel tracking error:', error);
-    }
-  };
+  //     console.log(`📊 Pixel tracked: ${contactType} contact initiated`);
+  //   } catch (error) {
+  //     console.warn('Pixel tracking error:', error);
+  //   }
+  // };
 
   // Handle consultation dialog open
   const handleConsultationClick = () => {
@@ -204,7 +204,7 @@ export default function FaqHomepage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="flex flex-wrap justify-center gap-4 mb-12"
           >
-            {categories.map((category, index) => {
+            {categories.map((category) => {
               const Icon = category.icon;
               return (
                 <button
