@@ -146,7 +146,7 @@ const nextConfig = {
         ],
       },
       {
-        // OPTIMASI: Reduce redirect chains - preload resource hints
+        // OPTIMASI: Reduce redirect chains - preload critical resources with high priority
         source: '/(.*)',
         headers: [
           {
@@ -156,7 +156,7 @@ const nextConfig = {
           {
             key: 'Link',
             value:
-              '</fonts/Inter.woff2>;rel=preload;as=font;type=font/woff2;crossorigin, </hero/hero-bg-web.webp>;rel=preload;as=image;type=image/webp',
+              '</fonts/Inter.woff2>;rel=preload;as=font;type=font/woff2;crossorigin, </hero/hero-bg-web.webp>;rel=preload;as=image;type=image/webp;imagesrcset="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1920px", </hero/hero-heading-web.webp>;rel=preload;as=image;type=image/webp',
           },
         ],
       },
