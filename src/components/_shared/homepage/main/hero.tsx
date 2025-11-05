@@ -86,7 +86,10 @@ const HeroSection: React.FC = () => {
   const y = useTransform(scrollY, [0, 300], [0, -50]);
 
   // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
+  const pathname = usePathname();
+
+  // Get dynamic colors
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');

@@ -130,7 +130,7 @@ export default function ProviderWebsiteCategory({
     },
   };
 
-  if (isLoading) {
+  if (isLoading && pathname !== '/') {
     return (
       <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
         <Loader2 className="animate-spin w-4 h-4" />

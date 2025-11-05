@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 const TryoutSection: React.FC = () => {
@@ -64,7 +64,10 @@ const TryoutSection: React.FC = () => {
   }, [href]);
 
   // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
+  const pathname = usePathname();
+
+  // Get dynamic colors
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');

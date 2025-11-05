@@ -13,6 +13,7 @@ import {
 } from '@/types/database';
 import Cookies from 'js-cookie';
 import { Loader2 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import {
   createContext,
   ReactNode,
@@ -27,6 +28,7 @@ export default function ProviderSessionAuth({
 }: {
   children: ReactNode;
 }) {
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<SessionProviderType['data']>();
 
@@ -110,7 +112,7 @@ export default function ProviderSessionAuth({
         .catch((error) => {
           const { message, status } = responseError(error);
           if (status === 401) {
-            responseError(error, true);
+            responseError(error);
             signOut();
           }
           console.log({ error });
@@ -130,7 +132,7 @@ export default function ProviderSessionAuth({
     data,
   };
 
-  if (isLoading) {
+  if (isLoading && pathname !== '/') {
     return (
       <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
         <Loader2 className="animate-spin w-4 h-4" />

@@ -1,9 +1,7 @@
 'use client';
 
 import { useSession } from '@/components/provider/provider-session-auth';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { env } from '@/env.mjs';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { pixel } from '@/lib/pixel/_core';
 import { responseError } from '@/lib/response';
 import { GoogleOAuthProvider, useGoogleOneTapLogin } from '@react-oauth/google';
@@ -19,18 +17,16 @@ export const OneTapLogin = () => {
 };
 const HandleLogin = () => {
   const { data: session } = useSession();
-  const { webCategoryData } = useWebsiteSubCategory();
 
   const handleSubmit = async (googleToken: any) => {
     try {
       // Get Google token
       const { credential } = googleToken as { credential: string };
-      const res = await axios.post(
-        `${env.NEXT_PUBLIC_API_URL}/auth/google?website_sub_category_id=${website_sub_category_id || webCategoryData[0].WebsiteSubCategory[0].id}`,
-        {
-          token: credential,
-        },
-      );
+      console.log({ credential });
+      const res = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/google`, {
+        token: credential,
+      });
+      console.log({ res });
 
       Cookies.set('token', res.data.data.token);
 

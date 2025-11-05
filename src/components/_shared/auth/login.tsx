@@ -1,12 +1,10 @@
 'use client';
 
 import { useAppContext } from '@/components/provider/provider-app';
-import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
 import LoadingPage from '@/components/ui/Loading-Page';
 import Logo from '@/components/ui/logo';
 import { env } from '@/env.mjs';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking login success
 import { responseError } from '@/lib/response';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
@@ -19,7 +17,6 @@ export const Login = () => {
   const {
     useAuth: { setShowAuth, showAuth },
   } = useAppContext();
-  const { webCategoryData } = useWebsiteSubCategory();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -28,12 +25,11 @@ export const Login = () => {
     try {
       // Get Google token
       const { credential } = googleToken as { credential: string };
-      const res = await axios.post(
-        `${env.NEXT_PUBLIC_API_URL}/auth/google?website_sub_category_id=${website_sub_category_id || webCategoryData[0].WebsiteSubCategory[0].id}`,
-        {
-          token: credential,
-        },
-      );
+      console.log({ credential });
+      const res = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/google`, {
+        token: credential,
+      });
+      console.log({ res });
 
       Cookies.set('token', res.data.data.token);
 

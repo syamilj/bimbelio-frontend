@@ -19,7 +19,10 @@ import { useRouter } from 'next/navigation';
 const BlueprintConcept: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const router = useRouter();
-  const isMainLandingPage = window.location.pathname === '/';
+  const pathname = usePathname();
+
+  // Get dynamic colors
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');

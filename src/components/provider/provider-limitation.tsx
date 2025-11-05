@@ -3,6 +3,7 @@ import axiosInstance from '@/lib/axios/axiosInstance';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { response } from '@/lib/response';
 import { Loader2 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -51,6 +52,7 @@ export default function ProviderLimitation({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const { data: session } = useSession();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -109,7 +111,7 @@ export default function ProviderLimitation({
     checkLimitation,
   };
 
-  if (isLoading) {
+  if (isLoading && pathname !== '/') {
     return (
       <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
         <Loader2 className="animate-spin w-4 h-4" />

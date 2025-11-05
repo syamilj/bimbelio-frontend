@@ -12,6 +12,7 @@ import {
   Target,
   Users,
 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 interface PrintsPillar {
@@ -37,8 +38,10 @@ interface ProblemMapping {
 export const SolutionSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
+  const pathname = usePathname();
+
   // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');
