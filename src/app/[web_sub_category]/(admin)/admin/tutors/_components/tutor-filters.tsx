@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { getSubjectList } from '@/lib/mock-data/live-class';
 import { Category, Subcategory } from '@/types/database';
 import { Search, X } from 'lucide-react';
 
@@ -33,7 +32,6 @@ export function TutorFilters({
   setStatusFilter,
   onClearFilters,
 }: TutorFiltersProps) {
-  const subjects = getSubjectList();
   const hasActiveFilters =
     searchQuery || subjectFilter !== 'all' || statusFilter !== 'all';
 
