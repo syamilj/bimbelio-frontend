@@ -99,12 +99,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        {/* Font font-display:swap untuk prevent FOIT (Flash of Invisible Text) */}
+        {/* Font dengan display=swap untuk prevent FOIT (Flash of Invisible Text) */}
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
           rel="stylesheet"
-          media="print"
-          onLoad={(e: any) => (e.media = 'all')}
         />
 
         {/* Priority 2: Critical API endpoints */}
