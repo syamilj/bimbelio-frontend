@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { IconBook, IconChat, IconStar } from '@/styles/icon';
 import { motion } from 'framer-motion';
 import { CheckCircle, Star } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
 
