@@ -85,7 +85,10 @@ export default function ProviderWebsiteCategory({
   };
 
   useEffect(() => {
-    if (pathname === '/') return;
+    if (pathname === '/') {
+      setIsLoading(false);
+      return;
+    }
     getWebSubCategory();
     getGeneral('/website-category/getWebsiteCategory', {
       setData: setWebCategoryData,
