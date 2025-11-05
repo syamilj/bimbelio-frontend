@@ -886,7 +886,7 @@ const DesktopNav: React.FC<{
   return (
     <div className="fixed left-0 top-0 z-50 w-full bg-transparent pointer-events-none">
       <div className="mx-auto max-w-4xl px-4 pt-4 pointer-events-auto">
-        <Card className="border-2 shadow-md border rounded-2xl backdrop-blur-xl overflow-visible bg-white">
+        <Card className=" shadow-md border rounded-2xl backdrop-blur-xl overflow-visible bg-white">
           <div
             className="px-6 py-4 md:py-1 lg:py-1 relative rounded-3xl z-[3] bg-transparent"
             // style={{

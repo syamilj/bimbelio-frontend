@@ -96,10 +96,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           rel="preconnect"
           href="https://app.midtrans.com"
         />
-        <link
+        {/* <link
           rel="preconnect"
           href="https://snap-assets.al-pc-id-p.cdn.gtflabs.io"
-        />
+        /> */}
         <link
           rel="preconnect"
           href="https://fonts.googleapis.com"

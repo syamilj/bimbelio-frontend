@@ -2,6 +2,7 @@
 
 import { env } from '@/env.mjs';
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -27,6 +28,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     redirect: string | null;
   }>({ open: false, redirect: null });
 
+  const pathname = usePathname();
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(true);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
 
@@ -64,9 +66,10 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   //   if (isDekstop) setMinimizeSidebar(false);
   // }, [isDekstop]);
 
-  // Lazy load Midtrans Snap hanya saat popup transaksi dibuka
-  useEffect(() => {
-    // if (!transactionPopUp) return;
+  const [isMidtransScriptLoaded, setIsMidtransScriptLoaded] =
+    useState<boolean>(false);
+
+  const LoadMidtransScript = () => {
     const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
     if (!snapScriptUrl) return;
     const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
@@ -78,7 +81,30 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     if (clientKey) script.setAttribute('data-client-key', clientKey);
     script.async = true;
     document.body.appendChild(script);
-  }, []);
+  };
+
+  const LoadMidtransCss = () => {
+    const linkId = 'snap-assets-preconnect';
+    if (document.getElementById(linkId)) return; // Already added!
+
+    const link = document.createElement('link');
+    link.id = linkId; // ✅ Add ID for tracking
+    link.rel = 'preconnect';
+    link.href = 'https://snap-assets.al-pc-id-p.cdn.gtflabs.io';
+    document.head.appendChild(link);
+  };
+
+  useEffect(() => {
+    const isPayment =
+      transactionPopUp ||
+      pathname.includes('/price') ||
+      pathname.includes('/user');
+    if (isPayment && !isMidtransScriptLoaded) {
+      LoadMidtransScript();
+      LoadMidtransCss();
+      setIsMidtransScriptLoaded(true);
+    }
+  }, [pathname, transactionPopUp, isMidtransScriptLoaded]);
 
   useEffect(() => {
     if (showAuth.open) {
