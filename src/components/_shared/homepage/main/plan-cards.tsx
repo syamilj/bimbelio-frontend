@@ -36,7 +36,10 @@ const PlanCards: React.FC = () => {
     '/plan/getAllPlanByWebCategory',
   );
 
-  const isMainLandingPage = window.location.pathname === '/';
+  const pathname = usePathname();
+
+  // Get dynamic colors
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');

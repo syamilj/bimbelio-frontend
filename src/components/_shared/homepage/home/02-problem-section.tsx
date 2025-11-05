@@ -16,6 +16,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 
 interface PainPoint {
@@ -48,7 +49,10 @@ const ProblemSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
+  const pathname = usePathname();
+
+  // Get dynamic colors
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');

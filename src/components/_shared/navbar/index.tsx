@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useMedia } from 'use-media';
 
@@ -347,11 +347,12 @@ const MobileNav: React.FC<{
   } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
-  const router = useRouter();
+
+  // Get dynamic colors
   const pathname = usePathname();
 
   // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');
@@ -835,7 +836,7 @@ const DesktopNav: React.FC<{
   const pathname = usePathname();
 
   // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');

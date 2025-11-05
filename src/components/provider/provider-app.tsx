@@ -12,7 +12,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import useMedia from 'use-media';
 import { BlocknoteEditorType } from '../workspace/editor/provider';
 // Dynamic import komponen berat yang jarang muncul awal
 const Login = dynamic(() => import('../_shared/auth/login'), { ssr: false });
@@ -21,14 +20,14 @@ const HistoryPayment = dynamic(() => import('../_shared/account/setting'), {
 });
 
 export default function ProviderApp({ children }: { children: ReactNode }) {
-  const isDekstop = useMedia({ minWidth: '768px' });
-
+  const pathname = usePathname();
   const [showAuth, setShowAuth] = useState<{
     open: boolean;
     redirect: string | null;
   }>({ open: false, redirect: null });
+  const [transactionHistory, setTransactionHistory] = useState<boolean>(false);
+  const [pagesSetting, setPagesSetting] = useState<string>('account');
 
-  const pathname = usePathname();
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(true);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
 
@@ -36,7 +35,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   const [zoomValue, setZoomValue] = useState<string>('page-width');
   const [normalSize, setNormalSize] = useState<string>('1.00');
   const [transactionPopUp, setTransactionPopUp] = useState<boolean>(false);
-  const [transactionHistory, setTransactionHistory] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
 
   // Change Note
@@ -52,8 +50,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
 
   // Editor
   const [editor, setEditor] = useState<BlocknoteEditorType | null>(null);
-
-  const [pagesSetting, setPagesSetting] = useState<string>('account');
 
   const [onBoarding, setOnBoarding] = useState<OnBoardingProps>({
     chat: false,

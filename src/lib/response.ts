@@ -12,10 +12,11 @@ export const responseError = (
       title: toastTitle || 'Gagal',
       condition: 'warning',
       description:
-        toastMessage || (error as any).response.data.message || 'Gagal',
+        toastMessage || (error as any)?.response?.data?.message || 'Gagal',
       duration: 2500,
     });
   }
+  console.log({ error });
   return {
     error,
     message:

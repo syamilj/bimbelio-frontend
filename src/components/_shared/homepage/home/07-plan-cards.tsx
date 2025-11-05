@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { CheckCircle2, CreditCard, Crown, MessageCircle } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 
 type PricingDataType = {
@@ -35,7 +36,10 @@ const PlanCards: React.FC = () => {
     '/plan/getAllPlanByWebCategory',
   );
 
-  const isMainLandingPage = window.location.pathname === '/';
+  const pathname = usePathname();
+
+  // Get dynamic colors
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');

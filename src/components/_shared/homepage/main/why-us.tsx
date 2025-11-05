@@ -28,7 +28,10 @@ const WhyUs = () => {
   const [active, setActive] = useState<number>(1);
 
   // Get dynamic colors
-  const isMainLandingPage = window.location.pathname === '/';
+  const pathname = usePathname();
+
+  // Get dynamic colors
+  const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');

@@ -54,7 +54,7 @@ const HeroSection: React.FC = () => {
             alt="ALLPRINTS Hero Background"
             fill
             priority
-            quality={75}
+            quality={30}
             fetchPriority="high"
             className="object-cover object-center md:object-center"
             placeholder="blur"
@@ -87,7 +87,7 @@ const HeroSection: React.FC = () => {
         <div className="relative z-20 mx-auto flex max-w-2xl flex-col items-center text-center pt-36 md:pt-8 lg:pt-12 pb-24 md:pb-32">
           {/* Hero Heading - Image dengan Text Skeleton untuk SEO */}
           <div className="w-full max-w-5xl mb-6 md:mb-10 relative">
-            <div
+            {/* <div
               className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}
             >
               <div
@@ -140,7 +140,7 @@ const HeroSection: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <Image
               src={HeroHeadingWeb}
@@ -148,7 +148,7 @@ const HeroSection: React.FC = () => {
               width={672}
               height={443}
               priority
-              quality={85}
+              quality={60}
               fetchPriority="high"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               className="w-full h-auto"
