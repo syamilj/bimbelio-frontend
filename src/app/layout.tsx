@@ -87,7 +87,27 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       suppressHydrationWarning
     >
       <head>
-        {/* Preconnect untuk critical external origins - OPTIMASI LCP */}
+        {/* OPTIMASI: Preconnect + Prefetch untuk menghindari critical dependency chain */}
+        {/* Priority 1: Fonts (blocking critical render path) */}
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        {/* Font font-display:swap untuk prevent FOIT (Flash of Invisible Text) */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet"
+          media="print"
+          onLoad={(e: any) => (e.media = 'all')}
+        />
+
+        {/* Priority 2: Critical API endpoints */}
         <link
           rel="preconnect"
           href="https://be.bimbelio.com"
@@ -96,21 +116,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           rel="preconnect"
           href="https://app.midtrans.com"
         />
+
+        {/* Priority 3: Payment gateway assets - defer with dns-prefetch */}
         <link
-          rel="preconnect"
+          rel="dns-prefetch"
           href="https://snap-assets.al-pc-id-p.cdn.gtflabs.io"
         />
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
 
-        {/* DNS Prefetch untuk third-party domains */}
+        {/* Analytics & Tracking - LOW PRIORITY */}
         <link
           rel="dns-prefetch"
           href="https://connect.facebook.net"
@@ -123,11 +136,15 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           rel="dns-prefetch"
           href="https://static.cloudflareinsights.com"
         />
+        <link
+          rel="dns-prefetch"
+          href="https://www.googletagmanager.com"
+        />
 
-        {/* Meta Pixel Script - OPTIMASI: Defer loading, tidak render-blocking */}
+        {/* Meta Pixel Script - OPTIMASI: Gunakan afterInteractive untuk defer loading tanpa kehilangan data */}
         <Script
           id="facebook-pixel"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -144,10 +161,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           }}
         />
 
-        {/* TikTok Pixel Script - OPTIMASI: Defer loading, tidak render-blocking */}
+        {/* TikTok Pixel Script - OPTIMASI: afterInteractive timing */}
         <Script
           id="tiktok-pixel"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function (w, d, t) {
@@ -159,15 +176,15 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           }}
         />
 
-        {/* Google Analytics - OPTIMASI: Lazy load GA juga */}
+        {/* Google Analytics - OPTIMASI: afterInteractive untuk menghindari blocking, tapi tetap track semua events */}
         <Script
           id="gtag-js"
           src="https://www.googletagmanager.com/gtag/js?id=G-PVEJ5PSRCH"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
         />
         <Script
           id="gtag-init"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             window.dataLayer = window.dataLayer || [];
