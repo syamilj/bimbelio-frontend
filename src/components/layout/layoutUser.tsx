@@ -533,7 +533,7 @@ const HeaderUser = () => {
                 </div>
               </TooltipTrigger>
               <TooltipContent
-                className="min-w-xs max-w-[350px] p-3"
+                className="min-w-xs max-w-[350px] p-3 max-h-[90vh] overflow-y-auto"
                 side="bottom"
                 align="end"
               >
@@ -649,7 +649,9 @@ const HeaderUser = () => {
                                         backgroundColor: '#f59e0b',
                                       }}
                                     >
-                                      {subPending.planTier}
+                                      {subPending.planTier === 'Limitation'
+                                        ? 'Koin'
+                                        : subPending.planTier}
                                     </span>
                                     <span className="text-[8px] px-1.5 py-0.5 rounded-md bg-orange-100 text-orange-700 font-medium">
                                       PENDING

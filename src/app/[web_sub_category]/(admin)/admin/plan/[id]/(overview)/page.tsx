@@ -308,6 +308,17 @@ export default function UpdatePlanForm() {
       return;
     }
 
+    if (activeTab.feature && !course && !materiPremium && !liveClass) {
+      toaster({
+        title: 'Error',
+        condition: 'warning',
+        description: 'Feature belum terisi',
+        duration: 3000,
+      });
+      setIsLoading(false);
+      return;
+    }
+
     if (activeTab.limit && validityTypeLimit === 'duration' && !durationLimit) {
       toaster({
         title: 'Error',

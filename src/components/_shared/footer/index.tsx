@@ -13,7 +13,7 @@ export default function Footer() {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   return (
-    <footer className="relative w-full overflow-hidden bg-gradient-to-b from-gray-50 to-white py-12 md:py-16">
+    <footer className="relative w-full overflow-hidden bg-background py-12 md:py-16">
       {/* Background Decoration */}
       <div className="absolute inset-0 -z-10">
         <div

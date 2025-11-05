@@ -68,15 +68,25 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
             </CardHeader>
             <CardContent className="space-y-6">
               {Object.entries(plan.PlanLimitation)
-                .filter(
-                  ([key]) =>
+                .filter(([key, value]) => {
+                  if (
                     key !== 'id' &&
                     key !== 'planId' &&
                     key !== 'expireDays' &&
                     key !== 'validFrom' &&
                     key !== 'validUntil' &&
-                    key !== 'isTimebound',
-                )
+                    key !== 'isTimebound'
+                  ) {
+                    if (typeof value === 'number' && value > 0) {
+                      return true;
+                    }
+                    if (typeof value === 'string' && parseInt(value) > 0) {
+                      return true;
+                    }
+                    return false;
+                  }
+                  return false;
+                })
                 .map(([key, value], index) => (
                   <motion.div
                     key={key}

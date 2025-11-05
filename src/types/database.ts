@@ -542,7 +542,7 @@ export type SubscriptionPending = {
   discord_username: string | null;
   discord_invite_link: string | null;
   updatedAt: string;
-  websiteSubCategoryId: string;
+  websiteSubCategoryId?: string;
 };
 
 export type SubscriptionPendingFeature = {

@@ -1,3 +1,74 @@
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInMonths,
+  differenceInSeconds,
+  differenceInYears,
+} from 'date-fns';
+
+interface DateDifference {
+  years: number;
+  months: number;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  totalDays: number;
+  totalHours: number;
+  totalMinutes: number;
+  totalSeconds: number;
+}
+
+export function calculateDateDifference(
+  date1: string | Date | undefined,
+  date2: string | Date | undefined,
+): DateDifference | null {
+  if (!date1 || !date2) {
+    return null;
+  }
+
+  const d1 = new Date(date1);
+  const d2 = new Date(date2);
+
+  return {
+    years: differenceInYears(d2, d1),
+    months: differenceInMonths(d2, d1) % 12,
+    days: differenceInDays(d2, d1) % 30,
+    hours: differenceInHours(d2, d1) % 24,
+    minutes: differenceInMinutes(d2, d1) % 60,
+    seconds: differenceInSeconds(d2, d1) % 60,
+    totalDays: differenceInDays(d2, d1),
+    totalHours: differenceInHours(d2, d1),
+    totalMinutes: differenceInMinutes(d2, d1),
+    totalSeconds: differenceInSeconds(d2, d1),
+  };
+}
+
+export function formatDateDifference(
+  date1: string | Date | undefined,
+  date2: string | Date | undefined,
+): string {
+  const diff = calculateDateDifference(date1, date2);
+
+  if (!diff) {
+    return '-';
+  }
+
+  const parts: string[] = [];
+
+  if (diff.years > 0) parts.push(`${diff.years} tahun`);
+  if (diff.months > 0) parts.push(`${diff.months} bulan`);
+  if (diff.days > 0) parts.push(`${diff.days} hari`);
+  if (diff.hours > 0 && parts.length === 0) parts.push(`${diff.hours} jam`);
+  if (diff.minutes > 0 && parts.length === 0)
+    parts.push(`${diff.minutes} menit`);
+  if (diff.seconds > 0 && parts.length === 0)
+    parts.push(`${diff.seconds} detik`);
+
+  return parts.length > 0 ? parts.join(', ') : '0 detik';
+}
+
 export function formatDateRange(
   date1: string | Date | undefined,
   date2: string | Date | undefined,

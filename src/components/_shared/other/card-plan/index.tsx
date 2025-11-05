@@ -10,7 +10,7 @@ import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import {
-  Clock,
+  Coins,
   Crown,
   Eye,
   Gift,
@@ -53,11 +53,14 @@ export function CardPlan({
   classOverlay?: string;
 }) {
   const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
+  const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
   const {
     useAuth: { setShowAuth },
     setTransactionPopUp,
   } = useAppContext();
+
+  const webSubData =
+    webCategoryData.length > 0 ? webCategoryData[0].WebsiteSubCategory : [];
 
   const router = useRouter();
 
@@ -166,10 +169,13 @@ export function CardPlan({
   //   plan: plan.PlanSubscription.PlanSubscriptionBundle,
   // });
 
-  const platfroms =
-    plan.PlanSubscription?.PlanSubscriptionBundle?.map((item) =>
-      item.websiteSubCategoryId.toUpperCase(),
-    ) || [];
+  const platfroms = plan.PlanSubscription
+    ? plan.PlanSubscription?.PlanSubscriptionBundle?.map((item) =>
+        item.websiteSubCategoryId.toUpperCase(),
+      )
+    : plan.PlanLimitation
+      ? webSubData.map((item) => item.id.toUpperCase())
+      : [];
 
   return (
     <ProviderContext.Provider value={Context}>
@@ -397,7 +403,11 @@ export function CardPlan({
                   variant="outline"
                   className="text-xs text-gray-600 border-gray-300"
                 >
-                  {plan.PlanSubscription?.tier || 'Standar'}
+                  {plan.PlanSubscription?.tier
+                    ? plan.PlanSubscription?.tier
+                    : plan.PlanLimitation
+                      ? 'Koin'
+                      : 'Standar'}
                 </Badge>
               </div>
 
@@ -658,11 +668,11 @@ export function CardPlan({
                   value="limitations"
                   className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
                 >
-                  <Clock
+                  <Coins
                     size={14}
                     className="mr-1"
                   />
-                  <span className="hidden sm:inline">Limits</span>
+                  <span className="hidden sm:inline">Koin</span>
                 </TabsTrigger>
               )}
               {plan.PlanBenefit.length > 0 && (

@@ -1,7 +1,6 @@
 'use client';
 import { EmptyPlan } from '@/components/_shared/empty/empty-plan';
 import { CardPlan } from '@/components/_shared/other/card-plan';
-import { CardPlanTopping } from '@/components/_shared/other/card-plan-coin';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -26,7 +25,6 @@ import {
   TrendingUp,
   Video,
   Wallet,
-  Zap,
 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -147,7 +145,8 @@ export default function PricingPlans() {
           matchesPlanType = true;
         } else if (
           selectedPlanTypes.includes('topping') &&
-          plan.name?.toLowerCase().includes('coin')
+          !plan.PlanSubscription &&
+          plan.PlanLimitation
         ) {
           // Check if it's a coin/topping plan by name
           matchesPlanType = true;
@@ -575,18 +574,18 @@ export default function PricingPlans() {
                             <div className="space-y-2">
                               {[
                                 {
-                                  id: 'subscription',
-                                  label: 'Subscription',
-                                  desc: 'Akses berlangganan',
-                                },
-                                {
                                   id: 'bundle',
                                   label: 'Bundle',
                                   desc: 'Paket bundel',
                                 },
                                 {
+                                  id: 'subscription',
+                                  label: 'Subscription',
+                                  desc: 'Akses berlangganan',
+                                },
+                                {
                                   id: 'topping',
-                                  label: 'Topping',
+                                  label: 'Koin',
                                   desc: 'Tambahan coin',
                                 },
                               ].map((type) => (
@@ -1078,14 +1077,13 @@ export default function PricingPlans() {
         )}
       </div>
       {/* Enhanced Coin Topping Section */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
         className="relative max-w-7xl mx-auto"
         id="price-coin"
       >
-        {/* Background Decoration */}
         <div className="absolute inset-0 -z-10">
           <div
             className="absolute top-1/4 left-0 w-72 h-72 rounded-full blur-3xl opacity-10"
@@ -1171,7 +1169,7 @@ export default function PricingPlans() {
             </div>
           </div>
         )}
-      </motion.div>
+      </motion.div> */}
     </div>
   );
 }

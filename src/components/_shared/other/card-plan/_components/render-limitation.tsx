@@ -64,7 +64,7 @@ export const RenderLimitationTab = () => {
       case 'quiz':
         return 'Quiz Attempt';
       case 'tryout':
-        return 'Tryout Test';
+        return 'Tryout';
       default:
         return type.charAt(0).toUpperCase() + type.slice(1);
     }
@@ -142,9 +142,7 @@ export const RenderLimitationTab = () => {
           size={24}
           className="mx-auto mb-2 text-blue-600"
         />
-        <h4 className="text-sm font-semibold text-blue-800 mb-2">
-          Usage Limitations
-        </h4>
+        <h4 className="text-sm font-semibold text-blue-800 mb-2">Usage Koin</h4>
         <p className="text-xs text-blue-600">
           Batas penggunaan fitur-fitur platform per periode
         </p>
@@ -169,7 +167,7 @@ export const RenderLimitationTab = () => {
             </span>
           </div>
           <p className="text-xs text-indigo-600 mt-1">
-            Akses live class berlaku selama periode subscription aktif
+            Akses koin berlaku selama periode aktif
           </p>
         </div>
       )}
@@ -178,21 +176,23 @@ export const RenderLimitationTab = () => {
         limitations.validFrom &&
         limitations.validUntil && (
           <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
-            <div className="flex items-center gap-2">
+            <div className="flex items-start gap-2">
               <Calendar
                 size={16}
-                className="text-indigo-600"
+                className="text-indigo-600 mt-0.5"
               />
               <span className="text-sm font-semibold text-indigo-800">
-                Durasi Akses:{' '}
-                {formatDateRange(
-                  plan.PlanLimitation.validFrom,
-                  plan.PlanLimitation.validUntil,
-                )}
+                Durasi Akses: <br />
               </span>
             </div>
+            <div className="text-sm font-semibold text-indigo-800">
+              {formatDateRange(
+                plan.PlanLimitation.validFrom,
+                plan.PlanLimitation.validUntil,
+              )}
+            </div>
             <p className="text-xs text-indigo-600 mt-1">
-              Akses live class berlaku selama periode subscription aktif
+              Akses koin berlaku selama periode aktif
             </p>
           </div>
         )}

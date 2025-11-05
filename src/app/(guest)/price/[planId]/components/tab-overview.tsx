@@ -139,176 +139,180 @@ export default function TabOverview({
       )}
 
       {/* Features Overview - SNBT Style */}
-      {plan.PlanSubscription?.PlanFeature && (
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
-            <CardHeader className="pb-6">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                <Badge
-                  className="mb-4 px-4 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit"
-                  style={{ backgroundColor: mainColor }}
+      {plan.PlanSubscription?.PlanFeature &&
+        plan.PlanSubscription?.PlanFeature.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
+              <CardHeader className="pb-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  viewport={{ once: true }}
                 >
-                  <BookOpen className="w-4 h-4" />
-                  Fitur Blueprint
-                </Badge>
-                <CardTitle className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                  Akses{' '}
-                  <span
-                    className="bg-clip-text text-transparent"
-                    style={{
-                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    }}
+                  <Badge
+                    className="mb-4 px-4 py-2 text-sm font-semibold text-white border-none flex items-center gap-2 w-fit"
+                    style={{ backgroundColor: mainColor }}
                   >
-                    unlimited
-                  </span>{' '}
-                  ke semua kategori
-                </CardTitle>
-                <CardDescription className="text-xl text-gray-600 leading-relaxed">
-                  <span
-                    className="font-bold"
-                    style={{ color: mainColor }}
-                  >
-                    Semua fitur premium
-                  </span>{' '}
-                  yang kamu butuhkan untuk persiapan UTBK maksimal. Bukan
-                  sekadar akses biasa, tapi{' '}
-                  <span
-                    className="font-bold"
-                    style={{ color: secondaryColor }}
-                  >
-                    sistem pembelajaran terintegrasi
-                  </span>
-                  !
-                </CardDescription>
-              </motion.div>
-            </CardHeader>
-            <CardContent>
-              <div
-                className={cn(
-                  'grid md:grid-cols-3 gap-6',
-                  plan.PlanSubscription.PlanFeature.length === 1 &&
-                    'md:grid-cols-1',
-                  plan.PlanSubscription.PlanFeature.length === 2 &&
-                    'md:grid-cols-2',
-                )}
-              >
-                {plan.PlanSubscription.PlanFeature.map((feature, index) => (
-                  <motion.div
-                    key={feature.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: index * 0.15,
-                    }}
-                    viewport={{ once: true }}
-                    className="group p-6 rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-2"
-                  >
-                    <div className="flex items-center gap-3 mb-4">
-                      <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
-                        style={{
-                          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                        }}
-                      >
-                        {getFeatureIcon(feature.type)}
-                      </div>
-                      <div>
-                        <h3 className="font-black text-gray-900 text-lg capitalize">
-                          {feature.type.toLowerCase().replace('_', ' ')}
-                        </h3>
-                        {feature.liveClassesPerWeek && (
-                          <p
-                            className="text-sm font-medium"
-                            style={{ color: mainColor }}
-                          >
-                            {feature.liveClassesPerWeek} kelas/minggu
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      {feature.type === 'COURSE' &&
-                        feature.Pivot_Plan_Category.slice(0, 3).map((pivot) => (
-                          <div
-                            key={pivot.id}
-                            className="flex items-center gap-3 p-2 rounded-xl bg-white/60 hover:bg-white/80 transition-all duration-200"
-                          >
-                            <div
-                              className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold"
-                              style={{
-                                backgroundColor: mainColor,
-                              }}
-                            >
-                              {pivot.Category.nomor}
-                            </div>
-                            <span className="text-gray-900 font-semibold text-sm">
-                              {pivot.Category.name}
-                            </span>
-                            <ArrowRight className="w-4 h-4 text-gray-400 ml-auto group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
-                          </div>
-                        ))}
-                      {feature.type === 'DOCUMENT' && (
-                        <div className="flex gap-3 p-2 rounded-xl bg-white/60">
-                          <div
-                            className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
-                            style={{ backgroundColor: mainColor }}
-                          >
-                            <LockOpen className="w-3 h-3" />
-                          </div>
-                          <span className="text-gray-900 font-semibold text-sm">
-                            Akses ke Semua Document Premium
-                          </span>
+                    <BookOpen className="w-4 h-4" />
+                    Fitur Blueprint
+                  </Badge>
+                  <CardTitle className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                    Akses{' '}
+                    <span
+                      className="bg-clip-text text-transparent"
+                      style={{
+                        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                      }}
+                    >
+                      unlimited
+                    </span>{' '}
+                    ke semua kategori
+                  </CardTitle>
+                  <CardDescription className="text-xl text-gray-600 leading-relaxed">
+                    <span
+                      className="font-bold"
+                      style={{ color: mainColor }}
+                    >
+                      Semua fitur premium
+                    </span>{' '}
+                    yang kamu butuhkan untuk persiapan UTBK maksimal. Bukan
+                    sekadar akses biasa, tapi{' '}
+                    <span
+                      className="font-bold"
+                      style={{ color: secondaryColor }}
+                    >
+                      sistem pembelajaran terintegrasi
+                    </span>
+                    !
+                  </CardDescription>
+                </motion.div>
+              </CardHeader>
+              <CardContent>
+                <div
+                  className={cn(
+                    'grid md:grid-cols-3 gap-6',
+                    plan.PlanSubscription.PlanFeature.length === 1 &&
+                      'md:grid-cols-1',
+                    plan.PlanSubscription.PlanFeature.length === 2 &&
+                      'md:grid-cols-2',
+                  )}
+                >
+                  {plan.PlanSubscription.PlanFeature.map((feature, index) => (
+                    <motion.div
+                      key={feature.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: index * 0.15,
+                      }}
+                      viewport={{ once: true }}
+                      className="group p-6 rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-2"
+                    >
+                      <div className="flex items-center gap-3 mb-4">
+                        <div
+                          className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                          style={{
+                            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                          }}
+                        >
+                          {getFeatureIcon(feature.type)}
                         </div>
-                      )}
-                      {feature.type === 'LIVECLASS' &&
-                        feature.liveClassesPerWeek && (
+                        <div>
+                          <h3 className="font-black text-gray-900 text-lg capitalize">
+                            {feature.type.toLowerCase().replace('_', ' ')}
+                          </h3>
+                          {feature.liveClassesPerWeek && (
+                            <p
+                              className="text-sm font-medium"
+                              style={{ color: mainColor }}
+                            >
+                              {feature.liveClassesPerWeek} kelas/minggu
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        {feature.type === 'COURSE' &&
+                          feature.Pivot_Plan_Category.slice(0, 3).map(
+                            (pivot) => (
+                              <div
+                                key={pivot.id}
+                                className="flex items-center gap-3 p-2 rounded-xl bg-white/60 hover:bg-white/80 transition-all duration-200"
+                              >
+                                <div
+                                  className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold"
+                                  style={{
+                                    backgroundColor: mainColor,
+                                  }}
+                                >
+                                  {pivot.Category.nomor}
+                                </div>
+                                <span className="text-gray-900 font-semibold text-sm">
+                                  {pivot.Category.name}
+                                </span>
+                                <ArrowRight className="w-4 h-4 text-gray-400 ml-auto group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" />
+                              </div>
+                            ),
+                          )}
+                        {feature.type === 'DOCUMENT' && (
                           <div className="flex gap-3 p-2 rounded-xl bg-white/60">
                             <div
                               className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
-                              style={{
-                                backgroundColor: mainColor,
-                              }}
+                              style={{ backgroundColor: mainColor }}
                             >
-                              <Play className="w-3 h-3" />
+                              <LockOpen className="w-3 h-3" />
                             </div>
                             <span className="text-gray-900 font-semibold text-sm">
-                              {feature.liveClassesPerWeek} Live Class per Minggu
+                              Akses ke Semua Document Premium
                             </span>
                           </div>
                         )}
-                    </div>
-
-                    {/* Feature highlight badge */}
-                    <div className="mt-4 pt-3 border-t border-gray-200/50">
-                      <div
-                        className="text-xs font-bold px-3 py-1 rounded-full text-white w-fit"
-                        style={{
-                          backgroundColor: secondaryColor,
-                        }}
-                      >
-                        Premium Access
+                        {feature.type === 'LIVECLASS' &&
+                          feature.liveClassesPerWeek && (
+                            <div className="flex gap-3 p-2 rounded-xl bg-white/60">
+                              <div
+                                className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
+                                style={{
+                                  backgroundColor: mainColor,
+                                }}
+                              >
+                                <Play className="w-3 h-3" />
+                              </div>
+                              <span className="text-gray-900 font-semibold text-sm">
+                                {feature.liveClassesPerWeek} Live Class per
+                                Minggu
+                              </span>
+                            </div>
+                          )}
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      )}
+
+                      {/* Feature highlight badge */}
+                      <div className="mt-4 pt-3 border-t border-gray-200/50">
+                        <div
+                          className="text-xs font-bold px-3 py-1 rounded-full text-white w-fit"
+                          style={{
+                            backgroundColor: secondaryColor,
+                          }}
+                        >
+                          Premium Access
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
       {/* Live Classes Overview - SNBT Style */}
       {plan.Pivot_LiveClass_Plan && plan.Pivot_LiveClass_Plan.length > 0 && (
@@ -530,15 +534,25 @@ export default function TabOverview({
             <CardContent>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Object.entries(plan.PlanLimitation)
-                  .filter(
-                    ([key]) =>
+                  .filter(([key, value]) => {
+                    if (
                       key !== 'id' &&
                       key !== 'planId' &&
                       key !== 'expireDays' &&
                       key !== 'validFrom' &&
                       key !== 'validUntil' &&
-                      key !== 'isTimebound',
-                  )
+                      key !== 'isTimebound'
+                    ) {
+                      if (typeof value === 'number' && value > 0) {
+                        return true;
+                      }
+                      if (typeof value === 'string' && parseInt(value) > 0) {
+                        return true;
+                      }
+                      return false;
+                    }
+                    return false;
+                  })
                   .map(([key, value], index) => (
                     <motion.div
                       key={key}

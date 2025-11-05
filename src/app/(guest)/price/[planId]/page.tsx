@@ -4,6 +4,7 @@ import ConsultationDialog from '@/components/_shared/contact/consultation-dialog
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { cn } from '@/lib/utils';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { PlanDataType } from './components/_helper';
@@ -36,6 +37,14 @@ export default function PlanDetailPage() {
     },
   );
 
+  const tabCourseAvailable = plan?.PlanSubscription?.PlanFeature.find(
+    (feature) => feature.type === 'COURSE',
+  );
+
+  const tabFeatureAvailable =
+    plan?.PlanSubscription?.PlanFeature &&
+    plan?.PlanSubscription?.PlanFeature.length > 0;
+
   if (planIsLoading) {
     return <LoadingSkeleton />;
   }
@@ -46,7 +55,7 @@ export default function PlanDetailPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pt-16">
+      <div className="min-h-screen pt-[50px]">
         {/* Hero Section - Compact SNBT Style */}
         <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <Hero
@@ -66,7 +75,17 @@ export default function PlanDetailPage() {
                 onValueChange={setActiveTab as any}
                 className="w-full"
               >
-                <TabsList className="grid w-full h-full grid-cols-5 mb-6 bg-white/70 backdrop-blur-sm border border-blue-200/50 rounded-xl p-1">
+                <TabsList
+                  className={cn(
+                    'grid w-full h-full grid-cols-5 mb-6 bg-white/70 backdrop-blur-sm border border-blue-200/50 rounded-xl p-1',
+                    !tabCourseAvailable &&
+                      !tabFeatureAvailable &&
+                      'grid-cols-3',
+                    ((!tabCourseAvailable && tabFeatureAvailable) ||
+                      (tabCourseAvailable && !tabFeatureAvailable)) &&
+                      'grid-cols-4',
+                  )}
+                >
                   <TabsTrigger
                     value="overview"
                     className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
@@ -77,26 +96,31 @@ export default function PlanDetailPage() {
                   >
                     Overview
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="course"
-                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
-                    style={{
-                      backgroundColor:
-                        activeTab === 'course' ? mainColor : 'transparent',
-                    }}
-                  >
-                    Course
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="features"
-                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
-                    style={{
-                      backgroundColor:
-                        activeTab === 'features' ? mainColor : 'transparent',
-                    }}
-                  >
-                    Fitur
-                  </TabsTrigger>
+                  {tabCourseAvailable && (
+                    <TabsTrigger
+                      value="course"
+                      className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
+                      style={{
+                        backgroundColor:
+                          activeTab === 'course' ? mainColor : 'transparent',
+                      }}
+                    >
+                      Course
+                    </TabsTrigger>
+                  )}
+                  {tabFeatureAvailable && (
+                    <TabsTrigger
+                      value="features"
+                      className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
+                      style={{
+                        backgroundColor:
+                          activeTab === 'features' ? mainColor : 'transparent',
+                      }}
+                    >
+                      Fitur
+                    </TabsTrigger>
+                  )}
+
                   <TabsTrigger
                     value="classes"
                     className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
