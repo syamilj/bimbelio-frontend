@@ -124,10 +124,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           href="https://static.cloudflareinsights.com"
         />
 
-        {/* Meta Pixel Script - Load before interactive untuk detection yang lebih baik */}
+        {/* Meta Pixel Script - OPTIMASI: Defer loading, tidak render-blocking */}
         <Script
           id="facebook-pixel"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -144,10 +144,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           }}
         />
 
-        {/* TikTok Pixel Script - Load before interactive untuk detection yang lebih baik */}
+        {/* TikTok Pixel Script - OPTIMASI: Defer loading, tidak render-blocking */}
         <Script
           id="tiktok-pixel"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               !function (w, d, t) {
@@ -159,14 +159,15 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           }}
         />
 
-        {/* Google Analytics - tetap afterInteractive */}
+        {/* Google Analytics - OPTIMASI: Lazy load GA juga */}
         <Script
-          async
-          src={'https://www.googletagmanager.com/gtag/js?id=G-PVEJ5PSRCH'}
+          id="gtag-js"
+          src="https://www.googletagmanager.com/gtag/js?id=G-PVEJ5PSRCH"
+          strategy="lazyOnload"
         />
         <Script
           id="gtag-init"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
             window.dataLayer = window.dataLayer || [];
@@ -176,7 +177,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           `,
           }}
         />
-        {/* End Google Tag Manager */}
 
         <Script
           type="application/ld+json"

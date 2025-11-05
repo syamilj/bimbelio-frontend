@@ -3,19 +3,21 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { motion } from 'framer-motion';
 import { ArrowRight, PhoneCallIcon } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
-import { lazy, Suspense, useMemo, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 
-// Import gambar hero
+// OPTIMASI: Dynamic import untuk consultation dialog - jangan load sampai dibutuhkan
+const ConsultationDialog = dynamic(
+  () => import('@/components/_shared/contact/consultation-dialog'),
+  { ssr: false, loading: () => null },
+);
+
+// Import gambar hero dengan ukuran optimal
 import HeroBgWeb from '@/../public/hero/hero-bg-web.webp';
 import HeroHeadingWeb from '@/../public/hero/hero-heading-web.webp';
-
-// Lazy loading untuk komponen berat
-const ConsultationDialog = lazy(
-  () => import('@/components/_shared/contact/consultation-dialog'),
-);
 
 // Component
 const HeroSection: React.FC = () => {
@@ -55,20 +57,20 @@ const HeroSection: React.FC = () => {
               'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 1) 100%)',
           }}
         />
-        {/* Background Image with responsive height - Mobile center position */}
+        {/* Background Image with responsive height - OPTIMASI: Aggressive quality reduction */}
         <div className="absolute inset-0 z-0 min-h-[850px]">
           <Image
             src={HeroBgWeb}
             alt="ALLPRINTS Hero Background"
             fill
             priority
-            quality={60}
+            quality={50}
             fetchPriority="high"
             className="object-cover object-center md:object-center"
             placeholder="blur"
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1920px"
             style={{
-              objectPosition: 'center center', // Mobile: center, Desktop: center
+              objectPosition: 'center center',
             }}
           />
 
@@ -94,12 +96,7 @@ const HeroSection: React.FC = () => {
         {/* Main Content - Margin lebih kecil di mobile */}
         <div className="relative z-20 mx-auto flex max-w-2xl flex-col items-center text-center pt-36 md:pt-8 lg:pt-12 pb-24 md:pb-32">
           {/* Hero Heading - Image dengan Text Skeleton untuk SEO */}
-          <div
-            // initial={{ opacity: 0, y: 30 }}
-            // animate={{ opacity: 1, y: 0 }}
-            // transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-full max-w-5xl mb-6 md:mb-10 relative"
-          >
+          <div className="w-full max-w-5xl mb-6 md:mb-10 relative">
             {/* Text Skeleton - Hidden ketika image sudah loaded */}
             <div
               className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}
@@ -165,16 +162,16 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Actual Image - akan ditampilkan ketika sudah loaded */}
+            {/* Actual Image - OPTIMASI: Lazy load heading image setelah LCP */}
             <Image
               src={HeroHeadingWeb}
               alt="Bimbel AI untuk SNBT, Ujian Mandiri, KEDINASAN"
               width={1200}
               height={600}
-              priority
-              quality={70}
-              fetchPriority="high"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              loading="lazy"
+              quality={45}
+              fetchPriority="auto"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 1200px"
               className="w-full h-auto"
               placeholder="blur"
               onLoadingComplete={() => setImageLoaded(true)}
@@ -185,7 +182,7 @@ const HeroSection: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             className="w-full flex flex-col items-center gap-3 md:gap-4"
           >
             {/* Main CTA - Redesigned dengan warna gradient lebih menarik */}
@@ -264,7 +261,7 @@ const HeroSection: React.FC = () => {
                   className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
                   style={{ backgroundColor: mainColor }}
                 />
-                {/* Lazy-loaded dialog dengan Suspense wrapper */}
+                {/* OPTIMASI: Lazy-loaded dialog hanya saat button diklik */}
                 {isConsultationOpen && (
                   <Suspense fallback={null}>
                     <ConsultationDialog

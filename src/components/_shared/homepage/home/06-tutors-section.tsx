@@ -15,6 +15,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+import Image from 'next/image';
 
 interface Layer {
   layer: string;
@@ -398,9 +399,12 @@ export default function TutorsSection() {
 
                   {/* Image */}
                   {tutor.image ? (
-                    <img
+                    <Image
                       src={tutor.image}
                       alt={tutor.name}
+                      fill
+                      loading="lazy"
+                      quality={50}
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
@@ -417,10 +421,13 @@ export default function TutorsSection() {
                         border: `2px solid ${tutor.color}`,
                       }}
                     >
-                      <img
+                      <Image
                         src="/tutors/ui.webp"
                         alt="UI"
-                        className="h-4 w-auto"
+                        width={16}
+                        height={16}
+                        loading="lazy"
+                        quality={40}
                       />
                       <span
                         className="text-xs font-black"
