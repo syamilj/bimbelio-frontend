@@ -1525,6 +1525,7 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     if (plans.length === 0) return;
+
     setNavData((prev) =>
       prev.map((navitem) => {
         if (navitem.label === 'Program') {
@@ -1535,14 +1536,53 @@ const Navbar: React.FC = () => {
             submenuColumns: [
               {
                 title: 'Program',
-                items: plans.map((plan, index) => ({
-                  href: `/price/${plan.slug}`,
-                  label: `Program ${index + 1}`,
-                  description: plan.name,
-                  // badge: { text: '1-ON-1', variant: 'premium' },
-                  icon: 'UserPlus',
-                  isLink: true,
-                })),
+                items: plans
+                  .filter(
+                    (item) =>
+                      item.PlanSubscription &&
+                      item.PlanSubscription?.PlanFeature.length > 0,
+                  )
+                  .map((plan, index) => ({
+                    href: `/price/${plan.slug}`,
+                    label: `Program ${index + 1}`,
+                    description: plan.name,
+                    // badge: { text: '1-ON-1', variant: 'premium' },
+                    icon: 'UserPlus',
+                    isLink: true,
+                  })),
+              },
+              {
+                title: 'Koin',
+                items: plans
+                  .filter(
+                    (item) => !item.PlanSubscription && item.PlanLimitation,
+                  )
+                  .map((plan, index) => ({
+                    href: `/price/${plan.slug}`,
+                    label: plan.name,
+                    description: Object.entries(plan.PlanLimitation)
+                      .filter(([key, value]) => {
+                        if (
+                          key === 'id' ||
+                          key === 'validFrom' ||
+                          key === 'validUntil' ||
+                          key === 'isTimebound' ||
+                          key === 'planId' ||
+                          key === 'expireDays'
+                        ) {
+                          return false;
+                        }
+                        if (value === 0) {
+                          return false;
+                        }
+                        return true;
+                      })
+                      .map(([key, value]) => `${key}: ${value} koin`)
+                      .join(', '),
+                    // badge: { text: '1-ON-1', variant: 'premium' },
+                    icon: 'UserPlus',
+                    isLink: true,
+                  })),
               },
               ...subMenuColumns,
             ],
