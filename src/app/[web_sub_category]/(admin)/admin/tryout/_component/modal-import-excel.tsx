@@ -8,6 +8,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { toaster } from '@/components/ui/toaster';
+import { useGet } from '@/lib/fetch-helper/useGet';
+import { responseError, throwError } from '@/lib/response';
 import { supabase } from '@/supabaseClient';
 import { BlockNoteEditor } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
@@ -15,6 +17,15 @@ import { Loader2 } from 'lucide-react';
 import Papa from 'papaparse';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { QuestionProps, SessionProps } from '../new/page';
+
+type ChapterOptionsType = {
+  id: string;
+  title: string;
+  Category: {
+    id: string;
+    name: string;
+  };
+}[];
 
 const ModalImportCSV = ({
   setSessions,
@@ -43,6 +54,17 @@ const ModalImportCSV = ({
     }
   }, [open]);
 
+  const [isCourseOptionsLoaded, setIsCourseOptionsLoaded] = useState(false);
+
+  const { data: ChapterOptions, isLoading: isCourseOptionsLoading } =
+    useGet<ChapterOptionsType>('/course/getAllCourseChapterId', {
+      enabled: open && !isCourseOptionsLoaded,
+      onSuccess: () => setIsCourseOptionsLoaded(true),
+      useEffectDependencies: [open, isCourseOptionsLoaded],
+    });
+
+  console.log('[Import CSV] : ', { ChapterOptions });
+
   const handleGenerate = () => {
     setIsLoading(true);
     if (file) {
@@ -51,6 +73,7 @@ const ModalImportCSV = ({
         skipEmptyLines: true,
         complete: async function (results: any) {
           const data: any[] = results.data;
+          console.log('[Import CSV] 1 : ', { data, results });
 
           // Validasi dan transformasi data
           let isAssesmentTypeValid = {
@@ -60,7 +83,7 @@ const ModalImportCSV = ({
           let isValid = true;
 
           if (assessmentType === 'IRT') {
-            const Questions = handleGenerateIRT(data);
+            const Questions = handleGenerateIRT(data, ChapterOptions || []);
             Questions.forEach((item) => {
               const isCorrect =
                 item.Answers.find((item2) => item2.value === 5) || null;
@@ -168,11 +191,26 @@ const ModalImportCSV = ({
           if (assessmentType !== '1-5') {
             let Questions;
             if (assessmentType === '+1/0' || assessmentType === '0-100') {
-              Questions = handleGenerateQuestion(data, 1, 0);
+              Questions = handleGenerateQuestion(
+                data,
+                1,
+                0,
+                ChapterOptions || [],
+              );
             } else if (assessmentType === '+5/0') {
-              Questions = handleGenerateQuestion(data, 5, 0);
+              Questions = handleGenerateQuestion(
+                data,
+                5,
+                0,
+                ChapterOptions || [],
+              );
             } else if (assessmentType === '+4/-1/0') {
-              Questions = handleGenerateQuestion(data, 4, -1);
+              Questions = handleGenerateQuestion(
+                data,
+                4,
+                -1,
+                ChapterOptions || [],
+              );
             } else {
               toaster({
                 title: 'Error',
@@ -285,6 +323,8 @@ const ModalImportCSV = ({
               });
               return;
             }
+
+            console.log('[Import CSV] : ', { ParseQuestions });
             setQuestionIndex(0);
             setSessions((prev) =>
               prev.map((session, sessionId) => {
@@ -362,11 +402,14 @@ const ModalImportCSV = ({
             }
 
             return {
-              number: parseInt(quest.Number), // Konversi string ke number
-              question: quest.Question,
-              subCategory: quest.Subcategory,
               Answers: transformedAnswers,
-              courseChapterIds: [],
+              number: parseInt(quest.Number),
+              question: quest.Question,
+              subCategory: quest?.Subcategory || undefined,
+              subSubCategory: quest?.SubSubCategory || undefined,
+              categoryId: quest?.categoryId || undefined,
+              explanation: quest?.explanation || undefined,
+              courseChapterIds: quest?.courseChapterIds || [],
             };
           });
 
@@ -390,6 +433,8 @@ const ModalImportCSV = ({
             setIsLoading(false);
             return;
           }
+
+          console.log('[Import CSV] : ', { fixData });
 
           setSessions((prev) =>
             prev.map((session, sessionId) => {
@@ -437,61 +482,73 @@ const ModalImportCSV = ({
             Import Soal dari CSV
           </DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col items-center justify-center text-center">
-          <p className="font-semibold underline">Format CSV:</p>
-          {assessmentType === 'IRT' ? (
-            <p className="font-semibold">
-              Number | Question | SubCategory | SubSubCategory | A | B | C | D |
-              E | Correct | Explanation
-            </p>
-          ) : assessmentType !== '1-5' ? (
-            <p className="font-semibold">
-              Number | Question | SubCategory | SubSubCategory | A | B | C | D |
-              E | Correct | Explanation
-            </p>
-          ) : (
-            <p className="font-semibold">
-              Number | Question | Subcategory | Answer_A | Value_A | Answer_B |
-              Value_B | Answer_C | Value_C | Answer_D | Value_D | Answer_E |
-              Value_E
-            </p>
-          )}
-          {file ? (
-            <p className="mt-4 font-semibold text-blue-700">{file.name}</p>
-          ) : null}
-
-          <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-8 text-[.9rem]">
-            <input
-              id="uploadCSV"
-              type="file"
-              accept=".csv"
-              className="absolute left-0 top-0 w-0 p-0"
-              onChange={(e) => handleChangeFile(e)}
-            />
-            {file ? (
-              <button
-                className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
-                onClick={handleGenerate}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <Loader2 className="animate-spin w-4 h-4 mx-auto" />
-                ) : (
-                  'Generate'
-                )}
-              </button>
-            ) : (
-              <div
-                className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
-                onClick={() => {
-                  document.getElementById('uploadCSV')?.click();
-                }}
-              >
-                Upload
-              </div>
-            )}
+        {isCourseOptionsLoading && (
+          <div className="flex w-full justify-center gap-1 items-center">
+            <Loader2 className="animate-spin w-4 h-4 text-black mb-[-3px]" />
+            <span>Loading</span>
           </div>
-        </div>
+        )}
+        {!isCourseOptionsLoading && (
+          <div className="flex flex-col items-center justify-center text-center">
+            <p className="font-semibold underline">Format CSV:</p>
+            {assessmentType === 'IRT' ? (
+              <p className="font-semibold">
+                Number | Question | SubCategory | SubSubCategory | A | B | C | D
+                | E | Correct | Explanation
+              </p>
+            ) : assessmentType !== '1-5' ? (
+              <p className="font-semibold">
+                Number | Question | SubCategory | SubSubCategory | A | B | C | D
+                | E | Correct | Explanation
+              </p>
+            ) : (
+              <p className="font-semibold">
+                Number | Question | Subcategory | Answer_A | Value_A | Answer_B
+                | Value_B | Answer_C | Value_C | Answer_D | Value_D | Answer_E |
+                Value_E
+              </p>
+            )}
+            {file ? (
+              <p className="mt-4 font-semibold text-blue-700">
+                {file.name.length > 30
+                  ? `${file.name.slice(0, 30)}...`
+                  : file.name}
+              </p>
+            ) : null}
+
+            <div className="relative grid w-full grid-cols-1 gap-[.5rem] pt-8 text-[.9rem]">
+              <input
+                id="uploadCSV"
+                type="file"
+                accept=".csv"
+                className="absolute left-0 top-0 w-0 p-0"
+                onChange={(e) => handleChangeFile(e)}
+              />
+              {file ? (
+                <button
+                  className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                  onClick={handleGenerate}
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <Loader2 className="animate-spin w-4 h-4 mx-auto" />
+                  ) : (
+                    'Generate'
+                  )}
+                </button>
+              ) : (
+                <div
+                  className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
+                  onClick={() => {
+                    document.getElementById('uploadCSV')?.click();
+                  }}
+                >
+                  Upload
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
@@ -499,73 +556,111 @@ const ModalImportCSV = ({
 
 export default ModalImportCSV;
 
-const handleGenerateIRT = (data: any[]) => {
-  const fixData: QuestionProps[] = data.map((quest: any) => {
-    const Correct = (quest.Correct as string).toLowerCase();
-    const getAnswers = [
-      { answer: quest.A as string, value: 0, type: 'a' },
-      { answer: quest.B as string, value: 0, type: 'b' },
-      { answer: quest.C as string, value: 0, type: 'c' },
-      { answer: quest.D as string, value: 0, type: 'd' },
-      { answer: quest.E as string, value: 0, type: 'e' },
-    ];
+const handleGenerateIRT = (data: any[], ChapterOptions: ChapterOptionsType) => {
+  try {
+    const fixData: QuestionProps[] = data.map((quest: any) => {
+      const Correct = (quest.Correct as string).toLowerCase();
+      const getAnswers = [
+        { answer: quest.A as string, value: 0, type: 'a' },
+        { answer: quest.B as string, value: 0, type: 'b' },
+        { answer: quest.C as string, value: 0, type: 'c' },
+        { answer: quest.D as string, value: 0, type: 'd' },
+        { answer: quest.E as string, value: 0, type: 'e' },
+      ];
 
-    const Answers: QuestionProps['Answers'] = getAnswers.map((item) => {
-      const isCorrect = item.type === Correct;
+      const Answers: QuestionProps['Answers'] = getAnswers.map((item) => {
+        const isCorrect = item.type === Correct;
+        return {
+          answer: item.answer,
+          value: isCorrect ? 5 : 0,
+        };
+      });
+
+      const CategoryName = quest?.Category || null;
+      const CourseChapterNamesArray = ((quest?.Chapter || '') as string)
+        .split('|')
+        .map((name: string) => name.trim().toLowerCase());
+
+      const CourseData = getCourseChapterIds(
+        CategoryName,
+        CourseChapterNamesArray,
+        ChapterOptions || [],
+        parseInt(quest.Number),
+      );
+
       return {
-        answer: item.answer,
-        value: isCorrect ? 5 : 0,
+        Answers,
+        number: parseInt(quest.Number),
+        question: quest.Question,
+        subCategory: quest.SubCategory,
+        subSubCategory: quest.SubSubCategory,
+        explanation: quest.Explanation,
+        categoryId: CourseData?.categoryId || undefined,
+        courseChapterIds: CourseData?.courseChapterIds || [],
       };
     });
-
-    return {
-      Answers,
-      number: parseInt(quest.Number),
-      question: quest.Question,
-      subCategory: quest.SubCategory,
-      subSubCategory: quest.SubSubCategory,
-      explanation: quest.Explanation,
-      courseChapterIds: [],
-    };
-  });
-  return fixData;
+    return fixData;
+  } catch (error) {
+    responseError(error, true, undefined, undefined, 10000000);
+    return [];
+  }
 };
 
 const handleGenerateQuestion = (
   data: any[],
   correctValue: number,
   wrongValue: number,
+  ChapterOptions: ChapterOptionsType,
 ) => {
-  const fixData: QuestionProps[] = data.map((quest: any) => {
-    const Correct = (quest.Correct as string).toLowerCase();
+  try {
+    // console.log('[Import CSVV] : ', { data });
+    const fixData: QuestionProps[] = data.map((quest: any) => {
+      const Correct = (quest.Correct as string).toLowerCase();
 
-    const getAnswers = [
-      { answer: quest.A as string, value: 0, type: 'a' },
-      { answer: quest.B as string, value: 0, type: 'b' },
-      { answer: quest.C as string, value: 0, type: 'c' },
-      { answer: quest.D as string, value: 0, type: 'd' },
-      { answer: quest.E as string, value: 0, type: 'e' },
-    ];
+      const getAnswers = [
+        { answer: quest.A as string, value: 0, type: 'a' },
+        { answer: quest.B as string, value: 0, type: 'b' },
+        { answer: quest.C as string, value: 0, type: 'c' },
+        { answer: quest.D as string, value: 0, type: 'd' },
+        { answer: quest.E as string, value: 0, type: 'e' },
+      ];
 
-    const Answers: QuestionProps['Answers'] = getAnswers.map((item) => {
-      const isCorrect = item.type === Correct;
+      const Answers: QuestionProps['Answers'] = getAnswers.map((item) => {
+        const isCorrect = item.type === Correct;
+        return {
+          answer: item.answer,
+          value: isCorrect ? correctValue : wrongValue,
+        };
+      });
+
+      const CategoryName = quest?.Category || null;
+      const CourseChapterNamesArray = ((quest?.Chapter || '') as string)
+        .split('|')
+        .map((name: string) => name.trim().toLowerCase());
+
+      const CourseData = getCourseChapterIds(
+        CategoryName,
+        CourseChapterNamesArray,
+        ChapterOptions || [],
+        parseInt(quest.Number),
+      );
+
       return {
-        answer: item.answer,
-        value: isCorrect ? correctValue : wrongValue,
+        Answers,
+        number: parseInt(quest.Number),
+        question: quest.Question,
+        subCategory: quest.SubCategory,
+        subSubCategory: quest.SubSubCategory,
+        explanation: quest.Explanation,
+        categoryId: CourseData?.categoryId || undefined,
+        courseChapterIds: CourseData?.courseChapterIds || [],
       };
     });
-
-    return {
-      Answers,
-      number: parseInt(quest.Number),
-      question: quest.Question,
-      subCategory: quest.SubCategory,
-      subSubCategory: quest.SubSubCategory,
-      explanation: quest.Explanation,
-      courseChapterIds: [],
-    };
-  });
-  return fixData;
+    return fixData;
+  } catch (error) {
+    responseError(error, true, undefined, undefined, 10000000);
+    return [];
+  }
 };
 
 const ParseMarkdownToHTML = async (
@@ -580,4 +675,54 @@ const ParseMarkdownToHTML = async (
   );
 
   return parseQuestionBlockToHTML;
+};
+
+const getCourseChapterIds = (
+  categoryName: string,
+  chapterNameArray: string[],
+  ChapterOptions: ChapterOptionsType,
+  questionNumber: number,
+) => {
+  const matchedCategory = ChapterOptions.find(
+    (chapter) =>
+      chapter.Category.name.toLowerCase() === categoryName.toLowerCase(),
+  )?.Category;
+
+  if (!matchedCategory) {
+    throw throwError(
+      404,
+      `Kategori "${categoryName}" tidak ditemukan pada soal nomor ${questionNumber}`,
+    );
+  }
+
+  const matchedChapters = ChapterOptions.filter((chapter) => {
+    const isCategoryMatch =
+      chapter.Category.name.toLowerCase() === categoryName.toLowerCase();
+    const isChapterMatch = chapterNameArray.includes(
+      chapter.title.toLowerCase(),
+    );
+    const isMatch = isCategoryMatch && isChapterMatch;
+
+    return isMatch;
+  });
+
+  chapterNameArray.forEach((chapterName) => {
+    const isMatched = matchedChapters.find(
+      (chapter) => chapter.title.toLowerCase() === chapterName.toLowerCase(),
+    );
+
+    if (!isMatched) {
+      throw throwError(
+        404,
+        `Chapter "${chapterName}" tidak ditemukan pada soal nomor ${questionNumber}`,
+      );
+    }
+
+    return !isMatched;
+  });
+
+  return {
+    categoryId: matchedCategory.id,
+    courseChapterIds: matchedChapters.map((chapter) => chapter.id),
+  };
 };

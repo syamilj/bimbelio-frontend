@@ -9,7 +9,7 @@ import {
   IconUp,
 } from '@/styles/icon';
 import React, { SetStateAction, useState } from 'react';
-import ModalImportExcel from '../../_component/modal-import-excel';
+import ModalImportCSV from '../../_component/modal-import-excel';
 import { Category, QuestionProps, SessionProps } from '../page';
 import HeadingSessionTryout from './heading-session-tryout';
 import QuestionSessionTryout from './question-session-tryout';
@@ -176,7 +176,7 @@ const SessionOption = ({
           )}
         </div>
         <div className="flex items-center gap-4">
-          <ModalImportExcel
+          <ModalImportCSV
             setSessions={setSessions}
             currentIndexEdit={currentIndexEdit}
             assessmentType={assessmentType}

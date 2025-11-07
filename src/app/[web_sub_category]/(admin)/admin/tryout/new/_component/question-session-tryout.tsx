@@ -927,12 +927,14 @@ const SelectedCourseChapter = ({
       Category: Category;
       CourseSubChapter: CourseSubChapter[];
     })[]
-  >('/course/getCourseUserByCategoryId', {
+  >('/course/getCourseUserByCategoryId?adminPage=true', {
     params: {
       categoryId: currentQuestion.categoryId,
     },
     useEffectDependencies: [currentQuestion.categoryId],
   });
+
+  console.log({ currentQuestion, Categories });
 
   return (
     <div className="bg-white rounded-[.8rem] p-4 flex flex-col gap-4">
