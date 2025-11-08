@@ -24,7 +24,7 @@ const formatDuration = (days: number) => {
 
 export const RenderFeatureTab = () => {
   const {
-    useData: { plan, isCourse, isDocument },
+    useData: { plan, isCourse, isDocument, isPrivate },
   } = useProvider();
   if (
     !plan.PlanSubscription?.PlanFeature ||
@@ -180,22 +180,22 @@ export const RenderFeatureTab = () => {
         <p className="text-xs text-purple-600">
           Akses ke konten dan fitur premium platform
         </p>
-        {plan.PlanSubscription && (
+        {/* {plan.PlanSubscription && (
           <p className="text-xs text-purple-500 mt-1">
             Platform: {plan.PlanSubscription.WebsiteSubCategory?.name}
           </p>
-        )}
+        )} */}
       </div>
 
       {/* Global Access */}
-      {(isCourse || isDocument) && (
+      {(isCourse || isDocument || isPrivate) && (
         <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
           <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
             <Star
               size={14}
               className="text-emerald-600"
             />
-            Global Access - Semua Kategori
+            Global Access
           </h4>
           <div className="space-y-2">
             {isCourse && (
@@ -208,6 +208,12 @@ export const RenderFeatureTab = () => {
               <div className="flex items-center gap-2 text-sm text-emerald-700">
                 <FileText size={14} />
                 <span>✓ Semua Dokumen & Materi tersedia</span>
+              </div>
+            )}
+            {isPrivate && (
+              <div className="flex items-center gap-2 text-sm text-emerald-700">
+                <FileText size={14} />
+                <span>✓ Private Sesion dengan Tutor</span>
               </div>
             )}
           </div>

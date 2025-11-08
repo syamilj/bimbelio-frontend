@@ -532,7 +532,7 @@ export type WebsiteSubCategory = {
 
 export type WebsiteSubCategoryTypeEnum = 'CORE' | 'GENERAL';
 
-export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS';
+export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS' | 'PRIVATE';
 
 export type SubscriptionPending = {
   id: string;

@@ -74,6 +74,7 @@ export default function CreatePlanForm() {
         timelineEnd,
         liveClass,
         materiPremium,
+        privateTalk,
         originalPrice,
         price,
         tier,
@@ -117,7 +118,13 @@ export default function CreatePlanForm() {
       return;
     }
 
-    if (activeTab.feature && !course && !materiPremium && !liveClass) {
+    if (
+      activeTab.feature &&
+      !course &&
+      !materiPremium &&
+      !liveClass &&
+      !privateTalk
+    ) {
       toaster({
         title: 'Error',
         condition: 'warning',
@@ -238,6 +245,7 @@ export default function CreatePlanForm() {
                     .map((item) => item.value)
                     .filter((id) => id.length > 0),
                 },
+                { type: privateTalk ? 'PRIVATE' : null },
               ].filter((item) => item.type),
             }
           : undefined,
@@ -966,7 +974,9 @@ const SectionFeature = () => {
               <MultiSelectContent>
                 <MultiSelectGroup>
                   {webCategoryData.length > 0 &&
-                    webCategoryData[0].WebsiteSubCategory.map((webSub) => (
+                    webCategoryData[0].WebsiteSubCategory.filter(
+                      (item) => item.id !== 'core',
+                    ).map((webSub) => (
                       <MultiSelectItem
                         key={webSub.id}
                         value={webSub.id}
@@ -1024,6 +1034,21 @@ const SectionFeature = () => {
                 className="ml-2"
               >
                 Document
+              </Label>
+            </div>
+            <div className="flex items-center">
+              <Checkbox
+                id="privateTalk"
+                name="privateTalk"
+                onCheckedChange={(value) => {
+                  setValue('privateTalk', value as boolean);
+                }}
+              />
+              <Label
+                htmlFor="privateTalk"
+                className="ml-2"
+              >
+                Private
               </Label>
             </div>
           </div>

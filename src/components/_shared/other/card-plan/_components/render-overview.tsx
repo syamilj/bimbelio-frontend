@@ -24,7 +24,7 @@ import { useProvider } from '../_provider/provider';
 
 export const RenderOverviewTab = () => {
   const {
-    useData: { plan, isCourse, isDocument },
+    useData: { plan, isCourse, isDocument, isPrivate },
     useState: { setShowAllBenefits, showAllBenefits },
   } = useProvider();
 
@@ -135,14 +135,14 @@ export const RenderOverviewTab = () => {
         </div>
 
         {/* Global Access Info */}
-        {(isCourse || isDocument) && (
+        {(isCourse || isDocument || isPrivate) && (
           <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
             <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
               <Star
                 size={14}
                 className="text-emerald-600"
               />
-              Global Access - Semua Kategori
+              Global Access
             </h4>
             <div className="space-y-2">
               {isCourse && (
@@ -157,11 +157,17 @@ export const RenderOverviewTab = () => {
                   <span>✓ Semua Dokumen & Materi tersedia</span>
                 </div>
               )}
+              {isPrivate && (
+                <div className="flex items-center gap-2 text-sm text-emerald-700">
+                  <FileText size={14} />
+                  <span>✓ Private Sesion dengan Tutor</span>
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {(isCourse || isDocument) && (
+        {(isCourse || isDocument || isPrivate) && (
           <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
             <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
               <Calendar

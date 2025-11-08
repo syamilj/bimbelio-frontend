@@ -86,6 +86,10 @@ export function CardPlan({
     plan.PlanSubscription?.PlanFeature?.some(
       (item) => item.type === 'DOCUMENT',
     ) ?? false;
+  const isPrivate =
+    plan.PlanSubscription?.PlanFeature?.some(
+      (item) => item.type === 'PRIVATE',
+    ) ?? false;
 
   // Enhanced marketplace indicators
   const isPopular =
@@ -161,6 +165,7 @@ export function CardPlan({
       plan,
       isCourse,
       isDocument,
+      isPrivate,
       hideFeatures,
     },
   };
