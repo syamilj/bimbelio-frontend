@@ -112,10 +112,11 @@ export function JoinLiveClassModal({
   const timeLeft = useCountdown(startDate);
 
   if (!liveClass) return null;
-
+  const isInvited = liveClass.participantStatus === 'Diundang';
   const isLive = liveClass.status === 'Sedang Berlangsung';
   const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
-  const canJoinNow = isLive || (isUpcoming && timeLeft.canJoinSoon);
+  const canJoinNow =
+    (isLive || (isUpcoming && timeLeft.canJoinSoon)) && isInvited;
 
   const { mutate: AddAttendance } = useMutation(
     '/liveClass/addLiveClassAttendance',
@@ -128,6 +129,9 @@ export function JoinLiveClassModal({
       },
       onSuccess() {
         refetchAttendanceData();
+      },
+      toast: {
+        hideError: true,
       },
     },
   );
@@ -252,10 +256,32 @@ export function JoinLiveClassModal({
           )}
 
           {/* Access Info */}
-          {userEmail && (
+          {liveClass.participantStatus === 'Terdaftar' && (
+            <>
+              <div className="p-3 bg-green-50 border-2 border-green-200 rounded-2xl text-center">
+                <p className="text-sm font-semibold text-green-800 mb-1">
+                  Email Sudah <span className="font-black">Terdaftar</span>
+                </p>
+                <p className="text-xs text-green-700 font-medium">
+                  {userEmail}
+                </p>
+              </div>
+              <div className="p-3 bg-yellow-50 border-2 border-yellow-200 rounded-2xl text-center">
+                <p className="text-sm font-semibold text-yellow-800 mb-1">
+                  Email Belum <span className="font-black">Diundang</span> Admin
+                </p>
+                <p className="text-xs text-yellow-700 font-medium">
+                  {userEmail}
+                </p>
+              </div>
+            </>
+          )}
+
+          {liveClass.participantStatus === 'Diundang' && (
             <div className="p-3 bg-green-50 border-2 border-green-200 rounded-2xl text-center">
-              <p className="text-sm font-bold text-green-800 mb-1">
-                Email Terdaftar
+              <p className="text-sm font-semibold text-green-800 mb-1">
+                Email Sudah <span className="font-black">Terdaftar</span> dan{' '}
+                <span className="font-black">Diundang</span> Admin
               </p>
               <p className="text-xs text-green-700 font-medium">{userEmail}</p>
             </div>

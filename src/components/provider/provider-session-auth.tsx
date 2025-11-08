@@ -34,6 +34,11 @@ export default function ProviderSessionAuth({
 
   useEffect(() => {
     const token = Cookies.get('token');
+    // console.log({ token });
+
+    // if (!token && window.location.pathname.includes('/user')) {
+    //   window.location.pathname = '/';
+    // }
     const urlPathname = window.location.pathname.split('/');
 
     const website_sub_category_id =

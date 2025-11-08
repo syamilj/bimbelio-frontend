@@ -48,6 +48,7 @@ import {
   Loader2,
   PlayCircle,
   Star,
+  UserCheck,
   Users,
   Video,
   Volume2,
@@ -55,6 +56,7 @@ import {
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { DialogLiveClassRegister } from '../../_components/dialog-live-class-register';
 import { JoinLiveClassModal } from '../../_components/join-live-class-modal';
 import { LiveClassRatingsDisplay } from '../../_components/live-class-ratings-display';
 import { RatingModal } from '../../_components/rating-modal';
@@ -120,6 +122,8 @@ export default function LiveClassStudentDetail() {
         attendanceInDataRefetch();
       },
     });
+
+  console.log({ liveClass });
 
   const [isShowAttendance, setIsShowAttendance] = useState<boolean>(false);
 
@@ -659,6 +663,25 @@ export default function LiveClassStudentDetail() {
                     </Button>
                   </RatingModal>
                 )}
+
+                {liveClass.accessType !== 'PREMIUM' &&
+                  liveClass.participantStatus === 'Tidak Terdaftar' && (
+                    <DialogLiveClassRegister
+                      liveClassId={liveClass.id}
+                      onFinish={async () => {
+                        await liveClassRefetch();
+                      }}
+                      liveClassAccessType={liveClass.accessType}
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full rounded-2xl font-bold border-2"
+                      >
+                        <UserCheck className="mr-2 h-4 w-4" />
+                        Daftar
+                      </Button>
+                    </DialogLiveClassRegister>
+                  )}
 
                 {liveClass.link && (
                   <JoinLiveClassModal

@@ -27,6 +27,7 @@ import {
   CourseChapter,
   CourseSubChapter,
   Instructor,
+  LiveClassAccessTypeEnum,
   LiveClassReferenceTypeEnum,
   LiveClassReferenceUrlTypeEnum,
 } from '@/types/database';
@@ -72,6 +73,9 @@ export default function CreateLiveClassForm() {
   const [type, setType] = useState<
     'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR' | undefined
   >();
+
+  const [accessType, setAccessType] =
+    useState<LiveClassAccessTypeEnum>('PREMIUM');
 
   const [agendas, setAgendas] = useState<AgendaType[]>([]);
   const [references, setReferences] = useState<ReferenceType[]>([]);
@@ -137,7 +141,7 @@ export default function CreateLiveClassForm() {
   const { mutate } = useMutation('/liveClass/addLiveClass', 'post');
 
   const validateSubmit = () => {
-    if (selectedPlanIds.length === 0 && type !== 'WEBINAR') {
+    if (selectedPlanIds.length === 0 && accessType === 'PREMIUM') {
       toaster({
         title: 'Error',
         condition: 'warning',
@@ -175,7 +179,7 @@ export default function CreateLiveClassForm() {
         formData.get('record-live-class') === 'on' ? true : false;
 
       const payload = {
-        planIds: type === 'WEBINAR' ? [] : selectedPlanIds,
+        planIds: accessType === 'PREMIUM' ? selectedPlanIds : [],
         liveClass: {
           title,
           categoryId,
@@ -187,6 +191,7 @@ export default function CreateLiveClassForm() {
           isRecord,
           instructorId,
           type,
+          accessType,
         },
         liveClassAgenda: agendas,
         liveClassReference: references,
@@ -292,21 +297,51 @@ export default function CreateLiveClassForm() {
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="description">Deskripsi *</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  placeholder="Jelaskan materi yang akan dibahas dalam live class ini..."
-                  rows={3}
+                <Label htmlFor="accessType">Akses *</Label>
+                <Select
+                  name="accessType"
+                  value={accessType}
+                  onValueChange={(value) =>
+                    value && setAccessType(value as any)
+                  }
                   required
-                />
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih tipe live learning" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(
+                      [
+                        {
+                          id: 'PREMIUM',
+                          name: 'Premium',
+                        },
+                        {
+                          id: 'FREE_WITH_REGISTRATION',
+                          name: 'Gratis dengan registrasi',
+                        },
+                        {
+                          id: 'FREE_NO_REGISTRATION',
+                          name: 'Gratis tanpa registrasi',
+                        },
+                      ] as { id: LiveClassAccessTypeEnum; name: string }[]
+                    )?.map((subject) => (
+                      <SelectItem
+                        key={subject.id}
+                        value={subject.id}
+                      >
+                        {subject.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="type">Tipe Live Learning *</Label>
                 <Select
                   name="type"
                   value={type}
-                  onValueChange={(value) => setType(value as any)}
+                  onValueChange={(value) => value && setType(value as any)}
                   required
                 >
                   <SelectTrigger>
@@ -338,10 +373,20 @@ export default function CreateLiveClassForm() {
                 </Select>
               </div>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Deskripsi *</Label>
+              <Textarea
+                id="description"
+                name="description"
+                placeholder="Jelaskan materi yang akan dibahas dalam live class ini..."
+                rows={3}
+                required
+              />
+            </div>
           </CardContent>
         </Card>
 
-        {type !== 'WEBINAR' && (
+        {accessType === 'PREMIUM' && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
