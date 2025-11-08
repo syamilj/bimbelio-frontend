@@ -6,7 +6,11 @@ export const responseError = (
   showToast?: boolean,
   toastMessage?: string,
   toastTitle?: string,
+  duration?: number,
 ) => {
+  const jsError =
+    typeof error?.message === 'string' ? error?.message : undefined;
+
   if (showToast) {
     toaster({
       title: toastTitle || 'Gagal',
@@ -14,8 +18,9 @@ export const responseError = (
       description:
         toastMessage ||
         (error as any)?.response?.data?.message ||
+        jsError ||
         'Internal Server Error',
-      duration: 2500,
+      duration: duration || 2500,
     });
   }
   console.log({ error });

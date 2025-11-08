@@ -35,6 +35,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Category, Instructor, LiveClass } from '@/types/database';
 import {
+  AccessibilityIcon,
   Clock,
   Copy,
   Edit,
@@ -186,6 +187,9 @@ export function LiveClassTable({
                     Durasi
                   </TableHead>
                   <TableHead className="font-semibold text-gray-700 py-4">
+                    Akses
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700 py-4">
                     Tipe
                   </TableHead>
                   {/* <TableHead className="font-semibold text-gray-700 py-4">
@@ -269,6 +273,12 @@ export function LiveClassTable({
                         <div className="flex items-center gap-1 text-sm text-gray-600">
                           <Clock className="w-4 h-4" />
                           {formatDuration(liveClass.duration)}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1 text-sm text-black-600">
+                          <AccessibilityIcon className="w-4 h-4" />
+                          {liveClass.accessType}
                         </div>
                       </TableCell>
                       {/* <TableCell>

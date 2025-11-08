@@ -34,6 +34,8 @@ export const middleware = async (req: NextRequest) => {
       await res.json();
     const { status, data } = resData;
 
+    console.log('[Session] : ', { resData, token });
+
     if (status !== 200) {
       return NextResponse.redirect(new URL('/', req.url));
     }
@@ -64,6 +66,7 @@ export const config = {
     '/:path*/auth/login',
     '/:path*/auth/signup',
     '/:path*/admin/:path*',
+    '/:path*/user/:path*',
     '/:path*/user/explore/:path*',
     '/:path*/user/explore/:path*',
     '/:path*/user/try-out/:path*',

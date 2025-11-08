@@ -90,36 +90,47 @@ export const CardSubs = ({
               </span>
             </div>{' '}
             <div className="grid grid-cols-5 gap-2">
-              {data.coins.map((coin) => {
-                const item = {
-                  icon:
-                    coin?.name === 'chat'
-                      ? MessageSquare
-                      : coin?.name === 'notes'
-                        ? PenTool
-                        : coin?.name === 'quiz'
-                          ? BookOpen
-                          : coin?.name === 'tryout'
-                            ? FileText
-                            : coin?.name === 'vision'
-                              ? Eye
-                              : PenTool,
-                };
-                return (
-                  <div
-                    className="flex flex-col items-center"
-                    key={coin?.name}
-                  >
-                    <item.icon className="h-5 w-5 mb-1 text-main-default" />
-                    <span className="text-xs text-[#4a5568] font-medium">
-                      {coin?.name}
-                    </span>
-                    <span className="text-sm font-bold text-main-default">
-                      {coin?.total}
-                    </span>
-                  </div>
-                );
-              })}
+              {data.coins
+                .filter((coin) => {
+                  if (
+                    coin?.name === 'validFrom' ||
+                    coin?.name === 'validUntil' ||
+                    coin?.name === 'isTimebound'
+                  ) {
+                    return false;
+                  }
+                  return true;
+                })
+                .map((coin) => {
+                  const item = {
+                    icon:
+                      coin?.name === 'chat'
+                        ? MessageSquare
+                        : coin?.name === 'notes'
+                          ? PenTool
+                          : coin?.name === 'quiz'
+                            ? BookOpen
+                            : coin?.name === 'tryout'
+                              ? FileText
+                              : coin?.name === 'vision'
+                                ? Eye
+                                : PenTool,
+                  };
+                  return (
+                    <div
+                      className="flex flex-col items-center"
+                      key={coin?.name}
+                    >
+                      <item.icon className="h-5 w-5 mb-1 text-main-default" />
+                      <span className="text-xs text-[#4a5568] font-medium">
+                        {coin?.name}
+                      </span>
+                      <span className="text-sm font-bold text-main-default">
+                        {coin?.total}
+                      </span>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         )}

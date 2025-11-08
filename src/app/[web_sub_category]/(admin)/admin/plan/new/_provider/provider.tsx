@@ -46,6 +46,7 @@ type FormDataType = {
   materiPremium: boolean;
   liveClass: boolean;
   liveClassesPerWeek: string;
+  privateTalk: boolean;
   duration?: string;
   timelineStart?: string;
   timelineEnd?: string;
@@ -106,6 +107,7 @@ export default function Provider({ children }: Props) {
       originalPrice: '',
       course: false,
       materiPremium: false,
+      privateTalk: false,
       liveClass: false,
       liveClassesPerWeek: '',
       duration: '',
@@ -123,6 +125,7 @@ export default function Provider({ children }: Props) {
   const originalPrice = formData.watch('originalPrice');
   const course = formData.watch('course');
   const materiPremium = formData.watch('materiPremium');
+  const privateTalk = formData.watch('privateTalk');
   const liveClass = formData.watch('liveClass');
   const liveClassesPerWeek = formData.watch('liveClassesPerWeek');
   const duration = formData.watch('duration');
@@ -144,6 +147,7 @@ export default function Provider({ children }: Props) {
     originalPrice,
     course,
     materiPremium,
+    privateTalk,
     liveClass,
     liveClassesPerWeek,
     duration,
@@ -271,6 +275,7 @@ type ProviderType = {
       originalPrice: string;
       course: boolean;
       materiPremium: boolean;
+      privateTalk: boolean;
       liveClass: boolean;
       liveClassesPerWeek: string;
       duration?: string;

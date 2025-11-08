@@ -89,6 +89,8 @@ export default function ParticipantsPage() {
       participant.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
+  console.log({ filteredParticipants });
+
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
       setSelectedParticipants(filteredParticipants.map((p) => p.email));
@@ -117,6 +119,9 @@ export default function ParticipantsPage() {
     {
       async onSuccess() {
         await ParticipantsRefetch();
+        setIsLoadingInviteUser(null);
+      },
+      onError() {
         setIsLoadingInviteUser(null);
       },
     },

@@ -68,9 +68,15 @@ export type LiveClass = {
   maxParticipant: number | null;
   isRecord: boolean;
   type: LiveClassTypeEnum;
+  accessType: LiveClassAccessTypeEnum;
   websiteSubCategoryId: string;
 };
 export type LiveClassTypeEnum = 'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR';
+
+export type LiveClassAccessTypeEnum =
+  | 'PREMIUM'
+  | 'FREE_NO_REGISTRATION'
+  | 'FREE_WITH_REGISTRATION';
 
 export type LiveClassInvited = {
   id: string;
@@ -526,7 +532,7 @@ export type WebsiteSubCategory = {
 
 export type WebsiteSubCategoryTypeEnum = 'CORE' | 'GENERAL';
 
-export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS';
+export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS' | 'PRIVATE';
 
 export type SubscriptionPending = {
   id: string;

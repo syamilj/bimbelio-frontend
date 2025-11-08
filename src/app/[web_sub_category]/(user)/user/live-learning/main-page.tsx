@@ -32,7 +32,6 @@ import {
   Instructor,
   LiveClass,
   LiveClassAgenda,
-  LiveClassInvited,
   LiveClassReference,
 } from '@/types/database';
 import {
@@ -48,12 +47,14 @@ import {
   Star,
   Target,
   Timer,
+  UserCheck,
   Users,
   Video,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import './_components/_style.css'; // Keep the CSS import here if it's specific to the dashboard layout
+import { DialogLiveClassRegister } from './_components/dialog-live-class-register';
 import { CalendarView } from './_components/live-class-calendar-view';
 import { useCountdown } from './_components/live-class-hooks';
 import {
@@ -79,8 +80,8 @@ export type LiveLearningDataType = LiveClass & {
     name: string;
     subs: string;
     image: string | null;
-    inviteStatus: LiveClassInvited | null;
   }[];
+  isRegistered?: boolean;
 };
 
 export default function LiveLearningDashboard({
@@ -109,6 +110,7 @@ export default function LiveLearningDashboard({
     isLoading: LiveClassAvailableIsLoading,
     error: LiveClassAvailableError,
     totalData: LiveClassAvailableTotalData,
+    refetch: LiveClassAvailableRefetch,
   } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassAvailable', {
     params: {
       type,
@@ -116,7 +118,7 @@ export default function LiveLearningDashboard({
     useEffectDependencies: [type],
   });
 
-  console.log({ LiveClassAvailableTotalData });
+  console.log({ LiveClassAvailableTotalData, LiveClassAvailableIsLoading });
 
   const {
     data: LiveClassCompleted,
@@ -135,11 +137,13 @@ export default function LiveLearningDashboard({
     // isLoading: LiveClassRegisteredIsLoading,
     // error: LiveClassRegisteredError,
     totalData: LiveClassRegisteredTotalData,
+    refetch: LiveClassRegisteredRefetch,
   } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassRegistered', {
     params: {
       type,
     },
-    useEffectDependencies: [type],
+    enabled: LiveClassAvailableIsLoading === false,
+    useEffectDependencies: [type, LiveClassAvailableIsLoading],
   });
 
   const {
@@ -547,6 +551,11 @@ export default function LiveLearningDashboard({
                         onJoin={() => {}}
                         onRate={() => {}}
                         viewMode={viewMode}
+                        isRegistrationStep={true}
+                        onFinishRegistered={async () => {
+                          await LiveClassAvailableRefetch();
+                          await LiveClassRegisteredRefetch();
+                        }}
                       />
                     ))}
                   </div>
@@ -559,71 +568,6 @@ export default function LiveLearningDashboard({
                   />
                 )}
               </>
-
-              // <div className="space-y-6">
-              //   {LiveClassAvailable && LiveClassAvailable?.length > 0 && (
-              //     <div>
-              //       <div className="flex items-center gap-2 mb-4">
-              //         <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-              //           <Video className="w-4 h-4 text-green-600" />
-              //         </div>
-              //         <h3 className="text-lg font-semibold text-green-800">
-              //           ✅ Dapat Diakses ({LiveClassAvailable?.length})
-              //         </h3>
-              //       </div>
-              //       <div
-              //         className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''}`}
-              //       >
-              //         {LiveClassAvailable?.map((liveClass) => (
-              //           <LiveClassCard
-              //             key={liveClass.id}
-              //             liveClass={liveClass}
-              //             onJoin={() => {}}
-              //             onRate={() => {}}
-              //             showPlanInfo={true}
-              //             viewMode={viewMode}
-              //           />
-              //         ))}
-              //       </div>
-              //     </div>
-              //   )}
-
-              //   {LiveClassAvailable && LiveClassAvailable?.length > 0 && (
-              //     <div>
-              //       <div className="flex items-center gap-2 mb-4">
-              //         <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
-              //           <Award className="w-4 h-4 text-orange-600" />
-              //         </div>
-              //         <h3 className="text-lg font-semibold text-orange-800">
-              //           🔒 Perlu Upgrade ({LiveClassAvailable?.length})
-              //         </h3>
-              //       </div>
-              //       <div
-              //         className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''}`}
-              //       >
-              //         {LiveClassAvailable?.map((liveClass) => (
-              //           <LiveClassCard
-              //             key={liveClass.id}
-              //             liveClass={liveClass}
-              //             onJoin={() => {}}
-              //             onRate={() => {}}
-              //             onUpgrade={() => {}}
-              //             showPlanInfo={true}
-              //             viewMode={viewMode}
-              //           />
-              //         ))}
-              //       </div>
-              //     </div>
-              //   )}
-
-              //   {LiveClassAvailable?.length === 0 && (
-              //     <EmptyState
-              //       icon={Crown}
-              //       title="Belum ada live class premium"
-              //       description="Live class premium dengan plan requirements akan muncul di sini. Saat ini belum ada live class yang dikaitkan dengan paket premium."
-              //     />
-              //   )}
-              // </div>
             )}
           </TabsContent>
 
@@ -841,6 +785,8 @@ function LiveClassCard({
   showPlanInfo = false,
   viewMode = 'list',
   variant = 'accessible', // NEW: Default variant
+  isRegistrationStep = false,
+  onFinishRegistered,
 }: {
   liveClass: LiveLearningDataType;
   onJoin: (liveClass: LiveLearningDataType) => void;
@@ -848,7 +794,9 @@ function LiveClassCard({
   onUpgrade?: (liveClass: any) => void;
   showPlanInfo?: boolean;
   viewMode?: 'list' | 'grid' | 'calendar';
-  variant?: 'accessible' | 'preview' | 'locked'; // NEW: Marketing variants
+  variant?: 'accessible' | 'preview' | 'locked';
+  isRegistrationStep?: boolean;
+  onFinishRegistered?: () => Promise<void>;
 }) {
   const liveClassWithAccess = liveClass as any;
   const timeLeft = useCountdown(liveClass.startDate);
@@ -1041,15 +989,6 @@ function LiveClassCard({
                       {liveClass.participants?.length || 0}
                     </div>
                   </div>
-                  {/* {liveClass.ratingStats &&
-                    liveClass.ratingStats.totalRatings > 0 && (
-                      <div className="text-xs text-gray-500 text-center border-l-2 border-gray-200 pl-2">
-                        <Star className="h-3 w-3 mx-auto mb-1 fill-yellow-400 text-yellow-400" />
-                        <div className="font-black text-gray-900">
-                          {liveClass.ratingStats.averageRating.toFixed(1)}
-                        </div>
-                      </div>
-                    )} */}
                   <Link
                     href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
                   >
@@ -1062,6 +1001,31 @@ function LiveClassCard({
                       <span className="hidden sm:inline">Detail</span>
                     </Button>
                   </Link>
+                  {liveClass.accessType === 'PREMIUM' && (
+                    <Badge className="h-10 px-3 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 border-2 border-blue-300 rounded-2xl font-black flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
+                      <Crown className="h-4 w-4 text-blue-600 fill-blue-600" />
+                      <span>Premium</span>
+                    </Badge>
+                  )}
+                  {liveClass.accessType !== 'PREMIUM' &&
+                    isRegistrationStep &&
+                    liveClass.isRegistered === false &&
+                    onFinishRegistered && (
+                      <DialogLiveClassRegister
+                        liveClassId={liveClass.id}
+                        onFinish={onFinishRegistered}
+                        liveClassAccessType={liveClass.accessType}
+                      >
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-10 px-4 bg-transparent border-2 rounded-2xl font-bold"
+                        >
+                          <UserCheck className="mr-1 h-4 w-4" />
+                          <span className="hidden sm:inline">Daftar</span>
+                        </Button>
+                      </DialogLiveClassRegister>
+                    )}
                 </div>
               </div>
             </div>

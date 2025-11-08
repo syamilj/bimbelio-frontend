@@ -124,6 +124,7 @@ export default function UpdatePlanForm() {
         timelineLimitStart,
         liveClass,
         materiPremium,
+        privateTalk,
         originalPrice,
         price,
         tier,
@@ -217,6 +218,9 @@ export default function UpdatePlanForm() {
               if (item.type === 'DOCUMENT') {
                 setValue('materiPremium', true);
               }
+              if (item.type === 'PRIVATE') {
+                setValue('privateTalk', true);
+              }
             });
           }
           if (planData.PlanLimitation) {
@@ -308,7 +312,13 @@ export default function UpdatePlanForm() {
       return;
     }
 
-    if (activeTab.feature && !course && !materiPremium && !liveClass) {
+    if (
+      activeTab.feature &&
+      !course &&
+      !materiPremium &&
+      !liveClass &&
+      !privateTalk
+    ) {
       toaster({
         title: 'Error',
         condition: 'warning',
@@ -428,6 +438,7 @@ export default function UpdatePlanForm() {
                   liveClassesPerWeek: parseInt(liveClassesPerWeek || '0'),
                   liveClassIds: liveClassIds.map((item) => item.value),
                 },
+                { type: privateTalk ? 'PRIVATE' : null },
               ].filter((item) => item.type),
             }
           : undefined,
@@ -1072,9 +1083,11 @@ const SectionFeature = () => {
     },
     useForm: {
       formData: { register, setValue },
-      formDataValues: { course, liveClass, materiPremium },
+      formDataValues: { course, liveClass, materiPremium, privateTalk },
     },
   } = useProvider();
+
+  console.log({ selectedWebSubCategoryIds });
 
   const { webCategoryData } = useWebsiteSubCategory();
 
@@ -1158,7 +1171,9 @@ const SectionFeature = () => {
               <MultiSelectContent>
                 <MultiSelectGroup>
                   {webCategoryData.length > 0 &&
-                    webCategoryData[0].WebsiteSubCategory.map((webSub) => (
+                    webCategoryData[0].WebsiteSubCategory.filter(
+                      (item) => item.id !== 'core',
+                    ).map((webSub) => (
                       <MultiSelectItem
                         key={webSub.id}
                         value={webSub.id}
@@ -1216,6 +1231,22 @@ const SectionFeature = () => {
                 className="ml-2"
               >
                 Document
+              </Label>
+            </div>
+            <div className="flex items-center">
+              <Checkbox
+                id="privateTalk"
+                name="privateTalk"
+                checked={privateTalk}
+                onCheckedChange={(value) => {
+                  setValue('privateTalk', value as boolean);
+                }}
+              />
+              <Label
+                htmlFor="privateTalk"
+                className="ml-2"
+              >
+                Private
               </Label>
             </div>
           </div>

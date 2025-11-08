@@ -19,6 +19,7 @@ type ProviderType = {
     plan: PlanDataType;
     isCourse: boolean;
     isDocument: boolean;
+    isPrivate: boolean;
     hideFeatures: string[];
   };
 };
