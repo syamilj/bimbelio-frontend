@@ -97,9 +97,10 @@ const RestTime = ({
   }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
+    const hours = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs
+    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs
       .toString()
       .padStart(2, '0')}`;
   };
@@ -155,7 +156,7 @@ const RestTime = ({
 
                   {/* Countdown Display */}
                   <div
-                    className="w-32 h-32 mx-auto mb-6 rounded-full flex items-center justify-center text-4xl font-mono font-bold text-white shadow-2xl"
+                    className="w-fit px-4 h-32 mx-auto mb-6 rounded-full flex items-center justify-center text-4xl font-mono font-bold text-white shadow-2xl"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -301,7 +302,7 @@ const RestTime = ({
                       <CheckCircle2 className="w-5 h-5 text-green-600" />
                       <div className="flex-1">
                         <h4 className="font-medium text-green-800">
-                          {session.TryoutCategory.name}
+                          {session.TryoutSubCategory.name}
                         </h4>
                         <p className="text-sm text-green-600">Selesai</p>
                       </div>
@@ -334,7 +335,7 @@ const RestTime = ({
                       <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-600">
-                          {session.TryoutCategory.name}
+                          {session.TryoutSubCategory.name}
                         </h4>
                         <p className="text-sm text-gray-500">Menunggu</p>
                       </div>

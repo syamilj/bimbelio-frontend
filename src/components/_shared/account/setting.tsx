@@ -514,13 +514,18 @@ const HistoryTab = ({ data, mainColor, secondaryColor }: any) => (
                   <Badge
                     className="mt-2 font-bold text-xs rounded-xl"
                     style={{
-                      backgroundColor: item.settlement_time
-                        ? '#10b981'
-                        : '#f59e0b',
+                      backgroundColor:
+                        item.transaction_status === 'SETTLEMENT'
+                          ? '#10b981'
+                          : item.transaction_status === 'PENDING'
+                            ? '#f59e0b'
+                            : item.transaction_status === 'EXPIRE'
+                              ? '#f5260b'
+                              : '#5e5e5e',
                       color: 'white',
                     }}
                   >
-                    {item.settlement_time ? 'Berhasil' : 'Pending'}
+                    {item.transaction_status}
                   </Badge>
                 </div>
               </div>
