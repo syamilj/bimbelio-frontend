@@ -10,14 +10,27 @@ import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { ChatHistory } from '@/types/database';
 import { motion } from 'framer-motion';
 import { BotMessageSquare, Loader2, Plus, SendIcon } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { Dispatch, useEffect, useState } from 'react';
 
+const blacklistPaths = ['/user/try-out'];
+
 export const DialogBimbotAI = () => {
+  const pathname = usePathname();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
   const [isOpen, setIsOpen] = useState(false);
 
+  const isBlocked = blacklistPaths.some((path) => {
+    if (pathname.toLowerCase().includes(path)) {
+      return true;
+    }
+
+    return false;
+  });
+
+  if (isBlocked) return null;
   return (
     <Dialog
       open={isOpen}

@@ -576,17 +576,21 @@ const handleGenerateIRT = (data: any[], ChapterOptions: ChapterOptionsType) => {
         };
       });
 
-      const CategoryName = quest?.Category || null;
-      const CourseChapterNamesArray = ((quest?.Chapter || '') as string)
-        .split('|')
-        .map((name: string) => name.trim().toLowerCase());
+      let CourseData = null;
 
-      const CourseData = getCourseChapterIds(
-        CategoryName,
-        CourseChapterNamesArray,
-        ChapterOptions || [],
-        parseInt(quest.Number),
-      );
+      if (quest?.Chapter) {
+        const CategoryName = quest?.Category || null;
+        const CourseChapterNamesArray = ((quest?.Chapter || '') as string)
+          .split('|')
+          .map((name: string) => name.trim().toLowerCase());
+
+        CourseData = getCourseChapterIds(
+          CategoryName,
+          CourseChapterNamesArray,
+          ChapterOptions || [],
+          parseInt(quest.Number),
+        );
+      }
 
       return {
         Answers,
@@ -633,17 +637,21 @@ const handleGenerateQuestion = (
         };
       });
 
-      const CategoryName = quest?.Category || null;
-      const CourseChapterNamesArray = ((quest?.Chapter || '') as string)
-        .split('|')
-        .map((name: string) => name.trim().toLowerCase());
+      let CourseData = null;
 
-      const CourseData = getCourseChapterIds(
-        CategoryName,
-        CourseChapterNamesArray,
-        ChapterOptions || [],
-        parseInt(quest.Number),
-      );
+      if (quest?.Chapter) {
+        const CategoryName = quest?.Category || null;
+        const CourseChapterNamesArray = ((quest?.Chapter || '') as string)
+          .split('|')
+          .map((name: string) => name.trim().toLowerCase());
+
+        CourseData = getCourseChapterIds(
+          CategoryName,
+          CourseChapterNamesArray,
+          ChapterOptions || [],
+          parseInt(quest.Number),
+        );
+      }
 
       return {
         Answers,
