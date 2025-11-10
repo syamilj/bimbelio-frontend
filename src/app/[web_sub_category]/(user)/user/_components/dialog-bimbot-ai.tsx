@@ -13,7 +13,7 @@ import { BotMessageSquare, Loader2, Plus, SendIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Dispatch, useEffect, useState } from 'react';
 
-const blacklistPaths = ['/user/try-out'];
+const blacklistPaths = ['/user/try-out', '/user/course', '/user/workspace'];
 
 export const DialogBimbotAI = () => {
   const pathname = usePathname();

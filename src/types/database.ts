@@ -448,8 +448,17 @@ export type Transaction = {
   transaction_time: Date;
   expired_time: Date;
   order_id: string;
+  transaction_status: TransactionStatusTypeEnum;
   website_sub_category_id: string | null;
 };
+
+export type TransactionStatusTypeEnum =
+  | 'PENDING'
+  | 'SETTLEMENT'
+  | 'DENY'
+  | 'EXPIRE'
+  | 'CANCEL'
+  | 'FAILURE';
 
 export type Pricing = {
   id: string;
