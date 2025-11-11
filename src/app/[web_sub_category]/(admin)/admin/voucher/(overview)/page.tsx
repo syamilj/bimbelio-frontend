@@ -83,6 +83,9 @@ export default function VoucherPage() {
       Pivot_Voucher_Plan: (Pivot_Voucher_Plan & {
         Plan: Plan;
       })[];
+      _count: {
+        Transaction: number;
+      };
     })[]
   >('/voucher/getAllVoucher', {
     params: {
@@ -92,6 +95,8 @@ export default function VoucherPage() {
     },
     useEffectDependencies: [page, take, searchTerm],
   });
+
+  console.log({ Vouchers });
 
   const { mutate: DeleteVoucher, isLoading: DeleteVoucherIsLoading } =
     useMutation('/voucher/deleteVoucher', 'delete', {
@@ -167,6 +172,7 @@ export default function VoucherPage() {
                   <TableHead>Discount</TableHead>
                   <TableHead>Mulai</TableHead>
                   <TableHead>Berakhir</TableHead>
+                  <TableHead>Digunakan</TableHead>
                   <TableHead>Batas Penggunaan</TableHead>
                   <TableHead>Plan / Subs</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -217,6 +223,9 @@ export default function VoucherPage() {
                         {voucher.endDate
                           ? formatDateTime(voucher.endDate)
                           : '-'}
+                      </TableCell>
+                      <TableCell className="text-black">
+                        {voucher._count.Transaction} kali
                       </TableCell>
                       <TableCell className="text-black">
                         {voucher.usageLimit} kali

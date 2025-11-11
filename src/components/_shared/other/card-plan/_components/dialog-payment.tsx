@@ -117,22 +117,24 @@ export function DialogPayment({
   };
 
   const [discountPrice, setDiscountPrice] = useState<number | null>(null);
-  const { mutate: checkVoucherCode, isLoading } = useMutation<Voucher>(
-    '/voucher/checkVoucherCode',
-    'post',
-    {
-      onSuccess({ data }) {
-        if (!data) return;
-        const type = data.type;
-        const discount = data.discount;
-        if (type === 'Fixed_Amount') {
-          setDiscountPrice(getPriceByDiscountFixedAmount(plan.price, discount));
-        } else if (type === 'Percentage') {
-          setDiscountPrice(getPriceByDiscountPercentage(plan.price, discount));
-        }
-      },
+  const {
+    mutate: checkVoucherCode,
+    isLoading,
+    error,
+  } = useMutation<Voucher>('/voucher/checkVoucherCode', 'post', {
+    onSuccess({ data }) {
+      if (!data) return;
+      const type = data.type;
+      const discount = data.discount;
+      if (type === 'Fixed_Amount') {
+        setDiscountPrice(getPriceByDiscountFixedAmount(plan.price, discount));
+      } else if (type === 'Percentage') {
+        setDiscountPrice(getPriceByDiscountPercentage(plan.price, discount));
+      }
     },
-  );
+  });
+
+  console.log({ error });
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -219,7 +221,7 @@ export function DialogPayment({
       }
 
       pixel.meta.track(
-        'Purchase',
+        'AddToCart',
         {
           contents: [{ id: plan.id, quantity: 1 }], // ✅ Format yang benar untuk Meta
           content_name: plan.name,
@@ -232,7 +234,7 @@ export function DialogPayment({
         advancedMatchingData,
       ); // ✅ Advanced matching data
 
-      pixel.tiktok.track('Purchase', {
+      pixel.tiktok.track('AddToCart', {
         content_id: plan.id, // ✅ FIX: TikTok content_id parameter yang missing
         content_name: plan.name,
         content_type: 'product', // ✅ Tambahan content_type
@@ -523,53 +525,62 @@ export function DialogPayment({
               </div>
 
               <div className="p-4">
-                <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <Input
-                      type="text"
-                      placeholder="Masukkan kode voucher atau promo"
-                      value={voucherCode}
-                      disabled={!!discountPrice}
-                      onChange={(e) =>
-                        setVoucherCode(e.target.value.toUpperCase())
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Input
+                        type="text"
+                        placeholder="Masukkan kode voucher atau promo"
+                        value={voucherCode}
+                        disabled={!!discountPrice}
+                        onChange={(e) =>
+                          setVoucherCode(e.target.value.toUpperCase())
+                        }
+                        className="h-10 text-sm border border-gray-200 focus:border-green-500 rounded-lg pl-8"
+                      />
+                      <Tag
+                        size={14}
+                        className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className={cn(
+                        'h-10 px-4 border rounded-lg text-sm font-medium',
+                        discountPrice
+                          ? 'border-red-200 text-red-600 hover:bg-red-50'
+                          : 'border-green-200 text-green-600 hover:bg-green-50',
+                      )}
+                      onClick={() => {
+                        if (!discountPrice) {
+                          applyVoucherCode(plan.id);
+                        } else {
+                          setDiscountPrice(null);
+                          setVoucherCode('');
+                        }
+                      }}
+                      disabled={
+                        isLoading || (!voucherCode.trim() && !discountPrice)
                       }
-                      className="h-10 text-sm border border-gray-200 focus:border-green-500 rounded-lg pl-8"
-                    />
-                    <Tag
-                      size={14}
-                      className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400"
-                    />
+                    >
+                      {isLoading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : discountPrice ? (
+                        'Hapus'
+                      ) : (
+                        'Terapkan'
+                      )}
+                    </Button>
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className={cn(
-                      'h-10 px-4 border rounded-lg text-sm font-medium',
-                      discountPrice
-                        ? 'border-red-200 text-red-600 hover:bg-red-50'
-                        : 'border-green-200 text-green-600 hover:bg-green-50',
-                    )}
-                    onClick={() => {
-                      if (!discountPrice) {
-                        applyVoucherCode(plan.id);
-                      } else {
-                        setDiscountPrice(null);
-                        setVoucherCode('');
-                      }
-                    }}
-                    disabled={
-                      isLoading || (!voucherCode.trim() && !discountPrice)
-                    }
-                  >
-                    {isLoading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : discountPrice ? (
-                      'Hapus'
-                    ) : (
-                      'Terapkan'
-                    )}
-                  </Button>
+                  {error && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <p className="text-sm text-red-600 font-medium">
+                        ⚠️ {error.message}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Voucher Success State - Compact */}

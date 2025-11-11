@@ -27,7 +27,7 @@ import {
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { getDateString } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
-import { User } from '@/types/database';
+import { TransactionStatusTypeEnum, User } from '@/types/database';
 import { MidtransTransaction } from '@/types/midtrans-type';
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
@@ -168,8 +168,12 @@ export default function Detail() {
                         {formatIDR(transaction.total_amount)}
                       </TableCell>
                       <TableCell>
-                        <Badge className={getStatusColor(transaction.status)}>
-                          {transaction.status}
+                        <Badge
+                          className={getStatusColor(
+                            transaction.transaction_status,
+                          )}
+                        >
+                          {transaction.transaction_status}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-black/70">
@@ -356,14 +360,15 @@ const UserAvatar = ({
     />
   );
 };
-
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: TransactionStatusTypeEnum) => {
   switch (status) {
-    case 'settlement':
+    case 'SETTLEMENT':
       return 'bg-green-100 text-green-700';
-    case 'pending':
+    case 'PENDING':
       return 'bg-yellow-100 text-yellow-700';
-    case 'Failed':
+    case 'FAILURE':
+      return 'bg-red-100 text-red-700';
+    case 'EXPIRE':
       return 'bg-red-100 text-red-700';
     default:
       return 'bg-gray-100 text-gray-700';

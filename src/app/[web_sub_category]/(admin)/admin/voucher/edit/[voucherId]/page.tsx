@@ -73,6 +73,7 @@ export default function CreateVoucher() {
 
   const bundles = plans?.bundles;
   const subscription = plans?.subscriptions;
+  const topping = plans?.topping;
 
   const [selectedPlanIds, setSelectedPlanIds] = useState<string[]>([]);
   const [planType, setPlanType] = useState<'ALL_PLAN' | 'SELECTED_PLAN'>(
@@ -414,6 +415,35 @@ export default function CreateVoucher() {
                     </Label>
                     <div className="flex justify-start gap-4 flex-wrap">
                       {subscription?.map((item) => {
+                        const isSelected = selectedPlanIds.some(
+                          (id) => id === item.id,
+                        );
+                        return (
+                          <CardSubs
+                            key={item.id}
+                            data={item}
+                            onClick={() => {
+                              if (!isSelected) {
+                                setSelectedPlanIds((prev) => [
+                                  ...prev,
+                                  item.id,
+                                ]);
+                              } else {
+                                setSelectedPlanIds((prev) =>
+                                  prev.filter((id) => id !== item.id),
+                                );
+                              }
+                            }}
+                            isSelected={isSelected}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <Label className="text-xl font-semibold">Koin</Label>
+                    <div className="flex justify-start gap-4 flex-wrap">
+                      {topping?.map((item) => {
                         const isSelected = selectedPlanIds.some(
                           (id) => id === item.id,
                         );

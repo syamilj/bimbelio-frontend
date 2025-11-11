@@ -183,7 +183,7 @@ export function DialogPayment({
       // ✅ ENRICHED PURCHASE EVENT DATA - Konsisten dengan card-plan
       const purchaseValue = discountPrice || plan.price;
 
-      pixel.meta.track('Purchase', {
+      pixel.meta.track('AddToCart', {
         contents: [{ id: plan.id, quantity: 1 }], // ✅ Format yang benar untuk Meta
         content_name: plan.name,
         content_type: 'product',
@@ -193,7 +193,7 @@ export function DialogPayment({
         order_id: res?.data?.order_id || `coin_order_${Date.now()}`,
       });
 
-      pixel.tiktok.track('Purchase', {
+      pixel.tiktok.track('AddToCart', {
         content_id: plan.id, // ✅ FIX: TikTok content_id parameter yang missing
         content_name: plan.name,
         content_type: 'product', // ✅ Tambahan content_type

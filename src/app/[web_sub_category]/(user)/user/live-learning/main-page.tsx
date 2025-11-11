@@ -998,7 +998,7 @@ function LiveClassCard({
                       className="h-10 ml-2 px-4 bg-transparent border-2 rounded-2xl font-bold"
                     >
                       <Eye className="mr-1 h-4 w-4" />
-                      <span className="hidden sm:inline">Detail</span>
+                      <span className="inline">Detail</span>
                     </Button>
                   </Link>
                   {liveClass.accessType === 'PREMIUM' && (
@@ -1022,9 +1022,22 @@ function LiveClassCard({
                           className="h-10 px-4 bg-transparent border-2 rounded-2xl font-bold"
                         >
                           <UserCheck className="mr-1 h-4 w-4" />
-                          <span className="hidden sm:inline">Daftar</span>
+                          <span className="inline">Daftar</span>
                         </Button>
                       </DialogLiveClassRegister>
+                    )}
+                  {liveClass.accessType !== 'PREMIUM' &&
+                    isRegistrationStep &&
+                    liveClass.isRegistered === true &&
+                    onFinishRegistered && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-10 px-4 bg-green-50 border-2 border-green-300 text-green-700 hover:bg-green-100 rounded-2xl font-bold"
+                      >
+                        <UserCheck className="mr-1 h-4 w-4" />
+                        <span className="inline">Terdaftar</span>
+                      </Button>
                     )}
                 </div>
               </div>
