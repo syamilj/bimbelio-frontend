@@ -32,7 +32,6 @@ import {
   Instructor,
   LiveClass,
   LiveClassAgenda,
-  LiveClassInvited,
   LiveClassReference,
 } from '@/types/database';
 import {
@@ -48,12 +47,14 @@ import {
   Star,
   Target,
   Timer,
+  UserCheck,
   Users,
   Video,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import './_components/_style.css'; // Keep the CSS import here if it's specific to the dashboard layout
+import { DialogLiveClassRegister } from './_components/dialog-live-class-register';
 import { CalendarView } from './_components/live-class-calendar-view';
 import { useCountdown } from './_components/live-class-hooks';
 import {
@@ -64,7 +65,7 @@ import {
   PreviewContent,
 } from './_components/live-class-shared-components';
 
-export type LiveClassAvailableType = LiveClass & {
+export type LiveLearningDataType = LiveClass & {
   Instructor: Instructor;
   Category: Category;
   LiveClassReference: (LiveClassReference & {
@@ -79,11 +80,11 @@ export type LiveClassAvailableType = LiveClass & {
     name: string;
     subs: string;
     image: string | null;
-    inviteStatus: LiveClassInvited | null;
   }[];
+  isRegistered?: boolean;
 };
 
-export default function LiveClassStudentDashboard() {
+export default function LiveLearningDashboard() {
   // === DESIGN SYSTEM PATTERNS FROM LEADERBOARD ===
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -105,16 +106,19 @@ export default function LiveClassStudentDashboard() {
     isLoading: LiveClassAvailableIsLoading,
     error: LiveClassAvailableError,
     totalData: LiveClassAvailableTotalData,
-  } = useGet<LiveClassAvailableType[]>('/liveClass/getAllLiveClassAvailable', {
+    refetch: LiveClassAvailableRefetch,
+  } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassAvailable', {
     params: { take: 100, page: 1 },
   });
+
+  console.log({ LiveClassAvailableTotalData, LiveClassAvailableIsLoading });
 
   const {
     data: LiveClassCompleted,
     // isLoading: LiveClassCompletedIsLoading,
     // error: LiveClassCompletedError,
     totalData: LiveClassCompletedTotalData,
-  } = useGet<LiveClassAvailableType[]>('/liveClass/getAllLiveClassCompleted', {
+  } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassCompleted', {
     params: { take: 100, page: 1 },
   });
 
@@ -123,8 +127,11 @@ export default function LiveClassStudentDashboard() {
     // isLoading: LiveClassRegisteredIsLoading,
     // error: LiveClassRegisteredError,
     totalData: LiveClassRegisteredTotalData,
-  } = useGet<LiveClassAvailableType[]>('/user/getUserLiveClassRegistered', {
+    refetch: LiveClassRegisteredRefetch,
+  } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassRegistered', {
     params: { take: 100, page: 1 },
+    enabled: LiveClassAvailableIsLoading === false,
+    useEffectDependencies: [LiveClassAvailableIsLoading],
   });
 
   const {
@@ -132,11 +139,18 @@ export default function LiveClassStudentDashboard() {
     // isLoading: LiveClassInvitedIsLoading,
     // error: LiveClassInvitedError,
     totalData: LiveClassInviteTotalData,
-  } = useGet<LiveClassAvailableType[]>('/user/getUserLiveClassInvited', {
+  } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassInvited', {
     params: { take: 100, page: 1 },
   });
 
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
+
+  console.log({
+    LiveClassAvailable,
+    LiveClassRegistered,
+    LiveClassCompleted,
+    LiveClassInvited,
+  });
 
   useEffect(() => {
     pixel.meta.track(
@@ -175,11 +189,8 @@ export default function LiveClassStudentDashboard() {
             <div className="relative z-10">
               <CardTitle className="text-3xl font-black flex items-center gap-4 text-gray-900">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border-2"
-                  style={{
-                    backgroundColor: `${mainColor}15`,
-                    borderColor: `${mainColor}30`,
-                  }}
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+                  style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <PlayCircle
                     className="w-6 h-6"
@@ -190,63 +201,17 @@ export default function LiveClassStudentDashboard() {
               </CardTitle>
               <CardDescription className="text-lg mt-3 text-gray-500 font-medium">
                 Ikuti kelas langsung dengan tutor ahli dan tingkatkan persiapan
-                ujian Kamu
+                ujian Anda
               </CardDescription>
             </div>
           </CardHeader>
           {/* STATS CARDS - LEADERBOARD PATTERN */}
           <CardContent className="p-6">
-            {/* <div className="grid gap-4 md:gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
-              <StatsCard
-                title="Total Kelas"
-                value={liveClasses.length}
-                description="Kelas tersedia untuk Kamu"
-                icon={BookOpen}
-                gradient="from-blue-500 to-blue-600"
-                bgColor="bg-blue-50"
-                borderColor="border-blue-200"
-                textColor="text-blue-700"
-              />
-              <StatsCard
-                title="Diundang"
-                value={invitedClasses.length}
-                description="Siap untuk diikuti"
-                icon={Video}
-                gradient="from-green-500 to-green-600"
-                bgColor="bg-green-50"
-                borderColor="border-green-200"
-                textColor="text-green-700"
-              />
-              <StatsCard
-                title="Terdaftar"
-                value={registeredClasses.length}
-                description="Menunggu undangan"
-                icon={Users}
-                gradient="from-yellow-500 to-yellow-600"
-                bgColor="bg-yellow-50"
-                borderColor="border-yellow-200"
-                textColor="text-yellow-700"
-              />
-              <StatsCard
-                title="Live Now"
-                value={
-                  liveClasses.filter((lc) => lc.status === 'Sedang Berlangsung')
-                    .length
-                }
-                description="Sedang berlangsung"
-                icon={Zap}
-                gradient="from-red-500 to-red-600"
-                bgColor="bg-red-50"
-                borderColor="border-red-200"
-                textColor="text-red-700"
-              />
-            </div> */}
-            {/* Quick Actions for Upcoming Classes */}
             <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200">
               <div className="flex items-center gap-2 mb-3">
                 <Timer className="w-5 h-5 text-blue-600" />
                 <h3 className="text-lg font-black text-blue-900">
-                  Kelas Mendatang
+                  Live Learning Mendatang
                 </h3>
               </div>
               <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -261,7 +226,7 @@ export default function LiveClassStudentDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="mb-6 border-2 border-gray-100 rounded-3xl shadow-sm">
+        <Card className="mb-6 border-2 border-gray-100 rounded-2xl shadow-sm">
           <CardContent className="p-4">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-4">
@@ -322,8 +287,8 @@ export default function LiveClassStudentDashboard() {
                         onClick={() => setViewMode('list')}
                         className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
                           viewMode === 'list'
-                            ? 'bg-white text-gray-900 shadow-sm border-2 border-gray-200'
-                            : 'text-gray-600 hover:text-gray-900 border-2 border-transparent'
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-600 hover:text-gray-900'
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -335,8 +300,8 @@ export default function LiveClassStudentDashboard() {
                         onClick={() => setViewMode('grid')}
                         className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
                           viewMode === 'grid'
-                            ? 'bg-white text-gray-900 shadow-sm border-2 border-gray-200'
-                            : 'text-gray-600 hover:text-gray-900 border-2 border-transparent'
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-600 hover:text-gray-900'
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -348,8 +313,8 @@ export default function LiveClassStudentDashboard() {
                         onClick={() => setViewMode('calendar')}
                         className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
                           viewMode === 'calendar'
-                            ? 'bg-white text-gray-900 shadow-sm border-2 border-gray-200'
-                            : 'text-gray-600 hover:text-gray-900 border-2 border-transparent'
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-600 hover:text-gray-900'
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -421,10 +386,14 @@ export default function LiveClassStudentDashboard() {
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline font-bold">
-                LiveClass Tersedia
+                Live Learning Tersedia
               </span>
               <span className="sm:hidden font-bold">Semua</span>
-              <NotificationBadge count={LiveClassAvailableTotalData || 0} />
+              <NotificationBadge
+                count={
+                  LiveClassAvailableTotalData || LiveClassAvailable?.length || 0
+                }
+              />
             </TabsTrigger>
             <TabsTrigger
               value="registered"
@@ -440,7 +409,11 @@ export default function LiveClassStudentDashboard() {
               <span className="hidden sm:inline font-bold">Terdaftar</span>
               <span className="sm:hidden font-bold">Daftar</span>
               <NotificationBadge
-                count={LiveClassRegisteredTotalData}
+                count={
+                  LiveClassRegisteredTotalData ||
+                  LiveClassRegistered?.length ||
+                  0
+                }
                 variant="yellow"
               />
             </TabsTrigger>
@@ -458,7 +431,9 @@ export default function LiveClassStudentDashboard() {
               <span className="hidden sm:inline font-bold">Diundang</span>
               <span className="sm:hidden font-bold">Live</span>
               <NotificationBadge
-                count={LiveClassInviteTotalData}
+                count={
+                  LiveClassInviteTotalData || LiveClassInvited?.length || 0
+                }
                 variant="green"
               />
             </TabsTrigger>
@@ -476,7 +451,9 @@ export default function LiveClassStudentDashboard() {
               <span className="hidden sm:inline font-bold">Selesai</span>
               <span className="sm:hidden font-bold">Selesai</span>
               <NotificationBadge
-                count={LiveClassCompletedTotalData || 0}
+                count={
+                  LiveClassCompletedTotalData || LiveClassCompleted?.length || 0
+                }
                 variant="green"
               />
             </TabsTrigger>
@@ -503,11 +480,11 @@ export default function LiveClassStudentDashboard() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-black text-orange-900 mb-2">
+                <h3 className="text-lg font-semibold text-orange-800 mb-2">
                   Fitur Multi-Plan Tidak Tersedia
                 </h3>
-                <p className="text-orange-700 font-medium">
-                  Terjadi kesalahan saat memuat data multi-plan. Kamu masih
+                <p className="text-orange-600">
+                  Terjadi kesalahan saat memuat data multi-plan. Anda masih
                   dapat menggunakan tab lain.
                 </p>
               </div>
@@ -516,11 +493,11 @@ export default function LiveClassStudentDashboard() {
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="border-2 border-gray-100 rounded-2xl p-4 animate-pulse"
+                    className="border rounded-lg p-4 animate-pulse"
                   >
-                    <div className="h-6 bg-gray-200 rounded-xl w-48 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded-xl w-full mb-4"></div>
-                    <div className="h-10 bg-gray-200 rounded-2xl w-24"></div>
+                    <div className="h-6 bg-gray-200 rounded w-48 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full mb-4"></div>
+                    <div className="h-10 bg-gray-200 rounded w-24"></div>
                   </div>
                 ))}
               </div>
@@ -544,6 +521,11 @@ export default function LiveClassStudentDashboard() {
                         onJoin={() => {}}
                         onRate={() => {}}
                         viewMode={viewMode}
+                        isRegistrationStep={true}
+                        onFinishRegistered={async () => {
+                          await LiveClassAvailableRefetch();
+                          await LiveClassRegisteredRefetch();
+                        }}
                       />
                     ))}
                   </div>
@@ -556,71 +538,6 @@ export default function LiveClassStudentDashboard() {
                   />
                 )}
               </>
-
-              // <div className="space-y-6">
-              //   {LiveClassAvailable && LiveClassAvailable?.length > 0 && (
-              //     <div>
-              //       <div className="flex items-center gap-2 mb-4">
-              //         <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-              //           <Video className="w-4 h-4 text-green-600" />
-              //         </div>
-              //         <h3 className="text-lg font-semibold text-green-800">
-              //           ✅ Dapat Diakses ({LiveClassAvailable?.length})
-              //         </h3>
-              //       </div>
-              //       <div
-              //         className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''}`}
-              //       >
-              //         {LiveClassAvailable?.map((liveClass) => (
-              //           <LiveClassCard
-              //             key={liveClass.id}
-              //             liveClass={liveClass}
-              //             onJoin={() => {}}
-              //             onRate={() => {}}
-              //             showPlanInfo={true}
-              //             viewMode={viewMode}
-              //           />
-              //         ))}
-              //       </div>
-              //     </div>
-              //   )}
-
-              //   {LiveClassAvailable && LiveClassAvailable?.length > 0 && (
-              //     <div>
-              //       <div className="flex items-center gap-2 mb-4">
-              //         <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
-              //           <Award className="w-4 h-4 text-orange-600" />
-              //         </div>
-              //         <h3 className="text-lg font-semibold text-orange-800">
-              //           🔒 Perlu Upgrade ({LiveClassAvailable?.length})
-              //         </h3>
-              //       </div>
-              //       <div
-              //         className={`grid gap-4 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : ''}`}
-              //       >
-              //         {LiveClassAvailable?.map((liveClass) => (
-              //           <LiveClassCard
-              //             key={liveClass.id}
-              //             liveClass={liveClass}
-              //             onJoin={() => {}}
-              //             onRate={() => {}}
-              //             onUpgrade={() => {}}
-              //             showPlanInfo={true}
-              //             viewMode={viewMode}
-              //           />
-              //         ))}
-              //       </div>
-              //     </div>
-              //   )}
-
-              //   {LiveClassAvailable?.length === 0 && (
-              //     <EmptyState
-              //       icon={Crown}
-              //       title="Belum ada live class premium"
-              //       description="Live class premium dengan plan requirements akan muncul di sini. Saat ini belum ada live class yang dikaitkan dengan paket premium."
-              //     />
-              //   )}
-              // </div>
             )}
           </TabsContent>
 
@@ -653,7 +570,7 @@ export default function LiveClassStudentDashboard() {
               <EmptyState
                 icon={Users}
                 title="Belum ada kelas terdaftar"
-                description="Kelas yang sudah Kamu daftarkan akan muncul di sini."
+                description="Kelas yang sudah Anda daftarkan akan muncul di sini."
               />
             )}
           </TabsContent>
@@ -744,25 +661,25 @@ export default function LiveClassStudentDashboard() {
   );
 }
 
-const UpcomingCard = ({ liveClass }: { liveClass: LiveClassAvailableType }) => {
+const UpcomingCard = ({ liveClass }: { liveClass: LiveLearningDataType }) => {
   const timeLeft = useCountdown(liveClass.startDate);
 
   return (
-    <div className="quick-action-card bg-white rounded-2xl border-2 border-gray-100 p-3 hover:shadow-md transition-shadow shadow-sm">
+    <div className="quick-action-card bg-white rounded-lg border p-3 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-2">
-        <h4 className="font-black text-sm line-clamp-2 flex-1 pr-2 text-gray-900">
+        <h4 className="font-semibold text-sm line-clamp-2 flex-1 pr-2">
           {liveClass.title}
         </h4>
         <div className="flex flex-col items-end gap-1">
-          <Badge className="status-badge text-xs bg-blue-100 text-blue-800 border-2 border-blue-300 shrink-0 font-bold rounded-xl">
+          <Badge className="status-badge text-xs bg-blue-100 text-blue-800 border-blue-300 shrink-0">
             {liveClass.status}
           </Badge>
-          <div className="text-xs font-mono text-gray-500 font-bold">
+          <div className="text-xs font-mono text-gray-500">
             #{liveClass.id.slice(-6).toUpperCase()}
           </div>
         </div>
       </div>
-      <div className="text-xs text-gray-600 mb-2 font-medium">
+      <div className="text-xs text-gray-600 mb-2">
         <div className="flex items-center gap-1 mb-1">
           <Clock className="h-3 w-3" />
           <span>{formatDateTime(liveClass.startDate)}</span>
@@ -774,27 +691,25 @@ const UpcomingCard = ({ liveClass }: { liveClass: LiveClassAvailableType }) => {
       </div>
       {!timeLeft.isExpired && (
         <div className="mb-3">
-          <div className="text-xs text-gray-500 mb-1 font-bold">
-            Dimulai dalam:
-          </div>
+          <div className="text-xs text-gray-500 mb-1">Dimulai dalam:</div>
           <div className="flex gap-1">
             {timeLeft.days > 0 && (
-              <div className="bg-gray-100 rounded-xl px-2 py-1 border-2 border-gray-200">
-                <div className="text-xs font-black">{timeLeft.days}</div>
-                <div className="text-xs text-gray-500 font-bold">hari</div>
+              <div className="bg-gray-100 rounded px-2 py-1">
+                <div className="text-xs font-bold">{timeLeft.days}</div>
+                <div className="text-xs text-gray-500">hari</div>
               </div>
             )}
-            <div className="bg-gray-100 rounded-xl px-2 py-1 border-2 border-gray-200">
-              <div className="text-xs font-black">
+            <div className="bg-gray-100 rounded px-2 py-1">
+              <div className="text-xs font-bold">
                 {timeLeft.hours.toString().padStart(2, '0')}
               </div>
-              <div className="text-xs text-gray-500 font-bold">jam</div>
+              <div className="text-xs text-gray-500">jam</div>
             </div>
-            <div className="bg-gray-100 rounded-xl px-2 py-1 border-2 border-gray-200">
-              <div className="text-xs font-black">
+            <div className="bg-gray-100 rounded px-2 py-1">
+              <div className="text-xs font-bold">
                 {timeLeft.minutes.toString().padStart(2, '0')}
               </div>
-              <div className="text-xs text-gray-500 font-bold">mnt</div>
+              <div className="text-xs text-gray-500">mnt</div>
             </div>
           </div>
         </div>
@@ -822,7 +737,7 @@ const UpcomingCard = ({ liveClass }: { liveClass: LiveClassAvailableType }) => {
           <Button
             variant="outline"
             size="sm"
-            className="h-7 px-2 bg-transparent border-2 rounded-2xl font-bold"
+            className="h-7 px-2 bg-transparent"
           >
             <Eye className="h-3 w-3" />
           </Button>
@@ -840,14 +755,18 @@ function LiveClassCard({
   showPlanInfo = false,
   viewMode = 'list',
   variant = 'accessible', // NEW: Default variant
+  isRegistrationStep = false,
+  onFinishRegistered,
 }: {
-  liveClass: LiveClassAvailableType;
-  onJoin: (liveClass: LiveClassAvailableType) => void;
-  onRate: (liveClass: LiveClassAvailableType) => void;
+  liveClass: LiveLearningDataType;
+  onJoin: (liveClass: LiveLearningDataType) => void;
+  onRate: (liveClass: LiveLearningDataType) => void;
   onUpgrade?: (liveClass: any) => void;
   showPlanInfo?: boolean;
   viewMode?: 'list' | 'grid' | 'calendar';
-  variant?: 'accessible' | 'preview' | 'locked'; // NEW: Marketing variants
+  variant?: 'accessible' | 'preview' | 'locked';
+  isRegistrationStep?: boolean;
+  onFinishRegistered?: () => Promise<void>;
 }) {
   const liveClassWithAccess = liveClass as any;
   const timeLeft = useCountdown(liveClass.startDate);
@@ -1040,17 +959,8 @@ function LiveClassCard({
                       {liveClass.participants?.length || 0}
                     </div>
                   </div>
-                  {/* {liveClass.ratingStats &&
-                    liveClass.ratingStats.totalRatings > 0 && (
-                      <div className="text-xs text-gray-500 text-center border-l-2 border-gray-200 pl-2">
-                        <Star className="h-3 w-3 mx-auto mb-1 fill-yellow-400 text-yellow-400" />
-                        <div className="font-black text-gray-900">
-                          {liveClass.ratingStats.averageRating.toFixed(1)}
-                        </div>
-                      </div>
-                    )} */}
                   <Link
-                    href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
+                    href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
                   >
                     <Button
                       variant="outline"
@@ -1058,9 +968,47 @@ function LiveClassCard({
                       className="h-10 ml-2 px-4 bg-transparent border-2 rounded-2xl font-bold"
                     >
                       <Eye className="mr-1 h-4 w-4" />
-                      <span className="hidden sm:inline">Detail</span>
+                      <span className="inline">Detail</span>
                     </Button>
                   </Link>
+                  {liveClass.accessType === 'PREMIUM' && (
+                    <Badge className="h-10 px-3 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 border-2 border-blue-300 rounded-2xl font-black flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
+                      <Crown className="h-4 w-4 text-blue-600 fill-blue-600" />
+                      <span>Premium</span>
+                    </Badge>
+                  )}
+                  {liveClass.accessType !== 'PREMIUM' &&
+                    isRegistrationStep &&
+                    liveClass.isRegistered === false &&
+                    onFinishRegistered && (
+                      <DialogLiveClassRegister
+                        liveClassId={liveClass.id}
+                        onFinish={onFinishRegistered}
+                        liveClassAccessType={liveClass.accessType}
+                      >
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-10 px-4 bg-transparent border-2 rounded-2xl font-bold"
+                        >
+                          <UserCheck className="mr-1 h-4 w-4" />
+                          <span className="inline">Daftar</span>
+                        </Button>
+                      </DialogLiveClassRegister>
+                    )}
+                  {liveClass.accessType !== 'PREMIUM' &&
+                    isRegistrationStep &&
+                    liveClass.isRegistered === true &&
+                    onFinishRegistered && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-10 px-4 bg-green-50 border-2 border-green-300 text-green-700 hover:bg-green-100 rounded-2xl font-bold"
+                      >
+                        <UserCheck className="mr-1 h-4 w-4" />
+                        <span className="inline">Terdaftar</span>
+                      </Button>
+                    )}
                 </div>
               </div>
             </div>
@@ -1075,16 +1023,16 @@ function LiveClassCard({
     <Card className="hover:shadow-md transition-all duration-500 border-2 border-gray-100 rounded-3xl overflow-hidden cursor-pointer group bg-white hover:border-blue-200 shadow-sm">
       <CardContent className="p-0">
         {/* Modern Header with Floating Elements */}
-        <div className="relative bg-linear-to-r from-slate-50 via-blue-50 to-indigo-50 p-6">
+        <div className="relative bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-50 p-6">
           {/* Floating Status Elements */}
           <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
             <Badge
-              className={`status-badge ${getStatusColor(liveClass.status)} shadow-lg backdrop-blur-sm`}
+              className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm backdrop-blur-sm font-bold text-xs rounded-xl`}
             >
               {liveClass.status}
             </Badge>
             {isLive && (
-              <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-lg animate-pulse">
+              <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-xl text-xs font-black shadow-sm animate-pulse">
                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                 LIVE
               </div>
@@ -1093,9 +1041,9 @@ function LiveClassCard({
           <div className="flex items-start gap-4 pr-16">
             {/* Instructor Avatar - Larger and more prominent */}
             <div className="relative shrink-0">
-              <Avatar className="h-16 w-16 border-3 border-white shadow-lg ring-2 ring-blue-100">
+              <Avatar className="h-16 w-16 border-3 border-white shadow-sm ring-2 ring-blue-100">
                 <AvatarImage src={liveClass.Instructor.image || undefined} />
-                <AvatarFallback className="text-lg font-bold bg-linear-to-br from-blue-400 to-indigo-500 text-white">
+                <AvatarFallback className="text-lg font-black bg-gradient-to-br from-blue-400 to-indigo-500 text-white">
                   {liveClass.Instructor.name
                     .split(' ')
                     .map((n) => n[0])
@@ -1103,7 +1051,7 @@ function LiveClassCard({
                 </AvatarFallback>
               </Avatar>
               {liveClass.Instructor.certificate && (
-                <div className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1 shadow-lg">
+                <div className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1 shadow-sm">
                   <Award className="h-3 w-3" />
                 </div>
               )}
@@ -1113,31 +1061,31 @@ function LiveClassCard({
               <div className="mb-2">
                 <Badge
                   variant="outline"
-                  className="text-xs font-mono bg-white/80 text-gray-600 border-gray-300"
+                  className="text-xs font-mono bg-white/80 text-gray-600 border-2 border-gray-300 font-bold rounded-xl"
                 >
                   #{liveClass.id.slice(-6).toUpperCase()}
                 </Badge>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors leading-tight">
+              <h3 className="text-xl font-black text-gray-900 line-clamp-2 mb-2 group-hover:text-blue-600 transition-colors leading-tight">
                 {liveClass.title}
               </h3>
               {/* Instructor Info - Elegant layout */}
               <div className="flex items-center gap-3 mb-3">
                 <div>
-                  <p className="font-semibold text-gray-800 text-base line-clamp-1">
+                  <p className="font-black text-gray-900 text-base line-clamp-1">
                     {liveClass.Instructor.name}
                   </p>
                   <div className="flex items-center gap-2 mt-1">
                     {liveClass.Instructor.certificate && (
                       <span
-                        className={`text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium border border-green-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
+                        className={`text-xs px-2 py-1 bg-green-100 text-green-700 rounded-xl font-bold border-2 border-green-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
                       >
                         ✓ {liveClass.Instructor.certificate}
                       </span>
                     )}
                     {liveClass.Instructor.lastEducation && (
                       <span
-                        className={`text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-medium border border-blue-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
+                        className={`text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-xl font-bold border-2 border-blue-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
                       >
                         🎓 {liveClass.Instructor.lastEducation}
                       </span>
@@ -1148,27 +1096,27 @@ function LiveClassCard({
               {/* Time Information - Clean layout */}
               <div className="flex items-center gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-2xl bg-blue-100 flex items-center justify-center border-2 border-blue-200">
                     <Calendar className="h-4 w-4 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase font-medium">
+                    <p className="text-xs text-gray-500 uppercase font-bold">
                       Tanggal
                     </p>
-                    <p className="font-semibold text-gray-800">
+                    <p className="font-black text-gray-900">
                       {formatDateTime(liveClass.startDate)}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-2xl bg-purple-100 flex items-center justify-center border-2 border-purple-200">
                     <Clock className="h-4 w-4 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase font-medium">
+                    <p className="text-xs text-gray-500 uppercase font-bold">
                       Durasi
                     </p>
-                    <p className="font-semibold text-gray-800">
+                    <p className="font-black text-gray-900">
                       {formatDuration(liveClass.duration)}
                     </p>
                   </div>
@@ -1178,8 +1126,8 @@ function LiveClassCard({
           </div>
           {/* Countdown Timer - Modern design */}
           {isUpcoming && !timeLeft.isExpired && (
-            <div className="mt-4 bg-white/90 backdrop-blur-sm rounded-xl p-4 border border-white/50 shadow-sm">
-              <div className="text-xs text-gray-600 mb-2 text-center font-medium uppercase tracking-wide">
+            <div className="mt-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 border-2 border-white/50 shadow-sm">
+              <div className="text-xs text-gray-600 mb-2 text-center font-black uppercase tracking-wide">
                 Dimulai dalam
               </div>
               <div className="flex justify-center">
@@ -1191,13 +1139,13 @@ function LiveClassCard({
           {!isUpcoming && (
             <div className="mt-4 flex justify-center">
               {isLive && (
-                <div className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg flex items-center gap-2">
+                <div className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-red-600">
                   <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                   Sedang Berlangsung
                 </div>
               )}
               {liveClass.status === 'Selesai' && (
-                <div className="bg-gray-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg flex items-center gap-2">
+                <div className="bg-gray-600 text-white px-4 py-2 rounded-2xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-gray-700">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                   Kelas Selesai
                 </div>
@@ -1207,7 +1155,7 @@ function LiveClassCard({
         </div>
         {/* Content Section - Cleaner layout */}
         <div className="p-6">
-          <p className="text-gray-600 text-sm mb-5 line-clamp-2 leading-relaxed">
+          <p className="text-gray-500 text-sm mb-5 line-clamp-2 leading-relaxed font-medium">
             {liveClass.description}
           </p>
 
@@ -1221,12 +1169,12 @@ function LiveClassCard({
               {/* Agenda Items - Modern card */}
               {liveClass.LiveClassAgenda &&
                 liveClass.LiveClassAgenda.length > 0 && (
-                  <div className="bg-linear-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border-2 border-blue-200">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-lg bg-blue-500 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-2xl bg-blue-500 flex items-center justify-center border-2 border-blue-600">
                         <Target className="h-3 w-3 text-white" />
                       </div>
-                      <span className="text-sm font-semibold text-blue-800">
+                      <span className="text-sm font-black text-blue-900">
                         Agenda Pembelajaran ({liveClass.LiveClassAgenda.length})
                       </span>
                     </div>
@@ -1235,23 +1183,23 @@ function LiveClassCard({
                         (agenda, index) => (
                           <div
                             key={agenda.id}
-                            className="bg-white/70 rounded-lg p-3 border border-white/50"
+                            className="bg-white/70 rounded-2xl p-3 border-2 border-white/50 shadow-sm"
                           >
                             <div className="flex items-start gap-3">
-                              <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                              <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 border-2 border-blue-600">
                                 {agenda.order || index + 1}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-blue-800 font-medium text-sm line-clamp-1">
+                                <p className="text-blue-900 font-black text-sm line-clamp-1">
                                   {agenda.title}
                                 </p>
                                 {agenda.description && (
-                                  <p className="text-blue-600 text-xs mt-1 line-clamp-1">
+                                  <p className="text-blue-700 text-xs mt-1 line-clamp-1 font-medium">
                                     {agenda.description}
                                   </p>
                                 )}
                                 <div className="flex items-center gap-2 mt-2">
-                                  <span className="text-xs bg-blue-200 text-blue-700 px-2 py-1 rounded-full font-medium">
+                                  <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-xl font-bold border-2 border-blue-300">
                                     {agenda.duration} menit
                                   </span>
                                 </div>
@@ -1262,7 +1210,7 @@ function LiveClassCard({
                       )}
                       {liveClass.LiveClassAgenda.length > 2 && (
                         <div className="text-center py-2">
-                          <span className="text-xs text-blue-600 font-medium">
+                          <span className="text-xs text-blue-700 font-black">
                             +{liveClass.LiveClassAgenda.length - 2} agenda
                             lainnya
                           </span>
@@ -1274,12 +1222,12 @@ function LiveClassCard({
               {/* Reference Items - Modern card */}
               {liveClass.LiveClassReference &&
                 liveClass.LiveClassReference.length > 0 && (
-                  <div className="bg-linear-to-br from-emerald-50 to-emerald-100 rounded-xl p-4 border border-emerald-200">
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-4 border-2 border-emerald-200">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-lg bg-emerald-500 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-2xl bg-emerald-500 flex items-center justify-center border-2 border-emerald-600">
                         <BookOpen className="h-3 w-3 text-white" />
                       </div>
-                      <span className="text-sm font-semibold text-emerald-800">
+                      <span className="text-sm font-black text-emerald-900">
                         Materi Referensi ({liveClass.LiveClassReference.length})
                       </span>
                     </div>
@@ -1287,10 +1235,10 @@ function LiveClassCard({
                       {liveClass.LiveClassReference.slice(0, 2).map((ref) => (
                         <div
                           key={ref.id}
-                          className="bg-white/70 rounded-lg p-3 border border-white/50"
+                          className="bg-white/70 rounded-2xl p-3 border-2 border-white/50 shadow-sm"
                         >
                           <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                            <div className="w-8 h-8 rounded-2xl bg-emerald-100 flex items-center justify-center shrink-0 border-2 border-emerald-200">
                               {ref.urlType === 'VIDEO' && (
                                 <span className="text-emerald-600">🎥</span>
                               )}
@@ -1308,7 +1256,7 @@ function LiveClassCard({
                               )}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-emerald-800 font-semibold text-base line-clamp-1 mb-1 flex items-center gap-2">
+                              <p className="text-emerald-900 font-black text-base line-clamp-1 mb-1 flex items-center gap-2">
                                 {/* Icon sesuai tipe materi */}
                                 {ref.urlType === 'VIDEO' && (
                                   <Video className="h-4 w-4 text-emerald-600" />
@@ -1329,18 +1277,18 @@ function LiveClassCard({
                               </p>
                               <div className="flex flex-wrap gap-2 mb-1">
                                 {ref.CourseSubChapter?.spendTime && (
-                                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full border border-emerald-200 font-medium flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-800 rounded-xl border-2 border-emerald-200 font-bold flex items-center gap-1">
                                     <Clock className="h-3 w-3" />
                                     {ref.CourseSubChapter.spendTime} menit
                                   </span>
                                 )}
                                 {ref.CourseSubChapter?.premium ? (
-                                  <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full border border-yellow-200 font-medium flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-xl border-2 border-yellow-200 font-bold flex items-center gap-1">
                                     <Star className="h-3 w-3" />
                                     Premium
                                   </span>
                                 ) : (
-                                  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded-full border border-gray-200 font-medium flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-xl border-2 border-gray-200 font-bold flex items-center gap-1">
                                     <BookOpen className="h-3 w-3" />
                                     Gratis
                                   </span>
@@ -1349,7 +1297,7 @@ function LiveClassCard({
                               <div className="flex items-center gap-2 mt-2">
                                 <Badge
                                   variant="outline"
-                                  className="text-xs text-emerald-700 border-emerald-300 bg-emerald-50 flex items-center gap-1"
+                                  className="text-xs text-emerald-800 border-2 border-emerald-300 bg-emerald-50 flex items-center gap-1 font-bold rounded-xl"
                                 >
                                   <Target className="h-3 w-3" />
                                   {ref.type}
@@ -1359,7 +1307,7 @@ function LiveClassCard({
                                     href={ref.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-xs text-emerald-600 underline hover:text-emerald-800 transition-colors flex items-center gap-1"
+                                    className="text-xs text-emerald-700 underline hover:text-emerald-900 transition-colors flex items-center gap-1 font-bold"
                                   >
                                     <Eye className="h-3 w-3" />
                                     Lihat Materi
@@ -1372,7 +1320,7 @@ function LiveClassCard({
                       ))}
                       {liveClass.LiveClassReference.length > 2 && (
                         <div className="text-center py-2">
-                          <span className="text-xs text-emerald-600 font-medium">
+                          <span className="text-xs text-emerald-700 font-black">
                             +{liveClass.LiveClassReference.length - 2} referensi
                             lainnya
                           </span>
@@ -1387,12 +1335,12 @@ function LiveClassCard({
           {/* Plan Information - Modern design */}
           {showPlanInfo && liveClassWithAccess.userAccess && (
             <div className="mb-6">
-              <div className="bg-linear-to-r from-orange-50 to-yellow-50 rounded-xl p-4 border border-orange-200">
+              <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-4 border-2 border-orange-200">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 rounded-lg bg-orange-500 flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-2xl bg-orange-500 flex items-center justify-center border-2 border-orange-600">
                     <Target className="h-3 w-3 text-white" />
                   </div>
-                  <span className="text-sm font-semibold text-orange-800">
+                  <span className="text-sm font-black text-orange-900">
                     Status Akses
                   </span>
                 </div>
@@ -1403,10 +1351,10 @@ function LiveClassCard({
                       .map((plan: any, index: number) => (
                         <div
                           key={index}
-                          className={`px-3 py-2 rounded-lg border text-sm font-medium ${
+                          className={`px-3 py-2 rounded-2xl border-2 text-sm font-black ${
                             liveClassWithAccess.userAccess.canRegister
-                              ? 'bg-green-100 text-green-800 border-green-300'
-                              : 'bg-orange-100 text-orange-800 border-orange-300'
+                              ? 'bg-green-100 text-green-900 border-green-300'
+                              : 'bg-orange-100 text-orange-900 border-orange-300'
                           }`}
                         >
                           <span className="mr-2">
@@ -1418,7 +1366,7 @@ function LiveClassCard({
                         </div>
                       ))
                   ) : (
-                    <div className="bg-gray-100 text-gray-700 px-3 py-2 rounded-lg border border-gray-300 text-sm font-medium">
+                    <div className="bg-gray-100 text-gray-900 px-3 py-2 rounded-2xl border-2 border-gray-300 text-sm font-black">
                       <span className="mr-2">📖</span>
                       Gratis untuk Semua
                     </div>
@@ -1428,7 +1376,7 @@ function LiveClassCard({
             </div>
           )}
           {/* Modern Actions & Stats Section */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          <div className="flex items-center justify-between pt-4 border-t-2 border-gray-100">
             {/* Action Buttons */}
             <div className="flex gap-3">
               {liveClassWithAccess.needsUpgrade && showPlanInfo ? (
@@ -1475,7 +1423,7 @@ function LiveClassCard({
                           e.stopPropagation();
                           onUpgrade(liveClass);
                         }}
-                        className="h-11 px-6 border-2 border-orange-300 text-orange-700 hover:bg-orange-50 font-semibold rounded-xl transition-all duration-300 hover:shadow-lg"
+                        className="h-11 px-6 border-2 border-orange-300 text-orange-800 hover:bg-orange-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md"
                       >
                         <div className="w-4 h-4 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
                           <span className="text-white text-xs">🔒</span>
@@ -1491,7 +1439,7 @@ function LiveClassCard({
                         e.stopPropagation();
                         onRate(liveClass);
                       }}
-                      className="h-11 px-6 border-2 border-yellow-300 text-yellow-700 hover:bg-yellow-50 font-semibold rounded-xl transition-all duration-300 hover:shadow-lg"
+                      className="h-11 px-6 border-2 border-yellow-300 text-yellow-800 hover:bg-yellow-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md"
                     >
                       <Star className="mr-2 h-4 w-4" />
                       Beri Rating
@@ -1504,13 +1452,13 @@ function LiveClassCard({
             <div className="flex items-center gap-4">
               {/* Enhanced Stats */}
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
-                  <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
+                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-2xl border-2 border-gray-100">
+                  <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
                     <Users className="h-3 w-3 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 font-medium">Peserta</p>
-                    <p className="text-sm font-bold text-gray-800">
+                    <p className="text-xs text-gray-500 font-bold">Peserta</p>
+                    <p className="text-sm font-black text-gray-900">
                       {liveClass.participants?.length || 0}
                     </p>
                   </div>
@@ -1534,12 +1482,12 @@ function LiveClassCard({
               </div>
               {/* Modern Detail Button */}
               <Link
-                href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
+                href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
               >
                 <Button
                   variant="outline"
                   size="lg"
-                  className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-700 hover:text-blue-600 hover:bg-blue-50 font-semibold rounded-xl transition-all duration-300 hover:shadow-lg group bg-transparent"
+                  className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-900 hover:text-blue-600 hover:bg-blue-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md group bg-transparent"
                 >
                   <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
                   <span className="hidden sm:inline">Lihat Detail</span>

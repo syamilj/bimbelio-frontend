@@ -108,12 +108,14 @@ export default function CreateLiveClassForm() {
       Category: Category;
       CourseSubChapter: CourseSubChapter[];
     })[]
-  >('/course/getCourseUserByCategoryId', {
+  >('/course/getCourseUserByCategoryId?adminPage=true', {
     params: {
       categoryId: selectedCategoryId,
     },
     useEffectDependencies: [selectedCategoryId],
   });
+
+  console.log('CourseOptions', CourseOptions);
 
   const onChangeAgenda = (
     key: 'title' | 'description' | 'duration',
