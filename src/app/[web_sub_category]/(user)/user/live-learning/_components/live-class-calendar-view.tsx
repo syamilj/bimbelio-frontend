@@ -5,13 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getStatusColor } from '@/lib/utils/live-class';
 import { CalendarIcon, Clock, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { LiveClassAvailableType } from '../page';
+import { LiveLearningDataType } from '../main-page';
 
 interface CalendarViewProps {
   liveClass: any[];
   // needsUpgradeClasses: any[];
-  onJoin: (liveClass: LiveClassAvailableType) => void;
-  onRate: (liveClass: LiveClassAvailableType) => void;
+  onJoin: (liveClass: LiveLearningDataType) => void;
+  onRate: (liveClass: LiveLearningDataType) => void;
   onUpgrade: (liveClass: any) => void;
 }
 
