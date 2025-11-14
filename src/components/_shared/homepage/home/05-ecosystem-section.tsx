@@ -3,19 +3,10 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import {
   BarChart3,
-  BookOpen,
-  Bot,
-  FileText,
-  FolderKanban,
-  Layers,
-  Library,
+  Clock,
   MessageCircle,
-  Network,
-  Podcast,
-  Rocket,
-  Target,
-  Trophy,
-  UserCheck,
+  Sparkles,
+  TrendingUp,
   Users,
   Video,
   Zap,
@@ -27,477 +18,269 @@ export default function EcosystemSection() {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   // Color variants
-  const color20 = mainColor + '33';
-  const color10 = mainColor + '1A';
   const color05 = mainColor + '0D';
 
-  // Journey phases
-  const phases = [
+  // Ecosystem items - connected network style
+  const ecosystemItems = [
     {
-      icon: Rocket,
-      title: 'Onboarding',
-      subtitle: 'Hari Pertama',
-      description: 'Tau posisi awal kamu',
-      color: '#F59E0B',
-      features: [
-        { label: 'Diagnostic Test', badge: 'Langkah1', badgeColor: '#3B82F6' },
-        {
-          label: 'Personal Roadmap',
-          badge: 'AI Planning',
-          badgeColor: '#8B5CF6',
-        },
-        { label: 'Join Discord', badge: 'Community', badgeColor: '#10B981' },
-      ],
+      id: 1,
+      title: 'Live Class',
+      description: 'Interaktif & real-time',
+      icon: Video,
+      color: '#3B82F6',
+      category: 'Belajar',
     },
     {
-      icon: BookOpen,
-      title: 'Foundation',
-      subtitle: 'Belajar Konsep',
-      description: 'Build pemahaman kuat',
-      color: '#F59E0B',
-      features: [
-        {
-          label: 'Live Class',
-          badge: 'Google Meet',
-          badgeColor: '#3B82F6',
-        },
-        { label: 'Video Library', badge: 'LMS', badgeColor: '#8B5CF6' },
-        { label: 'Tanya AI', badge: 'Chat 24/7', badgeColor: '#10B981' },
-      ],
+      id: 2,
+      title: 'AI Mentor',
+      description: '24/7 instant help',
+      icon: Sparkles,
+      color: '#3B82F6',
+      category: 'Belajar',
     },
     {
-      icon: Target,
-      title: 'Practice',
-      subtitle: 'Latihan Soal',
-      description: 'Drill sampai jago',
-      color: '#F59E0B',
-      features: [
-        { label: 'Try Out', badge: 'Website + Rute', badgeColor: '#3B82F6' },
-        {
-          label: 'Drill Tactical',
-          badge: 'Question Bank',
-          badgeColor: '#8B5CF6',
-        },
-        { label: 'Progress Report', badge: 'Analytics', badgeColor: '#10B981' },
-      ],
+      id: 3,
+      title: 'Video Library',
+      description: 'On-demand, kapan saja',
+      icon: Clock,
+      color: '#3B82F6',
+      category: 'Belajar',
     },
     {
+      id: 4,
+      title: 'Tryout CBT',
+      description: 'Semua ujian tersedia',
       icon: Zap,
-      title: 'Intensive',
-      subtitle: 'Final Push',
-      description: 'Sprint ke finish line',
-      color: '#F59E0B',
-      features: [
-        { label: 'Super Intensif', badge: 'Bootcamp', badgeColor: '#3B82F6' },
-        { label: 'Mock Test', badge: 'CBT Sim', badgeColor: '#8B5CF6' },
-        { label: 'Mental Prep', badge: 'Mentoring', badgeColor: '#10B981' },
-      ],
+      color: '#8B5CF6',
+      category: 'Latihan',
+    },
+    {
+      id: 5,
+      title: 'Progress Track',
+      description: 'Analytics real-time',
+      icon: TrendingUp,
+      color: '#8B5CF6',
+      category: 'Latihan',
+    },
+    {
+      id: 6,
+      title: 'Weak Point',
+      description: 'Identifikasi & improve',
+      icon: BarChart3,
+      color: '#8B5CF6',
+      category: 'Latihan',
+    },
+    {
+      id: 7,
+      title: 'Discord Groups',
+      description: 'Study bersama teman',
+      icon: MessageCircle,
+      color: '#10B981',
+      category: 'Komunitas',
+    },
+    {
+      id: 8,
+      title: 'Alumni Network',
+      description: 'Mentorship dari PTN',
+      icon: Users,
+      color: '#10B981',
+      category: 'Komunitas',
+    },
+    {
+      id: 9,
+      title: 'Peer Support',
+      description: 'Bantuan dari sesama',
+      icon: Sparkles,
+      color: '#10B981',
+      category: 'Komunitas',
     },
   ];
 
-  // Platform cards
-  const platforms = [
-    {
-      title: 'Learning Hub',
-      icon: BookOpen,
-      color: mainColor,
-      items: [
-        {
-          icon: Video,
-          title: 'Live Class & Livestream',
-          description: 'Kelas real-time interaktif!',
-          highlight: true,
-        },
-        {
-          icon: Library,
-          title: 'Video Library',
-          description: 'Rekaman on-demand',
-          highlight: false,
-        },
-        {
-          icon: Bot,
-          title: 'AI Mentor',
-          description: 'Instant help 24/7',
-          highlight: false,
-        },
-        {
-          icon: Podcast,
-          title: 'Podcast Series',
-          description: 'Learning meets podcast',
-          highlight: false,
-        },
-      ],
-    },
-    {
-      title: 'Assessment Center',
-      icon: BarChart3,
-      color: mainColor,
-      items: [
-        {
-          icon: FileText,
-          title: 'Tryout Website',
-          description: 'CBT simulation semua ujian',
-          highlight: true,
-        },
-        {
-          icon: BarChart3,
-          title: 'Progress Dashboard',
-          description: 'Track perkembangan',
-          highlight: false,
-        },
-        {
-          icon: Trophy,
-          title: 'Analytics & Report',
-          description: 'Weak points analysis',
-          highlight: false,
-        },
-        {
-          icon: Target,
-          title: 'Ranking System',
-          description: 'Tau posisi kamu',
-          highlight: false,
-        },
-      ],
-    },
-    {
-      title: 'Community & Support',
-      icon: Users,
-      color: mainColor,
-      items: [
-        {
-          icon: MessageCircle,
-          title: 'Discord Community',
-          description: 'Study groups & voice channels',
-          highlight: true,
-        },
-        {
-          icon: UserCheck,
-          title: '1-on-1 Konseling',
-          description: 'Strategic guidance',
-          highlight: false,
-        },
-        {
-          icon: Network,
-          title: 'Alumni Network',
-          description: 'Mentorship dari senior PTN',
-          highlight: false,
-        },
-        {
-          icon: FolderKanban,
-          title: 'Parent Portal',
-          description: 'Laporan progress ke ortu',
-          highlight: false,
-        },
-      ],
-    },
-  ];
+  // Group by category for layout
+  const byCategory = {
+    Belajar: ecosystemItems.filter((item) => item.category === 'Belajar'),
+    Latihan: ecosystemItems.filter((item) => item.category === 'Latihan'),
+    Komunitas: ecosystemItems.filter((item) => item.category === 'Komunitas'),
+  };
 
   return (
     <section
       id="ecosystem"
       className="relative overflow-hidden bg-white py-20"
     >
-      {/* Background Elements */}
+      {/* Background Elements - Subtle Network */}
       <div className="absolute inset-0 -z-10">
+        <svg
+          className="absolute inset-0 h-full w-full opacity-5"
+          viewBox="0 0 1000 1000"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <pattern
+              id="dots"
+              x="50"
+              y="50"
+              width="100"
+              height="100"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r="2"
+                fill={mainColor}
+              />
+            </pattern>
+          </defs>
+          <rect
+            width="1000"
+            height="1000"
+            fill="url(#dots)"
+          />
+        </svg>
         <div
-          className="absolute right-0 top-0 h-[600px] w-[600px] rounded-full opacity-10 blur-3xl"
+          className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full opacity-8 blur-3xl"
           style={{ backgroundColor: mainColor }}
-        />
-        <div
-          className="absolute bottom-0 left-0 h-[500px] w-[500px] rounded-full opacity-10 blur-3xl"
-          style={{ backgroundColor: secondaryColor }}
         />
       </div>
 
       <div className="container mx-auto max-w-7xl px-4">
         {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">
-            Ini dia sistem beraksi —{' '}
+        <div className="mb-20 text-center">
+          <Badge
+            className="mb-6 border-none px-6 py-2 text-sm font-bold text-white"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+            }}
+          >
+            Ekosistem Terkoneksi
+          </Badge>
+
+          <h2 className="mb-6 text-4xl font-black text-gray-900 md:text-5xl">
+            Tools yang Saling Terhubung —
+            <br />
             <span
-              className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent"
+              className="bg-clip-text text-transparent"
               style={{
-                backgroundImage: `linear-gradient(to right, ${mainColor}, ${secondaryColor})`,
+                backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
               }}
             >
-              Ekosistem yang support kamu 24/7
+              Satu Ekosistem Utuh
             </span>
           </h2>
-          <p className="mx-auto mt-4 max-w-4xl text-base text-gray-600 md:text-lg">
-            PRINTS System bukan cuma teori. Ini{' '}
-            <span className="font-semibold text-gray-900">
-              ekosistem lengkap
-            </span>{' '}
-            — dari diagnostic test, live class, tryout, AI mentor, sampai
-            komunitas Discord.{' '}
-            <span className="font-semibold text-gray-900">
-              Semua tools udah siap, kamu tinggal pakai.
+
+          <p className="mx-auto max-w-3xl text-base text-gray-600 leading-relaxed md:text-lg">
+            Belajar, latihan, dan komunitas — semua terkoneksi dalam satu
+            sistem.
+            <span className="font-bold text-gray-900">
+              {' '}
+              Nggak perlu buka-buka aplikasi berbeda.
             </span>
           </p>
         </div>
 
-        {/* Journey Section */}
-        <div className="mb-20">
-          <div className="mb-8 text-center">
-            <Badge
-              className="mb-4 border-none px-6 py-2 text-sm font-bold text-white"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              Journey Program
-            </Badge>
-            <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">
-              Journey Kamu: 4 Fase Sampai Lolos
-            </h3>
-          </div>
-          <p className="mx-auto mb-12 max-w-3xl text-center text-gray-600">
-            Dari hari pertama sampai H-Day ujian, setiap fase punya{' '}
-            <span className="font-semibold text-gray-900">
-              tools & support yang beda
-            </span>
-            . Ini bukan cuma belajar — tapi journey terstruktur yang support
-            semua jenis ujian PTN & Kedinasan.
-          </p>
+        {/* Network Grid */}
+        <div className="relative">
+          {/* Connecting Lines SVG */}
+          <svg
+            className="absolute inset-0 h-full w-full -z-1 opacity-20"
+            style={{ pointerEvents: 'none' }}
+          >
+            {/* Horizontal lines connecting items */}
+            <line
+              x1="25%"
+              y1="200"
+              x2="75%"
+              y2="200"
+              stroke={mainColor}
+              strokeWidth="1"
+              strokeDasharray="5,5"
+            />
+            <line
+              x1="25%"
+              y1="450"
+              x2="75%"
+              y2="450"
+              stroke="#8B5CF6"
+              strokeWidth="1"
+              strokeDasharray="5,5"
+            />
+            <line
+              x1="25%"
+              y1="700"
+              x2="75%"
+              y2="700"
+              stroke="#10B981"
+              strokeWidth="1"
+              strokeDasharray="5,5"
+            />
+            {/* Vertical connecting lines */}
+            <line
+              x1="50%"
+              y1="200"
+              x2="50%"
+              y2="900"
+              stroke={mainColor}
+              strokeWidth="0.5"
+              opacity="0.3"
+            />
+          </svg>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {phases.map((phase, index) => (
+          {/* Items Grid - 3x3 Network */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
+            {ecosystemItems.map((item) => (
               <div
-                key={phase.title}
-                className="group relative overflow-hidden rounded-3xl border-2 border-gray-200 bg-white shadow-lg transition-all duration-300 hover:border-gray-300 hover:shadow-2xl"
+                key={item.id}
+                className="group relative flex flex-col items-center"
               >
-                {/* Top Accent Bar */}
+                {/* Connection Node */}
                 <div
-                  className="h-1.5 w-full"
-                  style={{ backgroundColor: phase.color }}
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 w-2 h-2 rounded-full opacity-60 group-hover:opacity-100 transition-opacity"
+                  style={{ backgroundColor: item.color }}
                 />
 
-                {/* Icon Box */}
-                <div className="flex justify-center p-6 pb-4">
-                  <div
-                    className="flex h-24 w-24 items-center justify-center rounded-2xl shadow-lg"
-                    style={{ backgroundColor: phase.color }}
-                  >
-                    <phase.icon
-                      className="h-12 w-12 text-white"
-                      strokeWidth={2.5}
-                    />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="space-y-4 p-6 pt-2">
-                  <div className="text-center">
-                    <div className="mb-2 flex items-center justify-center gap-2">
-                      <div
-                        className="h-1 w-1 rounded-full"
-                        style={{ backgroundColor: phase.color }}
-                      />
-                      <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-                        {phase.subtitle}
-                      </p>
-                      <div
-                        className="h-1 w-1 rounded-full"
-                        style={{ backgroundColor: phase.color }}
-                      />
-                    </div>
-                    <h4 className="text-xl font-black text-gray-900">
-                      {phase.title}
-                    </h4>
-                    <p
-                      className="mt-1 text-sm font-semibold"
-                      style={{ color: phase.color }}
-                    >
-                      {phase.description}
-                    </p>
-                  </div>
-
-                  {/* Divider */}
-                  <div
-                    className="mx-auto h-0.5 w-12 rounded-full"
-                    style={{ backgroundColor: phase.color + '40' }}
-                  />
-
-                  {/* Features */}
-                  <div className="space-y-3">
-                    {phase.features.map((feature, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start justify-between gap-2 rounded-2xl bg-white p-3 transition-all duration-200 hover:bg-gray-100"
-                      >
-                        <div className="flex-1">
-                          <p className="text-sm font-semibold text-gray-800">
-                            {feature.label}
-                          </p>
-                        </div>
-                        <Badge
-                          style={{
-                            backgroundColor: feature.badgeColor + '15',
-                            color: feature.badgeColor,
-                            border: `1.5px solid ${feature.badgeColor}30`,
-                          }}
-                          className="shrink-0 text-xs font-bold"
-                        >
-                          {feature.badge}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Phase Number */}
-                  <div className="pt-2 text-center">
-                    <div
-                      className="mx-auto inline-flex h-8 w-8 items-center justify-center rounded-full text-xs font-black text-white"
-                      style={{ backgroundColor: phase.color }}
-                    >
-                      {index + 1}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Platform Section */}
-        <div>
-          <div className="mb-8 text-center">
-            <Badge
-              className="mb-4 border-none px-6 py-2 text-sm font-bold text-white"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              <Layers className="w-4 h-4 mr-2 inline" />
-              Platform Ecosystem
-            </Badge>
-            <h3 className="text-2xl font-bold text-gray-900 md:text-3xl">
-              Oke Timeline Udah Jelas —
-              <br />
-              <span style={{ color: mainColor }}>Tapi Belajar Dimana?</span>
-            </h3>
-          </div>
-          <p className="mx-auto mb-12 max-w-3xl text-center text-gray-600">
-            Kamu nggak cuma &quot;dapat kelas doang&quot;. Ada{' '}
-            <span className="font-semibold text-gray-900">
-              ekosistem lengkap
-            </span>{' '}
-            yang aku siapin — dari belajar, latihan, sampai komunitas. Semua
-            tools buat execute PRINTS System ada di sini.
-          </p>
-
-          <div className="grid gap-6 lg:grid-cols-3">
-            {platforms.map((platform) => (
-              <div
-                key={platform.title}
-                className="group overflow-hidden rounded-3xl border-2 border-gray-200 bg-white shadow-lg transition-all duration-300 hover:border-gray-300 hover:shadow-2xl"
-              >
-                {/* Top Accent Bar */}
+                {/* Card */}
                 <div
-                  className="h-1.5 w-full"
+                  className="w-full rounded-2xl border-2 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-opacity-100 text-center hover:-translate-y-1"
                   style={{
-                    background: `linear-gradient(to right, ${mainColor}, ${secondaryColor})`,
-                  }}
-                />
-
-                {/* Header */}
-                <div className="p-6 pb-4">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl shadow-lg"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <platform.icon
-                        className="h-8 w-8 text-white"
-                        strokeWidth={2}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-xl font-black text-gray-900">
-                        {platform.title}
-                      </h4>
-                      <p className="text-xs text-gray-500">
-                        {platform.items.length} Features Available
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Items */}
-                <div className="space-y-2 p-6 pt-0">
-                  {platform.items.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className={`rounded-2xl p-4 transition-all duration-300 ${
-                        item.highlight
-                          ? 'bg-gradient-to-br from-orange-50 to-orange-100 shadow-md'
-                          : 'bg-white hover:bg-gray-100'
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div
-                          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl shadow-md"
-                          style={{
-                            backgroundColor: item.highlight
-                              ? '#F59E0B'
-                              : mainColor,
-                          }}
-                        >
-                          <item.icon className="h-5 w-5 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between gap-2">
-                            <p
-                              className={`font-bold leading-tight ${
-                                item.highlight
-                                  ? 'text-gray-900'
-                                  : 'text-gray-800'
-                              }`}
-                            >
-                              {item.title}
-                            </p>
-                            {item.highlight && (
-                              <Badge
-                                className="shrink-0 border-none text-xs font-bold"
-                                style={{
-                                  backgroundColor: '#F59E0B',
-                                  color: 'white',
-                                }}
-                              >
-                                CORE
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="mt-1 text-xs leading-relaxed text-gray-600">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Footer Stats */}
-                <div
-                  className="border-t-2 p-4"
-                  style={{
-                    backgroundColor: color05,
-                    borderColor: color10,
+                    borderColor: item.color + '40',
+                    backgroundColor: item.color + '03',
                   }}
                 >
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-gray-600">
-                      Platform Status
+                  {/* Icon */}
+                  <div
+                    className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-md"
+                    style={{ backgroundColor: item.color }}
+                  >
+                    <item.icon
+                      className="h-6 w-6"
+                      strokeWidth={2}
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg font-black text-gray-900 mb-1">
+                    {item.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p
+                    className="text-xs font-semibold mb-3"
+                    style={{ color: item.color }}
+                  >
+                    {item.description}
+                  </p>
+
+                  {/* Category Badge */}
+                  <div className="flex justify-center">
+                    <span
+                      className="text-xs font-bold px-3 py-1 rounded-full text-white"
+                      style={{ backgroundColor: item.color }}
+                    >
+                      {item.category}
                     </span>
-                    <div className="flex items-center gap-1.5">
-                      <div className="h-2 w-2 rounded-full bg-green-500" />
-                      <span
-                        className="font-bold"
-                        style={{ color: mainColor }}
-                      >
-                        Active & Ready
-                      </span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -506,44 +289,22 @@ export default function EcosystemSection() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-16 text-center">
+        <div className="mt-20 text-center">
           <div
-            className="mx-auto max-w-4xl rounded-3xl border-2 p-8 shadow-md"
+            className="mx-auto max-w-3xl rounded-3xl border-2 p-8 shadow-lg"
             style={{
               backgroundColor: color05,
-              borderColor: color20,
+              borderColor: mainColor + '30',
             }}
           >
-            <div className="mb-4 flex items-center justify-center gap-3">
-              <div
-                className="flex h-12 w-12 items-center justify-center rounded-2xl"
-                style={{ backgroundColor: mainColor }}
-              >
-                <Network className="h-6 w-6 text-white" />
-              </div>
-              <h4 className="text-xl font-bold text-gray-900">
-                Ekosistem Lengkap Siap Pakai
-              </h4>
-            </div>
-            <p className="mb-6 text-lg leading-relaxed text-gray-700">
-              <span className="font-bold text-gray-900">Semua tools ini</span>{' '}
-              udah siap pakai dari hari pertama. Kamu tinggal fokus belajar —
-              kami yang siapin semua infrastruktur support-nya.
+            <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+              <span className="font-bold text-gray-900">
+                Semua tools terkoneksi seamlessly.
+              </span>{' '}
+              Data dari latihan → langsung bisa dilihat progress di analytics.
+              Alumni feedback → integrated dengan tutor system. Satu ekosistem,
+              unlimited potential.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold shadow-md">
-                <div className="h-2 w-2 rounded-full bg-green-500" />
-                <span style={{ color: mainColor }}>24/7 Available</span>
-              </div>
-              <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold shadow-md">
-                <div className="h-2 w-2 rounded-full bg-blue-500" />
-                <span style={{ color: mainColor }}>Multi-Platform</span>
-              </div>
-              <div className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold shadow-md">
-                <div className="h-2 w-2 rounded-full bg-purple-500" />
-                <span style={{ color: mainColor }}>AI-Powered</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

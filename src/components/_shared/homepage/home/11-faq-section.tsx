@@ -3,23 +3,29 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import {
+  BookOpen,
   Calendar,
   CheckCircle2,
+  ChevronDown,
+  DollarSign,
   HelpCircle,
   MessageCircle,
-  PiggyBank,
   PlayCircle,
   Shield,
   Smartphone,
   Trophy,
+  Users,
   Zap,
 } from 'lucide-react';
+import { useState } from 'react';
 
-interface Question {
+interface FAQItem {
   icon: React.ReactNode;
+  category: string;
   title: string;
-  description: string;
+  answer: string;
   color: string;
+  isPopular?: boolean;
 }
 
 interface Solution {
@@ -30,6 +36,8 @@ interface Solution {
 
 export default function FAQSection() {
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const [expandedId, setExpandedId] = useState<number | null>(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const isMainLandingPage =
     typeof window !== 'undefined' && window.location.pathname === '/';
@@ -40,51 +48,128 @@ export default function FAQSection() {
     ? '#5aa4dd'
     : (websiteSubCategory?.secondary_color ?? '#7C3AED');
 
-  // Top 6 Questions - Updated without guarantee/proof claims
-  const questions: Question[] = [
+  // Expanded FAQ with Categories
+  const faqs: FAQItem[] = [
+    // Program Category
     {
-      icon: <Trophy className="w-6 h-6" />,
-      title: 'Kalau ketinggalan kelas, gimana?',
-      description:
-        'Tenang! Semua sesi auto-rekam. Akses kapan aja, review ulang sepuasnya.',
+      icon: <Calendar className="w-5 h-5" />,
+      category: 'Program',
+      title: 'Berapa lama program ini?',
+      answer:
+        '9 bulan intensif hingga kedinasan, mulai 21 Nov 2025. Dibagi 3 fase: Bimbel (persiapan), Intensif (fokus materi), Super (final push kedinasan).',
+      color: '#0091FF',
+      isPopular: true,
+    },
+    {
+      icon: <BookOpen className="w-5 h-5" />,
+      category: 'Program',
+      title: 'Apa aja yang dikasih setelah kedinasan?',
+      answer:
+        'Akses materials & rekaman selamanya, progress report lengkap, dan bisa konsultasi support untuk career path next step.',
       color: '#0091FF',
     },
     {
-      icon: <Smartphone className="w-6 h-6" />,
-      title: 'Cuma pake HP bisa?',
-      description:
-        'Bisa banget! Platform kami mobile-friendly 100%. Belajar di mana aja nyaman.',
-      color: '#00C853',
+      icon: <Users className="w-5 h-5" />,
+      category: 'Program',
+      title: 'Livestream vs Liveclass, pilih mana?',
+      answer:
+        'Livestream (799K) = Unlimited siswa, format besar, harga lebih terjangkau. Liveclass (1.499K) = Max 50 siswa, personal attention, priority support. Dua-duanya 9 bulan hingga kedinasan.',
+      color: '#0091FF',
+      isPopular: true,
     },
     {
-      icon: <PlayCircle className="w-6 h-6" />,
-      title: 'Bedanya sama video on-demand?',
-      description:
-        'Live = Bisa tanya langsung ke tutor, diskusi real-time, dapat motivasi bareng teman.',
-      color: '#FFA500',
+      icon: <Trophy className="w-5 h-5" />,
+      category: 'Program',
+      title: 'Kalau ketinggalan kelas, gimana?',
+      answer:
+        'Tenang! Semua sesi auto-rekam HD. Akses kapan aja, review ulang sepuasnya. Bisa catch-up dengan kecepatan kamu sendiri.',
+      color: '#0091FF',
     },
+
+    // Harga Category
     {
-      icon: <PiggyBank className="w-6 h-6" />,
+      icon: <DollarSign className="w-5 h-5" />,
+      category: 'Harga',
       title: 'Bisa cicil nggak?',
-      description:
-        'Bisa! Cicilan 3× tanpa ribet, tanpa bunga. Bank transfer & e-wallet juga diterima.',
+      answer:
+        'Bisa! Cicilan 3× tanpa ribet, tanpa bunga. Livestream (799K) = 3× Rp266K. Liveclass (1.499K) = 3× Rp499K. Bank transfer & e-wallet diterima.',
+      color: '#E91E63',
+      isPopular: true,
+    },
+    {
+      icon: <Shield className="w-5 h-5" />,
+      category: 'Harga',
+      title: 'Harga bakal berubah nggak?',
+      answer:
+        'Nope! Harga fixed untuk peserta yang daftar sekarang. Dijamin nggak ada biaya tersembunyi atau tambahan mendadak.',
       color: '#E91E63',
     },
     {
-      icon: <Shield className="w-6 h-6" />,
+      icon: <CheckCircle2 className="w-5 h-5" />,
+      category: 'Harga',
+      title: 'Ada garansi uang kembali?',
+      answer:
+        'Iya! Trial gratis 7 hari untuk cek apakah cocok. Kalau nggak puas, uang kembali 100%. Nggak ada syarat yang ribet.',
+      color: '#E91E63',
+    },
+
+    // Teknis Category
+    {
+      icon: <Smartphone className="w-5 h-5" />,
+      category: 'Teknis',
+      title: 'Cuma pake HP bisa?',
+      answer:
+        'Bisa banget! Platform kami 100% mobile-friendly. Belajar dari HP, laptop, tablet—semua support. Internet stabil aja cukup.',
+      color: '#00C853',
+      isPopular: true,
+    },
+    {
+      icon: <PlayCircle className="w-5 h-5" />,
+      category: 'Teknis',
+      title: 'Bedanya sama video on-demand?',
+      answer:
+        'Live = Bisa tanya langsung, diskusi real-time, dapat motivasi bareng teman. Video on-demand = Anda sendiri, nggak ada interaksi. Bimbelio? Live + Rekaman unlimited!',
+      color: '#00C853',
+    },
+    {
+      icon: <Zap className="w-5 h-5" />,
+      category: 'Teknis',
       title: 'PRINTS System itu apa?',
-      description:
-        'Framework belajar cerdas: Prioritize materi penting, Rhythm konsisten, Iterate dengan AI feedback, Navigate roadmap jelas, Test IRT-based, Support 24/7.',
+      answer:
+        'Framework belajar smart kami: Prioritize (fokus materi penting), Rhythm (konsisten), Iterate (AI feedback), Navigate (roadmap jelas), Test (IRT-based), Support (24/7). Semua terintegrasi.',
+      color: '#00C853',
+    },
+
+    // Jadwal & Support Category
+    {
+      icon: <MessageCircle className="w-5 h-5" />,
+      category: 'Support',
+      title: 'Kalau ada masalah, support siapa?',
+      answer:
+        'Tim support 24/7 siap membantu via chat, WhatsApp, atau email. Response time < 5 menit untuk urgent. Liveclass dapet priority support.',
       color: '#9C27B0',
     },
     {
-      icon: <Calendar className="w-6 h-6" />,
-      title: 'Jadwal kelasnya kapan?',
-      description:
-        'Livestream: Sen–Jum 18:30–21:30. Liveclass: Sen–Kam 19:00–21:00. Fleksibel, lihat rekaman juga bisa.',
-      color: '#0091FF',
+      icon: <HelpCircle className="w-5 h-5" />,
+      category: 'Support',
+      title: 'Bisa konsultasi one-on-one?',
+      answer:
+        'Iya! Liveclass ada konseling dengan tutor alumni PTN. Livestream bisa join grup diskusi atau upgrade jadi Liveclass kapan saja.',
+      color: '#9C27B0',
     },
   ];
+
+  // Get unique categories
+  const categories = ['all', ...new Set(faqs.map((f) => f.category))];
+
+  // Filter FAQs based on selected category
+  const filteredFaqs =
+    selectedCategory === 'all'
+      ? faqs
+      : faqs.filter((f) => f.category === selectedCategory);
+
+  // Popular FAQs (show 3 as featured)
+  const popularFaqs = faqs.filter((f) => f.isPopular).slice(0, 3);
 
   // Solutions - Takut Nggak Konsisten? Kami Punya Solusinya
   const solutions: Solution[] = [
@@ -125,7 +210,7 @@ export default function FAQSection() {
             }}
           >
             <HelpCircle className="w-4 h-4 mr-2 inline" />
-            FAQ & Solutions
+            Pertanyaan & Jawaban
           </Badge>
 
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
@@ -143,13 +228,9 @@ export default function FAQSection() {
             </span>
           </h2>
 
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-            Aku jawab semua keraguan kamu dengan{' '}
-            <span className="font-bold">jujur dan transparan</span>.
-            <br />
-            <span className="font-bold text-gray-900">
-              Nggak ada yang disembunyikan. Ini commitment aku ke kamu.
-            </span>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+            Jawaban jujur untuk setiap keraguan kamu.{' '}
+            <span className="font-bold">Nggak ada yang disembunyikan.</span>
           </p>
 
           {/* Info Pills */}
@@ -193,41 +274,145 @@ export default function FAQSection() {
             >
               <Zap className="w-4 h-4 text-purple-600" />
               <span className="text-sm font-semibold text-purple-600">
-                Fast Response
+                Response Cepat
               </span>
             </div>
           </div>
         </div>
 
-        {/* Questions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-          {questions.map((question, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl p-6 border-2 hover:shadow-md transition-all duration-300"
-              style={{
-                borderColor: `${question.color}20`,
-              }}
-            >
-              {/* Icon */}
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center text-white mb-4 shadow-md"
-                style={{
-                  background: `linear-gradient(135deg, ${question.color}, ${question.color}dd)`,
-                }}
-              >
-                {question.icon}
-              </div>
-
-              {/* Content */}
-              <h3 className="text-lg font-black text-gray-900 mb-2">
-                {question.title}
+        {/* Popular FAQs Section */}
+        {popularFaqs.length > 0 && (
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                🔥 Paling Sering Ditanya
               </h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {question.description}
+              <p className="text-gray-600">
+                Jawaban untuk pertanyaan yang paling banyak diajukan
               </p>
             </div>
-          ))}
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              {popularFaqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-6 border-2 hover:shadow-md transition-all duration-300"
+                  style={{
+                    borderColor: `${faq.color}30`,
+                    backgroundColor: `${faq.color}05`,
+                  }}
+                >
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-4 shadow-md"
+                    style={{
+                      background: `linear-gradient(135deg, ${faq.color}, ${faq.color}dd)`,
+                    }}
+                  >
+                    {faq.icon}
+                  </div>
+
+                  <h4 className="text-base font-bold text-gray-900 mb-3">
+                    {faq.title}
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Category Tabs */}
+        <div className="mb-12">
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-6 py-2.5 rounded-full font-semibold transition-all duration-300 text-sm md:text-base ${
+                  selectedCategory === cat
+                    ? 'text-white shadow-lg'
+                    : 'text-gray-700 bg-gray-100 hover:bg-gray-200'
+                }`}
+                style={{
+                  background:
+                    selectedCategory === cat
+                      ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
+                      : undefined,
+                }}
+              >
+                {cat === 'all' ? 'Semua' : cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Accordion FAQ List */}
+          <div className="max-w-4xl mx-auto space-y-4">
+            {filteredFaqs.map((faq, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl border-2 overflow-hidden transition-all duration-300"
+                style={{
+                  borderColor:
+                    expandedId === index ? faq.color : `${faq.color}20`,
+                  boxShadow:
+                    expandedId === index ? `0 8px 24px ${faq.color}20` : 'none',
+                }}
+              >
+                <button
+                  onClick={() =>
+                    setExpandedId(expandedId === index ? null : index)
+                  }
+                  className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-4 text-left flex-1">
+                    <div
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                      style={{
+                        background: `linear-gradient(135deg, ${faq.color}, ${faq.color}dd)`,
+                      }}
+                    >
+                      {faq.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-base font-bold text-gray-900 text-left">
+                        {faq.title}
+                      </h4>
+                      <p className="text-xs font-semibold text-gray-500 mt-1">
+                        {faq.category}
+                      </p>
+                    </div>
+                  </div>
+
+                  <ChevronDown
+                    className={`w-5 h-5 text-gray-600 transition-transform duration-300 flex-shrink-0`}
+                    style={{
+                      transform:
+                        expandedId === index
+                          ? 'rotate(180deg)'
+                          : 'rotate(0deg)',
+                      color: faq.color,
+                    }}
+                  />
+                </button>
+
+                {expandedId === index && (
+                  <div
+                    className="px-6 py-4 border-t-2 bg-gradient-to-br"
+                    style={{
+                      borderColor: `${faq.color}20`,
+                      background: `linear-gradient(135deg, ${faq.color}05, white)`,
+                    }}
+                  >
+                    <p className="text-gray-700 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Solutions Section */}

@@ -181,7 +181,9 @@ const TryoutSection: React.FC = () => {
           className={cn(
             cards.length === 1 && !isLoading
               ? 'flex justify-center gap-6 mb-8'
-              : 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8',
+              : cards.length === 2 && !isLoading
+                ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6 mb-8 justify-items-center max-w-2xl mx-auto'
+                : 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8',
           )}
         >
           {/* Loading State */}
@@ -212,7 +214,10 @@ const TryoutSection: React.FC = () => {
             : cards?.map((tryOut) => (
                 <div
                   key={tryOut.id}
-                  className="h-full"
+                  className={cn(
+                    'h-full',
+                    cards.length === 2 && 'w-full md:max-w-sm',
+                  )}
                 >
                   <EnhancedTryOutCard
                     tryOut={tryOut}
@@ -678,7 +683,7 @@ const EnhancedTryOutCard = ({
               className="text-xs font-bold underline hover:opacity-80 transition-opacity"
               style={{ color: mainColor }}
             >
-              discord.com/invite/5Fy3fnVaE9
+              JOIN SEKARANG!
             </a>
           </div>
 

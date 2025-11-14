@@ -7,7 +7,6 @@ import {
   AlertTriangle,
   BarChart3,
   BookOpen,
-  CheckCircle2,
   HelpCircle,
   MapPin,
   TrendingDown,
@@ -36,7 +35,6 @@ interface ProblemCard {
 }
 
 interface CompetitionData {
-  exam: string;
   examShortName: string;
   applicants: string;
   accepted: string;
@@ -72,7 +70,6 @@ const ProblemSection: React.FC = () => {
   // Competition data for statistics table
   const competitionData: CompetitionData[] = [
     {
-      exam: 'Seleksi Nasional Berbasih Tes',
       examShortName: 'SNBT',
       applicants: '785.058',
       accepted: '231.104',
@@ -81,7 +78,6 @@ const ProblemSection: React.FC = () => {
       brandColor: brandColors.blue,
     },
     {
-      exam: 'SIMAK Universitas Indonesia',
       examShortName: 'SIMAK UI',
       applicants: '31.289',
       accepted: '4.200',
@@ -90,7 +86,6 @@ const ProblemSection: React.FC = () => {
       brandColor: brandColors.yellow,
     },
     {
-      exam: 'Ujian Mandiri Universitas Gadjah Mada',
       examShortName: 'UM UGM',
       applicants: '34.627',
       accepted: '3.670',
@@ -99,7 +94,6 @@ const ProblemSection: React.FC = () => {
       brandColor: brandColors.steelBlue,
     },
     {
-      exam: 'Politeknik Keuangan Negara STAN',
       examShortName: 'PKN STAN',
       applicants: '100.000',
       accepted: '500',
@@ -215,14 +209,14 @@ const ProblemSection: React.FC = () => {
               }}
             >
               <BarChart3 className="w-4 h-4 mr-2 inline" />
-              Realita Yang Harus Kamu Hadapi
+              Pola Yang Sering Terjadi
             </Badge>
           </div>
 
           {/* Main Heading */}
           <div className="mb-8">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-              Aku Tau Banget —
+              Banyak Yang Belajar Keras,
             </h2>
             <h2
               className="text-4xl md:text-5xl font-black bg-clip-text text-transparent"
@@ -232,76 +226,34 @@ const ProblemSection: React.FC = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Struggle Kamu Kayak Gini
+              Tapi Kurang Strategis
             </h2>
           </div>
 
-          {/* Subtext - Bullet Points */}
-          <div className="max-w-4xl mx-auto">
-            {/* Intro Text */}
-            <p className="text-base text-gray-700 leading-relaxed mb-6">
-              Jangan merasa sendirian. Dari{' '}
-              <span
-                className="font-bold"
-                style={{ color: mainColor }}
-              >
-                785 ribu peserta SNBT
-              </span>
-              , cuma{' '}
-              <span
-                className="font-bold"
-                style={{ color: mainColor }}
-              >
-                1 dari 10
-              </span>{' '}
-              yang beneran lolos ke PTN impian. Sisanya? Ngalamin struggle yang
-              sama kayak kamu sekarang.
-            </p>
-
-            {/* Bullet Points */}
-            <div className="space-y-3 mb-6">
-              <div className="flex items-start gap-3">
-                <div
-                  className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: mainColor }}
-                />
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                  <span className="font-bold text-gray-900">
-                    Masalahnya Bukan Soal Effort atau IQ Kamu Kok:
-                  </span>{' '}
-                  Ribuan siswa yang IQ-nya standar aja bisa masuk PTN top dengan
-                  nilai 600+. Mereka tau sesuatu yang kamu belum tau.
-                </p>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div
-                  className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: mainColor }}
-                />
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                  <span className="font-bold text-gray-900">
-                    Mereka Tau Sistem yang Tepat Buat Belajar:
-                  </span>{' '}
-                  Strategi yang terukur. Metode yang proven. Bukan cuma sekadar
-                  nonton video atau ngapalin soal.
-                </p>
-              </div>
-            </div>
-
-            {/* Quote */}
-            <p className="text-sm md:text-base italic text-gray-600 border-l-4 pl-4 my-6 text-left">
-              <span
-                className="inline-block"
-                style={{ borderColor: mainColor }}
-              >
-                &quot;Banyak siswa pintar yang nggak lolos. Kenapa? Karena
-                mereka belajar keras, tapi gak cerdas. Sebaliknya, banyak siswa
-                biasa yang lolos karena mereka belajar cerdas, gak cuma
-                keras.&quot;
-              </span>
-            </p>
-          </div>
+          {/* Subtext */}
+          <p className="text-base text-gray-700 leading-relaxed max-w-3xl mx-auto">
+            Dari{' '}
+            <span
+              style={{ color: mainColor }}
+              className="font-bold"
+            >
+              785 ribu peserta SNBT
+            </span>
+            , hanya{' '}
+            <span
+              style={{ color: mainColor }}
+              className="font-bold"
+            >
+              1 dari 10
+            </span>{' '}
+            yang sampai ke PTN impian. Angka ini bukan soal IQ — tapi soal punya
+            roadmap atau tidak. Mayoritas siswa belajar asal-asalan, padahal
+            siswa yang berhasil punya satu kesamaan:{' '}
+            <span className="font-bold">
+              mereka tahu persis harus fokus ke mana
+            </span>
+            .
+          </p>
         </div>
 
         {/* STATISTIK KOMPETISI TABLE */}
@@ -341,13 +293,13 @@ const ProblemSection: React.FC = () => {
                     Ujian
                   </th>
                   <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
+                    Rasio Lolos
+                  </th>
+                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
                     Pendaftar
                   </th>
                   <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
                     Diterima
-                  </th>
-                  <th className="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">
-                    Rasio Lolos
                   </th>
                 </tr>
               </thead>
@@ -398,13 +350,19 @@ const ProblemSection: React.FC = () => {
                           <div className="font-black text-gray-900 text-base">
                             {data.examShortName}
                           </div>
-                          <div className="text-xs text-gray-600">
-                            {data.exam}
-                          </div>
                         </div>
                       </div>
                     </td>
 
+                    {/* Rasio Column */}
+                    <td className="px-6 py-4 text-center">
+                      <div
+                        className="inline-flex items-center justify-center px-4 py-2 rounded-xl font-black text-white text-lg shadow-md"
+                        style={{ backgroundColor: data.brandColor }}
+                      >
+                        {data.ratio}
+                      </div>
+                    </td>
                     {/* Pendaftar Column */}
                     <td className="px-6 py-4 text-center">
                       <div className="font-bold text-gray-900 text-lg">
@@ -420,45 +378,10 @@ const ProblemSection: React.FC = () => {
                       </div>
                       <div className="text-xs text-gray-500">siswa</div>
                     </td>
-
-                    {/* Rasio Column */}
-                    <td className="px-6 py-4 text-center">
-                      <div
-                        className="inline-flex items-center justify-center px-4 py-2 rounded-xl font-black text-white text-lg shadow-md"
-                        style={{ backgroundColor: data.brandColor }}
-                      >
-                        {data.ratio}
-                      </div>
-                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-
-          {/* Info Box */}
-          <div
-            className="mt-8 p-6 rounded-2xl border-l-4"
-            style={{
-              backgroundColor: `${mainColor}08`,
-              borderColor: mainColor,
-            }}
-          >
-            <div className="flex items-start gap-3">
-              <CheckCircle2
-                className="w-5 h-5 flex-shrink-0 mt-0.5"
-                style={{ color: mainColor }}
-              />
-              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                <span className="font-black">Apa Artinya?</span> Di SNBT aja,
-                dari 785 ribu peserta, cuma 231 ribu yang lolos (29%). Itu
-                berarti{' '}
-                <span className="font-black">7 dari 10 siswa gak lolos</span>,
-                meski udah belajar keras. Kenapa? Karena mereka gak punya{' '}
-                <span className="font-black">strategi yang tepat</span> buat
-                maksimalin score.
-              </p>
-            </div>
           </div>
         </div>
 

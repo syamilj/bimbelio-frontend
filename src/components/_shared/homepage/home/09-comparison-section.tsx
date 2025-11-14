@@ -33,11 +33,11 @@ export default function ComparisonSection() {
       liveclass: '198+ sesi live',
       livestream: '198+ sesi live',
     },
-    {
-      aspek: 'Jadwal',
-      liveclass: 'Sen–Jum 18:30–21:30',
-      livestream: 'Sen–Jum 18:30–21:30',
-    },
+    // {
+    //   aspek: 'Jadwal',
+    //   liveclass: 'Sen–Jum 18:30–21:30',
+    //   livestream: 'Sen–Jum 18:30–21:30',
+    // },
     {
       aspek: 'Mulai',
       liveclass: '21 Nov 2025',
@@ -45,8 +45,8 @@ export default function ComparisonSection() {
     },
     {
       aspek: 'Durasi',
-      liveclass: '6 Bulan (Bimbel → Intensif)',
-      livestream: '6 Bulan (Bimbel → Intensif)',
+      liveclass: '9 Bulan Hingga Kedinasan',
+      livestream: '9 Bulan Hingga Kedinasan',
     },
     {
       aspek: 'Konseling 1-on-1',
@@ -75,8 +75,8 @@ export default function ComparisonSection() {
     },
     {
       aspek: 'Coverage',
-      liveclass: 'Materi + Intensif + Super',
-      livestream: 'All + UM + Kedinasan',
+      liveclass: 'Materi + Intensif + Kedinasan',
+      livestream: 'Materi + Intensif + UM + Kedinasan',
     },
     {
       aspek: 'Harga',
@@ -126,7 +126,7 @@ export default function ComparisonSection() {
       aspek: 'Harga',
       bimbelio: 'Rp 799-1.499k',
       videoOnDemand: 'Rp 200-500k',
-      bimbelOffline: 'Rp 3-8 juta',
+      bimbelOffline: 'Rp 4-30 juta',
     },
     {
       aspek: 'Fleksibilitas',
@@ -170,8 +170,12 @@ export default function ComparisonSection() {
           </h2>
 
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
-            Data speaks louder. Ini perbandingan jujur antara program aku dan
-            alternatif lain di pasaran — biar kamu makin yakin.
+            <span className="font-bold text-gray-900">Bandingkan sendiri.</span>{' '}
+            Ini perbandingan jujur antara Bimbelio dan alternatif lain — dari
+            features, support, sampai harga.
+            <span className="block mt-2 text-gray-700">
+              Kamu akan lihat sendiri kenapa ribuan siswa pilih Bimbelio.
+            </span>
           </p>
 
           {/* Info Pills */}
@@ -228,17 +232,21 @@ export default function ComparisonSection() {
               Liveclass vs Livestream
             </h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Pilih yang sesuai dengan kebutuhan dan budget kamu
+              Pilih yang sesuai dengan kebutuhan dan budget kamu — kedua-duanya
+              powerful, tinggal pilih mana yang cocok.
             </p>
           </div>
 
           <div
-            className="overflow-hidden rounded-3xl shadow-md border-2 border-gray-100"
-            style={{ boxShadow: `0 8px 32px ${mainColor}15` }}
+            className="overflow-hidden rounded-3xl shadow-xl border-2"
+            style={{
+              boxShadow: `0 12px 40px ${mainColor}20`,
+              borderColor: `${mainColor}15`,
+            }}
           >
             {/* Top Accent Bar */}
             <div
-              className="h-1.5"
+              className="h-2"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -250,33 +258,59 @@ export default function ComparisonSection() {
                     className="text-white"
                     style={{ background: mainColor }}
                   >
-                    <th className="px-6 py-4 text-left font-bold text-sm md:text-base">
+                    <th className="px-6 py-5 text-left font-bold text-sm md:text-base">
                       Aspek
                     </th>
-                    <th className="px-6 py-4 text-center font-bold text-sm md:text-base">
+                    <th className="px-6 py-5 text-center font-bold text-sm md:text-base">
                       Liveclass
                     </th>
-                    <th className="px-6 py-4 text-center font-bold text-sm md:text-base">
+                    <th className="px-6 py-5 text-center font-bold text-sm md:text-base relative">
                       Livestream
+                      <span className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                        🔥 BEST VALUE
+                      </span>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {liveclassComparison.map((row, index) => (
+                  {liveclassComparison.map((item, idx) => (
                     <tr
-                      key={index}
-                      className={`${
-                        index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                      } hover:bg-blue-50 transition-colors`}
+                      key={idx}
+                      className="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200"
                     >
-                      <td className="px-6 py-4 font-semibold text-gray-900 text-sm md:text-base border-b border-gray-200">
-                        {row.aspek}
+                      <td className="px-6 py-4 font-semibold text-gray-900 text-sm md:text-base">
+                        {item.aspek}
                       </td>
-                      <td className="px-6 py-4 text-center text-gray-700 text-sm md:text-base border-b border-gray-200">
-                        {row.liveclass}
+                      <td className="px-6 py-4 text-center text-gray-700 text-sm md:text-base">
+                        {typeof item.liveclass === 'boolean' ? (
+                          item.liveclass ? (
+                            <CheckCircle2 className="w-5 h-5 text-green-500 mx-auto" />
+                          ) : (
+                            <X className="w-5 h-5 text-gray-300 mx-auto" />
+                          )
+                        ) : (
+                          item.liveclass
+                        )}
                       </td>
-                      <td className="px-6 py-4 text-center text-gray-700 text-sm md:text-base border-b border-gray-200">
-                        {row.livestream}
+                      <td
+                        className="px-6 py-4 text-center text-sm md:text-base font-semibold transition-colors"
+                        style={{
+                          backgroundColor: `${mainColor}10`,
+                          color: mainColor,
+                        }}
+                      >
+                        {typeof item.livestream === 'boolean' ? (
+                          item.livestream ? (
+                            <CheckCircle2
+                              className="w-5 h-5 mx-auto"
+                              style={{ color: mainColor }}
+                            />
+                          ) : (
+                            <X className="w-5 h-5 text-gray-300 mx-auto" />
+                          )
+                        ) : (
+                          item.livestream
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -286,24 +320,28 @@ export default function ComparisonSection() {
           </div>
         </div>
 
-        {/* Table 2: Bimbelio vs Alternatif Lain */}
+        {/* Table 2: Bimbelio vs Kompetitor */}
         <div>
           <div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
-              Bimbelio vs Alternatif Lain
+              Bimbelio vs Kompetitor
             </h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Bandingkan fitur dan value yang kamu dapatkan
+              Lihat sendiri apa yang membedakan Bimbelio dari yang lain — semua
+              ditampilkan jujur.
             </p>
           </div>
 
           <div
-            className="overflow-hidden rounded-3xl shadow-md border-2 border-gray-100"
-            style={{ boxShadow: `0 8px 32px ${mainColor}15` }}
+            className="overflow-hidden rounded-3xl shadow-xl border-2"
+            style={{
+              boxShadow: `0 12px 40px ${mainColor}20`,
+              borderColor: `${mainColor}15`,
+            }}
           >
             {/* Top Accent Bar */}
             <div
-              className="h-1.5"
+              className="h-2"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -315,16 +353,26 @@ export default function ComparisonSection() {
                     className="text-white"
                     style={{ background: mainColor }}
                   >
-                    <th className="px-6 py-4 text-left font-bold text-sm md:text-base">
-                      Aspek
+                    <th className="px-6 py-5 text-left font-bold text-sm md:text-base">
+                      Fitur
                     </th>
-                    <th className="px-6 py-4 text-center font-bold text-sm md:text-base">
-                      Bimbelio
+                    <th
+                      className="px-6 py-5 text-center font-bold text-sm md:text-base relative"
+                      style={{
+                        background: `linear-gradient(135deg, ${mainColor}, ${mainColor}dd)`,
+                      }}
+                    >
+                      <div className="flex flex-col items-center gap-2">
+                        <span>Bimbelio</span>
+                        <span className="bg-yellow-400 text-white text-xs font-black px-3 py-1 rounded-full">
+                          PILIHAN TERBAIK
+                        </span>
+                      </div>
                     </th>
-                    <th className="px-6 py-4 text-center font-bold text-sm md:text-base">
-                      Video-on-Demand
+                    <th className="px-6 py-5 text-center font-bold text-sm md:text-base">
+                      Video On-Demand
                     </th>
-                    <th className="px-6 py-4 text-center font-bold text-sm md:text-base">
+                    <th className="px-6 py-5 text-center font-bold text-sm md:text-base">
                       Bimbel Offline
                     </th>
                   </tr>
@@ -333,38 +381,42 @@ export default function ComparisonSection() {
                   {bimbelioComparison.map((row, index) => (
                     <tr
                       key={index}
-                      className={`${
-                        index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                      } hover:bg-blue-50 transition-colors`}
+                      className="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200"
                     >
-                      <td className="px-6 py-4 font-semibold text-gray-900 text-sm md:text-base border-b border-gray-200">
+                      <td className="px-6 py-4 font-semibold text-gray-900 text-sm md:text-base">
                         {row.aspek}
                       </td>
-                      <td className="px-6 py-4 text-center border-b border-gray-200">
+                      <td
+                        className="px-6 py-4 text-center text-sm md:text-base font-semibold transition-colors"
+                        style={{
+                          backgroundColor: `${mainColor}10`,
+                          color: mainColor,
+                        }}
+                      >
                         {typeof row.bimbelio === 'boolean' ? (
                           row.bimbelio ? (
                             <CheckCircle2
-                              className="w-6 h-6 mx-auto"
-                              style={{ color: '#00C853' }}
+                              className="w-5 h-5 mx-auto"
+                              style={{ color: mainColor }}
                             />
                           ) : (
-                            <X className="w-6 h-6 mx-auto text-gray-400" />
+                            <X className="w-5 h-5 text-gray-300 mx-auto" />
                           )
                         ) : (
-                          <span className="text-sm md:text-base text-gray-700">
+                          <span
+                            className="text-sm md:text-base"
+                            style={{ color: mainColor }}
+                          >
                             {row.bimbelio}
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-center border-b border-gray-200">
+                      <td className="px-6 py-4 text-center text-gray-700 text-sm md:text-base">
                         {typeof row.videoOnDemand === 'boolean' ? (
                           row.videoOnDemand ? (
-                            <CheckCircle2
-                              className="w-6 h-6 mx-auto"
-                              style={{ color: '#00C853' }}
-                            />
+                            <CheckCircle2 className="w-5 h-5 text-green-500 mx-auto" />
                           ) : (
-                            <X className="w-6 h-6 mx-auto text-gray-400" />
+                            <X className="w-5 h-5 text-gray-300 mx-auto" />
                           )
                         ) : (
                           <span className="text-sm md:text-base text-gray-700">
@@ -372,15 +424,12 @@ export default function ComparisonSection() {
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-center border-b border-gray-200">
+                      <td className="px-6 py-4 text-center text-gray-700 text-sm md:text-base">
                         {typeof row.bimbelOffline === 'boolean' ? (
                           row.bimbelOffline ? (
-                            <CheckCircle2
-                              className="w-6 h-6 mx-auto"
-                              style={{ color: '#00C853' }}
-                            />
+                            <CheckCircle2 className="w-5 h-5 text-green-500 mx-auto" />
                           ) : (
-                            <X className="w-6 h-6 mx-auto text-gray-400" />
+                            <X className="w-5 h-5 text-gray-300 mx-auto" />
                           )
                         ) : (
                           <span className="text-sm md:text-base text-gray-700">
@@ -397,53 +446,179 @@ export default function ComparisonSection() {
         </div>
         {/* Bottom CTA */}
         <div className="mt-16 max-w-4xl mx-auto">
-          <div className="bg-white rounded-3xl border-2 border-gray-100 shadow-md p-8">
-            {/* Icon Header */}
-            <div className="mb-4 flex items-center justify-center gap-3">
-              <div
-                className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-lg"
+          <div
+            className="rounded-3xl border-2 shadow-xl p-8 md:p-10"
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
+              borderColor: `${mainColor}20`,
+            }}
+          >
+            {/* Main Heading */}
+            <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-4 text-center">
+              Pilihan Udah Jelas, Kan?
+            </h3>
+
+            {/* Strong Value Proposition */}
+            <p className="text-center text-lg text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
+              <span
+                className="font-bold"
+                style={{ color: mainColor }}
+              >
+                Online dengan kualitas premium.
+              </span>{' '}
+              Tutor berpengalaman + Live interaction + AI yang siap 24/7 +{' '}
+              <span
+                className="font-bold"
+                style={{ color: mainColor }}
+              >
+                harga yang sangat worth it.
+              </span>{' '}
+              Ribuan siswa udah tahu. Giliran kamu?
+            </p>
+
+            {/* Social Proof Section */}
+            <div
+              className="rounded-2xl p-4 md:p-6 mb-8"
+              style={{ backgroundColor: `${mainColor}10` }}
+            >
+              <div className="flex flex-col md:flex-row md:items-center md:justify-center gap-6 text-center">
+                <div>
+                  <p
+                    className="text-3xl md:text-4xl font-black"
+                    style={{ color: mainColor }}
+                  >
+                    15K+
+                  </p>
+                  <p className="text-gray-600 font-semibold mt-1">
+                    Siswa Aktif
+                  </p>
+                </div>
+                <div
+                  className="hidden md:block h-16 w-0.5"
+                  style={{ backgroundColor: `${mainColor}20` }}
+                />
+                <div>
+                  <p
+                    className="text-3xl md:text-4xl font-black"
+                    style={{ color: mainColor }}
+                  >
+                    4.8/5
+                  </p>
+                  <p className="text-gray-600 font-semibold mt-1">
+                    Rating dari Ribuan Review
+                  </p>
+                </div>
+                <div
+                  className="hidden md:block h-16 w-0.5"
+                  style={{ backgroundColor: `${mainColor}20` }}
+                />
+                <div>
+                  <p
+                    className="text-3xl md:text-4xl font-black"
+                    style={{ color: mainColor }}
+                  >
+                    10x
+                  </p>
+                  <p className="text-gray-600 font-semibold mt-1">
+                    Lebih Murah dari Bimbel
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Key Benefits */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <div className="flex items-start gap-3">
+                <div
+                  className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  <CheckCircle2 className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-gray-900">
+                    Mulai dari Rp 99K/bulan
+                  </p>
+                  <p className="text-sm text-gray-600 mt-0.5">
+                    Coba semua fitur premium tanpa risiko
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div
+                  className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  <CheckCircle2 className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-gray-900">
+                    Akses Penuh dari Hari Pertama
+                  </p>
+                  <p className="text-sm text-gray-600 mt-0.5">
+                    Nggak ada hidden features atau batasan tiba-tiba
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div
+                  className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  <CheckCircle2 className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-gray-900">
+                    Support Responsif 24/7
+                  </p>
+                  <p className="text-sm text-gray-600 mt-0.5">
+                    Tim siap bantu kapan pun kamu butuh
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div
+                  className="h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                  style={{ backgroundColor: mainColor }}
+                >
+                  <CheckCircle2 className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-gray-900">
+                    Flexible Learning Path
+                  </p>
+                  <p className="text-sm text-gray-600 mt-0.5">
+                    Sesuai dengan kecepatan dan gaya belajar kamu
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom CTA Button */}
+            {/* <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+              <button
+                className="w-full md:w-auto px-8 py-4 rounded-2xl font-bold text-white text-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
               >
-                <Scale className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900">
-                Sudah Jelas Bedanya?
-              </h3>
-            </div>
-
-            <p className="text-center text-gray-600 mb-6 max-w-2xl mx-auto leading-relaxed">
-              <span className="font-bold text-gray-900">
-                Bimbelio kasih kamu fleksibilitas online + kualitas premium
-              </span>{' '}
-              dengan harga yang masuk akal. Nggak perlu keluar jutaan buat
-              bimbel offline, tapi tetap dapet{' '}
-              <span className="font-bold text-gray-900">live interaction</span>{' '}
-              yang nggak kamu dapet di video biasa.
-            </p>
-
-            {/* Trust Indicators */}
-            <div className="mt-6 pt-6 border-t-2 border-gray-100 flex flex-wrap items-center justify-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-green-500" />
-                <span className="font-semibold text-gray-700">
-                  Harga Transparan
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-blue-500" />
-                <span className="font-semibold text-gray-700">
-                  Fitur Lengkap
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-purple-500" />
-                <span className="font-semibold text-gray-700">
-                  Best Value for Money
-                </span>
-              </div>
-            </div>
+                Mulai Trial Gratis Sekarang
+              </button>
+              <button
+                className="w-full md:w-auto px-8 py-4 rounded-2xl font-bold transition-all duration-300 hover:-translate-y-1"
+                style={{
+                  color: mainColor,
+                  borderColor: mainColor,
+                  border: '2px solid',
+                  backgroundColor: 'white',
+                }}
+              >
+                Lihat Paket Lengkap
+              </button>
+            </div> */}
           </div>
         </div>
       </div>

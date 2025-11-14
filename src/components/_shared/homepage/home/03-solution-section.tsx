@@ -3,7 +3,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import {
-  CheckCircle2,
   Clock,
   FileCheck,
   Lightbulb,
@@ -64,54 +63,54 @@ export const SolutionSection: React.FC = () => {
       {
         letter: 'P',
         title: 'Prioritize',
-        subtitle: 'Fokus ke yang penting dulu',
+        subtitle: 'Identifikasi topik penting',
         description:
-          'Nilai stagnan? PRINTS kasih roadmap jelas: materi mana yang urgent, mana yang bisa ditunda. Nggak buang waktu lagi.',
+          'Dari ribuan topik, kami hitung mana yang paling sering keluar di ujian. Fokus ke situ dulu — bukan random belajar.',
         icon: <Target className="w-8 h-8" />,
         color: PILLAR_COLORS.azure,
       },
       {
         letter: 'R',
         title: 'Rhythm',
-        subtitle: 'Konsisten tanpa burnout',
+        subtitle: 'Belajar dengan rutinitas',
         description:
-          'Stamina drop? Rhythm builder bikin kamu belajar 2 jam/hari yang efektif — bukan 14 jam seminggu sekali yang akhirnya zonk.',
+          'Sistem tracking memastikan kamu belajar konsisten setiap hari. Bukan sekali-kali intensif yang bikin burnout.',
         icon: <Clock className="w-8 h-8" />,
         color: PILLAR_COLORS.violet,
       },
       {
         letter: 'I',
         title: 'Iterate',
-        subtitle: 'Coba, evaluasi, improve',
+        subtitle: 'Perbaiki strategi berdasarkan data',
         description:
-          'Nilai nggak naik-naik? Sistem iterate bantu kamu analisis kesalahan → perbaiki strategi → coba lagi. Loop sampai berhasil.',
+          'Setiap kali jawab soal salah, sistem analisis kenapa. Terus diapdate sampai pattern-nya jelas dan bisa dihindari.',
         icon: <RefreshCw className="w-8 h-8" />,
         color: PILLAR_COLORS.emerald,
       },
       {
         letter: 'N',
         title: 'Navigate',
-        subtitle: 'Peta belajar yang jelas',
+        subtitle: 'Roadmap yang jelas dari awal',
         description:
-          'Galau jurusan? Takut kelamaan di satu bab? Navigator guide kamu dari Core → Intensif → Super Intensif. Ada peta, nggak nyasar.',
+          'Tahu persis harus belajar apa dulu, apa sesudahnya. Materi tersusun — bukan sembarangan atau tersesat di tengah jalan.',
         icon: <Map className="w-8 h-8" />,
         color: PILLAR_COLORS.amber,
       },
       {
         letter: 'T',
         title: 'Test',
-        subtitle: 'Latihan soal yang cerdas',
+        subtitle: 'Latihan yang adaptive & terukur',
         description:
-          'Video ngebosenin? TO pakai IRT system — ngasih soal yang pas sama level kamu. Progress terlihat real-time, bukan cuma berasa aja.',
+          'Soal yang diberikan disesuaikan level kamu — makin pintar, makin sulit. Progress real-time bisa dilihat kapan saja.',
         icon: <FileCheck className="w-8 h-8" />,
         color: PILLAR_COLORS.rose,
       },
       {
         letter: 'S',
         title: 'Support',
-        subtitle: 'Nggak pernah sendirian',
+        subtitle: 'Mentor siap kapan saja',
         description:
-          'Butuh dukungan intensif? AI Mentor 24/7 sudah termasuk. Plus, tutor alumni PTN top siap membimbing — sistem support lengkap terintegrasi.',
+          'Stuck? Ada AI Mentor 24/7 atau tutor alumni PTN top yang siap jawab. Nggak pernah belajar sendiri sampai frustasi.',
         icon: <Users className="w-8 h-8" />,
         color: PILLAR_COLORS.indigo,
       },
@@ -119,15 +118,7 @@ export const SolutionSection: React.FC = () => {
     [],
   );
 
-  const problemMappings: ProblemMapping[] = useMemo(
-    () => [
-      { problem: 'Nilai Stagnasi', solution: 'Iterate & Test' },
-      { problem: 'Bingung Materi', solution: 'Prioritize & Navigate' },
-      { problem: 'Stamina Menurun', solution: 'Rhythm' },
-      { problem: 'Butuh Support', solution: 'Support System' },
-    ],
-    [],
-  );
+  const problemMappings: ProblemMapping[] = useMemo(() => [], []);
 
   // const socialProofStats: SocialProofStat[] = useMemo(
   //   () => [
@@ -202,14 +193,14 @@ export const SolutionSection: React.FC = () => {
               }}
             >
               <Lightbulb className="w-4 h-4 mr-2 inline" />
-              Solusi Terintegrasi
+              Ada Solusi Sistematis
             </Badge>
           </div>
 
           {/* Main Heading */}
           <div className="mb-8">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-              Makanya Aku Bikin —
+              Yang Berhasil Tahu Satu Hal —
             </h2>
             <h2
               className="text-4xl md:text-5xl font-black bg-clip-text text-transparent"
@@ -219,124 +210,24 @@ export const SolutionSection: React.FC = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              PRINTS System
+              Mereka Punya Sistem
             </h2>
           </div>
 
           {/* Subtext */}
-          <div className="max-w-4xl mx-auto space-y-4 text-base text-gray-700 leading-relaxed">
-            <p>
-              Bukan soal IQ atau talent. Bukan sekadar nonton video atau
-              menghapal soal.{' '}
-              <span
-                className="font-bold"
-                style={{ color: mainColor }}
-              >
-                Ribuan siswa biasa yang nggak ngerti matematika bisa masuk PTN
-                top
-              </span>{' '}
-              karena tahu{' '}
-              <span
-                className="font-bold"
-                style={{ color: mainColor }}
-              >
-                cara yang tepat untuk belajar.
-              </span>
-            </p>
-
-            <p>
-              Sistem PRINTS adalah kerangka kerja{' '}
-              <span
-                className="font-bold"
-                style={{ color: secondaryColor }}
-              >
-                yang menjawab semua masalah
-              </span>{' '}
-              — dari nilai stagnasi, hingga stamina turun, sampai ngga tahu
-              harus mulai dari mana. Satu sistem, enam pilar, hasil nyata
-              terukur.
-            </p>
-
-            <p className="text-sm md:text-base italic text-gray-600 border-l-4 pl-4 my-6 text-left">
-              <span
-                className="inline-block"
-                style={{ borderColor: mainColor }}
-              >
-                &quot;95% siswa kita lolos karena mereka belajar dengan strategi
-                yang jelas, bukan sekadar kerja keras tanpa arah.&quot;
-              </span>
-            </p>
-          </div>
-        </div>
-
-        {/* Problem to Solution Mapping */}
-        <div className="mb-20">
-          {/* Header Icon + Title */}
-          <div className="flex justify-center items-center gap-4 mb-8">
-            <div
-              className="p-4 rounded-2xl text-white shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
+          <p className="text-base text-gray-700 leading-relaxed max-w-3xl mx-auto">
+            Ribuan siswa yang awalnya juga bingung & stagnan — berhasil masuk
+            PTN impian bukan karena lebih pintar, tapi karena{' '}
+            <span
+              style={{ color: mainColor }}
+              className="font-bold"
             >
-              <Lightbulb className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="text-2xl md:text-3xl font-black text-gray-900">
-                Dari 8 Masalah → 1 Sistem yang Ngejawab Semua
-              </h3>
-              <p className="text-sm md:text-base text-gray-600">
-                PRINTS System dirancang khusus untuk mengatasi semua pain points
-                kamu
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {problemMappings.map((mapping, idx) => (
-              <div
-                key={idx}
-                className="group relative bg-white rounded-2xl border-2 hover:shadow-md transition-all duration-300 overflow-hidden"
-                style={{
-                  borderColor: `${mainColor}20`,
-                }}
-              >
-                {/* Top Accent Bar */}
-                <div
-                  className="h-2 w-full"
-                  style={{
-                    background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
-                  }}
-                />
-
-                <div className="p-6 flex items-center gap-4">
-                  <div
-                    className="flex-shrink-0 p-3 rounded-2xl"
-                    style={{ backgroundColor: `${mainColor}15` }}
-                  >
-                    <CheckCircle2
-                      className="w-6 h-6"
-                      style={{ color: mainColor }}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-base text-gray-700">
-                      <span className="font-black text-gray-900">
-                        {mapping.problem}
-                      </span>{' '}
-                      →{' '}
-                      <span
-                        className="font-bold"
-                        style={{ color: mainColor }}
-                      >
-                        {mapping.solution}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+              punya sistem yang jelas
+            </span>
+            . PRINTS adalah kerangka kerja berdasarkan pola mereka yang
+            berhasil: enam pilar yang menjawab setiap masalah, dari materi,
+            prioritas, rhythm, feedback, latihan, hingga support lengkap.
+          </p>
         </div>
 
         {/* PRINTS Pillars Grid */}
@@ -344,11 +235,11 @@ export const SolutionSection: React.FC = () => {
           {/* Section Title */}
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-              6 Pilar PRINTS
+              Gimana Cara Kerjanya?
             </h3>
             <p className="text-base md:text-lg text-gray-600">
-              Setiap pilar dirancang untuk mengatasi masalah spesifik dalam
-              perjalanan belajar kamu
+              PRINTS bekerja dalam 6 tahap — dari identifikasi masalah sampai
+              konsistensi berkelanjutan
             </p>
           </div>
 
@@ -356,7 +247,7 @@ export const SolutionSection: React.FC = () => {
             {printsPillars.map((pillar, idx) => (
               <div
                 key={idx}
-                className="group relative bg-white rounded-2xl border-2 hover:shadow-md transition-all duration-300 overflow-hidden"
+                className="group relative bg-white rounded-2xl border-2 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col"
                 style={{
                   borderColor: `${pillar.color}20`,
                 }}
@@ -369,12 +260,12 @@ export const SolutionSection: React.FC = () => {
                   }}
                 />
 
-                <div className="p-6">
+                <div className="p-6 flex flex-col items-center text-center h-full">
                   {/* Header with Icon & Letter */}
-                  <div className="flex items-start gap-4 mb-4">
+                  <div className="flex flex-col items-center gap-3 mb-4">
                     {/* Icon */}
                     <div
-                      className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg"
+                      className="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg"
                       style={{
                         backgroundColor: pillar.color,
                       }}
@@ -384,7 +275,7 @@ export const SolutionSection: React.FC = () => {
 
                     {/* Large Letter */}
                     <div
-                      className="text-6xl font-black leading-none opacity-20"
+                      className="text-5xl font-black leading-none opacity-30"
                       style={{ color: pillar.color }}
                     >
                       {pillar.letter}
@@ -392,8 +283,8 @@ export const SolutionSection: React.FC = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="space-y-3">
-                    <h4 className="text-2xl font-black text-gray-900">
+                  <div className="space-y-2 flex-1 flex flex-col justify-center">
+                    <h4 className="text-xl font-black text-gray-900">
                       {pillar.title}
                     </h4>
                     <p
@@ -408,9 +299,9 @@ export const SolutionSection: React.FC = () => {
                   </div>
 
                   {/* Bottom accent line */}
-                  <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="mt-4 pt-4 border-t border-gray-100 w-full">
                     <div
-                      className="h-1 w-12 rounded-full"
+                      className="h-1 w-12 rounded-full mx-auto"
                       style={{ backgroundColor: pillar.color }}
                     />
                   </div>
@@ -418,28 +309,6 @@ export const SolutionSection: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Social Proof Section */}
-
-        {/* CTA line */}
-        <div className="mt-16 pt-8 border-t border-gray-200 text-center">
-          <p className="text-sm md:text-base text-gray-600">
-            <span
-              className="font-black"
-              style={{ color: mainColor }}
-            >
-              Penasaran?
-            </span>{' '}
-            Scroll ke bawah untuk melihat{' '}
-            <span
-              className="font-black"
-              style={{ color: secondaryColor }}
-            >
-              paket berlangganan
-            </span>{' '}
-            yang cocok untuk kamu.
-          </p>
         </div>
       </div>
     </section>

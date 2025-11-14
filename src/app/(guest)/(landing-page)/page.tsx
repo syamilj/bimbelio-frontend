@@ -27,10 +27,10 @@ const ProgramsSection = dynamic(
 );
 
 // TIER 3: SSR = false (Below fold, non-critical - defer to client)
-const EcosystemSection = dynamic(
-  () => import('@/components/_shared/homepage/home/05-ecosystem-section'),
-  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
-);
+// const EcosystemSection = dynamic(
+//   () => import('@/components/_shared/homepage/home/05-ecosystem-section'),
+//   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
+// );
 
 // TIER 2: SSR = true (Tutors showcase - SEO important)
 const TutorsSection = dynamic(
@@ -83,7 +83,7 @@ export default function LandingPage() {
           <ProgramsSection />
 
           {/* 05 Ecosystem section */}
-          <EcosystemSection />
+          {/* <EcosystemSection /> */}
 
           {/* 06 Tutors section */}
           <TutorsSection />

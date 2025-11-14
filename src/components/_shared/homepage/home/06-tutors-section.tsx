@@ -9,6 +9,7 @@ import {
   Clock,
   GraduationCap,
   MessageCircle,
+  Send,
   Sparkles,
   Target,
   TrendingUp,
@@ -144,37 +145,43 @@ export default function TutorsSection() {
       icon: <Target className="w-6 h-6" />,
       title: 'Strategic Planning',
       description:
-        'Fokus mana dulu, skip mana yang gak penting, prioritas sesuai target PTN-mu.',
+        'Mapping target PTN, identifikasi kelemahan, buat roadmap 36 minggu yang breakthrough-focused.',
       bullets: [
-        'Analisis kekuatan & kelemahan',
-        'Roadmap personalized 36 minggu',
+        'Pilih target PTN & breakdown kebutuhan skor',
+        'Analisis gap antara level saat ini vs target',
       ],
       color: '#0091FF',
     },
     {
       icon: <Clock className="w-6 h-6" />,
-      title: 'Time Management',
+      title: 'Study Rhythm',
       description:
-        'Fokus mana dulu, skip mana yang gak penting, prioritas sesuai target PTN-mu.',
-      bullets: ['Weekly planner template', 'Produktivitas tanpa burnout'],
+        'Bangun habits yang sustainable — nggak burnout, tapi consistently progressing setiap minggu.',
+      bullets: [
+        'Weekly study plan template + checklist',
+        'Monitoring consistency & adjust pace sesuai kebutuhan',
+      ],
       color: '#00C853',
     },
     {
       icon: <MessageCircle className="w-6 h-6" />,
-      title: 'Mental Coaching',
+      title: 'Mindset Coaching',
       description:
-        'Jaga motivasi, atasi stress, dan bangun mindset winner untuk jangka panjang.',
-      bullets: ['Strategi atasi tekanan UTBK', 'Growth mindset & resilience'],
+        'Jaga mental tetap sharp — atasi procrastination, self-doubt, dan test anxiety yang biasa muncul.',
+      bullets: [
+        'Strategi mindset sebelum & sesudah practice test',
+        'Dealing dengan imposter syndrome & failure recovery',
+      ],
       color: '#FFA500',
     },
     {
       icon: <TrendingUp className="w-6 h-6" />,
-      title: 'Karir Pasca-PTN',
+      title: 'Career Roadmap',
       description:
-        'Persiapan kehidupan kampus, networking, dan strategi karir setelah lulus PTN.',
+        'Nggak cuma masuk PTN — persiapan sukses di kuliah & strategi karir jangka panjang.',
       bullets: [
-        'Tips adaptasi kuliah semester 1',
-        'Roadmap karir sesuai jurusan',
+        'Tips adaptasi semester 1 di kampus',
+        'Networking strategy & internship planning',
       ],
       color: '#9C27B0',
     },
@@ -184,20 +191,23 @@ export default function TutorsSection() {
   const aiFeatures: AIFeature[] = [
     {
       icon: <Zap className="w-8 h-8" />,
-      title: 'Instant Response',
-      description: 'Tanya jam 2 pagi pun dijawab instant. No waiting time.',
+      title: 'Instant Help 24/7',
+      description:
+        'Stuck jam 2 pagi? Bimbot siap jawab instant. Nggak perlu tunggu tutor online besok.',
       color: '#FFA500',
     },
     {
       icon: <Target className="w-8 h-8" />,
-      title: 'Error Analysis',
-      description: 'Analisis pola kesalahan & kasih tips improve specific.',
+      title: 'Smart Error Analysis',
+      description:
+        'Setiap soal salah di-analisis — tahu persis mana konsep yang belum paham, mana strategy yang kurang.',
       color: '#0091FF',
     },
     {
-      icon: <Clock className="w-8 h-8" />,
-      title: 'Smart Drill Recommendation',
-      description: 'Rekomendasikan latihan soal sesuai kelemahanmu.',
+      icon: <TrendingUp className="w-8 h-8" />,
+      title: 'Personalized Drill Queue',
+      description:
+        'Soal yang diberikan disesuaikan skill level & weakness pattern kamu. Nggak asal ngasih soal.',
       color: '#9C27B0',
     },
   ];
@@ -214,144 +224,61 @@ export default function TutorsSection() {
             className="mb-8 px-6 py-2 text-sm font-bold text-white border-none inline-flex items-center gap-2"
             style={{ backgroundColor: mainColor }}
           >
-            <Users className="w-4 h-4" />
-            3-Layer Support System
+            <GraduationCap className="w-4 h-4" />
+            Experts Yang Ngajarin
           </Badge>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-            Platform Canggih
-            <span className="block">Tapi Siapa Yang Ngajarin?</span>
-            <br />
-            <span style={{ color: mainColor }}>
-              3 Layer Support yang Saling Melengkapi
+            Mereka Sukses di PTN —
+            <span
+              className="block"
+              style={{ color: mainColor }}
+            >
+              Sekarang Mereka Ngajarin Kamu
             </span>
           </h2>
 
           <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
             <span className="font-bold text-gray-900">
-              Tools doang nggak cukup.
-            </span>{' '}
-            Kamu butuh
+              Fresh graduates dari UI/UGM/ITB
+            </span>
+            yang bukan cuma tahu caranya, tapi juga
             <span className="block mt-1">
-              <span className="font-bold">Tutor</span> yang ngajar materi,{' '}
-              <span className="font-bold">Mentor</span> yang bimbing strategi,
-              dan <span className="font-bold">Bimbot AI</span> yang support
-              24/7.
+              beneran relate sama struggle-nya calon mahasiswa.
+            </span>
+            <span className="block mt-3 font-semibold text-gray-700">
+              3 layer support: Tutor yang ngajar, Mentor yang guide, Bimbot AI
+              yang siap 24/7.
             </span>
           </p>
-
-          {/* Three Dots Indicator */}
-          <div className="flex items-center justify-center gap-2">
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="w-2 h-2 rounded-full"
-                style={{
-                  backgroundColor: [mainColor, '#00C853', '#9C27B0'][i],
-                }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* ========== 3 LAYERS SYSTEM CARDS ========== */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-28 justify-items-center">
-          {layers.map((layer, index) => (
-            <div
-              key={index}
-              className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 w-full max-w-sm"
-            >
-              {/* Top Accent Bar */}
-              <div
-                className="h-2 w-full"
-                style={{ backgroundColor: layer.color }}
-              />
-
-              <div className="p-6 text-center">
-                {/* Icon */}
-                <div
-                  className="w-16 h-16 rounded-xl flex items-center justify-center text-white mb-4 shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300 mx-auto"
-                  style={{ backgroundColor: layer.color }}
-                >
-                  {layer.icon}
-                </div>
-
-                {/* Content */}
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <div
-                        className="h-1 w-1 rounded-full"
-                        style={{ backgroundColor: layer.color }}
-                      />
-                      <p
-                        className="text-xs font-bold uppercase tracking-wider"
-                        style={{ color: layer.color }}
-                      >
-                        {layer.layer}
-                      </p>
-                      <div
-                        className="h-1 w-1 rounded-full"
-                        style={{ backgroundColor: layer.color }}
-                      />
-                    </div>
-                    <h3 className="text-2xl font-black text-gray-900 mb-2">
-                      {layer.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {layer.description}
-                    </p>
-                  </div>
-
-                  {/* Divider */}
-                  <div
-                    className="h-0.5 w-12 rounded-full mx-auto"
-                    style={{ backgroundColor: layer.color + '40' }}
-                  />
-
-                  {/* Info Box */}
-                  <div
-                    className="rounded-lg p-3 text-center"
-                    style={{
-                      backgroundColor: layer.color + '08',
-                      border: `1.5px solid ${layer.color}20`,
-                    }}
-                  >
-                    <p className="text-xs font-semibold text-gray-700">
-                      {index === 0 && 'Live Class & Video Content'}
-                      {index === 1 && 'Strategic Guidance & Planning'}
-                      {index === 2 && 'Instant Help Anytime'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
 
         {/* ========== LAYER 1: TIM TUTOR BIMBELIO ========== */}
-        <div className="mb-24">
+        <div className="mb-28">
           {/* Header */}
-          <div className="text-center mb-14">
+          <div className="text-center mb-16">
             <Badge
               className="mb-6 border-none px-6 py-2 text-sm font-bold text-white inline-flex items-center gap-2"
               style={{ backgroundColor: mainColor }}
             >
               <GraduationCap className="w-4 h-4" />
-              Layer 1 - Tim Tutor Bimbelio
+              LAYER 1 - Expert Tutors
             </Badge>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-              Expert Teaching —{' '}
-              <span style={{ color: mainColor }}>Bimbelio Tutors</span>
+              Tutor yang Proven
+              <span
+                className="block"
+                style={{ color: mainColor }}
+              >
+                Masuk PTN Top + Pahami Strategi Asli
+              </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Fresh graduates dari UI/UGM/ITB yang beneran paham struggle UTBK.{' '}
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Bukan hanya pinter di akademik — mereka{' '}
               <span className="font-bold">
-                Mereka bukan hanya ngajar, tapi jadi mentor yang relate-able dan
-                supportif.
-              </span>{' '}
-              Sharing real experience, proven strategies, dan personal guidance
-              untuk sukses di PTN.
+                tahu persis gimana strategi UTBK itu
+              </span>
+              , mana topik yang paling keluar, dan cara jenius jawab soalnya.
             </p>
           </div>
 
@@ -360,7 +287,7 @@ export default function TutorsSection() {
             {tutors.map((tutor, index) => (
               <div
                 key={index}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col"
+                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100"
               >
                 {/* Top Section - Image with Overlay */}
                 <div
@@ -391,22 +318,14 @@ export default function TutorsSection() {
                     </div>
                   )}
 
-                  {/* Badge - Top Right Corner with UI Logo */}
+                  {/* Badge - Top Right Corner */}
                   <div className="absolute top-3 right-3 z-20">
                     <div
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg shadow-lg backdrop-blur-sm bg-white"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm bg-white"
                       style={{
                         border: `2px solid ${tutor.color}`,
                       }}
                     >
-                      <Image
-                        src="/tutors/ui.webp"
-                        alt="UI"
-                        width={16}
-                        height={16}
-                        loading="lazy"
-                        quality={40}
-                      />
                       <span
                         className="text-xs font-black"
                         style={{ color: tutor.color }}
@@ -430,9 +349,9 @@ export default function TutorsSection() {
                     {tutor.name}
                   </h4>
 
-                  {/* Major - with icon */}
+                  {/* Subject - with icon */}
                   <div className="flex items-center gap-2 mb-4 pb-4 border-b border-gray-100">
-                    <GraduationCap
+                    <Target
                       className="w-4 h-4 flex-shrink-0"
                       style={{ color: tutor.color }}
                     />
@@ -444,7 +363,7 @@ export default function TutorsSection() {
                     </p>
                   </div>
 
-                  {/* Quote */}
+                  {/* Quote - the insight */}
                   <p
                     className="text-sm leading-relaxed italic font-medium flex-1"
                     style={{
@@ -460,7 +379,7 @@ export default function TutorsSection() {
                                 : '#1E40AF',
                     }}
                   >
-                    &quot;{tutor.quote}&quot;
+                    💡 &quot;{tutor.quote}&quot;
                   </p>
                 </div>
               </div>
@@ -469,27 +388,30 @@ export default function TutorsSection() {
         </div>
 
         {/* ========== LAYER 2: MENTOR SYSTEM ========== */}
-        <div className="mb-24">
+        <div className="mb-28">
           {/* Header */}
-          <div className="text-center mb-14">
+          <div className="text-center mb-16">
             <Badge
               className="mb-6 border-none px-6 py-2 text-sm font-bold text-white inline-flex items-center gap-2"
               style={{ backgroundColor: '#00C853' }}
             >
               <Users className="w-4 h-4" />
-              Layer 2 - Mentor System
+              LAYER 2 - Mentorship
             </Badge>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-              Beyond Teaching —{' '}
-              <span style={{ color: '#00C853' }}>Strategic Guidance</span>
+              Beyond Teaching —
+              <span
+                className="block"
+                style={{ color: '#00C853' }}
+              >
+                Strategic Guidance & Mental Coaching
+              </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Tutor ngajarin materi, tapi kamu butuh lebih dari itu.{' '}
-              <span className="font-bold">
-                Mentor system kami memberikan strategic planning, time
-                management, mental coaching, dan career guidance
-              </span>{' '}
-              untuk memastikan kamu siap 100% untuk PTN impian.
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Tutor ngajarin materi, tapi kamu butuh lebih.{' '}
+              <span className="font-bold">Mentor system kami</span> handle
+              strategi PTN, time management, mindset, dan even career prep after
+              graduation.
             </p>
           </div>
 
@@ -562,81 +484,250 @@ export default function TutorsSection() {
 
         {/* ========== LAYER 3: AI MENTOR ========== */}
         <div
-          className="mb-24"
+          className="mb-28"
           id="mentor-ai"
         >
           {/* Header */}
-          <div className="text-center mb-14">
+          <div className="text-center mb-16">
             <Badge
               className="mb-6 border-none px-6 py-2 text-sm font-bold text-white inline-flex items-center gap-2"
               style={{ backgroundColor: '#9C27B0' }}
             >
               <Sparkles className="w-4 h-4" />
-              Layer 3 - Bimbot AI
+              LAYER 3 - AI Support
             </Badge>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-              Always Available —{' '}
-              <span style={{ color: '#9C27B0' }}>Bimbot AI 24/7</span>
+              Support Nonstop —
+              <span
+                className="block"
+                style={{ color: '#9C27B0' }}
+              >
+                Bimbot AI Ready 24/7
+              </span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Tutor & Mentor butuh sleep, tapi{' '}
-              <span className="font-bold">
-                Bimbot AI siap standby kapan saja.
-              </span>{' '}
-              Instant jawab pertanyaan, analisis error pattern, dan
-              rekomendasikan drill soal yang paling cocok untuk kelemahan
-              spesifik kamu.
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Tutor & Mentor perlu istirahat, tapi{' '}
+              <span className="font-bold">Bimbot AI nggak pernah tidur.</span>{' '}
+              Instant jawab pertanyaan, analisis error pattern, recommend soal
+              yang tepat sesuai kelemahan kamu.
             </p>
           </div>
 
-          {/* AI Features Grid - Enhanced 3-Column Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-            {aiFeatures.map((feature, index) => (
+          {/* Chat UI Visual */}
+          <div className="max-w-2xl mx-auto">
+            <div
+              className="rounded-3xl overflow-hidden shadow-2xl border"
+              style={{
+                borderColor: '#9C27B030',
+                backgroundColor: '#F8FAFC',
+              }}
+            >
+              {/* Chat Header */}
               <div
-                key={index}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col"
+                className="px-6 py-6 border-b flex items-center justify-between gap-6 bg-white"
+                style={{
+                  borderColor: '#9C27B015',
+                }}
               >
-                {/* Top Colored Bar */}
-                <div
-                  className="h-1.5 w-full"
-                  style={{ backgroundColor: feature.color }}
-                />
+                {/* Left: Logo Horizontal */}
+                <div className="flex-shrink-0">
+                  <Image
+                    src="/logo-kecil.png"
+                    alt="Bimbelio"
+                    width={140}
+                    height={48}
+                    quality={100}
+                    priority
+                  />
+                </div>
 
-                {/* Content */}
-                <div className="p-8 text-center flex flex-col flex-1">
-                  {/* Icon Container */}
+                {/* Right: Status */}
+                <div className="flex items-center gap-2.5 ml-auto">
                   <div
-                    className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-5 shadow-md group-hover:shadow-lg transition-shadow group-hover:scale-110 duration-300"
-                    style={{ backgroundColor: feature.color }}
-                  >
-                    <div className="text-white text-2xl">{feature.icon}</div>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-black text-gray-900 mb-3">
-                    {feature.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-sm text-gray-600 leading-relaxed mb-6 flex-1">
-                    {feature.description}
-                  </p>
-
-                  {/* AI Badge */}
-                  <div
-                    className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold shadow-sm"
+                    className="w-2 h-2 rounded-full"
                     style={{
-                      backgroundColor: feature.color + '15',
-                      border: `1.5px solid ${feature.color}30`,
-                      color: feature.color,
+                      backgroundColor: '#9C27B0',
+                      boxShadow: '0 0 8px rgba(156, 39, 176, 0.6)',
+                      animation:
+                        'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }}
+                  />
+                  <span
+                    className="text-sm font-bold tracking-wide"
+                    style={{ color: '#9C27B0' }}
+                  >
+                    Online • Ready
+                  </span>
+                </div>
+              </div>
+
+              {/* Chat Messages Area */}
+              <div
+                className="px-6 py-8 space-y-4 bg-white"
+                style={{ minHeight: '320px' }}
+              >
+                {/* User Message */}
+                <div className="flex justify-end">
+                  <div
+                    className="max-w-xs px-4 py-3 rounded-2xl text-sm font-medium"
+                    style={{
+                      backgroundColor: '#9C27B0',
+                      color: 'white',
                     }}
                   >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>AI-Powered</span>
+                    Kak, cara ngerjain soal PRU yang susah gitu gimana?
+                  </div>
+                </div>
+
+                {/* AI Thinking */}
+                <div className="flex justify-start">
+                  <div
+                    className="px-4 py-3 rounded-2xl"
+                    style={{
+                      backgroundColor: '#9C27B008',
+                      border: '1px solid #9C27B020',
+                    }}
+                  >
+                    <div className="flex gap-1.5 items-center">
+                      <div
+                        className="w-2 h-2 rounded-full"
+                        style={{
+                          backgroundColor: '#9C27B0',
+                          animation:
+                            'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        }}
+                      />
+                      <div
+                        className="w-2 h-2 rounded-full"
+                        style={{
+                          backgroundColor: '#9C27B0',
+                          animation:
+                            'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.3s',
+                        }}
+                      />
+                      <div
+                        className="w-2 h-2 rounded-full"
+                        style={{
+                          backgroundColor: '#9C27B0',
+                          animation:
+                            'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.6s',
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* AI Response */}
+                <div className="flex justify-start">
+                  <div
+                    className="max-w-xs px-4 py-3 rounded-2xl text-sm leading-relaxed"
+                    style={{
+                      backgroundColor: '#9C27B010',
+                      border: '1px solid #9C27B020',
+                      color: '#1F2937',
+                    }}
+                  >
+                    <p className="font-semibold mb-2">Oke, jadi begini:</p>
+                    <p>1. Pahami struktur pertanyaan dulu</p>
+                    <p>2. Identifikasi keyword penting</p>
+                    <p>3. Eliminasi pilihan yang jelas salah</p>
+                  </div>
+                </div>
+
+                {/* User Message 2 */}
+                <div className="flex justify-end">
+                  <div
+                    className="max-w-xs px-4 py-3 rounded-2xl text-sm font-medium"
+                    style={{
+                      backgroundColor: '#9C27B0',
+                      color: 'white',
+                    }}
+                  >
+                    Bisa kasih contoh soal yang sesuai level aku?
+                  </div>
+                </div>
+
+                {/* AI Response 2 */}
+                <div className="flex justify-start">
+                  <div
+                    className="max-w-xs px-4 py-3 rounded-2xl text-sm"
+                    style={{
+                      backgroundColor: '#9C27B010',
+                      border: '1px solid #9C27B020',
+                      color: '#1F2937',
+                    }}
+                  >
+                    <p className="font-semibold mb-2">✅ Siap!</p>
+                    <p className="text-xs">
+                      Saya sudah identify weakness pattern kamu dari 47 soal
+                      terakhir.
+                    </p>
+                    <p className="text-xs mt-1">
+                      Rekomendasi: 5 soal PRU level medium-hard ✓
+                    </p>
                   </div>
                 </div>
               </div>
-            ))}
+
+              {/* Chat Input Area */}
+              <div
+                className="px-6 py-4 border-t flex gap-3"
+                style={{ borderColor: '#9C27B010' }}
+              >
+                <input
+                  type="text"
+                  placeholder="Tanya apa aja..."
+                  className="flex-1 px-4 py-2.5 rounded-full text-sm border outline-none focus:ring-2"
+                  style={{
+                    borderColor: '#9C27B020',
+                    backgroundColor: '#F8FAFC',
+                    color: '#1F2937',
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#9C27B0';
+                    e.target.style.backgroundColor = 'white';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#9C27B020';
+                    e.target.style.backgroundColor = '#F8FAFC';
+                  }}
+                />
+                <button
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold transition-all hover:scale-110 duration-300"
+                  style={{ backgroundColor: '#9C27B0' }}
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Features Below Chat */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+              {aiFeatures.map((feature, index) => (
+                <div
+                  key={index}
+                  className="text-center p-6"
+                >
+                  {/* Icon Container */}
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md"
+                    style={{ backgroundColor: feature.color + '15' }}
+                  >
+                    <div style={{ color: feature.color }}>{feature.icon}</div>
+                  </div>
+
+                  {/* Title */}
+                  <h4 className="font-black text-gray-900 mb-2">
+                    {feature.title}
+                  </h4>
+
+                  {/* Description */}
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -669,23 +760,22 @@ export default function TutorsSection() {
                   <CheckCircle2 className="h-6 w-6 text-white" />
                 </div>
                 <h4 className="text-2xl md:text-3xl font-black text-gray-900">
-                  The Complete Support System
+                  Complete Support Ecosystem
                 </h4>
               </div>
 
               <p className="mb-8 text-lg md:text-xl leading-relaxed text-gray-700 max-w-3xl mx-auto">
                 <span className="font-black text-gray-900">
-                  3 layer support system yang saling melengkapi
+                  Experts di TOP + support yang lengkap.
                 </span>
-                — dari Tutor yang ngajarin materi, Mentor yang guide strategi,
-                hingga Bimbot AI yang support 24/7. Kamu
-                <span className="block mt-1 font-bold text-gray-900">
-                  nggak akan merasa sendirian
+                Dari Tutor yang proven sukses di PTN, Mentor yang guide strategi
+                & mindset, sampai Bimbot AI yang available 24/7.
+                <span className="block mt-3 font-semibold text-gray-900">
+                  Kamu nggak sendirian di perjalanan ini.
                 </span>
-                dalam perjalanan ke PTN impian.
               </p>
 
-              {/* Badges - Feature Pills */}
+              {/* Feature Pills */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 flex-wrap">
                 <div
                   className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold shadow-md transition-all"
@@ -696,7 +786,7 @@ export default function TutorsSection() {
                   }}
                 >
                   <GraduationCap className="w-4 h-4" />
-                  <span>Live Teaching</span>
+                  <span>Expert Tutors</span>
                 </div>
 
                 <div
@@ -708,7 +798,7 @@ export default function TutorsSection() {
                   }}
                 >
                   <Users className="w-4 h-4" />
-                  <span>Personal Guidance</span>
+                  <span>Strategic Mentors</span>
                 </div>
 
                 <div

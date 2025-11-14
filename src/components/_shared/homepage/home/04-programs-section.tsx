@@ -31,18 +31,18 @@ export default function ProgramsSection() {
   const programs: Program[] = [
     {
       id: 1,
-      title: 'Core Learning Materi',
-      subtitle: 'Bangun Fondasi Kuat',
-      badge: 'PROGRAM 1',
+      title: 'Core Learning',
+      subtitle: 'Bangun Pondasi Kuat',
+      badge: 'TAHAP 1',
       duration: 'Nov-Des 2025',
       monthRange: '2 Bulan',
       features: [
-        'Materi UTBK SNBT + materi sekolah lengkap',
-        'Meningkatkan nilai SNBP dan persiapan UTBK SNBT',
-        'Focus pada pendalaman konsep dasar',
+        'Kuasai konsep fundamental dari awal yang benar',
+        'Identifikasi gap pemahaman sebelum masuk fase intensif',
+        'Siap mental dan punya roadmap yang jelas ke depan',
       ],
       highlights: {
-        focus: 'Konsep Dasar',
+        focus: 'Fondasi Konsep',
         percentage: '60%',
       },
       color: '#0091FF',
@@ -50,18 +50,18 @@ export default function ProgramsSection() {
     },
     {
       id: 2,
-      title: 'Intensif UTBK - SNBT',
-      subtitle: 'Persiapan Maksimal',
-      badge: 'PROGRAM 2',
+      title: 'Intensif UTBK',
+      subtitle: 'Drill & Strategi',
+      badge: 'TAHAP 2',
       duration: 'Jan-Mar 2026',
       monthRange: '3 Bulan',
       features: [
-        'Materi UTBK SNBT + 20% materi tambahan',
-        'Penajaman materi untuk UAS',
-        'Latihan soal intensif dan pembahasan',
+        'Drill soal intensif berdasarkan pola ujian sebenarnya',
+        'Analisis kesalahan & perbaiki strategi setiap minggu',
+        'Pantau progress real-time sampai stabil di target skor',
       ],
       highlights: {
-        focus: 'Drill & Practice',
+        focus: 'Penguasaan Soal',
         percentage: '30%',
       },
       color: '#FFA500',
@@ -69,18 +69,18 @@ export default function ProgramsSection() {
     },
     {
       id: 3,
-      title: 'Superintensif UTBK-SNBT',
-      subtitle: 'Sprint Menuju PTN',
-      badge: 'PROGRAM 3',
-      duration: 'April 2026',
+      title: 'Super Intensif',
+      subtitle: 'Persiapan Final',
+      badge: 'TAHAP 3',
+      duration: 'Apr 2026',
       monthRange: '1 Bulan',
       features: [
-        '100% fokus mengasah keterampilan UTBK SNBT',
-        'Konsultasi pemilihan jurusan dan PTN',
-        'Simulasi ujian dan strategi pengisian',
+        'Simulasi ujian full lengkap seperti kondisi sebenarnya',
+        'Optimasi strategi waktu & mental untuk hari H',
+        'Finishing touches untuk maksimalkan skor final',
       ],
       highlights: {
-        focus: 'Full UTBK',
+        focus: 'Eksekusi Sempurna',
         percentage: '100%',
       },
       color: '#00C853',
@@ -88,18 +88,18 @@ export default function ProgramsSection() {
     },
     {
       id: 4,
-      title: 'Seleksi Mandiri PTN',
-      subtitle: 'Kesempatan Kedua',
-      badge: 'PROGRAM 4',
+      title: 'Seleksi Mandiri',
+      subtitle: 'Jalur Tambahan',
+      badge: 'TAHAP 4',
       duration: 'Mei-Jun 2026',
       monthRange: '2 Bulan',
       features: [
-        'Materi lengkap seleksi mandiri PTN',
-        'SIMAK UI, UM UGM CBT, SM ITB, UM UNDIP, dll',
-        'Info lengkap jalur mandiri setiap PTN',
+        'Materi spesifik ujian mandiri setiap PTN favorit',
+        'Strategi berbeda untuk UI, UGM, ITB, dan PTN lainnya',
+        'Tingkatkan peluang dengan jalur kedua yang matang',
       ],
       highlights: {
-        focus: 'Jalur Mandiri',
+        focus: 'Multiplied Chances',
         percentage: '100%',
       },
       color: '#9C27B0',
@@ -111,18 +111,18 @@ export default function ProgramsSection() {
     },
     {
       id: 5,
-      title: 'Kedinasaan',
-      subtitle: 'Serve The Nation',
-      badge: 'PROGRAM 5',
+      title: 'Kedinasan',
+      subtitle: 'Karir Stabil & Terhormat',
+      badge: 'TAHAP 5',
       duration: 'Jul-Agu 2026',
       monthRange: '2 Bulan',
       features: [
-        'Materi lengkap SKD dan TBI',
-        'STAN, STIS, IPDN, AKMIL, AKPOL',
-        'Simulasi tes dan tips lolos seleksi',
+        'SKD dan TBI dengan strategi yang sudah terbukti',
+        'Pahami kultur & kebutuhan setiap lembaga kedinasan',
+        'Raih stabilitas karir di instansi negara terkemuka',
       ],
       highlights: {
-        focus: 'Kedinasan',
+        focus: 'Karir Terjamin',
         percentage: '100%',
       },
       color: '#E91E63',
@@ -149,11 +149,11 @@ export default function ProgramsSection() {
             }}
           >
             <Calendar className="w-4 h-4 mr-2 inline" />
-            Timeline Program
+            Perjalanan Belajar Terstruktur
           </Badge>
 
           <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-            PRINTS Bagus —
+            Setiap Target Ujian
             <br />
             <span
               className="bg-clip-text text-transparent"
@@ -163,28 +163,27 @@ export default function ProgramsSection() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Tapi Kapan Mulainya?
+              Ada Program Yang Pas
             </span>
           </h2>
 
           <p className="text-base text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Dari{' '}
+            Sistem belajar yang efektif butuh progression yang jelas. Dari{' '}
             <span
               className="font-bold"
               style={{ color: mainColor }}
             >
-              Core Learning (Nov 2025)
+              membangun dasar (Core Learning)
             </span>{' '}
             sampai{' '}
             <span
               className="font-bold"
               style={{ color: secondaryColor }}
             >
-              Kedinasan (Jul 2026)
+              eksekusi maksimal (Intensif & Super Intensif)
             </span>
-            , ada <span className="font-bold">5 program bertahap</span> yang
-            sesuai sama PRINTS System. Kamu bisa ikut semua atau pilih yang
-            match sama target ujian kamu.
+            , ada tahap untuk setiap target kamu. Mulai dari mana aja sesuai
+            jadwal & kebutuhan.
           </p>
         </div>
 
@@ -341,15 +340,15 @@ export default function ProgramsSection() {
                         </p>
                         <p className="text-xs text-gray-600 text-center mb-4 leading-relaxed">
                           {program.id === 1 &&
-                            'Membangun pemahaman fundamental yang kuat'}
+                            'Pahami setiap konsep dari awal supaya siap untuk fase berikutnya'}
                           {program.id === 2 &&
-                            'Latihan intensif dengan soal-soal variatif'}
+                            'Latihan soal terus menerus sampai pattern-nya jelas dan konsisten'}
                           {program.id === 3 &&
-                            'Persiapan total menghadapi UTBK SNBT'}
+                            'Siap menghadapi ujian dengan percaya diri dan strategi yang matang'}
                           {program.id === 4 &&
-                            'Strategi khusus ujian mandiri PTN favorit'}
+                            'Buka peluang masuk PTN favorit lewat jalur yang berbeda'}
                           {program.id === 5 &&
-                            'Persiapan komprehensif sekolah kedinasan'}
+                            'Raih kesempatan berkarir di institusi negara yang prestisius'}
                         </p>
                         {/* Progress Bar */}
                         <div className="relative h-2.5 bg-gray-200 rounded-full overflow-hidden mb-2">
@@ -519,9 +518,9 @@ export default function ProgramsSection() {
                             </p>
                             <p className="text-xs text-gray-600 text-center mb-4 leading-relaxed">
                               {program.id === 1 &&
-                                'Membangun pemahaman fundamental yang kuat'}
+                                'Pahami setiap konsep dari awal supaya siap untuk fase berikutnya'}
                               {program.id === 3 &&
-                                'Persiapan total menghadapi UTBK SNBT'}
+                                'Siap menghadapi ujian dengan percaya diri dan strategi yang matang'}
                             </p>
                             {/* Progress Bar */}
                             <div className="relative h-2.5 bg-gray-200 rounded-full overflow-hidden mb-2">
@@ -722,9 +721,9 @@ export default function ProgramsSection() {
                             </p>
                             <p className="text-xs text-gray-600 text-center mb-4 leading-relaxed">
                               {program.id === 2 &&
-                                'Latihan intensif dengan soal-soal variatif'}
+                                'Latihan soal terus menerus sampai pattern-nya jelas dan konsisten'}
                               {program.id === 4 &&
-                                'Strategi khusus ujian mandiri PTN favorit'}
+                                'Buka peluang masuk PTN favorit lewat jalur yang berbeda'}
                             </p>
                             {/* Progress Bar */}
                             <div className="relative h-2.5 bg-gray-200 rounded-full overflow-hidden mb-2">
@@ -907,7 +906,8 @@ export default function ProgramsSection() {
                         {programs[4].highlights.focus}
                       </p>
                       <p className="text-xs text-gray-600 text-center mb-4 leading-relaxed">
-                        Persiapan komprehensif sekolah kedinasan
+                        Raih kesempatan berkarir di institusi negara yang
+                        prestisius
                       </p>
                       {/* Progress Bar */}
                       <div className="relative h-2.5 bg-gray-200 rounded-full overflow-hidden mb-2">
