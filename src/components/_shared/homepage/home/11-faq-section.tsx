@@ -3,7 +3,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import {
-  BookOpen,
   Calendar,
   CheckCircle2,
   ChevronDown,
@@ -59,14 +58,6 @@ export default function FAQSection() {
         '9 bulan intensif hingga kedinasan, mulai 21 Nov 2025. Dibagi 3 fase: Bimbel (persiapan), Intensif (fokus materi), Super (final push kedinasan).',
       color: '#0091FF',
       isPopular: true,
-    },
-    {
-      icon: <BookOpen className="w-5 h-5" />,
-      category: 'Program',
-      title: 'Apa aja yang dikasih setelah kedinasan?',
-      answer:
-        'Akses materials & rekaman selamanya, progress report lengkap, dan bisa konsultasi support untuk career path next step.',
-      color: '#0091FF',
     },
     {
       icon: <Users className="w-5 h-5" />,
