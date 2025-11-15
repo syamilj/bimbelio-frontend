@@ -21,7 +21,7 @@ import {
   PlanLimitation,
   PlanSubscription,
 } from '@/types/database';
-import { Edit, Plus, Search, Trash2 } from 'lucide-react';
+import { Edit, Plus, Search, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { DialogDelete } from './_components/dialog-delete-plan';
@@ -258,6 +258,19 @@ function PlanTable({
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center gap-2">
+                      {type !== 'coin' && (
+                        <Link
+                          href={`/${website_sub_category_id}/admin/plan/user/${plan.id}`}
+                        >
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex items-center gap-1"
+                          >
+                            <User className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      )}
                       <Link
                         href={`/${website_sub_category_id}/admin/plan/${plan.id}`}
                       >
