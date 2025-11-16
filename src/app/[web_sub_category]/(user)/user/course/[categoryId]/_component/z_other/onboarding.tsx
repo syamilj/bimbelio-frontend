@@ -39,7 +39,32 @@ const OnBoarding = ({ open, type }: Props) => {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const handleClose = () => {
-    setOnBoarding({ ...onBoarding, [type]: false });
+    // setOnBoarding({ ...onBoarding, [type]: false });
+    if (type === 'chat') {
+      setOnBoarding((prev: any) => ({ ...prev, chat: false }));
+      localStorage.setItem(
+        'on-boarding',
+        JSON.stringify({ ...onBoarding, chat: false }),
+      );
+    } else if (type === 'notes') {
+      setOnBoarding((prev: any) => ({ ...prev, notes: false }));
+      localStorage.setItem(
+        'on-boarding',
+        JSON.stringify({ ...onBoarding, notes: false }),
+      );
+    } else if (type === 'quiz') {
+      setOnBoarding((prev: any) => ({ ...prev, quiz: false }));
+      localStorage.setItem(
+        'on-boarding',
+        JSON.stringify({ ...onBoarding, quiz: false }),
+      );
+    } else if (type === 'tryout') {
+      setOnBoarding((prev: any) => ({ ...prev, tryout: false }));
+      localStorage.setItem(
+        'on-boarding',
+        JSON.stringify({ ...onBoarding, tryout: false }),
+      );
+    }
   };
 
   const getOnboardingContent = () => {
@@ -301,7 +326,13 @@ const ChatAI = () => {
           </Button>
         ) : (
           <Button
-            onClick={() => setOnBoarding({ ...onBoarding, chat: false })}
+            onClick={() => {
+              setOnBoarding({ ...onBoarding, chat: false });
+              localStorage.setItem(
+                'on-boarding',
+                JSON.stringify({ ...onBoarding, chat: false }),
+              );
+            }}
             className="rounded-xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -448,7 +479,13 @@ const Notes = () => {
           </Button>
         ) : (
           <Button
-            onClick={() => setOnBoarding({ ...onBoarding, notes: false })}
+            onClick={() => {
+              setOnBoarding({ ...onBoarding, notes: false });
+              localStorage.setItem(
+                'on-boarding',
+                JSON.stringify({ ...onBoarding, notes: false }),
+              );
+            }}
             className="rounded-xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -566,7 +603,13 @@ const QuizAI = () => {
           </Button>
         ) : (
           <Button
-            onClick={() => setOnBoarding({ ...onBoarding, quiz: false })}
+            onClick={() => {
+              setOnBoarding({ ...onBoarding, quiz: false });
+              localStorage.setItem(
+                'on-boarding',
+                JSON.stringify({ ...onBoarding, quiz: false }),
+              );
+            }}
             className="rounded-xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, #9333ea)`,
@@ -685,7 +728,13 @@ const Tryout = () => {
           </Button>
         ) : (
           <Button
-            onClick={() => setOnBoarding({ ...onBoarding, tryout: false })}
+            onClick={() => {
+              setOnBoarding({ ...onBoarding, tryout: false });
+              localStorage.setItem(
+                'on-boarding',
+                JSON.stringify({ ...onBoarding, tryout: false }),
+              );
+            }}
             className="rounded-xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, #ea580c)`,

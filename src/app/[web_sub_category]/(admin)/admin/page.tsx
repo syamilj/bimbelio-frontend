@@ -18,6 +18,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import ListPagination from '@/components/ui/list-pagination';
 import {
@@ -40,7 +41,7 @@ import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn, formatSchoolName } from '@/lib/utils';
 
-import { UserRoleEnum } from '@/types/database';
+import { Subscription, UserRoleEnum } from '@/types/database';
 import {
   ChevronDown,
   ChevronRight,
@@ -61,7 +62,7 @@ import {
   SortDesc,
   Users,
 } from 'lucide-react';
-import { Fragment, useState } from 'react';
+import { Fragment, ReactNode, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -92,6 +93,10 @@ export default function UserManagementDashboard() {
   const [page, setPage] = useState<number>(1);
   const [isExporting, setIsExporting] = useState<'EXCEL' | 'CSV' | null>(null);
 
+  const [hasSubscription, setHasSubscription] = useState<'HAS' | 'NOT' | 'ALL'>(
+    'ALL',
+  );
+
   const { data: usersData, totalPages } = useGet<UserDataType[]>(
     '/user/getAllUsers',
     {
@@ -101,8 +106,17 @@ export default function UserManagementDashboard() {
         role: roleFilter,
         sort: sortOption,
         search: searchTerm,
+        hasSubscription:
+          hasSubscription !== 'ALL' ? hasSubscription : undefined,
       },
-      useEffectDependencies: [take, page, roleFilter, sortOption, searchTerm],
+      useEffectDependencies: [
+        take,
+        page,
+        roleFilter,
+        sortOption,
+        searchTerm,
+        hasSubscription,
+      ],
     },
   );
 
@@ -488,6 +502,25 @@ export default function UserManagementDashboard() {
                     <SelectItem value="USER">User</SelectItem>
                   </SelectContent>
                 </Select>
+                <Select
+                  value={hasSubscription}
+                  onValueChange={(value) => {
+                    setHasSubscription(value as any);
+                    setPage(1);
+                  }}
+                >
+                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
+                    <div className="flex items-center">
+                      <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
+                      <SelectValue placeholder="All Roles" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ALL">Semua Subscription</SelectItem>
+                    <SelectItem value="HAS">Premium Subscription</SelectItem>
+                    <SelectItem value="NOT">Free Tier Subscription</SelectItem>
+                  </SelectContent>
+                </Select>
 
                 {/* Sort Option */}
                 <Select
@@ -524,7 +557,7 @@ export default function UserManagementDashboard() {
                   <TableHead>School</TableHead>
                   <TableHead>City</TableHead>
                   <TableHead>Role</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>Subscription</TableHead>
                   <TableHead>Count</TableHead>
                   <TableHead>Telp</TableHead>
                   <TableHead>Status</TableHead> {/* Updated */}
@@ -546,21 +579,18 @@ export default function UserManagementDashboard() {
                     <TableCell>{user.UserTryout?.kabupaten || '-'}</TableCell>
                     <TableCell>{user.Role}</TableCell>
                     <TableCell>
-                      <Badge
-                        variant={
-                          user.Role !== 'USER'
-                            ? 'default'
-                            : user.TryoutUnlock.length > 0
-                              ? 'secondary'
-                              : 'outline'
-                        }
-                      >
-                        {user.Role !== 'USER'
-                          ? 'Premium'
-                          : user.TryoutUnlock.length > 0
-                            ? 'Tryout'
-                            : 'User'}
-                      </Badge>
+                      <DialogDetailSubscription subData={user.Subscription}>
+                        <Badge
+                          variant={
+                            user.Subscription.length > 0 ? 'default' : 'outline'
+                          }
+                          className="cursor-pointer"
+                        >
+                          {user.Subscription.length > 0
+                            ? `${user.Subscription.length} Active`
+                            : 'Free Tier'}
+                        </Badge>
+                      </DialogDetailSubscription>
                     </TableCell>
                     <TableCell>
                       {user.Role === 'PREMIUM'
@@ -857,6 +887,7 @@ type UserDataType = {
     channel: string;
     schoolOrigin: string;
   } | null;
+  Subscription: Subscription[];
 };
 
 type ChannelDataType = {
@@ -877,4 +908,157 @@ type RegionalDataType = {
   premium: number;
   tryout: number;
   region: string;
+};
+
+const DialogDetailSubscription = ({
+  subData,
+  children,
+}: {
+  subData: Subscription[];
+  children: ReactNode;
+}) => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="max-w-2xl">
+        <div className="space-y-4">
+          {/* Header */}
+          <div className="space-y-1 border-b pb-4">
+            <h2 className="text-xl font-bold text-gray-900">
+              Subscription Details
+            </h2>
+            <p className="text-sm text-gray-500">
+              {subData.length === 0
+                ? 'No active subscriptions'
+                : `${subData.length} active subscription${subData.length > 1 ? 's' : ''}`}
+            </p>
+          </div>
+
+          {/* Empty State */}
+          {subData.length === 0 ? (
+            <div className="rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 py-12 text-center">
+              <Crown className="mx-auto mb-3 h-8 w-8 text-gray-300" />
+              <p className="text-sm font-medium text-gray-500">
+                No active subscriptions
+              </p>
+              <p className="text-xs text-gray-400">
+                This user does not have any active subscriptions yet
+              </p>
+            </div>
+          ) : (
+            /* Subscriptions List */
+            <div className="space-y-3 max-h-[60vh] overflow-y-auto">
+              {subData.map((sub, index) => (
+                <div
+                  key={sub.id}
+                  className="rounded-xl border border-gray-200 bg-gradient-to-br from-blue-50/50 via-indigo-50/30 to-purple-50/50 p-4 hover:shadow-md transition-shadow duration-200"
+                >
+                  <div className="space-y-3">
+                    {/* Title Section */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <Badge
+                          variant="default"
+                          className="bg-gradient-to-r from-blue-600 to-indigo-600 shrink-0"
+                        >
+                          #{index + 1}
+                        </Badge>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-semibold text-gray-900 truncate">
+                            {sub.planName || 'Unknown Plan'}
+                          </h3>
+                          <p className="text-xs text-gray-500">
+                            {sub.planTier}
+                          </p>
+                        </div>
+                      </div>
+                      {/* <Badge
+                        variant="default"
+                        className={cn(
+                          'shrink-0',
+                          sub.discord_user_id
+                            ? 'bg-green-600 hover:bg-green-700'
+                            : 'bg-gray-400 hover:bg-gray-500',
+                        )}
+                      >
+                        {sub.planExpire ? 'Active' : 'Pending'}
+                      </Badge> */}
+                    </div>
+
+                    {/* Description */}
+                    {sub.planDescription && (
+                      <p className="text-sm text-gray-600 line-clamp-2">
+                        {sub.planDescription}
+                      </p>
+                    )}
+
+                    {/* Details Grid */}
+                    <div className="grid grid-cols-2 gap-3 pt-2">
+                      {/* Price */}
+                      <div className="rounded-lg bg-white/60 p-2.5">
+                        <p className="text-xs font-medium text-gray-500 mb-1">
+                          Price
+                        </p>
+                        <p className="text-lg font-bold text-gray-900">
+                          Rp {sub.planPrice?.toLocaleString('id-ID') || '-'}
+                        </p>
+                      </div>
+
+                      {/* Duration */}
+                      <div className="rounded-lg bg-white/60 p-2.5">
+                        <p className="text-xs font-medium text-gray-500 mb-1">
+                          Expire At
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {sub.planExpire
+                            ? new Date(sub.planExpire).toLocaleDateString(
+                                'id-ID',
+                                {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                },
+                              )
+                            : '-'}
+                        </p>
+                      </div>
+
+                      {/* Start Date */}
+                      <div className="rounded-lg bg-white/60 p-2.5">
+                        <p className="text-xs font-medium text-gray-500 mb-1">
+                          Created
+                        </p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {sub.createdAt
+                            ? new Date(sub.createdAt).toLocaleDateString(
+                                'id-ID',
+                                {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric',
+                                },
+                              )
+                            : '-'}
+                        </p>
+                      </div>
+
+                      {/* Discord Status */}
+                      <div className="rounded-lg bg-white/60 p-2.5">
+                        <p className="text-xs font-medium text-gray-500 mb-1">
+                          Discord
+                        </p>
+                        <p className="text-sm font-medium text-gray-900 truncate">
+                          {sub.discord_username || 'Not linked'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 };

@@ -1,7 +1,7 @@
 'use client';
 
-import { Download } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import { Download, Search } from 'lucide-react';
+import { ReactNode, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Table,
   TableBody,
@@ -24,18 +32,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { env } from '@/env.mjs';
-import { response } from '@/lib/response';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { getDateString } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
 import { exportToExcel } from '@/lib/utils/excel';
 import { TransactionStatusTypeEnum, User } from '@/types/database';
 import { MidtransTransaction } from '@/types/midtrans-type';
-import axios from 'axios';
 import { format } from 'date-fns';
-import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
-import { useDebouncedCallback } from 'use-debounce';
 
 export default function TransactionsPage() {
   const [isExporting, setIsExporting] = useState(false);
@@ -43,54 +47,77 @@ export default function TransactionsPage() {
   const [_isLoadingMessage, setIsLoadingMessage] = useState<null | string>(
     null,
   );
-  const [transactions, setTransactions] = useState<
+  // const [transactions, setTransactions] = useState<
+  //   (MidtransTransaction & {
+  //     user: User;
+  //     total_amount: number;
+  //     status: string;
+  //   })[]
+  // >([]);
+  const [take, setTake] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
+  // const [totalPage, setTotalPage] = useState<number>(10);
+
+  const [search, setSearch] = useState('');
+  const [status, setStatus] = useState<TransactionStatusTypeEnum | 'ALL'>(
+    'ALL',
+  );
+
+  console.log({ status });
+
+  const { data: transactions, totalPages } = useGet<
     (MidtransTransaction & {
       user: User;
       total_amount: number;
       status: string;
     })[]
-  >([]);
-  const [take, setTake] = useState<number>(10);
-  const [page, setPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(10);
+  >('/payment/getTransactions', {
+    params: {
+      page,
+      take,
+      status: status !== 'ALL' ? status : undefined,
+      search: search.length > 0 ? search : undefined,
+    },
+    useEffectDependencies: [take, page, search, status],
+  });
 
-  const fetchData = (page: number) => {
-    const token = Cookies.get('token');
-    axios
-      .get(
-        `${env.NEXT_PUBLIC_API_URL}/payment/getTransactions?page=${page}&take=${take}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((res) => {
-        const resData = response(res);
-        setTransactions(resData.data);
-        setPage(resData?.page || 1);
-        setTotalPage(resData?.total_pages || 1);
-      })
-      .finally(() => setIsLoadingMessage(null));
-  };
+  // const fetchData = (page: number) => {
+  //   const token = Cookies.get('token');
+  //   axios
+  //     .get(
+  //       `${env.NEXT_PUBLIC_API_URL}/payment/getTransactions?page=${page}&take=${take}${status !== 'ALL' && `&status=${status}`}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       },
+  //     )
+  //     .then((res) => {
+  //       const resData = response(res);
+  //       setTransactions(resData.data);
+  //       setPage(resData?.page || 1);
+  //       setTotalPage(resData?.total_pages || 1);
+  //     })
+  //     .finally(() => setIsLoadingMessage(null));
+  // };
 
-  useEffect(() => {
-    setIsLoadingMessage('Fetching Data....');
-    fetchData(1);
-  }, []);
+  // useEffect(() => {
+  //   setIsLoadingMessage('Fetching Data....');
+  //   fetchData(1);
+  // }, []);
 
-  const fetchWithDebounced = useDebouncedCallback(() => {
-    fetchData(page);
-  }, 500);
+  // const fetchWithDebounced = useDebouncedCallback(() => {
+  //   fetchData(page);
+  // }, 500);
 
-  useEffect(() => {
-    fetchWithDebounced();
-  }, [take, page]);
+  // useEffect(() => {
+  //   fetchWithDebounced();
+  // }, [take, page, search, status]);
 
   const handleExport = () => {
     try {
       setIsExporting(true);
-      const dataToExport = transactions.map((transaction) => ({
+      const dataToExport = transactions?.map((transaction) => ({
         'Transaction ID': transaction.id,
         'User ID': transaction.userId,
         'User Name': transaction.user.name,
@@ -101,7 +128,7 @@ export default function TransactionsPage() {
       }));
 
       exportToExcel(
-        dataToExport,
+        dataToExport || [],
         `transactions-${new Date().toISOString().split('T')[0]}`,
       );
 
@@ -155,6 +182,34 @@ export default function TransactionsPage() {
             <CardTitle>List Transactions</CardTitle>
           </CardHeader>
           <CardContent>
+            <div className="grid gap-4 md:grid-cols-4 mb-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder="Cari email atau nama user..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-10 rounded-xl border-gray-200 focus:border-blue-500"
+                />
+              </div>
+              <Select
+                value={status}
+                onValueChange={(value: any) => value && setStatus(value)}
+              >
+                <SelectTrigger className="rounded-xl border-gray-200">
+                  <SelectValue placeholder="Pilih status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">Semua Status</SelectItem>
+                  <SelectItem value="SETTLEMENT">Settlement</SelectItem>
+                  <SelectItem value="PENDING">Pending</SelectItem>
+                  <SelectItem value="DENY">Deny</SelectItem>
+                  <SelectItem value="EXPIRE">Expire</SelectItem>
+                  <SelectItem value="CANCEL">Cancel</SelectItem>
+                  <SelectItem value="FAILURE">Failure</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -169,7 +224,7 @@ export default function TransactionsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {transactions.map((transaction, index) => (
+                {transactions?.map((transaction, index) => (
                   <TableRow key={transaction.id}>
                     <TableCell>{page * take - take + index + 1}</TableCell>
                     <TableCell>
@@ -237,7 +292,7 @@ export default function TransactionsPage() {
                 setPage(page);
               }}
               currentPage={page}
-              totalPage={totalPage}
+              totalPage={totalPages}
               pageSize={take}
             />
           </CardContent>
