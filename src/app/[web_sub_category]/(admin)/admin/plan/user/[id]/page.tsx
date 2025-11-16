@@ -12,6 +12,7 @@ import {
 
 // import AbsoluteLoader from '@/components/ui/loading/absolute-loader';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -33,16 +42,19 @@ import { formatIDR } from '@/lib/utils/currency';
 import { FeatureTypeEnum, User } from '@/types/database';
 import { MidtransTransaction } from '@/types/midtrans-type';
 import { format } from 'date-fns';
+import { Search, Trash } from 'lucide-react';
 import { useParams } from 'next/navigation';
+import { DialogDeleteSubs } from './components/dialog-delete-subs';
 
 export default function Detail() {
   const { id }: { id: string } = useParams();
   const [searchTerm, setSearchTerm] = useState('');
+  const [status, setStatus] = useState<'ALL' | 'ACTIVE' | 'PENDING'>('ALL');
 
   const {
     data: PlanUsers,
-    totalPages,
     isLoading,
+    refetch,
   } = useGet<
     {
       id: string;
@@ -52,13 +64,15 @@ export default function Detail() {
       subs: string;
       type: 'Active' | 'Pending';
       features: FeatureTypeEnum[];
+      subId: string;
     }[]
   >('/plan/getAllUsers', {
     params: {
       planId: id,
-      search: searchTerm,
+      search: searchTerm.length > 0 ? searchTerm : undefined,
+      status: status === 'ALL' ? undefined : status,
     },
-    useEffectDependencies: [searchTerm, id],
+    useEffectDependencies: [searchTerm, status, id],
   });
 
   console.log({ PlanUsers, id });
@@ -85,30 +99,30 @@ export default function Detail() {
             </CardDescription>
           </CardHeader>
           <CardContent className="pb-0">
-            {/* <div className="grid gap-4 md:grid-cols-4 mb-4">
+            <div className="grid gap-4 md:grid-cols-4 mb-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
-                  placeholder="Cari judul voucher atau code..."
+                  placeholder="Cari email atau nama user..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 rounded-xl border-gray-200 focus:border-blue-500"
                 />
               </div>
               <Select
-                value={type}
-                onValueChange={(value: any) => setType(value)}
+                value={status}
+                onValueChange={(value: any) => setStatus(value)}
               >
                 <SelectTrigger className="rounded-xl border-gray-200">
                   <SelectValue placeholder="Pilih status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ALL">Semua Type</SelectItem>
-                  <SelectItem value="Percentage">Persentase</SelectItem>
-                  <SelectItem value="Fixed_Amount">Fixed Amount</SelectItem>
+                  <SelectItem value="ALL">Semua Status</SelectItem>
+                  <SelectItem value="ACTIVE">Active</SelectItem>
+                  <SelectItem value="PENDING">Pending</SelectItem>
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -116,7 +130,7 @@ export default function Detail() {
                   <TableHead className="min-w-[200px]">User</TableHead>
                   <TableHead>Feature</TableHead>
                   <TableHead>Status</TableHead>
-                  {/* <TableHead className="text-right">Actions</TableHead> */}
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -181,17 +195,26 @@ export default function Detail() {
                           {user.type}
                         </Badge>
                       </TableCell>
-                      {/* <TableCell className="text-right">
-                        <DetailTransaction transaction={transaction as any}>
+                      <TableCell className="text-right">
+                        <DialogDeleteSubs
+                          id={user.subId}
+                          email={user.email}
+                          name={user.name}
+                          subs={user.subs}
+                          title="Apakah kamu yakin ingin menghapus subscription pada user ini?"
+                          description="Data yang terhapus tidak dapat dikembalikan."
+                          getData={refetch}
+                        >
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-blue-600 hover:text-blue-700"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors duration-200 px-3 py-2 rounded-md"
                           >
-                            Detail
+                            <Trash className="w-4 h-4 mr-2" />
+                            Delete
                           </Button>
-                        </DetailTransaction>
-                      </TableCell> */}
+                        </DialogDeleteSubs>
+                      </TableCell>
                     </TableRow>
                   ))
                 )}

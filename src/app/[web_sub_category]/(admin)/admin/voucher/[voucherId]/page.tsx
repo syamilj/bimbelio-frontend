@@ -15,6 +15,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -30,11 +38,15 @@ import { formatIDR } from '@/lib/utils/currency';
 import { TransactionStatusTypeEnum, User } from '@/types/database';
 import { MidtransTransaction } from '@/types/midtrans-type';
 import { format } from 'date-fns';
+import { Search } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
 export default function Detail() {
   const { voucherId }: { voucherId: string } = useParams();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [search, setSearch] = useState('');
+  const [status, setStatus] = useState<TransactionStatusTypeEnum | 'ALL'>(
+    'ALL',
+  );
   // const [type, setType] = useState<'ALL' | 'Percentage' | 'Fixed_Amount'>(
   //   'ALL',
   // );
@@ -56,9 +68,10 @@ export default function Detail() {
       id: voucherId,
       page,
       take,
-      search: searchTerm,
+      search: search.length > 0 ? search : undefined,
+      status: status !== 'ALL' ? status : undefined,
     },
-    useEffectDependencies: [page, take, searchTerm, voucherId],
+    useEffectDependencies: [page, take, search, status, voucherId],
   });
 
   return (
@@ -80,30 +93,34 @@ export default function Detail() {
             <CardTitle>List Voucher History</CardTitle>
           </CardHeader>
           <CardContent className="pb-0">
-            {/* <div className="grid gap-4 md:grid-cols-4 mb-4">
+            <div className="grid gap-4 md:grid-cols-4 mb-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
-                  placeholder="Cari judul voucher atau code..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Cari email atau nama user..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   className="pl-10 rounded-xl border-gray-200 focus:border-blue-500"
                 />
               </div>
               <Select
-                value={type}
-                onValueChange={(value: any) => setType(value)}
+                value={status}
+                onValueChange={(value: any) => value && setStatus(value)}
               >
                 <SelectTrigger className="rounded-xl border-gray-200">
                   <SelectValue placeholder="Pilih status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ALL">Semua Type</SelectItem>
-                  <SelectItem value="Percentage">Persentase</SelectItem>
-                  <SelectItem value="Fixed_Amount">Fixed Amount</SelectItem>
+                  <SelectItem value="ALL">Semua Status</SelectItem>
+                  <SelectItem value="SETTLEMENT">Settlement</SelectItem>
+                  <SelectItem value="PENDING">Pending</SelectItem>
+                  <SelectItem value="DENY">Deny</SelectItem>
+                  <SelectItem value="EXPIRE">Expire</SelectItem>
+                  <SelectItem value="CANCEL">Cancel</SelectItem>
+                  <SelectItem value="FAILURE">Failure</SelectItem>
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
             <Table>
               <TableHeader>
                 <TableRow>
