@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/card';
 
 // import AbsoluteLoader from '@/components/ui/loading/absolute-loader';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -47,6 +48,7 @@ import { useParams } from 'next/navigation';
 import { DialogDeleteSubs } from './components/dialog-delete-subs';
 
 export default function Detail() {
+  const { data: session } = useSession();
   const { id }: { id: string } = useParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [status, setStatus] = useState<'ALL' | 'ACTIVE' | 'PENDING'>('ALL');
@@ -130,7 +132,9 @@ export default function Detail() {
                   <TableHead className="min-w-[200px]">User</TableHead>
                   <TableHead>Feature</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  {session?.user.role === 'SUPER_ADMIN' && (
+                    <TableHead className="text-right">Actions</TableHead>
+                  )}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -195,26 +199,28 @@ export default function Detail() {
                           {user.type}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right">
-                        <DialogDeleteSubs
-                          id={user.subId}
-                          email={user.email}
-                          name={user.name}
-                          subs={user.subs}
-                          title="Apakah kamu yakin ingin menghapus subscription pada user ini?"
-                          description="Data yang terhapus tidak dapat dikembalikan."
-                          getData={refetch}
-                        >
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors duration-200 px-3 py-2 rounded-md"
+                      {session?.user.role === 'SUPER_ADMIN' && (
+                        <TableCell className="text-right">
+                          <DialogDeleteSubs
+                            id={user.subId}
+                            email={user.email}
+                            name={user.name}
+                            subs={user.subs}
+                            title="Apakah kamu yakin ingin menghapus subscription pada user ini?"
+                            description="Data yang terhapus tidak dapat dikembalikan."
+                            getData={refetch}
                           >
-                            <Trash className="w-4 h-4 mr-2" />
-                            Delete
-                          </Button>
-                        </DialogDeleteSubs>
-                      </TableCell>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors duration-200 px-3 py-2 rounded-md"
+                            >
+                              <Trash className="w-4 h-4 mr-2" />
+                              Delete
+                            </Button>
+                          </DialogDeleteSubs>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))
                 )}
