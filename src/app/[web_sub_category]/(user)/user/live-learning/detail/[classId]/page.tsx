@@ -54,7 +54,7 @@ import {
   Volume2,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { DialogLiveClassRegister } from '../../_components/dialog-live-class-register';
 import { JoinLiveClassModal } from '../../_components/join-live-class-modal';
@@ -78,6 +78,8 @@ export type LiveClassType = LiveClass & {
 export default function LiveClassStudentDetail() {
   const { data: session } = useSession();
   const { classId }: { classId: string } = useParams();
+  const searchParams = useSearchParams();
+  const liveLearningId = searchParams.get('liveLearningId');
   // === DESIGN SYSTEM FROM LEADERBOARD ===
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -213,7 +215,15 @@ export default function LiveClassStudentDetail() {
               <div className="flex items-center gap-4 mb-4">
                 <Button
                   variant="ghost"
-                  onClick={() => router.back()}
+                  onClick={() => {
+                    if (liveLearningId && liveLearningId?.length > 0) {
+                      router.push(
+                        `/${website_sub_category_id}/user/live-learning`,
+                      );
+                    } else {
+                      router.back();
+                    }
+                  }}
                   className="hover:bg-white/20 transition-colors font-bold rounded-2xl"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />

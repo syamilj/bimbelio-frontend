@@ -191,7 +191,7 @@ const HeroSection: React.FC = () => {
                 href="https://discord.com/invite/5Fy3fnVaE9"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-fit"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
                   border: `2px solid ${mainColor}30`,
@@ -200,30 +200,56 @@ const HeroSection: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span className="relative z-10">Grup Belajar</span>
               </a>
-              <a
-                href="#try-out"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById('tryout');
-                  if (el) {
-                    const top =
-                      el.getBoundingClientRect().top + window.pageYOffset - 100;
-                    window.scrollTo({ top, behavior: 'smooth' });
-                  }
-                }}
-                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
-                  border: `2px solid ${mainColor}30`,
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative z-10">Tryout Gratis</span>
-              </a>
+              <div className="flex flex-col gap-4">
+                <a
+                  href="#try-out"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById('tryout');
+                    if (el) {
+                      const top =
+                        el.getBoundingClientRect().top +
+                        window.pageYOffset -
+                        100;
+                      window.scrollTo({ top, behavior: 'smooth' });
+                    }
+                  }}
+                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
+                    border: `2px solid ${mainColor}30`,
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative z-10">Tryout Gratis</span>
+                </a>
+                <a
+                  href="#live-learning"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById('live-learning');
+                    if (el) {
+                      const top =
+                        el.getBoundingClientRect().top +
+                        window.pageYOffset -
+                        100;
+                      window.scrollTo({ top, behavior: 'smooth' });
+                    }
+                  }}
+                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
+                    border: `2px solid ${mainColor}30`,
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative z-10">Live Learning</span>
+                </a>
+              </div>
               <button
                 type="button"
                 onClick={() => setIsConsultationOpen(true)}
-                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold shadow-lg hover:shadow-2xl transition-all duration-300 bg-white overflow-hidden"
+                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold shadow-lg hover:shadow-2xl transition-all duration-300 bg-white overflow-hidden h-fit"
                 style={{
                   borderWidth: '2px',
                   borderStyle: 'solid',

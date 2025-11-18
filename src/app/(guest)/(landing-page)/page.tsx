@@ -50,6 +50,11 @@ const TryoutSection = dynamic(
   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
+const LiveLearningSection = dynamic(
+  () => import('@/components/_shared/homepage/home/08-live-learning-section'),
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
+);
+
 // TIER 3: SSR = false (Comparison - non-critical, heavy)
 const ComparisonSection = dynamic(
   () => import('@/components/_shared/homepage/home/09-comparison-section'),
@@ -93,6 +98,8 @@ export default function LandingPage() {
 
           {/* 09 Tryout section */}
           <TryoutSection />
+
+          <LiveLearningSection />
 
           {/* 10 Comparison section */}
           <ComparisonSection />
