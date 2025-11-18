@@ -1,5 +1,5 @@
 'use client';
-import { Payment } from '@/app/[web_sub_category]/(user)/user/_components/payment';
+import { Payment } from '@/app/(main)/[web_sub_category]/(user)/user/_components/payment';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { CreditCard, Shield } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';

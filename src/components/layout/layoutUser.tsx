@@ -6,11 +6,11 @@ import { useParams, usePathname } from 'next/navigation';
 import { ReactNode, Suspense, useEffect, useState } from 'react';
 import useMedia from 'use-media';
 
-import Sidebar from '@/app/[web_sub_category]/(user)/user/_components/sidebar';
+import Sidebar from '@/app/(main)/[web_sub_category]/(user)/user/_components/sidebar';
 import { useAppContext } from '@/components/provider/provider-app';
 
-import SearchDeskstop from '@/app/[web_sub_category]/(user)/user/_components/search-dekstop';
-import SidebarUser from '@/app/[web_sub_category]/(user)/user/_components/sidebar';
+import SearchDeskstop from '@/app/(main)/[web_sub_category]/(user)/user/_components/search-dekstop';
+import SidebarUser from '@/app/(main)/[web_sub_category]/(user)/user/_components/sidebar';
 import ProviderCheckSubscription from '@/components/provider/provider-check-subscription';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
