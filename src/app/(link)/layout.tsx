@@ -1,0 +1,128 @@
+import { siteConfig } from '@/config/site';
+import type { Metadata } from 'next';
+import Script from 'next/script';
+import { ReactNode } from 'react';
+import '../../styles/globals.css';
+
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s | Bimbelio`,
+  },
+  description: siteConfig.description,
+  metadataBase: new URL(siteConfig.url),
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/logo.png',
+    apple: '/apple-touch-icon.png',
+  },
+};
+
+export default function LinkLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="id" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://be.bimbelio.com" />
+        <link rel="preconnect" href="https://storage.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://analytics.tiktok.com" />
+      </head>
+      <body className="bg-slate-950 font-sans antialiased">
+        {children}
+        <TrackingScripts lazy />
+      </body>
+    </html>
+  );
+}
+
+function TrackingScripts({ lazy }: { lazy?: boolean }) {
+  const strategy = lazy ? 'lazyOnload' : 'afterInteractive';
+
+  return (
+    <>
+      <Script
+        id="facebook-pixel"
+        strategy={strategy}
+        dangerouslySetInnerHTML={{
+          __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '367763043065117');
+            fbq('track', 'PageView');
+          `,
+        }}
+      />
+
+      <Script
+        id="tiktok-pixel"
+        strategy={strategy}
+        dangerouslySetInnerHTML={{
+          __html: `
+            !function (w, d, t) {
+              w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._t=ttq._t||{},ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+              ttq.load('D23J0VRC77U5781IJVSG');
+              ttq.page();
+            }(window, document, 'ttq');
+          `,
+        }}
+      />
+
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-PVEJ5PSRCH"
+        strategy={strategy}
+      />
+      <Script
+        id="gtag-init"
+        strategy={strategy}
+        dangerouslySetInnerHTML={{
+          __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-PVEJ5PSRCH');
+        `,
+        }}
+      />
+    </>
+  );
+}
+
+function StructuredData() {
+  return (
+    <Script
+      type="application/ld+json"
+      id="ld-json-org"
+      dangerouslySetInnerHTML={{
+        __html: `
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Bimbelio",
+          "url": "https://www.bimbelio.com",
+          "logo": "https://www.bimbelio.com/logo.png",
+          "sameAs": [
+            "https://www.facebook.com/bimbelio.official",
+            "https://www.twitter.com/bimbelio.official",
+            "https://www.instagram.com/bimbelio.official",
+            "https://www.tiktok.com/bimbelio.official"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+6285161112223",
+            "contactType": "Customer Service"
+          }
+        }
+        `,
+      }}
+    />
+  );
+}
