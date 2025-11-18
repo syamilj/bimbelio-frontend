@@ -21,7 +21,6 @@ import {
 } from 'lucide-react';
 import { ReactNode, useEffect, useState } from 'react';
 
-import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import {
@@ -32,6 +31,7 @@ import {
 } from '@/components/ui/dialog';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
+import { useSearchParams } from 'next/navigation';
 
 interface ProofItem {
   id: string;
@@ -62,7 +62,8 @@ export const DialogLiveClassRegister = ({
   liveClassAccessType: LiveClassAccessTypeEnum;
   onFinish: () => Promise<void>;
 }) => {
-  const { userLimitation, checkLimitation } = useUserLimitation();
+  const searchParams = useSearchParams();
+  const liveLearningId = searchParams.get('liveLearningId');
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   // Get dynamic colors
@@ -200,6 +201,14 @@ export const DialogLiveClassRegister = ({
 
     setProofItems(items);
   }, []);
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (liveLearningId === liveClassId) {
+      setOpen(true);
+    }
+  }, [liveLearningId, liveClassId]);
 
   //   const [pricing, setPricing] = useState<Pricing>();
   //   const [pricingIsLoading, setPricingIsLoading] = useState<boolean>(true);
@@ -355,7 +364,10 @@ export const DialogLiveClassRegister = ({
   };
 
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader className="flex flex-col items-center gap-3">
