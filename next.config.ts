@@ -12,10 +12,14 @@ const nextConfig = {
     // }
   },
 
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/explore',
+  async rewrites() {
+    return [
+      {
+        source: '/l/:code',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/l/:code`,
+      },
+      // {
+      //   source: '/explore',
   //       destination: '/user/explore',
   //     },
   //     {
@@ -58,12 +62,12 @@ const nextConfig = {
   //       source: '/leaderboard',
   //       destination: '/user/leaderboard',
   //     },
-  //     {
-  //       source: '/dashboard',
-  //       destination: '/user/dashboard',
-  //     },
-  //   ];
-  // },
+      // {
+      //   source: '/dashboard',
+      //   destination: '/user/dashboard',
+      // },
+    ];
+  },
 
   images: {
     // Tambah format modern untuk mengurangi ukuran transfer LCP image
