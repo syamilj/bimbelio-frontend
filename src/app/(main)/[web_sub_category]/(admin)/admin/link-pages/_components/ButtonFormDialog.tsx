@@ -1,20 +1,33 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { LinkButton } from "@/types/link";
 import { createLinkButton, CreateLinkButtonPayload, updateLinkButton, UpdateLinkButtonPayload } from "@/lib/api/link-pages";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toaster } from "@/components/ui/toaster";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { UploadFile } from "@/components/_shared/other/upload-file-with-drag-drop";
+import { supabase } from "@/supabaseClient";
+import { Trash2 } from "lucide-react";
 
 const optionalUrl = z
   .string()
@@ -32,7 +45,7 @@ const buttonSchema = z.object({
   type: z.enum(["PRIMARY", "SECONDARY", "OUTLINE", "TEXT", "THUMBNAIL"]).default("PRIMARY"),
   color: z.string().optional().default("#111111"),
   textColor: z.string().optional().default("#ffffff"),
-  borderRadius: z.string().optional().default("8px"),
+  borderRadius: z.string().optional().default("rounded-lg"),
   thumbnail: optionalUrl.default(""),
   price: z.string().optional().default(""),
   showOnMobile: z.boolean().default(true),
@@ -47,6 +60,22 @@ const buttonSchema = z.object({
 
 export type LinkButtonFormValues = z.infer<typeof buttonSchema>;
 
+const BORDER_RADIUS_OPTIONS = [
+  { label: "None", value: "rounded-none" },
+  { label: "Small", value: "rounded-sm" },
+  { label: "Default", value: "rounded" },
+  { label: "Medium", value: "rounded-md" },
+  { label: "Large", value: "rounded-lg" },
+  { label: "X-Large", value: "rounded-xl" },
+  { label: "2X-Large", value: "rounded-2xl" },
+  { label: "3X-Large", value: "rounded-3xl" },
+  { label: "Full", value: "rounded-full" },
+];
+
+const SECTION_DATALIST_ID = "section-label-suggestions";
+
+const getOrigin = () => (typeof window !== "undefined" ? window.location.origin : "https://bimbelio.com");
+
 interface ButtonFormDialogProps {
   open: boolean;
   onClose: () => void;
@@ -55,6 +84,8 @@ interface ButtonFormDialogProps {
   nextOrder: number;
   button?: LinkButton | null;
   onSuccess: () => void;
+  sectionOptions?: string[];
+  shortUrls?: { id: string; code: string; clickCount: number }[];
 }
 
 const parseCountriesInput = (input?: string) =>
@@ -72,7 +103,7 @@ const dateInputToIso = (value?: string) => {
   return date.toISOString();
 };
 
-export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, button, onSuccess }: ButtonFormDialogProps) {
+export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, button, onSuccess, sectionOptions = [], shortUrls = [] }: ButtonFormDialogProps) {
   const form = useForm<LinkButtonFormValues>({
     resolver: zodResolver(buttonSchema) as any,
     defaultValues: {
@@ -98,6 +129,16 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
       isActive: true,
     },
   });
+
+  const origin = useMemo(() => getOrigin(), []);
+  const shortLinkChoices = useMemo(
+    () =>
+      shortUrls.map((item) => ({
+        ...item,
+        url: `${origin}/${item.code}`,
+      })),
+    [origin, shortUrls]
+  );
 
   useEffect(() => {
     if (button && open) {
@@ -212,6 +253,16 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
     }
   };
 
+  const uploadImage = async (file: File) => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `${fileName}`;
+    const { error } = await supabase.storage.from('img').upload(filePath, file);
+    if (error) throw error;
+    const { data } = supabase.storage.from('img').getPublicUrl(filePath);
+    return data.publicUrl;
+  };
+
   return (
     <Dialog open={open} onOpenChange={(next) => {
       if (!next) onClose();
@@ -250,14 +301,31 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                 )}
               />
               <FormField
-                control={form.control as any}
+                control={form.control}
                 name="sectionLabel"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Section Label</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. Baca ini" {...field} />
-                    </FormControl>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input placeholder="e.g. Socials, Products" {...field} />
+                      </FormControl>
+                      {sectionOptions.length > 0 && (
+                        <Select onValueChange={field.onChange}>
+                          <SelectTrigger className="w-[40px] px-0 justify-center">
+                            <ChevronsUpDown className="h-4 w-4" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {sectionOptions.map((opt) => (
+                              <SelectItem key={opt} value={opt}>
+                                {opt}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    </div>
+                    <FormDescription>Group buttons under a header.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -268,9 +336,42 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                 render={({ field }) => (
                   <FormItem className="md:col-span-2">
                     <FormLabel>Destination URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://" {...field} />
-                    </FormControl>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input placeholder="https://" {...field} />
+                      </FormControl>
+                      {shortLinkChoices.length ? (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button type="button" variant="outline">
+                              Short Link
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-64 p-0" align="start">
+                            <Command>
+                              <CommandInput placeholder="Search short links" />
+                              <CommandList>
+                                <CommandEmpty>No short link found</CommandEmpty>
+                                <CommandGroup heading="Short links">
+                                  {shortLinkChoices.map((item) => (
+                                    <CommandItem
+                                      key={item.id}
+                                      value={item.url}
+                                      onSelect={() => field.onChange(item.url)}
+                                    >
+                                      <div>
+                                        <p className="text-sm font-medium">/{item.code}</p>
+                                        <p className="text-xs text-muted-foreground">{item.clickCount} clicks</p>
+                                      </div>
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      ) : null}
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -302,15 +403,47 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
               <FormField
                 control={form.control as any}
                 name="borderRadius"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Border Radius</FormLabel>
-                    <FormControl>
-                      <Input placeholder="8px" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                render={({ field }) => {
+                  const isPreset = BORDER_RADIUS_OPTIONS.some((option) => option.value === field.value);
+                  return (
+                    <FormItem>
+                      <FormLabel>Border Radius</FormLabel>
+                      <Select
+                        onValueChange={(next) => {
+                          if (next === "custom") {
+                            field.onChange("");
+                            return;
+                          }
+                          field.onChange(next);
+                        }}
+                        value={isPreset ? field.value : "custom"}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select radius" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {BORDER_RADIUS_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                          <SelectItem value="custom">Custom</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      {!isPreset ? (
+                        <Input
+                          className="mt-2"
+                          placeholder="e.g. 6px"
+                          value={field.value}
+                          onChange={(event) => field.onChange(event.target.value)}
+                        />
+                      ) : null}
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
               <FormField
                 control={form.control as any}
@@ -378,9 +511,41 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                 name="thumbnail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Thumbnail URL</FormLabel>
+                    <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://" {...field} />
+                      <div className="space-y-4">
+                        {field.value && (
+                          <div className="relative h-32 w-32 overflow-hidden rounded-lg border">
+                            <img src={field.value} alt="Thumbnail" className="h-full w-full object-cover" />
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="icon"
+                              className="absolute right-2 top-2 h-6 w-6"
+                              onClick={() => field.onChange("")}
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        )}
+                        <UploadFile
+                          file={null}
+                          setFile={async (file: File) => {
+                            if (file) {
+                              try {
+                                const url = await uploadImage(file);
+                                field.onChange(url);
+                                toaster({ title: "Thumbnail uploaded", condition: "success" });
+                              } catch (e: any) {
+                                toaster({ title: "Upload failed", description: e.message, condition: "warning" });
+                              }
+                            }
+                          }}
+                          heading="Upload Thumbnail"
+                          buttonText="Choose Image"
+                          image={true}
+                        />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
