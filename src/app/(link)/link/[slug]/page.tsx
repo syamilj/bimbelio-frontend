@@ -287,6 +287,19 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
   const buttonSections = buildButtonSections(page.buttons);
   const hasButtons = buttonSections.some((section) => section.buttons.length > 0);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    mainEntity: {
+      '@type': 'Person',
+      name: page.title,
+      description: page.description,
+      image: page.profileImage,
+      url: `https://www.bimbelio.com/link/${page.slug}`,
+      sameAs: socialEntries.map(([, url]) => url),
+    },
+  };
+
   const trackingScript = `
     (function(){
       const endpoint = ${JSON.stringify(`${API_BASE_URL}/link/track/button-click`)};
@@ -323,6 +336,11 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
 
       {/* Gradient Overlay for depth */}
       <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-black/0 via-black/5 to-black/20" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-4 py-16 sm:py-20">
 
