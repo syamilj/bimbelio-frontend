@@ -13,17 +13,14 @@ import {
   LineChart,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
   CartesianGrid,
   BarChart,
   Bar,
   PieChart,
   Pie,
   Cell,
-  TooltipProps,
+  Label,
 } from "recharts";
-import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import Papa from "papaparse";
 
 import { LinkAnalyticsResponse, LinkPageDetail } from "@/types/link";
@@ -37,6 +34,14 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toaster } from "@/components/ui/toaster";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartConfig,
+  ChartLegend,
+  ChartLegendContent,
+} from "@/components/ui/chart";
 
 const presetOptions = [
   { label: "Last 7 days", value: "7d" },
@@ -44,6 +49,26 @@ const presetOptions = [
   { label: "Last 90 days", value: "90d" },
   { label: "Custom", value: "custom" },
 ] as const;
+
+const viewsChartConfig = {
+  count: {
+    label: "Page Views",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig;
+
+const buttonChartConfig = {
+  clicks: {
+    label: "Clicks",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
+
+const pieChartConfig = {
+  count: {
+    label: "Count",
+  },
+} satisfies ChartConfig;
 
 type PresetValue = (typeof presetOptions)[number]["value"];
 
@@ -273,19 +298,44 @@ export default function LinkAnalyticsPage() {
                 <CardTitle>Views by Day</CardTitle>
                 <CardDescription>Trend of page views during the selected period.</CardDescription>
               </CardHeader>
-              <CardContent className="h-72">
+              <CardContent>
                 {analytics?.viewsByDay?.length ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={analytics.viewsByDay}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis allowDecimals={false} />
-                      <Tooltip content={<div />} />
-                      <Line type="monotone" dataKey="count" stroke="#6366F1" strokeWidth={2} />
+                  <ChartContainer config={viewsChartConfig} className="aspect-auto h-[250px] w-full">
+                    <LineChart
+                      accessibilityLayer
+                      data={analytics.viewsByDay}
+                      margin={{
+                        left: 12,
+                        right: 12,
+                      }}
+                    >
+                      <CartesianGrid vertical={false} />
+                      <XAxis
+                        dataKey="date"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) => {
+                          const date = new Date(value);
+                          return date.toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          });
+                        }}
+                      />
+                      <YAxis tickLine={false} axisLine={false} tickMargin={8} allowDecimals={false} />
+                      <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                      <Line
+                        dataKey="count"
+                        type="natural"
+                        stroke="var(--color-count)"
+                        strokeWidth={2}
+                        dot={false}
+                      />
                     </LineChart>
-                  </ResponsiveContainer>
+                  </ChartContainer>
                 ) : (
-                  <div className="flex h-full items-center justify-center text-muted-foreground">No views recorded.</div>
+                  <div className="flex h-[250px] items-center justify-center text-muted-foreground">No views recorded.</div>
                 )}
               </CardContent>
             </Card>
@@ -294,19 +344,31 @@ export default function LinkAnalyticsPage() {
                 <CardTitle>Button Performance</CardTitle>
                 <CardDescription>Compare click volume per button.</CardDescription>
               </CardHeader>
-              <CardContent className="h-72">
+              <CardContent>
                 {analytics?.buttonPerformance?.length ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={analytics.buttonPerformance}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="title" interval={0} angle={-20} textAnchor="end" height={80} />
-                      <YAxis allowDecimals={false} />
-                      <Tooltip content={<div />} />
-                      <Bar dataKey="clicks" fill="#F97316" radius={[4, 4, 0, 0]} />
+                  <ChartContainer config={buttonChartConfig} className="aspect-auto h-[250px] w-full">
+                    <BarChart
+                      accessibilityLayer
+                      data={analytics.buttonPerformance}
+                      margin={{
+                        top: 20,
+                      }}
+                    >
+                      <CartesianGrid vertical={false} />
+                      <XAxis
+                        dataKey="title"
+                        tickLine={false}
+                        tickMargin={10}
+                        axisLine={false}
+                        tickFormatter={(value) => (value.length > 10 ? `${value.slice(0, 10)}...` : value)}
+                      />
+                      <YAxis tickLine={false} axisLine={false} tickMargin={8} allowDecimals={false} />
+                      <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                      <Bar dataKey="clicks" fill="var(--color-clicks)" radius={8} />
                     </BarChart>
-                  </ResponsiveContainer>
+                  </ChartContainer>
                 ) : (
-                  <div className="flex h-full items-center justify-center text-muted-foreground">No button clicks yet.</div>
+                  <div className="flex h-[250px] items-center justify-center text-muted-foreground">No button clicks yet.</div>
                 )}
               </CardContent>
             </Card>
@@ -326,15 +388,16 @@ export default function LinkAnalyticsPage() {
                 <CardContent className="flex flex-col gap-4">
                   {data && data.length ? (
                     <div className="flex items-center gap-4">
-                      <ResponsiveContainer width={120} height={120}>
+                      <ChartContainer config={pieChartConfig} className="aspect-square h-[120px] w-[120px]">
                         <PieChart>
+                          <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                           <Pie data={data} dataKey="count" innerRadius={30} outerRadius={50}>
                             {data.map((_, dataIdx) => (
                               <Cell key={`cell-${title}-${dataIdx}`} fill={chartColors[dataIdx % chartColors.length]} />
                             ))}
                           </Pie>
                         </PieChart>
-                      </ResponsiveContainer>
+                      </ChartContainer>
                       <div className="space-y-2 text-sm">
                         {data.map((entry, entryIdx) => {
                           const key = entry[label as keyof typeof entry];
