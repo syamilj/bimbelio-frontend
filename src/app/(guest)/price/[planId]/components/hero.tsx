@@ -254,42 +254,6 @@ export default function Hero({
               </motion.div>
             </motion.div>
           </div>
-
-          {/* Compact stats row */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-200/50"
-          >
-            <div className="text-center">
-              <div
-                className="text-lg font-bold"
-                style={{ color: mainColor }}
-              >
-                15K+
-              </div>
-              <div className="text-xs text-gray-600">Users</div>
-            </div>
-            <div className="text-center">
-              <div
-                className="text-lg font-bold"
-                style={{ color: mainColor }}
-              >
-                +200
-              </div>
-              <div className="text-xs text-gray-600">Score</div>
-            </div>
-            <div className="text-center">
-              <div
-                className="text-lg font-bold"
-                style={{ color: mainColor }}
-              >
-                97%
-              </div>
-              <div className="text-xs text-gray-600">Success</div>
-            </div>
-          </motion.div>
         </CardContent>
       </Card>
     </motion.div>

@@ -811,18 +811,6 @@ function Sidebar({
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className="p-4 rounded-xl"
-                style={{ backgroundColor: `${mainColor}08` }}
-              >
-                <div className="text-2xl font-black text-gray-900 mb-1">
-                  15K+
-                </div>
-                <div className="text-xs text-gray-600 font-medium">
-                  Member Aktif
-                </div>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="p-4 rounded-xl"
                 style={{ backgroundColor: `${secondaryColor}08` }}
               >
                 <div className="text-2xl font-black text-gray-900 mb-1">
