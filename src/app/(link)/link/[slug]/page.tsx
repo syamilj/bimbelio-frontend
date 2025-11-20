@@ -241,27 +241,23 @@ const ErrorState = ({ message }: { message: string }) => (
 );
 
 const buildButtonSections = (buttons: LinkButton[]) => {
-  const sections: Array<{ key: string; label: string | null; buttons: LinkButton[] }> = [];
-  let currentSection: { key: string; label: string | null; normalized: string; buttons: LinkButton[] } | null = null;
+  const map = new Map<string, LinkButton[]>();
+  const order: string[] = [];
 
-  buttons.forEach((button, index) => {
-    const label = button.sectionLabel?.trim() || null;
-    const normalized = label?.toLowerCase() ?? "__default__";
-
-    if (!currentSection || currentSection.normalized !== normalized) {
-      currentSection = {
-        key: `${normalized}-${index}`,
-        label,
-        normalized,
-        buttons: [],
-      };
-      sections.push(currentSection);
+  buttons.forEach((button) => {
+    const label = button.sectionLabel?.trim() || "";
+    if (!map.has(label)) {
+      map.set(label, []);
+      order.push(label);
     }
-
-    currentSection.buttons.push(button);
+    map.get(label)!.push(button);
   });
 
-  return sections;
+  return order.map((label, index) => ({
+    key: `${label || "default"}-${index}`,
+    label: label || null,
+    buttons: map.get(label)!,
+  }));
 };
 
 export default async function PublicLinkPage({ params, searchParams }: PageProps) {
