@@ -5,8 +5,8 @@ import CheckSubscription from '@/components/provider/provider-check-subscription
 import { cn } from '@/lib/utils';
 import { useParams, usePathname } from 'next/navigation';
 import { ReactNode, Suspense, useEffect, useState } from 'react';
-import Navbar from '../../app/[web_sub_category]/(admin)/admin/_components/navbar';
-import Sidebar from '../../app/[web_sub_category]/(admin)/admin/_components/sidebar';
+import Navbar from '@/app/(main)/[web_sub_category]/(admin)/admin/_components/navbar';
+import Sidebar from '@/app/(main)/[web_sub_category]/(admin)/admin/_components/sidebar';
 
 interface LayoutAdminProps {
   children: ReactNode;
