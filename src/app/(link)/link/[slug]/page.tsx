@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { cache, type ComponentType } from 'react';
 import { Inter, Playfair_Display } from 'next/font/google';
+import { cacheLife } from 'next/cache';
 import {
   ExternalLink,
   Facebook,
@@ -22,8 +23,9 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
 
 const API_BASE_URL = env.NEXT_PUBLIC_API_URL.replace(/\/$/, '');
-export const runtime = 'edge';
-export const revalidate = 60;
+// MIGRATED: Removed export const runtime = 'edge' (incompatible with Cache Components)
+// MIGRATED: Removed export const revalidate = 60 (incompatible with Cache Components)
+// TODO: Will add "use cache" + cacheLife('minutes') after analyzing build errors
 
 interface LinkButton {
   id: string;
@@ -71,7 +73,10 @@ type PageProps = {
   searchParams: Promise<{ password?: string } | undefined>;
 };
 
-const getLinkPage = cache(async (slug: string, password?: string): Promise<LinkPageResult> => {
+async function getLinkPage(slug: string, password?: string): Promise<LinkPageResult> {
+  "use cache";
+  cacheLife('minutes');
+
   const url = new URL(`/link/${slug}`, API_BASE_URL);
   if (password) {
     url.searchParams.set('password', password);
@@ -79,8 +84,6 @@ const getLinkPage = cache(async (slug: string, password?: string): Promise<LinkP
 
   const response = await fetch(url.toString(), {
     headers: { 'Content-Type': 'application/json' },
-    next: { revalidate: password ? 0 : revalidate },
-    cache: password ? 'no-store' : undefined,
   });
 
   if (response.status === 401) {
@@ -107,7 +110,7 @@ const getLinkPage = cache(async (slug: string, password?: string): Promise<LinkP
       ),
     },
   };
-});
+}
 
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const resolvedParams = await Promise.resolve(params);
@@ -523,4 +526,8 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
       {hasButtons && <script dangerouslySetInnerHTML={{ __html: trackingScript }} />}
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  return [{ slug: 'example' }];
 }

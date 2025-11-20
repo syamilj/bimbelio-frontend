@@ -7,6 +7,7 @@ import LayoutGuest from '@/components/layout/layoutGuest';
 import { siteConfig } from '@/config/site';
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { Suspense } from 'react';
 import '../../styles/globals.css';
 
 export const metadata: Metadata = {
@@ -74,15 +75,17 @@ export default function GuestRootLayout({ children }: { children: React.ReactNod
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <ProviderMaintenance>
-          <ProviderSessionAuth>
-            <ProviderPixel>
-              <ProviderWebsiteCategory>
-                <ProviderApp>
-                   <LayoutGuest>{children}</LayoutGuest>
-                </ProviderApp>
-              </ProviderWebsiteCategory>
-            </ProviderPixel>
-          </ProviderSessionAuth>
+          <Suspense fallback={null}>
+            <ProviderSessionAuth>
+              <ProviderPixel>
+                <ProviderWebsiteCategory>
+                  <ProviderApp>
+                    <LayoutGuest>{children}</LayoutGuest>
+                  </ProviderApp>
+                </ProviderWebsiteCategory>
+              </ProviderPixel>
+            </ProviderSessionAuth>
+          </Suspense>
         </ProviderMaintenance>
       </body>
     </html>

@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
-export const runtime = 'edge';
+// MIGRATED: Removed export const runtime = 'edge' (incompatible with Cache Components)
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
