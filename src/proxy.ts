@@ -14,7 +14,7 @@ type DecodeData = {
   exp: number;
 };
 //
-export const middleware = async (req: NextRequest) => {
+export const proxy = async (req: NextRequest) => {
   try {
     const token = req.cookies.get('token')?.value;
     const pathname = req.nextUrl.pathname;

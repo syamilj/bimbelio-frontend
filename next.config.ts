@@ -72,15 +72,14 @@ const nextConfig = {
   images: {
     // Tambah format modern untuk mengurangi ukuran transfer LCP image
     formats: ['image/avif', 'image/webp'],
+    // Next.js 16 defaults to [75], so we need to add the others used in the app
+    qualities: [30, 50, 60, 75, 100],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
       },
     ],
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   // Tambah headers caching aset statis untuk meningkatkan FCP / repeat views
   async headers() {
