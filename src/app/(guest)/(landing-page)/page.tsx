@@ -1,12 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-
-// TIER 1: SSR = true (Critical LCP - Hero must render on server)
-const HeroSection = dynamic(
-  () => import('@/components/_shared/homepage/home/01-hero-section'),
-  { ssr: true },
-);
+import HeroSection from '@/components/_shared/homepage/home/01-hero-section';
 
 // TIER 2: SSR = true (Above fold, important for initial render)
 const ProblemSection = dynamic(

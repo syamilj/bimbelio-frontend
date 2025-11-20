@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import {
   createContext,
@@ -8,11 +9,16 @@ import {
   SetStateAction,
   useContext,
 } from 'react';
-import { OneTapLogin } from '../_shared/auth/one-tap-login';
+// import { OneTapLogin } from '../_shared/auth/one-tap-login';
 import Footer from '../_shared/footer';
 import Navbar from '../_shared/navbar';
 import FloatingContactButton from '../_shared/other/floating-contact-button';
 import { useAppContext } from '../provider/provider-app';
+
+const OneTapLogin = dynamic(
+  () => import('../_shared/auth/one-tap-login').then((mod) => mod.OneTapLogin),
+  { ssr: false },
+);
 
 interface LayoutGuestProps {
   children: ReactNode;

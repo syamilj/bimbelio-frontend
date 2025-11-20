@@ -3,6 +3,11 @@
 const nextConfig = {
   cacheComponents: true,
   reactStrictMode: true,
+  compress: true,
+  poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons', 'date-fns', 'lodash'],
+  },
 
   // Tambahkan ini untuk hapus console di production
   compiler: {

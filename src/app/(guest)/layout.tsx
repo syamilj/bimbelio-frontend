@@ -125,7 +125,7 @@ function DefaultHeadContent() {
         href="https://static.cloudflareinsights.com"
       />
 
-      <TrackingScripts lazy={false} />
+      <TrackingScripts lazy={true} />
       <StructuredData />
     </>
   );
