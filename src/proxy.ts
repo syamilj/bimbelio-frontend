@@ -13,8 +13,13 @@ type DecodeData = {
   iat: number;
   exp: number;
 };
+<<<<<<< HEAD:src/middleware.ts
 
 export const middleware = async (req: NextRequest) => {
+=======
+//
+export const proxy = async (req: NextRequest) => {
+>>>>>>> 92a9e782099447806fa0a3427c335ee774db4087:src/proxy.ts
   try {
     const token = req.cookies.get('token')?.value;
     const pathname = req.nextUrl.pathname;

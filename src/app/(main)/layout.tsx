@@ -92,19 +92,21 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         <ProviderMaintenance>
-          <ProviderSessionAuth>
-            <ProviderPixel>
-              <ProviderWebsiteCategory>
-                <ProviderLimitation>
-                  <ProviderApp>
-                    <Suspense fallback={null}>
-                      <ProviderCheckPayment>{children}</ProviderCheckPayment>
-                    </Suspense>
-                  </ProviderApp>
-                </ProviderLimitation>
-              </ProviderWebsiteCategory>
-            </ProviderPixel>
-          </ProviderSessionAuth>
+          <Suspense fallback={null}>
+            <ProviderSessionAuth>
+              <ProviderPixel>
+                <ProviderWebsiteCategory>
+                  <ProviderLimitation>
+                    <ProviderApp>
+                      <Suspense fallback={null}>
+                        <ProviderCheckPayment>{children}</ProviderCheckPayment>
+                      </Suspense>
+                    </ProviderApp>
+                  </ProviderLimitation>
+                </ProviderWebsiteCategory>
+              </ProviderPixel>
+            </ProviderSessionAuth>
+          </Suspense>
         </ProviderMaintenance>
       </body>
     </html>

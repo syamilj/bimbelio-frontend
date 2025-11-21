@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { cache, type ComponentType } from 'react';
 import { Inter, Playfair_Display } from 'next/font/google';
+import { cacheLife } from 'next/cache';
 import {
   ExternalLink,
   Facebook,
@@ -22,8 +23,9 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
 
 const API_BASE_URL = env.NEXT_PUBLIC_API_URL.replace(/\/$/, '');
-export const runtime = 'edge';
-export const revalidate = 60;
+// MIGRATED: Removed export const runtime = 'edge' (incompatible with Cache Components)
+// MIGRATED: Removed export const revalidate = 60 (incompatible with Cache Components)
+// TODO: Will add "use cache" + cacheLife('minutes') after analyzing build errors
 
 interface LinkButton {
   id: string;
@@ -71,7 +73,10 @@ type PageProps = {
   searchParams: Promise<{ password?: string } | undefined>;
 };
 
-const getLinkPage = cache(async (slug: string, password?: string): Promise<LinkPageResult> => {
+async function getLinkPage(slug: string, password?: string): Promise<LinkPageResult> {
+  "use cache";
+  cacheLife('minutes');
+
   const url = new URL(`/link/${slug}`, API_BASE_URL);
   if (password) {
     url.searchParams.set('password', password);
@@ -79,8 +84,6 @@ const getLinkPage = cache(async (slug: string, password?: string): Promise<LinkP
 
   const response = await fetch(url.toString(), {
     headers: { 'Content-Type': 'application/json' },
-    next: { revalidate: password ? 0 : revalidate },
-    cache: password ? 'no-store' : undefined,
   });
 
   if (response.status === 401) {
@@ -107,7 +110,7 @@ const getLinkPage = cache(async (slug: string, password?: string): Promise<LinkP
       ),
     },
   };
-});
+}
 
 export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const resolvedParams = await Promise.resolve(params);
@@ -241,27 +244,23 @@ const ErrorState = ({ message }: { message: string }) => (
 );
 
 const buildButtonSections = (buttons: LinkButton[]) => {
-  const sections: Array<{ key: string; label: string | null; buttons: LinkButton[] }> = [];
-  let currentSection: { key: string; label: string | null; normalized: string; buttons: LinkButton[] } | null = null;
+  const map = new Map<string, LinkButton[]>();
+  const order: string[] = [];
 
-  buttons.forEach((button, index) => {
-    const label = button.sectionLabel?.trim() || null;
-    const normalized = label?.toLowerCase() ?? "__default__";
-
-    if (!currentSection || currentSection.normalized !== normalized) {
-      currentSection = {
-        key: `${normalized}-${index}`,
-        label,
-        normalized,
-        buttons: [],
-      };
-      sections.push(currentSection);
+  buttons.forEach((button) => {
+    const label = button.sectionLabel?.trim() || "";
+    if (!map.has(label)) {
+      map.set(label, []);
+      order.push(label);
     }
-
-    currentSection.buttons.push(button);
+    map.get(label)!.push(button);
   });
 
-  return sections;
+  return order.map((label, index) => ({
+    key: `${label || "default"}-${index}`,
+    label: label || null,
+    buttons: map.get(label)!,
+  }));
 };
 
 export default async function PublicLinkPage({ params, searchParams }: PageProps) {
@@ -290,6 +289,19 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
   const primaryCtaLabel = whatsappLink ? 'Chat via WhatsApp' : 'Kunjungi Tautan Utama';
   const buttonSections = buildButtonSections(page.buttons);
   const hasButtons = buttonSections.some((section) => section.buttons.length > 0);
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    mainEntity: {
+      '@type': 'Person',
+      name: page.title,
+      description: page.description,
+      image: page.profileImage,
+      url: `https://www.bimbelio.com/link/${page.slug}`,
+      sameAs: socialEntries.map(([, url]) => url),
+    },
+  };
 
   const trackingScript = `
     (function(){
@@ -327,6 +339,11 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
 
       {/* Gradient Overlay for depth */}
       <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-black/0 via-black/5 to-black/20" />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-4 py-16 sm:py-20">
 
@@ -509,4 +526,8 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
       {hasButtons && <script dangerouslySetInnerHTML={{ __html: trackingScript }} />}
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  return [{ slug: 'example' }];
 }

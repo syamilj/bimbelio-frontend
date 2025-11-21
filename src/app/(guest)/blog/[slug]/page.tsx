@@ -3,8 +3,27 @@ import axios from 'axios';
 import { Metadata } from 'next';
 import { Fragment } from 'react';
 import BlogClient from '../_components/BlogContent';
+import { cacheLife } from 'next/cache';
+
+export async function generateStaticParams() {
+  try {
+    const response = await axios.get(`${env.NEXT_PUBLIC_API_URL}/blog/getBlog`);
+    const blogs = response.data.data || [];
+    if (blogs.length === 0) {
+      return [{ slug: 'example-slug' }];
+    }
+    return blogs.map((blog: any) => ({
+      slug: blog.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params for blog:', error);
+    return [{ slug: 'example-slug' }];
+  }
+}
 
 async function getBlogBySlug(slug: string) {
+  "use cache";
+  cacheLife('hours');
   try {
     const response = await axios.get(
       `${env.NEXT_PUBLIC_API_URL}/blog/getBlogBySlug`,

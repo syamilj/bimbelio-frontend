@@ -560,7 +560,7 @@ export default function UserManagementDashboard() {
                   <TableHead>Subscription</TableHead>
                   <TableHead>Count</TableHead>
                   <TableHead>Telp</TableHead>
-                  <TableHead>Status</TableHead> {/* Updated */}
+                  <TableHead>Status</TableHead>
                   <TableHead>WhatsApp</TableHead>
                   {sessionRole === 'SUPER_ADMIN' && (
                     <TableHead>Actions</TableHead>
