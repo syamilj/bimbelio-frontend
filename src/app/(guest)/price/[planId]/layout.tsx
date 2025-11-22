@@ -22,7 +22,7 @@ async function getPlanData(slug: string): Promise<PlanDataType | null> {
     return null;
   }
 }
-//
+
 // Generate dynamic metadata
 export async function generateMetadata(
   { params }: { params: Promise<{ planId: string }> },
