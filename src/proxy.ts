@@ -13,7 +13,7 @@ type DecodeData = {
   iat: number;
   exp: number;
 };
-
+//
 export const proxy = async (req: NextRequest) => {
   try {
     const token = req.cookies.get('token')?.value;
