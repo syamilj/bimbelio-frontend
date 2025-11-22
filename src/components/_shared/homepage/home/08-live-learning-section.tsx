@@ -1,11 +1,11 @@
 'use client';
 
-import { useCountdown } from '@/app/[web_sub_category]/(user)/user/live-learning/_components/live-class-hooks';
+import { useCountdown } from '@/app/(main)/[web_sub_category]/(user)/user/live-learning/_components/live-class-hooks';
 import {
   CountdownTimer,
   MarketingCTA,
   PreviewContent,
-} from '@/app/[web_sub_category]/(user)/user/live-learning/_components/live-class-shared-components';
+} from '@/app/(main)/[web_sub_category]/(user)/user/live-learning/_components/live-class-shared-components';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';

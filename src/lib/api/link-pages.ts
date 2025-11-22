@@ -1,6 +1,6 @@
-import axiosInstanceWithToken from "@/lib/axios/axiosInstanceWithToken";
-import axiosInstanceRaw from "@/lib/axios/axiosInstanceRaw";
-import { LinkAnalyticsResponse, LinkButton, LinkPageDetail } from "@/types/link";
+import axiosInstanceRaw from '@/lib/axios/axiosInstanceRaw';
+import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
+import { LinkButton, LinkPageDetail } from '@/types/link';
 
 // ============================================
 // LINK PAGE CRUD
@@ -11,7 +11,7 @@ export interface CreateLinkPagePayload {
   title: string;
   description?: string;
   profileImage?: string;
-  backgroundType?: "GRADIENT" | "COLOR" | "IMAGE" | "VIDEO";
+  backgroundType?: 'GRADIENT' | 'COLOR' | 'IMAGE' | 'VIDEO';
   backgroundColor?: string;
   backgroundImage?: string;
   metaTitle?: string;
@@ -53,41 +53,40 @@ export const fetchAllLinkPages = async (params?: {
   search?: string;
   isActive?: boolean;
 }) => {
-  const response = await axiosInstanceWithToken.get("/link/admin/pages", { params });
+  const response = await axiosInstanceWithToken.get('/link/admin/pages', {
+    params,
+  });
   return response.data;
 };
 
 export const fetchLinkPage = async (linkPageId: string) => {
-  const response = await axiosInstanceWithToken.get(`/link/admin/page/${linkPageId}`);
+  const response = await axiosInstanceWithToken.get(
+    `/link/admin/page/${linkPageId}`,
+  );
   return response.data.data as LinkPageDetail;
 };
 
 export const createLinkPage = async (payload: CreateLinkPagePayload) => {
-  const response = await axiosInstanceWithToken.post("/link/admin/createLinkPage", payload);
+  const response = await axiosInstanceWithToken.post(
+    '/link/admin/createLinkPage',
+    payload,
+  );
   return response.data.data as LinkPageDetail;
 };
 
-export const updateLinkPage = async (linkPageId: string, payload: UpdateLinkPagePayload) => {
-  const response = await axiosInstanceWithToken.put(`/link/admin/page/${linkPageId}`, payload);
+export const updateLinkPage = async (
+  linkPageId: string,
+  payload: UpdateLinkPagePayload,
+) => {
+  const response = await axiosInstanceWithToken.put(
+    `/link/admin/page/${linkPageId}`,
+    payload,
+  );
   return response.data.data as LinkPageDetail;
 };
 
 export const deleteLinkPage = async (linkPageId: string) => {
   return axiosInstanceWithToken.delete(`/link/admin/page/${linkPageId}`);
-};
-
-// ============================================
-// ANALYTICS
-// ============================================
-
-export const fetchLinkAnalytics = async (
-  linkPageId: string,
-  params?: { startDate?: string; endDate?: string }
-) => {
-  const response = await axiosInstanceWithToken.get(`/link/admin/analytics/${linkPageId}`, {
-    params,
-  });
-  return response.data.data as LinkAnalyticsResponse;
 };
 
 export interface CreateLinkButtonPayload {
@@ -110,14 +109,28 @@ export interface CreateLinkButtonPayload {
 }
 
 export const createLinkButton = async (payload: CreateLinkButtonPayload) => {
-  const response = await axiosInstanceWithToken.post("/link/admin/createButton", payload);
+  const response = await axiosInstanceWithToken.post(
+    '/link/admin/createButton',
+    payload,
+  );
   return response.data.data as LinkButton;
 };
 
-export type UpdateLinkButtonPayload = Partial<Omit<LinkButton, "id" | "linkPageId" | "clickCount" | "createdAt" | "updatedAt">>;
+export type UpdateLinkButtonPayload = Partial<
+  Omit<
+    LinkButton,
+    'id' | 'linkPageId' | 'clickCount' | 'createdAt' | 'updatedAt'
+  >
+>;
 
-export const updateLinkButton = async (buttonId: string, payload: UpdateLinkButtonPayload) => {
-  const response = await axiosInstanceWithToken.put(`/link/admin/button/${buttonId}`, payload);
+export const updateLinkButton = async (
+  buttonId: string,
+  payload: UpdateLinkButtonPayload,
+) => {
+  const response = await axiosInstanceWithToken.put(
+    `/link/admin/button/${buttonId}`,
+    payload,
+  );
   return response.data.data as LinkButton;
 };
 
@@ -125,19 +138,22 @@ export const deleteLinkButton = async (buttonId: string) => {
   return axiosInstanceWithToken.delete(`/link/admin/button/${buttonId}`);
 };
 
-export const reorderLinkButtons = async (linkPageId: string, buttonOrders: Array<{ id: string; order: number }>) => {
-  return axiosInstanceWithToken.post("/link/admin/reorderButtons", {
+export const reorderLinkButtons = async (
+  linkPageId: string,
+  buttonOrders: Array<{ id: string; order: number }>,
+) => {
+  return axiosInstanceWithToken.post('/link/admin/reorderButtons', {
     linkPageId,
     buttonOrders,
   });
 };
 
 export const trackTestConversion = async (linkPageId: string) => {
-  return axiosInstanceWithToken.post("/link/track/conversion", {
+  return axiosInstanceWithToken.post('/link/track/conversion', {
     linkPageId,
-    conversionType: "CUSTOM",
+    conversionType: 'CUSTOM',
     value: 0,
-    currency: "IDR",
+    currency: 'IDR',
     metadata: {
       test: true,
     },
@@ -153,25 +169,4 @@ export const viewLinkPage = async (slug: string, password?: string) => {
     params: password ? { password } : undefined,
   });
   return response.data.data;
-};
-
-export const trackButtonClick = async (payload: {
-  buttonId: string;
-  linkPageId: string;
-  metadata?: Record<string, any>;
-}) => {
-  return axiosInstanceRaw.post("/link/track/button-click", payload);
-};
-
-export const trackConversion = async (payload: {
-  linkPageId: string;
-  conversionType: string;
-  value?: number;
-  currency?: string;
-  email?: string;
-  phone?: string;
-  referralCode?: string;
-  metadata?: Record<string, any>;
-}) => {
-  return axiosInstanceRaw.post("/link/track/conversion", payload);
 };

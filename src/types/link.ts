@@ -4,7 +4,7 @@ export interface LinkShortUrl {
   clickCount: number;
 }
 
-export type LinkBackgroundType = "GRADIENT" | "COLOR" | "IMAGE" | "VIDEO";
+export type LinkBackgroundType = 'GRADIENT' | 'COLOR' | 'IMAGE' | 'VIDEO';
 
 export interface LinkButton {
   id: string;
@@ -112,25 +112,25 @@ export interface LinkAnalyticsResponse {
     slug: string;
     title: string;
   };
-  dateRange: {
-    startDate: string;
-    endDate: string;
-  };
-  overview: LinkAnalyticsOverview;
-  eventBreakdown: Array<{
-    eventType: string;
-    _count: {
-      id: number;
-    };
-  }>;
-  topReferrers: Array<{ domain: string; source: string; count: number }>;
-  topCountries: Array<{ country: string; code: string; count: number }>;
-  deviceBreakdown: Array<{ device: string; count: number }>;
-  browserBreakdown: Array<{ browser: string; count: number }>;
-  osBreakdown: Array<{ os: string; count: number }>;
-  viewsByDay: Array<{ date: string; count: number }>;
-  buttonPerformance: Array<{ id: string; title: string; clicks: number }>;
-  conversions: LinkAnalyticsConversion[];
-  topReferralCodes: Array<{ code: string | null; count: number }>;
-  recentActivity: LinkAnalyticsRecentActivityItem[];
+  // dateRange: {
+  //   startDate: string;
+  //   endDate: string;
+  // };
+  // overview: LinkAnalyticsOverview;
+  // eventBreakdown: Array<{
+  //   eventType: string;
+  //   _count: {
+  //     id: number;
+  //   };
+  // }>;
+  // topReferrers: Array<{ domain: string; source: string; count: number }>;
+  // topCountries: Array<{ country: string; code: string; count: number }>;
+  // deviceBreakdown: Array<{ device: string; count: number }>;
+  // browserBreakdown: Array<{ browser: string; count: number }>;
+  // osBreakdown: Array<{ os: string; count: number }>;
+  // viewsByDay: Array<{ date: string; count: number }>;
+  // buttonPerformance: Array<{ id: string; title: string; clicks: number }>;
+  // conversions: LinkAnalyticsConversion[];
+  // topReferralCodes: Array<{ code: string | null; count: number }>;
+  // recentActivity: LinkAnalyticsRecentActivityItem[];
 }

@@ -1,3 +1,4 @@
+import ProviderUtm from '@/app/(link)/link/[slug]/components/provider-utm-link-page';
 import { siteConfig } from '@/config/site';
 import type { Metadata } from 'next';
 import Script from 'next/script';
@@ -20,17 +21,39 @@ export const metadata: Metadata = {
 
 export default function LinkLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html
+      lang="id"
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preconnect" href="https://be.bimbelio.com" />
-        <link rel="preconnect" href="https://storage.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://connect.facebook.net" />
-        <link rel="dns-prefetch" href="https://analytics.tiktok.com" />
+        <link
+          rel="preconnect"
+          href="https://be.bimbelio.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://storage.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://connect.facebook.net"
+        />
+        <link
+          rel="dns-prefetch"
+          href="https://analytics.tiktok.com"
+        />
       </head>
       <body className="bg-slate-950 font-sans antialiased">
-        {children}
+        <ProviderUtm>{children}</ProviderUtm>
         <TrackingScripts lazy />
       </body>
     </html>

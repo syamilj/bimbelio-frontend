@@ -1,11 +1,4 @@
 import { env } from '@/env.mjs';
-import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { cache, type ComponentType } from 'react';
-import { Inter, Playfair_Display } from 'next/font/google';
-import { cacheLife } from 'next/cache';
 import {
   ExternalLink,
   Facebook,
@@ -18,9 +11,20 @@ import {
   Twitter,
   Youtube,
 } from 'lucide-react';
+import type { Metadata } from 'next';
+import { cacheLife } from 'next/cache';
+import { Inter, Playfair_Display } from 'next/font/google';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { type ComponentType } from 'react';
+import { ButtonLinkPage } from './components/button-link-page';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+});
 
 const API_BASE_URL = env.NEXT_PUBLIC_API_URL.replace(/\/$/, '');
 // MIGRATED: Removed export const runtime = 'edge' (incompatible with Cache Components)
@@ -66,15 +70,16 @@ interface LinkPageResult {
   requiresPassword?: boolean;
 }
 
-type Awaitable<T> = T | Promise<T>;
-
 type PageProps = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ password?: string } | undefined>;
 };
 
-async function getLinkPage(slug: string, password?: string): Promise<LinkPageResult> {
-  "use cache";
+async function getLinkPage(
+  slug: string,
+  password?: string,
+): Promise<LinkPageResult> {
+  'use cache';
   cacheLife('minutes');
 
   const url = new URL(`/link/${slug}`, API_BASE_URL);
@@ -106,16 +111,24 @@ async function getLinkPage(slug: string, password?: string): Promise<LinkPageRes
     data: {
       ...data,
       buttons: (data.buttons || []).sort(
-        (a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER),
+        (a, b) =>
+          (a.order ?? Number.MAX_SAFE_INTEGER) -
+          (b.order ?? Number.MAX_SAFE_INTEGER),
       ),
     },
   };
 }
 
-export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: PageProps): Promise<Metadata> {
   const resolvedParams = await Promise.resolve(params);
   const resolvedSearchParams = (await Promise.resolve(searchParams)) ?? {};
-  const result = await getLinkPage(resolvedParams.slug, resolvedSearchParams.password);
+  const result = await getLinkPage(
+    resolvedParams.slug,
+    resolvedSearchParams.password,
+  );
 
   if (!result.data) {
     return {
@@ -126,16 +139,25 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   return {
     title: result.data.metaTitle || result.data.title,
-    description: result.data.metaDescription || result.data.description || 'Kunjungi link bio saya di Bimbelio.',
+    description:
+      result.data.metaDescription ||
+      result.data.description ||
+      'Kunjungi link bio saya di Bimbelio.',
     openGraph: {
       title: result.data.metaTitle || result.data.title,
-      description: result.data.metaDescription || result.data.description || 'Kunjungi link bio saya di Bimbelio.',
+      description:
+        result.data.metaDescription ||
+        result.data.description ||
+        'Kunjungi link bio saya di Bimbelio.',
       images: result.data.ogImage ? [result.data.ogImage] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title: result.data.metaTitle || result.data.title,
-      description: result.data.metaDescription || result.data.description || 'Kunjungi link bio saya di Bimbelio.',
+      description:
+        result.data.metaDescription ||
+        result.data.description ||
+        'Kunjungi link bio saya di Bimbelio.',
       images: result.data.ogImage ? [result.data.ogImage] : undefined,
     },
   };
@@ -190,17 +212,31 @@ const backgroundStyle = (data?: LinkPageData) => {
   }
 };
 
-const PasswordGate = ({ message, password }: { message?: string; password?: string }) => (
+const PasswordGate = ({
+  message,
+  password,
+}: {
+  message?: string;
+  password?: string;
+}) => (
   <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
     <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-slate-900 p-8 text-center shadow-lg border border-white/10">
       <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20">
         <Lock className="h-6 w-6 text-white/80" />
       </div>
       <h1 className="text-xl font-medium text-white">Halaman Terkunci</h1>
-      <p className="mt-2 text-sm text-white/60">{message || 'Masukkan password untuk membuka halaman.'}</p>
-      <form method="GET" className="mt-8 space-y-4 text-left">
+      <p className="mt-2 text-sm text-white/60">
+        {message || 'Masukkan password untuk membuka halaman.'}
+      </p>
+      <form
+        method="GET"
+        className="mt-8 space-y-4 text-left"
+      >
         <div>
-          <label htmlFor="password" className="sr-only">
+          <label
+            htmlFor="password"
+            className="sr-only"
+          >
             Password
           </label>
           <input
@@ -248,7 +284,7 @@ const buildButtonSections = (buttons: LinkButton[]) => {
   const order: string[] = [];
 
   buttons.forEach((button) => {
-    const label = button.sectionLabel?.trim() || "";
+    const label = button.sectionLabel?.trim() || '';
     if (!map.has(label)) {
       map.set(label, []);
       order.push(label);
@@ -257,13 +293,16 @@ const buildButtonSections = (buttons: LinkButton[]) => {
   });
 
   return order.map((label, index) => ({
-    key: `${label || "default"}-${index}`,
+    key: `${label || 'default'}-${index}`,
     label: label || null,
     buttons: map.get(label)!,
   }));
 };
 
-export default async function PublicLinkPage({ params, searchParams }: PageProps) {
+export default async function PublicLinkPage({
+  params,
+  searchParams,
+}: PageProps) {
   const resolvedParams = await Promise.resolve(params);
   const resolvedSearchParams = (await Promise.resolve(searchParams)) ?? {};
   const password = resolvedSearchParams.password;
@@ -274,21 +313,35 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
   }
 
   if (result.requiresPassword) {
-    return <PasswordGate password={password} message="Halaman ini dilindungi." />;
+    return (
+      <PasswordGate
+        password={password}
+        message="Halaman ini dilindungi."
+      />
+    );
   }
 
   if (!result.data) {
-    return <ErrorState message="Gagal memuat halaman link. Silakan coba lagi." />;
+    return (
+      <ErrorState message="Gagal memuat halaman link. Silakan coba lagi." />
+    );
   }
 
   const page = result.data;
 
-  const socialEntries = Object.entries(page.socialLinks || {}).filter(([, url]) => Boolean(url));
+  const socialEntries = Object.entries(page.socialLinks || {}).filter(
+    ([, url]) => Boolean(url),
+  );
   const whatsappLink = page.socialLinks?.whatsapp;
-  const primaryCtaLink = whatsappLink || page.buttons[0]?.url || socialEntries[0]?.[1] || '#';
-  const primaryCtaLabel = whatsappLink ? 'Chat via WhatsApp' : 'Kunjungi Tautan Utama';
+  const primaryCtaLink =
+    whatsappLink || page.buttons[0]?.url || socialEntries[0]?.[1] || '#';
+  const primaryCtaLabel = whatsappLink
+    ? 'Chat via WhatsApp'
+    : 'Kunjungi Tautan Utama';
   const buttonSections = buildButtonSections(page.buttons);
-  const hasButtons = buttonSections.some((section) => section.buttons.length > 0);
+  const hasButtons = buttonSections.some(
+    (section) => section.buttons.length > 0,
+  );
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -303,38 +356,11 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
     },
   };
 
-  const trackingScript = `
-    (function(){
-      const endpoint = ${JSON.stringify(`${API_BASE_URL}/link/track/button-click`)};
-      const linkPageId = ${JSON.stringify(page.id)};
-      document.addEventListener('click', function(event) {
-        const anchor = event.target.closest('a[data-link-button]');
-        if (!anchor) return;
-        const payload = {
-          buttonId: anchor.getAttribute('data-button-id'),
-          linkPageId,
-          metadata: {
-            title: anchor.getAttribute('data-button-title'),
-            url: anchor.getAttribute('href')
-          }
-        };
-        const body = JSON.stringify(payload);
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(endpoint, body);
-          return;
-        }
-        fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body,
-          keepalive: true
-        });
-      }, { passive: true });
-    })();
-  `;
-
   return (
-    <div className={`relative min-h-screen w-full overflow-x-hidden transition-colors duration-700 ${inter.variable} ${playfair.variable} font-sans`} style={backgroundStyle(page)}>
+    <div
+      className={`relative min-h-screen w-full overflow-x-hidden transition-colors duration-700 ${inter.variable} ${playfair.variable} font-sans`}
+      style={backgroundStyle(page)}
+    >
       {/* Halftone Overlay for depth if needed, but handled in backgroundStyle now */}
 
       {/* Gradient Overlay for depth */}
@@ -346,7 +372,6 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
       />
 
       <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-4 py-16 sm:py-20">
-
         {/* Profile Section - Clean & Open */}
         <div className="mb-10 flex flex-col items-center text-center">
           {page.profileImage && (
@@ -358,19 +383,19 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
                 className="object-cover"
                 priority
                 sizes="(max-width: 768px) 112px, 112px"
+                unoptimized={true}
               />
             </div>
           )}
-
           <h1 className="text-xl font-bold tracking-tight text-white drop-shadow-md sm:text-2xl font-serif">
             {page.title}
           </h1>
-
           {page.description && (
             <p className="mt-2 max-w-xs text-base font-medium leading-relaxed text-white/90 drop-shadow-sm">
               {page.description}
             </p>
-          )}          {/* Social Icons - Floating Row */}
+          )}{' '}
+          {/* Social Icons - Floating Row */}
           {socialEntries.length > 0 && (
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               {socialEntries.map(([platform, url]) => {
@@ -402,7 +427,10 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
             </div>
           ) : (
             buttonSections.map((section) => (
-              <div key={section.key} className="space-y-3">
+              <div
+                key={section.key}
+                className="space-y-3"
+              >
                 {section.label && (
                   <div className="px-1 pb-1 text-center">
                     <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-white/60 drop-shadow-sm">
@@ -412,91 +440,11 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
                 )}
                 <div className="space-y-3">
                   {section.buttons.map((button) => {
-                    // Logic for button styling based on TYPE
-                    const type = button.type || 'PRIMARY';
-                    const baseColor = button.color || '#ffffff';
-                    const baseTextColor = button.textColor || '#000000';
-                    const radius = button.borderRadius || '99999px'; // Slightly tighter radius
-
-                    let finalBg = baseColor;
-                    let finalTxt = baseTextColor;
-                    let borderStyle = 'none';
-                    let shadow = '0 2px 4px rgba(0,0,0,0.1)';
-
-                    if (type === 'OUTLINE') {
-                      finalBg = 'transparent';
-                      finalTxt = baseColor; // Use the main color for text/border
-                      borderStyle = `2px solid ${baseColor}`;
-                      shadow = 'none';
-                    } else if (type === 'SECONDARY') {
-                      // Secondary usually implies a different style, but here we just use the color
-                      // If color is not provided, maybe fallback to glass
-                      if (!button.color) {
-                         finalBg = 'rgba(255, 255, 255, 0.15)';
-                         finalTxt = '#ffffff';
-                         borderStyle = '1px solid rgba(255, 255, 255, 0.2)';
-                      }
-                    } else if (type === 'TEXT') {
-                      finalBg = 'transparent';
-                      finalTxt = baseTextColor || '#ffffff';
-                      shadow = 'none';
-                    }
-
-                    // Fallback for glass effect if no color set on PRIMARY
-                    if (type === 'PRIMARY' && !button.color) {
-                       finalBg = 'rgba(255, 255, 255, 0.95)';
-                       finalTxt = '#000000';
-                    }
-
                     return (
-                      <a
+                      <ButtonLinkPage
                         key={button.id}
-                        href={button.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-link-button
-                        data-button-id={button.id}
-                        data-button-title={button.title}
-                        className="group relative flex w-full items-center justify-center overflow-hidden px-6 py-4 transition-transform active:scale-[0.98]"
-                        style={{
-                          backgroundColor: finalBg,
-                          color: finalTxt,
-                          borderRadius: radius,
-                          border: borderStyle,
-                          boxShadow: shadow,
-                        }}
-                      >
-                        <div className="relative flex w-full items-center justify-center">
-                          {/* Thumbnail/Icon Left */}
-                          {(button.thumbnail || button.icon) && (
-                            <div className="absolute left-0 flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-black/5 object-cover">
-                               {button.thumbnail ? (
-                                 <Image
-                                   src={button.thumbnail}
-                                   alt=""
-                                   width={32}
-                                   height={32}
-                                   sizes="32px"
-                                   className="h-full w-full object-cover"
-                                 />
-                               ) : (
-                                 <span className="text-lg">{/* Icon logic here if needed */}⭐️</span>
-                               )}
-                            </div>
-                          )}
-
-                          <div className="flex flex-col items-center text-center">
-                            <span className="text-base font-semibold tracking-wide sm:text-lg">
-                              {button.title}
-                            </span>
-                            {button.subtitle && (
-                              <span className="mt-0.5 text-sm opacity-80 font-medium">
-                                {button.subtitle}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </a>
+                        button={button}
+                      />
                     );
                   })}
                 </div>
@@ -509,7 +457,9 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
         <footer className="mt-16 flex flex-col items-center gap-4 text-center">
           <div className="h-px w-12 bg-white/20" />
           <div className="text-sm font-medium text-white/50">
-            <p>© {new Date().getFullYear()} {page.title}</p>
+            <p>
+              © {new Date().getFullYear()} {page.title}
+            </p>
             <a
               href={primaryCtaLink}
               target="_blank"
@@ -522,8 +472,6 @@ export default async function PublicLinkPage({ params, searchParams }: PageProps
           </div>
         </footer>
       </main>
-
-      {hasButtons && <script dangerouslySetInnerHTML={{ __html: trackingScript }} />}
     </div>
   );
 }

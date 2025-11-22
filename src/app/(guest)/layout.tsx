@@ -1,9 +1,9 @@
+import LayoutGuest from '@/components/layout/layoutGuest';
 import ProviderApp from '@/components/provider/provider-app';
 import ProviderMaintenance from '@/components/provider/provider-maintenance';
 import ProviderPixel from '@/components/provider/provider-pixel';
 import ProviderSessionAuth from '@/components/provider/provider-session-auth';
 import ProviderWebsiteCategory from '@/components/provider/provider-website-category';
-import LayoutGuest from '@/components/layout/layoutGuest';
 import { siteConfig } from '@/config/site';
 import type { Metadata } from 'next';
 import Script from 'next/script';
@@ -67,9 +67,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GuestRootLayout({ children }: { children: React.ReactNode }) {
+export default function GuestRootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html
+      lang="id"
+      suppressHydrationWarning
+    >
       <head>
         <DefaultHeadContent />
       </head>
