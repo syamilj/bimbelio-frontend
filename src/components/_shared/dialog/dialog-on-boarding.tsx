@@ -268,7 +268,7 @@ export const DialogOnBoarding = ({
                 </p>
                 <p className="text-xs text-gray-600 mt-1">
                   Arahkan mouse ke button subscription di header, akan muncul
-                  button "Kelola Subscription" dengan opsi lainnya
+                  button &quot;Kelola Subscription&quot; dengan opsi lainnya
                 </p>
               </div>
             </div>
@@ -281,7 +281,7 @@ export const DialogOnBoarding = ({
                   Kelola Subscription
                 </p>
                 <p className="text-xs text-gray-600 mt-1">
-                  Klik "Kelola Subscription" untuk melihat detail subscription
+                  Klik &quot;Kelola Subscription&quot; untuk melihat detail subscription
                   aktif, yang pending, dan upgrade/beli subscription baru
                 </p>
               </div>

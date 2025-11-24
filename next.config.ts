@@ -1,7 +1,13 @@
 // next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  cacheComponents: true,
   reactStrictMode: true,
+  compress: true,
+  poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons', 'date-fns', 'lodash'],
+  },
 
   // Tambahkan ini untuk hapus console di production
   compiler: {
@@ -12,10 +18,14 @@ const nextConfig = {
     // }
   },
 
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/explore',
+  async rewrites() {
+    return [
+      {
+        source: '/l/:code',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/l/:code`,
+      },
+      // {
+      //   source: '/explore',
   //       destination: '/user/explore',
   //     },
   //     {
@@ -58,25 +68,24 @@ const nextConfig = {
   //       source: '/leaderboard',
   //       destination: '/user/leaderboard',
   //     },
-  //     {
-  //       source: '/dashboard',
-  //       destination: '/user/dashboard',
-  //     },
-  //   ];
-  // },
+      // {
+      //   source: '/dashboard',
+      //   destination: '/user/dashboard',
+      // },
+    ];
+  },
 
   images: {
     // Tambah format modern untuk mengurangi ukuran transfer LCP image
     formats: ['image/avif', 'image/webp'],
+    // Next.js 16 defaults to [75], so we need to add the others used in the app
+    qualities: [30, 50, 60, 75, 100],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
       },
     ],
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   // Tambah headers caching aset statis untuk meningkatkan FCP / repeat views
   async headers() {

@@ -476,56 +476,6 @@ export default function ComparisonSection() {
               Ribuan siswa udah tahu. Giliran kamu?
             </p>
 
-            {/* Social Proof Section */}
-            <div
-              className="rounded-2xl p-4 md:p-6 mb-8"
-              style={{ backgroundColor: `${mainColor}10` }}
-            >
-              <div className="flex flex-col md:flex-row md:items-center md:justify-center gap-6 text-center">
-                <div>
-                  <p
-                    className="text-3xl md:text-4xl font-black"
-                    style={{ color: mainColor }}
-                  >
-                    15K+
-                  </p>
-                  <p className="text-gray-600 font-semibold mt-1">
-                    Siswa Aktif
-                  </p>
-                </div>
-                <div
-                  className="hidden md:block h-16 w-0.5"
-                  style={{ backgroundColor: `${mainColor}20` }}
-                />
-                <div>
-                  <p
-                    className="text-3xl md:text-4xl font-black"
-                    style={{ color: mainColor }}
-                  >
-                    4.8/5
-                  </p>
-                  <p className="text-gray-600 font-semibold mt-1">
-                    Rating dari Ribuan Review
-                  </p>
-                </div>
-                <div
-                  className="hidden md:block h-16 w-0.5"
-                  style={{ backgroundColor: `${mainColor}20` }}
-                />
-                <div>
-                  <p
-                    className="text-3xl md:text-4xl font-black"
-                    style={{ color: mainColor }}
-                  >
-                    10x
-                  </p>
-                  <p className="text-gray-600 font-semibold mt-1">
-                    Lebih Murah dari Bimbel
-                  </p>
-                </div>
-              </div>
-            </div>
-
             {/* Key Benefits */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
               <div className="flex items-start gap-3">

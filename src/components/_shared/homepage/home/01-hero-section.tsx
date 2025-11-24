@@ -153,7 +153,7 @@ const HeroSection: React.FC = () => {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               className="w-full h-auto"
               placeholder="blur"
-              onLoadingComplete={() => setImageLoaded(true)}
+              onLoad={() => setImageLoaded(true)}
             />
           </div>
 

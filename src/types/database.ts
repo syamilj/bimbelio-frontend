@@ -1,3 +1,14 @@
+export type LinkConversionType =
+  | 'PURCHASE'
+  | 'EMAIL_SIGNUP'
+  | 'REGISTRATION'
+  | 'SUBSCRIBE'
+  | 'DOWNLOAD'
+  | 'CONTACT'
+  | 'BOOKING'
+  | 'CUSTOM'
+  | 'CLICK';
+
 export type Pivot_TryoutQuestion_CourseChapter = {
   id: string;
   createAt: Date;

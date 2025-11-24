@@ -17,7 +17,7 @@
     "@blocknote/mantine": "^0.35.0",
     "@blocknote/react": "^0.35.0",
     "@eslint/compat": "^1.3.1",
-    "@hookform/resolvers": "^5.2.1",
+    "@hookform/resolvers": "^3.9.1",
     "@paralleldrive/cuid2": "^2.2.2",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -60,17 +60,18 @@
     "lucide-react": "^0.535.0",
     "lz-string": "^1.5.0",
     "motion": "^12.23.12",
-    "next": "15.4.5",
+    "next": "16.0.3",
     "nextjs-toploader": "^3.8.16",
     "papaparse": "^5.5.3",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "react-hook-form": "^7.61.1",
     "react-hot-toast": "^2.5.2",
     "react-intersection-observer": "^9.16.0",
     "react-latex-next": "^3.0.0",
     "react-markdown": "^10.1.0",
     "react-pdf-highlighter-extended": "^8.1.0",
+    "react-qr-code": "^2.0.18",
     "react-resizable-panels": "^3.0.4",
     "react-textarea-autosize": "^8.5.9",
     "react-virtualized-auto-sizer": "^1.0.25",
@@ -85,7 +86,7 @@
     "use-debounce": "^10.0.5",
     "use-media": "^1.5.0",
     "xlsx": "^0.18.5",
-    "zod": "^4.0.14",
+    "zod": "^3.24.1",
     "zustand": "^5.0.7"
   },
   "devDependencies": {
@@ -95,13 +96,13 @@
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^24.1.0",
     "@types/papaparse": "^5.3.16",
-    "@types/react": "^19.1.9",
-    "@types/react-dom": "^19.1.7",
+    "@types/react": "19.2.6",
+    "@types/react-dom": "19.2.3",
     "@types/react-window": "^1.8.8",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.38.0",
     "eslint": "^9.32.0",
-    "eslint-config-next": "^15.4.5",
+    "eslint-config-next": "16.0.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
     "knip": "^5.62.0",
@@ -114,5 +115,9 @@
     "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2"
   },
-  "packageManager": "pnpm@10.20.0"
+  "packageManager": "pnpm@10.20.0",
+  "overrides": {
+    "@types/react": "19.2.6",
+    "@types/react-dom": "19.2.3"
+  }
 }
