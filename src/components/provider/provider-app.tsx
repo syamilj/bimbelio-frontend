@@ -1,6 +1,5 @@
 'use client';
 
-import { env } from '@/env.mjs';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import {
@@ -63,45 +62,45 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   //   if (isDekstop) setMinimizeSidebar(false);
   // }, [isDekstop]);
 
-  const [isMidtransScriptLoaded, setIsMidtransScriptLoaded] =
-    useState<boolean>(false);
+  // const [isMidtransScriptLoaded, setIsMidtransScriptLoaded] =
+  //   useState<boolean>(false);
 
-  const LoadMidtransScript = () => {
-    const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
-    if (!snapScriptUrl) return;
-    const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
-    const id = 'midtrans-snap-script';
-    if (document.getElementById(id)) return; // sudah dimuat
-    const script = document.createElement('script');
-    script.id = id;
-    script.src = snapScriptUrl;
-    if (clientKey) script.setAttribute('data-client-key', clientKey);
-    script.async = true;
-    document.body.appendChild(script);
-  };
+  // const LoadMidtransScript = () => {
+  //   const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
+  //   if (!snapScriptUrl) return;
+  //   const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+  //   const id = 'midtrans-snap-script';
+  //   if (document.getElementById(id)) return; // sudah dimuat
+  //   const script = document.createElement('script');
+  //   script.id = id;
+  //   script.src = snapScriptUrl;
+  //   if (clientKey) script.setAttribute('data-client-key', clientKey);
+  //   script.async = true;
+  //   document.body.appendChild(script);
+  // };
 
-  const LoadMidtransCss = () => {
-    const linkId = 'snap-assets-preconnect';
-    if (document.getElementById(linkId)) return; // Already added!
+  // const LoadMidtransCss = () => {
+  //   const linkId = 'snap-assets-preconnect';
+  //   if (document.getElementById(linkId)) return; // Already added!
 
-    const link = document.createElement('link');
-    link.id = linkId; // ✅ Add ID for tracking
-    link.rel = 'preconnect';
-    link.href = 'https://snap-assets.al-pc-id-p.cdn.gtflabs.io';
-    document.head.appendChild(link);
-  };
+  //   const link = document.createElement('link');
+  //   link.id = linkId; // ✅ Add ID for tracking
+  //   link.rel = 'preconnect';
+  //   link.href = 'https://snap-assets.al-pc-id-p.cdn.gtflabs.io';
+  //   document.head.appendChild(link);
+  // };
 
   useEffect(() => {
     const isPayment =
       transactionPopUp ||
       pathname.includes('/price') ||
       pathname.includes('/user');
-    if (isPayment && !isMidtransScriptLoaded) {
-      LoadMidtransScript();
-      LoadMidtransCss();
-      setIsMidtransScriptLoaded(true);
-    }
-  }, [pathname, transactionPopUp, isMidtransScriptLoaded]);
+    // if (isPayment && !isMidtransScriptLoaded) {
+    //   LoadMidtransScript();
+    //   LoadMidtransCss();
+    //   setIsMidtransScriptLoaded(true);
+    // }
+  }, [pathname, transactionPopUp]);
 
   useEffect(() => {
     if (showAuth.open) {
