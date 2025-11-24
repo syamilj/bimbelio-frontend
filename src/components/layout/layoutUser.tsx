@@ -206,7 +206,6 @@ const HeaderUser = () => {
     setSidebarMobile,
     setTransactionPopUp,
     setPagesSetting,
-    setTransactionHistory,
   } = useAppContext();
 
   const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
@@ -886,7 +885,8 @@ const HeaderUser = () => {
               )}
 
               {(userSession?.user.role === 'ADMIN' ||
-                userSession?.user.role === 'SUPER_ADMIN') && (
+                userSession?.user.role === 'SUPER_ADMIN' ||
+                userSession?.user.role === 'FINANCE') && (
                 <Link href={`/${website_sub_category_id_params}/admin`}>
                   <DropdownMenuItem>
                     <LayoutDashboardIcon className="w-4 h-4 mr-2" />
@@ -898,7 +898,6 @@ const HeaderUser = () => {
                 onClick={() => {
                   // setOpenMenu(false);
                   setPagesSetting('account');
-                  setTransactionHistory(true);
                 }}
               >
                 <User className="w-4 h-4 mr-2" />
@@ -908,7 +907,6 @@ const HeaderUser = () => {
                 onClick={() => {
                   // setOpenMenu(false);
                   setPagesSetting('account');
-                  setTransactionHistory(true);
                 }}
               >
                 <Settings className="w-4 h-4 mr-2" />

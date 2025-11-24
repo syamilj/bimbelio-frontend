@@ -88,7 +88,8 @@ export default function ProviderSessionAuth({
             userData.specialRole &&
             (userData.role === 'ADMIN' ||
               userData.role === 'SUPER_ADMIN' ||
-              userData.role === 'PREMIUM')
+              userData.role === 'PREMIUM' ||
+              userData.role === 'FINANCE')
           ) {
             tier = userData.specialRole.tier;
             feature = userData.specialRole.feature;

@@ -3,6 +3,7 @@
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { ReactNode, useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { useSession } from './provider-session-auth';
 
 export default function ProviderCheckSubscriptionPending({
@@ -23,22 +24,23 @@ export default function ProviderCheckSubscriptionPending({
     return res;
   };
 
-  useEffect(() => {
-    const check = async () => {
-      try {
-        const res = await CheckSubscription();
-        console.log('Pending : ', res);
-        if (res?.status == 201) {
-          window.location.reload();
-        }
-        // if (res?.status === 202 || res?.status === 203) {
-        //   signOut();
-        // }
-        return;
-      } catch (error) {
-        return;
+  const check = useDebouncedCallback(async () => {
+    try {
+      const res = await CheckSubscription();
+      console.log('Pending : ', res);
+      if (res?.status == 201) {
+        window.location.reload();
       }
-    };
+      // if (res?.status === 202 || res?.status === 203) {
+      //   signOut();
+      // }
+      return;
+    } catch (error) {
+      return;
+    }
+  }, 1000);
+
+  useEffect(() => {
     if (session && checkSubs) {
       check();
       setCheckSubs(false);

@@ -62,8 +62,6 @@ export function DialogPayment({
   classOverlay?: string;
 }) {
   const {
-    setPagesSetting,
-    setTransactionHistory,
     setTransactionPopUp,
     useAuth: { setShowAuth },
   } = useAppContext();
@@ -164,8 +162,9 @@ export function DialogPayment({
   };
 
   const addPayment = async (payload: any) => {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
     const res = await mutateGeneral('/payment/addPayment', {
-      payload: { ...payload, userId: session?.user.id },
+      payload: { ...payload, userId: session?.user.id, url },
       params: { website_sub_category_id: 'undefined' },
       type: 'post',
     });
@@ -186,12 +185,16 @@ export function DialogPayment({
         voucherCode,
       });
       setIsOpen(false);
-      window.snap.pay(`${res?.data.token}`, {
-        onClose: () => {
-          setPagesSetting('rt');
-          setTransactionHistory(true);
-        },
-      });
+      // window.snap.pay(`${res?.data.token}`, {
+      //   onClose: () => {
+      //     setPagesSetting('rt');
+      //     setTransactionHistory(true);
+      //   },
+      // });
+      console.log('resData : ', res?.data.invoiceUrl);
+      console.log('Token : ', res?.data.token);
+      // window.open(res?.data.invoiceUrl, '_blank')?.focus();
+      window.location.href = res?.data.invoiceUrl;
 
       // ✅ ENRICHED PURCHASE EVENT DATA - Lebih lengkap untuk tracking yang optimal
       const purchaseValue = discountPrice || plan.price;

@@ -1,6 +1,5 @@
 'use client';
 
-import { env } from '@/env.mjs';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import {
@@ -15,7 +14,7 @@ import {
 import { BlocknoteEditorType } from '../workspace/editor/provider';
 // Dynamic import komponen berat yang jarang muncul awal
 const Login = dynamic(() => import('../_shared/auth/login'), { ssr: false });
-const HistoryPayment = dynamic(() => import('../_shared/account/setting'), {
+const AccountSetting = dynamic(() => import('../_shared/account/setting'), {
   ssr: false,
 });
 
@@ -25,8 +24,9 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     open: boolean;
     redirect: string | null;
   }>({ open: false, redirect: null });
-  const [transactionHistory, setTransactionHistory] = useState<boolean>(false);
-  const [pagesSetting, setPagesSetting] = useState<string>('account');
+  const [pagesSetting, setPagesSetting] = useState<
+    'account' | 'subscription' | 'history' | undefined
+  >();
 
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(true);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
@@ -62,45 +62,45 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   //   if (isDekstop) setMinimizeSidebar(false);
   // }, [isDekstop]);
 
-  const [isMidtransScriptLoaded, setIsMidtransScriptLoaded] =
-    useState<boolean>(false);
+  // const [isMidtransScriptLoaded, setIsMidtransScriptLoaded] =
+  //   useState<boolean>(false);
 
-  const LoadMidtransScript = () => {
-    const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
-    if (!snapScriptUrl) return;
-    const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
-    const id = 'midtrans-snap-script';
-    if (document.getElementById(id)) return; // sudah dimuat
-    const script = document.createElement('script');
-    script.id = id;
-    script.src = snapScriptUrl;
-    if (clientKey) script.setAttribute('data-client-key', clientKey);
-    script.async = true;
-    document.body.appendChild(script);
-  };
+  // const LoadMidtransScript = () => {
+  //   const snapScriptUrl = `${env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}`;
+  //   if (!snapScriptUrl) return;
+  //   const clientKey = env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+  //   const id = 'midtrans-snap-script';
+  //   if (document.getElementById(id)) return; // sudah dimuat
+  //   const script = document.createElement('script');
+  //   script.id = id;
+  //   script.src = snapScriptUrl;
+  //   if (clientKey) script.setAttribute('data-client-key', clientKey);
+  //   script.async = true;
+  //   document.body.appendChild(script);
+  // };
 
-  const LoadMidtransCss = () => {
-    const linkId = 'snap-assets-preconnect';
-    if (document.getElementById(linkId)) return; // Already added!
+  // const LoadMidtransCss = () => {
+  //   const linkId = 'snap-assets-preconnect';
+  //   if (document.getElementById(linkId)) return; // Already added!
 
-    const link = document.createElement('link');
-    link.id = linkId; // ✅ Add ID for tracking
-    link.rel = 'preconnect';
-    link.href = 'https://snap-assets.al-pc-id-p.cdn.gtflabs.io';
-    document.head.appendChild(link);
-  };
+  //   const link = document.createElement('link');
+  //   link.id = linkId; // ✅ Add ID for tracking
+  //   link.rel = 'preconnect';
+  //   link.href = 'https://snap-assets.al-pc-id-p.cdn.gtflabs.io';
+  //   document.head.appendChild(link);
+  // };
 
   useEffect(() => {
     const isPayment =
       transactionPopUp ||
       pathname.includes('/price') ||
       pathname.includes('/user');
-    if (isPayment && !isMidtransScriptLoaded) {
-      LoadMidtransScript();
-      LoadMidtransCss();
-      setIsMidtransScriptLoaded(true);
-    }
-  }, [pathname, transactionPopUp, isMidtransScriptLoaded]);
+    // if (isPayment && !isMidtransScriptLoaded) {
+    //   LoadMidtransScript();
+    //   LoadMidtransCss();
+    //   setIsMidtransScriptLoaded(true);
+    // }
+  }, [pathname, transactionPopUp]);
 
   useEffect(() => {
     if (showAuth.open) {
@@ -126,8 +126,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     setVision,
     transactionPopUp,
     setTransactionPopUp,
-    transactionHistory,
-    setTransactionHistory,
     change,
     setChange,
     mobileScreen,
@@ -159,7 +157,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider value={Context}>
       {showAuth.open && <Login />}
-      {transactionHistory && <HistoryPayment pages={`${pagesSetting}`} />}
+      <AccountSetting />
       {children}
     </AppContext.Provider>
   );
@@ -188,8 +186,6 @@ interface AppContextType {
   setVision: Dispatch<SetStateAction<boolean>>;
   transactionPopUp: boolean;
   setTransactionPopUp: Dispatch<SetStateAction<boolean>>;
-  transactionHistory: boolean;
-  setTransactionHistory: Dispatch<SetStateAction<boolean>>;
   change: boolean;
   setChange: Dispatch<SetStateAction<boolean>>;
   mobileScreen: string;
@@ -198,8 +194,10 @@ interface AppContextType {
   setSidebarMobile: Dispatch<SetStateAction<boolean>>;
   docsSearchData: any;
   setDocsSearchData: Dispatch<any>;
-  pagesSetting: string;
-  setPagesSetting: Dispatch<SetStateAction<string>>;
+  pagesSetting: 'account' | 'subscription' | 'history' | undefined;
+  setPagesSetting: Dispatch<
+    SetStateAction<'account' | 'subscription' | 'history' | undefined>
+  >;
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
   onBoarding: OnBoardingProps;

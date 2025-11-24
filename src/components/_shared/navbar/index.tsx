@@ -1428,7 +1428,8 @@ const DesktopNav: React.FC<{
 
                           {/* Admin Panel - Only for Admin/Super Admin */}
                           {(session?.user?.role === 'ADMIN' ||
-                            session?.user?.role === 'SUPER_ADMIN') && (
+                            session?.user?.role === 'SUPER_ADMIN' ||
+                            session?.user.role === 'FINANCE') && (
                             <DropdownMenuItem
                               asChild
                               className="p-0 mt-1"

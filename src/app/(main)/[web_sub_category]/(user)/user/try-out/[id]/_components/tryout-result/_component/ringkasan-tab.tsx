@@ -83,6 +83,8 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
     },
   ];
 
+  console.log({ check: ResultData?.summaryTryout.Result });
+
   return (
     <div className="space-y-8">
       {/* Header Section */}

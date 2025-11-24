@@ -115,24 +115,26 @@ const Step2 = ({
   const {
     useParams: { predictionId },
   } = useProvider();
-  const { setPagesSetting, setTransactionHistory } = useAppContext();
+  const { setPagesSetting } = useAppContext();
   const { data: session } = useSession();
 
   const [loading, setLoading] = useState(false);
   const [telp, setTelp] = useState('');
 
-  const { mutate: addPayment } = useMutation<{ token: string }>(
+  const { mutate: addPayment } = useMutation<{ invoiceUrl: string }>(
     '/payment/addPaymentPrediction',
     'post',
     {
       payload: { type: 'limit', userId: session?.user.id, predictionId },
       onSuccess({ data }) {
-        window.snap.pay(`${data?.token}`, {
-          onClose: () => {
-            setPagesSetting('rt');
-            setTransactionHistory(true);
-          },
-        });
+        // window.snap.pay(`${data?.token}`, {
+        //   onClose: () => {
+        //     setPagesSetting('rt');
+        //   },
+        // });
+        if (data?.invoiceUrl) {
+          window.location.href = data?.invoiceUrl;
+        }
       },
     },
   );

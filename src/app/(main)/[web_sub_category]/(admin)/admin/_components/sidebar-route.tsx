@@ -169,6 +169,13 @@ const SidebarRoute: FC = () => {
     if (session?.user.role === 'ADMIN' && item.label === 'Web Category') {
       return false;
     }
+    if (
+      session?.user.role === 'FINANCE' &&
+      item.label !== 'Transactions' &&
+      item.label !== 'Users'
+    ) {
+      return false;
+    }
     if (isCore) {
       const label = item.label;
       if (
