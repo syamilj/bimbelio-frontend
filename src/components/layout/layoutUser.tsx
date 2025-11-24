@@ -886,7 +886,8 @@ const HeaderUser = () => {
               )}
 
               {(userSession?.user.role === 'ADMIN' ||
-                userSession?.user.role === 'SUPER_ADMIN') && (
+                userSession?.user.role === 'SUPER_ADMIN' ||
+                userSession?.user.role === 'FINANCE') && (
                 <Link href={`/${website_sub_category_id_params}/admin`}>
                   <DropdownMenuItem>
                     <LayoutDashboardIcon className="w-4 h-4 mr-2" />

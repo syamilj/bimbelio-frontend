@@ -14,6 +14,7 @@ type DecodeData = {
   exp: number;
 };
 //
+
 export const middleware = async (req: NextRequest) => {
   try {
     const token = req.cookies.get('token')?.value;
@@ -40,11 +41,23 @@ export const middleware = async (req: NextRequest) => {
       return NextResponse.redirect(new URL('/', req.url));
     }
 
+    const pathnameWithoutWebCat = pathname.split('/');
+    console.log({ pathnameWithoutWebCat });
     if (status === 200 && data) {
+      if (data.role === 'FINANCE' && pathnameWithoutWebCat.length > 2) {
+        const path2 = pathnameWithoutWebCat[3] || null;
+        const path = `/${pathnameWithoutWebCat[2]}${path2 ? `/${path2}` : ''}`;
+
+        console.log({ path });
+        if (path !== '/admin/transaction' && path !== '/admin') {
+          return NextResponse.redirect(new URL('/404', req.url));
+        }
+      }
       if (
         pathname.includes('admin') &&
         data.role !== 'ADMIN' &&
-        data.role !== 'SUPER_ADMIN'
+        data.role !== 'SUPER_ADMIN' &&
+        data.role !== 'FINANCE'
       ) {
         return NextResponse.redirect(new URL('/', req.url));
       }

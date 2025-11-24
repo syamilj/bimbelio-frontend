@@ -290,7 +290,8 @@ const SidebarUser = ({
                   className="w-56 border-2 border-gray-100 rounded-2xl shadow-sm"
                 >
                   {(session?.user.role === 'ADMIN' ||
-                    session?.user.role === 'SUPER_ADMIN') && (
+                    session?.user.role === 'SUPER_ADMIN' ||
+                    session?.user.role === 'FINANCE') && (
                     <Link href={`/${website_sub_category_id_params}/admin`}>
                       <DropdownMenuItem>
                         <LayoutDashboardIcon className="w-4 h-4 mr-2" />
