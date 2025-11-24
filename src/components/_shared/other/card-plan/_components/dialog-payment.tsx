@@ -62,8 +62,6 @@ export function DialogPayment({
   classOverlay?: string;
 }) {
   const {
-    setPagesSetting,
-    setTransactionHistory,
     setTransactionPopUp,
     useAuth: { setShowAuth },
   } = useAppContext();

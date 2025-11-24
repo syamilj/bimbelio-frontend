@@ -59,7 +59,6 @@ export function DialogPayment({
 }) {
   const {
     setPagesSetting,
-    setTransactionHistory,
     setTransactionPopUp,
     useAuth: { setShowAuth },
   } = useAppContext();
@@ -175,8 +174,7 @@ export function DialogPayment({
       setIsOpen(false);
       window.snap.pay(`${res?.data.token}`, {
         onClose: () => {
-          setPagesSetting('rt');
-          setTransactionHistory(true);
+          setPagesSetting('history');
         },
       });
 

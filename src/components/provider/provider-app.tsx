@@ -15,7 +15,7 @@ import {
 import { BlocknoteEditorType } from '../workspace/editor/provider';
 // Dynamic import komponen berat yang jarang muncul awal
 const Login = dynamic(() => import('../_shared/auth/login'), { ssr: false });
-const HistoryPayment = dynamic(() => import('../_shared/account/setting'), {
+const AccountSetting = dynamic(() => import('../_shared/account/setting'), {
   ssr: false,
 });
 
@@ -25,8 +25,9 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     open: boolean;
     redirect: string | null;
   }>({ open: false, redirect: null });
-  const [transactionHistory, setTransactionHistory] = useState<boolean>(false);
-  const [pagesSetting, setPagesSetting] = useState<string>('account');
+  const [pagesSetting, setPagesSetting] = useState<
+    'account' | 'subscription' | 'history' | undefined
+  >();
 
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(true);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
@@ -126,8 +127,6 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     setVision,
     transactionPopUp,
     setTransactionPopUp,
-    transactionHistory,
-    setTransactionHistory,
     change,
     setChange,
     mobileScreen,
@@ -159,7 +158,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider value={Context}>
       {showAuth.open && <Login />}
-      {transactionHistory && <HistoryPayment pages={`${pagesSetting}`} />}
+      <AccountSetting />
       {children}
     </AppContext.Provider>
   );
@@ -188,8 +187,6 @@ interface AppContextType {
   setVision: Dispatch<SetStateAction<boolean>>;
   transactionPopUp: boolean;
   setTransactionPopUp: Dispatch<SetStateAction<boolean>>;
-  transactionHistory: boolean;
-  setTransactionHistory: Dispatch<SetStateAction<boolean>>;
   change: boolean;
   setChange: Dispatch<SetStateAction<boolean>>;
   mobileScreen: string;
@@ -198,8 +195,10 @@ interface AppContextType {
   setSidebarMobile: Dispatch<SetStateAction<boolean>>;
   docsSearchData: any;
   setDocsSearchData: Dispatch<any>;
-  pagesSetting: string;
-  setPagesSetting: Dispatch<SetStateAction<string>>;
+  pagesSetting: 'account' | 'subscription' | 'history' | undefined;
+  setPagesSetting: Dispatch<
+    SetStateAction<'account' | 'subscription' | 'history' | undefined>
+  >;
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
   onBoarding: OnBoardingProps;

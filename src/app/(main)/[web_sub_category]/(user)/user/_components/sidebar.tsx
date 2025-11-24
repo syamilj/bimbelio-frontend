@@ -33,6 +33,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
   Crown,
+  History,
   LayoutDashboardIcon,
   LogOut,
   Settings,
@@ -69,20 +70,19 @@ const SidebarUser = ({
     setMinimizeSidebar,
     transactionPopUp,
     setTransactionPopUp,
-    transactionHistory,
-    setTransactionHistory,
     setSidebarMobile,
     setPagesSetting,
+    pagesSetting,
   } = useAppContext();
 
   // Handle body overflow based on pop-ups
   useEffect(() => {
-    if (transactionPopUp || transactionHistory) {
+    if (transactionPopUp || pagesSetting) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
-  }, [transactionPopUp, transactionHistory]);
+  }, [transactionPopUp, pagesSetting]);
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -302,7 +302,6 @@ const SidebarUser = ({
                   <DropdownMenuItem
                     onClick={() => {
                       setPagesSetting('account');
-                      setTransactionHistory(true);
                     }}
                   >
                     <User className="w-4 h-4 mr-2" />
@@ -310,12 +309,11 @@ const SidebarUser = ({
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
-                      setPagesSetting('account');
-                      setTransactionHistory(true);
+                      setPagesSetting('history');
                     }}
                   >
-                    <Settings className="w-4 h-4 mr-2" />
-                    Pengaturan
+                    <History className="w-4 h-4 mr-2" />
+                    Riwayat Pembelian
                   </DropdownMenuItem>
                   {!session?.user.tier && (
                     <>
@@ -483,7 +481,6 @@ const SidebarUser = ({
                   <DropdownMenuItem
                     onClick={() => {
                       setPagesSetting('account');
-                      setTransactionHistory(true);
                       setIsMobileSidebarOpen(false);
                     }}
                     className="font-bold"
@@ -493,14 +490,13 @@ const SidebarUser = ({
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
-                      setPagesSetting('account');
-                      setTransactionHistory(true);
+                      setPagesSetting('history');
                       setIsMobileSidebarOpen(false);
                     }}
                     className="font-bold"
                   >
-                    <Settings className="w-4 h-4 mr-2" />
-                    Pengaturan
+                    <History className="w-4 h-4 mr-2" />
+                    Riwayat Pembelian
                   </DropdownMenuItem>
                   {!session?.user.tier && (
                     <>
