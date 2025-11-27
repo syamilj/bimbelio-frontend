@@ -52,6 +52,7 @@ export default function AccountSetting() {
     params: {
       userId: session?.user.id,
     },
+    enabled: !!session,
     useEffectDependencies: [session, page],
   });
 
