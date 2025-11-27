@@ -37,17 +37,14 @@ const AboutSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Team Photo Placeholder */}
-        <div
-          className="relative w-full h-48 md:h-64 rounded-2xl overflow-hidden mb-10 border border-gray-200"
-          style={{ backgroundColor: `${mainColor}08` }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center">
-              <Users className="w-16 h-16 mx-auto mb-3 text-gray-300" />
-              <p className="text-sm text-gray-500 font-medium">Tim Bimbelio</p>
-            </div>
-          </div>
+        {/* Team Photo */}
+        <div className="relative w-full md:w-3/5 md:mx-auto rounded-2xl overflow-hidden mb-10 border border-gray-200">
+          <img
+            src="/hero/thumbnail_bimbelio.webp"
+            alt="Tim Bimbelio"
+            className="w-full h-auto object-cover"
+            loading="lazy"
+          />
           <div className="absolute bottom-0 left-0 right-0 bg-gray-900/60 px-5 py-4">
             <p className="text-white text-sm font-medium">
               Dedicated team yang committed untuk kesuksesan siswa

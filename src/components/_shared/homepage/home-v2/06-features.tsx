@@ -47,7 +47,7 @@ const FeaturesSection: React.FC = () => {
         'Multi-subject support (semua mapel)',
       ],
       icon: MessageCircle,
-      imagePlaceholder: 'Chat Interface',
+      imagePlaceholder: '/hero/fitur_bimbelio_1.webp',
     },
     {
       id: 2,
@@ -62,7 +62,7 @@ const FeaturesSection: React.FC = () => {
         'Sync across devices',
       ],
       icon: BookOpen,
-      imagePlaceholder: 'Note Editor',
+      imagePlaceholder: '/hero/fitur_bimbelio-2.webp',
     },
     {
       id: 3,
@@ -77,7 +77,7 @@ const FeaturesSection: React.FC = () => {
         'Prediksi skor SNBT real',
       ],
       icon: Target,
-      imagePlaceholder: 'Try Out Dashboard',
+      imagePlaceholder: '/hero/fitur_bimbelio-3.webp',
     },
     {
       id: 4,
@@ -92,7 +92,7 @@ const FeaturesSection: React.FC = () => {
         'Small batch eksklusif',
       ],
       icon: Video,
-      imagePlaceholder: 'Live Class Interface',
+      imagePlaceholder: '/hero/fitur_bimbelio-4.webp',
     },
     {
       id: 5,
@@ -107,12 +107,12 @@ const FeaturesSection: React.FC = () => {
         'Target tracking otomatis',
       ],
       icon: BarChart3,
-      imagePlaceholder: 'Dashboard Analytics',
+      imagePlaceholder: '/hero/fitur_bimbelio-5.webp',
     },
     {
       id: 6,
       badge: 'Personalized',
-      title: 'Mentor 1-on-1',
+      title: 'Mentorship',
       description:
         'Konseling personal sama mentor buat bahas strategi, mindset, dan roadmap PTN kamu. Nggak sendirian, ada yang guide.',
       features: [
@@ -122,7 +122,7 @@ const FeaturesSection: React.FC = () => {
         'Career path guidance',
       ],
       icon: Users,
-      imagePlaceholder: 'Mentor Console',
+      imagePlaceholder: '/hero/fitur_bimbelio_1.webp',
     },
   ];
 
@@ -165,21 +165,13 @@ const FeaturesSection: React.FC = () => {
                   className={`relative rounded-2xl overflow-hidden border border-gray-200 ${
                     index % 2 === 1 ? 'md:[direction:ltr]' : ''
                   }`}
-                  style={{ backgroundColor: `${mainColor}08` }}
                 >
-                  <div className="relative w-full aspect-video flex items-center justify-center">
-                    <div className="text-center p-6">
-                      <Icon
-                        className="w-16 h-16 mx-auto mb-4"
-                        style={{ color: `${mainColor}40` }}
-                      />
-                      <p
-                        className="text-sm font-medium"
-                        style={{ color: mainColor }}
-                      >
-                        {feature.imagePlaceholder}
-                      </p>
-                    </div>
+                  <img
+                    src={feature.imagePlaceholder}
+                    alt={feature.title}
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                  />
 
                     {/* Badge */}
                     <div
@@ -188,7 +180,6 @@ const FeaturesSection: React.FC = () => {
                     >
                       {feature.badge}
                     </div>
-                  </div>
                 </div>
 
                 {/* Description */}

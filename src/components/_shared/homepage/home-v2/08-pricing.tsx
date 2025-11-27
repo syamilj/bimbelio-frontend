@@ -112,14 +112,20 @@ const PricingSection: React.FC = () => {
 
         {/* Top 3 Plans */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-          {topPlans.map((plan, index) => (
-            <div
-              key={plan.id}
-              className={index === 1 ? 'md:scale-105 md:z-10 relative' : ''}
-            >
-              <CardPlan plan={plan} />
+          {topPlans.length === 0 ? (
+            <div className="col-span-3 text-center py-10">
+              <p className="text-gray-500">Belum ada paket tersedia</p>
             </div>
-          ))}
+          ) : (
+            topPlans.map((plan, index) => (
+              <div
+                key={plan.id}
+                className={index === 1 ? 'md:scale-105 md:z-10 relative' : ''}
+              >
+                <CardPlan plan={plan} />
+              </div>
+            ))
+          )}
         </div>
 
         {/* CTAs */}

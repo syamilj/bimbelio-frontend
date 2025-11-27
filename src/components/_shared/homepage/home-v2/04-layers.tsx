@@ -43,12 +43,12 @@ const LayersSection: React.FC = () => {
       image: '/tutors/erich.webp',
     },
     {
-      name: 'Kak Rheza',
+      name: 'Kak Naufal',
       university: 'Universitas Indonesia',
-      major: 'Kedokteran',
+      major: 'Matematika',
       quote: 'Penalaran Umum bukan IQ test. Ada triknya!',
       badge: 'UI 2020',
-      image: '/tutors/rheza.webp',
+      image: '/tutors/naufal.webp',
     },
     {
       name: 'Kak Okky',
@@ -250,15 +250,16 @@ const LayersSection: React.FC = () => {
             </p>
           </div>
 
-          {/* Desktop: Grid 5 columns */}
-          <div className="hidden md:grid md:grid-cols-5 gap-4">
+          {/* Desktop: 5 columns grid */}
+          <div className="hidden md:flex md:flex-wrap md:justify-center md:gap-4">
             {tutors.map((tutor, index) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl overflow-hidden border border-gray-200"
+                style={{ width: 'calc(20% - 13px)' }}
               >
                 <div
-                  className="relative h-44 overflow-hidden"
+                  className="relative h-72 overflow-hidden"
                   style={{ backgroundColor: `${mainColor}10` }}
                 >
                   {tutor.image ? (
@@ -307,57 +308,56 @@ const LayersSection: React.FC = () => {
             ))}
           </div>
 
-          {/* Mobile: Horizontal scroll */}
-          <div className="md:hidden overflow-x-auto -mx-4 px-4">
-            <div className="flex gap-3" style={{ width: 'max-content' }}>
-              {tutors.map((tutor, index) => (
+          {/* Mobile: Grid 2-2-1 centered layout with equal size */}
+          <div className="md:hidden flex flex-wrap justify-center gap-3">
+            {tutors.map((tutor, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl overflow-hidden border border-gray-200"
+                style={{ width: 'calc(50% - 6px)' }}
+              >
                 <div
-                  key={index}
-                  className="w-44 bg-white rounded-2xl overflow-hidden border border-gray-200 flex-shrink-0"
+                  className="relative h-64 overflow-hidden"
+                  style={{ backgroundColor: `${mainColor}10` }}
                 >
-                  <div
-                    className="relative h-40 overflow-hidden"
-                    style={{ backgroundColor: `${mainColor}10` }}
-                  >
-                    {tutor.image ? (
-                      <Image
-                        src={tutor.image}
-                        alt={tutor.name}
-                        fill
-                        loading="lazy"
-                        quality={50}
-                        className="object-cover object-top"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Brain className="w-12 h-12 text-gray-300" />
-                      </div>
-                    )}
-                    <div
-                      className="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold bg-white"
-                      style={{ color: mainColor }}
-                    >
-                      {tutor.badge}
+                  {tutor.image ? (
+                    <Image
+                      src={tutor.image}
+                      alt={tutor.name}
+                      fill
+                      loading="lazy"
+                      quality={50}
+                      className="object-cover object-top"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Brain className="w-12 h-12 text-gray-300" />
                     </div>
-                  </div>
-
-                  <div className="p-3">
-                    <h4 className="text-sm font-bold text-gray-900 mb-1">
-                      {tutor.name}
-                    </h4>
-                    <p
-                      className="text-xs font-medium mb-2"
-                      style={{ color: mainColor }}
-                    >
-                      {tutor.major}
-                    </p>
-                    <p className="text-xs text-gray-600 italic line-clamp-2">
-                      "{tutor.quote}"
-                    </p>
+                  )}
+                  <div
+                    className="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold bg-white"
+                    style={{ color: mainColor }}
+                  >
+                    {tutor.badge}
                   </div>
                 </div>
-              ))}
-            </div>
+
+                <div className="p-3">
+                  <h4 className="text-sm font-bold text-gray-900 mb-1">
+                    {tutor.name}
+                  </h4>
+                  <p
+                    className="text-xs font-medium mb-2"
+                    style={{ color: mainColor }}
+                  >
+                    {tutor.major}
+                  </p>
+                  <p className="text-xs text-gray-600 italic line-clamp-2">
+                    "{tutor.quote}"
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
