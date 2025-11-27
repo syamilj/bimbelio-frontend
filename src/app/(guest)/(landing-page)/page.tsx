@@ -1,64 +1,65 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import HeroSection from '@/components/_shared/homepage/home/01-hero-section';
+import HeroSection from '@/components/_shared/homepage/home-v2/01-hero';
 
 // TIER 2: SSR = true (Above fold, important for initial render)
-const ProblemSection = dynamic(
-  () => import('@/components/_shared/homepage/home/02-problem-section'),
+const AboutSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/02-about'),
   { ssr: true, loading: () => <div className="min-h-[400px]" /> },
 );
 
-// TIER 2: SSR = true (Important section, keep on server)
-const SolutionSection = dynamic(
-  () => import('@/components/_shared/homepage/home/03-solution-section'),
+// TIER 2: SSR = true (Statistics - builds urgency)
+const StatisticsSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/03-statistics'),
   { ssr: true, loading: () => <div className="min-h-[400px]" /> },
 );
 
-// TIER 2: SSR = true (Program showcase, pre-render on server)
-const ProgramsSection = dynamic(
-  () => import('@/components/_shared/homepage/home/04-programs-section'),
+// TIER 2: SSR = true (Support layers - key value prop)
+const LayersSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/04-layers'),
   { ssr: true, loading: () => <div className="min-h-[400px]" /> },
 );
 
-// TIER 3: SSR = false (Below fold, non-critical - defer to client)
-// const EcosystemSection = dynamic(
-//   () => import('@/components/_shared/homepage/home/05-ecosystem-section'),
-//   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
-// );
-
-// TIER 2: SSR = true (Tutors showcase - SEO important)
-const TutorsSection = dynamic(
-  () => import('@/components/_shared/homepage/home/06-tutors-section'),
-  { ssr: true, loading: () => <div className="min-h-[400px]" /> },
-);
-
-// TIER 3: SSR = false (Pricing table - below fold, heavy)
-const PlanCardsSection = dynamic(
-  () => import('@/components/_shared/homepage/home/07-plan-cards'),
+// TIER 3: SSR = false (Timeline - below fold)
+const TimelineSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/05-timeline'),
   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
-// TIER 3: SSR = false (Tryout section - heavy component, below fold)
-const TryoutSection = dynamic(
-  () => import('@/components/_shared/homepage/home/08-tryout-section'),
+// TIER 3: SSR = false (Features - below fold)
+const FeaturesSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/06-features'),
   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
-const LiveLearningSection = dynamic(
-  () => import('@/components/_shared/homepage/home/08-live-learning-section'),
-  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
-);
-
-// TIER 3: SSR = false (Comparison - non-critical, heavy)
+// TIER 3: SSR = false (Comparison - below fold)
 const ComparisonSection = dynamic(
-  () => import('@/components/_shared/homepage/home/09-comparison-section'),
+  () => import('@/components/_shared/homepage/home-v2/07-comparison'),
   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
-// TIER 3: SSR = false (FAQ - interactive, client-side better)
+// TIER 3: SSR = false (Pricing - heavy component)
+const PricingSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/08-pricing'),
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
+);
+
+// TIER 3: SSR = false (Tryout - below fold)
+const TryoutSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/09-tryout'),
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
+);
+
+// TIER 3: SSR = false (Live Class - heavy component)
+const LiveClassSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/10-liveclass'),
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
+);
+
+// TIER 3: SSR = false (FAQ - interactive accordion)
 const FaqSection = dynamic(
-  () => import('@/components/_shared/homepage/home/11-faq-section'),
+  () => import('@/components/_shared/homepage/home-v2/11-faq'),
   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
@@ -70,43 +71,38 @@ export default function LandingPage() {
     >
       <div className="min-h-screen">
         <div className="flex w-full flex-col gap-20">
-          {/* 01 Hero section */}
+          {/* 01 Hero - Masuk PTN Impian */}
           <HeroSection />
 
-          {/* 02 Problem section */}
-          <ProblemSection />
+          {/* 02 About - Validasi Pain Point */}
+          <AboutSection />
 
-          {/* 03 Solution section */}
-          <SolutionSection />
+          {/* 03 Statistics - Data Kompetisi */}
+          <StatisticsSection />
 
-          {/* 04 Programs section */}
-          <ProgramsSection />
+          {/* 04 Layers - 3-Layer Support */}
+          <LayersSection />
 
-          {/* 05 Ecosystem section */}
-          {/* <EcosystemSection /> */}
+          {/* 05 Timeline - Roadmap Perjalanan */}
+          <TimelineSection />
 
-          {/* 06 Tutors section */}
-          <TutorsSection />
+          {/* 06 Features - Fitur Platform */}
+          <FeaturesSection />
 
-          {/* 08 Plan Cards section */}
-          <PlanCardsSection />
-
-          {/* 09 Tryout section */}
-          <TryoutSection />
-
-          <LiveLearningSection />
-
-          {/* 10 Comparison section */}
+          {/* 07 Comparison - Banding Kompetitor */}
           <ComparisonSection />
 
-          {/* 11 Add-On Premium section */}
-          {/* <AddOnPremiumSection /> */}
+          {/* 08 Pricing - Harga Paket */}
+          <PricingSection />
 
-          {/* 12 FAQ section */}
+          {/* 09 Tryout - Bonus Try Out */}
+          <TryoutSection />
+
+          {/* 10 Live Class - Kelas Live */}
+          <LiveClassSection />
+
+          {/* 11 FAQ - Jawab Keraguan */}
           <FaqSection />
-
-          {/* 13 Footer */}
-          {/* <Footer /> */}
         </div>
       </div>
     </div>
