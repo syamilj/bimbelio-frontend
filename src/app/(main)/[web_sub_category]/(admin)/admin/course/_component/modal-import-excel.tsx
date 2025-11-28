@@ -57,6 +57,8 @@ const ModalImportExcel = ({
       };
       let isValid = true;
 
+      console.log({ data });
+
       isValid = validateFormat(data);
 
       if (assessmentType !== '+5/0') {
@@ -206,40 +208,53 @@ const handleGenerateQuestions = (data: any[]) => {
 
 const validateFormat = (data: any[]) => {
   let isValid = true;
-  data.forEach((item: any) => {
-    if (!item.Number) {
+  let message = '';
+  data.forEach((item: any, i: number) => {
+    if (item.Number === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom Number kosong`;
     }
-    if (!item.Question) {
+    if (item.Question === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom Question kosong`;
     }
-    if (!item.SubCategory) {
+    if (item.SubCategory === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom SubCategory kosong`;
     }
-    if (!item.SubSubCategory) {
+    if (item.SubSubCategory === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom SubSubCategory kosong`;
     }
-    if (!item.A) {
+    if (item.A === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom A kosong`;
     }
-    if (!item.B) {
+    if (item.B === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom B kosong`;
     }
-    if (!item.C) {
+    if (item.C === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom C kosong`;
     }
-    if (!item.D) {
+    if (item.D === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom D kosong`;
     }
-    if (!item.E) {
+    if (item.E === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom E kosong`;
     }
-    if (!item.Correct) {
+    if (item.Correct === undefined) {
       isValid = false;
+      message = `Index ke-${i} kolom Correct kosong`;
     }
-    if (!item.Explanation) {
-      isValid = false;
-    }
+    // if (!item.Explanation) {
+    //   isValid = false;
+    //   message = `Index ke-${i} kolom Explanation kosong`;
+    // }
   });
+  console.log({ message });
   return isValid;
 };

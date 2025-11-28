@@ -3,15 +3,15 @@
 import { CardPlan } from '@/components/_shared/other/card-plan';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { Crown, MessageCircle } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useGet } from '@/lib/fetch-helper/useGet';
 
 const ConsultationDialog = dynamic(
   () => import('@/components/_shared/contact/consultation-dialog'),
-  { ssr: false }
+  { ssr: false },
 );
 
 type PricingDataType = {
@@ -30,7 +30,8 @@ const PricingSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const pathname = usePathname();
   const router = useRouter();
-  const [isConsultationDialogOpen, setIsConsultationDialogOpen] = useState(false);
+  const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
+    useState(false);
 
   const { data: PricingData } = useGet<PricingDataType>(
     '/plan/getAllPlanByWebCategory',
@@ -65,7 +66,8 @@ const PricingSection: React.FC = () => {
     if (!categoryToUse) return [];
 
     const allPlans: PlanDataType[] = [];
-    if (categoryToUse.subscriptions) allPlans.push(...categoryToUse.subscriptions);
+    if (categoryToUse.subscriptions)
+      allPlans.push(...categoryToUse.subscriptions);
     if (categoryToUse.bundles) allPlans.push(...categoryToUse.bundles);
     if (PricingData?.topping) allPlans.push(...PricingData.topping);
 
@@ -77,7 +79,10 @@ const PricingSection: React.FC = () => {
 
   if (!PricingData) {
     return (
-      <section id="pricing" className="py-16 md:py-20 px-4 bg-white">
+      <section
+        id="pricing"
+        className="py-16 md:py-20 px-4 bg-white"
+      >
         <div className="max-w-5xl mx-auto">
           <div className="text-center">
             <p className="text-sm text-gray-500">Loading plans...</p>
@@ -88,7 +93,10 @@ const PricingSection: React.FC = () => {
   }
 
   return (
-    <section id="pricing" className="py-16 md:py-20 px-4 bg-white">
+    <section
+      id="pricing"
+      className="py-16 md:py-20 px-4 bg-white"
+    >
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
@@ -129,7 +137,7 @@ const PricingSection: React.FC = () => {
         </div>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-20">
           <button
             onClick={() => router.push('/price')}
             className="px-8 py-3 rounded-2xl font-semibold text-white transition-all duration-200 hover:opacity-90"
@@ -160,4 +168,3 @@ const PricingSection: React.FC = () => {
 };
 
 export default PricingSection;
-
