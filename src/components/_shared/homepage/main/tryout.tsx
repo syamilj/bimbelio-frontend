@@ -635,7 +635,7 @@ const EnhancedTryOutCard = ({
               />
               <span className="text-xs font-medium text-gray-800">Grup:</span>
               <a
-                href="https://discord.com/invite/5Fy3fnVaE9"
+                href="https://www.bimbelio.com/l/wa-grup"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-blue-600 hover:text-blue-800 font-medium underline"

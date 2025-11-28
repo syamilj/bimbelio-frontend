@@ -43,7 +43,7 @@ export default function LayoutGuest({ children }: LayoutGuestProps) {
     <GuestContext.Provider value={Context}>
       <OneTapLogin />
       <div className="min-h-screen">
-        {pathname !== '/discord' && <Navbar />}
+        {pathname !== '/l/wa-grup' && <Navbar />}
         <main className="relative">
           {children}
 

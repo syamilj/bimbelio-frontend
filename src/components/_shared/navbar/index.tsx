@@ -252,7 +252,7 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    href: '/discord',
+    href: '/blog',
     label: 'Lainnya',
     isLink: false,
     submenuColumns: [
@@ -268,8 +268,8 @@ const navItems: NavItem[] = [
             isLink: true,
           },
           {
-            href: '/discord',
-            label: 'Discord',
+            href: '/l/wa-grup',
+            label: 'WhatsApp',
             description: 'Grup belajar online',
             icon: 'Users',
             badge: { text: 'GRATIS', variant: 'success' },

@@ -99,7 +99,7 @@ const HeroSection: React.FC = () => {
             {/* Secondary CTAs */}
             <div className="flex flex-wrap justify-center gap-3 mt-2">
               <a
-                href="https://discord.com/invite/5Fy3fnVaE9"
+                href="https://www.bimbelio.com/l/wa-grup"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-semibold text-white transition-all duration-200 hover:opacity-90"
