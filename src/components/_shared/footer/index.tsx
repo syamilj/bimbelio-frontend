@@ -286,60 +286,60 @@ export default function Footer() {
 
             {/* Payment Methods */}
             <div>
-              <p className="text-xs font-bold text-gray-700 mb-6 uppercase tracking-wider text-center">
+              <p className="text-sm font-bold text-gray-700 mb-6 uppercase tracking-wider text-center">
                 Metode Pembayaran
               </p>
 
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-5">
                 {/* Cards */}
-                <div className="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100 min-w-[140px]">
-                  <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-3">Kartu</span>
-                  <div className="flex items-center justify-center gap-3 h-8">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" className="h-5 object-contain" />
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-8 object-contain" />
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">Kartu</span>
+                  <div className="flex items-center justify-center gap-4 h-10">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" className="h-7 object-contain" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-10 object-contain" />
                   </div>
                 </div>
 
                 {/* E-Wallets */}
-                <div className="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100 min-w-[180px]">
-                  <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-3">E-Wallet</span>
-                  <div className="flex items-center justify-center gap-3 h-8">
-                    <img src="/hero/astrapay-logo.svg" alt="AstraPay" className="h-6 object-contain" />
-                    <img src="/hero/ovo-logo.svg" alt="OVO" className="h-6 object-contain" />
-                    <img src="/hero/shopeepay-logo.svg" alt="ShopeePay" className="h-6 object-contain" />
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">E-Wallet</span>
+                  <div className="flex items-center justify-center gap-4 h-10">
+                    <img src="/hero/astrapay-logo.svg" alt="AstraPay" className="h-8 object-contain" />
+                    <img src="/hero/ovo-logo.svg" alt="OVO" className="h-8 object-contain" />
+                    <img src="/hero/shopeepay-logo.svg" alt="ShopeePay" className="h-8 object-contain" />
                   </div>
                 </div>
 
                 {/* Virtual Account */}
-                <div className="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100 min-w-[280px]">
-                  <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-3">Virtual Account</span>
-                  <div className="grid grid-cols-4 gap-2 place-items-center">
-                    <img src="/hero/bca-logo.svg" alt="BCA" className="h-6 object-contain" />
-                    <img src="/hero/bni-logo.svg" alt="BNI" className="h-6 object-contain" />
-                    <img src="/hero/bri-logo.svg" alt="BRI" className="h-6 object-contain" />
-                    <img src="/hero/mandiri-logo.svg" alt="Mandiri" className="h-6 object-contain" />
-                    <img src="/hero/bsi-logo.svg" alt="BSI" className="h-6 object-contain" />
-                    <img src="/hero/bjb-logo.svg" alt="BJB" className="h-6 object-contain" />
-                    <img src="/hero/cimb-logo.svg" alt="CIMB" className="h-6 object-contain" />
-                    <img src="/hero/permata-logo.svg" alt="Permata" className="h-6 object-contain" />
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">Virtual Account</span>
+                  <div className="grid grid-cols-4 gap-3 place-items-center">
+                    <img src="/hero/bca-logo.svg" alt="BCA" className="h-8 object-contain" />
+                    <img src="/hero/bni-logo.svg" alt="BNI" className="h-8 object-contain" />
+                    <img src="/hero/bri-logo.svg" alt="BRI" className="h-8 object-contain" />
+                    <img src="/hero/mandiri-logo.svg" alt="Mandiri" className="h-8 object-contain" />
+                    <img src="/hero/bsi-logo.svg" alt="BSI" className="h-8 object-contain" />
+                    <img src="/hero/bjb-logo.svg" alt="BJB" className="h-8 object-contain" />
+                    <img src="/hero/cimb-logo.svg" alt="CIMB" className="h-8 object-contain" />
+                    <img src="/hero/permata-logo.svg" alt="Permata" className="h-8 object-contain" />
                   </div>
                 </div>
 
                 {/* PayLater */}
-                <div className="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100 min-w-[120px]">
-                  <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-3">PayLater</span>
-                  <div className="flex items-center justify-center gap-3 h-8">
-                    <img src="/hero/akulaku-logo.svg" alt="Akulaku" className="h-6 object-contain" />
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">PayLater</span>
+                  <div className="flex items-center justify-center gap-4 h-10">
+                    <img src="/hero/akulaku-logo.svg" alt="Akulaku" className="h-8 object-contain" />
                   </div>
                 </div>
 
                 {/* Retail & QRIS */}
-                <div className="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100 min-w-[180px]">
-                  <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-3">Retail & QRIS</span>
-                  <div className="flex items-center justify-center gap-3 h-8">
-                    <img src="/hero/qris-logo.svg" alt="QRIS" className="h-6 object-contain" />
-                    <img src="/hero/alfamart-logo.svg" alt="Alfamart" className="h-6 object-contain" />
-                    <img src="/hero/indomaret-logo.svg" alt="Indomaret" className="h-6 object-contain" />
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">Retail & QRIS</span>
+                  <div className="flex items-center justify-center gap-4 h-10">
+                    <img src="/hero/qris-logo.svg" alt="QRIS" className="h-8 object-contain" />
+                    <img src="/hero/alfamart-logo.svg" alt="Alfamart" className="h-8 object-contain" />
+                    <img src="/hero/indomaret-logo.svg" alt="Indomaret" className="h-8 object-contain" />
                   </div>
                 </div>
               </div>
