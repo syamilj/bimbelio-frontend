@@ -85,6 +85,7 @@ export type LiveLearningDataType = LiveClass & {
     image: string | null;
   }[];
   isRegistered?: boolean;
+  participantStatus?: 'Diundang' | 'Terdaftar' | 'Tidak Terdaftar';
 };
 
 export default function LiveLearningDashboard() {
@@ -292,22 +293,42 @@ export default function LiveLearningDashboard() {
               </div>
             )}
 
-            <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200">
-              <div className="flex items-center gap-2 mb-3">
-                <Timer className="w-5 h-5 text-blue-600" />
-                <h3 className="text-lg font-black text-blue-900">
-                  Live Learning Mendatang
-                </h3>
+            {/* Upcoming Live Classes - Horizontal Scrollable */}
+            {LiveClassAvailable && LiveClassAvailable.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <Timer className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-black text-gray-900">Live Learning Mendatang</h3>
+                      <p className="text-sm text-gray-500">{LiveClassAvailable.length} kelas tersedia</p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-blue-600 font-bold hover:bg-blue-50"
+                    onClick={() => setActiveTab('available')}
+                  >
+                    Lihat Semua →
+                  </Button>
+                </div>
+
+                <div className="relative">
+                  <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
+                    {LiveClassAvailable.slice(0, 6).map((liveClass, index) => (
+                      <UpcomingCard
+                        key={liveClass.id}
+                        liveClass={liveClass}
+                        index={index}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                {LiveClassAvailable?.map((liveClass) => (
-                  <UpcomingCard
-                    key={liveClass.id}
-                    liveClass={liveClass}
-                  />
-                ))}
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
@@ -607,6 +628,7 @@ export default function LiveLearningDashboard() {
                         onRate={() => {}}
                         viewMode={viewMode}
                         isRegistrationStep={true}
+                        attendanceStatus={attendanceStatusMap.get(liveClass.id)}
                         onFinishRegistered={async () => {
                           await LiveClassAvailableRefetch();
                           await LiveClassRegisteredRefetch();
@@ -648,6 +670,7 @@ export default function LiveLearningDashboard() {
                     onJoin={() => {}}
                     onRate={() => {}}
                     viewMode={viewMode}
+                    attendanceStatus={attendanceStatusMap.get(liveClass.id)}
                   />
                 ))}
               </div>
@@ -682,6 +705,7 @@ export default function LiveLearningDashboard() {
                     onJoin={() => {}}
                     onRate={() => {}}
                     viewMode={viewMode}
+                    attendanceStatus={attendanceStatusMap.get(liveClass.id)}
                   />
                 ))}
               </div>
@@ -747,87 +771,125 @@ export default function LiveLearningDashboard() {
   );
 }
 
-const UpcomingCard = ({ liveClass }: { liveClass: LiveLearningDataType }) => {
+const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; index: number }) => {
   const timeLeft = useCountdown(liveClass.startDate);
+  const isLive = liveClass.status === 'ONGOING' || liveClass.status === 'Sedang Berlangsung';
+
+  // Gradient colors for visual variety
+  const gradients = [
+    'from-blue-500 to-indigo-600',
+    'from-purple-500 to-pink-600',
+    'from-emerald-500 to-teal-600',
+    'from-orange-500 to-red-600',
+    'from-cyan-500 to-blue-600',
+    'from-rose-500 to-pink-600',
+  ];
+  const gradient = gradients[index % gradients.length];
 
   return (
-    <div className="quick-action-card bg-white rounded-lg border p-3 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-2">
-        <h4 className="font-semibold text-sm line-clamp-2 flex-1 pr-2">
-          {liveClass.title}
-        </h4>
-        <div className="flex flex-col items-end gap-1">
-          <Badge className="status-badge text-xs bg-blue-100 text-blue-800 border-blue-300 shrink-0">
-            {liveClass.status}
-          </Badge>
-          <div className="text-xs font-mono text-gray-500">
-            #{liveClass.id.slice(-6).toUpperCase()}
+    <div className="min-w-[280px] max-w-[300px] snap-start">
+      <div className="relative bg-white rounded-2xl border-2 border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+        {/* Top gradient bar */}
+        <div className={`h-2 bg-gradient-to-r ${gradient}`} />
+
+        {/* Live indicator */}
+        {isLive && (
+          <div className="absolute top-4 right-3 z-10">
+            <Badge className="bg-red-500 text-white border-0 text-xs font-bold animate-pulse flex items-center gap-1">
+              <span className="w-2 h-2 bg-white rounded-full animate-ping" />
+              LIVE
+            </Badge>
           </div>
-        </div>
-      </div>
-      <div className="text-xs text-gray-600 mb-2">
-        <div className="flex items-center gap-1 mb-1">
-          <Clock className="h-3 w-3" />
-          <span>{formatDateTime(liveClass.startDate)}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <Users className="h-3 w-3" />
-          <span>{liveClass.Instructor.name}</span>
-        </div>
-      </div>
-      {!timeLeft.isExpired && (
-        <div className="mb-3">
-          <div className="text-xs text-gray-500 mb-1">Dimulai dalam:</div>
-          <div className="flex gap-1">
-            {timeLeft.days > 0 && (
-              <div className="bg-gray-100 rounded px-2 py-1">
-                <div className="text-xs font-bold">{timeLeft.days}</div>
-                <div className="text-xs text-gray-500">hari</div>
-              </div>
-            )}
-            <div className="bg-gray-100 rounded px-2 py-1">
-              <div className="text-xs font-bold">
-                {timeLeft.hours.toString().padStart(2, '0')}
-              </div>
-              <div className="text-xs text-gray-500">jam</div>
+        )}
+
+        <div className="p-4">
+          {/* Status badge and ID */}
+          <div className="flex items-center justify-between mb-3">
+            <Badge className={`text-xs font-bold rounded-xl ${
+              isLive
+                ? 'bg-red-100 text-red-700 border-red-200'
+                : 'bg-blue-100 text-blue-700 border-blue-200'
+            }`}>
+              {isLive ? 'Sedang Berlangsung' : 'Akan Datang'}
+            </Badge>
+            <span className="text-xs font-mono text-gray-400">
+              #{liveClass.id.slice(-6).toUpperCase()}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h4 className="font-bold text-gray-900 text-sm line-clamp-2 mb-3 group-hover:text-blue-600 transition-colors min-h-[40px]">
+            {liveClass.title}
+          </h4>
+
+          {/* Instructor */}
+          <div className="flex items-center gap-2 mb-3">
+            <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-xs font-bold shadow-sm`}>
+              {liveClass.Instructor?.name?.charAt(0) || 'T'}
             </div>
-            <div className="bg-gray-100 rounded px-2 py-1">
-              <div className="text-xs font-bold">
-                {timeLeft.minutes.toString().padStart(2, '0')}
-              </div>
-              <div className="text-xs text-gray-500">mnt</div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-800 truncate">
+                {liveClass.Instructor?.name || 'Tutor'}
+              </p>
             </div>
           </div>
+
+          {/* Time info */}
+          <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
+            <Calendar className="w-3.5 h-3.5" />
+            <span>{formatDateTime(liveClass.startDate)}</span>
+          </div>
+
+          {/* Countdown */}
+          {!isLive && !timeLeft.isExpired && (
+            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-3 mb-4 border border-gray-200">
+              <div className="text-xs text-gray-500 mb-2 font-medium">Dimulai dalam:</div>
+              <div className="flex gap-2 justify-center">
+                {timeLeft.days > 0 && (
+                  <div className="bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200 text-center min-w-[50px]">
+                    <div className="text-lg font-black text-gray-900">{timeLeft.days}</div>
+                    <div className="text-xs text-gray-400 font-medium">hari</div>
+                  </div>
+                )}
+                <div className="bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200 text-center min-w-[50px]">
+                  <div className="text-lg font-black text-gray-900">
+                    {timeLeft.hours.toString().padStart(2, '0')}
+                  </div>
+                  <div className="text-xs text-gray-400 font-medium">jam</div>
+                </div>
+                <div className="bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200 text-center min-w-[50px]">
+                  <div className="text-lg font-black text-gray-900">
+                    {timeLeft.minutes.toString().padStart(2, '0')}
+                  </div>
+                  <div className="text-xs text-gray-400 font-medium">mnt</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Action button */}
+          <Link href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}>
+            <Button
+              className={`w-full h-10 font-bold rounded-xl transition-all ${
+                isLive
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg shadow-red-200'
+                  : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg shadow-blue-200'
+              }`}
+            >
+              {isLive ? (
+                <>
+                  <Video className="w-4 h-4 mr-2" />
+                  Join Sekarang
+                </>
+              ) : (
+                <>
+                  <Eye className="w-4 h-4 mr-2" />
+                  Lihat Detail
+                </>
+              )}
+            </Button>
+          </Link>
         </div>
-      )}
-      <div className="flex gap-2">
-        {/* {liveClass.canJoin && (
-                            <Button
-                              size="sm"
-                              onClick={() => handleJoinClass(liveClass)}
-                              className="flex-1 h-7 text-xs"
-                            >
-                              {liveClass.status === 'Sedang Berlangsung' ? (
-                                <>
-                                  <Video className="mr-1 h-3 w-3" />
-                                  Join Live
-                                </>
-                              ) : (
-                                'Bergabung'
-                              )}
-                            </Button>
-                          )} */}
-        <Link
-          href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
-        >
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 px-2 bg-transparent"
-          >
-            <Eye className="h-3 w-3" />
-          </Button>
-        </Link>
       </div>
     </div>
   );
@@ -861,8 +923,39 @@ function LiveClassCard({
   const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
   const isLive = liveClass.status === 'Sedang Berlangsung';
 
-  // Attendance badge helper
+  // Attendance badge helper - shows attendance status clearly
   const getAttendanceBadge = () => {
+    // For LIVE classes - show if user has checked in or not
+    if (isLive) {
+      if (attendanceStatus === 'PRESENT') {
+        return (
+          <Badge className="bg-emerald-100 text-emerald-800 border-2 border-emerald-300 text-xs font-bold rounded-xl flex items-center gap-1 animate-pulse">
+            <CheckCircle2 className="w-3 h-3" />
+            Sudah Absen
+          </Badge>
+        );
+      }
+      if (attendanceStatus === 'LATE') {
+        return (
+          <Badge className="bg-yellow-100 text-yellow-800 border-2 border-yellow-300 text-xs font-bold rounded-xl flex items-center gap-1">
+            <AlertCircle className="w-3 h-3" />
+            Absen (Telat)
+          </Badge>
+        );
+      }
+      // User is invited but hasn't checked in yet
+      if (liveClass.participantStatus === 'Diundang') {
+        return (
+          <Badge className="bg-orange-100 text-orange-800 border-2 border-orange-300 text-xs font-bold rounded-xl flex items-center gap-1 animate-pulse">
+            <AlertCircle className="w-3 h-3" />
+            Belum Absen!
+          </Badge>
+        );
+      }
+      return null;
+    }
+
+    // For completed classes - show final attendance status
     if (!attendanceStatus) return null;
 
     const config = {
@@ -873,7 +966,7 @@ function LiveClassCard({
       },
       LATE: {
         icon: AlertCircle,
-        label: 'Terlambat',
+        label: 'Hadir (Telat)',
         className: 'bg-yellow-100 text-yellow-800 border-yellow-300',
       },
       ABSENT: {
@@ -899,11 +992,35 @@ function LiveClassCard({
 
   // Grid view - more compact card
   if (viewMode === 'grid') {
+    // Determine participant status for this card
+    const getParticipantStatusBadge = () => {
+      // Check if user is invited (can join directly)
+      if (liveClass.participantStatus === 'Diundang') {
+        return (
+          <Badge className="bg-emerald-100 text-emerald-800 border-2 border-emerald-300 text-xs font-bold rounded-xl flex items-center gap-1">
+            <CheckCircle2 className="w-3 h-3" />
+            Diundang
+          </Badge>
+        );
+      }
+      // Check if user is registered but not invited
+      if (liveClass.participantStatus === 'Terdaftar' || liveClass.isRegistered) {
+        return (
+          <Badge className="bg-yellow-100 text-yellow-800 border-2 border-yellow-300 text-xs font-bold rounded-xl flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            Menunggu Undangan
+          </Badge>
+        );
+      }
+      return null;
+    };
+
     return (
       <Card className="live-class-card hover:shadow-md transition-all duration-300 border-2 border-gray-100 rounded-3xl overflow-hidden group shadow-sm">
         <CardContent className="p-0">
           {/* Header with gradient and status */}
           <div className="relative p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+            {/* Status row */}
             <div className="flex justify-between items-start mb-3">
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge
@@ -914,15 +1031,25 @@ function LiveClassCard({
                 {getAttendanceBadge()}
               </div>
               {isLive && (
-                <div className="live-indicator flex items-center gap-1 text-red-600">
-                  <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                <div className="live-indicator flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-xl animate-pulse">
+                  <div className="w-2 h-2 bg-white rounded-full"></div>
                   <span className="text-xs font-black">LIVE</span>
                 </div>
               )}
             </div>
+
+            {/* Title */}
             <h3 className="font-black text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors text-gray-900">
               {liveClass.title}
             </h3>
+
+            {/* Participant Status Badge */}
+            {getParticipantStatusBadge() && (
+              <div className="mb-3">
+                {getParticipantStatusBadge()}
+              </div>
+            )}
+
             {/* Countdown for upcoming classes */}
             {isUpcoming && (
               <div className="mb-3">
@@ -930,60 +1057,49 @@ function LiveClassCard({
               </div>
             )}
           </div>
+
           {/* Content */}
           <div className="p-4 space-y-3">
-            {/* Header with ID */}
-            <div className="flex items-start justify-between mb-2">
-              <h4 className="font-black text-sm line-clamp-2 flex-1 pr-2 text-gray-900">
-                {liveClass.title}
-              </h4>
-              <Badge
-                variant="secondary"
-                className="text-xs font-mono bg-gray-100 text-gray-600 border-2 border-gray-300 shrink-0 ml-2 font-bold rounded-xl"
-              >
-                #{liveClass.id.slice(-6).toUpperCase()}
-              </Badge>
-            </div>
             {/* Instructor */}
-            <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8 border-2 border-gray-100">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-10 w-10 border-2 border-gray-200">
                 <AvatarImage src={liveClass.Instructor.image || undefined} />
-                <AvatarFallback className="text-xs font-black">
+                <AvatarFallback className="text-xs font-black bg-blue-100 text-blue-700">
                   {liveClass.Instructor.name
                     .split(' ')
                     .map((n) => n[0])
                     .join('')}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex flex-col gap-1 text-sm">
-                <span className="font-black text-gray-900 line-clamp-1">
+              <div className="flex-1 min-w-0">
+                <span className="font-bold text-gray-900 line-clamp-1 block">
                   {liveClass.Instructor.name}
                 </span>
-                <div className="flex flex-wrap gap-2">
-                  {liveClass.Instructor.certificate && (
-                    <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-xl border-2 border-green-200 line-clamp-1 max-w-[150px] truncate font-bold">
-                      {liveClass.Instructor.certificate}
-                    </span>
-                  )}
-                  {liveClass.Instructor.lastEducation && (
-                    <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-xl border-2 border-blue-200 line-clamp-1 max-w-[150px] truncate font-bold">
-                      {liveClass.Instructor.lastEducation}
-                    </span>
-                  )}
-                </div>
+                {liveClass.Instructor.lastEducation && (
+                  <span className="text-xs text-gray-500 font-medium">
+                    {liveClass.Instructor.lastEducation}
+                  </span>
+                )}
               </div>
+              <Badge
+                variant="secondary"
+                className="text-xs font-mono bg-gray-100 text-gray-500 border border-gray-200 shrink-0 font-medium rounded-lg"
+              >
+                #{liveClass.id.slice(-6).toUpperCase()}
+              </Badge>
             </div>
-            {/* Time info */}
-            <div className="space-y-2 text-sm text-gray-500 font-medium">
+
+            {/* Time info - more compact */}
+            <div className="flex items-center gap-4 text-sm text-gray-600 bg-gray-50 rounded-xl p-3 border border-gray-100">
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 shrink-0" />
-                <span className="truncate">
+                <Calendar className="h-4 w-4 text-blue-500" />
+                <span className="font-medium">
                   {formatDateTime(liveClass.startDate)}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 shrink-0" />
-                <span>{formatDuration(liveClass.duration)}</span>
+                <Clock className="h-4 w-4 text-purple-500" />
+                <span className="font-medium">{formatDuration(liveClass.duration)}</span>
               </div>
             </div>
 
@@ -1078,65 +1194,69 @@ function LiveClassCard({
                   </>
                 )}
               </div>
-              <div className="flex gap-2">
-                <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-2xl border-2 border-gray-100">
-                  <div className="flex gap-2 text-xs text-gray-500 text-center">
-                    <Users className="h-3 w-3 mx-auto mb-1" />
-                    <div className="font-black text-gray-900">
-                      {liveClass.participants?.length || 0}
-                    </div>
-                  </div>
-                  <Link
-                    href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
+
+              {/* Actions - simplified */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Participants count */}
+                <div className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 rounded-xl border border-gray-200">
+                  <Users className="h-4 w-4 text-gray-500" />
+                  <span className="font-bold text-gray-900 text-sm">
+                    {liveClass.participants?.length || 0}
+                  </span>
+                </div>
+
+                {/* Detail button */}
+                <Link
+                  href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
+                >
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-9 px-4 bg-white border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 rounded-xl font-bold text-gray-700 hover:text-blue-700"
                   >
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-10 ml-2 px-4 bg-transparent border-2 rounded-2xl font-bold"
+                    <Eye className="mr-1.5 h-4 w-4" />
+                    Detail
+                  </Button>
+                </Link>
+
+                {/* Premium badge */}
+                {liveClass.accessType === 'PREMIUM' && (
+                  <Badge className="h-9 px-3 bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 border-2 border-amber-300 rounded-xl font-bold flex items-center gap-1.5">
+                    <Crown className="h-4 w-4 text-amber-600" />
+                    Premium
+                  </Badge>
+                )}
+
+                {/* Register button */}
+                {liveClass.accessType !== 'PREMIUM' &&
+                  isRegistrationStep &&
+                  liveClass.isRegistered === false &&
+                  onFinishRegistered && (
+                    <DialogLiveClassRegister
+                      liveClassId={liveClass.id}
+                      onFinish={onFinishRegistered}
+                      liveClassAccessType={liveClass.accessType}
                     >
-                      <Eye className="mr-1 h-4 w-4" />
-                      <span className="inline">Detail</span>
-                    </Button>
-                  </Link>
-                  {liveClass.accessType === 'PREMIUM' && (
-                    <Badge className="h-10 px-3 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 border-2 border-blue-300 rounded-2xl font-black flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
-                      <Crown className="h-4 w-4 text-blue-600 fill-blue-600" />
-                      <span>Premium</span>
+                      <Button
+                        size="sm"
+                        className="h-9 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold"
+                      >
+                        <UserCheck className="mr-1.5 h-4 w-4" />
+                        Daftar
+                      </Button>
+                    </DialogLiveClassRegister>
+                  )}
+
+                {/* Already registered */}
+                {liveClass.accessType !== 'PREMIUM' &&
+                  isRegistrationStep &&
+                  liveClass.isRegistered === true &&
+                  onFinishRegistered && (
+                    <Badge className="h-9 px-3 bg-emerald-100 text-emerald-700 border-2 border-emerald-300 rounded-xl font-bold flex items-center gap-1.5">
+                      <CheckCircle2 className="h-4 w-4" />
+                      Terdaftar
                     </Badge>
                   )}
-                  {liveClass.accessType !== 'PREMIUM' &&
-                    isRegistrationStep &&
-                    liveClass.isRegistered === false &&
-                    onFinishRegistered && (
-                      <DialogLiveClassRegister
-                        liveClassId={liveClass.id}
-                        onFinish={onFinishRegistered}
-                        liveClassAccessType={liveClass.accessType}
-                      >
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-10 px-4 bg-transparent border-2 rounded-2xl font-bold"
-                        >
-                          <UserCheck className="mr-1 h-4 w-4" />
-                          <span className="inline">Daftar</span>
-                        </Button>
-                      </DialogLiveClassRegister>
-                    )}
-                  {liveClass.accessType !== 'PREMIUM' &&
-                    isRegistrationStep &&
-                    liveClass.isRegistered === true &&
-                    onFinishRegistered && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-10 px-4 bg-green-50 border-2 border-green-300 text-green-700 hover:bg-green-100 rounded-2xl font-bold"
-                      >
-                        <UserCheck className="mr-1 h-4 w-4" />
-                        <span className="inline">Terdaftar</span>
-                      </Button>
-                    )}
-                </div>
               </div>
             </div>
           </div>
