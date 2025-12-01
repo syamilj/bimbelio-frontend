@@ -99,9 +99,7 @@ export default function LiveLearningDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [viewMode, setViewMode] = useState<'list' | 'grid' | 'calendar'>(
-    'grid',
-  );
+  const [viewMode, setViewMode] = useState<'grid' | 'calendar'>('grid');
   // const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
   // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
@@ -293,7 +291,7 @@ export default function LiveLearningDashboard() {
               </div>
             )}
 
-            {/* Upcoming Live Classes - Horizontal Scrollable */}
+            {/* Upcoming Live Classes - Responsive Grid */}
             {LiveClassAvailable && LiveClassAvailable.length > 0 && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -316,16 +314,14 @@ export default function LiveLearningDashboard() {
                   </Button>
                 </div>
 
-                <div className="relative">
-                  <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
-                    {LiveClassAvailable.slice(0, 6).map((liveClass, index) => (
-                      <UpcomingCard
-                        key={liveClass.id}
-                        liveClass={liveClass}
-                        index={index}
-                      />
-                    ))}
-                  </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {LiveClassAvailable.slice(0, 4).map((liveClass, index) => (
+                    <UpcomingCard
+                      key={liveClass.id}
+                      liveClass={liveClass}
+                      index={index}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -389,19 +385,6 @@ export default function LiveLearningDashboard() {
                       Tampilan:
                     </span>
                     <div className="flex bg-gray-100 rounded-2xl p-1 border-2 border-gray-200">
-                      <button
-                        onClick={() => setViewMode('list')}
-                        className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
-                          viewMode === 'list'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <BookOpen className="w-4 h-4" />
-                          <span className="hidden sm:inline">List</span>
-                        </div>
-                      </button>
                       <button
                         onClick={() => setViewMode('grid')}
                         className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
@@ -787,8 +770,8 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
   const gradient = gradients[index % gradients.length];
 
   return (
-    <div className="min-w-[280px] max-w-[300px] snap-start">
-      <div className="relative bg-white rounded-2xl border-2 border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+    <div className="w-full">
+      <div className="relative bg-white rounded-2xl border-2 border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group h-full flex flex-col">
         {/* Top gradient bar */}
         <div className={`h-2 bg-gradient-to-r ${gradient}`} />
 
@@ -802,7 +785,7 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
           </div>
         )}
 
-        <div className="p-4">
+        <div className="p-4 flex flex-col flex-1">
           {/* Status badge and ID */}
           <div className="flex items-center justify-between mb-3">
             <Badge className={`text-xs font-bold rounded-xl ${
@@ -824,7 +807,7 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
 
           {/* Instructor */}
           <div className="flex items-center gap-2 mb-3">
-            <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-xs font-bold shadow-sm`}>
+            <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-xs font-bold shadow-sm shrink-0`}>
               {liveClass.Instructor?.name?.charAt(0) || 'T'}
             </div>
             <div className="flex-1 min-w-0">
@@ -836,36 +819,12 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
 
           {/* Time info */}
           <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
-            <Calendar className="w-3.5 h-3.5" />
-            <span>{formatDateTime(liveClass.startDate)}</span>
+            <Calendar className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">{formatDateTime(liveClass.startDate)}</span>
           </div>
 
-          {/* Countdown */}
-          {!isLive && !timeLeft.isExpired && (
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-3 mb-4 border border-gray-200">
-              <div className="text-xs text-gray-500 mb-2 font-medium">Dimulai dalam:</div>
-              <div className="flex gap-2 justify-center">
-                {timeLeft.days > 0 && (
-                  <div className="bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200 text-center min-w-[50px]">
-                    <div className="text-lg font-black text-gray-900">{timeLeft.days}</div>
-                    <div className="text-xs text-gray-400 font-medium">hari</div>
-                  </div>
-                )}
-                <div className="bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200 text-center min-w-[50px]">
-                  <div className="text-lg font-black text-gray-900">
-                    {timeLeft.hours.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-xs text-gray-400 font-medium">jam</div>
-                </div>
-                <div className="bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200 text-center min-w-[50px]">
-                  <div className="text-lg font-black text-gray-900">
-                    {timeLeft.minutes.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-xs text-gray-400 font-medium">mnt</div>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Spacer to push button to bottom */}
+          <div className="flex-1" />
 
           {/* Action button */}
           <Link href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}>
@@ -901,7 +860,7 @@ function LiveClassCard({
   onRate,
   onUpgrade,
   showPlanInfo = false,
-  viewMode = 'list',
+  viewMode = 'grid',
   variant = 'accessible', // NEW: Default variant
   isRegistrationStep = false,
   onFinishRegistered,
@@ -912,7 +871,7 @@ function LiveClassCard({
   onRate: (liveClass: LiveLearningDataType) => void;
   onUpgrade?: (liveClass: any) => void;
   showPlanInfo?: boolean;
-  viewMode?: 'list' | 'grid' | 'calendar';
+  viewMode?: 'grid' | 'calendar';
   variant?: 'accessible' | 'preview' | 'locked';
   isRegistrationStep?: boolean;
   onFinishRegistered?: () => Promise<void>;
