@@ -791,11 +791,11 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
               #{liveClass.id.slice(-4).toUpperCase()}
             </span>
           </div>
-          
+
           <h4 className="font-black text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
             {liveClass.title}
           </h4>
-          
+
           <div className="flex items-center gap-2">
             <Avatar className="h-6 w-6 border border-gray-200">
               <AvatarImage src={liveClass.Instructor.image || undefined} />
