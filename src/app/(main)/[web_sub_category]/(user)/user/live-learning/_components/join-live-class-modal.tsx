@@ -300,7 +300,7 @@ export function JoinLiveClassModal({
           >
             Batal
           </Button>
-          {liveClass.participantStatus !== 'Tidak Terdaftar' && (
+          {isInvited && (
             <Button
               onClick={handleJoin}
               disabled={!canJoinNow || isJoining}
@@ -318,6 +318,14 @@ export function JoinLiveClassModal({
               ) : (
                 'Belum Bisa Join'
               )}
+            </Button>
+          )}
+          {!isInvited && liveClass.participantStatus !== 'Tidak Terdaftar' && (
+            <Button
+              disabled
+              className="flex-1 rounded-2xl font-bold border-2 opacity-50"
+            >
+              Menunggu Undangan Admin
             </Button>
           )}
         </DialogFooter>

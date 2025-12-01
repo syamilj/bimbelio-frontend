@@ -39,6 +39,7 @@ import {
   BookOpen,
   Calendar,
   Check,
+  CheckCircle2,
   Clock,
   Crown,
   Eye,
@@ -50,6 +51,8 @@ import {
   UserCheck,
   Users,
   Video,
+  XCircle,
+  AlertCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -143,6 +146,29 @@ export default function LiveLearningDashboard() {
     params: { take: 100, page: 1 },
   });
 
+  // Attendance Report
+  const { data: attendanceReport } = useGet<{
+    report: {
+      id: string;
+      attendanceStatus: 'PRESENT' | 'LATE' | 'ABSENT' | 'UPCOMING';
+    }[];
+    summary: {
+      total: number;
+      present: number;
+      late: number;
+      absent: number;
+      upcoming: number;
+      attendanceRate: number;
+    };
+  }>('/liveClass/getAttendanceReport', {
+    params: { take: 100, page: 1 },
+  });
+
+  // Create attendance status map for quick lookup
+  const attendanceStatusMap = new Map(
+    attendanceReport?.report?.map((r) => [r.id, r.attendanceStatus]) || []
+  );
+
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
   console.log({
@@ -207,7 +233,66 @@ export default function LiveLearningDashboard() {
           </CardHeader>
           {/* STATS CARDS - LEADERBOARD PATTERN */}
           <CardContent className="p-6">
-            <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200">
+            {/* Attendance Stats */}
+            {attendanceReport?.summary && attendanceReport.summary.total > 0 && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <UserCheck className="w-5 h-5 text-emerald-600" />
+                  <h3 className="text-lg font-black text-gray-900">
+                    Statistik Kehadiran
+                  </h3>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  <div className="bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                      <span className="text-xs font-bold text-emerald-700">Hadir</span>
+                    </div>
+                    <p className="text-2xl font-black text-emerald-900">
+                      {attendanceReport.summary.present}
+                    </p>
+                  </div>
+                  <div className="bg-yellow-50 rounded-2xl p-4 border-2 border-yellow-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <AlertCircle className="w-4 h-4 text-yellow-600" />
+                      <span className="text-xs font-bold text-yellow-700">Terlambat</span>
+                    </div>
+                    <p className="text-2xl font-black text-yellow-900">
+                      {attendanceReport.summary.late}
+                    </p>
+                  </div>
+                  <div className="bg-red-50 rounded-2xl p-4 border-2 border-red-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <XCircle className="w-4 h-4 text-red-600" />
+                      <span className="text-xs font-bold text-red-700">Tidak Hadir</span>
+                    </div>
+                    <p className="text-2xl font-black text-red-900">
+                      {attendanceReport.summary.absent}
+                    </p>
+                  </div>
+                  <div className="bg-blue-50 rounded-2xl p-4 border-2 border-blue-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Clock className="w-4 h-4 text-blue-600" />
+                      <span className="text-xs font-bold text-blue-700">Akan Datang</span>
+                    </div>
+                    <p className="text-2xl font-black text-blue-900">
+                      {attendanceReport.summary.upcoming}
+                    </p>
+                  </div>
+                  <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 border-2 border-indigo-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Target className="w-4 h-4 text-indigo-600" />
+                      <span className="text-xs font-bold text-indigo-700">Tingkat Kehadiran</span>
+                    </div>
+                    <p className="text-2xl font-black text-indigo-900">
+                      {attendanceReport.summary.attendanceRate}%
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200">
               <div className="flex items-center gap-2 mb-3">
                 <Timer className="w-5 h-5 text-blue-600" />
                 <h3 className="text-lg font-black text-blue-900">
@@ -631,6 +716,7 @@ export default function LiveLearningDashboard() {
                     onJoin={() => {}}
                     onRate={() => {}}
                     viewMode={viewMode}
+                    attendanceStatus={attendanceStatusMap.get(liveClass.id)}
                   />
                 ))}
               </div>
@@ -757,6 +843,7 @@ function LiveClassCard({
   variant = 'accessible', // NEW: Default variant
   isRegistrationStep = false,
   onFinishRegistered,
+  attendanceStatus,
 }: {
   liveClass: LiveLearningDataType;
   onJoin: (liveClass: LiveLearningDataType) => void;
@@ -767,11 +854,48 @@ function LiveClassCard({
   variant?: 'accessible' | 'preview' | 'locked';
   isRegistrationStep?: boolean;
   onFinishRegistered?: () => Promise<void>;
+  attendanceStatus?: 'PRESENT' | 'LATE' | 'ABSENT' | 'UPCOMING';
 }) {
   const liveClassWithAccess = liveClass as any;
   const timeLeft = useCountdown(liveClass.startDate);
   const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
   const isLive = liveClass.status === 'Sedang Berlangsung';
+
+  // Attendance badge helper
+  const getAttendanceBadge = () => {
+    if (!attendanceStatus) return null;
+
+    const config = {
+      PRESENT: {
+        icon: CheckCircle2,
+        label: 'Hadir',
+        className: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+      },
+      LATE: {
+        icon: AlertCircle,
+        label: 'Terlambat',
+        className: 'bg-yellow-100 text-yellow-800 border-yellow-300',
+      },
+      ABSENT: {
+        icon: XCircle,
+        label: 'Tidak Hadir',
+        className: 'bg-red-100 text-red-800 border-red-300',
+      },
+      UPCOMING: {
+        icon: Clock,
+        label: 'Akan Datang',
+        className: 'bg-blue-100 text-blue-800 border-blue-300',
+      },
+    };
+
+    const { icon: Icon, label, className } = config[attendanceStatus];
+    return (
+      <Badge className={`${className} text-xs font-bold rounded-xl border-2 flex items-center gap-1`}>
+        <Icon className="w-3 h-3" />
+        {label}
+      </Badge>
+    );
+  };
 
   // Grid view - more compact card
   if (viewMode === 'grid') {
@@ -781,11 +905,14 @@ function LiveClassCard({
           {/* Header with gradient and status */}
           <div className="relative p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
             <div className="flex justify-between items-start mb-3">
-              <Badge
-                className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm font-bold text-xs rounded-xl`}
-              >
-                {liveClass.status}
-              </Badge>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge
+                  className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm font-bold text-xs rounded-xl`}
+                >
+                  {liveClass.status}
+                </Badge>
+                {getAttendanceBadge()}
+              </div>
               {isLive && (
                 <div className="live-indicator flex items-center gap-1 text-red-600">
                   <div className="w-2 h-2 bg-red-600 rounded-full"></div>
@@ -1025,12 +1152,13 @@ function LiveClassCard({
         {/* Modern Header with Floating Elements */}
         <div className="relative bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-50 p-6">
           {/* Floating Status Elements */}
-          <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
+          <div className="absolute top-4 right-4 flex items-center gap-2 z-10 flex-wrap">
             <Badge
               className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm backdrop-blur-sm font-bold text-xs rounded-xl`}
             >
               {liveClass.status}
             </Badge>
+            {getAttendanceBadge()}
             {isLive && (
               <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-xl text-xs font-black shadow-sm animate-pulse">
                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>

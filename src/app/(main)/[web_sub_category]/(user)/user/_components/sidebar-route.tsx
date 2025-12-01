@@ -470,10 +470,6 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                             name: 'Livestream',
                             href: `/${webSubCategoryId}/user/live-learning/livestream`,
                           },
-                          {
-                            name: 'Absensi',
-                            href: `/${webSubCategoryId}/user/live-learning/attendance`,
-                          },
                         ].map((cat) => {
                           const isSubActive = pathname?.includes(
                             `category=${cat.name}`,
