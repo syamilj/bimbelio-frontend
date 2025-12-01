@@ -71,8 +71,8 @@ const navSections: NavSection[] = [
         title: 'Belajar',
         url: (subCategoryId: string) => `/${subCategoryId}/user/course`,
         icon: BookOpen,
-        badge: 'Soon',
-        isLocked: true,
+        // badge: 'Soon',
+        // isLocked: true,
       },
       {
         title: 'Material',
