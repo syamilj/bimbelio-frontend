@@ -346,18 +346,26 @@ const HeaderUser = () => {
             <Menu className="w-5 h-5 text-gray-700" />
           </Button>
 
-          {/* Desktop Greeting - Responsive */}
-          <div className="hidden md:flex items-center gap-3 min-w-0 flex-1">
-            <div className="min-w-0 flex-1">
-              <h1 className="text-base lg:text-lg font-bold text-gray-900 truncate">
-                Selamat datang kembali!
-              </h1>
-              <p className="text-xs lg:text-sm text-gray-500 truncate">
-                Halo,{' '}
-                <span style={{ color: mainColor, fontWeight: '600' }}>
-                  {userSession?.user.name}
-                </span>
-              </p>
+          {/* Desktop Greeting - Modern Design */}
+          <div className="hidden md:flex items-center gap-4 min-w-0 flex-1">
+            <div className="flex items-center gap-3 min-w-0">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: `${mainColor}15` }}
+              >
+                <span className="text-lg">👋</span>
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-gray-900 truncate">
+                  Selamat datang kembali!
+                </p>
+                <p className="text-xs text-gray-500 truncate">
+                  Halo,{' '}
+                  <span style={{ color: mainColor }} className="font-semibold">
+                    {userSession?.user.name?.split(' ')[0]}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -489,46 +497,85 @@ const HeaderUser = () => {
         )}
 
         {/* RIGHT SECTION */}
-        <div className="flex items-center gap-1 md:gap-3 shrink-0">
-          {/* Desktop Limitations - More Compact */}
+        <div className="flex items-center gap-2 md:gap-3 shrink-0">
+          {/* Desktop Limitations - Modern Compact Pills */}
           {!isMobile && (
-            <div className="hidden xl:flex items-center gap-1">
-              {limitations.map((limitation, index) => (
-                <LimitationItem
-                  key={index}
-                  icon={limitation.icon}
-                  label={limitation.label}
-                  remaining={limitation.remaining}
-                  total={limitation.total}
-                  color={limitation.color}
-                />
-              ))}
+            <div className="hidden xl:flex items-center gap-1.5 bg-gray-50 rounded-xl px-2 py-1.5 border border-gray-100">
+              {limitations.map((limitation, index) => {
+                const Icon = limitation.icon;
+                const isLow = limitation.remaining <= 3 && limitation.remaining > 0;
+                const isEmpty = limitation.remaining === 0;
+
+                return (
+                  <Tooltip key={index} delayDuration={100}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className={cn(
+                          'flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all duration-200 cursor-default',
+                          isEmpty
+                            ? 'bg-red-50 border border-red-200'
+                            : isLow
+                              ? 'bg-orange-50 border border-orange-200'
+                              : 'bg-white border border-gray-200 hover:border-gray-300'
+                        )}
+                      >
+                        <Icon
+                          className="w-3.5 h-3.5"
+                          style={{ color: isEmpty ? '#ef4444' : isLow ? '#f97316' : limitation.color }}
+                        />
+                        <span className={cn(
+                          'text-xs font-semibold',
+                          isEmpty ? 'text-red-600' : isLow ? 'text-orange-600' : 'text-gray-700'
+                        )}>
+                          {limitation.label}
+                        </span>
+                        <span className={cn(
+                          'text-xs font-bold px-1.5 py-0.5 rounded-md',
+                          isEmpty
+                            ? 'bg-red-100 text-red-700'
+                            : isLow
+                              ? 'bg-orange-100 text-orange-700'
+                              : 'bg-gray-100 text-gray-600'
+                        )}>
+                          {userTier === 'ADMIN' ? '∞' : `${limitation.remaining}`}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="text-xs">
+                      <p>{limitation.label}: {userTier === 'ADMIN' ? 'Unlimited' : `${limitation.remaining}/${limitation.total}`}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
             </div>
           )}
 
-          {/* Status Badge - Compact for desktop */}
+          {/* Status Badge - Premium Design */}
           {userTier === 'ADMIN' ||
           userTier === 'SUPER_ADMIN' ||
           userTier === 'PREMIUM' ? (
             <div
-              className="hidden md:flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1 lg:py-1.5 rounded-xl text-white text-xs lg:text-sm font-semibold shadow-sm"
-              style={{ backgroundColor: mainColor }}
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
             >
-              <Crown className="w-3 h-3 lg:w-4 lg:h-4" />
-              <span className="hidden lg:inline">{userTier}</span>
+              <Crown className="w-4 h-4" />
+              <span>Premium</span>
+              <ChevronDown className="w-3.5 h-3.5 opacity-70" />
             </div>
           ) : (
             <Tooltip delayDuration={100}>
               <TooltipTrigger className="cursor-pointer">
                 <div
-                  className="hidden md:flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1 lg:py-1.5 rounded-xl text-white text-xs lg:text-sm font-semibold shadow-sm"
-                  style={{ backgroundColor: mainColor }}
+                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
                 >
-                  <Crown className="w-3 h-3 lg:w-4 lg:h-4" />
-                  <span className="hidden lg:inline">
-                    {userTier || 'Free Tier'}
-                  </span>
-                  <ChevronDown className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <Crown className="w-4 h-4" />
+                  <span>{userTier || 'Premium'}</span>
+                  <ChevronDown className="w-3.5 h-3.5 opacity-70" />
                 </div>
               </TooltipTrigger>
               <TooltipContent
@@ -825,15 +872,15 @@ const HeaderUser = () => {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2 h-9 px-2 rounded-xl hover:bg-gray-100 transition-colors shrink-0"
+                className="flex items-center gap-2.5 h-10 px-2 pr-3 rounded-xl hover:bg-gray-50 transition-all duration-200 shrink-0 border border-gray-100"
               >
-                <Avatar className="w-6 h-6 lg:w-7 lg:h-7 ring-2 ring-offset-1 ring-gray-200">
+                <Avatar className="w-7 h-7 ring-2 ring-offset-1 ring-gray-100">
                   <AvatarImage
                     src={userSession?.user.image || '/placeholder.svg'}
                     alt={userSession?.user.name || 'User'}
                   />
                   <AvatarFallback
-                    className="text-white font-bold text-xs lg:text-sm"
+                    className="text-white font-bold text-xs"
                     style={{ backgroundColor: mainColor }}
                   >
                     {userSession?.user.name?.charAt(0) || 'U'}
@@ -841,10 +888,10 @@ const HeaderUser = () => {
                 </Avatar>
                 {!isMobile && (
                   <>
-                    <span className="text-xs lg:text-sm font-medium text-gray-700 max-w-16 lg:max-w-24 truncate">
-                      {userSession?.user.name}
+                    <span className="text-sm font-semibold text-gray-700 max-w-24 truncate">
+                      {userSession?.user.name?.split(' ')[0]}
                     </span>
-                    <ChevronDown className="w-3 h-3 lg:w-4 lg:h-4 text-gray-500" />
+                    <ChevronDown className="w-4 h-4 text-gray-400" />
                   </>
                 )}
               </Button>
