@@ -32,6 +32,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Coins,
   Crown,
   History,
   LayoutDashboardIcon,
@@ -309,6 +310,14 @@ const SidebarUser = ({
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {
+                      setPagesSetting('installment');
+                    }}
+                  >
+                    <Coins className="w-4 h-4 mr-2" />
+                    Cicilan
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
                       setPagesSetting('history');
                     }}
                   >
@@ -487,6 +496,15 @@ const SidebarUser = ({
                   >
                     <User className="w-4 h-4 mr-2" />
                     Profil
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setPagesSetting('installment');
+                      setIsMobileSidebarOpen(false);
+                    }}
+                  >
+                    <Coins className="w-4 h-4 mr-2" />
+                    Cicilan
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => {

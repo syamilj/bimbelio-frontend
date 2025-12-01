@@ -10,14 +10,20 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { response, responseError } from '@/lib/response';
 import { cn, imageProfile } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
-import { Transaction } from '@/types/database';
+import {
+  Subscription,
+  SubscriptionInstallment,
+  SubscriptionInstallmentLimitation,
+  Transaction,
+} from '@/types/database';
 import Cookies from 'js-cookie';
-import { Crown, History, Settings, User, X } from 'lucide-react';
+import { Coins, Crown, History, Settings, User, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AccountTab } from './components/account-tab';
 import { HistoryPaymentTab } from './components/history-payment-tab';
 import { SubscriptionTab } from './components/subscription-tab';
+import { TabInstallment } from './components/tab-installment';
 
 // HistoryPayment Component
 export default function AccountSetting() {
@@ -48,15 +54,35 @@ export default function AccountSetting() {
   const { data: paymentData, refetch } = useGet<{
     waiting: Transaction[];
     riwayat: Transaction[];
+    installment: (Subscription & {
+      SubscriptionInstallment: (SubscriptionInstallment & {
+        SubscriptionInstallmentLimitation?: SubscriptionInstallmentLimitation | null;
+        paymentLink: string | null;
+      })[];
+    })[];
   }>('/payment/getPaymentInProses', {
     params: {
       userId: session?.user.id,
+    },
+    toast: {
+      hideError: true,
+    },
+    onError({ status, message }) {
+      if (status !== 403) {
+        toaster({
+          title: 'Gagal',
+          description: message,
+          condition: 'warning',
+        });
+      }
     },
     enabled: !!session,
     useEffectDependencies: [session, page],
   });
 
   const data = paymentData || { waiting: [], riwayat: [] };
+
+  console.log({ intallmenr: paymentData?.installment });
 
   // useEffect(() => {
   //   getGeneral(`/payment/getPaymentInProses?userId=${session?.user.id}`, {
@@ -161,6 +187,11 @@ export default function AccountSetting() {
       icon: <Crown className="w-4 h-4" />,
     },
     {
+      value: 'installment',
+      label: 'Cicilan',
+      icon: <Coins className="w-4 h-4" />,
+    },
+    {
       value: 'history',
       label: 'Riwayat',
       icon: <History className="w-4 h-4" />,
@@ -212,7 +243,7 @@ export default function AccountSetting() {
           >
             {/* Tabs Navigation */}
             <div className="border-b-2 border-gray-100 bg-gray-50/50">
-              <TabsList className="grid w-full grid-cols-3 bg-transparent p-0 h-auto">
+              <TabsList className="grid w-full grid-cols-4 bg-transparent p-0 h-auto">
                 {tabs.map((tab) => (
                   <TabsTrigger
                     key={tab.value}
@@ -259,6 +290,17 @@ export default function AccountSetting() {
                   data={data}
                   handlePay={handlePay}
                   setTransactionPopUp={setTransactionPopUp}
+                  mainColor={mainColor}
+                  secondaryColor={secondaryColor}
+                />
+              </TabsContent>
+
+              <TabsContent
+                value="installment"
+                className="mt-0 h-full overflow-y-auto"
+              >
+                <TabInstallment
+                  installment={paymentData?.installment || []}
                   mainColor={mainColor}
                   secondaryColor={secondaryColor}
                 />

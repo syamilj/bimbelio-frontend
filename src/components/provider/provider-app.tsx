@@ -25,7 +25,7 @@ export default function ProviderApp({ children }: { children: ReactNode }) {
     redirect: string | null;
   }>({ open: false, redirect: null });
   const [pagesSetting, setPagesSetting] = useState<
-    'account' | 'subscription' | 'history' | undefined
+    'account' | 'subscription' | 'history' | 'installment' | undefined
   >();
 
   const [minimizeSidebar, setMinimizeSidebar] = useState<boolean>(true);
@@ -194,9 +194,16 @@ interface AppContextType {
   setSidebarMobile: Dispatch<SetStateAction<boolean>>;
   docsSearchData: any;
   setDocsSearchData: Dispatch<any>;
-  pagesSetting: 'account' | 'subscription' | 'history' | undefined;
+  pagesSetting:
+    | 'account'
+    | 'subscription'
+    | 'history'
+    | 'installment'
+    | undefined;
   setPagesSetting: Dispatch<
-    SetStateAction<'account' | 'subscription' | 'history' | undefined>
+    SetStateAction<
+      'account' | 'subscription' | 'history' | 'installment' | undefined
+    >
   >;
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;

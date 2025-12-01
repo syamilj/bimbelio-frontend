@@ -10,6 +10,9 @@ import {
   Plan,
   PlanBenefit,
   PlanFeature,
+  PlanInstallmentConfig,
+  PlanInstallmentSchedule,
+  PlanInstallmentScheduleLimitation,
   PlanLimitation,
   PlanSubscription,
   PlanSubscriptionBundle,
@@ -35,5 +38,12 @@ export type PlanDataType = Plan & {
       Instructor: Instructor;
     };
   })[];
+  PlanInstallmentConfig:
+    | (PlanInstallmentConfig & {
+        PlanInstallmentSchedule: (PlanInstallmentSchedule & {
+          PlanInstallmentScheduleLimitation: PlanInstallmentScheduleLimitation | null;
+        })[];
+      })
+    | null;
   timeline: string;
 };

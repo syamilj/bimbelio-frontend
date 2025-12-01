@@ -7,12 +7,24 @@ import {
   Plan,
   PlanBenefit,
   PlanFeature,
+  PlanInstallmentConfig,
+  PlanInstallmentSchedule,
+  PlanInstallmentScheduleLimitation,
   PlanLimitation,
   PlanSubscription,
   PlanSubscriptionBundle,
   WebsiteSubCategory,
 } from '@/types/database';
-import { BookOpen, Brain, Eye, FileText, MessageCircle, Star, Trophy, Video } from 'lucide-react';
+import {
+  BookOpen,
+  Brain,
+  Eye,
+  FileText,
+  MessageCircle,
+  Star,
+  Trophy,
+  Video,
+} from 'lucide-react';
 
 export type PlanDataType = Plan & {
   totalUsers: number;
@@ -33,6 +45,13 @@ export type PlanDataType = Plan & {
       Instructor: Instructor;
     };
   })[];
+  PlanInstallmentConfig:
+    | (PlanInstallmentConfig & {
+        PlanInstallmentSchedule: (PlanInstallmentSchedule & {
+          PlanInstallmentScheduleLimitation: PlanInstallmentScheduleLimitation | null;
+        })[];
+      })
+    | null;
   timeline: string;
 };
 
