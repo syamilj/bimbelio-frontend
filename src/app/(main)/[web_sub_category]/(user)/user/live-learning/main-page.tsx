@@ -35,10 +35,12 @@ import {
   LiveClassReference,
 } from '@/types/database';
 import {
+  AlertCircle,
   Award,
   BookOpen,
   Calendar,
   Check,
+  CheckCircle2,
   Clock,
   Crown,
   Eye,
@@ -50,6 +52,7 @@ import {
   UserCheck,
   Users,
   Video,
+  XCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -82,6 +85,7 @@ export type LiveLearningDataType = LiveClass & {
     image: string | null;
   }[];
   isRegistered?: boolean;
+  participantStatus?: 'Diundang' | 'Terdaftar' | 'Tidak Terdaftar';
 };
 
 export default function LiveLearningDashboard({
@@ -99,11 +103,12 @@ export default function LiveLearningDashboard({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
-  const [viewMode, setViewMode] = useState<'list' | 'grid' | 'calendar'>(
-    'grid',
-  );
+  const [viewMode, setViewMode] = useState<'grid' | 'calendar'>('grid');
   // const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
   // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  const typeLabel = type === 'LIVECLASS' ? 'Live Class' : type === 'LIVESTREAM' ? 'Livestream' : 'Webinar';
+  const typeIcon = type === 'LIVECLASS' ? Video : type === 'LIVESTREAM' ? PlayCircle : Users;
 
   const {
     data: LiveClassAvailable,
@@ -158,6 +163,30 @@ export default function LiveLearningDashboard({
     useEffectDependencies: [type],
   });
 
+  // Attendance Report
+  const { data: attendanceReport } = useGet<{
+    report: {
+      id: string;
+      attendanceStatus: 'PRESENT' | 'LATE' | 'ABSENT' | 'UPCOMING';
+    }[];
+    summary: {
+      total: number;
+      present: number;
+      late: number;
+      absent: number;
+      upcoming: number;
+      attendanceRate: number;
+    };
+  }>('/liveClass/getAttendanceReport', {
+    params: { take: 100, page: 1, type },
+    useEffectDependencies: [type],
+  });
+
+  // Create attendance status map for quick lookup
+  const attendanceStatusMap = new Map(
+    attendanceReport?.report?.map((r) => [r.id, r.attendanceStatus]) || []
+  );
+
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
 
   console.log({
@@ -207,17 +236,11 @@ export default function LiveLearningDashboard({
                   className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <PlayCircle
-                    className="w-6 h-6"
-                    style={{ color: mainColor }}
-                  />
+                  {type === 'LIVECLASS' && <Video className="w-6 h-6" style={{ color: mainColor }} />}
+                  {type === 'LIVESTREAM' && <PlayCircle className="w-6 h-6" style={{ color: mainColor }} />}
+                  {type === 'WEBINAR' && <Users className="w-6 h-6" style={{ color: mainColor }} />}
                 </div>
-                {type === 'LIVECLASS'
-                  ? 'Liveclass'
-                  : type === 'LIVESTREAM'
-                    ? 'Livestream'
-                    : 'Webinar'}{' '}
-                Dashboard
+                {typeLabel} Dashboard
               </CardTitle>
               <CardDescription className="text-lg mt-3 text-gray-500 font-medium">
                 Ikuti kelas langsung dengan tutor ahli dan tingkatkan persiapan
@@ -227,27 +250,99 @@ export default function LiveLearningDashboard({
           </CardHeader>
           {/* STATS CARDS - LEADERBOARD PATTERN */}
           <CardContent className="p-6">
-            <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200">
-              <div className="flex items-center gap-2 mb-3">
-                <Timer className="w-5 h-5 text-blue-600" />
-                <h3 className="text-lg font-black text-blue-900">
-                  {type === 'LIVECLASS'
-                    ? 'Liveclass'
-                    : type === 'LIVESTREAM'
-                      ? 'Livestream'
-                      : 'Webinar'}{' '}
-                  Mendatang
-                </h3>
+            {/* Attendance Stats */}
+            {attendanceReport?.summary && attendanceReport.summary.total > 0 && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <UserCheck className="w-5 h-5 text-emerald-600" />
+                  <h3 className="text-lg font-black text-gray-900">
+                    Statistik Kehadiran
+                  </h3>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  <div className="bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                      <span className="text-xs font-bold text-emerald-700">Hadir</span>
+                    </div>
+                    <p className="text-2xl font-black text-emerald-900">
+                      {attendanceReport.summary.present}
+                    </p>
+                  </div>
+                  <div className="bg-yellow-50 rounded-2xl p-4 border-2 border-yellow-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <AlertCircle className="w-4 h-4 text-yellow-600" />
+                      <span className="text-xs font-bold text-yellow-700">Terlambat</span>
+                    </div>
+                    <p className="text-2xl font-black text-yellow-900">
+                      {attendanceReport.summary.late}
+                    </p>
+                  </div>
+                  <div className="bg-red-50 rounded-2xl p-4 border-2 border-red-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <XCircle className="w-4 h-4 text-red-600" />
+                      <span className="text-xs font-bold text-red-700">Tidak Hadir</span>
+                    </div>
+                    <p className="text-2xl font-black text-red-900">
+                      {attendanceReport.summary.absent}
+                    </p>
+                  </div>
+                  <div className="bg-blue-50 rounded-2xl p-4 border-2 border-blue-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Clock className="w-4 h-4 text-blue-600" />
+                      <span className="text-xs font-bold text-blue-700">Akan Datang</span>
+                    </div>
+                    <p className="text-2xl font-black text-blue-900">
+                      {attendanceReport.summary.upcoming}
+                    </p>
+                  </div>
+                  <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 border-2 border-indigo-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Target className="w-4 h-4 text-indigo-600" />
+                      <span className="text-xs font-bold text-indigo-700">Tingkat Kehadiran</span>
+                    </div>
+                    <p className="text-2xl font-black text-indigo-900">
+                      {attendanceReport.summary.attendanceRate}%
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                {LiveClassAvailable?.map((liveClass) => (
-                  <UpcomingCard
-                    key={liveClass.id}
-                    liveClass={liveClass}
-                  />
-                ))}
+            )}
+
+            {/* Upcoming Live Classes - Responsive Grid */}
+            {LiveClassAvailable && LiveClassAvailable.length > 0 && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <Timer className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-black text-gray-900">{typeLabel} Mendatang</h3>
+                      <p className="text-sm text-gray-500">{LiveClassAvailable.length} kelas tersedia</p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-blue-600 font-bold hover:bg-blue-50"
+                    onClick={() => setActiveTab('available')}
+                  >
+                    Lihat Semua →
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {LiveClassAvailable.slice(0, 4).map((liveClass, index) => (
+                    <UpcomingCard
+                      key={liveClass.id}
+                      liveClass={liveClass}
+                      index={index}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
@@ -308,19 +403,6 @@ export default function LiveLearningDashboard({
                       Tampilan:
                     </span>
                     <div className="flex bg-gray-100 rounded-2xl p-1 border-2 border-gray-200">
-                      <button
-                        onClick={() => setViewMode('list')}
-                        className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
-                          viewMode === 'list'
-                            ? 'bg-white text-gray-900 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <BookOpen className="w-4 h-4" />
-                          <span className="hidden sm:inline">List</span>
-                        </div>
-                      </button>
                       <button
                         onClick={() => setViewMode('grid')}
                         className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
@@ -411,12 +493,7 @@ export default function LiveLearningDashboard({
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline font-bold">
-                {type === 'LIVECLASS'
-                  ? 'Liveclass'
-                  : type === 'LIVESTREAM'
-                    ? 'Livestream'
-                    : 'Webinar'}{' '}
-                Tersedia
+                {typeLabel} Tersedia
               </span>
               <span className="sm:hidden font-bold">Semua</span>
               <NotificationBadge
@@ -691,89 +768,82 @@ export default function LiveLearningDashboard({
   );
 }
 
-const UpcomingCard = ({ liveClass }: { liveClass: LiveLearningDataType }) => {
+const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; index?: number }) => {
   const timeLeft = useCountdown(liveClass.startDate);
+  const colors = [
+    { bg: 'from-blue-500 to-indigo-600', light: 'bg-blue-50 border-blue-200', text: 'text-blue-700' },
+    { bg: 'from-purple-500 to-pink-600', light: 'bg-purple-50 border-purple-200', text: 'text-purple-700' },
+    { bg: 'from-emerald-500 to-teal-600', light: 'bg-emerald-50 border-emerald-200', text: 'text-emerald-700' },
+    { bg: 'from-orange-500 to-red-600', light: 'bg-orange-50 border-orange-200', text: 'text-orange-700' },
+  ];
+  const color = colors[(index ?? 0) % colors.length];
 
   return (
-    <div className="quick-action-card bg-white rounded-lg border p-3 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-2">
-        <h4 className="font-semibold text-sm line-clamp-2 flex-1 pr-2">
-          {liveClass.title}
-        </h4>
-        <div className="flex flex-col items-end gap-1">
-          <Badge className="status-badge text-xs bg-blue-100 text-blue-800 border-blue-300 shrink-0">
-            {liveClass.status}
-          </Badge>
-          <div className="text-xs font-mono text-gray-500">
-            #{liveClass.id.slice(-6).toUpperCase()}
+    <Card className={`group hover:shadow-lg transition-all duration-300 border-2 ${color.light} rounded-2xl overflow-hidden`}>
+      <CardContent className="p-0">
+        <div className={`h-2 bg-gradient-to-r ${color.bg}`} />
+        <div className="p-4 space-y-3">
+          <div className="flex items-start justify-between">
+            <Badge className={`${color.light} ${color.text} border font-bold text-xs`}>
+              {liveClass.status}
+            </Badge>
+            <span className="text-xs font-mono text-gray-400">
+              #{liveClass.id.slice(-4).toUpperCase()}
+            </span>
           </div>
-        </div>
-      </div>
-      <div className="text-xs text-gray-600 mb-2">
-        <div className="flex items-center gap-1 mb-1">
-          <Clock className="h-3 w-3" />
-          <span>{formatDateTime(liveClass.startDate)}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <Users className="h-3 w-3" />
-          <span>{liveClass.Instructor.name}</span>
-        </div>
-      </div>
-      {!timeLeft.isExpired && (
-        <div className="mb-3">
-          <div className="text-xs text-gray-500 mb-1">Dimulai dalam:</div>
-          <div className="flex gap-1">
-            {timeLeft.days > 0 && (
-              <div className="bg-gray-100 rounded px-2 py-1">
-                <div className="text-xs font-bold">{timeLeft.days}</div>
-                <div className="text-xs text-gray-500">hari</div>
-              </div>
-            )}
-            <div className="bg-gray-100 rounded px-2 py-1">
-              <div className="text-xs font-bold">
-                {timeLeft.hours.toString().padStart(2, '0')}
-              </div>
-              <div className="text-xs text-gray-500">jam</div>
-            </div>
-            <div className="bg-gray-100 rounded px-2 py-1">
-              <div className="text-xs font-bold">
-                {timeLeft.minutes.toString().padStart(2, '0')}
-              </div>
-              <div className="text-xs text-gray-500">mnt</div>
-            </div>
+          
+          <h4 className="font-black text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
+            {liveClass.title}
+          </h4>
+          
+          <div className="flex items-center gap-2">
+            <Avatar className="h-6 w-6 border border-gray-200">
+              <AvatarImage src={liveClass.Instructor.image || undefined} />
+              <AvatarFallback className="text-xs font-bold">
+                {liveClass.Instructor.name.split(' ').map((n) => n[0]).join('')}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-semibold text-gray-700 truncate">
+              {liveClass.Instructor.name}
+            </span>
           </div>
+
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <Calendar className="h-3 w-3" />
+            <span>{formatDateTime(liveClass.startDate)}</span>
+          </div>
+
+          {!timeLeft.isExpired && (
+            <div className="bg-gray-50 rounded-xl p-2 border border-gray-100">
+              <div className="text-xs text-gray-500 mb-1 text-center font-semibold">Dimulai dalam</div>
+              <div className="flex justify-center gap-2">
+                {timeLeft.days > 0 && (
+                  <div className="text-center">
+                    <div className="text-lg font-black text-gray-900">{timeLeft.days}</div>
+                    <div className="text-xs text-gray-500">hari</div>
+                  </div>
+                )}
+                <div className="text-center">
+                  <div className="text-lg font-black text-gray-900">{timeLeft.hours.toString().padStart(2, '0')}</div>
+                  <div className="text-xs text-gray-500">jam</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-black text-gray-900">{timeLeft.minutes.toString().padStart(2, '0')}</div>
+                  <div className="text-xs text-gray-500">mnt</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <Link href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}>
+            <Button variant="outline" size="sm" className="w-full h-9 font-bold rounded-xl border-2 hover:bg-gray-50">
+              <Eye className="h-4 w-4 mr-2" />
+              Lihat Detail
+            </Button>
+          </Link>
         </div>
-      )}
-      <div className="flex gap-2">
-        {/* {liveClass.canJoin && (
-                            <Button
-                              size="sm"
-                              onClick={() => handleJoinClass(liveClass)}
-                              className="flex-1 h-7 text-xs"
-                            >
-                              {liveClass.status === 'Sedang Berlangsung' ? (
-                                <>
-                                  <Video className="mr-1 h-3 w-3" />
-                                  Join Live
-                                </>
-                              ) : (
-                                'Bergabung'
-                              )}
-                            </Button>
-                          )} */}
-        <Link
-          href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}
-        >
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 px-2 bg-transparent"
-          >
-            <Eye className="h-3 w-3" />
-          </Button>
-        </Link>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -783,7 +853,7 @@ function LiveClassCard({
   onRate,
   onUpgrade,
   showPlanInfo = false,
-  viewMode = 'list',
+  viewMode = 'grid',
   variant = 'accessible', // NEW: Default variant
   isRegistrationStep = false,
   onFinishRegistered,
@@ -793,7 +863,7 @@ function LiveClassCard({
   onRate: (liveClass: LiveLearningDataType) => void;
   onUpgrade?: (liveClass: any) => void;
   showPlanInfo?: boolean;
-  viewMode?: 'list' | 'grid' | 'calendar';
+  viewMode?: 'grid' | 'calendar';
   variant?: 'accessible' | 'preview' | 'locked';
   isRegistrationStep?: boolean;
   onFinishRegistered?: () => Promise<void>;
