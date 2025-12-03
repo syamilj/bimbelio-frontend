@@ -65,6 +65,7 @@ interface InstallmentSchedule {
   id: string;
   installmentNumber: string;
   daysAfterFirstPayment: string;
+  expireDaysAfterFirstPayment: string;
   amount: string;
   description?: string;
   lateFeeType: LateFeeType;
@@ -134,6 +135,7 @@ export default function Provider({ children }: Props) {
           id: crypto.randomUUID(),
           installmentNumber: '1',
           daysAfterFirstPayment: '0',
+          expireDaysAfterFirstPayment: '0',
           amount: '0',
           description: '',
           lateFeeType: 'NONE',

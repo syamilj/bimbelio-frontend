@@ -74,6 +74,13 @@ const SidebarRoute: FC = () => {
     },
     {
       icon: CreditCard,
+      href: `/${website_sub_category_id}/admin/installment`,
+      label: 'Cicilan',
+      description: 'List cicilan user',
+      category: 'User Management',
+    },
+    {
+      icon: CreditCard,
       href: `/${website_sub_category_id}/admin/voucher`,
       label: 'Voucher',
       description: 'Voucher Management',

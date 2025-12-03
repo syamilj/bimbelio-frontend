@@ -10,6 +10,7 @@ export type SubscriptionInstallmentLimitation = {
 
 export type SubscriptionInstallment = {
   id: string;
+  userId: string;
   createdAt: string;
   updatedAt: string;
   installmentNumber: number;
@@ -17,6 +18,7 @@ export type SubscriptionInstallment = {
   lateFee: number;
   amountWithLateFee: number;
   dueDate: string;
+  expiredAccessDate: string;
   gracePeriodEndDate: string;
   reminderSentAt: string | null;
   reminderCount: number;
@@ -47,6 +49,7 @@ export type PlanInstallmentSchedule = {
   updatedAt: Date;
   installmentNumber: number;
   daysAfterFirstPayment: number;
+  expireDaysAfterFirstPayment: number;
   amount: number;
   lateFeeType: LateFeeTypeEnum;
   lateFeeAmount: number | null;

@@ -171,8 +171,8 @@ export const TabInstallment = ({
                       >
                         <CardContent className="p-4 md:p-6">
                           <div className="flex flex-col items-start gap-4">
-                            {/* Left Section */}
-                            <div className="flex items-start gap-3 md:gap-4 flex-1">
+                            {/* Top Section */}
+                            <div className="flex items-start gap-3 md:gap-4 w-full">
                               <div
                                 className="p-3 rounded-2xl flex-shrink-0 mt-1"
                                 style={{
@@ -198,7 +198,7 @@ export const TabInstallment = ({
                                 )}
                               </div>
 
-                              <div className="flex-1 min-w-0">
+                              <div className="w-full">
                                 <div className="flex items-center gap-2 mb-2">
                                   <p className="font-bold text-gray-900">
                                     Cicilan #{installmentItem.installmentNumber}
@@ -284,6 +284,52 @@ export const TabInstallment = ({
                                       </div>
                                     </div>
                                   )}
+                                  {/* Expired Access Date */}
+                                  {installmentItem.expiredAccessDate && (
+                                    <div className="flex items-center gap-2">
+                                      <span className="font-semibold text-gray-400 uppercase flex-shrink-0">
+                                        {installmentItem.installmentNumber !==
+                                        subscription.SubscriptionInstallment
+                                          .length
+                                          ? 'Akses Ditangguhkan'
+                                          : 'Akses Berakhir'}
+                                      </span>
+                                      <div
+                                        className="px-2 py-1 rounded-lg flex-1"
+                                        style={{
+                                          backgroundColor:
+                                            new Date(
+                                              installmentItem.expiredAccessDate,
+                                            ) < new Date()
+                                              ? '#fee2e2'
+                                              : '#fef3c7',
+                                        }}
+                                      >
+                                        <p
+                                          className="font-bold text-xs"
+                                          style={{
+                                            color:
+                                              new Date(
+                                                installmentItem.expiredAccessDate,
+                                              ) < new Date()
+                                                ? '#991b1b'
+                                                : '#92400e',
+                                          }}
+                                        >
+                                          {getDateString(
+                                            installmentItem.expiredAccessDate,
+                                          )}
+                                          {new Date(
+                                            installmentItem.expiredAccessDate,
+                                          ) < new Date() && (
+                                            <span className="text-red-600 ml-1">
+                                              (Sudah Berakhir)
+                                            </span>
+                                          )}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  )}
                                 </div>
 
                                 {/* Late Fee Info */}
@@ -345,7 +391,7 @@ export const TabInstallment = ({
                               </div>
                             </div>
 
-                            {/* Right Section - Action */}
+                            {/* Bottom Section - Action */}
                             <div className="flex justify-end gap-2 w-full">
                               {!installmentItem.isPaid && (
                                 <button

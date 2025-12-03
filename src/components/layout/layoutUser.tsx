@@ -46,6 +46,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import ProviderCheckLimitation from '../provider/provider-check-limitation';
+import ProviderCheckSubscriptionInstallment from '../provider/provider-check-subscription-installment';
 import ProviderCheckSubscriptionPending from '../provider/provider-check-subscription-pending';
 import { useUserLimitation } from '../provider/provider-limitation';
 import { Badge } from '../ui/badge';
@@ -144,47 +145,49 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
       <Suspense>
         <ProviderCheckSubscriptionPending>
           <ProviderCheckSubscription>
-            <ProviderCheckLimitation>
-              <SidebarUser
-                category={category}
-                isMobileSidebarOpen={sidebarMobile}
-                setIsMobileSidebarOpen={setSidebarMobile}
-              />
+            <ProviderCheckSubscriptionInstallment>
+              <ProviderCheckLimitation>
+                <SidebarUser
+                  category={category}
+                  isMobileSidebarOpen={sidebarMobile}
+                  setIsMobileSidebarOpen={setSidebarMobile}
+                />
 
-              {isMobile && (
-                <div
-                  className={`fixed top-0 block h-full overflow-hidden duration-200 md:hidden ${
-                    sidebarMobile
-                      ? 'left-0 w-[300px] z-10000'
-                      : 'left-[-310px] w-[300px] z-10000'
-                  }`}
-                >
-                  <Sidebar
-                    category={category}
-                    isMobileSidebarOpen={sidebarMobile}
-                    setIsMobileSidebarOpen={setSidebarMobile}
-                  />
-                </div>
-              )}
+                {isMobile && (
+                  <div
+                    className={`fixed top-0 block h-full overflow-hidden duration-200 md:hidden ${
+                      sidebarMobile
+                        ? 'left-0 w-[300px] z-10000'
+                        : 'left-[-310px] w-[300px] z-10000'
+                    }`}
+                  >
+                    <Sidebar
+                      category={category}
+                      isMobileSidebarOpen={sidebarMobile}
+                      setIsMobileSidebarOpen={setSidebarMobile}
+                    />
+                  </div>
+                )}
 
-              {/* MAIN CONTENT */}
-              <SidebarInset>
-                {!inWorkspace && <HeaderUser />}
-                <main
-                  className={cn(
-                    'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 min-h-screen w-full ',
-                    // docViewer => full fixed
-                    componentName === 'DocViewerPage' &&
-                      'fixed left-0 top-0 h-full w-full',
-                    // not in workspace => push down margin
-                    !inWorkspace &&
-                      'mt-[80px] pt-4 md:pl-12 md:pr-10 md:pt-12 min-h-[calc(100vh-80px)]',
-                  )}
-                >
-                  {children}
-                </main>
-              </SidebarInset>
-            </ProviderCheckLimitation>
+                {/* MAIN CONTENT */}
+                <SidebarInset>
+                  {!inWorkspace && <HeaderUser />}
+                  <main
+                    className={cn(
+                      'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 min-h-screen w-full ',
+                      // docViewer => full fixed
+                      componentName === 'DocViewerPage' &&
+                        'fixed left-0 top-0 h-full w-full',
+                      // not in workspace => push down margin
+                      !inWorkspace &&
+                        'mt-[80px] pt-4 md:pl-12 md:pr-10 md:pt-12 min-h-[calc(100vh-80px)]',
+                    )}
+                  >
+                    {children}
+                  </main>
+                </SidebarInset>
+              </ProviderCheckLimitation>
+            </ProviderCheckSubscriptionInstallment>
           </ProviderCheckSubscription>
         </ProviderCheckSubscriptionPending>
       </Suspense>

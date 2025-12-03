@@ -338,6 +338,8 @@ export default function UpdatePlanForm() {
                       lateFeeType: item.lateFeeType,
                       lateFeeAmount:
                         item.lateFeeAmount?.toString() || undefined,
+                      expireDaysAfterFirstPayment:
+                        item.expireDaysAfterFirstPayment.toString(),
                       PlanInstallmentScheduleLimitation:
                         item.PlanInstallmentScheduleLimitation
                           ? {
@@ -574,9 +576,10 @@ export default function UpdatePlanForm() {
                   return {
                     id: item.id,
                     installmentNumber: Number(item.installmentNumber),
-                    daysAfterFirstPayment: item.daysAfterFirstPayment
-                      ? Number(item.daysAfterFirstPayment)
-                      : undefined,
+                    daysAfterFirstPayment: Number(item.daysAfterFirstPayment),
+                    expireDaysAfterFirstPayment: Number(
+                      item.expireDaysAfterFirstPayment,
+                    ),
                     amount: Number(item.amount),
                     description: item.description,
                     lateFeeType: item.lateFeeType,
@@ -1900,6 +1903,7 @@ const SectionInstallment = () => {
       id: crypto.randomUUID(),
       installmentNumber: (config.InstallmentSchedules.length + 1).toString(),
       daysAfterFirstPayment: '0',
+      expireDaysAfterFirstPayment: '0',
       amount: '0',
       description: '',
       lateFeeType: 'NONE',
@@ -2173,13 +2177,25 @@ const SectionInstallment = () => {
                         placeholder="cth: 30"
                         required
                         value={schedule.daysAfterFirstPayment}
-                        onChange={(e) =>
+                        disabled={schedule.installmentNumber === '1'}
+                        onChange={(e) => {
                           updateScheduleRow(
                             schedule.id,
                             'daysAfterFirstPayment',
                             e.target.value,
-                          )
-                        }
+                          );
+
+                          const prevSchedule =
+                            config.InstallmentSchedules[index - 1] || null;
+
+                          if (prevSchedule) {
+                            updateScheduleRow(
+                              prevSchedule.id,
+                              'expireDaysAfterFirstPayment',
+                              e.target.value,
+                            );
+                          }
+                        }}
                       />
                     </div>
                     <div>
@@ -2208,6 +2224,30 @@ const SectionInstallment = () => {
                           updateScheduleRow(
                             schedule.id,
                             'description',
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="block mb-2">
+                        Hari Akses di tangguhkan{' '}
+                        <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="number"
+                        placeholder="cth: 30"
+                        required
+                        value={schedule.expireDaysAfterFirstPayment}
+                        disabled={
+                          schedule.installmentNumber !==
+                          config.InstallmentSchedules.length.toString()
+                        }
+                        onChange={(e) =>
+                          updateScheduleRow(
+                            schedule.id,
+                            'expireDaysAfterFirstPayment',
                             e.target.value,
                           )
                         }
