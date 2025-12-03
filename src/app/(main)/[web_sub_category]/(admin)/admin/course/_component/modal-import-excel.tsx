@@ -5,8 +5,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { toaster } from '@/components/ui/toaster';
+import { ParseMarkdownToHTML } from '@/lib/utils/editor';
+import { supabase } from '@/supabaseClient';
+import { useCreateBlockNote } from '@blocknote/react';
+import { Loader2 } from 'lucide-react';
+import Papa from 'papaparse';
 import React, { SetStateAction, useEffect, useState } from 'react';
-import * as XLSX from 'xlsx';
 import { QuestionProps, SubChapterProps } from '../new/page';
 
 const ModalImportExcel = ({
@@ -18,9 +22,10 @@ const ModalImportExcel = ({
   currentIndexEdit: number | null;
   assessmentType: string;
 }) => {
+  const editor = useCreateBlockNote();
   const [open, setOpen] = useState<boolean>(false);
   const [file, setFile] = useState<File | undefined>();
-  const [fileBuffer, setFileBuffer] = useState<string | ArrayBuffer | null>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -28,96 +33,316 @@ const ModalImportExcel = ({
   };
 
   useEffect(() => {
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onload = (e) => {
-        if (e.target) setFileBuffer(e.target.result);
-      };
-    }
-  }, [file]);
-
-  useEffect(() => {
     if (!open) {
       setFile(undefined);
-      setFileBuffer(undefined);
     }
   }, [open]);
 
-  const handleGenerate = () => {
-    if (fileBuffer) {
-      const workbook = XLSX.read(fileBuffer, { type: 'buffer' });
-      const worksheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[worksheetName];
-      const data: any[] = XLSX.utils.sheet_to_json(worksheet);
+  const handleGenerate = async () => {
+    setIsLoading(true);
+    try {
+      if (file) {
+        Papa.parse(file, {
+          header: true,
+          skipEmptyLines: true,
+          complete: async function (results: any) {
+            const data: any[] = results.data;
+            console.log('[Import CSV] 1 : ', { data, results });
 
-      let isAssesmentTypeValid = {
-        value: true,
-        number: 0,
-      };
-      let isValid = true;
-
-      console.log({ data });
-
-      isValid = validateFormat(data);
-
-      if (assessmentType !== '+5/0') {
-        toaster({
-          title: 'Upss',
-          condition: 'warning',
-          description: 'Assessment Type Tidak Valid!',
-        });
-        return;
-      }
-
-      if (!isValid) {
-        toaster({
-          title: 'Upss',
-          condition: 'warning',
-          description: 'Format Exel Tidak Valid!',
-        });
-        return;
-      }
-
-      const Questions = handleGenerateQuestions(data);
-      Questions.forEach((item) => {
-        const isCorrect =
-          item.Answers.find((item2) => item2.value === 5) || null;
-        if (!isCorrect) {
-          isAssesmentTypeValid = {
-            value: false,
-            number: item.number,
-          };
-        }
-      });
-      if (!isAssesmentTypeValid.value) {
-        toaster({
-          title: `Number ${isAssesmentTypeValid.number}`,
-          condition: 'warning',
-          description: 'Jawaban benar tidak ditemukan',
-          duration: 3000,
-        });
-        return;
-      }
-      setSubChapter((prev) =>
-        prev.map((session, sessionId) => {
-          if (sessionId === currentIndexEdit) {
-            return {
-              ...session,
-              Questions,
+            let isAssesmentTypeValid = {
+              value: true,
+              number: 0,
             };
-          }
-          return { ...session };
-        }),
-      );
-      setOpen(false);
-      return;
+            let isValid = true;
+
+            console.log({ data });
+
+            isValid = validateFormat(data);
+
+            if (assessmentType !== '+5/0') {
+              toaster({
+                title: 'Upss',
+                condition: 'warning',
+                description: 'Assessment Type Tidak Valid!',
+              });
+              return;
+            }
+
+            if (!isValid) {
+              toaster({
+                title: 'Upss',
+                condition: 'warning',
+                description: 'Format Exel Tidak Valid!',
+              });
+              return;
+            }
+
+            const QuestionsData = handleGenerateQuestions(data);
+            QuestionsData.forEach((item) => {
+              const isCorrect =
+                item.Answers.find((item2) => item2.value === 5) || null;
+              if (!isCorrect) {
+                isAssesmentTypeValid = {
+                  value: false,
+                  number: item.number,
+                };
+              }
+            });
+
+            const ParseQuestions = await Promise.all(
+              QuestionsData.map(async (item) => {
+                let questionValue = item.question;
+
+                const matches = [
+                  ...item.question.matchAll(
+                    /!\[.*?\]\((data:image\/.*?;base64,.*?)\)/g,
+                  ),
+                ];
+
+                for (const match of matches) {
+                  const fullMatch = match[0];
+                  const base64Data = match[1];
+
+                  const parsed = base64Data.match(
+                    /^data:(image\/\w+);base64,(.+)$/,
+                  );
+                  if (!parsed) continue;
+
+                  const mime = parsed[1];
+                  const ext = mime.split('/')[1];
+                  const base64 = parsed[2];
+
+                  const fileName = `${crypto.randomUUID()}.${ext}`;
+                  const buffer = Buffer.from(base64, 'base64');
+
+                  const { error } = await supabase.storage
+                    .from('dump-images')
+                    .upload(fileName, buffer, {
+                      contentType: mime,
+                      upsert: true,
+                    });
+
+                  if (error) {
+                    console.error('Upload error:', error);
+                    continue;
+                  }
+
+                  const { data: publicUrlData } = supabase.storage
+                    .from('dump-images')
+                    .getPublicUrl(fileName);
+
+                  const publicUrl = publicUrlData?.publicUrl || '';
+
+                  questionValue = questionValue.replace(
+                    fullMatch,
+                    `![Gambar](${publicUrl})`,
+                  );
+                }
+
+                return {
+                  ...item,
+                  question: await ParseMarkdownToHTML(questionValue, editor),
+                  Answers: await Promise.all(
+                    item.Answers.map(async (aItem) => {
+                      return {
+                        ...aItem,
+                        answer: await ParseMarkdownToHTML(aItem.answer, editor),
+                      };
+                    }),
+                  ),
+                  explanation: await ParseMarkdownToHTML(
+                    item.explanation || '',
+                    editor,
+                  ),
+                };
+              }),
+            );
+            if (!isAssesmentTypeValid.value) {
+              toaster({
+                title: `Number ${isAssesmentTypeValid.number}`,
+                condition: 'warning',
+                description: 'Jawaban benar tidak ditemukan',
+                duration: 3000,
+              });
+              return;
+            }
+            setSubChapter((prev) =>
+              prev.map((session, sessionId) => {
+                if (sessionId === currentIndexEdit) {
+                  return {
+                    ...session,
+                    Questions: ParseQuestions,
+                  };
+                }
+                return { ...session };
+              }),
+            );
+            setOpen(false);
+            setIsLoading(false);
+            return;
+          },
+          error: function (error: any) {
+            console.error(error);
+            toaster({
+              title: 'Upss',
+              condition: 'warning',
+              description: 'Gagal membaca file CSV!',
+            });
+            setIsLoading(false);
+          },
+        });
+      }
+      // if (fileBuffer) {
+      //   const workbook = XLSX.read(fileBuffer, { type: 'buffer' });
+      //   const worksheetName = workbook.SheetNames[0];
+      //   const worksheet = workbook.Sheets[worksheetName];
+      //   const data: any[] = XLSX.utils.sheet_to_json(worksheet);
+
+      //   let isAssesmentTypeValid = {
+      //     value: true,
+      //     number: 0,
+      //   };
+      //   let isValid = true;
+
+      //   console.log({ data });
+
+      //   isValid = validateFormat(data);
+
+      //   if (assessmentType !== '+5/0') {
+      //     toaster({
+      //       title: 'Upss',
+      //       condition: 'warning',
+      //       description: 'Assessment Type Tidak Valid!',
+      //     });
+      //     return;
+      //   }
+
+      //   if (!isValid) {
+      //     toaster({
+      //       title: 'Upss',
+      //       condition: 'warning',
+      //       description: 'Format Exel Tidak Valid!',
+      //     });
+      //     return;
+      //   }
+
+      //   const QuestionsData = handleGenerateQuestions(data);
+      //   QuestionsData.forEach((item) => {
+      //     const isCorrect =
+      //       item.Answers.find((item2) => item2.value === 5) || null;
+      //     if (!isCorrect) {
+      //       isAssesmentTypeValid = {
+      //         value: false,
+      //         number: item.number,
+      //       };
+      //     }
+      //   });
+
+      //   const ParseQuestions = await Promise.all(
+      //     QuestionsData.map(async (item) => {
+      //       let questionValue = item.question;
+
+      //       const matches = [
+      //         ...item.question.matchAll(
+      //           /!\[.*?\]\((data:image\/.*?;base64,.*?)\)/g,
+      //         ),
+      //       ];
+
+      //       for (const match of matches) {
+      //         const fullMatch = match[0];
+      //         const base64Data = match[1];
+
+      //         const parsed = base64Data.match(
+      //           /^data:(image\/\w+);base64,(.+)$/,
+      //         );
+      //         if (!parsed) continue;
+
+      //         const mime = parsed[1];
+      //         const ext = mime.split('/')[1];
+      //         const base64 = parsed[2];
+
+      //         const fileName = `${crypto.randomUUID()}.${ext}`;
+      //         const buffer = Buffer.from(base64, 'base64');
+
+      //         const { error } = await supabase.storage
+      //           .from('dump-images')
+      //           .upload(fileName, buffer, {
+      //             contentType: mime,
+      //             upsert: true,
+      //           });
+
+      //         if (error) {
+      //           console.error('Upload error:', error);
+      //           continue;
+      //         }
+
+      //         const { data: publicUrlData } = supabase.storage
+      //           .from('dump-images')
+      //           .getPublicUrl(fileName);
+
+      //         const publicUrl = publicUrlData?.publicUrl || '';
+
+      //         questionValue = questionValue.replace(
+      //           fullMatch,
+      //           `![Gambar](${publicUrl})`,
+      //         );
+      //       }
+
+      //       return {
+      //         ...item,
+      //         question: await ParseMarkdownToHTML(questionValue, editor),
+      //         Answers: await Promise.all(
+      //           item.Answers.map(async (aItem) => {
+      //             return {
+      //               ...aItem,
+      //               answer: await ParseMarkdownToHTML(aItem.answer, editor),
+      //             };
+      //           }),
+      //         ),
+      //         explanation: await ParseMarkdownToHTML(
+      //           item.explanation || '',
+      //           editor,
+      //         ),
+      //       };
+      //     }),
+      //   );
+      //   if (!isAssesmentTypeValid.value) {
+      //     toaster({
+      //       title: `Number ${isAssesmentTypeValid.number}`,
+      //       condition: 'warning',
+      //       description: 'Jawaban benar tidak ditemukan',
+      //       duration: 3000,
+      //     });
+      //     return;
+      //   }
+      //   setSubChapter((prev) =>
+      //     prev.map((session, sessionId) => {
+      //       if (sessionId === currentIndexEdit) {
+      //         return {
+      //           ...session,
+      //           Questions: ParseQuestions,
+      //         };
+      //       }
+      //       return { ...session };
+      //     }),
+      //   );
+      //   setOpen(false);
+      //   return;
+      // }
+    } catch (error: any) {
+      setIsLoading(false);
+      console.error('Error processing file:', error);
+      toaster({
+        title: 'Upss',
+        condition: 'warning',
+        description: JSON.stringify(error?.message),
+      });
     }
   };
 
   return (
     <Dialog
-      open={open}
+      open={isLoading ? true : open}
       onOpenChange={setOpen}
     >
       <DialogTrigger>
@@ -150,12 +375,17 @@ const ModalImportExcel = ({
               onChange={(e) => handleChangeFile(e)}
             />
             {file ? (
-              <div
+              <button
                 className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"
                 onClick={handleGenerate}
+                disabled={isLoading}
               >
-                Generate
-              </div>
+                {isLoading ? (
+                  <Loader2 className="animate-spin w-4 h-4 mx-auto" />
+                ) : (
+                  'Generate'
+                )}
+              </button>
             ) : (
               <div
                 className="w-full shrink-0 cursor-pointer rounded-[.8rem] bg-blue-100 py-[.8rem] font-medium text-blue-700 duration-300 md:hover:bg-blue-200 md:active:bg-blue-100"

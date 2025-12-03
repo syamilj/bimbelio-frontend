@@ -12,6 +12,7 @@ import { supabase } from '@/supabaseClient';
 import { Category } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { ArrowLeft, Check, Save } from 'lucide-react';
+import LZString from 'lz-string';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ChapterOption from './_component/chapter-option';
@@ -138,7 +139,10 @@ const Index = () => {
   }, [assessmentType]);
 
   useEffect(() => {
-    const saveDataString = localStorage.getItem(`temporary-course`);
+    // const saveDataString = localStorage.getItem(`temporary-course`);
+    const saveDataString = LZString.decompress(
+      localStorage.getItem(`temporary-course`) || '',
+    );
     if (saveDataString) {
       const saveData = JSON.parse(saveDataString);
       setChapter({ ...saveData.chapter });
@@ -152,8 +156,14 @@ const Index = () => {
       chapter,
       subChapter,
     };
-    if (chapter) {
-      localStorage.setItem(`temporary-course`, JSON.stringify(saveData));
+    const compressed = LZString.compress(JSON.stringify(saveData));
+
+    if (chapter && compressed) {
+      try {
+        localStorage.setItem(`temporary-course`, compressed);
+      } catch (error) {
+        console.error('Failed to save data to localStorage:', error);
+      }
     }
   }, [chapter, subChapter]);
 

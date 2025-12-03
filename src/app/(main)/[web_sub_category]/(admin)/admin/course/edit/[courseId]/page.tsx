@@ -11,6 +11,7 @@ import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { Category } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { ArrowLeft, Check, Save } from 'lucide-react';
+import LZString from 'lz-string';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ChapterOption from './_component/chapter-option';
@@ -136,8 +137,11 @@ const Index = () => {
   }, [assessmentType]);
 
   useEffect(() => {
-    const saveDataString = localStorage.getItem(
-      `temporary-course-${courseId}-${courseId}`,
+    // const saveDataString = localStorage.getItem(
+    //   `temporary-course-${courseId}-${courseId}`,
+    // );
+    const saveDataString = LZString.decompress(
+      localStorage.getItem(`temporary-course-${courseId}-${courseId}`) || '',
     );
     if (saveDataString) {
       const saveData = JSON.parse(saveDataString);
@@ -152,11 +156,16 @@ const Index = () => {
       chapter,
       subChapter,
     };
-    if (chapter) {
-      localStorage.setItem(
-        `temporary-course-${courseId}-${courseId}`,
-        JSON.stringify(saveData),
-      );
+    const compressed = LZString.compress(JSON.stringify(saveData));
+    if (chapter && compressed) {
+      try {
+        localStorage.setItem(
+          `temporary-course-${courseId}-${courseId}`,
+          compressed,
+        );
+      } catch (error) {
+        console.error('Failed to save data to localStorage:', error);
+      }
     }
   }, [chapter, subChapter]);
 
