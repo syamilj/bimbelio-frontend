@@ -188,7 +188,7 @@ const HeroSection: React.FC = () => {
             {/* Sub CTA Buttons - Redesigned dengan style modern */}
             <div className="flex flex-wrap justify-center gap-3 md:gap-4 mt-3 md:mt-4">
               <a
-                href="https://www.bimbelio.com/l/wa-grup"
+                href="https://www.bimbelio.com/link/komunitas"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-fit"
