@@ -8,6 +8,8 @@ type InputImageProps = {
   // showPreview?: boolean;
   placeholder?: string;
   required?: boolean;
+  id?: string;
+  name?: string;
 };
 
 export function InputImage({
@@ -16,8 +18,10 @@ export function InputImage({
   // showPreview,
   placeholder,
   required,
+  id,
+  name,
 }: InputImageProps) {
-  const inputId = crypto.randomUUID();
+  const inputId = id || crypto.randomUUID();
   const [isHover, setIsHover] = useState<boolean>(false);
   const [PreviewImg, setPreviewImg] = useState<string | null>(null);
 
@@ -41,6 +45,7 @@ export function InputImage({
     >
       <input
         id={`${inputId}`}
+        name={name}
         type="file"
         className={cn('sr-only', 'top-0 bottom-0')}
         onChange={(e) => {

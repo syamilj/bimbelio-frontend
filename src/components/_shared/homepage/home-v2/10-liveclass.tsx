@@ -149,13 +149,26 @@ const LiveClassSection: React.FC = () => {
                     <CardContent className="p-0">
                       {/* Header with status */}
                       <div
-                        className="h-24 relative flex items-center justify-center"
+                        className={cn(
+                          'h-24 relative flex items-center justify-center',
+                          liveClass.image && 'h-full',
+                        )}
                         style={{ backgroundColor: `${mainColor}10` }}
                       >
-                        <PlayCircle
-                          className="w-12 h-12"
-                          style={{ color: mainColor }}
-                        />
+                        {!liveClass.image && (
+                          <PlayCircle
+                            className="w-12 h-12"
+                            style={{ color: mainColor }}
+                          />
+                        )}
+                        {liveClass.image && (
+                          <Image
+                            src={liveClass.image}
+                            alt={liveClass.title}
+                            width={400}
+                            height={96}
+                          />
+                        )}
                         <div className="absolute top-3 right-3">
                           <span
                             className="px-3 py-1 rounded-full text-xs font-semibold text-white"

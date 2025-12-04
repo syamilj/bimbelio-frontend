@@ -33,6 +33,8 @@ import {
   formatDuration,
 } from '@/lib/mock-data/live-class';
 import { cn } from '@/lib/utils';
+import { sanitizeFileName } from '@/lib/utils/storage';
+import { supabase } from '@/supabaseClient';
 import { Category, Instructor, LiveClass } from '@/types/database';
 import {
   AccessibilityIcon,
@@ -93,8 +95,14 @@ export function LiveClassTable({
   });
 
   const { mutate: DeleteLiveClass, isLoading: DeleteLiveClassIsLoading } =
-    useMutation('/liveClass/deleteLiveClass', 'delete', {
-      onSuccess() {
+    useMutation<{ title: string }>('/liveClass/deleteLiveClass', 'delete', {
+      async onSuccess({ data }) {
+        if (data?.title) {
+          supabase.storage
+            .from('img')
+            .remove([`live-learning/${sanitizeFileName(data.title)}`]);
+        }
+
         LiveClassRefetch();
       },
     });
