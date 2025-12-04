@@ -191,6 +191,8 @@ export const getHours = (date: any) => {
   }`;
 };
 export const getHoursDetail = (date: any) => {
+  if (!date) return '-';
+
   const Dates = new Date(date);
   const hours = Dates.getHours();
   const minute = Dates.getMinutes();

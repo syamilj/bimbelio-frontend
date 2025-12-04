@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import ListPagination from '@/components/ui/list-pagination';
+import { ModalVerification } from '@/components/ui/modal-verification';
 import {
   Table,
   TableBody,
@@ -31,7 +32,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { cn, getDateString } from '@/lib/utils';
+import { useMutation } from '@/lib/fetch-helper/useMutation';
+import { cn, getDateString, getHoursDetail } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
 import { exportToExcel } from '@/lib/utils/excel';
 import {
@@ -53,17 +55,18 @@ export default function InstallmentPage() {
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState('');
 
-  const { data: installmentUser, totalPages } = useGet<DataType>(
-    '/payment/getInstallment',
-    {
-      params: {
-        page,
-        take,
-        search: search.length > 0 ? search : undefined,
-      },
-      useEffectDependencies: [take, page, search],
+  const {
+    data: installmentUser,
+    totalPages,
+    refetch,
+  } = useGet<DataType>('/payment/getInstallment', {
+    params: {
+      page,
+      take,
+      search: search.length > 0 ? search : undefined,
     },
-  );
+    useEffectDependencies: [take, page, search],
+  });
 
   console.log({ installmentUser });
 
@@ -160,6 +163,8 @@ export default function InstallmentPage() {
                   <TableHead>Nominal</TableHead>
                   <TableHead>Jatuh Tempo</TableHead>
                   <TableHead>Akses Berakhir</TableHead>
+                  <TableHead>Reminder Dikirim</TableHead>
+                  <TableHead>Jumlah Reminder</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Aksi</TableHead>
                 </TableRow>
@@ -269,6 +274,36 @@ export default function InstallmentPage() {
                               {getDateString(installment.expiredAccessDate)}
                             </TableCell>
                             <TableCell
+                              className={cn(
+                                'text-black/70',
+                                isLastInstallment && 'border-b',
+                              )}
+                            >
+                              <div className="flex flex-col">
+                                <span className="font-medium">
+                                  {installment.reminderSentAt
+                                    ? getDateString(installment.reminderSentAt)
+                                    : '-'}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  {getHoursDetail(installment.reminderSentAt)}
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell
+                              className={cn(
+                                'text-center',
+                                isLastInstallment && 'border-b',
+                              )}
+                            >
+                              <Badge
+                                variant="outline"
+                                className="text-xs"
+                              >
+                                {installment.reminderCount}x
+                              </Badge>
+                            </TableCell>
+                            <TableCell
                               className={cn(isLastInstallment && 'border-b')}
                             >
                               <Badge className={status.color}>
@@ -281,18 +316,27 @@ export default function InstallmentPage() {
                                 isLastInstallment && 'border-b',
                               )}
                             >
-                              <DetailInstallment
-                                user={user}
-                                installment={installment}
-                              >
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="text-blue-600 hover:text-blue-700"
+                              <div className="flex items-center gap-2 justify-end">
+                                {!installment.isPaid && (
+                                  <RemindButton
+                                    installment={installment}
+                                    user={user}
+                                    refetch={refetch}
+                                  />
+                                )}
+                                <DetailInstallment
+                                  user={user}
+                                  installment={installment}
                                 >
-                                  Detail
-                                </Button>
-                              </DetailInstallment>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-blue-600 hover:text-blue-700"
+                                  >
+                                    Detail
+                                  </Button>
+                                </DetailInstallment>
+                              </div>
                             </TableCell>
                           </TableRow>
                         );
@@ -328,6 +372,51 @@ export default function InstallmentPage() {
     </>
   );
 }
+
+const RemindButton = ({
+  installment,
+  user,
+  refetch,
+}: {
+  installment: SubscriptionInstallment & {
+    SubscriptionInstallmentLimitation: SubscriptionInstallmentLimitation | null;
+  };
+  user: User;
+  refetch: () => Promise<any>;
+}) => {
+  const { mutate: sendInstallmentReminder, isLoading } = useMutation(
+    '/user/sendInstallmentReminder',
+    'post',
+    {
+      payload: {
+        subInstallmentId: installment.id,
+        userId: user.id,
+      },
+      async onSuccess() {
+        await refetch();
+      },
+    },
+  );
+
+  return (
+    <ModalVerification
+      onClick={sendInstallmentReminder}
+      isLoading={isLoading}
+      type="submit"
+      title="Ingatkan User"
+      description={`Kirimkan reminder pembayaran cicilan #${installment.installmentNumber} kepada ${user.name}?`}
+      submitTitle="Kirim Reminder"
+    >
+      <Button
+        variant="outline"
+        size="sm"
+        className="text-orange-600 hover:text-orange-700 border-orange-200"
+      >
+        Ingatkan
+      </Button>
+    </ModalVerification>
+  );
+};
 
 const DetailInstallment = ({
   user,
