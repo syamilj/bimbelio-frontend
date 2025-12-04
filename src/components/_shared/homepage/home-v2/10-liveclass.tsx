@@ -1,17 +1,11 @@
 'use client';
 
-import { useCountdown } from '@/app/(main)/[web_sub_category]/(user)/user/live-learning/_components/live-class-hooks';
-import { CountdownTimer } from '@/app/(main)/[web_sub_category]/(user)/user/live-learning/_components/live-class-shared-components';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { cn, formatDateTime, formatDuration } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import {
   Category,
   CourseSubChapter,
@@ -20,10 +14,10 @@ import {
   LiveClassAgenda,
   LiveClassReference,
 } from '@/types/database';
-import { Calendar, Clock, Crown, Eye, PlayCircle, Users, Video } from 'lucide-react';
+import { Calendar, Clock, PlayCircle, Video } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 type LiveLearningDataType = LiveClass & {
   Instructor: Instructor;
@@ -44,46 +38,46 @@ type LiveLearningDataType = LiveClass & {
   isRegistered?: boolean;
 };
 
-const LiveLearningSection: React.FC = () => {
+const LiveClassSection: React.FC = () => {
+  const { setShowAuth } = useGuest();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const href = searchParams?.get('href');
+  const pathname = usePathname();
 
-  const ref = useRef(null);
-
-  const { data: cards, isLoading } = useGet<LiveLearningDataType[]>(
+  const { data: liveClasses, isLoading } = useGet<LiveLearningDataType[]>(
     '/liveClass/getAllLiveClassForLandingPage',
-    {
-      params: { take: 3, page: 1 },
-    },
+    { params: { take: 3, page: 1 } },
   );
 
-  useEffect(() => {
-    if (href && href?.length > 0) {
-      router.push(href);
-    }
-  }, [href]);
-
-  const pathname = usePathname();
   const isMainLandingPage = pathname === '/';
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');
 
+  if (!isLoading && (!liveClasses || liveClasses.length === 0)) {
+    return null;
+  }
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'LIVE':
+        return { label: 'LIVE', color: '#EF4444' };
+      case 'UPCOMING':
+        return { label: 'Upcoming', color: mainColor };
+      default:
+        return { label: 'Selesai', color: '#6B7280' };
+    }
+  };
+
   return (
     <section
-      id="live-learning"
+      id="live-class"
       className={cn(
-        'py-16 md:py-20 px-4 bg-gray-50/50',
-        !isLoading && cards?.length === 0 && 'hidden',
+        'py-16 md:py-20 px-4 bg-white',
+        !isLoading && (!liveClasses || liveClasses.length === 0) && 'hidden',
       )}
     >
-      <div
-        className="max-w-5xl mx-auto"
-        ref={ref}
-      >
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
           <span
@@ -91,37 +85,60 @@ const LiveLearningSection: React.FC = () => {
             style={{ backgroundColor: mainColor }}
           >
             <Video className="w-4 h-4" />
-            Live Learning
+            Live Class
           </span>
 
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Belajar Bareng{' '}
-            <span style={{ color: mainColor }}>Tutor Expert</span>
+            <span style={{ color: mainColor }}>Tutor Alumni PTN</span>
           </h2>
 
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Kelas live interaktif dengan tutor berpengalaman. Tanya langsung,
-            dapat pembahasan real-time, dan akses rekaman selamanya.
+            198+ sesi live class interaktif. Tanya langsung, diskusi real-time,
+            bukan cuma nonton video.
           </p>
         </div>
 
-        {/* Cards Grid */}
-        <div
-          className={cn(
-            'grid gap-5 mb-8',
-            cards?.length === 1 && !isLoading
-              ? 'grid-cols-1 max-w-md mx-auto'
-              : cards?.length === 2 && !isLoading
-                ? 'grid-cols-1 md:grid-cols-2 max-w-2xl mx-auto'
-                : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3',
-          )}
-        >
-          {/* Loading State */}
-          {isLoading
-            ? Array.from({ length: 3 }).map((_, index) => (
+        {/* Live Class Cards */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[1, 2, 3].map((i) => (
+              <Card
+                key={i}
+                className="overflow-hidden rounded-2xl"
+              >
+                <CardContent className="p-0">
+                  <div className="h-32 bg-gray-200 animate-pulse" />
+                  <div className="p-4 space-y-3">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse" />
+                    <div className="h-6 bg-gray-200 rounded animate-pulse" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {liveClasses?.slice(0, 3).map((liveClass) => {
+              const status = getStatusLabel(liveClass.status);
+              const href = `/${liveClass.websiteSubCategoryId}/user/live-learning/detail/${liveClass.id}?liveLearningId=${liveClass.id}`;
+              const linkId = `live-class-link-${liveClass.id}`;
+
+              return (
                 <div
-                  key={index}
-                  className="bg-white rounded-2xl border border-gray-200 animate-pulse overflow-hidden"
+                  key={liveClass.id}
+                  className="group cursor-pointer"
+                  onClick={() => {
+                    if (!session) {
+                      setShowAuth({
+                        open: true,
+                        redirect: href,
+                      });
+                    } else {
+                      const linkElement = document.getElementById(linkId);
+                      linkElement?.click();
+                    }
+                  }}
                 >
                   <Link
                     hidden
@@ -161,248 +178,99 @@ const LiveLearningSection: React.FC = () => {
                           </span>
                         </div>
                       </div>
-                    </div>
-                    <div className="h-5 bg-gray-100 rounded w-full" />
-                    <div className="h-4 bg-gray-100 rounded w-2/3" />
-                    <div className="h-10 bg-gray-100 rounded mt-4" />
-                  </div>
-                </div>
-              ))
-            : cards?.map((liveClass) => (
-                <LiveClassCard
-                  key={liveClass.id}
-                  liveClass={liveClass}
-                  mainColor={mainColor}
-                />
-              ))}
-        </div>
 
-        {/* View All CTA */}
-        {cards && cards.length > 0 && (
-          <div className="text-center">
-            <Link
-              href={`/${website_sub_category_id}/user/live-learning`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold border-2 transition-all duration-200 hover:bg-gray-50"
-              style={{ borderColor: mainColor, color: mainColor }}
-            >
-              Lihat Semua Kelas
-              <PlayCircle className="w-4 h-4" />
-            </Link>
+                      {/* Content */}
+                      <div className="p-4">
+                        <p
+                          className="text-xs font-semibold mb-1"
+                          style={{ color: mainColor }}
+                        >
+                          {liveClass.Category?.name || 'Live Class'}
+                        </p>
+                        <h3 className="font-semibold text-base text-gray-900 line-clamp-2 mb-3 group-hover:opacity-80 transition-opacity">
+                          {liveClass.title}
+                        </h3>
+
+                        {/* Instructor */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                            {liveClass.Instructor?.image ? (
+                              <Image
+                                src={liveClass.Instructor.image}
+                                alt={liveClass.Instructor.name}
+                                width={32}
+                                height={32}
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div
+                                className="w-full h-full flex items-center justify-center text-white text-xs font-semibold"
+                                style={{ backgroundColor: mainColor }}
+                              >
+                                {liveClass.Instructor?.name?.charAt(0) || 'T'}
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">
+                              {liveClass.Instructor?.name || 'Tutor'}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {liveClass.Instructor?.lastEducation ||
+                                'Alumni PTN'}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Meta */}
+                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3.5 h-3.5" />
+                            <span>
+                              {new Date(liveClass.startDate).toLocaleDateString(
+                                'id-ID',
+                                {
+                                  day: 'numeric',
+                                  month: 'short',
+                                },
+                              )}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-3.5 h-3.5" />
+                            <span>
+                              {new Date(liveClass.startDate).toLocaleTimeString(
+                                'id-ID',
+                                {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                },
+                              )}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              );
+            })}
           </div>
         )}
+
+        {/* CTA */}
+        <div className="text-center mt-8">
+          <Link
+            href="/snbt/user/live-learning"
+            className="inline-flex items-center px-6 py-3 rounded-2xl font-semibold text-white transition-all duration-200 hover:opacity-90"
+            style={{ backgroundColor: mainColor }}
+          >
+            Lihat Semua Live Class →
+          </Link>
+        </div>
       </div>
     </section>
   );
 };
 
-// LiveClass Card Component - Match Screenshot Design
-const LiveClassCard = ({
-  liveClass,
-  mainColor,
-}: {
-  liveClass: LiveLearningDataType;
-  mainColor: string;
-}) => {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const { setShowAuth } = useGuest();
-  const searchParams = useSearchParams();
-  const liveLearningId = searchParams?.get('liveLearningId');
-
-  useEffect(() => {
-    if (!liveClass || !liveLearningId || !session) return;
-    if (liveLearningId === liveClass.id) {
-      router.push(
-        `${liveClass.websiteSubCategoryId}/user/live-learning?id=${liveLearningId}`,
-      );
-    }
-  }, [liveClass, liveLearningId, session]);
-
-  const timeLeft = useCountdown(liveClass.startDate);
-  const isUpcoming = liveClass.status === 'Akan Datang' && !timeLeft.isExpired;
-  const isLive = liveClass.status === 'Sedang Berlangsung';
-  const isFinished = liveClass.status === 'Selesai';
-
-  const getStatusBadge = () => {
-    if (isLive) {
-      return {
-        label: 'Sedang Berlangsung',
-        className: 'bg-red-100 text-red-700 border-red-200',
-      };
-    }
-    if (isUpcoming) {
-      return {
-        label: 'Akan Datang',
-        className: 'bg-blue-100 text-blue-700 border-blue-200',
-      };
-    }
-    if (isFinished) {
-      return {
-        label: 'Selesai',
-        className: 'bg-gray-100 text-gray-700 border-gray-200',
-      };
-    }
-    return {
-      label: liveClass.status,
-      className: 'bg-gray-100 text-gray-700 border-gray-200',
-    };
-  };
-
-  const statusBadge = getStatusBadge();
-
-  return (
-    <Card className="group relative overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] bg-white rounded-3xl">
-      <CardContent className="p-5 lg:p-6">
-        {/* Status Badge */}
-        <div className="mb-4">
-          <Badge
-            className={cn(
-              'px-3 py-1 text-xs font-semibold rounded-full border',
-              statusBadge.className,
-            )}
-          >
-            {statusBadge.label}
-          </Badge>
-        </div>
-
-        {/* Title */}
-        <h3 className="text-lg lg:text-xl font-bold text-gray-900 line-clamp-2 mb-4 group-hover:text-blue-600 transition-colors">
-          {liveClass.title}
-        </h3>
-
-        {/* Countdown for upcoming */}
-        {isUpcoming && !timeLeft.isExpired && (
-          <div className="mb-4 flex justify-center">
-            <CountdownTimer timeLeft={timeLeft} />
-          </div>
-        )}
-
-        {/* Divider */}
-        <div className="border-t border-gray-100 my-4" />
-
-        {/* Title + ID Row */}
-        <div className="flex items-start justify-between gap-3 mb-4">
-          <h4 className="text-base font-bold text-gray-900 line-clamp-2 flex-1">
-            {liveClass.title}
-          </h4>
-          <Badge
-            variant="outline"
-            className="text-xs font-mono bg-gray-50 text-gray-600 border-gray-200 shrink-0 rounded-full"
-          >
-            #{liveClass.id.slice(-6).toUpperCase()}
-          </Badge>
-        </div>
-
-        {/* Instructor */}
-        <div className="flex items-center gap-3 mb-4">
-          <Avatar className="h-10 w-10 border-2 border-gray-100">
-            <AvatarImage src={liveClass.Instructor.image || undefined} />
-            <AvatarFallback
-              className="text-sm font-bold text-white"
-              style={{ backgroundColor: mainColor }}
-            >
-              {liveClass.Instructor.name
-                .split(' ')
-                .map((n) => n[0])
-                .join('')}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="font-bold text-gray-900 text-sm">
-              {liveClass.Instructor.name}
-            </p>
-            {liveClass.Instructor.lastEducation && (
-              <Badge
-                className="mt-1 text-xs px-2 py-0.5 rounded-full border"
-                style={{
-                  backgroundColor: `${mainColor}15`,
-                  color: mainColor,
-                  borderColor: `${mainColor}30`,
-                }}
-              >
-                {liveClass.Instructor.lastEducation}
-              </Badge>
-            )}
-          </div>
-        </div>
-
-        {/* Date & Duration */}
-        <div className="space-y-2 mb-5">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Calendar
-              className="w-4 h-4"
-              style={{ color: mainColor }}
-            />
-            <span>{formatDateTime(liveClass.startDate)}</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Clock
-              className="w-4 h-4"
-              style={{ color: mainColor }}
-            />
-            <span>{formatDuration(liveClass.duration)}</span>
-          </div>
-        </div>
-
-        {/* Footer: Participants + Actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          {/* Participants */}
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Users className="w-4 h-4" />
-            <span>{liveClass.participants?.length || 0}</span>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-9 px-4 rounded-full border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold"
-              onClick={() => {
-                if (!session) {
-                  setShowAuth({
-                    open: true,
-                    redirect: `/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`,
-                  });
-                  return;
-                }
-                router.push(
-                  `/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`,
-                );
-              }}
-            >
-              <Eye className="w-4 h-4 mr-1.5" />
-              Detail
-            </Button>
-            <Button
-              size="sm"
-              className="h-9 px-4 rounded-full font-semibold text-white border-2"
-              style={{
-                backgroundColor: mainColor,
-                borderColor: mainColor,
-              }}
-              onClick={() => {
-                if (!session) {
-                  setShowAuth({
-                    open: true,
-                    redirect: `/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`,
-                  });
-                  return;
-                }
-                router.push(
-                  `/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`,
-                );
-              }}
-            >
-              <Crown className="w-4 h-4 mr-1.5" />
-              Premium
-            </Button>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-export default LiveLearningSection;
-export { LiveLearningSection };
+export default LiveClassSection;
