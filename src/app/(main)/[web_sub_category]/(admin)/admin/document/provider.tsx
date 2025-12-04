@@ -1,5 +1,6 @@
 'use client';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { Category, Document, Subcategory, Video } from '@/types/database';
 import {
   createContext,
@@ -53,30 +54,32 @@ export default function Provider({ children }: Props) {
   }, [editData]);
 
   // == Document Data ===================================================
-  const [documentData, setDocumentData] = useState<DocumentType>([]);
+  // const [documentData, setDocumentData] = useState<DocumentType>([]);
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const fetchDocument = async () => {
-    await getGeneral(`/document/getDocumentAdmin`, {
-      setData: setDocumentData,
-      setLoading: setIsLoading,
-      setPage,
-      setTotalPages,
-      onError({ message }) {
-        setErrorMessage(message);
-      },
-      params: {
-        filter: filterDocument?.filter,
-        filterValue: filterDocument?.filterValue,
-        page,
-      },
-    });
-  };
-  useEffect(() => {
-    fetchDocument();
-  }, [filterDocument, page]);
+
+  const search = filterDocument?.search;
+
+  const {
+    data,
+    totalPages,
+    error,
+    isLoading,
+    refetch: fetchDocument,
+  } = useGet<DocumentType>('/document/getDocumentAdmin', {
+    params: {
+      page,
+      search: search && search.length > 0 ? search : undefined,
+      filter: filterDocument?.filter,
+      filterValue: filterDocument?.filterValue,
+    },
+    useEffectDependencies: [page, filterDocument, search],
+    debounceTime: 1000,
+  });
+
+  const documentData = data || [];
+  const errorMessage = error?.message;
+
+  console.log({ filterDocument });
 
   // == Context Value ===================================================
   const Context = {
@@ -99,15 +102,11 @@ export default function Provider({ children }: Props) {
     },
     useDocument: {
       documentData,
-      setDocumentData,
       page,
       setPage,
       totalPages,
-      setTotalPages,
       isLoading,
-      setIsLoading,
       errorMessage,
-      setErrorMessage,
       fetchDocument,
     },
   };
@@ -167,16 +166,12 @@ type ProviderType = {
   };
   useDocument: {
     documentData: DocumentType;
-    setDocumentData: Dispatch<SetStateAction<DocumentType>>;
     page: number;
     setPage: Dispatch<SetStateAction<number>>;
     totalPages: number;
-    setTotalPages: Dispatch<SetStateAction<number>>;
     isLoading: boolean;
-    setIsLoading: Dispatch<SetStateAction<boolean>>;
-    errorMessage: string | null;
-    setErrorMessage: Dispatch<SetStateAction<string | null>>;
-    fetchDocument: () => Promise<void>;
+    errorMessage: string | undefined;
+    fetchDocument: () => Promise<any>;
   };
 };
 
@@ -198,4 +193,5 @@ interface FilterProps {
 interface FilterDocumentProps {
   filter: string;
   filterValue: string;
+  search: string;
 }

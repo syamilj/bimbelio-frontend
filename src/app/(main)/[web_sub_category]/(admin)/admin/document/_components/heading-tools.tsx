@@ -8,6 +8,7 @@ import {
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { IconRegenerateMessage, IconTailedArrowNext } from '@/styles/icon';
+import { SearchIcon, XIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useProvider } from '../provider';
 
@@ -64,27 +65,88 @@ export default function HeadingTools() {
       return;
     }
     if (filter) {
-      setFilterDocument({ filter: filter.filter, filterValue: filter.value });
+      setFilterDocument((prev) => ({
+        filter: filter.filter,
+        filterValue: filter.value,
+        search: prev?.search || '',
+      }));
       setShowFilter(false);
     }
   };
 
+  const handleSearch = () => {
+    const inputElement = document.getElementById(
+      'search-document',
+    ) as HTMLInputElement;
+    const value = inputElement?.value || '';
+    setFilterDocument((prev) => {
+      if (!prev)
+        return {
+          filter: '',
+          filterValue: '',
+          search: value.length > 0 ? value : '',
+        };
+      return { ...prev, search: value.length > 0 ? value : '' };
+    });
+  };
+
+  const handleClearSearch = () => {
+    const inputElement = document.getElementById(
+      'search-document',
+    ) as HTMLInputElement;
+    if (inputElement) {
+      inputElement.value = '';
+    }
+    setFilterDocument((prev) => {
+      if (!prev) return null;
+      return { ...prev, search: '' };
+    });
+  };
+
   return (
     <div className="flex w-full justify-between">
-      <div className="flex gap-4">
+      <div className="flex gap-2">
         {showFilter && (
           <div
             className="fixed left-0 top-0 z-1 h-full w-full"
             onClick={() => setShowFilter(false)}
           />
         )}
-        <div className="">
+        <form
+          className="flex gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <input
+            id="search-document"
             type="text"
             placeholder="Cari document...."
             className="h-full w-full rounded-[.7rem] bg-white px-4 outline-none"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
           />
-        </div>
+          {(document.getElementById('search-document') as HTMLInputElement)
+            ?.value && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="rounded-[.7rem] bg-gray-300 px-4 py-[.7rem] text-gray-700 font-medium duration-200 hover:bg-gray-400"
+            >
+              <XIcon className="h-4 w-4" />
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={handleSearch}
+            className="rounded-[.7rem] bg-main px-4 py-[.7rem] text-white font-medium duration-200 hover:bg-main-hover flex items-center gap-2 whitespace-nowrap"
+          >
+            <SearchIcon className="h-4 w-4" />
+          </button>
+        </form>
         <div className="relative">
           <div
             className={cn(
