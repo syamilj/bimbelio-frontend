@@ -107,7 +107,7 @@ export const SupportDialog = ({ children }: { children: ReactNode }) => {
         console.warn('Pixel tracking error:', error);
       }
 
-      window.open('https://www.bimbelio.com/l/wa-grup', '_blank');
+      window.open('https://www.bimbelio.com/link/komunitas', '_blank');
     },
     color: '#0088CC', // Discord blue
   };

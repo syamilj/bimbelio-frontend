@@ -188,7 +188,7 @@ export const DialogLiveClassRegister = ({
       title: 'Join Grup Belajar',
       instruction: 'Klik Join Group di WA',
       icon: <Users className="h-5 w-5" />,
-      link: 'https://www.bimbelio.com/l/wa-grup',
+      link: 'https://www.bimbelio.com/link/komunitas',
       points: 15,
       required: true,
       step: items.length + 1,

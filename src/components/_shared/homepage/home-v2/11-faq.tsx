@@ -132,7 +132,7 @@ const FAQSection: React.FC = () => {
         {/* <div className="mt-10 text-center">
           <p className="text-sm text-gray-500 mb-4">Pertanyaan kamu belum kejawab?</p>
           <a
-            href="https://www.bimbelio.com/l/wa-grup"
+            href="https://www.bimbelio.com/link/komunitas"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-6 py-3 rounded-2xl font-semibold text-white transition-all duration-200 hover:opacity-90"

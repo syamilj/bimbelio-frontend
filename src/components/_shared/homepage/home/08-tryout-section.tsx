@@ -677,7 +677,7 @@ const EnhancedTryOutCard = ({
               Grup Belajar:
             </span>
             <a
-              href="https://www.bimbelio.com/l/wa-grup"
+              href="https://www.bimbelio.com/link/komunitas"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold underline hover:opacity-80 transition-opacity"

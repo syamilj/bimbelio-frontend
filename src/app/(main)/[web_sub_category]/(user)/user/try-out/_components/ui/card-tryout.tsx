@@ -384,7 +384,7 @@ export default function CardTryOut({
                 {/* Content Section */}
                 <div className="p-4 lg:p-6 space-y-4">
                   {/* Stats Grid - Match Course Gradient Style */}
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-2 gap-3">
                     {/* Durasi - Blue */}
                     <div
                       className="p-3 rounded-2xl border-2 text-center"
@@ -426,13 +426,13 @@ export default function CardTryOut({
                     </div>
 
                     {/* Peserta - Purple */}
-                    <div
+                    {/* <div
                       className="p-3 rounded-2xl border-2 text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(250 245 255), rgb(243 232 255))`,
                         borderColor: 'rgb(233 213 255)',
                       }}
-                    >
+                     >
                       <Users className="w-4 h-4 text-purple-600 mx-auto mb-1" />
                       <div className="text-sm font-bold text-purple-700">
                         {item._count.TryoutRegistration}
@@ -440,7 +440,7 @@ export default function CardTryOut({
                       <div className="text-xs text-purple-600 font-medium">
                         Peserta
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Dates Section - Match Course Style */}
@@ -472,7 +472,7 @@ export default function CardTryOut({
                     >
                       <Calendar className="w-4 h-4 text-pink-600 mx-auto mb-1" />
                       <div className="text-xs text-pink-600 font-medium mb-1">
-                        Selesai
+                        Pembahasan
                       </div>
                       <div className="text-sm font-bold text-pink-700">
                         {getDateString(item.endDate)}
@@ -484,7 +484,7 @@ export default function CardTryOut({
                   <div className="flex justify-center">
                     <Badge className="flex items-center gap-1 text-xs bg-gray-50 text-gray-700 border-gray-200 font-medium">
                       <Tag className="w-3 h-3" />
-                      Try Out Online
+                      {item.WebsiteSubCategory?.name}
                     </Badge>
                   </div>
                 </div>
