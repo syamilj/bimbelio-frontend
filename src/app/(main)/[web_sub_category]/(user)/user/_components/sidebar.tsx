@@ -195,7 +195,7 @@ const SidebarUser = ({
                   </h3>
                   <p className="text-sm text-white/90 mb-4 leading-relaxed font-medium">
                     {websiteSubCategory
-                      ? 'Persiapan terbaik untuk mencapai target impianmu'
+                      ? ''
                       : 'Pilih kategori sesuai dengan tujuan belajar kamu'}
                   </p>
                   <div className="flex items-center justify-between text-white/95 group-hover:text-white transition-colors">
