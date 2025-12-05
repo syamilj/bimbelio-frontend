@@ -41,6 +41,7 @@ type ProviderType = {
     viewOnly: boolean | undefined;
     classOverlay: string | undefined;
     buttonRef: RefObject<HTMLButtonElement | null>;
+    paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT';
   };
 };
 

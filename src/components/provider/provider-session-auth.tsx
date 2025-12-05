@@ -6,6 +6,7 @@ import { responseError } from '@/lib/response';
 import {
   Subscription,
   SubscriptionFeature,
+  SubscriptionInstallment,
   SubscriptionPending,
   SubscriptionPendingFeature,
   SubscriptionPendingLimitation,
@@ -182,6 +183,7 @@ type SessionProviderType = {
           };
           subsList: (Subscription & {
             SubscriptionFeature: SubscriptionFeature[];
+            SubscriptionInstallment: SubscriptionInstallment[];
           })[];
           subsPendingList: (SubscriptionPending & {
             SubscriptionPendingFeature: SubscriptionPendingFeature[];

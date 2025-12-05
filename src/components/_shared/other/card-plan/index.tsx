@@ -53,6 +53,7 @@ export function CardPlan({
   discount,
   onClose,
   classOverlay,
+  paymentMethod = 'FULL_PAYMENT',
 }: {
   plan: PlanDataType;
   hideFeatures?: string[];
@@ -60,6 +61,7 @@ export function CardPlan({
   discount?: number;
   onClose?: () => void;
   classOverlay?: string;
+  paymentMethod?: 'FULL_PAYMENT' | 'INSTALLMENT';
 }) {
   const { data: session } = useSession();
   const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
@@ -170,6 +172,7 @@ export function CardPlan({
       viewOnly,
       classOverlay,
       buttonRef,
+      paymentMethod,
     },
   };
 
@@ -490,110 +493,16 @@ const HeaderSection = () => {
     </div>
   );
 };
-
-// const PricingSection = () => {
-//   const { websiteSubCategory } = useWebsiteSubCategory();
-//   const {
-//     useData: { plan },
-//     useViewData: { isLimitedTime, getDiscountPercentage, discount },
-//   } = useProvider();
-
-//   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-
-//   return (
-//     <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
-//       <div className="space-y-3">
-//         <div className="flex items-center justify-between">
-//           <span className="text-sm font-medium text-gray-700">
-//             Harga Terbaik
-//           </span>
-//           {isLimitedTime && (
-//             <div className="flex items-center gap-1 text-red-600">
-//               <Zap size={12} />
-//               <span className="text-xs font-bold">PROMO TERBATAS</span>
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Price Display - Enhanced */}
-//         <div className="flex items-end justify-between relative">
-//           <div className="flex items-baseline gap-3">
-//             {/* Current/Discounted Price */}
-//             <div className="flex flex-col">
-//               <div className="flex items-center gap-2">
-//                 {discount && (
-//                   <div
-//                     className="text-3xl font-black"
-//                     style={{ color: mainColor }}
-//                   >
-//                     {formatPrice(discount)}
-//                   </div>
-//                 )}
-//                 <div
-//                   className={cn(
-//                     'text-3xl font-black',
-//                     discount &&
-//                       'text-lg text-gray-500 line-through font-semibold',
-//                   )}
-//                   style={{ color: mainColor }}
-//                 >
-//                   {formatPrice(plan.price)}
-//                 </div>
-//               </div>
-//               {plan.PlanBenefit.length > 0 &&
-//                 plan.PlanSubscription?.expireDays && (
-//                   <div className="text-xs text-gray-500 mt-1">
-//                     ~
-//                     {formatPrice(
-//                       Math.floor(
-//                         (discount || plan.price) /
-//                           (plan.PlanSubscription?.expireDays || 1),
-//                       ),
-//                     )}{' '}
-//                     per hari
-//                   </div>
-//                 )}
-//             </div>
-
-//             {/* Original Price */}
-//             {((plan.originalPrice && plan.originalPrice > plan.price) ||
-//               discount) && (
-//               <div className="flex flex-col items-end">
-//                 <span className="text-lg text-gray-500 line-through font-semibold">
-//                   {formatPrice(plan.originalPrice || plan.price)}
-//                 </span>
-//                 <div className="flex items-center gap-1 text-green-600">
-//                   <span className="text-xs font-bold">
-//                     Hemat{' '}
-//                     {formatPrice(
-//                       (plan.originalPrice || plan.price) -
-//                         (discount || plan.price),
-//                     )}
-//                   </span>
-//                 </div>
-//               </div>
-//             )}
-//           </div>
-
-//           {/* Savings Badge */}
-//           {getDiscountPercentage() > 0 && (
-//             <div className="text-right absolute right-[-1rem] top-[calc(100%+10px)]">
-//               <Badge className="bg-red-500 text-white font-bold text-sm">
-//                 -{getDiscountPercentage()}%
-//               </Badge>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
 const PricingSection = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const {
     useData: { plan },
-    useViewData: { isLimitedTime, getDiscountPercentage, discount },
+    useViewData: {
+      isLimitedTime,
+      getDiscountPercentage,
+      discount,
+      paymentMethod,
+    },
   } = useProvider();
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -602,12 +511,14 @@ const PricingSection = () => {
   const firstInstallmentPrice =
     plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0]?.amount ||
     plan.price;
-  const displayPrice = plan.PlanInstallmentConfig
-    ? firstInstallmentPrice
-    : plan.price;
-  const originalDisplayPrice = plan.PlanInstallmentConfig
-    ? plan.originalPrice || plan.price
-    : plan.originalPrice;
+  const displayPrice =
+    plan.PlanInstallmentConfig && paymentMethod === 'INSTALLMENT'
+      ? firstInstallmentPrice
+      : plan.price;
+  const originalDisplayPrice =
+    plan.PlanInstallmentConfig && paymentMethod === 'INSTALLMENT'
+      ? plan.originalPrice || plan.price
+      : plan.originalPrice;
 
   return (
     <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
@@ -761,6 +672,7 @@ const MaxUsersInfo = () => {
 const InstallmentInfo = () => {
   const {
     useData: { plan },
+    useViewData: { paymentMethod, discount },
   } = useProvider();
   if (!plan.PlanInstallmentConfig) return null;
   return (
@@ -781,27 +693,24 @@ const InstallmentInfo = () => {
 
       {/* Detail Cicilan */}
       <div className="space-y-2 ml-11">
-        {plan.PlanInstallmentConfig.PlanInstallmentSchedule.slice(0, 3).map(
-          (schedule, index) => (
-            <div
-              key={schedule.id}
-              className="text-xs text-blue-700"
-            >
-              <span className="font-semibold">
-                Cicilan #{schedule.installmentNumber}:
-              </span>{' '}
-              {formatPrice(schedule.amount)}
-              {index === 0
-                ? ' (Pembayaran pertama)'
-                : ` (${schedule.daysAfterFirstPayment} hari setelah)`}
-            </div>
-          ),
-        )}
-        {plan.PlanInstallmentConfig.PlanInstallmentSchedule.length > 3 && (
-          <div className="text-xs text-blue-600 italic mt-1">
-            +{plan.PlanInstallmentConfig.PlanInstallmentSchedule.length - 3}{' '}
-            cicilan lainnya
-          </div>
+        {plan.PlanInstallmentConfig.PlanInstallmentSchedule.map(
+          (schedule, index) => {
+            const amount = schedule.amount;
+            return (
+              <div
+                key={schedule.id}
+                className="text-xs text-blue-700"
+              >
+                <span className="font-semibold">
+                  Cicilan #{schedule.installmentNumber}:
+                </span>{' '}
+                {formatPrice(amount)}
+                {index === 0
+                  ? ' (Pembayaran pertama)'
+                  : ` (${schedule.daysAfterFirstPayment} hari setelah)`}
+              </div>
+            );
+          },
         )}
       </div>
 

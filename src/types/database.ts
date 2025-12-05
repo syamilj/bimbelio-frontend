@@ -639,6 +639,7 @@ export type SubscriptionPending = {
   planTier: string;
   planDescription: string;
   planPrice: number;
+  paymentType: PlanPaymentTypeEnum;
   discord_user_id: string | null;
   discord_username: string | null;
   discord_invite_link: string | null;
@@ -668,6 +669,8 @@ export type SubscriptionPendingLimitation = {
   tryout: number;
 };
 
+export type PlanPaymentTypeEnum = 'FULL_PAYMENT' | 'INSTALLMENT';
+
 export type Subscription = {
   id: string;
   createdAt: Date;
@@ -681,6 +684,8 @@ export type Subscription = {
   planDescription: string;
   planPrice: number;
   planExpire: Date;
+  paymentType: PlanPaymentTypeEnum;
+  isAccessGranted: boolean;
 
   discord_user_id: string;
   discord_username: string;

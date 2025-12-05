@@ -7,6 +7,8 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn, getDateString, getHours } from '@/lib/utils';
+import { formatIDR } from '@/lib/utils/currency';
 import { formatDateRange } from '@/lib/utils/date';
 import {
   Calendar,
@@ -47,6 +49,8 @@ export default function SubscriptionPage() {
         return <Check className="w-3 h-3" />;
     }
   };
+
+  const currentDate = new Date();
 
   const hasActiveSubscription =
     userSession?.user.subsList && userSession.user.subsList.length > 0;
@@ -103,114 +107,214 @@ export default function SubscriptionPage() {
             </CardHeader>
             <CardContent className="p-4">
               <div className="space-y-3">
-                {userSession.user.subsList.map((sub) => (
-                  <div
-                    key={sub.id}
-                    className="relative overflow-hidden rounded-xl border-2 border-green-200 bg-gradient-to-br from-white to-green-50 p-4 shadow-md hover:shadow-xl transition-all duration-300"
-                  >
-                    {/* Header Badge */}
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex flex-col gap-2">
-                        <Badge
-                          className="w-fit text-white font-semibold text-xs px-3 py-1"
-                          style={{ backgroundColor: mainColor }}
-                        >
-                          <Crown className="w-3 h-3 mr-1" />
-                          {sub.planTier}
-                        </Badge>
-                        <h3 className="text-base font-bold text-gray-900">
-                          {sub.planName}
-                        </h3>
-                      </div>
-                      <div className="p-2 bg-main rounded-full">
-                        <Check className="w-4 h-4 text-white" />
-                      </div>
-                    </div>
+                {userSession.user.subsList.map((sub) => {
+                  const isInstallment = sub.paymentType === 'INSTALLMENT';
+                  let currentInstallment:
+                    | (typeof sub.SubscriptionInstallment)[0]
+                    | null =
+                    sub.SubscriptionInstallment[
+                      sub.SubscriptionInstallment.length - 1
+                    ] || null;
 
-                    {/* Description */}
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                      {sub.planDescription}
-                    </p>
-                    {/* Features */}
-                    {sub.SubscriptionFeature &&
-                      sub.SubscriptionFeature.length > 0 && (
-                        <div className="mb-3">
-                          <p className="text-xs font-semibold text-gray-700 mb-2 flex items-center gap-1">
-                            <Sparkles className="w-3 h-3 text-green-600" />
-                            Fitur Aktif:
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {sub.SubscriptionFeature.map((feature) => (
-                              <div
-                                key={feature.id}
-                                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200"
-                              >
-                                {getFeatureIcon(feature.type)}
-                                <span className="text-xs font-medium text-blue-700">
-                                  {feature.type === 'DOCUMENT' && 'Document'}
-                                  {feature.type === 'COURSE' && 'Course'}
-                                  {feature.type === 'LIVECLASS' && 'Live Class'}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    {/* Expiry Info */}
-                    <div className="flex items-center gap-2 p-2 bg-orange-50 border border-orange-200 rounded-lg mb-3">
-                      <Clock className="w-4 h-4 text-orange-600" />
-                      <div className="flex-1">
-                        <p className="text-xs font-medium text-gray-700">
-                          Berakhir pada
-                        </p>
-                        <p className="text-sm font-bold text-orange-600">
-                          {new Date(sub.planExpire).toLocaleDateString(
-                            'id-ID',
-                            {
-                              day: 'numeric',
-                              month: 'long',
-                              year: 'numeric',
-                            },
-                          )}
-                        </p>
-                      </div>
-                    </div>
+                  sub.SubscriptionInstallment.forEach((inst) => {
+                    if (
+                      currentInstallment &&
+                      inst.isPaid === false &&
+                      inst.installmentNumber <
+                        currentInstallment?.installmentNumber
+                    ) {
+                      currentInstallment = inst;
+                    }
+                  });
 
-                    {/* Action Buttons */}
-                    <div className="space-y-2">
-                      {sub.discord_invite_link && (
-                        <DialogJoinDiscord inviteLink={sub.discord_invite_link}>
-                          <Button
-                            asChild
-                            className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white shadow-md"
+                  return (
+                    <div
+                      key={sub.id}
+                      className="relative overflow-hidden rounded-xl border-2 border-green-200 bg-gradient-to-br from-white to-green-50 p-4 shadow-md hover:shadow-xl transition-all duration-300"
+                    >
+                      {/* Header Badge */}
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex flex-col gap-2">
+                          <Badge
+                            className="w-fit text-white font-semibold text-xs px-3 py-1"
+                            style={{ backgroundColor: mainColor }}
                           >
-                            <div rel="noopener noreferrer">
-                              <svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="mr-2"
-                              >
-                                <path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.24 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08-.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.52.31-1.07.56-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.83 2.12-1.89 2.12z" />
-                              </svg>
-                              Gabung Discord dengan plan ini
+                            <Crown className="w-3 h-3 mr-1" />
+                            {sub.planTier}
+                          </Badge>
+                          <h3 className="text-base font-bold text-gray-900">
+                            {sub.planName}
+                          </h3>
+                        </div>
+                        <div className="p-2 bg-main rounded-full">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                        {sub.planDescription}
+                      </p>
+                      {/* Features */}
+                      {sub.SubscriptionFeature &&
+                        sub.SubscriptionFeature.length > 0 && (
+                          <div className="mb-3">
+                            <p className="text-xs font-semibold text-gray-700 mb-2 flex items-center gap-1">
+                              <Sparkles className="w-3 h-3 text-green-600" />
+                              Fitur Aktif:
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {sub.SubscriptionFeature.map((feature) => (
+                                <div
+                                  key={feature.id}
+                                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200"
+                                >
+                                  {getFeatureIcon(feature.type)}
+                                  <span className="text-xs font-medium text-blue-700">
+                                    {feature.type === 'DOCUMENT' && 'Document'}
+                                    {feature.type === 'COURSE' && 'Course'}
+                                    {feature.type === 'LIVECLASS' &&
+                                      'Live Class'}
+                                  </span>
+                                </div>
+                              ))}
                             </div>
-                          </Button>
-                        </DialogJoinDiscord>
-                      )}
-                      <Button
-                        asChild
-                        className="w-full bg-main text-white shadow-md"
-                      >
-                        <Link href={`/price/${sub.planSlug}`}>
-                          <TrendingUp className="w-4 h-4 mr-2" />
-                          Lihat Detail Paket
-                        </Link>
-                      </Button>
+                          </div>
+                        )}
+
+                      {isInstallment &&
+                        sub.SubscriptionInstallment &&
+                        sub.SubscriptionInstallment.length > 0 && (
+                          <div className="space-y-2 mb-3">
+                            <p className="text-xs font-semibold text-gray-700 flex items-center gap-1">
+                              <Clock className="w-3 h-3 text-blue-600" />
+                              Jadwal Cicilan:
+                            </p>
+                            <div className="space-y-2">
+                              {sub.SubscriptionInstallment.map(
+                                (installment, idx) => (
+                                  <div
+                                    key={installment.id}
+                                    className={cn(
+                                      'flex items-center justify-between p-2.5 rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200',
+                                      installment.isPaid &&
+                                        'bg-gradient-to-r from-green-50 to-emerald-50 border-green-400',
+                                    )}
+                                  >
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+                                          #{installment.installmentNumber}
+                                        </span>
+                                        <span className="text-sm font-semibold text-gray-900">
+                                          {formatIDR(installment.amount)}
+                                        </span>
+                                        {installment.isPaid && (
+                                          <Badge className="bg-green-100 text-green-700 text-[10px] px-1.5 py-0">
+                                            ✓ Lunas
+                                          </Badge>
+                                        )}
+                                      </div>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-xs text-gray-600">
+                                          Jatuh Tempo:{' '}
+                                          <span className="font-bold">
+                                            {getDateString(installment.dueDate)}{' '}
+                                            {getHours(installment.dueDate)}
+                                          </span>
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-xs text-gray-600">
+                                          Batas Pembayaran:{' '}
+                                          <span className="font-bold">
+                                            {getDateString(
+                                              installment.gracePeriodEndDate,
+                                            )}{' '}
+                                            {getHours(
+                                              installment.gracePeriodEndDate,
+                                            )}
+                                          </span>
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-xs text-gray-600">
+                                          Akses Berakhir:{' '}
+                                          <span className="font-bold">
+                                            {getDateString(
+                                              installment.expiredAccessDate,
+                                            )}{' '}
+                                            {getHours(
+                                              installment.expiredAccessDate,
+                                            )}
+                                          </span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ),
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      {/* Expiry Info */}
+                      <div className="flex items-center gap-2 p-2 bg-orange-50 border border-orange-200 rounded-lg mb-3">
+                        <Clock className="w-4 h-4 text-orange-600" />
+                        <div className="flex-1">
+                          <p className="text-xs font-medium text-gray-700">
+                            Berakhir pada
+                          </p>
+                          <p className="text-sm font-bold text-orange-600">
+                            {new Date(sub.planExpire).toLocaleDateString(
+                              'id-ID',
+                              {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                              },
+                            )}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="space-y-2">
+                        {sub.discord_invite_link && (
+                          <DialogJoinDiscord
+                            inviteLink={sub.discord_invite_link}
+                          >
+                            <Button
+                              asChild
+                              className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white shadow-md"
+                            >
+                              <div rel="noopener noreferrer">
+                                <svg
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className="mr-2"
+                                >
+                                  <path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.24 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08-.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.52.31-1.07.56-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.83 2.12-1.89 2.12z" />
+                                </svg>
+                                Gabung Discord dengan plan ini
+                              </div>
+                            </Button>
+                          </DialogJoinDiscord>
+                        )}
+                        <Button
+                          asChild
+                          className="w-full bg-main text-white shadow-md"
+                        >
+                          <Link href={`/price/${sub.planSlug}`}>
+                            <TrendingUp className="w-4 h-4 mr-2" />
+                            Lihat Detail Paket
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </CardContent>
           </Card>

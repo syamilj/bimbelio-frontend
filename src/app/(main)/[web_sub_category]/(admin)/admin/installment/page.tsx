@@ -37,6 +37,7 @@ import { cn, getDateString, getHoursDetail } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
 import { exportToExcel } from '@/lib/utils/excel';
 import {
+  Subscription,
   SubscriptionInstallment,
   SubscriptionInstallmentLimitation,
   User,
@@ -46,6 +47,7 @@ import toast from 'react-hot-toast';
 type DataType = (User & {
   SubscriptionInstallment: (SubscriptionInstallment & {
     SubscriptionInstallmentLimitation: SubscriptionInstallmentLimitation | null;
+    Subscription: Subscription;
   })[];
 })[];
 
@@ -161,6 +163,7 @@ export default function InstallmentPage() {
                   <TableHead className="min-w-[200px]">User</TableHead>
                   <TableHead>Cicilan Ke</TableHead>
                   <TableHead>Nominal</TableHead>
+                  <TableHead>Name</TableHead>
                   <TableHead>Jatuh Tempo</TableHead>
                   <TableHead>Akses Berakhir</TableHead>
                   <TableHead>Reminder Dikirim</TableHead>
@@ -244,6 +247,16 @@ export default function InstallmentPage() {
                                   </span>
                                 )}
                               </div>
+                            </TableCell>
+                            <TableCell
+                              className={cn(
+                                'text-black/70 text-start',
+                                isLastInstallment && 'border-b',
+                              )}
+                            >
+                              <span className="font-semibold">
+                                {installment.Subscription.planName}
+                              </span>
                             </TableCell>
                             <TableCell
                               className={cn(

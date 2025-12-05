@@ -109,9 +109,31 @@ export function DialogPayment({
       const type = data.type;
       const discount = data.discount;
       if (type === 'Fixed_Amount') {
-        setDiscountPrice(getPriceByDiscountFixedAmount(plan.price, discount));
+        if (paymentMethod === 'INSTALLMENT' && plan.PlanInstallmentConfig) {
+          const discountInstallment =
+            discount /
+            plan.PlanInstallmentConfig.PlanInstallmentSchedule.length;
+          const firstInstallmentPrice =
+            plan.PlanInstallmentConfig.PlanInstallmentSchedule[0].amount;
+          setDiscountPrice(
+            getPriceByDiscountFixedAmount(
+              firstInstallmentPrice,
+              discountInstallment,
+            ),
+          );
+        } else {
+          setDiscountPrice(getPriceByDiscountFixedAmount(plan.price, discount));
+        }
       } else if (type === 'Percentage') {
-        setDiscountPrice(getPriceByDiscountPercentage(plan.price, discount));
+        if (paymentMethod === 'FULL_PAYMENT') {
+          setDiscountPrice(getPriceByDiscountPercentage(plan.price, discount));
+        } else if (plan.PlanInstallmentConfig) {
+          const firstInstallmentPrice =
+            plan.PlanInstallmentConfig.PlanInstallmentSchedule[0].amount;
+          setDiscountPrice(
+            getPriceByDiscountPercentage(firstInstallmentPrice, discount),
+          );
+        }
       }
     },
   });
@@ -357,6 +379,7 @@ export function DialogPayment({
             <CardPreview
               plan={plan}
               discountPrice={discountPrice}
+              paymentMethod={paymentMethod}
             />
 
             {/* Checkout Form - Right Columns (60%) */}
@@ -377,6 +400,7 @@ export function DialogPayment({
                 setDiscountPrice={setDiscountPrice}
                 setVoucherCode={setVoucherCode}
                 voucherCode={voucherCode}
+                paymentMethod={paymentMethod}
               />
 
               {/* Order Summary & Payment - Compact */}
@@ -651,9 +675,11 @@ const HeaderSection = () => {
 const CardPreview = ({
   plan,
   discountPrice,
+  paymentMethod,
 }: {
   plan: PlanDataType;
   discountPrice: number | null;
+  paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT';
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -673,6 +699,7 @@ const CardPreview = ({
           plan={plan}
           discount={discountPrice || undefined}
           viewOnly
+          paymentMethod={paymentMethod}
         />
       </div>
     </div>
@@ -778,6 +805,7 @@ const FormVoucher = ({
   applyVoucherCode,
   error,
   plan,
+  paymentMethod,
 }: {
   voucherCode: string;
   setVoucherCode: React.Dispatch<React.SetStateAction<string>>;
@@ -787,10 +815,15 @@ const FormVoucher = ({
   applyVoucherCode: (planId: string) => void;
   error: ErrorType<any> | null;
   plan: PlanDataType;
+  paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT';
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  const firstInstallmentPrice =
+    plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0].amount || null;
+
   return (
     <div className="bg-white rounded-xl border">
       <div
@@ -876,7 +909,10 @@ const FormVoucher = ({
                   Voucher berhasil diterapkan!
                 </p>
                 <p className="text-xs text-green-700">
-                  Kamu hemat {formatPrice(plan.price - discountPrice)}
+                  Kamu hemat{' '}
+                  {paymentMethod === 'INSTALLMENT' && firstInstallmentPrice
+                    ? formatPrice(firstInstallmentPrice - discountPrice)
+                    : formatPrice(plan.price - discountPrice)}
                 </p>
               </div>
             </div>
