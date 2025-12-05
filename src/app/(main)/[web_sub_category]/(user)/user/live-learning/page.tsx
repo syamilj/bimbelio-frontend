@@ -35,6 +35,7 @@ import {
   LiveClassReference,
 } from '@/types/database';
 import {
+  AlertCircle,
   Award,
   BookOpen,
   Calendar,
@@ -52,7 +53,6 @@ import {
   Users,
   Video,
   XCircle,
-  AlertCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -165,7 +165,7 @@ export default function LiveLearningDashboard() {
 
   // Create attendance status map for quick lookup
   const attendanceStatusMap = new Map(
-    attendanceReport?.report?.map((r) => [r.id, r.attendanceStatus]) || []
+    attendanceReport?.report?.map((r) => [r.id, r.attendanceStatus]) || [],
   );
 
   const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
@@ -233,63 +233,74 @@ export default function LiveLearningDashboard() {
           {/* STATS CARDS - LEADERBOARD PATTERN */}
           <CardContent className="p-6">
             {/* Attendance Stats */}
-            {attendanceReport?.summary && attendanceReport.summary.total > 0 && (
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <UserCheck className="w-5 h-5 text-emerald-600" />
-                  <h3 className="text-lg font-black text-gray-900">
-                    Statistik Kehadiran
-                  </h3>
+            {attendanceReport?.summary &&
+              attendanceReport.summary.total > 0 && (
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <UserCheck className="w-5 h-5 text-emerald-600" />
+                    <h3 className="text-lg font-black text-gray-900">
+                      Statistik Kehadiran
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <div className="bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-200">
+                      <div className="flex items-center gap-2 mb-1">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        <span className="text-xs font-bold text-emerald-700">
+                          Hadir
+                        </span>
+                      </div>
+                      <p className="text-2xl font-black text-emerald-900">
+                        {attendanceReport.summary.present}
+                      </p>
+                    </div>
+                    <div className="bg-yellow-50 rounded-2xl p-4 border-2 border-yellow-200">
+                      <div className="flex items-center gap-2 mb-1">
+                        <AlertCircle className="w-4 h-4 text-yellow-600" />
+                        <span className="text-xs font-bold text-yellow-700">
+                          Terlambat
+                        </span>
+                      </div>
+                      <p className="text-2xl font-black text-yellow-900">
+                        {attendanceReport.summary.late}
+                      </p>
+                    </div>
+                    <div className="bg-red-50 rounded-2xl p-4 border-2 border-red-200">
+                      <div className="flex items-center gap-2 mb-1">
+                        <XCircle className="w-4 h-4 text-red-600" />
+                        <span className="text-xs font-bold text-red-700">
+                          Tidak Hadir
+                        </span>
+                      </div>
+                      <p className="text-2xl font-black text-red-900">
+                        {attendanceReport.summary.absent}
+                      </p>
+                    </div>
+                    <div className="bg-blue-50 rounded-2xl p-4 border-2 border-blue-200">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Clock className="w-4 h-4 text-blue-600" />
+                        <span className="text-xs font-bold text-blue-700">
+                          Akan Datang
+                        </span>
+                      </div>
+                      <p className="text-2xl font-black text-blue-900">
+                        {attendanceReport.summary.upcoming}
+                      </p>
+                    </div>
+                    <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 border-2 border-indigo-200">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Target className="w-4 h-4 text-indigo-600" />
+                        <span className="text-xs font-bold text-indigo-700">
+                          Tingkat Kehadiran
+                        </span>
+                      </div>
+                      <p className="text-2xl font-black text-indigo-900">
+                        {attendanceReport.summary.attendanceRate}%
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                  <div className="bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-200">
-                    <div className="flex items-center gap-2 mb-1">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      <span className="text-xs font-bold text-emerald-700">Hadir</span>
-                    </div>
-                    <p className="text-2xl font-black text-emerald-900">
-                      {attendanceReport.summary.present}
-                    </p>
-                  </div>
-                  <div className="bg-yellow-50 rounded-2xl p-4 border-2 border-yellow-200">
-                    <div className="flex items-center gap-2 mb-1">
-                      <AlertCircle className="w-4 h-4 text-yellow-600" />
-                      <span className="text-xs font-bold text-yellow-700">Terlambat</span>
-                    </div>
-                    <p className="text-2xl font-black text-yellow-900">
-                      {attendanceReport.summary.late}
-                    </p>
-                  </div>
-                  <div className="bg-red-50 rounded-2xl p-4 border-2 border-red-200">
-                    <div className="flex items-center gap-2 mb-1">
-                      <XCircle className="w-4 h-4 text-red-600" />
-                      <span className="text-xs font-bold text-red-700">Tidak Hadir</span>
-                    </div>
-                    <p className="text-2xl font-black text-red-900">
-                      {attendanceReport.summary.absent}
-                    </p>
-                  </div>
-                  <div className="bg-blue-50 rounded-2xl p-4 border-2 border-blue-200">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Clock className="w-4 h-4 text-blue-600" />
-                      <span className="text-xs font-bold text-blue-700">Akan Datang</span>
-                    </div>
-                    <p className="text-2xl font-black text-blue-900">
-                      {attendanceReport.summary.upcoming}
-                    </p>
-                  </div>
-                  <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 border-2 border-indigo-200">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Target className="w-4 h-4 text-indigo-600" />
-                      <span className="text-xs font-bold text-indigo-700">Tingkat Kehadiran</span>
-                    </div>
-                    <p className="text-2xl font-black text-indigo-900">
-                      {attendanceReport.summary.attendanceRate}%
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+              )}
 
             {/* Upcoming Live Classes - Responsive Grid */}
             {LiveClassAvailable && LiveClassAvailable.length > 0 && (
@@ -300,8 +311,12 @@ export default function LiveLearningDashboard() {
                       <Timer className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-black text-gray-900">Live Learning Mendatang</h3>
-                      <p className="text-sm text-gray-500">{LiveClassAvailable.length} kelas tersedia</p>
+                      <h3 className="text-lg font-black text-gray-900">
+                        Live Learning Mendatang
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {LiveClassAvailable.length} kelas tersedia
+                      </p>
                     </div>
                   </div>
                   <Button
@@ -754,9 +769,16 @@ export default function LiveLearningDashboard() {
   );
 }
 
-const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; index: number }) => {
+const UpcomingCard = ({
+  liveClass,
+  index,
+}: {
+  liveClass: LiveLearningDataType;
+  index: number;
+}) => {
   const timeLeft = useCountdown(liveClass.startDate);
-  const isLive = liveClass.status === 'ONGOING' || liveClass.status === 'Sedang Berlangsung';
+  const isLive =
+    liveClass.status === 'ONGOING' || liveClass.status === 'Sedang Berlangsung';
 
   // Gradient colors for visual variety
   const gradients = [
@@ -788,11 +810,13 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
         <div className="p-4 flex flex-col flex-1">
           {/* Status badge and ID */}
           <div className="flex items-center justify-between mb-3">
-            <Badge className={`text-xs font-bold rounded-xl ${
-              isLive
-                ? 'bg-red-100 text-red-700 border-red-200'
-                : 'bg-blue-100 text-blue-700 border-blue-200'
-            }`}>
+            <Badge
+              className={`text-xs font-bold rounded-xl ${
+                isLive
+                  ? 'bg-red-100 text-red-700 border-red-200'
+                  : 'bg-blue-100 text-blue-700 border-blue-200'
+              }`}
+            >
               {isLive ? 'Sedang Berlangsung' : 'Akan Datang'}
             </Badge>
             <span className="text-xs font-mono text-gray-400">
@@ -807,7 +831,9 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
 
           {/* Instructor */}
           <div className="flex items-center gap-2 mb-3">
-            <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-xs font-bold shadow-sm shrink-0`}>
+            <div
+              className={`w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-white text-xs font-bold shadow-sm shrink-0`}
+            >
               {liveClass.Instructor?.name?.charAt(0) || 'T'}
             </div>
             <div className="flex-1 min-w-0">
@@ -820,14 +846,18 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
           {/* Time info */}
           <div className="flex items-center gap-2 text-xs text-gray-500 mb-4">
             <Calendar className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">{formatDateTime(liveClass.startDate)}</span>
+            <span className="truncate">
+              {formatDateTime(liveClass.startDate)}
+            </span>
           </div>
 
           {/* Spacer to push button to bottom */}
           <div className="flex-1" />
 
           {/* Action button */}
-          <Link href={`/${website_sub_category_id}/user/live-class/${liveClass.id}`}>
+          <Link
+            href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
+          >
             <Button
               className={`w-full h-10 font-bold rounded-xl transition-all ${
                 isLive
@@ -942,7 +972,9 @@ function LiveClassCard({
 
     const { icon: Icon, label, className } = config[attendanceStatus];
     return (
-      <Badge className={`${className} text-xs font-bold rounded-xl border-2 flex items-center gap-1`}>
+      <Badge
+        className={`${className} text-xs font-bold rounded-xl border-2 flex items-center gap-1`}
+      >
         <Icon className="w-3 h-3" />
         {label}
       </Badge>
@@ -963,7 +995,10 @@ function LiveClassCard({
         );
       }
       // Check if user is registered but not invited
-      if (liveClass.participantStatus === 'Terdaftar' || liveClass.isRegistered) {
+      if (
+        liveClass.participantStatus === 'Terdaftar' ||
+        liveClass.isRegistered
+      ) {
         return (
           <Badge className="bg-yellow-100 text-yellow-800 border-2 border-yellow-300 text-xs font-bold rounded-xl flex items-center gap-1">
             <Clock className="w-3 h-3" />
@@ -1004,9 +1039,7 @@ function LiveClassCard({
 
             {/* Participant Status Badge */}
             {getParticipantStatusBadge() && (
-              <div className="mb-3">
-                {getParticipantStatusBadge()}
-              </div>
+              <div className="mb-3">{getParticipantStatusBadge()}</div>
             )}
 
             {/* Countdown for upcoming classes */}
@@ -1058,7 +1091,9 @@ function LiveClassCard({
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-purple-500" />
-                <span className="font-medium">{formatDuration(liveClass.duration)}</span>
+                <span className="font-medium">
+                  {formatDuration(liveClass.duration)}
+                </span>
               </div>
             </div>
 
