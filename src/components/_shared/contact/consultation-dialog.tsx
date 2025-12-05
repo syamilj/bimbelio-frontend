@@ -116,7 +116,7 @@ const useContactOptions = (
         console.warn('Pixel tracking error:', error);
       }
 
-      window.open('https://discord.com/invite/5Fy3fnVaE9', '_blank');
+      window.open('https://www.bimbelio.com/link/komunitas', '_blank');
       onDialogClose();
       onContactSelect?.('discord');
     },

@@ -244,7 +244,7 @@ export default function ProviderMaintenance({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <a
-                    href="https://discord.com/invite/5Fy3fnVaE9"
+                    href="https://www.bimbelio.com/link/komunitas"
                     target="_blank"
                     className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
                   >

@@ -1,10 +1,10 @@
 'use client';
 
+import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import ReactMarkdown from '@/components/ui/react-markdown';
 import {
   Select,
   SelectContent,
@@ -12,17 +12,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { env } from '@/env.mjs';
-import { cn, replaceLatexNotation } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { supabase } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
 import {
   AlertCircle,
   CircleCheck,
   CircleX,
-  Eye,
-  EyeOff,
   ImageIcon,
   Trash2,
   Upload,
@@ -231,10 +228,7 @@ const SubChapterQuestion = ({
     });
   };
 
-  const onChangeExplanation = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    questionIndex: number,
-  ) => {
+  const onChangeExplanation = (value: string, questionIndex: number) => {
     setSubChapter((prev) => {
       return prev.map((item, sessionIndex) => {
         if (
@@ -246,7 +240,7 @@ const SubChapterQuestion = ({
             ...item,
             Questions: item.Questions.map((item2, qIndex) => {
               if (qIndex === questionIndex) {
-                return { ...item2, explanation: e.target.value };
+                return { ...item2, explanation: value };
               }
               return item2;
             }),
@@ -258,8 +252,8 @@ const SubChapterQuestion = ({
   };
 
   const onChangeQuestion = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>, index: number) => {
-      const newQuestionValue = e.target.value;
+    (value: string, index: number) => {
+      const newQuestionValue = value;
       setSubChapter((prev) => {
         return prev.map((item, sessionIndex) => {
           if (
@@ -619,45 +613,16 @@ const SubChapterQuestion = ({
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-base">Soal</CardTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() =>
-                setShowPreview(
-                  showPreview === questionIndex ? 99999 : questionIndex,
-                )
-              }
-              className="gap-2"
-            >
-              {showPreview === questionIndex ? (
-                <>
-                  <EyeOff className="h-4 w-4" />
-                  Edit
-                </>
-              ) : (
-                <>
-                  <Eye className="h-4 w-4" />
-                  Preview
-                </>
-              )}
-            </Button>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          {showPreview === questionIndex ? (
-            <div className="min-h-[200px] p-4 border border-gray-200 rounded-lg bg-gray-50">
-              <ReactMarkdown
-                value={replaceLatexNotation(currentQuestion.question)}
-              />
-            </div>
-          ) : (
-            <Textarea
-              placeholder="Tulis soal di sini... Mendukung Markdown dan LaTeX"
-              value={currentQuestion.question}
-              onChange={(e) => onChangeQuestion(e, questionIndex)}
-              className="min-h-[200px] font-mono"
-            />
-          )}
+          <BlocknoteEditor
+            value={currentQuestion.question}
+            onValueChange={(value) => {
+              onChangeQuestion(value, questionIndex);
+            }}
+            type="BORDERED"
+          />
 
           {/* Image Upload Section */}
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
@@ -774,47 +739,15 @@ const SubChapterQuestion = ({
               </div>
 
               <div className="space-y-3">
-                {showAnswerPreview === answerIndex ? (
-                  <div className="min-h-[80px] p-3 border border-gray-200 rounded-lg bg-gray-50">
-                    <ReactMarkdown
-                      value={replaceLatexNotation(answer.answer)}
-                    />
-                  </div>
-                ) : (
-                  <Textarea
-                    placeholder="Tulis pilihan jawaban..."
-                    value={answer.answer}
-                    onChange={(e) =>
-                      onChangeAnswer(e.target.value, questionIndex, answerIndex)
-                    }
-                    className="min-h-[80px]"
-                  />
-                )}
+                <BlocknoteEditor
+                  value={answer.answer}
+                  onValueChange={(value) => {
+                    onChangeAnswer(value, questionIndex, answerIndex);
+                  }}
+                  type="BORDERED"
+                />
 
-                <div className="flex items-center justify-between">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      setShowAnswerPreview(
-                        showAnswerPreview === answerIndex ? 99999 : answerIndex,
-                      )
-                    }
-                    className="gap-2"
-                  >
-                    {showAnswerPreview === answerIndex ? (
-                      <>
-                        <EyeOff className="h-4 w-4" />
-                        Edit
-                      </>
-                    ) : (
-                      <>
-                        <Eye className="h-4 w-4" />
-                        Preview
-                      </>
-                    )}
-                  </Button>
-
+                <div className="flex items-center justify-end ">
                   {/* Score Buttons */}
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-600">Poin:</span>
@@ -898,47 +831,16 @@ const SubChapterQuestion = ({
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-base">Pembahasan</CardTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() =>
-                setShowExplanationPreview(
-                  showExplanationPreview === questionIndex
-                    ? 99999
-                    : questionIndex,
-                )
-              }
-              className="gap-2"
-            >
-              {showExplanationPreview === questionIndex ? (
-                <>
-                  <EyeOff className="h-4 w-4" />
-                  Edit
-                </>
-              ) : (
-                <>
-                  <Eye className="h-4 w-4" />
-                  Preview
-                </>
-              )}
-            </Button>
           </div>
         </CardHeader>
         <CardContent>
-          {showExplanationPreview === questionIndex ? (
-            <div className="min-h-[150px] p-4 border border-gray-200 rounded-lg bg-gray-50">
-              <ReactMarkdown
-                value={replaceLatexNotation(currentQuestion.explanation || '')}
-              />
-            </div>
-          ) : (
-            <Textarea
-              placeholder="Tulis pembahasan dan penjelasan jawaban yang benar..."
-              value={currentQuestion.explanation || ''}
-              onChange={(e) => onChangeExplanation(e, questionIndex)}
-              className="min-h-[150px]"
-            />
-          )}
+          <BlocknoteEditor
+            value={currentQuestion.explanation || ''}
+            onValueChange={(value) => {
+              onChangeExplanation(value, questionIndex);
+            }}
+            type="BORDERED"
+          />
         </CardContent>
       </Card>
     </div>

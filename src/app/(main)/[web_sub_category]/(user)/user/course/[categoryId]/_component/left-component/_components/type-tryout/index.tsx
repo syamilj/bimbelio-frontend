@@ -12,10 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import ReactMarkdown from '@/components/ui/react-markdown';
+// import ReactMarkdown from '@/components/ui/react-markdown';
+import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { cn } from '@/lib/utils';
 import {
   BookOpen,
@@ -294,12 +294,13 @@ const TryoutType = () => {
                 <div className="p-4 bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-xl border border-gray-200">
                   <div className="flex items-start gap-3">
                     <BookOpen className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                    <ReactMarkdown
-                      className="font-medium text-gray-800 flex-1"
+                    <BlocknoteEditor
                       value={
                         TryoutSession.TryoutQuestion[currentIndexQuestion]
                           .question
                       }
+                      viewOnly
+                      className="question-content"
                     />
                   </div>
                 </div>
@@ -367,7 +368,7 @@ const TryoutType = () => {
                                 isSelected && 'border-blue-600 text-blue-600',
                               )}
                             />
-                            <Label
+                            {/* <Label
                               htmlFor={answer.id}
                               className={cn(
                                 'flex-1 cursor-pointer text-gray-700 font-medium',
@@ -375,7 +376,12 @@ const TryoutType = () => {
                               )}
                             >
                               {answer.answer}
-                            </Label>
+                            </Label> */}
+                            <BlocknoteEditor
+                              value={answer.answer}
+                              viewOnly
+                              className="question-content"
+                            />
                           </div>
                           {isSelected && (
                             <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />

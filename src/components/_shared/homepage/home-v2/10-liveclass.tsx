@@ -1,48 +1,52 @@
 'use client';
 
+import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Card, CardContent } from '@/components/ui/card';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
 import {
-  Calendar,
-  Clock,
-  PlayCircle,
-  Users,
-  Video,
-} from 'lucide-react';
+  Category,
+  CourseSubChapter,
+  Instructor,
+  LiveClass,
+  LiveClassAgenda,
+  LiveClassReference,
+} from '@/types/database';
+import { Calendar, Clock, PlayCircle, Video } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-type LiveClassData = {
-  id: string;
-  title: string;
-  description: string;
-  startDate: string;
+type LiveLearningDataType = LiveClass & {
+  Instructor: Instructor;
+  Category: Category;
+  LiveClassReference: (LiveClassReference & {
+    CourseSubChapter: CourseSubChapter;
+  })[];
+  LiveClassAgenda: LiveClassAgenda[];
   endDate: string;
   status: string;
-  Instructor: {
+  participants: {
     id: string;
+    email: string;
     name: string;
+    subs: string;
     image: string | null;
-    university: string;
-  };
-  Category: {
-    name: string;
-  };
-  participants: { id: string }[];
+  }[];
+  isRegistered?: boolean;
 };
 
 const LiveClassSection: React.FC = () => {
+  const { setShowAuth } = useGuest();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const { data: liveClasses, isLoading } = useGet<LiveClassData[]>(
+  const { data: liveClasses, isLoading } = useGet<LiveLearningDataType[]>(
     '/liveClass/getAllLiveClassForLandingPage',
-    { params: { take: 3, page: 1 } }
+    { params: { take: 3, page: 1 } },
   );
 
   const isMainLandingPage = pathname === '/';
@@ -70,7 +74,7 @@ const LiveClassSection: React.FC = () => {
       id="live-class"
       className={cn(
         'py-16 md:py-20 px-4 bg-white',
-        !isLoading && (!liveClasses || liveClasses.length === 0) && 'hidden'
+        !isLoading && (!liveClasses || liveClasses.length === 0) && 'hidden',
       )}
     >
       <div className="max-w-5xl mx-auto">
@@ -85,7 +89,8 @@ const LiveClassSection: React.FC = () => {
           </span>
 
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Belajar Bareng <span style={{ color: mainColor }}>Tutor Alumni PTN</span>
+            Belajar Bareng{' '}
+            <span style={{ color: mainColor }}>Tutor Alumni PTN</span>
           </h2>
 
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -98,7 +103,10 @@ const LiveClassSection: React.FC = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[1, 2, 3].map((i) => (
-              <Card key={i} className="overflow-hidden rounded-2xl">
+              <Card
+                key={i}
+                className="overflow-hidden rounded-2xl"
+              >
                 <CardContent className="p-0">
                   <div className="h-32 bg-gray-200 animate-pulse" />
                   <div className="p-4 space-y-3">
@@ -113,24 +121,54 @@ const LiveClassSection: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {liveClasses?.slice(0, 3).map((liveClass) => {
               const status = getStatusLabel(liveClass.status);
+              const href = `/${liveClass.websiteSubCategoryId}/user/live-learning/detail/${liveClass.id}?liveLearningId=${liveClass.id}`;
+              const linkId = `live-class-link-${liveClass.id}`;
 
               return (
-                <Link
+                <div
                   key={liveClass.id}
-                  href={`/snbt/user/live-learning/${liveClass.id}`}
-                  className="group"
+                  className="group cursor-pointer"
+                  onClick={() => {
+                    if (!session) {
+                      setShowAuth({
+                        open: true,
+                        redirect: href,
+                      });
+                    } else {
+                      const linkElement = document.getElementById(linkId);
+                      linkElement?.click();
+                    }
+                  }}
                 >
+                  <Link
+                    hidden
+                    id={linkId}
+                    href={href}
+                  />
                   <Card className="overflow-hidden rounded-2xl border border-gray-200 hover:border-gray-300 transition-colors bg-white h-full">
                     <CardContent className="p-0">
                       {/* Header with status */}
                       <div
-                        className="h-24 relative flex items-center justify-center"
+                        className={cn(
+                          'h-24 relative flex items-center justify-center',
+                          liveClass.image && 'h-full',
+                        )}
                         style={{ backgroundColor: `${mainColor}10` }}
                       >
-                        <PlayCircle
-                          className="w-12 h-12"
-                          style={{ color: mainColor }}
-                        />
+                        {!liveClass.image && (
+                          <PlayCircle
+                            className="w-12 h-12"
+                            style={{ color: mainColor }}
+                          />
+                        )}
+                        {liveClass.image && (
+                          <Image
+                            src={liveClass.image}
+                            alt={liveClass.title}
+                            width={400}
+                            height={96}
+                          />
+                        )}
                         <div className="absolute top-3 right-3">
                           <span
                             className="px-3 py-1 rounded-full text-xs font-semibold text-white"
@@ -178,7 +216,8 @@ const LiveClassSection: React.FC = () => {
                               {liveClass.Instructor?.name || 'Tutor'}
                             </p>
                             <p className="text-xs text-gray-500">
-                              {liveClass.Instructor?.university || 'Alumni PTN'}
+                              {liveClass.Instructor?.lastEducation ||
+                                'Alumni PTN'}
                             </p>
                           </div>
                         </div>
@@ -188,26 +227,32 @@ const LiveClassSection: React.FC = () => {
                           <div className="flex items-center gap-1">
                             <Calendar className="w-3.5 h-3.5" />
                             <span>
-                              {new Date(liveClass.startDate).toLocaleDateString('id-ID', {
-                                day: 'numeric',
-                                month: 'short',
-                              })}
+                              {new Date(liveClass.startDate).toLocaleDateString(
+                                'id-ID',
+                                {
+                                  day: 'numeric',
+                                  month: 'short',
+                                },
+                              )}
                             </span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="w-3.5 h-3.5" />
                             <span>
-                              {new Date(liveClass.startDate).toLocaleTimeString('id-ID', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })}
+                              {new Date(liveClass.startDate).toLocaleTimeString(
+                                'id-ID',
+                                {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                },
+                              )}
                             </span>
                           </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                </Link>
+                </div>
               );
             })}
           </div>

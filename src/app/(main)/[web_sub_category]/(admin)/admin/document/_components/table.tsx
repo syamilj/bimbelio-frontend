@@ -4,10 +4,20 @@ import { env } from '@/env.mjs';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { IconTailedArrowNext, IconTailedArrowPrev } from '@/styles/icon';
 import { supabase } from '@/supabaseClient';
+import { Category, Document, Subcategory, Video } from '@/types/database';
 import { Download, Link } from 'lucide-react';
 import { useState } from 'react';
 import { useProvider } from '../provider';
 import HapusDokumen from './action/hapus-dokumen';
+
+type DataType = (Document & {
+  category: Category;
+  subCategory: Subcategory;
+  video: Video | null;
+  _count: {
+    userDocuments: number;
+  };
+})[];
 
 export default function Table() {
   const {

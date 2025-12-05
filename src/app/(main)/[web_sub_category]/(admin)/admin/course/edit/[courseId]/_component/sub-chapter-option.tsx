@@ -339,7 +339,7 @@ const SubChapterOption = ({
                 EditSubChapter.Questions.length > 0 ? (
                   <>
                     <div className="flex gap-2 flex-wrap">
-                      {EditSubChapter.Questions.map((_, qIndex) => (
+                      {EditSubChapter.Questions.map((quest, qIndex) => (
                         <Button
                           key={qIndex}
                           variant={
@@ -349,7 +349,7 @@ const SubChapterOption = ({
                           onClick={() => setQuestionIndex(qIndex)}
                           className="w-8 h-8 p-0"
                         >
-                          {qIndex + 1}
+                          {quest.number}
                         </Button>
                       ))}
                     </div>

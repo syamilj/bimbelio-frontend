@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { InputImage } from '@/components/ui/input-image';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -22,6 +23,8 @@ import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
+import { sanitizeFileName } from '@/lib/utils/storage';
+import { supabase } from '@/supabaseClient';
 import {
   Category,
   CourseChapter,
@@ -87,6 +90,8 @@ export default function CreateLiveClassForm() {
 
   const [instructorId, setInstructorId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const [image, setImage] = useState<File | undefined>(undefined);
 
   const [urlReadingData, setUrlReadingData] = useState<ReferenceType>({
     title: '',
@@ -168,7 +173,7 @@ export default function CreateLiveClassForm() {
     setIsLoading(true);
     try {
       const formData = new FormData(e.target as HTMLFormElement);
-      const title = formData.get('title');
+      const title = formData.get('title') as string;
       const categoryId = formData.get('categoryId');
       const description = formData.get('description');
       const startDate = formData.get('startDate');
@@ -179,6 +184,25 @@ export default function CreateLiveClassForm() {
       const link = formData.get('link');
       const isRecord =
         formData.get('record-live-class') === 'on' ? true : false;
+
+      console.log({ image });
+
+      let imageUrl = undefined;
+      if (image && title) {
+        const pathFile = `live-learning/${sanitizeFileName(title)}`;
+
+        const upload = await supabase.storage
+          .from('img')
+          .upload(pathFile, image);
+
+        console.log({ upload });
+
+        const { data } = supabase.storage.from('img').getPublicUrl(pathFile);
+
+        if (data.publicUrl) {
+          imageUrl = data.publicUrl;
+        }
+      }
 
       const payload = {
         planIds: accessType === 'PREMIUM' ? selectedPlanIds : [],
@@ -194,6 +218,7 @@ export default function CreateLiveClassForm() {
           instructorId,
           type,
           accessType,
+          image: imageUrl,
         },
         liveClassAgenda: agendas,
         liveClassReference: references,
@@ -375,15 +400,25 @@ export default function CreateLiveClassForm() {
                 </Select>
               </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Deskripsi *</Label>
-              <Textarea
-                id="description"
-                name="description"
-                placeholder="Jelaskan materi yang akan dibahas dalam live class ini..."
-                rows={3}
-                required
-              />
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="description">Deskripsi *</Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  placeholder="Jelaskan materi yang akan dibahas dalam live class ini..."
+                  rows={3}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="image">Image</Label>
+                <InputImage
+                  onChange={(file) => {
+                    setImage(file);
+                  }}
+                />
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -55,14 +55,17 @@ export function useGet<Data = any, ErrorData = any>(
     return res;
   };
 
-  const initialFetch = useDebouncedCallback(refetch);
+  const referchDeounced = useDebouncedCallback(
+    refetch,
+    more?.debounceTime || 0,
+  );
 
   const Dependencies = more?.useEffectDependencies || [];
   const Enabled = more?.enabled !== undefined ? more.enabled : true;
 
   useEffect(() => {
     if (Enabled) {
-      initialFetch();
+      referchDeounced();
     }
   }, [...Dependencies, Enabled]);
 
@@ -84,6 +87,7 @@ type MoreProps<Data = any, ErrorData = any> = {
   firstLoad?: boolean;
   endLoad?: boolean;
   hideToast?: boolean;
+  debounceTime?: number;
   toast?: {
     hideSuccess?: boolean;
     hideError?: boolean;

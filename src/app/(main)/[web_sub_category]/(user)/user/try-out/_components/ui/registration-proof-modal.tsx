@@ -210,9 +210,9 @@ export default function RegistrationProofModal({
     items.push({
       id: 'discord_join',
       title: 'Join Grup Belajar',
-      instruction: 'Klik Join Group di Discord',
+      instruction: 'Klik Join Group di WA',
       icon: <Users className="h-5 w-5" />,
-      link: 'https://discord.com/invite/5Fy3fnVaE9',
+      link: 'https://www.bimbelio.com/link/komunitas',
       points: 15,
       required: true,
       step: items.length + 1,
