@@ -2,8 +2,7 @@ import { env } from '@/env.mjs';
 import axios from 'axios';
 import { Metadata } from 'next';
 import { Fragment } from 'react';
-import BlogClient from '../_components/BlogContent';
-import { cacheLife } from 'next/cache';
+import BlogClientWrapper from '../_components/BlogClientWrapper';
 
 export async function generateStaticParams() {
   try {
@@ -22,8 +21,6 @@ export async function generateStaticParams() {
 }
 
 async function getBlogBySlug(slug: string) {
-  "use cache";
-  cacheLife('hours');
   try {
     const response = await axios.get(
       `${env.NEXT_PUBLIC_API_URL}/blog/getBlogBySlug`,
@@ -97,7 +94,7 @@ export default async function BlogServerPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogClient blog={blog} />
+      <BlogClientWrapper blog={blog} />
     </Fragment>
   );
 }
