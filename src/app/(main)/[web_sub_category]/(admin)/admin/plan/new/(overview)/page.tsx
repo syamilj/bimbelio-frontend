@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import LoadingPageWithText from '@/components/ui/spinner';
+import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
@@ -36,7 +37,23 @@ import { cn, formatCurrency, parseCurrency } from '@/lib/utils';
 import { getSlug } from '@/lib/utils/slug';
 import { supabase } from '@/supabaseClient';
 import { Category, Instructor, LiveClass } from '@/types/database';
-import { InfoIcon, Plus, Trash2 } from 'lucide-react';
+import {
+  // ...existing imports...
+  AlertCircleIcon,
+  CheckCircleIcon,
+  ClipboardListIcon,
+  EyeIcon,
+  FileTextIcon,
+  HelpCircleIcon,
+  InfoIcon,
+  ListIcon,
+  MessageSquareIcon,
+  Plus,
+  StickyNoteIcon,
+  TargetIcon,
+  Trash2,
+  XCircleIcon,
+} from 'lucide-react';
 import React, { useState } from 'react';
 import { LimitType, useProvider } from '../_provider/provider';
 
@@ -87,11 +104,44 @@ export default function CreatePlanForm() {
         maxUsers,
       },
     },
+    useInstallment: {
+      installmentConfig,
+      isInstallmentEnabled,
+      alertAmount,
+      alertLimitation,
+    },
   } = useProvider();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (isInstallmentEnabled) {
+      if (installmentConfig.InstallmentSchedules.length === 0) {
+        toaster({
+          title: 'Error',
+          condition: 'warning',
+          description: 'Installment schedule belum terisi!',
+          duration: 3000,
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      if (
+        alertAmount ||
+        (alertLimitation && installmentConfig.isCustomeLimitation)
+      ) {
+        toaster({
+          title: 'Error',
+          condition: 'warning',
+          description: 'Cek ringkasan cicilan untuk memperbaiki kesalahan!',
+          duration: 3000,
+        });
+        setIsLoading(false);
+        return;
+      }
+    }
 
     if (activeTab.feature && validityType === 'duration' && !duration) {
       toaster({
@@ -258,6 +308,49 @@ export default function CreatePlanForm() {
             title: row.title,
             description: row.description,
           })),
+        PlanInstallmentConfig: isInstallmentEnabled
+          ? {
+              ...installmentConfig,
+              totalInstallments: Number(installmentConfig.totalInstallments),
+              totalAmount: Number(installmentConfig.totalAmount),
+              gracePeriodDays: parseInt(installmentConfig.gracePeriodDays),
+              PlanInstallmentSchedule:
+                installmentConfig.InstallmentSchedules.map((item) => {
+                  return {
+                    installmentNumber: Number(item.installmentNumber),
+                    daysAfterFirstPayment: Number(item.daysAfterFirstPayment),
+                    expireDaysAfterFirstPayment: Number(
+                      item.expireDaysAfterFirstPayment,
+                    ),
+                    amount: Number(item.amount),
+                    description: item.description,
+                    lateFeeType: item.lateFeeType,
+                    lateFeeAmount: Number(item.lateFeeAmount),
+                    PlanInstallmentScheduleLimitation:
+                      item.PlanInstallmentScheduleLimitation &&
+                      installmentConfig.isCustomeLimitation
+                        ? {
+                            chat: Number(
+                              item.PlanInstallmentScheduleLimitation.chat,
+                            ),
+                            notes: Number(
+                              item.PlanInstallmentScheduleLimitation.notes,
+                            ),
+                            vision: Number(
+                              item.PlanInstallmentScheduleLimitation.vision,
+                            ),
+                            quiz: Number(
+                              item.PlanInstallmentScheduleLimitation.quiz,
+                            ),
+                            tryout: Number(
+                              item.PlanInstallmentScheduleLimitation.tryout,
+                            ),
+                          }
+                        : undefined,
+                  };
+                }),
+            }
+          : undefined,
       };
 
       // return;
@@ -475,6 +568,8 @@ export default function CreatePlanForm() {
             </div>
           </CardContent>
         </Card>
+
+        <SectionInstallment />
 
         {/* Form Actions */}
         <div className="flex justify-end gap-4 mt-6">
@@ -1519,6 +1614,789 @@ const SectionBenefits = () => {
           </div>
         </div>
       ))}
+    </div>
+  );
+};
+
+const SectionInstallment = () => {
+  const {
+    useForm: {
+      formDataValues: { price },
+    },
+    useInstallment: {
+      installmentConfig: config,
+      isInstallmentEnabled,
+      setInstallmentConfig: setConfig,
+      setIsInstallmentEnabled,
+      alertAmount,
+      alertLimitation,
+      dataHelper: { limitationMismatches, priceDifference, totalLimitations },
+    },
+    useLimitation: { limitRows },
+  } = useProvider();
+
+  enum LateFeeType {
+    FIXED = 'FIXED',
+    PERCENTAGE = 'PERCENTAGE',
+    NONE = 'NONE',
+  }
+
+  const updateConfig = <K extends keyof typeof config>(
+    key: K,
+    value: (typeof config)[K],
+  ) => {
+    setConfig((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const addScheduleRow = () => {
+    const newSchedule: (typeof config.InstallmentSchedules)[0] = {
+      id: crypto.randomUUID(),
+      installmentNumber: (config.InstallmentSchedules.length + 1).toString(),
+      daysAfterFirstPayment: '0',
+      expireDaysAfterFirstPayment: '0',
+      amount: '0',
+      description: '',
+      lateFeeType: 'NONE',
+      lateFeeAmount: '0',
+    };
+    setConfig((prev) => ({
+      ...prev,
+      InstallmentSchedules: [...prev.InstallmentSchedules, newSchedule],
+      totalInstallments: (prev.InstallmentSchedules.length + 1).toString(),
+    }));
+  };
+
+  const removeScheduleRow = (id: string) => {
+    setConfig((prev) => {
+      const filtered = prev.InstallmentSchedules.filter((s) => s.id !== id).map(
+        (s, idx) => ({
+          ...s,
+          installmentNumber: (idx + 1).toString(),
+        }),
+      );
+      return {
+        ...prev,
+        InstallmentSchedules: filtered,
+        totalInstallments: filtered.length.toString(),
+      };
+    });
+  };
+
+  const updateScheduleRow = <
+    K extends keyof (typeof config.InstallmentSchedules)[0],
+  >(
+    id: string,
+    key: K,
+    value: (typeof config.InstallmentSchedules)[0][K],
+  ) => {
+    setConfig((prev) => ({
+      ...prev,
+      InstallmentSchedules: prev.InstallmentSchedules.map((s) =>
+        s.id === id ? { ...s, [key]: value } : s,
+      ),
+    }));
+  };
+
+  const updateScheduleLimitation = (
+    id: string,
+    field: 'chat' | 'notes' | 'vision' | 'quiz' | 'tryout',
+    value: string,
+  ) => {
+    setConfig((prev) => ({
+      ...prev,
+      InstallmentSchedules: prev.InstallmentSchedules.map((s) =>
+        s.id === id
+          ? {
+              ...s,
+              PlanInstallmentScheduleLimitation: {
+                ...s.PlanInstallmentScheduleLimitation,
+                chat: s.PlanInstallmentScheduleLimitation?.chat || '0',
+                notes: s.PlanInstallmentScheduleLimitation?.notes || '0',
+                vision: s.PlanInstallmentScheduleLimitation?.vision || '0',
+                quiz: s.PlanInstallmentScheduleLimitation?.quiz || '0',
+                tryout: s.PlanInstallmentScheduleLimitation?.tryout || '0',
+                [field]: value,
+              },
+            }
+          : s,
+      ),
+    }));
+  };
+
+  const moveScheduleRow = (id: string, direction: 'up' | 'down') => {
+    setConfig((prev) => {
+      const schedules = [...prev.InstallmentSchedules];
+      const index = schedules.findIndex((s) => s.id === id);
+      if (
+        (direction === 'up' && index === 0) ||
+        (direction === 'down' && index === schedules.length - 1)
+      ) {
+        return prev;
+      }
+      const newIndex = direction === 'up' ? index - 1 : index + 1;
+      [schedules[index], schedules[newIndex]] = [
+        schedules[newIndex],
+        schedules[index],
+      ];
+      // Update installment numbers after reordering
+      const reordered = schedules.map((s, idx) => ({
+        ...s,
+        installmentNumber: (idx + 1).toString(),
+      }));
+      return { ...prev, InstallmentSchedules: reordered };
+    });
+  };
+
+  const instalmentTotalAmount = config.InstallmentSchedules.reduce(
+    (sum, s) => sum + Number(s.amount),
+    0,
+  );
+
+  return (
+    <div className="space-y-6">
+      {/* Toggle Cicilan */}
+      <div className="flex items-center justify-between p-4 border rounded-lg bg-white">
+        <div>
+          <Label className="text-base font-medium">Aktifkan Cicilan</Label>
+          <p className="text-sm text-gray-500">
+            Izinkan pelanggan untuk membayar secara cicilan
+          </p>
+        </div>
+        <Switch
+          checked={isInstallmentEnabled}
+          onCheckedChange={setIsInstallmentEnabled}
+        />
+      </div>
+
+      {/* Konfigurasi Cicilan */}
+      {isInstallmentEnabled && (
+        <div className="space-y-6">
+          {/* Konfigurasi Utama */}
+          <div className="border rounded-lg p-4 bg-white">
+            <h3 className="text-lg font-semibold mb-4">Konfigurasi Cicilan</h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <Label className="block mb-2">
+                  Total Cicilan <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  min={1}
+                  placeholder="cth: 3"
+                  value={config.totalInstallments}
+                  onChange={(e) =>
+                    updateConfig('totalInstallments', e.target.value)
+                  }
+                  required
+                  disabled
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Dihitung otomatis dari jadwal cicilan
+                </p>
+              </div>
+              <div>
+                <Label className="block mb-2">
+                  Total Harga <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  disabled
+                  placeholder="cth: 1.000.000"
+                  required
+                  value={formatCurrency(price)}
+                  onChange={(e) => {
+                    const rawValue = parseCurrency(e.target.value);
+                    updateConfig('totalAmount', rawValue);
+                  }}
+                />
+              </div>
+              <div>
+                <Label className="block mb-2">
+                  Custom Limitation <span className="text-red-500">*</span>
+                </Label>
+                <Select
+                  value={config.isCustomeLimitation ? 'Custom' : 'Otomatis'}
+                  onValueChange={(value: 'Custom' | 'Otomatis') =>
+                    value &&
+                    updateConfig(
+                      'isCustomeLimitation',
+                      value === 'Custom' ? true : false,
+                    )
+                  }
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih jenis" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={'Otomatis'}>Otomatis</SelectItem>
+                    <SelectItem value={'Custom'}>Custom</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="block mb-2">
+                  Masa Tenggang (Hari) <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  type="number"
+                  min={0}
+                  placeholder="cth: 7"
+                  required
+                  value={config.gracePeriodDays}
+                  onChange={(e) =>
+                    updateConfig('gracePeriodDays', e.target.value)
+                  }
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Jadwal Cicilan */}
+          <div className="border rounded-lg p-4 bg-white">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Jadwal Cicilan</h3>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="bg-blue-50 text-blue-500 hover:bg-blue-100 border-blue-100"
+                onClick={addScheduleRow}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Tambah Jadwal
+              </Button>
+            </div>
+
+            <div className="space-y-4">
+              {config.InstallmentSchedules.map((schedule, index) => (
+                <div
+                  key={schedule.id}
+                  className="border rounded-lg p-4 bg-gray-50"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-medium text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                      Cicilan ke-{schedule.installmentNumber}
+                    </span>
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => moveScheduleRow(schedule.id, 'up')}
+                        disabled={index === 0}
+                        className="px-2"
+                      >
+                        ↑
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => moveScheduleRow(schedule.id, 'down')}
+                        disabled={
+                          index === config.InstallmentSchedules.length - 1
+                        }
+                        className="px-2"
+                      >
+                        ↓
+                      </Button>
+                      {config.InstallmentSchedules.length > 1 && (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="bg-red-50 text-red-500 hover:bg-red-100 border-red-100"
+                          onClick={() => removeScheduleRow(schedule.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                      <Label className="block mb-2">
+                        Hari Setelah Pembayaran Pertama{' '}
+                        <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="number"
+                        placeholder="cth: 30"
+                        required
+                        value={schedule.daysAfterFirstPayment}
+                        disabled={schedule.installmentNumber === '1'}
+                        onChange={(e) => {
+                          updateScheduleRow(
+                            schedule.id,
+                            'daysAfterFirstPayment',
+                            e.target.value,
+                          );
+                          const prevSchedule =
+                            config.InstallmentSchedules[index - 1] || null;
+
+                          if (prevSchedule) {
+                            updateScheduleRow(
+                              prevSchedule.id,
+                              'expireDaysAfterFirstPayment',
+                              e.target.value,
+                            );
+                          }
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Label className="block mb-2">
+                        Jumlah Bayar <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="text"
+                        min={0}
+                        required
+                        placeholder="cth: 500.000"
+                        value={formatCurrency(schedule.amount)}
+                        onChange={(e) => {
+                          const rawValue = parseCurrency(e.target.value);
+                          updateScheduleRow(schedule.id, 'amount', rawValue);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Label className="block mb-2">Keterangan</Label>
+                      <Input
+                        type="text"
+                        placeholder="cth: Cicilan pertama"
+                        value={schedule.description || ''}
+                        onChange={(e) =>
+                          updateScheduleRow(
+                            schedule.id,
+                            'description',
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="block mb-2">
+                        Hari Akses di tangguhkan{' '}
+                        <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="number"
+                        placeholder="cth: 30"
+                        required
+                        value={schedule.expireDaysAfterFirstPayment}
+                        disabled={
+                          schedule.installmentNumber !==
+                          config.InstallmentSchedules.length.toString()
+                        }
+                        onChange={(e) =>
+                          updateScheduleRow(
+                            schedule.id,
+                            'expireDaysAfterFirstPayment',
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+                    <div>
+                      <Label className="block mb-2">
+                        Jenis Denda Keterlambatan{' '}
+                        <span className="text-red-500">*</span>
+                      </Label>
+                      <Select
+                        value={schedule.lateFeeType}
+                        onValueChange={(value: LateFeeType) =>
+                          updateScheduleRow(schedule.id, 'lateFeeType', value)
+                        }
+                        required
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Pilih jenis" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value={LateFeeType.NONE}>
+                            Tidak Ada
+                          </SelectItem>
+                          <SelectItem value={LateFeeType.FIXED}>
+                            Nominal Tetap
+                          </SelectItem>
+                          <SelectItem value={LateFeeType.PERCENTAGE}>
+                            Persentase
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {schedule.lateFeeType !== 'NONE' && (
+                      <div>
+                        <Label className="block mb-2">
+                          Jumlah Denda{' '}
+                          {schedule.lateFeeType === LateFeeType.PERCENTAGE
+                            ? '(%)'
+                            : '(Rp)'}
+                        </Label>
+                        <Input
+                          type="text"
+                          required
+                          min={0}
+                          placeholder={
+                            schedule.lateFeeType === LateFeeType.PERCENTAGE
+                              ? 'cth: 5'
+                              : 'cth: 50.000'
+                          }
+                          value={
+                            schedule.lateFeeType === 'FIXED' &&
+                            schedule.lateFeeAmount
+                              ? formatCurrency(schedule.lateFeeAmount)
+                              : schedule.lateFeeAmount
+                          }
+                          onChange={(e) => {
+                            const rawValue =
+                              schedule.lateFeeType === 'FIXED'
+                                ? parseCurrency(e.target.value)
+                                : e.target.value;
+                            updateScheduleRow(
+                              schedule.id,
+                              'lateFeeAmount',
+                              rawValue,
+                            );
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  {config.isCustomeLimitation && (
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <Label className="block mb-3 font-medium text-gray-700">
+                        Batas Penggunaan Fitur{' '}
+                        <span className="text-red-500">*</span>
+                      </Label>
+                      <p className="text-xs text-gray-500 mb-3">
+                        Atur jumlah limit yang didapat pengguna setelah membayar
+                        cicilan ini
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+                        <div>
+                          <Label className="block mb-1 text-sm text-gray-600">
+                            Chat
+                          </Label>
+                          <Input
+                            type="number"
+                            min={0}
+                            placeholder="0"
+                            value={
+                              schedule.PlanInstallmentScheduleLimitation
+                                ?.chat || ''
+                            }
+                            onChange={(e) =>
+                              updateScheduleLimitation(
+                                schedule.id,
+                                'chat',
+                                e.target.value,
+                              )
+                            }
+                            className="h-9"
+                          />
+                        </div>
+                        <div>
+                          <Label className="block mb-1 text-sm text-gray-600">
+                            Notes
+                          </Label>
+                          <Input
+                            type="number"
+                            min={0}
+                            placeholder="0"
+                            value={
+                              schedule.PlanInstallmentScheduleLimitation
+                                ?.notes || ''
+                            }
+                            onChange={(e) =>
+                              updateScheduleLimitation(
+                                schedule.id,
+                                'notes',
+                                e.target.value,
+                              )
+                            }
+                            className="h-9"
+                          />
+                        </div>
+                        <div>
+                          <Label className="block mb-1 text-sm text-gray-600">
+                            Vision
+                          </Label>
+                          <Input
+                            type="number"
+                            min={0}
+                            placeholder="0"
+                            value={
+                              schedule.PlanInstallmentScheduleLimitation
+                                ?.vision || ''
+                            }
+                            onChange={(e) =>
+                              updateScheduleLimitation(
+                                schedule.id,
+                                'vision',
+                                e.target.value,
+                              )
+                            }
+                            className="h-9"
+                          />
+                        </div>
+                        <div>
+                          <Label className="block mb-1 text-sm text-gray-600">
+                            Quiz
+                          </Label>
+                          <Input
+                            type="number"
+                            min={0}
+                            placeholder="0"
+                            value={
+                              schedule.PlanInstallmentScheduleLimitation
+                                ?.quiz || ''
+                            }
+                            onChange={(e) =>
+                              updateScheduleLimitation(
+                                schedule.id,
+                                'quiz',
+                                e.target.value,
+                              )
+                            }
+                            className="h-9"
+                          />
+                        </div>
+                        <div>
+                          <Label className="block mb-1 text-sm text-gray-600">
+                            Tryout
+                          </Label>
+                          <Input
+                            type="number"
+                            min={0}
+                            placeholder="0"
+                            value={
+                              schedule.PlanInstallmentScheduleLimitation
+                                ?.tryout || ''
+                            }
+                            onChange={(e) =>
+                              updateScheduleLimitation(
+                                schedule.id,
+                                'tryout',
+                                e.target.value,
+                              )
+                            }
+                            className="h-9"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Ringkasan */}
+          <div className="border rounded-lg p-4 bg-blue-50">
+            <h4 className="font-medium text-blue-700 mb-3 flex items-center gap-2">
+              <FileTextIcon className="w-4 h-4" />
+              Ringkasan Cicilan
+            </h4>
+
+            {/* Info Umum */}
+            <div className="text-sm text-blue-600 space-y-1 mb-3">
+              <p>Total Cicilan: {config.totalInstallments}x</p>
+              <p>Masa Tenggang: {config.gracePeriodDays} hari</p>
+              <p>Harga Plan: Rp {Number(price).toLocaleString('id-ID')}</p>
+              <p>
+                Total Harga Cicilan: Rp{' '}
+                {instalmentTotalAmount.toLocaleString('id-ID')}
+                {!alertAmount ? (
+                  <CheckCircleIcon className="inline w-4 h-4 ml-1 text-green-600" />
+                ) : (
+                  <XCircleIcon className="inline w-4 h-4 ml-1 text-red-600" />
+                )}
+              </p>
+            </div>
+
+            {/* Detail per Cicilan */}
+            <div className="text-sm text-blue-600 space-y-1 mb-3">
+              <p className="font-medium flex items-center gap-1">
+                <ListIcon className="w-4 h-4" />
+                Detail Cicilan:
+              </p>
+              <div className="ml-5 space-y-1">
+                {config.InstallmentSchedules.map((schedule, index) => {
+                  const limitation = schedule.PlanInstallmentScheduleLimitation;
+                  const percentage =
+                    Number(price) > 0
+                      ? (
+                          (Number(schedule.amount) / Number(price)) *
+                          100
+                        ).toFixed(1)
+                      : '0';
+                  return (
+                    <div
+                      key={schedule.id}
+                      className=""
+                    >
+                      <p className="text-gray-600">
+                        Cicilan #{schedule.installmentNumber}: Rp{' '}
+                        {Number(schedule.amount).toLocaleString('id-ID')} (
+                        {percentage}%)
+                        {index === 0
+                          ? ' - Pembayaran pertama'
+                          : ` - ${schedule.daysAfterFirstPayment} hari setelah pembayaran pertama`}
+                        {schedule.lateFeeType !== 'NONE' && (
+                          <span className="text-orange-600 ml-1">
+                            (Denda:{' '}
+                            {schedule.lateFeeType === 'PERCENTAGE'
+                              ? `${schedule.lateFeeAmount}%`
+                              : `Rp ${Number(schedule.lateFeeAmount).toLocaleString('id-ID')}`}
+                            )
+                          </span>
+                        )}
+                      </p>
+                      {config.isCustomeLimitation && (
+                        <p
+                          key={schedule.id}
+                          className="text-gray-600 ml-8"
+                        >
+                          <p>
+                            {limitation?.chat &&
+                              Number(limitation?.chat) > 0 &&
+                              `- Chat ${limitation?.chat || 0} `}
+                          </p>
+                          <p>
+                            {' '}
+                            {limitation?.notes &&
+                              Number(limitation?.notes) > 0 &&
+                              `- Notes ${limitation?.notes || 0} `}
+                          </p>
+                          <p>
+                            {limitation?.vision &&
+                              Number(limitation?.vision) > 0 &&
+                              `- Vision ${limitation?.vision || 0} `}
+                          </p>
+                          <p>
+                            {limitation?.quiz &&
+                              Number(limitation?.quiz) > 0 &&
+                              `- Quiz ${limitation?.quiz || 0} `}
+                          </p>
+                          <p>
+                            {limitation?.tryout &&
+                              Number(limitation?.tryout) > 0 &&
+                              `- Tryout ${limitation?.tryout || 0} `}
+                          </p>
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Total Limitasi - Hanya muncul jika custom limitation aktif */}
+            {config.isCustomeLimitation && totalLimitations && (
+              <div className="text-sm text-blue-600 space-y-1 mb-3">
+                <p className="font-medium flex items-center gap-1">
+                  <TargetIcon className="w-4 h-4" />
+                  Total Limitasi:
+                </p>
+                <div className="ml-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-1">
+                  <p className="flex items-center gap-1 text-gray-600">
+                    <MessageSquareIcon className="w-3 h-3" />
+                    Chat: {totalLimitations.chat.toLocaleString('id-ID')}
+                  </p>
+                  <p className="flex items-center gap-1 text-gray-600">
+                    <StickyNoteIcon className="w-3 h-3" />
+                    Notes: {totalLimitations.notes.toLocaleString('id-ID')}
+                  </p>
+                  <p className="flex items-center gap-1 text-gray-600">
+                    <EyeIcon className="w-3 h-3" />
+                    Vision: {totalLimitations.vision.toLocaleString('id-ID')}
+                  </p>
+                  <p className="flex items-center gap-1 text-gray-600">
+                    <HelpCircleIcon className="w-3 h-3" />
+                    Quiz: {totalLimitations.quiz.toLocaleString('id-ID')}
+                  </p>
+                  <p className="flex items-center gap-1 text-gray-600">
+                    <ClipboardListIcon className="w-3 h-3" />
+                    Tryout: {totalLimitations.tryout.toLocaleString('id-ID')}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Warning jika tidak match */}
+            {alertAmount && (
+              <div className="mt-3 p-3 bg-red-50 border border-red-300 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <AlertCircleIcon className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-red-800 mb-1">
+                      Peringatan: Ketidakcocokan Harga
+                    </p>
+                    <p className="text-sm text-red-700">
+                      Total jadwal cicilan{' '}
+                      <span className="font-semibold">
+                        Rp {instalmentTotalAmount.toLocaleString('id-ID')}
+                      </span>{' '}
+                      {priceDifference > 0 ? 'kurang' : 'lebih'} Rp{' '}
+                      <span className="font-semibold">
+                        {Math.abs(priceDifference).toLocaleString('id-ID')}
+                      </span>{' '}
+                      dari harga plan{' '}
+                      <span className="font-semibold">
+                        Rp {Number(price).toLocaleString('id-ID')}
+                      </span>
+                      .
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Warning jika limitasi tidak cocok */}
+            {alertLimitation && (
+              <div className="mt-3 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <AlertCircleIcon className="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium text-yellow-800 mb-2">
+                      Peringatan: Ketidakcocokan Limitasi
+                    </p>
+                    <ul className="text-sm text-yellow-700 space-y-1">
+                      {limitationMismatches.map((mismatch) => (
+                        <li key={mismatch.type}>
+                          <span className="capitalize font-medium">
+                            {mismatch.type}
+                          </span>
+                          : Limit di pengaturan{' '}
+                          <span className="font-semibold">
+                            {mismatch.limitRowValue}
+                          </span>
+                          , tetapi total cicilan{' '}
+                          <span className="font-semibold">
+                            {mismatch.totalCiclanValue}
+                          </span>
+                          {mismatch.limitRowValue === 0 &&
+                            mismatch.totalCiclanValue > 0 &&
+                            ' (tidak ada limitasi yang diatur, tapi ada di cicilan)'}
+                          {mismatch.limitRowValue > 0 &&
+                            mismatch.totalCiclanValue === 0 &&
+                            ' (ada limitasi yang diatur, tapi tidak ada di cicilan)'}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

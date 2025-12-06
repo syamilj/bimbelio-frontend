@@ -205,7 +205,7 @@ export default function LiveClassStudentDetail() {
         {/* ENHANCED HEADER - LEADERBOARD PATTERN */}
         <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden mb-8">
           <CardHeader
-            className="pb-6 border-b-2 border-gray-100 relative overflow-hidden"
+            className="pb-6 border-b-2 border-gray-100 relative"
             style={{
               background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
             }}
@@ -224,7 +224,7 @@ export default function LiveClassStudentDetail() {
                       router.back();
                     }
                   }}
-                  className="hover:bg-white/20 transition-colors font-bold rounded-2xl"
+                  className="hover:bg-white/20 transition-colors font-bold rounded-2xl relative z-20"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Kembali

@@ -1,3 +1,73 @@
+export type SubscriptionInstallmentLimitation = {
+  id: string;
+  chat: number;
+  quiz: number;
+  tryout: number;
+  notes: number;
+  vision: number;
+  subscriptionInstallmentId: string;
+};
+
+export type SubscriptionInstallment = {
+  id: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  installmentNumber: number;
+  amount: number;
+  lateFee: number;
+  amountWithLateFee: number;
+  dueDate: string;
+  expiredAccessDate: string;
+  gracePeriodEndDate: string;
+  reminderSentAt: string | null;
+  reminderCount: number;
+  isPaid: boolean;
+  transactionId: string | null;
+};
+
+export type Pivot_Subscription_Installment = {
+  id: string;
+  subscriptionInstallmentId: string;
+  subscriptionId: string;
+};
+
+export type PlanInstallmentConfig = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  planId: string;
+  totalInstallments: number;
+  totalAmount: number;
+  gracePeriodDays: number;
+};
+
+export type PlanInstallmentSchedule = {
+  id: string;
+  description: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  installmentNumber: number;
+  daysAfterFirstPayment: number;
+  expireDaysAfterFirstPayment: number;
+  amount: number;
+  lateFeeType: LateFeeTypeEnum;
+  lateFeeAmount: number | null;
+  installmentConfigId: string;
+};
+
+export type LateFeeTypeEnum = 'NONE' | 'FIXED' | 'PERCENTAGE';
+
+export type PlanInstallmentScheduleLimitation = {
+  id: string;
+  chat: number;
+  notes: number;
+  vision: number;
+  quiz: number;
+  tryout: number;
+  installmentScheduleId: string;
+};
+
 export type LinkConversionType =
   | 'PURCHASE'
   | 'EMAIL_SIGNUP'
@@ -569,6 +639,7 @@ export type SubscriptionPending = {
   planTier: string;
   planDescription: string;
   planPrice: number;
+  paymentType: PlanPaymentTypeEnum;
   discord_user_id: string | null;
   discord_username: string | null;
   discord_invite_link: string | null;
@@ -598,6 +669,8 @@ export type SubscriptionPendingLimitation = {
   tryout: number;
 };
 
+export type PlanPaymentTypeEnum = 'FULL_PAYMENT' | 'INSTALLMENT';
+
 export type Subscription = {
   id: string;
   createdAt: Date;
@@ -611,6 +684,8 @@ export type Subscription = {
   planDescription: string;
   planPrice: number;
   planExpire: Date;
+  paymentType: PlanPaymentTypeEnum;
+  isAccessGranted: boolean;
 
   discord_user_id: string;
   discord_username: string;

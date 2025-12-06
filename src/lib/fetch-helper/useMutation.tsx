@@ -39,15 +39,15 @@ export function useMutation<Data = any, ErrorData = any>(
       },
       type,
       setLoading: setIsLoading,
-      onLoading() {
-        if (more?.onLoading) more.onLoading();
+      onLoading: async () => {
+        if (more?.onLoading) await more.onLoading();
       },
-      onSuccess(successData) {
-        if (more?.onSuccess) more.onSuccess(successData);
+      onSuccess: async (successData) => {
+        if (more?.onSuccess) await more.onSuccess(successData);
         setSuccess(successData);
       },
-      onError(errorData) {
-        if (more?.onError) more.onError(errorData);
+      onError: async (errorData) => {
+        if (more?.onError) await more.onError(errorData);
         setError(errorData);
       },
     });

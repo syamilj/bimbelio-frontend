@@ -9,11 +9,11 @@ import {
   WebsiteSubCategory,
   WebsiteSubCategoryTypeEnum,
 } from '@/types/database';
-import { Loader2 } from 'lucide-react';
 import { useParams, usePathname } from 'next/navigation';
 import NextTopLoader from 'nextjs-toploader';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { DialogWebCategory } from '../ui/choose-web-category/dialog-web-category';
+import { LoadingFixed } from '../ui/loading/loading-fixed';
 import { useSession } from './provider-session-auth';
 
 const initialValue: WebsiteSubCategory = {
@@ -130,13 +130,13 @@ export default function ProviderWebsiteCategory({
     },
   };
 
-  if (isLoading && pathname !== '/') {
-    return (
-      <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
-        <Loader2 className="animate-spin w-4 h-4" />
-      </div>
-    );
-  }
+  // if (isLoading && pathname !== '/') {
+  //   return (
+  //     <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
+  //       <Loader2 className="animate-spin w-4 h-4" />
+  //     </div>
+  //   );
+  // }
 
   if (first) {
     return (
@@ -175,6 +175,7 @@ export default function ProviderWebsiteCategory({
 
   return (
     <WebsiteSubCategoryContext.Provider value={Context}>
+      {isLoading && pathname !== '/' && <LoadingFixed />}
       <NextTopLoader
         color={websiteSubCategory?.main_color || '#0091FF'}
         initialPosition={0.08}

@@ -58,6 +58,34 @@ type FormDataType = {
 };
 type ValidityType = 'duration' | 'timeline';
 
+type LateFeeType = 'FIXED' | 'PERCENTAGE' | 'NONE';
+
+interface InstallmentSchedule {
+  id: string;
+  installmentNumber: string;
+  daysAfterFirstPayment: string;
+  expireDaysAfterFirstPayment: string;
+  amount: string;
+  description?: string;
+  lateFeeType: LateFeeType;
+  lateFeeAmount?: string;
+  PlanInstallmentScheduleLimitation?: {
+    chat: string;
+    notes: string;
+    vision: string;
+    quiz: string;
+    tryout: string;
+  };
+}
+
+interface PlanInstallmentConfig {
+  totalInstallments: string;
+  totalAmount: string;
+  gracePeriodDays: string;
+  isCustomeLimitation: boolean;
+  InstallmentSchedules: InstallmentSchedule[];
+}
+
 export default function Provider({ children }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<ActiveTabType>({
@@ -95,6 +123,27 @@ export default function Provider({ children }: Props) {
   const [validityType, setValidityType] = useState<ValidityType>('duration');
   const [validityTypeLimit, setValidityTypeLimit] =
     useState<ValidityType>('duration');
+
+  const [isInstallmentEnabled, setIsInstallmentEnabled] = useState(false);
+  const [installmentConfig, setInstallmentConfig] =
+    useState<PlanInstallmentConfig>({
+      totalInstallments: '1',
+      totalAmount: '0',
+      gracePeriodDays: '0',
+      isCustomeLimitation: false,
+      InstallmentSchedules: [
+        {
+          id: crypto.randomUUID(),
+          installmentNumber: '1',
+          daysAfterFirstPayment: '0',
+          expireDaysAfterFirstPayment: '0',
+          amount: '0',
+          description: '',
+          lateFeeType: 'NONE',
+          lateFeeAmount: '0',
+        },
+      ],
+    });
 
   const formData = useForm<FormDataType>({
     defaultValues: {
@@ -138,6 +187,14 @@ export default function Provider({ children }: Props) {
   const status = formData.watch('status');
   const image = formData.watch('image');
 
+  const {
+    alertInstallmentLimitation,
+    alertInstallmentTotalAmount,
+    limitationMismatches,
+    priceDifference,
+    totalLimitations,
+  } = getInstallmentMatching({ installmentConfig, limitRows, price });
+
   const formDataValues = {
     roleDiscord,
     name,
@@ -177,6 +234,19 @@ export default function Provider({ children }: Props) {
       setExpireTypeLimit,
       validityTypeLimit,
       setValidityTypeLimit,
+    },
+    useInstallment: {
+      isInstallmentEnabled,
+      setIsInstallmentEnabled,
+      installmentConfig,
+      setInstallmentConfig,
+      alertLimitation: alertInstallmentLimitation,
+      alertAmount: alertInstallmentTotalAmount,
+      dataHelper: {
+        limitationMismatches,
+        priceDifference,
+        totalLimitations,
+      },
     },
     useFeature: {
       categoryIds,
@@ -236,6 +306,29 @@ type ProviderType = {
     validityTypeLimit: ValidityType;
     setValidityTypeLimit: Dispatch<SetStateAction<ValidityType>>;
   };
+  useInstallment: {
+    isInstallmentEnabled: boolean;
+    setIsInstallmentEnabled: Dispatch<SetStateAction<boolean>>;
+    installmentConfig: PlanInstallmentConfig;
+    setInstallmentConfig: Dispatch<SetStateAction<PlanInstallmentConfig>>;
+    alertLimitation: boolean;
+    alertAmount: boolean;
+    dataHelper: {
+      limitationMismatches: {
+        type: string;
+        limitRowValue: number;
+        totalCiclanValue: number;
+      }[];
+      priceDifference: number;
+      totalLimitations: {
+        chat: number;
+        notes: number;
+        vision: number;
+        quiz: number;
+        tryout: number;
+      } | null;
+    };
+  };
   useFeature: {
     categoryIds: string[];
     setCategoryIds: Dispatch<SetStateAction<string[]>>;
@@ -288,5 +381,84 @@ type ProviderType = {
       timelineLimitEnd?: string;
       maxUsers: string | undefined;
     };
+  };
+};
+
+const getInstallmentMatching = ({
+  installmentConfig,
+  limitRows,
+  price,
+}: {
+  installmentConfig: PlanInstallmentConfig;
+  limitRows: LimitRowType;
+  price: string;
+}) => {
+  const totalLimitations = installmentConfig.isCustomeLimitation
+    ? installmentConfig.InstallmentSchedules.reduce(
+        (acc, schedule) => {
+          const limitation = schedule.PlanInstallmentScheduleLimitation;
+          if (limitation) {
+            return {
+              chat: acc.chat + Number(limitation.chat || 0),
+              notes: acc.notes + Number(limitation.notes || 0),
+              vision: acc.vision + Number(limitation.vision || 0),
+              quiz: acc.quiz + Number(limitation.quiz || 0),
+              tryout: acc.tryout + Number(limitation.tryout || 0),
+            };
+          }
+          return acc;
+        },
+        { chat: 0, notes: 0, vision: 0, quiz: 0, tryout: 0 },
+      )
+    : null;
+
+  // Validasi limitasi dengan limitRows
+  const limitRowsMap = limitRows.reduce(
+    (acc, row) => {
+      acc[row.type] = Number(row.limit) || 0;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  const allLimitationTypes = ['chat', 'notes', 'vision', 'quiz', 'tryout'];
+
+  const limitationMismatches = !installmentConfig.isCustomeLimitation
+    ? []
+    : allLimitationTypes
+        .map((type) => {
+          const limitRowValue = limitRowsMap[type] ?? 0;
+          const totalCiclanValue =
+            totalLimitations?.[type as keyof typeof totalLimitations] ?? 0;
+
+          // Ada mismatch jika nilai berbeda
+          if (limitRowValue !== totalCiclanValue) {
+            return {
+              type,
+              limitRowValue,
+              totalCiclanValue,
+            };
+          }
+          return null;
+        })
+        .filter((item) => item !== null);
+
+  const alertInstallmentLimitation =
+    installmentConfig.isCustomeLimitation && limitationMismatches.length > 0;
+
+  const instalmentTotalAmount = installmentConfig.InstallmentSchedules.reduce(
+    (sum, s) => sum + Number(s.amount),
+    0,
+  );
+
+  const priceDifference = Number(price) - instalmentTotalAmount;
+  const alertInstallmentTotalAmount = priceDifference !== 0;
+
+  return {
+    alertInstallmentLimitation,
+    alertInstallmentTotalAmount,
+    limitationMismatches,
+    priceDifference,
+    totalLimitations,
   };
 };

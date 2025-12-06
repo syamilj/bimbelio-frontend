@@ -234,7 +234,7 @@ export const mutateGeneral = async (
     setLoading(true);
   }
 
-  if (more.onLoading) more.onLoading();
+  if (more.onLoading) await more.onLoading();
 
   let showToast = true;
   // if (more.hideToast === true) showToast = false;

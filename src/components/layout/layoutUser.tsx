@@ -28,10 +28,12 @@ import { signOut } from '@/lib/auth-helper';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response } from '@/lib/response';
 import { cn } from '@/lib/utils';
+import { formatIDR } from '@/lib/utils/currency';
 import { formatDateRange } from '@/lib/utils/date';
 import {
   Brain,
   ChevronDown,
+  Clock,
   Crown,
   Eye,
   FileText,
@@ -46,6 +48,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import ProviderCheckLimitation from '../provider/provider-check-limitation';
+import ProviderCheckSubscriptionInstallment from '../provider/provider-check-subscription-installment';
 import ProviderCheckSubscriptionPending from '../provider/provider-check-subscription-pending';
 import { useUserLimitation } from '../provider/provider-limitation';
 import { Badge } from '../ui/badge';
@@ -88,6 +91,7 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     sidebarMobile,
     setSidebarMobile,
     setMinimizeSidebar,
+    setPagesSetting,
   } = useAppContext();
 
   // State
@@ -144,47 +148,49 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
       <Suspense>
         <ProviderCheckSubscriptionPending>
           <ProviderCheckSubscription>
-            <ProviderCheckLimitation>
-              <SidebarUser
-                category={category}
-                isMobileSidebarOpen={sidebarMobile}
-                setIsMobileSidebarOpen={setSidebarMobile}
-              />
+            <ProviderCheckSubscriptionInstallment>
+              <ProviderCheckLimitation>
+                <SidebarUser
+                  category={category}
+                  isMobileSidebarOpen={sidebarMobile}
+                  setIsMobileSidebarOpen={setSidebarMobile}
+                />
 
-              {isMobile && (
-                <div
-                  className={`fixed top-0 block h-full overflow-hidden duration-200 md:hidden ${
-                    sidebarMobile
-                      ? 'left-0 w-[300px] z-10000'
-                      : 'left-[-310px] w-[300px] z-10000'
-                  }`}
-                >
-                  <Sidebar
-                    category={category}
-                    isMobileSidebarOpen={sidebarMobile}
-                    setIsMobileSidebarOpen={setSidebarMobile}
-                  />
-                </div>
-              )}
+                {isMobile && (
+                  <div
+                    className={`fixed top-0 block h-full overflow-hidden duration-200 md:hidden ${
+                      sidebarMobile
+                        ? 'left-0 w-[300px] z-10000'
+                        : 'left-[-310px] w-[300px] z-10000'
+                    }`}
+                  >
+                    <Sidebar
+                      category={category}
+                      isMobileSidebarOpen={sidebarMobile}
+                      setIsMobileSidebarOpen={setSidebarMobile}
+                    />
+                  </div>
+                )}
 
-              {/* MAIN CONTENT */}
-              <SidebarInset>
-                {!inWorkspace && <HeaderUser />}
-                <main
-                  className={cn(
-                    'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 min-h-screen w-full ',
-                    // docViewer => full fixed
-                    componentName === 'DocViewerPage' &&
-                      'fixed left-0 top-0 h-full w-full',
-                    // not in workspace => push down margin
-                    !inWorkspace &&
-                      'mt-[80px] pt-4 md:pl-12 md:pr-10 md:pt-12 min-h-[calc(100vh-80px)]',
-                  )}
-                >
-                  {children}
-                </main>
-              </SidebarInset>
-            </ProviderCheckLimitation>
+                {/* MAIN CONTENT */}
+                <SidebarInset>
+                  {!inWorkspace && <HeaderUser />}
+                  <main
+                    className={cn(
+                      'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 min-h-screen w-full ',
+                      // docViewer => full fixed
+                      componentName === 'DocViewerPage' &&
+                        'fixed left-0 top-0 h-full w-full',
+                      // not in workspace => push down margin
+                      !inWorkspace &&
+                        'mt-[80px] pt-4 md:pl-12 md:pr-10 md:pt-12 min-h-[calc(100vh-80px)]',
+                    )}
+                  >
+                    {children}
+                  </main>
+                </SidebarInset>
+              </ProviderCheckLimitation>
+            </ProviderCheckSubscriptionInstallment>
           </ProviderCheckSubscription>
         </ProviderCheckSubscriptionPending>
       </Suspense>
@@ -346,18 +352,26 @@ const HeaderUser = () => {
             <Menu className="w-5 h-5 text-gray-700" />
           </Button>
 
-          {/* Desktop Greeting - Responsive */}
-          <div className="hidden md:flex items-center gap-3 min-w-0 flex-1">
-            <div className="min-w-0 flex-1">
-              <h1 className="text-base lg:text-lg font-bold text-gray-900 truncate">
-                Selamat datang kembali!
-              </h1>
-              <p className="text-xs lg:text-sm text-gray-500 truncate">
-                Halo,{' '}
-                <span style={{ color: mainColor, fontWeight: '600' }}>
-                  {userSession?.user.name}
-                </span>
-              </p>
+          {/* Desktop Greeting - Modern Design */}
+          <div className="hidden md:flex items-center gap-4 min-w-0 flex-1">
+            <div className="flex items-center gap-3 min-w-0">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: `${mainColor}15` }}
+              >
+                <span className="text-lg">👋</span>
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-gray-900 truncate">
+                  Selamat datang kembali!
+                </p>
+                <p className="text-xs text-gray-500 truncate">
+                  Halo,{' '}
+                  <span style={{ color: mainColor }} className="font-semibold">
+                    {userSession?.user.name?.split(' ')[0]}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
 
@@ -489,46 +503,85 @@ const HeaderUser = () => {
         )}
 
         {/* RIGHT SECTION */}
-        <div className="flex items-center gap-1 md:gap-3 shrink-0">
-          {/* Desktop Limitations - More Compact */}
+        <div className="flex items-center gap-2 md:gap-3 shrink-0">
+          {/* Desktop Limitations - Modern Compact Pills */}
           {!isMobile && (
-            <div className="hidden xl:flex items-center gap-1">
-              {limitations.map((limitation, index) => (
-                <LimitationItem
-                  key={index}
-                  icon={limitation.icon}
-                  label={limitation.label}
-                  remaining={limitation.remaining}
-                  total={limitation.total}
-                  color={limitation.color}
-                />
-              ))}
+            <div className="hidden xl:flex items-center gap-1.5 bg-gray-50 rounded-xl px-2 py-1.5 border border-gray-100">
+              {limitations.map((limitation, index) => {
+                const Icon = limitation.icon;
+                const isLow = limitation.remaining <= 3 && limitation.remaining > 0;
+                const isEmpty = limitation.remaining === 0;
+
+                return (
+                  <Tooltip key={index} delayDuration={100}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className={cn(
+                          'flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all duration-200 cursor-default',
+                          isEmpty
+                            ? 'bg-red-50 border border-red-200'
+                            : isLow
+                              ? 'bg-orange-50 border border-orange-200'
+                              : 'bg-white border border-gray-200 hover:border-gray-300'
+                        )}
+                      >
+                        <Icon
+                          className="w-3.5 h-3.5"
+                          style={{ color: isEmpty ? '#ef4444' : isLow ? '#f97316' : limitation.color }}
+                        />
+                        <span className={cn(
+                          'text-xs font-semibold',
+                          isEmpty ? 'text-red-600' : isLow ? 'text-orange-600' : 'text-gray-700'
+                        )}>
+                          {limitation.label}
+                        </span>
+                        <span className={cn(
+                          'text-xs font-bold px-1.5 py-0.5 rounded-md',
+                          isEmpty
+                            ? 'bg-red-100 text-red-700'
+                            : isLow
+                              ? 'bg-orange-100 text-orange-700'
+                              : 'bg-gray-100 text-gray-600'
+                        )}>
+                          {userTier === 'ADMIN' ? '∞' : `${limitation.remaining}`}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="text-xs">
+                      <p>{limitation.label}: {userTier === 'ADMIN' ? 'Unlimited' : `${limitation.remaining}/${limitation.total}`}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
             </div>
           )}
 
-          {/* Status Badge - Compact for desktop */}
+          {/* Status Badge - Premium Design */}
           {userTier === 'ADMIN' ||
           userTier === 'SUPER_ADMIN' ||
           userTier === 'PREMIUM' ? (
             <div
-              className="hidden md:flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1 lg:py-1.5 rounded-xl text-white text-xs lg:text-sm font-semibold shadow-sm"
-              style={{ backgroundColor: mainColor }}
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
             >
-              <Crown className="w-3 h-3 lg:w-4 lg:h-4" />
-              <span className="hidden lg:inline">{userTier}</span>
+              <Crown className="w-4 h-4" />
+              <span>Premium</span>
+              <ChevronDown className="w-3.5 h-3.5 opacity-70" />
             </div>
           ) : (
             <Tooltip delayDuration={100}>
               <TooltipTrigger className="cursor-pointer">
                 <div
-                  className="hidden md:flex items-center gap-1 lg:gap-2 px-2 lg:px-3 py-1 lg:py-1.5 rounded-xl text-white text-xs lg:text-sm font-semibold shadow-sm"
-                  style={{ backgroundColor: mainColor }}
+                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+                  style={{
+                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                  }}
                 >
-                  <Crown className="w-3 h-3 lg:w-4 lg:h-4" />
-                  <span className="hidden lg:inline">
-                    {userTier || 'Free Tier'}
-                  </span>
-                  <ChevronDown className="w-3 h-3 lg:w-4 lg:h-4" />
+                  <Crown className="w-4 h-4" />
+                  <span>{userTier || 'Premium'}</span>
+                  <ChevronDown className="w-3.5 h-3.5 opacity-70" />
                 </div>
               </TooltipTrigger>
               <TooltipContent
@@ -545,72 +598,195 @@ const HeaderUser = () => {
                     {userSession?.user.subsList &&
                     userSession.user.subsList.length > 0 ? (
                       <div className="space-y-2">
-                        {userSession.user.subsList.map((sub, index) => (
-                          <div
-                            key={sub.id}
-                            className="p-2 rounded-lg bg-green-50 border border-green-200"
-                          >
-                            <div className="flex flex-col items-start justify-center mb-1 gap-1">
-                              <span
-                                className="text-[9px] px-2 py-0.5 rounded-full text-white font-medium flex items-center justify-center"
-                                style={{
-                                  backgroundColor: mainColor,
-                                }}
-                              >
-                                {sub.planTier}
-                              </span>
-                              <span className="text-xs font-semibold text-gray-900 truncate">
-                                {sub.planName}
-                              </span>
-                            </div>
-                            <p className="text-xs text-gray-600 mb-1 line-clamp-2">
-                              {sub.planDescription}
-                            </p>
-                            {sub.SubscriptionFeature &&
-                              sub.SubscriptionFeature.length > 0 && (
-                                <div className="mb-2">
-                                  <p className="text-xs font-medium text-gray-700 mb-1">
-                                    Fitur:
+                        {userSession.user.subsList.map((sub, index) => {
+                          const isInstallment =
+                            sub.paymentType === 'INSTALLMENT';
+                          let currentInstallment:
+                            | (typeof sub.SubscriptionInstallment)[0]
+                            | null =
+                            sub.SubscriptionInstallment[
+                              sub.SubscriptionInstallment.length - 1
+                            ] || null;
+
+                          sub.SubscriptionInstallment.forEach((inst) => {
+                            if (
+                              currentInstallment &&
+                              inst.isPaid === false &&
+                              inst.installmentNumber <
+                                currentInstallment?.installmentNumber
+                            ) {
+                              currentInstallment = inst;
+                            }
+                          });
+                          return (
+                            <div
+                              key={sub.id}
+                              className="p-2 rounded-lg bg-green-50 border border-green-200"
+                            >
+                              <div className="flex flex-col items-start justify-center mb-1 gap-1">
+                                <span
+                                  className="text-[9px] px-2 py-0.5 rounded-full text-white font-medium flex items-center justify-center"
+                                  style={{
+                                    backgroundColor: mainColor,
+                                  }}
+                                >
+                                  {sub.planTier}
+                                </span>
+                                <span className="text-xs font-semibold text-gray-900 truncate">
+                                  {sub.planName}
+                                </span>
+                              </div>
+                              <p className="text-xs text-gray-600 mb-1 line-clamp-2">
+                                {sub.planDescription}
+                              </p>
+                              {sub.SubscriptionFeature &&
+                                sub.SubscriptionFeature.length > 0 && (
+                                  <div className="mb-2">
+                                    <p className="text-xs font-medium text-gray-700 mb-1">
+                                      Fitur:
+                                    </p>
+                                    <div className="flex flex-wrap gap-1">
+                                      {sub.SubscriptionFeature.map(
+                                        (feature, featureIndex) => (
+                                          <span
+                                            key={feature.id}
+                                            className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-700 font-medium"
+                                          >
+                                            {feature.type === 'DOCUMENT' &&
+                                              '📄 Document'}
+                                            {feature.type === 'COURSE' &&
+                                              '📚 Course'}
+                                            {feature.type === 'LIVECLASS' &&
+                                              '🎥 Live Class'}
+                                          </span>
+                                        ),
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                              {/* Current Installment Info */}
+                              {isInstallment && currentInstallment && (
+                                <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
+                                  <p className="text-[11px] font-semibold text-amber-900 mb-2 flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />
+                                    Cicilan
                                   </p>
-                                  <div className="flex flex-wrap gap-1">
-                                    {sub.SubscriptionFeature.map(
-                                      (feature, featureIndex) => (
-                                        <span
-                                          key={feature.id}
-                                          className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-700 font-medium"
-                                        >
-                                          {feature.type === 'DOCUMENT' &&
-                                            '📄 Document'}
-                                          {feature.type === 'COURSE' &&
-                                            '📚 Course'}
-                                          {feature.type === 'LIVECLASS' &&
-                                            '🎥 Live Class'}
+                                  <div className="space-y-1.5">
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
+                                          #
+                                          {currentInstallment.installmentNumber}
                                         </span>
-                                      ),
-                                    )}
+                                        <span className="text-sm font-bold text-gray-900">
+                                          {formatIDR(currentInstallment.amount)}
+                                        </span>
+                                      </div>
+                                      {currentInstallment.isPaid ? (
+                                        <Badge className="bg-green-100 text-green-700 text-[9px] px-1.5 py-0">
+                                          ✓ Lunas
+                                        </Badge>
+                                      ) : new Date(currentInstallment.dueDate) <
+                                        new Date() ? (
+                                        <Badge className="bg-red-100 text-red-700 text-[9px] px-1.5 py-0">
+                                          ⚠ Tertunda
+                                        </Badge>
+                                      ) : (
+                                        <Badge className="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0">
+                                          Menunggu Pembayaran
+                                        </Badge>
+                                      )}
+                                    </div>
+
+                                    <div className="grid grid-cols-3 gap-1.5 text-[10px]">
+                                      <div>
+                                        <p className="text-amber-700 font-medium text-[9px]">
+                                          Jatuh Tempo
+                                        </p>
+                                        <p className="text-gray-900 font-semibold">
+                                          {new Date(
+                                            currentInstallment.dueDate,
+                                          ).toLocaleDateString('id-ID', {
+                                            day: 'numeric',
+                                            month: 'short',
+                                          })}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <p className="text-amber-700 font-medium text-[9px]">
+                                          Tenggang
+                                        </p>
+                                        <p className="text-green-600 font-semibold">
+                                          {new Date(
+                                            currentInstallment.gracePeriodEndDate,
+                                          ).toLocaleDateString('id-ID', {
+                                            day: 'numeric',
+                                            month: 'short',
+                                          })}
+                                        </p>
+                                      </div>
+
+                                      <div>
+                                        <p className="text-amber-700 font-medium text-[9px]">
+                                          Akses Berakhir
+                                        </p>
+                                        <p className="text-gray-900 font-semibold">
+                                          {new Date(
+                                            currentInstallment.expiredAccessDate,
+                                          ).toLocaleDateString('id-ID', {
+                                            day: 'numeric',
+                                            month: 'short',
+                                          })}
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    {currentInstallment.lateFee > 0 &&
+                                      !currentInstallment.isPaid &&
+                                      new Date(currentInstallment.dueDate) <
+                                        new Date() && (
+                                        <div className="p-1.5 bg-orange-100 rounded border border-orange-300">
+                                          <p className="text-[9px] text-orange-700 font-semibold">
+                                            Denda:{' '}
+                                            {formatIDR(
+                                              currentInstallment.lateFee,
+                                            )}
+                                          </p>
+                                        </div>
+                                      )}
+                                    <Button
+                                      className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-lg bg-green-50 border-green-400"
+                                      variant={'outline'}
+                                      onClick={() =>
+                                        setPagesSetting('installment')
+                                      }
+                                    >
+                                      Bayar Sekarang
+                                    </Button>
                                   </div>
                                 </div>
                               )}
-                            <div className="flex items-center justify-between text-xs">
-                              <span className="text-gray-500">
-                                Expired:{' '}
-                                {new Date(sub.planExpire).toLocaleDateString(
-                                  'id-ID',
-                                )}
-                              </span>
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-gray-500">
+                                  Expired:{' '}
+                                  {new Date(sub.planExpire).toLocaleDateString(
+                                    'id-ID',
+                                  )}
+                                </span>
+                              </div>
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="sm"
+                                className="w-full mt-2 h-7 text-xs"
+                              >
+                                <Link href={`/price/${sub.planSlug}`}>
+                                  Lihat Detail
+                                </Link>
+                              </Button>
                             </div>
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
-                              className="w-full mt-2 h-7 text-xs"
-                            >
-                              <Link href={`/price/${sub.planSlug}`}>
-                                Lihat Detail
-                              </Link>
-                            </Button>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     ) : (
                       <p className="text-xs text-gray-500 text-center">
@@ -825,15 +1001,15 @@ const HeaderUser = () => {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2 h-9 px-2 rounded-xl hover:bg-gray-100 transition-colors shrink-0"
+                className="flex items-center gap-2.5 h-10 px-2 pr-3 rounded-xl hover:bg-gray-50 transition-all duration-200 shrink-0 border border-gray-100"
               >
-                <Avatar className="w-6 h-6 lg:w-7 lg:h-7 ring-2 ring-offset-1 ring-gray-200">
+                <Avatar className="w-7 h-7 ring-2 ring-offset-1 ring-gray-100">
                   <AvatarImage
                     src={userSession?.user.image || '/placeholder.svg'}
                     alt={userSession?.user.name || 'User'}
                   />
                   <AvatarFallback
-                    className="text-white font-bold text-xs lg:text-sm"
+                    className="text-white font-bold text-xs"
                     style={{ backgroundColor: mainColor }}
                   >
                     {userSession?.user.name?.charAt(0) || 'U'}
@@ -841,10 +1017,10 @@ const HeaderUser = () => {
                 </Avatar>
                 {!isMobile && (
                   <>
-                    <span className="text-xs lg:text-sm font-medium text-gray-700 max-w-16 lg:max-w-24 truncate">
-                      {userSession?.user.name}
+                    <span className="text-sm font-semibold text-gray-700 max-w-24 truncate">
+                      {userSession?.user.name?.split(' ')[0]}
                     </span>
-                    <ChevronDown className="w-3 h-3 lg:w-4 lg:h-4 text-gray-500" />
+                    <ChevronDown className="w-4 h-4 text-gray-400" />
                   </>
                 )}
               </Button>
