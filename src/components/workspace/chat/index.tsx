@@ -130,6 +130,8 @@ const MainContent = () => {
     return <SpinnerCentered />;
   }
 
+  console.log({ isVectorised, userDoc });
+
   if (!isVectorised && userDoc) {
     return (
       <Start

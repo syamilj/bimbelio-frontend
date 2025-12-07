@@ -5,9 +5,12 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import Chat from '@/components/workspace/chat';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { Document, User, UserDocument } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function ChatContent({
   docId,
@@ -32,18 +35,68 @@ export default function ChatContent({
   //   { refetchOnWindowFocus: false },
   // );
 
+  const [messageError, setMessageError] = useState<string | null>(null);
+
   const {
     data: prevChatMessages,
     isLoading: isLoadingPrevMessage,
     refetch,
-    error: messageError,
+    error,
   } = useGet('/message/getAllByCourseCategoryIdAndUserId', {
     params: { courseCategoryId: categoryId },
     useEffectDependencies: [categoryId],
   });
 
-  if (messageError) {
-    return <div>{messageError.message}</div>;
+  const [userDocData, setUserDocData] = useState<
+    UserDocument & {
+      document: Document;
+      user: User;
+    }
+  >();
+  const [isUserDocLoading, setIsUserDocLoading] = useState<boolean>(true);
+
+  const fetchUserDocData = async () => {
+    await getGeneral(`/document/getUserDocData`, {
+      params: {
+        documentId: docId,
+        userId: session?.user.id,
+      },
+      setData: setUserDocData,
+      setLoading: setIsUserDocLoading,
+      onError({ message }) {
+        setMessageError(message);
+      },
+    });
+  };
+
+  useEffect(() => {
+    fetchUserDocData();
+  }, [session]);
+
+  const [isVectorising, setIsVectorising] = useState<boolean>(false);
+
+  const vectoriseDocMutation = async () => {
+    await mutateGeneral('/document/vectorise', {
+      payload: {
+        documentId: docId,
+        userId: session?.user.id,
+      },
+      type: 'post',
+      setLoading: setIsVectorising,
+      onSuccess: async () => {
+        //       await trpc.document.getHistoryByUser.refetch();
+        //       await trpc.document.getDocumentTotalPage.refetch();
+        fetchUserDocData();
+      },
+    });
+  };
+
+  console.log({ userDocData });
+
+  const errorMessage = error?.message || messageError;
+
+  if (errorMessage) {
+    return <div>{errorMessage}</div>;
   }
   return (
     <Chat
@@ -58,6 +111,14 @@ export default function ChatContent({
         isLoadingPrevMessage,
       }}
       onClickPageNumber={onClose}
+      vectorize={{
+        isVectorising,
+        vectoriseDocMutation,
+      }}
+      userDoc={{
+        isUserDocLoading,
+        userDocData,
+      }}
       fetchMessages={refetch}
     />
   );
