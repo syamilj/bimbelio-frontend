@@ -12,7 +12,6 @@ import {
   Youtube,
 } from 'lucide-react';
 import type { Metadata } from 'next';
-import { cacheLife } from 'next/cache';
 import { Inter, Playfair_Display } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -79,8 +78,8 @@ async function getLinkPage(
   slug: string,
   password?: string,
 ): Promise<LinkPageResult> {
-  'use cache';
-  cacheLife('minutes');
+  // 'use cache';
+  // cacheLife('minutes');
 
   const url = new URL(`/link/${slug}`, API_BASE_URL);
   if (password) {

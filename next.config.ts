@@ -1,12 +1,18 @@
 // next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  cacheComponents: true,
+  cacheComponents: false,
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion', '@radix-ui/react-icons', 'date-fns', 'lodash'],
+    optimizePackageImports: [
+      'lucide-react',
+      'framer-motion',
+      '@radix-ui/react-icons',
+      'date-fns',
+      'lodash',
+    ],
   },
 
   // Tambahkan ini untuk hapus console di production
@@ -26,48 +32,48 @@ const nextConfig = {
       },
       // {
       //   source: '/explore',
-  //       destination: '/user/explore',
-  //     },
-  //     {
-  //       source: '/course',
-  //       destination: '/user/course',
-  //     },
-  //     {
-  //       source: '/try-out',
-  //       destination: '/user/try-out',
-  //     },
-  //     {
-  //       source: '/try-out/:path*',
-  //       destination: '/user/try-out/:path*',
-  //     },
-  //     {
-  //       source: '/workspace',
-  //       destination: '/user/workspace',
-  //     },
-  //     {
-  //       source: '/workspace/:path*',
-  //       destination: '/user/workspace/:path*',
-  //     },
-  //     {
-  //       source: '/workspace/:path*/:path*',
-  //       destination: '/user/workspace/:path*/:path*',
-  //     },
-  //     {
-  //       source: '/course',
-  //       destination: '/user/course',
-  //     },
-  //     {
-  //       source: '/course/:path*',
-  //       destination: '/user/course/:path*',
-  //     },
-  //     {
-  //       source: '/search',
-  //       destination: '/user/search',
-  //     },
-  //     {
-  //       source: '/leaderboard',
-  //       destination: '/user/leaderboard',
-  //     },
+      //       destination: '/user/explore',
+      //     },
+      //     {
+      //       source: '/course',
+      //       destination: '/user/course',
+      //     },
+      //     {
+      //       source: '/try-out',
+      //       destination: '/user/try-out',
+      //     },
+      //     {
+      //       source: '/try-out/:path*',
+      //       destination: '/user/try-out/:path*',
+      //     },
+      //     {
+      //       source: '/workspace',
+      //       destination: '/user/workspace',
+      //     },
+      //     {
+      //       source: '/workspace/:path*',
+      //       destination: '/user/workspace/:path*',
+      //     },
+      //     {
+      //       source: '/workspace/:path*/:path*',
+      //       destination: '/user/workspace/:path*/:path*',
+      //     },
+      //     {
+      //       source: '/course',
+      //       destination: '/user/course',
+      //     },
+      //     {
+      //       source: '/course/:path*',
+      //       destination: '/user/course/:path*',
+      //     },
+      //     {
+      //       source: '/search',
+      //       destination: '/user/search',
+      //     },
+      //     {
+      //       source: '/leaderboard',
+      //       destination: '/user/leaderboard',
+      //     },
       // {
       //   source: '/dashboard',
       //   destination: '/user/dashboard',
