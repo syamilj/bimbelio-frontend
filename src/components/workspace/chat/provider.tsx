@@ -323,4 +323,3 @@ export type MessageDataType = {
   like: boolean;
   dislike: boolean;
 };
-document: Document;

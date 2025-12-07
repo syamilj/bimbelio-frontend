@@ -13,6 +13,7 @@ import {
   UserRoleEnum,
 } from '@/types/database';
 import Cookies from 'js-cookie';
+import { Loader2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {
   createContext,
@@ -22,7 +23,6 @@ import {
   useState,
 } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { LoadingFixed } from '../ui/loading/loading-fixed';
 
 export default function ProviderSessionAuth({
   children,
@@ -139,17 +139,17 @@ export default function ProviderSessionAuth({
     data,
   };
 
-  // if (isLoading && pathname !== '/') {
-  //   return (
-  //     <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
-  //       <Loader2 className="animate-spin w-4 h-4" />
-  //     </div>
-  //   );
-  // }
+  if (isLoading && pathname !== '/') {
+    return (
+      <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
+        <Loader2 className="animate-spin w-4 h-4" />
+      </div>
+    );
+  }
 
   return (
     <>
-      {isLoading && pathname !== '/' && <LoadingFixed />}
+      {/* {isLoading && pathname !== '/' && <LoadingFixed />} */}
       <Toaster />
       <SessionProvider.Provider value={Context}>
         {children}
