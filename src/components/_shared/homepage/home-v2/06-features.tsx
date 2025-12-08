@@ -127,7 +127,10 @@ const FeaturesSection: React.FC = () => {
   ];
 
   return (
-    <section id="features" className="py-16 md:py-20 px-4 bg-white">
+    <section
+      id="ecosystem"
+      className="py-16 md:py-20 px-4 bg-white"
+    >
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -144,8 +147,8 @@ const FeaturesSection: React.FC = () => {
           </h2>
 
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Live class untuk SNBT, Mandiri, & Kedinasan. Plus chat AI, try out IRT,
-            dan progress tracking — semua di satu tempat.
+            Live class untuk SNBT, Mandiri, & Kedinasan. Plus chat AI, try out
+            IRT, dan progress tracking — semua di satu tempat.
           </p>
         </div>
 
@@ -173,13 +176,13 @@ const FeaturesSection: React.FC = () => {
                     loading="lazy"
                   />
 
-                    {/* Badge */}
-                    <div
-                      className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      {feature.badge}
-                    </div>
+                  {/* Badge */}
+                  <div
+                    className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    {feature.badge}
+                  </div>
                 </div>
 
                 {/* Description */}
@@ -209,7 +212,10 @@ const FeaturesSection: React.FC = () => {
                   {/* Feature bullets */}
                   <div className="space-y-2">
                     {feature.features.map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5">
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2.5"
+                      >
                         <CheckCircle2
                           className="w-5 h-5 flex-shrink-0 mt-0.5"
                           style={{ color: mainColor }}

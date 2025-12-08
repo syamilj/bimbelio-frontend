@@ -11,6 +11,7 @@ import { WebsiteSubCategory } from '@/types/database';
 import { Target } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { autoScroll } from '../autoscroll';
 
 const TryoutSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -52,6 +53,8 @@ const TryoutSection: React.FC = () => {
   const mainColor = isMainLandingPage
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');
+
+  autoScroll('tryout2');
 
   return (
     <section
