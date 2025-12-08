@@ -2,6 +2,7 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { env } from '@/env.mjs';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { pixel } from '@/lib/pixel/_core';
 import { responseError } from '@/lib/response';
 import { GoogleOAuthProvider, useGoogleOneTapLogin } from '@react-oauth/google';
@@ -70,6 +71,15 @@ const HandleLogin = () => {
       }
 
       window.location.reload();
+
+      const redirect = `${website_sub_category_id}/user/dashboard`;
+      const pathname = window.location.pathname;
+      const origin = window.location.origin;
+      if (pathname === redirect || !redirect) {
+        window.location.reload();
+      } else {
+        window.location.href = redirect ? `${origin}/${redirect}` : origin;
+      }
     } catch (error) {
       responseError(error, true);
       console.log({ error });
