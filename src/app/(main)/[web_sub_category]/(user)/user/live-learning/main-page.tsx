@@ -21,7 +21,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import {
+  website_sub_category_id,
+  website_sub_category_id_params,
+} from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { pixel } from '@/lib/pixel/_core';
 import { formatDateTime, formatDuration } from '@/lib/utils';
@@ -91,13 +94,14 @@ export type LiveLearningDataType = LiveClass & {
 export default function LiveLearningDashboard({
   type,
 }: {
-  type: 'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR';
+  type?: 'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR';
 }) {
   // === DESIGN SYSTEM PATTERNS FROM LEADERBOARD ===
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+  const webSubCategoryId = website_sub_category_id ?? website_sub_category_id_params;
 
   const [activeTab, setActiveTab] = useState('available');
   const [searchQuery, setSearchQuery] = useState('');
@@ -107,8 +111,22 @@ export default function LiveLearningDashboard({
   // const [sortBy, setSortBy] = useState<'date' | 'name' | 'status'>('date');
   // const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const typeLabel = type === 'LIVECLASS' ? 'Live Class' : type === 'LIVESTREAM' ? 'Livestream' : 'Webinar';
-  const typeIcon = type === 'LIVECLASS' ? Video : type === 'LIVESTREAM' ? PlayCircle : Users;
+  const typeLabel = type
+    ? type === 'LIVECLASS'
+      ? 'Live Class'
+      : type === 'LIVESTREAM'
+        ? 'Livestream'
+        : 'Webinar'
+    : 'Live Learning';
+  const typeIcon =
+    type === 'LIVECLASS'
+      ? Video
+      : type === 'LIVESTREAM'
+        ? PlayCircle
+        : type === 'WEBINAR'
+          ? Users
+          : Video;
+  const TypeIcon = typeIcon;
 
   const {
     data: LiveClassAvailable,
@@ -118,9 +136,11 @@ export default function LiveLearningDashboard({
     refetch: LiveClassAvailableRefetch,
   } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassAvailable', {
     params: {
-      type,
+      ...(type ? { type } : {}),
+      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
     },
-    useEffectDependencies: [type],
+    useEffectDependencies: [type, webSubCategoryId],
+    enabled: Boolean(webSubCategoryId),
   });
 
   console.log({ LiveClassAvailableTotalData, LiveClassAvailableIsLoading });
@@ -132,9 +152,11 @@ export default function LiveLearningDashboard({
     totalData: LiveClassCompletedTotalData,
   } = useGet<LiveLearningDataType[]>('/liveClass/getAllLiveClassCompleted', {
     params: {
-      type,
+      ...(type ? { type } : {}),
+      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
     },
-    useEffectDependencies: [type],
+    useEffectDependencies: [type, webSubCategoryId],
+    enabled: Boolean(webSubCategoryId),
   });
 
   const {
@@ -145,10 +167,11 @@ export default function LiveLearningDashboard({
     refetch: LiveClassRegisteredRefetch,
   } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassRegistered', {
     params: {
-      type,
+      ...(type ? { type } : {}),
+      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
     },
-    enabled: LiveClassAvailableIsLoading === false,
-    useEffectDependencies: [type, LiveClassAvailableIsLoading],
+    enabled: LiveClassAvailableIsLoading === false && Boolean(webSubCategoryId),
+    useEffectDependencies: [type, LiveClassAvailableIsLoading, webSubCategoryId],
   });
 
   const {
@@ -158,9 +181,11 @@ export default function LiveLearningDashboard({
     totalData: LiveClassInviteTotalData,
   } = useGet<LiveLearningDataType[]>('/user/getUserLiveClassInvited', {
     params: {
-      type,
+      ...(type ? { type } : {}),
+      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
     },
-    useEffectDependencies: [type],
+    useEffectDependencies: [type, webSubCategoryId],
+    enabled: Boolean(webSubCategoryId),
   });
 
   // Attendance Report
@@ -178,8 +203,14 @@ export default function LiveLearningDashboard({
       attendanceRate: number;
     };
   }>('/liveClass/getAttendanceReport', {
-    params: { take: 100, page: 1, type },
-    useEffectDependencies: [type],
+    params: {
+      take: 100,
+      page: 1,
+      ...(type ? { type } : {}),
+      ...(webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : {}),
+    },
+    useEffectDependencies: [type, webSubCategoryId],
+    enabled: Boolean(webSubCategoryId),
   });
 
   // Create attendance status map for quick lookup
@@ -187,7 +218,11 @@ export default function LiveLearningDashboard({
     attendanceReport?.report?.map((r) => [r.id, r.attendanceStatus]) || []
   );
 
-  const { data: Categories } = useGet<Category[]>('/category/getAllCategories');
+  const { data: Categories } = useGet<Category[]>('/category/getAllCategories', {
+    params: webSubCategoryId ? { website_sub_category_id: webSubCategoryId } : undefined,
+    useEffectDependencies: [webSubCategoryId],
+    enabled: Boolean(webSubCategoryId),
+  });
 
   console.log({
     LiveClassAvailable,
@@ -236,9 +271,10 @@ export default function LiveLearningDashboard({
                   className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  {type === 'LIVECLASS' && <Video className="w-6 h-6" style={{ color: mainColor }} />}
-                  {type === 'LIVESTREAM' && <PlayCircle className="w-6 h-6" style={{ color: mainColor }} />}
-                  {type === 'WEBINAR' && <Users className="w-6 h-6" style={{ color: mainColor }} />}
+                  <TypeIcon
+                    className="w-6 h-6"
+                    style={{ color: mainColor }}
+                  />
                 </div>
                 {typeLabel} Dashboard
               </CardTitle>
