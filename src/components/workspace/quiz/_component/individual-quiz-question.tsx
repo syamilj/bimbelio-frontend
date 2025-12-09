@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import ReactMarkdown from '@/components/ui/react-markdown';
 import { Textarea } from '@/components/ui/textarea';
 import { IconSend, IconSuccess, IconX } from '@/styles/icon';
-import { RequestOptions } from 'ai';
+import type { RequestOptions } from '@ai-sdk/ui-utils';
 import 'katex/dist/katex.min.css';
 import { useState } from 'react';
 import { useProvider } from '../provider';

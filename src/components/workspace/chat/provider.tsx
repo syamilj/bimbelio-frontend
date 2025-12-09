@@ -5,9 +5,9 @@ import { User, UserDocument } from '@/types/database';
 import type {
   ChatRequestOptions,
   CreateMessage,
-  Message,
+  UIMessage,
 } from '@ai-sdk/ui-utils';
-import { useChat } from 'ai/react';
+import { useChat } from '@ai-sdk/react';
 import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import {
@@ -158,12 +158,19 @@ export default function Provider({
     },
   });
 
+  // Helper function untuk extract text content dari UIMessage parts
+  const getTextContent = (msg: UIMessage): string => {
+    if (!msg.parts || msg.parts.length === 0) return '';
+    const textParts = msg.parts.filter((part) => part.type === 'text');
+    return textParts.map((part) => (part as { type: 'text'; text: string }).text).join('');
+  };
+
   // Helper function untuk convert UIMessage ke MessageDataType
-  const convertToMessageDataType = (messages: Message[]): MessageDataType[] => {
+  const convertToMessageDataType = (messages: UIMessage[]): MessageDataType[] => {
     return messages.map((msg) => ({
       id: msg.id,
       createdAt: msg.createdAt,
-      content: msg.content,
+      content: getTextContent(msg),
       role: msg.role,
       like: false, // Default value
       dislike: false, // Default value
@@ -252,7 +259,7 @@ type ProviderType = {
     ) => void;
     isLoadingMessages: boolean;
     appendMessages: (
-      message: Message | CreateMessage,
+      message: UIMessage | CreateMessage,
       chatRequestOptions?: ChatRequestOptions,
     ) => Promise<string | null | undefined>;
   };
@@ -272,7 +279,7 @@ type ProviderType = {
     ) => void;
     isLoadingMessagesEdit: boolean;
     appendMessagesEdit: (
-      message: Message | CreateMessage,
+      message: UIMessage | CreateMessage,
       chatRequestOptions?: ChatRequestOptions,
     ) => Promise<string | null | undefined>;
   };
