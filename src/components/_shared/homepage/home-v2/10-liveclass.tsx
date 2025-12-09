@@ -60,13 +60,13 @@ const LiveClassSection: React.FC = () => {
       case 'UPCOMING':
         return { label: 'Upcoming', color: mainColor };
       default:
-        return { label: 'Selesai', color: '#6B7280' };
+        return { label: '', color: '#6B7280' };
     }
   };
 
   return (
     <section
-      id="live-class"
+      id="live-learning"
       className={cn(
         'py-16 md:py-20 px-4 bg-white',
         !isLoading && (!liveClasses || liveClasses.length === 0) && 'hidden',
@@ -164,14 +164,16 @@ const LiveClassSection: React.FC = () => {
                             height={96}
                           />
                         )}
-                        <div className="absolute top-3 right-3">
-                          <span
-                            className="px-3 py-1 rounded-full text-xs font-semibold text-white"
-                            style={{ backgroundColor: status.color }}
-                          >
-                            {status.label}
-                          </span>
-                        </div>
+                        {status.label.length > 0 && (
+                          <div className="absolute top-3 right-3">
+                            <span
+                              className="px-3 py-1 rounded-full text-xs font-semibold text-white"
+                              style={{ backgroundColor: status.color }}
+                            >
+                              {status.label}
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       {/* Content */}

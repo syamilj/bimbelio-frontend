@@ -1,7 +1,14 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { Brain, CheckCircle2, GraduationCap, Sparkles, Target, Users } from 'lucide-react';
+import {
+  Brain,
+  CheckCircle2,
+  GraduationCap,
+  Sparkles,
+  Target,
+  Users,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -103,7 +110,10 @@ const LayersSection: React.FC = () => {
   ];
 
   return (
-    <section id="layers" className="py-16 md:py-20 px-4 bg-white">
+    <section
+      id="3-layer"
+      className="py-16 md:py-20 px-4 bg-white"
+    >
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -120,8 +130,9 @@ const LayersSection: React.FC = () => {
           </h2>
 
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Mau SNBT, Mandiri, atau Kedinasan — semuanya di-support. Tutor ngajar
-            strategi tiap ujian, Mentor jaga progress, dan AI standby 24/7.
+            Mau SNBT, Mandiri, atau Kedinasan — semuanya di-support. Tutor
+            ngajar strategi tiap ujian, Mentor jaga progress, dan AI standby
+            24/7.
           </p>
         </div>
 
@@ -155,7 +166,10 @@ const LayersSection: React.FC = () => {
 
               <div className="space-y-2">
                 {layer.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-start gap-2">
+                  <div
+                    key={idx}
+                    className="flex items-start gap-2"
+                  >
                     <CheckCircle2
                       className="w-4 h-4 flex-shrink-0 mt-0.5"
                       style={{ color: mainColor }}
@@ -218,7 +232,10 @@ const LayersSection: React.FC = () => {
                   </p>
                   <div className="space-y-2">
                     {layer.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2"
+                      >
                         <CheckCircle2
                           className="w-4 h-4 flex-shrink-0 mt-0.5"
                           style={{ color: mainColor }}
@@ -234,7 +251,10 @@ const LayersSection: React.FC = () => {
         </div>
 
         {/* Tutor Showcase */}
-        <div className="mt-12">
+        <div
+          id="tutors"
+          className="mt-12"
+        >
           <div className="text-center mb-8">
             <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
               Meet Our Tutors

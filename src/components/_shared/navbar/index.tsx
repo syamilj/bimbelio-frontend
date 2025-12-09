@@ -122,7 +122,7 @@ const navItems: NavItem[] = [
         title: '3-Layer System',
         items: [
           {
-            href: '#tutors',
+            href: '#3-layer',
             label: 'Tutor',
             description: 'Diajar oleh yang terbaik',
             icon: 'UserCheck',
@@ -130,14 +130,14 @@ const navItems: NavItem[] = [
             // isLink: true,
           },
           {
-            href: '#mentor',
+            href: '#3-layer',
             label: 'Mentor',
             description: 'Dibimbing oleh yang relevan',
             icon: 'UserCheck',
             // isLink: true,
           },
           {
-            href: '#mentor-ai',
+            href: '#3-layer',
             label: 'Bimbot AI',
             description: '24/7 AI yang membantu belajar',
             icon: 'BotMessageSquare',
@@ -165,14 +165,14 @@ const navItems: NavItem[] = [
             badge: { text: 'GRATIS', variant: 'info' },
             // isLink: true,
           },
-          {
-            href: '#ecosystem',
-            label: 'Analisis',
-            description: 'Laporan detail kemampuan',
-            icon: 'TrendingUp',
-            badge: { text: 'PREMIUM', variant: 'premium' },
-            // isLink: true,
-          },
+          // {
+          //   href: '#ecosystem',
+          //   label: 'Analisis',
+          //   description: 'Laporan detail kemampuan',
+          //   icon: 'TrendingUp',
+          //   badge: { text: 'PREMIUM', variant: 'premium' },
+          //   // isLink: true,
+          // },
         ],
       },
     ],
@@ -1603,45 +1603,41 @@ const Navbar: React.FC = () => {
     );
   }, [plans]);
 
-  // Reset navigating state when pathname changes
+  // // Handle scroll to hash on page load
   // useEffect(() => {
-  //   setIsNavigating(false);
+  //   const handleHashScroll = () => {
+  //     const hash = window.location.hash;
+  //     console.log({ hash });
+  //     if (hash && pathname === '/') {
+  //       setTimeout(() => {
+  //         const targetId = hash.substring(1);
+  //         const targetElement = document.getElementById(targetId);
+
+  //         if (targetElement) {
+  //           const offset = 200;
+  //           const elementPosition = targetElement.getBoundingClientRect().top;
+  //           const offsetPosition =
+  //             elementPosition + window.pageYOffset - offset;
+
+  //           window.scrollTo({
+  //             top: offsetPosition,
+  //             behavior: 'smooth',
+  //           });
+  //         }
+  //       }, 3000);
+  //     }
+  //   };
+
+  //   // Run on mount
+  //   handleHashScroll();
+
+  //   // Listen for hash changes
+  //   window.addEventListener('hashchange', handleHashScroll);
+
+  //   return () => {
+  //     window.removeEventListener('hashchange', handleHashScroll);
+  //   };
   // }, [pathname]);
-
-  // Handle scroll to hash on page load
-  useEffect(() => {
-    const handleHashScroll = () => {
-      const hash = window.location.hash;
-      if (hash && pathname === '/') {
-        const targetId = hash.substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-          setTimeout(() => {
-            const offset = 200;
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition =
-              elementPosition + window.pageYOffset - offset;
-
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: 'smooth',
-            });
-          }, 100); // Delay untuk memastikan page sudah render
-        }
-      }
-    };
-
-    // Run on mount
-    handleHashScroll();
-
-    // Listen for hash changes
-    window.addEventListener('hashchange', handleHashScroll);
-
-    return () => {
-      window.removeEventListener('hashchange', handleHashScroll);
-    };
-  }, [pathname]);
 
   return (
     <>
