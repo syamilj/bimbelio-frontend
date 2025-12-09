@@ -54,7 +54,7 @@ const TryoutSection: React.FC = () => {
     ? '#0091FF'
     : (websiteSubCategory?.main_color ?? '#0091FF');
 
-  autoScroll('tryout2');
+  autoScroll('tryout');
 
   return (
     <section
