@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
@@ -128,6 +129,9 @@ export default function CardTryOut({
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const {
+    useAuth: { setShowAuth },
+  } = useAppContext();
 
   const searchParams = useSearchParams();
   const id = searchParams?.get('id');
@@ -195,9 +199,12 @@ export default function CardTryOut({
     tryoutId: string;
     userId: string;
     isPremium?: boolean;
+    websiteSubCategoryId: string;
   }) => {
+    const { websiteSubCategoryId, ...restPayload } = payload;
     await mutateGeneral('/tryout/registerTryOut', {
-      payload,
+      payload: restPayload,
+      params: { website_sub_category_id: websiteSubCategoryId },
       type: 'post',
       onSuccess: refresh,
     });
@@ -211,6 +218,7 @@ export default function CardTryOut({
           tryoutId: showDetail.id,
           userId: session?.user.id || '',
           isPremium,
+          websiteSubCategoryId: showDetail.WebsiteSubCategory?.id || website_sub_category_id || '',
         });
 
         // ✅ Track Lead Event - User mendaftar try out
@@ -500,6 +508,16 @@ export default function CardTryOut({
                           background: `linear-gradient(135deg, ${item.WebsiteSubCategory?.main_color || mainColor}, ${item.WebsiteSubCategory?.secondary_color || secondaryColor})`,
                         }}
                         onClick={() => {
+                          // Check if user is logged in first
+                          if (!session) {
+                            const currentPath = window.location.pathname;
+                            setShowAuth({
+                              redirect: `${currentPath}?id=${item.id}`,
+                              open: true,
+                            });
+                            return;
+                          }
+
                           if (reloadHref && item.WebsiteSubCategory) {
                             localStorage.setItem(
                               'website_sub_category_id',

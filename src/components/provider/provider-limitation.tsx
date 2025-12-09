@@ -151,3 +151,8 @@ export const useUserLimitation = () => {
   }
   return context;
 };
+
+// Safe version that doesn't throw - returns undefined if no provider
+export const useUserLimitationSafe = () => {
+  return useContext(LimitationContext);
+};

@@ -84,12 +84,19 @@ export default function RegistrationProofModal({
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { setTransactionPopUp } = useAppContext();
 
+  const websiteSubCategoryId =
+    websiteSubCategory?.id || showDetail.WebsiteSubCategory?.id;
+
   const { data: TryoutIrtData, isLoading: TryoutIrtDataIsLoading } = useGet<{
     isIrt: boolean;
     isDone: boolean;
   }>('/tryout/getIsTryoutIRT', {
-    params: { tryoutId: showDetail.id },
-    useEffectDependencies: [showDetail],
+    params: {
+      tryoutId: showDetail.id,
+      website_sub_category_id: websiteSubCategoryId,
+    },
+    useEffectDependencies: [showDetail, websiteSubCategoryId],
+    enabled: !!websiteSubCategoryId,
   });
 
   // Get dynamic colors

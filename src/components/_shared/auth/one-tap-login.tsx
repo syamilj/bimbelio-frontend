@@ -89,22 +89,23 @@ const HandleLogin = () => {
 
   useGoogleOneTapLogin({
     disabled: !!session,
+    use_fedcm_for_prompt: true, // Enable FedCM for Google One Tap (required after Jan 2025)
     onSuccess(credentialResponse) {
       console.log('One Tap Success:', credentialResponse);
       handleSubmit(credentialResponse);
     },
     onError() {
-      console.error('One Tap Failed:');
+      // FedCM errors are expected in some cases:
+      // - User cancels the prompt
+      // - Browser doesn't fully support FedCM
+      // - Network issues
+      // These are not critical errors, so we just log them silently
+      console.log('One Tap: User cancelled or FedCM unavailable');
     },
-    promptMomentNotification: (notification) => {
-      console.log('One Tap notification:', notification);
-      if (notification.isNotDisplayed()) {
-        console.log('One Tap not displayed');
-      }
-      if (notification.isSkippedMoment()) {
-        console.log('One Tap skipped');
-      }
-    },
+    // NOTE: promptMomentNotification removed for FedCM migration
+    // Methods like isDisplayMoment(), isNotDisplayed(), getSkippedReason()
+    // are deprecated and will stop working when FedCM becomes mandatory.
+    // See: https://developers.google.com/identity/gsi/web/guides/fedcm-migration
   });
 
   return <div className="hidden"></div>;
