@@ -3,7 +3,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { AlertTriangle, TrendingDown } from 'lucide-react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 
 interface CompetitionData {
   name: string;
@@ -15,12 +14,7 @@ interface CompetitionData {
 
 const StatisticsSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const pathname = usePathname();
-
-  const isMainLandingPage = pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   const competitionData: CompetitionData[] = [
     {
@@ -90,6 +84,7 @@ const StatisticsSection: React.FC = () => {
                   width={40}
                   height={40}
                   className="object-contain"
+                  loading="lazy"
                 />
               </div>
               <p className="text-sm font-semibold text-gray-900 mb-1">{item.name}</p>

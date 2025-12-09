@@ -11,7 +11,7 @@ import {
   Users,
   Video,
 } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Feature {
   id: number;
@@ -25,13 +25,7 @@ interface Feature {
 
 const FeaturesSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const isMainLandingPage = pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   const features: Feature[] = [
     {
@@ -232,13 +226,13 @@ const FeaturesSection: React.FC = () => {
           <p className="text-gray-600 mb-5">
             Daftar sekarang dan langsung akses ke semua fitur premium platform
           </p>
-          <button
-            onClick={() => router.push('/price')}
-            className="px-8 py-3 rounded-2xl font-semibold text-white transition-all duration-200 hover:opacity-90"
+          <Link
+            href="/price"
+            className="inline-block px-8 py-3 rounded-2xl font-semibold text-white"
             style={{ backgroundColor: mainColor }}
           >
             Lihat Semua Paket →
-          </button>
+          </Link>
         </div>
       </div>
     </section>

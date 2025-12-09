@@ -2,7 +2,6 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { HelpCircle, Plus, Minus } from 'lucide-react';
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 interface FAQItem {
@@ -12,13 +11,8 @@ interface FAQItem {
 
 const FAQSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const pathname = usePathname();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-
-  const isMainLandingPage = pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   const faqs: FAQItem[] = [
     {

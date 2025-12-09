@@ -29,82 +29,65 @@ const TimelineSection: React.FC = () => {
   const programs: Program[] = [
     {
       id: 1,
-      title: 'Core Learning',
-      subtitle: 'Bangun Pondasi Kuat',
-      badge: 'TAHAP 1',
-      duration: 'Nov-Des 2025',
-      monthRange: '2 Bulan',
-      highlight: 'Mulai dari sini!',
+      title: 'JAN - MAR',
+      subtitle: 'Fase Intensif',
+      badge: '4x Seminggu Live Class',
+      duration: 'Fokus',
+      monthRange: 'Bedah konsep dasar & tipe soal SNBT biar fondasi kuat',
       features: [
-        'Kuasai konsep fundamental yang benar',
-        'Identifikasi gap pemahaman',
-        'Siap mental & roadmap jelas',
+        'Bedah konsep dasar & tipe soal SNBT',
+        'Fondasi kuat untuk semua materi',
+        'Live class interaktif 4x seminggu',
       ],
       logos: ['/hero/LOGO_SNBT.webp'],
     },
     {
       id: 2,
-      title: 'Intensif UTBK',
-      subtitle: 'Drill & Strategi',
-      badge: 'TAHAP 2',
-      duration: 'Jan-Mar 2026',
-      monthRange: '3 Bulan',
+      title: 'APR - MEI',
+      subtitle: 'Fase Super Intensif',
+      badge: '6x Seminggu (Hampir Tiap Hari)',
+      duration: 'Fokus',
+      monthRange: 'Full Simulasi TO & Bahas Soal buat persiapan final',
+      highlight: 'Sprint Final!',
       features: [
-        'Drill soal intensif pola ujian real',
-        'Analisis kesalahan mingguan',
-        'Progress tracking real-time',
+        'Full Simulasi TO & Bahas Soal',
+        'Persiapan final menjelang ujian',
+        'Drill intensif hampir setiap hari',
       ],
       logos: ['/hero/LOGO_SNBT.webp'],
     },
     {
       id: 3,
-      title: 'Super Intensif',
-      subtitle: 'Persiapan Final',
-      badge: 'TAHAP 3',
-      duration: 'Apr 2026',
-      monthRange: '1 Bulan',
-      highlight: 'Sprint terakhir!',
+      title: 'JUN - JUL',
+      subtitle: 'Fase Ujian Mandiri',
+      badge: '6x Seminggu Live Class',
+      duration: 'Fokus',
+      monthRange: 'Sikat soal level tinggi (HOTS) buat SIMAK UI &UTUL UGM',
       features: [
-        'Simulasi ujian full kondisi real',
-        'Optimasi strategi waktu & mental',
-        'Finishing touches skor maksimal',
-      ],
-      logos: ['/hero/LOGO_SNBT.webp'],
-    },
-    {
-      id: 4,
-      title: 'Seleksi Mandiri',
-      subtitle: 'Jalur Tambahan',
-      badge: 'TAHAP 4',
-      duration: 'Mei-Jun 2026',
-      monthRange: '2 Bulan',
-      features: [
-        'Materi spesifik ujian mandiri PTN',
-        'Strategi beda UI, UGM, ITB',
-        'Tingkatkan peluang jalur kedua',
+        'Sikat soal level tinggi (HOTS)',
+        'Strategi khusus SIMAK UI &UTUL UGM',
+        'Persiapan ujian mandiri PTN top',
       ],
       logos: [
         '/hero/LOGO_PTN_UI.webp',
         '/hero/LOGO_PTN_UGM.webp',
-        '/hero/LOGO_PTN_ITB.webp',
       ],
     },
     {
-      id: 5,
-      title: 'Kedinasan',
-      subtitle: 'Karir Stabil',
-      badge: 'TAHAP 5',
-      duration: 'Jul-Agu 2026',
-      monthRange: '2 Bulan',
+      id: 4,
+      title: 'JUL - AGU',
+      subtitle: 'Fase Kedinasan',
+      badge: '4x Seminggu Live Class',
+      duration: 'Fokus',
+      monthRange: 'Khusus bahas SKD (TIU, TWK, TKP) buat masuk STAN/STIS',
       features: [
-        'SKD dan TBI strategi terbukti',
-        'Pahami kultur lembaga kedinasan',
-        'Raih stabilitas karir negara',
+        'Khusus bahas SKD (TIU, TWK, TKP)',
+        'Persiapan masuk STAN/STIS',
+        'Strategi lolos seleksi kedinasan',
       ],
       logos: [
         '/hero/LOGO_KEDINASAN_STAN.webp',
         '/hero/LOGO_KEDINASAN_STIS.webp',
-        '/hero/LOGO_KEDINASAN_IPDN.webp',
       ],
     },
   ];
@@ -119,16 +102,16 @@ const TimelineSection: React.FC = () => {
             style={{ backgroundColor: mainColor }}
           >
             <Calendar className="w-4 h-4" />
-            Full Timeline: Nov 2025 – Agu 2026
+            Jadwal Kita Padat
           </span>
 
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Dari SNBT Sampai <span style={{ color: mainColor }}>Kedinasan</span>
+            Tapi Tetap <span style={{ color: mainColor }}>Teratur</span>
           </h2>
 
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Ini roadmap lengkapnya. Core → Intensif → Super → Mandiri → Kedinasan.
-            Semua jalur masuk di-cover, tinggal ikutin aja.
+            Kita atur ritmemya. Kapan lari maraton, kapan harus sprint.<br />
+            <span className="font-semibold" style={{ color: mainColor }}>Kamu tinggal ikutin peta</span>
           </p>
         </div>
 
@@ -234,25 +217,20 @@ const TimelineSection: React.FC = () => {
                           </p>
                         </div>
 
-                        {/* Duration Pills */}
-                        <div className="flex flex-wrap items-center gap-2 mb-4">
+                        {/* Duration Info */}
+                        <div className="mb-4">
                           <div
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm"
+                            className="inline-block px-3 py-1.5 rounded-lg text-xs font-bold mb-2"
                             style={{
-                              backgroundColor: `${mainColor}10`,
-                              color: mainColor,
+                              backgroundColor: '#FFD700',
+                              color: '#000',
                             }}
                           >
-                            <Calendar className="w-4 h-4" />
-                            <span className="font-medium">{program.duration}</span>
+                            {program.duration}
                           </div>
-                          <div
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white"
-                            style={{ backgroundColor: mainColor }}
-                          >
-                            <Clock className="w-4 h-4" />
-                            <span>{program.monthRange}</span>
-                          </div>
+                          <p className="text-sm text-gray-700 font-medium">
+                            {program.monthRange}
+                          </p>
                         </div>
 
                         {/* Features Grid */}

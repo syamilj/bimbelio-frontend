@@ -17,7 +17,6 @@ import {
 import { Calendar, Clock, PlayCircle, Video } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 type LiveLearningDataType = LiveClass & {
   Instructor: Instructor;
@@ -42,17 +41,13 @@ const LiveClassSection: React.FC = () => {
   const { setShowAuth } = useGuest();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { data: session } = useSession();
-  const pathname = usePathname();
 
   const { data: liveClasses, isLoading } = useGet<LiveLearningDataType[]>(
     '/liveClass/getAllLiveClassForLandingPage',
     { params: { take: 3, page: 1 } },
   );
 
-  const isMainLandingPage = pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   if (!isLoading && (!liveClasses || liveClasses.length === 0)) {
     return null;

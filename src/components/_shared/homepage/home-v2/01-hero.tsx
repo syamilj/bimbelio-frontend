@@ -3,13 +3,9 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { ArrowRight, Phone } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import type React from 'react';
-import { lazy, Suspense, useState } from 'react';
-
-// Import gambar hero
-import HeroBgWeb from '@/../public/hero/hero-bg-web.webp';
-import HeroHeadingWeb from '@/../public/hero/hero-heading-web.webp';
+import { lazy, Suspense, useState, useCallback } from 'react';
 
 // Lazy loading untuk dialog
 const ConsultationDialog = lazy(
@@ -18,114 +14,95 @@ const ConsultationDialog = lazy(
 
 const HeroSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const router = useRouter();
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
 
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
-  const handleCTAClick = () => {
-    router.push('/price');
-  };
-
-  const scrollToTryout = (e: React.MouseEvent) => {
+  const scrollToTryout = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     const el = document.getElementById('tryout');
     if (el) {
-      const top = el.getBoundingClientRect().top + window.pageYOffset - 100;
-      window.scrollTo({ top, behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
+  }, []);
 
   return (
     <>
       <section
         id="hero"
-        className="relative w-full overflow-hidden pt-16 md:pt-20 pb-24 md:pb-0"
+        className="relative w-full overflow-hidden pt-12 md:pt-20 pb-16 md:pb-0"
       >
-        {/* Fade overlay mobile */}
-        <div className="absolute block md:hidden left-0 right-0 h-12 z-[1] bottom-0 bg-gradient-to-b from-transparent to-white" />
-
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0 min-h-[850px]">
+        {/* Background - Next Image for better mobile optimization */}
+        <div className="absolute inset-0 z-0 min-h-[600px] md:min-h-[850px]">
           <Image
-            src={HeroBgWeb}
-            alt="Hero Background"
+            src="/hero/hero-bg-web.webp"
+            alt=""
             fill
-            priority
-            quality={30}
-            fetchPriority="high"
-            className="object-cover object-center"
-            placeholder="blur"
+            quality={50}
             sizes="100vw"
+            className="object-cover object-center"
+            priority={false}
           />
-
-          {/* Gradient fade - Mobile */}
-          <div className="absolute inset-x-0 bottom-0 h-80 z-10 pointer-events-none md:hidden bg-gradient-to-b from-transparent via-white/70 to-white" />
-
-          {/* Gradient fade - Desktop */}
-          <div className="absolute inset-x-0 bottom-0 h-64 z-10 pointer-events-none hidden md:block bg-gradient-to-b from-transparent via-white/50 to-white" />
         </div>
 
         {/* Main Content */}
-        <div className="relative z-20 mx-auto flex max-w-2xl flex-col items-center text-center pt-36 md:pt-8 lg:pt-12 pb-24 md:pb-32 px-4">
-          {/* Hero Heading Image */}
-          <div className="w-full max-w-5xl mb-8 md:mb-10">
+        <div className="relative z-20 mx-auto flex max-w-2xl flex-col items-center text-center pt-24 md:pt-8 lg:pt-12 pb-16 md:pb-32 px-3 md:px-4">
+          {/* Hero Heading Image - priority LCP */}
+          <div className="w-full max-w-5xl mb-6 md:mb-10">
             <Image
-              src={HeroHeadingWeb}
+              src="/hero/hero-heading-web.webp"
               alt="Bimbel AI untuk SNBT, Ujian Mandiri, KEDINASAN"
               width={672}
               height={443}
               priority
               quality={60}
-              fetchPriority="high"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+              sizes="(max-width: 480px) 90vw, (max-width: 768px) 95vw, 672px"
               className="w-full h-auto"
-              placeholder="blur"
+              fetchPriority="high"
             />
           </div>
 
           {/* CTA Buttons */}
-          <div className="w-full flex flex-col items-center gap-4">
-            {/* Primary CTA */}
-            <button
-              onClick={handleCTAClick}
-              className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-base md:text-lg text-white shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer"
+          <div className="w-full flex flex-col items-center gap-3 md:gap-4">
+            {/* Primary CTA - Use Link instead of button+router */}
+            <Link
+              href="/price"
+              className="flex items-center justify-center gap-2 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-sm md:text-lg text-white"
               style={{ backgroundColor: mainColor }}
+              prefetch={false}
             >
               <span>Mulai Sekarang!</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-            </button>
+              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+            </Link>
 
-            {/* Secondary CTAs */}
-            <div className="flex flex-wrap justify-center gap-3 mt-2">
+            {/* Secondary CTAs - simplified for mobile */}
+            <div className="flex flex-wrap justify-center gap-2 md:gap-3 mt-1 md:mt-2">
               <a
                 href="https://www.bimbelio.com/link/komunitas"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-semibold text-white transition-all duration-200 hover:opacity-90"
+                className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
                 style={{ backgroundColor: mainColor }}
               >
                 Grup Belajar
               </a>
 
               <a
-                href="#try-out"
+                href="#tryout"
                 onClick={scrollToTryout}
-                className="flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-semibold text-white transition-all duration-200 hover:opacity-90"
+                className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
                 style={{ backgroundColor: mainColor }}
               >
                 Tryout Gratis
               </a>
-
-              <button
-                type="button"
-                onClick={() => setIsConsultationOpen(true)}
-                className="flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-semibold bg-white border-2 transition-all duration-200 hover:bg-gray-50"
-                style={{ borderColor: mainColor, color: mainColor }}
+<a
+                href="#live-class"
+                onClick={scrollToTryout}
+                className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
+                style={{ backgroundColor: mainColor }}
               >
-                <Phone className="w-4 h-4" />
-                <span>Konsultasi</span>
-              </button>
+                Liveclass Gratis
+              </a>
             </div>
           </div>
         </div>

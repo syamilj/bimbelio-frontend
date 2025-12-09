@@ -2,19 +2,13 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Heart, Lightbulb, Sparkles, Target, Users } from 'lucide-react';
-import { usePathname } from 'next/navigation';
 
 const AboutSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const pathname = usePathname();
-
-  const isMainLandingPage = pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   return (
-    <section id="about" className="py-16 md:py-20 px-4 bg-gray-50">
+    <section id="about" className="py-16 md:py-20 px-4 bg-white">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -44,6 +38,9 @@ const AboutSection: React.FC = () => {
             alt="Tim Bimbelio"
             className="w-full h-auto object-cover"
             loading="lazy"
+            decoding="async"
+            width={600}
+            height={400}
           />
           <div className="absolute bottom-0 left-0 right-0 bg-gray-900/60 px-5 py-4">
             <p className="text-white text-sm font-medium">
@@ -73,7 +70,7 @@ const AboutSection: React.FC = () => {
               </div>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
-              Tim kami alumni UI, UGM, ITB, STAN, dan kampus top lainnya. Kami pernah
+              Tim kami UI, UGM, ITB, STAN, dan kampus top lainnya. Kami pernah
               merasakan kebingungan yang sama — mau SNBT, Mandiri, atau Kedinasan.
               Pengalaman itu yang bikin kami tahu persis apa yang kamu butuhkan.
             </p>

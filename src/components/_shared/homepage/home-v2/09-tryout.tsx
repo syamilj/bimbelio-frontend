@@ -9,7 +9,7 @@ import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { WebsiteSubCategory } from '@/types/database';
 import { Target } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 const TryoutSection: React.FC = () => {
@@ -47,11 +47,7 @@ const TryoutSection: React.FC = () => {
   }, [href]);
 
   // Get dynamic colors
-  const pathname = usePathname();
-  const isMainLandingPage = pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   return (
     <section
@@ -135,7 +131,7 @@ const TryoutSection: React.FC = () => {
               data={cards}
               userTryOutId={session?.user.id || ''}
               refresh={getData}
-              reloadHref={isMainLandingPage}
+              reloadHref={false}
             />
           )}
         </div>

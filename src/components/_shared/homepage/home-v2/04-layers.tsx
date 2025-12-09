@@ -3,7 +3,6 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Brain, CheckCircle2, GraduationCap, Sparkles, Target, Users } from 'lucide-react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 interface Tutor {
@@ -17,13 +16,8 @@ interface Tutor {
 
 const LayersSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const pathname = usePathname();
   const [activeLayer, setActiveLayer] = useState<number>(0);
-
-  const isMainLandingPage = pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   const tutors: Tutor[] = [
     {
@@ -74,7 +68,7 @@ const LayersSection: React.FC = () => {
       layer: 'LAYER 1',
       title: 'TUTOR',
       icon: <GraduationCap className="w-6 h-6" />,
-      description: 'Alumni UI, UGM, ITB yang proven masuk PTN top',
+      description: 'UI, UGM, ITB yang proven masuk PTN top',
       features: [
         'Live class interaktif 198+ sesi',
         'Ngajar materi & strategi soal real UTBK',
@@ -246,7 +240,7 @@ const LayersSection: React.FC = () => {
               Meet Our Tutors
             </h3>
             <p className="text-sm text-gray-600">
-              Alumni PTN top yang paham strategi asli UTBK
+              PTN top yang paham strategi asli UTBK
             </p>
           </div>
 

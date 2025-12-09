@@ -6,7 +6,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { Crown, MessageCircle } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const ConsultationDialog = dynamic(
@@ -28,8 +28,6 @@ type PricingDataType = {
 
 const PricingSection: React.FC = () => {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const pathname = usePathname();
-  const router = useRouter();
   const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
     useState(false);
 
@@ -37,10 +35,7 @@ const PricingSection: React.FC = () => {
     '/plan/getAllPlanByWebCategory',
   );
 
-  const isMainLandingPage = pathname === '/';
-  const mainColor = isMainLandingPage
-    ? '#0091FF'
-    : (websiteSubCategory?.main_color ?? '#0091FF');
+  const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
   const getAllPlans = (): PlanDataType[] => {
     let categoryToUse = PricingData?.webSubCategory?.find(
@@ -138,17 +133,17 @@ const PricingSection: React.FC = () => {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-20">
-          <button
-            onClick={() => router.push('/price')}
-            className="px-8 py-3 rounded-2xl font-semibold text-white transition-all duration-200 hover:opacity-90"
+          <Link
+            href="/price"
+            className="px-8 py-3 rounded-2xl font-semibold text-white"
             style={{ backgroundColor: mainColor }}
           >
             Lihat Semua Paket →
-          </button>
+          </Link>
 
           <button
             onClick={() => setIsConsultationDialogOpen(true)}
-            className="px-8 py-3 rounded-2xl font-semibold bg-white border-2 transition-all duration-200 hover:bg-gray-50"
+            className="px-8 py-3 rounded-2xl font-semibold bg-white border-2"
             style={{ borderColor: mainColor, color: mainColor }}
           >
             <MessageCircle className="w-4 h-4 inline mr-2" />
