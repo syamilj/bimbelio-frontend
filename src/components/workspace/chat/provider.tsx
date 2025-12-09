@@ -2,12 +2,8 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
 import type { Document } from '@/types/database';
 import { User, UserDocument } from '@/types/database';
-import type {
-  ChatRequestOptions,
-  CreateMessage,
-  UIMessage,
-} from '@ai-sdk/ui-utils';
-import { useChat } from '@ai-sdk/react';
+import type { Message, CreateMessage, ChatRequestOptions } from 'ai-legacy';
+import { useChat } from 'ai-legacy/react';
 import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import {
@@ -95,6 +91,7 @@ export default function Provider({
     }
   };
 
+  // Create transport for useChat v5
   const {
     messages,
     input: inputMessages,
@@ -126,7 +123,7 @@ export default function Provider({
       }, 100);
     },
   });
-
+  // Create transport for useChat v5 (edit)
   const {
     messages: messageEdit,
     input: inputMessagesEdit,
@@ -158,16 +155,20 @@ export default function Provider({
     },
   });
 
-  // Helper function untuk extract text content dari UIMessage parts
-  const getTextContent = (msg: UIMessage): string => {
+  // Helper function untuk extract text content dari Message parts
+  const getTextContent = (msg: Message): string => {
+    // Support both v4 (content) and v5 (parts) format
+    if ('content' in msg && typeof msg.content === 'string') {
+      return msg.content;
+    }
     if (!msg.parts || msg.parts.length === 0) return '';
-    const textParts = msg.parts.filter((part) => part.type === 'text');
-    return textParts.map((part) => (part as { type: 'text'; text: string }).text).join('');
+    const textParts = msg.parts.filter((part: any) => part.type === 'text');
+    return textParts.map((part: any) => part.text).join('');
   };
 
-  // Helper function untuk convert UIMessage ke MessageDataType
-  const convertToMessageDataType = (messages: UIMessage[]): MessageDataType[] => {
-    return messages.map((msg) => ({
+  // Helper function untuk convert Message ke MessageDataType
+  const convertToMessageDataType = (msgs: Message[]): MessageDataType[] => {
+    return msgs.map((msg) => ({
       id: msg.id,
       createdAt: msg.createdAt,
       content: getTextContent(msg),
@@ -259,7 +260,7 @@ type ProviderType = {
     ) => void;
     isLoadingMessages: boolean;
     appendMessages: (
-      message: UIMessage | CreateMessage,
+      message: Message | CreateMessage,
       chatRequestOptions?: ChatRequestOptions,
     ) => Promise<string | null | undefined>;
   };
@@ -279,7 +280,7 @@ type ProviderType = {
     ) => void;
     isLoadingMessagesEdit: boolean;
     appendMessagesEdit: (
-      message: UIMessage | CreateMessage,
+      message: Message | CreateMessage,
       chatRequestOptions?: ChatRequestOptions,
     ) => Promise<string | null | undefined>;
   };

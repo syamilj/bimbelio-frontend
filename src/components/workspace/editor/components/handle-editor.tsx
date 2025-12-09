@@ -1,5 +1,5 @@
 import { toaster } from '@/components/ui/toaster';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from 'ai-legacy/react';
 import { useEffect } from 'react';
 import { useProvider } from '../provider';
 

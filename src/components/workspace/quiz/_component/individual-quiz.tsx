@@ -13,7 +13,7 @@ import {
   IconTailedArrowNext,
   IconTailedArrowPrev,
 } from '@/styles/icon';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from 'ai-legacy/react';
 import Cookies from 'js-cookie';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -54,7 +54,7 @@ const IndividualQuiz = () => {
       userId: session?.user.id,
     },
 
-    onFinish: async (_prompt, completion) => {
+    onFinish: async (completion: string) => {
       // utils.quiz.getQuiz.setData({ documentId: `${documentId}` }, (prev) => {
       //   if (!prev) return prev;
       //   return prev.map((quiz) => {
