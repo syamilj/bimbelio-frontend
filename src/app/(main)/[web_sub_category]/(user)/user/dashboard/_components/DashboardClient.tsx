@@ -306,8 +306,8 @@ export default function DashboardClient() {
   }
 
   return (
-    <div className="w-full max-w-full overflow-hidden px-4 pt-4 md:px-0 md:pt-0">
-      <div className="flex flex-col gap-4">
+    <div className="w-full min-w-0 overflow-hidden px-4 pt-4 md:px-0 md:pt-0">
+      <div className="flex flex-col gap-4 min-w-0">
 
         <StatsCards
           studyHours={data.stats.studyHours}

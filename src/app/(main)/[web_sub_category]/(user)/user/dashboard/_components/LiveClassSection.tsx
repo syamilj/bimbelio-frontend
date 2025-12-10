@@ -50,7 +50,7 @@ export default function LiveClassSection({ liveClasses }: LiveClassSectionProps)
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
@@ -76,8 +76,9 @@ export default function LiveClassSection({ liveClasses }: LiveClassSectionProps)
       </div>
 
       {/* Cards - Horizontal Scroll */}
-      <div className="w-full overflow-x-auto scrollbar-hidden">
-        <div className="flex gap-3 pb-2 pr-4 md:pr-0">
+      <div style={{ maxWidth: '100%', overflow: 'hidden' }}>
+        <div className="overflow-x-auto scrollbar-hidden" style={{ maxWidth: '100%' }}>
+          <div className="flex gap-3 pb-2">
           {liveClasses.map((lc) => (
             <Link
               key={lc.id}
@@ -140,6 +141,7 @@ export default function LiveClassSection({ liveClasses }: LiveClassSectionProps)
               </div>
             </Link>
           ))}
+          </div>
         </div>
       </div>
     </div>

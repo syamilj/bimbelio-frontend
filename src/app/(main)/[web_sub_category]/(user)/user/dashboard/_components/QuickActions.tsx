@@ -59,8 +59,9 @@ export default function QuickActions({
   ];
 
   return (
-    <div className="w-full overflow-x-auto scrollbar-hidden">
-      <div className="flex gap-2 pb-1 pr-4 md:pr-0">
+    <div style={{ maxWidth: '100%', overflow: 'hidden' }}>
+      <div className="overflow-x-auto scrollbar-hidden" style={{ maxWidth: '100%' }}>
+        <div className="flex gap-2 pb-1">
         {actions.map((action) => (
           <Link key={action.label} href={action.href} className="flex-shrink-0">
             <div
@@ -89,6 +90,7 @@ export default function QuickActions({
             </div>
           </Link>
         ))}
+        </div>
       </div>
     </div>
   );

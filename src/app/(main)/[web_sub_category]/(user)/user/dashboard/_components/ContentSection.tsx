@@ -65,7 +65,7 @@ function ContentRow({
   const imageHeight = isFullWide ? "h-52 md:h-56" : isWide ? "h-52 md:h-56" : "h-36 md:h-40";
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1.5">
@@ -91,8 +91,9 @@ function ContentRow({
       </div>
 
       {/* Cards - Horizontal Scroll */}
-      <div className="w-full overflow-x-auto scrollbar-hidden">
-        <div className="flex gap-3 pb-2 pr-4 md:pr-0">
+      <div style={{ maxWidth: '100%', overflow: 'hidden' }}>
+        <div className="overflow-x-auto scrollbar-hidden" style={{ maxWidth: '100%' }}>
+          <div className="flex gap-3 pb-2">
           {items.map((item) => (
             <Link key={item.id} href={href} className="flex-shrink-0 group">
               <div className={`${cardWidth} bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all`}>
@@ -139,6 +140,7 @@ function ContentRow({
               </div>
             </Link>
           ))}
+          </div>
         </div>
       </div>
     </div>
@@ -163,7 +165,7 @@ export default function ContentSection({
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full min-w-0 overflow-hidden space-y-4">
       {/* Main Header */}
       <div className="flex items-center gap-1.5">
         <Sparkles className="w-4 h-4" style={{ color: mainColor }} />
@@ -171,7 +173,7 @@ export default function ContentSection({
       </div>
 
       {/* Rows */}
-      <div className="space-y-4">
+      <div className="space-y-4 min-w-0">
         {tryouts.length > 0 && (
           <ContentRow
             items={tryouts}
