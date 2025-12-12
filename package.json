@@ -5,9 +5,9 @@
   "scripts": {
     "build": "next build",
     "check": "pnpm lint && pnpm typecheck",
-    "dev": "next dev --turbopack",
+    "dev": "next dev --webpack",
     "format": "prettier --write .",
-    "lint": "next lint",
+    "lint": "eslint .",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },

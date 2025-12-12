@@ -19,7 +19,7 @@ import { toaster } from '@/components/ui/toaster';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { ErrorType } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import {
   getPriceByDiscountFixedAmount,
@@ -190,52 +190,34 @@ export function DialogPayment({
 
       // ✅ ENRICHED PURCHASE EVENT DATA - Lebih lengkap untuk tracking yang optimal
       const purchaseValue = discountPrice || plan.price;
-      // const categoryName =
-      //   plan.PlanSubscription?.WebsiteSubCategory?.name || 'Unknown';
 
-      // ✅ ADVANCED MATCHING - Enhanced Meta tracking dengan user data
-      const advancedMatchingData: any = {};
+      const fullName = session?.user?.name || '';
+      const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
+      const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
 
-      if (session?.user?.email) {
-        advancedMatchingData.em = await pixel.meta.hashUserData(
-          session.user.email,
-        );
-      }
-      if (session?.user?.phone || telp) {
-        const phoneNumber = session?.user?.phone || telp;
-        advancedMatchingData.ph = await pixel.meta.hashUserData(phoneNumber);
-      }
-      if (session?.user?.name) {
-        const nameParts = session.user.name.split(' ');
-        if (nameParts[0]) {
-          advancedMatchingData.fn = await pixel.meta.hashUserData(nameParts[0]);
-        }
-        if (nameParts[1]) {
-          advancedMatchingData.ln = await pixel.meta.hashUserData(nameParts[1]);
-        }
-      }
-
-      pixel.meta.track(
-        'AddToCart',
-        {
-          contents: [{ id: plan.id, quantity: 1 }], // ✅ Format yang benar untuk Meta
+      trackUnifiedEvent({
+        eventName: 'AddToCart',
+        customData: {
+          contents: [{ id: plan.id, quantity: 1 }],
           content_name: plan.name,
           content_type: 'product',
           value: purchaseValue,
           currency: 'IDR',
           num_items: 1,
-          order_id: res?.data?.order_id || `order_${Date.now()}`, // Order ID from payment response
+          order_id: res?.data?.order_id || `order_${Date.now()}`,
+          content_id: plan.id,
         },
-        advancedMatchingData,
-      ); // ✅ Advanced matching data
-
-      pixel.tiktok.track('AddToCart', {
-        content_id: plan.id, // ✅ FIX: TikTok content_id parameter yang missing
-        content_name: plan.name,
-        content_type: 'product', // ✅ Tambahan content_type
-        value: purchaseValue,
-        currency: 'IDR',
-        order_id: res?.data?.order_id || `order_${Date.now()}`,
+        user: session?.user
+          ? {
+              userId: session.user.id?.toString?.() || undefined,
+              email: session.user.email || undefined,
+              phone: session.user.phone || telp || undefined,
+              firstName: firstName || undefined,
+              lastName,
+            }
+          : telp
+            ? { phone: telp }
+            : undefined,
       });
     } catch (error) {
       toaster({
@@ -253,30 +235,31 @@ export function DialogPayment({
     // ✅ ADDPAYMENTINFO TRACKING - Track saat user klik "Bayar Sekarang"
     try {
       const purchaseValue = discountPrice || plan.price;
-      pixel.meta.track(
-        'AddPaymentInfo',
-        {
+      const fullName = session?.user?.name || '';
+      const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
+      const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+
+      trackUnifiedEvent({
+        eventName: 'AddPaymentInfo',
+        customData: {
           content_name: plan.name,
           content_type: 'product',
           value: purchaseValue,
           currency: 'IDR',
           contents: [{ id: plan.id, quantity: 1 }],
+          content_id: plan.id,
         },
-        {
-          // Advanced Matching data
-          em: session?.user?.email,
-          ph: session?.user?.phone || undefined,
-          fn: session?.user?.name?.split(' ')[0],
-          ln: session?.user?.name?.split(' ').slice(1).join(' '),
-        },
-      );
-
-      pixel.tiktok.track('AddPaymentInfo', {
-        content_id: plan.id,
-        content_name: plan.name,
-        content_type: 'product',
-        value: purchaseValue,
-        currency: 'IDR',
+        user: session?.user
+          ? {
+              userId: session.user.id?.toString?.() || undefined,
+              email: session.user.email || undefined,
+              phone: session.user.phone || telp || undefined,
+              firstName: firstName || undefined,
+              lastName,
+            }
+          : telp
+            ? { phone: telp }
+            : undefined,
       });
     } catch (pixelError) {
       console.warn('Pixel tracking error on add payment info:', pixelError);
@@ -300,21 +283,32 @@ export function DialogPayment({
         if (open) {
           // ✅ INITIATE CHECKOUT TRACKING - Track saat dialog payment dibuka
           const purchaseValue = discountPrice || plan.price;
-          pixel.meta.track('InitiateCheckout', {
-            contents: [{ id: plan.id, quantity: 1 }],
-            content_name: plan.name,
-            content_type: 'product',
-            value: purchaseValue,
-            currency: 'IDR',
-            num_items: 1,
-          });
+          const fullName = session?.user?.name || '';
+          const [firstName, ...restNameParts] = fullName
+            .split(' ')
+            .filter(Boolean);
+          const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
 
-          pixel.tiktok.track('InitiateCheckout', {
-            content_id: plan.id,
-            content_name: plan.name,
-            content_type: 'product',
-            value: purchaseValue,
-            currency: 'IDR',
+          trackUnifiedEvent({
+            eventName: 'InitiateCheckout',
+            customData: {
+              contents: [{ id: plan.id, quantity: 1 }],
+              content_name: plan.name,
+              content_type: 'product',
+              value: purchaseValue,
+              currency: 'IDR',
+              num_items: 1,
+              content_id: plan.id,
+            },
+            user: session?.user
+              ? {
+                  userId: session.user.id?.toString?.() || undefined,
+                  email: session.user.email || undefined,
+                  phone: session.user.phone || undefined,
+                  firstName: firstName || undefined,
+                  lastName,
+                }
+              : undefined,
           });
 
           // ✅ Trigger onOpen callback jika ada

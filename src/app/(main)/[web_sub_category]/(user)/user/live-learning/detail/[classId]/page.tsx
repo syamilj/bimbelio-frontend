@@ -17,7 +17,7 @@ import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import {
   formatDateTime,
   formatDuration,
@@ -154,25 +154,22 @@ export default function LiveClassStudentDetail() {
   }, [liveClass]);
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Live Class Detail',
         content_type: 'page',
+        content_id: `live_class_detail_${classId}`,
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            email: session.user.email,
+            phone: session.user.phone || undefined,
+            userId: session.user.id,
+            firstName: session.user.name?.split(' ')[0],
+            lastName: session.user.name?.split(' ').slice(1).join(' '),
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Live Class Detail',
-      content_id: `live_class_detail_${classId}`, // ✅ Required untuk TikTok VSA
     });
   }, [session, classId]);
 

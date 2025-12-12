@@ -8,7 +8,7 @@ import {
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import {
   CourseProgress,
   TryoutAnswer,
@@ -115,25 +115,22 @@ const WorkspaceCourse = () => {
   }, [isHistoryUpdated]);
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Course Detail',
         content_type: 'page',
+        content_id: `course_detail_${categoryId}`,
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            email: session.user.email,
+            phone: session.user.phone || undefined,
+            userId: session.user.id,
+            firstName: session.user.name?.split(' ')[0],
+            lastName: session.user.name?.split(' ').slice(1).join(' '),
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Course Detail',
-      content_id: `course_detail_${categoryId}`, // ✅ Required untuk TikTok VSA
     });
   }, [categoryId, session]);
 

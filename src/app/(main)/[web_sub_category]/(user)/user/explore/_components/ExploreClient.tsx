@@ -2,7 +2,7 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import type { Category } from '@/types/database';
 import { useEffect, useState } from 'react';
 import SearchDeskstop from '../../_components/search-dekstop';
@@ -28,27 +28,27 @@ export default function ExploreClient() {
   }, []);
 
   useEffect(() => {
-    // ✅ ENRICHED VIEWCONTENT EVENT DATA
-    pixel.meta.track(
-      'ViewContent',
-      {
+    const fullName = session?.user?.name || '';
+    const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
+    const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Explore Document',
         content_type: 'page',
+        page_path: `/user/explore`,
+        content_id: 'explore_document_page',
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            userId: session.user.id?.toString?.() || undefined,
+            email: session.user.email || undefined,
+            phone: session.user.phone || undefined,
+            firstName: firstName || undefined,
+            lastName,
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Explore Document',
-      page_path: `/user/explore`,
-      content_id: 'explore_document_page', // ✅ Required untuk TikTok VSA
     });
   }, [session]);
 

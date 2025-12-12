@@ -2,7 +2,7 @@
 
 import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { motion } from 'framer-motion';
 import { PhoneCall } from 'lucide-react';
 import { useState } from 'react';
@@ -18,15 +18,14 @@ const FloatingContactButton = () => {
   const handleMainButtonClick = () => {
     // Track dialog open event with correct content_type
     try {
-      pixel.meta.track('ViewContent', {
-        content_type: 'page', // ✅ Valid content_type
-        content_name: 'Contact Modal',
-      });
-
-      pixel.tiktok.track('ViewContent', {
-        content_name: 'Contact Modal',
-        content_id: 'floating_contact_modal', // ✅ Required for TikTok VSA
-        page_path: '/contact-modal',
+      trackUnifiedEvent({
+        eventName: 'ViewContent',
+        customData: {
+          content_type: 'page',
+          content_name: 'Contact Modal',
+          content_id: 'floating_contact_modal',
+          page_path: '/contact-modal',
+        },
       });
 
       console.log('📊 Pixel tracked: Contact dialog opened');

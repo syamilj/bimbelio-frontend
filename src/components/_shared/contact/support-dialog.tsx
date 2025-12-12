@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { CONTACT_CONFIG } from '@/config/contact';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import { MessageCircle, Phone, Users } from 'lucide-react';
 import { ReactNode } from 'react';
@@ -32,16 +32,14 @@ export const SupportDialog = ({ children }: { children: ReactNode }) => {
   // Pixel tracking function for contact events
   const trackContactEvent = (contactType: string, contactValue: number) => {
     try {
-      // Track Meta Pixel Contact event with correct value format
-      pixel.meta.track('Contact', {
-        content_type: 'contact',
-        content_name: contactType,
-      });
-
-      // Track TikTok Pixel Contact event - using 'contact' as requested
-      pixel.tiktok.track('Contact', {
-        content_name: contactType,
-        content_id: `contact_${contactType.toLowerCase()}`, // ✅ Required for TikTok VSA
+      trackUnifiedEvent({
+        eventName: 'Contact',
+        customData: {
+          content_type: 'contact',
+          content_name: contactType,
+          content_id: `contact_${contactType.toLowerCase()}`,
+          value: contactValue,
+        },
       });
 
       console.log(`📊 Pixel tracked: ${contactType} contact initiated`);
@@ -93,15 +91,14 @@ export const SupportDialog = ({ children }: { children: ReactNode }) => {
     action: () => {
       // Track community join event (using different tracking for community)
       try {
-        pixel.meta.track('Lead', {
-          content_type: 'community',
-          content_name: 'discord_group',
-          value: 0, // ✅ Free community join - no monetary value
-        });
-
-        pixel.tiktok.track('Lead', {
-          content_name: 'discord_group',
-          content_id: 'discord_group_join', // ✅ Required for TikTok VSA
+        trackUnifiedEvent({
+          eventName: 'Lead',
+          customData: {
+            content_type: 'community',
+            content_name: 'discord_group',
+            content_id: 'discord_group_join',
+            value: 0,
+          },
         });
       } catch (error) {
         console.warn('Pixel tracking error:', error);
@@ -115,15 +112,14 @@ export const SupportDialog = ({ children }: { children: ReactNode }) => {
   const handleMainButtonClick = () => {
     // Track dialog open event with correct content_type
     try {
-      pixel.meta.track('ViewContent', {
-        content_type: 'page', // ✅ Valid content_type
-        content_name: 'Contact Modal',
-      });
-
-      pixel.tiktok.track('ViewContent', {
-        content_name: 'Contact Modal',
-        content_id: 'floating_contact_modal', // ✅ Required for TikTok VSA
-        page_path: '/contact-modal',
+      trackUnifiedEvent({
+        eventName: 'ViewContent',
+        customData: {
+          content_type: 'page',
+          content_name: 'Contact Modal',
+          content_id: 'floating_contact_modal',
+          page_path: '/contact-modal',
+        },
       });
 
       console.log('📊 Pixel tracked: Contact dialog opened');

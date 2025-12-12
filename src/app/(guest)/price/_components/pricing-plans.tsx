@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { motion } from 'framer-motion';
 import {
   BookOpen,
@@ -291,27 +291,27 @@ export default function PricingPlans() {
       : 0);
 
   useEffect(() => {
-    // ✅ ENRICHED VIEWCONTENT EVENT DATA
-    pixel.meta.track(
-      'ViewContent',
-      {
+    const fullName = session?.user?.name || '';
+    const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
+    const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Pricing Page',
         content_type: 'page',
+        page_path: '/price',
+        content_id: 'pricing_page_main',
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            userId: session.user.id?.toString?.() || undefined,
+            email: session.user.email || undefined,
+            phone: session.user.phone || undefined,
+            firstName: firstName || undefined,
+            lastName,
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Pricing Page',
-      page_path: '/price',
-      content_id: 'pricing_page_main', // ✅ Required untuk TikTok VSA
     });
   }, [session]);
 

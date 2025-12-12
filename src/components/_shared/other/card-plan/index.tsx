@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { env } from '@/env.mjs';
-import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import {
@@ -946,20 +946,16 @@ const ButtonSection = () => {
             }}
             onClick={() => {
               // ✅ VIEWCONTENT TRACKING - Track saat user melihat detail produk
-              pixel.meta.track('ViewContent', {
-                contents: [{ id: plan.id, quantity: 1 }],
-                content_name: plan.name,
-                content_type: 'product',
-                value: plan.price,
-                currency: 'IDR',
-              });
-
-              pixel.tiktok.track('ViewContent', {
-                content_id: plan.id,
-                content_name: plan.name,
-                content_type: 'product',
-                value: plan.price,
-                currency: 'IDR',
+              trackUnifiedEvent({
+                eventName: 'ViewContent',
+                customData: {
+                  contents: [{ id: plan.id, quantity: 1 }],
+                  content_id: plan.id,
+                  content_name: plan.name,
+                  content_type: 'product',
+                  value: plan.price,
+                  currency: 'IDR',
+                },
               });
 
               setTransactionPopUp(false);

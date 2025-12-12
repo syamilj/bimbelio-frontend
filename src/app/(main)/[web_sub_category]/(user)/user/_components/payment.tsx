@@ -23,7 +23,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { motion } from 'framer-motion';
 import {
   AlertCircle,
@@ -96,14 +96,13 @@ export function Payment() {
   // Analytics tracking
   useEffect(() => {
     if (transactionPopUp && PricingData) {
-      pixel.meta.track('ViewContent', {
-        content_name: 'Payment Dialog',
-        content_type: 'pricing',
-      });
-
-      pixel.tiktok.track('ViewContent', {
-        content_name: 'Payment Dialog',
-        content_id: 'payment_modal',
+      trackUnifiedEvent({
+        eventName: 'ViewContent',
+        customData: {
+          content_name: 'Payment Dialog',
+          content_type: 'pricing',
+          content_id: 'payment_modal',
+        },
       });
     }
   }, [transactionPopUp, PricingData]);

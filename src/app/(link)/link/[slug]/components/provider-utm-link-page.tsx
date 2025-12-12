@@ -4,7 +4,7 @@
 
 'use client';
 
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { utm } from '@/lib/utm/_core';
 import { getLinkPageSlug } from '@/lib/utm/url';
 import { useEffect } from 'react';
@@ -54,22 +54,46 @@ export default function ProviderUtmLinkPage({
       utmParams,
     });
 
-    pixel.meta.track('PageView', {
-      utm_source: utmParams?.utm_source,
-      utm_medium: utmParams?.utm_medium,
-      utm_campaign: utmParams?.utm_campaign,
+    const pagePath = typeof window !== 'undefined' ? window.location.pathname : '';
+
+    // Meta PageView (browser + server dedup via event_id)
+    trackUnifiedEvent({
+      eventName: 'PageView',
+      platforms: ['meta'],
+      customData: {
+        page_path: pagePath,
+        content_type: 'link_page',
+      },
     });
 
-    pixel.tiktok.track('ViewContent', {
-      utm_source: utmParams?.utm_source,
-      utm_medium: utmParams?.utm_medium,
-      utm_campaign: utmParams?.utm_campaign,
+    // TikTok page helper
+    try {
+      if (typeof window !== 'undefined' && (window as any).ttq?.page) {
+        (window as any).ttq.page();
+      }
+    } catch {
+      // ignore
+    }
+
+    // TikTok ViewContent (browser + server dedup via event_id)
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      platforms: ['tiktok'],
+      customData: {
+        utm_source: utmParams?.utm_source,
+        utm_medium: utmParams?.utm_medium,
+        utm_campaign: utmParams?.utm_campaign,
+        utm_content: utmParams?.utm_content,
+        utm_term: utmParams?.utm_term,
+        content_type: 'link_page',
+        page_path: pagePath,
+        content_id: `link_${pagePath.split('/').filter(Boolean).join('_') || 'home'}`,
+      },
     });
 
     const slug = getLinkPageSlug();
     if (slug) {
       console.log('📄 Link Page SLUG:', slug);
-
       utm.trackPageView(slug);
     }
 
