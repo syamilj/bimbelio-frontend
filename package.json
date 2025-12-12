@@ -60,7 +60,7 @@
     "lucide-react": "^0.535.0",
     "lz-string": "^1.5.0",
     "motion": "^12.23.12",
-    "next": "16.0.7",
+    "next": "16.0.10",
     "nextjs-toploader": "^3.8.16",
     "papaparse": "^5.5.3",
     "react": "19.2.1",
