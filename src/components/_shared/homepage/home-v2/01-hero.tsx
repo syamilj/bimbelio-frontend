@@ -1,11 +1,11 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { ArrowRight, Phone } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type React from 'react';
-import { lazy, Suspense, useState, useCallback } from 'react';
+import { lazy, Suspense, useCallback, useState } from 'react';
 
 // Lazy loading untuk dialog
 const ConsultationDialog = lazy(
@@ -95,8 +95,8 @@ const HeroSection: React.FC = () => {
               >
                 Tryout Gratis
               </a>
-<a
-                href="#live-class"
+              <a
+                href="#live-learning"
                 onClick={scrollToTryout}
                 className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
                 style={{ backgroundColor: mainColor }}
