@@ -18,9 +18,9 @@ const HeroSection: React.FC = () => {
 
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
-  const scrollToTryout = useCallback((e: React.MouseEvent) => {
+  const scrollToElement = useCallback((e: React.MouseEvent, id: string) => {
     e.preventDefault();
-    const el = document.getElementById('tryout');
+    const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -89,7 +89,7 @@ const HeroSection: React.FC = () => {
 
               <a
                 href="#tryout"
-                onClick={scrollToTryout}
+                onClick={(e) => scrollToElement(e, 'tryout')}
                 className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
                 style={{ backgroundColor: mainColor }}
               >
@@ -97,7 +97,7 @@ const HeroSection: React.FC = () => {
               </a>
               <a
                 href="#live-learning"
-                onClick={scrollToTryout}
+                onClick={(e) => scrollToElement(e, 'live-learning')}
                 className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
                 style={{ backgroundColor: mainColor }}
               >
