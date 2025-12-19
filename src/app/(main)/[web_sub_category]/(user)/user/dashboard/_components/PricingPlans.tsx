@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
+  ArrowRight,
+  Check,
+  ChevronRight,
   Crown,
   Sparkles,
-  Check,
-  ArrowRight,
-  Users,
   Star,
-  ChevronRight,
-} from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { getGeneral } from "@/lib/fetch-helper/fetch-helper";
+  Users,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface PricingPlan {
   id: string;
@@ -31,12 +32,22 @@ interface PricingPlansProps {
   isPremium?: boolean;
 }
 
+type PricingDataType = {
+  plans: PlanDataType[];
+  topping: PlanDataType[];
+  productCompare?: {
+    subscription: PlanDataType[];
+    bundles: PlanDataType[];
+    listCompare: string[];
+  };
+};
+
 export default function PricingPlans({
   webSubCategory,
   isPremium = false,
 }: PricingPlansProps) {
   const { websiteSubCategory, id: webSubCategoryId } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const [plans, setPlans] = useState<PricingPlan[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,48 +56,54 @@ export default function PricingPlans({
       if (!webSubCategoryId) return;
 
       try {
-        const res = await getGeneral(`/plan/getAllPlanForPricingPage`, {
+        const res = await getGeneral(`/plan/getAllPlanByWebCategory`, {
           params: { website_sub_category_id: webSubCategoryId },
         });
+        console.log('Fetched plans:', res);
 
-        const bundles = res?.data?.bundles || [];
+        const bundles =
+          res?.data?.webSubCategory?.find(
+            (web: any) => web.webSubCategoryId === webSubCategoryId,
+          )?.bundles || [];
 
         if (bundles.length > 0) {
-          const transformedPlans = bundles.slice(0, 3).map((plan: any, index: number) => {
-            const tryoutCoin =
-              plan.coins?.find((c: any) => c.name === "tryout")?.total || 0;
-            const chatCoin =
-              plan.coins?.find((c: any) => c.name === "chat")?.total || 0;
+          const transformedPlans = bundles
+            .slice(0, 3)
+            .map((plan: any, index: number) => {
+              const tryoutCoin =
+                plan.coins?.find((c: any) => c.name === 'tryout')?.total || 0;
+              const chatCoin =
+                plan.coins?.find((c: any) => c.name === 'chat')?.total || 0;
 
-            const featureList: string[] = [];
-            plan.features?.forEach((f: any) => {
-              if (f.features && Array.isArray(f.features)) {
-                featureList.push(...f.features.slice(0, 2));
-              }
+              const featureList: string[] = [];
+              plan.features?.forEach((f: any) => {
+                if (f.features && Array.isArray(f.features)) {
+                  featureList.push(...f.features.slice(0, 2));
+                }
+              });
+
+              return {
+                id: plan.id,
+                name: plan.name,
+                price: plan.price,
+                duration: 30,
+                tier: plan.tier,
+                features:
+                  featureList.length > 0
+                    ? featureList.slice(0, 4)
+                    : [
+                        `${tryoutCoin} Try Out`,
+                        `${chatCoin} AI Chat`,
+                        'Akses Course',
+                        'Akses Materi',
+                      ],
+                isPopular: index === 0,
+              };
             });
-
-            return {
-              id: plan.id,
-              name: plan.name,
-              price: plan.price,
-              duration: 30,
-              tier: plan.tier,
-              features:
-                featureList.length > 0
-                  ? featureList.slice(0, 4)
-                  : [
-                      `${tryoutCoin} Try Out`,
-                      `${chatCoin} AI Chat`,
-                      "Akses Course",
-                      "Akses Materi",
-                    ],
-              isPopular: index === 0,
-            };
-          });
           setPlans(transformedPlans);
         }
       } catch (error) {
-        console.error("Failed to fetch plans:", error);
+        console.error('Failed to fetch plans:', error);
       } finally {
         setLoading(false);
       }
@@ -98,9 +115,9 @@ export default function PricingPlans({
   if (isPremium) return null;
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -111,7 +128,10 @@ export default function PricingPlans({
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Crown className="w-4 h-4" style={{ color: mainColor }} />
+          <Crown
+            className="w-4 h-4"
+            style={{ color: mainColor }}
+          />
           <h2 className="font-bold text-sm text-gray-900">Upgrade Premium</h2>
           <Badge className="bg-amber-100 text-amber-700 border-0 text-[10px]">
             <Sparkles className="w-3 h-3 mr-0.5" />
@@ -142,9 +162,11 @@ export default function PricingPlans({
               >
                 <div
                   className={`w-52 md:w-60 bg-white rounded-2xl overflow-hidden border-2 hover:shadow-lg transition-all cursor-pointer ${
-                    plan.isPopular ? "shadow-md" : "border-gray-100"
+                    plan.isPopular ? 'shadow-md' : 'border-gray-100'
                   }`}
-                  style={{ borderColor: plan.isPopular ? mainColor : undefined }}
+                  style={{
+                    borderColor: plan.isPopular ? mainColor : undefined,
+                  }}
                 >
                   {/* Plan Header */}
                   <div
@@ -166,12 +188,14 @@ export default function PricingPlans({
 
                     <div className="flex items-center gap-2 mb-2">
                       <Crown
-                        className={`w-5 h-5 ${plan.isPopular ? "text-white" : ""}`}
-                        style={{ color: plan.isPopular ? undefined : mainColor }}
+                        className={`w-5 h-5 ${plan.isPopular ? 'text-white' : ''}`}
+                        style={{
+                          color: plan.isPopular ? undefined : mainColor,
+                        }}
                       />
                       <span
                         className={`text-xs font-medium ${
-                          plan.isPopular ? "text-white/80" : "text-gray-500"
+                          plan.isPopular ? 'text-white/80' : 'text-gray-500'
                         }`}
                       >
                         {plan.tier || `Paket ${idx + 1}`}
@@ -180,7 +204,7 @@ export default function PricingPlans({
 
                     <h3
                       className={`font-bold text-sm leading-tight line-clamp-2 ${
-                        plan.isPopular ? "text-white" : "text-gray-900"
+                        plan.isPopular ? 'text-white' : 'text-gray-900'
                       }`}
                     >
                       {plan.name}
@@ -188,8 +212,10 @@ export default function PricingPlans({
 
                     <div className="flex items-baseline gap-1 mt-2">
                       <span
-                        className={`text-xl font-black ${plan.isPopular ? "text-white" : ""}`}
-                        style={{ color: plan.isPopular ? undefined : mainColor }}
+                        className={`text-xl font-black ${plan.isPopular ? 'text-white' : ''}`}
+                        style={{
+                          color: plan.isPopular ? undefined : mainColor,
+                        }}
                       >
                         {formatPrice(plan.price)}
                       </span>
@@ -216,13 +242,13 @@ export default function PricingPlans({
                     <Button
                       size="sm"
                       className={`w-full text-xs h-9 font-semibold ${
-                        plan.isPopular ? "text-white" : ""
+                        plan.isPopular ? 'text-white' : ''
                       }`}
                       style={{
                         backgroundColor: plan.isPopular
                           ? mainColor
                           : `${mainColor}15`,
-                        color: plan.isPopular ? "white" : mainColor,
+                        color: plan.isPopular ? 'white' : mainColor,
                       }}
                     >
                       Pilih Paket
