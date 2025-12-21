@@ -166,6 +166,15 @@ export function DialogPayment({
     voucherCode?: string,
   ) => {
     try {
+      // console.log('handlePayment called with:', {
+      //   telp: phoneNumber,
+      //   type,
+      //   planId: plan.id,
+      //   plan_website_sub_category_id,
+      //   voucherCode,
+      //   paymentType: paymentMethod,
+      // });
+      // return;
       const res = await addPayment({
         telp: phoneNumber,
         type,
@@ -193,7 +202,9 @@ export function DialogPayment({
 
       const fullName = session?.user?.name || '';
       const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
-      const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+      const lastName = restNameParts.length
+        ? restNameParts.join(' ')
+        : undefined;
 
       trackUnifiedEvent({
         eventName: 'AddToCart',
@@ -237,7 +248,9 @@ export function DialogPayment({
       const purchaseValue = discountPrice || plan.price;
       const fullName = session?.user?.name || '';
       const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
-      const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+      const lastName = restNameParts.length
+        ? restNameParts.join(' ')
+        : undefined;
 
       trackUnifiedEvent({
         eventName: 'AddPaymentInfo',
@@ -287,7 +300,9 @@ export function DialogPayment({
           const [firstName, ...restNameParts] = fullName
             .split(' ')
             .filter(Boolean);
-          const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+          const lastName = restNameParts.length
+            ? restNameParts.join(' ')
+            : undefined;
 
           trackUnifiedEvent({
             eventName: 'InitiateCheckout',
