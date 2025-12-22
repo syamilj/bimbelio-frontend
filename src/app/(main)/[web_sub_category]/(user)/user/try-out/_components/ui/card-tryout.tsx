@@ -33,7 +33,6 @@ import {
   Star,
   Tag,
   Trophy,
-  Users,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -146,13 +145,13 @@ export default function CardTryOut({
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  useEffect(() => {
-    if (showDetail) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [showDetail]);
+  // useEffect(() => {
+  //   if (showDetail) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'auto';
+  //   }
+  // }, [showDetail]);
 
   const getTimer = (date: any, item: CardTryoutProps): any => {
     const targetDate = new Date(date);
@@ -218,14 +217,19 @@ export default function CardTryOut({
           tryoutId: showDetail.id,
           userId: session?.user.id || '',
           isPremium,
-          websiteSubCategoryId: showDetail.WebsiteSubCategory?.id || website_sub_category_id || '',
+          websiteSubCategoryId:
+            showDetail.WebsiteSubCategory?.id || website_sub_category_id || '',
         });
 
         // ✅ Track Lead Event - User mendaftar try out
         try {
           const fullName = session?.user?.name || '';
-          const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
-          const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+          const [firstName, ...restNameParts] = fullName
+            .split(' ')
+            .filter(Boolean);
+          const lastName = restNameParts.length
+            ? restNameParts.join(' ')
+            : undefined;
 
           trackUnifiedEvent({
             eventName: 'Lead',
