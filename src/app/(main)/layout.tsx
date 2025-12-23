@@ -1,3 +1,4 @@
+import { NotificationPopUp } from '@/components/_shared/notification/notification-pop-up';
 import ProviderApp from '@/components/provider/provider-app';
 import ProviderCheckPayment from '@/components/provider/provider-check-payment';
 import ProviderLimitation from '@/components/provider/provider-limitation';
@@ -9,6 +10,7 @@ import { siteConfig } from '@/config/site';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Suspense } from 'react';
+import SocketInfo from '../(guest)/socket-info';
 import '../../styles/globals.css';
 const PATH_HEADER_KEYS = [
   'x-invoke-path',
@@ -97,10 +99,12 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <ProviderMaintenance>
           <Suspense fallback={null}>
             <ProviderSessionAuth>
+              <SocketInfo />
               <ProviderPixel>
                 <ProviderWebsiteCategory>
                   <ProviderLimitation>
                     <ProviderApp>
+                      <NotificationPopUp />
                       <Suspense fallback={null}>
                         <ProviderCheckPayment>{children}</ProviderCheckPayment>
                       </Suspense>

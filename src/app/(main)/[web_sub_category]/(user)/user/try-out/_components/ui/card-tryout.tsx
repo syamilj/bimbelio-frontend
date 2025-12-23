@@ -33,7 +33,6 @@ import {
   Star,
   Tag,
   Trophy,
-  Users,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -206,7 +205,11 @@ export default function CardTryOut({
       payload: restPayload,
       params: { website_sub_category_id: websiteSubCategoryId },
       type: 'post',
-      onSuccess: refresh,
+      async onSuccess() {
+        if (refresh) {
+          await refresh();
+        }
+      },
     });
   };
 
@@ -218,7 +221,8 @@ export default function CardTryOut({
           tryoutId: showDetail.id,
           userId: session?.user.id || '',
           isPremium,
-          websiteSubCategoryId: showDetail.WebsiteSubCategory?.id || website_sub_category_id || '',
+          websiteSubCategoryId:
+            showDetail.WebsiteSubCategory?.id || website_sub_category_id || '',
         });
 
         // ✅ Track Lead Event - User mendaftar try out

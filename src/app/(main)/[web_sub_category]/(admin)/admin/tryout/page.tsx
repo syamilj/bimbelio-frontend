@@ -9,9 +9,9 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn, getDateString, getHours } from '@/lib/utils';
 import { Tryout } from '@/types/database';
 // import { api } from '@/trpc/react';
-import ExcelJS from 'exceljs';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { utils, writeFile } from 'xlsx';
 
 interface TryoutData extends Tryout {
   TryoutSession: {
@@ -63,32 +63,10 @@ export default function Page() {
     downloadData: any[];
     fileName: string;
   }) => {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('items');
-
-    if (downloadData.length > 0) {
-      const headers = Object.keys(downloadData[0]);
-      worksheet.addRow(headers);
-
-      downloadData.forEach((row) => {
-        worksheet.addRow(Object.values(row));
-      });
-    }
-
-    const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    });
-
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `${fileName}.xlsx`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    let wb = utils.book_new(),
+      ws = utils.json_to_sheet(downloadData);
+    utils.book_append_sheet(wb, ws, 'items');
+    writeFile(wb, `${fileName}.xlsx`);
   };
 
   return (

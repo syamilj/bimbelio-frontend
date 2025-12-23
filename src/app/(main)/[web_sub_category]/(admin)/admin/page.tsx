@@ -74,7 +74,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import ExcelJS from 'exceljs';
+import * as XLSX from 'xlsx';
 
 export default function UserManagementDashboard() {
   const { data: session } = useSession();
@@ -187,53 +187,30 @@ export default function UserManagementDashboard() {
 
       const exportData = prepareExportData(allUsers);
 
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Users Data');
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(exportData);
 
-      // Add headers
-      if (exportData.length > 0) {
-        const headers = Object.keys(exportData[0]);
-        worksheet.addRow(headers);
+      const colWidths = [
+        { wch: 5 }, // No.
+        { wch: 25 }, // Name
+        { wch: 30 }, // Email
+        { wch: 30 }, // School
+        { wch: 20 }, // City
+        { wch: 20 }, // Province
+        { wch: 12 }, // Role
+        { wch: 12 }, // Status
+        { wch: 12 }, // Tryout Count
+        { wch: 12 }, // Verification
+        { wch: 15 }, // Phone
+        { wch: 15 }, // Channel
+        { wch: 15 }, // Registration Date
+      ];
+      ws['!cols'] = colWidths;
 
-        // Add data rows
-        exportData.forEach((row: Record<string, any>) => {
-          worksheet.addRow(Object.values(row));
-        });
+      XLSX.utils.book_append_sheet(wb, ws, 'Users Data');
 
-        // Set column widths
-        worksheet.columns = [
-          { width: 5 }, // No.
-          { width: 25 }, // Name
-          { width: 30 }, // Email
-          { width: 30 }, // School
-          { width: 20 }, // City
-          { width: 20 }, // Province
-          { width: 12 }, // Role
-          { width: 12 }, // Status
-          { width: 12 }, // Verification
-          { width: 15 }, // Phone
-          { width: 15 }, // Channel
-          { width: 15 }, // Registration Date
-        ];
-      }
-
-      // Generate buffer and download
-      const buffer = await workbook.xlsx.writeBuffer();
-      const blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      });
-
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
       const timestamp = new Date().toISOString().split('T')[0];
-
-      link.setAttribute('href', url);
-      link.setAttribute('download', `Bimbelio_Users_Data_${timestamp}.xlsx`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      XLSX.writeFile(wb, `Bimbelio_Users_Data_${timestamp}.xlsx`);
     } catch (error) {
       console.error('Error exporting to Excel:', error);
       alert('Failed to export data to Excel');
@@ -255,22 +232,14 @@ export default function UserManagementDashboard() {
 
       const exportData = prepareExportData(allUsers);
 
-      // Create workbook and worksheet using ExcelJS
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Users Data');
-
-      if (exportData.length > 0) {
-        const headers = Object.keys(exportData[0]);
-        worksheet.addRow(headers);
-
-        exportData.forEach((row: Record<string, any>) => {
-          worksheet.addRow(Object.values(row));
-        });
-      }
+      // Create workbook and worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      XLSX.utils.book_append_sheet(wb, ws, 'Users Data');
 
       // Generate CSV
-      const buffer = await workbook.csv.writeBuffer();
-      const blob = new Blob([buffer], { type: 'text/csv;charset=utf-8;' });
+      const csv = XLSX.utils.sheet_to_csv(ws);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
       // Create download link
       const link = document.createElement('a');
@@ -283,7 +252,6 @@ export default function UserManagementDashboard() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error exporting to CSV:', error);
       alert('Failed to export data to CSV');

@@ -47,6 +47,7 @@ import {
   User,
 } from 'lucide-react';
 import Link from 'next/link';
+import { Notification } from '../_shared/notification';
 import ProviderCheckLimitation from '../provider/provider-check-limitation';
 import ProviderCheckSubscriptionInstallment from '../provider/provider-check-subscription-installment';
 import ProviderCheckSubscriptionPending from '../provider/provider-check-subscription-pending';
@@ -367,7 +368,10 @@ const HeaderUser = () => {
                 </p>
                 <p className="text-xs text-gray-500 truncate">
                   Halo,{' '}
-                  <span style={{ color: mainColor }} className="font-semibold">
+                  <span
+                    style={{ color: mainColor }}
+                    className="font-semibold"
+                  >
                     {userSession?.user.name?.split(' ')[0]}
                   </span>
                 </p>
@@ -509,11 +513,15 @@ const HeaderUser = () => {
             <div className="hidden xl:flex items-center gap-1.5 bg-gray-50 rounded-xl px-2 py-1.5 border border-gray-100">
               {limitations.map((limitation, index) => {
                 const Icon = limitation.icon;
-                const isLow = limitation.remaining <= 3 && limitation.remaining > 0;
+                const isLow =
+                  limitation.remaining <= 3 && limitation.remaining > 0;
                 const isEmpty = limitation.remaining === 0;
 
                 return (
-                  <Tooltip key={index} delayDuration={100}>
+                  <Tooltip
+                    key={index}
+                    delayDuration={100}
+                  >
                     <TooltipTrigger asChild>
                       <div
                         className={cn(
@@ -522,33 +530,57 @@ const HeaderUser = () => {
                             ? 'bg-red-50 border border-red-200'
                             : isLow
                               ? 'bg-orange-50 border border-orange-200'
-                              : 'bg-white border border-gray-200 hover:border-gray-300'
+                              : 'bg-white border border-gray-200 hover:border-gray-300',
                         )}
                       >
                         <Icon
                           className="w-3.5 h-3.5"
-                          style={{ color: isEmpty ? '#ef4444' : isLow ? '#f97316' : limitation.color }}
+                          style={{
+                            color: isEmpty
+                              ? '#ef4444'
+                              : isLow
+                                ? '#f97316'
+                                : limitation.color,
+                          }}
                         />
-                        <span className={cn(
-                          'text-xs font-semibold',
-                          isEmpty ? 'text-red-600' : isLow ? 'text-orange-600' : 'text-gray-700'
-                        )}>
+                        <span
+                          className={cn(
+                            'text-xs font-semibold',
+                            isEmpty
+                              ? 'text-red-600'
+                              : isLow
+                                ? 'text-orange-600'
+                                : 'text-gray-700',
+                          )}
+                        >
                           {limitation.label}
                         </span>
-                        <span className={cn(
-                          'text-xs font-bold px-1.5 py-0.5 rounded-md',
-                          isEmpty
-                            ? 'bg-red-100 text-red-700'
-                            : isLow
-                              ? 'bg-orange-100 text-orange-700'
-                              : 'bg-gray-100 text-gray-600'
-                        )}>
-                          {userTier === 'ADMIN' ? '∞' : `${limitation.remaining}`}
+                        <span
+                          className={cn(
+                            'text-xs font-bold px-1.5 py-0.5 rounded-md',
+                            isEmpty
+                              ? 'bg-red-100 text-red-700'
+                              : isLow
+                                ? 'bg-orange-100 text-orange-700'
+                                : 'bg-gray-100 text-gray-600',
+                          )}
+                        >
+                          {userTier === 'ADMIN'
+                            ? '∞'
+                            : `${limitation.remaining}`}
                         </span>
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom" className="text-xs">
-                      <p>{limitation.label}: {userTier === 'ADMIN' ? 'Unlimited' : `${limitation.remaining}/${limitation.total}`}</p>
+                    <TooltipContent
+                      side="bottom"
+                      className="text-xs"
+                    >
+                      <p>
+                        {limitation.label}:{' '}
+                        {userTier === 'ADMIN'
+                          ? 'Unlimited'
+                          : `${limitation.remaining}/${limitation.total}`}
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 );
@@ -1108,6 +1140,7 @@ const HeaderUser = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Notification />
         </div>
       </div>
 

@@ -7,6 +7,7 @@ import ChooseWebCategory from '@/components/ui/choose-web-category';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
+  Bell,
   BookOpen,
   Brain,
   CreditCard,
@@ -49,6 +50,20 @@ const SidebarRoute: FC = () => {
       href: `/${website_sub_category_id}/admin/website-category`,
       label: 'Web Category',
       description: 'Kelola kategori website',
+      category: 'System',
+    },
+    {
+      icon: Zap,
+      href: `/${website_sub_category_id}/admin/token`,
+      label: 'Tokens',
+      description: 'Manajemen token',
+      category: 'System',
+    },
+    {
+      icon: Bell,
+      href: `/${website_sub_category_id}/admin/notification`,
+      label: 'Notification',
+      description: 'Kelola notifikasi',
       category: 'System',
     },
     {
@@ -155,13 +170,6 @@ const SidebarRoute: FC = () => {
       label: 'Tutors',
       description: 'Kelola tutor live class',
       category: 'Education',
-    },
-    {
-      icon: Zap,
-      href: `/${website_sub_category_id}/admin/token`,
-      label: 'Tokens',
-      description: 'Manajemen token',
-      category: 'System',
     },
   ].filter((item) => {
     if (
