@@ -299,7 +299,9 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
   useEffect(() => {
     if (doc.video?.url) {
       hideVideoLink({
-        link: `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/${doc.video.url}` || '',
+        link:
+          `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}` ||
+          '',
         setUrl: setVideoUrl,
       });
     }
@@ -315,6 +317,8 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
       setCurrentPage(window.PdfViewer.viewer.currentPageNumber);
     }
   }, [window.PdfViewer]);
+
+  console.log({ videoUrl });
 
   if (!doc?.highlights) {
     return;

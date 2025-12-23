@@ -15,6 +15,7 @@ import {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 
@@ -187,9 +188,13 @@ export default function Provider({
     appendMessagesEdit,
   };
 
-  // useEffect(() => {
-  //   setMessageData([]);
-  // }, [pathname]);
+  useEffect(() => {
+    if (prevChatMessages?.length === 0) {
+      setMessageData([]);
+    }
+  }, [prevChatMessages]);
+
+  console.log({ prevChatMessages, messageData });
 
   const Context = {
     messageData,
@@ -318,4 +323,3 @@ export type MessageDataType = {
   like: boolean;
   dislike: boolean;
 };
-document: Document;

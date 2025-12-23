@@ -2,7 +2,7 @@ import { Transaction } from './database';
 
 export type MidtransTransaction = Omit<
   Transaction,
-  'item_details' | 'status'
+  'item_details' | 'status' | 'transaction_details'
 > & {
   item_details: {
     id: string;
@@ -11,5 +11,9 @@ export type MidtransTransaction = Omit<
     name: string;
     brand: string;
   }[];
+  transaction_details: {
+    order_id?: string;
+    gross_amount?: number;
+  };
   // status: TransactionStatus;
 };

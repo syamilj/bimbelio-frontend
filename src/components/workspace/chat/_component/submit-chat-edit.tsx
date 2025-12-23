@@ -152,7 +152,7 @@ const SubmitChatEdit = () => {
       <div className="relative">
         <TextareaAutosize
           id="editInput"
-          placeholder="Edit pesan Anda di sini..."
+          placeholder="Edit pesan Kamu di sini..."
           defaultValue={editMessage.value}
           className={cn(
             'w-full resize-none rounded-xl border-2 py-3 px-4 text-sm font-normal outline-none transition-all duration-200',

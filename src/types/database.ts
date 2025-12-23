@@ -1,3 +1,214 @@
+export type Notification = {
+  id: string;
+  userId: string | null;
+  isBroadcast: boolean;
+  isPopUp: boolean;
+  title: string;
+  content: string;
+  description: string | null;
+  type: NotificationTypeEnum;
+  category: NotificationCategoryEnum;
+  priority: NotificationPriorityEnum;
+  relatedResourceId: string | null;
+  relatedResourceType: NotificationRelatedTypeEnum | null;
+  isRead: boolean;
+  readAt: string | null;
+  isArchived: boolean;
+  archivedAt: string | null;
+  actionUrl: string | null;
+  metadata: any | null;
+  isSendingWhatsApp: boolean;
+  isSendingEmail: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type NotificationQueue = {
+  id: string;
+  status: NotificationQueueStatusEnum;
+  userId: string;
+  title: string;
+  content: string;
+  description: string | null;
+  type: NotificationTypeEnum;
+  category: NotificationCategoryEnum;
+  priority: NotificationPriorityEnum;
+  relatedResourceId: string | null;
+  relatedResourceType: NotificationRelatedTypeEnum | null;
+  actionUrl: string | null;
+  metadata: JSON | null;
+  runAt: string;
+  sentAt: string | null;
+  failedAt: string | null;
+  failureReason: string | null;
+  retryCount: number;
+  maxRetries: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type NotificationQueueStatusEnum =
+  | 'PENDING'
+  | 'SENT'
+  | 'DELIVERED'
+  | 'FAILED'
+  | 'BOUNCED'
+  | 'UNSUBSCRIBED';
+
+export type NotificationPriorityEnum = 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+
+export type NotificationRelatedTypeEnum = 'COURSE' | 'LIVE_CLASS' | 'TRYOUT';
+
+export type NotificationCategoryEnum =
+  | 'PROMOTION'
+  | 'ORDER'
+  | 'SUBSCRIPTION'
+  | 'COURSE'
+  | 'LIVE_CLASS'
+  | 'TRYOUT'
+  | 'MESSAGE'
+  | 'PAYMENT'
+  | 'SYSTEM'
+  | 'ACCOUNT'
+  | 'OTHER';
+
+export type NotificationTypeEnum =
+  // Order/Transaction related
+  | 'ORDER_CONFIRMATION'
+  | 'ORDER_SHIPPED'
+  | 'ORDER_DELIVERED'
+  | 'PAYMENT_SUCCESSFUL'
+  | 'PAYMENT_FAILED'
+  | 'PAYMENT_REMINDER'
+  | 'REFUND_PROCESSED'
+
+  // Subscription related
+  | 'SUBSCRIPTION_ACTIVATED'
+  | 'SUBSCRIPTION_RENEWED'
+  | 'SUBSCRIPTION_EXPIRING'
+  | 'SUBSCRIPTION_EXPIRED'
+  | 'SUBSCRIPTION_CANCELED'
+  | 'INSTALLMENT_REMINDER'
+  | 'INSTALLMENT_DUE'
+  | 'INSTALLMENT_OVERDUE'
+
+  // Course related
+  | 'COURSE_ENROLLED'
+  | 'COURSE_PROGRESS'
+  | 'COURSE_COMPLETED'
+  | 'NEW_COURSE_AVAILABLE'
+  | 'COURSE_UPDATE'
+
+  // Live class related
+  | 'LIVECLASS_SCHEDULED'
+  | 'LIVECLASS_REMINDER'
+  | 'LIVECLASS_STARTING'
+  | 'LIVECLASS_ENDED'
+  | 'LIVECLASS_REGISTRATION_CONFIRMED'
+
+  // Tryout related
+  | 'TRYOUT_STARTED'
+  | 'TRYOUT_COMPLETED'
+  | 'TRYOUT_RESULTS'
+  | 'TRYOUT_AVAILABLE'
+  // Message/Chat related
+  | 'NEW_MESSAGE'
+  | 'MESSAGE_REPLY'
+
+  // System/Promo related
+  | 'SYSTEM_ALERT'
+  | 'PROMOTION'
+  | 'SPECIAL_OFFER'
+  | 'ANNOUNCEMENT'
+
+  // Account related
+  | 'ACCOUNT_VERIFICATION'
+  | 'PASSWORD_CHANGED'
+  | 'LOGIN_ATTEMPT'
+  | 'ACCOUNT_UPDATED'
+  | 'GENERIC';
+
+export type SubscriptionInstallmentLimitation = {
+  id: string;
+  chat: number;
+  quiz: number;
+  tryout: number;
+  notes: number;
+  vision: number;
+  subscriptionInstallmentId: string;
+};
+
+export type SubscriptionInstallment = {
+  id: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  installmentNumber: number;
+  amount: number;
+  lateFee: number;
+  amountWithLateFee: number;
+  dueDate: string;
+  expiredAccessDate: string;
+  gracePeriodEndDate: string;
+  reminderSentAt: string | null;
+  reminderCount: number;
+  isPaid: boolean;
+  transactionId: string | null;
+};
+
+export type Pivot_Subscription_Installment = {
+  id: string;
+  subscriptionInstallmentId: string;
+  subscriptionId: string;
+};
+
+export type PlanInstallmentConfig = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  planId: string;
+  totalInstallments: number;
+  totalAmount: number;
+  gracePeriodDays: number;
+};
+
+export type PlanInstallmentSchedule = {
+  id: string;
+  description: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  installmentNumber: number;
+  daysAfterFirstPayment: number;
+  expireDaysAfterFirstPayment: number;
+  amount: number;
+  lateFeeType: LateFeeTypeEnum;
+  lateFeeAmount: number | null;
+  installmentConfigId: string;
+};
+
+export type LateFeeTypeEnum = 'NONE' | 'FIXED' | 'PERCENTAGE';
+
+export type PlanInstallmentScheduleLimitation = {
+  id: string;
+  chat: number;
+  notes: number;
+  vision: number;
+  quiz: number;
+  tryout: number;
+  installmentScheduleId: string;
+};
+
+export type LinkConversionType =
+  | 'PURCHASE'
+  | 'EMAIL_SIGNUP'
+  | 'REGISTRATION'
+  | 'SUBSCRIBE'
+  | 'DOWNLOAD'
+  | 'CONTACT'
+  | 'BOOKING'
+  | 'CUSTOM'
+  | 'CLICK';
+
 export type Pivot_TryoutQuestion_CourseChapter = {
   id: string;
   createAt: Date;
@@ -67,8 +278,17 @@ export type LiveClass = {
   duration: number;
   maxParticipant: number | null;
   isRecord: boolean;
+  type: LiveClassTypeEnum;
+  accessType: LiveClassAccessTypeEnum;
   websiteSubCategoryId: string;
 };
+export type LiveClassTypeEnum = 'LIVECLASS' | 'LIVESTREAM' | 'WEBINAR';
+
+export type LiveClassAccessTypeEnum =
+  | 'PREMIUM'
+  | 'FREE_NO_REGISTRATION'
+  | 'FREE_WITH_REGISTRATION';
+
 export type LiveClassInvited = {
   id: string;
   createdAt: Date;
@@ -99,6 +319,14 @@ export type Instructor = {
   phone: string;
   lastEducation: string;
   certificate: string | null;
+};
+
+export type InstructorCertificate = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  instructorId: string;
+  title: string;
 };
 
 export type Pivot_LiveClass_Plan = {
@@ -163,6 +391,8 @@ export type CourseSubChapter = {
   type: TypeCourseEnum;
   tryoutSessionId: string | null;
   materi: string | null;
+  status: 'DRAFT' | 'PUBLISH' | 'UPCOMING';
+  publishedAt: string | null;
 };
 
 export type CourseProgress = {
@@ -221,6 +451,7 @@ export type Category = {
   name: string;
   nomor: number;
   to: boolean;
+  visibleAtWebSubIds: string[];
 };
 
 export type Subcategory = {
@@ -228,6 +459,7 @@ export type Subcategory = {
   id: string;
   name: string;
   categoryId: string;
+  visibleAtWebSubIds: string[];
 };
 
 export type Highlight = {
@@ -386,7 +618,12 @@ export type User = {
   Role: UserRoleEnum;
 };
 
-export type UserRoleEnum = 'SUPER_ADMIN' | 'ADMIN' | 'USER' | 'PREMIUM';
+export type UserRoleEnum =
+  | 'SUPER_ADMIN'
+  | 'ADMIN'
+  | 'USER'
+  | 'PREMIUM'
+  | 'FINANCE';
 
 export type UserTryout = {
   id: string;
@@ -427,8 +664,17 @@ export type Transaction = {
   transaction_time: Date;
   expired_time: Date;
   order_id: string;
+  transaction_status: TransactionStatusTypeEnum;
   website_sub_category_id: string | null;
 };
+
+export type TransactionStatusTypeEnum =
+  | 'PENDING'
+  | 'SETTLEMENT'
+  | 'DENY'
+  | 'EXPIRE'
+  | 'CANCEL'
+  | 'FAILURE';
 
 export type Pricing = {
   id: string;
@@ -458,6 +704,7 @@ export type Document = {
   premium: boolean | null;
   videoId: string | null;
   website_sub_category_id: string;
+  visibleAtWebSubIds: string[];
 };
 
 export type Video = {
@@ -498,14 +745,61 @@ export type WebsiteCategory = {
 export type WebsiteSubCategory = {
   id: string;
   name: string;
+  image?: string;
   createdAt: Date;
   updatedAt: Date;
   main_color: string;
   secondary_color: string;
   website_category_id: string;
+  sharing_website_sub_category_ids: string[];
+  type: WebsiteSubCategoryTypeEnum;
 };
 
-export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS';
+export type WebsiteSubCategoryTypeEnum = 'CORE' | 'GENERAL';
+
+export type FeatureTypeEnum = 'DOCUMENT' | 'COURSE' | 'LIVECLASS' | 'PRIVATE';
+
+export type SubscriptionPending = {
+  id: string;
+  createdAt: string;
+  userId: string;
+  planId: string | null;
+  planSlug: string;
+  planName: string;
+  planTier: string;
+  planDescription: string;
+  planPrice: number;
+  paymentType: PlanPaymentTypeEnum;
+  discord_user_id: string | null;
+  discord_username: string | null;
+  discord_invite_link: string | null;
+  updatedAt: string;
+  websiteSubCategoryId?: string;
+};
+
+export type SubscriptionPendingFeature = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  type: FeatureTypeEnum;
+  validFrom: string;
+  validUntil: string;
+  subscriptionPendingId: string | null;
+};
+
+export type SubscriptionPendingLimitation = {
+  id: string;
+  validFrom: string;
+  validUntil: string;
+  subscriptionPendingId: string;
+  chat: number;
+  notes: number;
+  vision: number;
+  quiz: number;
+  tryout: number;
+};
+
+export type PlanPaymentTypeEnum = 'FULL_PAYMENT' | 'INSTALLMENT';
 
 export type Subscription = {
   id: string;
@@ -520,6 +814,13 @@ export type Subscription = {
   planDescription: string;
   planPrice: number;
   planExpire: Date;
+  paymentType: PlanPaymentTypeEnum;
+  isAccessGranted: boolean;
+
+  discord_user_id: string;
+  discord_username: string;
+  discord_display_name: string;
+  discord_invite_link: string;
 };
 
 export type SubscriptionFeature = {
@@ -535,10 +836,12 @@ export type Plan = {
   slug: string;
   name: string;
   description: string;
+  roleDiscord: string | null;
   image: string | null;
   originalPrice: number | null;
   price: number;
   status: PlanStatusEnum;
+  maxUsers: number | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -551,7 +854,10 @@ export type PlanLimitation = {
   vision: number;
   quiz: number;
   tryout: number;
-  expireDays: number;
+  expireDays?: number;
+  validFrom?: string;
+  validUntil?: string;
+  isTimebound: boolean;
   id: string;
   planId: string;
 };
@@ -562,8 +868,16 @@ export type PlanSubscription = {
   updatedAt: Date;
   planId: string;
   tier: string;
-  expireDays: number;
+  expireDays?: number;
   websiteSubCategoryId: string;
+};
+
+export type PlanSubscriptionBundle = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  websiteSubCategoryId: string;
+  planSubscriptionId: string;
 };
 
 export type PlanFeature = {
@@ -573,6 +887,9 @@ export type PlanFeature = {
   type: FeatureTypeEnum;
   liveClassesPerWeek?: number;
   planSubscriptionId: string;
+  validFrom?: string;
+  validUntil?: string;
+  isTimebound: boolean;
 };
 
 export type TryoutUserAnswer = {

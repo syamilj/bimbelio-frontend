@@ -1,7 +1,7 @@
 import {
   DataIRTProps,
   OverallStatsProps,
-} from '@/app/[web_sub_category]/(admin)/admin/tryout/irt/[tryoutId]/page';
+} from '@/app/(main)/[web_sub_category]/(admin)/admin/tryout/irt/[tryoutId]/page';
 import Papa from 'papaparse';
 import { SetStateAction } from 'react';
 
@@ -176,7 +176,6 @@ export const processData = async (
     setCurrentStep('Membaca file respons peserta');
     const participantAnswerRows: { [key: string]: string }[] =
       await readCSV(participantFile);
-    console.log({ participantAnswerRows, parameterIrtRows });
     const participants = participantAnswerRows.map((row) => row.p);
     const participantAnswer = participantAnswerRows.map((row) => {
       const data = Object.keys(row).filter((key) => key.startsWith('q'));

@@ -1,6 +1,6 @@
 'use client';
 
-import { CardTryoutProps } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -177,7 +177,7 @@ const FeaturedTryoutSection = () => {
                   className="h-96 bg-white rounded-3xl border-2 border-gray-100 animate-pulse"
                 />
               ))
-            : cards?.map((tryOut, index) => (
+            : cards?.map((tryOut) => (
                 <motion.div
                   key={tryOut.id}
                   variants={{

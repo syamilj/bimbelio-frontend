@@ -1,5 +1,7 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 import {
   createContext,
   Dispatch,
@@ -7,9 +9,16 @@ import {
   SetStateAction,
   useContext,
 } from 'react';
+// import { OneTapLogin } from '../_shared/auth/one-tap-login';
+import Footer from '../_shared/footer';
 import Navbar from '../_shared/navbar';
 import FloatingContactButton from '../_shared/other/floating-contact-button';
 import { useAppContext } from '../provider/provider-app';
+
+const OneTapLogin = dynamic(
+  () => import('../_shared/auth/one-tap-login').then((mod) => mod.OneTapLogin),
+  { ssr: false },
+);
 
 interface LayoutGuestProps {
   children: ReactNode;
@@ -20,6 +29,7 @@ interface auth {
 }
 
 export default function LayoutGuest({ children }: LayoutGuestProps) {
+  const pathname = usePathname();
   const {
     useAuth: { showAuth, setShowAuth },
   } = useAppContext();
@@ -31,9 +41,14 @@ export default function LayoutGuest({ children }: LayoutGuestProps) {
 
   return (
     <GuestContext.Provider value={Context}>
+      <OneTapLogin />
       <div className="min-h-screen">
-        <Navbar />
-        <main className="relative">{children}</main>
+        {pathname !== '/l/wa-grup' && <Navbar />}
+        <main className="relative">
+          {children}
+
+          <Footer />
+        </main>
         <FloatingContactButton />
       </div>
     </GuestContext.Provider>

@@ -1,4 +1,4 @@
-import ButtonPayment from '@/app/[web_sub_category]/(user)/user/_components/button-payment';
+import ButtonPayment from '@/app/(main)/[web_sub_category]/(user)/user/_components/button-payment';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useUserLimitation } from '@/components/provider/provider-limitation';
 import { useSession } from '@/components/provider/provider-session-auth';
@@ -138,7 +138,8 @@ const SubmitChat = () => {
     userLimitation &&
     userLimitation?.chat < userLimitation?.chatLimit &&
     session?.user.role !== 'ADMIN' &&
-    session?.user.role !== 'SUPER_ADMIN';
+    session?.user.role !== 'SUPER_ADMIN' &&
+    session?.user.role !== 'PREMIUM';
 
   return (
     <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-10">
@@ -209,7 +210,7 @@ const SubmitChat = () => {
             <TextareaAutosize
               id="inputChat"
               maxLength={1000}
-              placeholder="Ketik pesan Anda di sini..."
+              placeholder="Ketik pesan Kamu di sini..."
               className={cn(
                 'w-full resize-none rounded-2xl border-2 py-3 px-4 pr-14 text-sm font-normal outline-none transition-all duration-200',
                 'placeholder:text-gray-400',

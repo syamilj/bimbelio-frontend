@@ -1,7 +1,19 @@
 // next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  cacheComponents: false,
   reactStrictMode: true,
+  compress: true,
+  poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react',
+      'framer-motion',
+      '@radix-ui/react-icons',
+      'date-fns',
+      'lodash',
+    ],
+  },
 
   // Tambahkan ini untuk hapus console di production
   compiler: {
@@ -12,71 +24,74 @@ const nextConfig = {
     // }
   },
 
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/explore',
-  //       destination: '/user/explore',
-  //     },
-  //     {
-  //       source: '/course',
-  //       destination: '/user/course',
-  //     },
-  //     {
-  //       source: '/try-out',
-  //       destination: '/user/try-out',
-  //     },
-  //     {
-  //       source: '/try-out/:path*',
-  //       destination: '/user/try-out/:path*',
-  //     },
-  //     {
-  //       source: '/workspace',
-  //       destination: '/user/workspace',
-  //     },
-  //     {
-  //       source: '/workspace/:path*',
-  //       destination: '/user/workspace/:path*',
-  //     },
-  //     {
-  //       source: '/workspace/:path*/:path*',
-  //       destination: '/user/workspace/:path*/:path*',
-  //     },
-  //     {
-  //       source: '/course',
-  //       destination: '/user/course',
-  //     },
-  //     {
-  //       source: '/course/:path*',
-  //       destination: '/user/course/:path*',
-  //     },
-  //     {
-  //       source: '/search',
-  //       destination: '/user/search',
-  //     },
-  //     {
-  //       source: '/leaderboard',
-  //       destination: '/user/leaderboard',
-  //     },
-  //     {
-  //       source: '/dashboard',
-  //       destination: '/user/dashboard',
-  //     },
-  //   ];
-  // },
+  async rewrites() {
+    return [
+      {
+        source: '/l/:code',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/l/:code`,
+      },
+      // {
+      //   source: '/explore',
+      //       destination: '/user/explore',
+      //     },
+      //     {
+      //       source: '/course',
+      //       destination: '/user/course',
+      //     },
+      //     {
+      //       source: '/try-out',
+      //       destination: '/user/try-out',
+      //     },
+      //     {
+      //       source: '/try-out/:path*',
+      //       destination: '/user/try-out/:path*',
+      //     },
+      //     {
+      //       source: '/workspace',
+      //       destination: '/user/workspace',
+      //     },
+      //     {
+      //       source: '/workspace/:path*',
+      //       destination: '/user/workspace/:path*',
+      //     },
+      //     {
+      //       source: '/workspace/:path*/:path*',
+      //       destination: '/user/workspace/:path*/:path*',
+      //     },
+      //     {
+      //       source: '/course',
+      //       destination: '/user/course',
+      //     },
+      //     {
+      //       source: '/course/:path*',
+      //       destination: '/user/course/:path*',
+      //     },
+      //     {
+      //       source: '/search',
+      //       destination: '/user/search',
+      //     },
+      //     {
+      //       source: '/leaderboard',
+      //       destination: '/user/leaderboard',
+      //     },
+      // {
+      //   source: '/dashboard',
+      //   destination: '/user/dashboard',
+      // },
+    ];
+  },
 
   images: {
     // Tambah format modern untuk mengurangi ukuran transfer LCP image
     formats: ['image/avif', 'image/webp'],
+    // Next.js 16 defaults to [75], so we need to add the others used in the app
+    qualities: [30, 50, 60, 75, 100],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
       },
     ],
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   // Tambah headers caching aset statis untuk meningkatkan FCP / repeat views
   async headers() {

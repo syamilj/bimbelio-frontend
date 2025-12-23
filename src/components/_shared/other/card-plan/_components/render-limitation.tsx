@@ -2,8 +2,10 @@
 
 'use client';
 
+import { formatDateRange } from '@/lib/utils/date';
 import {
   Brain,
+  Calendar,
   CheckCircle2,
   Eye,
   FileText,
@@ -13,6 +15,21 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useProvider } from '../_provider/provider';
+
+const formatDuration = (days: number) => {
+  if (days === 7) return '1 Minggu';
+  if (days === 14) return '2 Minggu';
+  if (days === 21) return '3 Minggu';
+  if (days === 30) return '1 Bulan';
+  if (days === 45) return '1.5 Bulan';
+  if (days === 60) return '2 Bulan';
+  if (days === 90) return '3 Bulan';
+  if (days === 120) return '4 Bulan';
+  if (days === 180) return '6 Bulan';
+  if (days === 365) return '1 Tahun';
+  if (days === 730) return '2 Tahun';
+  return `${days} Hari`;
+};
 
 export const RenderLimitationTab = () => {
   const {
@@ -47,7 +64,7 @@ export const RenderLimitationTab = () => {
       case 'quiz':
         return 'Quiz Attempt';
       case 'tryout':
-        return 'Tryout Test';
+        return 'Tryout';
       default:
         return type.charAt(0).toUpperCase() + type.slice(1);
     }
@@ -113,9 +130,10 @@ export const RenderLimitationTab = () => {
     ['tryout', limitations.tryout],
   ] as const;
 
-  const hasUnlimited = limitationEntries.some(
-    ([, limit]) => limit === -1 || limit === 0,
-  );
+  // const hasUnlimited = limitationEntries.some(
+  //   ([, limit]) => limit === -1 || limit === 0,
+  // );
+  const hasUnlimited = false;
 
   return (
     <div className="space-y-4">
@@ -124,19 +142,60 @@ export const RenderLimitationTab = () => {
           size={24}
           className="mx-auto mb-2 text-blue-600"
         />
-        <h4 className="text-sm font-semibold text-blue-800 mb-2">
-          Usage Limitations
-        </h4>
+        <h4 className="text-sm font-semibold text-blue-800 mb-2">Usage Koin</h4>
         <p className="text-xs text-blue-600">
           Batas penggunaan fitur-fitur platform per periode
         </p>
       </div>
 
       <div className="space-y-2">
-        {limitationEntries.map(([type, limit]) =>
-          renderLimitationItem(type, limit),
-        )}
+        {limitationEntries
+          .filter((item) => item[1] > 0)
+          .map(([type, limit]) => renderLimitationItem(type, limit))}
       </div>
+
+      {!limitations.isTimebound && limitations.expireDays && (
+        <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+          <div className="flex items-center gap-2">
+            <Calendar
+              size={16}
+              className="text-indigo-600"
+            />
+            <span className="text-sm font-semibold text-indigo-800">
+              Durasi Akses:{' '}
+              {formatDuration(plan.PlanSubscription?.expireDays || 0)}
+            </span>
+          </div>
+          <p className="text-xs text-indigo-600 mt-1">
+            Akses koin berlaku selama periode aktif
+          </p>
+        </div>
+      )}
+
+      {limitations.isTimebound &&
+        limitations.validFrom &&
+        limitations.validUntil && (
+          <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+            <div className="flex items-start gap-2">
+              <Calendar
+                size={16}
+                className="text-indigo-600 mt-0.5"
+              />
+              <span className="text-sm font-semibold text-indigo-800">
+                Durasi Akses: <br />
+              </span>
+            </div>
+            <div className="text-sm font-semibold text-indigo-800">
+              {formatDateRange(
+                plan.PlanLimitation.validFrom,
+                plan.PlanLimitation.validUntil,
+              )}
+            </div>
+            <p className="text-xs text-indigo-600 mt-1">
+              Akses koin berlaku selama periode aktif
+            </p>
+          </div>
+        )}
 
       {hasUnlimited && (
         <div className="p-3 bg-linear-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">

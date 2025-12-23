@@ -39,7 +39,10 @@ export type StandardCustomDataType =
   | 'search_string' // ✅ Meta & TikTok — Kata kunci yang dicari user (untuk event 'Search')
   | 'page_path' // ✅ TikTok only — Jalur halaman yang dibuka (pengganti PageView)
   | 'email' // ✅ TikTok (hashed) — Email user dalam format SHA256 (server-side tracking)
-  | 'phone_number'; // ✅ TikTok (hashed) — Nomor telepon user dalam SHA256 (server-side tracking)
+  | 'phone_number'
+  | 'utm_source'
+  | 'utm_medium'
+  | 'utm_campaign'; // ✅ TikTok (hashed) — Nomor telepon user dalam SHA256 (server-side tracking)
 
 export type MetaPixelCustomDataType = Exclude<
   StandardCustomDataType,

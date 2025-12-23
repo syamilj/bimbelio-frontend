@@ -2,8 +2,10 @@
 
 'use client';
 
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { formatDateRange } from '@/lib/utils/date';
 import {
   Award,
   BookOpen,
@@ -22,9 +24,14 @@ import { useProvider } from '../_provider/provider';
 
 export const RenderOverviewTab = () => {
   const {
-    useData: { plan, isCourse, isDocument },
+    useData: { plan, isCourse, isDocument, isPrivate },
     useState: { setShowAllBenefits, showAllBenefits },
   } = useProvider();
+
+  const { webCategoryData } = useWebsiteSubCategory();
+
+  const webSubData =
+    webCategoryData.length > 0 ? webCategoryData[0].WebsiteSubCategory : [];
 
   const formatDuration = (days: number) => {
     if (days === 7) return '1 Minggu';
@@ -41,6 +48,14 @@ export const RenderOverviewTab = () => {
     return `${days} Hari`;
   };
 
+  const platfroms = plan.PlanSubscription
+    ? plan.PlanSubscription?.PlanSubscriptionBundle?.map((item) =>
+        item.websiteSubCategoryId.toUpperCase(),
+      )
+    : plan.PlanLimitation
+      ? webSubData.map((item) => item.id.toUpperCase())
+      : [];
+
   return (
     <div className="space-y-4">
       {/* Plan Type Badge */}
@@ -49,7 +64,11 @@ export const RenderOverviewTab = () => {
           variant="destructive"
           className={`flex items-center gap-2 text-white`}
         >
-          {plan.PlanSubscription.tier}
+          {plan.PlanSubscription?.tier
+            ? plan.PlanSubscription?.tier
+            : plan.PlanLimitation
+              ? 'Koin'
+              : 'Standar'}
         </Badge>
       </div>
 
@@ -69,12 +88,12 @@ export const RenderOverviewTab = () => {
                   ? '∞'
                   : 'Limited'}
               </div>
-              <div className="text-xs text-blue-600">Usage Limits</div>
+              <div className="text-xs text-blue-600">Usage Koin</div>
             </div>
           )}
 
           {/* Subscription Stats (jika ada) */}
-          {plan.PlanSubscription && (
+          {/* {plan.PlanSubscription && (
             <div className="text-center">
               <Calendar
                 size={20}
@@ -85,18 +104,18 @@ export const RenderOverviewTab = () => {
               </div>
               <div className="text-xs text-green-600">Duration</div>
             </div>
-          )}
+          )} */}
 
           {/* Features Count (jika ada) */}
-          {plan.PlanSubscription.PlanFeature &&
-            plan.PlanSubscription.PlanFeature.length > 0 && (
+          {plan.PlanSubscription?.PlanFeature &&
+            plan.PlanSubscription?.PlanFeature.length > 0 && (
               <div className="text-center">
                 <Star
                   size={20}
                   className="mx-auto mb-1 text-purple-600"
                 />
                 <div className="text-lg font-bold text-purple-600">
-                  {plan.PlanSubscription.PlanFeature.length}
+                  {plan.PlanSubscription?.PlanFeature.length}
                 </div>
                 <div className="text-xs text-purple-600">Features</div>
               </div>
@@ -116,7 +135,7 @@ export const RenderOverviewTab = () => {
         </div>
 
         {/* Global Access Info */}
-        {(isCourse || isDocument) && (
+        {(isCourse || isDocument || isPrivate) && (
           <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
             <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
               <Star
@@ -125,26 +144,93 @@ export const RenderOverviewTab = () => {
               />
               Global Access
             </h4>
-            <div className="flex gap-2 flex-wrap">
+            <div className="space-y-2">
               {isCourse && (
-                <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300">
-                  <BookOpen
-                    size={12}
-                    className="mr-1"
-                  />
-                  All Courses
-                </Badge>
+                <div className="flex items-center gap-2 text-sm text-emerald-700">
+                  <BookOpen size={14} />
+                  <span>✓ Semua Video Course tersedia</span>
+                </div>
               )}
               {isDocument && (
-                <Badge className="bg-emerald-100 text-emerald-700 border-emerald-300">
-                  <FileText
-                    size={12}
-                    className="mr-1"
-                  />
-                  All Documents
-                </Badge>
+                <div className="flex items-center gap-2 text-sm text-emerald-700">
+                  <FileText size={14} />
+                  <span>✓ Semua Dokumen & Materi tersedia</span>
+                </div>
+              )}
+              {isPrivate && (
+                <div className="flex items-center gap-2 text-sm text-emerald-700">
+                  <FileText size={14} />
+                  <span>✓ Private Sesion dengan Tutor</span>
+                </div>
               )}
             </div>
+          </div>
+        )}
+
+        {(isCourse || isDocument || isPrivate) && (
+          <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+            <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
+              <Calendar
+                size={16}
+                className="text-emerald-700"
+              />
+              Durasi Fitur:
+            </h4>
+            <div className="text-sm text-emerald-700 font-semibold">
+              {plan.PlanSubscription?.expireDays
+                ? formatDuration(plan.PlanSubscription.expireDays)
+                : plan.PlanSubscription?.PlanFeature?.[0]
+                  ? formatDateRange(
+                      plan.PlanSubscription.PlanFeature[0].validFrom,
+                      plan.PlanSubscription.PlanFeature[0].validUntil,
+                    )
+                  : 'Tidak terbatas'}
+            </div>
+            <p className="text-xs text-emerald-600 mt-1">
+              Akses fitur berlaku selama periode aktif
+            </p>
+          </div>
+        )}
+
+        {plan.PlanLimitation && (
+          <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+            {plan.PlanSubscription?.expireDays &&
+              !plan.PlanLimitation.isTimebound && (
+                <div className="flex items-center gap-2">
+                  <Calendar
+                    size={16}
+                    className="text-indigo-600"
+                  />
+                  <span className="text-sm font-semibold text-indigo-800">
+                    Durasi Koin:{' '}
+                    {formatDuration(plan.PlanSubscription?.expireDays || 0)}
+                  </span>
+                </div>
+              )}
+            {plan.PlanLimitation.isTimebound &&
+              plan.PlanLimitation.validFrom &&
+              plan.PlanLimitation.validUntil && (
+                <>
+                  <div className="flex items-start gap-2">
+                    <Calendar
+                      size={16}
+                      className="text-indigo-600 mt-0.5"
+                    />
+                    <span className="text-sm font-semibold text-indigo-800">
+                      Durasi Koin: <br />
+                    </span>
+                  </div>
+                  <div className="text-sm font-semibold text-indigo-800">
+                    {formatDateRange(
+                      plan.PlanLimitation.validFrom,
+                      plan.PlanLimitation.validUntil,
+                    )}
+                  </div>
+                </>
+              )}
+            <p className="text-xs text-indigo-600 mt-1">
+              Akses koin berlaku selama periode aktif
+            </p>
           </div>
         )}
       </div>
@@ -153,12 +239,43 @@ export const RenderOverviewTab = () => {
       {plan.PlanSubscription && (
         <div className="p-3 bg-linear-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
           <div className="text-center">
-            <div className="text-sm font-semibold text-indigo-700 flex items-center justify-center gap-2">
+            <div className="text-sm font-semibold text-indigo-700 flex items-center justify-center gap-2 mb-2">
               <MapPin size={14} />
-              Platform: {plan.PlanSubscription.WebsiteSubCategory?.name}
+              Platform
             </div>
-            <div className="text-xs text-indigo-600 mt-1">
-              Tier: {plan.PlanSubscription.tier}
+
+            {platfroms.length === 0 && (
+              <div className="text-xs text-indigo-600">
+                {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Platform'}
+              </div>
+            )}
+
+            {platfroms.length > 0 && (
+              <div
+                className={
+                  platfroms.length > 3
+                    ? 'grid grid-cols-2 gap-2 mb-2'
+                    : 'flex flex-wrap justify-center gap-2 mb-2'
+                }
+              >
+                {platfroms.map((platform) => (
+                  <div
+                    key={platform}
+                    className="inline-block px-2 py-1 bg-white border border-indigo-300 rounded-2xl text-xs font-medium text-indigo-700"
+                  >
+                    {platform}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="text-xs text-indigo-600">
+              Tier:{' '}
+              {plan.PlanSubscription?.tier
+                ? plan.PlanSubscription?.tier
+                : plan.PlanLimitation
+                  ? 'Koin'
+                  : 'Standar'}
             </div>
           </div>
         </div>

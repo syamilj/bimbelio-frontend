@@ -10,7 +10,7 @@ import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import {
-  Clock,
+  Coins,
   Crown,
   Eye,
   Gift,
@@ -34,8 +34,17 @@ import { RenderBenefitTab } from './_components/render-benefit';
 import { RenderFeatureTab } from './_components/render-feature';
 import { RenderLimitationTab } from './_components/render-limitation';
 import { RenderOverviewTab } from './_components/render-overview';
-import { ProviderContext } from './_provider/provider';
+import { ProviderContext, useProvider } from './_provider/provider';
 import { PlanDataType } from './_provider/types';
+
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price);
+};
 
 export function CardPlan({
   plan,
@@ -44,6 +53,7 @@ export function CardPlan({
   discount,
   onClose,
   classOverlay,
+  paymentMethod = 'FULL_PAYMENT',
 }: {
   plan: PlanDataType;
   hideFeatures?: string[];
@@ -51,19 +61,21 @@ export function CardPlan({
   discount?: number;
   onClose?: () => void;
   classOverlay?: string;
+  paymentMethod?: 'FULL_PAYMENT' | 'INSTALLMENT';
 }) {
   const { data: session } = useSession();
-  const { websiteSubCategory } = useWebsiteSubCategory();
+  const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
   const {
     useAuth: { setShowAuth },
-    setTransactionPopUp,
   } = useAppContext();
+
+  const webSubData =
+    webCategoryData.length > 0 ? webCategoryData[0].WebsiteSubCategory : [];
 
   const router = useRouter();
 
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const searchParams = useSearchParams();
   const planIdQuery = searchParams.get('planId');
@@ -75,12 +87,18 @@ export function CardPlan({
   const [liveClassDetails, setLiveClassDetails] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const isCourse = plan.PlanSubscription.PlanFeature.some(
-    (item) => item.type === 'COURSE',
-  );
-  const isDocument = plan.PlanSubscription.PlanFeature.some(
-    (item) => item.type === 'DOCUMENT',
-  );
+  const isCourse =
+    plan.PlanSubscription?.PlanFeature?.some(
+      (item) => item.type === 'COURSE',
+    ) ?? false;
+  const isDocument =
+    plan.PlanSubscription?.PlanFeature?.some(
+      (item) => item.type === 'DOCUMENT',
+    ) ?? false;
+  const isPrivate =
+    plan.PlanSubscription?.PlanFeature?.some(
+      (item) => item.type === 'PRIVATE',
+    ) ?? false;
 
   // Enhanced marketplace indicators
   const isPopular =
@@ -90,16 +108,7 @@ export function CardPlan({
     plan.name.toLowerCase().includes('recommended') ||
     plan.name.toLowerCase().includes('direkomendasikan');
   const isBestSeller = plan.name.toLowerCase().includes('bestseller');
-  const isLimitedTime = plan.originalPrice && plan.originalPrice > plan.price;
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price);
-  };
+  const isLimitedTime = !!plan.originalPrice && plan.originalPrice > plan.price;
 
   const getDiscountPercentage = () => {
     if (!plan.originalPrice || plan.originalPrice <= plan.price) return 0;
@@ -108,17 +117,6 @@ export function CardPlan({
     );
   };
 
-  // Mock marketplace data (in real app, this would come from API)
-  // const marketplaceData = {
-  //   rating: 4.8,
-  //   reviewCount: 2847,
-  //   studentCount: 15420,
-  //   completionRate: 94,
-  //   lastUpdated: '2 minggu lalu',
-  //   instructor: 'Expert Team',
-  //   difficulty: 'Pemula - Mahir',
-  // };
-
   useEffect(() => {
     if (!session && planIdQuery) {
       setShowAuth({
@@ -126,11 +124,24 @@ export function CardPlan({
         open: true,
       });
     }
+    console.log({
+      planIdQuery,
+      planId: plan.id,
+      type: 'paket',
+    });
     if (planIdQuery === plan.id && session) {
       buttonRef.current?.click();
       router.replace(window.location.pathname);
     }
   }, [planIdQuery, session, voucherCodeQuery]);
+
+  const platfroms = plan.PlanSubscription
+    ? plan.PlanSubscription?.PlanSubscriptionBundle?.map((item) =>
+        item.websiteSubCategoryId.toUpperCase(),
+      )
+    : plan.PlanLimitation
+      ? webSubData.map((item) => item.id.toUpperCase())
+      : [];
 
   const Context = {
     useState: {
@@ -145,7 +156,23 @@ export function CardPlan({
       plan,
       isCourse,
       isDocument,
+      isPrivate,
       hideFeatures,
+    },
+    useViewData: {
+      platfroms,
+      getDiscountPercentage,
+      isPopular,
+      isRecommended,
+      isBestSeller,
+      isLimitedTime,
+      isWishlisted,
+      setIsWishlisted,
+      discount,
+      viewOnly,
+      classOverlay,
+      buttonRef,
+      paymentMethod,
     },
   };
 
@@ -168,142 +195,172 @@ export function CardPlan({
             : `0 4px 24px ${mainColor}15`,
         }}
       >
-        {/* Marketplace Status Bar */}
-        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white/50 to-transparent">
-          {isLimitedTime && (
-            <div
-              className="h-full bg-gradient-to-r from-red-500 to-orange-500 animate-pulse"
-              style={{ width: '60%' }}
-            />
+        {/* Header Section - Homepage Style */}
+        <HeaderSection />
+
+        <div className="px-6 pb-6">
+          {/* Marketplace-Style Pricing Section */}
+          <PricingSection />
+
+          <MaxUsersInfo />
+
+          {/* Informasi Cicilan */}
+          <InstallmentInfo />
+
+          {/* Enhanced Tabs - Marketplace Style */}
+          <TabsSection />
+
+          {/* Marketplace-Style CTA Section */}
+          <ButtonSection />
+        </div>
+      </motion.div>
+    </ProviderContext.Provider>
+  );
+}
+
+const HeaderSection = () => {
+  const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
+  const {
+    useData: { plan },
+    useViewData: {
+      isBestSeller,
+      isPopular,
+      isRecommended,
+      isLimitedTime,
+      getDiscountPercentage,
+      platfroms,
+      isWishlisted,
+      setIsWishlisted,
+    },
+  } = useProvider();
+
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  return (
+    <div className="relative p-6 bg-gradient-to-br from-white/90 to-white/80 backdrop-blur-sm">
+      {/* Top Badges Row */}
+      <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-20">
+        {/* Left badges */}
+        <div className="flex flex-col gap-1">
+          {isBestSeller && (
+            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg border-0 font-bold text-xs">
+              <SparkleIcon
+                size={10}
+                className="mr-1"
+              />
+              BESTSELLER
+            </Badge>
+          )}
+          {isPopular && (
+            <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg border-0">
+              <TrendingUp
+                size={10}
+                className="mr-1"
+              />
+              TRENDING
+            </Badge>
           )}
         </div>
 
-        {/* Header Section - Homepage Style */}
-        <div className="relative p-6 bg-gradient-to-br from-white/90 to-white/80 backdrop-blur-sm">
-          {/* Top Badges Row */}
-          <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-20">
-            {/* Left badges */}
-            <div className="flex flex-col gap-1">
-              {isBestSeller && (
-                <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg border-0 font-bold text-xs">
-                  <SparkleIcon
-                    size={10}
-                    className="mr-1"
-                  />
-                  BESTSELLER
-                </Badge>
-              )}
-              {isPopular && (
-                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg border-0">
-                  <TrendingUp
-                    size={10}
-                    className="mr-1"
-                  />
-                  TRENDING
-                </Badge>
-              )}
-            </div>
-
-            {/* Right badges */}
-            <div className="flex flex-col gap-1 items-end">
-              {isRecommended && (
-                <Badge
-                  className="text-white shadow-lg border-0 font-bold"
-                  style={{
-                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                  }}
-                >
-                  <Crown
-                    size={10}
-                    className="mr-1"
-                  />
-                  PILIHAN EDITOR
-                </Badge>
-              )}
-
-              {/* Wishlist Button */}
-              <button
-                onClick={() => setIsWishlisted(!isWishlisted)}
-                className="p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:scale-110 transition-all duration-200"
-              >
-                <Heart
-                  size={14}
-                  className={cn(
-                    'transition-colors duration-200',
-                    isWishlisted
-                      ? 'fill-red-500 text-red-500'
-                      : 'text-gray-400',
-                  )}
-                />
-              </button>
-            </div>
-          </div>
-
-          {/* Discount Flash Badge */}
-          {isLimitedTime && getDiscountPercentage() > 0 && (
-            <div className="absolute top-16 left-3 z-20">
-              <div className="relative">
-                <Badge className="bg-red-500 text-white shadow-xl border-0 font-bold text-sm px-3 py-1 animate-pulse">
-                  <Zap
-                    size={12}
-                    className="mr-1"
-                  />
-                  HEMAT {getDiscountPercentage()}%
-                </Badge>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-ping" />
-              </div>
-            </div>
+        {/* Right badges */}
+        <div className="flex flex-col gap-1 items-end">
+          {isRecommended && (
+            <Badge
+              className="text-white shadow-lg border-0 font-bold"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
+            >
+              <Crown
+                size={10}
+                className="mr-1"
+              />
+              PILIHAN EDITOR
+            </Badge>
           )}
 
-          {/* Enhanced Hero Image Section */}
-          <div className="relative mt-12 mb-4">
-            <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
-              {plan.image ? (
-                <Image
-                  src={plan.image}
-                  alt={plan.name}
-                  fill
-                  className="object-cover object-top transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
-                  sizes="(max-width: 768px) 100vw, 400px"
-                  priority
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const fallback =
-                      e.currentTarget.parentElement?.querySelector(
-                        '.fallback-icon',
-                      );
-                    if (fallback) {
-                      (fallback as HTMLElement).style.display = 'flex';
-                    }
-                  }}
-                />
-              ) : null}
+          {/* Wishlist Button */}
+          <button
+            onClick={() => setIsWishlisted(!isWishlisted)}
+            className="p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:scale-110 transition-all duration-200"
+          >
+            <Heart
+              size={14}
+              className={cn(
+                'transition-colors duration-200',
+                isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400',
+              )}
+            />
+          </button>
+        </div>
+      </div>
 
-              {/* Enhanced Fallback */}
-              <div
-                className={`fallback-icon absolute inset-0 flex flex-col items-center justify-center ${plan.image ? 'hidden' : 'flex'}`}
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor}20, ${secondaryColor}15)`,
-                }}
-              >
-                <ImageIcon
-                  size={40}
-                  style={{ color: `${mainColor}80` }}
-                  className="mb-2"
-                />
-                <span
-                  className="text-sm font-medium"
-                  style={{ color: `${mainColor}70` }}
-                >
-                  Product Preview
-                </span>
-              </div>
+      {/* Discount Flash Badge */}
+      {isLimitedTime && getDiscountPercentage() > 0 && (
+        <div className="absolute top-16 left-3 z-20">
+          <div className="relative">
+            <Badge className="bg-red-500 text-white shadow-xl border-0 font-bold text-sm px-3 py-1 animate-pulse">
+              <Zap
+                size={12}
+                className="mr-1"
+              />
+              HEMAT {getDiscountPercentage()}%
+            </Badge>
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-ping" />
+          </div>
+        </div>
+      )}
 
-              {/* Marketplace Overlay Effects */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+      {/* Enhanced Hero Image Section */}
+      <div className="relative mt-12 mb-4">
+        <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
+          {plan.image ? (
+            <Image
+              src={plan.image}
+              alt={plan.name}
+              fill
+              className="object-cover object-top transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+              sizes="(max-width: 768px) 100vw, 400px"
+              priority
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                const fallback =
+                  e.currentTarget.parentElement?.querySelector(
+                    '.fallback-icon',
+                  );
+                if (fallback) {
+                  (fallback as HTMLElement).style.display = 'flex';
+                }
+              }}
+            />
+          ) : null}
 
-              {/* Quick Stats Overlay */}
-              {/* <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-all duration-500">
+          {/* Enhanced Fallback */}
+          <div
+            className={`fallback-icon absolute inset-0 flex flex-col items-center justify-center ${plan.image ? 'hidden' : 'flex'}`}
+            style={{
+              background: `linear-gradient(135deg, ${mainColor}20, ${secondaryColor}15)`,
+            }}
+          >
+            <ImageIcon
+              size={40}
+              style={{ color: `${mainColor}80` }}
+              className="mb-2"
+            />
+            <span
+              className="text-sm font-medium"
+              style={{ color: `${mainColor}70` }}
+            >
+              Product Preview
+            </span>
+          </div>
+
+          {/* Marketplace Overlay Effects */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+
+          {/* Quick Stats Overlay */}
+          {/* <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-all duration-500">
                 <div className="flex gap-2">
                   <div className="px-2 py-1 rounded-lg text-xs font-medium backdrop-blur-sm bg-white/90 text-gray-800">
                     ⭐ {marketplaceData.rating}
@@ -314,447 +371,621 @@ export function CardPlan({
                 </div>
               </div> */}
 
-              {/* Live indicator for time-sensitive offers */}
-              {isLimitedTime && (
-                <div className="absolute top-3 right-3">
-                  <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/90 backdrop-blur-sm text-white text-xs font-medium">
-                    <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                    LIMITED
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Category & Platform Tags */}
-            <div className="flex items-center justify-between mt-3">
-              <div className="flex items-center gap-2">
-                {plan.PlanSubscription?.WebsiteSubCategory && (
-                  <Badge
-                    variant="outline"
-                    className="text-xs font-medium border-2"
-                    style={{
-                      borderColor: `${mainColor}30`,
-                      color: mainColor,
-                      backgroundColor: `${mainColor}05`,
-                    }}
-                  >
-                    {plan.PlanSubscription.WebsiteSubCategory.name}
-                  </Badge>
-                )}
-                <Badge
-                  variant="outline"
-                  className="text-xs text-gray-600 border-gray-300"
-                >
-                  {plan.PlanSubscription.tier}
-                </Badge>
+          {/* Live indicator for time-sensitive offers */}
+          {isLimitedTime && (
+            <div className="absolute top-3 right-3">
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/90 backdrop-blur-sm text-white text-xs font-medium">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                LIMITED
               </div>
-
-              {/* <div className="text-xs text-gray-500 flex items-center gap-1">
-                <Clock size={10} />
-                {marketplaceData.lastUpdated}
-              </div> */}
             </div>
-          </div>
-
-          {/* Product Title & Rating */}
-          <div className="space-y-3">
-            <h3 className="text-xl font-black leading-tight text-gray-900 line-clamp-2 group-hover:text-gray-700 transition-colors">
-              {plan.name}
-            </h3>
-
-            {/* Marketplace Rating & Social Proof */}
-            {/* <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={12}
-                      className={cn(
-                        'transition-colors',
-                        i < Math.floor(marketplaceData.rating)
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-gray-300',
-                      )}
-                    />
-                  ))}
-                  <span className="text-sm font-semibold text-gray-800">
-                    {marketplaceData.rating}
-                  </span>
-                </div>
-                <span className="text-xs text-gray-500">
-                  ({marketplaceData.reviewCount.toLocaleString()} ulasan)
-                </span>
+          )}
+          {plan.PlanInstallmentConfig && (
+            <div className="absolute top-3 right-3">
+              <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/90 backdrop-blur-sm text-white text-xs font-medium">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                Bisa Cicilan
               </div>
-
-              <div className="text-xs text-gray-600 flex items-center gap-1">
-                <Users size={10} />
-                {marketplaceData.studentCount.toLocaleString()} siswa
-              </div>
-            </div> */}
-
-            {/* Enhanced Description */}
-            <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
-              {plan.description}
-            </p>
-
-            {/* Key Features Preview - Marketplace Style */}
-            <div className="flex flex-wrap gap-1.5">
-              {plan.PlanSubscription?.PlanFeature?.slice(0, 3).map(
-                (feature, index) => (
-                  <Badge
-                    key={feature.id}
-                    variant="secondary"
-                    className="text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                  >
-                    {feature.type === 'COURSE'
-                      ? '📚'
-                      : feature.type === 'DOCUMENT'
-                        ? '📄'
-                        : '🎥'}{' '}
-                    {feature.type === 'COURSE'
-                      ? 'Video Course'
-                      : feature.type === 'DOCUMENT'
-                        ? 'Materials'
-                        : 'Live Class'}
-                  </Badge>
-                ),
-              )}
-              {(plan.PlanSubscription?.PlanFeature?.length || 0) > 3 && (
-                <Badge
-                  variant="secondary"
-                  className="text-xs font-medium bg-gray-100 text-gray-600"
-                >
-                  +{(plan.PlanSubscription?.PlanFeature?.length || 0) - 3}{' '}
-                  lainnya
-                </Badge>
-              )}
             </div>
-          </div>
+          )}
         </div>
 
-        <div className="px-6 pb-6">
-          {/* Marketplace-Style Pricing Section */}
-          <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700">
-                  Harga Terbaik
-                </span>
-                {isLimitedTime && (
-                  <div className="flex items-center gap-1 text-red-600">
-                    <Zap size={12} />
-                    <span className="text-xs font-bold">PROMO TERBATAS</span>
+        {/* Category & Platform Tags */}
+        <div className="flex items-center justify-between mt-3">
+          <div className="flex items-center gap-2">
+            {platfroms.length === 0 &&
+              plan.PlanSubscription?.WebsiteSubCategory && (
+                <Badge
+                  variant="outline"
+                  className="text-xs font-medium border-2"
+                  style={{
+                    borderColor: `${mainColor}30`,
+                    color: mainColor,
+                    backgroundColor: `${mainColor}05`,
+                  }}
+                >
+                  {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Paket'}
+                </Badge>
+              )}
+            {platfroms.length > 0 &&
+              platfroms.slice(0, 2).map((platform) => (
+                <Badge
+                  key={platform}
+                  variant="outline"
+                  className="text-xs font-medium border-2 whitespace-nowrap"
+                  style={{
+                    borderColor: `${mainColor}30`,
+                    color: mainColor,
+                    backgroundColor: `${mainColor}05`,
+                  }}
+                >
+                  {platform}
+                </Badge>
+              ))}
+            {platfroms.length > 2 && (
+              <Badge
+                variant="outline"
+                className="text-xs font-medium border-2 whitespace-nowrap"
+                style={{
+                  borderColor: `${mainColor}30`,
+                  color: mainColor,
+                  backgroundColor: `${mainColor}05`,
+                }}
+              >
+                +{platfroms.length - 2}
+              </Badge>
+            )}
+            <Badge
+              variant="outline"
+              className="text-xs text-gray-600 border-gray-300"
+            >
+              {plan.PlanSubscription?.tier
+                ? plan.PlanSubscription?.tier
+                : plan.PlanLimitation
+                  ? 'Koin'
+                  : 'Standar'}
+            </Badge>
+          </div>
+        </div>
+      </div>
+
+      {/* Product Title & Rating */}
+      <div className="space-y-3">
+        <h3 className="text-xl font-black leading-tight text-gray-900 line-clamp-2 group-hover:text-gray-700 transition-colors">
+          {plan.name}
+        </h3>
+
+        {/* Enhanced Description */}
+        <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
+          {plan.description}
+        </p>
+
+        {/* Key Features Preview - Marketplace Style */}
+        <div className="flex flex-wrap gap-1.5">
+          {plan.PlanSubscription?.PlanFeature?.slice(0, 3).map((feature) => (
+            <Badge
+              key={feature.id}
+              variant="secondary"
+              className="text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+            >
+              {feature.type === 'COURSE'
+                ? '📚'
+                : feature.type === 'DOCUMENT'
+                  ? '📄'
+                  : '🎥'}{' '}
+              {feature.type === 'COURSE'
+                ? 'Video Course'
+                : feature.type === 'DOCUMENT'
+                  ? 'Materials'
+                  : 'Live Class'}
+            </Badge>
+          ))}
+          {(plan.PlanSubscription?.PlanFeature?.length || 0) > 3 && (
+            <Badge
+              variant="secondary"
+              className="text-xs font-medium bg-gray-100 text-gray-600"
+            >
+              +{(plan.PlanSubscription?.PlanFeature?.length || 0) - 3} lainnya
+            </Badge>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+const PricingSection = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const {
+    useData: { plan },
+    useViewData: {
+      isLimitedTime,
+      getDiscountPercentage,
+      discount,
+      paymentMethod,
+    },
+  } = useProvider();
+
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+
+  // Hitung harga cicilan pertama jika ada installment config
+  const firstInstallmentPrice =
+    plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0]?.amount ||
+    plan.price;
+  const displayPrice =
+    plan.PlanInstallmentConfig && paymentMethod === 'INSTALLMENT'
+      ? firstInstallmentPrice
+      : plan.price;
+  const originalDisplayPrice =
+    plan.PlanInstallmentConfig && paymentMethod === 'INSTALLMENT'
+      ? plan.originalPrice || plan.price
+      : plan.originalPrice;
+
+  return (
+    <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-gray-700">
+            {plan.PlanInstallmentConfig ? 'Cicilan Pertama' : 'Harga Terbaik'}
+          </span>
+          {isLimitedTime && (
+            <div className="flex items-center gap-1 text-red-600">
+              <Zap size={12} />
+              <span className="text-xs font-bold">PROMO TERBATAS</span>
+            </div>
+          )}
+        </div>
+
+        {/* Price Display - Enhanced */}
+        <div className="flex items-end justify-between relative">
+          <div className="flex items-baseline gap-3">
+            {/* Current/Discounted Price */}
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                {discount && (
+                  <div
+                    className="text-3xl font-black"
+                    style={{ color: mainColor }}
+                  >
+                    {formatPrice(discount)}
                   </div>
                 )}
+                <div
+                  className={cn(
+                    'text-3xl font-black',
+                    discount &&
+                      'text-lg text-gray-500 line-through font-semibold',
+                  )}
+                  style={{ color: mainColor }}
+                >
+                  {formatPrice(displayPrice)}
+                </div>
               </div>
-
-              {/* Price Display - Enhanced */}
-              <div className="flex items-end justify-between">
-                <div className="flex items-baseline gap-3">
-                  {/* Current/Discounted Price */}
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-2">
-                      {discount && (
-                        <div
-                          className="text-3xl font-black"
-                          style={{ color: mainColor }}
-                        >
-                          {formatPrice(discount)}
-                        </div>
-                      )}
-                      <div
-                        className={cn(
-                          'text-3xl font-black',
-                          discount &&
-                            'text-lg text-gray-500 line-through font-semibold',
-                        )}
-                        style={{ color: mainColor }}
-                      >
-                        {formatPrice(plan.price)}
-                      </div>
-                    </div>
-                    {plan.PlanBenefit.length > 0 && (
-                      <div className="text-xs text-gray-500 mt-1">
+              {plan.PlanBenefit.length > 0 &&
+                plan.PlanSubscription?.expireDays && (
+                  <div className="text-xs text-gray-500 mt-1">
+                    {plan.PlanInstallmentConfig ? (
+                      <>
+                        Total Rp{' '}
+                        {formatPrice(plan.PlanInstallmentConfig.totalAmount)}{' '}
+                        dalam {plan.PlanInstallmentConfig.totalInstallments}x
+                        cicilan
+                      </>
+                    ) : (
+                      <>
                         ~
                         {formatPrice(
                           Math.floor(
                             (discount || plan.price) /
-                              plan.PlanSubscription.expireDays,
+                              (plan.PlanSubscription?.expireDays || 1),
                           ),
                         )}{' '}
                         per hari
-                      </div>
+                      </>
                     )}
                   </div>
-
-                  {/* Original Price */}
-                  {((plan.originalPrice && plan.originalPrice > plan.price) ||
-                    discount) && (
-                    <div className="flex flex-col items-end">
-                      <span className="text-lg text-gray-500 line-through font-semibold">
-                        {formatPrice(plan.originalPrice || plan.price)}
-                      </span>
-                      <div className="flex items-center gap-1 text-green-600">
-                        <span className="text-xs font-bold">
-                          Hemat{' '}
-                          {formatPrice(
-                            (plan.originalPrice || plan.price) -
-                              (discount || plan.price),
-                          )}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Savings Badge */}
-                {getDiscountPercentage() > 0 && (
-                  <div className="text-right">
-                    <Badge className="bg-red-500 text-white font-bold text-sm">
-                      -{getDiscountPercentage()}%
-                    </Badge>
-                  </div>
                 )}
-              </div>
-
-              {/* Value Props */}
-              {/* <div className="flex items-center justify-between pt-2 border-t border-gray-200">
-                <div className="flex items-center gap-2 text-xs text-gray-600">
-                  <Shield
-                    size={12}
-                    className="text-green-500"
-                  />
-                  <span>Garansi 30 hari</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-gray-600">
-                  <CheckCircle2
-                    size={12}
-                    className="text-blue-500"
-                  />
-                  <span>Akses selamanya</span>
-                </div>
-              </div> */}
             </div>
+
+            {/* Original Price */}
+            {((plan.originalPrice && plan.originalPrice > plan.price) ||
+              discount ||
+              plan.PlanInstallmentConfig) && (
+              <div className="flex flex-col items-end">
+                {originalDisplayPrice && (
+                  <span className="text-lg text-gray-500 line-through font-semibold">
+                    {formatPrice(originalDisplayPrice)}
+                  </span>
+                )}
+
+                <div className="flex items-center gap-1 text-green-600">
+                  <span className="text-xs font-bold">
+                    {plan.PlanInstallmentConfig ? (
+                      <>
+                        Cicilan {plan.PlanInstallmentConfig.totalInstallments}x
+                      </>
+                    ) : (
+                      <>
+                        Hemat{' '}
+                        {formatPrice(
+                          (plan.originalPrice || plan.price) -
+                            (discount || plan.price),
+                        )}
+                      </>
+                    )}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Enhanced Tabs - Marketplace Style */}
-          <Tabs
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="w-full"
-          >
-            <TabsList className="grid w-full grid-cols-4 mb-4 h-8 bg-gray-100 p-1 rounded-xl">
-              <TabsTrigger
-                value="overview"
-                className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-                style={
-                  {
-                    '--tw-ring-color': `${mainColor}20`,
-                  } as React.CSSProperties
-                }
-              >
-                <Eye
-                  size={14}
-                  className="mr-1"
-                />
-                <span className="hidden sm:inline">Overview</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="features"
-                className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-              >
-                <Sparkles
-                  size={14}
-                  className="mr-1"
-                />
-                <span className="hidden sm:inline">Fitur</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="benefits"
-                className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-              >
-                <Gift
-                  size={14}
-                  className="mr-1"
-                />
-                <span className="hidden sm:inline">Benefit</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="limitations"
-                className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
-              >
-                <Clock
-                  size={14}
-                  className="mr-1"
-                />
-                <span className="hidden sm:inline">Limits</span>
-              </TabsTrigger>
-            </TabsList>
-
-            {/* Tab Content */}
-            <div className="min-h-[200px] rounded-xl border border-gray-100 p-4 bg-white shadow-sm">
-              <TabsContent
-                value="overview"
-                className="mt-0"
-              >
-                <RenderOverviewTab />
-              </TabsContent>
-              <TabsContent
-                value="limitations"
-                className="mt-0"
-              >
-                <RenderLimitationTab />
-              </TabsContent>
-              <TabsContent
-                value="features"
-                className="mt-0"
-              >
-                <RenderFeatureTab />
-              </TabsContent>
-              <TabsContent
-                value="benefits"
-                className="mt-0"
-              >
-                <RenderBenefitTab />
-              </TabsContent>
+          {/* Savings Badge */}
+          {getDiscountPercentage() > 0 && !plan.PlanInstallmentConfig && (
+            <div className="text-right absolute right-[-1rem] top-[calc(100%+10px)]">
+              <Badge className="bg-red-500 text-white font-bold text-sm">
+                -{getDiscountPercentage()}%
+              </Badge>
             </div>
-          </Tabs>
+          )}
 
-          {/* Marketplace-Style CTA Section */}
-          <div className="mt-6 space-y-3">
-            {/* Primary CTA */}
-            {!viewOnly && (
-              <DialogPayment
-                plan={plan}
-                classOverlay={classOverlay}
+          {/* Installment Badge */}
+          {plan.PlanInstallmentConfig && (
+            <div className="text-right absolute right-[-1rem] top-[calc(100%+10px)]">
+              <Badge className="bg-blue-500 text-white font-bold text-sm flex items-center gap-1">
+                <Coins size={12} />
+                Cicilan
+              </Badge>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MaxUsersInfo = () => {
+  const {
+    useData: { plan },
+  } = useProvider();
+
+  if (!plan.maxUsers) return null;
+
+  return (
+    <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
+      <div className="flex items-center gap-3">
+        <div className="p-2 bg-amber-100 rounded-lg">
+          <Users className="w-4 h-4 text-amber-600" />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-amber-800">Kuota Terbatas</p>
+          <p className="text-xs text-amber-700">
+            {plan.totalUsers || 0} / {plan.maxUsers} pengguna aktif
+          </p>
+        </div>
+        <Badge className="bg-amber-500 text-white text-xs font-bold px-2 py-1">
+          LIMITED
+        </Badge>
+      </div>
+    </div>
+  );
+};
+
+const InstallmentInfo = () => {
+  const {
+    useData: { plan },
+    useViewData: { paymentMethod, discount },
+  } = useProvider();
+  if (!plan.PlanInstallmentConfig) return null;
+  return (
+    <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="p-2 bg-blue-100 rounded-lg">
+          <Coins className="w-4 h-4 text-blue-600" />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-blue-800">
+            Cicilan Tersedia
+          </p>
+          <p className="text-xs text-blue-700">
+            {plan.PlanInstallmentConfig.totalInstallments}x tanpa bunga
+          </p>
+        </div>
+      </div>
+
+      {/* Detail Cicilan */}
+      <div className="space-y-2 ml-11">
+        {plan.PlanInstallmentConfig.PlanInstallmentSchedule.map(
+          (schedule, index) => {
+            const amount = schedule.amount;
+            return (
+              <div
+                key={schedule.id}
+                className="text-xs text-blue-700"
               >
-                <Button
-                  ref={buttonRef}
-                  className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
-                  size="lg"
-                  style={{
-                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = `0 20px 40px ${mainColor}40`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = `0 10px 30px ${mainColor}30`;
-                  }}
-                  onClick={() => {
-                    // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"
-                    try {
-                    } catch (pixelError) {
-                      console.warn(
-                        'Pixel tracking error on add to cart:',
-                        pixelError,
-                      );
-                    }
-                  }}
-                >
-                  <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                  <ShoppingCart
-                    size={20}
-                    className="mr-3"
-                  />
-                  <span>Beli Sekarang</span>
-                </Button>
-              </DialogPayment>
-            )}
-
-            {/* Secondary CTA */}
-            {!viewOnly && (
-              <Link href={`/price/${plan.id}`}>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full border-2 hover:shadow-lg font-semibold transition-all duration-300 group bg-white h-12"
-                  style={{
-                    borderColor: `${mainColor}40`,
-                    color: mainColor,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = `${mainColor}05`;
-                    e.currentTarget.style.borderColor = mainColor;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'white';
-                    e.currentTarget.style.borderColor = `${mainColor}40`;
-                  }}
-                  onClick={() => {
-                    // ✅ VIEWCONTENT TRACKING - Track saat user melihat detail produk
-                    pixel.meta.track('ViewContent', {
-                      contents: [{ id: plan.id, quantity: 1 }],
-                      content_name: plan.name,
-                      content_type: 'product',
-                      value: plan.price,
-                      currency: 'IDR',
-                    });
-
-                    pixel.tiktok.track('ViewContent', {
-                      content_id: plan.id,
-                      content_name: plan.name,
-                      content_type: 'product',
-                      value: plan.price,
-                      currency: 'IDR',
-                    });
-
-                    setTransactionPopUp(false);
-                  }}
-                >
-                  <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-                  <span>Lihat Detail Lengkap</span>
-                </Button>
-              </Link>
-            )}
-
-            {/* Trust Indicators - Marketplace Style */}
-            <div className="bg-gray-50 rounded-xl p-4 space-y-3">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mb-1">
-                    <Shield
-                      size={14}
-                      className="text-green-600"
-                    />
-                  </div>
-                  <span className="text-xs font-medium text-gray-700">
-                    Aman
-                  </span>
-                  <span className="text-xs text-gray-500">SSL Secure</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mb-1">
-                    <Users
-                      size={14}
-                      className="text-blue-600"
-                    />
-                  </div>
-                  <span className="text-xs font-medium text-gray-700">
-                    Support
-                  </span>
-                  <span className="text-xs text-gray-500">24/7 Help</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mb-1">
-                    <Star
-                      size={14}
-                      className="text-purple-600"
-                    />
-                  </div>
-                  <span className="text-xs font-medium text-gray-700">
-                    Kualitas
-                  </span>
-                  <span className="text-xs text-gray-500">Premium</span>
-                </div>
+                <span className="font-semibold">
+                  Cicilan #{schedule.installmentNumber}:
+                </span>{' '}
+                {formatPrice(amount)}
+                {index === 0
+                  ? ' (Pembayaran pertama)'
+                  : ` (${schedule.daysAfterFirstPayment} hari setelah)`}
               </div>
+            );
+          },
+        )}
+      </div>
+
+      {/* Masa Tenggang */}
+      {plan.PlanInstallmentConfig.gracePeriodDays > 0 && (
+        <div className="mt-2 pt-2 border-t border-blue-200 text-xs text-blue-700">
+          <span className="font-semibold">Masa Tenggang:</span>{' '}
+          {plan.PlanInstallmentConfig.gracePeriodDays} hari
+        </div>
+      )}
+    </div>
+  );
+};
+
+const TabsSection = () => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const {
+    useData: { plan },
+    useState: { activeTab, setActiveTab },
+  } = useProvider();
+
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+
+  const tabCount =
+    (plan.PlanBenefit.length > 0 ? 1 : 0) +
+    (plan.PlanLimitation ? 1 : 0) +
+    (plan.PlanSubscription ? 1 : 0) +
+    1;
+
+  return (
+    <Tabs
+      value={activeTab}
+      onValueChange={setActiveTab}
+      className="w-full"
+    >
+      <TabsList
+        className={cn(
+          'grid w-full mb-4 h-8 bg-gray-100 p-1 rounded-xl grid-cols-4',
+        )}
+        style={{
+          gridTemplateColumns: `repeat(${tabCount}, minmax(0, 1fr))`,
+        }}
+      >
+        <TabsTrigger
+          value="overview"
+          className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+          style={
+            {
+              '--tw-ring-color': `${mainColor}20`,
+            } as React.CSSProperties
+          }
+        >
+          <Eye
+            size={14}
+            className="mr-1"
+          />
+          <span className="hidden sm:inline">Overview</span>
+        </TabsTrigger>
+        {plan.PlanSubscription && (
+          <TabsTrigger
+            value="features"
+            className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+          >
+            <Sparkles
+              size={14}
+              className="mr-1"
+            />
+            <span className="hidden sm:inline">Fitur</span>
+          </TabsTrigger>
+        )}
+        {plan.PlanLimitation && (
+          <TabsTrigger
+            value="limitations"
+            className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+          >
+            <Coins
+              size={14}
+              className="mr-1"
+            />
+            <span className="hidden sm:inline">Koin</span>
+          </TabsTrigger>
+        )}
+        {plan.PlanBenefit.length > 0 && (
+          <TabsTrigger
+            value="benefits"
+            className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+          >
+            <Gift
+              size={14}
+              className="mr-1"
+            />
+            <span className="hidden sm:inline">Benefit</span>
+          </TabsTrigger>
+        )}
+      </TabsList>
+
+      {/* Tab Content */}
+      <div className="min-h-[200px] rounded-xl border border-gray-100 p-4 bg-white shadow-sm">
+        <TabsContent
+          value="overview"
+          className="mt-0"
+        >
+          <RenderOverviewTab />
+        </TabsContent>
+        <TabsContent
+          value="limitations"
+          className="mt-0"
+        >
+          <RenderLimitationTab />
+        </TabsContent>
+        <TabsContent
+          value="features"
+          className="mt-0"
+        >
+          <RenderFeatureTab />
+        </TabsContent>
+        <TabsContent
+          value="benefits"
+          className="mt-0"
+        >
+          <RenderBenefitTab />
+        </TabsContent>
+      </div>
+    </Tabs>
+  );
+};
+
+const ButtonSection = () => {
+  const { setTransactionPopUp } = useAppContext();
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const {
+    useData: { plan },
+    useViewData: { viewOnly, classOverlay, buttonRef },
+  } = useProvider();
+
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
+
+  return (
+    <div className="mt-6 space-y-3">
+      {/* Primary CTA */}
+      {!viewOnly && (
+        <>
+          {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
+            <Button
+              ref={buttonRef}
+              className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group cursor-not-allowed"
+              size="lg"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
+            >
+              <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              <Users
+                size={20}
+                className="mr-3"
+              />
+              <span>Kuota Penuh</span>
+            </Button>
+          ) : (
+            <DialogPayment
+              plan={plan}
+              classOverlay={classOverlay}
+            >
+              <Button
+                ref={buttonRef}
+                className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group"
+                size="lg"
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
+                onClick={() => {
+                  // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"
+                  try {
+                  } catch (pixelError) {
+                    console.warn(
+                      'Pixel tracking error on add to cart:',
+                      pixelError,
+                    );
+                  }
+                }}
+              >
+                <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                <ShoppingCart
+                  size={20}
+                  className="mr-3"
+                />
+                <span>Beli Sekarang</span>
+              </Button>
+            </DialogPayment>
+          )}
+        </>
+      )}
+
+      {/* Secondary CTA */}
+      {!viewOnly && (
+        <Link href={`/price/${plan.slug}`}>
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full border-2 hover:shadow-lg font-semibold transition-all duration-300 group bg-white h-12"
+            style={{
+              borderColor: `${mainColor}40`,
+              color: mainColor,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = `${mainColor}05`;
+              e.currentTarget.style.borderColor = mainColor;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'white';
+              e.currentTarget.style.borderColor = `${mainColor}40`;
+            }}
+            onClick={() => {
+              // ✅ VIEWCONTENT TRACKING - Track saat user melihat detail produk
+              pixel.meta.track('ViewContent', {
+                contents: [{ id: plan.id, quantity: 1 }],
+                content_name: plan.name,
+                content_type: 'product',
+                value: plan.price,
+                currency: 'IDR',
+              });
+
+              pixel.tiktok.track('ViewContent', {
+                content_id: plan.id,
+                content_name: plan.name,
+                content_type: 'product',
+                value: plan.price,
+                currency: 'IDR',
+              });
+
+              setTransactionPopUp(false);
+            }}
+          >
+            <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+            <span>Lihat Detail Lengkap</span>
+          </Button>
+        </Link>
+      )}
+
+      {/* Trust Indicators - Marketplace Style */}
+      <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="flex flex-col items-center">
+            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mb-1">
+              <Shield
+                size={14}
+                className="text-green-600"
+              />
             </div>
+            <span className="text-xs font-medium text-gray-700">Aman</span>
+            <span className="text-xs text-gray-500">SSL Secure</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mb-1">
+              <Users
+                size={14}
+                className="text-blue-600"
+              />
+            </div>
+            <span className="text-xs font-medium text-gray-700">Support</span>
+            <span className="text-xs text-gray-500">24/7 Help</span>
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mb-1">
+              <Star
+                size={14}
+                className="text-purple-600"
+              />
+            </div>
+            <span className="text-xs font-medium text-gray-700">Kualitas</span>
+            <span className="text-xs text-gray-500">Premium</span>
           </div>
         </div>
-      </motion.div>
-    </ProviderContext.Provider>
+      </div>
+    </div>
   );
-}
+};

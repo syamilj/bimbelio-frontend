@@ -51,18 +51,24 @@ export function useGet<Data = any, ErrorData = any>(
         if (more?.onError) more.onError(errorData);
         setError(errorData);
       },
+      onFinished() {
+        if (more?.onFinished) more.onFinished();
+      },
     });
     return res;
   };
 
-  const initialFetch = useDebouncedCallback(refetch);
+  const referchDeounced = useDebouncedCallback(
+    refetch,
+    more?.debounceTime || 0,
+  );
 
   const Dependencies = more?.useEffectDependencies || [];
   const Enabled = more?.enabled !== undefined ? more.enabled : true;
 
   useEffect(() => {
     if (Enabled) {
-      initialFetch();
+      referchDeounced();
     }
   }, [...Dependencies, Enabled]);
 
@@ -84,6 +90,7 @@ type MoreProps<Data = any, ErrorData = any> = {
   firstLoad?: boolean;
   endLoad?: boolean;
   hideToast?: boolean;
+  debounceTime?: number;
   toast?: {
     hideSuccess?: boolean;
     hideError?: boolean;
@@ -92,6 +99,7 @@ type MoreProps<Data = any, ErrorData = any> = {
     errorTitle?: string;
     errorMsg?: string;
   };
+  onFinished?: () => any;
   onLoading?: () => any;
   onSuccess?: (params: { message: string; status: number; data?: Data }) => any;
   onError?: (params: {

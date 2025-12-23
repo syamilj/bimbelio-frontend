@@ -319,37 +319,6 @@ const FinalCTA = () => {
               </motion.button>
             </div>
 
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap items-center gap-6 pt-4">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <Star className="w-3 h-3 fill-current" />
-                    </div>
-                  ))}
-                </div>
-                <span className="text-sm text-gray-600 font-medium">
-                  +15k siswa bergabung
-                </span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <span className="text-sm text-gray-600 font-medium">
-                  4.9/5 rating
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-sm text-gray-600 font-medium">
-                  100% Gratis
-                </span>
-              </div>
-            </div>
           </motion.div>
 
           {/* Right Content - Achievement Cards */}

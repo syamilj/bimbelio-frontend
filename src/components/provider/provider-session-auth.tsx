@@ -3,9 +3,18 @@
 import { signOut } from '@/lib/auth-helper';
 import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 import { responseError } from '@/lib/response';
-import { UserRoleEnum } from '@/types/database';
+import {
+  Subscription,
+  SubscriptionFeature,
+  SubscriptionInstallment,
+  SubscriptionPending,
+  SubscriptionPendingFeature,
+  SubscriptionPendingLimitation,
+  UserRoleEnum,
+} from '@/types/database';
 import Cookies from 'js-cookie';
 import { Loader2 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import {
   createContext,
   ReactNode,
@@ -20,11 +29,17 @@ export default function ProviderSessionAuth({
 }: {
   children: ReactNode;
 }) {
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [data, setData] = useState<SessionProviderType['data']>();
 
   useEffect(() => {
     const token = Cookies.get('token');
+    // console.log({ token });
+
+    // if (!token && window.location.pathname.includes('/user')) {
+    //   window.location.pathname = '/';
+    // }
     const urlPathname = window.location.pathname.split('/');
 
     const website_sub_category_id =
@@ -34,12 +49,52 @@ export default function ProviderSessionAuth({
 
     if (token) {
       axiosInstanceWithToken
-        .post(
-          `/auth/verifyToken?website_sub_category_id=${website_sub_category_id}`,
-        )
+        .post(`/auth/verifyToken`)
         .then((res) => {
           const resData = res.data;
           const userData = resData.data;
+          const subsListData = userData.subsData;
+          const subsPendingListData = userData.subsPendingData;
+          console.log({ userData, subsListData, subsPendingListData, res });
+          let tier, feature, subsList, subsPendingList;
+          if (
+            Object.keys(userData.subsList).includes(website_sub_category_id!)
+          ) {
+            tier = userData.subsList[website_sub_category_id!].tier;
+            feature = userData.subsList[website_sub_category_id!].feature;
+            subsList = subsListData[website_sub_category_id!] || [];
+          } else {
+            tier = null;
+            feature = { document: false, course: false, liveClass: false };
+            subsList = [];
+          }
+
+          if (
+            Object.keys(subsPendingListData).includes(website_sub_category_id!)
+          ) {
+            subsPendingList =
+              subsPendingListData[website_sub_category_id!] || [];
+          } else {
+            subsPendingList = [];
+          }
+
+          if (Object.keys(subsPendingListData).includes('all')) {
+            subsPendingList = [
+              ...subsPendingList,
+              ...subsPendingListData['all'],
+            ];
+          }
+
+          if (
+            userData.specialRole &&
+            (userData.role === 'ADMIN' ||
+              userData.role === 'SUPER_ADMIN' ||
+              userData.role === 'PREMIUM' ||
+              userData.role === 'FINANCE')
+          ) {
+            tier = userData.specialRole.tier;
+            feature = userData.specialRole.feature;
+          }
           setData({
             expires: undefined,
             user: {
@@ -47,27 +102,27 @@ export default function ProviderSessionAuth({
               email: userData.email,
               name: userData.name,
               role: userData.role,
-              token: userData.token,
+              token: token,
               type: userData.type,
               userTryOutId: userData.userTryOutId,
               emailVerified: userData.emailVerified,
               expire: userData.expire,
               image: userData.image,
-              tier: userData.tier,
               phone: userData.phone,
-              feature: {
-                document: userData.feature.document,
-                course: userData.feature.course,
-                liveClass: userData.feature.liveClass,
-              },
+              subsList,
+              subsPendingList,
+              tier,
+              feature,
             },
           });
         })
         .catch((error) => {
           const { message, status } = responseError(error);
           if (status === 401) {
+            responseError(error);
             signOut();
           }
+          console.log({ error });
           console.error('Token verification failed:', message);
         })
         .finally(() => {
@@ -78,13 +133,13 @@ export default function ProviderSessionAuth({
     }
   }, []);
 
-  console.log(data);
+  console.log('session : ', data);
 
   const Context = {
     data,
   };
 
-  if (isLoading) {
+  if (isLoading && pathname !== '/') {
     return (
       <div className="flex w-full h-full fixed top-0 left-0 justify-center items-center">
         <Loader2 className="animate-spin w-4 h-4" />
@@ -94,6 +149,7 @@ export default function ProviderSessionAuth({
 
   return (
     <>
+      {/* {isLoading && pathname !== '/' && <LoadingFixed />} */}
       <Toaster />
       <SessionProvider.Provider value={Context}>
         {children}
@@ -120,7 +176,19 @@ type SessionProviderType = {
           type: string;
           tier: string;
           phone: string | null;
-          feature: { document: boolean; course: boolean; liveClass: boolean };
+          feature: {
+            document: boolean;
+            course: string[] | 'ALLOW';
+            liveClass: boolean;
+          };
+          subsList: (Subscription & {
+            SubscriptionFeature: SubscriptionFeature[];
+            SubscriptionInstallment: SubscriptionInstallment[];
+          })[];
+          subsPendingList: (SubscriptionPending & {
+            SubscriptionPendingFeature: SubscriptionPendingFeature[];
+            SubscriptionPendingLimitation?: SubscriptionPendingLimitation;
+          })[];
         };
         expires: string | undefined;
       }

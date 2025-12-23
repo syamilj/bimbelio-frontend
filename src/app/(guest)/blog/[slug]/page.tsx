@@ -1,74 +1,75 @@
-'use client';
-
-import BlogClient from '@/app/(guest)/blog/_components/BlogContent';
-import { useGet } from '@/lib/fetch-helper/useGet';
-import { BlogPost } from '@/types/database';
-import { Loader2 } from 'lucide-react';
-import { useParams } from 'next/navigation';
-
+import { env } from '@/env.mjs';
+import axios from 'axios';
+import { Metadata } from 'next';
 import { Fragment } from 'react';
+import BlogClientWrapper from '../_components/BlogClientWrapper';
 
-// // 1) fetch blog
-// async function getBlogBySlug(slug: string) {
-//   return prisma.blogPost.findUnique({ where: { slug } });
-// }
-
-// // 2) generateStaticParams
-// export async function generateStaticParams() {
-//   const allBlogs = await prisma.blogPost.findMany({ select: { slug: true } });
-//   return allBlogs.map((b) => ({ slug: b.slug }));
-// }
-
-// // 3) generateMetadata
-// export async function generateMetadata(
-//   props: BlogPageProps,
-// ): Promise<Metadata> {
-//   const params = await props.params;
-//   const blog = await getBlogBySlug(params.slug);
-//   if (!blog) {
-//     return {
-//       title: 'Blog Not Found | Bimbelio',
-//       description: 'Maaf, artikel tidak ditemukan.',
-//       openGraph: {
-//         title: 'Blog Not Found | Bimbelio',
-//         description: 'Maaf, artikel tidak ditemukan.',
-//       },
-//       twitter: { card: 'summary_large_image' },
-//     };
-//   }
-//   return {
-//     title: `${blog.title} | Bimbelio Blog`,
-//     description:
-//       blog.description ?? `Baca tentang ${blog.title} di Bimbelio Artikel`,
-//     openGraph: {
-//       title: `${blog.title} | Bimbelio Artikel`,
-//       description:
-//         blog.description ?? `Baca tentang ${blog.title} di Bimbelio Artikel`,
-//       images: [blog.thumbnail],
-//       type: 'article',
-//     },
-//     twitter: { card: 'summary_large_image' },
-//   };
-// }
-
-// 4) page.tsx
-export default function BlogServerPage() {
-  const params = useParams();
-  const { data: blog, isLoading } = useGet<BlogPost>('/blog/getBlogBySlug', {
-    params: { slug: params.slug },
-    useEffectDependencies: [params],
-  });
-
-  // const params = await props.params;
-  // const blog = await getBlogBySlug(params.slug);
-
-  if (isLoading) {
-    return (
-      <div className="flex w-full h-[90vh] justify-center items-center">
-        <Loader2 className="animate-spin w-6 h-6" />
-      </div>
-    );
+export async function generateStaticParams() {
+  try {
+    const response = await axios.get(`${env.NEXT_PUBLIC_API_URL}/blog/getBlog`);
+    const blogs = response.data.data || [];
+    if (blogs.length === 0) {
+      return [{ slug: 'example-slug' }];
+    }
+    return blogs.map((blog: any) => ({
+      slug: blog.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params for blog:', error);
+    return [{ slug: 'example-slug' }];
   }
+}
+
+async function getBlogBySlug(slug: string) {
+  try {
+    const response = await axios.get(
+      `${env.NEXT_PUBLIC_API_URL}/blog/getBlogBySlug`,
+      {
+        params: { slug },
+      },
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching blog:', error);
+    return null;
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{
+    slug: string;
+  }>;
+}): Promise<Metadata> {
+  const blog = await getBlogBySlug((await params).slug);
+
+  return {
+    title: blog?.title,
+    description: blog?.description,
+    openGraph: {
+      title: blog?.title,
+      description: blog?.description,
+      images: [
+        {
+          url: blog?.thumbnail || '',
+          width: 1200,
+          height: 630,
+          alt: blog?.title,
+        },
+      ],
+    },
+  };
+}
+
+export default async function BlogServerPage({
+  params,
+}: {
+  params: Promise<{
+    slug: string;
+  }>;
+}) {
+  const blog = await getBlogBySlug((await params).slug);
 
   if (!blog) {
     return (
@@ -77,19 +78,23 @@ export default function BlogServerPage() {
       </div>
     );
   }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: blog.title,
-    // ... dll
+    description: blog.description,
+    image: blog.thumbnail,
+    datePublished: blog.createdAt,
   };
+
   return (
     <Fragment>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogClient blog={blog} />
+      <BlogClientWrapper blog={blog} />
     </Fragment>
   );
 }

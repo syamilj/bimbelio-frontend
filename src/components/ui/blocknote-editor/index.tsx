@@ -23,12 +23,14 @@ function BlocknoteEditor({
   viewOnly,
   className,
   isMarkdown,
+  type,
 }: {
   value?: string;
   onValueChange?: (value: string) => void;
   viewOnly?: boolean;
   className?: string;
   isMarkdown?: boolean;
+  type?: 'BORDERED';
 }) {
   const id = crypto.randomUUID();
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -103,7 +105,12 @@ function BlocknoteEditor({
     >
       <BlockNoteView
         id={id}
-        className={cn(viewOnly && 'viewOnly', className && className)}
+        className={cn(
+          viewOnly && 'viewOnly',
+          className && className,
+          type === 'BORDERED' &&
+            'rounded-xl border border-input px-3 py-2 shadow-sm',
+        )}
         editor={editor}
         theme={'light'}
         onChange={async () => {

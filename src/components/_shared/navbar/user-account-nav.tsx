@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
+import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { LayoutDashboard, LogOut } from 'lucide-react';
 // import { User } from "next-auth";
@@ -22,9 +23,10 @@ type User = any;
 
 interface UserAccountNavProps {
   user: Pick<User, 'name' | 'image' | 'email'>;
+  compact?: boolean; // For compact mode in combined button
 }
 
-const UserAccountNav = ({ user }: UserAccountNavProps) => {
+const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -41,12 +43,21 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-10 w-10 overflow-hidden rounded-full ring-2 hover:ring-4 hover:shadow-lg focus:ring-4 p-0"
+          className={cn(
+            'relative overflow-hidden p-0 transition-all duration-300',
+            compact
+              ? 'h-7 w-7 rounded-none hover:brightness-110 ring-0 hover:ring-0 focus:ring-0'
+              : 'h-10 w-10 rounded-full ring-2 hover:ring-4 hover:shadow-lg focus:ring-4',
+          )}
           style={
-            {
-              '--tw-ring-color': `${mainColor}30`,
-              backgroundColor: `${mainColor}05`,
-            } as React.CSSProperties
+            compact
+              ? {
+                  backgroundColor: 'transparent',
+                }
+              : ({
+                  '--tw-ring-color': `${mainColor}30`,
+                  backgroundColor: `${mainColor}05`,
+                } as React.CSSProperties)
           }
         >
           <motion.div
@@ -56,14 +67,17 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             transition={{ duration: 0.2, type: 'spring' }}
             className="relative"
           >
-            <Avatar className="h-10 w-10">
+            <Avatar className={compact ? 'h-7 w-7' : 'h-10 w-10'}>
               <AvatarImage
                 src={user.image || ''}
                 alt={user.name || ''}
                 className="object-cover"
               />
               <AvatarFallback
-                className="text-white text-sm font-bold shadow-inner"
+                className={cn(
+                  'text-white font-bold shadow-inner',
+                  compact ? 'text-xs' : 'text-sm',
+                )}
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -71,8 +85,10 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
                 {user.name ? user.name[0].toUpperCase() : 'U'}
               </AvatarFallback>
             </Avatar>
-            {/* Online indicator */}
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+            {/* Online indicator - hide in compact mode */}
+            {!compact && (
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
+            )}
           </motion.div>
         </Button>
       </DropdownMenuTrigger>
@@ -214,7 +230,9 @@ const UserAccountNav = ({ user }: UserAccountNavProps) => {
             </DropdownMenuItem>
           </motion.div>
 
-          {session?.user?.role == 'ADMIN' && (
+          {(session?.user?.role == 'ADMIN' ||
+            session?.user?.role == 'SUPER_ADMIN' ||
+            session?.user.role === 'FINANCE') && (
             <motion.div
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}

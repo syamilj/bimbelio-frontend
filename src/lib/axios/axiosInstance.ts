@@ -24,10 +24,13 @@ axiosInstance.interceptors.request.use(
     const urlPathname = window.location.pathname.split('/');
 
     if (urlPathname.length > 2) {
-      config.params = {
-        ...config.params,
-        website_sub_category_id: urlPathname[1],
-      };
+      const isThere = config.params?.website_sub_category_id;
+      if (!isThere) {
+        config.params = {
+          ...config.params,
+          website_sub_category_id: urlPathname[1],
+        };
+      }
     }
 
     const token = Cookies.get('token');

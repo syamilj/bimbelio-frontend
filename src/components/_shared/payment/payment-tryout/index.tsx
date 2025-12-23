@@ -1,5 +1,4 @@
-import { CardTryoutProps } from '@/app/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
-import { useAppContext } from '@/components/provider/provider-app';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -20,7 +19,6 @@ export const PaymentTryout = ({
   setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { data: session } = useSession();
-  const { setTransactionHistory } = useAppContext();
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -50,8 +48,9 @@ export const PaymentTryout = ({
     titleTryout: string;
     tryoutId: string;
   }) => {
+    const url = typeof window !== 'undefined' ? window.location.href : '';
     const res = await mutateGeneral('/payment/buyTryoutPremium', {
-      payload: { ...payload, userId: session?.user.id },
+      payload: { ...payload, userId: session?.user.id, url },
       type: 'post',
       toast: { hideSuccess: true },
     });
@@ -66,12 +65,14 @@ export const PaymentTryout = ({
         titleTryout: tryoutData.title,
         tryoutId: tryoutData.id,
       });
-      window.snap.pay(`${res?.data?.token}`, {
-        onClose: () => {
-          setShow(false);
-          setTransactionHistory(true);
-        },
-      });
+      const token = res?.data?.token;
+      // window.snap.pay(`${token}`, {
+      //   onClose: () => {
+      //     setShow(false);
+      //     setTransactionHistory(true);
+      //   },
+      // });
+      window.location.href = res?.data.invoiceUrl;
       setLoading(false);
     } catch (error) {
       toaster({
@@ -92,8 +93,9 @@ export const PaymentTryout = ({
       onOpenChange={setShow}
     >
       <DialogContent
-        className="sm:max-w-[425px] w-[95vw] p-0 rounded-3xl"
+        className="md:max-w-[425px] w-[95vw] p-0 rounded-3xl"
         hideClose
+        classOverlay="z-[101]"
       >
         <div className="overflow-hidden rounded-3xl bg-white">
           <div className="flex items-center justify-between bg-main p-6">

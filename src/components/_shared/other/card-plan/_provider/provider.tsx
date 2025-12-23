@@ -1,5 +1,11 @@
 // src/components/_shared/other/card-plan/_provider/provider.tsx
-import { createContext, Dispatch, SetStateAction, useContext } from 'react';
+import {
+  createContext,
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useContext,
+} from 'react';
 import { PlanDataType } from './types';
 
 export const ProviderContext = createContext<undefined | ProviderType>(
@@ -19,7 +25,23 @@ type ProviderType = {
     plan: PlanDataType;
     isCourse: boolean;
     isDocument: boolean;
+    isPrivate: boolean;
     hideFeatures: string[];
+  };
+  useViewData: {
+    platfroms: string[];
+    getDiscountPercentage: () => number;
+    isPopular: boolean;
+    isRecommended: boolean;
+    isBestSeller: boolean;
+    isLimitedTime: boolean;
+    isWishlisted: boolean;
+    setIsWishlisted: Dispatch<SetStateAction<boolean>>;
+    discount: number | undefined;
+    viewOnly: boolean | undefined;
+    classOverlay: string | undefined;
+    buttonRef: RefObject<HTMLButtonElement | null>;
+    paymentMethod: 'FULL_PAYMENT' | 'INSTALLMENT';
   };
 };
 

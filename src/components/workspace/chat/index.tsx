@@ -91,10 +91,8 @@ const MainContent = () => {
   const docId = pathnameArray && pathnameArray[pathnameArray?.length - 1];
 
   useEffect(() => {
-    console.log('masuk1');
     if (prevChatMessages && prevChatMessages?.length > 0 && !firstMessage) {
       setMessageData([GreetingMessage, ...prevChatMessages]);
-      console.log('masuk2', prevChatMessages);
     }
   }, [prevChatMessages, firstMessage, setMessageData]);
 
@@ -128,13 +126,11 @@ const MainContent = () => {
   const isNoMessages =
     messageData?.length === 0 && prevChatMessages?.length === 0 && !newChat;
 
-  console.log({
-    messageData,
-  });
-
   if (isUserDocLoading === true) {
     return <SpinnerCentered />;
   }
+
+  console.log({ isVectorised, userDoc });
 
   if (!isVectorised && userDoc) {
     return (
@@ -210,7 +206,7 @@ const FormMessageEdit = () => {
 const GreetingMessage: MessageDataType = {
   id: 'id',
   content:
-    'Selamat datang di **Bimbelio**! Saya siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
+    'Selamat datang di **Bimbelio**! Aku siap membantu Kamu. Jangan ragu untuk bertanya atau berdiskusi tentang PTN dan Kedinasan. Mari kita maksimalkan pembelajaran Kamu!',
   role: 'assistant',
   createdAt: null,
   like: false,

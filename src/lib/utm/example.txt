@@ -1,0 +1,66 @@
+Basic Page Tracking
+
+  useEffect(() => {
+    // Initialize tracking
+    tracker.trackPageView();
+  }, [linkPageId]);
+
+
+
+
+Button Click Tracking
+
+  const handleClick = async () => {
+    // Track click
+    await tracker.trackButtonClick(buttonId);
+
+    // Navigate
+    window.location.href = url;
+  };
+
+
+
+Conversion Tracking (Form Submission)
+
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const email = formData.get('email') as string;
+      const phone = formData.get('phone') as string;
+
+      // Submit form to API
+      const response = await fetch('/api/registrations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, phone }),
+      });
+
+      if (response.ok) {
+        // Track conversion
+        await tracker.trackConversion('REGISTRATION', {
+          email,
+          phone,
+          conversionValue: 1000000, // Course price
+          eventData: { courseId: 'snbt-2025' },
+        });
+
+        // Show success message
+        alert('Registration successful!');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+Custom Event Tracking
+  const handleVideoComplete = async () => {
+    await tracker.trackEvent('video_completed', {
+      eventData: { videoId },
+    });
+  };

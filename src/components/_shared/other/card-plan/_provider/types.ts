@@ -10,16 +10,22 @@ import {
   Plan,
   PlanBenefit,
   PlanFeature,
+  PlanInstallmentConfig,
+  PlanInstallmentSchedule,
+  PlanInstallmentScheduleLimitation,
   PlanLimitation,
   PlanSubscription,
+  PlanSubscriptionBundle,
   WebsiteSubCategory,
 } from '@/types/database';
 
 export type PlanDataType = Plan & {
+  totalUsers: number;
   PlanBenefit: PlanBenefit[];
   PlanLimitation: PlanLimitation;
   discount: number | undefined;
   PlanSubscription: PlanSubscription & {
+    PlanSubscriptionBundle: PlanSubscriptionBundle[];
     PlanFeature: (PlanFeature & {
       Pivot_Plan_Category: (Pivot_Plan_Category & {
         Category: Category;
@@ -32,5 +38,12 @@ export type PlanDataType = Plan & {
       Instructor: Instructor;
     };
   })[];
+  PlanInstallmentConfig:
+    | (PlanInstallmentConfig & {
+        PlanInstallmentSchedule: (PlanInstallmentSchedule & {
+          PlanInstallmentScheduleLimitation: PlanInstallmentScheduleLimitation | null;
+        })[];
+      })
+    | null;
   timeline: string;
 };

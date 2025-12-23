@@ -20,6 +20,7 @@ export const getGeneral = async (
       errorTitle?: string;
       errorMsg?: string;
     };
+    onFinished?: () => any;
     onLoading?: () => any;
     onSuccess?: ({
       message,
@@ -51,7 +52,7 @@ export const getGeneral = async (
     more.setLoading(true);
   }
 
-  if (more?.onLoading) more.onLoading();
+  if (more?.onLoading) await more.onLoading();
 
   let showToast = true;
 
@@ -89,6 +90,7 @@ export const getGeneral = async (
       });
     }
   } finally {
+    if (more?.onLoading) await more.onLoading();
     if (
       more?.setLoading &&
       (more?.endLoad == true || !more || more.endLoad === undefined)
@@ -234,7 +236,7 @@ export const mutateGeneral = async (
     setLoading(true);
   }
 
-  if (more.onLoading) more.onLoading();
+  if (more.onLoading) await more.onLoading();
 
   let showToast = true;
   // if (more.hideToast === true) showToast = false;
@@ -259,6 +261,12 @@ export const mutateGeneral = async (
     if (more?.onSuccess) {
       await more.onSuccess(resData);
     }
+    if (
+      setLoading &&
+      (more?.endLoad == true || !more || more.endLoad === undefined)
+    ) {
+      setLoading(false);
+    }
     return resData || null;
   } catch (error) {
     if (more.toast?.hideError === true) showToast = false;
@@ -278,14 +286,20 @@ export const mutateGeneral = async (
         error: errData.error,
       });
     }
-    return;
-  } finally {
     if (
       setLoading &&
       (more?.endLoad == true || !more || more.endLoad === undefined)
     ) {
       setLoading(false);
     }
+    return;
+  } finally {
+    // if (
+    //   setLoading &&
+    //   (more?.endLoad == true || !more || more.endLoad === undefined)
+    // ) {
+    //   setLoading(false);
+    // }
   }
 };
 
