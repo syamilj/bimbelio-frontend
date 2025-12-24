@@ -8,6 +8,7 @@ const serverUrl = env.NEXT_PUBLIC_SOCKET_URL;
 export const connectSocket = () => {
   if (!socket) {
     socket = io(serverUrl, {
+      transports: ['websocket'],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
