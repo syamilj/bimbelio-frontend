@@ -11,6 +11,10 @@
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
+  "overrides": {
+    "@types/react": "19.2.6",
+    "@types/react-dom": "19.2.3"
+  },
   "dependencies": {
     "@ai-sdk/ui-utils": "^1.2.11",
     "@blocknote/core": "^0.35.0",
@@ -46,13 +50,14 @@
     "@supabase/supabase-js": "^2.53.0",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/typography": "^0.5.16",
-    "ai": "4.2.11",
+    "ai": "4.3.19",
     "autoprefixer": "^10.4.21",
-    "axios": "^1.11.0",
+    "axios": "^1.12.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
+    "exceljs": "4.4.0",
     "framer-motion": "^12.23.12",
     "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
@@ -60,7 +65,7 @@
     "lucide-react": "^0.535.0",
     "lz-string": "^1.5.0",
     "motion": "^12.23.12",
-    "next": "16.0.7",
+    "next": "16.0.10",
     "nextjs-toploader": "^3.8.16",
     "papaparse": "^5.5.3",
     "react": "19.2.1",
@@ -86,7 +91,6 @@
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.5",
     "use-media": "^1.5.0",
-    "xlsx": "^0.18.5",
     "zod": "^3.24.1",
     "zustand": "^5.0.7"
   },
@@ -117,8 +121,11 @@
     "typescript": "^5.9.2"
   },
   "packageManager": "pnpm@10.20.0",
-  "overrides": {
-    "@types/react": "19.2.6",
-    "@types/react-dom": "19.2.3"
+  "pnpm": {
+    "overrides": {
+      "js-yaml@>=4.0.0 <4.1.1": "^4.1.1",
+      "jsondiffpatch@<0.7.2": "^0.7.2",
+      "mdast-util-to-hast@>=13.0.0 <13.2.1": "^13.2.1"
+    }
   }
 }
