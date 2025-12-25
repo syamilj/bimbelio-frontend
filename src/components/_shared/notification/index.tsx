@@ -30,21 +30,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useSocket } from '@/lib/socket/useSocket';
 import { cn } from '@/lib/utils';
-import { Notification as NotificationData } from '@/types/database';
 import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
 
 export const Notification = () => {
   const { data: session } = useSession();
-  const userId = session?.user.id;
   const role = session?.user.role;
-  const { on, emit, off } = useSocket();
 
   const {
-    usePopUp: { notificationPopUp, setNotificationPopUp },
-    useData: { notifications, setNotifications },
+    useData: { notifications },
     useAction: { handleDelete, handleMarkAllAsRead, handleMarkAsRead },
     useFetchRead: { isReadingAll },
     useFetchData: {
@@ -65,7 +60,6 @@ export const Notification = () => {
       setIsLoading,
       setIsViewMore,
       unreadCount,
-      setUnreadCount,
     },
   } = useNotification();
 
@@ -120,63 +114,6 @@ export const Notification = () => {
     page,
     totalPages,
   ]);
-
-  // Listen ke socket notification
-  useEffect(() => {
-    if (!userId) return;
-    console.log('Setting up notification listener for userId:', userId);
-    console.log('Listening to event: ', `notification:${userId}`);
-    on(
-      `notification:${userId}`,
-      (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
-        console.log('New notification received:', data);
-
-        const newNotif: NotificationData = {
-          ...data,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-
-        if (newNotif.isPopUp) {
-          setNotificationPopUp(newNotif);
-        }
-
-        setNotifications((prev) => [newNotif, ...prev]);
-        setUnreadCount((prev) => prev + 1);
-      },
-    );
-    return () => {
-      console.log('Cleaning up notification listener for userId:', userId);
-      off(`notification:${userId}`);
-    };
-  }, [userId]);
-
-  useEffect(() => {
-    console.log('Setting up notification listener for broadcast');
-    on(
-      `notification:broadcast`,
-      (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
-        console.log('New notification received:', data);
-
-        const newNotif: NotificationData = {
-          ...data,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-
-        if (newNotif.isPopUp) {
-          setNotificationPopUp(newNotif);
-        }
-
-        setNotifications((prev) => [newNotif, ...prev]);
-        setUnreadCount((prev) => prev + 1);
-      },
-    );
-    return () => {
-      console.log('Cleaning up notification listener for broadcast');
-      off(`notification:broadcast`);
-    };
-  }, []);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
