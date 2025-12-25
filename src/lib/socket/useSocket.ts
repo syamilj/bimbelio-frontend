@@ -40,9 +40,9 @@ export const useSocket = (serverUrl?: string) => {
       setSocketId(null);
     });
 
-    // ✅ Auto authenticate saat connect
-    socket.emit('user:auth', { userId: session.user.id });
-    console.log('[AUTH] Authenticated as:', session.user.id);
+    // // ✅ Auto authenticate saat connect
+    // socket.emit('user:auth', { userId: session.user.id });
+    // console.log('[AUTH] Authenticated as:', session.user.id);
 
     // Re-attach listeners yang sudah terdaftar
     listenersRef.current.forEach((callback, eventName) => {
