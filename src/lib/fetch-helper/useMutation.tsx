@@ -117,7 +117,7 @@ type FetchReturnType<Data, ErrorData> = {
   success: SuccessType<Data> | null;
 };
 
-type MutateType<Data = any> = (optional?: {
+export type MutateType<Data = any> = (optional?: {
   payload?: any;
   params?: object;
 }) => Promise<

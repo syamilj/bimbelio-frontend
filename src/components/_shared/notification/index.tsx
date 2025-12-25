@@ -18,9 +18,9 @@ import {
   Trophy,
   Zap,
 } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { useAppContext } from '@/components/provider/provider-app';
+import { useNotification } from '@/components/provider/privoder-notification';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,75 +30,48 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useGet } from '@/lib/fetch-helper/useGet';
-import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { useSocket } from '@/lib/socket/useSocket';
 import { cn } from '@/lib/utils';
-import { Notification as NotificationType } from '@/types/database';
+import { Notification as NotificationData } from '@/types/database';
 import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
 
-type NotificationData = NotificationType;
-
 export const Notification = () => {
-  const {
-    useNotification: { setNotificationPopUp },
-  } = useAppContext();
   const { data: session } = useSession();
   const userId = session?.user.id;
   const role = session?.user.role;
   const { on, emit, off } = useSocket();
-  const [notifications, setNotifications] = useState<NotificationData[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [filter, setFilter] = useState<'ALL' | 'UNREAD'>('ALL');
-
-  const [take, setTake] = useState<number>(10);
-  const [page, setPage] = useState<number>(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isViewMore, setIsViewMore] = useState(false);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const [isFirstFetching, setIsFirstFetching] = useState(true);
 
   const {
-    refetch: fetchNotification,
-    page: currentPage,
-    totalPages,
-    totalData,
-  } = useGet<{
-    data: NotificationData[];
-    unreadCount: number;
-  }>('/notification/getUserNotification', {
-    params: {
-      take,
+    usePopUp: { notificationPopUp, setNotificationPopUp },
+    useData: { notifications, setNotifications },
+    useAction: { handleDelete, handleMarkAllAsRead, handleMarkAsRead },
+    useFetchRead: { isReadingAll },
+    useFetchData: {
+      filter,
+      setFilter,
+      isAllLoaded,
       page,
-      unReadOnly: filter === 'UNREAD' ? 'true' : undefined,
+      setPage,
+      totalData,
+      currentPage,
+      totalPages,
     },
-    onSuccess({ data }) {
-      if (data) {
-        const newData = data.data;
-        if (page === 1) {
-          setNotifications(newData);
-          setIsLoading(false);
-        } else if (page > 1 && page <= totalPages && isViewMore) {
-          setNotifications((prev) => [...prev, ...newData]);
-          setIsLoading(false);
-        }
-        setUnreadCount(data.unreadCount);
-      }
-      setIsFirstFetching(false);
+    useState: {
+      isFirstFetching,
+      isLoading,
+      isViewMore,
+      setIsFirstFetching,
+      setIsLoading,
+      setIsViewMore,
+      unreadCount,
+      setUnreadCount,
     },
-    onError() {
-      setIsLoading(false);
-      setIsFirstFetching(false);
-    },
-    useEffectDependencies: [take, page, filter],
-  });
+  } = useNotification();
 
-  const isAllLoaded = notifications.length >= totalData;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleChangePage = useDebouncedCallback((scrollPercentage: number) => {
     if (
@@ -155,7 +128,7 @@ export const Notification = () => {
     console.log('Listening to event: ', `notification:${userId}`);
     on(
       `notification:${userId}`,
-      (data: Omit<NotificationType, 'createdAt' | 'updatedAt'>) => {
+      (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
         console.log('New notification received:', data);
 
         const newNotif: NotificationData = {
@@ -182,7 +155,7 @@ export const Notification = () => {
     console.log('Setting up notification listener for broadcast');
     on(
       `notification:broadcast`,
-      (data: Omit<NotificationType, 'createdAt' | 'updatedAt'>) => {
+      (data: Omit<NotificationData, 'createdAt' | 'updatedAt'>) => {
         console.log('New notification received:', data);
 
         const newNotif: NotificationData = {
@@ -203,74 +176,6 @@ export const Notification = () => {
       console.log('Cleaning up notification listener for broadcast');
       off(`notification:broadcast`);
     };
-  }, []);
-
-  const { mutate: deleteNotification } = useMutation(
-    '/notification/deleteNotification',
-    'delete',
-    {
-      async onError() {
-        if (page === 1) {
-          await fetchNotification();
-        } else {
-          setPage(1);
-        }
-      },
-    },
-  );
-
-  const { mutate: readNotification } = useMutation(
-    '/notification/readNotification',
-    'put',
-    {
-      toast: {
-        hideSuccess: true,
-      },
-      async onError() {
-        if (page === 1) {
-          await fetchNotification();
-        } else {
-          setPage(1);
-        }
-      },
-    },
-  );
-
-  const { mutate: readAllNotification, isLoading: isReadingAll } = useMutation(
-    '/notification/readAllNotification',
-    'put',
-    {
-      async onSuccess() {
-        if (page === 1) {
-          await fetchNotification();
-        } else {
-          setPage(1);
-        }
-      },
-    },
-  );
-
-  const handleMarkAsRead = useCallback((notifId: string) => {
-    setNotifications((prev) =>
-      prev.map((notif) =>
-        notif.id === notifId
-          ? { ...notif, isRead: true, readAt: new Date().toISOString() }
-          : notif,
-      ),
-    );
-    setUnreadCount((prev) => Math.max(0, prev - 1));
-    readNotification({
-      payload: { id: notifId },
-    });
-  }, []);
-
-  const handleDelete = useCallback((notifId: string) => {
-    setNotifications((prev) => prev.filter((notif) => notif.id !== notifId));
-    deleteNotification({ params: { id: notifId } });
-  }, []);
-
-  const handleMarkAllAsRead = useCallback(async () => {
-    await readAllNotification();
   }, []);
 
   const getPriorityColor = (priority: string) => {
@@ -576,18 +481,38 @@ export const Notification = () => {
                           <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">
                             {notif.content}
                           </p>
-                          {notif.actionUrl && notif.actionUrl?.length > 0 && (
-                            <div className="w-full flex justify-start">
-                              <Link href={notif.actionUrl}>
-                                <Button
-                                  className="py-1 px-3 h-[unset] text-xs mt-2 rounded-md"
-                                  variant={'outline'}
+                          {notif.actionUrl &&
+                            notif.actionUrl?.length > 0 &&
+                            notif.actionUrl.startsWith('/') && (
+                              <div className="w-full flex justify-start">
+                                <Link href={notif.actionUrl}>
+                                  <Button
+                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-md"
+                                    variant={'outline'}
+                                  >
+                                    Lihat Detail
+                                  </Button>
+                                </Link>
+                              </div>
+                            )}
+                          {notif.actionUrl &&
+                            notif.actionUrl?.length > 0 &&
+                            notif.actionUrl.startsWith('http') && (
+                              <div className="w-full flex justify-start">
+                                <a
+                                  href={notif.actionUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                 >
-                                  Lihat Detail
-                                </Button>
-                              </Link>
-                            </div>
-                          )}
+                                  <Button
+                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-md"
+                                    variant={'outline'}
+                                  >
+                                    Lihat Detail
+                                  </Button>
+                                </a>
+                              </div>
+                            )}
                         </div>
 
                         {/* Priority Badge */}

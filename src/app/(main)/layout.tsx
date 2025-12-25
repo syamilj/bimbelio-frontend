@@ -1,4 +1,5 @@
 import { NotificationPopUp } from '@/components/_shared/notification/notification-pop-up';
+import ProviderNotification from '@/components/provider/privoder-notification';
 import ProviderApp from '@/components/provider/provider-app';
 import ProviderCheckPayment from '@/components/provider/provider-check-payment';
 import ProviderLimitation from '@/components/provider/provider-limitation';
@@ -104,10 +105,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 <ProviderWebsiteCategory>
                   <ProviderLimitation>
                     <ProviderApp>
-                      <NotificationPopUp />
-                      <Suspense fallback={null}>
-                        <ProviderCheckPayment>{children}</ProviderCheckPayment>
-                      </Suspense>
+                      <ProviderNotification>
+                        <NotificationPopUp />
+                        <Suspense fallback={null}>
+                          <ProviderCheckPayment>
+                            {children}
+                          </ProviderCheckPayment>
+                        </Suspense>
+                      </ProviderNotification>
                     </ProviderApp>
                   </ProviderLimitation>
                 </ProviderWebsiteCategory>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppContext } from '@/components/provider/provider-app';
+import { useNotification } from '@/components/provider/privoder-notification';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
@@ -29,8 +29,9 @@ import Link from 'next/link';
 
 export const NotificationPopUp = () => {
   const {
-    useNotification: { notificationPopUp, setNotificationPopUp },
-  } = useAppContext();
+    usePopUp: { notificationPopUp, setNotificationPopUp },
+    useAction: { handleMarkAsRead },
+  } = useNotification();
 
   const handleClose = () => {
     setNotificationPopUp(null);
@@ -264,24 +265,46 @@ export const NotificationPopUp = () => {
         <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100/50 border-t border-gray-200 flex gap-2 justify-end">
           <Button
             variant="outline"
-            onClick={handleClose}
+            onClick={() => {
+              handleClose();
+              handleMarkAsRead(notificationPopUp.id);
+            }}
             className="rounded-lg font-medium hover:bg-gray-100 transition-colors"
           >
-            Tutup
+            Tandai Telah Dibaca
           </Button>
-          {notificationPopUp.actionUrl && (
-            <Link
-              href={notificationPopUp.actionUrl}
-              className="inline-block"
-            >
-              <Button
-                onClick={handleClose}
-                className="rounded-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
+          {notificationPopUp.actionUrl &&
+            notificationPopUp.actionUrl.length > 0 &&
+            notificationPopUp.actionUrl.startsWith('/') && (
+              <Link
+                href={notificationPopUp.actionUrl}
+                className="inline-block"
               >
-                Lihat Selengkapnya
-              </Button>
-            </Link>
-          )}
+                <Button
+                  onClick={handleClose}
+                  className="rounded-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
+                >
+                  Lihat Selengkapnya
+                </Button>
+              </Link>
+            )}
+          {notificationPopUp.actionUrl &&
+            notificationPopUp.actionUrl.length > 0 &&
+            notificationPopUp.actionUrl.startsWith('http') && (
+              <a
+                href={notificationPopUp.actionUrl}
+                className="inline-block"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  onClick={handleClose}
+                  className="rounded-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
+                >
+                  Lihat Selengkapnya
+                </Button>
+              </a>
+            )}
         </div>
       </DialogContent>
     </Dialog>
@@ -290,8 +313,8 @@ export const NotificationPopUp = () => {
 
 const getLiveClassMetadata = () => {
   const {
-    useNotification: { notificationPopUp, setNotificationPopUp },
-  } = useAppContext();
+    usePopUp: { notificationPopUp, setNotificationPopUp },
+  } = useNotification();
 
   if (!notificationPopUp) return null;
 
@@ -394,8 +417,8 @@ const getLiveClassMetadata = () => {
 
 const getTryoutMetadata = () => {
   const {
-    useNotification: { notificationPopUp },
-  } = useAppContext();
+    usePopUp: { notificationPopUp, setNotificationPopUp },
+  } = useNotification();
 
   if (!notificationPopUp) return null;
 
