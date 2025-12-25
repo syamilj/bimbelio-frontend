@@ -5,12 +5,11 @@ import {
   NotificationRelatedTypeEnum,
   NotificationTypeEnum,
 } from '@/types/database';
+
 import axios from 'axios';
 
-export const addNotification = async ({
-  id,
-  userId,
-  isBroadcast,
+export const addManyNotification = async ({
+  users,
   isPopUp,
   title,
   content,
@@ -24,14 +23,14 @@ export const addNotification = async ({
   metadata,
   runAt,
   sendAt,
-  whatsApp,
-  email,
   retryCount,
   maxRetries,
 }: {
-  id?: string;
-  userId?: string;
-  isBroadcast: boolean;
+  users: {
+    userId: string;
+    email?: string;
+    whatsApp?: string;
+  }[];
   isPopUp: boolean;
   title: string;
   content: string;
@@ -43,8 +42,6 @@ export const addNotification = async ({
   relatedResourceType?: NotificationRelatedTypeEnum;
   actionUrl?: string;
   metadata?: any[] | Record<string, any>;
-  whatsApp?: string;
-  email?: string;
   runAt?: Date;
   sendAt?: Date;
   retryCount: number;
@@ -56,11 +53,9 @@ export const addNotification = async ({
     }
     console.log('new Date : ', new Date());
     const res = await axios.post(
-      `${env.NEXT_PUBLIC_SOCKET_URL}/notification/queue`,
+      `${env.NEXT_PUBLIC_SOCKET_URL}/notification/queue/addMany`,
       {
-        id,
-        userId,
-        isBroadcast,
+        users,
         isPopUp,
         title,
         content,
@@ -74,19 +69,17 @@ export const addNotification = async ({
         metadata: metadata || null,
         runAt,
         sendAt,
-        whatsApp,
-        email,
         retryCount,
         maxRetries,
       },
     );
     console.log(
-      `[SOCKET] Notification added for user ${userId}: ${res?.data?.data?.id}`,
+      `[SOCKET] Notification added for ${users.length} users : ${res?.data?.data?.id}`,
     );
     return true;
   } catch (error: any) {
     console.log(
-      `[SOCKET] Failed to add notification for user ${userId}:`,
+      `[SOCKET] Failed to add notification for ${users.length} users :`,
       error?.message,
     );
     return false;

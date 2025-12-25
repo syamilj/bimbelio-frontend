@@ -33,7 +33,7 @@ export const ModalVerification = ({
   const [open, setOpen] = useState(false);
   return (
     <AlertDialog
-      open={open}
+      open={isLoading ? true : open}
       onOpenChange={setOpen}
     >
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -59,7 +59,7 @@ export const ModalVerification = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Batal</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading}>Batal</AlertDialogCancel>
           <AlertDialogAction
             className={cn(
               type === 'delete' && 'bg-red-600 text-red-100 hover:bg-red-500',
@@ -69,6 +69,7 @@ export const ModalVerification = ({
               onClick();
               setOpen(false);
             }}
+            disabled={isLoading}
           >
             {isLoading ? (
               <Loader2 className="animate-spin w-4 h-4" />
