@@ -281,7 +281,10 @@ export const NotificationPopUp = () => {
                 className="inline-block"
               >
                 <Button
-                  onClick={handleClose}
+                  onClick={() => {
+                    handleClose();
+                    handleMarkAsRead(notificationPopUp.id);
+                  }}
                   className="rounded-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
                 >
                   Lihat Selengkapnya
@@ -298,7 +301,10 @@ export const NotificationPopUp = () => {
                 rel="noopener noreferrer"
               >
                 <Button
-                  onClick={handleClose}
+                  onClick={() => {
+                    handleClose();
+                    handleMarkAsRead(notificationPopUp.id);
+                  }}
                   className="rounded-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
                 >
                   Lihat Selengkapnya
