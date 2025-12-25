@@ -19,7 +19,7 @@ import {
   getGeneral,
   mutateGeneral,
 } from '@/lib/fetch-helper/fetch-helper';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { getDateString } from '@/lib/utils';
 import { ChatHistory } from '@/types/database';
 import {
@@ -162,25 +162,22 @@ export default function AIChatPage() {
   // ];
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Chat AI',
         content_type: 'page',
+        content_id: 'chat_ai_page',
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            email: session.user.email,
+            phone: session.user.phone || undefined,
+            userId: session.user.id,
+            firstName: session.user.name?.split(' ')[0],
+            lastName: session.user.name?.split(' ').slice(1).join(' '),
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Chat AI',
-      content_id: 'chat_ai_page', // ✅ Required untuk TikTok VSA
     });
   }, [session]);
 

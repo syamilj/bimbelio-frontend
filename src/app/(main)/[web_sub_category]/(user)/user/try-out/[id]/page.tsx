@@ -4,7 +4,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Clock, Shield } from 'lucide-react';
@@ -133,25 +133,22 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   }, [tryoutData]);
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Tryout Detail',
         content_type: 'page',
+        content_id: `tryout_detail_${tryoutId}`,
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      sessionUser?.user
+      user: sessionUser?.user
         ? {
-            em: sessionUser.user.email,
-            ph: sessionUser.user.phone || undefined,
-            fn: sessionUser.user.name?.split(' ')[0],
-            ln: sessionUser.user.name?.split(' ').slice(1).join(' '),
+            email: sessionUser.user.email,
+            phone: sessionUser.user.phone || undefined,
+            userId: sessionUser.user.id,
+            firstName: sessionUser.user.name?.split(' ')[0],
+            lastName: sessionUser.user.name?.split(' ').slice(1).join(' '),
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Tryout Detail',
-      content_id: `tryout_detail_${tryoutId}`, // ✅ Required untuk TikTok VSA menggunakan tryout ID
     });
   }, [sessionUser, tryoutId]);
 

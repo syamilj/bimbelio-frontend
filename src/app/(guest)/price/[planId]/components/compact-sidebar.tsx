@@ -5,7 +5,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { formatDateDifference } from '@/lib/utils/date';
 import { motion } from 'framer-motion';
 import {
@@ -37,15 +37,14 @@ export default function CompactSidebar({
   // Handle consultation dialog open
   const handleConsultationClick = () => {
     try {
-      pixel.meta.track('ViewContent', {
-        content_type: 'page',
-        content_name: 'Contact Modal from Plan Detail',
-      });
-
-      pixel.tiktok.track('ViewContent', {
-        content_name: 'Contact Modal from Plan Detail',
-        content_id: 'plan_detail_contact_modal',
-        page_path: '/plan-detail-contact-modal',
+      trackUnifiedEvent({
+        eventName: 'ViewContent',
+        customData: {
+          content_type: 'page',
+          content_name: 'Contact Modal from Plan Detail',
+          content_id: 'plan_detail_contact_modal',
+          page_path: '/plan-detail-contact-modal',
+        },
       });
 
       console.log('📊 Pixel tracked: Contact dialog opened from plan detail');

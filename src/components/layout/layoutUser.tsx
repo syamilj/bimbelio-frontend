@@ -330,6 +330,8 @@ const HeaderUser = () => {
       color: '#ef4444',
     },
   ];
+
+  console.log({ userTier });
   // MAIN LAYOUT --------------------------------------------------
   return (
     <header
@@ -612,7 +614,7 @@ const HeaderUser = () => {
                   }}
                 >
                   <Crown className="w-4 h-4" />
-                  <span>{userTier || 'Premium'}</span>
+                  <span>{userTier || 'Free Tier'}</span>
                   <ChevronDown className="w-3.5 h-3.5 opacity-70" />
                 </div>
               </TooltipTrigger>
@@ -697,115 +699,144 @@ const HeaderUser = () => {
                                   </div>
                                 )}
                               {/* Current Installment Info */}
-                              {isInstallment && currentInstallment && (
-                                <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
-                                  <p className="text-[11px] font-semibold text-amber-900 mb-2 flex items-center gap-1">
-                                    <Clock className="w-3 h-3" />
-                                    Cicilan
-                                  </p>
-                                  <div className="space-y-1.5">
-                                    <div className="flex items-center justify-between">
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
-                                          #
-                                          {currentInstallment.installmentNumber}
-                                        </span>
-                                        <span className="text-sm font-bold text-gray-900">
-                                          {formatIDR(currentInstallment.amount)}
-                                        </span>
-                                      </div>
-                                      {currentInstallment.isPaid ? (
-                                        <Badge className="bg-green-100 text-green-700 text-[9px] px-1.5 py-0">
-                                          ✓ Lunas
-                                        </Badge>
-                                      ) : new Date(currentInstallment.dueDate) <
-                                        new Date() ? (
-                                        <Badge className="bg-red-100 text-red-700 text-[9px] px-1.5 py-0">
-                                          ⚠ Tertunda
-                                        </Badge>
-                                      ) : (
-                                        <Badge className="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0">
-                                          Menunggu Pembayaran
-                                        </Badge>
-                                      )}
-                                    </div>
-
-                                    <div className="grid grid-cols-3 gap-1.5 text-[10px]">
-                                      <div>
-                                        <p className="text-amber-700 font-medium text-[9px]">
-                                          Jatuh Tempo
-                                        </p>
-                                        <p className="text-gray-900 font-semibold">
-                                          {new Date(
-                                            currentInstallment.dueDate,
-                                          ).toLocaleDateString('id-ID', {
-                                            day: 'numeric',
-                                            month: 'short',
-                                          })}
-                                        </p>
-                                      </div>
-                                      <div>
-                                        <p className="text-amber-700 font-medium text-[9px]">
-                                          Tenggang
-                                        </p>
-                                        <p className="text-green-600 font-semibold">
-                                          {new Date(
-                                            currentInstallment.gracePeriodEndDate,
-                                          ).toLocaleDateString('id-ID', {
-                                            day: 'numeric',
-                                            month: 'short',
-                                          })}
-                                        </p>
-                                      </div>
-
-                                      <div>
-                                        <p className="text-amber-700 font-medium text-[9px]">
-                                          Akses Berakhir
-                                        </p>
-                                        <p className="text-gray-900 font-semibold">
-                                          {new Date(
-                                            currentInstallment.expiredAccessDate,
-                                          ).toLocaleDateString('id-ID', {
-                                            day: 'numeric',
-                                            month: 'short',
-                                          })}
-                                        </p>
-                                      </div>
-                                    </div>
-
-                                    {currentInstallment.lateFee > 0 &&
-                                      !currentInstallment.isPaid &&
-                                      new Date(currentInstallment.dueDate) <
-                                        new Date() && (
-                                        <div className="p-1.5 bg-orange-100 rounded border border-orange-300">
-                                          <p className="text-[9px] text-orange-700 font-semibold">
-                                            Denda:{' '}
+                              {isInstallment &&
+                                currentInstallment &&
+                                currentInstallment.isPaid === false && (
+                                  <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
+                                    <p className="text-[11px] font-semibold text-amber-900 mb-2 flex items-center gap-1">
+                                      <Clock className="w-3 h-3" />
+                                      Cicilan
+                                    </p>
+                                    <div className="space-y-1.5">
+                                      <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                          <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
+                                            #
+                                            {
+                                              currentInstallment.installmentNumber
+                                            }
+                                          </span>
+                                          <span className="text-sm font-bold text-gray-900">
                                             {formatIDR(
-                                              currentInstallment.lateFee,
+                                              currentInstallment.amount,
                                             )}
+                                          </span>
+                                        </div>
+                                        {currentInstallment.isPaid ? (
+                                          <Badge className="bg-green-100 text-green-700 text-[9px] px-1.5 py-0">
+                                            ✓ Lunas
+                                          </Badge>
+                                        ) : new Date(
+                                            currentInstallment.dueDate,
+                                          ) < new Date() ? (
+                                          <Badge className="bg-red-100 text-red-700 text-[9px] px-1.5 py-0">
+                                            ⚠ Tertunda
+                                          </Badge>
+                                        ) : (
+                                          <Badge className="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0">
+                                            Menunggu Pembayaran
+                                          </Badge>
+                                        )}
+                                      </div>
+
+                                      <div className="grid grid-cols-3 gap-1.5 text-[10px]">
+                                        <div>
+                                          <p className="text-amber-700 font-medium text-[9px]">
+                                            Jatuh Tempo
+                                          </p>
+                                          <p className="text-gray-900 font-semibold">
+                                            {new Date(
+                                              currentInstallment.dueDate,
+                                            ).toLocaleDateString('id-ID', {
+                                              day: 'numeric',
+                                              month: 'short',
+                                            })}
                                           </p>
                                         </div>
-                                      )}
-                                    <Button
-                                      className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-lg bg-green-50 border-green-400"
-                                      variant={'outline'}
-                                      onClick={() =>
-                                        setPagesSetting('installment')
-                                      }
-                                    >
-                                      Bayar Sekarang
-                                    </Button>
+                                        <div>
+                                          <p className="text-amber-700 font-medium text-[9px]">
+                                            Tenggang
+                                          </p>
+                                          <p className="text-green-600 font-semibold">
+                                            {new Date(
+                                              currentInstallment.gracePeriodEndDate,
+                                            ).toLocaleDateString('id-ID', {
+                                              day: 'numeric',
+                                              month: 'short',
+                                            })}
+                                          </p>
+                                        </div>
+
+                                        <div>
+                                          <p className="text-amber-700 font-medium text-[9px]">
+                                            Akses Berakhir
+                                          </p>
+                                          <p className="text-gray-900 font-semibold">
+                                            {new Date(
+                                              currentInstallment.expiredAccessDate,
+                                            ).toLocaleDateString('id-ID', {
+                                              day: 'numeric',
+                                              month: 'short',
+                                            })}
+                                          </p>
+                                        </div>
+                                      </div>
+
+                                      {currentInstallment.lateFee > 0 &&
+                                        !currentInstallment.isPaid &&
+                                        new Date(currentInstallment.dueDate) <
+                                          new Date() && (
+                                          <div className="p-1.5 bg-orange-100 rounded border border-orange-300">
+                                            <p className="text-[9px] text-orange-700 font-semibold">
+                                              Denda:{' '}
+                                              {formatIDR(
+                                                currentInstallment.lateFee,
+                                              )}
+                                            </p>
+                                          </div>
+                                        )}
+                                      <Button
+                                        className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-lg bg-green-50 border-green-400"
+                                        variant={'outline'}
+                                        onClick={() =>
+                                          setPagesSetting('installment')
+                                        }
+                                      >
+                                        Bayar Sekarang
+                                      </Button>
+                                    </div>
                                   </div>
+                                )}
+                              {isInstallment &&
+                                currentInstallment &&
+                                currentInstallment.isPaid && (
+                                  <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
+                                    <div>
+                                      <p className="text-amber-700 font-medium text-[9px]">
+                                        Akses Berakhir
+                                      </p>
+                                      <p className="text-gray-900 font-semibold text-xs">
+                                        {new Date(
+                                          currentInstallment.expiredAccessDate,
+                                        ).toLocaleDateString('id-ID', {
+                                          day: 'numeric',
+                                          month: 'long',
+                                          year: 'numeric',
+                                        })}
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+                              {sub.paymentType === 'FULL_PAYMENT' && (
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="text-gray-500">
+                                    Expired:{' '}
+                                    {new Date(
+                                      sub.planExpire,
+                                    ).toLocaleDateString('id-ID')}
+                                  </span>
                                 </div>
                               )}
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="text-gray-500">
-                                  Expired:{' '}
-                                  {new Date(sub.planExpire).toLocaleDateString(
-                                    'id-ID',
-                                  )}
-                                </span>
-                              </div>
                               <Button
                                 asChild
                                 variant="outline"

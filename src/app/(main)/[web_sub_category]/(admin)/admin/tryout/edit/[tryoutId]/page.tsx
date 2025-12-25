@@ -429,8 +429,12 @@ const NewTryOut = () => {
   const handleSetLocalData = useDebouncedCallback(
     (tryoutId: string, saveData: any) => {
       // const notCompressed = JSON.stringify(saveData);
-      const compressed = LZString.compress(JSON.stringify(saveData));
-      localStorage.setItem(`temporary-edit-tryout-${tryoutId}`, compressed);
+      try {
+        const compressed = LZString.compress(JSON.stringify(saveData));
+        localStorage.setItem(`temporary-edit-tryout-${tryoutId}`, compressed);
+      } catch (error) {
+        console.log('Failed to save temporary data:', error);
+      }
     },
     1000,
   );

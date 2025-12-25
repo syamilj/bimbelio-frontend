@@ -5,7 +5,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { UserTryout } from '@/types/database';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -38,14 +38,14 @@ export default function TryOutPage() {
 
   useEffect(() => {
     // ✅ ENRICHED VIEWCONTENT EVENT DATA
-    pixel.meta.track('ViewContent', {
-      content_name: 'Tryout Page',
-      content_type: 'page',
-    });
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Tryout Page',
-      page_path: `/user/try-out`,
-      content_id: 'tryout_page_main', // ✅ Required untuk TikTok VSA
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
+        content_name: 'Tryout Page',
+        content_type: 'page',
+        page_path: `/user/try-out`,
+        content_id: 'tryout_page_main',
+      },
     });
   }, []);
 

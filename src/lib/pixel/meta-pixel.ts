@@ -1,6 +1,8 @@
 'use client';
 
 import { MetaPixelCustomDataType, MetaPixelEventType } from './types';
+import { createEventId } from '@/lib/tracking/event-id';
+import { trackServerEvent } from '@/lib/tracking/server-events';
 
 let isMetaPixelInitialized = false;
 
@@ -74,13 +76,28 @@ export const trackMetaEvent = (
   }
 
   // Track event
-  if (advancedMatching && Object.keys(advancedMatching).length > 0) {
-    // Track dengan advanced matching data
-    (window as any).fbq('track', event, data || {}, advancedMatching);
-  } else {
-    // Track normal tanpa advanced matching
-    (window as any).fbq('track', event, data || {});
-  }
+  const eventId = createEventId(`meta_${event}`);
+
+  // Browser pixel (with eventID for dedup)
+  (window as any).fbq('track', event, data || {}, { eventID: eventId });
+
+  // Server CAPI (best-effort)
+  trackServerEvent({
+    eventName: event,
+    eventId,
+    platforms: ['meta'],
+    user: advancedMatching
+      ? {
+          email: advancedMatching.em,
+          phone: advancedMatching.ph,
+          firstName: advancedMatching.fn,
+          lastName: advancedMatching.ln,
+        }
+      : undefined,
+    customData: data || {},
+  }).catch((e) => {
+    console.warn('Meta server tracking failed:', e);
+  });
 }; // ✅ Helper function untuk hash data user (Advanced Matching)
 export const hashUserData = async (value: string): Promise<string> => {
   if (!value) return '';

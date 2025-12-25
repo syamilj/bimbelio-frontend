@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { CONTACT_CONFIG } from '@/config/contact';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import { MessageCircle, Phone, Users } from 'lucide-react';
 
@@ -44,14 +44,14 @@ const useContactOptions = (
   // Pixel tracking function (sama seperti di FloatingContactButton)
   const trackContactEvent = (contactType: string, contactValue: number) => {
     try {
-      pixel.meta.track('Contact', {
-        content_type: 'contact',
-        content_name: contactType,
-      });
-
-      pixel.tiktok.track('Contact', {
-        content_name: contactType,
-        content_id: `contact_${contactType.toLowerCase()}`,
+      trackUnifiedEvent({
+        eventName: 'Contact',
+        customData: {
+          content_type: 'contact',
+          content_name: contactType,
+          content_id: `contact_${contactType.toLowerCase()}`,
+          value: contactValue,
+        },
       });
 
       console.log(`📊 Pixel tracked: ${contactType} contact initiated`);
@@ -102,15 +102,14 @@ const useContactOptions = (
     icon: <Users className="w-5 h-5" />,
     action: () => {
       try {
-        pixel.meta.track('Lead', {
-          content_type: 'community',
-          content_name: 'discord_group',
-          value: 0,
-        });
-
-        pixel.tiktok.track('Lead', {
-          content_name: 'discord_group',
-          content_id: 'discord_group_join',
+        trackUnifiedEvent({
+          eventName: 'Lead',
+          customData: {
+            content_type: 'community',
+            content_name: 'discord_group',
+            content_id: 'discord_group_join',
+            value: 0,
+          },
         });
       } catch (error) {
         console.warn('Pixel tracking error:', error);
