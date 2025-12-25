@@ -4,7 +4,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import {
   Award,
@@ -31,25 +31,22 @@ export default function UTBKSIMAKPredictor() {
   } = useProvider();
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Prediction Detail',
         content_type: 'page',
+        content_id: `prediction_detail_${predictionId}`,
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            email: session.user.email,
+            phone: session.user.phone || undefined,
+            userId: session.user.id,
+            firstName: session.user.name?.split(' ')[0],
+            lastName: session.user.name?.split(' ').slice(1).join(' '),
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Prediction Detail',
-      content_id: `prediction_detail_${predictionId}`, // ✅ Required untuk TikTok VSA
     });
   }, [session, predictionId]);
 

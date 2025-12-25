@@ -1,11 +1,11 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { ArrowRight, Phone } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type React from 'react';
-import { lazy, Suspense, useState, useCallback } from 'react';
+import { lazy, Suspense, useCallback, useState } from 'react';
 
 // Lazy loading untuk dialog
 const ConsultationDialog = lazy(
@@ -18,9 +18,9 @@ const HeroSection: React.FC = () => {
 
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
-  const scrollToTryout = useCallback((e: React.MouseEvent) => {
+  const scrollToElement = useCallback((e: React.MouseEvent, id: string) => {
     e.preventDefault();
-    const el = document.getElementById('tryout');
+    const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -89,15 +89,15 @@ const HeroSection: React.FC = () => {
 
               <a
                 href="#tryout"
-                onClick={scrollToTryout}
+                onClick={(e) => scrollToElement(e, 'tryout')}
                 className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
                 style={{ backgroundColor: mainColor }}
               >
                 Tryout Gratis
               </a>
-<a
-                href="#live-class"
-                onClick={scrollToTryout}
+              <a
+                href="#live-learning"
+                onClick={(e) => scrollToElement(e, 'live-learning')}
                 className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
                 style={{ backgroundColor: mainColor }}
               >

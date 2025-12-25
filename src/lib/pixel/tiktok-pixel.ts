@@ -1,6 +1,9 @@
 'use client';
 
 import { TiktokPixelCustomDataType, TiktokPixelEventType } from './types';
+import { createEventId } from '@/lib/tracking/event-id';
+import { trackServerEvent } from '@/lib/tracking/server-events';
+import { normalizeTikTokCustomData } from '@/lib/tracking/normalize-tiktok';
 
 let isTikTokPixelInitialized = false;
 
@@ -48,6 +51,20 @@ export const trackTikTokEvent = (
     trackedTikTokEvents[eventKey] = true;
   }
 
-  // Track event
-  (window as any).ttq.track(event, data || {});
+  const eventId = createEventId(`tt_${event}`);
+
+  const normalizedData = normalizeTikTokCustomData((data || {}) as Record<string, any>);
+
+  // Track event (with event_id for dedup)
+  (window as any).ttq.track(event, { ...normalizedData, event_id: eventId });
+
+  // Server Events API (best-effort)
+  trackServerEvent({
+    eventName: event,
+    eventId,
+    platforms: ['tiktok'],
+    customData: normalizedData,
+  }).catch((e) => {
+    console.warn('TikTok server tracking failed:', e);
+  });
 };

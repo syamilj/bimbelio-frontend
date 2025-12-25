@@ -22,7 +22,8 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Toaster } from 'react-hot-toast';
+// import { Toaster } from 'react-hot-toast';
+import { Toaster } from '@/components/ui/sonner';
 
 export default function ProviderSessionAuth({
   children,

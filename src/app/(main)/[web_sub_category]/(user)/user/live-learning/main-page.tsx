@@ -26,7 +26,7 @@ import {
   website_sub_category_id_params,
 } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { formatDateTime, formatDuration } from '@/lib/utils';
 import { getStatusColor } from '@/lib/utils/live-class';
 import {
@@ -232,25 +232,22 @@ export default function LiveLearningDashboard({
   });
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Live Class Page',
         content_type: 'page',
+        content_id: 'live_class_page_main',
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            email: session.user.email,
+            phone: session.user.phone || undefined,
+            userId: session.user.id,
+            firstName: session.user.name?.split(' ')[0],
+            lastName: session.user.name?.split(' ').slice(1).join(' '),
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Live Class Page',
-      content_id: 'live_class_page_main', // ✅ Required untuk TikTok VSA
     });
   }, [session]);
 

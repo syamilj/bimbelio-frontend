@@ -10,6 +10,7 @@ import {
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
+  BarChart3,
   BookOpen,
   Bot,
   ChevronDown,
@@ -56,6 +57,11 @@ const navSections: NavSection[] = [
         title: 'Dashboard',
         url: (subCategoryId: string) => `/${subCategoryId}/user/dashboard`,
         icon: Home,
+      },
+      {
+        title: 'Rapor',
+        url: (subCategoryId: string) => `/${subCategoryId}/user/report`,
+        icon: BarChart3,
       },
       {
         title: 'Peringkat',

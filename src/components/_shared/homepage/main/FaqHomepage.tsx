@@ -2,7 +2,7 @@
 
 import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
 import { Button } from '@/components/ui/button';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -147,15 +147,14 @@ export default function FaqHomepage() {
   // Handle consultation dialog open
   const handleConsultationClick = () => {
     try {
-      pixel.meta.track('ViewContent', {
-        content_type: 'page',
-        content_name: 'Contact Modal from FAQ',
-      });
-
-      pixel.tiktok.track('ViewContent', {
-        content_name: 'Contact Modal from FAQ',
-        content_id: 'faq_contact_modal',
-        page_path: '/faq-contact-modal',
+      trackUnifiedEvent({
+        eventName: 'ViewContent',
+        customData: {
+          content_type: 'page',
+          content_name: 'Contact Modal from FAQ',
+          content_id: 'faq_contact_modal',
+          page_path: '/faq-contact-modal',
+        },
       });
 
       console.log('📊 Pixel tracked: Contact dialog opened from FAQ');

@@ -2,7 +2,7 @@
 
 import { useSession } from '@/components/provider/provider-session-auth';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Provider from './_provider/provider';
@@ -18,25 +18,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, [website_sub_category_id_params]);
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    const fullName = session?.user?.name || '';
+    const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
+    const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Prediction Page',
         content_type: 'page',
+        content_id: 'prediction_page_layout',
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            userId: session.user.id?.toString?.() || undefined,
+            email: session.user.email || undefined,
+            phone: session.user.phone || undefined,
+            firstName: firstName || undefined,
+            lastName,
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Prediction Page',
-      content_id: 'prediction_page_layout', // ✅ Required untuk TikTok VSA
     });
   }, [session]);
 

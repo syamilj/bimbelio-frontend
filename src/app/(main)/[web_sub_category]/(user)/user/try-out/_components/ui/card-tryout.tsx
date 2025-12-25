@@ -15,7 +15,7 @@ import {
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking Lead
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn, getDateString } from '@/lib/utils';
 import { IconTailedArrowUp45 } from '@/styles/icon';
 import type {
@@ -145,13 +145,13 @@ export default function CardTryOut({
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  useEffect(() => {
-    if (showDetail) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [showDetail]);
+  // useEffect(() => {
+  //   if (showDetail) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'auto';
+  //   }
+  // }, [showDetail]);
 
   const getTimer = (date: any, item: CardTryoutProps): any => {
     const targetDate = new Date(date);
@@ -227,30 +227,32 @@ export default function CardTryOut({
 
         // ✅ Track Lead Event - User mendaftar try out
         try {
-          pixel.meta.track(
-            'Lead',
-            {
+          const fullName = session?.user?.name || '';
+          const [firstName, ...restNameParts] = fullName
+            .split(' ')
+            .filter(Boolean);
+          const lastName = restNameParts.length
+            ? restNameParts.join(' ')
+            : undefined;
+
+          trackUnifiedEvent({
+            eventName: 'Lead',
+            customData: {
               content_name: `Tryout Registration - ${showDetail.title}`,
               content_type: 'tryout',
-              value: isPremium ? 1 : 0, // 1 untuk premium, 0 untuk gratis
+              value: isPremium ? 1 : 0,
               currency: 'IDR',
               contents: [{ id: showDetail.id, quantity: 1 }],
             },
-            {
-              // Advanced Matching data
-              em: session?.user?.email,
-              ph: session?.user?.phone || undefined, // ✅ Handle null value
-              fn: session?.user?.name?.split(' ')[0],
-              ln: session?.user?.name?.split(' ').slice(1).join(' '),
-            },
-          );
-
-          pixel.tiktok.track('Lead', {
-            content_name: `Tryout Registration - ${showDetail.title}`,
-            content_type: 'tryout',
-            value: isPremium ? 1 : 0,
-            currency: 'IDR',
-            content_id: `tryout_registration_${showDetail.id}`, // ✅ Required untuk TikTok VSA
+            user: session?.user
+              ? {
+                  userId: session.user.id?.toString?.() || undefined,
+                  email: session.user.email || undefined,
+                  phone: session.user.phone || undefined,
+                  firstName: firstName || undefined,
+                  lastName,
+                }
+              : undefined,
           });
         } catch (pixelError) {
           console.warn(
