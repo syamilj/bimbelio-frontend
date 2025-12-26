@@ -139,7 +139,8 @@ export default function NotificationQueuePage() {
                 <TableRow>
                   <TableHead>No</TableHead>
                   <TableHead>Title</TableHead>
-                  <TableHead>Type</TableHead>
+                  <TableHead>Send Type</TableHead>
+                  <TableHead>Pop Up</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Run At</TableHead>
@@ -178,6 +179,9 @@ export default function NotificationQueuePage() {
                       </TableCell>
                       <TableCell className="text-black text-sm">
                         {notif.userId ? notif.userId : 'Broadcast'}
+                      </TableCell>
+                      <TableCell className="text-black text-sm">
+                        {notif.isPopUp ? 'Yes' : 'No'}
                       </TableCell>
                       <TableCell className="text-black text-sm">
                         {notif.type}
