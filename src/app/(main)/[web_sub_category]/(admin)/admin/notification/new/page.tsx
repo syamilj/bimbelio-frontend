@@ -30,6 +30,7 @@ import { Controller, useForm } from 'react-hook-form';
 interface NotificationFormData {
   userId?: string;
   isBroadcast: boolean;
+  isPopUp: boolean;
   title: string;
   content: string;
   description?: string;
@@ -55,9 +56,11 @@ export default function CreateNotification() {
         isBroadcast: true,
         isSendingWhatsApp: false,
         isSendingEmail: false,
+        isPopUp: false,
       },
     });
 
+  const isPopUpValue = watch('isPopUp');
   const broadcastValue = watch('isBroadcast');
   const metadataValue = watch('metadata');
 
@@ -68,6 +71,7 @@ export default function CreateNotification() {
       const payload = {
         userId: data.userId,
         isBroadcast: data.isBroadcast,
+        isPopUp: data.isPopUp,
         title: data.title,
         content: data.content,
         description: data.description,
@@ -242,6 +246,24 @@ export default function CreateNotification() {
                   />
                 </div>
               )}
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="isPopUp"
+                  checked={isPopUpValue}
+                  onCheckedChange={(checked) => {
+                    setValue('isPopUp', checked);
+                  }}
+                />
+                <Label
+                  htmlFor="isPopUp"
+                  className="font-medium cursor-pointer"
+                >
+                  Tampilkan sebagai Pop-up
+                </Label>
+              </div>
             </div>
           </CardContent>
         </Card>
