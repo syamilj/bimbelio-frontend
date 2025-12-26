@@ -6,7 +6,6 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { env } from '@/env.mjs';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
@@ -840,8 +839,6 @@ const TabsSection = () => {
 };
 
 const ButtonSection = () => {
-  const { data: session } = useSession();
-  const TRACK_ENDPOINT = `${env.NEXT_PUBLIC_API_URL}/payment/clickNotif`;
   const { setTransactionPopUp } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
   const {
@@ -851,30 +848,6 @@ const ButtonSection = () => {
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
-
-  const clickNotif = () => {
-    console.log('Preparing to send click notification...');
-    if (!session) return;
-    try {
-      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
-        const blob = new Blob(
-          [
-            JSON.stringify({
-              userId: session.user.id,
-              planId: plan.id,
-            }),
-          ],
-          {
-            type: 'application/json',
-          },
-        );
-        const success = navigator.sendBeacon(TRACK_ENDPOINT, blob);
-        console.log('Click notification sent via sendBeacon:', success);
-      }
-    } catch (error) {
-      console.error('Error sending click notification:', error);
-    }
-  };
 
   return (
     <div className="mt-6 space-y-3">
@@ -910,7 +883,14 @@ const ButtonSection = () => {
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
                 onClick={() => {
-                  clickNotif();
+                  // ✅ ADDTOCART TRACKING - Track saat user klik "Beli Sekarang"
+                  try {
+                  } catch (pixelError) {
+                    console.warn(
+                      'Pixel tracking error on add to cart:',
+                      pixelError,
+                    );
+                  }
                 }}
               >
                 <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />

@@ -1,7 +1,7 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import HeroSection from '@/components/_shared/homepage/home-v2/01-hero';
+import dynamic from 'next/dynamic';
 
 // TIER 2: SSR = true (Above fold, important for initial render)
 const AboutSection = dynamic(

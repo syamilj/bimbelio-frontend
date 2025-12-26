@@ -1,6 +1,7 @@
 import { getDate, getHours } from '@/lib/utils';
 import { IconCheckList, IconPlus, IconWrong } from '@/styles/icon';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
+// import toast from "react-hot-toast";
 
 interface ToasterProps {
   title: string;
@@ -17,10 +18,10 @@ export const toaster = ({
   duration,
   noDate,
 }: ToasterProps) => {
-  toast(
-    (data: any) => (
+  toast.custom(
+    (number) => (
       <Toasts
-        data={data}
+        number={parseInt(number.toString())}
         condition={condition}
         title={title}
         description={description}
@@ -28,7 +29,8 @@ export const toaster = ({
       />
     ),
     {
-      duration: duration ? duration : 1500,
+      position: 'top-center',
+      duration: duration ? duration : 3000,
       style: {
         padding: 0,
         margin: 0,
@@ -37,16 +39,36 @@ export const toaster = ({
       },
     },
   );
+  // toast(
+  //   (data: any) => (
+  //     <Toasts
+  //       data={data}
+  //       condition={condition}
+  //       title={title}
+  //       description={description}
+  //       noDate={noDate ? noDate : false}
+  //     />
+  //   ),
+  //   {
+  //     duration: duration ? duration : 1500,
+  //     style: {
+  //       padding: 0,
+  //       margin: 0,
+  //       boxShadow: "none",
+  //       background: "transparent",
+  //     },
+  //   }
+  // );
 };
 
-const Toasts = ({
-  data,
+export const Toasts = ({
+  number,
   condition,
   title,
   description,
   noDate,
 }: {
-  data: any;
+  number: number;
   condition?: any;
   title: string;
   description?: string;
@@ -54,12 +76,12 @@ const Toasts = ({
 }) => {
   const Dates = new Date();
 
+  console.log({ number });
+
   return (
     <div
       id="toaster"
-      className={`${
-        data.visible ? 'animate-enter' : 'animate-leave'
-      } pointer-events-auto relative flex w-full max-w-md rounded-2xl bg-white shadow-default`}
+      className={`pointer-events-auto relative flex w-full max-w-md rounded-2xl bg-white shadow-[0_0_10px_#6f6a6a45]`}
     >
       <div className="flex flex-col p-4 text-[.9rem]">
         <div className="flex items-center">
@@ -74,9 +96,9 @@ const Toasts = ({
           <p className="font-medium">{title}</p>
         </div>
         <div className="ml-[30px] mt-[5px]">
-          {description && <p className="text-main-gray-text2">{description}</p>}
+          {description && <p className="text-[#6E717B]">{description}</p>}
           {!noDate && (
-            <div className="font-regular mt-[.3rem] flex items-center gap-[.2rem] text-[.8rem] text-main-gray-disabled duration-300">
+            <div className="font-normal mt-[.3rem] flex items-center gap-[.2rem] text-[.8rem] text-[#B6B9C3] duration-300">
               <p>{getHours(Dates)}</p>
               <span>.</span>
               <p>{getDate(Dates)}</p>
@@ -87,11 +109,11 @@ const Toasts = ({
       {}
       <div
         id="toasterClose"
-        className="absolute right-[.5rem] top-[.5rem] w-fit rotate-45 rounded-[50%] p-[.4rem] duration-200 hover:bg-main-gray-input active:bg-main-gray-input2"
-        onClick={() => toast.dismiss(data.id)}
+        className="absolute right-[.5rem] top-[.5rem] w-fit rotate-45 rounded-[50%] p-[.4rem] duration-200 hover:bg-[#dadde7] active:bg-[#E8EBF4]"
+        onClick={() => toast.dismiss(number)}
       >
         <IconPlus
-          className={'text-main-gray-text2'}
+          className={'text-[#6E717B]'}
           w={15}
         />
       </div>

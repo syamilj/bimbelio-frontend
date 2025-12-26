@@ -34,14 +34,14 @@ export const proxy = async (req: NextRequest) => {
       await res.json();
     const { status, data } = resData;
 
-    console.log('[Session] : ', { resData, token });
+    // console.log('[Session] : ', { resData, token });
 
     if (status !== 200) {
       return NextResponse.redirect(new URL('/', req.url));
     }
 
     const pathnameWithoutWebCat = pathname.split('/');
-    console.log({ pathnameWithoutWebCat });
+    // console.log({ pathnameWithoutWebCat });
     if (status === 200 && data) {
       if (data.role === 'FINANCE' && pathnameWithoutWebCat.length > 2) {
         const path2 = pathnameWithoutWebCat[3] || null;

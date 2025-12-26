@@ -10,6 +10,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Suspense } from 'react';
 import '../../styles/globals.css';
+import SocketInfo from './socket-info';
 
 export const metadata: Metadata = {
   title: {
@@ -85,6 +86,7 @@ export default function GuestRootLayout({
         <ProviderMaintenance>
           <Suspense fallback={null}>
             <ProviderSessionAuth>
+              <SocketInfo />
               <ProviderLimitation>
                 <ProviderPixel>
                   <ProviderWebsiteCategory>

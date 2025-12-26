@@ -47,6 +47,7 @@ import {
   User,
 } from 'lucide-react';
 import Link from 'next/link';
+import { Notification } from '../_shared/notification';
 import ProviderCheckLimitation from '../provider/provider-check-limitation';
 import ProviderCheckSubscriptionInstallment from '../provider/provider-check-subscription-installment';
 import ProviderCheckSubscriptionPending from '../provider/provider-check-subscription-pending';
@@ -1170,6 +1171,7 @@ const HeaderUser = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Notification />
         </div>
       </div>
 

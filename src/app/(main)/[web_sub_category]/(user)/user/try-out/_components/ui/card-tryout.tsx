@@ -205,7 +205,11 @@ export default function CardTryOut({
       payload: restPayload,
       params: { website_sub_category_id: websiteSubCategoryId },
       type: 'post',
-      onSuccess: refresh,
+      async onSuccess() {
+        if (refresh) {
+          await refresh();
+        }
+      },
     });
   };
 
