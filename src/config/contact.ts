@@ -4,7 +4,7 @@
 export const CONTACT_CONFIG = {
   whatsapp: {
     // Nomor WhatsApp bisnis (format: 62xxx tanpa +)
-    number: '6282174653020',
+    number: '6285128056771',
     // Pesan default yang akan muncul di WhatsApp
     message: 'Halo! Aku ingin konsultasi mengenai program bimbel Bimbelio.',
   },

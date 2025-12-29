@@ -190,7 +190,7 @@ export default function Footer() {
                             style={{ color: mainColor }}
                           />
                           <a
-                            href="https://wa.me/6282174653020?text=Halo!%20Saya%20ingin%20konsultasi%20mengenai%20program%20bimbel%20Bimbelio."
+                            href="https://wa.me/6285128056771?text=Halo!%20Saya%20ingin%20konsultasi%20mengenai%20program%20bimbel%20Bimbelio."
                             className="text-sm text-gray-700 hover:font-bold transition-all"
                             style={{ color: mainColor }}
                           >
