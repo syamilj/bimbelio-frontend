@@ -1,3 +1,20 @@
+export type TryoutCoupon = {
+  code: string;
+  id: string;
+  createdAt: string;
+  title: string;
+  startDate: string;
+  endDate: string | null;
+  usageLimit: number | null;
+  updatedAt: string;
+};
+
+export type Pivot_TryoutCoupon_Tryout = {
+  id: string;
+  couponId: string;
+  tryoutId: string;
+};
+
 export type Notification = {
   id: string;
   userId: string | null;

@@ -151,6 +151,13 @@ const SidebarRoute: FC = () => {
       category: 'Education',
     },
     {
+      icon: CreditCard,
+      href: `/${website_sub_category_id}/admin/tryout-coupon`,
+      label: 'Tryout Coupons',
+      description: 'Kelola try out',
+      category: 'Education',
+    },
+    {
       icon: BookOpen,
       href: `/${website_sub_category_id}/admin/course`,
       label: 'Courses',

@@ -199,9 +199,10 @@ export default function CardTryOut({
     userId: string;
     isPremium?: boolean;
     websiteSubCategoryId: string;
+    couponCode?: string;
   }) => {
     const { websiteSubCategoryId, ...restPayload } = payload;
-    await mutateGeneral('/tryout/registerTryOut', {
+    const res = await mutateGeneral('/tryout/registerTryOut', {
       payload: restPayload,
       params: { website_sub_category_id: websiteSubCategoryId },
       type: 'post',
@@ -211,18 +212,23 @@ export default function CardTryOut({
         }
       },
     });
+    return res;
   };
 
-  const handleRegistration = async (isPremium?: boolean) => {
+  const handleRegistration = async (
+    isPremium?: boolean,
+    couponCode?: string,
+  ) => {
     try {
       setIsLoading(true);
       if (showDetail) {
-        await registerTryOut({
+        const res = await registerTryOut({
           tryoutId: showDetail.id,
           userId: session?.user.id || '',
           isPremium,
           websiteSubCategoryId:
             showDetail.WebsiteSubCategory?.id || website_sub_category_id || '',
+          couponCode,
         });
 
         // ✅ Track Lead Event - User mendaftar try out
@@ -261,8 +267,10 @@ export default function CardTryOut({
           );
         }
 
-        router.push(`${pathname}?register_tryout=success`);
-        setShowDetail(null);
+        if (res?.status === 200) {
+          router.push(`${pathname}?register_tryout=success`);
+          setShowDetail(null);
+        }
       }
       setIsLoading(false);
       return;
