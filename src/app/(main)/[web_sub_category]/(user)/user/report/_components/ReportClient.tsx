@@ -2209,7 +2209,7 @@ export const CalendarComponent: React.FC<{
     let mode = view.toUpperCase();
     if (view === 'schedule') mode = 'AGENDA';
     const today = new Date().toISOString().split('T')[0].replace(/-/g, '');
-    return `https://calendar.google.com/calendar/embed?src=admin%40bimbelio.com&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FJakarta&hl=id&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=1&mode=${mode}${
+    return `https://calendar.google.com/calendar/embed?src=bimbelio.marketing%40gmail.com&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FJakarta&hl=id&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=0&showCalendars=0&showTz=1&mode=${mode}${
       view === 'agenda' ? `&dates=${today}%2F${today}` : ''
     }`;
   }, []);
