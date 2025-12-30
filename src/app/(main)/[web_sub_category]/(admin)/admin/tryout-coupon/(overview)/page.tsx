@@ -43,7 +43,7 @@ import {
 } from '@/types/database';
 import Link from 'next/link';
 
-export default function VoucherPage() {
+export default function CouponVoucherPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [take, setTake] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
@@ -87,8 +87,8 @@ export default function VoucherPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-black">Voucher</h1>
-            <p className="text-sm text-gray-500">View and manage voucher.</p>
+            <h1 className="text-2xl font-semibold text-black">Coupon</h1>
+            <p className="text-sm text-gray-500">View and manage coupon.</p>
           </div>
           <div className="flex items-center justify-center gap-4">
             {/* <Button className="gap-2">
@@ -151,7 +151,7 @@ export default function VoucherPage() {
                       colSpan={10}
                       className="text-center py-8 text-gray-500"
                     >
-                      Tidak ada voucher yang ditemukan
+                      Tidak ada coupon yang ditemukan
                     </TableCell>
                   </TableRow>
                 ) : (
