@@ -205,7 +205,10 @@ export default function CardTryOut({
   }) => {
     const { websiteSubCategoryId, ...restPayload } = payload;
     const res = await mutateGeneral('/tryout/registerTryOut', {
-      payload: restPayload,
+      payload: {
+        ...restPayload,
+        isPremium: restPayload.isPremium ?? false, // Default to false if undefined
+      },
       params: { website_sub_category_id: websiteSubCategoryId },
       type: 'post',
       async onSuccess() {

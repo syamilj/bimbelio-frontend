@@ -473,7 +473,7 @@ export default function RegistrationProofModal({
           disabled={isLoading}
           onClick={async () => {
             if (session?.user.role !== 'USER') {
-              onRegistrationComplete();
+              onRegistrationComplete(false);
             } else if (
               userLimitation &&
               userLimitation.tryout < userLimitation.tryoutLimit
@@ -1035,7 +1035,8 @@ export default function RegistrationProofModal({
               onClick={() => {
                 // Add logic to verify coupon and proceed, e.g., handleVerifyCoupon()
                 // For now, call onRegistrationComplete with coupon flag
-                onRegistrationComplete(true, couponCode);
+                // isPremium = false because coupon is for free access
+                onRegistrationComplete(false, couponCode);
               }}
               disabled={isLoading}
             >
