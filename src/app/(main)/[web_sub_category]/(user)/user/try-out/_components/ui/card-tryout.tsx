@@ -29,6 +29,7 @@ import {
   CheckCircle,
   Clock,
   Eye,
+  Gift,
   Play,
   Star,
   Tag,
@@ -109,6 +110,7 @@ export interface CardTryoutProps extends CardTryout {
   isRegistered: boolean;
   isActive: boolean;
   isJoin: boolean;
+  isCouponOnly?: boolean;
 }
 
 interface card {
@@ -361,10 +363,17 @@ export default function CardTryOut({
 
               {/* Free Badge */}
               <div className="absolute top-4 left-4 z-20">
-                <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 font-bold flex items-center gap-1">
-                  <Award className="w-3 h-3" />
-                  <span className="text-xs">GRATIS</span>
-                </Badge>
+                {item.isCouponOnly ? (
+                  <Badge className="bg-purple-50 text-purple-700 border-purple-200 font-bold flex items-center gap-1">
+                    <Gift className="w-3 h-3" />
+                    <span className="text-xs">COUPON ONLY</span>
+                  </Badge>
+                ) : (
+                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 font-bold flex items-center gap-1">
+                    <Award className="w-3 h-3" />
+                    <span className="text-xs">GRATIS</span>
+                  </Badge>
+                )}
               </div>
 
               <CardContent className="p-0">
