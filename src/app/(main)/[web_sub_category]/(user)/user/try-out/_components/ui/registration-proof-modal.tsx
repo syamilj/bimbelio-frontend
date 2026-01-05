@@ -1014,7 +1014,9 @@ export default function RegistrationProofModal({
                   type="text"
                   placeholder="Masukkan kode kupon Anda"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  onChange={(e) => setCouponCode(e.target.value)}
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value.trim())}
+                  disabled={isLoading}
                 />
               </div>
               <p className="text-xs text-gray-500">
@@ -1033,12 +1035,20 @@ export default function RegistrationProofModal({
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
               onClick={() => {
-                // Add logic to verify coupon and proceed, e.g., handleVerifyCoupon()
-                // For now, call onRegistrationComplete with coupon flag
+                // Validasi kupon tidak kosong
+                if (!couponCode || couponCode.trim().length === 0) {
+                  toaster({
+                    title: 'Error',
+                    condition: 'warning',
+                    description: 'Silakan masukkan kode kupon!',
+                    duration: 3000,
+                  });
+                  return;
+                }
                 // isPremium = false because coupon is for free access
                 onRegistrationComplete(false, couponCode);
               }}
-              disabled={isLoading}
+              disabled={isLoading || !couponCode.trim()}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -1052,6 +1062,11 @@ export default function RegistrationProofModal({
                 </div>
               )}
             </Button>
+            {!couponCode && (
+              <p className="text-center text-xs text-gray-500 mt-2">
+                Masukkan kode kupon untuk melanjutkan
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
