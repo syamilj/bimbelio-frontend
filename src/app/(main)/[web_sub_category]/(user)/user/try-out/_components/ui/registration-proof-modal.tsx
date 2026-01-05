@@ -472,6 +472,13 @@ export default function RegistrationProofModal({
           }}
           disabled={isLoading}
           onClick={async () => {
+            // 🔥 PENTING: Jika tryout coupon-only, WAJIB ke Step 2 untuk input kupon
+            if (showDetail?.isCouponOnly) {
+              setStep(2);
+              return;
+            }
+
+            // Flow untuk tryout biasa (non-coupon-only)
             if (session?.user.role !== 'USER') {
               onRegistrationComplete(false);
             } else if (
