@@ -464,8 +464,8 @@ const MobileNav: React.FC<{
                         ...prev,
                         open: true,
                         redirect: website_sub_category_id
-                          ? `/${website_sub_category_id}/user/dashboard`
-                          : '/choice/user/dashboard',
+                          ? `/${website_sub_category_id}/user/bimboard`
+                          : '/choice/user/bimboard',
                       }))
                     }
                   >
@@ -473,7 +473,7 @@ const MobileNav: React.FC<{
                   </Button>
                 )}
                 {session && (
-                  <Link href={`/${website_sub_category_id}/user/dashboard`}>
+                  <Link href={`/${website_sub_category_id}/user/bimboard`}>
                     <Button
                       className="px-6 py-2.5 rounded-none text-sm font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 active:scale-95"
                       style={{
@@ -778,7 +778,7 @@ const MobileNav: React.FC<{
                           {/* Action Buttons - Simple Grid */}
                           <div className="grid grid-cols-2 gap-2">
                             <Link
-                              href={`/${website_sub_category_id}/user/try-out`}
+                              href={`/${website_sub_category_id}/user/bimarena/try-out`}
                               onClick={() => setIsSheetOpen(false)}
                               className="flex items-center justify-center gap-2 p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
                             >
@@ -811,8 +811,8 @@ const MobileNav: React.FC<{
                               ...prev,
                               open: true,
                               redirect: website_sub_category_id
-                                ? `/${website_sub_category_id}/user/dashboard`
-                                : '/choice/user/dashboard',
+                                ? `/${website_sub_category_id}/user/bimboard`
+                                : '/choice/user/bimboard',
                             }));
                             setIsSheetOpen(false);
                           }}
@@ -1289,8 +1289,8 @@ const DesktopNav: React.FC<{
                           ...prev,
                           open: true,
                           redirect: website_sub_category_id
-                            ? `/${website_sub_category_id}/user/dashboard`
-                            : '/choice/user/dashboard',
+                            ? `/${website_sub_category_id}/user/bimboard`
+                            : '/choice/user/bimboard',
                         }))
                       }
                     >
@@ -1318,7 +1318,7 @@ const DesktopNav: React.FC<{
                       <div className="w-px h-5 bg-white/20" />
 
                       {/* Dashboard Button */}
-                      <Link href={`/${website_sub_category_id}/user/dashboard`}>
+                      <Link href={`/${website_sub_category_id}/user/bimboard`}>
                         <Button
                           className="px-4 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
                           style={{
@@ -1402,7 +1402,7 @@ const DesktopNav: React.FC<{
                             className="p-0"
                           >
                             <Link
-                              href={`/${website_sub_category_id}/user/dashboard`}
+                              href={`/${website_sub_category_id}/user/bimboard`}
                               className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-gray-50"
                             >
                               <div

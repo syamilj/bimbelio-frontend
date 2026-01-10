@@ -247,7 +247,7 @@ const HeaderUser = () => {
     const isWarning = percentage > 80 && !isAdmin;
 
     return (
-      <div className="flex items-center gap-2 px-2 lg:px-3 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group min-w-0">
+      <div className="flex items-center gap-2 px-2 lg:px-3 py-1.5 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-colors group min-w-0">
         <div className="flex items-center justify-center shrink-0">
           <Icon
             className="w-3 h-3 lg:w-4 lg:h-4"
@@ -336,7 +336,7 @@ const HeaderUser = () => {
   return (
     <header
       className={cn(
-        'fixed left-2 md:left-0 right-2 md:right-2 top-2 z-40 h-16 bg-white/95 backdrop-blur-lg border rounded-xl border-gray-200 shadow-sm transition-all duration-300',
+        'fixed left-2 md:left-0 right-2 md:right-2 top-2 z-40 h-16 bg-white/95 backdrop-blur-lg border rounded-2xl border-gray-200 shadow-sm transition-all duration-300',
         !minimizeSidebar ? 'md:left-[18rem]' : 'md:left-[6rem]',
       )}
     >
@@ -347,7 +347,7 @@ const HeaderUser = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden w-9 h-9 rounded-xl shrink-0 hover:bg-gray-100 border border-gray-200"
+            className="md:hidden w-9 h-9 rounded-2xl shrink-0 hover:bg-gray-100 border border-gray-200"
             onClick={() => {
               setSidebarMobile(true);
             }}
@@ -359,7 +359,7 @@ const HeaderUser = () => {
           <div className="hidden md:flex items-center gap-4 min-w-0 flex-1">
             <div className="flex items-center gap-3 min-w-0">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <span className="text-lg">👋</span>
@@ -501,7 +501,7 @@ const HeaderUser = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="w-9 h-9 rounded-xl shrink-0 border border-gray-200"
+            className="w-9 h-9 rounded-2xl shrink-0 border border-gray-200"
             onClick={() => setShowMobileSearch(!showMobileSearch)}
           >
             <SearchIcon className="w-5 h-5 text-gray-600" />
@@ -512,7 +512,7 @@ const HeaderUser = () => {
         <div className="flex items-center gap-2 md:gap-3 shrink-0">
           {/* Desktop Limitations - Modern Compact Pills */}
           {!isMobile && (
-            <div className="hidden xl:flex items-center gap-1.5 bg-gray-50 rounded-xl px-2 py-1.5 border border-gray-100">
+            <div className="hidden xl:flex items-center gap-1.5 bg-gray-50 rounded-2xl px-2 py-1.5 border border-gray-100">
               {limitations.map((limitation, index) => {
                 const Icon = limitation.icon;
                 const isLow =
@@ -595,7 +595,7 @@ const HeaderUser = () => {
           userTier === 'SUPER_ADMIN' ||
           userTier === 'PREMIUM' ? (
             <div
-              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-2xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -608,7 +608,7 @@ const HeaderUser = () => {
             <Tooltip delayDuration={100}>
               <TooltipTrigger className="cursor-pointer">
                 <div
-                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-2xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -1030,7 +1030,7 @@ const HeaderUser = () => {
                   <Button
                     asChild
                     variant="outline"
-                    className="w-full items-center gap-2 rounded-xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
+                    className="w-full items-center gap-2 rounded-2xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
                     style={{
                       borderColor: mainColor,
                       color: mainColor,
@@ -1046,7 +1046,7 @@ const HeaderUser = () => {
 
                   {/* Button Beli Subscription */}
                   <Button
-                    className="w-full items-center gap-1 lg:gap-2 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
+                    className="w-full items-center gap-1 lg:gap-2 rounded-2xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
                     style={{ backgroundColor: mainColor }}
                     onClick={() => setTransactionPopUp(true)}
                   >
@@ -1064,7 +1064,7 @@ const HeaderUser = () => {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2.5 h-10 px-2 pr-3 rounded-xl hover:bg-gray-50 transition-all duration-200 shrink-0 border border-gray-100"
+                className="flex items-center gap-2.5 h-10 px-2 pr-3 rounded-2xl hover:bg-gray-50 transition-all duration-200 shrink-0 border border-gray-100"
               >
                 <Avatar className="w-7 h-7 ring-2 ring-offset-1 ring-gray-100">
                   <AvatarImage

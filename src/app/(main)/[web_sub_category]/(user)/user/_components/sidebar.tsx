@@ -41,6 +41,8 @@ import {
   Stars,
   User,
   Zap,
+  ShoppingBag, // Added ShoppingBag
+  Loader2, // Added loader
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -61,6 +63,7 @@ const SidebarUser = ({
   const { userLimitation } = useUserLimitation();
   const userImage = session?.user.image || null;
   const router = useRouter();
+  const [isUpgrading, setIsUpgrading] = useState(false); // Added state
   const { websiteSubCategory, webCategoryData } = useWebsiteSubCategory();
 
   const [isWebCategoryDialogOpen, setIsWebCategoryDialogOpen] = useState(false);
@@ -95,17 +98,17 @@ const SidebarUser = ({
         // variant="sidebar"
         variant="floating"
         collapsible={'icon'}
-        className="hidden md:flex z-[50]"
+        className="hidden md:flex z-[50] rounded-2xl"
         style={
           {
             '--sidebar-width': '18rem',
-            '--sidebar-width-icon': '5rem',
+            '--sidebar-width-icon': '4.5rem',
           } as React.CSSProperties
         }
         // onMouseOver={() => setMinimizeSidebar(false)}
         // onMouseLeave={() => setMinimizeSidebar(true)}
       >
-        <SidebarHeader className="border-b-2 border-slate-200/50 bg-white/80 backdrop-blur-xl h-20 flex items-center rounded-2xl">
+        <SidebarHeader className="h-16 flex items-center justify-center pt-2 rounded-2xl">
           <div
             className={cn(
               'flex items-center justify-between gap-2 w-full px-2',
@@ -113,7 +116,7 @@ const SidebarUser = ({
             )}
           >
             {!minimizeSidebar && (
-              <Logo href={`/${website_sub_category_id}/user/dashboard`} />
+              <Logo href={`/${website_sub_category_id}/user/bimboard`} />
             )}
             {/* <div
               onClick={() => setMinimizeSidebar(!minimizeSidebar)}
@@ -137,81 +140,51 @@ const SidebarUser = ({
                 )}
               </div>
             </div> */}
-            <div
+            <button
               onClick={() => setMinimizeSidebar(!minimizeSidebar)}
-              className={cn(
-                'h-12 w-12 rounded-xl transition-all duration-300 ease-in-out',
-                'border-2',
-                'shadow-sm hover:shadow-lg',
-                'flex items-center justify-center',
-                'active:scale-95',
-                'group cursor-pointer',
-              )}
-              style={{
-                backgroundColor: `${mainColor}10`,
-                backgroundImage: `linear-gradient(135deg, ${mainColor}15, ${secondaryColor}10)`,
-                borderColor: mainColor,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = secondaryColor;
-                e.currentTarget.style.boxShadow = `0 10px 25px -5px ${mainColor}30`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = mainColor;
-                e.currentTarget.style.boxShadow =
-                  '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
-              }}
+              className="flex items-center justify-center h-9 w-9 rounded-2xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-all active:scale-95"
             >
-              <div className="relative w-6 h-6 flex items-center justify-center">
-                {minimizeSidebar ? (
-                  <ChevronsRight
-                    className="w-6 h-6 transition-all duration-300 group-hover:translate-x-0.5"
-                    style={{ color: mainColor }}
-                  />
-                ) : (
-                  <ChevronsLeft
-                    className="w-6 h-6 transition-all duration-300 group-hover:-translate-x-0.5"
-                    style={{ color: mainColor }}
-                  />
-                )}
-              </div>
-            </div>
+              {minimizeSidebar ? (
+                <ChevronsRight className="w-5 h-5" />
+              ) : (
+                <ChevronsLeft className="w-5 h-5" />
+              )}
+            </button>
           </div>
         </SidebarHeader>
 
         <SidebarContent className="flex flex-col gap-0">
           {!minimizeSidebar && (
-            <div className="p-4 border-b-2 border-slate-200/50 bg-linear-to-br from-white/60 to-slate-50/80 backdrop-blur-sm">
-              <div
-                className="relative overflow-hidden rounded-2xl p-5 text-white shadow-sm cursor-pointer hover:shadow-md group border-2 border-white/20"
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 50%, ${mainColor} 100%)`,
-                }}
+            <div className="px-3 pt-2 pb-1">
+              <button
+                className="w-full flex items-center justify-between p-2.5 rounded-2xl bg-white border-2 border-slate-100 hover:border-slate-200 hover:bg-slate-50 transition-all text-left group shadow-sm"
                 onClick={() => setIsWebCategoryDialogOpen(true)}
               >
-                <div className="relative z-10">
-                  <h3 className="font-black text-lg mb-2 group-hover:scale-[1.01] transition-transform">
-                    {websiteSubCategory?.name || 'Pilih Kategori'}
-                  </h3>
-                  <p className="text-sm text-white/90 mb-4 leading-relaxed font-medium">
-                    {websiteSubCategory
-                      ? ''
-                      : 'Pilih kategori sesuai dengan tujuan belajar kamu'}
-                  </p>
-                  <div className="flex items-center justify-between text-white/95 group-hover:text-white transition-colors">
-                    <span className="text-sm font-bold flex items-center gap-2">
-                      <Stars className="w-4 h-4" />
-                      Ganti Kategori
-                    </span>
-                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </div>
+                <div className="flex items-center gap-3 w-full overflow-hidden">
+                   <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-slate-100"
+                      style={{ backgroundColor: `${mainColor}10` }}
+                   >
+                     <Stars className="w-5 h-5" style={{ color: mainColor }} />
+                   </div>
+                   <div className="flex-1 min-w-0">
+                      <p className="text-sm font-black text-slate-800 truncate mb-0.5">
+                        {websiteSubCategory?.name || 'Pilih Kategori'}
+                      </p>
+                      <p className="text-[10px] font-semibold text-slate-500 truncate">
+                        {websiteSubCategory ? 'Platform Belajar' : 'Pilih tujuan belajar'}
+                      </p>
+                   </div>
+                   <div className="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-100 transition-colors">
+                     <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
+                   </div>
                 </div>
-              </div>
+              </button>
             </div>
           )}
 
           {/* Navigation Routes */}
-          <div className="flex-1 px-2 py-4">
+          <div className="flex-1 px-2 pt-1 pb-4">
             <SidebarRoute
               category={category}
               minimizeSidebar={minimizeSidebar}
@@ -221,29 +194,48 @@ const SidebarUser = ({
           </div>
         </SidebarContent>
 
-        <SidebarFooter className="border-t-2 border-slate-200/50 bg-white/80 backdrop-blur-xl rounded-2xl">
-          {/* Premium Card */}
-          {!session?.user.tier && !minimizeSidebar && (
-            <div
-              className="p-4 rounded-2xl text-white shadow-sm cursor-pointer hover:shadow-md mb-4 border-2 border-white/20"
-              style={{
-                backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-              onClick={() => setTransactionPopUp(true)}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <Zap className="w-4 h-4 text-yellow-300" />
-                <span className="font-black text-sm">Upgrade Premium</span>
-              </div>
-              <p className="text-xs text-white/90 mb-3 font-medium">
-                Dapatkan akses unlimited ke semua fitur
-              </p>
-              <Button
-                size="sm"
-                className="w-full bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 text-xs font-bold rounded-xl shadow-sm hover:shadow-md"
+        <SidebarFooter className="pt-2 pb-4">
+          {/* Upgrade Button (Minimized) */}
+          {!session?.user.tier && minimizeSidebar && (
+            <div className="flex justify-center mb-3 px-2">
+              <button
+                onClick={() => {
+                   setIsUpgrading(true);
+                   router.push('/price');
+                }}
+                disabled={isUpgrading}
+                className="w-10 h-10 rounded-2xl flex items-center justify-center bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all shadow-sm group relative disabled:opacity-70 disabled:cursor-not-allowed"
+                title="Upgrade Plan"
               >
-                Upgrade Sekarang
-              </Button>
+                {isUpgrading ? (
+                   <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                   <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                )}
+              </button>
+            </div>
+          )}
+
+          {/* Upgrade Button (Expanded & Mobile) - Replaces Card */}
+          {!session?.user.tier && !minimizeSidebar && (
+            <div className="px-5 mb-3">
+               <button
+                  onClick={() => {
+                    if (!isUpgrading) {
+                      setIsUpgrading(true);
+                      router.push('/price');
+                    }
+                  }}
+                  disabled={isUpgrading}
+                  className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all group disabled:opacity-70 disabled:cursor-not-allowed"
+               >
+                  {isUpgrading ? (
+                     <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                     <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  )}
+                  <span>Upgrade Plan</span>
+               </button>
             </div>
           )}
 
@@ -373,34 +365,38 @@ const SidebarUser = ({
           <div className="flex flex-col h-full gap-0">
             {/* Mobile Header */}
             <div className="pb-4 border-b-2 border-slate-200/50">
-              <Logo href={`/${website_sub_category_id}/user/dashboard`} />
+              <Logo href={`/${website_sub_category_id}/user/bimboard`} />
             </div>
 
             {/* Mobile Category Selection */}
             {websiteSubCategory && (
-              <div
-                className="p-4 m-2 rounded-2xl border-2 border-slate-200/50 bg-gradient-to-br cursor-pointer hover:shadow-md shadow-sm"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${mainColor}15, ${secondaryColor}10)`,
-                  borderColor: `${mainColor}30`,
-                }}
-                onClick={() => {
-                  setIsWebCategoryDialogOpen(true);
-                  setIsMobileSidebarOpen(false);
-                }}
+            <div className="px-3 py-4">
+              <button
+                 className="w-full flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-left group shadow-sm"
+                 onClick={() => {
+                   setIsWebCategoryDialogOpen(true);
+                   setIsMobileSidebarOpen(false);
+                 }}
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-sm font-black text-gray-900 mb-1">
-                      {websiteSubCategory?.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 font-medium">
-                      Klik untuk ganti kategori
-                    </p>
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-gray-400" />
-                </div>
-              </div>
+                 <div className="flex items-center gap-3 w-full overflow-hidden">
+                    <div
+                       className="w-8 h-8 rounded-md flex items-center justify-center shrink-0"
+                       style={{ backgroundColor: `${mainColor}15` }}
+                    >
+                      <Stars className="w-4 h-4" style={{ color: mainColor }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                       <p className="text-sm font-bold text-slate-800 truncate">
+                         {websiteSubCategory?.name || 'Pilih Kategori'}
+                       </p>
+                       <p className="text-[10px] text-slate-500 truncate">
+                         {websiteSubCategory ? 'Platform Belajar' : 'Pilih tujuan belajar'}
+                       </p>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
+                 </div>
+              </button>
+           </div>
             )}
 
             {/* Mobile Navigation Routes */}
@@ -415,30 +411,24 @@ const SidebarUser = ({
 
             {/* Mobile Premium Card */}
             {!session?.user.tier && (
-              <div
-                className="p-4 rounded-2xl text-white shadow-sm mb-4 mx-2 border-2 border-white/20"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                }}
-                onClick={() => {
-                  setTransactionPopUp(true);
-                  setIsMobileSidebarOpen(false);
-                }}
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <Zap className="w-4 h-4 text-yellow-300" />
-                  <span className="font-black text-sm">Upgrade Premium</span>
-                </div>
-                <p className="text-xs text-white/90 mb-3 font-medium">
-                  Dapatkan akses unlimited ke semua fitur
-                </p>
-                <Button
-                  size="sm"
-                  className="w-full bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 text-xs font-bold rounded-xl"
-                >
-                  Upgrade Sekarang
-                </Button>
-              </div>
+               <div className="px-5 mb-4">
+                  <button
+                     onClick={() => {
+                       setIsUpgrading(true);
+                       router.push('/price');
+                       setIsMobileSidebarOpen(false);
+                     }}
+                     disabled={isUpgrading}
+                     className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all group disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                     {isUpgrading ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                     ) : (
+                        <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                     )}
+                     <span>Upgrade Plan</span>
+                  </button>
+               </div>
             )}
 
             {/* Mobile User Profile */}
