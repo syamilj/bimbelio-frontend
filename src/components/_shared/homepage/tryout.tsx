@@ -1,6 +1,6 @@
 'use client';
 
-import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -216,7 +216,7 @@ const FeaturedTryoutSection = () => {
         >
           {session ? (
             <Link
-              href={`${website_sub_category_id}/user/try-out`}
+              href={`${website_sub_category_id}/user/bimarena/try-out`}
               className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl bg-gradient-default"
             >
               Lihat Semua Try Out
@@ -229,7 +229,7 @@ const FeaturedTryoutSection = () => {
               className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl bg-gradient-default"
               onClick={() => {
                 router.push(
-                  `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
+                  `${window.location.pathname}?href=/${website_sub_category_id}/user/bimarena/try-out`,
                 );
                 setShowAuth((prev) => ({ ...prev, open: true }));
               }}
@@ -264,7 +264,7 @@ const EnhancedTryOutCard = ({
     if (!tryOut || !tryoutId || !session) return;
     if (tryoutId === tryOut.id) {
       router.push(
-        `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryoutId}`,
+        `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryoutId}`,
       );
     }
   }, [tryOut, tryoutId, session]);
@@ -413,7 +413,7 @@ const EnhancedTryOutCard = ({
               return;
             }
             router.push(
-              `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryOut.id}`,
+              `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryOut.id}`,
             );
           }}
           className="w-full group flex items-center justify-center gap-3 px-6 py-4 rounded-2xl text-white font-bold shadow-lg transition-all duration-300 hover:shadow-xl"

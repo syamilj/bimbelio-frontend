@@ -363,7 +363,7 @@ const EnhancedPricing = () => {
                           return;
                         }
                         router.push(
-                          `${website_sub_category_id}/user/dashboard`,
+                          `${website_sub_category_id}/user/bimboard`,
                         );
                       }}
                     >

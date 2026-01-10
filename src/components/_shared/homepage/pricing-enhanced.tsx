@@ -291,7 +291,7 @@ const PricingEnhanced = () => {
                   {/* CTA Button */}
                   {session ? (
                     <Link
-                      href={`${website_sub_category_id}/user/dashboard`}
+                      href={`${website_sub_category_id}/user/bimboard`}
                       className="block"
                     >
                       <motion.button

@@ -172,7 +172,7 @@ export default function PredictionStep4() {
                       <span>Visualisasi SIMAK</span>
                       {TryoutData && (
                         <Link
-                          href={`/${website_sub_category_id_params}/user/try-out/${TryoutData.id}`}
+                          href={`/${website_sub_category_id_params}/user/bimarena/try-out/${TryoutData.id}`}
                           className="ml-2 text-xs bg-main hover:scale-105 cursor-pointer duration-300 py-1 px-2 rounded-2xl text-white font-normal"
                         >
                           {TryoutData.title}

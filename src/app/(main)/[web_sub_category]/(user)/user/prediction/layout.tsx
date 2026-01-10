@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (website_sub_category_id_params !== 'simak-ui') {
-      router.push(`/${website_sub_category_id_params}/user/dashboard`);
+      router.push(`/${website_sub_category_id_params}/user/bimboard`);
     }
   }, [website_sub_category_id_params]);
 

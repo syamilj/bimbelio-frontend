@@ -177,7 +177,7 @@ const Invitation = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               {session ? (
                 <Link
-                  href={`${website_sub_category_id}/user/try-out`}
+                  href={`${website_sub_category_id}/user/bimarena/try-out`}
                   className="flex-1"
                 >
                   <motion.button

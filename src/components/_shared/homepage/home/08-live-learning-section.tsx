@@ -1,11 +1,11 @@
 'use client';
 
-import { useCountdown } from '@/app/(main)/[web_sub_category]/(user)/user/live-learning/_components/live-class-hooks';
+import { useCountdown } from '@/app/(main)/[web_sub_category]/(user)/user/bimlive/_components/live-class-hooks';
 import {
   CountdownTimer,
   MarketingCTA,
   PreviewContent,
-} from '@/app/(main)/[web_sub_category]/(user)/user/live-learning/_components/live-class-shared-components';
+} from '@/app/(main)/[web_sub_category]/(user)/user/bimlive/_components/live-class-shared-components';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -306,7 +306,7 @@ const LiveLearningSection: React.FC = () => {
             {/* CTA Button */}
             {session ? (
               <Link
-                href={`${website_sub_category_id}/user/live-learning`}
+                href={`${website_sub_category_id}/user/bimlive`}
                 className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -325,7 +325,7 @@ const LiveLearningSection: React.FC = () => {
                 onClick={() => {
                   setShowAuth({
                     open: true,
-                    redirect: `/${website_sub_category_id}/user/live-learning`,
+                    redirect: `/${website_sub_category_id}/user/bimlive`,
                   });
                 }}
               >
@@ -393,7 +393,7 @@ const EnhancedLiveLearningCard = ({
     if (!liveLearning || !liveLearningId || !session) return;
     if (liveLearningId === liveLearning.id) {
       router.push(
-        `${liveLearning.websiteSubCategoryId}/user/live-learning?id=${liveLearningId}`,
+        `${liveLearning.websiteSubCategoryId}/user/bimlive?id=${liveLearningId}`,
       );
     }
   }, [liveLearning, liveLearningId, session]);
@@ -862,7 +862,7 @@ const EnhancedLiveLearningCard = ({
               {/* Modern Detail Button */}
               {session && (
                 <Link
-                  href={`/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}`}
+                  href={`/${website_sub_category_id}/user/bimlive/detail/${liveClass.id}`}
                 >
                   <Button
                     variant="outline"
@@ -883,7 +883,7 @@ const EnhancedLiveLearningCard = ({
                   onClick={() => {
                     setShowAuth({
                       open: true,
-                      redirect: `/${website_sub_category_id}/user/live-learning/detail/${liveClass.id}?liveLearningId=${liveClass.id}`,
+                      redirect: `/${website_sub_category_id}/user/bimlive/detail/${liveClass.id}?liveLearningId=${liveClass.id}`,
                     });
                   }}
                 >

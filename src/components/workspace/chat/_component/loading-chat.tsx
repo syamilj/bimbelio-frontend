@@ -1,4 +1,4 @@
-//src/app/(user)/user/chat/_component/loading-chat.tsx
+//src/app/(user)/user/bimbot/_component/loading-chat.tsx
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { getDate, getHours } from '@/lib/utils';

@@ -251,7 +251,7 @@ const FinalCTA = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               {session ? (
                 <Link
-                  href={`${website_sub_category_id}/user/try-out`}
+                  href={`${website_sub_category_id}/user/bimarena/try-out`}
                   className="flex-1"
                 >
                   <motion.button
@@ -284,7 +284,7 @@ const FinalCTA = () => {
                     });
 
                     router.push(
-                      `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
+                      `${window.location.pathname}?href=/${website_sub_category_id}/user/bimarena/try-out`,
                     );
                     setShowAuth((prev) => ({ ...prev, open: true }));
                   }}

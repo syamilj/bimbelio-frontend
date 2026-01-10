@@ -1,6 +1,6 @@
 'use client';
 
-import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -243,7 +243,7 @@ const FeaturedTryoutSection = () => {
         >
           {session ? (
             <Link
-              href={`${website_sub_category_id}/user/try-out`}
+              href={`${website_sub_category_id}/user/bimarena/try-out`}
               className="group inline-flex items-center gap-3 px-6 py-3 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-xl text-white"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -262,7 +262,7 @@ const FeaturedTryoutSection = () => {
               }}
               onClick={() => {
                 setShowAuth({
-                  redirect: `/${website_sub_category_id ? website_sub_category_id : 'chosee'}/user/try-out`,
+                  redirect: `/${website_sub_category_id ? website_sub_category_id : 'chosee'}/user/bimarena/try-out`,
                   open: true,
                 });
               }}
@@ -297,7 +297,7 @@ const EnhancedTryOutCard = ({
     if (!tryOut || !tryoutId || !session) return;
     if (tryoutId === tryOut.id) {
       router.push(
-        `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryoutId}`,
+        `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryoutId}`,
       );
     }
   }, [tryOut, tryoutId, session]);
@@ -670,7 +670,7 @@ const EnhancedTryOutCard = ({
                 return;
               }
               router.push(
-                `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryOut.id}`,
+                `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryOut.id}`,
               );
             }}
           >

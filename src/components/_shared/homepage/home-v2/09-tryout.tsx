@@ -2,7 +2,7 @@
 
 import CardTryOut, {
   CardTryoutProps,
-} from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+} from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';

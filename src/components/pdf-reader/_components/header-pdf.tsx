@@ -1,6 +1,6 @@
 'use client';
 
-import SubmitCourse from '@/app/(main)/[web_sub_category]/(user)/user/course/[categoryId]/_component/z_other/submit-course';
+import SubmitCourse from '@/app/(main)/[web_sub_category]/(user)/user/bimcourse/[categoryId]/_component/z_other/submit-course';
 import { useAppContext } from '@/components/provider/provider-app';
 import { buttonVariants } from '@/components/ui/button';
 import { ToolTip } from '@/components/ui/tooltip';

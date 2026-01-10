@@ -23,7 +23,7 @@ import { CrownIcon, LockIcon, PlayIcon, Sparkles } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useDebouncedCallback } from 'use-debounce';
-import ButtonUpgradeTryout from '../../../try-out/_components/ui/button-upgrade-tryout';
+import ButtonUpgradeTryout from '../../../bimarena/try-out/_components/ui/button-upgrade-tryout';
 import LeftComponent from './_components/left-component';
 import { RightComponent } from './_components/right-component';
 
@@ -69,7 +69,7 @@ const DocViewerPage = () => {
         setStatus(status);
         setTryoutId(data.tryoutId);
         setTryoutLink(
-          `/${data.website_sub_category_id}/user/try-out?id=${data.tryoutId}`,
+          `/${data.website_sub_category_id}/user/bimarena/try-out?id=${data.tryoutId}`,
         );
       },
     });

@@ -116,7 +116,7 @@ const LiveClassSection: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {liveClasses?.slice(0, 3).map((liveClass) => {
               const status = getStatusLabel(liveClass.status);
-              const href = `/${liveClass.websiteSubCategoryId}/user/live-learning/detail/${liveClass.id}?liveLearningId=${liveClass.id}`;
+              const href = `/${liveClass.websiteSubCategoryId}/user/bimlive/detail/${liveClass.id}?liveLearningId=${liveClass.id}`;
               const linkId = `live-class-link-${liveClass.id}`;
 
               return (
@@ -258,7 +258,7 @@ const LiveClassSection: React.FC = () => {
         {/* CTA */}
         <div className="text-center mt-8">
           <Link
-            href="/snbt/user/live-learning"
+            href="/snbt/user/bimlive"
             className="inline-flex items-center px-6 py-3 rounded-2xl font-semibold text-white transition-all duration-200 hover:opacity-90"
             style={{ backgroundColor: mainColor }}
           >

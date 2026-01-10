@@ -1,6 +1,6 @@
 'use client';
 
-import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -189,7 +189,7 @@ const EnhancedTryOutCard = ({
     if (!tryOut || !tryoutId || !session) return;
     if (tryoutId === tryOut.id) {
       router.push(
-        `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryoutId}`,
+        `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryoutId}`,
       );
     }
   }, [tryOut, tryoutId, session]);
@@ -302,7 +302,7 @@ const EnhancedTryOutCard = ({
               return;
             }
             router.push(
-              `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryOut.id}`,
+              `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryOut.id}`,
             );
           }}
           className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"

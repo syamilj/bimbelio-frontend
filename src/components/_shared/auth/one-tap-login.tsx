@@ -69,7 +69,7 @@ const HandleLogin = () => {
 
       window.location.reload();
 
-      const redirect = `${website_sub_category_id}/user/dashboard`;
+      const redirect = `${website_sub_category_id}/user/bimboard`;
       const pathname = window.location.pathname;
       const origin = window.location.origin;
       if (pathname === redirect || !redirect) {

@@ -23,7 +23,7 @@ const NextBreadcrumb = () => {
         {pathNames?.map((path, index) => {
           let href = `/${pathNames.slice(0, index + 1).join('/')}`;
           if (path === 'dashboard') {
-            href = '/user/dashboard';
+            href = '/user/bimboard';
           }
 
           return (

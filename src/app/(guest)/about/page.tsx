@@ -243,7 +243,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap justify-center gap-4">
               {session?.user ? (
                 <Link
-                  href={`/${website_sub_category_id ? website_sub_category_id : 'choose'}/user/course`}
+                  href={`/${website_sub_category_id ? website_sub_category_id : 'choose'}/user/bimcourse`}
                 >
                   <motion.div
                     whileHover={{ scale: 1.05 }}
@@ -260,7 +260,7 @@ export default function AboutPage() {
                 <motion.div
                   onClick={() => {
                     setShowAuth({
-                      redirect: `/${website_sub_category_id ? website_sub_category_id : 'choose'}/user/course`,
+                      redirect: `/${website_sub_category_id ? website_sub_category_id : 'choose'}/user/bimcourse`,
                       open: true,
                     });
                   }}
