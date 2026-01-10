@@ -5,7 +5,6 @@ import js from '@eslint/js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { fixupConfigRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 
 // Impor plugin
@@ -20,10 +19,6 @@ const compat = new FlatCompat({
   allConfig: js.configs.all,
 });
 
-const patchedConfig = fixupConfigRules([
-  ...compat.extends('next/core-web-vitals'),
-]);
-
 const config = [
   // Definisikan ignores di awal konfigurasi
   {
@@ -35,7 +30,7 @@ const config = [
       // Tambahkan pola lain yang perlu diabaikan
     ],
   },
-  ...patchedConfig,
+  ...compat.extends('next/core-web-vitals'),
   {
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,

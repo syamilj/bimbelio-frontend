@@ -3,7 +3,7 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { Category, Subcategory } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
@@ -42,27 +42,27 @@ export default function DocumentSearch() {
   useEffect(() => {
     // ✅ ENHANCED SEARCH EVENT - Track saat search berubah dengan data lengkap
     if (search && search.trim().length > 0) {
-      pixel.meta.track(
-        'Search',
-        {
+      const fullName = session?.user?.name || '';
+      const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
+      const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+
+      trackUnifiedEvent({
+        eventName: 'Search',
+        customData: {
           content_name: 'Document Search',
           content_type: 'document',
           search_string: search,
+          content_id: `document_search_${search.replace(/\s+/g, '_').toLowerCase()}`,
         },
-        // ✅ Advanced Matching untuk Meta Pixel
-        session?.user
+        user: session?.user
           ? {
-              em: session.user.email,
-              ph: session.user.phone || undefined,
-              fn: session.user.name?.split(' ')[0],
-              ln: session.user.name?.split(' ').slice(1).join(' '),
+              userId: session.user.id?.toString?.() || undefined,
+              email: session.user.email || undefined,
+              phone: session.user.phone || undefined,
+              firstName: firstName || undefined,
+              lastName,
             }
           : undefined,
-      );
-      pixel.tiktok.track('Search', {
-        content_name: 'Document Search',
-        search_string: search,
-        content_id: `document_search_${search.replace(/\s+/g, '_').toLowerCase()}`, // ✅ Required untuk TikTok VSA
       });
     }
   }, [search, session]); // ✅ DUPLIKASI FIX: Trigger saat search berubah, bukan saat mount

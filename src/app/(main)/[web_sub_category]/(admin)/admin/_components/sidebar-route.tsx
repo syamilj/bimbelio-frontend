@@ -7,6 +7,7 @@ import ChooseWebCategory from '@/components/ui/choose-web-category';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { cn } from '@/lib/utils';
 import {
+  Bell,
   BookOpen,
   Brain,
   CreditCard,
@@ -49,6 +50,20 @@ const SidebarRoute: FC = () => {
       href: `/${website_sub_category_id}/admin/website-category`,
       label: 'Web Category',
       description: 'Kelola kategori website',
+      category: 'System',
+    },
+    {
+      icon: Zap,
+      href: `/${website_sub_category_id}/admin/token`,
+      label: 'Tokens',
+      description: 'Manajemen token',
+      category: 'System',
+    },
+    {
+      icon: Bell,
+      href: `/${website_sub_category_id}/admin/notification`,
+      label: 'Notification',
+      description: 'Kelola notifikasi',
       category: 'System',
     },
     {
@@ -136,6 +151,13 @@ const SidebarRoute: FC = () => {
       category: 'Education',
     },
     {
+      icon: CreditCard,
+      href: `/${website_sub_category_id}/admin/tryout-coupon`,
+      label: 'Tryout Coupons',
+      description: 'Kelola try out',
+      category: 'Education',
+    },
+    {
       icon: BookOpen,
       href: `/${website_sub_category_id}/admin/course`,
       label: 'Courses',
@@ -155,13 +177,6 @@ const SidebarRoute: FC = () => {
       label: 'Tutors',
       description: 'Kelola tutor live class',
       category: 'Education',
-    },
-    {
-      icon: Zap,
-      href: `/${website_sub_category_id}/admin/token`,
-      label: 'Tokens',
-      description: 'Manajemen token',
-      category: 'System',
     },
   ].filter((item) => {
     if (

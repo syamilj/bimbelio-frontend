@@ -67,7 +67,10 @@ interface ProofItem {
 interface RegistrationProofModalProps {
   showDetail: CardTryoutProps;
   setShowDetail: Dispatch<SetStateAction<CardTryoutProps | null>>;
-  onRegistrationComplete: (isPremium?: boolean) => void;
+  onRegistrationComplete: (
+    isPremium?: boolean,
+    couponCode?: string,
+  ) => Promise<void>;
   isLoading: boolean;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
@@ -84,12 +87,21 @@ export default function RegistrationProofModal({
   const { websiteSubCategory } = useWebsiteSubCategory();
   const { setTransactionPopUp } = useAppContext();
 
+  const websiteSubCategoryId =
+    websiteSubCategory?.id || showDetail.WebsiteSubCategory?.id;
+
+  const [couponCode, setCouponCode] = useState<string>('');
+
   const { data: TryoutIrtData, isLoading: TryoutIrtDataIsLoading } = useGet<{
     isIrt: boolean;
     isDone: boolean;
   }>('/tryout/getIsTryoutIRT', {
-    params: { tryoutId: showDetail.id },
-    useEffectDependencies: [showDetail],
+    params: {
+      tryoutId: showDetail.id,
+      website_sub_category_id: websiteSubCategoryId,
+    },
+    useEffectDependencies: [showDetail, websiteSubCategoryId],
+    enabled: !!websiteSubCategoryId,
   });
 
   // Get dynamic colors
@@ -99,11 +111,18 @@ export default function RegistrationProofModal({
   const [step, setStep] = useState<number>(1);
   const [showPayment, setShowPayment] = useState<boolean>(false);
   const [selectTypeRegistration, setSelectTypeRegistration] = useState<
-    'free' | 'premium'
+    'free' | 'premium' | 'coupon'
   >('free');
   const [pricing, setPricing] = useState<Pricing>();
   const [pricingIsLoading, setPricingIsLoading] = useState<boolean>(true);
   const [proofItems, setProofItems] = useState<ProofItem[]>([]);
+
+  useEffect(() => {
+    // Auto-select coupon if this is a coupon-only tryout
+    if (showDetail?.isCouponOnly) {
+      setSelectTypeRegistration('coupon');
+    }
+  }, [showDetail]);
 
   useEffect(() => {
     // Generate proof items based on showDetail
@@ -453,8 +472,15 @@ export default function RegistrationProofModal({
           }}
           disabled={isLoading}
           onClick={async () => {
+            // 🔥 PENTING: Jika tryout coupon-only, WAJIB ke Step 2 untuk input kupon
+            if (showDetail?.isCouponOnly) {
+              setStep(2);
+              return;
+            }
+
+            // Flow untuk tryout biasa (non-coupon-only)
             if (session?.user.role !== 'USER') {
-              onRegistrationComplete();
+              onRegistrationComplete(false);
             } else if (
               userLimitation &&
               userLimitation.tryout < userLimitation.tryoutLimit
@@ -542,70 +568,22 @@ export default function RegistrationProofModal({
 
         {/* Registration Options */}
         <div className="space-y-4">
-          {/* Free Option */}
-          {!showDetail?.isDone && (
-            <Card
-              onClick={() => setSelectTypeRegistration('free')}
-              className={cn(
-                'cursor-pointer transition-all duration-300 hover:shadow-lg border-2',
-                selectTypeRegistration === 'free'
-                  ? 'shadow-lg scale-[1.02]'
-                  : 'hover:scale-[1.01]',
-              )}
-              style={{
-                borderColor:
-                  selectTypeRegistration === 'free' ? mainColor : '#e5e7eb',
-                backgroundColor:
-                  selectTypeRegistration === 'free'
-                    ? `${mainColor}05`
-                    : 'white',
-              }}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${mainColor}15` }}
-                    >
-                      <Star
-                        className="w-5 h-5"
-                        style={{ color: mainColor }}
-                      />
-                    </div>
-                    <div>
-                      <CardTitle className="text-lg">Gratis</CardTitle>
-                      <CardDescription>
-                        Daftar dengan mengikuti tugas sosial media
-                      </CardDescription>
-                    </div>
-                  </div>
-                  <Badge className="bg-green-100 text-green-700 border-green-200">
-                    FREE
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-2">
-                  {[
-                    'Akses ke semua materi Try Out',
-                    'Hasil dan pembahasan setelah Try Out selesai',
-                    'Peringkat nasional',
-                  ].map((feature, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-2 text-sm"
-                    >
-                      <Check className="w-4 h-4 text-green-500" />
-                      <span>{feature}</span>
-                    </div>
-                  ))}
+          {/* Info banner for coupon-only tryouts */}
+          {showDetail?.isCouponOnly && (
+            <Card className="border-2 border-purple-200 bg-purple-50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Gift className="w-5 h-5 text-purple-600" />
+                  <p className="text-sm text-purple-800 font-medium">
+                    Try out ini hanya bisa diakses menggunakan kupon. Silakan masukkan kode kupon yang valid.
+                  </p>
                 </div>
               </CardContent>
             </Card>
           )}
 
           {/* Premium Option */}
+          {!showDetail?.isCouponOnly && (
           <Card
             onClick={() => setSelectTypeRegistration('premium')}
             className={cn(
@@ -682,6 +660,134 @@ export default function RegistrationProofModal({
               </div>
             </CardContent>
           </Card>
+          )}
+          {/* Free Option */}
+          {!showDetail?.isDone && !showDetail?.isCouponOnly && (
+            <Card
+              onClick={() => setSelectTypeRegistration('free')}
+              className={cn(
+                'cursor-pointer transition-all duration-300 hover:shadow-lg border-2',
+                selectTypeRegistration === 'free'
+                  ? 'shadow-lg scale-[1.02]'
+                  : 'hover:scale-[1.01]',
+              )}
+              style={{
+                borderColor:
+                  selectTypeRegistration === 'free' ? mainColor : '#e5e7eb',
+                backgroundColor:
+                  selectTypeRegistration === 'free'
+                    ? `${mainColor}05`
+                    : 'white',
+              }}
+            >
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: `${mainColor}15` }}
+                    >
+                      <Star
+                        className="w-5 h-5"
+                        style={{ color: mainColor }}
+                      />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg">Gratis</CardTitle>
+                      <CardDescription>
+                        Daftar dengan mengikuti tugas sosial media
+                      </CardDescription>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-100 text-green-700 border-green-200">
+                    FREE
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-2">
+                  {[
+                    'Akses ke semua materi Try Out',
+                    'Hasil dan pembahasan setelah Try Out selesai',
+                    'Peringkat nasional',
+                  ].map((feature, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2 text-sm"
+                    >
+                      <Check className="w-4 h-4 text-green-500" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Coupon Option - Always shown, highlighted for coupon-only tryouts */}
+          <Card
+            onClick={() => setSelectTypeRegistration('coupon')}
+            className={cn(
+              'cursor-pointer transition-all duration-300 hover:shadow-lg border-2 relative overflow-hidden',
+              selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly
+                ? 'shadow-lg scale-[1.02]'
+                : 'hover:scale-[1.01]',
+            )}
+            style={{
+              borderColor:
+                selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly ? mainColor : '#e5e7eb',
+              backgroundColor:
+                selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly
+                  ? `${mainColor}05`
+                  : 'white',
+            }}
+          >
+            {/* Premium Badge */}
+            <div className="absolute top-4 right-4">
+              <Badge className="bg-linear-to-r from-green-400 to-blue-500 text-white border-0">
+                <Gift className="w-3 h-3 mr-1" />
+                Coupon
+              </Badge>
+            </div>
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-green-400 to-blue-500 flex items-center justify-center">
+                  <Gift className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Coupon</CardTitle>
+                  <CardDescription>
+                    Gunakan kupon untuk mendapatkan diskon
+                  </CardDescription>
+                </div>
+              </div>
+              <div className="mt-2">
+                {/* Placeholder for coupon input or discount info */}
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-500">
+                    Masukkan kode kupon untuk diskon
+                  </span>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-2">
+                {[
+                  'Daftar gratis dengan coupon',
+                  'Akses prioritas saat Try Out berlangsung',
+                  'Analisis detail performa dan rekomendasi',
+                ].map((feature, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2 text-sm"
+                  >
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Continue Button */}
@@ -691,6 +797,12 @@ export default function RegistrationProofModal({
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
           onClick={() => {
+            // Auto-select coupon for coupon-only tryouts
+            if (showDetail?.isCouponOnly) {
+              setSelectTypeRegistration('coupon');
+              setStep(3);
+              return;
+            }
             setStep(3);
             if (selectTypeRegistration === 'premium') {
               setShowPayment(true);
@@ -873,6 +985,93 @@ export default function RegistrationProofModal({
             {earnedPoints !== totalPoints && (
               <p className="text-center text-xs text-gray-500 mt-2">
                 Lengkapi semua tugas untuk melanjutkan
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  } else if (step === 3 && selectTypeRegistration === 'coupon') {
+    return (
+      <div className="space-y-6">
+        {/* Close Button */}
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold text-gray-900">
+            Bukti Pendaftaran Try Out
+          </h2>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowDetail(null)}
+            className="h-8 w-8 p-0 rounded-full hover:bg-gray-100"
+          >
+            <IconX className="w-4 h-4" />
+          </Button>
+        </div>
+
+        {/* Coupon Input Section */}
+        <Card className="border-2 border-gray-100">
+          <CardContent className="p-4">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Kode Kupon
+                </label>
+                <input
+                  type="text"
+                  placeholder="Masukkan kode kupon Anda"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value.trim())}
+                  disabled={isLoading}
+                />
+              </div>
+              <p className="text-xs text-gray-500">
+                Pastikan kode kupon valid dan belum kadaluarsa.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Submit Button */}
+        <Card className="border-2 border-gray-100">
+          <CardContent className="p-4">
+            <Button
+              className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              }}
+              onClick={() => {
+                // Validasi kupon tidak kosong
+                if (!couponCode || couponCode.trim().length === 0) {
+                  toaster({
+                    title: 'Error',
+                    condition: 'warning',
+                    description: 'Silakan masukkan kode kupon!',
+                    duration: 3000,
+                  });
+                  return;
+                }
+                // isPremium = false because coupon is for free access
+                onRegistrationComplete(false, couponCode);
+              }}
+              disabled={isLoading || !couponCode.trim()}
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Memverifikasi...</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Gift className="w-4 h-4" />
+                  <span>Daftar dengan Kupon</span>
+                </div>
+              )}
+            </Button>
+            {!couponCode && (
+              <p className="text-center text-xs text-gray-500 mt-2">
+                Masukkan kode kupon untuk melanjutkan
               </p>
             )}
           </CardContent>

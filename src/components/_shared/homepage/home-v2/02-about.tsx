@@ -34,7 +34,7 @@ const AboutSection: React.FC = () => {
         {/* Team Photo */}
         <div className="relative w-full md:w-3/5 md:mx-auto rounded-2xl overflow-hidden mb-10 border border-gray-200">
           <img
-            src="/hero/thumbnail_bimbelio.webp"
+            src="/hero/about.webp"
             alt="Tim Bimbelio"
             className="w-full h-auto object-cover"
             loading="lazy"

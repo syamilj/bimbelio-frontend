@@ -42,6 +42,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn, formatSchoolName } from '@/lib/utils';
 
 import { Subscription, UserRoleEnum } from '@/types/database';
+import ExcelJS from 'exceljs';
 import {
   ChevronDown,
   ChevronRight,
@@ -74,7 +75,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import ExcelJS from 'exceljs';
 
 export default function UserManagementDashboard() {
   const { data: session } = useSession();

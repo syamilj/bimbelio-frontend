@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +15,7 @@ import {
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { pixel } from '@/lib/pixel/_core'; // ✅ Import pixel untuk tracking Lead
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn, getDateString } from '@/lib/utils';
 import { IconTailedArrowUp45 } from '@/styles/icon';
 import type {
@@ -28,11 +29,11 @@ import {
   CheckCircle,
   Clock,
   Eye,
+  Gift,
   Play,
   Star,
   Tag,
   Trophy,
-  Users,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -109,6 +110,7 @@ export interface CardTryoutProps extends CardTryout {
   isRegistered: boolean;
   isActive: boolean;
   isJoin: boolean;
+  isCouponOnly?: boolean;
 }
 
 interface card {
@@ -128,6 +130,9 @@ export default function CardTryOut({
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const {
+    useAuth: { setShowAuth },
+  } = useAppContext();
 
   const searchParams = useSearchParams();
   const id = searchParams?.get('id');
@@ -142,13 +147,13 @@ export default function CardTryOut({
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  useEffect(() => {
-    if (showDetail) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [showDetail]);
+  // useEffect(() => {
+  //   if (showDetail) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'auto';
+  //   }
+  // }, [showDetail]);
 
   const getTimer = (date: any, item: CardTryoutProps): any => {
     const targetDate = new Date(date);
@@ -195,50 +200,70 @@ export default function CardTryOut({
     tryoutId: string;
     userId: string;
     isPremium?: boolean;
+    websiteSubCategoryId: string;
+    couponCode?: string;
   }) => {
-    await mutateGeneral('/tryout/registerTryOut', {
-      payload,
+    const { websiteSubCategoryId, ...restPayload } = payload;
+    const res = await mutateGeneral('/tryout/registerTryOut', {
+      payload: {
+        ...restPayload,
+        isPremium: restPayload.isPremium ?? false, // Default to false if undefined
+      },
+      params: { website_sub_category_id: websiteSubCategoryId },
       type: 'post',
-      onSuccess: refresh,
+      async onSuccess() {
+        if (refresh) {
+          await refresh();
+        }
+      },
     });
+    return res;
   };
 
-  const handleRegistration = async (isPremium?: boolean) => {
+  const handleRegistration = async (
+    isPremium?: boolean,
+    couponCode?: string,
+  ) => {
     try {
       setIsLoading(true);
       if (showDetail) {
-        await registerTryOut({
+        const res = await registerTryOut({
           tryoutId: showDetail.id,
           userId: session?.user.id || '',
           isPremium,
+          websiteSubCategoryId:
+            showDetail.WebsiteSubCategory?.id || website_sub_category_id || '',
+          couponCode,
         });
 
         // ✅ Track Lead Event - User mendaftar try out
         try {
-          pixel.meta.track(
-            'Lead',
-            {
+          const fullName = session?.user?.name || '';
+          const [firstName, ...restNameParts] = fullName
+            .split(' ')
+            .filter(Boolean);
+          const lastName = restNameParts.length
+            ? restNameParts.join(' ')
+            : undefined;
+
+          trackUnifiedEvent({
+            eventName: 'Lead',
+            customData: {
               content_name: `Tryout Registration - ${showDetail.title}`,
               content_type: 'tryout',
-              value: isPremium ? 1 : 0, // 1 untuk premium, 0 untuk gratis
+              value: isPremium ? 1 : 0,
               currency: 'IDR',
               contents: [{ id: showDetail.id, quantity: 1 }],
             },
-            {
-              // Advanced Matching data
-              em: session?.user?.email,
-              ph: session?.user?.phone || undefined, // ✅ Handle null value
-              fn: session?.user?.name?.split(' ')[0],
-              ln: session?.user?.name?.split(' ').slice(1).join(' '),
-            },
-          );
-
-          pixel.tiktok.track('Lead', {
-            content_name: `Tryout Registration - ${showDetail.title}`,
-            content_type: 'tryout',
-            value: isPremium ? 1 : 0,
-            currency: 'IDR',
-            content_id: `tryout_registration_${showDetail.id}`, // ✅ Required untuk TikTok VSA
+            user: session?.user
+              ? {
+                  userId: session.user.id?.toString?.() || undefined,
+                  email: session.user.email || undefined,
+                  phone: session.user.phone || undefined,
+                  firstName: firstName || undefined,
+                  lastName,
+                }
+              : undefined,
           });
         } catch (pixelError) {
           console.warn(
@@ -247,8 +272,10 @@ export default function CardTryOut({
           );
         }
 
-        router.push(`${pathname}?register_tryout=success`);
-        setShowDetail(null);
+        if (res?.status === 200) {
+          router.push(`${pathname}?register_tryout=success`);
+          setShowDetail(null);
+        }
       }
       setIsLoading(false);
       return;
@@ -339,10 +366,17 @@ export default function CardTryOut({
 
               {/* Free Badge */}
               <div className="absolute top-4 left-4 z-20">
-                <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 font-bold flex items-center gap-1">
-                  <Award className="w-3 h-3" />
-                  <span className="text-xs">GRATIS</span>
-                </Badge>
+                {item.isCouponOnly ? (
+                  <Badge className="bg-purple-50 text-purple-700 border-purple-200 font-bold flex items-center gap-1">
+                    <Gift className="w-3 h-3" />
+                    <span className="text-xs">COUPON ONLY</span>
+                  </Badge>
+                ) : (
+                  <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 font-bold flex items-center gap-1">
+                    <Award className="w-3 h-3" />
+                    <span className="text-xs">GRATIS</span>
+                  </Badge>
+                )}
               </div>
 
               <CardContent className="p-0">
@@ -500,6 +534,16 @@ export default function CardTryOut({
                           background: `linear-gradient(135deg, ${item.WebsiteSubCategory?.main_color || mainColor}, ${item.WebsiteSubCategory?.secondary_color || secondaryColor})`,
                         }}
                         onClick={() => {
+                          // Check if user is logged in first
+                          if (!session) {
+                            const currentPath = window.location.pathname;
+                            setShowAuth({
+                              redirect: `${currentPath}?id=${item.id}`,
+                              open: true,
+                            });
+                            return;
+                          }
+
                           if (reloadHref && item.WebsiteSubCategory) {
                             localStorage.setItem(
                               'website_sub_category_id',

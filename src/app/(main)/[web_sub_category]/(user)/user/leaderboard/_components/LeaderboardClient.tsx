@@ -8,7 +8,7 @@ import { TryOutSelector } from '@/app/(main)/[web_sub_category]/(user)/user/lead
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -106,25 +106,26 @@ export default function LeaderboardClient() {
   }, [selectedTryOut, session]);
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    const fullName = session?.user?.name || '';
+    const [firstName, ...restNameParts] = fullName.split(' ').filter(Boolean);
+    const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Leaderboard',
         content_type: 'page',
+        content_id: 'leaderboard_page',
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            userId: session.user.id?.toString?.() || undefined,
+            email: session.user.email || undefined,
+            phone: session.user.phone || undefined,
+            firstName: firstName || undefined,
+            lastName,
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Leaderboard',
-      content_id: 'leaderboard_page', // ✅ Required untuk TikTok VSA
     });
   }, [session]);
 

@@ -17,7 +17,7 @@ import { DocDataType } from '@/components/pdf-reader';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { pixel } from '@/lib/pixel/_core';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
 import { CrownIcon, LockIcon, PlayIcon, Sparkles } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -119,25 +119,22 @@ const DocViewerPage = () => {
   const isMobile = useMedia({ maxWidth: '768px' });
 
   useEffect(() => {
-    pixel.meta.track(
-      'ViewContent',
-      {
+    trackUnifiedEvent({
+      eventName: 'ViewContent',
+      customData: {
         content_name: 'Workspace',
         content_type: 'page',
+        content_id: `workspace_document_${docId}`,
       },
-      // ✅ Advanced Matching untuk Meta Pixel
-      session?.user
+      user: session?.user
         ? {
-            em: session.user.email,
-            ph: session.user.phone || undefined,
-            fn: session.user.name?.split(' ')[0],
-            ln: session.user.name?.split(' ').slice(1).join(' '),
+            email: session.user.email,
+            phone: session.user.phone || undefined,
+            userId: session.user.id,
+            firstName: session.user.name?.split(' ')[0],
+            lastName: session.user.name?.split(' ').slice(1).join(' '),
           }
         : undefined,
-    );
-    pixel.tiktok.track('ViewContent', {
-      content_name: 'Workspace',
-      content_id: `workspace_document_${docId}`, // ✅ Required untuk TikTok VSA
     });
   }, [session, docId]);
 
