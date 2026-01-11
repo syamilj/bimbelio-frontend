@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Logo from '@/components/ui/logo';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import {
   SidebarContent,
   SidebarFooter,
@@ -204,13 +204,14 @@ const SidebarUser = ({
                    router.push('/price');
                 }}
                 disabled={isUpgrading}
-                className="w-10 h-10 rounded-2xl flex items-center justify-center bg-white text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all shadow-sm group relative disabled:opacity-70 disabled:cursor-not-allowed"
+                style={{ backgroundColor: `${mainColor}15` }}
+                className="w-10 h-10 rounded-2xl flex items-center justify-center hover:opacity-80 transition-all shadow-sm group relative disabled:opacity-70 disabled:cursor-not-allowed"
                 title="Upgrade Plan"
               >
                 {isUpgrading ? (
-                   <Loader2 className="w-5 h-5 animate-spin" />
+                   <Loader2 className="w-5 h-5 animate-spin" style={{ color: mainColor }} />
                 ) : (
-                   <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                   <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" style={{ color: mainColor }} />
                 )}
               </button>
             </div>
@@ -227,7 +228,8 @@ const SidebarUser = ({
                     }
                   }}
                   disabled={isUpgrading}
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all group disabled:opacity-70 disabled:cursor-not-allowed"
+                  style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
+                  className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
                >
                   {isUpgrading ? (
                      <Loader2 className="w-5 h-5 animate-spin" />
@@ -362,6 +364,7 @@ const SidebarUser = ({
           side="left"
           className="w-80 bg-white backdrop-blur-xl border-r border-slate-200/60"
         >
+          <SheetTitle className="sr-only">Menu Mobile</SheetTitle>
           <div className="flex flex-col h-full gap-0">
             {/* Mobile Header */}
             <div className="pb-4 border-b-2 border-slate-200/50">
@@ -419,7 +422,8 @@ const SidebarUser = ({
                        setIsMobileSidebarOpen(false);
                      }}
                      disabled={isUpgrading}
-                     className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all group disabled:opacity-70 disabled:cursor-not-allowed"
+                     style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
+                     className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
                   >
                      {isUpgrading ? (
                         <Loader2 className="w-5 h-5 animate-spin" />

@@ -87,11 +87,7 @@ const navSections: NavSection[] = [
         icon: MonitorPlay,
         isNew: true,
       },
-      {
-        title: 'Material',
-        url: (subCategoryId: string) => `/${subCategoryId}/user/explore`,
-        icon: Search,
-      },
+      // Material moved to BimCourse submenu
     ],
   },
   {
@@ -144,6 +140,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
   const pathname = usePathname();
   const [showMaterialSub, setShowMaterialSub] = useState<boolean>(true); // Always expanded by default
   const [showBimArenaSub, setShowBimArenaSub] = useState<boolean>(true); // Always expanded by default
+  const [showBimCourseSub, setShowBimCourseSub] = useState<boolean>(true); // Added for BimCourse
   const { setSidebarMobile } = useAppContext();
   const webSubCategoryId = website_sub_category_id_params;
 
@@ -151,6 +148,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
     // Keep it true effectively
     setShowMaterialSub(true);
     setShowBimArenaSub(true);
+    setShowBimCourseSub(true);
   }, [pathname]);
 
   const isMobile = useMedia({ maxWidth: '768px' });
@@ -272,7 +270,8 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
 
                 // Handle Submenu Toggles
                 const isBimArena = item.title === 'BimArena';
-                const hasSubMenu = isBimArena;
+                const isBimCourse = item.title === 'BimCourse';
+                const hasSubMenu = isBimArena || isBimCourse;
 
                 const handleItemClick = (e: React.MouseEvent) => {
                    if (hasSubMenu) {
@@ -280,6 +279,10 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                      if (isBimArena) {
                         e.preventDefault();
                         setShowBimArenaSub(prev => !prev);
+                     }
+                      if (isBimCourse) {
+                        e.preventDefault();
+                        setShowBimCourseSub(prev => !prev);
                      }
                      // BimLive actually navigates AND has submenu, so we don't prevent default
                    }
@@ -289,7 +292,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                 return (
                   <div key={item.title} className="relative">
                     <Link
-                      href={(isBimArena) ? '#' : item.url(webSubCategoryId ?? '')}
+                      href={(isBimArena || isBimCourse) ? '#' : item.url(webSubCategoryId ?? '')}
                       onClick={handleItemClick}
                       className={cn(
                         'group flex items-center justify-between px-3 py-2 rounded-2xl text-sm font-semibold transition-all duration-200',
@@ -328,12 +331,84 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                           <ChevronDown
                             className={cn(
                               "w-3.5 h-3.5 transition-transform duration-200 opacity-50",
-                              (isBimArena && showBimArenaSub) ? "rotate-180" : ""
+                              ((isBimArena && showBimArenaSub) || (isBimCourse && showBimCourseSub)) ? "rotate-180" : ""
                             )}
                           />
                         )}
                       </div>
                     </Link>
+
+                    {/* BimCourse Submenu */}
+                     {showBimCourseSub && isBimCourse && (
+                         <div className="mt-1 ml-4 pl-3 border-l border-slate-200 space-y-1 relative">
+                             {/* Utility Menu */}
+                             <div className="space-y-1">
+                                <Link
+                                    key="semua"
+                                    href={`/${webSubCategoryId}/user/bimcourse`}
+                                    onClick={handleLinkClick}
+                                    className={cn(
+                                        "flex items-center gap-2 px-3 py-1.5 text-xs rounded-md transition-colors",
+                                        pathname === `/${webSubCategoryId}/user/bimcourse`
+                                        ? "text-slate-900 font-bold bg-slate-100"
+                                        : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                    )}
+                                >
+                                    <div className="w-4 flex justify-center"><BookOpen className="w-3.5 h-3.5 shrink-0" /></div>
+                                    <span>Semua Modul</span>
+                                </Link>
+
+                                <Link
+                                    key="telusuri"
+                                    href={`/${webSubCategoryId}/user/explore`}
+                                    onClick={handleLinkClick}
+                                    className={cn(
+                                        "flex items-center gap-2 px-3 py-1.5 text-xs rounded-md transition-colors",
+                                        pathname?.includes('/user/explore')
+                                        ? "text-slate-900 font-bold bg-slate-100"
+                                        : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                    )}
+                                >
+                                    <div className="w-4 flex justify-center"><Search className="w-3.5 h-3.5 shrink-0" /></div>
+                                    <span>Telusuri</span>
+                                </Link>
+                             </div>
+
+                             {/* Divider & Categories */}
+                             {category && category.length > 0 && (
+                                <div className="pt-1">
+                                   <div className="my-1.5 border-t border-slate-100 w-full" />
+                                   <p className="px-3 text-[10px] font-extrabold text-slate-400 uppercase mb-1 tracking-wider">
+                                     Mata Pelajaran
+                                   </p>
+                                   <div className="space-y-0.5">
+                                      {category?.map((cat: any) => {
+                                         const catHref = `/${webSubCategoryId}/user/bimcourse/${cat.id}`;
+                                         const isCatActive = pathname?.includes(catHref);
+                                         return (
+                                           <Link
+                                              key={cat.id}
+                                              href={catHref}
+                                              onClick={handleLinkClick}
+                                              className={cn(
+                                                  "flex items-center gap-2 px-3 py-1.5 text-xs rounded-md transition-colors",
+                                                  isCatActive
+                                                    ? "text-slate-900 font-semibold bg-slate-50"
+                                                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                              )}
+                                           >
+                                              <div className="w-4 flex justify-center">
+                                                <div className={cn("w-1.5 h-1.5 rounded-full", isCatActive ? "bg-slate-600" : "bg-slate-300")} />
+                                              </div>
+                                              <span className="truncate">{cat.name}</span>
+                                           </Link>
+                                         );
+                                      })}
+                                   </div>
+                                </div>
+                             )}
+                         </div>
+                     )}
 
                     {/* BimArena Submenu */}
                     {showBimArenaSub && isBimArena && (

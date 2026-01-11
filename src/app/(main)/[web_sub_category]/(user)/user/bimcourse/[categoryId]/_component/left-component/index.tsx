@@ -19,7 +19,7 @@ export default function LeftComponent() {
   const {
     isLocked,
     useParams: { sub },
-    useData: { CourseData, showStartCourse, setShowStartCourse, Course },
+    useData: { CourseData, Course },
     useDoc: { doc },
   } = useProvider();
   const { mobileScreen } = useAppContext();
@@ -31,62 +31,6 @@ export default function LeftComponent() {
 
   const isUpcoming = CourseData?.status === 'UPCOMING';
 
-  // Handle start course flow
-  const handleStartCourse = () => {
-    setShowStartCourse(false);
-    // Navigate to first chapter if available
-    if (Course && Course.length > 0 && Course[0].CourseSubChapter.length > 0) {
-      const firstSubChapter = Course[0].CourseSubChapter[0];
-      // Remove start parameter and add sub and tab parameters
-      const newUrl = `${window.location.pathname}?sub=${firstSubChapter.id}&tab=chat`;
-      window.history.replaceState({}, '', newUrl);
-      // Force reload to update provider state
-      window.location.reload();
-    }
-  };
-
-  // Prepare course data for StartCourse component
-  const courseDataForStart = Course
-    ? {
-        id: Course[0]?.id || '',
-        title: Course[0]?.title || 'Course',
-        description:
-          'Start your learning journey with this comprehensive course.',
-        totalChapters: Course.length,
-        totalSubChapters: Course.reduce(
-          (total, chapter) => total + chapter.CourseSubChapter.length,
-          0,
-        ),
-        estimatedDuration: Course.reduce(
-          (total, chapter) =>
-            total +
-            chapter.CourseSubChapter.reduce(
-              (subTotal, subChapter) => subTotal + subChapter.spendTime,
-              0,
-            ),
-          0,
-        ),
-        level: 'BEGINNER' as const, // You can make this dynamic based on course data
-        category: Course[0]?.title || 'General',
-        enrolledCount: 0, // You can add this to your database if needed
-        // Add full course structure for detailed view
-        chapters: Course.map((chapter, index) => ({
-          id: chapter.id,
-          title: chapter.title,
-          number: index + 1,
-          subChapters: chapter.CourseSubChapter.map((subChapter, subIndex) => ({
-            id: subChapter.id,
-            title: subChapter.title,
-            type: subChapter.type,
-            spendTime: subChapter.spendTime,
-            number: subIndex + 1,
-            premium: subChapter.premium,
-            description: subChapter.description,
-            img: subChapter.Document?.img || null, // Get thumbnail from Document
-          })),
-        })),
-      }
-    : null;
 
   return (
     <ResizablePanel

@@ -73,7 +73,6 @@ export default function Provider({ children }: Props) {
   // ===== Data & IndexChapter ================================
   const [CourseData, setCourseData] = useState<Data | null>(null);
   const [indexChapter, setIndexChapter] = useState<number>(0);
-  const [showStartCourse, setShowStartCourse] = useState<boolean>(false);
 
   const {
     data: Course,
@@ -116,10 +115,6 @@ export default function Provider({ children }: Props) {
                 ),
             ),
         );
-
-      // Check if user is starting a new course (start=true param OR no progress and no sub)
-      const isStartFlow = startParam === 'true' || (!sub && !hasProgress);
-      setShowStartCourse(isStartFlow);
 
       if (sub) {
         let findData: any;
@@ -175,8 +170,7 @@ export default function Provider({ children }: Props) {
         // Only auto-navigate if not showing start course
         if (
           Course.length > 0 &&
-          Course[0].CourseSubChapter.length > 0 &&
-          !isStartFlow
+          Course[0].CourseSubChapter.length > 0
         ) {
           setCourseData({
             id: Course[0].CourseSubChapter[0].id,
@@ -296,8 +290,6 @@ export default function Provider({ children }: Props) {
       setCourseData,
       indexChapter,
       setIndexChapter,
-      showStartCourse,
-      setShowStartCourse,
     },
     useDoc: {
       docId,
@@ -367,8 +359,6 @@ type ProviderType = {
     setCourseData: Dispatch<SetStateAction<Data | null>>;
     indexChapter: number;
     setIndexChapter: Dispatch<SetStateAction<number>>;
-    showStartCourse: boolean;
-    setShowStartCourse: Dispatch<SetStateAction<boolean>>;
   };
   useDoc: {
     docId: string;
