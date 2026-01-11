@@ -69,7 +69,7 @@ export type Data = {
 
 const WorkspaceCourse = () => {
   const {
-    useData: { CourseData, CourseLoading, Course, showStartCourse },
+    useData: { CourseData, CourseLoading, Course,  },
     useDoc: { docId },
   } = useProvider();
   const { data: session } = useSession();
@@ -160,14 +160,7 @@ const WorkspaceCourse = () => {
   // }
   return (
     <Fragment>
-      {!showStartCourse && <HeaderCourse className="hidden md:flex" />}
-      {showStartCourse ? (
-        // Full screen start course experience
-        <div className="h-full w-full">
-          <LeftComponent />
-        </div>
-      ) : (
-        // Normal layout with left and right panels
+      <HeaderCourse className="hidden md:flex" />
         <ResizablePanelGroup
           autoSaveId="window-layout"
           direction={isMobile ? 'vertical' : 'horizontal'}
@@ -181,7 +174,6 @@ const WorkspaceCourse = () => {
             <NavigationButtons />
           </div>
         </ResizablePanelGroup>
-      )}
     </Fragment>
   );
 };
