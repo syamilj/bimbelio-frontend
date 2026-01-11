@@ -113,7 +113,8 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
     const isWorkspaceRoute =
       pathname?.includes('workspace') && params?.category && params?.docsid;
-    const isCourseRoute = pathname?.includes('course') && params?.categoryId;
+    // Only treat as workspace (immersive) if it's the study/player page
+    const isCourseRoute = pathname?.includes('course') && params?.categoryId && pathname?.includes('/study');
 
     if (isWorkspaceRoute || isCourseRoute) {
       setComponentName('DocViewerPage');

@@ -93,6 +93,15 @@ export default function Provider({ children }: Props) {
     },
   );
 
+  const { data: CourseAnalytics, isLoading: AnalyticsLoading } = useGet(
+    '/course/getCourseAnalytics',
+    {
+      params: { categoryId },
+      enabled: !!categoryId,
+      useEffectDependencies: [categoryId],
+    }
+  );
+
   useEffect(() => {
     setCourseData(null);
   }, [categoryId, pathname]);
@@ -290,6 +299,8 @@ export default function Provider({ children }: Props) {
       setCourseData,
       indexChapter,
       setIndexChapter,
+      CourseAnalytics,
+      AnalyticsLoading,
     },
     useDoc: {
       docId,
@@ -359,6 +370,8 @@ type ProviderType = {
     setCourseData: Dispatch<SetStateAction<Data | null>>;
     indexChapter: number;
     setIndexChapter: Dispatch<SetStateAction<number>>;
+    CourseAnalytics: any;
+    AnalyticsLoading: boolean;
   };
   useDoc: {
     docId: string;
