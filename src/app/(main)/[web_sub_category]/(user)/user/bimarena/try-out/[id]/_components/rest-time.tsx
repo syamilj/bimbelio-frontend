@@ -119,7 +119,7 @@ const RestTime = ({
           className="text-center mb-12"
         >
           <div
-            className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -208,7 +208,7 @@ const RestTime = ({
                   disabled={loading}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 mx-auto"
+                  className="px-8 py-4 rounded-3xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 mx-auto"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -241,7 +241,7 @@ const RestTime = ({
           >
             {/* Next Session Info */}
             <Card
-              className="border-2 rounded-2xl overflow-hidden shadow-lg"
+              className="border-2 rounded-3xl overflow-hidden shadow-lg"
               style={{ borderColor: `${secondaryColor}20` }}
             >
               <CardContent className="p-6">
@@ -280,7 +280,7 @@ const RestTime = ({
 
             {/* Progress Overview */}
             <Card
-              className="border-2 rounded-2xl overflow-hidden shadow-lg"
+              className="border-2 rounded-3xl overflow-hidden shadow-lg"
               style={{ borderColor: `${mainColor}20` }}
             >
               <CardContent className="p-6">
@@ -368,7 +368,7 @@ const RestTime = ({
             </Card>
 
             {/* Tips Card */}
-            <Card className="border-2 rounded-2xl overflow-hidden shadow-lg border-yellow-200 bg-yellow-50">
+            <Card className="border-2 rounded-3xl overflow-hidden shadow-lg border-yellow-200 bg-yellow-50">
               <CardContent className="p-6">
                 <h3 className="text-lg font-bold text-yellow-800 mb-4">
                   💡 Tips Istirahat

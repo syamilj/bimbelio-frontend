@@ -340,7 +340,7 @@ const LogoSection: React.FC<{
       </div>
 
       {/*  logo slider */}
-      <div className="relative overflow-hidden py-4 rounded-2xl">
+      <div className="relative overflow-hidden py-4 rounded-3xl">
         <div className="animate-smooth-marquee flex">
           {doubled.map((logo, i) => (
             <div

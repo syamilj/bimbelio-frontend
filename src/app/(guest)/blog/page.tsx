@@ -114,7 +114,7 @@ export default function BlogClient() {
           />
           {/* Medium Pink Square - Top Left */}
           <div
-            className="absolute top-32 left-20 w-40 h-40 rounded-2xl opacity-8 blur-2xl"
+            className="absolute top-32 left-20 w-40 h-40 rounded-3xl opacity-8 blur-2xl"
             style={{
               backgroundColor: secondaryColor,
               transform: 'rotate(15deg)',
@@ -210,7 +210,7 @@ export default function BlogClient() {
               >
                 {/* Filter Section - Enhanced design */}
                 <Card
-                  className="border-2 shadow-lg bg-white rounded-2xl overflow-hidden"
+                  className="border-2 shadow-lg bg-white rounded-3xl overflow-hidden"
                   style={{ borderColor: `${mainColor}20` }}
                 >
                   {/* Top Accent Bar */}
@@ -225,7 +225,7 @@ export default function BlogClient() {
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div
-                          className="p-3 rounded-2xl"
+                          className="p-3 rounded-3xl"
                           style={{ backgroundColor: `${mainColor}15` }}
                         >
                           <TrendingUp
@@ -280,7 +280,7 @@ export default function BlogClient() {
                     {[1, 2, 3, 4, 5, 6].map((i) => (
                       <Card
                         key={i}
-                        className="border-2 shadow-lg rounded-2xl overflow-hidden bg-white"
+                        className="border-2 shadow-lg rounded-3xl overflow-hidden bg-white"
                         style={{ borderColor: `${mainColor}20` }}
                       >
                         {/* Top Accent Bar Skeleton */}
@@ -356,7 +356,7 @@ export default function BlogClient() {
                     transition={{ duration: 0.5 }}
                   >
                     <Card
-                      className="border-2 shadow-lg rounded-2xl overflow-hidden p-12 text-center bg-white"
+                      className="border-2 shadow-lg rounded-3xl overflow-hidden p-12 text-center bg-white"
                       style={{ borderColor: `${mainColor}20` }}
                     >
                       {/* Top Accent Bar */}
@@ -371,7 +371,7 @@ export default function BlogClient() {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2, type: 'spring' }}
-                        className="w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center"
+                        className="w-20 h-20 rounded-3xl mx-auto mb-6 flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <SearchIcon
@@ -517,7 +517,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
               {/* Date Badge */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="p-3 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all"
+                className="p-3 rounded-3xl border-2 flex flex-col items-center justify-center text-center transition-all"
                 style={{
                   background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                   borderColor: 'rgb(191 219 254)',
@@ -534,7 +534,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
               {/* Reading Time Badge */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="p-3 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all"
+                className="p-3 rounded-3xl border-2 flex flex-col items-center justify-center text-center transition-all"
                 style={{
                   background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
                   borderColor: 'rgb(187 247 208)',
@@ -549,7 +549,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
               {/* Views Badge */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="p-3 rounded-2xl border-2 flex flex-col items-center justify-center text-center transition-all"
+                className="p-3 rounded-3xl border-2 flex flex-col items-center justify-center text-center transition-all"
                 style={{
                   background: `linear-gradient(to bottom right, rgb(254 249 195), rgb(254 240 138))`,
                   borderColor: 'rgb(253 224 71)',
@@ -569,7 +569,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
 
             {/* CTA Button */}
             <Button
-              className="w-full rounded-2xl font-bold text-base transition-all duration-300 border-0 shadow-md hover:shadow-lg text-white py-2.5"
+              className="w-full rounded-3xl font-bold text-base transition-all duration-300 border-0 shadow-md hover:shadow-lg text-white py-2.5"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -606,7 +606,7 @@ function Sidebar({
         transition={{ duration: 0.5 }}
       >
         <Card
-          className="border-2 shadow-lg rounded-2xl overflow-hidden bg-white"
+          className="border-2 shadow-lg rounded-3xl overflow-hidden bg-white"
           style={{ borderColor: `${mainColor}20` }}
         >
           {/* Top Accent Bar */}
@@ -619,7 +619,7 @@ function Sidebar({
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center text-gray-900 font-black">
               <div
-                className="p-3 rounded-2xl mr-3 flex items-center justify-center"
+                className="p-3 rounded-3xl mr-3 flex items-center justify-center"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <SearchIcon
@@ -652,7 +652,7 @@ function Sidebar({
         transition={{ duration: 0.5, delay: 0.1 }}
       >
         <Card
-          className="border-2 shadow-lg rounded-2xl overflow-hidden bg-white"
+          className="border-2 shadow-lg rounded-3xl overflow-hidden bg-white"
           style={{ borderColor: `${secondaryColor}20` }}
         >
           {/* Top Accent Bar */}
@@ -663,7 +663,7 @@ function Sidebar({
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center text-gray-900 font-black">
               <div
-                className="p-3 rounded-2xl mr-3 flex items-center justify-center"
+                className="p-3 rounded-3xl mr-3 flex items-center justify-center"
                 style={{ backgroundColor: `${secondaryColor}15` }}
               >
                 <TagIcon
@@ -710,14 +710,14 @@ function Sidebar({
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <Card
-          className="border-2 shadow-lg rounded-2xl overflow-hidden bg-white"
+          className="border-2 shadow-lg rounded-3xl overflow-hidden bg-white"
           style={{ borderColor: '#fbbf2420' }}
         >
           {/* Top Accent Bar */}
           <div className="h-2 w-full bg-yellow-500" />
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center text-gray-900 font-black">
-              <div className="p-3 rounded-2xl mr-3 flex items-center justify-center bg-yellow-500 bg-opacity-15">
+              <div className="p-3 rounded-3xl mr-3 flex items-center justify-center bg-yellow-500 bg-opacity-15">
                 <TrendingUp className="h-5 w-5 text-yellow-600" />
               </div>
               Artikel Terpopuler
@@ -773,7 +773,7 @@ function Sidebar({
         transition={{ duration: 0.5, delay: 0.3 }}
       >
         <Card
-          className="border-2 shadow-lg rounded-2xl overflow-hidden bg-white"
+          className="border-2 shadow-lg rounded-3xl overflow-hidden bg-white"
           style={{ borderColor: `${mainColor}20` }}
         >
           {/* Top Accent Bar */}
@@ -785,7 +785,7 @@ function Sidebar({
           />
           <CardContent className="p-6 text-center">
             <div
-              className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
+              className="w-16 h-16 rounded-3xl mx-auto mb-4 flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Users

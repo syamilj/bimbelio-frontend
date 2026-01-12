@@ -413,7 +413,7 @@ const MobileNav: React.FC<{
   return (
     <div className="fixed left-0 top-0 z-50 w-full">
       {/* Enhanced Mobile Header */}
-      <Card className="mx-3 mt-3 shadow-xl border rounded-2xl backdrop-blur-xl overflow-hidden">
+      <Card className="mx-3 mt-3 shadow-xl border rounded-3xl backdrop-blur-xl overflow-hidden">
         <div className="px-4 py-3 relative bg-transparent">
           {/* Background Pattern */}
           {/* <div className="absolute inset-0 opacity-5">
@@ -436,7 +436,7 @@ const MobileNav: React.FC<{
 
             <div className="flex items-center gap-2">
               {/* Combined Button: Shop (1/4) + Login/Dashboard (3/4) */}
-              <div className="flex items-center rounded-2xl shadow-lg overflow-hidden">
+              <div className="flex items-center rounded-3xl shadow-lg overflow-hidden">
                 {/* Shop Button - 1/4 */}
                 <Link href="/price">
                   <Button
@@ -892,7 +892,7 @@ const DesktopNav: React.FC<{
   return (
     <div className="fixed left-0 top-0 z-50 w-full bg-transparent pointer-events-none">
       <div className="mx-auto max-w-4xl px-4 pt-4 pointer-events-auto">
-        <Card className=" shadow-md border rounded-2xl backdrop-blur-xl overflow-visible bg-white">
+        <Card className=" shadow-md border rounded-3xl backdrop-blur-xl overflow-visible bg-white">
           <div
             className="px-6 py-4 md:py-1 lg:py-1 relative rounded-3xl z-[3] bg-transparent"
             // style={{
@@ -991,7 +991,7 @@ const DesktopNav: React.FC<{
                                 })()}
                             </span>
                           </NavigationMenuTrigger>
-                          <NavigationMenuContent className="overflow-hidden border-0 p-0 shadow-none !rounded-2xl !bg-transparent">
+                          <NavigationMenuContent className="overflow-hidden border-0 p-0 shadow-none !rounded-3xl !bg-transparent">
                             {/* Multi-column layout */}
                             {item.submenuColumns ? (
                               <div
@@ -1053,7 +1053,7 @@ const DesktopNav: React.FC<{
                                                       subItem.isLink,
                                                     );
                                                   }}
-                                                  className="group w-full text-left px-3 py-2.5 text-sm rounded-2xl transition-all duration-200 relative"
+                                                  className="group w-full text-left px-3 py-2.5 text-sm rounded-3xl transition-all duration-200 relative"
                                                   style={{
                                                     color: mainColor,
                                                   }}

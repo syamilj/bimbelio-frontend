@@ -221,7 +221,7 @@ export default function LiveClassStudentDetail() {
                       router.back();
                     }
                   }}
-                  className="hover:bg-white/20 transition-colors font-bold rounded-2xl relative z-20"
+                  className="hover:bg-white/20 transition-colors font-bold rounded-3xl relative z-20"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Kembali
@@ -244,7 +244,7 @@ export default function LiveClassStudentDetail() {
 
               <CardTitle className="text-3xl font-bold flex items-center gap-4 text-gray-900">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border-2"
+                  className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm border-2"
                   style={{
                     backgroundColor: `${mainColor}15`,
                     borderColor: `${mainColor}30`,
@@ -374,7 +374,7 @@ export default function LiveClassStudentDetail() {
                   defaultValue="agenda"
                   className="w-full"
                 >
-                  <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-50 rounded-2xl p-1 h-11 border-2 border-gray-100">
+                  <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-50 rounded-3xl p-1 h-11 border-2 border-gray-100">
                     <TabsTrigger
                       value="agenda"
                       className="rounded-xl transition-all duration-200 data-[state=active]:shadow-sm font-bold"
@@ -409,7 +409,7 @@ export default function LiveClassStudentDetail() {
                         {liveClass.LiveClassAgenda.map((agenda, index) => (
                           <div
                             key={agenda.id}
-                            className="border-2 border-gray-100 rounded-2xl p-4 hover:shadow-sm transition-shadow"
+                            className="border-2 border-gray-100 rounded-3xl p-4 hover:shadow-sm transition-shadow"
                           >
                             <div className="flex items-start gap-3">
                               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center shrink-0 mt-1 border-2 border-blue-200">
@@ -461,11 +461,11 @@ export default function LiveClassStudentDetail() {
                                 href={`/${website_sub_category_id}/user/bimcourse/${liveClass.Category?.id || 'unknown'}?sub=${ref.subChapterId}`}
                                 className="block w-full"
                               >
-                                <div className="border-2 border-blue-100 rounded-2xl p-4 hover:shadow-md transition-all duration-300 hover:border-blue-300 bg-gradient-to-r from-blue-50 to-indigo-50 cursor-pointer group-hover:scale-[1.02]">
+                                <div className="border-2 border-blue-100 rounded-3xl p-4 hover:shadow-md transition-all duration-300 hover:border-blue-300 bg-gradient-to-r from-blue-50 to-indigo-50 cursor-pointer group-hover:scale-[1.02]">
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-start gap-3 flex-1">
                                       {/* Course icon */}
-                                      <div className="w-10 h-10 rounded-2xl bg-blue-500 flex items-center justify-center shrink-0 border-2 border-blue-600 shadow-sm">
+                                      <div className="w-10 h-10 rounded-3xl bg-blue-500 flex items-center justify-center shrink-0 border-2 border-blue-600 shadow-sm">
                                         <BookOpen className="h-5 w-5 text-white" />
                                       </div>
 
@@ -512,11 +512,11 @@ export default function LiveClassStudentDetail() {
                               </Link>
                             ) : (
                               /* External Link Reference Card */
-                              <div className="border-2 border-gray-100 rounded-2xl p-4 hover:shadow-sm transition-all duration-300 bg-gradient-to-r from-gray-50 to-slate-50">
+                              <div className="border-2 border-gray-100 rounded-3xl p-4 hover:shadow-sm transition-all duration-300 bg-gradient-to-r from-gray-50 to-slate-50">
                                 <div className="flex items-start justify-between">
                                   <div className="flex items-start gap-3 flex-1">
                                     {/* Icon based on url type */}
-                                    <div className="w-10 h-10 rounded-2xl bg-gray-500 flex items-center justify-center shrink-0 border-2 border-gray-600 shadow-sm">
+                                    <div className="w-10 h-10 rounded-3xl bg-gray-500 flex items-center justify-center shrink-0 border-2 border-gray-600 shadow-sm">
                                       {ref.urlType === 'VIDEO' && (
                                         <Video className="h-5 w-5 text-white" />
                                       )}
@@ -575,7 +575,7 @@ export default function LiveClassStudentDetail() {
                                       size="sm"
                                       variant="outline"
                                       asChild
-                                      className="shrink-0 rounded-2xl font-bold border-2"
+                                      className="shrink-0 rounded-3xl font-bold border-2"
                                     >
                                       <Link
                                         href={ref.url}
@@ -663,7 +663,7 @@ export default function LiveClassStudentDetail() {
                   >
                     <Button
                       variant="outline"
-                      className="w-full hover:bg-yellow-50 hover:border-yellow-300 transition-colors rounded-2xl font-bold border-2"
+                      className="w-full hover:bg-yellow-50 hover:border-yellow-300 transition-colors rounded-3xl font-bold border-2"
                     >
                       <Star className="mr-2 h-4 w-4" />
                       Beri Rating
@@ -682,7 +682,7 @@ export default function LiveClassStudentDetail() {
                     >
                       <Button
                         variant="outline"
-                        className="w-full rounded-2xl font-bold border-2"
+                        className="w-full rounded-3xl font-bold border-2"
                       >
                         <UserCheck className="mr-2 h-4 w-4" />
                         Daftar
@@ -705,7 +705,7 @@ export default function LiveClassStudentDetail() {
                   >
                     <Button
                       variant="outline"
-                      className="w-full rounded-2xl font-bold border-2"
+                      className="w-full rounded-3xl font-bold border-2"
                     >
                       <LinkIcon className="mr-2 h-4 w-4" />
                       Buka Meeting
@@ -717,7 +717,7 @@ export default function LiveClassStudentDetail() {
                   !isAlreadyAttendanceOut &&
                   isShowAttendance && (
                     <Button
-                      className="w-full rounded-2xl font-bold border-2"
+                      className="w-full rounded-3xl font-bold border-2"
                       disabled={AddAttendanceIsLoading}
                       onClick={() => {
                         AddAttendance();
@@ -800,14 +800,14 @@ function StatsCard({
 }: StatsCardProps) {
   return (
     <Card
-      className={`border-2 transition-all duration-300 hover:shadow-md hover:scale-105 rounded-2xl overflow-hidden shadow-sm ${bgColor} ${borderColor}`}
+      className={`border-2 transition-all duration-300 hover:shadow-md hover:scale-105 rounded-3xl overflow-hidden shadow-sm ${bgColor} ${borderColor}`}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 md:pb-3">
         <CardTitle className={`text-xs md:text-sm font-bold ${textColor}`}>
           {title}
         </CardTitle>
         <div
-          className={`w-8 h-8 md:w-10 md:h-10 rounded-2xl flex items-center justify-center bg-gradient-to-br ${gradient} text-white shadow-sm border-2 border-white`}
+          className={`w-8 h-8 md:w-10 md:h-10 rounded-3xl flex items-center justify-center bg-gradient-to-br ${gradient} text-white shadow-sm border-2 border-white`}
         >
           <Icon className="w-4 h-4 md:w-5 md:h-5" />
         </div>
@@ -876,8 +876,8 @@ function LoadingSkeleton({
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="h-10 bg-gray-200 rounded-2xl animate-pulse"></div>
-                <div className="h-10 bg-gray-200 rounded-2xl animate-pulse"></div>
+                <div className="h-10 bg-gray-200 rounded-3xl animate-pulse"></div>
+                <div className="h-10 bg-gray-200 rounded-3xl animate-pulse"></div>
               </div>
             </CardContent>
           </Card>
@@ -899,7 +899,7 @@ function ErrorState({ onBack }: { onBack: () => void }) {
       </p>
       <Button
         onClick={onBack}
-        className="px-6 py-2 rounded-2xl font-bold border-2"
+        className="px-6 py-2 rounded-3xl font-bold border-2"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Kembali

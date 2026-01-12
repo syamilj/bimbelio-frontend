@@ -459,7 +459,7 @@ export default function TabOverview({
                   <Button
                     variant="outline"
                     onClick={() => setActiveTab('classes')}
-                    className="px-8 py-4 rounded-2xl border-2 font-semibold hover:scale-105 transition-all duration-300"
+                    className="px-8 py-4 rounded-3xl border-2 font-semibold hover:scale-105 transition-all duration-300"
                     style={{
                       borderColor: mainColor,
                       color: mainColor,
@@ -570,7 +570,7 @@ export default function TabOverview({
 
                       <div className="relative">
                         <div
-                          className="w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg"
+                          className="w-16 h-16 rounded-3xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}

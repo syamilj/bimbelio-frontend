@@ -379,7 +379,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Hero Image Section */}
         <div className="relative mt-12 mb-4">
-          <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
+          <div className="relative w-full h-52 rounded-3xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
             <Image
               src={
                 `${env.NEXT_PUBLIC_SUPABASE_IMG_URL || '/placeholder.svg'}/tryout/${tryOut.image}` ||
@@ -484,7 +484,7 @@ const EnhancedTryOutCard = ({
 
       <div className="px-6 pb-6">
         {/* Enhanced Stats Section - Plan Card Style */}
-        <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
+        <div className="mb-6 p-4 rounded-3xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-700">

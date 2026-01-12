@@ -113,7 +113,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
       {/* Hero Banner with Result */}
       <div
         className={cn(
-          'relative overflow-hidden rounded-2xl p-8 shadow-2xl',
+          'relative overflow-hidden rounded-3xl p-8 shadow-2xl',
           isPassed
             ? 'bg-gradient-to-br from-green-500 via-emerald-600 to-teal-600'
             : 'bg-gradient-to-br from-orange-500 via-red-500 to-pink-600',

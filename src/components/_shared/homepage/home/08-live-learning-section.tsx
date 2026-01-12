@@ -248,7 +248,7 @@ const LiveLearningSection: React.FC = () => {
                     }}
                   />
                   <div className="p-6 space-y-4">
-                    <div className="h-48 bg-gray-200 rounded-2xl" />
+                    <div className="h-48 bg-gray-200 rounded-3xl" />
                     <div className="h-6 bg-gray-200 rounded w-3/4" />
                     <div className="h-4 bg-gray-200 rounded w-1/2" />
                     <div className="space-y-2">
@@ -286,7 +286,7 @@ const LiveLearningSection: React.FC = () => {
             {/* Icon Header */}
             <div className="mb-4 flex items-center justify-center gap-3">
               <div
-                className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-lg"
+                className="h-12 w-12 rounded-3xl flex items-center justify-center shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -307,7 +307,7 @@ const LiveLearningSection: React.FC = () => {
             {session ? (
               <Link
                 href={`${website_sub_category_id}/user/bimlive`}
-                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
+                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-3xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -318,7 +318,7 @@ const LiveLearningSection: React.FC = () => {
               </Link>
             ) : (
               <button
-                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
+                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-3xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -475,7 +475,7 @@ const EnhancedLiveLearningCard = ({
               {/* Time Information - Clean layout */}
               <div className="flex flex-col items-start gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-2xl bg-blue-100 flex items-center justify-center border-2 border-blue-200">
+                  <div className="w-8 h-8 rounded-3xl bg-blue-100 flex items-center justify-center border-2 border-blue-200">
                     <Calendar className="h-4 w-4 text-blue-600" />
                   </div>
                   <div>
@@ -488,7 +488,7 @@ const EnhancedLiveLearningCard = ({
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-2xl bg-purple-100 flex items-center justify-center border-2 border-purple-200">
+                  <div className="w-8 h-8 rounded-3xl bg-purple-100 flex items-center justify-center border-2 border-purple-200">
                     <Clock className="h-4 w-4 text-purple-600" />
                   </div>
                   <div>
@@ -505,7 +505,7 @@ const EnhancedLiveLearningCard = ({
           </div>
           {/* Countdown Timer - Modern design */}
           {isUpcoming && !timeLeft.isExpired && (
-            <div className="mt-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 border-2 border-white/50 shadow-sm">
+            <div className="mt-4 bg-white/90 backdrop-blur-sm rounded-3xl p-4 border-2 border-white/50 shadow-sm">
               <div className="text-xs text-gray-600 mb-2 text-center font-black uppercase tracking-wide">
                 Dimulai dalam
               </div>
@@ -518,13 +518,13 @@ const EnhancedLiveLearningCard = ({
           {!isUpcoming && (
             <div className="mt-4 flex justify-center">
               {isLive && (
-                <div className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-red-600">
+                <div className="bg-red-500 text-white px-4 py-2 rounded-3xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-red-600">
                   <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                   Sedang Berlangsung
                 </div>
               )}
               {liveClass.status === 'Selesai' && (
-                <div className="bg-gray-600 text-white px-4 py-2 rounded-2xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-gray-700">
+                <div className="bg-gray-600 text-white px-4 py-2 rounded-3xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-gray-700">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                   Kelas Selesai
                 </div>
@@ -548,9 +548,9 @@ const EnhancedLiveLearningCard = ({
               {/* Agenda Items - Modern card */}
               {liveClass.LiveClassAgenda &&
                 liveClass.LiveClassAgenda.length > 0 && (
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border-2 border-blue-200">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-4 border-2 border-blue-200">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-2xl bg-blue-500 flex items-center justify-center border-2 border-blue-600">
+                      <div className="w-6 h-6 rounded-3xl bg-blue-500 flex items-center justify-center border-2 border-blue-600">
                         <Target className="h-3 w-3 text-white" />
                       </div>
                       <span className="text-sm font-black text-blue-900">
@@ -562,7 +562,7 @@ const EnhancedLiveLearningCard = ({
                         (agenda, index) => (
                           <div
                             key={agenda.id}
-                            className="bg-white/70 rounded-2xl p-3 border-2 border-white/50 shadow-sm"
+                            className="bg-white/70 rounded-3xl p-3 border-2 border-white/50 shadow-sm"
                           >
                             <div className="flex items-start gap-3">
                               <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 border-2 border-blue-600">
@@ -601,9 +601,9 @@ const EnhancedLiveLearningCard = ({
               {/* Reference Items - Modern card */}
               {liveClass.LiveClassReference &&
                 liveClass.LiveClassReference.length > 0 && (
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-4 border-2 border-emerald-200">
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-3xl p-4 border-2 border-emerald-200">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-2xl bg-emerald-500 flex items-center justify-center border-2 border-emerald-600">
+                      <div className="w-6 h-6 rounded-3xl bg-emerald-500 flex items-center justify-center border-2 border-emerald-600">
                         <BookOpen className="h-3 w-3 text-white" />
                       </div>
                       <span className="text-sm font-black text-emerald-900">
@@ -614,10 +614,10 @@ const EnhancedLiveLearningCard = ({
                       {liveClass.LiveClassReference.slice(0, 2).map((ref) => (
                         <div
                           key={ref.id}
-                          className="bg-white/70 rounded-2xl p-3 border-2 border-white/50 shadow-sm"
+                          className="bg-white/70 rounded-3xl p-3 border-2 border-white/50 shadow-sm"
                         >
                           <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-2xl bg-emerald-100 flex items-center justify-center shrink-0 border-2 border-emerald-200">
+                            <div className="w-8 h-8 rounded-3xl bg-emerald-100 flex items-center justify-center shrink-0 border-2 border-emerald-200">
                               {ref.urlType === 'VIDEO' && (
                                 <span className="text-emerald-600">🎥</span>
                               )}
@@ -714,9 +714,9 @@ const EnhancedLiveLearningCard = ({
           {/* Plan Information - Modern design */}
           {showPlanInfo && liveClassWithAccess.userAccess && (
             <div className="mb-6">
-              <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-4 border-2 border-orange-200">
+              <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-3xl p-4 border-2 border-orange-200">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 rounded-2xl bg-orange-500 flex items-center justify-center border-2 border-orange-600">
+                  <div className="w-6 h-6 rounded-3xl bg-orange-500 flex items-center justify-center border-2 border-orange-600">
                     <Target className="h-3 w-3 text-white" />
                   </div>
                   <span className="text-sm font-black text-orange-900">
@@ -730,7 +730,7 @@ const EnhancedLiveLearningCard = ({
                       .map((plan: any, index: number) => (
                         <div
                           key={index}
-                          className={`px-3 py-2 rounded-2xl border-2 text-sm font-black ${
+                          className={`px-3 py-2 rounded-3xl border-2 text-sm font-black ${
                             liveClassWithAccess.userAccess.canRegister
                               ? 'bg-green-100 text-green-900 border-green-300'
                               : 'bg-orange-100 text-orange-900 border-orange-300'
@@ -745,7 +745,7 @@ const EnhancedLiveLearningCard = ({
                         </div>
                       ))
                   ) : (
-                    <div className="bg-gray-100 text-gray-900 px-3 py-2 rounded-2xl border-2 border-gray-300 text-sm font-black">
+                    <div className="bg-gray-100 text-gray-900 px-3 py-2 rounded-3xl border-2 border-gray-300 text-sm font-black">
                       <span className="mr-2">📖</span>
                       Gratis untuk Semua
                     </div>
@@ -802,7 +802,7 @@ const EnhancedLiveLearningCard = ({
                           e.stopPropagation();
                           onUpgrade(liveClass);
                         }}
-                        className="h-11 px-6 border-2 border-orange-300 text-orange-800 hover:bg-orange-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md"
+                        className="h-11 px-6 border-2 border-orange-300 text-orange-800 hover:bg-orange-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md"
                       >
                         <div className="w-4 h-4 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
                           <span className="text-white text-xs">🔒</span>
@@ -818,7 +818,7 @@ const EnhancedLiveLearningCard = ({
                         e.stopPropagation();
                         onRate(liveClass);
                       }}
-                      className="h-11 px-6 border-2 border-yellow-300 text-yellow-800 hover:bg-yellow-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md"
+                      className="h-11 px-6 border-2 border-yellow-300 text-yellow-800 hover:bg-yellow-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md"
                     >
                       <Star className="mr-2 h-4 w-4" />
                       Beri Rating
@@ -831,7 +831,7 @@ const EnhancedLiveLearningCard = ({
             <div className="flex items-center gap-4">
               {/* Enhanced Stats */}
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-2xl border-2 border-gray-100">
+                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-3xl border-2 border-gray-100">
                   <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
                     <Users className="h-3 w-3 text-blue-600" />
                   </div>
@@ -867,7 +867,7 @@ const EnhancedLiveLearningCard = ({
                   <Button
                     variant="outline"
                     size="lg"
-                    className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-900 hover:text-blue-600 hover:bg-blue-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md group bg-transparent"
+                    className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-900 hover:text-blue-600 hover:bg-blue-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md group bg-transparent"
                   >
                     <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
                     <span className="hidden sm:inline">Lihat Detail</span>
@@ -879,7 +879,7 @@ const EnhancedLiveLearningCard = ({
                 <Button
                   variant="outline"
                   size="lg"
-                  className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-900 hover:text-blue-600 hover:bg-blue-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md group bg-transparent"
+                  className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-900 hover:text-blue-600 hover:bg-blue-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md group bg-transparent"
                   onClick={() => {
                     setShowAuth({
                       open: true,

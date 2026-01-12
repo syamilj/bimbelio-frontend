@@ -88,7 +88,7 @@ const HeroSection: React.FC = () => {
           {/* Hero Heading - Image dengan Text Skeleton untuk SEO */}
           <div className="w-full max-w-5xl mb-6 md:mb-10 relative">
             {/* <div
-              className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}
+              className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-3xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}
             >
               <div
                 className="absolute inset-0 opacity-10"
@@ -162,7 +162,7 @@ const HeroSection: React.FC = () => {
             {/* Main CTA - Redesigned dengan warna gradient lebih menarik */}
             <button
               onClick={handleCTAClick}
-              className="group relative flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black text-base md:text-lg text-white shadow-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border-2 border-white/20"
+              className="group relative flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-5 rounded-3xl font-black text-base md:text-lg text-white shadow-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border-2 border-white/20"
               style={{
                 background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 50%, ${mainColor} 100%)`,
                 boxShadow: `0 12px 48px -10px ${mainColor}70, 0 0 0 1px ${mainColor}30`,

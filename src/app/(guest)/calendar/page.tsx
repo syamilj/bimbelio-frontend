@@ -57,7 +57,7 @@ export default function CalendarPage() {
             transition={{ duration: 0.6 }}
             className="mb-12 text-center"
           >
-            <div className="mb-4 inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-3 bg-white shadow-sm border border-gray-100">
+            <div className="mb-4 inline-flex items-center justify-center gap-3 rounded-3xl px-6 py-3 bg-white shadow-sm border border-gray-100">
               <Calendar
                 className="w-5 h-5"
                 style={{ color: mainColor }}
@@ -84,7 +84,7 @@ export default function CalendarPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mb-8"
           >
-            <Card className="border-2 overflow-hidden rounded-2xl">
+            <Card className="border-2 overflow-hidden rounded-3xl">
               <div
                 className="h-1 w-full"
                 style={{
@@ -126,9 +126,9 @@ export default function CalendarPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mb-12"
           >
-            <Card className="border-2 rounded-2xl overflow-hidden">
+            <Card className="border-2 rounded-3xl overflow-hidden">
               <CardContent className="p-0">
-                <div className="bg-white rounded-2xl overflow-hidden">
+                <div className="bg-white rounded-3xl overflow-hidden">
                   <iframe
                     src={GOOGLE_CALENDAR_EMBED_URL}
                     style={{
@@ -187,7 +187,7 @@ export default function CalendarPage() {
                     whileHover={{ y: -4 }}
                     className="group"
                   >
-                    <Card className="border-2 rounded-2xl h-full hover:shadow-lg transition-shadow overflow-hidden">
+                    <Card className="border-2 rounded-3xl h-full hover:shadow-lg transition-shadow overflow-hidden">
                       <div
                         className="h-2 w-full"
                         style={{ backgroundColor: event.color }}
@@ -253,7 +253,7 @@ export default function CalendarPage() {
                       whileHover={{ y: -4 }}
                       className="group"
                     >
-                      <Card className="border-2 rounded-2xl h-full hover:shadow-lg transition-shadow overflow-hidden">
+                      <Card className="border-2 rounded-3xl h-full hover:shadow-lg transition-shadow overflow-hidden">
                         <div
                           className="h-2 w-full"
                           style={{ backgroundColor: mainColor }}

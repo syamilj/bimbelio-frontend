@@ -24,7 +24,7 @@ const QuestionBubble = ({
 
   if (!question) {
     return (
-      <Card className="border-2 border-gray-200 rounded-2xl">
+      <Card className="border-2 border-gray-200 rounded-3xl">
         <CardContent className="p-6 md:p-8">
           <div className="flex items-center justify-center h-32 text-gray-400">
             <div className="text-center">
@@ -44,7 +44,7 @@ const QuestionBubble = ({
       className={className}
     >
       <Card
-        className="border-2 rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+        className="border-2 rounded-3xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
         style={{ borderColor: `${mainColor}20` }}
       >
         <div

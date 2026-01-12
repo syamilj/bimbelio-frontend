@@ -94,7 +94,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
         className="text-center"
       >
         <div
-          className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg"
+          className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center shadow-lg"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
@@ -125,7 +125,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
           return (
             <Card
               key={index}
-              className="relative border-2 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="relative border-2 rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               style={{
                 backgroundColor: card.bgColor,
                 borderColor: card.borderColor,
@@ -201,7 +201,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
             {category.data.map((subject, subjectIndex) => (
               <Card
                 key={subject.id}
-                className="border-2 border-gray-100 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                className="border-2 border-gray-100 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
               >
                 <CardHeader
                   className="pb-4 relative"
@@ -329,7 +329,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
 
 const UpgradeLayer = () => {
   return (
-    <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-2xl z-10 flex items-end justify-end p-4">
+    <div className="absolute inset-0 bg-white/60 backdrop-blur-sm rounded-3xl z-10 flex items-end justify-end p-4">
       <ButtonUpgradeTryout>
         <Button className="bg-yellow-500 hover:bg-yellow-400 text-yellow-900 font-bold px-4 py-2 rounded-xl shadow-lg flex items-center gap-2 text-sm">
           <Crown className="w-4 h-4" />

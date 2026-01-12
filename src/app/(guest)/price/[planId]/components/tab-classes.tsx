@@ -96,7 +96,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
 
                   {/* Stats Grid */}
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50">
+                    <div className="p-4 rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50">
                       <div className="flex items-center gap-3">
                         <div
                           className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -115,7 +115,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                       </div>
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200/50">
+                    <div className="p-4 rounded-3xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200/50">
                       <div className="flex items-center gap-3">
                         <div
                           className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -137,7 +137,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                     </div>
 
                     {pivot.LiveClass.maxParticipant && (
-                      <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200/50">
+                      <div className="p-4 rounded-3xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200/50">
                         <div className="flex items-center gap-3">
                           <div
                             className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -158,7 +158,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                     )}
 
                     {pivot.LiveClass.isRecord && (
-                      <div className="p-4 rounded-2xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200/50">
+                      <div className="p-4 rounded-3xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200/50">
                         <div className="flex items-center gap-3">
                           <div
                             className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -190,7 +190,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                       }}
                     >
                       <Button
-                        className="group/btn w-full sm:w-auto text-white font-bold py-3 px-6 rounded-2xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                        className="group/btn w-full sm:w-auto text-white font-bold py-3 px-6 rounded-3xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                         }}

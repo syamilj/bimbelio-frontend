@@ -287,7 +287,7 @@ export default function TutorsSection() {
             {tutors.map((tutor, index) => (
               <div
                 key={index}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100"
+                className="group relative bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100"
               >
                 {/* Top Section - Image with Overlay */}
                 <div
@@ -420,7 +420,7 @@ export default function TutorsSection() {
             {mentorFeatures.map((feature, index) => (
               <div
                 key={index}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="group relative bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 {/* Top Colored Bar */}
                 <div
@@ -569,7 +569,7 @@ export default function TutorsSection() {
                 {/* User Message */}
                 <div className="flex justify-end">
                   <div
-                    className="max-w-xs px-4 py-3 rounded-2xl text-sm font-medium"
+                    className="max-w-xs px-4 py-3 rounded-3xl text-sm font-medium"
                     style={{
                       backgroundColor: '#9C27B0',
                       color: 'white',
@@ -582,7 +582,7 @@ export default function TutorsSection() {
                 {/* AI Thinking */}
                 <div className="flex justify-start">
                   <div
-                    className="px-4 py-3 rounded-2xl"
+                    className="px-4 py-3 rounded-3xl"
                     style={{
                       backgroundColor: '#9C27B008',
                       border: '1px solid #9C27B020',
@@ -620,7 +620,7 @@ export default function TutorsSection() {
                 {/* AI Response */}
                 <div className="flex justify-start">
                   <div
-                    className="max-w-xs px-4 py-3 rounded-2xl text-sm leading-relaxed"
+                    className="max-w-xs px-4 py-3 rounded-3xl text-sm leading-relaxed"
                     style={{
                       backgroundColor: '#9C27B010',
                       border: '1px solid #9C27B020',
@@ -637,7 +637,7 @@ export default function TutorsSection() {
                 {/* User Message 2 */}
                 <div className="flex justify-end">
                   <div
-                    className="max-w-xs px-4 py-3 rounded-2xl text-sm font-medium"
+                    className="max-w-xs px-4 py-3 rounded-3xl text-sm font-medium"
                     style={{
                       backgroundColor: '#9C27B0',
                       color: 'white',
@@ -650,7 +650,7 @@ export default function TutorsSection() {
                 {/* AI Response 2 */}
                 <div className="flex justify-start">
                   <div
-                    className="max-w-xs px-4 py-3 rounded-2xl text-sm"
+                    className="max-w-xs px-4 py-3 rounded-3xl text-sm"
                     style={{
                       backgroundColor: '#9C27B010',
                       border: '1px solid #9C27B020',

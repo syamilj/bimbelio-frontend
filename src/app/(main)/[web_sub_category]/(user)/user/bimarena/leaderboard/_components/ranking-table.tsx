@@ -267,7 +267,7 @@ export function RankingTable() {
       <CardHeader className="pb-4 border-b-2 border-gray-100">
         <CardTitle className="text-xl font-black text-gray-900 flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm"
+            className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
             style={{ backgroundColor: mainColor }}
           >
             <Trophy className="w-5 h-5 text-white" />
@@ -295,7 +295,7 @@ export function RankingTable() {
                 placeholder="Cari nama peserta..."
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 h-11 rounded-2xl border-2 border-gray-200 focus:border-2 bg-white transition-all"
+                className="pl-10 h-11 rounded-3xl border-2 border-gray-200 focus:border-2 bg-white transition-all"
                 style={{
                   borderColor: searchTerm ? mainColor : undefined,
                 }}

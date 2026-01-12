@@ -150,7 +150,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                         </div>
 
                         {/* Sample Chapter Structure */}
-                        <div className="space-y-3 bg-white/60 p-4 rounded-2xl border border-white/50">
+                        <div className="space-y-3 bg-white/60 p-4 rounded-3xl border border-white/50">
                           <div className="flex items-center gap-3 p-3 rounded-xl bg-white/80 hover:bg-white transition-all duration-200">
                             <div
                               className="w-8 h-8 rounded-lg text-white text-xs flex items-center justify-center font-bold"
@@ -275,7 +275,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                       </div>
 
                       {/* Category Stats */}
-                      <div className="mt-6 p-4 rounded-2xl bg-white/60 border border-white/50">
+                      <div className="mt-6 p-4 rounded-3xl bg-white/60 border border-white/50">
                         <div className="grid grid-cols-3 gap-4 text-center">
                           <div>
                             <div

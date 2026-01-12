@@ -32,7 +32,7 @@ const AboutSection: React.FC = () => {
         </div>
 
         {/* Team Photo */}
-        <div className="relative w-full md:w-3/5 md:mx-auto rounded-2xl overflow-hidden mb-10 border border-gray-200">
+        <div className="relative w-full md:w-3/5 md:mx-auto rounded-3xl overflow-hidden mb-10 border border-gray-200">
           <img
             src="/hero/about.webp"
             alt="Tim Bimbelio"
@@ -52,10 +52,10 @@ const AboutSection: React.FC = () => {
         {/* Story Cards */}
         <div className="grid md:grid-cols-2 gap-5 mb-10">
           {/* Founder Story */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-200">
+          <div className="bg-white rounded-3xl p-6 border border-gray-200">
             <div className="flex items-start gap-4 mb-4">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-white"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 text-white"
                 style={{ backgroundColor: mainColor }}
               >
                 <Heart className="w-6 h-6" />
@@ -77,10 +77,10 @@ const AboutSection: React.FC = () => {
           </div>
 
           {/* Mission */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-200">
+          <div className="bg-white rounded-3xl p-6 border border-gray-200">
             <div className="flex items-start gap-4 mb-4">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-white"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 text-white"
                 style={{ backgroundColor: mainColor }}
               >
                 <Target className="w-6 h-6" />
@@ -102,11 +102,11 @@ const AboutSection: React.FC = () => {
 
         {/* What Makes Us Different */}
         <div
-          className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200"
+          className="bg-white rounded-3xl p-6 md:p-8 border border-gray-200"
         >
           <div className="flex items-start gap-4 mb-6">
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 text-white"
+              className="w-14 h-14 rounded-3xl flex items-center justify-center flex-shrink-0 text-white"
               style={{ backgroundColor: mainColor }}
             >
               <Sparkles className="w-7 h-7" />
@@ -124,7 +124,7 @@ const AboutSection: React.FC = () => {
 
           {/* Key Differentiators */}
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="flex items-start gap-3 bg-gray-50 rounded-2xl p-4">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
@@ -139,7 +139,7 @@ const AboutSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 bg-gray-50 rounded-2xl p-4">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
@@ -154,7 +154,7 @@ const AboutSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 bg-gray-50 rounded-2xl p-4">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
@@ -169,7 +169,7 @@ const AboutSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 bg-gray-50 rounded-2xl p-4">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}

@@ -146,7 +146,7 @@ const NavigationButtons = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex w-fit justify-between items-center gap-4 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200 p-2"
+        className="flex w-fit justify-between items-center gap-4 bg-white/90 backdrop-blur-sm rounded-3xl shadow-lg border border-gray-200 p-2"
       >
         {prevLink ? (
           <Link href={prevLink}>

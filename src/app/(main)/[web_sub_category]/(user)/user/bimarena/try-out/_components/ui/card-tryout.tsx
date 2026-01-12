@@ -421,7 +421,7 @@ export default function CardTryOut({
                   <div className="grid grid-cols-2 gap-3">
                     {/* Durasi - Blue */}
                     <div
-                      className="p-3 rounded-2xl border-2 text-center"
+                      className="p-3 rounded-3xl border-2 text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                         borderColor: 'rgb(191 219 254)',
@@ -441,7 +441,7 @@ export default function CardTryOut({
 
                     {/* Soal - Green */}
                     <div
-                      className="p-3 rounded-2xl border-2 text-center"
+                      className="p-3 rounded-3xl border-2 text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
                         borderColor: 'rgb(187 247 208)',
@@ -461,7 +461,7 @@ export default function CardTryOut({
 
                     {/* Peserta - Purple */}
                     {/* <div
-                      className="p-3 rounded-2xl border-2 text-center"
+                      className="p-3 rounded-3xl border-2 text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(250 245 255), rgb(243 232 255))`,
                         borderColor: 'rgb(233 213 255)',
@@ -481,7 +481,7 @@ export default function CardTryOut({
                   <div className="grid grid-cols-2 gap-3">
                     {/* Tanggal Mulai - Orange */}
                     <div
-                      className="p-3 rounded-2xl border-2 text-center"
+                      className="p-3 rounded-3xl border-2 text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(255 247 237), rgb(254 237 213))`,
                         borderColor: 'rgb(254 215 170)',
@@ -498,7 +498,7 @@ export default function CardTryOut({
 
                     {/* Tanggal Selesai - Pink */}
                     <div
-                      className="p-3 rounded-2xl border-2 text-center"
+                      className="p-3 rounded-3xl border-2 text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(253 242 248), rgb(252 231 243))`,
                         borderColor: 'rgb(251 207 232)',
@@ -590,7 +590,7 @@ export default function CardTryOut({
           />
           <div
             id="register-tryout-modal"
-            className="relative w-[calc(100%-2rem)] max-w-[600px] max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl"
+            className="relative w-[calc(100%-2rem)] max-w-[600px] max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl"
           >
             <div className="p-6 lg:p-8">
               {!showDetail.isRegistered ? (
@@ -608,7 +608,7 @@ export default function CardTryOut({
                 /* Registered State */
                 <div className="text-center space-y-6">
                   <div
-                    className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+                    className="w-16 h-16 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}

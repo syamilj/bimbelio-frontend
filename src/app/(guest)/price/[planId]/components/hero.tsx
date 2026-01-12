@@ -228,17 +228,17 @@ export default function Hero({
               transition={{ duration: 0.6, delay: 0.3 }}
               className="relative"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-lg bg-white/20 backdrop-blur-sm">
+              <div className="relative rounded-3xl overflow-hidden shadow-lg bg-white/20 backdrop-blur-sm">
                 {plan.image && (
                   <Image
                     src={plan.image || '/placeholder.svg'}
                     alt={plan.name}
                     width={300}
                     height={200}
-                    className="w-full h-auto rounded-2xl"
+                    className="w-full h-auto rounded-3xl"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-3xl" />
               </div>
 
               {/* Small floating badge */}

@@ -252,7 +252,7 @@ const BentoGrid: React.FC = () => {
                 {/* Icon & Badge */}
                 <div className="flex items-start justify-between mb-6">
                   <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300"
+                    className="w-16 h-16 rounded-3xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -376,7 +376,7 @@ const BentoGrid: React.FC = () => {
             <Button
               size="lg"
               onClick={handlePricingNavigation}
-              className="font-bold rounded-2xl px-8 py-3 hover:scale-105 transition-transform duration-300"
+              className="font-bold rounded-3xl px-8 py-3 hover:scale-105 transition-transform duration-300"
               style={{ backgroundColor: mainColor, color: 'white' }}
             >
               <Play className="w-5 h-5 mr-2" />

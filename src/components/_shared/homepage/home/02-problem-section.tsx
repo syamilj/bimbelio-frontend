@@ -261,7 +261,7 @@ const ProblemSection: React.FC = () => {
           {/* Table Header */}
           <div className="flex justify-center items-center gap-4 mb-8">
             <div
-              className="p-4 rounded-2xl text-white shadow-lg"
+              className="p-4 rounded-3xl text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -279,7 +279,7 @@ const ProblemSection: React.FC = () => {
           </div>
 
           {/* Clean Table */}
-          <div className="overflow-x-auto rounded-2xl border-2 border-gray-200 shadow-lg">
+          <div className="overflow-x-auto rounded-3xl border-2 border-gray-200 shadow-lg">
             <table className="w-full bg-white">
               {/* Table Head */}
               <thead>
@@ -399,7 +399,7 @@ const ProblemSection: React.FC = () => {
             card.painPoints.map((painPoint, idx) => (
               <div
                 key={`${card.title}-${idx}`}
-                className="group relative bg-white rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
+                className="group relative bg-white rounded-3xl border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
               >
                 {/* Left Border Accent */}
                 <div

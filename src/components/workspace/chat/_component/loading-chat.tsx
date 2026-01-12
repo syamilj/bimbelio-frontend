@@ -53,7 +53,7 @@ const LoadingChat = () => {
 
           {/* Loading Message Bubble */}
           <div
-            className="relative rounded-2xl px-4 py-3 shadow-md border border-transparent"
+            className="relative rounded-3xl px-4 py-3 shadow-md border border-transparent"
             style={{
               backgroundColor: `${mainColor}08`,
               borderColor: `${mainColor}20`,

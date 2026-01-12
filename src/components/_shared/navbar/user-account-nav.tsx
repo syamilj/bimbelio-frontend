@@ -181,7 +181,7 @@ const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
             >
               <Link
                 href={`/${website_sub_category_id}/user/bimboard`}
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
+                className="flex items-center gap-3 rounded-3xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
                 style={
                   {
                     backgroundColor: 'transparent',
@@ -244,7 +244,7 @@ const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
               >
                 <Link
                   href={`/${website_sub_category_id}/admin`}
-                  className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
+                  className="flex items-center gap-3 rounded-3xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
                   style={
                     {
                       backgroundColor: 'transparent',
@@ -310,7 +310,7 @@ const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
                 signOut({ callbackUrl: '/' });
               }}
             >
-              <div className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:bg-red-50 hover:shadow-md group">
+              <div className="flex w-full items-center gap-3 rounded-3xl px-4 py-3 transition-all duration-200 hover:bg-red-50 hover:shadow-md group">
                 <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center transition-all duration-200 group-hover:scale-110">
                   <LogOut className="h-5 w-5 text-red-600" />
                 </div>

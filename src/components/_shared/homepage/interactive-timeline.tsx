@@ -146,7 +146,7 @@ const InteractiveTimeline = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -326,7 +326,7 @@ const InteractiveTimeline = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <button
-                    className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2 mx-auto"
+                    className="px-8 py-4 rounded-3xl font-bold text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2 mx-auto"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}

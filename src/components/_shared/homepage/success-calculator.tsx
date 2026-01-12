@@ -230,7 +230,7 @@ const SuccessCalculator = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -346,7 +346,7 @@ const SuccessCalculator = () => {
                   <Button
                     onClick={handleCalculate}
                     disabled={!targetUniversity || calculationStep > 0}
-                    className="w-full h-14 rounded-2xl font-bold text-lg text-white shadow-lg transition-all duration-300"
+                    className="w-full h-14 rounded-3xl font-bold text-lg text-white shadow-lg transition-all duration-300"
                     style={{
                       background: targetUniversity
                         ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
@@ -579,7 +579,7 @@ const SuccessCalculator = () => {
                     <CardContent className="p-8 h-full flex items-center justify-center">
                       <div className="text-center space-y-6">
                         <div
-                          className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center"
+                          className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center"
                           style={{ backgroundColor: `${mainColor}15` }}
                         >
                           <TrendingUp

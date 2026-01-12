@@ -65,7 +65,7 @@ export function LoadingSkeleton() {
 
               {/* Hero Image skeleton */}
               <div className="relative">
-                <Skeleton className="w-full h-96 rounded-2xl bg-white/20" />
+                <Skeleton className="w-full h-96 rounded-3xl bg-white/20" />
                 {/* Floating elements skeleton */}
                 <Skeleton className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/20" />
                 <Skeleton className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full bg-white/20" />
@@ -108,7 +108,7 @@ export function LoadingSkeleton() {
                     {[1, 2, 3, 4, 5, 6].map((i) => (
                       <div
                         key={i}
-                        className="p-6 rounded-2xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
+                        className="p-6 rounded-3xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
                       >
                         <div className="flex items-start gap-4">
                           <Skeleton className="w-12 h-12 rounded-xl shrink-0" />
@@ -139,7 +139,7 @@ export function LoadingSkeleton() {
                     {[1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="p-6 rounded-2xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
+                        className="p-6 rounded-3xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
                       >
                         <div className="flex items-center gap-3 mb-4">
                           <Skeleton className="w-12 h-12 rounded-xl" />

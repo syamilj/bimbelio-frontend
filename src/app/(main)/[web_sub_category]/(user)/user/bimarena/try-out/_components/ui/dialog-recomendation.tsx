@@ -134,7 +134,7 @@ export default function DialogRecomendation({
           {/* Main Icon */}
           <div className="relative mb-6">
             <div
-              className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 rounded-2xl shadow-2xl relative z-10 group hover:scale-105 transition-transform duration-300"
+              className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 rounded-3xl shadow-2xl relative z-10 group hover:scale-105 transition-transform duration-300"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -143,7 +143,7 @@ export default function DialogRecomendation({
 
               {/* Glow Effect */}
               <div
-                className="absolute inset-0 rounded-2xl opacity-30 animate-pulse"
+                className="absolute inset-0 rounded-3xl opacity-30 animate-pulse"
                 style={{
                   boxShadow: `0 0 30px ${mainColor}, 0 0 60px ${mainColor}40`,
                 }}
@@ -302,7 +302,7 @@ export default function DialogRecomendation({
                 {Array.from({ length: 8 }).map((_, i) => (
                   <Skeleton
                     key={i}
-                    className="h-[300px] lg:h-[350px] rounded-2xl"
+                    className="h-[300px] lg:h-[350px] rounded-3xl"
                   />
                 ))}
               </div>
@@ -314,7 +314,7 @@ export default function DialogRecomendation({
         <div className="mt-8 pt-6 border-t border-gray-100">
           <div className="text-center space-y-4">
             <div
-              className="inline-flex items-center space-x-3 px-6 py-3 rounded-2xl shadow-sm"
+              className="inline-flex items-center space-x-3 px-6 py-3 rounded-3xl shadow-sm"
               style={{ backgroundColor: `${mainColor}05` }}
             >
               <Sparkles

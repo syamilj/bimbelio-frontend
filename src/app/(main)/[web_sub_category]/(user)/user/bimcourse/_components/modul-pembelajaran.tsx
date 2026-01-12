@@ -256,7 +256,7 @@ export default function ModulPembelajaranSection() {
                 <CardHeader className="pb-4">
                   <div className="flex items-start gap-4 pr-16">
                     <div
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
+                      className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0"
                       style={{ backgroundColor: mainColor }}
                     >
                       <BookOpenIcon className="w-6 h-6 text-white" />
@@ -298,7 +298,7 @@ export default function ModulPembelajaranSection() {
                   {/* Stats Grid - Gradient Style */}
                   <div className="grid grid-cols-2 gap-3">
                     <div
-                      className="p-4 rounded-2xl border-2"
+                      className="p-4 rounded-3xl border-2"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                         borderColor: 'rgb(191 219 254)',
@@ -318,7 +318,7 @@ export default function ModulPembelajaranSection() {
                     </div>
 
                     <div
-                      className="p-4 rounded-2xl border-2"
+                      className="p-4 rounded-3xl border-2"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
                         borderColor: 'rgb(187 247 208)',
@@ -355,7 +355,7 @@ export default function ModulPembelajaranSection() {
                         <DialogHeader>
                           <div className="flex items-center gap-4">
                             <div
-                              className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+                              className="w-14 h-14 rounded-3xl flex items-center justify-center shadow-lg"
                               style={{ backgroundColor: mainColor }}
                             >
                               <BookOpenIcon className="w-7 h-7 text-white" />
@@ -374,7 +374,7 @@ export default function ModulPembelajaranSection() {
                         {/* Enhanced Stats Overview */}
                         <div className="grid grid-cols-3 gap-3 pb-4 border-b">
                           <div
-                            className="p-4 rounded-2xl border-2 text-center"
+                            className="p-4 rounded-3xl border-2 text-center"
                             style={{
                               background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                               borderColor: 'rgb(191 219 254)',
@@ -389,7 +389,7 @@ export default function ModulPembelajaranSection() {
                           </div>
 
                           <div
-                            className="p-4 rounded-2xl border-2 text-center"
+                            className="p-4 rounded-3xl border-2 text-center"
                             style={{
                               background: `linear-gradient(to bottom right, rgb(254 249 195), rgb(254 240 138))`,
                               borderColor: 'rgb(253 224 71)',
@@ -404,7 +404,7 @@ export default function ModulPembelajaranSection() {
                           </div>
 
                           <div
-                            className="p-4 rounded-2xl border-2 text-center"
+                            className="p-4 rounded-3xl border-2 text-center"
                             style={{
                               background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
                               borderColor: 'rgb(187 247 208)',
@@ -516,7 +516,7 @@ const DetailContent = ({
     <div key={index}>
       {/* Header Chapter */}
       <div
-        className="p-4 rounded-2xl border-2 border-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
+        className="p-4 rounded-3xl border-2 border-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
         onClick={() =>
           setExpandedChapter(expandedChapter === index ? null : index)
         }
@@ -648,7 +648,7 @@ const DetailContent = ({
   // return (
   //   <div
   //     key={index}
-  //     className="p-4 rounded-2xl border-2 border-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
+  //     className="p-4 rounded-3xl border-2 border-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
   //     onClick={() => {
   //       if (chapter.CourseSubChapter.length > 0) {
   //         router.push(

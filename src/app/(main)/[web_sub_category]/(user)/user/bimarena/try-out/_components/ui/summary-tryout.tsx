@@ -66,7 +66,7 @@ const SummaryTryout = () => {
       {!isLoading ? (
         <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mb-8">
           {/* Try Out Selesai - Blue */}
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-5 text-center">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-3xl p-5 text-center">
             <div className="w-5 h-5 text-blue-600 mx-auto mb-2">
               <IconTryOut
                 active
@@ -82,7 +82,7 @@ const SummaryTryout = () => {
           </div>
 
           {/* Total Soal - Green */}
-          <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 text-center">
+          <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-3xl p-5 text-center">
             <div className="w-5 h-5 text-green-600 mx-auto mb-2">
               <IconTabsQuiz
                 active
@@ -98,7 +98,7 @@ const SummaryTryout = () => {
           </div>
 
           {/* Peringkat Terakhir - Yellow */}
-          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 rounded-2xl p-5 text-center">
+          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 rounded-3xl p-5 text-center">
             <Trophy className="w-5 h-5 text-yellow-600 mx-auto mb-2" />
             <div className="text-2xl font-bold text-yellow-700">
               #{Summary?.LastRanking || '-'}
@@ -109,7 +109,7 @@ const SummaryTryout = () => {
           </div>
 
           {/* Rata-rata Skor - Purple */}
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-2xl p-5 text-center">
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-3xl p-5 text-center">
             <Target className="w-5 h-5 text-purple-600 mx-auto mb-2" />
             <div className="text-2xl font-bold text-purple-700">
               {Summary?.AverageScore || 0}
@@ -124,7 +124,7 @@ const SummaryTryout = () => {
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton
               key={i}
-              className="h-[120px] rounded-2xl"
+              className="h-[120px] rounded-3xl"
             />
           ))}
         </div>
@@ -210,7 +210,7 @@ const SummaryTryout = () => {
               </ResponsiveContainer>
             </ChartContainer>
           ) : (
-            <Skeleton className="h-[300px] w-full rounded-2xl" />
+            <Skeleton className="h-[300px] w-full rounded-3xl" />
           )}
         </CardContent>
       </Card>

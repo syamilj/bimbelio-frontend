@@ -89,7 +89,7 @@ const FAQSection: React.FC = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-gray-50 rounded-2xl border border-gray-200 overflow-hidden"
+              className="bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden"
             >
               <button
                 onClick={() => toggleFAQ(index)}
@@ -129,7 +129,7 @@ const FAQSection: React.FC = () => {
             href="https://www.bimbelio.com/link/komunitas"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center px-6 py-3 rounded-2xl font-semibold text-white transition-all duration-200 hover:opacity-90"
+            className="inline-flex items-center px-6 py-3 rounded-3xl font-semibold text-white transition-all duration-200 hover:opacity-90"
             style={{ backgroundColor: mainColor }}
           >
             Tanya Langsung di W →

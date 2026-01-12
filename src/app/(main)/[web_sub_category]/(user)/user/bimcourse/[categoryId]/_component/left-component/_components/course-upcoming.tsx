@@ -144,7 +144,7 @@ export default function CourseUpcoming({
 
         {/* CTA Section */}
         <div className="space-y-4 pt-4">
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-6 border border-blue-100">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="text-left flex-1">
                 <h3 className="font-semibold text-gray-900 mb-1">

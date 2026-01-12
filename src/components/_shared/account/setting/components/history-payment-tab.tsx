@@ -35,7 +35,7 @@ export const HistoryPaymentTab = ({
           {data.map((item, i) => (
             <Card
               key={i}
-              className="border-2 border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow"
+              className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow"
               style={{
                 borderLeft: `4px solid ${mainColor}`,
               }}
@@ -44,7 +44,7 @@ export const HistoryPaymentTab = ({
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex items-center gap-3 md:gap-4">
                     <div
-                      className="p-3 rounded-2xl flex-shrink-0"
+                      className="p-3 rounded-3xl flex-shrink-0"
                       style={{
                         backgroundColor: `${mainColor}20`,
                       }}

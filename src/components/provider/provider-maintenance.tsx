@@ -134,7 +134,7 @@ export default function ProviderMaintenance({
                       key={item.label}
                       className="text-center"
                     >
-                      <div className="bg-linear-to-br from-blue-600 to-indigo-600 text-white rounded-2xl p-4 min-w-[80px] shadow-lg">
+                      <div className="bg-linear-to-br from-blue-600 to-indigo-600 text-white rounded-3xl p-4 min-w-[80px] shadow-lg">
                         <div className="text-3xl font-bold">
                           {item.value.toString().padStart(2, '0')}
                         </div>
@@ -146,7 +146,7 @@ export default function ProviderMaintenance({
                   ))}
                 </div>
 
-                <div className="bg-linear-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-200">
+                <div className="bg-linear-to-r from-yellow-50 to-orange-50 rounded-3xl p-6 border border-yellow-200">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Sparkles className="w-5 h-5 text-yellow-600" />
                     <span className="font-semibold text-yellow-800">
@@ -191,7 +191,7 @@ export default function ProviderMaintenance({
                     return (
                       <div
                         key={index}
-                        className={`relative p-6 rounded-2xl border-2 transition-all duration-300 ${
+                        className={`relative p-6 rounded-3xl border-2 transition-all duration-300 ${
                           isCompleted
                             ? 'bg-green-50 border-green-200 shadow-green-100 shadow-lg'
                             : isInProgress
@@ -232,7 +232,7 @@ export default function ProviderMaintenance({
                 </div>
               </div>
               {/* Contact Section */}
-              <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
+              <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 border border-blue-100">
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Butuh Bantuan?

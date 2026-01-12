@@ -387,7 +387,7 @@ export function AnalisisTab({
         className="text-center"
       >
         <div
-          className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg"
+          className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center shadow-lg"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
@@ -414,7 +414,7 @@ export function AnalisisTab({
       >
         <Tabs defaultValue="analisis">
           <TabsList
-            className="grid w-full grid-cols-3 h-14 p-1 rounded-2xl border-0 shadow-lg mb-8"
+            className="grid w-full grid-cols-3 h-14 p-1 rounded-3xl border-0 shadow-lg mb-8"
             style={{ backgroundColor: `${mainColor}08` }}
           >
             <TabsTrigger
@@ -464,7 +464,7 @@ export function AnalisisTab({
               >
                 {/* Score Card */}
                 <Card
-                  className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                  className="border-2 rounded-3xl overflow-hidden shadow-lg"
                   style={{
                     borderColor: `${mainColor}20`,
                     backgroundColor: `${mainColor}05`,
@@ -500,7 +500,7 @@ export function AnalisisTab({
                 </Card>
 
                 {/* Ranking Card */}
-                <Card className="border-2 border-green-200 bg-green-50 rounded-2xl overflow-hidden shadow-lg">
+                <Card className="border-2 border-green-200 bg-green-50 rounded-3xl overflow-hidden shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                     <CardTitle className="text-sm font-semibold text-green-700">
                       Ranking Kamu
@@ -538,7 +538,7 @@ export function AnalisisTab({
                 </Card>
 
                 {/* University Ranking Card */}
-                <Card className="border-2 border-yellow-200 bg-yellow-50 rounded-2xl overflow-hidden shadow-lg">
+                <Card className="border-2 border-yellow-200 bg-yellow-50 rounded-3xl overflow-hidden shadow-lg">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                     <CardTitle className="text-sm font-semibold text-yellow-700">
                       Estimasi Universitas
@@ -600,7 +600,7 @@ export function AnalisisTab({
                       return (
                         <Card
                           key={choice.univ}
-                          className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden"
+                          className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden"
                         >
                           <CardHeader
                             className="border-b"
@@ -778,7 +778,7 @@ export function AnalisisTab({
                     ? recommendations.map((item, index) => (
                         <Card
                           key={index}
-                          className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                          className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
                         >
                           <CardHeader className="flex flex-row items-center justify-between">
                             <div>
@@ -824,7 +824,7 @@ export function AnalisisTab({
                       Array.from({ length: 4 }).map((_, index) => (
                         <Card
                           key={index}
-                          className="border-2 border-gray-200 rounded-2xl shadow-lg overflow-hidden opacity-60"
+                          className="border-2 border-gray-200 rounded-3xl shadow-lg overflow-hidden opacity-60"
                         >
                           <CardHeader>
                             <CardTitle className="text-lg">
@@ -863,7 +863,7 @@ export function AnalisisTab({
               animate={{ opacity: 1, y: 0 }}
               className="space-y-8"
             >
-              <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+              <Card className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden">
                 <CardHeader
                   className="border-b"
                   style={{ backgroundColor: `${mainColor}05` }}
@@ -957,7 +957,7 @@ const UpgradeLayer = ({ unlockTryout }: { unlockTryout: boolean }) => {
   if (unlockTryout) return null;
 
   return (
-    <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-2xl z-10 flex items-center justify-center">
+    <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-3xl z-10 flex items-center justify-center">
       <div className="text-center space-y-6">
         <div className="w-16 h-16 mx-auto bg-yellow-100 rounded-full flex items-center justify-center">
           <Lock className="w-8 h-8 text-yellow-600" />

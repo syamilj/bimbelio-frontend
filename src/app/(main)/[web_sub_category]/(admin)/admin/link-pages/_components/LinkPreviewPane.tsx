@@ -236,7 +236,7 @@ export const LinkPreviewPane = memo(function LinkPreviewPane({ page, buttons, cl
 
             <div className="relative z-10 mt-8 space-y-6 pb-8">
               {groups.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-white/30 px-4 py-6 text-center text-xs text-white/60">
+                <div className="rounded-3xl border border-dashed border-white/30 px-4 py-6 text-center text-xs text-white/60">
                   No buttons yet.
                 </div>
               ) : (

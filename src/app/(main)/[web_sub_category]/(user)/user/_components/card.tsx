@@ -54,7 +54,7 @@ export default function Card({ data, href, noCategory }: CardProps) {
 
               <div
                 id="card"
-                className={`relative flex cursor-pointer flex-col items-center justify-start overflow-hidden rounded-2xl bg-white shadow-sm border-2 transition-all duration-300 mb-4 ${
+                className={`relative flex cursor-pointer flex-col items-center justify-start overflow-hidden rounded-3xl bg-white shadow-sm border-2 transition-all duration-300 mb-4 ${
                   isLocked
                     ? 'border-amber-200 hover:shadow-md hover:border-amber-300'
                     : 'border-gray-100 hover:shadow-md hover:border-gray-200 hover:-translate-y-1'
@@ -79,7 +79,7 @@ export default function Card({ data, href, noCategory }: CardProps) {
                   {/* Lock Overlay */}
                   {isLocked && (
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 via-orange-500/20 to-red-500/20 backdrop-blur-[2px] flex items-center justify-center">
-                      <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-md border-2 border-amber-200 transform group-hover:scale-105 transition-all duration-300">
+                      <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 shadow-md border-2 border-amber-200 transform group-hover:scale-105 transition-all duration-300">
                         <div className="flex flex-col items-center text-center space-y-3">
                           {/* Lock Icon with Animation */}
                           {/* <div className="relative">
@@ -189,7 +189,7 @@ export default function Card({ data, href, noCategory }: CardProps) {
 
                 {/* Hover Border Effect */}
                 <div
-                  className={`absolute inset-0 rounded-2xl ring-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none ${
+                  className={`absolute inset-0 rounded-3xl ring-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none ${
                     isLocked ? 'ring-amber-400' : 'ring-blue-400'
                   }`}
                 />

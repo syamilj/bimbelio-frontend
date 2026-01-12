@@ -277,7 +277,7 @@ export default function TryoutResult({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+          className="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-4"
         >
           <div className="text-center">
             <div
@@ -430,7 +430,7 @@ export default function TryoutResult({
             <div className="sticky top-32 space-y-6">
               {/* Enhanced Tabs Navigation */}
               <Card
-                className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                className="border-2 rounded-3xl overflow-hidden shadow-lg"
                 style={{ borderColor: `${mainColor}20` }}
               >
                 <CardContent className="p-6">
@@ -522,7 +522,7 @@ export default function TryoutResult({
 
               {/* Progress Summary Card - mirip dengan statistik di tryout.tsx */}
               <Card
-                className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                className="border-2 rounded-3xl overflow-hidden shadow-lg"
                 style={{ borderColor: `${secondaryColor}20` }}
               >
                 <CardContent className="p-6">
@@ -690,7 +690,7 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
           className="flex items-center justify-center min-h-[70vh]"
         >
           <Card
-            className="max-w-md mx-auto border-2 rounded-2xl shadow-xl overflow-hidden"
+            className="max-w-md mx-auto border-2 rounded-3xl shadow-xl overflow-hidden"
             style={{
               borderColor: `${mainColor}20`,
               backgroundColor: `${mainColor}05`,
@@ -701,7 +701,7 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
                 initial={{ scale: 0.8 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg"
+                className="w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}

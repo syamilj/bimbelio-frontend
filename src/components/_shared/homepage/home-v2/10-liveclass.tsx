@@ -100,7 +100,7 @@ const LiveClassSection: React.FC = () => {
             {[1, 2, 3].map((i) => (
               <Card
                 key={i}
-                className="overflow-hidden rounded-2xl"
+                className="overflow-hidden rounded-3xl"
               >
                 <CardContent className="p-0">
                   <div className="h-32 bg-gray-200 animate-pulse" />
@@ -140,7 +140,7 @@ const LiveClassSection: React.FC = () => {
                     id={linkId}
                     href={href}
                   />
-                  <Card className="overflow-hidden rounded-2xl border border-gray-200 hover:border-gray-300 transition-colors bg-white h-full">
+                  <Card className="overflow-hidden rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors bg-white h-full">
                     <CardContent className="p-0">
                       {/* Header with status */}
                       <div
@@ -259,7 +259,7 @@ const LiveClassSection: React.FC = () => {
         <div className="text-center mt-8">
           <Link
             href="/snbt/user/bimlive"
-            className="inline-flex items-center px-6 py-3 rounded-2xl font-semibold text-white transition-all duration-200 hover:opacity-90"
+            className="inline-flex items-center px-6 py-3 rounded-3xl font-semibold text-white transition-all duration-200 hover:opacity-90"
             style={{ backgroundColor: mainColor }}
           >
             Lihat Semua Live Class →

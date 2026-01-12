@@ -225,7 +225,7 @@ const Tryout: React.FC<Props> = ({
                 >
                   {/* Session Stats */}
                   <Card
-                    className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                    className="border-2 rounded-3xl overflow-hidden shadow-lg"
                     style={{ borderColor: `${mainColor}20` }}
                   >
                     <CardContent className="p-6">
@@ -266,7 +266,7 @@ const Tryout: React.FC<Props> = ({
 
                   {/* Question Navigation */}
                   <Card
-                    className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                    className="border-2 rounded-3xl overflow-hidden shadow-lg"
                     style={{ borderColor: `${secondaryColor}20` }}
                   >
                     <CardContent className="p-6">
@@ -323,7 +323,7 @@ const Tryout: React.FC<Props> = ({
                   {/* Submit Section */}
                   {!isSessionDone && (
                     <Card
-                      className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                      className="border-2 rounded-3xl overflow-hidden shadow-lg"
                       style={{ borderColor: `${mainColor}20` }}
                     >
                       <CardContent className="p-6">

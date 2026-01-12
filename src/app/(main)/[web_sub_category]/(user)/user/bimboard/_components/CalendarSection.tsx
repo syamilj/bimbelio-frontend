@@ -13,7 +13,7 @@ export default function CalendarSection() {
 
   return (
     <div className="w-full">
-      <div className="border border-gray-100 rounded-2xl overflow-hidden bg-white">
+      <div className="border border-gray-100 rounded-3xl overflow-hidden bg-white">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
           <div className="flex items-center gap-2">

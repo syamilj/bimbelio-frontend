@@ -141,11 +141,11 @@ const LayersSection: React.FC = () => {
           {layers.map((layer) => (
             <div
               key={layer.id}
-              className="bg-gray-50 rounded-2xl p-6 border border-gray-200"
+              className="bg-gray-50 rounded-3xl p-6 border border-gray-200"
             >
               <div className="flex flex-col items-center text-center mb-5">
                 <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 text-white"
+                  className="w-14 h-14 rounded-3xl flex items-center justify-center mb-4 text-white"
                   style={{ backgroundColor: mainColor }}
                 >
                   {layer.icon}
@@ -187,7 +187,7 @@ const LayersSection: React.FC = () => {
           {layers.map((layer) => (
             <div
               key={layer.id}
-              className="bg-gray-50 rounded-2xl border border-gray-200 overflow-hidden"
+              className="bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden"
             >
               <button
                 onClick={() =>
@@ -269,7 +269,7 @@ const LayersSection: React.FC = () => {
             {tutors.map((tutor, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl overflow-hidden border border-gray-200"
+                className="bg-white rounded-3xl overflow-hidden border border-gray-200"
                 style={{ width: 'calc(20% - 13px)' }}
               >
                 <div
@@ -327,7 +327,7 @@ const LayersSection: React.FC = () => {
             {tutors.map((tutor, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl overflow-hidden border border-gray-200"
+                className="bg-white rounded-3xl overflow-hidden border border-gray-200"
                 style={{ width: 'calc(50% - 6px)' }}
               >
                 <div

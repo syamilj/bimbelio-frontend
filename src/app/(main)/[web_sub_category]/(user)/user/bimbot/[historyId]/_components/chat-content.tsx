@@ -55,7 +55,7 @@ export default function ChatContent({ historyId }: { historyId: string }) {
       {isMinimized && (
         <Button
           onClick={() => setIsMinimized(false)}
-          className="fixed top-20 right-4 z-9999 md:hidden w-12 h-12 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-0"
+          className="fixed top-20 right-4 z-9999 md:hidden w-12 h-12 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 p-0"
           style={{ backgroundColor: mainColor }}
         >
           <History className="w-5 h-5 text-white" />

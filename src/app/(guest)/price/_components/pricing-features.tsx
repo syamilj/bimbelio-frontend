@@ -191,7 +191,7 @@ export default function PricingFeatures() {
               transition={{ duration: 0.7, delay: index * 0.15 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.03, y: -8 }}
-              className="group relative bg-white rounded-2xl overflow-hidden border-2 shadow-lg"
+              className="group relative bg-white rounded-3xl overflow-hidden border-2 shadow-lg"
               style={{ borderColor: `${mainColor}20` }}
             >
               {/* Top Accent Bar */}
@@ -206,7 +206,7 @@ export default function PricingFeatures() {
                 {/* Icon with enhanced styling */}
                 <div className="flex items-center mb-6">
                   <div
-                    className="p-3 rounded-2xl flex items-center justify-center mr-4 shadow-md group-hover:scale-110 transition-transform duration-300"
+                    className="p-3 rounded-3xl flex items-center justify-center mr-4 shadow-md group-hover:scale-110 transition-transform duration-300"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     {feature.icon}
@@ -257,7 +257,7 @@ export default function PricingFeatures() {
               transition={{ duration: 0.7, delay: (index + 3) * 0.15 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.03, y: -8 }}
-              className="group relative bg-white rounded-2xl overflow-hidden border-2 shadow-lg"
+              className="group relative bg-white rounded-3xl overflow-hidden border-2 shadow-lg"
               style={{ borderColor: `${secondaryColor}20` }}
             >
               {/* Top Accent Bar */}
@@ -270,7 +270,7 @@ export default function PricingFeatures() {
                 {/* Icon with enhanced styling */}
                 <div className="flex items-center mb-6">
                   <div
-                    className="p-3 rounded-2xl flex items-center justify-center mr-4 shadow-md group-hover:scale-110 transition-transform duration-300"
+                    className="p-3 rounded-3xl flex items-center justify-center mr-4 shadow-md group-hover:scale-110 transition-transform duration-300"
                     style={{ backgroundColor: `${secondaryColor}15` }}
                   >
                     {feature.icon}
@@ -374,7 +374,7 @@ export default function PricingFeatures() {
           >
             <div className="flex items-center mb-6">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4 shadow-lg"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center mr-4 shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${mainColor}dd)`,
                 }}
@@ -474,7 +474,7 @@ export default function PricingFeatures() {
           >
             <div className="flex items-center mb-6">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center mr-4 shadow-lg"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center mr-4 shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${secondaryColor}, ${secondaryColor}dd)`,
                 }}
@@ -538,7 +538,7 @@ export default function PricingFeatures() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                  className="flex items-center justify-between p-4 rounded-2xl border border-gray-100 group hover:shadow-lg transition-all duration-300"
+                  className="flex items-center justify-between p-4 rounded-3xl border border-gray-100 group hover:shadow-lg transition-all duration-300"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}02, ${mainColor}05)`,
                   }}

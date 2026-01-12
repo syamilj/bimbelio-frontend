@@ -144,7 +144,7 @@ export function RatingModal({
           <div className="relative z-10">
             <DialogTitle className="flex items-center gap-3 text-xl font-black">
               <div
-                className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm border-2 border-gray-100"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm border-2 border-gray-100"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Heart
@@ -168,7 +168,7 @@ export function RatingModal({
                 </>
               )}
               {existingRating && (
-                <div className="mt-2 px-3 py-2 bg-blue-50 rounded-2xl border-2 border-blue-200">
+                <div className="mt-2 px-3 py-2 bg-blue-50 rounded-3xl border-2 border-blue-200">
                   <span className="text-sm text-blue-700 font-bold">
                     Rating sebelumnya: {existingRating.score} ⭐
                   </span>
@@ -208,7 +208,7 @@ export function RatingModal({
                     onClick={() => handleStarClick(star)}
                     onMouseEnter={() => handleStarHover(star)}
                     onMouseLeave={handleStarLeave}
-                    className="p-2 hover:scale-110 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 rounded-2xl hover:bg-white/50"
+                    className="p-2 hover:scale-110 transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 rounded-3xl hover:bg-white/50"
                     type="button"
                     disabled={isSubmitting}
                   >
@@ -266,7 +266,7 @@ export function RatingModal({
                 onChange={(e) => setReview(e.target.value)}
                 rows={4}
                 maxLength={500}
-                className="border-2 border-gray-200 rounded-2xl focus:border-2 transition-colors resize-none shadow-sm"
+                className="border-2 border-gray-200 rounded-3xl focus:border-2 transition-colors resize-none shadow-sm"
                 style={
                   {
                     '--tw-ring-color': `${mainColor}20`,
@@ -284,7 +284,7 @@ export function RatingModal({
 
           {/* ENHANCED CLASS INFO CARD */}
           <div
-            className="p-4 rounded-2xl border-2 relative overflow-hidden shadow-sm"
+            className="p-4 rounded-3xl border-2 relative overflow-hidden shadow-sm"
             style={{
               backgroundColor: `${mainColor}05`,
               borderColor: `${mainColor}15`,
@@ -309,14 +309,14 @@ export function RatingModal({
             variant="outline"
             onClick={handleClose}
             disabled={isSubmitting}
-            className="px-6 py-2 h-11 border-2 hover:bg-gray-50 transition-colors rounded-2xl font-bold"
+            className="px-6 py-2 h-11 border-2 hover:bg-gray-50 transition-colors rounded-3xl font-bold"
           >
             Batal
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={rating === 0 || isSubmitting}
-            className="px-6 py-2 h-11 text-white font-black rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 h-11 text-white font-black rounded-3xl shadow-sm hover:shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
               backgroundColor:
                 rating > 0 ? getRatingColor(displayRating) : mainColor,

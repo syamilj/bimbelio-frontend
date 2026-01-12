@@ -126,7 +126,7 @@ const TryoutType = () => {
       {!isDone ? (
         <>
           {/* Header Card with Gradient */}
-          <div className="relative rounded-2xl bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 p-6 shadow-xl">
+          <div className="relative rounded-3xl bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 p-6 shadow-xl">
             {/* <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-3xl -ml-24 -mb-24"></div> */}
 
@@ -445,7 +445,7 @@ const TryoutType = () => {
         // <div className="flex w-full flex-col gap-4">
         //   <div
         //     className={cn(
-        //       'flex flex-col items-center gap-4 rounded-2xl py-6 font-medium text-white',
+        //       'flex flex-col items-center gap-4 rounded-3xl py-6 font-medium text-white',
         //       isPassed && 'bg-main',
         //       !isPassed && 'bg-main-red',
         //     )}
@@ -477,7 +477,7 @@ const TryoutType = () => {
         //     )}
         //   </div>
         //   <div className="grid grid-cols-2 gap-4">
-        //     <div className="flex gap-[.5rem] rounded-2xl bg-white p-4">
+        //     <div className="flex gap-[.5rem] rounded-3xl bg-white p-4">
         //       <div className="">
         //         <IconCircleLoop className="mt-[.1rem] text-main" />
         //       </div>
@@ -488,7 +488,7 @@ const TryoutType = () => {
         //         </p>
         //       </div>
         //     </div>
-        //     <div className="flex gap-[.5rem] rounded-2xl bg-white p-4">
+        //     <div className="flex gap-[.5rem] rounded-3xl bg-white p-4">
         //       <div className="">
         //         <IconTimer className="mt-[.1rem] text-main" />
         //       </div>

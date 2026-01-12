@@ -164,7 +164,7 @@ export const TabInstallment = ({
                     return (
                       <Card
                         key={instIndex}
-                        className="border-2 border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                        className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                         style={{
                           borderLeft: `4px solid ${mainColor}`,
                         }}
@@ -174,7 +174,7 @@ export const TabInstallment = ({
                             {/* Top Section */}
                             <div className="flex items-start gap-3 md:gap-4 w-full">
                               <div
-                                className="p-3 rounded-2xl flex-shrink-0 mt-1"
+                                className="p-3 rounded-3xl flex-shrink-0 mt-1"
                                 style={{
                                   backgroundColor: `${mainColor}20`,
                                 }}
@@ -536,7 +536,7 @@ const DialogInstallmentPayment = ({
       onOpenChange={onOpenChange}
     >
       <DialogContent
-        className="sm:max-w-md rounded-2xl"
+        className="sm:max-w-md rounded-3xl"
         classOverlay="z-[1001]"
       >
         <DialogHeader>

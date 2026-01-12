@@ -290,7 +290,7 @@ const DocViewerPage = () => {
                   <ButtonUpgradeTryout tryoutId={tryoutId || ''}>
                     <Button
                       size="lg"
-                      className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-600 hover:via-orange-600 hover:to-red-600 text-white font-bold px-10 py-7 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group rounded-2xl"
+                      className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-600 hover:via-orange-600 hover:to-red-600 text-white font-bold px-10 py-7 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group rounded-3xl"
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
                       <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 animate-shimmer" />
@@ -309,7 +309,7 @@ const DocViewerPage = () => {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="w-full border-3 border-amber-400 text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:border-amber-500 font-bold px-10 py-7 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group rounded-2xl"
+                      className="w-full border-3 border-amber-400 text-amber-700 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:border-amber-500 font-bold px-10 py-7 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group rounded-3xl"
                     >
                       <PlayIcon className="mr-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
                       <span className="text-lg">Ikut Tryout</span>
@@ -321,7 +321,7 @@ const DocViewerPage = () => {
               {status === 401 && (
                 <Button
                   size="lg"
-                  className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-600 hover:via-orange-600 hover:to-red-600 text-white font-bold px-10 py-7 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group w-full sm:w-auto rounded-2xl"
+                  className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-600 hover:via-orange-600 hover:to-red-600 text-white font-bold px-10 py-7 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group w-full sm:w-auto rounded-3xl"
                   onClick={() => setTransactionPopUp(true)}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />

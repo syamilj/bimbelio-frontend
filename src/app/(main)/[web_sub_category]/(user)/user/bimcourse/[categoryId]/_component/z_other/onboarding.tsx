@@ -115,7 +115,7 @@ const OnBoarding = ({ open, type }: Props) => {
       open={open}
       onOpenChange={handleClose}
     >
-      <DialogContent className="md:max-w-2xl w-[95%] mx-auto rounded-2xl overflow-hidden border-0 p-0">
+      <DialogContent className="md:max-w-2xl w-[95%] mx-auto rounded-3xl overflow-hidden border-0 p-0">
         {/* Header */}
         <DialogHeader
           className="pb-4 px-6 pt-6 relative overflow-hidden"
@@ -185,7 +185,7 @@ const ChatAI = () => {
       content: (
         <div className="text-center space-y-4">
           <div
-            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -363,7 +363,7 @@ const Notes = () => {
       content: (
         <div className="text-center space-y-4">
           <div
-            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -515,7 +515,7 @@ const QuizAI = () => {
       content: (
         <div className="text-center space-y-4">
           <div
-            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, #9333ea)`,
             }}
@@ -639,7 +639,7 @@ const Tryout = () => {
       content: (
         <div className="text-center space-y-4">
           <div
-            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, #ea580c)`,
             }}

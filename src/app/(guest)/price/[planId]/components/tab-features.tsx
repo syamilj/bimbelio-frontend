@@ -49,7 +49,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                     </div>
 
                     <CardTitle className="flex items-center gap-4 text-xl relative">
-                      <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                      <div className="w-12 h-12 bg-white/20 rounded-3xl flex items-center justify-center backdrop-blur-sm">
                         {getFeatureIcon(feature.type)}
                       </div>
                       <div>
@@ -86,7 +86,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                               delay: pivotIndex * 0.1,
                             }}
                             viewport={{ once: true }}
-                            className="group/item p-4 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
+                            className="group/item p-4 rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
                           >
                             {/* Background decoration */}
                             <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-br from-blue-100 to-transparent rounded-full -translate-y-4 translate-x-4 opacity-50" />
@@ -119,14 +119,14 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                           whileInView={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6 }}
                           viewport={{ once: true }}
-                          className="group/item col-span-3 p-6 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
+                          className="group/item col-span-3 p-6 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
                         >
                           {/* Background decoration */}
                           <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-100 to-transparent rounded-full -translate-y-8 translate-x-8 opacity-50" />
 
                           <div className="relative flex items-center gap-4">
                             <div
-                              className="w-12 h-12 rounded-2xl text-white flex items-center justify-center shadow-lg shrink-0"
+                              className="w-12 h-12 rounded-3xl text-white flex items-center justify-center shadow-lg shrink-0"
                               style={{
                                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                               }}
@@ -160,14 +160,14 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                             viewport={{ once: true }}
-                            className="group/item col-span-3 p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
+                            className="group/item col-span-3 p-6 rounded-3xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden"
                           >
                             {/* Background decoration */}
                             <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-100 to-transparent rounded-full -translate-y-8 translate-x-8 opacity-50" />
 
                             <div className="relative flex items-center gap-4">
                               <div
-                                className="w-12 h-12 rounded-2xl text-white flex items-center justify-center shadow-lg shrink-0"
+                                className="w-12 h-12 rounded-3xl text-white flex items-center justify-center shadow-lg shrink-0"
                                 style={{
                                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                                 }}
@@ -202,7 +202,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.4 }}
                       viewport={{ once: true }}
-                      className="mt-6 p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200/50"
+                      className="mt-6 p-4 rounded-3xl bg-gradient-to-r from-gray-50 to-blue-50 border border-gray-200/50"
                     >
                       <div className="flex items-start gap-3">
                         <div

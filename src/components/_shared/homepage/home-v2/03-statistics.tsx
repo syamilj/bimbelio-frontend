@@ -75,7 +75,7 @@ const StatisticsSection: React.FC = () => {
           {competitionData.map((item) => (
             <div
               key={item.name}
-              className="bg-gray-50 rounded-2xl p-4 border border-gray-200 text-center"
+              className="bg-gray-50 rounded-3xl p-4 border border-gray-200 text-center"
             >
               <div className="w-12 h-12 mx-auto mb-3 rounded-xl overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
                 <Image
@@ -96,7 +96,7 @@ const StatisticsSection: React.FC = () => {
 
         {/* Bottom Message */}
         <div
-          className="flex items-center justify-center gap-3 p-4 rounded-2xl"
+          className="flex items-center justify-center gap-3 p-4 rounded-3xl"
           style={{ backgroundColor: `${mainColor}10` }}
         >
           <TrendingDown className="w-5 h-5" style={{ color: mainColor }} />

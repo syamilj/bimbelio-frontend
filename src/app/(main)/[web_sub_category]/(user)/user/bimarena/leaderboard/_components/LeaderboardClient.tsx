@@ -144,7 +144,7 @@ export default function LeaderboardClient() {
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-6">
               <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm"
+                className="w-14 h-14 rounded-3xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: mainColor }}
               >
                 <Trophy className="w-7 h-7 text-white" />

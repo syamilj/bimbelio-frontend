@@ -67,7 +67,7 @@ const BORDER_RADIUS_OPTIONS = [
   { label: "Medium", value: "rounded-md" },
   { label: "Large", value: "rounded-lg" },
   { label: "X-Large", value: "rounded-xl" },
-  { label: "2X-Large", value: "rounded-2xl" },
+  { label: "2X-Large", value: "rounded-3xl" },
   { label: "3X-Large", value: "rounded-3xl" },
   { label: "Full", value: "rounded-full" },
 ];

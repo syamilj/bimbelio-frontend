@@ -212,7 +212,7 @@ const SubmitChat = () => {
               maxLength={1000}
               placeholder="Ketik pesan Kamu di sini..."
               className={cn(
-                'w-full resize-none rounded-2xl border-2 py-3 px-4 pr-14 text-sm font-normal outline-none transition-all duration-200',
+                'w-full resize-none rounded-3xl border-2 py-3 px-4 pr-14 text-sm font-normal outline-none transition-all duration-200',
                 'placeholder:text-gray-400',
                 'bg-gray-50 border-gray-200',
                 'focus:bg-white',

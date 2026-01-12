@@ -265,7 +265,7 @@ export default function LiveLearningDashboard({
             <div className="relative z-10">
               <CardTitle className="text-3xl font-black flex items-center gap-4 text-gray-900">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+                  className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <TypeIcon
@@ -293,7 +293,7 @@ export default function LiveLearningDashboard({
                   </h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                  <div className="bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-200">
+                  <div className="bg-emerald-50 rounded-3xl p-4 border-2 border-emerald-200">
                     <div className="flex items-center gap-2 mb-1">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                       <span className="text-xs font-bold text-emerald-700">Hadir</span>
@@ -302,7 +302,7 @@ export default function LiveLearningDashboard({
                       {attendanceReport.summary.present}
                     </p>
                   </div>
-                  <div className="bg-yellow-50 rounded-2xl p-4 border-2 border-yellow-200">
+                  <div className="bg-yellow-50 rounded-3xl p-4 border-2 border-yellow-200">
                     <div className="flex items-center gap-2 mb-1">
                       <AlertCircle className="w-4 h-4 text-yellow-600" />
                       <span className="text-xs font-bold text-yellow-700">Terlambat</span>
@@ -311,7 +311,7 @@ export default function LiveLearningDashboard({
                       {attendanceReport.summary.late}
                     </p>
                   </div>
-                  <div className="bg-red-50 rounded-2xl p-4 border-2 border-red-200">
+                  <div className="bg-red-50 rounded-3xl p-4 border-2 border-red-200">
                     <div className="flex items-center gap-2 mb-1">
                       <XCircle className="w-4 h-4 text-red-600" />
                       <span className="text-xs font-bold text-red-700">Tidak Hadir</span>
@@ -320,7 +320,7 @@ export default function LiveLearningDashboard({
                       {attendanceReport.summary.absent}
                     </p>
                   </div>
-                  <div className="bg-blue-50 rounded-2xl p-4 border-2 border-blue-200">
+                  <div className="bg-blue-50 rounded-3xl p-4 border-2 border-blue-200">
                     <div className="flex items-center gap-2 mb-1">
                       <Clock className="w-4 h-4 text-blue-600" />
                       <span className="text-xs font-bold text-blue-700">Akan Datang</span>
@@ -329,7 +329,7 @@ export default function LiveLearningDashboard({
                       {attendanceReport.summary.upcoming}
                     </p>
                   </div>
-                  <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4 border-2 border-indigo-200">
+                  <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-4 border-2 border-indigo-200">
                     <div className="flex items-center gap-2 mb-1">
                       <Target className="w-4 h-4 text-indigo-600" />
                       <span className="text-xs font-bold text-indigo-700">Tingkat Kehadiran</span>
@@ -379,7 +379,7 @@ export default function LiveLearningDashboard({
           </CardContent>
         </Card>
 
-        <Card className="mb-6 border-2 border-gray-100 rounded-2xl shadow-sm">
+        <Card className="mb-6 border-2 border-gray-100 rounded-3xl shadow-sm">
           <CardContent className="p-4">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-4">
@@ -390,7 +390,7 @@ export default function LiveLearningDashboard({
                       placeholder="Cari berdasarkan judul, deskripsi, atau nama tutor..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 border-2 rounded-2xl shadow-sm"
+                      className="pl-10 border-2 rounded-3xl shadow-sm"
                     />
                   </div>
                 </div>
@@ -398,10 +398,10 @@ export default function LiveLearningDashboard({
                   value={selectedSubject}
                   onValueChange={setSelectedSubject}
                 >
-                  <SelectTrigger className="w-full sm:w-[200px] border-2 rounded-2xl shadow-sm font-bold">
+                  <SelectTrigger className="w-full sm:w-[200px] border-2 rounded-3xl shadow-sm font-bold">
                     <SelectValue placeholder="Pilih mata pelajaran" />
                   </SelectTrigger>
-                  <SelectContent className="border-2 border-gray-100 rounded-2xl shadow-sm">
+                  <SelectContent className="border-2 border-gray-100 rounded-3xl shadow-sm">
                     <SelectItem value="all">Semua Mata Pelajaran</SelectItem>
                     {Categories?.map((subject) => (
                       <SelectItem
@@ -417,10 +417,10 @@ export default function LiveLearningDashboard({
                   value={selectedStatus}
                   onValueChange={setSelectedStatus}
                 >
-                  <SelectTrigger className="w-full sm:w-[150px] border-2 rounded-2xl shadow-sm font-bold">
+                  <SelectTrigger className="w-full sm:w-[150px] border-2 rounded-3xl shadow-sm font-bold">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
-                  <SelectContent className="border-2 border-gray-100 rounded-2xl shadow-sm">
+                  <SelectContent className="border-2 border-gray-100 rounded-3xl shadow-sm">
                     <SelectItem value="all">Semua Status</SelectItem>
                     <SelectItem value="SCHEDULED">Terjadwal</SelectItem>
                     <SelectItem value="ONGOING">Berlangsung</SelectItem>
@@ -435,7 +435,7 @@ export default function LiveLearningDashboard({
                     <span className="text-sm font-black text-gray-900">
                       Tampilan:
                     </span>
-                    <div className="flex bg-gray-100 rounded-2xl p-1 border-2 border-gray-200">
+                    <div className="flex bg-gray-100 rounded-3xl p-1 border-2 border-gray-200">
                       <button
                         onClick={() => setViewMode('grid')}
                         className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
@@ -513,7 +513,7 @@ export default function LiveLearningDashboard({
           value={activeTab}
           onValueChange={setActiveTab}
         >
-          <TabsList className="grid w-full grid-cols-4 mb-6 md:mb-8 bg-gray-50 rounded-2xl p-1 h-11 md:h-12 border-2 border-gray-100">
+          <TabsList className="grid w-full grid-cols-4 mb-6 md:mb-8 bg-gray-50 rounded-3xl p-1 h-11 md:h-12 border-2 border-gray-100">
             <TabsTrigger
               value="available"
               className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
@@ -604,7 +604,7 @@ export default function LiveLearningDashboard({
             className="space-y-4"
           >
             {LiveClassAvailableError ? (
-              <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-6 text-center">
+              <div className="bg-orange-50 border-2 border-orange-200 rounded-3xl p-6 text-center">
                 <div className="text-orange-500 mb-3">
                   <svg
                     className="h-12 w-12 mx-auto"
@@ -812,7 +812,7 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
   const color = colors[(index ?? 0) % colors.length];
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-300 border-2 ${color.light} rounded-2xl overflow-hidden`}>
+    <Card className={`group hover:shadow-lg transition-all duration-300 border-2 ${color.light} rounded-3xl overflow-hidden`}>
       <CardContent className="p-0">
         <div className={`h-2 bg-gradient-to-r ${color.bg}`} />
         <div className="p-4 space-y-3">
@@ -1076,7 +1076,7 @@ function LiveClassCard({
                         <Button
                           variant="outline"
                           onClick={() => onUpgrade(liveClass)}
-                          className="flex-1 h-10 text-sm border-2 border-orange-300 text-orange-600 hover:bg-orange-50 rounded-2xl font-bold"
+                          className="flex-1 h-10 text-sm border-2 border-orange-300 text-orange-600 hover:bg-orange-50 rounded-3xl font-bold"
                         >
                           🔒 Upgrade Plan
                         </Button>
@@ -1085,7 +1085,7 @@ function LiveClassCard({
                 )}
               </div>
               <div className="flex gap-2">
-                <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-2xl border-2 border-gray-100">
+                <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-3xl border-2 border-gray-100">
                   <div className="flex gap-2 text-xs text-gray-500 text-center">
                     <Users className="h-3 w-3 mx-auto mb-1" />
                     <div className="font-black text-gray-900">
@@ -1098,14 +1098,14 @@ function LiveClassCard({
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-10 ml-2 px-4 bg-transparent border-2 rounded-2xl font-bold"
+                      className="h-10 ml-2 px-4 bg-transparent border-2 rounded-3xl font-bold"
                     >
                       <Eye className="mr-1 h-4 w-4" />
                       <span className="inline">Detail</span>
                     </Button>
                   </Link>
                   {liveClass.accessType === 'PREMIUM' && (
-                    <Badge className="h-10 px-3 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 border-2 border-blue-300 rounded-2xl font-black flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
+                    <Badge className="h-10 px-3 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 border-2 border-blue-300 rounded-3xl font-black flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
                       <Crown className="h-4 w-4 text-blue-600 fill-blue-600" />
                       <span>Premium</span>
                     </Badge>
@@ -1122,7 +1122,7 @@ function LiveClassCard({
                         <Button
                           variant="outline"
                           size="sm"
-                          className="h-10 px-4 bg-transparent border-2 rounded-2xl font-bold"
+                          className="h-10 px-4 bg-transparent border-2 rounded-3xl font-bold"
                         >
                           <UserCheck className="mr-1 h-4 w-4" />
                           <span className="inline">Daftar</span>
@@ -1136,7 +1136,7 @@ function LiveClassCard({
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-10 px-4 bg-green-50 border-2 border-green-300 text-green-700 hover:bg-green-100 rounded-2xl font-bold"
+                        className="h-10 px-4 bg-green-50 border-2 border-green-300 text-green-700 hover:bg-green-100 rounded-3xl font-bold"
                       >
                         <UserCheck className="mr-1 h-4 w-4" />
                         <span className="inline">Terdaftar</span>
@@ -1229,7 +1229,7 @@ function LiveClassCard({
               {/* Time Information - Clean layout */}
               <div className="flex items-center gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-2xl bg-blue-100 flex items-center justify-center border-2 border-blue-200">
+                  <div className="w-8 h-8 rounded-3xl bg-blue-100 flex items-center justify-center border-2 border-blue-200">
                     <Calendar className="h-4 w-4 text-blue-600" />
                   </div>
                   <div>
@@ -1242,7 +1242,7 @@ function LiveClassCard({
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-2xl bg-purple-100 flex items-center justify-center border-2 border-purple-200">
+                  <div className="w-8 h-8 rounded-3xl bg-purple-100 flex items-center justify-center border-2 border-purple-200">
                     <Clock className="h-4 w-4 text-purple-600" />
                   </div>
                   <div>
@@ -1259,7 +1259,7 @@ function LiveClassCard({
           </div>
           {/* Countdown Timer - Modern design */}
           {isUpcoming && !timeLeft.isExpired && (
-            <div className="mt-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 border-2 border-white/50 shadow-sm">
+            <div className="mt-4 bg-white/90 backdrop-blur-sm rounded-3xl p-4 border-2 border-white/50 shadow-sm">
               <div className="text-xs text-gray-600 mb-2 text-center font-black uppercase tracking-wide">
                 Dimulai dalam
               </div>
@@ -1272,13 +1272,13 @@ function LiveClassCard({
           {!isUpcoming && (
             <div className="mt-4 flex justify-center">
               {isLive && (
-                <div className="bg-red-500 text-white px-4 py-2 rounded-2xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-red-600">
+                <div className="bg-red-500 text-white px-4 py-2 rounded-3xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-red-600">
                   <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                   Sedang Berlangsung
                 </div>
               )}
               {liveClass.status === 'Selesai' && (
-                <div className="bg-gray-600 text-white px-4 py-2 rounded-2xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-gray-700">
+                <div className="bg-gray-600 text-white px-4 py-2 rounded-3xl text-sm font-black shadow-sm flex items-center gap-2 border-2 border-gray-700">
                   <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                   Kelas Selesai
                 </div>
@@ -1302,9 +1302,9 @@ function LiveClassCard({
               {/* Agenda Items - Modern card */}
               {liveClass.LiveClassAgenda &&
                 liveClass.LiveClassAgenda.length > 0 && (
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border-2 border-blue-200">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-4 border-2 border-blue-200">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-2xl bg-blue-500 flex items-center justify-center border-2 border-blue-600">
+                      <div className="w-6 h-6 rounded-3xl bg-blue-500 flex items-center justify-center border-2 border-blue-600">
                         <Target className="h-3 w-3 text-white" />
                       </div>
                       <span className="text-sm font-black text-blue-900">
@@ -1316,7 +1316,7 @@ function LiveClassCard({
                         (agenda, index) => (
                           <div
                             key={agenda.id}
-                            className="bg-white/70 rounded-2xl p-3 border-2 border-white/50 shadow-sm"
+                            className="bg-white/70 rounded-3xl p-3 border-2 border-white/50 shadow-sm"
                           >
                             <div className="flex items-start gap-3">
                               <div className="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 border-2 border-blue-600">
@@ -1355,9 +1355,9 @@ function LiveClassCard({
               {/* Reference Items - Modern card */}
               {liveClass.LiveClassReference &&
                 liveClass.LiveClassReference.length > 0 && (
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-4 border-2 border-emerald-200">
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-3xl p-4 border-2 border-emerald-200">
                     <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded-2xl bg-emerald-500 flex items-center justify-center border-2 border-emerald-600">
+                      <div className="w-6 h-6 rounded-3xl bg-emerald-500 flex items-center justify-center border-2 border-emerald-600">
                         <BookOpen className="h-3 w-3 text-white" />
                       </div>
                       <span className="text-sm font-black text-emerald-900">
@@ -1368,10 +1368,10 @@ function LiveClassCard({
                       {liveClass.LiveClassReference.slice(0, 2).map((ref) => (
                         <div
                           key={ref.id}
-                          className="bg-white/70 rounded-2xl p-3 border-2 border-white/50 shadow-sm"
+                          className="bg-white/70 rounded-3xl p-3 border-2 border-white/50 shadow-sm"
                         >
                           <div className="flex items-start gap-3">
-                            <div className="w-8 h-8 rounded-2xl bg-emerald-100 flex items-center justify-center shrink-0 border-2 border-emerald-200">
+                            <div className="w-8 h-8 rounded-3xl bg-emerald-100 flex items-center justify-center shrink-0 border-2 border-emerald-200">
                               {ref.urlType === 'VIDEO' && (
                                 <span className="text-emerald-600">🎥</span>
                               )}
@@ -1468,9 +1468,9 @@ function LiveClassCard({
           {/* Plan Information - Modern design */}
           {showPlanInfo && liveClassWithAccess.userAccess && (
             <div className="mb-6">
-              <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-4 border-2 border-orange-200">
+              <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-3xl p-4 border-2 border-orange-200">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 rounded-2xl bg-orange-500 flex items-center justify-center border-2 border-orange-600">
+                  <div className="w-6 h-6 rounded-3xl bg-orange-500 flex items-center justify-center border-2 border-orange-600">
                     <Target className="h-3 w-3 text-white" />
                   </div>
                   <span className="text-sm font-black text-orange-900">
@@ -1484,7 +1484,7 @@ function LiveClassCard({
                       .map((plan: any, index: number) => (
                         <div
                           key={index}
-                          className={`px-3 py-2 rounded-2xl border-2 text-sm font-black ${
+                          className={`px-3 py-2 rounded-3xl border-2 text-sm font-black ${
                             liveClassWithAccess.userAccess.canRegister
                               ? 'bg-green-100 text-green-900 border-green-300'
                               : 'bg-orange-100 text-orange-900 border-orange-300'
@@ -1499,7 +1499,7 @@ function LiveClassCard({
                         </div>
                       ))
                   ) : (
-                    <div className="bg-gray-100 text-gray-900 px-3 py-2 rounded-2xl border-2 border-gray-300 text-sm font-black">
+                    <div className="bg-gray-100 text-gray-900 px-3 py-2 rounded-3xl border-2 border-gray-300 text-sm font-black">
                       <span className="mr-2">📖</span>
                       Gratis untuk Semua
                     </div>
@@ -1556,7 +1556,7 @@ function LiveClassCard({
                           e.stopPropagation();
                           onUpgrade(liveClass);
                         }}
-                        className="h-11 px-6 border-2 border-orange-300 text-orange-800 hover:bg-orange-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md"
+                        className="h-11 px-6 border-2 border-orange-300 text-orange-800 hover:bg-orange-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md"
                       >
                         <div className="w-4 h-4 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
                           <span className="text-white text-xs">🔒</span>
@@ -1572,7 +1572,7 @@ function LiveClassCard({
                         e.stopPropagation();
                         onRate(liveClass);
                       }}
-                      className="h-11 px-6 border-2 border-yellow-300 text-yellow-800 hover:bg-yellow-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md"
+                      className="h-11 px-6 border-2 border-yellow-300 text-yellow-800 hover:bg-yellow-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md"
                     >
                       <Star className="mr-2 h-4 w-4" />
                       Beri Rating
@@ -1585,7 +1585,7 @@ function LiveClassCard({
             <div className="flex items-center gap-4">
               {/* Enhanced Stats */}
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-2xl border-2 border-gray-100">
+                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-3xl border-2 border-gray-100">
                   <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
                     <Users className="h-3 w-3 text-blue-600" />
                   </div>
@@ -1620,7 +1620,7 @@ function LiveClassCard({
                 <Button
                   variant="outline"
                   size="lg"
-                  className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-900 hover:text-blue-600 hover:bg-blue-50 font-black rounded-2xl transition-all duration-300 hover:shadow-md group bg-transparent"
+                  className="h-11 px-4 border-2 border-gray-300 hover:border-blue-400 text-gray-900 hover:text-blue-600 hover:bg-blue-50 font-black rounded-3xl transition-all duration-300 hover:shadow-md group bg-transparent"
                 >
                   <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
                   <span className="hidden sm:inline">Lihat Detail</span>

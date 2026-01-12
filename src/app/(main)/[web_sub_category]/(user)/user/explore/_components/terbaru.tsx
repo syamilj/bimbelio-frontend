@@ -35,7 +35,7 @@ export default function Terbaru() {
       {/* Section Header */}
       <div className="flex items-center gap-4">
         <div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm"
+          className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
           style={{ backgroundColor: mainColor }}
         >
           <Clock className="w-6 h-6 text-white" />
@@ -85,7 +85,7 @@ export default function Terbaru() {
           {Array.from({ length: 8 }).map((_: any, i: number) => (
             <Skeleton
               key={i}
-              className="h-[200px] rounded-2xl"
+              className="h-[200px] rounded-3xl"
             />
           ))}
         </div>

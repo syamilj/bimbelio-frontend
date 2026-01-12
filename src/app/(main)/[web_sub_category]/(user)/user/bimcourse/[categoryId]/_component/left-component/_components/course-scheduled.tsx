@@ -108,7 +108,7 @@ export default function CourseScheduled({
         {/* Header Section */}
         <div className="text-center space-y-4">
           <div
-            className="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4"
+            className="inline-flex items-center justify-center w-20 h-20 rounded-3xl mb-4"
             style={{ backgroundColor: `${mainColor}10` }}
           >
             <Lock
@@ -162,7 +162,7 @@ export default function CourseScheduled({
         </div>
 
         {/* Schedule Card */}
-        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
             <div
               className="flex-shrink-0 p-3 rounded-xl"

@@ -28,7 +28,7 @@ export default function NotFound() {
 
               {/* Main icon container */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-24 h-24 bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="relative w-24 h-24 bg-gradient-to-br from-red-100 to-orange-100 rounded-3xl flex items-center justify-center shadow-lg">
                   <AlertCircle className="w-12 h-12 text-red-600" />
                 </div>
               </div>

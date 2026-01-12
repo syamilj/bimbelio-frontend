@@ -37,7 +37,7 @@ export const CardSubs = ({
     <Card
       key={data.name}
       className={cn(
-        `flex w-full max-w-[340px] min-w-[300px] flex-col rounded-2xl overflow-hidden shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer`,
+        `flex w-full max-w-[340px] min-w-[300px] flex-col rounded-3xl overflow-hidden shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer`,
         data.popular && 'shadow-xl ring-2 ring-[#0066ff]',
         isSelected && 'border-main border-2',
       )}

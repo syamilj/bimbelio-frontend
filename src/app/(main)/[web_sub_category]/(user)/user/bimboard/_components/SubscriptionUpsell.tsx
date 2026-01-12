@@ -36,7 +36,7 @@ export default function SubscriptionUpsell({
   return (
     <section className="w-full">
       <div
-        className="rounded-2xl p-4 text-white"
+        className="rounded-3xl p-4 text-white"
         style={{
           background: `linear-gradient(135deg, ${mainColor}, ${mainColor}dd)`,
         }}

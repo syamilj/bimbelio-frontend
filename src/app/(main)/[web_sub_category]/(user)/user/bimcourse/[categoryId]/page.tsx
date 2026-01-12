@@ -175,7 +175,7 @@ export default function CourseOverviewPage() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
             <Input
                placeholder="Cari materi pembelajaran..."
-               className="pl-12 h-12 rounded-2xl border-slate-200 bg-slate-50 focus:bg-white transition-all text-base"
+               className="pl-12 h-12 rounded-3xl border-slate-200 bg-slate-50 focus:bg-white transition-all text-base"
                value={searchQuery}
                onChange={e => setSearchQuery(e.target.value)}
             />
@@ -213,7 +213,7 @@ export default function CourseOverviewPage() {
                      </div>
 
                      {/* Graphic / Chart Area - Replaced with Recharts */}
-                     <div className="bg-white/60 backdrop-blur-md p-4 rounded-2xl border border-white/50 shadow-sm self-start w-full md:w-auto overflow-hidden">
+                     <div className="bg-white/60 backdrop-blur-md p-4 rounded-3xl border border-white/50 shadow-sm self-start w-full md:w-auto overflow-hidden">
                         {scoreData.length > 0 ? (
                             <div className="flex flex-col">
                                 <div className="flex items-center justify-between mb-2 gap-8">
@@ -283,7 +283,7 @@ export default function CourseOverviewPage() {
                          </div>
                     </div>
 
-                    <Button onClick={handleStartLearning} size="lg" className="w-full sm:w-auto rounded-2xl font-bold h-12 px-8 text-base shadow-lg shadow-blue-500/20 hover:translate-y-0.5 transition-all" style={{ backgroundColor: mainColor }}>
+                    <Button onClick={handleStartLearning} size="lg" className="w-full sm:w-auto rounded-3xl font-bold h-12 px-8 text-base shadow-lg shadow-blue-500/20 hover:translate-y-0.5 transition-all" style={{ backgroundColor: mainColor }}>
                        Lanjut Belajar
                     </Button>
                  </div>
@@ -322,7 +322,7 @@ export default function CourseOverviewPage() {
                       >
                       <div
                         onClick={() => router.push(`${pathname}/study?sub=${sub.id}&tab=chat`)}
-                        className="group relative bg-white rounded-2xl border-2 border-slate-100 overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all cursor-pointer flex flex-col h-full active:scale-95 touch-manipulation"
+                        className="group relative bg-white rounded-3xl border-2 border-slate-100 overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all cursor-pointer flex flex-col h-full active:scale-95 touch-manipulation"
                       >
                          {/* Thumbnail / Placeholder */}
                          <div className="h-36 sm:h-32 bg-slate-100 relative overflow-hidden">
@@ -465,7 +465,7 @@ export default function CourseOverviewPage() {
 
               <div className="mt-8 pt-6 border-t-2 border-slate-50 space-y-4">
                    {/* Target Mingguan */}
-                   <div className="bg-slate-50 rounded-2xl p-4">
+                   <div className="bg-slate-50 rounded-3xl p-4">
                       <h4 className="font-bold text-slate-800 mb-2 text-sm flex items-center gap-2">
                          <Target className="w-4 h-4 text-slate-400" />
                          Target Mingguan
@@ -480,14 +480,14 @@ export default function CourseOverviewPage() {
 
                    {/* Badges / Gamification (New) */}
                     <div className="grid grid-cols-2 gap-3">
-                       <div className="bg-indigo-50 rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                       <div className="bg-indigo-50 rounded-3xl p-3 flex flex-col items-center justify-center text-center">
                            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-indigo-600 mb-2 shadow-sm">
                                <Zap className="w-4 h-4 fill-current" />
                            </div>
                            <div className="text-[10px] font-bold text-indigo-400 uppercase tracking-wide">Streak</div>
                            <div className="text-sm font-black text-indigo-700">{currentStreak} Hari</div>
                        </div>
-                       <div className="bg-orange-50 rounded-2xl p-3 flex flex-col items-center justify-center text-center">
+                       <div className="bg-orange-50 rounded-3xl p-3 flex flex-col items-center justify-center text-center">
                            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-orange-600 mb-2 shadow-sm">
                                <TrendingUp className="w-4 h-4" />
                            </div>

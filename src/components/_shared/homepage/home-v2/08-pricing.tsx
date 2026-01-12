@@ -135,7 +135,7 @@ const PricingSection: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-20">
           <Link
             href="/price"
-            className="px-8 py-3 rounded-2xl font-semibold text-white"
+            className="px-8 py-3 rounded-3xl font-semibold text-white"
             style={{ backgroundColor: mainColor }}
           >
             Lihat Semua Paket →
@@ -143,7 +143,7 @@ const PricingSection: React.FC = () => {
 
           <button
             onClick={() => setIsConsultationDialogOpen(true)}
-            className="px-8 py-3 rounded-2xl font-semibold bg-white border-2"
+            className="px-8 py-3 rounded-3xl font-semibold bg-white border-2"
             style={{ borderColor: mainColor, color: mainColor }}
           >
             <MessageCircle className="w-4 h-4 inline mr-2" />

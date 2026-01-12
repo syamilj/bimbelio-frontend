@@ -98,7 +98,7 @@ const Sidebar = () => {
       {!minimizeSidebar && (
         <div className="px-6 py-4">
           <div
-            className="flex items-center gap-3 p-4 rounded-2xl shadow-sm border border-gray-100"
+            className="flex items-center gap-3 p-4 rounded-3xl shadow-sm border border-gray-100"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}

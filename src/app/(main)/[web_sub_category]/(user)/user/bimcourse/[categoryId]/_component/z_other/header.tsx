@@ -956,7 +956,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //         {/* Desktop Layout */}
 //         <div className="hidden md:flex items-center justify-center px-4 py-3">
 //           <motion.div
-//             className="flex items-center justify-between w-full max-w-5xl bg-white rounded-2xl shadow-sm border border-gray-100 px-4 py-2"
+//             className="flex items-center justify-between w-full max-w-5xl bg-white rounded-3xl shadow-sm border border-gray-100 px-4 py-2"
 //             initial={{ opacity: 0, y: -10 }}
 //             animate={{ opacity: 1, y: 0 }}
 //             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -1037,7 +1037,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //         {/* Course List Dropdown */}
 //         <motion.div
 //           className={cn(
-//             'absolute z-50 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden',
+//             'absolute z-50 bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden',
 //             // Mobile positioning
 //             'md:hidden left-4 right-4 top-full mt-2',
 //             // Desktop positioning - centered
@@ -1065,7 +1065,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //       {/* Mobile Floating Limits Bar */}
 //       <div className="md:hidden sticky top-14 z-30 mx-4 mt-2">
 //         <motion.div
-//           className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-sm border border-gray-200/50 p-3"
+//           className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-sm border border-gray-200/50 p-3"
 //           initial={{ opacity: 0, y: -10 }}
 //           animate={{ opacity: 1, y: 0 }}
 //           transition={{ delay: 0.1 }}

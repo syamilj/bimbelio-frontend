@@ -98,7 +98,7 @@ const SidebarUser = ({
         // variant="sidebar"
         variant="floating"
         collapsible={'icon'}
-        className="hidden md:flex z-[50] rounded-2xl"
+        className="hidden md:flex z-[50] rounded-3xl"
         style={
           {
             '--sidebar-width': '18rem',
@@ -108,7 +108,7 @@ const SidebarUser = ({
         // onMouseOver={() => setMinimizeSidebar(false)}
         // onMouseLeave={() => setMinimizeSidebar(true)}
       >
-        <SidebarHeader className="h-16 flex items-center justify-center pt-2 rounded-2xl">
+        <SidebarHeader className="h-16 flex items-center justify-center pt-2 rounded-3xl">
           <div
             className={cn(
               'flex items-center justify-between gap-2 w-full px-2',
@@ -121,7 +121,7 @@ const SidebarUser = ({
             {/* <div
               onClick={() => setMinimizeSidebar(!minimizeSidebar)}
               className={cn(
-                'h-12 w-12 rounded-2xl transition-all duration-300 ease-in-out',
+                'h-12 w-12 rounded-3xl transition-all duration-300 ease-in-out',
                 'bg-gradient-to-br from-blue-50 to-blue-100',
                 'border-2 border-blue-400 hover:border-blue-500',
                 'text-blue-600 hover:text-blue-700',
@@ -142,7 +142,7 @@ const SidebarUser = ({
             </div> */}
             <button
               onClick={() => setMinimizeSidebar(!minimizeSidebar)}
-              className="flex items-center justify-center h-9 w-9 rounded-2xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-all active:scale-95"
+              className="flex items-center justify-center h-9 w-9 rounded-3xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-all active:scale-95"
             >
               {minimizeSidebar ? (
                 <ChevronsRight className="w-5 h-5" />
@@ -157,7 +157,7 @@ const SidebarUser = ({
           {!minimizeSidebar && (
             <div className="px-3 pt-2 pb-1">
               <button
-                className="w-full flex items-center justify-between p-2.5 rounded-2xl bg-white border-2 border-slate-100 hover:border-slate-200 hover:bg-slate-50 transition-all text-left group shadow-sm"
+                className="w-full flex items-center justify-between p-2.5 rounded-3xl bg-white border-2 border-slate-100 hover:border-slate-200 hover:bg-slate-50 transition-all text-left group shadow-sm"
                 onClick={() => setIsWebCategoryDialogOpen(true)}
               >
                 <div className="flex items-center gap-3 w-full overflow-hidden">
@@ -205,7 +205,7 @@ const SidebarUser = ({
                 }}
                 disabled={isUpgrading}
                 style={{ backgroundColor: `${mainColor}15` }}
-                className="w-10 h-10 rounded-2xl flex items-center justify-center hover:opacity-80 transition-all shadow-sm group relative disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center hover:opacity-80 transition-all shadow-sm group relative disabled:opacity-70 disabled:cursor-not-allowed"
                 title="Upgrade Plan"
               >
                 {isUpgrading ? (
@@ -229,7 +229,7 @@ const SidebarUser = ({
                   }}
                   disabled={isUpgrading}
                   style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
+                  className="w-full flex items-center gap-3 px-3 py-2 rounded-3xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
                >
                   {isUpgrading ? (
                      <Loader2 className="w-5 h-5 animate-spin" />
@@ -242,7 +242,7 @@ const SidebarUser = ({
           )}
 
           {/* User Profile */}
-          <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-100 transition-colors">
+          <div className="flex items-center gap-3 p-3 rounded-3xl hover:bg-slate-100 transition-colors">
             <Avatar
               className="h-10 w-10 border-2"
               style={{ borderColor: mainColor }}
@@ -275,14 +275,14 @@ const SidebarUser = ({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-2xl"
+                    className="h-8 w-8 rounded-3xl"
                   >
                     <Settings className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
-                  className="w-56 border-2 border-gray-100 rounded-2xl shadow-sm"
+                  className="w-56 border-2 border-gray-100 rounded-3xl shadow-sm"
                 >
                   {(session?.user.role === 'ADMIN' ||
                     session?.user.role === 'SUPER_ADMIN' ||
@@ -423,7 +423,7 @@ const SidebarUser = ({
                      }}
                      disabled={isUpgrading}
                      style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
-                     className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
+                     className="w-full flex items-center gap-3 px-3 py-2 rounded-3xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
                   >
                      {isUpgrading ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
@@ -471,7 +471,7 @@ const SidebarUser = ({
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-start font-bold rounded-2xl border-2"
+                    className="w-full justify-start font-bold rounded-3xl border-2"
                   >
                     <Settings className="w-4 h-4 mr-2" />
                     Menu
@@ -479,7 +479,7 @@ const SidebarUser = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="start"
-                  className="w-full border-2 border-gray-100 rounded-2xl shadow-sm"
+                  className="w-full border-2 border-gray-100 rounded-3xl shadow-sm"
                 >
                   <DropdownMenuItem
                     onClick={() => {

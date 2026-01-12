@@ -145,7 +145,7 @@ const BlogNews = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -286,7 +286,7 @@ const BlogNews = () => {
                   viewport={{ once: true }}
                   whileHover={{ y: -5 }}
                 >
-                  <Card className="h-full overflow-hidden border-2 border-gray-100 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 group">
+                  <Card className="h-full overflow-hidden border-2 border-gray-100 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-500 group">
                     <div className="relative h-48 overflow-hidden">
                       <Image
                         src="/api/placeholder/400/200"
@@ -358,7 +358,7 @@ const BlogNews = () => {
             className="space-y-6"
           >
             {/* Categories */}
-            <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+            <Card className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden">
               <CardContent className="p-6">
                 <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <div
@@ -401,7 +401,7 @@ const BlogNews = () => {
 
             {/* Newsletter Signup */}
             <Card
-              className="border-2 rounded-2xl shadow-lg overflow-hidden"
+              className="border-2 rounded-3xl shadow-lg overflow-hidden"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}08, ${secondaryColor}08)`,
                 borderColor: `${mainColor}20`,
@@ -409,7 +409,7 @@ const BlogNews = () => {
             >
               <CardContent className="p-6 text-center">
                 <div
-                  className="w-12 h-12 mx-auto mb-4 rounded-2xl flex items-center justify-center"
+                  className="w-12 h-12 mx-auto mb-4 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: mainColor }}
                 >
                   <BookOpen className="w-6 h-6 text-white" />
@@ -453,7 +453,7 @@ const BlogNews = () => {
           >
             <Button
               size="lg"
-              className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300"
+              className="px-8 py-4 rounded-3xl font-bold text-white shadow-lg transition-all duration-300"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}

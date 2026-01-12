@@ -75,7 +75,7 @@ const Card: React.FC<CardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         className="relative"
       >
-        <div className="p-6 bg-white rounded-2xl border-2 border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
+        <div className="p-6 bg-white rounded-3xl border-2 border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
           <div className="flex items-center gap-3 mb-4">
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-white shadow-sm"
@@ -145,7 +145,7 @@ const Card: React.FC<CardProps> = ({
     >
       <div
         className={cn(
-          'relative p-4 md:p-6 rounded-2xl border-2 transition-all duration-300 cursor-pointer group',
+          'relative p-4 md:p-6 rounded-3xl border-2 transition-all duration-300 cursor-pointer group',
           'hover:shadow-lg',
           selected
             ? 'shadow-lg border-transparent'
@@ -161,7 +161,7 @@ const Card: React.FC<CardProps> = ({
         {/* Selection Indicator */}
         <div
           className={cn(
-            'absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300',
+            'absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300',
             selected && 'opacity-100',
           )}
           style={{

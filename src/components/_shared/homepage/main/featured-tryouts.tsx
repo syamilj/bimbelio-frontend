@@ -58,7 +58,7 @@ export default function FeaturedTryouts() {
         </div>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg animate-pulse bg-gray-300 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg animate-pulse bg-gray-300 mb-6">
               <div className="w-4 h-4 bg-gray-400 rounded"></div>
               Loading...
             </div>
@@ -86,7 +86,7 @@ export default function FeaturedTryouts() {
         </div>
         <div className="max-w-7xl mx-auto text-center">
           <span
-            className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg mb-6"
+            className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg mb-6"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}

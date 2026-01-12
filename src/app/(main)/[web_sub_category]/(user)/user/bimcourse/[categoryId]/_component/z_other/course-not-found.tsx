@@ -104,7 +104,7 @@ export default function CourseNotFound() {
             className="text-center mb-12"
           >
             <div
-              className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-6 rounded-3xl flex items-center justify-center shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -129,7 +129,7 @@ export default function CourseNotFound() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+            <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
               <CardHeader
                 className="text-center pb-6 relative overflow-hidden"
                 style={{
@@ -223,7 +223,7 @@ export default function CourseNotFound() {
             transition={{ delay: 0.4 }}
           >
             <Card
-              className="max-w-2xl mx-auto border-2 rounded-2xl overflow-hidden shadow-lg"
+              className="max-w-2xl mx-auto border-2 rounded-3xl overflow-hidden shadow-lg"
               style={{ borderColor: `${mainColor}20` }}
             >
               <CardContent className="p-8 text-center">

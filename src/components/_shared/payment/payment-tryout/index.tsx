@@ -146,7 +146,7 @@ export const PaymentTryout = ({
               ) : (
                 <button
                   className={cn(
-                    'flex items-center justify-center rounded-2xl bg-main py-4 text-white duration-300 hover:bg-main/80 active:bg-main cursor-pointer',
+                    'flex items-center justify-center rounded-3xl bg-main py-4 text-white duration-300 hover:bg-main/80 active:bg-main cursor-pointer',
                     loading && 'cursor-pointer hover:bg-main/80 active:bg-main',
                   )}
                   onClick={() => {
@@ -221,7 +221,7 @@ export const PaymentTryout = ({
   //           ) : (
   //             <button
   //               className={cn(
-  //                 'flex items-center justify-center rounded-2xl bg-main py-4 text-white duration-300 hover:bg-main/85 active:bg-main',
+  //                 'flex items-center justify-center rounded-3xl bg-main py-4 text-white duration-300 hover:bg-main/85 active:bg-main',
   //                 loading && 'cursor-pointer hover:bg-main/85 active:bg-main',
   //               )}
   //               onClick={() => {

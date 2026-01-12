@@ -124,7 +124,7 @@ export default function SidebarChat() {
           <div className="relative z-10 space-y-4">
             <div className="flex items-center gap-3 group">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-all duration-300"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-all duration-300"
                 style={{ backgroundColor: mainColor }}
               >
                 <Bot className="w-6 h-6 text-white" />
@@ -216,7 +216,7 @@ export default function SidebarChat() {
                     >
                       <div
                         className={cn(
-                          'flex items-start gap-3 p-3 rounded-2xl transition-all duration-300 cursor-pointer border-2',
+                          'flex items-start gap-3 p-3 rounded-3xl transition-all duration-300 cursor-pointer border-2',
                           isActive
                             ? 'shadow-sm'
                             : 'border-gray-100 hover:border-gray-200 hover:shadow-sm',
@@ -331,7 +331,7 @@ export default function SidebarChat() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 group flex-1">
                     <div
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm shrink-0"
+                      className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm shrink-0"
                       style={{ backgroundColor: mainColor }}
                     >
                       <Bot className="w-6 h-6 text-white" />
@@ -435,7 +435,7 @@ export default function SidebarChat() {
                         >
                           <div
                             className={cn(
-                              'flex items-start gap-3 p-3 rounded-2xl transition-all duration-300 cursor-pointer border-2',
+                              'flex items-start gap-3 p-3 rounded-3xl transition-all duration-300 cursor-pointer border-2',
                               isActive
                                 ? 'shadow-sm'
                                 : 'border-gray-100 hover:border-gray-200 hover:shadow-sm',

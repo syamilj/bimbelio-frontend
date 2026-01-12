@@ -202,7 +202,7 @@ export default function AIChatPage() {
                   </h1>
                 </div>
                 <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-white"
+                  className="w-16 h-16 rounded-3xl flex items-center justify-center text-white"
                   style={{ backgroundColor: mainColor }}
                 >
                   <Bot className="w-8 h-8" />
@@ -269,7 +269,7 @@ export default function AIChatPage() {
             {/* Lanjutkan Percakapan - Blue */}
             <button
               onClick={() => setIsHistoryOpen(true)}
-              className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-5 text-center hover:shadow-md transition-all"
+              className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-3xl p-5 text-center hover:shadow-md transition-all"
             >
               <Clock className="w-5 h-5 text-blue-600 mx-auto mb-2" />
               <div className="text-sm font-bold text-blue-700">Lanjutkan</div>
@@ -279,7 +279,7 @@ export default function AIChatPage() {
             </button>
 
             {/* Eksplorasi Materi - Green */}
-            <button className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 text-center hover:shadow-md transition-all">
+            <button className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-3xl p-5 text-center hover:shadow-md transition-all">
               <Sparkles className="w-5 h-5 text-green-600 mx-auto mb-2" />
               <div className="text-sm font-bold text-green-700">Eksplorasi</div>
               <p className="text-xs text-green-600 font-medium mt-1">
@@ -288,7 +288,7 @@ export default function AIChatPage() {
             </button>
 
             {/* Chat Aktif - Orange */}
-            <button className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-2xl p-5 text-center hover:shadow-md transition-all">
+            <button className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-3xl p-5 text-center hover:shadow-md transition-all">
               <MessageSquare className="w-5 h-5 text-orange-600 mx-auto mb-2" />
               <div className="text-sm font-bold text-orange-700">
                 {chatHistory?.length || 0}
@@ -299,7 +299,7 @@ export default function AIChatPage() {
             </button>
 
             {/* AI Powered - Purple */}
-            <button className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-2xl p-5 text-center hover:shadow-md transition-all">
+            <button className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-3xl p-5 text-center hover:shadow-md transition-all">
               <Bot className="w-5 h-5 text-purple-600 mx-auto mb-2" />
               <div className="text-sm font-bold text-purple-700">24/7</div>
               <p className="text-xs text-purple-600 font-medium mt-1">
@@ -356,7 +356,7 @@ export default function AIChatPage() {
           <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
             {/* 24/7 Available */}
             <div
-              className="p-6 rounded-2xl border-2 text-center"
+              className="p-6 rounded-3xl border-2 text-center"
               style={{
                 background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                 borderColor: 'rgb(191 219 254)',
@@ -371,7 +371,7 @@ export default function AIChatPage() {
 
             {/* Unlimited Topics */}
             <div
-              className="p-6 rounded-2xl border-2 text-center"
+              className="p-6 rounded-3xl border-2 text-center"
               style={{
                 background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
                 borderColor: 'rgb(187 247 208)',
@@ -386,7 +386,7 @@ export default function AIChatPage() {
 
             {/* Fast Response */}
             <div
-              className="p-6 rounded-2xl border-2 text-center"
+              className="p-6 rounded-3xl border-2 text-center"
               style={{
                 background: `linear-gradient(to bottom right, rgb(250 245 255), rgb(243 232 255))`,
                 borderColor: 'rgb(233 213 255)',
@@ -428,7 +428,7 @@ export default function AIChatPage() {
                   Array.from({ length: 5 }).map((_, index) => (
                     <Skeleton
                       key={index}
-                      className="h-20 w-full rounded-2xl"
+                      className="h-20 w-full rounded-3xl"
                     />
                   ))
                 ) : filteredHistory.length > 0 ? (
@@ -436,7 +436,7 @@ export default function AIChatPage() {
                     <Link
                       key={chat.id}
                       href={`/${website_sub_category_id}/user/bimbot/${chat.id}`}
-                      className="flex items-center justify-between p-4 rounded-2xl border-2 border-gray-100 hover:shadow-md transition-all cursor-pointer bg-white"
+                      className="flex items-center justify-between p-4 rounded-3xl border-2 border-gray-100 hover:shadow-md transition-all cursor-pointer bg-white"
                       onClick={() => {
                         setIsHistoryOpen(false);
                       }}

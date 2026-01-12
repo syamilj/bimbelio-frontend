@@ -173,7 +173,7 @@ export function JoinLiveClassModal({
           <div className="relative z-10">
             <div className="flex justify-center mb-3">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm border-2 border-gray-100"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm border-2 border-gray-100"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Video
@@ -208,7 +208,7 @@ export function JoinLiveClassModal({
 
           {/* Status Display */}
           {isLive && (
-            <div className="p-3 bg-red-50 border-2 border-red-200 rounded-2xl text-center">
+            <div className="p-3 bg-red-50 border-2 border-red-200 rounded-3xl text-center">
               <div className="flex justify-center items-center gap-2 text-red-600 mb-1">
                 <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
                 <span className="font-black">LIVE NOW</span>
@@ -221,26 +221,26 @@ export function JoinLiveClassModal({
 
           {/* Countdown Timer */}
           {isUpcoming && (
-            <div className="p-3 bg-blue-50 border-2 border-blue-200 rounded-2xl text-center">
+            <div className="p-3 bg-blue-50 border-2 border-blue-200 rounded-3xl text-center">
               <p className="text-sm font-bold text-blue-700 mb-2">
                 {timeLeft.canJoinSoon
                   ? 'Dapat bergabung dalam:'
                   : 'Dimulai dalam:'}
               </p>
               <div className="flex justify-center gap-2">
-                <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+                <div className="bg-white rounded-3xl px-2 py-1 shadow-sm border-2 border-gray-100">
                   <div className="text-sm font-black text-gray-900">
                     {timeLeft.hours.toString().padStart(2, '0')}
                   </div>
                   <div className="text-xs text-gray-500 font-bold">jam</div>
                 </div>
-                <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+                <div className="bg-white rounded-3xl px-2 py-1 shadow-sm border-2 border-gray-100">
                   <div className="text-sm font-black text-gray-900">
                     {timeLeft.minutes.toString().padStart(2, '0')}
                   </div>
                   <div className="text-xs text-gray-500 font-bold">mnt</div>
                 </div>
-                <div className="bg-white rounded-2xl px-2 py-1 shadow-sm border-2 border-gray-100">
+                <div className="bg-white rounded-3xl px-2 py-1 shadow-sm border-2 border-gray-100">
                   <div className="text-sm font-black text-gray-900">
                     {timeLeft.seconds.toString().padStart(2, '0')}
                   </div>
@@ -258,7 +258,7 @@ export function JoinLiveClassModal({
           {/* Access Info */}
           {liveClass.participantStatus === 'Terdaftar' && (
             <>
-              <div className="p-3 bg-green-50 border-2 border-green-200 rounded-2xl text-center">
+              <div className="p-3 bg-green-50 border-2 border-green-200 rounded-3xl text-center">
                 <p className="text-sm font-semibold text-green-800 mb-1">
                   Email Sudah <span className="font-black">Terdaftar</span>
                 </p>
@@ -266,7 +266,7 @@ export function JoinLiveClassModal({
                   {userEmail}
                 </p>
               </div>
-              <div className="p-3 bg-yellow-50 border-2 border-yellow-200 rounded-2xl text-center">
+              <div className="p-3 bg-yellow-50 border-2 border-yellow-200 rounded-3xl text-center">
                 <p className="text-sm font-semibold text-yellow-800 mb-1">
                   Email Belum <span className="font-black">Diundang</span> Admin
                 </p>
@@ -278,7 +278,7 @@ export function JoinLiveClassModal({
           )}
 
           {liveClass.participantStatus === 'Diundang' && (
-            <div className="p-3 bg-green-50 border-2 border-green-200 rounded-2xl text-center">
+            <div className="p-3 bg-green-50 border-2 border-green-200 rounded-3xl text-center">
               <p className="text-sm font-semibold text-green-800 mb-1">
                 Email Sudah <span className="font-black">Terdaftar</span> dan{' '}
                 <span className="font-black">Diundang</span> Admin
@@ -296,7 +296,7 @@ export function JoinLiveClassModal({
               setIsOpen(false);
               if (onClose) onClose();
             }}
-            className="flex-1 rounded-2xl font-bold border-2"
+            className="flex-1 rounded-3xl font-bold border-2"
           >
             Batal
           </Button>
@@ -304,7 +304,7 @@ export function JoinLiveClassModal({
             <Button
               onClick={handleJoin}
               disabled={!canJoinNow || isJoining}
-              className="flex-1 rounded-2xl font-bold border-2"
+              className="flex-1 rounded-3xl font-bold border-2"
             >
               {isJoining ? (
                 'Bergabung...'
@@ -323,7 +323,7 @@ export function JoinLiveClassModal({
           {!isInvited && liveClass.participantStatus !== 'Tidak Terdaftar' && (
             <Button
               disabled
-              className="flex-1 rounded-2xl font-bold border-2 opacity-50"
+              className="flex-1 rounded-3xl font-bold border-2 opacity-50"
             >
               Menunggu Undangan Admin
             </Button>

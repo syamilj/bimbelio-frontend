@@ -113,7 +113,7 @@ const TryoutSection: React.FC = () => {
                     {[1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="h-20 bg-gray-100 rounded-2xl"
+                        className="h-20 bg-gray-100 rounded-3xl"
                       />
                     ))}
                   </div>
@@ -121,7 +121,7 @@ const TryoutSection: React.FC = () => {
                     {[1, 2].map((i) => (
                       <div
                         key={i}
-                        className="h-16 bg-gray-100 rounded-2xl"
+                        className="h-16 bg-gray-100 rounded-3xl"
                       />
                     ))}
                   </div>

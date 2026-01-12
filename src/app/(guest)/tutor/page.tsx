@@ -26,7 +26,7 @@ export default function TutorPage() {
   //         {/* Tutor Cards Section */}
   //         <Suspense
   //           fallback={
-  //             <div className="w-full h-96 bg-gray-100 rounded-2xl animate-pulse mx-auto max-w-7xl" />
+  //             <div className="w-full h-96 bg-gray-100 rounded-3xl animate-pulse mx-auto max-w-7xl" />
   //           }
   //         >
   //           <TutorGridSection />

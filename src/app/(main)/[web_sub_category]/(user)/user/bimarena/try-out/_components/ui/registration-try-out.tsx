@@ -178,7 +178,7 @@ const RegistrationTryOut = ({
   }, [isHideGeneralSection, univOption]);
 
   return (
-    <div className="relative w-[calc(100%-2rem)] max-w-[500px] rounded-2xl bg-white p-8 shadow-default md:w-full">
+    <div className="relative w-[calc(100%-2rem)] max-w-[500px] rounded-3xl bg-white p-8 shadow-default md:w-full">
       <div
         className="absolute right-4 top-4 cursor-pointer"
         onClick={() => {

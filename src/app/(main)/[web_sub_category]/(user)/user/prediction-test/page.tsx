@@ -660,7 +660,7 @@ export default function UTBKSIMAKPredictor() {
         <div className="max-w-5xl mx-auto px-4 py-8">
           {/* Header Section */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-3xl mb-6">
               <Calculator className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">

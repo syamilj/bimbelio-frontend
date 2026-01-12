@@ -105,7 +105,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
               className="mb-8"
             >
               <div
-                className="p-6 rounded-2xl border-2 space-y-4"
+                className="p-6 rounded-3xl border-2 space-y-4"
                 style={{
                   borderColor: `${mainColor}20`,
                   backgroundColor: `${mainColor}05`,
@@ -178,7 +178,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
               animate={{ opacity: 1, y: 0 }}
               className="mb-8"
             >
-              <div className="p-4 bg-red-50 rounded-2xl border border-red-200">
+              <div className="p-4 bg-red-50 rounded-3xl border border-red-200">
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
                   <div>

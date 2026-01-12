@@ -107,7 +107,7 @@ const Challenge = ({
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between p-4 rounded-2xl border-2 bg-white shadow-sm"
+        className="flex items-center justify-between p-4 rounded-3xl border-2 bg-white shadow-sm"
         style={{ borderColor: `${typeInfo.color}20` }}
       >
         <div className="flex items-center gap-3">

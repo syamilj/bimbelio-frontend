@@ -170,7 +170,7 @@ const WhyUs = () => {
                 key={i}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`flex flex-col items-center gap-3 rounded-2xl px-6 py-4 text-center transition-all duration-300 min-w-[200px] ${
+                className={`flex flex-col items-center gap-3 rounded-3xl px-6 py-4 text-center transition-all duration-300 min-w-[200px] ${
                   active === 1 + i
                     ? 'text-white shadow-lg bg-gradient-default'
                     : 'text-gray-600 hover:bg-gray-50 bg-transparent'
@@ -288,7 +288,7 @@ const ComparisonSection = ({
             <div className="p-6"></div>
             <div className="p-6 text-center border-x-2 border-gray-200 bg-gradient-to-r from-blue-600 to-purple-600">
               <div className="text-white">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-white/20 flex items-center justify-center">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-3xl bg-white/20 flex items-center justify-center">
                   <Star className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-bold">Blueprint Bimbelio</h3>
@@ -296,14 +296,14 @@ const ComparisonSection = ({
               </div>
             </div>
             <div className="p-6 text-center bg-gray-50">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-200 flex items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-3xl bg-gray-200 flex items-center justify-center">
                 <span className="text-xl">📖</span>
               </div>
               <h3 className="text-lg font-bold text-gray-700">Self Study</h3>
               <p className="text-sm text-gray-500">Hope & Pray Method</p>
             </div>
             <div className="p-6 text-center bg-gray-50">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-200 flex items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-3xl bg-gray-200 flex items-center justify-center">
                 <span className="text-xl">🏫</span>
               </div>
               <h3 className="text-lg font-bold text-gray-700">Bimbel Biasa</h3>

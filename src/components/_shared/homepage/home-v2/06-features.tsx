@@ -159,7 +159,7 @@ const FeaturesSection: React.FC = () => {
               >
                 {/* Screenshot Placeholder */}
                 <div
-                  className={`relative rounded-2xl overflow-hidden border border-gray-200 ${
+                  className={`relative rounded-3xl overflow-hidden border border-gray-200 ${
                     index % 2 === 1 ? 'md:[direction:ltr]' : ''
                   }`}
                 >
@@ -184,7 +184,7 @@ const FeaturesSection: React.FC = () => {
                   <div className="mb-4">
                     <div className="flex items-center gap-3 mb-3">
                       <div
-                        className="w-12 h-12 rounded-2xl flex items-center justify-center text-white"
+                        className="w-12 h-12 rounded-3xl flex items-center justify-center text-white"
                         style={{ backgroundColor: mainColor }}
                       >
                         <Icon className="w-6 h-6" />
@@ -225,7 +225,7 @@ const FeaturesSection: React.FC = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-16 bg-gray-50 rounded-2xl p-6 md:p-8 text-center border border-gray-200">
+        <div className="mt-16 bg-gray-50 rounded-3xl p-6 md:p-8 text-center border border-gray-200">
           <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
             Siap Explore Semua Fitur?
           </h3>
@@ -234,7 +234,7 @@ const FeaturesSection: React.FC = () => {
           </p>
           <Link
             href="/price"
-            className="inline-block px-8 py-3 rounded-2xl font-semibold text-white"
+            className="inline-block px-8 py-3 rounded-3xl font-semibold text-white"
             style={{ backgroundColor: mainColor }}
           >
             Lihat Semua Paket →

@@ -104,7 +104,7 @@ const SearchDeskstop = () => {
         <div
           className={cn(
             'relative flex items-center overflow-hidden bg-white shadow-sm border-2 transition-all duration-300',
-            isMobile ? 'rounded-2xl' : 'rounded-full',
+            isMobile ? 'rounded-3xl' : 'rounded-full',
             isFocused
               ? 'shadow-md scale-[1.01] border-2'
               : 'shadow-sm border-2',
@@ -152,7 +152,7 @@ const SearchDeskstop = () => {
                   <SelectTrigger className="border-none shadow-none bg-transparent text-gray-600 focus:ring-0 h-auto p-0 font-medium">
                     <SelectValue placeholder="Semua Kategori" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-2xl border-2 border-gray-100 shadow-sm">
+                  <SelectContent className="rounded-3xl border-2 border-gray-100 shadow-sm">
                     <SelectItem
                       value="all"
                       className="rounded-xl font-medium"

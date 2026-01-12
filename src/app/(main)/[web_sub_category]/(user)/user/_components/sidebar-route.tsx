@@ -205,7 +205,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                         <TooltipTrigger asChild>
                           <div
                             className={cn(
-                              'flex items-center justify-center w-10 h-10 rounded-2xl transition-colors duration-200 cursor-pointer relative',
+                              'flex items-center justify-center w-10 h-10 rounded-3xl transition-colors duration-200 cursor-pointer relative',
                               isActive
                                 ? 'bg-slate-100'
                                 : 'hover:bg-slate-50'
@@ -295,7 +295,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                       href={(isBimArena || isBimCourse) ? '#' : item.url(webSubCategoryId ?? '')}
                       onClick={handleItemClick}
                       className={cn(
-                        'group flex items-center justify-between px-3 py-2 rounded-2xl text-sm font-semibold transition-all duration-200',
+                        'group flex items-center justify-between px-3 py-2 rounded-3xl text-sm font-semibold transition-all duration-200',
                         isActive
                           ? 'bg-slate-100 text-slate-900 shadow-sm'
                           : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900'

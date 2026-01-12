@@ -88,7 +88,7 @@ export default function ButtonUpgradeTryout({
         />
         <div
           className={cn(
-            'relative overflow-hidden rounded-xl md:rounded-2xl p-4 md:p-6 text-white shadow-lg border border-transparent',
+            'relative overflow-hidden rounded-xl md:rounded-3xl p-4 md:p-6 text-white shadow-lg border border-transparent',
             className,
           )}
           style={{

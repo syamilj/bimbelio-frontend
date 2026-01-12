@@ -102,7 +102,7 @@ export function TryOutSelector() {
                 key={tryOut.id}
                 variant="ghost"
                 className={cn(
-                  'w-full h-auto justify-start p-4 text-left rounded-2xl border-2 transition-all duration-300 hover:shadow-sm',
+                  'w-full h-auto justify-start p-4 text-left rounded-3xl border-2 transition-all duration-300 hover:shadow-sm',
                   selectedTryOut === tryOut.id
                     ? 'shadow-sm'
                     : 'border-gray-100 hover:border-gray-200 bg-white',
@@ -152,7 +152,7 @@ export function TryOutSelector() {
               Array.from({ length: 6 }).map((_, index) => (
                 <div
                   key={index}
-                  className="p-4 rounded-2xl border-2 border-gray-100 bg-white"
+                  className="p-4 rounded-3xl border-2 border-gray-100 bg-white"
                 >
                   <Skeleton className="h-4 w-3/4 mb-3 rounded-lg" />
                   <div className="flex justify-between items-center">

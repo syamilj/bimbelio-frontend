@@ -157,7 +157,7 @@ export default function BeasiswaPage() {
                   pilihan beasiswa yang tersedia.
                 </p>
 
-                <div className="bg-main-default/5 border border-main-default/20 rounded-2xl p-8 max-w-xl mx-auto">
+                <div className="bg-main-default/5 border border-main-default/20 rounded-3xl p-8 max-w-xl mx-auto">
                   <div className="flex gap-4 items-start mb-4">
                     <div className="w-10 h-10 rounded-lg bg-main-default flex items-center justify-center flex-shrink-0 text-white">
                       <BookOpen className="w-5 h-5" />
@@ -228,7 +228,7 @@ export default function BeasiswaPage() {
                   key={scholarship.id}
                   variants={itemVariants}
                   whileHover={{ y: -4 }}
-                  className="p-8 rounded-2xl bg-gradient-to-br from-white to-gray-50 border border-main-default/20 hover:border-main-default/50 transition-all duration-300 hover:shadow-xl"
+                  className="p-8 rounded-3xl bg-gradient-to-br from-white to-gray-50 border border-main-default/20 hover:border-main-default/50 transition-all duration-300 hover:shadow-xl"
                 >
                   {/* Header */}
                   <div className="flex gap-4 mb-6">
@@ -393,7 +393,7 @@ export default function BeasiswaPage() {
                 <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-main-default text-white flex items-center justify-center font-bold text-lg">
                   {item.step}
                 </div>
-                <div className="pt-8 p-6 rounded-2xl bg-white border border-main-default/20 text-center">
+                <div className="pt-8 p-6 rounded-3xl bg-white border border-main-default/20 text-center">
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     {item.title}
                   </h3>

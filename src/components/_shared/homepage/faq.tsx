@@ -139,7 +139,7 @@ const FAQ = () => {
             viewport={{ once: true }}
             className="mb-6"
           >
-            <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
+            <span className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
               <Quote className="w-4 h-4" />
               FREQUENTLY ASKED
             </span>
@@ -379,7 +379,7 @@ const FAQ = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 bg-gradient-default"
+                  className="px-8 py-4 rounded-3xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 bg-gradient-default"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Hubungi Support

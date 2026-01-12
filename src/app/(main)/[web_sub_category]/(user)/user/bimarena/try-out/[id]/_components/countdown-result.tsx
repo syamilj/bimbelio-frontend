@@ -83,7 +83,7 @@ const CountdownResult = ({
 
   if (!mounted) {
     return (
-      <Card className="border-2 rounded-2xl overflow-hidden shadow-lg">
+      <Card className="border-2 rounded-3xl overflow-hidden shadow-lg">
         <CardContent className="p-6">
           <div className="animate-pulse">
             <div className="h-6 bg-gray-200 rounded mb-4 w-3/4 mx-auto"></div>
@@ -129,7 +129,7 @@ const CountdownResult = ({
           {/* Header */}
           <div className="text-center mb-8">
             <div
-              className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center shadow-lg"
               style={{ backgroundColor: mainColor }}
             >
               <Clock className="w-8 h-8 text-white" />
@@ -174,7 +174,7 @@ const CountdownResult = ({
                     className="text-center"
                   >
                     <div
-                      className="relative rounded-2xl p-4 mb-3 border-2 shadow-lg bg-white hover:shadow-xl transition-all duration-300"
+                      className="relative rounded-3xl p-4 mb-3 border-2 shadow-lg bg-white hover:shadow-xl transition-all duration-300"
                       style={{ borderColor: `${mainColor}20` }}
                     >
                       {/* Background Icon */}
@@ -200,7 +200,7 @@ const CountdownResult = ({
                       {unit.label === 'Detik' && (
                         <motion.div
                           animate={{ scale: [1, 1.05, 1] }}
-                          className="absolute inset-0 rounded-2xl"
+                          className="absolute inset-0 rounded-3xl"
                           style={{ backgroundColor: `${mainColor}10` }}
                         />
                       )}

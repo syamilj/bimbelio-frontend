@@ -160,7 +160,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+          className="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-4"
         >
           <div className="text-center">
             <div
@@ -190,7 +190,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+          className="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-4"
         >
           <div className="text-center">
             <div
@@ -223,7 +223,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+          className="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-4"
         >
           <div className="text-center">
             <div
@@ -292,7 +292,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-8 shadow-lg max-w-md mx-4"
+          className="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-4"
         >
           <div className="text-center">
             <div

@@ -222,7 +222,7 @@ export function ReviewTab({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-2xl p-6 shadow-lg border-2 border-gray-100"
+        className="bg-white rounded-3xl p-6 shadow-lg border-2 border-gray-100"
       >
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div className="flex items-center gap-4">
@@ -412,7 +412,7 @@ const QuestionView = ({
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
       {/* Main Question Area */}
       <div className="lg:col-span-3">
-        <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+        <Card className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden">
           <CardHeader
             className="border-b"
             style={{ backgroundColor: `${mainColor}03` }}
@@ -656,7 +656,7 @@ const GridView = ({
     : 0;
 
   return (
-    <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+    <Card className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden">
       <CardHeader
         className="border-b"
         style={{ backgroundColor: `${mainColor}03` }}
@@ -812,7 +812,7 @@ const CompactNavigation = ({
   return (
     <div className="space-y-4">
       {/* Enhanced Navigation Header with Stats */}
-      <Card className="border-2 border-gray-100 rounded-2xl shadow-lg overflow-hidden">
+      <Card className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden">
         <CardHeader
           className="border-b py-3"
           style={{ backgroundColor: `${mainColor}05` }}
@@ -960,7 +960,7 @@ const CompactNavigation = ({
       </Card>
 
       {/* Quick Actions */}
-      <Card className="border-2 border-gray-100 rounded-2xl shadow-lg">
+      <Card className="border-2 border-gray-100 rounded-3xl shadow-lg">
         <CardContent className="p-4 space-y-3">
           {/* <Sheet>
             <SheetTrigger asChild>
@@ -1013,7 +1013,7 @@ const CompactNavigation = ({
           </TryoutAI>
 
           {sessionResult?.TryoutSession.Document && (
-            <div className="w-[5px] h-[20px] mx-auto bg-main rounded-2xl"></div>
+            <div className="w-[5px] h-[20px] mx-auto bg-main rounded-3xl"></div>
           )}
           {sessionResult?.TryoutSession.Document && (
             <Link
@@ -1034,7 +1034,7 @@ const CompactNavigation = ({
       </Card>
 
       {/* Enhanced Legend */}
-      <Card className="border-2 border-gray-100 rounded-2xl shadow-lg">
+      <Card className="border-2 border-gray-100 rounded-3xl shadow-lg">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm font-semibold text-gray-700">
             Keterangan

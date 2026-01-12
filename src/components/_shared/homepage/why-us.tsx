@@ -127,7 +127,7 @@ const WhyUs = () => {
           viewport={{ once: true }}
           className="mb-6"
         >
-          <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
+          <span className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
             <Star className="w-4 h-4" />
             MENGAPA BIMBELIO
           </span>
@@ -156,7 +156,7 @@ const WhyUs = () => {
                 key={i}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`flex flex-col items-center gap-3 rounded-2xl px-6 py-4 text-center transition-all duration-300 min-w-[200px] ${
+                className={`flex flex-col items-center gap-3 rounded-3xl px-6 py-4 text-center transition-all duration-300 min-w-[200px] ${
                   active === 1 + i
                     ? 'text-white shadow-lg bg-gradient-default'
                     : 'text-gray-600 hover:bg-gray-50 bg-transparent'
@@ -257,7 +257,7 @@ const ComparisonSection = ({ data }: { data: any[] }) => (
             <div className="p-6"></div>
             <div className="p-6 text-center border-x-2 border-main-default/20 bg-gradient-default">
               <div className="text-white">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-white/20 flex items-center justify-center">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-3xl bg-white/20 flex items-center justify-center">
                   <Star className="w-6 h-6" />
                 </div>
                 <h3 className="text-xl font-bold">Bimbelio</h3>
@@ -265,7 +265,7 @@ const ComparisonSection = ({ data }: { data: any[] }) => (
               </div>
             </div>
             <div className="p-6 text-center bg-gray-50">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-200 flex items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-3xl bg-gray-200 flex items-center justify-center">
                 <span className="text-xl">📖</span>
               </div>
               <h3 className="text-lg font-bold text-gray-700">
@@ -274,7 +274,7 @@ const ComparisonSection = ({ data }: { data: any[] }) => (
               <p className="text-sm text-gray-500">Self-Learning</p>
             </div>
             <div className="p-6 text-center bg-gray-50">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-gray-200 flex items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-3xl bg-gray-200 flex items-center justify-center">
                 <span className="text-xl">🏫</span>
               </div>
               <h3 className="text-lg font-bold text-gray-700">Kelas Bimbel</h3>

@@ -384,7 +384,7 @@ export default function ReportClient() {
                 </h1>
               </div>
               <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center text-white"
+                className="w-16 h-16 rounded-3xl flex items-center justify-center text-white"
                 style={{ backgroundColor: mainColor }}
               >
                 <Home className="w-8 h-8" />
@@ -425,7 +425,7 @@ export default function ReportClient() {
         {/* Quick Stats Grid */}
         <section className="mb-12">
           <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl p-5 text-center">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-3xl p-5 text-center">
               <Clock className="w-5 h-5 text-blue-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-blue-700">
                 {reportData?.studyHabits?.totalHoursStudied?.toFixed(0) || '0'}
@@ -435,7 +435,7 @@ export default function ReportClient() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 text-center">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-3xl p-5 text-center">
               <Award className="w-5 h-5 text-green-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-green-700">
                 {reportData?.learningReport?.totalScore || '0'}
@@ -445,7 +445,7 @@ export default function ReportClient() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-2xl p-5 text-center">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-3xl p-5 text-center">
               <Target className="w-5 h-5 text-orange-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-orange-700">
                 {reportData?.tryoutHistory?.history.length || '0'}
@@ -455,7 +455,7 @@ export default function ReportClient() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-pink-50 to-pink-100 border-2 border-pink-200 rounded-2xl p-5 text-center">
+            <div className="bg-gradient-to-br from-pink-50 to-pink-100 border-2 border-pink-200 rounded-3xl p-5 text-center">
               <Brain className="w-5 h-5 text-pink-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-pink-700">
                 {reportData?.studyHabits?.longestStreak || '0'}
@@ -641,7 +641,7 @@ export const StatCard: React.FC<StatCardProps> = ({
   changeLabel,
   mainColor = '#0091FF',
 }) => (
-  <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 group h-full">
+  <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-300 group h-full">
     <CardHeader
       className="pb-4 relative overflow-hidden h-20"
       style={{ backgroundColor: `${mainColor}08` }}
@@ -793,7 +793,7 @@ export const TryoutHistoryCard: React.FC<{
   };
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
           <Target
@@ -1009,7 +1009,7 @@ export const QuizHistoryCard: React.FC<{
   };
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
           <Brain
@@ -1217,7 +1217,7 @@ export const QuizHistoryCard: React.FC<{
 //   mainColor,
 //   secondaryColor,
 // }) => (
-//   <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+//   <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
 //     <CardHeader
 //       className="pb-4 relative overflow-hidden"
 //       style={{
@@ -1425,7 +1425,7 @@ export const ScoreDevelopmentCard: React.FC<{
   const totalTrend = totalLatest - totalPrevious;
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
           <TrendingUp
@@ -1613,7 +1613,7 @@ export const LearningActivityCard: React.FC<{
   ];
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
           <ActivityIcon
@@ -1795,7 +1795,7 @@ export const WeeklyProgressCard: React.FC<{
   }));
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
           <TrendingUp
@@ -2025,7 +2025,7 @@ export const StudyHabitsCard: React.FC<{
   return (
     <div className="space-y-6">
       {/* Timeline Progress */}
-      <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+      <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg font-bold flex items-center gap-2">
             <LibraryBigIcon
@@ -2215,7 +2215,7 @@ export const CalendarComponent: React.FC<{
   }, []);
 
   return (
-    <Card className="bg-white shadow-lg border-0 rounded-2xl overflow-hidden">
+    <Card className="bg-white shadow-lg border-0 rounded-3xl overflow-hidden">
       <CardHeader
         className="pb-4 relative overflow-hidden"
         style={{

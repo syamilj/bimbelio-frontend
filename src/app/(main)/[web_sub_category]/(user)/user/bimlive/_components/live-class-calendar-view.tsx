@@ -106,7 +106,7 @@ export function CalendarView({
                   variant="outline"
                   size="sm"
                   onClick={() => navigateMonth('prev')}
-                  className="h-8 w-8 p-0 rounded-2xl font-bold border-2"
+                  className="h-8 w-8 p-0 rounded-3xl font-bold border-2"
                 >
                   ←
                 </Button>
@@ -114,7 +114,7 @@ export function CalendarView({
                   variant="outline"
                   size="sm"
                   onClick={() => navigateMonth('next')}
-                  className="h-8 w-8 p-0 rounded-2xl font-bold border-2"
+                  className="h-8 w-8 p-0 rounded-3xl font-bold border-2"
                 >
                   →
                 </Button>
@@ -153,7 +153,7 @@ export function CalendarView({
                   <button
                     key={index}
                     onClick={() => setSelectedDate(day)}
-                    className={`calendar-day p-2 h-20 border-2 rounded-2xl transition-all hover:shadow-sm relative ${
+                    className={`calendar-day p-2 h-20 border-2 rounded-3xl transition-all hover:shadow-sm relative ${
                       isSelected
                         ? 'selected bg-blue-100 border-blue-300'
                         : isToday
@@ -221,7 +221,7 @@ export function CalendarView({
                 {selectedDateClasses.map((liveClass, index) => (
                   <div
                     key={index}
-                    className="p-3 border-2 border-gray-100 rounded-2xl hover:shadow-sm transition-shadow"
+                    className="p-3 border-2 border-gray-100 rounded-3xl hover:shadow-sm transition-shadow"
                   >
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="font-black text-sm line-clamp-2 flex-1 pr-2 text-gray-900">

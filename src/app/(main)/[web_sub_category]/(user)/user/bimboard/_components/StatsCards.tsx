@@ -28,7 +28,7 @@ export default function StatsCards({
       {/* Main Stats - 2x2 Grid on Mobile, 4 cols on Desktop */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         {/* Jam Belajar */}
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-3 md:p-4 border border-blue-100">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-3 md:p-4 border border-blue-100">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 rounded-xl bg-blue-500 flex items-center justify-center">
               <Clock className="w-4 h-4 text-white" />
@@ -44,7 +44,7 @@ export default function StatsCards({
         </div>
 
         {/* Nilai Total */}
-        <div className="bg-gradient-to-br from-amber-50 to-orange-100 rounded-2xl p-3 md:p-4 border border-amber-100">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-100 rounded-3xl p-3 md:p-4 border border-amber-100">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center">
               <TrendingUp className="w-4 h-4 text-white" />
@@ -60,7 +60,7 @@ export default function StatsCards({
 
         {/* Peringkat */}
         <div
-          className="rounded-2xl p-3 md:p-4 border"
+          className="rounded-3xl p-3 md:p-4 border"
           style={{
             background: `linear-gradient(135deg, ${mainColor}10, ${mainColor}20)`,
             borderColor: `${mainColor}30`
@@ -91,7 +91,7 @@ export default function StatsCards({
         </div>
 
         {/* TO Selesai */}
-        <div className="bg-gradient-to-br from-emerald-50 to-green-100 rounded-2xl p-3 md:p-4 border border-emerald-100">
+        <div className="bg-gradient-to-br from-emerald-50 to-green-100 rounded-3xl p-3 md:p-4 border border-emerald-100">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center">
               <Target className="w-4 h-4 text-white" />

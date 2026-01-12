@@ -173,7 +173,7 @@ const StartTryout = ({
                   }}
                 >
                   <div
-                    className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"
+                    className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: mainColor }}
                   >
                     <Play className="w-8 h-8 text-white" />
@@ -302,7 +302,7 @@ const StartTryout = ({
                           key={index}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
-                          className="flex gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                          className="flex gap-4 p-4 rounded-3xl bg-gray-50 hover:bg-gray-100 transition-colors"
                         >
                           <div
                             className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -366,7 +366,7 @@ const StartTryout = ({
               animate={{ opacity: 1, y: 0 }}
             >
               <Card
-                className="border-2 rounded-2xl overflow-hidden shadow-lg"
+                className="border-2 rounded-3xl overflow-hidden shadow-lg"
                 style={{ borderColor: `${mainColor}20` }}
               >
                 <CardHeader
@@ -441,7 +441,7 @@ const StartTryout = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <Card className="border-2 rounded-2xl overflow-hidden shadow-lg border-green-200">
+              <Card className="border-2 rounded-3xl overflow-hidden shadow-lg border-green-200">
                 <CardContent className="p-6">
                   <div className="text-center space-y-4">
                     <div className="w-16 h-16 mx-auto rounded-full bg-green-100 flex items-center justify-center">
@@ -516,7 +516,7 @@ const StartTryout = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <Card className="border-2 rounded-2xl overflow-hidden shadow-lg border-blue-200">
+              <Card className="border-2 rounded-3xl overflow-hidden shadow-lg border-blue-200">
                 <CardHeader className="bg-blue-50 py-4">
                   <h3 className="text-lg font-bold text-blue-800">
                     💡 Tips Sukses

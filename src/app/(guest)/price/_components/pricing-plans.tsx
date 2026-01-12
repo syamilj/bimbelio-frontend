@@ -404,7 +404,7 @@ export default function PricingPlans() {
           className="relative z-20"
         >
           <Card
-            className="mb-8 border-2 shadow-lg bg-white rounded-2xl overflow-visible"
+            className="mb-8 border-2 shadow-lg bg-white rounded-3xl overflow-visible"
             style={{ borderColor: `${mainColor}20` }}
           >
             {/* Top Accent Bar */}
@@ -418,7 +418,7 @@ export default function PricingPlans() {
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div
-                  className="p-3 rounded-2xl"
+                  className="p-3 rounded-3xl"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <TrendingUp
@@ -490,7 +490,7 @@ export default function PricingPlans() {
                   {/* Dropdown Content with Tabs */}
                   {isFilterOpen && (
                     <div
-                      className="absolute left-0 right-0 sm:left-auto sm:right-0 top-full mt-2 w-auto sm:w-[420px] bg-white rounded-2xl shadow-2xl border-2 overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-2 duration-200 max-h-[calc(100vh-10rem)] overflow-y-auto"
+                      className="absolute left-0 right-0 sm:left-auto sm:right-0 top-full mt-2 w-auto sm:w-[420px] bg-white rounded-3xl shadow-2xl border-2 overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-2 duration-200 max-h-[calc(100vh-10rem)] overflow-y-auto"
                       style={{ borderColor: `${mainColor}20` }}
                     >
                       {/* Top Accent Bar */}

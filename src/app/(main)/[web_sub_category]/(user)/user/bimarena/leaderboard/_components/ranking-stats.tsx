@@ -71,7 +71,7 @@ export function RankingStats() {
         <div>
           <CardTitle className="text-xl font-black text-gray-900 flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm"
+              className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
               style={{ backgroundColor: mainColor }}
             >
               <BarChart2 className="w-5 h-5 text-white" />
@@ -271,7 +271,7 @@ const Statistics = () => {
       {!RankingTryoutIsLoading ? (
         <div className="grid grid-cols-1 gap-8">
           {/* Statistics Table */}
-          <Card className="border-2 border-gray-100 rounded-2xl shadow-sm">
+          <Card className="border-2 border-gray-100 rounded-3xl shadow-sm">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-bold flex items-center gap-3">
                 <div
@@ -383,7 +383,7 @@ const Statistics = () => {
           </Card>
 
           {/* Distribution Chart */}
-          <Card className="border-2 border-gray-100 rounded-2xl shadow-sm">
+          <Card className="border-2 border-gray-100 rounded-3xl shadow-sm">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-bold flex items-center gap-3">
                 <div
@@ -457,8 +457,8 @@ const Statistics = () => {
         </div>
       ) : (
         <div className="space-y-8">
-          <Skeleton className="w-full h-80 rounded-2xl" />
-          <Skeleton className="w-full h-96 rounded-2xl" />
+          <Skeleton className="w-full h-80 rounded-3xl" />
+          <Skeleton className="w-full h-96 rounded-3xl" />
         </div>
       )}
     </div>
@@ -490,7 +490,7 @@ const AnalysisSubject = () => {
   return (
     <Fragment>
       {!RankingTryoutIsLoading ? (
-        <Card className="border-2 border-gray-100 rounded-2xl shadow-sm">
+        <Card className="border-2 border-gray-100 rounded-3xl shadow-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-bold flex items-center gap-3">
               <div
@@ -578,7 +578,7 @@ const AnalysisSubject = () => {
           </CardContent>
         </Card>
       ) : (
-        <Skeleton className="w-full h-[500px] rounded-2xl" />
+        <Skeleton className="w-full h-[500px] rounded-3xl" />
       )}
     </Fragment>
   );

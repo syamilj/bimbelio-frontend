@@ -80,7 +80,7 @@ export function LiveClassRatingsDisplay({
         >
           <CardTitle className="flex items-center gap-3 text-lg">
             <div
-              className="w-8 h-8 rounded-2xl flex items-center justify-center border-2 border-gray-100"
+              className="w-8 h-8 rounded-3xl flex items-center justify-center border-2 border-gray-100"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Star
@@ -122,7 +122,7 @@ export function LiveClassRatingsDisplay({
         >
           <CardTitle className="flex items-center gap-3 text-lg">
             <div
-              className="w-8 h-8 rounded-2xl flex items-center justify-center border-2 border-gray-100"
+              className="w-8 h-8 rounded-3xl flex items-center justify-center border-2 border-gray-100"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Star
@@ -181,7 +181,7 @@ export function LiveClassRatingsDisplay({
         />
         <CardTitle className="flex items-center gap-3 text-lg relative z-10">
           <div
-            className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm border-2 border-gray-100"
+            className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm border-2 border-gray-100"
             style={{ backgroundColor: `${mainColor}15` }}
           >
             <TrendingUp
@@ -263,7 +263,7 @@ export function LiveClassRatingsDisplay({
         {/* USER'S RATING */}
         {userRating && (
           <div
-            className="border-2 rounded-2xl p-5 relative overflow-hidden shadow-sm"
+            className="border-2 rounded-3xl p-5 relative overflow-hidden shadow-sm"
             style={{
               backgroundColor: `${mainColor}08`,
               borderColor: `${mainColor}20`,
@@ -311,7 +311,7 @@ export function LiveClassRatingsDisplay({
             {ratings.slice(0, 5).map((rating) => (
               <div
                 key={rating.id}
-                className="border-2 border-gray-100 rounded-2xl p-4 hover:shadow-sm transition-shadow"
+                className="border-2 border-gray-100 rounded-3xl p-4 hover:shadow-sm transition-shadow"
               >
                 <div className="flex items-start gap-4">
                   <Avatar className="h-10 w-10 ring-2 ring-gray-100 border-2 border-gray-100">
@@ -354,7 +354,7 @@ export function LiveClassRatingsDisplay({
 
           {ratings.length > 5 && (
             <div
-              className="text-center p-4 rounded-2xl border-2 border-dashed"
+              className="text-center p-4 rounded-3xl border-2 border-dashed"
               style={{ borderColor: `${mainColor}20` }}
             >
               <p

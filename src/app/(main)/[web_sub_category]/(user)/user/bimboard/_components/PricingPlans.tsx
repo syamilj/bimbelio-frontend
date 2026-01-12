@@ -161,7 +161,7 @@ export default function PricingPlans({
                 className="flex-shrink-0 group"
               >
                 <div
-                  className={`w-52 md:w-60 bg-white rounded-2xl overflow-hidden border-2 hover:shadow-lg transition-all cursor-pointer ${
+                  className={`w-52 md:w-60 bg-white rounded-3xl overflow-hidden border-2 hover:shadow-lg transition-all cursor-pointer ${
                     plan.isPopular ? 'shadow-md' : 'border-gray-100'
                   }`}
                   style={{

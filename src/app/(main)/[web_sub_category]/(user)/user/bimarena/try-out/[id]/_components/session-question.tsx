@@ -73,7 +73,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
 
   if (questions.length === 0) {
     return (
-      <Card className="rounded-2xl border-2 border-gray-100 shadow-lg">
+      <Card className="rounded-3xl border-2 border-gray-100 shadow-lg">
         <CardContent className="p-8">
           <div className="flex justify-center items-center h-32">
             <div
@@ -98,7 +98,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
     >
-      <Card className="rounded-2xl border-2 border-gray-100 shadow-lg overflow-hidden">
+      <Card className="rounded-3xl border-2 border-gray-100 shadow-lg overflow-hidden">
         <CardHeader className="border-b bg-gray-50/50 p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">

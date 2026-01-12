@@ -372,7 +372,7 @@ export const DialogLiveClassRegister = ({
       <DialogContent>
         <DialogHeader className="flex flex-col items-center gap-3">
           <div
-            className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-16 h-16 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}

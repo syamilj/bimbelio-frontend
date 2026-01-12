@@ -262,7 +262,7 @@ const LearningMethodology = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -356,11 +356,11 @@ const LearningMethodology = () => {
                 viewport={{ once: true }}
                 className="relative"
               >
-                <Card className="h-full border-2 border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 group">
+                <Card className="h-full border-2 border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-500 group">
                   <CardContent className="p-6 text-center">
                     {/* Step Number */}
                     <div
-                      className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300"
+                      className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300"
                       style={{ backgroundColor: step.color }}
                     >
                       {step.step}
@@ -423,7 +423,7 @@ const LearningMethodology = () => {
                   whileTap={{ scale: 0.98 }}
                 >
                   <Card
-                    className={`cursor-pointer border-2 rounded-2xl overflow-hidden transition-all duration-300 ${
+                    className={`cursor-pointer border-2 rounded-3xl overflow-hidden transition-all duration-300 ${
                       activeMethod === index
                         ? 'shadow-xl scale-105'
                         : 'hover:shadow-lg border-gray-200'
@@ -487,7 +487,7 @@ const LearningMethodology = () => {
                     <div className="mb-8">
                       <div className="flex items-center gap-4 mb-4">
                         <div
-                          className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg"
+                          className="w-16 h-16 rounded-3xl flex items-center justify-center text-white shadow-lg"
                           style={{
                             background: `linear-gradient(135deg, ${learningMethods[activeMethod].color}, ${learningMethods[activeMethod].color}dd)`,
                           }}
@@ -639,7 +639,7 @@ const LearningMethodology = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="h-full border-2 border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
+                <Card className="h-full border-2 border-gray-100 rounded-3xl overflow-hidden hover:shadow-lg transition-all duration-300">
                   <CardContent className="p-6">
                     <div
                       className="w-12 h-12 mb-4 rounded-xl flex items-center justify-center"
@@ -708,7 +708,7 @@ const LearningMethodology = () => {
                   >
                     <Button
                       size="lg"
-                      className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2"
+                      className="px-8 py-4 rounded-3xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2"
                       style={{
                         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                       }}
@@ -726,7 +726,7 @@ const LearningMethodology = () => {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="px-8 py-4 rounded-2xl font-bold border-2 transition-all duration-300 flex items-center gap-2"
+                      className="px-8 py-4 rounded-3xl font-bold border-2 transition-all duration-300 flex items-center gap-2"
                       style={{
                         borderColor: mainColor,
                         color: mainColor,
