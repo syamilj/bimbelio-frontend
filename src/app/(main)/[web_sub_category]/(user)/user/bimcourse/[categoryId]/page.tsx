@@ -80,7 +80,8 @@ export default function CourseOverviewPage() {
   Course?.forEach(c => {
     totalSubChapters += c.CourseSubChapter.length;
     c.CourseSubChapter.forEach(s => {
-        const isCompleted = (s.CourseProgress && s.CourseProgress.length > 0) || progressSet.has(s.id);
+        // Only use progressSet to avoid counting duplicates from s.CourseProgress relation
+        const isCompleted = progressSet.has(s.id);
 
         // Count local check if analytics not ready
         if (!analyticsSummary.totalMinutes) {
@@ -192,6 +193,8 @@ export default function CourseOverviewPage() {
          </div>
       </div>
 
+
+
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Main Content: Chapter List */}
         <div className="lg:col-span-2 space-y-8">
@@ -300,7 +303,8 @@ export default function CourseOverviewPage() {
                 {/* Subchapter List: Horizontal Scroll on Mobile, Grid on Desktop */}
                 <div className="flex flex-row overflow-x-auto pb-6 -mx-4 px-4 gap-4 snap-x snap-mandatory md:grid md:grid-cols-2 md:gap-4 md:pb-0 md:overflow-visible md:mx-0 md:px-0">
                    {chapter.CourseSubChapter.map((sub) => {
-                      const isSubCompleted = (sub.CourseProgress && sub.CourseProgress.length > 0) || progressSet.has(sub.id);
+                      // Only use progressSet to avoid counting duplicates
+                      const isSubCompleted = progressSet.has(sub.id);
 
                       // Logic Image: User confirms NO YouTube. All logic priorities document.img
                       // "kalo yang dokumennya ada video maka gambar video dulu" -> implies using Document.img which acts as thumbnail
@@ -489,27 +493,6 @@ export default function CourseOverviewPage() {
                            </div>
                            <div className="text-[10px] font-bold text-orange-400 uppercase tracking-wide">Waktu Belajar</div>
                            <div className="text-sm font-black text-orange-700">{Math.round(totalSpendTime)} Menit</div>
-                       </div>
-                   </div>
-
-                   {/* BimLabs Insights (New) */}
-                   <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-4 text-white relative overflow-hidden">
-                       <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-2xl -mr-10 -mt-10" />
-                       <div className="relative z-10">
-                           <div className="flex items-center gap-2 mb-3">
-                               <div className="px-2 py-0.5 rounded-md bg-indigo-500/30 border border-indigo-500/50 text-[10px] font-bold uppercase tracking-wider">
-                                   BimLabs AI
-                               </div>
-                           </div>
-                           <h4 className="font-bold text-sm mb-1">Analisis Performa</h4>
-                           <p className="text-xs text-slate-300 mb-3 leading-relaxed">
-                               {analyticsSummary.bimTactics || "Terus belajar untuk membuka analisis lebih mendalam."}
-                           </p>
-
-                           <div className="flex items-center justify-between text-xs font-medium bg-white/10 rounded-lg p-2">
-                               <span>Mastery Level</span>
-                               <span className="text-emerald-400 font-bold">{analyticsSummary.masteryLevel || "Beginner"}</span>
-                           </div>
                        </div>
                    </div>
               </div>

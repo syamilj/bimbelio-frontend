@@ -673,7 +673,7 @@ export function Chart() {
         <p className="text-sm text-gray-500 text-center">Eval Benchmark</p>
         <p className="text-xs text-gray-400 text-center">
           Sumber:
-          https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/
+          https://openai.com/index/gpt-5-nano-advancing-cost-efficient-intelligence/
         </p>
       </CardFooter>
     </Card>

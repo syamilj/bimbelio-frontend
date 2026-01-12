@@ -230,7 +230,7 @@ export default function ModulPembelajaranSection() {
                         stroke={mainColor}
                         strokeWidth="3.5"
                         fill="transparent"
-                        strokeDasharray={`${category.percentageProgress}, 100`}
+                        strokeDasharray={`${Math.min(100, Math.round(category.percentageProgress || 0))}, 100`}
                         strokeLinecap="round"
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                         style={{
@@ -246,7 +246,7 @@ export default function ModulPembelajaranSection() {
                           className="text-xs font-black leading-none"
                           style={{ color: mainColor }}
                         >
-                          {category.percentageProgress}%
+                          {Math.min(100, Math.round(category.percentageProgress || 0))}%
                         </span>
                       </div>
                     </div>
@@ -283,7 +283,7 @@ export default function ModulPembelajaranSection() {
                       </span>
                       <span className="font-bold text-gray-900">
                         {category.completedChapters}/{category.totalChapters}{' '}
-                        Chapter
+                        Sub Chapter
                       </span>
                     </div>
                     <Progress
@@ -399,7 +399,7 @@ export default function ModulPembelajaranSection() {
                               {category.totalChapters}
                             </div>
                             <div className="text-xs font-medium text-yellow-600 mt-1">
-                              Total Chapter
+                              Total Sub Chapter
                             </div>
                           </div>
 
