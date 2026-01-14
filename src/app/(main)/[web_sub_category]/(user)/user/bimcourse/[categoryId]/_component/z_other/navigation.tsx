@@ -82,14 +82,14 @@ const NavigationButtons = () => {
       const allSubChapters = chapters.flatMap((ch) => ch.CourseSubChapter);
       if (currentIndex > 0) {
         setPrevLink(
-          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}?sub=${allSubChapters[currentIndex - 1].id}`,
+          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${allSubChapters[currentIndex - 1].id}`,
         );
       } else {
         setPrevLink(undefined);
       }
       if (currentIndex < allSubChapters.length - 1) {
         setNextLink(
-          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}?sub=${allSubChapters[currentIndex + 1].id}`,
+          `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${allSubChapters[currentIndex + 1].id}`,
         );
       } else {
         const currentChapterIndex = chapters.findIndex((ch) =>
@@ -102,7 +102,7 @@ const NavigationButtons = () => {
           const nextChapter = chapters[currentChapterIndex + 1];
           if (nextChapter.CourseSubChapter.length > 0) {
             setNextLink(
-              `/${website_sub_category_id_params}/user/bimcourse/${categoryId}?sub=${nextChapter.CourseSubChapter[0].id}`,
+              `/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${nextChapter.CourseSubChapter[0].id}`,
             );
           } else {
             setNextLink(undefined);

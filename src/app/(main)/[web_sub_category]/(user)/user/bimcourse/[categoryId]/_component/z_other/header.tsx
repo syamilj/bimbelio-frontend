@@ -144,7 +144,7 @@ export default function HeaderCourse({
                           )}
                         </div>
                         <Link
-                          href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}?sub=${sChapter.id}`}
+                          href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${sChapter.id}`}
                           key={sIndex}
                           className={cn(
                             'flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2 duration-300 md:hover:bg-surface-primary-light relative w-full',
@@ -233,7 +233,7 @@ export default function HeaderCourse({
             </Accordion>
           ))}
           <Link
-            href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}?sub=report`}
+            href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=report`}
             className={cn(
               'flex cursor-pointer items-center gap-[.5rem] text-main rounded-[.5rem] px-4 py-[.5rem] text-start text-[1rem] font-semibold duration-300 md:md:hover:bg-surface-primary-light',
             )}

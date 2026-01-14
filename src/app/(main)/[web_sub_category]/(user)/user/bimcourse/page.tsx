@@ -9,16 +9,16 @@ export const metadata: Metadata = {
 
 export default function Course() {
   return (
-    <main className="min-h-screen">
+    <>
       <div className="container mx-auto max-w-7xl px-4 py-8">
         {/* Hero Header Section */}
         <HeaderSection />
-
-        {/* Course Modules Section */}
-        <section className="mb-12">
-          <ModulPembelajaranSection />
-        </section>
       </div>
-    </main>
+
+      {/* Course Modules Section - Full Width for Horizontal Scroll */}
+      <section className="mb-12">
+        <ModulPembelajaranSection />
+      </section>
+    </>
   );
 }
