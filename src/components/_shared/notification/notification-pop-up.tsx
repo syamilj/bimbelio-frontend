@@ -331,7 +331,7 @@ const getLiveClassMetadata = () => {
       {notificationPopUp.relatedResourceType === 'LIVE_CLASS' &&
         metadata &&
         typeof metadata === 'object' && (
-          <div className="mx-6 mb-6 border border-yellow-200 rounded-xl overflow-hidden bg-gradient-to-br from-yellow-50 via-white to-orange-50  shadow-sm hover:shadow-md transition-shadow">
+          <div className="mx-6 mb-6 border border-yellow-200 rounded-3xl overflow-hidden bg-gradient-to-br from-yellow-50 via-white to-orange-50  shadow-sm hover:shadow-md transition-shadow">
             {/* Image */}
             {metadata.image && (
               <div className="relative w-full h-44 overflow-hidden bg-gradient-to-br from-blue-200 to-purple-200">
@@ -437,7 +437,7 @@ const getTryoutMetadata = () => {
       {notificationPopUp.relatedResourceType === 'TRYOUT' &&
         metadata &&
         typeof metadata === 'object' && (
-          <div className="mx-6 mb-6 border border-yellow-200 rounded-xl overflow-hidden bg-gradient-to-br from-yellow-50 via-white to-orange-50 shadow-sm hover:shadow-md transition-shadow">
+          <div className="mx-6 mb-6 border border-yellow-200 rounded-3xl overflow-hidden bg-gradient-to-br from-yellow-50 via-white to-orange-50 shadow-sm hover:shadow-md transition-shadow">
             {/* Details */}
             <div className="p-4 space-y-3">
               <div>

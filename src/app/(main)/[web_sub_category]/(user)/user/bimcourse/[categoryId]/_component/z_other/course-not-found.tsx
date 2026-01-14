@@ -77,7 +77,7 @@ export default function CourseNotFound() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center"
                 style={{ backgroundColor: mainColor }}
               >
                 <Search className="w-5 h-5 text-white" />
@@ -185,7 +185,7 @@ export default function CourseNotFound() {
                           <CardHeader className="flex items-center space-y-0 pb-3 relative z-10">
                             <div
                               className={cn(
-                                'w-14 h-14 rounded-xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110',
+                                'w-14 h-14 rounded-3xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110',
                                 `bg-linear-to-br ${action.gradient}`,
                               )}
                             >
@@ -252,7 +252,7 @@ export default function CourseNotFound() {
 
                   <div className="space-y-4">
                     <Button
-                      className="w-full h-12 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-white"
+                      className="w-full h-12 rounded-3xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 text-white"
                       style={{
                         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                       }}

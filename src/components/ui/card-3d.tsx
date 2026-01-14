@@ -41,7 +41,7 @@ export function Card3D({
     <div
       ref={cardRef}
       className={cn(
-        'relative rounded-xl transition-transform duration-200 ease-out',
+        'relative rounded-3xl transition-transform duration-200 ease-out',
         className,
       )}
       style={{

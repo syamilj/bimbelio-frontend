@@ -112,7 +112,7 @@ const Challenge = ({
       >
         <div className="flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center"
+            className="w-10 h-10 rounded-3xl flex items-center justify-center"
             style={{ backgroundColor: `${typeInfo.color}15` }}
           >
             <div style={{ color: typeInfo.color }}>{typeInfo.icon}</div>
@@ -173,7 +173,7 @@ const Challenge = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: showHint ? 1 : 0 }}
         className={cn(
-          'p-4 rounded-xl border bg-blue-50 border-blue-200 transition-all duration-300',
+          'p-4 rounded-3xl border bg-blue-50 border-blue-200 transition-all duration-300',
           showHint ? 'block' : 'hidden',
         )}
       >

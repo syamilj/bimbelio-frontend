@@ -181,13 +181,13 @@ export default function CourseOverviewPage() {
             />
          </div>
          <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
-             <Badge className="h-10 px-4 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 cursor-pointer border-indigo-100 text-sm whitespace-nowrap">
+             <Badge className="h-10 px-4 rounded-3xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 cursor-pointer border-indigo-100 text-sm whitespace-nowrap">
                 Semua Materi
              </Badge>
-             <Badge className="h-10 px-4 rounded-xl bg-white text-slate-600 border-2 border-slate-100 hover:bg-slate-50 cursor-pointer text-sm whitespace-nowrap">
+             <Badge className="h-10 px-4 rounded-3xl bg-white text-slate-600 border-2 border-slate-100 hover:bg-slate-50 cursor-pointer text-sm whitespace-nowrap">
                 <PlayCircle className="w-3.5 h-3.5 mr-2" /> Video
              </Badge>
-             <Badge className="h-10 px-4 rounded-xl bg-white text-slate-600 border-2 border-slate-100 hover:bg-slate-50 cursor-pointer text-sm whitespace-nowrap">
+             <Badge className="h-10 px-4 rounded-3xl bg-white text-slate-600 border-2 border-slate-100 hover:bg-slate-50 cursor-pointer text-sm whitespace-nowrap">
                 <Trophy className="w-3.5 h-3.5 mr-2" /> Latihan Soal
              </Badge>
          </div>
@@ -404,7 +404,7 @@ export default function CourseOverviewPage() {
         <div className="space-y-6 hidden lg:block">
            <Card className="rounded-3xl border-2 border-slate-100 shadow-none p-6 bg-white sticky top-24">
               <div className="flex items-center gap-3 mb-6">
-                 <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+                 <div className="w-10 h-10 rounded-3xl bg-orange-100 flex items-center justify-center text-orange-600">
                     <TrendingUp className="w-5 h-5" />
                  </div>
                  <div>
@@ -438,7 +438,7 @@ export default function CourseOverviewPage() {
 
                  {/* Score Average Badge (New) */}
                  {scoreData.length > 0 && (
-                     <div className="bg-slate-50 p-4 rounded-xl flex items-center justify-between">
+                     <div className="bg-slate-50 p-4 rounded-3xl flex items-center justify-between">
                          <div>
                              <div className="text-xs font-bold text-slate-500">Rata-rata Nilai</div>
                              <div className="text-xl font-black text-slate-800">

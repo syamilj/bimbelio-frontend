@@ -224,7 +224,7 @@ export default function CreateVoucher() {
                         );
 
                         return (
-                          <div className="relative rounded-xl overflow-hidden">
+                          <div className="relative rounded-3xl overflow-hidden">
                             <div className="absolute top-0 left-0 h-full flex justify-center items-center bg-main w-10 text-white">
                               {type === 'Fixed_Amount' ? (
                                 <p>Rp</p>

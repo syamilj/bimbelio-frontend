@@ -302,13 +302,13 @@ export function RankingTable() {
               />
             </div>
           ) : (
-            <Skeleton className="w-full h-10 md:h-11 rounded-xl" />
+            <Skeleton className="w-full h-10 md:h-11 rounded-3xl" />
           )}
         </div>
 
         {/* Table Section - Mobile Responsive with Scrollable Locked Columns */}
         {!RankingTryoutIsLoading ? (
-          <div className="rounded-xl border-2 border-gray-100 overflow-hidden">
+          <div className="rounded-3xl border-2 border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
               <Table className="min-w-full">
                 <TableHeader>
@@ -538,7 +538,7 @@ export function RankingTable() {
             </div>
           </div>
         ) : (
-          <Skeleton className="h-96 w-full rounded-xl" />
+          <Skeleton className="h-96 w-full rounded-3xl" />
         )}
 
         {/* Enhanced Pagination */}

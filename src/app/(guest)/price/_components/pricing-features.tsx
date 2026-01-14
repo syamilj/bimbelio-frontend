@@ -225,7 +225,7 @@ export default function PricingFeatures() {
                 {/* Usage info with enhanced styling */}
                 <div className="mt-auto">
                   <div
-                    className="flex items-center justify-between p-4 rounded-xl border-2 shadow-sm"
+                    className="flex items-center justify-between p-4 rounded-3xl border-2 shadow-sm"
                     style={{
                       backgroundColor: `${mainColor}08`,
                       borderColor: `${mainColor}20`,
@@ -235,7 +235,7 @@ export default function PricingFeatures() {
                       Biaya penggunaan
                     </span>
                     <span
-                      className="text-sm font-black px-4 py-2 rounded-xl bg-white shadow-sm"
+                      className="text-sm font-black px-4 py-2 rounded-3xl bg-white shadow-sm"
                       style={{ color: mainColor }}
                     >
                       {feature.usage}
@@ -289,7 +289,7 @@ export default function PricingFeatures() {
                 {/* Usage info with enhanced styling */}
                 <div className="mt-auto">
                   <div
-                    className="flex items-center justify-between p-4 rounded-xl border-2 shadow-sm"
+                    className="flex items-center justify-between p-4 rounded-3xl border-2 shadow-sm"
                     style={{
                       backgroundColor: `${secondaryColor}08`,
                       borderColor: `${secondaryColor}20`,
@@ -299,7 +299,7 @@ export default function PricingFeatures() {
                       Biaya penggunaan
                     </span>
                     <span
-                      className="text-sm font-black px-4 py-2 rounded-xl bg-white shadow-sm"
+                      className="text-sm font-black px-4 py-2 rounded-3xl bg-white shadow-sm"
                       style={{ color: secondaryColor }}
                     >
                       {feature.usage}
@@ -545,7 +545,7 @@ export default function PricingFeatures() {
                 >
                   <div className="flex items-center">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300"
                       style={{
                         color: mainColor,
                         backgroundColor: `${mainColor}15`,

@@ -116,10 +116,10 @@ const HeroSection: React.FC = () => {
                   Satu Akun Untuk SNBT, Mandiri PTN & Kedinasan
                 </p>
 
-                <div className="bg-yellow-400 text-slate-900 rounded-xl px-6 py-4 font-bold text-center">
+                <div className="bg-yellow-400 text-slate-900 rounded-3xl px-6 py-4 font-bold text-center">
                   Pengajar 100% UI, UGM, ITB, & Juara OSN
                 </div>
-                <div className="bg-slate-700/50 border-2 border-yellow-400/30 rounded-xl p-6 space-y-3">
+                <div className="bg-slate-700/50 border-2 border-yellow-400/30 rounded-3xl p-6 space-y-3">
                   <div className="text-white">
                     <p className="text-sm font-semibold mb-2">Full timeline:</p>
                     <p className="text-base md:text-lg font-bold">
@@ -191,7 +191,7 @@ const HeroSection: React.FC = () => {
                 href="https://www.bimbelio.com/link/komunitas"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-fit"
+                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-3xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-fit"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
                   border: `2px solid ${mainColor}30`,
@@ -214,7 +214,7 @@ const HeroSection: React.FC = () => {
                       window.scrollTo({ top, behavior: 'smooth' });
                     }
                   }}
-                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-3xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
                     border: `2px solid ${mainColor}30`,
@@ -236,7 +236,7 @@ const HeroSection: React.FC = () => {
                       window.scrollTo({ top, behavior: 'smooth' });
                     }
                   }}
-                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-3xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
                     border: `2px solid ${mainColor}30`,
@@ -249,7 +249,7 @@ const HeroSection: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsConsultationOpen(true)}
-                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold shadow-lg hover:shadow-2xl transition-all duration-300 bg-white overflow-hidden h-fit"
+                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-3xl text-xs md:text-sm font-bold shadow-lg hover:shadow-2xl transition-all duration-300 bg-white overflow-hidden h-fit"
                 style={{
                   borderWidth: '2px',
                   borderStyle: 'solid',

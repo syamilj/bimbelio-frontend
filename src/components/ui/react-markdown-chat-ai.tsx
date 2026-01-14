@@ -305,7 +305,7 @@ export default function ReactMarkdownChatAI({
 
       {/* Blok Saran Pertanyaan */}
       {saran && (
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-3xl">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
               <Lightbulb className="text-white w-4 h-4" />
@@ -319,7 +319,7 @@ export default function ReactMarkdownChatAI({
               <button
                 key={i}
                 type="button"
-                className="w-full text-left p-3 bg-white border border-blue-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-sm leading-relaxed shadow-sm hover:shadow-md"
+                className="w-full text-left p-3 bg-white border border-blue-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 text-gray-700 text-sm leading-relaxed shadow-sm hover:shadow-md"
                 onClick={() => handleSaranClick(q)}
               >
                 <span className="font-medium text-blue-600 mr-2">

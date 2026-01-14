@@ -72,7 +72,7 @@ export default function Start({ isLoading, onClick }: Props) {
               </>
             ) : (
               <>
-                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                <div className="w-10 h-10 rounded-3xl bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
                   <Play className="w-5 h-5" />
                 </div>
                 <div className="text-left">
@@ -93,7 +93,7 @@ export default function Start({ isLoading, onClick }: Props) {
 
         {/* Features */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">
-          <div className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-white shadow-sm border border-gray-200">
             <div
               className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
@@ -107,7 +107,7 @@ export default function Start({ isLoading, onClick }: Props) {
             <p className="text-xs text-gray-500">Bantuan pembelajaran cerdas</p>
           </div>
 
-          <div className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-white shadow-sm border border-gray-200">
             <div
               className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
@@ -121,7 +121,7 @@ export default function Start({ isLoading, onClick }: Props) {
             <p className="text-xs text-gray-500">Bank soal terlengkap</p>
           </div>
 
-          <div className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-white shadow-sm border border-gray-200">
             <div
               className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}

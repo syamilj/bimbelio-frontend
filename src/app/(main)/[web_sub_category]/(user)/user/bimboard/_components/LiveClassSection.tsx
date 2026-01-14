@@ -85,7 +85,7 @@ export default function LiveClassSection({ liveClasses }: LiveClassSectionProps)
               href={`/${webSubId}/user/bimlive`}
               className="flex-shrink-0 group first:ml-0"
             >
-              <div className="w-64 md:w-72 bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all">
+              <div className="w-64 md:w-72 bg-white border border-gray-200 rounded-3xl overflow-hidden hover:shadow-md transition-all">
                 {/* Thumbnail */}
                 <div className="relative h-36 md:h-40 bg-gray-100">
                   {isValidImageUrl(lc.thumbnail) ? (

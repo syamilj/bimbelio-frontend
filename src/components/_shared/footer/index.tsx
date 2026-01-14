@@ -81,7 +81,7 @@ export default function Footer() {
                         href="https://instagram.com/bimbelio.official"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
                         style={{
                           backgroundColor: `${mainColor}10`,
                           borderColor: `${mainColor}30`,
@@ -100,7 +100,7 @@ export default function Footer() {
                         href="https://tiktok.com/@bimbelio.official"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
                         style={{
                           backgroundColor: `${mainColor}10`,
                           borderColor: `${mainColor}30`,
@@ -119,7 +119,7 @@ export default function Footer() {
                         href="https://youtube.com/@bimbelio"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
                         style={{
                           backgroundColor: `${mainColor}10`,
                           borderColor: `${mainColor}30`,
@@ -156,7 +156,7 @@ export default function Footer() {
                   </div>
 
                   <div
-                    className="p-4 rounded-xl border-2"
+                    className="p-4 rounded-3xl border-2"
                     style={{
                       backgroundColor: `${mainColor}08`,
                       borderColor: `${mainColor}20`,

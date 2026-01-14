@@ -163,7 +163,7 @@ export default function SidebarChat() {
                 placeholder="Tulis topik chat..."
                 value={newChatInput}
                 onChange={(e) => setNewChatInput(e.target.value)}
-                className="h-11 rounded-xl pl-4 pr-3 border-2 border-gray-200 focus:border-transparent transition-all duration-300"
+                className="h-11 rounded-3xl pl-4 pr-3 border-2 border-gray-200 focus:border-transparent transition-all duration-300"
                 style={
                   {
                     '--tw-ring-color': mainColor,
@@ -175,7 +175,7 @@ export default function SidebarChat() {
             <Button
               type="submit"
               disabled={!newChatInput.trim() || loading}
-              className="w-full h-11 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-bold"
+              className="w-full h-11 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-bold"
               style={{
                 backgroundColor: newChatInput.trim() ? mainColor : '#ccc',
               }}
@@ -228,7 +228,7 @@ export default function SidebarChat() {
                       >
                         <div
                           className={cn(
-                            'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300',
+                            'w-8 h-8 rounded-3xl flex items-center justify-center shrink-0 transition-all duration-300',
                           )}
                           style={{
                             backgroundColor: isActive
@@ -293,7 +293,7 @@ export default function SidebarChat() {
                       variant="ghost"
                       size="sm"
                       className={cn(
-                        'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-300 p-1 h-7 w-7 rounded-xl',
+                        'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-300 p-1 h-7 w-7 rounded-3xl',
                         isActive
                           ? 'text-white hover:bg-white/20'
                           : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600',
@@ -352,7 +352,7 @@ export default function SidebarChat() {
                     variant="ghost"
                     size="sm"
                     onClick={handleCloseSidebar}
-                    className="shrink-0 rounded-xl p-2 hover:bg-gray-100"
+                    className="shrink-0 rounded-3xl p-2 hover:bg-gray-100"
                   >
                     <X className="w-5 h-5" />
                   </Button>
@@ -379,7 +379,7 @@ export default function SidebarChat() {
                     placeholder="Tulis topik chat..."
                     value={newChatInput}
                     onChange={(e) => setNewChatInput(e.target.value)}
-                    className="h-11 rounded-xl pl-4 pr-3 border-2 border-gray-200 focus:border-transparent transition-all duration-300"
+                    className="h-11 rounded-3xl pl-4 pr-3 border-2 border-gray-200 focus:border-transparent transition-all duration-300"
                     style={
                       {
                         '--tw-ring-color': mainColor,
@@ -391,7 +391,7 @@ export default function SidebarChat() {
                 <Button
                   type="submit"
                   disabled={!newChatInput.trim() || loading}
-                  className="w-full h-11 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-bold"
+                  className="w-full h-11 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 text-white font-bold"
                   style={{
                     backgroundColor: newChatInput.trim() ? mainColor : '#ccc',
                   }}
@@ -447,7 +447,7 @@ export default function SidebarChat() {
                           >
                             <div
                               className={cn(
-                                'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300',
+                                'w-8 h-8 rounded-3xl flex items-center justify-center shrink-0 transition-all duration-300',
                               )}
                               style={{
                                 backgroundColor: isActive
@@ -514,7 +514,7 @@ export default function SidebarChat() {
                           variant="ghost"
                           size="sm"
                           className={cn(
-                            'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-300 p-1 h-7 w-7 rounded-xl',
+                            'absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all duration-300 p-1 h-7 w-7 rounded-3xl',
                             isActive
                               ? 'text-white hover:bg-white/20'
                               : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600',

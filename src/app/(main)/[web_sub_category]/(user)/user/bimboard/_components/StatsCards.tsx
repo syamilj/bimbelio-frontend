@@ -30,7 +30,7 @@ export default function StatsCards({
         {/* Jam Belajar */}
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-3 md:p-4 border border-blue-100">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-500 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-3xl bg-blue-500 flex items-center justify-center">
               <Clock className="w-4 h-4 text-white" />
             </div>
             <span className="text-xs text-blue-600 font-medium">Jam Belajar</span>
@@ -46,7 +46,7 @@ export default function StatsCards({
         {/* Nilai Total */}
         <div className="bg-gradient-to-br from-amber-50 to-orange-100 rounded-3xl p-3 md:p-4 border border-amber-100">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-3xl bg-amber-500 flex items-center justify-center">
               <TrendingUp className="w-4 h-4 text-white" />
             </div>
             <span className="text-xs text-amber-600 font-medium">Nilai Total</span>
@@ -68,7 +68,7 @@ export default function StatsCards({
         >
           <div className="flex items-center gap-2 mb-2">
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center"
+              className="w-8 h-8 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: mainColor }}
             >
               <Trophy className="w-4 h-4 text-white" />
@@ -93,7 +93,7 @@ export default function StatsCards({
         {/* TO Selesai */}
         <div className="bg-gradient-to-br from-emerald-50 to-green-100 rounded-3xl p-3 md:p-4 border border-emerald-100">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-3xl bg-emerald-500 flex items-center justify-center">
               <Target className="w-4 h-4 text-white" />
             </div>
             <span className="text-xs text-emerald-600 font-medium">TO Selesai</span>

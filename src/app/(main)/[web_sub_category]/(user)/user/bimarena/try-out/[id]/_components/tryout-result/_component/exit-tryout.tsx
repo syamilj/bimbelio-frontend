@@ -121,7 +121,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
 
                 {/* Progress Stats */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-3 bg-white rounded-xl shadow-sm">
+                  <div className="text-center p-3 bg-white rounded-3xl shadow-sm">
                     <div
                       className="text-2xl font-bold mb-1"
                       style={{ color: mainColor }}
@@ -130,7 +130,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
                     </div>
                     <div className="text-sm text-gray-600">Terjawab</div>
                   </div>
-                  <div className="text-center p-3 bg-white rounded-xl shadow-sm">
+                  <div className="text-center p-3 bg-white rounded-3xl shadow-sm">
                     <div className="text-2xl font-bold mb-1 text-orange-600">
                       {totalQuestions - answeredQuestions}
                     </div>
@@ -160,7 +160,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
                 </div>
 
                 {/* Time Remaining */}
-                <div className="flex items-center justify-center gap-2 p-3 bg-white rounded-xl shadow-sm">
+                <div className="flex items-center justify-center gap-2 p-3 bg-white rounded-3xl shadow-sm">
                   <Clock className="w-4 h-4 text-gray-500" />
                   <span className="text-sm text-gray-600">Sisa waktu:</span>
                   <span className="font-mono font-bold text-orange-600">
@@ -205,7 +205,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
             <Button
               variant="outline"
               onClick={handleCancel}
-              className="h-12 rounded-xl border-2 font-bold text-gray-700 hover:bg-gray-50 transition-all duration-300"
+              className="h-12 rounded-3xl border-2 font-bold text-gray-700 hover:bg-gray-50 transition-all duration-300"
               style={{ borderColor: `${mainColor}30` }}
             >
               <X className="w-4 h-4 mr-2" />
@@ -214,7 +214,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
 
             <Button
               onClick={handleExit}
-              className="h-12 rounded-xl font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              className="h-12 rounded-3xl font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300"
               style={{
                 background: done
                   ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`

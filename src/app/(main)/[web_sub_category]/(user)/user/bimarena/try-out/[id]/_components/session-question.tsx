@@ -103,7 +103,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-sm"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center text-white font-bold text-lg shadow-sm"
                 style={{ backgroundColor: mainColor }}
               >
                 {safeCurrentQuestionIndex + 1}
@@ -164,7 +164,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex items-center space-x-3 p-4 bg-yellow-50 rounded-xl border border-yellow-200"
+              className="flex items-center space-x-3 p-4 bg-yellow-50 rounded-3xl border border-yellow-200"
             >
               <Checkbox
                 id="notSure"
@@ -199,7 +199,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
           <Button
             variant="outline"
             className={cn(
-              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-xl border-2',
+              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-3xl border-2',
               safeCurrentQuestionIndex === 0 && 'opacity-50 cursor-not-allowed',
             )}
             onClick={() => {
@@ -222,7 +222,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
 
           <Button
             className={cn(
-              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-xl',
+              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-3xl',
               safeCurrentQuestionIndex + 1 === questions.length &&
                 'opacity-50 cursor-not-allowed',
             )}

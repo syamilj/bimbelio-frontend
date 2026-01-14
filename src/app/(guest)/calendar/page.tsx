@@ -195,7 +195,7 @@ export default function CalendarPage() {
                       <CardContent className="pt-4 sm:pt-6">
                         <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
                           <div
-                            className="p-2 sm:p-3 rounded-xl"
+                            className="p-2 sm:p-3 rounded-3xl"
                             style={{
                               backgroundColor: event.bgColor.includes('blue')
                                 ? '#dbeafe'
@@ -261,7 +261,7 @@ export default function CalendarPage() {
                         <CardContent className="pt-4 sm:pt-6">
                           <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
                             <div
-                              className="p-2 sm:p-3 rounded-xl"
+                              className="p-2 sm:p-3 rounded-3xl"
                               style={{
                                 backgroundColor: mainColor + '15',
                               }}
@@ -316,7 +316,7 @@ export default function CalendarPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button
-                    className="text-white font-semibold rounded-xl px-8 h-12 gap-2 w-full sm:w-auto"
+                    className="text-white font-semibold rounded-3xl px-8 h-12 gap-2 w-full sm:w-auto"
                     style={{ backgroundColor: mainColor }}
                     onClick={() => setIsConsultationOpen(true)}
                   >
@@ -330,7 +330,7 @@ export default function CalendarPage() {
                   >
                     <Button
                       variant="outline"
-                      className="font-semibold rounded-xl px-8 h-12 gap-2 w-full sm:w-auto border-2"
+                      className="font-semibold rounded-3xl px-8 h-12 gap-2 w-full sm:w-auto border-2"
                       style={{ color: mainColor, borderColor: mainColor }}
                     >
                       <Calendar className="w-4 h-4" />

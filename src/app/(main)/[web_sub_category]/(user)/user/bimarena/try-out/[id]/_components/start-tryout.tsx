@@ -125,7 +125,7 @@ const StartTryout = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center"
                 style={{ backgroundColor: mainColor }}
               >
                 <Trophy className="w-5 h-5 text-white" />
@@ -191,7 +191,7 @@ const StartTryout = ({
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                     <div className="text-center">
                       <div
-                        className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center"
+                        className="w-12 h-12 mx-auto mb-3 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <BookOpen
@@ -210,7 +210,7 @@ const StartTryout = ({
 
                     <div className="text-center">
                       <div
-                        className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center"
+                        className="w-12 h-12 mx-auto mb-3 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <Timer
@@ -229,7 +229,7 @@ const StartTryout = ({
 
                     <div className="text-center">
                       <div
-                        className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center"
+                        className="w-12 h-12 mx-auto mb-3 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <Users
@@ -248,7 +248,7 @@ const StartTryout = ({
 
                     <div className="text-center">
                       <div
-                        className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center"
+                        className="w-12 h-12 mx-auto mb-3 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <Calendar
@@ -305,7 +305,7 @@ const StartTryout = ({
                           className="flex gap-4 p-4 rounded-3xl bg-gray-50 hover:bg-gray-100 transition-colors"
                         >
                           <div
-                            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                            className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                             style={{ backgroundColor: `${mainColor}15` }}
                           >
                             <div style={{ color: mainColor }}>{rule.icon}</div>
@@ -473,7 +473,7 @@ const StartTryout = ({
                         onClick={handleStart}
                         disabled={!agreedToRules || loading}
                         className={cn(
-                          'w-full h-12 rounded-xl font-bold text-white shadow-lg transition-all duration-300',
+                          'w-full h-12 rounded-3xl font-bold text-white shadow-lg transition-all duration-300',
                           agreedToRules
                             ? 'hover:shadow-xl'
                             : 'cursor-not-allowed opacity-50',

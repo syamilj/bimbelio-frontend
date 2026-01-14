@@ -29,7 +29,7 @@ const HighlightPopup = ({
   ];
 
   return (
-    <div className="relative rounded-xl bg-black">
+    <div className="relative rounded-3xl bg-black">
       <div className="absolute -bottom-[10px] left-[50%] h-0 w-0 -translate-x-[50%] border-l-10 border-r-10 border-t-10 border-solid border-black border-l-transparent border-r-transparent" />
 
       <div className="flex divide-x divide-gray-800">

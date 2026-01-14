@@ -229,7 +229,7 @@ export function CalendarView({
                       </h4>
                       <div className="flex flex-col items-end gap-1">
                         <Badge
-                          className={`${getStatusColor(liveClass.status)} text-xs shrink-0 font-bold rounded-xl border-2`}
+                          className={`${getStatusColor(liveClass.status)} text-xs shrink-0 font-bold rounded-3xl border-2`}
                         >
                           {liveClass.status}
                         </Badge>

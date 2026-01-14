@@ -212,7 +212,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               >
                 <Button
                   variant="ghost"
-                  className="flex w-full items-center space-x-2 hover:shadow-md rounded-xl transition-all duration-300 border-2 border-gray-100 hover:border-opacity-50"
+                  className="flex w-full items-center space-x-2 hover:shadow-md rounded-3xl transition-all duration-300 border-2 border-gray-100 hover:border-opacity-50"
                   onClick={() => router.push('/blog')}
                   style={
                     {
@@ -400,7 +400,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     >
                       <Button
                         size="sm"
-                        className="rounded-xl border-0 shadow-md font-bold hover:shadow-lg transition-all duration-300 text-white px-4 py-2"
+                        className="rounded-3xl border-0 shadow-md font-bold hover:shadow-lg transition-all duration-300 text-white px-4 py-2"
                         onClick={handleShare}
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -508,7 +508,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               className="flex items-center gap-3 px-4"
             >
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center"
                 style={{ backgroundColor: mainColor }}
               >
                 <BookOpen className="w-5 h-5 text-white" />

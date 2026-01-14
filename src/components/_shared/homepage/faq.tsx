@@ -166,7 +166,7 @@ const FAQ = () => {
                 className="text-center"
               >
                 <div
-                  className="w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 mx-auto mb-2 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${stat.color}15` }}
                 >
                   <div style={{ color: stat.color }}>{stat.icon}</div>
@@ -260,7 +260,7 @@ const FAQ = () => {
                           className="shrink-0"
                         >
                           <div
-                            className="w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-300"
+                            className="w-8 h-8 rounded-3xl flex items-center justify-center transition-all duration-300"
                             style={{
                               backgroundColor:
                                 openIndex === index
@@ -290,7 +290,7 @@ const FAQ = () => {
                           className="overflow-hidden"
                         >
                           <div
-                            className="p-4 rounded-xl relative"
+                            className="p-4 rounded-3xl relative"
                             style={{
                               backgroundColor: `${faq.color}08`,
                               borderLeft: `4px solid ${faq.color}`,

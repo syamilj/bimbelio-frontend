@@ -466,7 +466,7 @@ export default function RegistrationProofModal({
 
         {/* Action Button */}
         <Button
-          className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+          className="w-full h-12 text-white font-semibold rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
@@ -543,7 +543,7 @@ export default function RegistrationProofModal({
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-3xl bg-blue-500 flex items-center justify-center">
                   <Zap className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -611,7 +611,7 @@ export default function RegistrationProofModal({
 
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-3xl bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -684,7 +684,7 @@ export default function RegistrationProofModal({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Star
@@ -751,7 +751,7 @@ export default function RegistrationProofModal({
             </div>
             <CardHeader className="pb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-green-400 to-blue-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-3xl bg-linear-to-br from-green-400 to-blue-500 flex items-center justify-center">
                   <Gift className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -792,7 +792,7 @@ export default function RegistrationProofModal({
 
         {/* Continue Button */}
         <Button
-          className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+          className="w-full h-12 text-white font-semibold rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
@@ -888,7 +888,7 @@ export default function RegistrationProofModal({
                   <div className="flex items-center justify-between">
                     <div
                       className={cn(
-                        'w-10 h-10 rounded-xl flex items-center justify-center',
+                        'w-10 h-10 rounded-3xl flex items-center justify-center',
                         item.uploaded
                           ? 'bg-green-100'
                           : item.completed
@@ -963,7 +963,7 @@ export default function RegistrationProofModal({
         <Card className="border-2 border-gray-100">
           <CardContent className="p-4">
             <Button
-              className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+              className="w-full h-12 text-white font-semibold rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -1037,7 +1037,7 @@ export default function RegistrationProofModal({
         <Card className="border-2 border-gray-100">
           <CardContent className="p-4">
             <Button
-              className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+              className="w-full h-12 text-white font-semibold rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}

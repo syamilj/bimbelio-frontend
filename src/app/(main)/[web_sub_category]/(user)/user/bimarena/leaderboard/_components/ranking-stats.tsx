@@ -90,7 +90,7 @@ export function RankingStats() {
           className="w-full"
         >
           {/* Clean Simple Tabs */}
-          <TabsList className="grid w-full grid-cols-3 mb-6 md:mb-8 bg-gray-50 rounded-xl p-1 h-11 md:h-12 border-0">
+          <TabsList className="grid w-full grid-cols-3 mb-6 md:mb-8 bg-gray-50 rounded-3xl p-1 h-11 md:h-12 border-0">
             {TabsItem.map((tab, index) => (
               <React.Fragment key={index}>
                 {!RankingTryoutIsLoading ? (
@@ -199,7 +199,7 @@ const Summary = () => {
             <Card
               key={index}
               className={cn(
-                'border-2 transition-all duration-300 hover:shadow-lg hover:scale-105 rounded-xl overflow-hidden',
+                'border-2 transition-all duration-300 hover:shadow-lg hover:scale-105 rounded-3xl overflow-hidden',
                 card.bgColor,
                 card.borderColor,
               )}
@@ -243,7 +243,7 @@ const Summary = () => {
           {Array.from({ length: 4 }).map((_, index) => (
             <Skeleton
               key={index}
-              className="h-28 md:h-36 w-full rounded-xl"
+              className="h-28 md:h-36 w-full rounded-3xl"
             />
           ))}
         </div>

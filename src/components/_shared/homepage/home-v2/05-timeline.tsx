@@ -171,7 +171,7 @@ const TimelineSection: React.FC = () => {
                             {program.logos.map((logo, idx) => (
                               <div
                                 key={idx}
-                                className="absolute w-12 h-12 rounded-xl overflow-hidden bg-white border-2"
+                                className="absolute w-12 h-12 rounded-3xl overflow-hidden bg-white border-2"
                                 style={{
                                   left: `${idx * 18}px`,
                                   top: `${idx * 2}px`,
@@ -238,7 +238,7 @@ const TimelineSection: React.FC = () => {
                           {program.features.map((feature, idx) => (
                             <div
                               key={idx}
-                              className="flex items-start gap-2.5 p-2.5 rounded-xl bg-gray-50"
+                              className="flex items-start gap-2.5 p-2.5 rounded-3xl bg-gray-50"
                             >
                               <CheckCircle2
                                 className="w-5 h-5 flex-shrink-0"

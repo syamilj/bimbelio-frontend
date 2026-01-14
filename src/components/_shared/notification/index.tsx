@@ -273,7 +273,7 @@ export const Notification = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="relative w-9 h-9 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 shrink-0"
+          className="relative w-9 h-9 rounded-3xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 shrink-0"
         >
           <Bell className="w-5 h-5 text-gray-600" />
 
@@ -288,7 +288,7 @@ export const Notification = () => {
 
       <DropdownMenuContent
         align="end"
-        className="w-[100vw] max-w-[450px] max-h-[90vh] p-0 rounded-xl shadow-xl border border-gray-200 flex flex-col"
+        className="w-[100vw] max-w-[450px] max-h-[90vh] p-0 rounded-3xl shadow-xl border border-gray-200 flex flex-col"
       >
         {/* Header - Fixed */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 rounded-t-xl z-10">

@@ -125,7 +125,7 @@ const TryoutSection: React.FC = () => {
                       />
                     ))}
                   </div>
-                  <div className="h-12 bg-gray-100 rounded-xl" />
+                  <div className="h-12 bg-gray-100 rounded-3xl" />
                 </div>
               </div>
             ))

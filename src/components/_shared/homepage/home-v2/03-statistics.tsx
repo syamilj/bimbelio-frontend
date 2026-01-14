@@ -77,7 +77,7 @@ const StatisticsSection: React.FC = () => {
               key={item.name}
               className="bg-gray-50 rounded-3xl p-4 border border-gray-200 text-center"
             >
-              <div className="w-12 h-12 mx-auto mb-3 rounded-xl overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-3xl overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
                 <Image
                   src={item.image}
                   alt={item.name}

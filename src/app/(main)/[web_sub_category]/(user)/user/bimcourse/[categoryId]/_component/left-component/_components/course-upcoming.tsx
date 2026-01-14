@@ -128,7 +128,7 @@ export default function CourseUpcoming({
           ].map((feature, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+              className="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
             >
               <feature.icon
                 className="w-6 h-6 mx-auto mb-2"
@@ -178,7 +178,7 @@ export default function CourseUpcoming({
           </div>
 
           {/* Progress Info */}
-          <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
+          <div className="bg-white rounded-3xl p-4 border border-gray-100 shadow-sm">
             <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
               <div
                 className="w-2 h-2 rounded-full animate-pulse"

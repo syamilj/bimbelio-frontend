@@ -78,7 +78,7 @@ export default function ProviderMaintenance({
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-3 mb-6">
               <div className="relative">
-                <div className="w-12 h-12 bg-linear-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-blue-600 to-blue-700 rounded-3xl flex items-center justify-center shadow-lg">
                   <span className="text-white text-xl font-bold">B</span>
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-ping"></div>
@@ -246,9 +246,9 @@ export default function ProviderMaintenance({
                   <a
                     href="https://www.bimbelio.com/link/komunitas"
                     target="_blank"
-                    className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
+                    className="group flex items-center gap-4 p-4 bg-white rounded-3xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
                   >
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <div className="w-12 h-12 bg-blue-100 rounded-3xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                       <MessageCircle className="w-6 h-6 text-blue-600" />
                     </div>
                     <div className="flex-1">
@@ -261,9 +261,9 @@ export default function ProviderMaintenance({
                   <a
                     href="https://www.instagram.com/bimbelio.official?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                     target="_blank"
-                    className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-pink-300 hover:shadow-lg transition-all duration-300"
+                    className="group flex items-center gap-4 p-4 bg-white rounded-3xl border border-gray-200 hover:border-pink-300 hover:shadow-lg transition-all duration-300"
                   >
-                    <div className="w-12 h-12 bg-linear-to-br from-pink-100 to-purple-100 rounded-xl flex items-center justify-center group-hover:from-pink-200 group-hover:to-purple-200 transition-all">
+                    <div className="w-12 h-12 bg-linear-to-br from-pink-100 to-purple-100 rounded-3xl flex items-center justify-center group-hover:from-pink-200 group-hover:to-purple-200 transition-all">
                       <div className="w-6 h-6 bg-linear-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
                         <span className="text-white text-xs font-bold">IG</span>
                       </div>

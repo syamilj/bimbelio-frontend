@@ -147,7 +147,7 @@ export default function HeaderCourse({
                           href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}/study?sub=${sChapter.id}`}
                           key={sIndex}
                           className={cn(
-                            'flex cursor-pointer items-center gap-2 rounded-xl px-4 py-2 duration-300 md:hover:bg-surface-primary-light relative w-full',
+                            'flex cursor-pointer items-center gap-2 rounded-3xl px-4 py-2 duration-300 md:hover:bg-surface-primary-light relative w-full',
                             sChapter.id === sub && 'bg-main/10 text-main',
                             // isHide(sChapter.premium) &&
                             //   'pointer-events-none select-none md:hover:bg-transparent',
@@ -368,7 +368,7 @@ export default function HeaderCourse({
               <p className="font-regular hidden md:block">Upgrade</p>
             </ButtonPayment>
           ) : (
-            <div className="flex items-center rounded-xl p-2 bg-main-yellow text-white">
+            <div className="flex items-center rounded-3xl p-2 bg-main-yellow text-white">
               <IconCrown className="text-white" />
               {/* <p>Admin</p> */}
             </div>
@@ -456,7 +456,7 @@ export default function HeaderCourse({
 
           <motion.div
             className={cn(
-              'absolute left-0 top-[calc(100%)] z-102 w-[400px] h-[700px] border border-main-gray-input bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-xl mt-2',
+              'absolute left-0 top-[calc(100%)] z-102 w-[400px] h-[700px] border border-main-gray-input bg-white p-2 shadow-xl duration-100 overflow-y-auto overflow-x-hidden rounded-3xl mt-2',
               !showList && 'w-0 h-0 p-0',
             )}
           >
@@ -559,7 +559,7 @@ export default function HeaderCourse({
 
           <motion.div
             className={cn(
-              'absolute left-4 top-[calc(100%)] mt-2 z-102 w-[300px] h-[500px] border border-main-gray-input bg-white p-2 shadow-sm duration-100 overflow-y-auto overflow-x-hidden rounded-xl',
+              'absolute left-4 top-[calc(100%)] mt-2 z-102 w-[300px] h-[500px] border border-main-gray-input bg-white p-2 shadow-sm duration-100 overflow-y-auto overflow-x-hidden rounded-3xl',
               !showList && 'w-0 h-0 p-0',
             )}
           >
@@ -902,7 +902,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //           >
 //             <button
 //               onClick={() => setSidebarMobile(true)}
-//               className="p-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+//               className="p-2.5 rounded-3xl bg-gray-50 hover:bg-gray-100 transition-colors"
 //             >
 //               <IconHamburger
 //                 w={18}
@@ -942,7 +942,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //             {/* List Toggle */}
 //             <motion.button
 //               onClick={() => setShowList(!showList)}
-//               className="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 transition-colors"
+//               className="p-2.5 rounded-3xl bg-blue-50 hover:bg-blue-100 transition-colors"
 //               whileTap={{ scale: 0.95 }}
 //             >
 //               <List
@@ -964,7 +964,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //             {/* Left: List Toggle */}
 //             <motion.button
 //               onClick={() => setShowList(!showList)}
-//               className="p-2 rounded-xl bg-blue-50 hover:bg-blue-100 transition-all duration-200 group relative"
+//               className="p-2 rounded-3xl bg-blue-50 hover:bg-blue-100 transition-all duration-200 group relative"
 //               whileHover={{ scale: 1.05 }}
 //               whileTap={{ scale: 0.95 }}
 //             >
@@ -1025,7 +1025,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                   doc.scrollTo({ top: 0, behavior: 'smooth' });
 //                 });
 //               }}
-//               className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all duration-200 group"
+//               className="p-2 rounded-3xl bg-gray-50 hover:bg-gray-100 transition-all duration-200 group"
 //               whileHover={{ scale: 1.05 }}
 //               whileTap={{ scale: 0.95 }}
 //             >

@@ -251,7 +251,7 @@ export default function EcosystemSection() {
                 >
                   {/* Icon */}
                   <div
-                    className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-md"
+                    className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-3xl text-white shadow-md"
                     style={{ backgroundColor: item.color }}
                   >
                     <item.icon

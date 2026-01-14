@@ -275,7 +275,7 @@ export function RatingModal({
                 }
               />
               <div className="absolute bottom-3 right-3">
-                <span className="text-xs text-gray-500 bg-white/80 px-2 py-1 rounded-xl font-bold">
+                <span className="text-xs text-gray-500 bg-white/80 px-2 py-1 rounded-3xl font-bold">
                   {review.length}/500
                 </span>
               </div>

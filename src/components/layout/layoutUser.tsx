@@ -648,7 +648,7 @@ const HeaderUser = () => {
                     <div
                       key={index}
                       className={cn(
-                        'p-2.5 rounded-xl border-2 transition-all duration-200',
+                        'p-2.5 rounded-3xl border-2 transition-all duration-200',
                         isEmpty
                           ? 'bg-red-50 border-red-200'
                           : isLow
@@ -746,7 +746,7 @@ const HeaderUser = () => {
                       setSearchQuery('');
                       setIsSearchOpen(false);
                     }}
-                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-xl hover:bg-gray-100 z-10"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-3xl hover:bg-gray-100 z-10"
                   >
                     <X className="w-4 h-4" />
                   </Button>
@@ -787,7 +787,7 @@ const HeaderUser = () => {
                           <div
                             key={result.id}
                             onClick={() => handleResultClick(result)}
-                            className={`p-3 rounded-xl transition-all mb-1 group cursor-pointer ${
+                            className={`p-3 rounded-3xl transition-all mb-1 group cursor-pointer ${
                               index === selectedIndex
                                 ? 'ring-2 ring-offset-1'
                                 : 'hover:bg-gray-50'
@@ -852,7 +852,7 @@ const HeaderUser = () => {
                 >
                   <div className="flex items-center gap-2">
                     <div
-                      className="w-8 h-8 rounded-xl flex items-center justify-center"
+                      className="w-8 h-8 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Coins className="w-4 h-4" style={{ color: mainColor }} />
@@ -1126,7 +1126,7 @@ const HeaderUser = () => {
                     setSearchQuery('');
                     setIsSearchOpen(false);
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-xl hover:bg-gray-100 z-10"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-3xl hover:bg-gray-100 z-10"
                 >
                   <X className="w-5 h-5" />
                 </Button>
@@ -1166,7 +1166,7 @@ const HeaderUser = () => {
                             handleResultClick(result);
                             setShowMobileSearch(false);
                           }}
-                          className={`p-3 rounded-xl transition-all mb-1.5 group cursor-pointer ${
+                          className={`p-3 rounded-3xl transition-all mb-1.5 group cursor-pointer ${
                             index === selectedIndex
                               ? 'ring-2 ring-offset-1'
                               : 'active:bg-gray-100'

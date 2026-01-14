@@ -433,7 +433,7 @@ export default function TutorsSection() {
                   <div className="flex items-start gap-4 mb-5">
                     {/* Icon Container */}
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-md flex-shrink-0 group-hover:shadow-lg transition-shadow"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center text-white shadow-md flex-shrink-0 group-hover:shadow-lg transition-shadow"
                       style={{ backgroundColor: feature.color }}
                     >
                       {feature.icon}
@@ -710,7 +710,7 @@ export default function TutorsSection() {
                 >
                   {/* Icon Container */}
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md"
+                    className="w-12 h-12 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-md"
                     style={{ backgroundColor: feature.color + '15' }}
                   >
                     <div style={{ color: feature.color }}>{feature.icon}</div>
@@ -754,7 +754,7 @@ export default function TutorsSection() {
             <div className="relative z-10">
               <div className="mb-6 flex items-center justify-center gap-3">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-xl shadow-md"
+                  className="flex h-12 w-12 items-center justify-center rounded-3xl shadow-md"
                   style={{ backgroundColor: mainColor }}
                 >
                   <CheckCircle2 className="h-6 w-6 text-white" />

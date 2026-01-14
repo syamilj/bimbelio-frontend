@@ -320,7 +320,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                               top: `${panelPosition.top}px`,
                               left: `${panelPosition.left}px`,
                             }}
-                            className="fixed w-72 max-h-[80vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-slate-200 z-[9999] animate-in fade-in slide-in-from-left-2 duration-200"
+                            className="fixed w-72 max-h-[80vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-slate-200 z-[9999] animate-in fade-in slide-in-from-left-2 duration-200"
                           >
                           <div className="p-3">
                             {/* Header */}

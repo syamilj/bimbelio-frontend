@@ -142,7 +142,7 @@ export default function PredictionStep4() {
               <AccordionTrigger
                 className={cn(
                   'border-l-4 border-main px-4 bg-main/10 text-base font-semibold',
-                  open === '' && 'rounded-xl',
+                  open === '' && 'rounded-3xl',
                   open === 'item-1' && ' rounded-t-xl',
                 )}
               >

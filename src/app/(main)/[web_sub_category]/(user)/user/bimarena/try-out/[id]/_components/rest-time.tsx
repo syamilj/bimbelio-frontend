@@ -254,7 +254,7 @@ const RestTime = ({
                 </h3>
 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
+                  <div className="flex items-center justify-between p-4 bg-blue-50 rounded-3xl">
                     <div>
                       <h4 className="font-bold text-gray-900">
                         {nextSession?.TryoutCategory.name}
@@ -297,7 +297,7 @@ const RestTime = ({
                   {completedSessions.map((session, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-3 p-3 bg-green-50 rounded-xl"
+                      className="flex items-center gap-3 p-3 bg-green-50 rounded-3xl"
                     >
                       <CheckCircle2 className="w-5 h-5 text-green-600" />
                       <div className="flex-1">
@@ -311,7 +311,7 @@ const RestTime = ({
 
                   {/* Current Session */}
                   <div
-                    className="flex items-center gap-3 p-3 rounded-xl"
+                    className="flex items-center gap-3 p-3 rounded-3xl"
                     style={{ backgroundColor: `${mainColor}08` }}
                   >
                     <Coffee
@@ -330,7 +330,7 @@ const RestTime = ({
                   {remainingSessions.map((session, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
+                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-3xl"
                     >
                       <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
                       <div className="flex-1">

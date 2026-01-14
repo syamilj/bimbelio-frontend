@@ -66,7 +66,7 @@ const LearningMaterials = () => {
       <div className="gap-6">
         <div
           className={cn(
-            'relative flex h-[450px] w-full flex-col overflow-hidden rounded-xl p-6 md:h-[500px]',
+            'relative flex h-[450px] w-full flex-col overflow-hidden rounded-3xl p-6 md:h-[500px]',
           )}
         >
           <AnimatedList>

@@ -125,7 +125,7 @@ const Invitation = () => {
                   className="text-center p-4 rounded-3xl bg-white/80 backdrop-blur-sm shadow-lg"
                 >
                   <div
-                    className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 mx-auto mb-3 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <div style={{ color: mainColor }}>{stat.icon}</div>
@@ -331,7 +331,7 @@ const Invitation = () => {
                     ].map((badge, index) => (
                       <div
                         key={index}
-                        className="p-4 rounded-xl text-center"
+                        className="p-4 rounded-3xl text-center"
                         style={{ backgroundColor: `${mainColor}10` }}
                       >
                         <div className="text-2xl mb-2">{badge.icon}</div>
@@ -360,7 +360,7 @@ const Invitation = () => {
               <motion.div
                 animate={{ y: [10, -10, 10] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -bottom-4 -left-4 w-12 h-12 rounded-xl shadow-lg flex items-center justify-center bg-white"
+                className="absolute -bottom-4 -left-4 w-12 h-12 rounded-3xl shadow-lg flex items-center justify-center bg-white"
               >
                 <div
                   className="w-6 h-6 rounded-lg"

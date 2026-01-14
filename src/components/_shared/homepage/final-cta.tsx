@@ -227,10 +227,10 @@ const FinalCTA = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 * index }}
                   viewport={{ once: true }}
-                  className="flex items-start gap-3 p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-all duration-300"
+                  className="flex items-start gap-3 p-4 rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-all duration-300"
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <div style={{ color: mainColor }}>{benefit.icon}</div>
@@ -356,7 +356,7 @@ const FinalCTA = () => {
                         className="text-center space-y-3"
                       >
                         <div
-                          className="w-12 h-12 mx-auto rounded-xl flex items-center justify-center"
+                          className="w-12 h-12 mx-auto rounded-3xl flex items-center justify-center"
                           style={{ backgroundColor: `${achievement.color}15` }}
                         >
                           <div style={{ color: achievement.color }}>
@@ -424,7 +424,7 @@ const FinalCTA = () => {
             <motion.div
               animate={{ y: [10, -10, 10] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -bottom-4 -left-4 w-12 h-12 rounded-xl shadow-lg flex items-center justify-center bg-white border-2"
+              className="absolute -bottom-4 -left-4 w-12 h-12 rounded-3xl shadow-lg flex items-center justify-center bg-white border-2"
               style={{ borderColor: mainColor }}
             >
               <div

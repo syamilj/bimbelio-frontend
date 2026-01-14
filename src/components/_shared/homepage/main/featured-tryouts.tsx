@@ -305,7 +305,7 @@ const EnhancedTryOutCard = ({
               `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryOut.id}`,
             );
           }}
-          className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+          className="w-full py-3 rounded-3xl font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
           style={{
             background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
             boxShadow: `0 4px 14px 0 ${mainColor}40`,

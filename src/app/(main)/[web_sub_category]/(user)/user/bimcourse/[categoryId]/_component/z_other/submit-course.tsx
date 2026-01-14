@@ -72,7 +72,7 @@ const SubmitCourse = () => {
       <Button
         onClick={handleSubmit}
         disabled={loading}
-        className="group relative rounded-xl px-6 py-3 font-semibold text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+        className="group relative rounded-3xl px-6 py-3 font-semibold text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
         }}

@@ -155,7 +155,7 @@ const DocViewerPage = () => {
         <Card className="max-w-[95%] md:max-w-4xl w-full border-0 shadow-2xl overflow-hidden backdrop-blur-sm bg-white/95 relative z-10">
           {/* Gradient Border Animation */}
           <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 opacity-75 blur-xl" />
-          <div className="absolute inset-[2px] bg-white rounded-xl" />
+          <div className="absolute inset-[2px] bg-white rounded-3xl" />
 
           <CardContent className="relative p-8 md:p-12 z-10 max-h-[90vh] md:max-h-[95vh] overflow-y-auto">
             {/* Floating Particles */}
@@ -221,13 +221,13 @@ const DocViewerPage = () => {
               ].map((feature, index) => (
                 <div
                   key={index}
-                  className={`group relative bg-gradient-to-br from-white to-${feature.color}-50 backdrop-blur-sm p-4 rounded-xl border-2 border-${feature.color}-200 hover:border-${feature.color}-400 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer`}
+                  className={`group relative bg-gradient-to-br from-white to-${feature.color}-50 backdrop-blur-sm p-4 rounded-3xl border-2 border-${feature.color}-200 hover:border-${feature.color}-400 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer`}
                   style={{
                     animationDelay: `${index * 100}ms`,
                   }}
                 >
                   <div
-                    className={`absolute inset-0 bg-gradient-to-r from-${feature.color}-400 to-${feature.color}-600 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                    className={`absolute inset-0 bg-gradient-to-r from-${feature.color}-400 to-${feature.color}-600 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                   />
                   <div className="flex items-center gap-3">
                     <div
@@ -244,7 +244,7 @@ const DocViewerPage = () => {
             </div>
 
             {/* Premium Benefits */}
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 mb-8 border-2 border-amber-200">
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-3xl p-6 mb-8 border-2 border-amber-200">
               <h3 className="text-lg font-bold text-gray-800 mb-4 text-center flex items-center justify-center gap-2">
                 <CrownIcon className="h-5 w-5 text-amber-600" />
                 Manfaat Premium

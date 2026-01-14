@@ -127,7 +127,7 @@ const OnBoarding = ({ open, type }: Props) => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center bg-linear-to-br ${config.gradient} shadow-lg`}
+                  className={`w-12 h-12 rounded-3xl flex items-center justify-center bg-linear-to-br ${config.gradient} shadow-lg`}
                 >
                   {config.icon}
                 </div>
@@ -147,7 +147,7 @@ const OnBoarding = ({ open, type }: Props) => {
                 variant="ghost"
                 size="sm"
                 onClick={handleClose}
-                className="rounded-xl hover:bg-gray-100"
+                className="rounded-3xl hover:bg-gray-100"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -204,7 +204,7 @@ const ChatAI = () => {
       description: 'Tips untuk mendapatkan hasil terbaik dari Chat AI',
       content: (
         <div className="space-y-4">
-          <div className="flex items-start gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <div className="flex items-start gap-3 p-4 rounded-3xl bg-blue-50 border border-blue-200">
             <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
               1
             </div>
@@ -218,7 +218,7 @@ const ChatAI = () => {
               </p>
             </div>
           </div>
-          <div className="flex items-start gap-3 p-4 rounded-xl bg-green-50 border border-green-200">
+          <div className="flex items-start gap-3 p-4 rounded-3xl bg-green-50 border border-green-200">
             <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center text-white font-bold text-sm">
               2
             </div>
@@ -231,7 +231,7 @@ const ChatAI = () => {
               </p>
             </div>
           </div>
-          <div className="flex items-start gap-3 p-4 rounded-xl bg-purple-50 border border-purple-200">
+          <div className="flex items-start gap-3 p-4 rounded-3xl bg-purple-50 border border-purple-200">
             <div className="w-8 h-8 rounded-lg bg-purple-500 flex items-center justify-center text-white font-bold text-sm">
               3
             </div>
@@ -307,7 +307,7 @@ const ChatAI = () => {
           variant="outline"
           onClick={() => setIndex(Math.max(0, index - 1))}
           disabled={index === 0}
-          className="rounded-xl"
+          className="rounded-3xl"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Sebelumnya
@@ -316,7 +316,7 @@ const ChatAI = () => {
         {index < steps.length - 1 ? (
           <Button
             onClick={() => setIndex(Math.min(steps.length - 1, index + 1))}
-            className="rounded-xl text-white"
+            className="rounded-3xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -333,7 +333,7 @@ const ChatAI = () => {
                 JSON.stringify({ ...onBoarding, chat: false }),
               );
             }}
-            className="rounded-xl text-white"
+            className="rounded-3xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -382,7 +382,7 @@ const Notes = () => {
       description: 'Manfaatkan teknologi AI untuk catatan yang lebih efektif',
       content: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <div className="p-4 rounded-3xl bg-blue-50 border border-blue-200">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="w-4 h-4 text-blue-600" />
               <h4 className="font-semibold text-blue-900">Auto Summary</h4>
@@ -391,7 +391,7 @@ const Notes = () => {
               AI akan merangkum poin-poin penting dari materi
             </p>
           </div>
-          <div className="p-4 rounded-xl bg-green-50 border border-green-200">
+          <div className="p-4 rounded-3xl bg-green-50 border border-green-200">
             <div className="flex items-center gap-2 mb-2">
               <Brain className="w-4 h-4 text-green-600" />
               <h4 className="font-semibold text-green-900">
@@ -460,7 +460,7 @@ const Notes = () => {
           variant="outline"
           onClick={() => setIndex(Math.max(0, index - 1))}
           disabled={index === 0}
-          className="rounded-xl"
+          className="rounded-3xl"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Sebelumnya
@@ -469,7 +469,7 @@ const Notes = () => {
         {index < steps.length - 1 ? (
           <Button
             onClick={() => setIndex(Math.min(steps.length - 1, index + 1))}
-            className="rounded-xl text-white"
+            className="rounded-3xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -486,7 +486,7 @@ const Notes = () => {
                 JSON.stringify({ ...onBoarding, notes: false }),
               );
             }}
-            className="rounded-xl text-white"
+            className="rounded-3xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -584,7 +584,7 @@ const QuizAI = () => {
           variant="outline"
           onClick={() => setIndex(Math.max(0, index - 1))}
           disabled={index === 0}
-          className="rounded-xl"
+          className="rounded-3xl"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Sebelumnya
@@ -593,7 +593,7 @@ const QuizAI = () => {
         {index < steps.length - 1 ? (
           <Button
             onClick={() => setIndex(Math.min(steps.length - 1, index + 1))}
-            className="rounded-xl text-white"
+            className="rounded-3xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, #9333ea)`,
             }}
@@ -610,7 +610,7 @@ const QuizAI = () => {
                 JSON.stringify({ ...onBoarding, quiz: false }),
               );
             }}
-            className="rounded-xl text-white"
+            className="rounded-3xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, #9333ea)`,
             }}
@@ -709,7 +709,7 @@ const Tryout = () => {
           variant="outline"
           onClick={() => setIndex(Math.max(0, index - 1))}
           disabled={index === 0}
-          className="rounded-xl"
+          className="rounded-3xl"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Sebelumnya
@@ -718,7 +718,7 @@ const Tryout = () => {
         {index < steps.length - 1 ? (
           <Button
             onClick={() => setIndex(Math.min(steps.length - 1, index + 1))}
-            className="rounded-xl text-white"
+            className="rounded-3xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, #ea580c)`,
             }}
@@ -735,7 +735,7 @@ const Tryout = () => {
                 JSON.stringify({ ...onBoarding, tryout: false }),
               );
             }}
-            className="rounded-xl text-white"
+            className="rounded-3xl text-white"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, #ea580c)`,
             }}

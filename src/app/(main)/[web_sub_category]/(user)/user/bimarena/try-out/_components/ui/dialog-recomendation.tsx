@@ -88,7 +88,7 @@ export default function DialogRecomendation({
           {/* Floating Decorative Icons */}
           <div className="absolute top-8 left-1/4 animate-float">
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center shadow-lg"
+              className="w-8 h-8 rounded-3xl flex items-center justify-center shadow-lg"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Star
@@ -99,7 +99,7 @@ export default function DialogRecomendation({
           </div>
           <div className="absolute top-12 right-1/4 animate-float animation-delay-500">
             <div
-              className="w-7 h-7 rounded-xl flex items-center justify-center shadow-lg"
+              className="w-7 h-7 rounded-3xl flex items-center justify-center shadow-lg"
               style={{ backgroundColor: `${secondaryColor}15` }}
             >
               <Sparkles
@@ -229,7 +229,7 @@ export default function DialogRecomendation({
             ].map((item, index) => (
               <div
                 key={index}
-                className="p-3 rounded-xl border border-gray-100 bg-white/50 backdrop-blur-sm hover:shadow-md transition-all duration-300"
+                className="p-3 rounded-3xl border border-gray-100 bg-white/50 backdrop-blur-sm hover:shadow-md transition-all duration-300"
                 style={{ backgroundColor: `${item.color}05` }}
               >
                 <div

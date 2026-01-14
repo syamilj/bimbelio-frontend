@@ -81,7 +81,7 @@ export function TryOutSelector() {
         <div>
           <CardTitle className="text-lg font-black text-gray-900 flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center"
+              className="w-8 h-8 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: mainColor }}
             >
               <Calendar className="w-4 h-4 text-white" />
@@ -157,7 +157,7 @@ export function TryOutSelector() {
                   <Skeleton className="h-4 w-3/4 mb-3 rounded-lg" />
                   <div className="flex justify-between items-center">
                     <Skeleton className="h-3 w-20 rounded-lg" />
-                    <Skeleton className="h-6 w-12 rounded-xl" />
+                    <Skeleton className="h-6 w-12 rounded-3xl" />
                   </div>
                 </div>
               ))}

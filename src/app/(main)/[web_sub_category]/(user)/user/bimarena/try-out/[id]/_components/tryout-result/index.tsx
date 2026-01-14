@@ -281,7 +281,7 @@ export default function TryoutResult({
         >
           <div className="text-center">
             <div
-              className="w-16 h-16 mx-auto mb-4 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center shadow-sm"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <FileText
@@ -341,14 +341,14 @@ export default function TryoutResult({
               <Button
                 variant="ghost"
                 onClick={() => setShowExitDialog(true)}
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 p-2 rounded-xl hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 p-2 rounded-3xl hover:bg-gray-100 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span className="hidden sm:inline">Kembali</span>
               </Button>
 
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Trophy
@@ -376,7 +376,7 @@ export default function TryoutResult({
                     TestAgainTryout({ tryoutId, userId: session.user.id });
                   }}
                   variant="outline"
-                  className="rounded-xl border-2"
+                  className="rounded-3xl border-2"
                   style={{ borderColor: `${mainColor}30` }}
                 >
                   Test Again
@@ -385,7 +385,7 @@ export default function TryoutResult({
 
               {website_sub_category_id_params === 'simak-ui' && (
                 <Button
-                  className="rounded-xl font-bold text-white shadow-lg"
+                  className="rounded-3xl font-bold text-white shadow-lg"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -445,7 +445,7 @@ export default function TryoutResult({
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`w-full p-4 rounded-xl text-left transition-all duration-200 border-2 ${
+                      className={`w-full p-4 rounded-3xl text-left transition-all duration-200 border-2 ${
                         tabs === 'ringkasan'
                           ? 'border-transparent text-white shadow-lg'
                           : 'border-gray-200 hover:border-gray-300 text-gray-600'
@@ -470,7 +470,7 @@ export default function TryoutResult({
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`w-full p-4 rounded-xl text-left transition-all duration-200 border-2 ${
+                      className={`w-full p-4 rounded-3xl text-left transition-all duration-200 border-2 ${
                         tabs === 'review'
                           ? 'border-transparent text-white shadow-lg'
                           : 'border-gray-200 hover:border-gray-300 text-gray-600'
@@ -495,7 +495,7 @@ export default function TryoutResult({
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`w-full p-4 rounded-xl text-left transition-all duration-200 border-2 ${
+                      className={`w-full p-4 rounded-3xl text-left transition-all duration-200 border-2 ${
                         tabs === 'analisis'
                           ? 'border-transparent text-white shadow-lg'
                           : 'border-gray-200 hover:border-gray-300 text-gray-600'
@@ -649,14 +649,14 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
             <Button
               variant="ghost"
               onClick={() => setShowExitDialog(true)}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 p-2 rounded-xl hover:bg-gray-100 transition-colors"
+              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 p-2 rounded-3xl hover:bg-gray-100 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
               <span className="hidden sm:inline">Kembali</span>
             </Button>
 
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Clock
@@ -718,7 +718,7 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
 
               <div className="space-y-4">
                 <div
-                  className="text-3xl font-mono font-bold p-4 rounded-xl shadow-sm"
+                  className="text-3xl font-mono font-bold p-4 rounded-3xl shadow-sm"
                   style={{
                     color: mainColor,
                     backgroundColor: `${mainColor}10`,

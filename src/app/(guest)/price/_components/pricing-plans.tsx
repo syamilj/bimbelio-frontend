@@ -458,7 +458,7 @@ export default function PricingPlans() {
                     placeholder="Cari berdasarkan nama atau deskripsi..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full rounded-xl border-2"
+                    className="w-full rounded-3xl border-2"
                     style={{ borderColor: `${mainColor}20` }}
                   />
                 </div>
@@ -470,7 +470,7 @@ export default function PricingPlans() {
                 >
                   <Button
                     onClick={() => setIsFilterOpen(!isFilterOpen)}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 text-white whitespace-nowrap rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 text-white whitespace-nowrap rounded-3xl font-bold shadow-md hover:shadow-lg transition-all"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -597,7 +597,7 @@ export default function PricingPlans() {
                                       : 'outline'
                                   }
                                   onClick={() => togglePlanType(type.id)}
-                                  className="w-full justify-start font-bold rounded-xl h-auto py-2.5"
+                                  className="w-full justify-start font-bold rounded-3xl h-auto py-2.5"
                                   style={
                                     selectedPlanTypes.includes(type.id)
                                       ? {
@@ -662,7 +662,7 @@ export default function PricingPlans() {
                                     }
                                     size="sm"
                                     onClick={() => toggleCategory(category.id)}
-                                    className="justify-start font-bold rounded-xl"
+                                    className="justify-start font-bold rounded-3xl"
                                     style={
                                       selectedCategories.includes(category.id)
                                         ? {
@@ -714,7 +714,7 @@ export default function PricingPlans() {
 
                             {/* Price Display */}
                             <div
-                              className="flex items-center justify-between p-3 rounded-xl border-2"
+                              className="flex items-center justify-between p-3 rounded-3xl border-2"
                               style={{
                                 backgroundColor: `${mainColor}08`,
                                 borderColor: `${mainColor}20`,
@@ -797,7 +797,7 @@ export default function PricingPlans() {
                                         preset.range as [number, number],
                                       )
                                     }
-                                    className="text-xs font-bold rounded-xl"
+                                    className="text-xs font-bold rounded-3xl"
                                     style={{ borderColor: `${mainColor}20` }}
                                   >
                                     {preset.label}
@@ -862,7 +862,7 @@ export default function PricingPlans() {
                                       : 'outline'
                                   }
                                   onClick={() => toggleDuration(duration.id)}
-                                  className="justify-start font-bold rounded-xl h-auto py-2.5"
+                                  className="justify-start font-bold rounded-3xl h-auto py-2.5"
                                   style={
                                     selectedDurations.includes(duration.id)
                                       ? {
@@ -950,7 +950,7 @@ export default function PricingPlans() {
                                         : 'outline'
                                     }
                                     onClick={() => toggleFeature(feature.id)}
-                                    className="w-full justify-start font-bold rounded-xl h-auto py-2.5"
+                                    className="w-full justify-start font-bold rounded-3xl h-auto py-2.5"
                                     style={
                                       selectedFeatures.includes(feature.id)
                                         ? {
@@ -1016,7 +1016,7 @@ export default function PricingPlans() {
                                 }
                                 size="sm"
                                 onClick={() => setSortBy(option)}
-                                className="text-xs font-bold rounded-xl"
+                                className="text-xs font-bold rounded-3xl"
                                 style={
                                   sortBy === option
                                     ? {
@@ -1041,7 +1041,7 @@ export default function PricingPlans() {
                             variant="outline"
                             size="sm"
                             onClick={resetAllFilters}
-                            className="w-full rounded-xl font-bold"
+                            className="w-full rounded-3xl font-bold"
                             style={{
                               borderColor: `${mainColor}20`,
                               color: mainColor,

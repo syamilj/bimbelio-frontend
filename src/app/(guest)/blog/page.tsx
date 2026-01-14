@@ -254,7 +254,7 @@ export default function BlogClient() {
                         ) => setSortBy(value)}
                       >
                         <SelectTrigger
-                          className="w-[200px] rounded-xl border-0 shadow-sm font-semibold"
+                          className="w-[200px] rounded-3xl border-0 shadow-sm font-semibold"
                           style={{
                             backgroundColor: `${mainColor}10`,
                             color: mainColor,
@@ -262,7 +262,7 @@ export default function BlogClient() {
                         >
                           <SelectValue placeholder="Urutkan" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-xl border-0 shadow-xl">
+                        <SelectContent className="rounded-3xl border-0 shadow-xl">
                           <SelectItem value="recent">📅 Terbaru</SelectItem>
                           <SelectItem value="popular">🔥 Terpopuler</SelectItem>
                           <SelectItem value="updated">
@@ -328,7 +328,7 @@ export default function BlogClient() {
                         {/* Button Skeleton */}
                         <CardFooter className="p-6 pt-0">
                           <div
-                            className="h-12 w-full rounded-xl animate-pulse"
+                            className="h-12 w-full rounded-3xl animate-pulse"
                             style={{ backgroundColor: `${mainColor}40` }}
                           />
                         </CardFooter>
@@ -398,7 +398,7 @@ export default function BlogClient() {
                           setSearchQuery('');
                           setSortBy('recent');
                         }}
-                        className="rounded-xl font-bold px-6 py-3 border-0"
+                        className="rounded-3xl font-bold px-6 py-3 border-0"
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           color: 'white',
@@ -637,7 +637,7 @@ function Sidebar({
                 placeholder="Masukkan kata kunci..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 rounded-xl border-2 shadow-sm bg-white focus:bg-gray-50 transition-all duration-300"
+                className="pl-10 rounded-3xl border-2 shadow-sm bg-white focus:bg-gray-50 transition-all duration-300"
                 style={{ borderColor: `${mainColor}20` }}
               />
             </div>
@@ -734,8 +734,8 @@ function Sidebar({
                   whileHover={{ x: 4 }}
                 >
                   <Link href={`/blog/${post.slug}`}>
-                    <div className="group flex items-start gap-4 p-4 rounded-xl hover:shadow-md transition-all duration-300 border-2 border-transparent hover:border-yellow-200 bg-gradient-to-r from-transparent hover:from-yellow-50">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-base shadow-md bg-gradient-to-br from-yellow-400 to-yellow-600">
+                    <div className="group flex items-start gap-4 p-4 rounded-3xl hover:shadow-md transition-all duration-300 border-2 border-transparent hover:border-yellow-200 bg-gradient-to-r from-transparent hover:from-yellow-50">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-3xl flex items-center justify-center font-black text-white text-base shadow-md bg-gradient-to-br from-yellow-400 to-yellow-600">
                         {index + 1}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -810,7 +810,7 @@ function Sidebar({
             <div className="grid grid-cols-2 gap-4">
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="p-4 rounded-xl"
+                className="p-4 rounded-3xl"
                 style={{ backgroundColor: `${secondaryColor}08` }}
               >
                 <div className="text-2xl font-black text-gray-900 mb-1">

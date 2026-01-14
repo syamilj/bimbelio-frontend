@@ -292,7 +292,7 @@ const BentoGrid: React.FC = () => {
                     {feature.metrics.map((metric, idx) => (
                       <div
                         key={idx}
-                        className="bg-gray-50 rounded-xl p-3 text-center"
+                        className="bg-gray-50 rounded-3xl p-3 text-center"
                       >
                         <div className="text-lg font-black text-gray-900">
                           {metric.value}

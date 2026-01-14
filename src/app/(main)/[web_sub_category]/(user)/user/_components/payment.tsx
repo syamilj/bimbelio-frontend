@@ -452,7 +452,7 @@ export function Payment() {
                             placeholder="Cari berdasarkan nama atau deskripsi..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full rounded-xl border-2"
+                            className="w-full rounded-3xl border-2"
                             style={{ borderColor: `${mainColor}20` }}
                           />
                         </div>
@@ -463,7 +463,7 @@ export function Payment() {
                         >
                           <Button
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
-                            className="w-full sm:w-auto flex items-center justify-center gap-2 text-white whitespace-nowrap rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
+                            className="w-full sm:w-auto flex items-center justify-center gap-2 text-white whitespace-nowrap rounded-3xl font-bold shadow-md hover:shadow-lg transition-all"
                             style={{
                               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                             }}
@@ -588,7 +588,7 @@ export function Payment() {
                                           onClick={() =>
                                             togglePlanType(type.id)
                                           }
-                                          className="w-full justify-start font-bold rounded-xl h-auto py-2.5"
+                                          className="w-full justify-start font-bold rounded-3xl h-auto py-2.5"
                                           style={
                                             selectedPlanTypes.includes(type.id)
                                               ? {
@@ -662,7 +662,7 @@ export function Payment() {
                                             onClick={() =>
                                               toggleCategory(category.id)
                                             }
-                                            className="justify-start font-bold rounded-xl"
+                                            className="justify-start font-bold rounded-3xl"
                                             style={
                                               selectedCategories.includes(
                                                 category.id,
@@ -720,7 +720,7 @@ export function Payment() {
                                     </Label>
 
                                     <div
-                                      className="flex items-center justify-between p-3 rounded-xl border-2"
+                                      className="flex items-center justify-between p-3 rounded-3xl border-2"
                                       style={{
                                         backgroundColor: `${mainColor}08`,
                                         borderColor: `${mainColor}20`,
@@ -818,7 +818,7 @@ export function Payment() {
                                                 ],
                                               )
                                             }
-                                            className="text-xs font-bold rounded-xl"
+                                            className="text-xs font-bold rounded-3xl"
                                             style={{
                                               borderColor: `${mainColor}20`,
                                             }}
@@ -888,7 +888,7 @@ export function Payment() {
                                           onClick={() =>
                                             toggleDuration(duration.id)
                                           }
-                                          className="justify-start font-bold rounded-xl h-auto py-2.5"
+                                          className="justify-start font-bold rounded-3xl h-auto py-2.5"
                                           style={
                                             selectedDurations.includes(
                                               duration.id,
@@ -985,7 +985,7 @@ export function Payment() {
                                             onClick={() =>
                                               toggleFeature(feature.id)
                                             }
-                                            className="w-full justify-start font-bold rounded-xl h-auto py-2.5"
+                                            className="w-full justify-start font-bold rounded-3xl h-auto py-2.5"
                                             style={
                                               selectedFeatures.includes(
                                                 feature.id,
@@ -1059,7 +1059,7 @@ export function Payment() {
                                         }
                                         size="sm"
                                         onClick={() => setSortBy(option)}
-                                        className="text-xs font-bold rounded-xl"
+                                        className="text-xs font-bold rounded-3xl"
                                         style={
                                           sortBy === option
                                             ? {
@@ -1083,7 +1083,7 @@ export function Payment() {
                                     variant="outline"
                                     size="sm"
                                     onClick={resetAllFilters}
-                                    className="w-full rounded-xl font-bold"
+                                    className="w-full rounded-3xl font-bold"
                                     style={{
                                       borderColor: `${mainColor}20`,
                                       color: mainColor,

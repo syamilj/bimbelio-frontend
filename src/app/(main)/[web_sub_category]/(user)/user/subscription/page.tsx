@@ -130,7 +130,7 @@ export default function SubscriptionPage() {
                   return (
                     <div
                       key={sub.id}
-                      className="relative overflow-hidden rounded-xl border-2 border-green-200 bg-gradient-to-br from-white to-green-50 p-4 shadow-md hover:shadow-xl transition-all duration-300"
+                      className="relative overflow-hidden rounded-3xl border-2 border-green-200 bg-gradient-to-br from-white to-green-50 p-4 shadow-md hover:shadow-xl transition-all duration-300"
                     >
                       {/* Header Badge */}
                       <div className="flex items-start justify-between mb-3">
@@ -356,7 +356,7 @@ export default function SubscriptionPage() {
                 {userSession!.user.subsPendingList.map((subPending) => (
                   <div
                     key={subPending.id}
-                    className="relative overflow-hidden rounded-xl border-2 border-orange-200 bg-gradient-to-br from-white to-orange-50 p-4 shadow-md"
+                    className="relative overflow-hidden rounded-3xl border-2 border-orange-200 bg-gradient-to-br from-white to-orange-50 p-4 shadow-md"
                   >
                     {/* Header */}
                     <div className="flex items-start justify-between mb-3">
@@ -509,7 +509,7 @@ export default function SubscriptionPage() {
       {/* CTA Button */}
       <div className="pt-2">
         <Button
-          className="w-full items-center gap-2 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-12 text-sm font-semibold"
+          className="w-full items-center gap-2 rounded-3xl text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-12 text-sm font-semibold"
           style={{
             background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
           }}

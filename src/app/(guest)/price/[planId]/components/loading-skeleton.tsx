@@ -98,7 +98,7 @@ export function LoadingSkeleton() {
               <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                 <CardHeader className="pb-6">
                   <div className="flex items-center gap-3">
-                    <Skeleton className="w-10 h-10 rounded-xl" />
+                    <Skeleton className="w-10 h-10 rounded-3xl" />
                     <Skeleton className="h-8 w-64" />
                   </div>
                   <Skeleton className="h-6 w-full mt-2" />
@@ -111,7 +111,7 @@ export function LoadingSkeleton() {
                         className="p-6 rounded-3xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
                       >
                         <div className="flex items-start gap-4">
-                          <Skeleton className="w-12 h-12 rounded-xl shrink-0" />
+                          <Skeleton className="w-12 h-12 rounded-3xl shrink-0" />
                           <div className="flex-1 space-y-2">
                             <Skeleton className="h-6 w-3/4" />
                             <Skeleton className="h-4 w-full" />
@@ -129,7 +129,7 @@ export function LoadingSkeleton() {
               <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                 <CardHeader className="pb-6">
                   <div className="flex items-center gap-3">
-                    <Skeleton className="w-10 h-10 rounded-xl" />
+                    <Skeleton className="w-10 h-10 rounded-3xl" />
                     <Skeleton className="h-8 w-48" />
                   </div>
                   <Skeleton className="h-6 w-full mt-2" />
@@ -142,7 +142,7 @@ export function LoadingSkeleton() {
                         className="p-6 rounded-3xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
                       >
                         <div className="flex items-center gap-3 mb-4">
-                          <Skeleton className="w-12 h-12 rounded-xl" />
+                          <Skeleton className="w-12 h-12 rounded-3xl" />
                           <div className="space-y-2">
                             <Skeleton className="h-5 w-24" />
                             <Skeleton className="h-4 w-20" />
@@ -169,7 +169,7 @@ export function LoadingSkeleton() {
               <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                 <CardHeader className="pb-6">
                   <div className="flex items-center gap-3">
-                    <Skeleton className="w-10 h-10 rounded-xl" />
+                    <Skeleton className="w-10 h-10 rounded-3xl" />
                     <Skeleton className="h-8 w-52" />
                   </div>
                   <Skeleton className="h-6 w-full mt-2" />
@@ -179,7 +179,7 @@ export function LoadingSkeleton() {
                     {[1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
-                        className="p-4 rounded-xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
+                        className="p-4 rounded-3xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
                       >
                         <div className="flex items-start gap-3">
                           <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
@@ -205,7 +205,7 @@ export function LoadingSkeleton() {
               <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
                 <CardHeader className="pb-6">
                   <div className="flex items-center gap-3">
-                    <Skeleton className="w-10 h-10 rounded-xl" />
+                    <Skeleton className="w-10 h-10 rounded-3xl" />
                     <Skeleton className="h-8 w-44" />
                   </div>
                   <Skeleton className="h-6 w-full mt-2" />
@@ -215,9 +215,9 @@ export function LoadingSkeleton() {
                     {[1, 2, 3, 4, 5].map((i) => (
                       <div
                         key={i}
-                        className="p-4 rounded-xl bg-[#E6F3FF] border border-[#B3D9FF]/50 text-center"
+                        className="p-4 rounded-3xl bg-[#E6F3FF] border border-[#B3D9FF]/50 text-center"
                       >
-                        <Skeleton className="w-12 h-12 rounded-xl mx-auto mb-3" />
+                        <Skeleton className="w-12 h-12 rounded-3xl mx-auto mb-3" />
                         <Skeleton className="h-5 w-16 mx-auto mb-1" />
                         <Skeleton className="h-8 w-12 mx-auto mb-1" />
                         <Skeleton className="h-3 w-12 mx-auto" />

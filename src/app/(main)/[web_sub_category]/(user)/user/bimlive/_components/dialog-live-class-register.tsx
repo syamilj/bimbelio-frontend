@@ -442,7 +442,7 @@ export const DialogLiveClassRegister = ({
                       <div className="flex items-center justify-between">
                         <div
                           className={cn(
-                            'w-10 h-10 rounded-xl flex items-center justify-center',
+                            'w-10 h-10 rounded-3xl flex items-center justify-center',
                             item.uploaded
                               ? 'bg-green-100'
                               : item.completed
@@ -521,7 +521,7 @@ export const DialogLiveClassRegister = ({
           <CardContent className="p-4">
             {step === 1 && (
               <Button
-                className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                className="w-full h-12 text-white font-semibold rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -543,7 +543,7 @@ export const DialogLiveClassRegister = ({
             )}
             {step === 2 && (
               <Button
-                className="w-full h-12 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+                className="w-full h-12 text-white font-semibold rounded-3xl shadow-lg hover:shadow-xl transition-all duration-200"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}

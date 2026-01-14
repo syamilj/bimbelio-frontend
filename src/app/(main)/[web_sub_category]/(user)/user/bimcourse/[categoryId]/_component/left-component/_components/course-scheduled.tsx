@@ -142,7 +142,7 @@ export default function CourseScheduled({
           ].map((item) => (
             <div
               key={item.label}
-              className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+              className="bg-white rounded-3xl p-4 md:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
             >
               <item.icon
                 className="w-5 h-5 mx-auto mb-2 opacity-50"
@@ -165,7 +165,7 @@ export default function CourseScheduled({
         <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
             <div
-              className="flex-shrink-0 p-3 rounded-xl"
+              className="flex-shrink-0 p-3 rounded-3xl"
               style={{ backgroundColor: `${mainColor}10` }}
             >
               <Calendar
@@ -203,7 +203,7 @@ export default function CourseScheduled({
         </div>
 
         {/* Info Note */}
-        <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-4 text-center">
+        <div className="bg-blue-50/50 border border-blue-100 rounded-3xl p-4 text-center">
           <p className="text-sm text-gray-600">
             💡 Materi akan otomatis terbuka saat waktu yang dijadwalkan tiba.
             Halaman akan ter-refresh secara otomatis.

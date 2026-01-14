@@ -109,7 +109,7 @@ export const HistoryPaymentTab = ({
                     </p>
                     <div className="flex flex-col items-end gap-2">
                       <Badge
-                        className="font-bold text-xs rounded-xl"
+                        className="font-bold text-xs rounded-3xl"
                         style={{
                           backgroundColor:
                             item.transaction_status === 'SETTLEMENT'
@@ -134,7 +134,7 @@ export const HistoryPaymentTab = ({
                             onClick={() => {
                               window.location.href = item.token;
                             }}
-                            className="flex-1 sm:flex-none px-3 py-2 md:px-4 md:py-2 rounded-xl font-bold text-xs text-white flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg hover:shadow-xl cursor-pointer bg-main-default whitespace-nowrap"
+                            className="flex-1 sm:flex-none px-3 py-2 md:px-4 md:py-2 rounded-3xl font-bold text-xs text-white flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg hover:shadow-xl cursor-pointer bg-main-default whitespace-nowrap"
                           >
                             <CreditCard className="w-4 h-4 flex-shrink-0" />
                             <span className="hidden sm:inline">
@@ -192,7 +192,7 @@ const CancelPayment = ({ refetch, id }: { refetch: () => any; id: string }) => {
         });
       }}
       disabled={cancelPaymentIsLoading}
-      className="flex-1 sm:flex-none px-3 py-2 md:px-4 md:py-2 rounded-xl font-bold text-xs text-gray-600 flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg hover:shadow-xl cursor-pointer bg-gray-200 hover:bg-gray-300 whitespace-nowrap"
+      className="flex-1 sm:flex-none px-3 py-2 md:px-4 md:py-2 rounded-3xl font-bold text-xs text-gray-600 flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg hover:shadow-xl cursor-pointer bg-gray-200 hover:bg-gray-300 whitespace-nowrap"
     >
       {cancelPaymentIsLoading ? (
         <Loader2 className="w-4 h-4 animate-spin" />

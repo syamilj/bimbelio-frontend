@@ -906,7 +906,7 @@ const SectionLimit = () => {
     }
   };
   return (
-    <div className="rounded-xl shadow-cardSoft2 p-4 mb-4">
+    <div className="rounded-3xl shadow-cardSoft2 p-4 mb-4">
       <div className="flex items-center mb-4">
         <Checkbox
           id="limit"
@@ -1284,7 +1284,7 @@ const SectionFeature = () => {
   });
 
   return (
-    <div className="rounded-xl shadow-cardSoft2 p-4">
+    <div className="rounded-3xl shadow-cardSoft2 p-4">
       <div className="flex items-center mb-4">
         <Checkbox
           id="features"
@@ -1661,7 +1661,7 @@ const SectionFeature = () => {
               {Categories?.map((webSub) => (
                 <div
                   key={webSub.categoryName}
-                  className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
+                  className="bg-white rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
                 >
                   {/* Category Header */}
                   <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 border-b border-gray-100">

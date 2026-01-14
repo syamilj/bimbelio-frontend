@@ -162,7 +162,7 @@ const SidebarUser = ({
               >
                 <div className="flex items-center gap-3 w-full overflow-hidden">
                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-slate-100"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0 border border-slate-100"
                       style={{ backgroundColor: `${mainColor}10` }}
                    >
                      <Stars className="w-5 h-5" style={{ color: mainColor }} />

@@ -247,7 +247,7 @@ export default function AIChatPage() {
           {loading && (
             <div className="flex justify-center mt-4">
               <div
-                className="flex items-center gap-2 text-sm px-4 py-2 rounded-xl"
+                className="flex items-center gap-2 text-sm px-4 py-2 rounded-3xl"
                 style={{
                   backgroundColor: `${mainColor}10`,
                   color: mainColor,
@@ -313,7 +313,7 @@ export default function AIChatPage() {
         <section className="mb-12">
           <div className="flex items-center gap-3 mb-6">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              className="w-10 h-10 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: mainColor }}
             >
               <Sparkles className="w-5 h-5 text-white" />
@@ -330,7 +330,7 @@ export default function AIChatPage() {
               >
                 <div className="flex items-start gap-4">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"
+                    className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform"
                     style={{ backgroundColor: mainColor }}
                   >
                     <span className="text-sm font-bold text-white">
@@ -417,7 +417,7 @@ export default function AIChatPage() {
                   placeholder="Cari percakapan..."
                   value={searchHistory}
                   onChange={(e) => setSearchHistory(e.target.value)}
-                  className="pl-10 h-10 rounded-xl border-2"
+                  className="pl-10 h-10 rounded-3xl border-2"
                 />
               </div>
             </DialogHeader>
@@ -443,7 +443,7 @@ export default function AIChatPage() {
                     >
                       <div className="flex items-start gap-4 flex-1">
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                          className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                           style={{ backgroundColor: mainColor }}
                         >
                           <MessageSquare className="w-5 h-5 text-white" />
@@ -460,7 +460,7 @@ export default function AIChatPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="shrink-0 text-gray-500 hover:text-red-600 rounded-xl"
+                        className="shrink-0 text-gray-500 hover:text-red-600 rounded-3xl"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();

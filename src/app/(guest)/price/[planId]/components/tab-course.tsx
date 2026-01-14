@@ -103,7 +103,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                       {/* Category Header */}
                       <div className="flex items-center gap-4 mb-6">
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-lg"
+                          className="w-12 h-12 rounded-3xl flex items-center justify-center text-white font-black text-lg shadow-lg"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
@@ -151,7 +151,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
 
                         {/* Sample Chapter Structure */}
                         <div className="space-y-3 bg-white/60 p-4 rounded-3xl border border-white/50">
-                          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/80 hover:bg-white transition-all duration-200">
+                          <div className="flex items-center gap-3 p-3 rounded-3xl bg-white/80 hover:bg-white transition-all duration-200">
                             <div
                               className="w-8 h-8 rounded-lg text-white text-xs flex items-center justify-center font-bold"
                               style={{
@@ -210,7 +210,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/80 hover:bg-white transition-all duration-200">
+                          <div className="flex items-center gap-3 p-3 rounded-3xl bg-white/80 hover:bg-white transition-all duration-200">
                             <div
                               className="w-8 h-8 rounded-lg text-white text-xs flex items-center justify-center font-bold"
                               style={{
@@ -239,7 +239,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
 
                         {/* Category Features */}
                         <div className="grid grid-cols-2 gap-3 mt-4">
-                          <div className="flex items-center gap-2 p-3 rounded-xl bg-green-50 border border-green-200">
+                          <div className="flex items-center gap-2 p-3 rounded-3xl bg-green-50 border border-green-200">
                             <div className="w-6 h-6 rounded-lg bg-green-500 flex items-center justify-center">
                               <Video className="w-3 h-3 text-white" />
                             </div>
@@ -247,7 +247,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                               Video Pembelajaran
                             </span>
                           </div>
-                          <div className="flex items-center gap-2 p-3 rounded-xl bg-purple-50 border border-purple-200">
+                          <div className="flex items-center gap-2 p-3 rounded-3xl bg-purple-50 border border-purple-200">
                             <div className="w-6 h-6 rounded-lg bg-purple-500 flex items-center justify-center">
                               <FileText className="w-3 h-3 text-white" />
                             </div>
@@ -255,7 +255,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                               Materi & Dokumen
                             </span>
                           </div>
-                          <div className="flex items-center gap-2 p-3 rounded-xl bg-orange-50 border border-orange-200">
+                          <div className="flex items-center gap-2 p-3 rounded-3xl bg-orange-50 border border-orange-200">
                             <div className="w-6 h-6 rounded-lg bg-orange-500 flex items-center justify-center">
                               <Target className="w-3 h-3 text-white" />
                             </div>
@@ -263,7 +263,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                               Latihan Tryout
                             </span>
                           </div>
-                          <div className="flex items-center gap-2 p-3 rounded-xl bg-blue-50 border border-blue-200">
+                          <div className="flex items-center gap-2 p-3 rounded-3xl bg-blue-50 border border-blue-200">
                             <div className="w-6 h-6 rounded-lg bg-blue-500 flex items-center justify-center">
                               <CheckCircle className="w-3 h-3 text-white" />
                             </div>
@@ -334,7 +334,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                 >
                   <div className="flex items-start gap-4">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                      className="w-12 h-12 rounded-3xl flex items-center justify-center shrink-0"
                       style={{ backgroundColor: mainColor }}
                     >
                       <BookOpen className="w-6 h-6 text-white" />

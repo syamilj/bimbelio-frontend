@@ -228,14 +228,14 @@ export default function LiveClassStudentDetail() {
                 </Button>
                 <div className="flex items-center gap-2">
                   <Badge
-                    className={`${getStatusColor(liveClass.status)} font-bold rounded-xl`}
+                    className={`${getStatusColor(liveClass.status)} font-bold rounded-3xl`}
                   >
                     {liveClass.status}
                   </Badge>
                   <Badge
                     className={`${getParticipantStatusColor(
                       liveClass.participantStatus,
-                    )} font-bold rounded-xl`}
+                    )} font-bold rounded-3xl`}
                   >
                     {getParticipantStatusText(liveClass.participantStatus)}
                   </Badge>
@@ -377,7 +377,7 @@ export default function LiveClassStudentDetail() {
                   <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-50 rounded-3xl p-1 h-11 border-2 border-gray-100">
                     <TabsTrigger
                       value="agenda"
-                      className="rounded-xl transition-all duration-200 data-[state=active]:shadow-sm font-bold"
+                      className="rounded-3xl transition-all duration-200 data-[state=active]:shadow-sm font-bold"
                       style={
                         { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                           [key: string]: string;
@@ -388,7 +388,7 @@ export default function LiveClassStudentDetail() {
                     </TabsTrigger>
                     <TabsTrigger
                       value="references"
-                      className="rounded-xl transition-all duration-200 data-[state=active]:shadow-sm font-bold"
+                      className="rounded-3xl transition-all duration-200 data-[state=active]:shadow-sm font-bold"
                       style={
                         { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                           [key: string]: string;
@@ -482,14 +482,14 @@ export default function LiveClassStudentDetail() {
                                         <div className="flex items-center gap-2">
                                           <Badge
                                             variant="outline"
-                                            className="text-xs bg-blue-100 border-2 border-blue-300 text-blue-700 font-bold rounded-xl"
+                                            className="text-xs bg-blue-100 border-2 border-blue-300 text-blue-700 font-bold rounded-3xl"
                                           >
                                             Course
                                           </Badge>
                                           {ref.urlType && (
                                             <Badge
                                               variant="secondary"
-                                              className="text-xs font-bold rounded-xl"
+                                              className="text-xs font-bold rounded-3xl"
                                             >
                                               {ref.urlType}
                                             </Badge>
@@ -550,7 +550,7 @@ export default function LiveClassStudentDetail() {
                                       <div className="flex items-center gap-2">
                                         <Badge
                                           variant="outline"
-                                          className="text-xs bg-gray-100 border-2 border-gray-300 text-gray-700 font-bold rounded-xl"
+                                          className="text-xs bg-gray-100 border-2 border-gray-300 text-gray-700 font-bold rounded-3xl"
                                         >
                                           🔗{' '}
                                           {ref.type === 'URL'
@@ -560,7 +560,7 @@ export default function LiveClassStudentDetail() {
                                         {ref.urlType && (
                                           <Badge
                                             variant="secondary"
-                                            className="text-xs font-bold rounded-xl"
+                                            className="text-xs font-bold rounded-3xl"
                                           >
                                             {ref.urlType}
                                           </Badge>
@@ -621,7 +621,7 @@ export default function LiveClassStudentDetail() {
                   <Badge
                     className={`${getParticipantStatusColor(
                       liveClass.participantStatus,
-                    )} font-bold rounded-xl border-2`}
+                    )} font-bold rounded-3xl border-2`}
                     variant="outline"
                   >
                     {liveClass.participantStatus}
@@ -842,8 +842,8 @@ function LoadingSkeleton({
           }}
         >
           <div className="relative z-10">
-            <div className="h-8 bg-gray-200 rounded-xl animate-pulse w-48 mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded-xl animate-pulse w-96"></div>
+            <div className="h-8 bg-gray-200 rounded-3xl animate-pulse w-48 mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded-3xl animate-pulse w-96"></div>
           </div>
         </CardHeader>
       </Card>
@@ -857,13 +857,13 @@ function LoadingSkeleton({
               className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm"
             >
               <CardHeader>
-                <div className="h-6 bg-gray-200 rounded-xl animate-pulse w-32"></div>
+                <div className="h-6 bg-gray-200 rounded-3xl animate-pulse w-32"></div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div className="h-4 bg-gray-200 rounded-xl animate-pulse w-full"></div>
-                  <div className="h-4 bg-gray-200 rounded-xl animate-pulse w-3/4"></div>
-                  <div className="h-4 bg-gray-200 rounded-xl animate-pulse w-1/2"></div>
+                  <div className="h-4 bg-gray-200 rounded-3xl animate-pulse w-full"></div>
+                  <div className="h-4 bg-gray-200 rounded-3xl animate-pulse w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded-3xl animate-pulse w-1/2"></div>
                 </div>
               </CardContent>
             </Card>
@@ -872,7 +872,7 @@ function LoadingSkeleton({
         <div className="space-y-6">
           <Card className="bg-white rounded-3xl border-2 border-gray-100 shadow-sm">
             <CardHeader>
-              <div className="h-6 bg-gray-200 rounded-xl animate-pulse w-32"></div>
+              <div className="h-6 bg-gray-200 rounded-3xl animate-pulse w-32"></div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">

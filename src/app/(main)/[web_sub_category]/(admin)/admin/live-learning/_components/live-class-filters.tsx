@@ -53,7 +53,7 @@ export function LiveClassFilters({
               placeholder="Cari judul kelas atau tutor..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 rounded-xl border-gray-200 focus:border-blue-500"
+              className="pl-10 rounded-3xl border-gray-200 focus:border-blue-500"
             />
           </div>
 
@@ -62,7 +62,7 @@ export function LiveClassFilters({
             value={statusFilter}
             onValueChange={setStatusFilter}
           >
-            <SelectTrigger className="rounded-xl border-gray-200">
+            <SelectTrigger className="rounded-3xl border-gray-200">
               <SelectValue placeholder="Pilih status" />
             </SelectTrigger>
             <SelectContent>
@@ -84,7 +84,7 @@ export function LiveClassFilters({
               }
             }}
           >
-            <SelectTrigger className="rounded-xl border-gray-200">
+            <SelectTrigger className="rounded-3xl border-gray-200">
               <SelectValue placeholder="Pilih mata pelajaran" />
             </SelectTrigger>
             <SelectContent>
@@ -104,7 +104,7 @@ export function LiveClassFilters({
           <Button
             variant="outline"
             onClick={onReset}
-            className="rounded-xl border-gray-200 hover:bg-gray-50"
+            className="rounded-3xl border-gray-200 hover:bg-gray-50"
           >
             <RotateCcw className="w-4 h-4 mr-2" />
             Reset

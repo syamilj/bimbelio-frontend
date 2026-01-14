@@ -161,7 +161,7 @@ export const SupportDialog = ({ children }: { children: ReactNode }) => {
                   <Button
                     onClick={option.action}
                     className={cn(
-                      'w-full h-auto p-3 rounded-xl text-center',
+                      'w-full h-auto p-3 rounded-3xl text-center',
                       'flex flex-col items-center gap-2 bg-white border-2',
                       'hover:shadow-lg transition-all duration-300',
                       'hover:border-opacity-60 hover:bg-opacity-5 hover:scale-105',
@@ -212,7 +212,7 @@ export const SupportDialog = ({ children }: { children: ReactNode }) => {
             <Button
               onClick={discordOption.action}
               className={cn(
-                'w-full h-auto p-4 rounded-xl text-left',
+                'w-full h-auto p-4 rounded-3xl text-left',
                 'flex items-center gap-4 bg-white border-2',
                 'hover:shadow-lg transition-all duration-300 hover:scale-105',
                 'border-blue-200 bg-blue-50/30 hover:bg-blue-50/50',

@@ -208,7 +208,7 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
             Preview Kelas
           </span>
         </div>
-        <Badge className="bg-blue-100 text-blue-700 border-2 border-blue-300 text-xs w-fit font-bold rounded-xl">
+        <Badge className="bg-blue-100 text-blue-700 border-2 border-blue-300 text-xs w-fit font-bold rounded-3xl">
           Terbatas
         </Badge>
       </div>

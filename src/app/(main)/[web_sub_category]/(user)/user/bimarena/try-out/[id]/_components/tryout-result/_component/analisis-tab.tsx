@@ -419,7 +419,7 @@ export function AnalisisTab({
           >
             <TabsTrigger
               value="analisis"
-              className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
+              className="flex items-center gap-2 rounded-3xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
               // style={{
               //   backgroundColor: 'transparent',
               // }}
@@ -431,7 +431,7 @@ export function AnalisisTab({
             {website_sub_category_id === 'snbt' && (
               <TabsTrigger
                 value="rekomendasi"
-                className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
+                className="flex items-center gap-2 rounded-3xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
               >
                 <Trophy className="w-4 h-4" />
                 <span className="sm:inline">Rekomendasi</span>
@@ -440,7 +440,7 @@ export function AnalisisTab({
 
             <TabsTrigger
               value="simulasi"
-              className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
+              className="flex items-center gap-2 rounded-3xl px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:text-white data-[state=active]:shadow-md"
             >
               <Target className="w-4 h-4" />
               <span className=" sm:inline">Simulasi</span>
@@ -475,7 +475,7 @@ export function AnalisisTab({
                       Skor Total
                     </CardTitle>
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: mainColor }}
                     >
                       <Trophy className="h-5 w-5 text-white" />
@@ -505,7 +505,7 @@ export function AnalisisTab({
                     <CardTitle className="text-sm font-semibold text-green-700">
                       Ranking Kamu
                     </CardTitle>
-                    <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-3xl bg-green-500 flex items-center justify-center">
                       <Crown className="h-5 w-5 text-white" />
                     </div>
                   </CardHeader>
@@ -543,7 +543,7 @@ export function AnalisisTab({
                     <CardTitle className="text-sm font-semibold text-yellow-700">
                       Estimasi Universitas
                     </CardTitle>
-                    <div className="w-10 h-10 rounded-xl bg-yellow-500 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-3xl bg-yellow-500 flex items-center justify-center">
                       <School className="h-5 w-5 text-white" />
                     </div>
                   </CardHeader>
@@ -608,7 +608,7 @@ export function AnalisisTab({
                           >
                             <CardTitle className="text-xl font-bold flex items-center gap-3">
                               <div
-                                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                                className="w-10 h-10 rounded-3xl flex items-center justify-center"
                                 style={{ backgroundColor: `${mainColor}15` }}
                               >
                                 <School
@@ -662,7 +662,7 @@ export function AnalisisTab({
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                                  <div className="text-center p-4 bg-gray-50 rounded-3xl">
                                     <div className="text-2xl font-bold text-gray-900">
                                       {choice.univRanking}
                                     </div>
@@ -670,7 +670,7 @@ export function AnalisisTab({
                                       Dari {choice.univTotalAplicants} peserta
                                     </p>
                                   </div>
-                                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                                  <div className="text-center p-4 bg-gray-50 rounded-3xl">
                                     <div className="text-2xl font-bold text-gray-900">
                                       {choice.univPercentage}%
                                     </div>
@@ -721,7 +721,7 @@ export function AnalisisTab({
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                                  <div className="text-center p-4 bg-gray-50 rounded-3xl">
                                     <div className="text-2xl font-bold text-gray-900">
                                       {choice.majorRanking}
                                     </div>
@@ -729,7 +729,7 @@ export function AnalisisTab({
                                       Dari {choice.majorTotalAplicants} peserta
                                     </p>
                                   </div>
-                                  <div className="text-center p-4 bg-gray-50 rounded-xl">
+                                  <div className="text-center p-4 bg-gray-50 rounded-3xl">
                                     <div className="text-2xl font-bold text-gray-900">
                                       {choice.majorPercentage}%
                                     </div>
@@ -924,7 +924,7 @@ export function AnalisisTab({
                         <Button
                           type="submit"
                           className={cn(
-                            'px-8 py-3 rounded-xl font-bold text-white shadow-lg',
+                            'px-8 py-3 rounded-3xl font-bold text-white shadow-lg',
                             !unlockTryout && 'cursor-not-allowed opacity-50',
                           )}
                           style={{ backgroundColor: mainColor }}
@@ -972,7 +972,7 @@ const UpgradeLayer = ({ unlockTryout }: { unlockTryout: boolean }) => {
           </p>
         </div>
         <ButtonUpgradeTryout>
-          <Button className="bg-yellow-500 hover:bg-yellow-400 text-yellow-900 font-bold px-8 py-3 rounded-xl shadow-lg">
+          <Button className="bg-yellow-500 hover:bg-yellow-400 text-yellow-900 font-bold px-8 py-3 rounded-3xl shadow-lg">
             <Crown className="w-5 h-5 mr-2" />
             Upgrade Sekarang
           </Button>

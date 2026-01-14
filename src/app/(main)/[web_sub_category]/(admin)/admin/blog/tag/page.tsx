@@ -118,7 +118,7 @@ export default function BlogTag() {
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="flex flex-col items-center rounded-xl bg-white p-6 shadow-lg">
+          <div className="flex flex-col items-center rounded-3xl bg-white p-6 shadow-lg">
             <p>Are you sure you want to delete this tag?</p>
             <div className="mt-4 grid grid-cols-2 gap-4">
               <button

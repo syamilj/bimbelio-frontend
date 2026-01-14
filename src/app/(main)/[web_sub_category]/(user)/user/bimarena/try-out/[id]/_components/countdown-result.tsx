@@ -93,7 +93,7 @@ const CountdownResult = ({
                   key={i}
                   className="text-center"
                 >
-                  <div className="h-12 bg-gray-200 rounded-xl mb-2"></div>
+                  <div className="h-12 bg-gray-200 rounded-3xl mb-2"></div>
                   <div className="h-4 bg-gray-200 rounded w-16 mx-auto"></div>
                 </div>
               ))}

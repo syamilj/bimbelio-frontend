@@ -276,7 +276,7 @@ export function LiveClassRatingsDisplay({
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-3">
                 <Badge
-                  className="text-white font-black rounded-xl border-2"
+                  className="text-white font-black rounded-3xl border-2"
                   style={{ backgroundColor: mainColor }}
                 >
                   Rating Kamu

@@ -91,7 +91,7 @@ export default function Card({ data, href, noCategory }: CardProps) {
 
                           {/* Text */}
                           <div className="flex items-center gap-2">
-                            <div className="relative bg-gradient-to-r from-amber-500 to-orange-600 p-1 rounded-xl shadow-sm">
+                            <div className="relative bg-gradient-to-r from-amber-500 to-orange-600 p-1 rounded-3xl shadow-sm">
                               <Lock className="w-4 h-4 text-white drop-shadow-sm" />
                             </div>
                             <p className="text-sm font-bold text-gray-900">
@@ -101,7 +101,7 @@ export default function Card({ data, href, noCategory }: CardProps) {
 
                           {/* Upgrade Button */}
                           <button
-                            className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-1.5 group/btn cursor-pointer"
+                            className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white px-4 py-2 rounded-3xl text-xs font-bold shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-1.5 group/btn cursor-pointer"
                             onClick={() => setTransactionPopUp(true)}
                           >
                             <Sparkles className="w-3 h-3 group-hover/btn:rotate-12 transition-transform duration-200" />
@@ -137,7 +137,7 @@ export default function Card({ data, href, noCategory }: CardProps) {
                     <p
                       className={`
                         text-xs font-bold leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis
-                        transition-colors duration-200 px-3 py-1.5 rounded-xl shadow-sm text-white
+                        transition-colors duration-200 px-3 py-1.5 rounded-3xl shadow-sm text-white
                         ${
                           item.category?.name === 'Bahasa Inggris'
                             ? 'bg-blue-500'
@@ -156,7 +156,7 @@ export default function Card({ data, href, noCategory }: CardProps) {
                   </div>
                   <div className="flex gap-2 flex-wrap">
                     <p
-                      className={`text-xs font-bold leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-200 bg-gray-50 text-gray-700 px-3 py-1.5 rounded-xl border-2 border-gray-100 ${
+                      className={`text-xs font-bold leading-tight truncate whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-200 bg-gray-50 text-gray-700 px-3 py-1.5 rounded-3xl border-2 border-gray-100 ${
                         isLocked
                           ? 'opacity-60'
                           : 'group-hover:text-blue-600 group-hover:border-blue-200'
@@ -170,18 +170,18 @@ export default function Card({ data, href, noCategory }: CardProps) {
                 {/* Top Badges */}
                 <div className="absolute right-3 top-3 flex flex-col gap-1.5 z-20">
                   {isDocumentPremium && (
-                    <div className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-2.5 py-1 text-xs font-bold text-white shadow-sm flex items-center gap-1">
+                    <div className="rounded-3xl bg-gradient-to-r from-amber-500 to-orange-600 px-2.5 py-1 text-xs font-bold text-white shadow-sm flex items-center gap-1">
                       <Crown className="w-3 h-3" />
                       Premium
                     </div>
                   )}
                   {item.new && (
-                    <div className="rounded-xl bg-orange-400 px-2.5 py-1 text-xs font-bold text-white shadow-sm">
+                    <div className="rounded-3xl bg-orange-400 px-2.5 py-1 text-xs font-bold text-white shadow-sm">
                       Baru!
                     </div>
                   )}
                   {item.videoId && (
-                    <div className="rounded-xl bg-blue-500 px-2.5 py-1 text-xs font-bold text-white shadow-sm">
+                    <div className="rounded-3xl bg-blue-500 px-2.5 py-1 text-xs font-bold text-white shadow-sm">
                       Video
                     </div>
                   )}

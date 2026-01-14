@@ -143,7 +143,7 @@ const TryoutType = () => {
                     {TryoutSession.name}
                   </h1>
                 </div>
-                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-3xl px-4 py-2">
                   <Trophy className="w-5 h-5 text-yellow-300" />
                   <span className="text-lg font-bold text-white">
                     {progress.toFixed(0)}%
@@ -216,7 +216,7 @@ const TryoutType = () => {
                             variant={'outline'}
                             size="sm"
                             className={cn(
-                              'relative h-12 w-12 rounded-xl font-bold transition-all duration-300 transform hover:scale-110',
+                              'relative h-12 w-12 rounded-3xl font-bold transition-all duration-300 transform hover:scale-110',
                               'border-2',
                               isCurrent &&
                                 !isAnswered &&
@@ -291,7 +291,7 @@ const TryoutType = () => {
             <CardContent className="pt-6">
               <div className="space-y-6">
                 {/* Question */}
-                <div className="p-4 bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-xl border border-gray-200">
+                <div className="p-4 bg-gradient-to-br from-gray-50 to-blue-50/30 rounded-3xl border border-gray-200">
                   <div className="flex items-start gap-3">
                     <BookOpen className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
                     <BlocknoteEditor
@@ -324,7 +324,7 @@ const TryoutType = () => {
                         <div
                           key={aIndex}
                           className={cn(
-                            'group relative flex items-start gap-3 rounded-xl p-4 transition-all duration-300 cursor-pointer border-2',
+                            'group relative flex items-start gap-3 rounded-3xl p-4 transition-all duration-300 cursor-pointer border-2',
                             isSelected
                               ? 'bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-500 shadow-md'
                               : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 hover:shadow-sm',
@@ -397,7 +397,7 @@ const TryoutType = () => {
                   <Button
                     variant="outline"
                     className={cn(
-                      'rounded-xl px-6 py-6 font-semibold transition-all',
+                      'rounded-3xl px-6 py-6 font-semibold transition-all',
                       currentIndexQuestion === 0
                         ? 'opacity-50 cursor-not-allowed'
                         : 'hover:bg-gray-100 hover:shadow-md',
@@ -416,7 +416,7 @@ const TryoutType = () => {
                   </Button>
                   <Button
                     className={cn(
-                      'rounded-xl px-6 py-6 font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all',
+                      'rounded-3xl px-6 py-6 font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all',
                       currentIndexQuestion ===
                         TryoutSession.TryoutQuestion.length - 1 &&
                         'opacity-50 cursor-not-allowed',

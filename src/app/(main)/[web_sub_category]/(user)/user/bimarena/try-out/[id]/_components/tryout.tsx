@@ -131,7 +131,7 @@ const Tryout: React.FC<Props> = ({
             {/* Session Info */}
             <div className="flex items-center gap-4">
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Trophy
@@ -162,7 +162,7 @@ const Tryout: React.FC<Props> = ({
               </div>
               <button
                 onClick={() => setShowSidebar(!showSidebar)}
-                className="lg:hidden p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="lg:hidden p-2 rounded-3xl bg-gray-100 hover:bg-gray-200 transition-colors"
               >
                 {showSidebar ? (
                   <ChevronUp className="w-5 h-5" />
@@ -284,7 +284,7 @@ const Tryout: React.FC<Props> = ({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={cn(
-                              'h-10 w-10 rounded-xl font-bold text-sm transition-all duration-200 border-2',
+                              'h-10 w-10 rounded-3xl font-bold text-sm transition-all duration-200 border-2',
                               currentQuestionIndex === i
                                 ? 'border-transparent text-white shadow-lg'
                                 : 'border-gray-200 text-gray-600 hover:border-gray-300',

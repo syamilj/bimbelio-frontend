@@ -164,7 +164,7 @@ const WhyUs = () => {
                 onClick={() => setActive(1 + i)}
               >
                 <div
-                  className={`p-2 rounded-xl ${active === 1 + i ? 'bg-white/20' : 'bg-gray-100'}`}
+                  className={`p-2 rounded-3xl ${active === 1 + i ? 'bg-white/20' : 'bg-gray-100'}`}
                 >
                   <div
                     className={cn(

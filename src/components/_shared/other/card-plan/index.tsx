@@ -650,7 +650,7 @@ const MaxUsersInfo = () => {
   if (!plan.maxUsers) return null;
 
   return (
-    <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
+    <div className="mb-4 p-3 rounded-3xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
       <div className="flex items-center gap-3">
         <div className="p-2 bg-amber-100 rounded-lg">
           <Users className="w-4 h-4 text-amber-600" />
@@ -676,7 +676,7 @@ const InstallmentInfo = () => {
   } = useProvider();
   if (!plan.PlanInstallmentConfig) return null;
   return (
-    <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200">
+    <div className="mb-4 p-3 rounded-3xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200">
       <div className="flex items-center gap-3 mb-3">
         <div className="p-2 bg-blue-100 rounded-lg">
           <Coins className="w-4 h-4 text-blue-600" />
@@ -748,7 +748,7 @@ const TabsSection = () => {
     >
       <TabsList
         className={cn(
-          'grid w-full mb-4 h-8 bg-gray-100 p-1 rounded-xl grid-cols-4',
+          'grid w-full mb-4 h-8 bg-gray-100 p-1 rounded-3xl grid-cols-4',
         )}
         style={{
           gridTemplateColumns: `repeat(${tabCount}, minmax(0, 1fr))`,
@@ -808,7 +808,7 @@ const TabsSection = () => {
       </TabsList>
 
       {/* Tab Content */}
-      <div className="min-h-[200px] rounded-xl border border-gray-100 p-4 bg-white shadow-sm">
+      <div className="min-h-[200px] rounded-3xl border border-gray-100 p-4 bg-white shadow-sm">
         <TabsContent
           value="overview"
           className="mt-0"
@@ -948,7 +948,7 @@ const ButtonSection = () => {
       )}
 
       {/* Trust Indicators - Marketplace Style */}
-      <div className="bg-gray-50 rounded-xl p-4 space-y-3">
+      <div className="bg-gray-50 rounded-3xl p-4 space-y-3">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div className="flex flex-col items-center">
             <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mb-1">

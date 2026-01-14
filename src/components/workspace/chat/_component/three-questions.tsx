@@ -143,7 +143,7 @@ export default function ThreeQuestions() {
                 {/* Content */}
                 <div className="relative z-10 space-y-4">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                    className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <IconComponent

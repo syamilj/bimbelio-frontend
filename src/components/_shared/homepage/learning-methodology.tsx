@@ -368,7 +368,7 @@ const LearningMethodology = () => {
 
                     {/* Icon */}
                     <div
-                      className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center"
+                      className="w-12 h-12 mx-auto mb-4 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${step.color}15` }}
                     >
                       <div style={{ color: step.color }}>{step.icon}</div>
@@ -439,7 +439,7 @@ const LearningMethodology = () => {
                     <CardContent className="p-6">
                       <div className="flex items-center gap-4">
                         <div
-                          className={`w-12 h-12 rounded-xl flex items-center justify-center text-white transition-all duration-300 ${
+                          className={`w-12 h-12 rounded-3xl flex items-center justify-center text-white transition-all duration-300 ${
                             activeMethod === index ? 'shadow-lg' : ''
                           }`}
                           style={{
@@ -519,7 +519,7 @@ const LearningMethodology = () => {
                         (stat, index) => (
                           <div
                             key={index}
-                            className="text-center p-4 rounded-xl bg-gray-50"
+                            className="text-center p-4 rounded-3xl bg-gray-50"
                           >
                             <div
                               className="text-2xl font-bold"
@@ -563,7 +563,7 @@ const LearningMethodology = () => {
 
                     {/* Methodology */}
                     <div
-                      className="mb-8 p-4 rounded-xl"
+                      className="mb-8 p-4 rounded-3xl"
                       style={{
                         backgroundColor: `${learningMethods[activeMethod].color}10`,
                       }}
@@ -642,7 +642,7 @@ const LearningMethodology = () => {
                 <Card className="h-full border-2 border-gray-100 rounded-3xl overflow-hidden hover:shadow-lg transition-all duration-300">
                   <CardContent className="p-6">
                     <div
-                      className="w-12 h-12 mb-4 rounded-xl flex items-center justify-center"
+                      className="w-12 h-12 mb-4 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <div style={{ color: mainColor }}>{research.icon}</div>
@@ -758,7 +758,7 @@ const LearningMethodology = () => {
                   ].map((feature, index) => (
                     <div
                       key={index}
-                      className="text-center p-4 rounded-xl bg-white/60 backdrop-blur-sm"
+                      className="text-center p-4 rounded-3xl bg-white/60 backdrop-blur-sm"
                     >
                       <div className="text-2xl mb-2">{feature.icon}</div>
                       <div className="font-medium text-gray-900">

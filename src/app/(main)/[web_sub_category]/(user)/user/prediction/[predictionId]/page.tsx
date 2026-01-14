@@ -86,7 +86,7 @@ export default function UTBKSIMAKPredictor() {
                       >
                         <div
                           className={cn(
-                            'w-10 h-10 rounded-xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
+                            'w-10 h-10 rounded-3xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
                             isActive
                               ? 'bg-main text-white'
                               : isCompleted

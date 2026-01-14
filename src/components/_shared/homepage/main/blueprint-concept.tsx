@@ -369,7 +369,7 @@ const BlueprintConcept: React.FC = () => {
               <h3 className="text-3xl md:text-5xl font-black text-white mb-6">
                 Siap Jadi yang{' '}
                 <span
-                  className="bg-white px-2 py-1 rounded-xl font-black"
+                  className="bg-white px-2 py-1 rounded-3xl font-black"
                   style={{
                     color: mainColor,
                   }}
@@ -385,7 +385,7 @@ const BlueprintConcept: React.FC = () => {
                 tercepat & terukur.
                 <br />
                 <span
-                  className="font-bold px-2 py-1 rounded-xl"
+                  className="font-bold px-2 py-1 rounded-3xl"
                   style={{ background: 'white', color: mainColor }}
                 >
                   Kapan giliran kamu?

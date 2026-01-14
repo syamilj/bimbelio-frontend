@@ -120,7 +120,7 @@ const CountDownTryout = ({
         ease: 'easeInOut',
       }}
       className={cn(
-        'inline-flex items-center gap-2 px-3 py-2 md:px-4 md:py-3 rounded-xl font-mono font-bold text-sm md:text-base transition-all duration-300',
+        'inline-flex items-center gap-2 px-3 py-2 md:px-4 md:py-3 rounded-3xl font-mono font-bold text-sm md:text-base transition-all duration-300',
         isCritical && 'shadow-lg animate-pulse',
       )}
       style={{

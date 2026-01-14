@@ -410,7 +410,7 @@ export default function AboutPage() {
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
                       style={{ background: colorPalette.blue }}
                     >
                       <Zap className="w-7 h-7" />
@@ -427,7 +427,7 @@ export default function AboutPage() {
 
                   <div className="flex gap-4">
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
                       style={{ background: colorPalette.yellow }}
                     >
                       <Users className="w-7 h-7" />
@@ -444,7 +444,7 @@ export default function AboutPage() {
 
                   <div className="flex gap-4">
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
                       style={{
                         background: `linear-gradient(135deg, ${colorPalette.blueSecondary}, ${colorPalette.blueDark})`,
                       }}

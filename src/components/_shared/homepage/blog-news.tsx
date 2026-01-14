@@ -261,7 +261,7 @@ const BlogNews = () => {
                       whileTap={{ scale: 0.95 }}
                     >
                       <Button
-                        className="mt-6 group flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white shadow-lg transition-all duration-300"
+                        className="mt-6 group flex items-center gap-2 px-6 py-3 rounded-3xl font-bold text-white shadow-lg transition-all duration-300"
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                         }}
@@ -376,7 +376,7 @@ const BlogNews = () => {
                   {categories.map((category, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer group"
+                      className="flex items-center justify-between p-3 rounded-3xl hover:bg-gray-50 transition-colors cursor-pointer group"
                     >
                       <div className="flex items-center gap-3">
                         <div style={{ color: mainColor }}>{category.icon}</div>
@@ -423,7 +423,7 @@ const BlogNews = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <Button
-                    className="w-full py-3 rounded-xl font-bold text-white shadow-lg"
+                    className="w-full py-3 rounded-3xl font-bold text-white shadow-lg"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}

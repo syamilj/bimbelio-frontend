@@ -227,7 +227,7 @@ export function ReviewTab({
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div className="flex items-center gap-4">
             <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-sm"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <FileText
@@ -251,7 +251,7 @@ export function ReviewTab({
 
           <div className="flex items-center gap-3 w-full lg:w-auto">
             {/* View Toggle */}
-            <div className="flex bg-gray-100 rounded-xl p-1">
+            <div className="flex bg-gray-100 rounded-3xl p-1">
               <Button
                 variant={activeView === 'question' ? 'default' : 'ghost'}
                 size="sm"
@@ -294,7 +294,7 @@ export function ReviewTab({
                 }
               }}
             >
-              <SelectTrigger className="w-40 h-10 rounded-xl border-2 border-gray-200 bg-white shadow-sm">
+              <SelectTrigger className="w-40 h-10 rounded-3xl border-2 border-gray-200 bg-white shadow-sm">
                 <SelectValue placeholder="Pilih Subtes" />
               </SelectTrigger>
               <SelectContent>
@@ -420,7 +420,7 @@ const QuestionView = ({
             <div className="flex items-center justify-between">
               <CardTitle className="text-xl font-bold flex items-center gap-3">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold"
+                  className="w-10 h-10 rounded-3xl flex items-center justify-center text-white font-bold"
                   style={{ backgroundColor: mainColor }}
                 >
                   {safeUserAnswerIndex + 1}
@@ -476,7 +476,7 @@ const QuestionView = ({
                       </Badge>
                     )}
                   </div>
-                  <div className="p-6 bg-gray-50 rounded-xl">
+                  <div className="p-6 bg-gray-50 rounded-3xl">
                     <BlocknoteEditor
                       value={
                         UserAnswers.TryoutQuestion.question ||
@@ -498,7 +498,7 @@ const QuestionView = ({
                       Jawaban Kamu
                     </h3>
                     <div
-                      className="p-4 rounded-xl border-2 min-h-[100px]"
+                      className="p-4 rounded-3xl border-2 min-h-[100px]"
                       style={{
                         backgroundColor:
                           getIsCorrect(safeUserAnswerIndex) === true
@@ -531,7 +531,7 @@ const QuestionView = ({
                       </div>
                       Jawaban Benar
                     </h3>
-                    <div className="p-4 bg-green-50 rounded-xl border-2 border-green-200 min-h-[100px]">
+                    <div className="p-4 bg-green-50 rounded-3xl border-2 border-green-200 min-h-[100px]">
                       <BlocknoteEditor
                         value={getCorrectAnswer()}
                         viewOnly
@@ -555,7 +555,7 @@ const QuestionView = ({
                     Pembahasan
                   </h3>
                   <div
-                    className="p-6 rounded-xl border-2"
+                    className="p-6 rounded-3xl border-2"
                     style={{
                       backgroundColor: `${mainColor}05`,
                       borderColor: `${mainColor}20`,
@@ -592,7 +592,7 @@ const QuestionView = ({
                   setUserAnswerIndex((prev: number) => Math.max(0, prev - 1))
                 }
                 disabled={userAnswerIndex === 0}
-                className="flex items-center gap-2 rounded-xl border-2 h-11"
+                className="flex items-center gap-2 rounded-3xl border-2 h-11"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Sebelumnya
@@ -617,7 +617,7 @@ const QuestionView = ({
                   )
                 }
                 disabled={userAnswerIndex === totalQuestions - 1}
-                className="flex items-center gap-2 rounded-xl border-2 h-11"
+                className="flex items-center gap-2 rounded-3xl border-2 h-11"
               >
                 Selanjutnya
                 <ChevronRight className="w-4 h-4" />
@@ -679,7 +679,7 @@ const GridView = ({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={cn(
-                  'aspect-square rounded-xl font-bold text-sm transition-all duration-200 border-2 flex items-center justify-center relative',
+                  'aspect-square rounded-3xl font-bold text-sm transition-all duration-200 border-2 flex items-center justify-center relative',
                   userAnswerIndex === index
                     ? 'border-transparent text-white shadow-lg'
                     : 'border-gray-200 hover:border-gray-300 text-gray-600',
@@ -1003,7 +1003,7 @@ const CompactNavigation = ({
             number={questionNumber}
           >
             <Button
-              className="w-full h-10 rounded-xl font-medium text-white shadow-lg"
+              className="w-full h-10 rounded-3xl font-medium text-white shadow-lg"
               style={{ backgroundColor: mainColor }}
               onClick={() => setOpenAI(true)}
             >
@@ -1022,7 +1022,7 @@ const CompactNavigation = ({
               }/${sessionResult.TryoutSession.Document!.id}`}
             >
               <Button
-                className="w-full h-10 rounded-xl font-medium text-white shadow-lg"
+                className="w-full h-10 rounded-3xl font-medium text-white shadow-lg"
                 style={{ backgroundColor: mainColor }}
               >
                 <BookOpen className="w-4 h-4 mr-2" />

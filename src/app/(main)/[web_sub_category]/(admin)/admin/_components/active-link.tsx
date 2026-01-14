@@ -53,7 +53,7 @@ const ActiveLink = ({
       {/* Icon Container */}
       <div
         className={cn(
-          'flex items-center justify-center rounded-xl transition-all duration-300',
+          'flex items-center justify-center rounded-3xl transition-all duration-300',
           minimized ? 'w-8 h-8' : 'w-10 h-10',
           isActive
             ? 'bg-white/20 shadow-inner'
@@ -117,7 +117,7 @@ const ActiveLink = ({
           <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
           <TooltipContent
             side="right"
-            className="bg-white shadow-lg border border-gray-200 rounded-xl p-3"
+            className="bg-white shadow-lg border border-gray-200 rounded-3xl p-3"
           >
             <div className="space-y-1">
               <div className="font-semibold text-sm text-gray-900">{label}</div>

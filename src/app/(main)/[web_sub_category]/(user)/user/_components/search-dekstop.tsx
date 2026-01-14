@@ -155,7 +155,7 @@ const SearchDeskstop = () => {
                   <SelectContent className="rounded-3xl border-2 border-gray-100 shadow-sm">
                     <SelectItem
                       value="all"
-                      className="rounded-xl font-medium"
+                      className="rounded-3xl font-medium"
                     >
                       <div className="flex items-center gap-2">
                         <div
@@ -169,7 +169,7 @@ const SearchDeskstop = () => {
                       <SelectItem
                         key={item.id}
                         value={item.id ?? ''} // pastikan item.id ada!
-                        className="rounded-xl font-medium"
+                        className="rounded-3xl font-medium"
                       >
                         <div className="flex items-center gap-2">
                           <div
@@ -193,7 +193,7 @@ const SearchDeskstop = () => {
               disabled={!searchValue.trim()}
               className={cn(
                 'shadow-sm transition-all duration-300 p-0',
-                isMobile ? 'w-8 h-8 rounded-xl' : 'w-12 h-12 rounded-full',
+                isMobile ? 'w-8 h-8 rounded-3xl' : 'w-12 h-12 rounded-full',
                 searchValue.trim()
                   ? 'hover:shadow-md hover:scale-105'
                   : 'opacity-50 cursor-not-allowed',
@@ -213,7 +213,7 @@ const SearchDeskstop = () => {
         <div className="flex items-center gap-2 pb-2">
           <button
             className={cn(
-              'px-3 py-2 rounded-xl whitespace-nowrap text-sm font-bold transition-all duration-200 border-2',
+              'px-3 py-2 rounded-3xl whitespace-nowrap text-sm font-bold transition-all duration-200 border-2',
               categoryId === ''
                 ? 'text-white shadow-sm border-transparent'
                 : 'bg-white text-gray-600 hover:bg-gray-50 border-gray-100',
@@ -229,7 +229,7 @@ const SearchDeskstop = () => {
             <button
               key={item.id}
               className={cn(
-                'px-3 py-2 rounded-xl whitespace-nowrap text-sm font-bold transition-all duration-200 border-2',
+                'px-3 py-2 rounded-3xl whitespace-nowrap text-sm font-bold transition-all duration-200 border-2',
                 categoryId === item.id
                   ? 'text-white shadow-sm border-transparent'
                   : 'bg-white text-gray-600 hover:bg-gray-50 border-gray-100',

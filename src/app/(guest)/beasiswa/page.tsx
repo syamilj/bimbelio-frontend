@@ -232,7 +232,7 @@ export default function BeasiswaPage() {
                 >
                   {/* Header */}
                   <div className="flex gap-4 mb-6">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-main-default/20 to-main-default/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-14 h-14 rounded-3xl bg-gradient-to-br from-main-default/20 to-main-default/10 flex items-center justify-center flex-shrink-0">
                       <Award className="w-7 h-7 text-main-default" />
                     </div>
                     <div className="flex-1">
@@ -253,7 +253,7 @@ export default function BeasiswaPage() {
                   {/* Key Info Grid */}
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     {/* Amount */}
-                    <div className="p-4 rounded-xl bg-main-default/5 border border-main-default/10">
+                    <div className="p-4 rounded-3xl bg-main-default/5 border border-main-default/10">
                       <div className="flex items-center gap-2 mb-2">
                         <DollarSign className="w-4 h-4 text-main-default" />
                         <span className="text-xs font-semibold text-gray-600">
@@ -269,7 +269,7 @@ export default function BeasiswaPage() {
                     </div>
 
                     {/* Deadline */}
-                    <div className="p-4 rounded-xl bg-main-default/5 border border-main-default/10">
+                    <div className="p-4 rounded-3xl bg-main-default/5 border border-main-default/10">
                       <div className="flex items-center gap-2 mb-2">
                         <Calendar className="w-4 h-4 text-main-default" />
                         <span className="text-xs font-semibold text-gray-600">
@@ -282,7 +282,7 @@ export default function BeasiswaPage() {
                     </div>
 
                     {/* Location */}
-                    <div className="p-4 rounded-xl bg-main-default/5 border border-main-default/10">
+                    <div className="p-4 rounded-3xl bg-main-default/5 border border-main-default/10">
                       <div className="flex items-center gap-2 mb-2">
                         <MapPin className="w-4 h-4 text-main-default" />
                         <span className="text-xs font-semibold text-gray-600">
@@ -295,7 +295,7 @@ export default function BeasiswaPage() {
                     </div>
 
                     {/* Requirements */}
-                    <div className="p-4 rounded-xl bg-main-default/5 border border-main-default/10">
+                    <div className="p-4 rounded-3xl bg-main-default/5 border border-main-default/10">
                       <div className="flex items-center gap-2 mb-2">
                         <Users className="w-4 h-4 text-main-default" />
                         <span className="text-xs font-semibold text-gray-600">

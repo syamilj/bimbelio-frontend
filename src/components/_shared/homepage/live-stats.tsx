@@ -321,7 +321,7 @@ const LiveStats = () => {
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-6">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Zap
@@ -344,7 +344,7 @@ const LiveStats = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                        className="flex items-start gap-3 p-3 rounded-3xl bg-gray-50 hover:bg-gray-100 transition-colors"
                       >
                         <div
                           className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"

@@ -347,7 +347,7 @@ export default function LiveLearningDashboard({
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-lg">
                       <Timer className="w-5 h-5 text-white" />
                     </div>
                     <div>
@@ -438,7 +438,7 @@ export default function LiveLearningDashboard({
                     <div className="flex bg-gray-100 rounded-3xl p-1 border-2 border-gray-200">
                       <button
                         onClick={() => setViewMode('grid')}
-                        className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
+                        className={`px-3 py-2 text-sm font-bold rounded-3xl transition-all ${
                           viewMode === 'grid'
                             ? 'bg-white text-gray-900 shadow-sm'
                             : 'text-gray-600 hover:text-gray-900'
@@ -451,7 +451,7 @@ export default function LiveLearningDashboard({
                       </button>
                       <button
                         onClick={() => setViewMode('calendar')}
-                        className={`px-3 py-2 text-sm font-bold rounded-xl transition-all ${
+                        className={`px-3 py-2 text-sm font-bold rounded-3xl transition-all ${
                           viewMode === 'calendar'
                             ? 'bg-white text-gray-900 shadow-sm'
                             : 'text-gray-600 hover:text-gray-900'
@@ -516,7 +516,7 @@ export default function LiveLearningDashboard({
           <TabsList className="grid w-full grid-cols-4 mb-6 md:mb-8 bg-gray-50 rounded-3xl p-1 h-11 md:h-12 border-2 border-gray-100">
             <TabsTrigger
               value="available"
-              className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               style={
                 { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                   [key: string]: string;
@@ -537,7 +537,7 @@ export default function LiveLearningDashboard({
             </TabsTrigger>
             <TabsTrigger
               value="registered"
-              className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               style={
                 { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                   [key: string]: string;
@@ -559,7 +559,7 @@ export default function LiveLearningDashboard({
             </TabsTrigger>
             <TabsTrigger
               value="invited"
-              className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               style={
                 { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                   [key: string]: string;
@@ -579,7 +579,7 @@ export default function LiveLearningDashboard({
             </TabsTrigger>
             <TabsTrigger
               value="completed"
-              className="flex items-center gap-2 rounded-xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+              className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-bold transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
               style={
                 { '--tw-bg-opacity': '1' } as React.CSSProperties & {
                   [key: string]: string;
@@ -847,7 +847,7 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
           </div>
 
           {!timeLeft.isExpired && (
-            <div className="bg-gray-50 rounded-xl p-2 border border-gray-100">
+            <div className="bg-gray-50 rounded-3xl p-2 border border-gray-100">
               <div className="text-xs text-gray-500 mb-1 text-center font-semibold">Dimulai dalam</div>
               <div className="flex justify-center gap-2">
                 {timeLeft.days > 0 && (
@@ -869,7 +869,7 @@ const UpcomingCard = ({ liveClass, index }: { liveClass: LiveLearningDataType; i
           )}
 
           <Link href={`/${website_sub_category_id}/user/bimlive/detail/${liveClass.id}`}>
-            <Button variant="outline" size="sm" className="w-full h-9 font-bold rounded-xl border-2 hover:bg-gray-50">
+            <Button variant="outline" size="sm" className="w-full h-9 font-bold rounded-3xl border-2 hover:bg-gray-50">
               <Eye className="h-4 w-4 mr-2" />
               Lihat Detail
             </Button>
@@ -915,7 +915,7 @@ function LiveClassCard({
           <div className="relative p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
             <div className="flex justify-between items-start mb-3">
               <Badge
-                className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm font-bold text-xs rounded-xl`}
+                className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm font-bold text-xs rounded-3xl`}
               >
                 {liveClass.status}
               </Badge>
@@ -945,7 +945,7 @@ function LiveClassCard({
               </h4>
               <Badge
                 variant="secondary"
-                className="text-xs font-mono bg-gray-100 text-gray-600 border-2 border-gray-300 shrink-0 ml-2 font-bold rounded-xl"
+                className="text-xs font-mono bg-gray-100 text-gray-600 border-2 border-gray-300 shrink-0 ml-2 font-bold rounded-3xl"
               >
                 #{liveClass.id.slice(-6).toUpperCase()}
               </Badge>
@@ -967,12 +967,12 @@ function LiveClassCard({
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {liveClass.Instructor.certificate && (
-                    <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-xl border-2 border-green-200 line-clamp-1 max-w-[150px] truncate font-bold">
+                    <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-3xl border-2 border-green-200 line-clamp-1 max-w-[150px] truncate font-bold">
                       {liveClass.Instructor.certificate}
                     </span>
                   )}
                   {liveClass.Instructor.lastEducation && (
-                    <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-xl border-2 border-blue-200 line-clamp-1 max-w-[150px] truncate font-bold">
+                    <span className="text-xs px-2 py-1 bg-blue-50 text-blue-700 rounded-3xl border-2 border-blue-200 line-clamp-1 max-w-[150px] truncate font-bold">
                       {liveClass.Instructor.lastEducation}
                     </span>
                   )}
@@ -1014,7 +1014,7 @@ function LiveClassCard({
                               ? 'default'
                               : 'outline'
                           }
-                          className={`text-xs font-bold rounded-xl ${
+                          className={`text-xs font-bold rounded-3xl ${
                             liveClassWithAccess.userAccess.canRegister
                               ? 'bg-green-100 text-green-800 border-2 border-green-300'
                               : 'bg-orange-100 text-orange-800 border-2 border-orange-300'
@@ -1031,7 +1031,7 @@ function LiveClassCard({
                   ) : (
                     <Badge
                       variant="secondary"
-                      className="text-xs font-bold rounded-xl border-2"
+                      className="text-xs font-bold rounded-3xl border-2"
                     >
                       📖 Free
                     </Badge>
@@ -1160,12 +1160,12 @@ function LiveClassCard({
           {/* Floating Status Elements */}
           <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
             <Badge
-              className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm backdrop-blur-sm font-bold text-xs rounded-xl`}
+              className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm backdrop-blur-sm font-bold text-xs rounded-3xl`}
             >
               {liveClass.status}
             </Badge>
             {isLive && (
-              <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-xl text-xs font-black shadow-sm animate-pulse">
+              <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-3xl text-xs font-black shadow-sm animate-pulse">
                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                 LIVE
               </div>
@@ -1194,7 +1194,7 @@ function LiveClassCard({
               <div className="mb-2">
                 <Badge
                   variant="outline"
-                  className="text-xs font-mono bg-white/80 text-gray-600 border-2 border-gray-300 font-bold rounded-xl"
+                  className="text-xs font-mono bg-white/80 text-gray-600 border-2 border-gray-300 font-bold rounded-3xl"
                 >
                   #{liveClass.id.slice(-6).toUpperCase()}
                 </Badge>
@@ -1211,14 +1211,14 @@ function LiveClassCard({
                   <div className="flex items-center gap-2 mt-1">
                     {liveClass.Instructor.certificate && (
                       <span
-                        className={`text-xs px-2 py-1 bg-green-100 text-green-700 rounded-xl font-bold border-2 border-green-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
+                        className={`text-xs px-2 py-1 bg-green-100 text-green-700 rounded-3xl font-bold border-2 border-green-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
                       >
                         ✓ {liveClass.Instructor.certificate}
                       </span>
                     )}
                     {liveClass.Instructor.lastEducation && (
                       <span
-                        className={`text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-xl font-bold border-2 border-blue-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
+                        className={`text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-3xl font-bold border-2 border-blue-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
                       >
                         🎓 {liveClass.Instructor.lastEducation}
                       </span>
@@ -1332,7 +1332,7 @@ function LiveClassCard({
                                   </p>
                                 )}
                                 <div className="flex items-center gap-2 mt-2">
-                                  <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-xl font-bold border-2 border-blue-300">
+                                  <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-3xl font-bold border-2 border-blue-300">
                                     {agenda.duration} menit
                                   </span>
                                 </div>
@@ -1410,18 +1410,18 @@ function LiveClassCard({
                               </p>
                               <div className="flex flex-wrap gap-2 mb-1">
                                 {ref.CourseSubChapter?.spendTime && (
-                                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-800 rounded-xl border-2 border-emerald-200 font-bold flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-800 rounded-3xl border-2 border-emerald-200 font-bold flex items-center gap-1">
                                     <Clock className="h-3 w-3" />
                                     {ref.CourseSubChapter.spendTime} menit
                                   </span>
                                 )}
                                 {ref.CourseSubChapter?.premium ? (
-                                  <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-xl border-2 border-yellow-200 font-bold flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-3xl border-2 border-yellow-200 font-bold flex items-center gap-1">
                                     <Star className="h-3 w-3" />
                                     Premium
                                   </span>
                                 ) : (
-                                  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-xl border-2 border-gray-200 font-bold flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-3xl border-2 border-gray-200 font-bold flex items-center gap-1">
                                     <BookOpen className="h-3 w-3" />
                                     Gratis
                                   </span>
@@ -1430,7 +1430,7 @@ function LiveClassCard({
                               <div className="flex items-center gap-2 mt-2">
                                 <Badge
                                   variant="outline"
-                                  className="text-xs text-emerald-800 border-2 border-emerald-300 bg-emerald-50 flex items-center gap-1 font-bold rounded-xl"
+                                  className="text-xs text-emerald-800 border-2 border-emerald-300 bg-emerald-50 flex items-center gap-1 font-bold rounded-3xl"
                                 >
                                   <Target className="h-3 w-3" />
                                   {ref.type}
@@ -1526,7 +1526,7 @@ function LiveClassCard({
                         onJoin(liveClass);
                       }}
                       size="lg"
-                      className={`h-11 px-6 font-semibold rounded-xl shadow-lg transition-all duration-300 ${
+                      className={`h-11 px-6 font-semibold rounded-3xl shadow-lg transition-all duration-300 ${
                         isLive
                           ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
                           : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-xl'

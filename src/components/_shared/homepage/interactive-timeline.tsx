@@ -220,7 +220,7 @@ const InteractiveTimeline = () => {
                     <CardContent className="p-6 md:p-8">
                       {/* Phase Badge */}
                       <div
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white mb-4 shadow-lg"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-3xl text-sm font-bold text-white mb-4 shadow-lg"
                         style={{ backgroundColor: item.color }}
                       >
                         <Clock className="w-4 h-4" />

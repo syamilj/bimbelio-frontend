@@ -42,7 +42,7 @@ export default function CourseLocked() {
                 />
                 <div className="relative z-20 bg-white/60 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-white/50">
                     <Lock className="w-12 h-12 text-slate-700/80" strokeWidth={1.5} />
-                    <div className="absolute -top-2 -right-2 bg-amber-50 p-2 rounded-xl text-amber-500 shadow-sm border border-amber-100">
+                    <div className="absolute -top-2 -right-2 bg-amber-50 p-2 rounded-3xl text-amber-500 shadow-sm border border-amber-100">
                         <Crown className="w-5 h-5 fill-current" />
                     </div>
                 </div>
@@ -68,7 +68,7 @@ export default function CourseLocked() {
           <div className="flex flex-col gap-3">
              <Button
                 onClick={() => router.push('/price')}
-                className="w-full h-12 text-sm font-bold rounded-xl shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all active:scale-95"
+                className="w-full h-12 text-sm font-bold rounded-3xl shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all active:scale-95"
                 style={{
                    backgroundColor: mainColor,
                    color: 'white'

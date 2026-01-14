@@ -96,7 +96,7 @@ function ContentRow({
           <div className="flex gap-3 pb-2">
           {items.map((item) => (
             <Link key={item.id} href={href} className="flex-shrink-0 group">
-              <div className={`${cardWidth} bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all`}>
+              <div className={`${cardWidth} bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all`}>
                 {/* Image Container - Fixed height */}
                 <div className={`relative bg-gray-100 ${imageHeight}`}>
                   {isValidImageUrl(item.src) ? (

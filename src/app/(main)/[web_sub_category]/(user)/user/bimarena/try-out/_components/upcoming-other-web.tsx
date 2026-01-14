@@ -41,7 +41,7 @@ export default function UpcomingOtherWeb({ id }: { id: string }) {
       {/* Section Header - Match Dashboard Style */}
       <div className="flex items-center gap-3 mb-6">
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center"
+          className="w-10 h-10 rounded-3xl flex items-center justify-center"
           style={{ backgroundColor: mainColor }}
         >
           <Globe className="w-5 h-5 text-white" />

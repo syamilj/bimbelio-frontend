@@ -156,13 +156,13 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
           )}
 
           <div className="flex flex-wrap gap-4 justify-center">
-            <div className="bg-white/20 backdrop-blur-md rounded-xl px-6 py-3 border border-white/30">
+            <div className="bg-white/20 backdrop-blur-md rounded-3xl px-6 py-3 border border-white/30">
               <p className="text-white/80 text-sm font-medium mb-1">Akurasi</p>
               <p className="text-3xl font-bold text-white">
                 {accuracy.toFixed(1)}%
               </p>
             </div>
-            <div className="bg-white/20 backdrop-blur-md rounded-xl px-6 py-3 border border-white/30">
+            <div className="bg-white/20 backdrop-blur-md rounded-3xl px-6 py-3 border border-white/30">
               <p className="text-white/80 text-sm font-medium mb-1">
                 Skor Akhir
               </p>
@@ -286,7 +286,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
                 {UserAnswers ? (
                   <div className="space-y-6">
                     {/* Question Header */}
-                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-l-4 border-blue-500">
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl border-l-4 border-blue-500">
                       <div className="flex items-center gap-3">
                         {getIsCorrect(safeUserAnswerIndex) === true ? (
                           <div className="p-2 bg-green-500 rounded-full">
@@ -317,7 +317,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
                     </div>
 
                     {/* Question Content */}
-                    <div className="p-5 bg-white rounded-xl border-2 border-gray-200 shadow-sm">
+                    <div className="p-5 bg-white rounded-3xl border-2 border-gray-200 shadow-sm">
                       <div className="flex items-start gap-3 mb-3">
                         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold text-sm flex-shrink-0">
                           Q
@@ -340,7 +340,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
                     {/* Your Answer */}
                     <div
                       className={cn(
-                        'p-5 rounded-xl border-2 shadow-sm',
+                        'p-5 rounded-3xl border-2 shadow-sm',
                         getIsCorrect(safeUserAnswerIndex) === false
                           ? 'bg-red-50 border-red-300'
                           : 'bg-blue-50 border-blue-300',
@@ -388,7 +388,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
                     </div>
 
                     {/* Correct Answer */}
-                    <div className="p-5 bg-green-50 rounded-xl border-2 border-green-300 shadow-sm">
+                    <div className="p-5 bg-green-50 rounded-3xl border-2 border-green-300 shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-200 text-green-700 font-bold text-sm flex-shrink-0">
                           ✓
@@ -408,7 +408,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
 
                     {/* Explanation */}
                     {UserAnswers.TryoutQuestion.explanation && (
-                      <div className="p-5 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl border-2 border-yellow-300 shadow-sm">
+                      <div className="p-5 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl border-2 border-yellow-300 shadow-sm">
                         <div className="flex items-start gap-3">
                           <div className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-200 text-yellow-700 font-bold text-sm flex-shrink-0">
                             💡
@@ -500,7 +500,7 @@ const Navigation = ({
                 variant="outline"
                 size="sm"
                 className={cn(
-                  'relative h-12 w-12 rounded-xl font-bold text-sm transition-all duration-300 transform hover:scale-110 border-2',
+                  'relative h-12 w-12 rounded-3xl font-bold text-sm transition-all duration-300 transform hover:scale-110 border-2',
                   isCurrent && 'ring-2 ring-offset-2 ring-purple-500 shadow-lg',
                   isCorrect === true &&
                     !isCurrent &&
@@ -542,7 +542,7 @@ const Navigation = ({
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-2 gap-3 mb-6 p-4 bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border">
+        <div className="grid grid-cols-2 gap-3 mb-6 p-4 bg-gradient-to-br from-gray-50 to-blue-50 rounded-3xl border">
           <div className="text-center p-3 bg-white rounded-lg shadow-sm">
             <div className="flex items-center justify-center gap-1 mb-1">
               <div className="w-3 h-3 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full"></div>
@@ -566,7 +566,7 @@ const Navigation = ({
           <Button
             variant="outline"
             className={cn(
-              'flex-1 rounded-xl py-6 font-semibold transition-all',
+              'flex-1 rounded-3xl py-6 font-semibold transition-all',
               userAnswerIndex === 0
                 ? 'opacity-50 cursor-not-allowed'
                 : 'hover:bg-gray-100 hover:shadow-md',
@@ -580,7 +580,7 @@ const Navigation = ({
           <Button
             variant="outline"
             className={cn(
-              'flex-1 rounded-xl py-6 font-semibold transition-all',
+              'flex-1 rounded-3xl py-6 font-semibold transition-all',
               userAnswerIndex === totalQuestions - 1
                 ? 'opacity-50 cursor-not-allowed'
                 : 'hover:bg-gray-100 hover:shadow-md',
@@ -600,7 +600,7 @@ const Navigation = ({
         {/* Pembahasan Button */}
         {sessionResult?.TryoutSession.Document && (
           <Button
-            className="w-full h-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+            className="w-full h-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-4 rounded-3xl font-semibold shadow-lg hover:shadow-xl transition-all"
             onClick={() =>
               router.push(
                 `/user/workspace/${sessionResult?.TryoutSession.Document!.category.id}/${sessionResult.TryoutSession.Document!.id}`,

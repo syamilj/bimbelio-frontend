@@ -446,7 +446,7 @@ export default function CaraBelajarSection1() {
                     {/* Stats Display */}
                     <div className="grid grid-cols-2 gap-4">
                       <div
-                        className="text-center p-4 rounded-xl"
+                        className="text-center p-4 rounded-3xl"
                         style={{ backgroundColor: `${mainColor}08` }}
                       >
                         <div
@@ -460,7 +460,7 @@ export default function CaraBelajarSection1() {
                         </div>
                       </div>
                       <div
-                        className="text-center p-4 rounded-xl"
+                        className="text-center p-4 rounded-3xl"
                         style={{ backgroundColor: `${secondaryColor}08` }}
                       >
                         <div
@@ -533,7 +533,7 @@ export default function CaraBelajarSection1() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: fIndex * 0.1 }}
-                                className="flex items-center gap-3 p-3 rounded-xl bg-white shadow-sm"
+                                className="flex items-center gap-3 p-3 rounded-3xl bg-white shadow-sm"
                               >
                                 <CheckCircleIcon
                                   className="w-5 h-5 shrink-0"
@@ -591,7 +591,7 @@ export default function CaraBelajarSection1() {
                       >
                         <Button
                           size="lg"
-                          className="text-white font-bold px-6 py-3 rounded-xl shadow-lg"
+                          className="text-white font-bold px-6 py-3 rounded-3xl shadow-lg"
                           style={{ backgroundColor: mainColor }}
                         >
                           Coba Sekarang →

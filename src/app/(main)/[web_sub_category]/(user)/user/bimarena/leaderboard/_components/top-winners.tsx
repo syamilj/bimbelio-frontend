@@ -248,7 +248,7 @@ export function TopWinners() {
                         {/* Score Badge */}
                         <div
                           className={cn(
-                            'inline-flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-2 rounded-xl font-bold text-white shadow-lg relative overflow-hidden',
+                            'inline-flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-2 rounded-3xl font-bold text-white shadow-lg relative overflow-hidden',
                             'group-hover:shadow-xl transition-all duration-300',
                           )}
                           style={{
@@ -370,7 +370,7 @@ export function TopWinners() {
                 <Skeleton className="w-12 h-12 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full" />
                 <Skeleton className="h-3 md:h-4 w-16 md:w-24" />
                 <Skeleton className="h-2 md:h-3 w-12 md:w-20" />
-                <Skeleton className="h-6 md:h-8 w-12 md:w-16 rounded-xl" />
+                <Skeleton className="h-6 md:h-8 w-12 md:w-16 rounded-3xl" />
               </div>
             ))}
           </div>

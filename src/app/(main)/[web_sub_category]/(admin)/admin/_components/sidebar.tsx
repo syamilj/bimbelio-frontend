@@ -52,7 +52,7 @@ const Sidebar = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setMinimizeSidebar(true)}
-                className="w-8 h-8 rounded-xl hover:bg-white/50 transition-all duration-200"
+                className="w-8 h-8 rounded-3xl hover:bg-white/50 transition-all duration-200"
               >
                 <ChevronLeft className="w-4 h-4 text-gray-600" />
               </Button>
@@ -63,7 +63,7 @@ const Sidebar = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setMinimizeSidebar(false)}
-                className="w-10 h-10 rounded-xl hover:bg-white/50 transition-all duration-200 mb-3"
+                className="w-10 h-10 rounded-3xl hover:bg-white/50 transition-all duration-200 mb-3"
               >
                 <Image
                   src={LogoMinimize}
@@ -103,7 +103,7 @@ const Sidebar = () => {
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-3xl bg-white/20 flex items-center justify-center">
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">
@@ -131,7 +131,7 @@ const Sidebar = () => {
         {!minimizeSidebar ? (
           <div className="p-4 space-y-3">
             {/* User Info */}
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-white shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+            <div className="flex items-center gap-3 p-3 rounded-3xl bg-white shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
               <Avatar className="w-10 h-10 ring-2 ring-offset-2 ring-gray-200">
                 <AvatarImage
                   src={session?.user?.image || test.src}
@@ -160,7 +160,7 @@ const Sidebar = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className="flex-1 rounded-xl border-gray-200 hover:bg-gray-50"
+                className="flex-1 rounded-3xl border-gray-200 hover:bg-gray-50"
               >
                 <Settings className="w-4 h-4 mr-2" />
                 Settings
@@ -169,7 +169,7 @@ const Sidebar = () => {
                 variant="outline"
                 size="sm"
                 onClick={() => signOut({ callbackUrl: '/' })}
-                className="flex-1 rounded-xl border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
+                className="flex-1 rounded-3xl border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout

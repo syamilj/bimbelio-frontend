@@ -364,7 +364,7 @@ const Sidebar = ({
         className="max-h-screen max-w-full overflow-hidden"
       >
         <div className="relative z-8 flex h-[60px] items-center justify-between border-b border-main-gray-input bg-white px-4">
-          <TabsList className="h-full rounded-xl bg-transparent">
+          <TabsList className="h-full rounded-3xl bg-transparent">
             {TABS.filter((item) => {
               if (courseType === 'DOCUMENT') return true;
               else if (courseType === 'TRYOUT') return false;

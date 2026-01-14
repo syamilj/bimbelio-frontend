@@ -243,7 +243,7 @@ const PasswordGate = ({
             name="password"
             type="password"
             defaultValue={password}
-            className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-center text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none focus:ring-1 focus:ring-white/30 transition-colors"
+            className="w-full rounded-3xl border border-white/10 bg-black/20 px-4 py-3 text-center text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none focus:ring-1 focus:ring-white/30 transition-colors"
             placeholder="Masukkan Password"
             required
             autoFocus
@@ -251,7 +251,7 @@ const PasswordGate = ({
         </div>
         <button
           type="submit"
-          className="w-full rounded-xl bg-white px-4 py-3 font-medium text-black active:scale-[0.98] transition-transform"
+          className="w-full rounded-3xl bg-white px-4 py-3 font-medium text-black active:scale-[0.98] transition-transform"
         >
           Buka Halaman
         </button>

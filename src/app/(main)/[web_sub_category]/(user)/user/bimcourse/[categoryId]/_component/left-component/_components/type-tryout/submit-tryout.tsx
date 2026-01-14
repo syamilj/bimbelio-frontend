@@ -102,7 +102,7 @@ const SubmitTryout = ({
         onOpenChange={setOpen}
       >
         <DialogTrigger asChild>
-          <button className="group relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-4 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 z-101">
+          <button className="group relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-4 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 z-101">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <span className="relative flex items-center gap-2">
               <svg
@@ -160,7 +160,7 @@ const SubmitTryout = ({
               <div className="p-6 space-y-4">
                 {/* Progress Stats */}
                 <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200">
+                  <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl border border-green-200">
                     <p className="text-xs font-semibold text-green-700 mb-1">
                       Terjawab
                     </p>
@@ -168,7 +168,7 @@ const SubmitTryout = ({
                       {answered}
                     </p>
                   </div>
-                  <div className="p-4 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl border border-orange-200">
+                  <div className="p-4 bg-gradient-to-br from-orange-50 to-red-50 rounded-3xl border border-orange-200">
                     <p className="text-xs font-semibold text-orange-700 mb-1">
                       Belum Dijawab
                     </p>
@@ -222,19 +222,19 @@ const SubmitTryout = ({
 
                 {/* Action Buttons */}
                 {loading ? (
-                  <div className="flex h-14 w-full items-center justify-center bg-gray-50 rounded-xl">
+                  <div className="flex h-14 w-full items-center justify-center bg-gray-50 rounded-3xl">
                     <Spinner />
                   </div>
                 ) : (
                   <div className="flex items-center gap-3 pt-2">
                     <button
-                      className="flex-1 h-12 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all duration-300"
+                      className="flex-1 h-12 rounded-3xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all duration-300"
                       onClick={() => setOpen(false)}
                     >
                       Kembali
                     </button>
                     <button
-                      className="flex-1 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                      className="flex-1 h-12 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                       onClick={() => {
                         if (notSure.length > 0) setStep(2);
                         else {
@@ -299,13 +299,13 @@ const SubmitTryout = ({
                 {/* Action Buttons */}
                 <div className="flex items-center gap-3 pt-2">
                   <button
-                    className="flex-1 h-12 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all duration-300"
+                    className="flex-1 h-12 rounded-3xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all duration-300"
                     onClick={() => setOpen(false)}
                   >
                     Kembali
                   </button>
                   <button
-                    className="flex-1 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    className="flex-1 h-12 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                     onClick={() => {
                       setLoading(true);
                       FinishTryOut({

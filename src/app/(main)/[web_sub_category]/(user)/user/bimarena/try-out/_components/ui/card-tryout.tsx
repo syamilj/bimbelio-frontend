@@ -529,7 +529,7 @@ export default function CardTryOut({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        className="w-full h-12 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 group"
+                        className="w-full h-12 text-white font-semibold rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 group"
                         style={{
                           background: `linear-gradient(135deg, ${item.WebsiteSubCategory?.main_color || mainColor}, ${item.WebsiteSubCategory?.secondary_color || secondaryColor})`,
                         }}
@@ -631,7 +631,7 @@ export default function CardTryOut({
                         ? `/${showDetail.WebsiteSubCategory?.id || website_sub_category_id}/admin/tryout/testing/try-out/${showDetail.id}`
                         : `/${showDetail.WebsiteSubCategory?.id || website_sub_category_id}/user/bimarena/try-out/${showDetail.id}`
                     }
-                    className="inline-flex items-center gap-2 w-full h-12 justify-center rounded-xl text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="inline-flex items-center gap-2 w-full h-12 justify-center rounded-3xl text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}

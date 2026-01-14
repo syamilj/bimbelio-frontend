@@ -126,7 +126,7 @@ const AboutSection: React.FC = () => {
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Lightbulb className="w-5 h-5" style={{ color: mainColor }} />
@@ -141,7 +141,7 @@ const AboutSection: React.FC = () => {
 
             <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Users className="w-5 h-5" style={{ color: mainColor }} />
@@ -156,7 +156,7 @@ const AboutSection: React.FC = () => {
 
             <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Target className="w-5 h-5" style={{ color: mainColor }} />
@@ -171,7 +171,7 @@ const AboutSection: React.FC = () => {
 
             <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Heart className="w-5 h-5" style={{ color: mainColor }} />

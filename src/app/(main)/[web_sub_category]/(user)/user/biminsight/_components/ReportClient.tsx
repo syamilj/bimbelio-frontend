@@ -651,7 +651,7 @@ export const StatCard: React.FC<StatCardProps> = ({
           {title}
         </CardTitle>
         <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md text-white flex-shrink-0 group-hover:scale-110 transition-transform"
+          className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-md text-white flex-shrink-0 group-hover:scale-110 transition-transform"
           style={{ backgroundColor: mainColor }}
         >
           {icon}
@@ -880,7 +880,7 @@ export const TryoutHistoryCard: React.FC<{
                 return (
                   <div
                     key={index}
-                    className="p-3 rounded-xl border border-gray-200 hover:shadow-md transition-all"
+                    className="p-3 rounded-3xl border border-gray-200 hover:shadow-md transition-all"
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
@@ -1098,7 +1098,7 @@ export const QuizHistoryCard: React.FC<{
                 return (
                   <div
                     key={index}
-                    className="p-3 rounded-xl border border-gray-200 hover:shadow-md transition-all"
+                    className="p-3 rounded-3xl border border-gray-200 hover:shadow-md transition-all"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex-1">
@@ -1155,7 +1155,7 @@ export const QuizHistoryCard: React.FC<{
         {/* Statistics Summary */}
         {quizHistory?.history && quizHistory.history.length > 0 && (
           <div
-            className="p-3 rounded-xl border-2"
+            className="p-3 rounded-3xl border-2"
             style={{
               borderColor: `${mainColor}30`,
               backgroundColor: `${mainColor}05`,
@@ -1230,7 +1230,7 @@ export const QuizHistoryCard: React.FC<{
 //           style={{ color: mainColor }}
 //         >
 //           <div
-//             className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+//             className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
 //             style={{ backgroundColor: `${mainColor}15` }}
 //           >
 //             <Target
@@ -1254,7 +1254,7 @@ export const QuizHistoryCard: React.FC<{
 //     <CardContent className="p-6 overflow-hidden">
 //       <Tabs defaultValue={tryoutCategory?.[0]?.name || ''}>
 //         <div className="w-full overflow-x-auto pb-2">
-//           <TabsList className="mb-4 inline-flex w-max bg-gray-100 rounded-xl p-1 h-12">
+//           <TabsList className="mb-4 inline-flex w-max bg-gray-100 rounded-3xl p-1 h-12">
 //             {tryoutCategory?.map((category: any, index: number) => (
 //               <TabsTrigger
 //                 key={index}
@@ -1493,7 +1493,7 @@ export const ScoreDevelopmentCard: React.FC<{
             {stats.map((stat: any, idx: number) => (
               <div
                 key={idx}
-                className="p-4 rounded-xl border-2 transition-all hover:shadow-md"
+                className="p-4 rounded-3xl border-2 transition-all hover:shadow-md"
                 style={{ borderColor: `${mainColor}20` }}
               >
                 <div className="flex justify-between items-start mb-2">
@@ -1527,7 +1527,7 @@ export const ScoreDevelopmentCard: React.FC<{
 
         {/* Total Score Highlight */}
         <div
-          className="p-4 rounded-xl border-2 md:col-span-2 lg:col-span-3"
+          className="p-4 rounded-3xl border-2 md:col-span-2 lg:col-span-3"
           style={{
             borderColor: `${mainColor}40`,
             backgroundColor: `${mainColor}08`,
@@ -1642,7 +1642,7 @@ export const LearningActivityCard: React.FC<{
             return (
               <div
                 key={idx}
-                className="flex flex-col items-center p-4 rounded-xl transition-all hover:shadow-md"
+                className="flex flex-col items-center p-4 rounded-3xl transition-all hover:shadow-md"
                 style={{ backgroundColor: activity.lightColor }}
               >
                 {/* Circular Progress */}
@@ -1711,7 +1711,7 @@ export const LearningActivityCard: React.FC<{
 
         {/* Summary */}
         <div
-          className="mt-6 p-4 rounded-xl border-2"
+          className="mt-6 p-4 rounded-3xl border-2"
           style={{
             borderColor: `${mainColor}30`,
             backgroundColor: `${mainColor}05`,
@@ -2102,7 +2102,7 @@ export const StudyHabitsCard: React.FC<{
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-3">
             <div
-              className="p-3 rounded-xl"
+              className="p-3 rounded-3xl"
               style={{ backgroundColor: `${mainColor}10` }}
             >
               <div className="flex items-center gap-2 mb-1">
@@ -2120,7 +2120,7 @@ export const StudyHabitsCard: React.FC<{
               </div>
             </div>
             <div
-              className="p-3 rounded-xl"
+              className="p-3 rounded-3xl"
               style={{ backgroundColor: `${secondaryColor}10` }}
             >
               <div className="flex items-center gap-2 mb-1">
@@ -2138,7 +2138,7 @@ export const StudyHabitsCard: React.FC<{
               </div>
             </div>
             <div
-              className="p-3 rounded-xl col-span-2"
+              className="p-3 rounded-3xl col-span-2"
               style={{ backgroundColor: `${mainColor}08` }}
             >
               <div className="flex items-center gap-2 mb-1">
@@ -2167,7 +2167,7 @@ export const StudyHabitsCard: React.FC<{
 
           {/* Effective Time */}
           <div
-            className="p-4 rounded-xl border-2"
+            className="p-4 rounded-3xl border-2"
             style={{
               borderColor: `${mainColor}30`,
               backgroundColor: `${mainColor}05`,
@@ -2228,7 +2228,7 @@ export const CalendarComponent: React.FC<{
             style={{ color: mainColor }}
           >
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <CalendarRangeIcon
@@ -2252,7 +2252,7 @@ export const CalendarComponent: React.FC<{
       <CardContent className="p-6">
         <Tabs defaultValue="schedule">
           <TabsList
-            className="grid w-full grid-cols-3 mb-6 md:mb-8 rounded-xl p-1 h-11 md:h-12 border-0"
+            className="grid w-full grid-cols-3 mb-6 md:mb-8 rounded-3xl p-1 h-11 md:h-12 border-0"
             style={{ backgroundColor: `${mainColor}08` }}
           >
             {calendarViews.map(({ value, label }) => (
@@ -2275,7 +2275,7 @@ export const CalendarComponent: React.FC<{
             >
               <iframe
                 src={generateCalendarUrl(value)}
-                className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] border-0 rounded-xl"
+                className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] border-0 rounded-3xl"
                 style={{ border: 0 }}
               />
             </TabsContent>

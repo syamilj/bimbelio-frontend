@@ -78,7 +78,7 @@ const Card: React.FC<CardProps> = ({
         <div className="p-6 bg-white rounded-3xl border-2 border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
           <div className="flex items-center gap-3 mb-4">
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-white shadow-sm"
+              className="w-8 h-8 rounded-3xl flex items-center justify-center font-bold text-white shadow-sm"
               style={{ backgroundColor: mainColor }}
             >
               {shortcut}
@@ -111,7 +111,7 @@ const Card: React.FC<CardProps> = ({
               disabled={disabled}
               placeholder="Ketik jawaban Kamu di sini..."
               className={cn(
-                'w-full h-12 rounded-xl border-2 px-4 transition-all duration-200 text-base',
+                'w-full h-12 rounded-3xl border-2 px-4 transition-all duration-200 text-base',
                 disabled
                   ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
                   : 'bg-white hover:border-gray-300 focus:border-2',
@@ -175,7 +175,7 @@ const Card: React.FC<CardProps> = ({
           {/* Shortcut Badge */}
           <div
             className={cn(
-              'shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center font-bold text-sm md:text-base transition-all duration-300',
+              'shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-3xl flex items-center justify-center font-bold text-sm md:text-base transition-all duration-300',
               'shadow-sm group-hover:shadow-md',
               selected ? 'text-white' : 'text-gray-600 bg-gray-100',
             )}

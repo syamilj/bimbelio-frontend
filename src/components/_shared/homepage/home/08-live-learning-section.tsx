@@ -413,12 +413,12 @@ const EnhancedLiveLearningCard = ({
           {/* Floating Status Elements */}
           <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
             <Badge
-              className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm backdrop-blur-sm font-bold text-xs rounded-xl`}
+              className={`status-badge ${getStatusColor(liveClass.status)} shadow-sm backdrop-blur-sm font-bold text-xs rounded-3xl`}
             >
               {liveClass.status}
             </Badge>
             {isLive && (
-              <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-xl text-xs font-black shadow-sm animate-pulse">
+              <div className="flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-3xl text-xs font-black shadow-sm animate-pulse">
                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                 LIVE
               </div>
@@ -443,14 +443,14 @@ const EnhancedLiveLearningCard = ({
                 <div className="flex items-center gap-2 mt-1">
                   {liveClass.Instructor.certificate && (
                     <span
-                      className={`text-xs px-2 py-1 bg-green-100 text-green-700 rounded-xl font-bold border-2 border-green-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
+                      className={`text-xs px-2 py-1 bg-green-100 text-green-700 rounded-3xl font-bold border-2 border-green-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
                     >
                       ✓ {liveClass.Instructor.certificate}
                     </span>
                   )}
                   {liveClass.Instructor.lastEducation && (
                     <span
-                      className={`text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-xl font-bold border-2 border-blue-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
+                      className={`text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-3xl font-bold border-2 border-blue-200 line-clamp-1 ${typeof window !== 'undefined' && window.innerWidth < 640 ? 'max-w-[150px] truncate' : ''}`}
                     >
                       🎓 {liveClass.Instructor.lastEducation}
                     </span>
@@ -463,7 +463,7 @@ const EnhancedLiveLearningCard = ({
               <div className="mb-2">
                 <Badge
                   variant="outline"
-                  className="text-xs font-mono bg-white/80 text-gray-600 border-2 border-gray-300 font-bold rounded-xl"
+                  className="text-xs font-mono bg-white/80 text-gray-600 border-2 border-gray-300 font-bold rounded-3xl"
                 >
                   #{liveClass.id.slice(-6).toUpperCase()}
                 </Badge>
@@ -578,7 +578,7 @@ const EnhancedLiveLearningCard = ({
                                   </p>
                                 )}
                                 <div className="flex items-center gap-2 mt-2">
-                                  <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-xl font-bold border-2 border-blue-300">
+                                  <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-3xl font-bold border-2 border-blue-300">
                                     {agenda.duration} menit
                                   </span>
                                 </div>
@@ -656,18 +656,18 @@ const EnhancedLiveLearningCard = ({
                               </p>
                               <div className="flex flex-wrap gap-2 mb-1">
                                 {ref.CourseSubChapter?.spendTime && (
-                                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-800 rounded-xl border-2 border-emerald-200 font-bold flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-800 rounded-3xl border-2 border-emerald-200 font-bold flex items-center gap-1">
                                     <Clock className="h-3 w-3" />
                                     {ref.CourseSubChapter.spendTime} menit
                                   </span>
                                 )}
                                 {ref.CourseSubChapter?.premium ? (
-                                  <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-xl border-2 border-yellow-200 font-bold flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-3xl border-2 border-yellow-200 font-bold flex items-center gap-1">
                                     <Star className="h-3 w-3" />
                                     Premium
                                   </span>
                                 ) : (
-                                  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-xl border-2 border-gray-200 font-bold flex items-center gap-1">
+                                  <span className="text-xs px-2 py-1 bg-gray-100 text-gray-800 rounded-3xl border-2 border-gray-200 font-bold flex items-center gap-1">
                                     <BookOpen className="h-3 w-3" />
                                     Gratis
                                   </span>
@@ -676,7 +676,7 @@ const EnhancedLiveLearningCard = ({
                               <div className="flex items-center gap-2 mt-2">
                                 <Badge
                                   variant="outline"
-                                  className="text-xs text-emerald-800 border-2 border-emerald-300 bg-emerald-50 flex items-center gap-1 font-bold rounded-xl"
+                                  className="text-xs text-emerald-800 border-2 border-emerald-300 bg-emerald-50 flex items-center gap-1 font-bold rounded-3xl"
                                 >
                                   <Target className="h-3 w-3" />
                                   {ref.type}
@@ -772,7 +772,7 @@ const EnhancedLiveLearningCard = ({
                         onJoin(liveClass);
                       }}
                       size="lg"
-                      className={`h-11 px-6 font-semibold rounded-xl shadow-lg transition-all duration-300 ${
+                      className={`h-11 px-6 font-semibold rounded-3xl shadow-lg transition-all duration-300 ${
                         isLive
                           ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
                           : 'bg-blue-600 hover:bg-blue-700 text-white hover:shadow-xl'

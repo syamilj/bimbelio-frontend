@@ -316,7 +316,7 @@ const ProblemSection: React.FC = () => {
                       <div className="flex items-center gap-3">
                         {/* Logo */}
                         <div
-                          className="flex-shrink-0 w-12 h-12 rounded-xl border-2 flex items-center justify-center overflow-hidden"
+                          className="flex-shrink-0 w-12 h-12 rounded-3xl border-2 flex items-center justify-center overflow-hidden"
                           style={{
                             borderColor: data.imageUrl
                               ? 'transparent'
@@ -357,7 +357,7 @@ const ProblemSection: React.FC = () => {
                     {/* Rasio Column */}
                     <td className="px-6 py-4 text-center">
                       <div
-                        className="inline-flex items-center justify-center px-4 py-2 rounded-xl font-black text-white text-lg shadow-md"
+                        className="inline-flex items-center justify-center px-4 py-2 rounded-3xl font-black text-white text-lg shadow-md"
                         style={{ backgroundColor: data.brandColor }}
                       >
                         {data.ratio}
@@ -410,7 +410,7 @@ const ProblemSection: React.FC = () => {
                 <div className="flex items-start gap-4 p-5">
                   {/* Icon */}
                   <div
-                    className="flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center shadow-sm"
+                    className="flex-shrink-0 w-14 h-14 rounded-3xl flex items-center justify-center shadow-sm"
                     style={{ backgroundColor: mainColor }}
                   >
                     <painPoint.icon

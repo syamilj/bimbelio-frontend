@@ -128,7 +128,7 @@ const SubmitTryout = ({
       <DialogTrigger asChild>
         <Button
           className={cn(
-            'w-full h-12 rounded-xl font-bold text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2',
+            'w-full h-12 rounded-3xl font-bold text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2',
             loading || hasSubmitted
               ? 'cursor-not-allowed opacity-50'
               : 'hover:shadow-xl hover:scale-105',
@@ -221,7 +221,7 @@ const SubmitTryout = ({
               {/* Warnings */}
               <div className="space-y-4 mb-6">
                 {unAnswered?.length > 0 && (
-                  <div className="p-4 bg-red-50 rounded-xl border border-red-200">
+                  <div className="p-4 bg-red-50 rounded-3xl border border-red-200">
                     <div className="flex items-start gap-3">
                       <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
                       <div>
@@ -249,7 +249,7 @@ const SubmitTryout = ({
                 )}
 
                 {notSure?.length > 0 && (
-                  <div className="p-4 bg-yellow-50 rounded-xl border border-yellow-200">
+                  <div className="p-4 bg-yellow-50 rounded-3xl border border-yellow-200">
                     <div className="flex items-start gap-3">
                       <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5 shrink-0" />
                       <div>
@@ -277,7 +277,7 @@ const SubmitTryout = ({
                 )}
 
                 {completionPercentage === 100 && (
-                  <div className="p-4 bg-green-50 rounded-xl border border-green-200">
+                  <div className="p-4 bg-green-50 rounded-3xl border border-green-200">
                     <div className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
                       <div>
@@ -299,14 +299,14 @@ const SubmitTryout = ({
                 <Button
                   variant="outline"
                   onClick={() => setOpen(false)}
-                  className="px-6 py-3 rounded-xl font-medium border-2"
+                  className="px-6 py-3 rounded-3xl font-medium border-2"
                   style={{ borderColor: `${mainColor}30` }}
                 >
                   Periksa Lagi
                 </Button>
                 <Button
                   onClick={() => setStep(2)}
-                  className="px-6 py-3 rounded-xl font-bold text-white shadow-lg"
+                  className="px-6 py-3 rounded-3xl font-bold text-white shadow-lg"
                   style={{ backgroundColor: mainColor }}
                 >
                   Lanjutkan
@@ -386,7 +386,7 @@ const SubmitTryout = ({
               </Card>
 
               {/* Warning Message */}
-              <div className="p-4 bg-orange-50 rounded-xl border border-orange-200 mb-6">
+              <div className="p-4 bg-orange-50 rounded-3xl border border-orange-200 mb-6">
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-orange-600 mt-0.5 shrink-0" />
                   <div>
@@ -409,7 +409,7 @@ const SubmitTryout = ({
                   variant="outline"
                   onClick={() => setStep(1)}
                   disabled={loading}
-                  className="px-6 py-3 rounded-xl font-medium border-2"
+                  className="px-6 py-3 rounded-3xl font-medium border-2"
                   style={{ borderColor: `${mainColor}30` }}
                 >
                   Kembali
@@ -418,7 +418,7 @@ const SubmitTryout = ({
                   onClick={handleSubmit}
                   disabled={loading || hasSubmitted}
                   className={cn(
-                    'px-6 py-3 rounded-xl font-bold text-white shadow-lg transition-all duration-300',
+                    'px-6 py-3 rounded-3xl font-bold text-white shadow-lg transition-all duration-300',
                     (loading || hasSubmitted) &&
                       'cursor-not-allowed opacity-50',
                   )}

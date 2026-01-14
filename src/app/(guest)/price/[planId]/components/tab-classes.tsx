@@ -99,7 +99,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                     <div className="p-4 rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/50">
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center"
+                          className="w-10 h-10 rounded-3xl flex items-center justify-center"
                           style={{ backgroundColor: mainColor }}
                         >
                           <Calendar className="w-5 h-5 text-white" />
@@ -118,7 +118,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                     <div className="p-4 rounded-3xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200/50">
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center"
+                          className="w-10 h-10 rounded-3xl flex items-center justify-center"
                           style={{
                             backgroundColor: secondaryColor,
                           }}
@@ -140,7 +140,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                       <div className="p-4 rounded-3xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200/50">
                         <div className="flex items-center gap-3">
                           <div
-                            className="w-10 h-10 rounded-xl flex items-center justify-center"
+                            className="w-10 h-10 rounded-3xl flex items-center justify-center"
                             style={{ backgroundColor: mainColor }}
                           >
                             <Users className="w-5 h-5 text-white" />
@@ -161,7 +161,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                       <div className="p-4 rounded-3xl bg-gradient-to-br from-orange-50 to-red-50 border border-orange-200/50">
                         <div className="flex items-center gap-3">
                           <div
-                            className="w-10 h-10 rounded-xl flex items-center justify-center"
+                            className="w-10 h-10 rounded-3xl flex items-center justify-center"
                             style={{
                               backgroundColor: secondaryColor,
                             }}

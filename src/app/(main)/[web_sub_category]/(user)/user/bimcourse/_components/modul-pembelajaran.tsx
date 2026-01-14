@@ -275,7 +275,7 @@ export default function ModulPembelajaranSection() {
         <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8 flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              className="w-10 h-10 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: mainColor }}
             >
               <BookOpenIcon className="w-5 h-5 text-white" />
@@ -283,7 +283,7 @@ export default function ModulPembelajaranSection() {
             <h2 className="text-2xl font-black text-gray-900">Modul Belajar</h2>
           </div>
 
-          <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-xl">
+          <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-3xl">
             <Button
               variant="ghost"
               size="sm"
@@ -349,7 +349,7 @@ export default function ModulPembelajaranSection() {
                   setSearchQuery('');
                   setIsSearchOpen(false);
                 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-12 w-12 rounded-xl hover:bg-gray-100 z-10"
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-12 w-12 rounded-3xl hover:bg-gray-100 z-10"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -389,7 +389,7 @@ export default function ModulPembelajaranSection() {
                         <div
                           key={result.id}
                           onClick={() => handleResultClick(result)}
-                          className={`p-4 rounded-xl transition-all mb-1.5 group cursor-pointer ${
+                          className={`p-4 rounded-3xl transition-all mb-1.5 group cursor-pointer ${
                             index === selectedIndex
                               ? 'ring-2 ring-offset-1'
                               : 'hover:bg-gray-50'
@@ -401,7 +401,7 @@ export default function ModulPembelajaranSection() {
                         >
                           <div className="flex items-start gap-4">
                             {/* Thumbnail */}
-                            <div className="relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-105 transition-transform">
+                            <div className="relative flex-shrink-0 w-24 h-24 rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-105 transition-transform">
                               {thumbnail ? (
                                 <>
                                   <img
@@ -527,7 +527,7 @@ export default function ModulPembelajaranSection() {
                     size="sm"
                     onClick={() => handleStartCourse(category.id)}
                     disabled={loadingCourseId === category.id}
-                    className="w-full rounded-xl text-white border-0 font-semibold transition-all"
+                    className="w-full rounded-3xl text-white border-0 font-semibold transition-all"
                     style={{ backgroundColor: mainColor }}
                   >
                     {loadingCourseId === category.id ? (
@@ -553,7 +553,7 @@ export default function ModulPembelajaranSection() {
                   >
                     <Button
                       size="sm"
-                      className="w-full rounded-xl bg-green-600 hover:bg-green-700 text-white border-0 font-semibold"
+                      className="w-full rounded-3xl bg-green-600 hover:bg-green-700 text-white border-0 font-semibold"
                     >
                       <CheckIcon className="w-4 h-4 mr-2" />
                       Selesai
@@ -568,7 +568,7 @@ export default function ModulPembelajaranSection() {
                   >
                     <Button
                       size="sm"
-                      className="w-full rounded-xl bg-orange-600 hover:bg-orange-700 text-white border-0 font-semibold"
+                      className="w-full rounded-3xl bg-orange-600 hover:bg-orange-700 text-white border-0 font-semibold"
                     >
                       <ForwardIcon className="w-4 h-4 mr-2" />
                       Lanjutkan
@@ -751,7 +751,7 @@ export default function ModulPembelajaranSection() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="flex-1 rounded-xl border-2 border-gray-200 hover:border-gray-300"
+                          className="flex-1 rounded-3xl border-2 border-gray-200 hover:border-gray-300"
                         >
                           <ListIcon className="w-4 h-4 mr-2" />
                           Detail
@@ -842,7 +842,7 @@ export default function ModulPembelajaranSection() {
 
                         <DialogFooter>
                           <Button
-                            className="w-full rounded-xl text-white"
+                            className="w-full rounded-3xl text-white"
                             style={{ backgroundColor: mainColor }}
                             onClick={() => {
                               if (category.completedChapters === 0) {
@@ -955,7 +955,7 @@ export default function ModulPembelajaranSection() {
                         : 0;
 
                       return (
-                        <div key={chapterIndex} className="border-2 border-gray-100 rounded-xl overflow-hidden">
+                        <div key={chapterIndex} className="border-2 border-gray-100 rounded-3xl overflow-hidden">
                           {/* Chapter Header */}
                           <div
                             className="p-4"
@@ -963,7 +963,7 @@ export default function ModulPembelajaranSection() {
                           >
                             <div className="flex items-start gap-3">
                               <div
-                                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-white font-bold text-lg shadow-md"
+                                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-3xl text-white font-bold text-lg shadow-md"
                                 style={{ backgroundColor: mainColor }}
                               >
                                 {chapterIndex + 1}
@@ -1011,7 +1011,7 @@ export default function ModulPembelajaranSection() {
                                   className="group w-full flex items-center gap-4 p-4 text-left transition-all hover:bg-gray-50"
                                 >
                                   <div
-                                    className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${
+                                    className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-3xl ${
                                       isCompleted
                                         ? "bg-green-100"
                                         : "bg-gray-100"
@@ -1083,7 +1083,7 @@ export default function ModulPembelajaranSection() {
                       size="sm"
                       onClick={() => handleStartCourse(category.id)}
                       disabled={loadingCourseId === category.id}
-                      className="w-full rounded-xl text-white border-0 font-semibold transition-all"
+                      className="w-full rounded-3xl text-white border-0 font-semibold transition-all"
                       style={{ backgroundColor: mainColor }}
                     >
                       {loadingCourseId === category.id ? (
@@ -1107,7 +1107,7 @@ export default function ModulPembelajaranSection() {
                       size="sm"
                       onClick={() => handleStartCourse(category.id)}
                       disabled={loadingCourseId === category.id}
-                      className="w-full rounded-xl bg-green-600 hover:bg-green-700 text-white border-0 font-semibold"
+                      className="w-full rounded-3xl bg-green-600 hover:bg-green-700 text-white border-0 font-semibold"
                     >
                       {loadingCourseId === category.id ? (
                         <>
@@ -1128,7 +1128,7 @@ export default function ModulPembelajaranSection() {
                       size="sm"
                       onClick={() => handleStartCourse(category.id)}
                       disabled={loadingCourseId === category.id}
-                      className="w-full rounded-xl text-white border-0 font-semibold"
+                      className="w-full rounded-3xl text-white border-0 font-semibold"
                       style={{ backgroundColor: mainColor }}
                     >
                       {loadingCourseId === category.id ? (
@@ -1246,7 +1246,7 @@ export default function ModulPembelajaranSection() {
                           : 0;
 
                         return (
-                          <div key={chapterIndex} className="border-2 border-gray-100 rounded-xl overflow-hidden">
+                          <div key={chapterIndex} className="border-2 border-gray-100 rounded-3xl overflow-hidden">
                             {/* Chapter Header */}
                             <div
                               className="p-4"
@@ -1254,7 +1254,7 @@ export default function ModulPembelajaranSection() {
                             >
                               <div className="flex items-start gap-3">
                                 <div
-                                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-white font-bold text-lg shadow-md"
+                                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-3xl text-white font-bold text-lg shadow-md"
                                   style={{ backgroundColor: mainColor }}
                                 >
                                   {chapterIndex + 1}
@@ -1302,7 +1302,7 @@ export default function ModulPembelajaranSection() {
                                     className="group w-full flex items-center gap-4 p-4 text-left transition-all hover:bg-gray-50"
                                   >
                                     <div
-                                      className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${
+                                      className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-3xl ${
                                         isCompleted
                                           ? "bg-green-100"
                                           : "bg-gray-100"
@@ -1423,7 +1423,7 @@ const DetailContent = ({
       >
         <div className="flex items-start gap-3 mb-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+            className="w-10 h-10 rounded-3xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
             style={{ backgroundColor: mainColor }}
           >
             {index + 1}
@@ -1560,7 +1560,7 @@ const DetailContent = ({
   //     {/* Header Chapter */}
   //     <div className="flex items-start gap-3 mb-3">
   //       <div
-  //         className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+  //         className="w-10 h-10 rounded-3xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
   //         style={{ backgroundColor: mainColor }}
   //       >
   //         {index + 1}
