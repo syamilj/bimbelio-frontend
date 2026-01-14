@@ -98,7 +98,7 @@ const SidebarUser = ({
         // variant="sidebar"
         variant="floating"
         collapsible={'icon'}
-        className="hidden md:flex z-[50] rounded-3xl"
+        className="hidden md:flex z-[50] rounded-3xl [&_[data-sidebar=sidebar]]:overflow-visible"
         style={
           {
             '--sidebar-width': '18rem',
@@ -153,7 +153,7 @@ const SidebarUser = ({
           </div>
         </SidebarHeader>
 
-        <SidebarContent className="flex flex-col gap-0">
+        <SidebarContent className="flex flex-col gap-0 overflow-x-visible">
           {!minimizeSidebar && (
             <div className="px-3 pt-2 pb-1">
               <button
@@ -242,7 +242,10 @@ const SidebarUser = ({
           )}
 
           {/* User Profile */}
-          <div className="flex items-center gap-3 p-3 rounded-3xl hover:bg-slate-100 transition-colors">
+          <div className={cn(
+            "flex items-center gap-3 p-3 rounded-3xl hover:bg-slate-100 transition-colors",
+            minimizeSidebar && "justify-center"
+          )}>
             <Avatar
               className="h-10 w-10 border-2"
               style={{ borderColor: mainColor }}
@@ -258,28 +261,29 @@ const SidebarUser = ({
                 {session?.user.name ? session?.user.name[0].toUpperCase() : 'U'}
               </AvatarFallback>
             </Avatar>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-black text-gray-900 truncate">
-                {session?.user.name}
-              </p>
-              <p className="text-xs text-gray-500 truncate font-medium">
-                {session?.user.email}
-              </p>
-            </div>
             {!minimizeSidebar && (
-              <DropdownMenu
-                open={openMenu}
-                onOpenChange={setOpenMenu}
-              >
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 rounded-3xl"
-                  >
-                    <Settings className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
+              <>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-black text-gray-900 truncate">
+                    {session?.user.name}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate font-medium">
+                    {session?.user.email}
+                  </p>
+                </div>
+                <DropdownMenu
+                  open={openMenu}
+                  onOpenChange={setOpenMenu}
+                >
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-3xl"
+                    >
+                      <Settings className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
                   className="w-56 border-2 border-gray-100 rounded-3xl shadow-sm"
@@ -340,6 +344,7 @@ const SidebarUser = ({
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+              </>
             )}
           </div>
         </SidebarFooter>

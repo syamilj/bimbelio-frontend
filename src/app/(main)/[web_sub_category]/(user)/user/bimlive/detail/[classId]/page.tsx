@@ -458,7 +458,7 @@ export default function LiveClassStudentDetail() {
                             {/* Course Reference Card - Navigate to course/subchapter */}
                             {ref.type === 'COURSE' && ref.subChapterId ? (
                               <Link
-                                href={`/${website_sub_category_id}/user/bimcourse/${liveClass.Category?.id || 'unknown'}?sub=${ref.subChapterId}`}
+                                href={`/${website_sub_category_id}/user/bimcourse/${liveClass.Category?.id || 'unknown'}/study?sub=${ref.subChapterId}`}
                                 className="block w-full"
                               >
                                 <div className="border-2 border-blue-100 rounded-3xl p-4 hover:shadow-md transition-all duration-300 hover:border-blue-300 bg-gradient-to-r from-blue-50 to-indigo-50 cursor-pointer group-hover:scale-[1.02]">
