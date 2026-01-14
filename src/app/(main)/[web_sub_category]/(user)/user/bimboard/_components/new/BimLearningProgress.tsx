@@ -203,13 +203,13 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                   className="group relative rounded-2xl border-2 border-slate-100 overflow-hidden bg-white hover:border-slate-200 transition-all hover:shadow-lg"
                 >
                   {/* Thumbnail */}
-                  <div className="relative h-56 bg-gradient-to-br from-slate-200 to-slate-300 overflow-hidden">
+                  <div className="relative h-96 bg-gradient-to-br from-slate-200 to-slate-300 overflow-hidden">
                     {liveClass.thumbnail ? (
                       <Image
                         src={liveClass.thumbnail}
                         alt={liveClass.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform"
+                        className="object-cover h-full group-hover:scale-105 transition-transform"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
