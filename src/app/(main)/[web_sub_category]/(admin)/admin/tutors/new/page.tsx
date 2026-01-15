@@ -12,10 +12,11 @@ import LoadingPageWithText from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { responseError } from '@/lib/response';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Category } from '@/types/database';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -71,7 +72,7 @@ export default function CreateTutorForm() {
       const email = formData.get('email');
       const phone = formData.get('phone');
       const description = formData.get('description');
-      const profile = formData.get('profile');
+      const profile = formData.get('profile') as File | undefined;
       const lastEducation = formData.get('last-education');
       const status = formData.get('status') === 'on' ? true : false;
       const categoryIds = selectedSubjects;
@@ -80,7 +81,7 @@ export default function CreateTutorForm() {
 
       if (profile) {
         const filePath = `tutor/${email}-${crypto.randomUUID().slice(0, 4)}`;
-        const { data, error } = await supabase.storage
+        const { data, error } = await storage
           .from('img')
           .upload(filePath, profile);
 
@@ -91,11 +92,7 @@ export default function CreateTutorForm() {
           });
           return;
         } else {
-          const { data: publicUrlData } = supabase.storage
-            .from('img')
-            .getPublicUrl(filePath);
-
-          image = publicUrlData.publicUrl;
+          image = `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${filePath}`;
         }
       }
 

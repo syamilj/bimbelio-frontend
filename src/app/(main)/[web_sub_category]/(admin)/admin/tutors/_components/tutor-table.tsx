@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/table';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import {
   BookOpen,
   Edit,
@@ -220,7 +220,7 @@ export function TutorTable({
                         const existhingImageName =
                           tutor?.image?.split('/tutor/')[1];
 
-                        const deleteData = await supabase.storage
+                        const deleteData = await storage
                           .from('img')
                           .remove([`tutor/${existhingImageName}`]);
                       }}

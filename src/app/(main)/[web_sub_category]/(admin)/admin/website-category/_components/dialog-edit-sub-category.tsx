@@ -23,8 +23,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import {
   WebsiteCategory,
   WebsiteSubCategory,
@@ -97,17 +98,16 @@ export function DialogEditSubCategory({
       let imgUrl: undefined | string = undefined;
       const filePath = `website-sub-category/${sanitizeFileName(name)}`;
       if (image) {
-        await supabase.storage
+        await storage
           .from('img')
           .remove([
             `website-sub-category/${sanitizeFileName(subCategory?.name)}`,
           ]);
-        const { data, error } = await supabase.storage
+        const { data, error } = await storage
           .from('img')
           .upload(filePath, image);
         if (data) {
-          imgUrl = supabase.storage.from('img').getPublicUrl(filePath)
-            .data.publicUrl;
+          imgUrl = `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${filePath}`;
         }
         if (error) {
           toaster({
@@ -121,7 +121,7 @@ export function DialogEditSubCategory({
           return;
         }
       } else {
-        await supabase.storage
+        await storage
           .from('img')
           .move(
             `website-sub-category/${sanitizeFileName(subCategory?.name)}`,

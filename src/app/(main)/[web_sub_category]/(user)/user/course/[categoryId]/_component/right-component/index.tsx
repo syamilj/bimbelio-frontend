@@ -20,7 +20,7 @@ import {
   IconWarning,
   IconX2,
 } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { motion } from 'framer-motion';
 import { BotMessageSquare, Loader2 } from 'lucide-react';
 import { useMedia } from 'use-media';
@@ -223,9 +223,7 @@ const Sidebar = ({
       const res = await getNameImage();
       const resData = res?.data;
       if (resData.length > 0) {
-        const { data, error } = await supabase.storage
-          .from('img')
-          .remove([...resData]);
+        const { data, error } = await storage.from('img').remove([...resData]);
 
         if (data) {
           try {

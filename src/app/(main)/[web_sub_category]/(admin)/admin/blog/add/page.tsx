@@ -1,5 +1,6 @@
 'use client';
 
+import BlogEditor from '@/components/ui/blog-editor';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -29,12 +30,11 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
 import { IconPlus } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { BlogStatusEnum, BlogTags } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import BlogEditor from '@/components/ui/blog-editor';
 
 const AddBlogAdmin = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -144,7 +144,7 @@ const AddBlogAdmin = () => {
       );
     setLoading(true);
     const fileName = crypto.randomUUID();
-    const { data, error } = await supabase.storage
+    const { data, error } = await storage
       .from('img')
       .upload(`blog/${fileName}`, thumbnail);
     if (data)

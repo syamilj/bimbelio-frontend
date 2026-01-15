@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/select';
 import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
 import {
   BookOpen,
@@ -27,6 +26,7 @@ import { BlockNoteImageHtml } from '@/components/ui/blocknote-editor/latex';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { storage } from '@/supabaseClient';
 import { Category, CourseChapter, CourseSubChapter } from '@/types/database';
 import { SessionProps } from '../page';
 
@@ -54,7 +54,7 @@ const QuestionSessionTryout = () => {
     }
     if (EditSession.Questions[questionIndex].image) {
       const title = EditSession.Questions[questionIndex].image;
-      const deleteImage = await supabase?.storage
+      const deleteImage = await storage
         .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {
@@ -1027,14 +1027,14 @@ const UploadImageQuestion = () => {
     const image = e.target.files ? e.target.files[0] : null;
     if (image && EditSession.Questions && EditSession.Questions[index].image) {
       const filename = `${EditSession.Questions[index].image}`;
-      const upload = await supabase?.storage
+      const upload = await storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
+          const update = await storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
@@ -1067,14 +1067,14 @@ const UploadImageQuestion = () => {
     }
     if (image) {
       const filename = `${crypto.randomUUID()}-${index + 1}`;
-      const upload = await supabase?.storage
+      const upload = await storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
+          const update = await storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
@@ -1110,7 +1110,7 @@ const UploadImageQuestion = () => {
   const deleteImageQuestion = async (questionIndex: number) => {
     if (EditSession?.Questions && EditSession.Questions[questionIndex].image) {
       const title = EditSession.Questions[questionIndex].image;
-      const deleteImage = await supabase?.storage
+      const deleteImage = await storage
         .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {
@@ -1270,14 +1270,14 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
     const image = e.target.files ? e.target.files[0] : null;
     if (image && EditSession.Questions && imageValue) {
       const filename = `${imageValue}`;
-      const upload = await supabase?.storage
+      const upload = await storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
+          const update = await storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
@@ -1318,14 +1318,14 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
     }
     if (image) {
       const filename = `${crypto.randomUUID()}-${answerIndex + 1}`;
-      const upload = await supabase?.storage
+      const upload = await storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
+          const update = await storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
@@ -1372,7 +1372,7 @@ const UploadImageAnswer = ({ answerIndex }: { answerIndex: number }) => {
   ) => {
     if (EditSession?.Questions && imageValue) {
       const title = imageValue;
-      const deleteImage = await supabase?.storage
+      const deleteImage = await storage
         .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {

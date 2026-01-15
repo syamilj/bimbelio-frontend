@@ -13,7 +13,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { getDateForInputDateTime } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Crown, FileText, Play, Video } from 'lucide-react';
 import React, { SetStateAction } from 'react';
 import { SubChapterProps } from '../page';
@@ -38,14 +38,10 @@ const SubChapterHeading = ({
 
     // Clean up files
     if (EditSubChapter.type === 'DOCUMENT' && EditSubChapter.document) {
-      await supabase.storage
-        .from('pdf')
-        .remove([`course/${EditSubChapter.document}`]);
+      await storage.from('pdf').remove([`course/${EditSubChapter.document}`]);
     }
     if (EditSubChapter.type === 'VIDEO' && EditSubChapter.video) {
-      await supabase.storage
-        .from('video')
-        .remove([`course/${EditSubChapter.video}`]);
+      await storage.from('video').remove([`course/${EditSubChapter.video}`]);
     }
   };
 
@@ -74,14 +70,10 @@ const SubChapterHeading = ({
 
       // Clean up old files
       if (EditSubChapter.type === 'DOCUMENT') {
-        await supabase.storage
-          .from('pdf')
-          .remove([`course/${EditSubChapter.document}`]);
+        await storage.from('pdf').remove([`course/${EditSubChapter.document}`]);
       }
       if (EditSubChapter.type === 'VIDEO') {
-        await supabase.storage
-          .from('video')
-          .remove([`course/${EditSubChapter.video}`]);
+        await storage.from('video').remove([`course/${EditSubChapter.video}`]);
       }
     }
   };

@@ -12,10 +12,11 @@ import LoadingPageWithText from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { responseError } from '@/lib/response';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Category } from '@/types/database';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -115,12 +116,10 @@ export default function UpdateTutorForm() {
       if (profile) {
         const existhingImageName = Instructor?.image?.split('/tutor/')[1];
 
-        await supabase.storage
-          .from('img')
-          .remove([`tutor/${existhingImageName}`]);
+        await storage.from('img').remove([`tutor/${existhingImageName}`]);
 
         const filePath = `tutor/${email}-${crypto.randomUUID().slice(0, 4)}`;
-        const { data: _, error } = await supabase.storage
+        const { data: _, error } = await storage
           .from('img')
           .upload(filePath, profile);
 
@@ -131,11 +130,7 @@ export default function UpdateTutorForm() {
           });
           return;
         } else {
-          const { data: publicUrlData } = supabase.storage
-            .from('img')
-            .getPublicUrl(filePath);
-
-          image = publicUrlData.publicUrl;
+          image = `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${filePath}`;
         }
       }
 

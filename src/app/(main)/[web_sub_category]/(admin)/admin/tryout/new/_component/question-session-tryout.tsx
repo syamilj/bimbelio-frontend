@@ -14,7 +14,7 @@ import {
 import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Category, CourseChapter, CourseSubChapter } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import {
@@ -76,7 +76,7 @@ const QuestionSessionTryout = ({
     }
     if (EditSession.Questions[questionIndex].image) {
       const title = EditSession.Questions[questionIndex].image;
-      const deleteImage = await supabase?.storage
+      const deleteImage = await storage
         .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {
@@ -1131,14 +1131,14 @@ const UploadImageQuestion = ({
     const image = e.target.files ? e.target.files[0] : null;
     if (image && EditSession.Questions && imageValue) {
       const filename = `${imageValue}`;
-      const upload = await supabase?.storage
+      const upload = await storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
+          const update = await storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
@@ -1171,14 +1171,14 @@ const UploadImageQuestion = ({
     }
     if (image) {
       const filename = `${crypto.randomUUID()}-${questionIndex + 1}`;
-      const upload = await supabase?.storage
+      const upload = await storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
+          const update = await storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
@@ -1213,7 +1213,7 @@ const UploadImageQuestion = ({
   const deleteImageQuestion = async (questionIndex: number) => {
     if (EditSession?.Questions && imageValue) {
       const title = imageValue;
-      const deleteImage = await supabase?.storage
+      const deleteImage = await storage
         .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {
@@ -1379,14 +1379,14 @@ const UploadAnswerQuestion = ({
     const image = e.target.files ? e.target.files[0] : null;
     if (image && EditSession.Questions && imageValue) {
       const filename = `${imageValue}`;
-      const upload = await supabase?.storage
+      const upload = await storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
+          const update = await storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
@@ -1427,14 +1427,14 @@ const UploadAnswerQuestion = ({
     }
     if (image) {
       const filename = `${crypto.randomUUID()}-${questionIndex + 1}`;
-      const upload = await supabase?.storage
+      const upload = await storage
         .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
+          const update = await storage
             .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
@@ -1480,7 +1480,7 @@ const UploadAnswerQuestion = ({
   ) => {
     if (EditSession?.Questions && imageValue) {
       const title = imageValue;
-      const deleteImage = await supabase?.storage
+      const deleteImage = await storage
         .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {

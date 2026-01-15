@@ -8,7 +8,7 @@ import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import { getDateForInput, getHours } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Category, Subcategory } from '@/types/database';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -86,7 +86,7 @@ export default function EditDocument() {
       setLoading: setLoading,
       async onSuccess() {
         fetchDocument();
-        await supabase.storage
+        await storage
           .from('dump-embedding')
           .remove([`${fileName || docxFile?.name}`]);
         setDocxFile(undefined);
@@ -156,46 +156,40 @@ export default function EditDocument() {
       }
 
       if (file) {
-        await supabase.storage
-          .from('pdf')
-          .remove([`document/${editData?.title}`]);
-        await supabase.storage.from('pdf').upload(`document/${fileName}`, file);
+        await storage.from('pdf').remove([`document/${editData?.title}`]);
+        await storage.from('pdf').upload(`document/${fileName}`, file);
       } else {
-        await supabase.storage
+        await storage
           .from('pdf')
           .move(`document/${editData?.title}`, `document/${fileName}`);
       }
       if (thumbnail) {
-        await supabase.storage
-          .from('img')
-          .remove([`document/${editData?.title}`]);
-        await supabase.storage
-          .from('img')
-          .upload(`document/${fileName}`, thumbnail);
+        await storage.from('img').remove([`document/${editData?.title}`]);
+        await storage.from('img').upload(`document/${fileName}`, thumbnail);
       } else {
-        await supabase.storage
+        await storage
           .from('img')
           .move(`document/${editData?.title}`, `document/${fileName}`);
       }
 
       if (video && option === 'video') {
         console.log(editData?.video?.title, ' | ', videoName);
-        const deleted = await supabase.storage
+        const deleted = await storage
           .from('video')
           .remove([`document/${editData?.video?.title}`]);
-        const data = await supabase.storage
+        const data = await storage
           .from('video')
           .upload(`document/${videoName}`, video);
         console.log({ data, deleted });
       } else if (!video && option === 'video') {
         console.log(editData?.video?.title, ' | ', videoName);
-        await supabase.storage
+        await storage
           .from('video')
           .move(`document/${editData?.video?.title}`, `document/${videoName}`);
       }
 
       if (option === 'doc' && editData?.video) {
-        await supabase.storage
+        await storage
           .from('video')
           .remove([`document/${editData?.video?.title}`]);
       }
