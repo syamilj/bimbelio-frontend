@@ -118,6 +118,13 @@ export default function RegistrationProofModal({
   const [proofItems, setProofItems] = useState<ProofItem[]>([]);
 
   useEffect(() => {
+    // Auto-select coupon if this is a coupon-only tryout
+    if (showDetail?.isCouponOnly) {
+      setSelectTypeRegistration('coupon');
+    }
+  }, [showDetail]);
+
+  useEffect(() => {
     // Generate proof items based on showDetail
     const items: ProofItem[] = [
       {
@@ -465,8 +472,15 @@ export default function RegistrationProofModal({
           }}
           disabled={isLoading}
           onClick={async () => {
+            // 🔥 PENTING: Jika tryout coupon-only, WAJIB ke Step 2 untuk input kupon
+            if (showDetail?.isCouponOnly) {
+              setStep(2);
+              return;
+            }
+
+            // Flow untuk tryout biasa (non-coupon-only)
             if (session?.user.role !== 'USER') {
-              onRegistrationComplete();
+              onRegistrationComplete(false);
             } else if (
               userLimitation &&
               userLimitation.tryout < userLimitation.tryoutLimit
@@ -554,7 +568,22 @@ export default function RegistrationProofModal({
 
         {/* Registration Options */}
         <div className="space-y-4">
+          {/* Info banner for coupon-only tryouts */}
+          {showDetail?.isCouponOnly && (
+            <Card className="border-2 border-purple-200 bg-purple-50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Gift className="w-5 h-5 text-purple-600" />
+                  <p className="text-sm text-purple-800 font-medium">
+                    Try out ini hanya bisa diakses menggunakan kupon. Silakan masukkan kode kupon yang valid.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Premium Option */}
+          {!showDetail?.isCouponOnly && (
           <Card
             onClick={() => setSelectTypeRegistration('premium')}
             className={cn(
@@ -631,8 +660,9 @@ export default function RegistrationProofModal({
               </div>
             </CardContent>
           </Card>
+          )}
           {/* Free Option */}
-          {!showDetail?.isDone && (
+          {!showDetail?.isDone && !showDetail?.isCouponOnly && (
             <Card
               onClick={() => setSelectTypeRegistration('free')}
               className={cn(
@@ -694,19 +724,20 @@ export default function RegistrationProofModal({
             </Card>
           )}
 
+          {/* Coupon Option - Always shown, highlighted for coupon-only tryouts */}
           <Card
             onClick={() => setSelectTypeRegistration('coupon')}
             className={cn(
               'cursor-pointer transition-all duration-300 hover:shadow-lg border-2 relative overflow-hidden',
-              selectTypeRegistration === 'coupon'
+              selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly
                 ? 'shadow-lg scale-[1.02]'
                 : 'hover:scale-[1.01]',
             )}
             style={{
               borderColor:
-                selectTypeRegistration === 'coupon' ? mainColor : '#e5e7eb',
+                selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly ? mainColor : '#e5e7eb',
               backgroundColor:
-                selectTypeRegistration === 'coupon'
+                selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly
                   ? `${mainColor}05`
                   : 'white',
             }}
@@ -766,6 +797,12 @@ export default function RegistrationProofModal({
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
           onClick={() => {
+            // Auto-select coupon for coupon-only tryouts
+            if (showDetail?.isCouponOnly) {
+              setSelectTypeRegistration('coupon');
+              setStep(3);
+              return;
+            }
             setStep(3);
             if (selectTypeRegistration === 'premium') {
               setShowPayment(true);
@@ -984,7 +1021,9 @@ export default function RegistrationProofModal({
                   type="text"
                   placeholder="Masukkan kode kupon Anda"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  onChange={(e) => setCouponCode(e.target.value)}
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value.trim())}
+                  disabled={isLoading}
                 />
               </div>
               <p className="text-xs text-gray-500">
@@ -1003,11 +1042,20 @@ export default function RegistrationProofModal({
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
               onClick={() => {
-                // Add logic to verify coupon and proceed, e.g., handleVerifyCoupon()
-                // For now, call onRegistrationComplete with coupon flag
-                onRegistrationComplete(true, couponCode);
+                // Validasi kupon tidak kosong
+                if (!couponCode || couponCode.trim().length === 0) {
+                  toaster({
+                    title: 'Error',
+                    condition: 'warning',
+                    description: 'Silakan masukkan kode kupon!',
+                    duration: 3000,
+                  });
+                  return;
+                }
+                // isPremium = false because coupon is for free access
+                onRegistrationComplete(false, couponCode);
               }}
-              disabled={isLoading}
+              disabled={isLoading || !couponCode.trim()}
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -1021,6 +1069,11 @@ export default function RegistrationProofModal({
                 </div>
               )}
             </Button>
+            {!couponCode && (
+              <p className="text-center text-xs text-gray-500 mt-2">
+                Masukkan kode kupon untuk melanjutkan
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
