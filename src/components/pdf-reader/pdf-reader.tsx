@@ -2,7 +2,7 @@
 
 import { useChatStore } from '@/lib/store';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import {
 //   AreaHighlight,
 //   Highlight,
@@ -21,6 +21,7 @@ import {
   Scaled,
   ScaledPosition,
 } from 'react-pdf-highlighter-extended';
+import { useDebouncedCallback } from 'use-debounce';
 import ExpandableTip from './_components/ExpandableTip';
 import HighlightContainer from './_components/HighlightContainer';
 import { useProvider } from './_provider';
@@ -141,32 +142,30 @@ function PdfReader({
 
   const { sendMessage } = useChatStore();
 
-  const [pdfUrl, setPdfUrl] = useState<string>(
-    `${env.NEXT_PUBLIC_SUPABASE_PDF_URL}/document/${docUrl}`,
-  );
-  // const fetchPdf = useDebouncedCallback(async () => {
-  //   const response = await fetch(
-  //     `${env.NEXT_PUBLIC_API_URL}/document/pdf?title=${docUrl}`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: `Bearer ${Cookies.get('token')}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //     },
-  //   );
-  //   if (response.ok) {
-  //     const blob = await response.blob();
-  //     const url = URL.createObjectURL(blob);
-  //     setPdfUrl(url);
-  //   } else {
-  //     console.error('Error fetching PDF');
-  //   }
-  // }, 500);
+  const [pdfUrl, setPdfUrl] = useState<string>('');
+  const fetchPdf = useDebouncedCallback(async () => {
+    const response = await fetch(
+      `${env.NEXT_PUBLIC_SUPABASE_PDF_URL}/document/${docUrl}`,
+      {
+        method: 'GET',
+        // headers: {
+        //   Authorization: `Bearer ${Cookies.get('token')}`,
+        //   'Content-Type': 'application/json',
+        // },
+      },
+    );
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+    } else {
+      console.error('Error fetching PDF');
+    }
+  }, 500);
 
-  // useEffect(() => {
-  //   fetchPdf();
-  // }, []);
+  useEffect(() => {
+    fetchPdf();
+  }, []);
 
   console.log('PDF URL:', pdfUrl);
 
