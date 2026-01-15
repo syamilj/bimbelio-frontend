@@ -2,12 +2,12 @@
 
 import { useLeaderboardContext } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/leaderboard/_components/provider-leaderboard';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { cn } from '@/lib/utils';
+import { cn, getInitials } from '@/lib/utils';
 import { Award, Crown, Medal, Star, Trophy } from 'lucide-react';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export type TopWinnersProp = '1' | '2' | '3' | '4';
@@ -192,7 +192,29 @@ export function TopWinners() {
                           {/* Inner Ring */}
                           <div className="bg-white rounded-full p-1">
                             {/* Avatar */}
-                            <div
+                            <Avatar
+                              className={cn(
+                                'shadow-lg',
+                                winner.rank === 1
+                                  ? 'w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24'
+                                  : 'w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20',
+                              )}
+                            >
+                              <AvatarImage
+                                src={winner.image || undefined}
+                                alt={`Foto ${winner.name}`}
+                                className="object-cover"
+                              />
+                              <AvatarFallback
+                                className={cn(
+                                  'text-white font-bold text-sm md:text-base',
+                                  getInitialsBgColor(winner.rank),
+                                )}
+                              >
+                                {getInitials(winner.name)}
+                              </AvatarFallback>
+                            </Avatar>
+                            {/* <div
                               className={cn(
                                 'rounded-full overflow-hidden shadow-lg',
                                 winner.rank === 1
@@ -207,7 +229,7 @@ export function TopWinners() {
                                 height={96}
                                 className="w-full h-full object-cover"
                               />
-                            </div>
+                            </div> */}
                           </div>
                         </div>
 
@@ -414,3 +436,17 @@ export function TopWinners() {
 }
 
 export default TopWinners;
+
+// Helper function to generate color based on name
+const getInitialsBgColor = (rank: number): string => {
+  switch (rank) {
+    case 1:
+      return 'bg-yellow-500';
+    case 2:
+      return 'bg-slate-400';
+    case 3:
+      return 'bg-orange-500';
+    default:
+      return 'bg-gray-400';
+  }
+};

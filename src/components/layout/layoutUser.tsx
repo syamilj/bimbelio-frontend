@@ -1129,6 +1129,21 @@ const HeaderUser = () => {
               {isMobile && (
                 <>
                   <div className="px-3 py-2 space-y-2">
+                    <Link
+                      href={`/${website_sub_category_id_params}/user/subscription`}
+                      className="md:hidden "
+                    >
+                      <div
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] mb-4"
+                        style={{
+                          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                        }}
+                      >
+                        <Crown className="w-4 h-4" />
+                        <span>Premium</span>
+                        {/* <ChevronDown className="w-3.5 h-3.5 opacity-70" /> */}
+                      </div>
+                    </Link>
                     <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                       Sisa Penggunaan
                     </p>

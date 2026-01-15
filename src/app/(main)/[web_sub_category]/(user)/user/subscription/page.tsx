@@ -59,7 +59,7 @@ export default function SubscriptionPage() {
     userSession.user.subsPendingList.length > 0;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-4 md:px-0">
       {/* Hero Section with User Tier */}
       {userTier && userTier !== 'USER' && (
         <div className="relative overflow-hidden rounded-3xl p-6 shadow-xl bg-gradient-to-br from-amber-500 via-orange-500 to-red-600">
