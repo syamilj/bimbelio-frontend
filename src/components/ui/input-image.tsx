@@ -64,7 +64,7 @@ export function InputImage({
       />
       <div
         className={cn(
-          'w-[200px] h-[120px] border rounded-2xl p-4 bg-gray-100 flex justify-center items-center relative overflow-hidden',
+          'w-[200px] h-[120px] border rounded-3xl p-4 bg-gray-100 flex justify-center items-center relative overflow-hidden',
           PreviewImg && 'w-fit h-fit max-w-[200px]',
         )}
       >

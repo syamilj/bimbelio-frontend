@@ -150,7 +150,7 @@ export default function CompactSidebar({
             <div className="space-y-2">
               {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
                 <Button
-                  className="w-full py-3 text-sm font-bold rounded-xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-not-allowed"
+                  className="w-full py-3 text-sm font-bold rounded-3xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-not-allowed"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -161,7 +161,7 @@ export default function CompactSidebar({
               ) : (
                 <DialogPayment plan={plan}>
                   <Button
-                    className="w-full py-3 text-sm font-bold rounded-xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                    className="w-full py-3 text-sm font-bold rounded-3xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -175,7 +175,7 @@ export default function CompactSidebar({
               <Button
                 onClick={handleConsultationClick}
                 variant="outline"
-                className="w-full py-3 text-sm font-semibold rounded-xl border hover:scale-[1.02] transition-all duration-300"
+                className="w-full py-3 text-sm font-semibold rounded-3xl border hover:scale-[1.02] transition-all duration-300"
                 style={{
                   borderColor: mainColor,
                   color: mainColor,

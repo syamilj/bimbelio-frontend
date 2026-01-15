@@ -156,7 +156,7 @@ export default function Hero({
               </motion.div>
 
               {plan.maxUsers && (
-                <div className="w-fit mb-4 p-3 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
+                <div className="w-fit mb-4 p-3 rounded-3xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-amber-100 rounded-lg">
                       <Users className="w-4 h-4 text-amber-600" />
@@ -185,7 +185,7 @@ export default function Hero({
               >
                 {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
                   <Button
-                    className="px-6 py-2 rounded-xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm cursor-not-allowed"
+                    className="px-6 py-2 rounded-3xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm cursor-not-allowed"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -196,7 +196,7 @@ export default function Hero({
                 ) : (
                   <DialogPayment plan={plan}>
                     <Button
-                      className="px-6 py-2 rounded-xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm"
+                      className="px-6 py-2 rounded-3xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm"
                       style={{
                         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                       }}
@@ -209,7 +209,7 @@ export default function Hero({
                 <Button
                   variant="outline"
                   onClick={handleConsultationClick}
-                  className="px-6 py-2 rounded-xl font-semibold text-sm hover:scale-105 transition-all duration-300"
+                  className="px-6 py-2 rounded-3xl font-semibold text-sm hover:scale-105 transition-all duration-300"
                   style={{
                     borderColor: mainColor,
                     color: mainColor,
@@ -228,17 +228,17 @@ export default function Hero({
               transition={{ duration: 0.6, delay: 0.3 }}
               className="relative"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-lg bg-white/20 backdrop-blur-sm">
+              <div className="relative rounded-3xl overflow-hidden shadow-lg bg-white/20 backdrop-blur-sm">
                 {plan.image && (
                   <Image
                     src={plan.image || '/placeholder.svg'}
                     alt={plan.name}
                     width={300}
                     height={200}
-                    className="w-full h-auto rounded-2xl"
+                    className="w-full h-auto rounded-3xl"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-2xl" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-3xl" />
               </div>
 
               {/* Small floating badge */}

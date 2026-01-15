@@ -183,7 +183,7 @@ const HeroSection: React.FC = () => {
 
           <Suspense
             fallback={
-              <div className="w-full h-96 bg-gray-100 rounded-2xl animate-pulse" />
+              <div className="w-full h-96 bg-gray-100 rounded-3xl animate-pulse" />
             }
           >
             <VideoSection isMobile={isMobile} />
@@ -543,7 +543,7 @@ const StatsSection: React.FC<{
 //       )}
 
 //       {/* Placeholder height untuk mencegah layout shift */}
-//       <div className="relative overflow-hidden py-4 rounded-2xl min-h-[120px]">
+//       <div className="relative overflow-hidden py-4 rounded-3xl min-h-[120px]">
 //         {shouldRender ? (
 //           <motion.div
 //             initial={{ opacity: 0, y: 20 }}
@@ -811,7 +811,7 @@ const DesktopVideo: React.FC = () => {
   }, [isInView, isLoaded]);
 
   return (
-    <div className="relative w-full h-full rounded-xl shadow-2xl overflow-hidden bg-white">
+    <div className="relative w-full h-full rounded-3xl shadow-2xl overflow-hidden bg-white">
       <div className="flex flex-col w-full h-full">
         {/* Optimized browser bar dengan lazy loading icons */}
         {showBrowserBar && (

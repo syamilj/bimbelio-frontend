@@ -122,10 +122,10 @@ const Invitation = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="text-center p-4 rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg"
+                  className="text-center p-4 rounded-3xl bg-white/80 backdrop-blur-sm shadow-lg"
                 >
                   <div
-                    className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 mx-auto mb-3 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <div style={{ color: mainColor }}>{stat.icon}</div>
@@ -177,13 +177,13 @@ const Invitation = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               {session ? (
                 <Link
-                  href={`${website_sub_category_id}/user/try-out`}
+                  href={`${website_sub_category_id}/user/bimarena/try-out`}
                   className="flex-1"
                 >
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full px-8 py-4 rounded-2xl font-bold text-white shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                    className="w-full px-8 py-4 rounded-3xl font-bold text-white shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -199,7 +199,7 @@ const Invitation = () => {
                   onClick={() =>
                     setShowAuth((prev) => ({ ...prev, open: true }))
                   }
-                  className="flex-1 px-8 py-4 rounded-2xl font-bold text-white shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                  className="flex-1 px-8 py-4 rounded-3xl font-bold text-white shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -212,7 +212,7 @@ const Invitation = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-4 rounded-2xl font-bold border-2 bg-white transition-all duration-300"
+                className="px-6 py-4 rounded-3xl font-bold border-2 bg-white transition-all duration-300"
                 style={{
                   borderColor: mainColor,
                   color: mainColor,
@@ -274,7 +274,7 @@ const Invitation = () => {
                 {/* Header */}
                 <div className="text-center mb-8">
                   <div
-                    className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"
+                    className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: mainColor }}
                   >
                     <Award className="w-8 h-8 text-white" />
@@ -331,7 +331,7 @@ const Invitation = () => {
                     ].map((badge, index) => (
                       <div
                         key={index}
-                        className="p-4 rounded-xl text-center"
+                        className="p-4 rounded-3xl text-center"
                         style={{ backgroundColor: `${mainColor}10` }}
                       >
                         <div className="text-2xl mb-2">{badge.icon}</div>
@@ -351,7 +351,7 @@ const Invitation = () => {
               <motion.div
                 animate={{ y: [-10, 10, -10] }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="absolute -top-4 -right-4 w-16 h-16 rounded-2xl shadow-lg flex items-center justify-center"
+                className="absolute -top-4 -right-4 w-16 h-16 rounded-3xl shadow-lg flex items-center justify-center"
                 style={{ backgroundColor: secondaryColor }}
               >
                 <Sparkles className="w-8 h-8 text-white" />
@@ -360,7 +360,7 @@ const Invitation = () => {
               <motion.div
                 animate={{ y: [10, -10, 10] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -bottom-4 -left-4 w-12 h-12 rounded-xl shadow-lg flex items-center justify-center bg-white"
+                className="absolute -bottom-4 -left-4 w-12 h-12 rounded-3xl shadow-lg flex items-center justify-center bg-white"
               >
                 <div
                   className="w-6 h-6 rounded-lg"

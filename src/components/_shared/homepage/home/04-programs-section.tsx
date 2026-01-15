@@ -211,7 +211,7 @@ export default function ProgramsSection() {
                             {program.logos.length === 1 ? (
                               // Single Logo
                               <div className="relative">
-                                <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
+                                <div className="w-16 h-16 rounded-3xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
                                   <Image
                                     src={program.logos[0]}
                                     alt={program.title}
@@ -228,7 +228,7 @@ export default function ProgramsSection() {
                                 {program.logos.map((logo, idx) => (
                                   <div
                                     key={idx}
-                                    className="absolute w-12 h-12 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-white hover:scale-110 hover:z-20 transition-all duration-300"
+                                    className="absolute w-12 h-12 rounded-3xl overflow-hidden bg-white shadow-lg border-2 border-white hover:scale-110 hover:z-20 transition-all duration-300"
                                     style={{
                                       left: `${idx * 18}px`,
                                       top: `${idx * 4}px`,
@@ -318,7 +318,7 @@ export default function ProgramsSection() {
                       </div>
 
                       {/* Focus Area Box */}
-                      <div className="bg-white rounded-2xl p-5 border-2 border-gray-100">
+                      <div className="bg-white rounded-3xl p-5 border-2 border-gray-100">
                         <div className="flex items-center justify-center gap-2 mb-2">
                           <div
                             className="w-1.5 h-1.5 rounded-full"
@@ -422,7 +422,7 @@ export default function ProgramsSection() {
                             <div className="flex items-start gap-4 mb-6">
                               {/* Logo Section */}
                               <div className="flex-shrink-0">
-                                <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
+                                <div className="w-20 h-20 rounded-3xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
                                   <Image
                                     src={program.logos[0]}
                                     alt={program.title}
@@ -496,7 +496,7 @@ export default function ProgramsSection() {
                           </div>
 
                           {/* Focus Area Box */}
-                          <div className="bg-white rounded-2xl p-5 border-2 border-gray-100">
+                          <div className="bg-white rounded-3xl p-5 border-2 border-gray-100">
                             <div className="flex items-center justify-center gap-2 mb-2">
                               <div
                                 className="w-1.5 h-1.5 rounded-full"
@@ -592,7 +592,7 @@ export default function ProgramsSection() {
                               {/* Logo Section */}
                               <div className="flex-shrink-0">
                                 {program.logos.length === 1 ? (
-                                  <div className="w-20 h-20 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
+                                  <div className="w-20 h-20 rounded-3xl overflow-hidden bg-white shadow-lg border-2 border-gray-100">
                                     <Image
                                       src={program.logos[0]}
                                       alt={program.title}
@@ -608,7 +608,7 @@ export default function ProgramsSection() {
                                     {program.logos.map((logo, idx) => (
                                       <div
                                         key={idx}
-                                        className="absolute w-14 h-14 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-white hover:scale-110 hover:z-20 transition-all duration-300"
+                                        className="absolute w-14 h-14 rounded-3xl overflow-hidden bg-white shadow-lg border-2 border-white hover:scale-110 hover:z-20 transition-all duration-300"
                                         style={{
                                           left: `${idx * 18}px`,
                                           top: `${idx * 4}px`,
@@ -699,7 +699,7 @@ export default function ProgramsSection() {
                           </div>
 
                           {/* Focus Area Box */}
-                          <div className="bg-white rounded-2xl p-5 border-2 border-gray-100">
+                          <div className="bg-white rounded-3xl p-5 border-2 border-gray-100">
                             <div className="flex items-center justify-center gap-2 mb-2">
                               <div
                                 className="w-1.5 h-1.5 rounded-full"
@@ -797,7 +797,7 @@ export default function ProgramsSection() {
                             {programs[4].logos.map((logo, idx) => (
                               <div
                                 key={idx}
-                                className="absolute w-14 h-14 rounded-2xl overflow-hidden bg-white shadow-lg border-2 border-white hover:scale-110 hover:z-20 transition-all duration-300"
+                                className="absolute w-14 h-14 rounded-3xl overflow-hidden bg-white shadow-lg border-2 border-white hover:scale-110 hover:z-20 transition-all duration-300"
                                 style={{
                                   left: `${idx * 18}px`,
                                   top: `${idx * 4}px`,
@@ -885,7 +885,7 @@ export default function ProgramsSection() {
                     </div>
 
                     {/* Focus Area Box */}
-                    <div className="bg-white rounded-2xl p-5 border-2 border-gray-100">
+                    <div className="bg-white rounded-3xl p-5 border-2 border-gray-100">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <div
                           className="w-1.5 h-1.5 rounded-full"

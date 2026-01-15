@@ -230,7 +230,7 @@ const SuccessCalculator = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -296,7 +296,7 @@ const SuccessCalculator = () => {
                     Universitas Target
                   </Label>
                   <Select onValueChange={setTargetUniversity}>
-                    <SelectTrigger className="h-12 rounded-xl border-2">
+                    <SelectTrigger className="h-12 rounded-3xl border-2">
                       <SelectValue placeholder="Pilih universitas impianmu" />
                     </SelectTrigger>
                     <SelectContent>
@@ -346,7 +346,7 @@ const SuccessCalculator = () => {
                   <Button
                     onClick={handleCalculate}
                     disabled={!targetUniversity || calculationStep > 0}
-                    className="w-full h-14 rounded-2xl font-bold text-lg text-white shadow-lg transition-all duration-300"
+                    className="w-full h-14 rounded-3xl font-bold text-lg text-white shadow-lg transition-all duration-300"
                     style={{
                       background: targetUniversity
                         ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
@@ -447,7 +447,7 @@ const SuccessCalculator = () => {
                         </div>
 
                         <div
-                          className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold ${getStatusConfig(result.status).bg}`}
+                          className={`inline-flex items-center gap-2 px-4 py-2 rounded-3xl font-bold ${getStatusConfig(result.status).bg}`}
                           style={{
                             color: getStatusConfig(result.status).color,
                           }}
@@ -459,7 +459,7 @@ const SuccessCalculator = () => {
 
                       {/* University Info */}
                       {targetUniversity && (
-                        <div className="p-6 rounded-xl bg-gray-50">
+                        <div className="p-6 rounded-3xl bg-gray-50">
                           <h4 className="font-bold text-lg text-gray-900 mb-2">
                             Target: {targetUniversity}
                           </h4>
@@ -524,7 +524,7 @@ const SuccessCalculator = () => {
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: index * 0.1 }}
-                              className="flex items-start gap-3 p-3 rounded-xl bg-white border border-gray-200"
+                              className="flex items-start gap-3 p-3 rounded-3xl bg-white border border-gray-200"
                             >
                               <ChevronRight
                                 className="w-4 h-4 mt-0.5"
@@ -545,7 +545,7 @@ const SuccessCalculator = () => {
                           whileTap={{ scale: 0.98 }}
                         >
                           <Button
-                            className="w-full h-12 rounded-xl font-bold text-white shadow-lg"
+                            className="w-full h-12 rounded-3xl font-bold text-white shadow-lg"
                             style={{
                               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                             }}
@@ -558,7 +558,7 @@ const SuccessCalculator = () => {
 
                         <Button
                           variant="outline"
-                          className="w-full h-12 rounded-xl font-medium border-2"
+                          className="w-full h-12 rounded-3xl font-medium border-2"
                           style={{ borderColor: mainColor, color: mainColor }}
                           onClick={() => setShowResult(false)}
                         >
@@ -579,7 +579,7 @@ const SuccessCalculator = () => {
                     <CardContent className="p-8 h-full flex items-center justify-center">
                       <div className="text-center space-y-6">
                         <div
-                          className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center"
+                          className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center"
                           style={{ backgroundColor: `${mainColor}15` }}
                         >
                           <TrendingUp
@@ -672,10 +672,10 @@ const SuccessCalculator = () => {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-4 rounded-xl bg-white shadow-sm border border-gray-200"
+                className="text-center p-4 rounded-3xl bg-white shadow-sm border border-gray-200"
               >
                 <div
-                  className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 mx-auto mb-3 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${stat.color}15` }}
                 >
                   <div style={{ color: stat.color }}>{stat.icon}</div>

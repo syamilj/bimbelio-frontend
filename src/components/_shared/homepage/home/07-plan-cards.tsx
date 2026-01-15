@@ -305,7 +305,7 @@ const PlanCards: React.FC = () => {
             >
               <div className="mb-4 flex items-center justify-center gap-3">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-2xl shadow-lg"
+                  className="flex h-12 w-12 items-center justify-center rounded-3xl shadow-lg"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -326,7 +326,7 @@ const PlanCards: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
                   onClick={handleConsultationClick}
-                  className="px-8 py-6 rounded-2xl font-bold text-white hover:shadow-md transition-all duration-300 text-base"
+                  className="px-8 py-6 rounded-3xl font-bold text-white hover:shadow-md transition-all duration-300 text-base"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}

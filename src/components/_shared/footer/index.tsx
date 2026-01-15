@@ -33,7 +33,7 @@ export default function Footer() {
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8">
         {/* Main Footer Card */}
         <Card
-          className="border-2 shadow-xl rounded-2xl overflow-hidden mb-8"
+          className="border-2 shadow-xl rounded-3xl overflow-hidden mb-8"
           style={{ borderColor: `${mainColor}20` }}
         >
           {/* Top Accent Bar */}
@@ -81,7 +81,7 @@ export default function Footer() {
                         href="https://instagram.com/bimbelio.official"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
                         style={{
                           backgroundColor: `${mainColor}10`,
                           borderColor: `${mainColor}30`,
@@ -100,7 +100,7 @@ export default function Footer() {
                         href="https://tiktok.com/@bimbelio.official"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
                         style={{
                           backgroundColor: `${mainColor}10`,
                           borderColor: `${mainColor}30`,
@@ -119,7 +119,7 @@ export default function Footer() {
                         href="https://youtube.com/@bimbelio"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg border-2"
                         style={{
                           backgroundColor: `${mainColor}10`,
                           borderColor: `${mainColor}30`,
@@ -156,7 +156,7 @@ export default function Footer() {
                   </div>
 
                   <div
-                    className="p-4 rounded-xl border-2"
+                    className="p-4 rounded-3xl border-2"
                     style={{
                       backgroundColor: `${mainColor}08`,
                       borderColor: `${mainColor}20`,
@@ -292,7 +292,7 @@ export default function Footer() {
 
               <div className="flex flex-wrap justify-center gap-5">
                 {/* Cards */}
-                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-3xl border border-gray-100">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">Kartu</span>
                   <div className="flex items-center justify-center gap-4 h-10">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" className="h-7 object-contain" />
@@ -301,7 +301,7 @@ export default function Footer() {
                 </div>
 
                 {/* E-Wallets */}
-                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-3xl border border-gray-100">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">E-Wallet</span>
                   <div className="flex items-center justify-center gap-4 h-10">
                     <img src="/hero/astrapay-logo.svg" alt="AstraPay" className="h-8 object-contain" />
@@ -311,7 +311,7 @@ export default function Footer() {
                 </div>
 
                 {/* Virtual Account */}
-                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-3xl border border-gray-100">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">Virtual Account</span>
                   <div className="grid grid-cols-4 gap-3 place-items-center">
                     <img src="/hero/bca-logo.svg" alt="BCA" className="h-8 object-contain" />
@@ -326,7 +326,7 @@ export default function Footer() {
                 </div>
 
                 {/* PayLater */}
-                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-3xl border border-gray-100">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">PayLater</span>
                   <div className="flex items-center justify-center gap-4 h-10">
                     <img src="/hero/akulaku-logo.svg" alt="Akulaku" className="h-8 object-contain" />
@@ -334,7 +334,7 @@ export default function Footer() {
                 </div>
 
                 {/* Retail & QRIS */}
-                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-2xl border border-gray-100">
+                <div className="flex flex-col items-center px-6 py-5 bg-gray-50 rounded-3xl border border-gray-100">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">Retail & QRIS</span>
                   <div className="flex items-center justify-center gap-4 h-10">
                     <img src="/hero/qris-logo.svg" alt="QRIS" className="h-8 object-contain" />

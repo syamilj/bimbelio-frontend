@@ -36,7 +36,7 @@
 //           {/* All other sections load lazily */}
 //           <Suspense
 //             fallback={
-//               <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+//               <div className="w-full h-64 bg-gray-100 rounded-3xl animate-pulse" />
 //             }
 //           >
 //             <PlanCards />
@@ -44,7 +44,7 @@
 
 //           <Suspense
 //             fallback={
-//               <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+//               <div className="w-full h-64 bg-gray-100 rounded-3xl animate-pulse" />
 //             }
 //           >
 //             <Tryout />
@@ -52,7 +52,7 @@
 
 //           <Suspense
 //             fallback={
-//               <div className="w-full h-96 bg-gray-100 rounded-2xl animate-pulse" />
+//               <div className="w-full h-96 bg-gray-100 rounded-3xl animate-pulse" />
 //             }
 //           >
 //             <BentoGrid />
@@ -60,7 +60,7 @@
 
 //           <Suspense
 //             fallback={
-//               <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+//               <div className="w-full h-64 bg-gray-100 rounded-3xl animate-pulse" />
 //             }
 //           >
 //             <BlueprintConcept />
@@ -68,7 +68,7 @@
 
 //           <Suspense
 //             fallback={
-//               <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+//               <div className="w-full h-64 bg-gray-100 rounded-3xl animate-pulse" />
 //             }
 //           >
 //             <WhyUs />
@@ -76,7 +76,7 @@
 
 //           <Suspense
 //             fallback={
-//               <div className="w-full h-96 bg-gray-100 rounded-2xl animate-pulse" />
+//               <div className="w-full h-96 bg-gray-100 rounded-3xl animate-pulse" />
 //             }
 //           >
 //             <FaqHomepage />

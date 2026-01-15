@@ -97,7 +97,7 @@ export default function Page() {
         {tryoutInfo?.map((item, index) => (
           <div
             key={index}
-            className="flex h-full w-full flex-col rounded-2xl bg-white p-8"
+            className="flex h-full w-full flex-col rounded-3xl bg-white p-8"
           >
             <h1 className="font-regular text-[2rem]">{item.total}</h1>
             <p className="text-main-gray-text">{item.title}</p>
@@ -211,7 +211,7 @@ export default function Page() {
                             return (
                               <div
                                 key={i}
-                                className="rounded-2xl bg-main px-[.5rem] text-[.9rem] text-white cursor-pointer"
+                                className="rounded-3xl bg-main px-[.5rem] text-[.9rem] text-white cursor-pointer"
                                 onClick={() => {
                                   const fileName = `${item2.TryoutCategory.name} - ${item2.TryoutSubCategory.name}`;
                                   const data = item2.TryoutQuestion.map(

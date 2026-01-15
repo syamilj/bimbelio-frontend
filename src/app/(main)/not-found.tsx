@@ -28,7 +28,7 @@ export default function NotFound() {
 
               {/* Main icon container */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-24 h-24 bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="relative w-24 h-24 bg-gradient-to-br from-red-100 to-orange-100 rounded-3xl flex items-center justify-center shadow-lg">
                   <AlertCircle className="w-12 h-12 text-red-600" />
                 </div>
               </div>
@@ -61,7 +61,7 @@ export default function NotFound() {
             <Button
               onClick={() => router.back()}
               variant="outline"
-              className="rounded-xl border-2 border-red-300 hover:border-red-400 h-12 px-8 font-semibold text-base transition-all duration-300 hover:shadow-md text-red-600 hover:text-red-700"
+              className="rounded-3xl border-2 border-red-300 hover:border-red-400 h-12 px-8 font-semibold text-base transition-all duration-300 hover:shadow-md text-red-600 hover:text-red-700"
             >
               <ChevronLeft className="w-5 h-5 mr-2" />
               Kembali

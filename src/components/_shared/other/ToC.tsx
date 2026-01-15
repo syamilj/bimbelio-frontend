@@ -37,7 +37,7 @@ const ToC: React.FC<ToCProps> = ({ headings }) => {
   }, [handleScroll]);
 
   return (
-    <nav className="toc sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-xl p-4">
+    <nav className="toc sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto rounded-3xl p-4">
       <span className="text-m mb-2 flex items-center text-center font-medium">
         Daftar Isi
       </span>

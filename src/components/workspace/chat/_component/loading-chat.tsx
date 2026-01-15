@@ -1,4 +1,4 @@
-//src/app/(user)/user/chat/_component/loading-chat.tsx
+//src/app/(user)/user/bimbot/_component/loading-chat.tsx
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { getDate, getHours } from '@/lib/utils';
@@ -53,7 +53,7 @@ const LoadingChat = () => {
 
           {/* Loading Message Bubble */}
           <div
-            className="relative rounded-2xl px-4 py-3 shadow-md border border-transparent"
+            className="relative rounded-3xl px-4 py-3 shadow-md border border-transparent"
             style={{
               backgroundColor: `${mainColor}08`,
               borderColor: `${mainColor}20`,

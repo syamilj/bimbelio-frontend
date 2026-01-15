@@ -64,7 +64,7 @@ export default function Riwayat() {
     <div className="space-y-6">
       {/* Section Header */}
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-sm">
+        <div className="w-12 h-12 rounded-3xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-sm">
           <History className="w-6 h-6 text-white" />
         </div>
         <div className="flex-1">
@@ -105,7 +105,7 @@ export default function Riwayat() {
           {Array.from({ length: 8 }).map((_: any, i: number) => (
             <Skeleton
               key={i}
-              className="h-[200px] rounded-2xl"
+              className="h-[200px] rounded-3xl"
             />
           ))}
         </div>

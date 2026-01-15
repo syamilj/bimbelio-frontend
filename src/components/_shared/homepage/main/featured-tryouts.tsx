@@ -1,6 +1,6 @@
 'use client';
 
-import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -58,7 +58,7 @@ export default function FeaturedTryouts() {
         </div>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg animate-pulse bg-gray-300 mb-6">
+            <div className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg animate-pulse bg-gray-300 mb-6">
               <div className="w-4 h-4 bg-gray-400 rounded"></div>
               Loading...
             </div>
@@ -86,7 +86,7 @@ export default function FeaturedTryouts() {
         </div>
         <div className="max-w-7xl mx-auto text-center">
           <span
-            className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg mb-6"
+            className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg mb-6"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -189,7 +189,7 @@ const EnhancedTryOutCard = ({
     if (!tryOut || !tryoutId || !session) return;
     if (tryoutId === tryOut.id) {
       router.push(
-        `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryoutId}`,
+        `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryoutId}`,
       );
     }
   }, [tryOut, tryoutId, session]);
@@ -302,10 +302,10 @@ const EnhancedTryOutCard = ({
               return;
             }
             router.push(
-              `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryOut.id}`,
+              `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryOut.id}`,
             );
           }}
-          className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+          className="w-full py-3 rounded-3xl font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
           style={{
             background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
             boxShadow: `0 4px 14px 0 ${mainColor}40`,

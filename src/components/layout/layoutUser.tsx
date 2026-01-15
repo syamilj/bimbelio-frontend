@@ -2,14 +2,20 @@
 
 'use client';
 
-import { useParams, usePathname } from 'next/navigation';
-import { ReactNode, Suspense, useEffect, useState } from 'react';
+import { useParams, usePathname, useRouter } from 'next/navigation';
+import {
+  ReactNode,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import useMedia from 'use-media';
 
 import Sidebar from '@/app/(main)/[web_sub_category]/(user)/user/_components/sidebar';
 import { useAppContext } from '@/components/provider/provider-app';
 
-import SearchDeskstop from '@/app/(main)/[web_sub_category]/(user)/user/_components/search-dekstop';
 import SidebarUser from '@/app/(main)/[web_sub_category]/(user)/user/_components/sidebar';
 import ProviderCheckSubscription from '@/components/provider/provider-check-subscription';
 import { useSession } from '@/components/provider/provider-session-auth';
@@ -26,39 +32,98 @@ import {
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import axiosInstance from '@/lib/axios/axiosInstance';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { response } from '@/lib/response';
 import { cn } from '@/lib/utils';
-import { formatIDR } from '@/lib/utils/currency';
-import { formatDateRange } from '@/lib/utils/date';
+import { TypeCourseEnum } from '@/types/database';
 import {
+  BookOpenIcon,
   Brain,
   ChevronDown,
-  Clock,
+  Coins,
   Crown,
   Eye,
+  FileQuestionIcon,
   FileText,
   LayoutDashboardIcon,
   Menu,
   MessageSquare,
+  PlayCircleIcon,
   Search as SearchIcon,
   Settings,
   Sparkles,
   Trophy,
   User,
+  X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Notification } from '../_shared/notification';
+import { BadgeSubsInfo } from '../_shared/subs/badge-subs-info';
 import ProviderCheckLimitation from '../provider/provider-check-limitation';
 import ProviderCheckSubscriptionInstallment from '../provider/provider-check-subscription-installment';
 import ProviderCheckSubscriptionPending from '../provider/provider-check-subscription-pending';
 import { useUserLimitation } from '../provider/provider-limitation';
 import { Badge } from '../ui/badge';
+import { Input } from '../ui/input';
 import { SidebarInset, SidebarProvider } from '../ui/sidebar';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 interface LayoutUserClientProps {
   children: ReactNode;
 }
+
+type SubChapterSearchResult = {
+  id: string;
+  title: string;
+  description: string;
+  type: TypeCourseEnum;
+  spendTime: number;
+  number: number;
+  categoryName: string;
+  categoryId: string;
+  chapterTitle: string;
+  isCompleted: boolean;
+  video: string | null;
+  document: string | null;
+  materi: string | null;
+};
+
+type CourseDataType = {
+  id: string;
+  name: string;
+  CourseChapter: {
+    isDone: boolean;
+    title: string;
+    CourseSubChapter: ({
+      CourseProgress: {
+        website_sub_category_id: string;
+        id: string;
+        createdAt: Date;
+        userId: string;
+        courseSubChapterId: string;
+        totalScore: number | null;
+      }[];
+    } & {
+      number: number;
+      website_sub_category_id: string;
+      id: string;
+      title: string;
+      description: string;
+      courseChapterId: string;
+      spendTime: number;
+      type: TypeCourseEnum;
+      premium: boolean;
+      tryoutSessionId: string | null;
+      video: string | null;
+      document: string | null;
+      materi: string | null;
+    })[];
+  }[];
+  totalChapters: number;
+  completedChapters: number;
+  percentageProgress: number;
+  totalSpendTime: number;
+  totalTryout: number;
+}[];
 
 type CategoryType = {
   name: string;
@@ -80,11 +145,17 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
   // const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
-    axiosInstance.get('/category/getAllCategories').then((res) => {
-      const resData = response(res);
-      setCategory(resData.data);
-    });
-  }, []);
+    if (website_sub_category_id_params) {
+      axiosInstance
+        .get('/category/getAllCategories', {
+          params: { website_sub_category_id: website_sub_category_id_params },
+        })
+        .then((res) => {
+          const resData = response(res);
+          setCategory(resData.data);
+        });
+    }
+  }, [website_sub_category_id_params]);
 
   // Global context
   const {
@@ -113,7 +184,11 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
     const isWorkspaceRoute =
       pathname?.includes('workspace') && params?.category && params?.docsid;
-    const isCourseRoute = pathname?.includes('course') && params?.categoryId;
+    // Only treat as workspace (immersive) if it's the study/player page
+    const isCourseRoute =
+      pathname?.includes('course') &&
+      params?.categoryId &&
+      pathname?.includes('/study');
 
     if (isWorkspaceRoute || isCourseRoute) {
       setComponentName('DocViewerPage');
@@ -174,21 +249,28 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                 )}
 
                 {/* MAIN CONTENT */}
-                <SidebarInset>
+                <SidebarInset className="flex flex-col h-screen overflow-hidden">
                   {!inWorkspace && <HeaderUser />}
-                  <main
+                  <div
                     className={cn(
-                      'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 min-h-screen w-full ',
-                      // docViewer => full fixed
-                      componentName === 'DocViewerPage' &&
-                        'fixed left-0 top-0 h-full w-full',
-                      // not in workspace => push down margin
-                      !inWorkspace &&
-                        'mt-[80px] pt-4 md:pl-12 md:pr-10 md:pt-12 min-h-[calc(100vh-80px)]',
+                      'flex-1 overflow-y-auto overflow-x-hidden',
+                      !inWorkspace && 'pt-[80px]', // Space for fixed header
                     )}
                   >
-                    {children}
-                  </main>
+                    <main
+                      className={cn(
+                        'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 w-full ',
+                        // docViewer => full fixed
+                        componentName === 'DocViewerPage' &&
+                          'fixed left-0 top-0 h-full w-full',
+                        // not in workspace => add padding
+                        !inWorkspace &&
+                          'pt-4 md:pl-12 md:pr-10 md:pt-12 min-h-[calc(100vh-80px)]',
+                      )}
+                    >
+                      {children}
+                    </main>
+                  </div>
                 </SidebarInset>
               </ProviderCheckLimitation>
             </ProviderCheckSubscriptionInstallment>
@@ -203,6 +285,7 @@ const HeaderUser = () => {
   const { data: userSession } = useSession();
   const { userLimitation } = useUserLimitation();
   const { websiteSubCategory } = useWebsiteSubCategory();
+  const router = useRouter();
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -216,9 +299,161 @@ const HeaderUser = () => {
   } = useAppContext();
 
   const [showMobileSearch, setShowMobileSearch] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Responsive check
   const isMobile = useMedia({ maxWidth: '768px' });
+
+  // Fetch course data for search
+  const { data: CourseData } = useGet<CourseDataType>(
+    '/course/getCategoryForCard',
+  );
+
+  // Flatten all sub chapters for search
+  const allSubChapters = useMemo<SubChapterSearchResult[]>(() => {
+    if (!CourseData) return [];
+    return CourseData.flatMap((category) =>
+      category.CourseChapter.flatMap((chapter) =>
+        chapter.CourseSubChapter.map((subChapter) => ({
+          id: subChapter.id,
+          title: subChapter.title,
+          description: subChapter.description,
+          type: subChapter.type,
+          spendTime: subChapter.spendTime,
+          number: subChapter.number,
+          categoryName: category.name,
+          categoryId: category.id,
+          chapterTitle: chapter.title,
+          isCompleted: subChapter.CourseProgress.length > 0,
+          video: subChapter.video,
+          document: subChapter.document,
+          materi: subChapter.materi,
+        })),
+      ),
+    );
+  }, [CourseData]);
+
+  // Search filter
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim() || searchQuery.length < 2) return [];
+    const query = searchQuery.toLowerCase().trim();
+    return allSubChapters.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.categoryName.toLowerCase().includes(query) ||
+        item.chapterTitle.toLowerCase().includes(query),
+    );
+  }, [searchQuery, allSubChapters]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Update search open state
+  useEffect(() => {
+    setIsSearchOpen(searchQuery.length >= 2 && searchResults.length > 0);
+    setSelectedIndex(0);
+  }, [searchQuery, searchResults.length]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (!isSearchOpen || searchResults.length === 0) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex((prev) =>
+          prev < searchResults.length - 1 ? prev + 1 : prev,
+        );
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (searchResults[selectedIndex]) {
+          handleResultClick(searchResults[selectedIndex]);
+        }
+      } else if (e.key === 'Escape') {
+        setIsSearchOpen(false);
+        inputRef.current?.blur();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isSearchOpen, searchResults, selectedIndex]);
+
+  const handleResultClick = (result: SubChapterSearchResult) => {
+    router.push(
+      `/${website_sub_category_id_params}/user/bimcourse/${result.categoryId}/study?sub=${result.id}&tab=chat`,
+    );
+    setSearchQuery('');
+    setIsSearchOpen(false);
+  };
+
+  const getTypeIcon = (type: TypeCourseEnum) => {
+    switch (type) {
+      case 'VIDEO':
+        return <PlayCircleIcon className="w-4 h-4" />;
+      case 'DOCUMENT':
+        return <FileText className="w-4 h-4" />;
+      case 'MATERI':
+        return <BookOpenIcon className="w-4 h-4" />;
+      case 'TRYOUT':
+        return <FileQuestionIcon className="w-4 h-4" />;
+      default:
+        return <BookOpenIcon className="w-4 h-4" />;
+    }
+  };
+
+  const getTypeColor = (type: TypeCourseEnum) => {
+    switch (type) {
+      case 'VIDEO':
+        return 'bg-red-50 text-red-700 border-red-200';
+      case 'DOCUMENT':
+        return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'MATERI':
+        return 'bg-purple-50 text-purple-700 border-purple-200';
+      case 'TRYOUT':
+        return 'bg-green-50 text-green-700 border-green-200';
+      default:
+        return 'bg-gray-50 text-gray-700 border-gray-200';
+    }
+  };
+
+  const highlightMatch = (text: string) => {
+    if (!searchQuery) return text;
+    const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, i) =>
+          part.toLowerCase() === searchQuery.toLowerCase() ? (
+            <mark
+              key={i}
+              className="bg-yellow-200 text-gray-900 rounded px-0.5"
+            >
+              {part}
+            </mark>
+          ) : (
+            <span key={i}>{part}</span>
+          ),
+        )}
+      </>
+    );
+  };
 
   // Admin/user data
   const userTier = userSession?.user.tier;
@@ -247,7 +482,7 @@ const HeaderUser = () => {
     const isWarning = percentage > 80 && !isAdmin;
 
     return (
-      <div className="flex items-center gap-2 px-2 lg:px-3 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors group min-w-0">
+      <div className="flex items-center gap-2 px-2 lg:px-3 py-1.5 rounded-3xl bg-gray-50 hover:bg-gray-100 transition-colors group min-w-0">
         <div className="flex items-center justify-center shrink-0">
           <Icon
             className="w-3 h-3 lg:w-4 lg:h-4"
@@ -336,18 +571,18 @@ const HeaderUser = () => {
   return (
     <header
       className={cn(
-        'fixed left-2 md:left-0 right-2 md:right-2 top-2 z-40 h-16 bg-white/95 backdrop-blur-lg border rounded-xl border-gray-200 shadow-sm transition-all duration-300',
+        'fixed left-2 md:left-0 right-2 md:right-2 top-2 z-40 h-14 md:h-16 bg-white/95 backdrop-blur-lg border rounded-3xl border-gray-200 shadow-sm transition-all duration-300',
         !minimizeSidebar ? 'md:left-[18rem]' : 'md:left-[6rem]',
       )}
     >
-      <div className="flex items-center justify-between h-full px-3 md:px-6">
+      <div className="flex items-center justify-between h-full px-3 md:px-6 gap-2">
         {/* LEFT SECTION */}
-        <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+        <div className="flex items-center gap-2 md:gap-4 min-w-0">
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden w-9 h-9 rounded-xl shrink-0 hover:bg-gray-100 border border-gray-200"
+            className="md:hidden w-9 h-9 rounded-3xl shrink-0 hover:bg-gray-100 border border-gray-200"
             onClick={() => {
               setSidebarMobile(true);
             }}
@@ -359,7 +594,7 @@ const HeaderUser = () => {
           <div className="hidden md:flex items-center gap-4 min-w-0 flex-1">
             <div className="flex items-center gap-3 min-w-0">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <span className="text-lg">👋</span>
@@ -381,690 +616,481 @@ const HeaderUser = () => {
             </div>
           </div>
 
-          {/* Mobile Limitations Display */}
-          <div className="md:hidden flex items-center justify-center gap-1 flex-1 min-w-0 overflow-x-auto scrollbar-hide">
-            <div className="flex items-center gap-1.5 min-w-0 py-0">
-              {limitations.slice(0, 3).map((limitation, index) => {
-                const isLow =
-                  limitation.remaining <= 3 && limitation.remaining > 0;
-                const isEmpty = limitation.remaining === 0;
-                const isWarning =
-                  limitation.remaining <= 10 && limitation.remaining > 3;
-
-                return (
-                  <div
-                    key={index}
-                    className={cn(
-                      'relative flex flex-col items-center justify-center px-2 py-1 rounded-2xl shrink-0 min-w-[55px] transition-all duration-200',
-                      isEmpty
-                        ? 'bg-red-50 border border-red-200 shadow-sm'
-                        : isLow
-                          ? 'bg-orange-50 border border-orange-200 shadow-sm'
-                          : isWarning
-                            ? 'bg-yellow-50 border border-yellow-200'
-                            : 'bg-white border border-gray-200 shadow-sm',
-                    )}
-                  >
-                    {/* Label */}
-                    <span
-                      className={cn(
-                        'text-xs font-medium truncate mb-1',
-                        isEmpty
-                          ? 'text-red-700'
-                          : isLow
-                            ? 'text-orange-700'
-                            : isWarning
-                              ? 'text-yellow-700'
-                              : 'text-gray-700',
-                      )}
-                    >
-                      {limitation.label}
-                    </span>
-
-                    {/* Value */}
-                    <span
-                      className={cn(
-                        'text-sm font-bold leading-none',
-                        isEmpty
-                          ? 'text-red-600'
-                          : isLow
-                            ? 'text-orange-600'
-                            : isWarning
-                              ? 'text-yellow-600'
-                              : 'text-gray-800',
-                      )}
-                    >
-                      {userTier === 'ADMIN' ? '∞' : limitation.remaining}
-                    </span>
-                  </div>
-                );
-              })}
-
-              {/* Show more indicator if there are more limitations */}
-              {limitations.length > 3 && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="flex items-center justify-center w-12 h-8 bg-gray-100 hover:bg-gray-200 rounded-full shrink-0 transition-colors"
-                    >
-                      <span className="text-xs font-medium text-gray-600">
-                        +{limitations.length - 3}
-                      </span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="center"
-                    className="w-64 mt-2"
-                  >
-                    <div className="px-3 py-2 border-b">
-                      <p className="text-sm font-medium text-center">
-                        Sisa Penggunaan
-                      </p>
-                    </div>
-                    <div className="px-3 py-2 space-y-2">
-                      {limitations.map((limitation, index) => (
-                        <LimitationItem
-                          key={index}
-                          icon={limitation.icon}
-                          label={limitation.label}
-                          remaining={limitation.remaining}
-                          total={limitation.total}
-                          color={limitation.color}
-                        />
-                      ))}
-                    </div>
-                    {!userTier && (
-                      <>
-                        <DropdownMenuSeparator />
-                        <div className="px-3 py-2">
-                          <Button
-                            className="w-full text-white"
-                            style={{ backgroundColor: mainColor }}
-                            onClick={() => setTransactionPopUp(true)}
-                          >
-                            <Crown className="w-4 h-4 mr-2" />
-                            Upgrade Premium
-                          </Button>
-                        </div>
-                      </>
-                    )}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
+          {/* Mobile - Compact Greeting */}
+          <div className="md:hidden flex items-center gap-1.5 min-w-0 flex-1">
+            <span className="text-base">👋</span>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold text-gray-900 truncate">
+                Halo,{' '}
+                <span style={{ color: mainColor }}>
+                  {userSession?.user.name?.split(' ')[0]}
+                </span>
+              </p>
             </div>
           </div>
         </div>
 
-        {/* CENTER SECTION - Mobile Search Button */}
-        {isMobile && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-9 h-9 rounded-xl shrink-0 border border-gray-200"
-            onClick={() => setShowMobileSearch(!showMobileSearch)}
-          >
-            <SearchIcon className="w-5 h-5 text-gray-600" />
-          </Button>
-        )}
-
         {/* RIGHT SECTION */}
-        <div className="flex items-center gap-2 md:gap-3 shrink-0">
-          {/* Desktop Limitations - Modern Compact Pills */}
-          {!isMobile && (
-            <div className="hidden xl:flex items-center gap-1.5 bg-gray-50 rounded-xl px-2 py-1.5 border border-gray-100">
-              {limitations.map((limitation, index) => {
-                const Icon = limitation.icon;
-                const isLow =
-                  limitation.remaining <= 3 && limitation.remaining > 0;
-                const isEmpty = limitation.remaining === 0;
+        <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
+          {/* Mobile Search Icon */}
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden w-9 h-9 rounded-3xl hover:bg-gray-100 border border-gray-200"
+              onClick={() => setShowMobileSearch(!showMobileSearch)}
+            >
+              <SearchIcon className="w-4 h-4 text-gray-600" />
+            </Button>
+          )}
 
-                return (
-                  <Tooltip
-                    key={index}
-                    delayDuration={100}
-                  >
-                    <TooltipTrigger asChild>
+          {/* Mobile Limitations Dropdown */}
+          {isMobile && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-1.5 h-9 px-2 rounded-3xl hover:bg-gray-100 border border-gray-200"
+                >
+                  <Coins
+                    className="w-4 h-4"
+                    style={{ color: mainColor }}
+                  />
+                  <span className="text-xs font-bold text-gray-700">
+                    {userTier === 'ADMIN'
+                      ? '∞'
+                      : limitations[0]?.remaining || 0}
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-72 mt-2"
+              >
+                <div className="px-3 py-2.5 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+                  <p className="text-sm font-bold text-center text-gray-900">
+                    💎 Sisa Penggunaan
+                  </p>
+                  {!userTier && (
+                    <p className="text-xs text-center text-gray-500 mt-0.5">
+                      Upgrade untuk unlimited akses
+                    </p>
+                  )}
+                </div>
+                <div className="px-3 py-3 space-y-2 max-h-[60vh] overflow-y-auto">
+                  {limitations.map((limitation, index) => {
+                    const Icon = limitation.icon;
+                    const isLow =
+                      limitation.remaining <= 3 && limitation.remaining > 0;
+                    const isEmpty = limitation.remaining === 0;
+                    const percentage =
+                      userTier === 'ADMIN'
+                        ? 100
+                        : limitation.total > 0
+                          ? ((limitation.total - limitation.remaining) /
+                              limitation.total) *
+                            100
+                          : 0;
+
+                    return (
                       <div
+                        key={index}
                         className={cn(
-                          'flex items-center gap-1.5 px-2.5 py-1 rounded-lg transition-all duration-200 cursor-default',
+                          'p-2.5 rounded-3xl border-2 transition-all duration-200',
                           isEmpty
-                            ? 'bg-red-50 border border-red-200'
+                            ? 'bg-red-50 border-red-200'
                             : isLow
-                              ? 'bg-orange-50 border border-orange-200'
-                              : 'bg-white border border-gray-200 hover:border-gray-300',
+                              ? 'bg-orange-50 border-orange-200'
+                              : 'bg-white border-gray-100 hover:border-gray-200',
                         )}
                       >
-                        <Icon
-                          className="w-3.5 h-3.5"
-                          style={{
-                            color: isEmpty
-                              ? '#ef4444'
-                              : isLow
-                                ? '#f97316'
-                                : limitation.color,
-                          }}
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-8 h-8 rounded-lg flex items-center justify-center"
+                              style={{
+                                backgroundColor: `${limitation.color}15`,
+                              }}
+                            >
+                              <Icon
+                                className="w-4 h-4"
+                                style={{ color: limitation.color }}
+                              />
+                            </div>
+                            <span className="text-sm font-semibold text-gray-900">
+                              {limitation.label}
+                            </span>
+                          </div>
+                          {userTier === 'ADMIN' ? (
+                            <span className="text-lg font-bold text-green-600">
+                              ∞
+                            </span>
+                          ) : (
+                            <span
+                              className={cn(
+                                'text-sm font-bold',
+                                isEmpty
+                                  ? 'text-red-600'
+                                  : isLow
+                                    ? 'text-orange-600'
+                                    : 'text-gray-900',
+                              )}
+                            >
+                              {limitation.remaining}/{limitation.total}
+                            </span>
+                          )}
+                        </div>
+                        {userTier !== 'ADMIN' && (
+                          <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                            <div
+                              className={cn(
+                                'h-full rounded-full transition-all duration-300',
+                                isEmpty
+                                  ? 'bg-red-500'
+                                  : isLow
+                                    ? 'bg-orange-500'
+                                    : 'bg-green-500',
+                              )}
+                              style={{ width: `${100 - percentage}%` }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                {!userTier && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <div className="px-3 py-3">
+                      <Button
+                        className="w-full text-white shadow-lg hover:shadow-xl transition-all"
+                        style={{ backgroundColor: mainColor }}
+                        onClick={() => {
+                          setTransactionPopUp(true);
+                        }}
+                      >
+                        <Crown className="w-4 h-4 mr-2" />
+                        Upgrade ke Premium
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
+          {/* Desktop Search - Interactive Input */}
+          {!isMobile && (
+            <div
+              ref={searchRef}
+              className="hidden md:block relative"
+            >
+              <div className="relative">
+                <div
+                  className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors z-10"
+                  style={{ color: isSearchOpen ? mainColor : '#9ca3af' }}
+                >
+                  <SearchIcon className="w-4 h-4" />
+                </div>
+                <Input
+                  ref={inputRef}
+                  type="text"
+                  placeholder="Cari materi pembelajaran..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10 h-10 w-64 rounded-3xl border-2 border-gray-200 focus:border-transparent text-sm font-medium transition-all"
+                  style={{
+                    boxShadow: isSearchOpen
+                      ? `0 0 0 3px ${mainColor}20`
+                      : undefined,
+                  }}
+                />
+                {searchQuery && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setSearchQuery('');
+                      setIsSearchOpen(false);
+                    }}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-3xl hover:bg-gray-100 z-10"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+
+                {/* Search Results Dropdown */}
+                {isSearchOpen && (
+                  <div
+                    className="absolute top-full mt-2 w-[500px] right-0 bg-white border-2 rounded-3xl shadow-2xl z-50 overflow-hidden"
+                    style={{ borderColor: `${mainColor}40` }}
+                  >
+                    {/* Results Header */}
+                    <div
+                      className="px-4 py-2.5 border-b flex items-center justify-between"
+                      style={{ backgroundColor: `${mainColor}08` }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Sparkles
+                          className="w-4 h-4"
+                          style={{ color: mainColor }}
                         />
-                        <span
-                          className={cn(
-                            'text-xs font-semibold',
-                            isEmpty
-                              ? 'text-red-600'
-                              : isLow
-                                ? 'text-orange-600'
-                                : 'text-gray-700',
-                          )}
-                        >
-                          {limitation.label}
-                        </span>
-                        <span
-                          className={cn(
-                            'text-xs font-bold px-1.5 py-0.5 rounded-md',
-                            isEmpty
-                              ? 'bg-red-100 text-red-700'
-                              : isLow
-                                ? 'bg-orange-100 text-orange-700'
-                                : 'bg-gray-100 text-gray-600',
-                          )}
-                        >
-                          {userTier === 'ADMIN'
-                            ? '∞'
-                            : `${limitation.remaining}`}
+                        <span className="text-sm font-bold text-gray-700">
+                          {searchResults.length} hasil
                         </span>
                       </div>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      side="bottom"
-                      className="text-xs"
-                    >
-                      <p>
-                        {limitation.label}:{' '}
-                        {userTier === 'ADMIN'
-                          ? 'Unlimited'
-                          : `${limitation.remaining}/${limitation.total}`}
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              })}
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <kbd className="px-2 py-0.5 text-[10px] font-semibold bg-gray-100 border border-gray-200 rounded">
+                          ↑↓
+                        </kbd>
+                        <span>navigasi</span>
+                        <kbd className="px-2 py-0.5 text-[10px] font-semibold bg-gray-100 border border-gray-200 rounded">
+                          Enter
+                        </kbd>
+                      </div>
+                    </div>
+
+                    {/* Results List */}
+                    <div className="max-h-[400px] overflow-y-auto">
+                      <div className="p-2">
+                        {searchResults.map((result, index) => (
+                          <div
+                            key={result.id}
+                            onClick={() => handleResultClick(result)}
+                            className={`p-3 rounded-3xl transition-all mb-1 group cursor-pointer ${
+                              index === selectedIndex
+                                ? 'ring-2 ring-offset-1'
+                                : 'hover:bg-gray-50'
+                            }`}
+                            style={{
+                              backgroundColor:
+                                index === selectedIndex
+                                  ? `${mainColor}08`
+                                  : undefined,
+                              ...(index === selectedIndex
+                                ? ({
+                                    '--tw-ring-color': mainColor,
+                                  } as React.CSSProperties)
+                                : {}),
+                            }}
+                          >
+                            <div className="flex items-start gap-3">
+                              {/* Icon */}
+                              <div
+                                className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                                style={{
+                                  backgroundColor: `${mainColor}15`,
+                                  color: mainColor,
+                                }}
+                              >
+                                {getTypeIcon(result.type)}
+                              </div>
+
+                              {/* Content */}
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-start justify-between gap-2 mb-1">
+                                  <h4 className="text-sm font-semibold text-gray-900 line-clamp-1">
+                                    {highlightMatch(result.title)}
+                                  </h4>
+                                  <Badge
+                                    className={`text-[10px] px-1.5 py-0.5 shrink-0 ${getTypeColor(result.type)}`}
+                                  >
+                                    {result.type}
+                                  </Badge>
+                                </div>
+                                <p className="text-xs text-gray-600 line-clamp-1 mb-1.5">
+                                  {highlightMatch(result.description)}
+                                </p>
+                                <div className="flex items-center gap-2 text-xs text-gray-500">
+                                  <span className="font-medium">
+                                    {result.categoryName}
+                                  </span>
+                                  <span>•</span>
+                                  <span>{result.chapterTitle}</span>
+                                  {result.isCompleted && (
+                                    <>
+                                      <span>•</span>
+                                      <span className="text-green-600 font-medium">
+                                        ✓ Selesai
+                                      </span>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
+          )}
+
+          {/* Desktop Limitations Dropdown - Single Clean Button */}
+          {!isMobile && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="hidden md:flex items-center gap-2 h-10 px-3 rounded-3xl hover:bg-gray-50 border border-gray-200 transition-all"
+                >
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-8 h-8 rounded-3xl flex items-center justify-center"
+                      style={{ backgroundColor: `${mainColor}15` }}
+                    >
+                      <Coins
+                        className="w-4 h-4"
+                        style={{ color: mainColor }}
+                      />
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-[10px] font-medium text-gray-500 leading-none">
+                        Sisa Coin
+                      </span>
+                      <span className="text-sm font-bold text-gray-900 leading-tight">
+                        {userTier === 'ADMIN'
+                          ? '∞'
+                          : `${limitations[0]?.remaining || 0}`}
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-80 mt-2"
+              >
+                <div className="px-4 py-3 border-b">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-gray-900">
+                      Sisa Penggunaan
+                    </p>
+                    {userTier && (
+                      <Badge
+                        className="text-white text-xs font-medium"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                        {userTier}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <div className="p-3 space-y-2 max-h-[70vh] overflow-y-auto">
+                  {limitations.map((limitation, index) => {
+                    const Icon = limitation.icon;
+                    const isLow =
+                      limitation.remaining <= 3 && limitation.remaining > 0;
+                    const isEmpty = limitation.remaining === 0;
+                    const percentage =
+                      userTier === 'ADMIN'
+                        ? 100
+                        : limitation.total > 0
+                          ? ((limitation.total - limitation.remaining) /
+                              limitation.total) *
+                            100
+                          : 0;
+
+                    return (
+                      <div
+                        key={index}
+                        className="p-3 rounded-lg border bg-white hover:bg-gray-50 transition-colors"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-8 h-8 rounded-lg flex items-center justify-center"
+                              style={{
+                                backgroundColor: `${limitation.color}15`,
+                              }}
+                            >
+                              <Icon
+                                className="w-4 h-4"
+                                style={{ color: limitation.color }}
+                              />
+                            </div>
+                            <span className="text-sm font-medium text-gray-900">
+                              {limitation.label}
+                            </span>
+                          </div>
+                          {userTier === 'ADMIN' ? (
+                            <span className="text-lg font-bold text-green-600">
+                              ∞
+                            </span>
+                          ) : (
+                            <span
+                              className={cn(
+                                'text-base font-bold',
+                                isEmpty
+                                  ? 'text-red-600'
+                                  : isLow
+                                    ? 'text-orange-600'
+                                    : 'text-gray-900',
+                              )}
+                            >
+                              {limitation.remaining}
+                            </span>
+                          )}
+                        </div>
+                        {userTier !== 'ADMIN' && (
+                          <div className="space-y-1">
+                            <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                              <div
+                                className={cn(
+                                  'h-full rounded-full transition-all duration-300',
+                                  isEmpty
+                                    ? 'bg-red-500'
+                                    : isLow
+                                      ? 'bg-orange-500'
+                                      : 'bg-green-500',
+                                )}
+                                style={{ width: `${100 - percentage}%` }}
+                              />
+                            </div>
+                            <div className="flex justify-between items-center text-xs text-gray-500">
+                              <span>0</span>
+                              <span>{limitation.total}</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                {!userTier && (
+                  <div className="p-3 pt-2 border-t">
+                    <Button
+                      className="w-full text-white h-9 text-sm font-medium"
+                      style={{ backgroundColor: mainColor }}
+                      onClick={() => {
+                        setTransactionPopUp(true);
+                      }}
+                    >
+                      <Crown className="w-4 h-4 mr-2" />
+                      Upgrade ke Premium
+                    </Button>
+                  </div>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
 
           {/* Status Badge - Premium Design */}
-          {userTier === 'ADMIN' ||
-          userTier === 'SUPER_ADMIN' ||
-          userTier === 'PREMIUM' ? (
-            <div
-              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              <Crown className="w-4 h-4" />
-              <span>Premium</span>
-              <ChevronDown className="w-3.5 h-3.5 opacity-70" />
-            </div>
-          ) : (
-            <Tooltip delayDuration={100}>
-              <TooltipTrigger className="cursor-pointer">
-                <div
-                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
-                  style={{
-                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                  }}
-                >
-                  <Crown className="w-4 h-4" />
-                  <span>{userTier || 'Free Tier'}</span>
-                  <ChevronDown className="w-3.5 h-3.5 opacity-70" />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent
-                className="min-w-xs max-w-[350px] p-3 max-h-[90vh] overflow-y-auto"
-                side="bottom"
-                align="end"
-              >
-                <div className="space-y-3">
-                  {/* Subscription Aktif */}
-                  <div className="space-y-2">
-                    <p className="text-sm font-semibold text-center">
-                      Subscription Aktif
-                    </p>
-                    {userSession?.user.subsList &&
-                    userSession.user.subsList.length > 0 ? (
-                      <div className="space-y-2">
-                        {userSession.user.subsList.map((sub, index) => {
-                          const isInstallment =
-                            sub.paymentType === 'INSTALLMENT';
-                          let currentInstallment:
-                            | (typeof sub.SubscriptionInstallment)[0]
-                            | null =
-                            sub.SubscriptionInstallment[
-                              sub.SubscriptionInstallment.length - 1
-                            ] || null;
+          <BadgeSubsInfo />
 
-                          sub.SubscriptionInstallment.forEach((inst) => {
-                            if (
-                              currentInstallment &&
-                              inst.isPaid === false &&
-                              inst.installmentNumber <
-                                currentInstallment?.installmentNumber
-                            ) {
-                              currentInstallment = inst;
-                            }
-                          });
-                          return (
-                            <div
-                              key={sub.id}
-                              className="p-2 rounded-lg bg-green-50 border border-green-200"
-                            >
-                              <div className="flex flex-col items-start justify-center mb-1 gap-1">
-                                <span
-                                  className="text-[9px] px-2 py-0.5 rounded-full text-white font-medium flex items-center justify-center"
-                                  style={{
-                                    backgroundColor: mainColor,
-                                  }}
-                                >
-                                  {sub.planTier}
-                                </span>
-                                <span className="text-xs font-semibold text-gray-900 truncate">
-                                  {sub.planName}
-                                </span>
-                              </div>
-                              <p className="text-xs text-gray-600 mb-1 line-clamp-2">
-                                {sub.planDescription}
-                              </p>
-                              {sub.SubscriptionFeature &&
-                                sub.SubscriptionFeature.length > 0 && (
-                                  <div className="mb-2">
-                                    <p className="text-xs font-medium text-gray-700 mb-1">
-                                      Fitur:
-                                    </p>
-                                    <div className="flex flex-wrap gap-1">
-                                      {sub.SubscriptionFeature.map(
-                                        (feature, featureIndex) => (
-                                          <span
-                                            key={feature.id}
-                                            className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-700 font-medium"
-                                          >
-                                            {feature.type === 'DOCUMENT' &&
-                                              '📄 Document'}
-                                            {feature.type === 'COURSE' &&
-                                              '📚 Course'}
-                                            {feature.type === 'LIVECLASS' &&
-                                              '🎥 Live Class'}
-                                          </span>
-                                        ),
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                              {/* Current Installment Info */}
-                              {isInstallment &&
-                                currentInstallment &&
-                                currentInstallment.isPaid === false && (
-                                  <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
-                                    <p className="text-[11px] font-semibold text-amber-900 mb-2 flex items-center gap-1">
-                                      <Clock className="w-3 h-3" />
-                                      Cicilan
-                                    </p>
-                                    <div className="space-y-1.5">
-                                      <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                          <span className="text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
-                                            #
-                                            {
-                                              currentInstallment.installmentNumber
-                                            }
-                                          </span>
-                                          <span className="text-sm font-bold text-gray-900">
-                                            {formatIDR(
-                                              currentInstallment.amount,
-                                            )}
-                                          </span>
-                                        </div>
-                                        {currentInstallment.isPaid ? (
-                                          <Badge className="bg-green-100 text-green-700 text-[9px] px-1.5 py-0">
-                                            ✓ Lunas
-                                          </Badge>
-                                        ) : new Date(
-                                            currentInstallment.dueDate,
-                                          ) < new Date() ? (
-                                          <Badge className="bg-red-100 text-red-700 text-[9px] px-1.5 py-0">
-                                            ⚠ Tertunda
-                                          </Badge>
-                                        ) : (
-                                          <Badge className="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0">
-                                            Menunggu Pembayaran
-                                          </Badge>
-                                        )}
-                                      </div>
-
-                                      <div className="grid grid-cols-3 gap-1.5 text-[10px]">
-                                        <div>
-                                          <p className="text-amber-700 font-medium text-[9px]">
-                                            Jatuh Tempo
-                                          </p>
-                                          <p className="text-gray-900 font-semibold">
-                                            {new Date(
-                                              currentInstallment.dueDate,
-                                            ).toLocaleDateString('id-ID', {
-                                              day: 'numeric',
-                                              month: 'short',
-                                            })}
-                                          </p>
-                                        </div>
-                                        <div>
-                                          <p className="text-amber-700 font-medium text-[9px]">
-                                            Tenggang
-                                          </p>
-                                          <p className="text-green-600 font-semibold">
-                                            {new Date(
-                                              currentInstallment.gracePeriodEndDate,
-                                            ).toLocaleDateString('id-ID', {
-                                              day: 'numeric',
-                                              month: 'short',
-                                            })}
-                                          </p>
-                                        </div>
-
-                                        <div>
-                                          <p className="text-amber-700 font-medium text-[9px]">
-                                            Akses Berakhir
-                                          </p>
-                                          <p className="text-gray-900 font-semibold">
-                                            {new Date(
-                                              currentInstallment.expiredAccessDate,
-                                            ).toLocaleDateString('id-ID', {
-                                              day: 'numeric',
-                                              month: 'short',
-                                            })}
-                                          </p>
-                                        </div>
-                                      </div>
-
-                                      {currentInstallment.lateFee > 0 &&
-                                        !currentInstallment.isPaid &&
-                                        new Date(currentInstallment.dueDate) <
-                                          new Date() && (
-                                          <div className="p-1.5 bg-orange-100 rounded border border-orange-300">
-                                            <p className="text-[9px] text-orange-700 font-semibold">
-                                              Denda:{' '}
-                                              {formatIDR(
-                                                currentInstallment.lateFee,
-                                              )}
-                                            </p>
-                                          </div>
-                                        )}
-                                      <Button
-                                        className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-lg bg-green-50 border-green-400"
-                                        variant={'outline'}
-                                        onClick={() =>
-                                          setPagesSetting('installment')
-                                        }
-                                      >
-                                        Bayar Sekarang
-                                      </Button>
-                                    </div>
-                                  </div>
-                                )}
-                              {isInstallment &&
-                                currentInstallment &&
-                                currentInstallment.isPaid && (
-                                  <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
-                                    <div>
-                                      <p className="text-amber-700 font-medium text-[9px]">
-                                        Akses Berakhir
-                                      </p>
-                                      <p className="text-gray-900 font-semibold text-xs">
-                                        {new Date(
-                                          currentInstallment.expiredAccessDate,
-                                        ).toLocaleDateString('id-ID', {
-                                          day: 'numeric',
-                                          month: 'long',
-                                          year: 'numeric',
-                                        })}
-                                      </p>
-                                    </div>
-                                  </div>
-                                )}
-                              {sub.paymentType === 'FULL_PAYMENT' && (
-                                <div className="flex items-center justify-between text-xs">
-                                  <span className="text-gray-500">
-                                    Expired:{' '}
-                                    {new Date(
-                                      sub.planExpire,
-                                    ).toLocaleDateString('id-ID')}
-                                  </span>
-                                </div>
-                              )}
-                              <Button
-                                asChild
-                                variant="outline"
-                                size="sm"
-                                className="w-full mt-2 h-7 text-xs"
-                              >
-                                <Link href={`/price/${sub.planSlug}`}>
-                                  Lihat Detail
-                                </Link>
-                              </Button>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <p className="text-xs text-gray-500 text-center">
-                        Tidak ada subscription aktif
-                      </p>
-                    )}
-                    {userSession?.user.role !== 'USER' && (
-                      <div className="flex justify-center w-full">
-                        <Badge className="bg-amber-400 text-white">
-                          {userTier}
-                        </Badge>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Subscription Pending */}
-                  {userSession?.user.subsPendingList &&
-                    userSession.user.subsPendingList.length > 0 && (
-                      <div className="space-y-2 pt-2 border-t border-gray-200">
-                        <p className="text-sm font-semibold text-center text-orange-600">
-                          Subscription Pending
-                        </p>
-                        <div className="space-y-2">
-                          {userSession.user.subsPendingList.map(
-                            (subPending, index) => (
-                              <div
-                                key={subPending.id}
-                                className="p-2 rounded-lg bg-orange-50 border border-orange-200"
-                              >
-                                <div className="flex flex-col items-start justify-center mb-1 gap-1">
-                                  <div className="flex items-center gap-2">
-                                    <span
-                                      className="text-[9px] px-2 py-0.5 rounded-full text-white font-medium flex items-center justify-center"
-                                      style={{
-                                        backgroundColor: '#f59e0b',
-                                      }}
-                                    >
-                                      {subPending.planTier === 'Limitation'
-                                        ? 'Koin'
-                                        : subPending.planTier}
-                                    </span>
-                                    <span className="text-[8px] px-1.5 py-0.5 rounded-md bg-orange-100 text-orange-700 font-medium">
-                                      PENDING
-                                    </span>
-                                  </div>
-                                  <span className="text-xs font-semibold text-gray-900 truncate">
-                                    {subPending.planName}
-                                  </span>
-                                </div>
-                                <p className="text-xs text-gray-600 mb-1 line-clamp-2">
-                                  {subPending.planDescription}
-                                </p>
-
-                                {/* Subscription Pending Features dengan Timeline */}
-                                {subPending.SubscriptionPendingFeature &&
-                                  subPending.SubscriptionPendingFeature.length >
-                                    0 && (
-                                    <div className="mb-2">
-                                      <p className="text-xs font-medium text-gray-700 mb-1">
-                                        Fitur:
-                                      </p>
-                                      <div className="space-y-1">
-                                        {subPending.SubscriptionPendingFeature.map(
-                                          (feature, featureIndex) => (
-                                            <div
-                                              key={feature.id}
-                                              className="p-1.5 rounded-md bg-yellow-50 border border-yellow-200"
-                                            >
-                                              <div className="flex items-center justify-between mb-1">
-                                                <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-yellow-200 text-yellow-800 font-medium">
-                                                  {feature.type ===
-                                                    'DOCUMENT' && '📄 Document'}
-                                                  {feature.type === 'COURSE' &&
-                                                    '📚 Course'}
-                                                  {feature.type ===
-                                                    'LIVECLASS' &&
-                                                    '🎥 Live Class'}
-                                                </span>
-                                              </div>
-                                              {/* Timeline untuk pending feature */}
-                                              <div className="text-[10px] text-green-600 pt-1 border-t border-yellow-300">
-                                                Aktif pada{' '}
-                                                {formatDateRange(
-                                                  feature.validFrom,
-                                                  feature.validUntil,
-                                                )}
-                                              </div>
-                                            </div>
-                                          ),
-                                        )}
-                                      </div>
-                                    </div>
-                                  )}
-
-                                {/* Subscription Pending Limitation */}
-                                {subPending.SubscriptionPendingLimitation && (
-                                  <div className="mb-2">
-                                    <p className="text-xs font-medium text-gray-700 mb-1">
-                                      Coin :
-                                    </p>
-                                    <div className="p-1.5 rounded-md bg-yellow-50 border border-yellow-200">
-                                      <div className="grid grid-cols-2 gap-1 mb-1">
-                                        <div className="text-[10px] text-yellow-800">
-                                          <span className="font-medium">
-                                            Chat:
-                                          </span>{' '}
-                                          {
-                                            subPending
-                                              .SubscriptionPendingLimitation
-                                              .chat
-                                          }
-                                        </div>
-                                        <div className="text-[10px] text-yellow-800">
-                                          <span className="font-medium">
-                                            Notes:
-                                          </span>{' '}
-                                          {
-                                            subPending
-                                              .SubscriptionPendingLimitation
-                                              .notes
-                                          }
-                                        </div>
-                                        <div className="text-[10px] text-yellow-800">
-                                          <span className="font-medium">
-                                            Vision:
-                                          </span>{' '}
-                                          {
-                                            subPending
-                                              .SubscriptionPendingLimitation
-                                              .vision
-                                          }
-                                        </div>
-                                        <div className="text-[10px] text-yellow-800">
-                                          <span className="font-medium">
-                                            Quiz:
-                                          </span>{' '}
-                                          {
-                                            subPending
-                                              .SubscriptionPendingLimitation
-                                              .quiz
-                                          }
-                                        </div>
-                                        <div className="text-[10px] text-yellow-800 col-span-2">
-                                          <span className="font-medium">
-                                            Tryout:
-                                          </span>{' '}
-                                          {
-                                            subPending
-                                              .SubscriptionPendingLimitation
-                                              .tryout
-                                          }
-                                        </div>
-                                      </div>
-                                      <div className="text-[10px] text-green-600 pt-1 border-t border-yellow-300">
-                                        Aktif pada{' '}
-                                        {formatDateRange(
-                                          subPending
-                                            .SubscriptionPendingLimitation
-                                            .validFrom,
-                                          subPending
-                                            .SubscriptionPendingLimitation
-                                            .validUntil,
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            ),
-                          )}
-                        </div>
-                      </div>
-                    )}
-                </div>
-
-                <div className="flex flex-col gap-2 mt-4 pt-3 border-t border-gray-200">
-                  {/* Button Lihat Detail Subscription */}
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full items-center gap-2 rounded-xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
-                    style={{
-                      borderColor: mainColor,
-                      color: mainColor,
-                    }}
-                  >
-                    <Link
-                      href={`/${website_sub_category_id_params}/user/subscription`}
-                    >
-                      <Settings className="w-3 h-3 lg:w-4 lg:h-4" />
-                      <span>Kelola Subscription</span>
-                    </Link>
-                  </Button>
-
-                  {/* Button Beli Subscription */}
-                  <Button
-                    className="w-full items-center gap-1 lg:gap-2 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
-                    style={{ backgroundColor: mainColor }}
-                    onClick={() => setTransactionPopUp(true)}
-                  >
-                    <Sparkles className="w-3 h-3 lg:w-4 lg:h-4" />
-                    <span className="hidden lg:inline">Beli Subscription</span>
-                    <span className="lg:hidden">Beli</span>
-                  </Button>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          )}
+          {/* Notification Icon */}
+          <Notification />
 
           {/* User Profile Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2.5 h-10 px-2 pr-3 rounded-xl hover:bg-gray-50 transition-all duration-200 shrink-0 border border-gray-100"
+                className="flex items-center gap-2.5 h-10 px-2 pr-3 rounded-3xl hover:bg-gray-50 transition-all duration-200 shrink-0 border border-gray-100"
               >
                 <Avatar className="w-7 h-7 ring-2 ring-offset-1 ring-gray-100">
                   <AvatarImage
@@ -1171,14 +1197,159 @@ const HeaderUser = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Notification />
         </div>
       </div>
 
-      {/* Mobile Search Dropdown */}
+      {/* Mobile Search - Interactive */}
       {isMobile && showMobileSearch && (
-        <div className="border-t border-gray-200 p-4 bg-white">
-          <SearchDeskstop />
+        <div className="border-t border-gray-200 p-3 bg-white">
+          <div
+            ref={searchRef}
+            className="relative"
+          >
+            <div className="relative">
+              <div
+                className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors z-10"
+                style={{ color: isSearchOpen ? mainColor : '#9ca3af' }}
+              >
+                <SearchIcon className="w-5 h-5" />
+              </div>
+              <Input
+                ref={inputRef}
+                type="text"
+                placeholder="Cari materi, video, tryout, atau dokumen..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+                className="pl-12 pr-12 h-12 rounded-3xl border-2 border-gray-200 focus:border-transparent text-sm font-medium transition-all"
+                style={{
+                  boxShadow: isSearchOpen
+                    ? `0 0 0 3px ${mainColor}20`
+                    : undefined,
+                }}
+              />
+              {searchQuery && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setIsSearchOpen(false);
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-3xl hover:bg-gray-100 z-10"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
+              )}
+
+              {/* Search Results Dropdown */}
+              {isSearchOpen && (
+                <div
+                  className="absolute top-full mt-2 w-full left-0 bg-white border-2 rounded-3xl shadow-2xl z-50 overflow-hidden"
+                  style={{ borderColor: `${mainColor}40` }}
+                >
+                  {/* Results Header */}
+                  <div
+                    className="px-4 py-2.5 border-b flex items-center justify-between"
+                    style={{ backgroundColor: `${mainColor}08` }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Sparkles
+                        className="w-4 h-4"
+                        style={{ color: mainColor }}
+                      />
+                      <span className="text-sm font-bold text-gray-700">
+                        {searchResults.length} hasil
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                      <kbd className="px-1.5 py-0.5 text-[10px] font-semibold bg-gray-100 border border-gray-200 rounded">
+                        ↑↓
+                      </kbd>
+                    </div>
+                  </div>
+
+                  {/* Results List */}
+                  <div className="max-h-[60vh] overflow-y-auto">
+                    <div className="p-2">
+                      {searchResults.map((result, index) => (
+                        <div
+                          key={result.id}
+                          onClick={() => {
+                            handleResultClick(result);
+                            setShowMobileSearch(false);
+                          }}
+                          className={`p-3 rounded-3xl transition-all mb-1.5 group cursor-pointer ${
+                            index === selectedIndex
+                              ? 'ring-2 ring-offset-1'
+                              : 'active:bg-gray-100'
+                          }`}
+                          style={{
+                            backgroundColor:
+                              index === selectedIndex
+                                ? `${mainColor}08`
+                                : undefined,
+                            ...(index === selectedIndex
+                              ? ({
+                                  '--tw-ring-color': mainColor,
+                                } as React.CSSProperties)
+                              : {}),
+                          }}
+                        >
+                          <div className="flex items-start gap-3">
+                            {/* Icon */}
+                            <div
+                              className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                              style={{
+                                backgroundColor: `${mainColor}15`,
+                                color: mainColor,
+                              }}
+                            >
+                              {getTypeIcon(result.type)}
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2 mb-1">
+                                <h4 className="text-sm font-semibold text-gray-900 line-clamp-2">
+                                  {highlightMatch(result.title)}
+                                </h4>
+                                <Badge
+                                  className={`text-[10px] px-1.5 py-0.5 shrink-0 ${getTypeColor(result.type)}`}
+                                >
+                                  {result.type}
+                                </Badge>
+                              </div>
+                              <p className="text-xs text-gray-600 line-clamp-2 mb-1.5">
+                                {highlightMatch(result.description)}
+                              </p>
+                              <div className="flex items-center gap-1.5 text-xs text-gray-500 flex-wrap">
+                                <span className="font-medium">
+                                  {result.categoryName}
+                                </span>
+                                <span>•</span>
+                                <span className="line-clamp-1">
+                                  {result.chapterTitle}
+                                </span>
+                                {result.isCompleted && (
+                                  <>
+                                    <span>•</span>
+                                    <span className="text-green-600 font-medium">
+                                      ✓ Selesai
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </header>

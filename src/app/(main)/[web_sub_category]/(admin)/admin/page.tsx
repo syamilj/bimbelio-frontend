@@ -521,7 +521,7 @@ export default function UserManagementDashboard() {
                     setPage(1);
                   }}
                 >
-                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
                     <div className="flex items-center">
                       <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
                       <SelectValue placeholder="All Roles" />
@@ -541,7 +541,7 @@ export default function UserManagementDashboard() {
                     setPage(1);
                   }}
                 >
-                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
                     <div className="flex items-center">
                       <Filter className="mr-2 h-4 w-4 text-muted-foreground" />
                       <SelectValue placeholder="All Roles" />
@@ -559,7 +559,7 @@ export default function UserManagementDashboard() {
                   value={sortOption}
                   onValueChange={(value: any) => setSortOption(value)}
                 >
-                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-xl border border-gray-300 px-3">
+                  <SelectTrigger className="flex h-10 w-[180px] items-center justify-between rounded-3xl border border-gray-300 px-3">
                     <div className="flex items-center">
                       {sortOption === 'LATEST' ? (
                         <SortDesc className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -579,7 +579,7 @@ export default function UserManagementDashboard() {
           </div>
 
           {/* User Table */}
-          <div className="overflow-hidden rounded-xl bg-white shadow">
+          <div className="overflow-hidden rounded-3xl bg-white shadow">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -983,7 +983,7 @@ const DialogDetailSubscription = ({
               {subData.map((sub, index) => (
                 <div
                   key={sub.id}
-                  className="rounded-xl border border-gray-200 bg-gradient-to-br from-blue-50/50 via-indigo-50/30 to-purple-50/50 p-4 hover:shadow-md transition-shadow duration-200"
+                  className="rounded-3xl border border-gray-200 bg-gradient-to-br from-blue-50/50 via-indigo-50/30 to-purple-50/50 p-4 hover:shadow-md transition-shadow duration-200"
                 >
                   <div className="space-y-3">
                     {/* Title Section */}

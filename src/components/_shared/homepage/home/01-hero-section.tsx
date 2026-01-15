@@ -88,7 +88,7 @@ const HeroSection: React.FC = () => {
           {/* Hero Heading - Image dengan Text Skeleton untuk SEO */}
           <div className="w-full max-w-5xl mb-6 md:mb-10 relative">
             {/* <div
-              className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-2xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}
+              className={`bg-gradient-to-b from-slate-900 to-slate-800 rounded-3xl p-8 md:p-12 border-2 border-yellow-400/50 relative overflow-hidden transition-opacity duration-300 ${imageLoaded ? 'hidden' : 'block'}`}
             >
               <div
                 className="absolute inset-0 opacity-10"
@@ -116,10 +116,10 @@ const HeroSection: React.FC = () => {
                   Satu Akun Untuk SNBT, Mandiri PTN & Kedinasan
                 </p>
 
-                <div className="bg-yellow-400 text-slate-900 rounded-xl px-6 py-4 font-bold text-center">
+                <div className="bg-yellow-400 text-slate-900 rounded-3xl px-6 py-4 font-bold text-center">
                   Pengajar 100% UI, UGM, ITB, & Juara OSN
                 </div>
-                <div className="bg-slate-700/50 border-2 border-yellow-400/30 rounded-xl p-6 space-y-3">
+                <div className="bg-slate-700/50 border-2 border-yellow-400/30 rounded-3xl p-6 space-y-3">
                   <div className="text-white">
                     <p className="text-sm font-semibold mb-2">Full timeline:</p>
                     <p className="text-base md:text-lg font-bold">
@@ -162,7 +162,7 @@ const HeroSection: React.FC = () => {
             {/* Main CTA - Redesigned dengan warna gradient lebih menarik */}
             <button
               onClick={handleCTAClick}
-              className="group relative flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black text-base md:text-lg text-white shadow-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border-2 border-white/20"
+              className="group relative flex items-center justify-center gap-3 px-8 md:px-10 py-4 md:py-5 rounded-3xl font-black text-base md:text-lg text-white shadow-2xl hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden border-2 border-white/20"
               style={{
                 background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 50%, ${mainColor} 100%)`,
                 boxShadow: `0 12px 48px -10px ${mainColor}70, 0 0 0 1px ${mainColor}30`,
@@ -191,7 +191,7 @@ const HeroSection: React.FC = () => {
                 href="https://www.bimbelio.com/link/komunitas"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-fit"
+                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-3xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-fit"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
                   border: `2px solid ${mainColor}30`,
@@ -214,7 +214,7 @@ const HeroSection: React.FC = () => {
                       window.scrollTo({ top, behavior: 'smooth' });
                     }
                   }}
-                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-3xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
                     border: `2px solid ${mainColor}30`,
@@ -236,7 +236,7 @@ const HeroSection: React.FC = () => {
                       window.scrollTo({ top, behavior: 'smooth' });
                     }
                   }}
-                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                  className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-3xl text-xs md:text-sm font-bold text-white shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
                     border: `2px solid ${mainColor}30`,
@@ -249,7 +249,7 @@ const HeroSection: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsConsultationOpen(true)}
-                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-xl text-xs md:text-sm font-bold shadow-lg hover:shadow-2xl transition-all duration-300 bg-white overflow-hidden h-fit"
+                className="group relative flex items-center gap-2 px-5 md:px-6 py-3 md:py-3.5 rounded-3xl text-xs md:text-sm font-bold shadow-lg hover:shadow-2xl transition-all duration-300 bg-white overflow-hidden h-fit"
                 style={{
                   borderWidth: '2px',
                   borderStyle: 'solid',

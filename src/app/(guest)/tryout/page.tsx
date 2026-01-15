@@ -20,7 +20,7 @@ export default function TryoutPage() {
         <div className="flex w-full flex-col gap-20">
           <Suspense
             fallback={
-              <div className="w-full h-64 bg-gray-100 rounded-2xl animate-pulse" />
+              <div className="w-full h-64 bg-gray-100 rounded-3xl animate-pulse" />
             }
           >
             <Tryout />

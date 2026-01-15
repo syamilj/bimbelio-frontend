@@ -8,7 +8,6 @@ import { IconDislike, IconLike } from '@/styles/icon';
 
 import { env } from '@/env.mjs';
 import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { hideVideoLink } from '@/lib/utils';
 import { HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
 import { createId } from '@paralleldrive/cuid2';
@@ -296,19 +295,19 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (doc.video?.url) {
-      hideVideoLink({
-        link:
-          `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}` ||
-          '',
-        setUrl: setVideoUrl,
-      });
-    }
-    if (!doc.video) {
-      setHideVideo(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (doc.video?.url) {
+  //     hideVideoLink({
+  //       link:
+  //         `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}` ||
+  //         '',
+  //       setUrl: setVideoUrl,
+  //     });
+  //   }
+  //   if (!doc.video) {
+  //     setHideVideo(true);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (window && window.PdfViewer) {
@@ -343,16 +342,16 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
             <div
               className={`flex h-full w-full flex-col p-4 pb-0 ${hideVideo && 'mt-[-100%]'} duration-300 ease-in-out`}
             >
-              {videoUrl.length > 0 && (
+              {doc.video?.url?.length > 0 && (
                 <div className="relative rounded-2xl overflow-hidden shadow-xl bg-black">
                   <video
                     controls
                     controlsList="nodownload"
-                    className="h-fit w-full rounded-2xl bg-black"
+                    className="h-fit w-full rounded-3xl bg-black"
                   >
                     <source
-                      src={videoUrl}
-                      // src={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}`}
+                      // src={videoUrl}
+                      src={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}`}
                       type="video/mp4"
                     />
                     Your browser does not support the video tag.
@@ -362,7 +361,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
                 </div>
               )}
               <div className="z-49 flex w-full shrink-0 justify-between px-4 py-4 text-slate-700">
-                <div className="flex items-center overflow-hidden rounded-xl bg-white/70 backdrop-blur-sm shadow-sm border border-white/20">
+                <div className="flex items-center overflow-hidden rounded-3xl bg-white/70 backdrop-blur-sm shadow-sm border border-white/20">
                   <ToolTip value="Like video">
                     <div className="border-r border-slate-200/50 px-4 py-[.5rem] duration-200 hover:bg-white/80 transition-all">
                       <IconLike className="text-slate-600 w-5 h-5" />
@@ -375,7 +374,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
                   </ToolTip>
                 </div>
                 <button
-                  className="rounded-xl bg-white/70 backdrop-blur-sm border border-white/20 px-6 py-[.5rem] text-[.85rem] text-slate-700 font-medium duration-200 hover:bg-white hover:shadow-md transition-all"
+                  className="rounded-3xl bg-white/70 backdrop-blur-sm border border-white/20 px-6 py-[.5rem] text-[.85rem] text-slate-700 font-medium duration-200 hover:bg-white hover:shadow-md transition-all"
                   onClick={() => setHideVideo(true)}
                 >
                   Hide Video
@@ -403,7 +402,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
             />
             {hideVideo && doc?.video && (
               <button
-                className="absolute right-4 top-4 z-49 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-[.5rem] text-[.85rem] font-medium duration-200 shadow-lg hover:shadow-xl transition-all"
+                className="absolute right-4 top-4 z-49 rounded-3xl bg-blue-600 hover:bg-blue-700 text-white px-6 py-[.5rem] text-[.85rem] font-medium duration-200 shadow-lg hover:shadow-xl transition-all"
                 onClick={() => {
                   setHideVideo(false);
                 }}

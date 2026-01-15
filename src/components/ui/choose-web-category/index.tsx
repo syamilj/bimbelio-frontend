@@ -29,7 +29,7 @@ export default function ChooseWebCategory({
     <>
       <div
         className={cn(
-          'relative overflow-hidden rounded-xl bg-linear-to-br from-blue-500 via-blue-600 to-indigo-700 p-3 text-white shadow-lg cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.01] active:scale-[0.99]',
+          'relative overflow-hidden rounded-3xl bg-linear-to-br from-blue-500 via-blue-600 to-indigo-700 p-3 text-white shadow-lg cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-[1.01] active:scale-[0.99]',
           minimizeSidebar ? 'hidden' : 'w-full',
         )}
         onClick={() => setIsDialogOpen(true)}

@@ -313,7 +313,7 @@ export default function CaraBelajarSection1() {
                         <div className="relative shrink-0">
                           <motion.div
                             whileHover={{ scale: 1.1 }}
-                            className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+                            className={`w-16 h-16 rounded-3xl flex items-center justify-center transition-all duration-300 ${
                               activeStep === index
                                 ? 'text-white shadow-lg'
                                 : 'text-gray-600'
@@ -418,12 +418,12 @@ export default function CaraBelajarSection1() {
                     {/* Enhanced Header */}
                     <div className="relative">
                       <div
-                        className="absolute inset-0 rounded-2xl opacity-10"
+                        className="absolute inset-0 rounded-3xl opacity-10"
                         style={{ backgroundColor: mainColor }}
                       />
                       <div className="relative p-6 text-center">
                         <div
-                          className="w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center text-white shadow-xl"
+                          className="w-20 h-20 mx-auto mb-4 rounded-3xl flex items-center justify-center text-white shadow-xl"
                           style={{ backgroundColor: mainColor }}
                         >
                           {learningSteps[activeStep].icon}
@@ -446,7 +446,7 @@ export default function CaraBelajarSection1() {
                     {/* Stats Display */}
                     <div className="grid grid-cols-2 gap-4">
                       <div
-                        className="text-center p-4 rounded-xl"
+                        className="text-center p-4 rounded-3xl"
                         style={{ backgroundColor: `${mainColor}08` }}
                       >
                         <div
@@ -460,7 +460,7 @@ export default function CaraBelajarSection1() {
                         </div>
                       </div>
                       <div
-                        className="text-center p-4 rounded-xl"
+                        className="text-center p-4 rounded-3xl"
                         style={{ backgroundColor: `${secondaryColor}08` }}
                       >
                         <div
@@ -478,7 +478,7 @@ export default function CaraBelajarSection1() {
                     {/* Enhanced Info Grid */}
                     <div className="space-y-6">
                       <div
-                        className="p-6 rounded-2xl"
+                        className="p-6 rounded-3xl"
                         style={{ backgroundColor: `${mainColor}08` }}
                       >
                         <h5 className="font-bold text-lg mb-3 flex items-center gap-2">
@@ -509,7 +509,7 @@ export default function CaraBelajarSection1() {
                         </ul>
                       </div>
 
-                      <div className="p-6 rounded-2xl bg-gray-50">
+                      <div className="p-6 rounded-3xl bg-gray-50">
                         <h5 className="font-bold text-lg mb-3 text-gray-900">
                           💡 Mengapa ini penting:
                         </h5>
@@ -533,7 +533,7 @@ export default function CaraBelajarSection1() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: fIndex * 0.1 }}
-                                className="flex items-center gap-3 p-3 rounded-xl bg-white shadow-sm"
+                                className="flex items-center gap-3 p-3 rounded-3xl bg-white shadow-sm"
                               >
                                 <CheckCircleIcon
                                   className="w-5 h-5 shrink-0"
@@ -551,7 +551,7 @@ export default function CaraBelajarSection1() {
 
                     {/* Enhanced Mockup */}
                     <div
-                      className="aspect-video rounded-2xl overflow-hidden relative"
+                      className="aspect-video rounded-3xl overflow-hidden relative"
                       style={{ backgroundColor: `${mainColor}10` }}
                     >
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -591,7 +591,7 @@ export default function CaraBelajarSection1() {
                       >
                         <Button
                           size="lg"
-                          className="text-white font-bold px-6 py-3 rounded-xl shadow-lg"
+                          className="text-white font-bold px-6 py-3 rounded-3xl shadow-lg"
                           style={{ backgroundColor: mainColor }}
                         >
                           Coba Sekarang →

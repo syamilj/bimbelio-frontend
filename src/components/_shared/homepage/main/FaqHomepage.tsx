@@ -240,7 +240,7 @@ export default function FaqHomepage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
               >
                 <button
                   onClick={() => toggleExpanded(item.id)}
@@ -322,7 +322,7 @@ export default function FaqHomepage() {
                 <Button
                   onClick={handleConsultationClick}
                   size="lg"
-                  className="bg-white text-blue-600 hover:bg-blue-50 font-bold text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="bg-white text-blue-600 hover:bg-blue-50 font-bold text-lg px-8 py-4 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <MessageCircle className="w-6 h-6 mr-3" />
                   Mulai Konsultasi Gratis

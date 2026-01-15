@@ -130,7 +130,7 @@ export default function NotificationQueuePage() {
                   placeholder="Cari judul notifikasi..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 rounded-xl border-gray-200 focus:border-blue-500"
+                  className="pl-10 rounded-3xl border-gray-200 focus:border-blue-500"
                 />
               </div>
             </div>

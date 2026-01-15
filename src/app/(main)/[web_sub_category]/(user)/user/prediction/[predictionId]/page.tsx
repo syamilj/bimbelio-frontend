@@ -55,7 +55,7 @@ export default function UTBKSIMAKPredictor() {
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 py-8">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-main rounded-2xl mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-main rounded-3xl mb-6">
               <Calculator className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -86,7 +86,7 @@ export default function UTBKSIMAKPredictor() {
                       >
                         <div
                           className={cn(
-                            'w-10 h-10 rounded-xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
+                            'w-10 h-10 rounded-3xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
                             isActive
                               ? 'bg-main text-white'
                               : isCompleted

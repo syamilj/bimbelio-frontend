@@ -31,7 +31,7 @@ export default function PredictionStep1() {
           </Badge>
         </div>
         <ComboboxSelect
-          className="h-12 rounded-xl"
+          className="h-12 rounded-3xl"
           placeholder="Pilih jurusan"
           value={selectedPrograms?.study || ''}
           setValue={(value) => {

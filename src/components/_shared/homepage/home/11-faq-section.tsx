@@ -287,14 +287,14 @@ export default function FAQSection() {
               {popularFaqs.map((faq, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-2xl p-6 border-2 hover:shadow-md transition-all duration-300"
+                  className="bg-white rounded-3xl p-6 border-2 hover:shadow-md transition-all duration-300"
                   style={{
                     borderColor: `${faq.color}30`,
                     backgroundColor: `${faq.color}05`,
                   }}
                 >
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-white mb-4 shadow-md"
+                    className="w-12 h-12 rounded-3xl flex items-center justify-center text-white mb-4 shadow-md"
                     style={{
                       background: `linear-gradient(135deg, ${faq.color}, ${faq.color}dd)`,
                     }}
@@ -343,7 +343,7 @@ export default function FAQSection() {
             {filteredFaqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl border-2 overflow-hidden transition-all duration-300"
+                className="bg-white rounded-3xl border-2 overflow-hidden transition-all duration-300"
                 style={{
                   borderColor:
                     expandedId === index ? faq.color : `${faq.color}20`,
@@ -421,7 +421,7 @@ export default function FAQSection() {
             {solutions.map((solution, index) => (
               <div
                 key={index}
-                className="rounded-2xl p-6 text-white relative overflow-hidden"
+                className="rounded-3xl p-6 text-white relative overflow-hidden"
                 style={{
                   background: solution.color,
                 }}
@@ -446,7 +446,7 @@ export default function FAQSection() {
             {/* Icon Header */}
             <div className="mb-4 flex items-center justify-center gap-3">
               <div
-                className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-lg"
+                className="h-12 w-12 rounded-3xl flex items-center justify-center shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}

@@ -96,7 +96,7 @@ const Testimoni = () => {
           viewport={{ once: true }}
           className="mb-6"
         >
-          <span className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
+          <span className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default">
             <Quote className="w-4 h-4" />
             EXPERT OPINIONS
           </span>
@@ -123,7 +123,7 @@ const Testimoni = () => {
               className="text-center"
             >
               <div
-                className="w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center"
+                className="w-12 h-12 mx-auto mb-2 rounded-3xl flex items-center justify-center"
                 style={{ backgroundColor: `${stat.color}15` }}
               >
                 <div style={{ color: stat.color }}>{stat.icon}</div>
@@ -218,7 +218,7 @@ const Testimoni = () => {
                     {/* Avatar */}
                     <div className="relative">
                       <div
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg text-lg group-hover:scale-110 transition-transform duration-300"
+                        className="w-14 h-14 rounded-3xl flex items-center justify-center text-white font-bold shadow-lg text-lg group-hover:scale-110 transition-transform duration-300"
                         style={{
                           background: `linear-gradient(135deg, ${item.iconColor}, ${item.iconColor}dd)`,
                         }}
@@ -294,7 +294,7 @@ const Testimoni = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 bg-gradient-default"
+                className="px-8 py-4 rounded-3xl font-bold text-white shadow-lg transition-all duration-300 flex items-center gap-2 bg-gradient-default"
               >
                 <Star className="w-5 h-5" />
                 Mulai Belajar Sekarang

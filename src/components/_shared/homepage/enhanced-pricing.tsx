@@ -172,7 +172,7 @@ const EnhancedPricing = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -200,7 +200,7 @@ const EnhancedPricing = () => {
             viewport={{ once: true }}
             className="mt-8"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-linear-to-r from-red-500 to-pink-500 text-white font-bold shadow-lg">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-3xl bg-linear-to-r from-red-500 to-pink-500 text-white font-bold shadow-lg">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
               <span>🔥 Diskon 50% - Terbatas untuk 100 pendaftar pertama!</span>
             </div>
@@ -248,7 +248,7 @@ const EnhancedPricing = () => {
                 <CardHeader className="text-center p-8 relative">
                   {/* Plan Icon */}
                   <div
-                    className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg"
+                    className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center shadow-lg"
                     style={{
                       background: plan.popular
                         ? `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`
@@ -345,7 +345,7 @@ const EnhancedPricing = () => {
                   >
                     <Button
                       size="lg"
-                      className={`w-full py-4 rounded-2xl font-bold shadow-lg transition-all duration-300 ${
+                      className={`w-full py-4 rounded-3xl font-bold shadow-lg transition-all duration-300 ${
                         plan.popular
                           ? 'text-white'
                           : 'border-2 bg-white hover:bg-gray-50'
@@ -363,7 +363,7 @@ const EnhancedPricing = () => {
                           return;
                         }
                         router.push(
-                          `${website_sub_category_id}/user/dashboard`,
+                          `${website_sub_category_id}/user/bimboard`,
                         );
                       }}
                     >
@@ -401,7 +401,7 @@ const EnhancedPricing = () => {
                 className="text-center space-y-4"
               >
                 <div
-                  className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+                  className="w-16 h-16 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <div style={{ color: mainColor }}>{feature.icon}</div>
@@ -433,7 +433,7 @@ const EnhancedPricing = () => {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 viewport={{ once: true }}
               >
-                <Card className="border-2 border-gray-100 rounded-2xl p-6 h-full">
+                <Card className="border-2 border-gray-100 rounded-3xl p-6 h-full">
                   <CardContent className="p-0 space-y-4">
                     <div className="flex justify-center">
                       {Array.from({ length: testimonial.rating }).map(

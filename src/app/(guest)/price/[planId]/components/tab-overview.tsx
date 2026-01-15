@@ -107,7 +107,7 @@ export default function TabOverview({
                     >
                       <div className="flex items-start gap-4">
                         <div
-                          className="shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                          className="shrink-0 w-12 h-12 rounded-3xl flex items-center justify-center shadow-lg"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
@@ -219,7 +219,7 @@ export default function TabOverview({
                     >
                       <div className="flex items-center gap-3 mb-4">
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                          className="w-12 h-12 rounded-3xl flex items-center justify-center shadow-lg"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
@@ -246,7 +246,7 @@ export default function TabOverview({
                             (pivot) => (
                               <div
                                 key={pivot.id}
-                                className="flex items-center gap-3 p-2 rounded-xl bg-white/60 hover:bg-white/80 transition-all duration-200"
+                                className="flex items-center gap-3 p-2 rounded-3xl bg-white/60 hover:bg-white/80 transition-all duration-200"
                               >
                                 <div
                                   className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold"
@@ -264,7 +264,7 @@ export default function TabOverview({
                             ),
                           )}
                         {feature.type === 'DOCUMENT' && (
-                          <div className="flex gap-3 p-2 rounded-xl bg-white/60">
+                          <div className="flex gap-3 p-2 rounded-3xl bg-white/60">
                             <div
                               className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
                               style={{ backgroundColor: mainColor }}
@@ -278,7 +278,7 @@ export default function TabOverview({
                         )}
                         {feature.type === 'LIVECLASS' &&
                           feature.liveClassesPerWeek && (
-                            <div className="flex gap-3 p-2 rounded-xl bg-white/60">
+                            <div className="flex gap-3 p-2 rounded-3xl bg-white/60">
                               <div
                                 className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
                                 style={{
@@ -388,7 +388,7 @@ export default function TabOverview({
                     <div className="relative">
                       <div className="flex items-start gap-4 mb-4">
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-lg shrink-0"
+                          className="w-12 h-12 rounded-3xl flex items-center justify-center text-white font-black text-lg shadow-lg shrink-0"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
@@ -459,7 +459,7 @@ export default function TabOverview({
                   <Button
                     variant="outline"
                     onClick={() => setActiveTab('classes')}
-                    className="px-8 py-4 rounded-2xl border-2 font-semibold hover:scale-105 transition-all duration-300"
+                    className="px-8 py-4 rounded-3xl border-2 font-semibold hover:scale-105 transition-all duration-300"
                     style={{
                       borderColor: mainColor,
                       color: mainColor,
@@ -570,7 +570,7 @@ export default function TabOverview({
 
                       <div className="relative">
                         <div
-                          className="w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg"
+                          className="w-16 h-16 rounded-3xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
@@ -643,7 +643,7 @@ export default function TabOverview({
               >
                 <div className="flex items-start gap-4">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                     style={{ backgroundColor: mainColor }}
                   >
                     <Infinity className="w-5 h-5 text-white" />

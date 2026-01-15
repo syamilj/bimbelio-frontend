@@ -219,7 +219,7 @@ const PasswordGate = ({
   password?: string;
 }) => (
   <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
-    <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-slate-900 p-8 text-center shadow-lg border border-white/10">
+    <div className="w-full max-w-sm overflow-hidden rounded-3xl bg-slate-900 p-8 text-center shadow-lg border border-white/10">
       <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/20">
         <Lock className="h-6 w-6 text-white/80" />
       </div>
@@ -243,7 +243,7 @@ const PasswordGate = ({
             name="password"
             type="password"
             defaultValue={password}
-            className="w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-center text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none focus:ring-1 focus:ring-white/30 transition-colors"
+            className="w-full rounded-3xl border border-white/10 bg-black/20 px-4 py-3 text-center text-white placeholder:text-white/30 focus:border-white/30 focus:outline-none focus:ring-1 focus:ring-white/30 transition-colors"
             placeholder="Masukkan Password"
             required
             autoFocus
@@ -251,7 +251,7 @@ const PasswordGate = ({
         </div>
         <button
           type="submit"
-          className="w-full rounded-xl bg-white px-4 py-3 font-medium text-black active:scale-[0.98] transition-transform"
+          className="w-full rounded-3xl bg-white px-4 py-3 font-medium text-black active:scale-[0.98] transition-transform"
         >
           Buka Halaman
         </button>
@@ -262,7 +262,7 @@ const PasswordGate = ({
 
 const ErrorState = ({ message }: { message: string }) => (
   <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
-    <div className="w-full max-w-sm rounded-2xl bg-slate-900 p-8 text-center border border-white/10">
+    <div className="w-full max-w-sm rounded-3xl bg-slate-900 p-8 text-center border border-white/10">
       <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-500/10">
         <ExternalLink className="h-6 w-6 text-red-400" />
       </div>
@@ -421,7 +421,7 @@ export default async function PublicLinkPage({
         {/* Buttons Section */}
         <div className="w-full space-y-8">
           {!hasButtons ? (
-            <div className="rounded-2xl border border-dashed border-white/20 bg-black/10 px-6 py-12 text-center">
+            <div className="rounded-3xl border border-dashed border-white/20 bg-black/10 px-6 py-12 text-center">
               <p className="text-white/60">Belum ada tautan yang aktif.</p>
             </div>
           ) : (

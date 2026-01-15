@@ -1,6 +1,6 @@
 'use client';
 
-import SubmitCourse from '@/app/(main)/[web_sub_category]/(user)/user/course/[categoryId]/_component/z_other/submit-course';
+import SubmitCourse from '@/app/(main)/[web_sub_category]/(user)/user/bimcourse/[categoryId]/_component/z_other/submit-course';
 import { useAppContext } from '@/components/provider/provider-app';
 import { buttonVariants } from '@/components/ui/button';
 import { ToolTip } from '@/components/ui/tooltip';
@@ -221,7 +221,7 @@ const HeaderPdf = ({ doc, isCourseDone }: Props) => {
             >
               <input
                 type="text"
-                className={`w-full rounded-2xl ${
+                className={`w-full rounded-3xl ${
                   onSearchPdf
                     ? 'rounded-tr-none border-2 border-white py-[.5rem] pl-4 pr-10 shadow-default outline-none focus:border-2 focus:border-main'
                     : 'p-0'

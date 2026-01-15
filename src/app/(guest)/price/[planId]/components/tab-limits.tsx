@@ -102,7 +102,7 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-4">
                         <div
-                          className="w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg"
+                          className="w-14 h-14 rounded-3xl flex items-center justify-center text-white shadow-lg"
                           style={{
                             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                           }}
@@ -180,7 +180,7 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
                     </div>
 
                     {/* Feature highlight */}
-                    <div className="mt-4 p-3 rounded-2xl bg-white/60 border border-white/80">
+                    <div className="mt-4 p-3 rounded-3xl bg-white/60 border border-white/80">
                       <div className="flex items-center gap-2 text-sm">
                         <CheckCircle2
                           className="w-4 h-4 shrink-0"

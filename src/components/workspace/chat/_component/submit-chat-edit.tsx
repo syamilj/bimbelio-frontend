@@ -138,7 +138,7 @@ const SubmitChatEdit = () => {
   };
 
   return (
-    <div className="w-full space-y-3 bg-background border border-gray-200 rounded-xl p-4">
+    <div className="w-full space-y-3 bg-background border border-gray-200 rounded-3xl p-4">
       {/* Edit Header */}
       <div className="flex items-center gap-2 text-sm text-gray-500">
         <div
@@ -155,7 +155,7 @@ const SubmitChatEdit = () => {
           placeholder="Edit pesan Kamu di sini..."
           defaultValue={editMessage.value}
           className={cn(
-            'w-full resize-none rounded-xl border-2 py-3 px-4 text-sm font-normal outline-none transition-all duration-200',
+            'w-full resize-none rounded-3xl border-2 py-3 px-4 text-sm font-normal outline-none transition-all duration-200',
             'placeholder:text-gray-400',
             'bg-gray-50 border-gray-200',
             'focus:bg-white focus:border-2',
@@ -204,7 +204,7 @@ const SubmitChatEdit = () => {
         <Button
           variant="outline"
           size="sm"
-          className="rounded-xl border-gray-200 hover:bg-gray-50"
+          className="rounded-3xl border-gray-200 hover:bg-gray-50"
           onClick={resetEdit}
           disabled={isSubmitting}
         >
@@ -215,7 +215,7 @@ const SubmitChatEdit = () => {
         <Button
           size="sm"
           className={cn(
-            'rounded-xl text-white shadow-lg transition-all duration-200',
+            'rounded-3xl text-white shadow-lg transition-all duration-200',
             isSubmitting
               ? 'opacity-75 cursor-not-allowed'
               : 'hover:shadow-xl hover:scale-105',

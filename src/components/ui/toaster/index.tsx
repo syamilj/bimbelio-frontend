@@ -81,7 +81,7 @@ export const Toasts = ({
   return (
     <div
       id="toaster"
-      className={`pointer-events-auto relative flex w-full max-w-md rounded-2xl bg-white shadow-[0_0_10px_#6f6a6a45]`}
+      className={`pointer-events-auto relative flex w-full max-w-md rounded-3xl bg-white shadow-[0_0_10px_#6f6a6a45]`}
     >
       <div className="flex flex-col p-4 text-[.9rem]">
         <div className="flex items-center">

@@ -491,7 +491,7 @@ const UploadFile = ({
         }
         className="absolute right-0 top-0 h-0 w-0"
       />
-      <div className="relative flex flex-col gap-4 rounded-2xl border-2 border-dashed border-main-gray-input p-4">
+      <div className="relative flex flex-col gap-4 rounded-3xl border-2 border-dashed border-main-gray-input p-4">
         {!image ? (
           <>
             <div className="flex flex-col items-center gap-[.5rem] text-center">

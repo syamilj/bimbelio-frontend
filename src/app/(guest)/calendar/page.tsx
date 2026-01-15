@@ -57,7 +57,7 @@ export default function CalendarPage() {
             transition={{ duration: 0.6 }}
             className="mb-12 text-center"
           >
-            <div className="mb-4 inline-flex items-center justify-center gap-3 rounded-2xl px-6 py-3 bg-white shadow-sm border border-gray-100">
+            <div className="mb-4 inline-flex items-center justify-center gap-3 rounded-3xl px-6 py-3 bg-white shadow-sm border border-gray-100">
               <Calendar
                 className="w-5 h-5"
                 style={{ color: mainColor }}
@@ -84,7 +84,7 @@ export default function CalendarPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mb-8"
           >
-            <Card className="border-2 overflow-hidden rounded-2xl">
+            <Card className="border-2 overflow-hidden rounded-3xl">
               <div
                 className="h-1 w-full"
                 style={{
@@ -126,9 +126,9 @@ export default function CalendarPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mb-12"
           >
-            <Card className="border-2 rounded-2xl overflow-hidden">
+            <Card className="border-2 rounded-3xl overflow-hidden">
               <CardContent className="p-0">
-                <div className="bg-white rounded-2xl overflow-hidden">
+                <div className="bg-white rounded-3xl overflow-hidden">
                   <iframe
                     src={GOOGLE_CALENDAR_EMBED_URL}
                     style={{
@@ -187,7 +187,7 @@ export default function CalendarPage() {
                     whileHover={{ y: -4 }}
                     className="group"
                   >
-                    <Card className="border-2 rounded-2xl h-full hover:shadow-lg transition-shadow overflow-hidden">
+                    <Card className="border-2 rounded-3xl h-full hover:shadow-lg transition-shadow overflow-hidden">
                       <div
                         className="h-2 w-full"
                         style={{ backgroundColor: event.color }}
@@ -195,7 +195,7 @@ export default function CalendarPage() {
                       <CardContent className="pt-4 sm:pt-6">
                         <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
                           <div
-                            className="p-2 sm:p-3 rounded-xl"
+                            className="p-2 sm:p-3 rounded-3xl"
                             style={{
                               backgroundColor: event.bgColor.includes('blue')
                                 ? '#dbeafe'
@@ -253,7 +253,7 @@ export default function CalendarPage() {
                       whileHover={{ y: -4 }}
                       className="group"
                     >
-                      <Card className="border-2 rounded-2xl h-full hover:shadow-lg transition-shadow overflow-hidden">
+                      <Card className="border-2 rounded-3xl h-full hover:shadow-lg transition-shadow overflow-hidden">
                         <div
                           className="h-2 w-full"
                           style={{ backgroundColor: mainColor }}
@@ -261,7 +261,7 @@ export default function CalendarPage() {
                         <CardContent className="pt-4 sm:pt-6">
                           <div className="flex flex-col items-center text-center space-y-2 sm:space-y-3">
                             <div
-                              className="p-2 sm:p-3 rounded-xl"
+                              className="p-2 sm:p-3 rounded-3xl"
                               style={{
                                 backgroundColor: mainColor + '15',
                               }}
@@ -316,7 +316,7 @@ export default function CalendarPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button
-                    className="text-white font-semibold rounded-xl px-8 h-12 gap-2 w-full sm:w-auto"
+                    className="text-white font-semibold rounded-3xl px-8 h-12 gap-2 w-full sm:w-auto"
                     style={{ backgroundColor: mainColor }}
                     onClick={() => setIsConsultationOpen(true)}
                   >
@@ -330,7 +330,7 @@ export default function CalendarPage() {
                   >
                     <Button
                       variant="outline"
-                      className="font-semibold rounded-xl px-8 h-12 gap-2 w-full sm:w-auto border-2"
+                      className="font-semibold rounded-3xl px-8 h-12 gap-2 w-full sm:w-auto border-2"
                       style={{ color: mainColor, borderColor: mainColor }}
                     >
                       <Calendar className="w-4 h-4" />

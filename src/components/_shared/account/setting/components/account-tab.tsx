@@ -36,7 +36,7 @@ export const AccountTab = ({
             }}
           />
           <div
-            className="w-24 h-24 rounded-2xl overflow-hidden border-4 border-white shadow-xl hover:shadow-2xl transition-all cursor-pointer"
+            className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-white shadow-xl hover:shadow-2xl transition-all cursor-pointer"
             onClick={() => document.getElementById('ubahFotoProfile')?.click()}
           >
             <Image
@@ -64,7 +64,7 @@ export const AccountTab = ({
               onClick={() =>
                 document.getElementById('ubahFotoProfile')?.click()
               }
-              className="rounded-2xl text-white font-bold bg-white/20 hover:bg-white/30 border-2 border-white/30 backdrop-blur-sm transition-all shadow-sm hover:shadow-md"
+              className="rounded-3xl text-white font-bold bg-white/20 hover:bg-white/30 border-2 border-white/30 backdrop-blur-sm transition-all shadow-sm hover:shadow-md"
             >
               <User className="w-4 h-4 mr-2" />
               Ubah Foto
@@ -74,13 +74,13 @@ export const AccountTab = ({
               <>
                 <Button
                   onClick={() => setProfile(undefined)}
-                  className="rounded-2xl bg-white/10 hover:bg-white/20 text-white border-2 border-white/20 backdrop-blur-sm font-bold transition-all shadow-sm"
+                  className="rounded-3xl bg-white/10 hover:bg-white/20 text-white border-2 border-white/20 backdrop-blur-sm font-bold transition-all shadow-sm"
                 >
                   Batal
                 </Button>
                 <Button
                   onClick={handleChangeProfile}
-                  className="rounded-2xl text-white font-bold bg-white/40 hover:bg-white/50 border-2 border-white/30 backdrop-blur-sm transition-all shadow-sm hover:shadow-md"
+                  className="rounded-3xl text-white font-bold bg-white/40 hover:bg-white/50 border-2 border-white/30 backdrop-blur-sm transition-all shadow-sm hover:shadow-md"
                 >
                   Simpan
                 </Button>
@@ -88,7 +88,7 @@ export const AccountTab = ({
             )}
 
             {loading && (
-              <div className="flex items-center px-4 bg-white/10 rounded-2xl backdrop-blur-sm border-2 border-white/20">
+              <div className="flex items-center px-4 bg-white/10 rounded-3xl backdrop-blur-sm border-2 border-white/20">
                 <Spinner />
               </div>
             )}
@@ -105,7 +105,7 @@ export const AccountTab = ({
           style={{ color: mainColor }}
         >
           <div
-            className="w-8 h-8 rounded-2xl flex items-center justify-center text-white"
+            className="w-8 h-8 rounded-3xl flex items-center justify-center text-white"
             style={{ backgroundColor: mainColor }}
           >
             <User className="w-4 h-4" />

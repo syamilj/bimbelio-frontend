@@ -413,7 +413,7 @@ const MobileNav: React.FC<{
   return (
     <div className="fixed left-0 top-0 z-50 w-full">
       {/* Enhanced Mobile Header */}
-      <Card className="mx-3 mt-3 shadow-xl border rounded-2xl backdrop-blur-xl overflow-hidden">
+      <Card className="mx-3 mt-3 shadow-xl border rounded-3xl backdrop-blur-xl overflow-hidden">
         <div className="px-4 py-3 relative bg-transparent">
           {/* Background Pattern */}
           {/* <div className="absolute inset-0 opacity-5">
@@ -436,7 +436,7 @@ const MobileNav: React.FC<{
 
             <div className="flex items-center gap-2">
               {/* Combined Button: Shop (1/4) + Login/Dashboard (3/4) */}
-              <div className="flex items-center rounded-2xl shadow-lg overflow-hidden">
+              <div className="flex items-center rounded-3xl shadow-lg overflow-hidden">
                 {/* Shop Button - 1/4 */}
                 <Link href="/price">
                   <Button
@@ -464,8 +464,8 @@ const MobileNav: React.FC<{
                         ...prev,
                         open: true,
                         redirect: website_sub_category_id
-                          ? `/${website_sub_category_id}/user/dashboard`
-                          : '/choice/user/dashboard',
+                          ? `/${website_sub_category_id}/user/bimboard`
+                          : '/choice/user/bimboard',
                       }))
                     }
                   >
@@ -473,7 +473,7 @@ const MobileNav: React.FC<{
                   </Button>
                 )}
                 {session && (
-                  <Link href={`/${website_sub_category_id}/user/dashboard`}>
+                  <Link href={`/${website_sub_category_id}/user/bimboard`}>
                     <Button
                       className="px-6 py-2.5 rounded-none text-sm font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 active:scale-95"
                       style={{
@@ -493,7 +493,7 @@ const MobileNav: React.FC<{
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="relative w-10 h-10 rounded-xl transition-all duration-300 hover:scale-105"
+                    className="relative w-10 h-10 rounded-3xl transition-all duration-300 hover:scale-105"
                     style={{
                       backgroundColor: hexToRgba(mainColor, 0.1),
                       color: mainColor,
@@ -541,7 +541,7 @@ const MobileNav: React.FC<{
                         return (
                           <div
                             key={`mobile-nav-${index}-${item.href}`}
-                            className="rounded-xl overflow-hidden"
+                            className="rounded-3xl overflow-hidden"
                             style={{
                               backgroundColor: isExpanded
                                 ? hexToRgba(mainColor, 0.05)
@@ -567,7 +567,7 @@ const MobileNav: React.FC<{
                                   );
                                 }
                               }}
-                              className="w-full flex items-center justify-between p-4 rounded-xl transition-all duration-200"
+                              className="w-full flex items-center justify-between p-4 rounded-3xl transition-all duration-200"
                               style={{
                                 backgroundColor: isExpanded
                                   ? 'transparent'
@@ -669,7 +669,7 @@ const MobileNav: React.FC<{
                                             subItem.action,
                                           )
                                         }
-                                        className="w-full flex items-start gap-3 p-3 rounded-xl transition-all duration-200 hover:bg-white"
+                                        className="w-full flex items-start gap-3 p-3 rounded-3xl transition-all duration-200 hover:bg-white"
                                         style={{
                                           backgroundColor: hexToRgba(
                                             mainColor,
@@ -750,7 +750,7 @@ const MobileNav: React.FC<{
                       {session ? (
                         <div className="space-y-4">
                           {/* User Info - Simple */}
-                          <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50">
+                          <div className="flex items-center gap-3 p-4 rounded-3xl bg-gray-50">
                             <Avatar className="h-12 w-12">
                               <AvatarImage
                                 src={session.user.image ?? ''}
@@ -778,9 +778,9 @@ const MobileNav: React.FC<{
                           {/* Action Buttons - Simple Grid */}
                           <div className="grid grid-cols-2 gap-2">
                             <Link
-                              href={`/${website_sub_category_id}/user/try-out`}
+                              href={`/${website_sub_category_id}/user/bimarena/try-out`}
                               onClick={() => setIsSheetOpen(false)}
-                              className="flex items-center justify-center gap-2 p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+                              className="flex items-center justify-center gap-2 p-2 rounded-3xl bg-gray-100 hover:bg-gray-200 transition-colors"
                             >
                               <LayoutDashboard className="w-4 h-4 text-gray-600" />
                               <span className="text-sm font-medium text-gray-700">
@@ -793,7 +793,7 @@ const MobileNav: React.FC<{
                                 signOut({ callbackUrl: '/' });
                                 setIsSheetOpen(false);
                               }}
-                              className="flex items-center justify-center gap-2 p-2 rounded-xl bg-red-50 hover:bg-red-100 transition-colors"
+                              className="flex items-center justify-center gap-2 p-2 rounded-3xl bg-red-50 hover:bg-red-100 transition-colors"
                             >
                               <LogOut className="w-4 h-4 text-red-600" />
                               <span className="text-sm font-medium text-red-700">
@@ -804,15 +804,15 @@ const MobileNav: React.FC<{
                         </div>
                       ) : (
                         <Button
-                          className="w-full h-12 rounded-xl font-medium text-white"
+                          className="w-full h-12 rounded-3xl font-medium text-white"
                           style={{ backgroundColor: mainColor }}
                           onClick={() => {
                             setShowAuth((prev) => ({
                               ...prev,
                               open: true,
                               redirect: website_sub_category_id
-                                ? `/${website_sub_category_id}/user/dashboard`
-                                : '/choice/user/dashboard',
+                                ? `/${website_sub_category_id}/user/bimboard`
+                                : '/choice/user/bimboard',
                             }));
                             setIsSheetOpen(false);
                           }}
@@ -892,7 +892,7 @@ const DesktopNav: React.FC<{
   return (
     <div className="fixed left-0 top-0 z-50 w-full bg-transparent pointer-events-none">
       <div className="mx-auto max-w-4xl px-4 pt-4 pointer-events-auto">
-        <Card className=" shadow-md border rounded-2xl backdrop-blur-xl overflow-visible bg-white">
+        <Card className=" shadow-md border rounded-3xl backdrop-blur-xl overflow-visible bg-white">
           <div
             className="px-6 py-4 md:py-1 lg:py-1 relative rounded-3xl z-[3] bg-transparent"
             // style={{
@@ -991,7 +991,7 @@ const DesktopNav: React.FC<{
                                 })()}
                             </span>
                           </NavigationMenuTrigger>
-                          <NavigationMenuContent className="overflow-hidden border-0 p-0 shadow-none !rounded-2xl !bg-transparent">
+                          <NavigationMenuContent className="overflow-hidden border-0 p-0 shadow-none !rounded-3xl !bg-transparent">
                             {/* Multi-column layout */}
                             {item.submenuColumns ? (
                               <div
@@ -1053,7 +1053,7 @@ const DesktopNav: React.FC<{
                                                       subItem.isLink,
                                                     );
                                                   }}
-                                                  className="group w-full text-left px-3 py-2.5 text-sm rounded-2xl transition-all duration-200 relative"
+                                                  className="group w-full text-left px-3 py-2.5 text-sm rounded-3xl transition-all duration-200 relative"
                                                   style={{
                                                     color: mainColor,
                                                   }}
@@ -1156,7 +1156,7 @@ const DesktopNav: React.FC<{
                             ) : (
                               /* Single column (backward compatible) */
                               <div
-                                className="w-64 p-3 bg-white rounded-xl shadow-2xl border z-50 overflow-visible"
+                                className="w-64 p-3 bg-white rounded-3xl shadow-2xl border z-50 overflow-visible"
                                 style={{
                                   borderColor: hexToRgba(mainColor, 0.2),
                                 }}
@@ -1262,7 +1262,7 @@ const DesktopNav: React.FC<{
               <div className="flex items-center gap-2 p-2">
                 {!session ? (
                   /* 2-Part Combined Button: Shop + Login (Not Logged In) */
-                  <div className="flex items-center rounded-xl shadow-md overflow-hidden">
+                  <div className="flex items-center rounded-3xl shadow-md overflow-hidden">
                     {/* Shop Button */}
                     <Link href="/price">
                       <Button
@@ -1289,8 +1289,8 @@ const DesktopNav: React.FC<{
                           ...prev,
                           open: true,
                           redirect: website_sub_category_id
-                            ? `/${website_sub_category_id}/user/dashboard`
-                            : '/choice/user/dashboard',
+                            ? `/${website_sub_category_id}/user/bimboard`
+                            : '/choice/user/bimboard',
                         }))
                       }
                     >
@@ -1301,7 +1301,7 @@ const DesktopNav: React.FC<{
                   /* Logged In: 2-Part Combined + 1 Separate Hamburger */
                   <div className="flex items-center gap-2 p-1">
                     {/* Combined: Shop + Dashboard (2 parts) */}
-                    <div className="flex items-center rounded-xl shadow-md overflow-hidden">
+                    <div className="flex items-center rounded-3xl shadow-md overflow-hidden">
                       {/* Shop Button */}
                       <Link href="/price">
                         <Button
@@ -1318,7 +1318,7 @@ const DesktopNav: React.FC<{
                       <div className="w-px h-5 bg-white/20" />
 
                       {/* Dashboard Button */}
-                      <Link href={`/${website_sub_category_id}/user/dashboard`}>
+                      <Link href={`/${website_sub_category_id}/user/bimboard`}>
                         <Button
                           className="px-4 py-2 rounded-none text-xs font-semibold text-white border-0 transition-all duration-300 hover:brightness-110 h-8"
                           style={{
@@ -1335,7 +1335,7 @@ const DesktopNav: React.FC<{
                       <DropdownMenuTrigger asChild>
                         <Button
                           variant="ghost"
-                          className="px-2 py-2 rounded-xl border-0 transition-all duration-300 hover:brightness-110 h-8 shadow-md"
+                          className="px-2 py-2 rounded-3xl border-0 transition-all duration-300 hover:brightness-110 h-8 shadow-md"
                           style={{
                             backgroundImage: `linear-gradient(145deg, ${secondaryColor}, ${mainColor})`,
                             color: '#ffffff',
@@ -1402,11 +1402,11 @@ const DesktopNav: React.FC<{
                             className="p-0"
                           >
                             <Link
-                              href={`/${website_sub_category_id}/user/dashboard`}
-                              className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-gray-50"
+                              href={`/${website_sub_category_id}/user/bimboard`}
+                              className="flex items-center gap-3 px-4 py-3 rounded-3xl transition-all duration-200 group hover:bg-gray-50"
                             >
                               <div
-                                className="w-11 h-11 rounded-xl flex items-center justify-center"
+                                className="w-11 h-11 rounded-3xl flex items-center justify-center"
                                 style={{ backgroundColor: `${mainColor}15` }}
                               >
                                 <LayoutDashboard
@@ -1436,10 +1436,10 @@ const DesktopNav: React.FC<{
                             >
                               <Link
                                 href={`/${website_sub_category_id}/admin`}
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-gray-50"
+                                className="flex items-center gap-3 px-4 py-3 rounded-3xl transition-all duration-200 group hover:bg-gray-50"
                               >
                                 <div
-                                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                                  className="w-11 h-11 rounded-3xl flex items-center justify-center"
                                   style={{ backgroundColor: `${mainColor}15` }}
                                 >
                                   <LayoutDashboard
@@ -1471,8 +1471,8 @@ const DesktopNav: React.FC<{
                               signOut({ callbackUrl: '/' });
                             }}
                           >
-                            <div className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group hover:bg-red-50 cursor-pointer w-full">
-                              <div className="w-11 h-11 rounded-xl bg-red-100 flex items-center justify-center">
+                            <div className="flex items-center gap-3 px-4 py-3 rounded-3xl transition-all duration-200 group hover:bg-red-50 cursor-pointer w-full">
+                              <div className="w-11 h-11 rounded-3xl bg-red-100 flex items-center justify-center">
                                 <LogOut className="h-5 w-5 text-red-600" />
                               </div>
                               <div className="flex-1">

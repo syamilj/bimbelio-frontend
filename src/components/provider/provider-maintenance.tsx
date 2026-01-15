@@ -78,7 +78,7 @@ export default function ProviderMaintenance({
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-3 mb-6">
               <div className="relative">
-                <div className="w-12 h-12 bg-linear-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-linear-to-br from-blue-600 to-blue-700 rounded-3xl flex items-center justify-center shadow-lg">
                   <span className="text-white text-xl font-bold">B</span>
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-ping"></div>
@@ -134,7 +134,7 @@ export default function ProviderMaintenance({
                       key={item.label}
                       className="text-center"
                     >
-                      <div className="bg-linear-to-br from-blue-600 to-indigo-600 text-white rounded-2xl p-4 min-w-[80px] shadow-lg">
+                      <div className="bg-linear-to-br from-blue-600 to-indigo-600 text-white rounded-3xl p-4 min-w-[80px] shadow-lg">
                         <div className="text-3xl font-bold">
                           {item.value.toString().padStart(2, '0')}
                         </div>
@@ -146,7 +146,7 @@ export default function ProviderMaintenance({
                   ))}
                 </div>
 
-                <div className="bg-linear-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-200">
+                <div className="bg-linear-to-r from-yellow-50 to-orange-50 rounded-3xl p-6 border border-yellow-200">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Sparkles className="w-5 h-5 text-yellow-600" />
                     <span className="font-semibold text-yellow-800">
@@ -191,7 +191,7 @@ export default function ProviderMaintenance({
                     return (
                       <div
                         key={index}
-                        className={`relative p-6 rounded-2xl border-2 transition-all duration-300 ${
+                        className={`relative p-6 rounded-3xl border-2 transition-all duration-300 ${
                           isCompleted
                             ? 'bg-green-50 border-green-200 shadow-green-100 shadow-lg'
                             : isInProgress
@@ -232,7 +232,7 @@ export default function ProviderMaintenance({
                 </div>
               </div>
               {/* Contact Section */}
-              <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
+              <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 border border-blue-100">
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Butuh Bantuan?
@@ -246,9 +246,9 @@ export default function ProviderMaintenance({
                   <a
                     href="https://www.bimbelio.com/link/komunitas"
                     target="_blank"
-                    className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
+                    className="group flex items-center gap-4 p-4 bg-white rounded-3xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
                   >
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                    <div className="w-12 h-12 bg-blue-100 rounded-3xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                       <MessageCircle className="w-6 h-6 text-blue-600" />
                     </div>
                     <div className="flex-1">
@@ -261,9 +261,9 @@ export default function ProviderMaintenance({
                   <a
                     href="https://www.instagram.com/bimbelio.official?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                     target="_blank"
-                    className="group flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200 hover:border-pink-300 hover:shadow-lg transition-all duration-300"
+                    className="group flex items-center gap-4 p-4 bg-white rounded-3xl border border-gray-200 hover:border-pink-300 hover:shadow-lg transition-all duration-300"
                   >
-                    <div className="w-12 h-12 bg-linear-to-br from-pink-100 to-purple-100 rounded-xl flex items-center justify-center group-hover:from-pink-200 group-hover:to-purple-200 transition-all">
+                    <div className="w-12 h-12 bg-linear-to-br from-pink-100 to-purple-100 rounded-3xl flex items-center justify-center group-hover:from-pink-200 group-hover:to-purple-200 transition-all">
                       <div className="w-6 h-6 bg-linear-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
                         <span className="text-white text-xs font-bold">IG</span>
                       </div>

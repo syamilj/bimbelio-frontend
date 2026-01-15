@@ -243,7 +243,7 @@ export default function EcosystemSection() {
 
                 {/* Card */}
                 <div
-                  className="w-full rounded-2xl border-2 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-opacity-100 text-center hover:-translate-y-1"
+                  className="w-full rounded-3xl border-2 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-opacity-100 text-center hover:-translate-y-1"
                   style={{
                     borderColor: item.color + '40',
                     backgroundColor: item.color + '03',
@@ -251,7 +251,7 @@ export default function EcosystemSection() {
                 >
                   {/* Icon */}
                   <div
-                    className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-md"
+                    className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-3xl text-white shadow-md"
                     style={{ backgroundColor: item.color }}
                   >
                     <item.icon

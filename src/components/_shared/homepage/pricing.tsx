@@ -93,7 +93,7 @@ const Pricing = () => {
               onClick={() => {
                 if (session) {
                   setTransactionPopUp(true);
-                  Router.push(`/${website_sub_category_id}/user/dashboard`);
+                  Router.push(`/${website_sub_category_id}/user/bimboard`);
                 } else {
                   setShowAuth((prev) => ({ ...prev, open: true }));
                 }

@@ -58,7 +58,7 @@ const FloatingContactButton = () => {
             delay: 1.5,
             duration: 0.5,
           }}
-          className="hidden md:flex items-center gap-2 bg-white px-4 py-3 rounded-2xl shadow-xl border-2"
+          className="hidden md:flex items-center gap-2 bg-white px-4 py-3 rounded-3xl shadow-xl border-2"
           style={{
             borderColor: `${mainColor}30`,
           }}
@@ -116,7 +116,7 @@ const FloatingContactButton = () => {
             delay: 1.5,
             duration: 0.5,
           }}
-          className="md:hidden bg-white px-3 py-2 rounded-xl shadow-lg border-2"
+          className="md:hidden bg-white px-3 py-2 rounded-3xl shadow-lg border-2"
           style={{
             borderColor: `${mainColor}30`,
           }}

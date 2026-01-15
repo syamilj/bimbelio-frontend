@@ -425,11 +425,11 @@ export default function Dokumen() {
 //                   <td className="bg-white p-[.5rem]">
 //                     <div className="flex w-full items-center justify-center">
 //                       {item.premium ? (
-//                         <div className="flex w-[100px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
+//                         <div className="flex w-[100px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
 //                           Premium
 //                         </div>
 //                       ) : (
-//                         <div className="flex w-[100px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
+//                         <div className="flex w-[100px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
 //                           Free
 //                         </div>
 //                       )}
@@ -437,14 +437,14 @@ export default function Dokumen() {
 //                   </td>
 //                   <td className="bg-white p-[.5rem]">
 //                     <div className="flex w-full items-center justify-center">
-//                       <div className="flex w-[76px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
+//                       <div className="flex w-[76px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
 //                         {item.category.name}
 //                       </div>
 //                     </div>
 //                   </td>
 //                   <td className="bg-white p-[.5rem]">
 //                     <div className="flex w-full items-center justify-center">
-//                       <div className="flex w-[76px] items-center justify-center rounded-2xl bg-bg-workspace py-[.2rem] font-medium text-black">
+//                       <div className="flex w-[76px] items-center justify-center rounded-3xl bg-bg-workspace py-[.2rem] font-medium text-black">
 //                         {item.subCategory.name}
 //                       </div>
 //                     </div>
@@ -515,17 +515,17 @@ export default function Dokumen() {
 //                   </td>
 //                   <td className="bg-transparent p-[.5rem]">1000</td>
 //                   <td className="bg-transparent p-[.5rem]">
-//                     <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
+//                     <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
 //                       awdawd
 //                     </div>
 //                   </td>
 //                   <td className="bg-transparent p-[.5rem]">
-//                     <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
+//                     <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
 //                       awdawd
 //                     </div>
 //                   </td>
 //                   <td className="bg-transparent p-[.5rem]">
-//                     <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
+//                     <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
 //                       awdwadaw
 //                     </div>
 //                   </td>
@@ -596,7 +596,7 @@ export default function Dokumen() {
 
 //       {deleteConfirmation && (
 //         <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-[#ffffff7a]">
-//           <div className="flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-lg">
+//           <div className="flex flex-col gap-4 rounded-3xl bg-white p-4 shadow-lg">
 //             <p className="text-center">
 //               Apakah kamu yakin ingin menghapus dokumen <br /> &quot;
 //               {deleteData.title}&quot; ?

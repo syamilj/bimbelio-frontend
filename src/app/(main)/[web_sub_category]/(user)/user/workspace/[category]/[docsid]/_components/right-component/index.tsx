@@ -272,7 +272,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
         className="max-h-screen max-w-full overflow-hidden"
       >
         <div className="relative z-8 flex h-[60px] items-center justify-between border-b border-main-gray-input bg-bg-workspace px-4">
-          <TabsList className="h-full rounded-xl bg-transparent">
+          <TabsList className="h-full rounded-3xl bg-transparent">
             {TABS.map((item) => (
               <div
                 className="relative"

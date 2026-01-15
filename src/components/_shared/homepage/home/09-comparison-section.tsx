@@ -550,7 +550,7 @@ export default function ComparisonSection() {
             {/* Bottom CTA Button */}
             {/* <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
               <button
-                className="w-full md:w-auto px-8 py-4 rounded-2xl font-bold text-white text-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                className="w-full md:w-auto px-8 py-4 rounded-3xl font-bold text-white text-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -558,7 +558,7 @@ export default function ComparisonSection() {
                 Mulai Trial Gratis Sekarang
               </button>
               <button
-                className="w-full md:w-auto px-8 py-4 rounded-2xl font-bold transition-all duration-300 hover:-translate-y-1"
+                className="w-full md:w-auto px-8 py-4 rounded-3xl font-bold transition-all duration-300 hover:-translate-y-1"
                 style={{
                   color: mainColor,
                   borderColor: mainColor,

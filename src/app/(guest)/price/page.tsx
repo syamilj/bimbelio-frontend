@@ -23,7 +23,7 @@ export default function PricingPage() {
 
         {/* Pink rotated square - top left */}
         <div
-          className="absolute top-32 left-20 w-40 h-40 rounded-2xl opacity-8 blur-2xl"
+          className="absolute top-32 left-20 w-40 h-40 rounded-3xl opacity-8 blur-2xl"
           style={{
             backgroundColor: '#5aa4dd',
             transform: 'rotate(15deg)',

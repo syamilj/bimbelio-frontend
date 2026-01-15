@@ -660,7 +660,7 @@ export default function UTBKSIMAKPredictor() {
         <div className="max-w-5xl mx-auto px-4 py-8">
           {/* Header Section */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-3xl mb-6">
               <Calculator className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -691,7 +691,7 @@ export default function UTBKSIMAKPredictor() {
                     >
                       <div
                         className={cn(
-                          'w-10 h-10 rounded-xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
+                          'w-10 h-10 rounded-3xl flex items-center justify-center font-medium transition-all duration-200 mb-3',
                           isActive
                             ? 'bg-blue-600 text-white'
                             : isCompleted
@@ -834,7 +834,7 @@ export default function UTBKSIMAKPredictor() {
                       Jurusan Dipilih
                     </h3>
                     {selectedPrograms.length === 0 ? (
-                      <div className="text-center py-16 border-2 border-dashed border-gray-200 rounded-xl">
+                      <div className="text-center py-16 border-2 border-dashed border-gray-200 rounded-3xl">
                         <School className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                         <p className="text-gray-500 font-medium">
                           Belum ada jurusan yang dipilih

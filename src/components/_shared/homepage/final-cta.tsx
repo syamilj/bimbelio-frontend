@@ -149,7 +149,7 @@ const FinalCTA = () => {
               className="flex items-center gap-2"
             >
               <span
-                className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+                className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -189,7 +189,7 @@ const FinalCTA = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
-              className="p-6 rounded-2xl border-2 border-orange-200 bg-linear-to-r from-orange-50 to-red-50"
+              className="p-6 rounded-3xl border-2 border-orange-200 bg-linear-to-r from-orange-50 to-red-50"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
@@ -227,10 +227,10 @@ const FinalCTA = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 * index }}
                   viewport={{ once: true }}
-                  className="flex items-start gap-3 p-4 rounded-xl bg-white/60 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-all duration-300"
+                  className="flex items-start gap-3 p-4 rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200 hover:shadow-md transition-all duration-300"
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                    className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <div style={{ color: mainColor }}>{benefit.icon}</div>
@@ -251,13 +251,13 @@ const FinalCTA = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               {session ? (
                 <Link
-                  href={`${website_sub_category_id}/user/try-out`}
+                  href={`${website_sub_category_id}/user/bimarena/try-out`}
                   className="flex-1"
                 >
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full px-8 py-4 rounded-2xl font-bold text-white shadow-xl transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group"
+                    className="w-full px-8 py-4 rounded-3xl font-bold text-white shadow-xl transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -284,11 +284,11 @@ const FinalCTA = () => {
                     });
 
                     router.push(
-                      `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
+                      `${window.location.pathname}?href=/${website_sub_category_id}/user/bimarena/try-out`,
                     );
                     setShowAuth((prev) => ({ ...prev, open: true }));
                   }}
-                  className="flex-1 px-8 py-4 rounded-2xl font-bold text-white shadow-xl transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group"
+                  className="flex-1 px-8 py-4 rounded-3xl font-bold text-white shadow-xl transition-all duration-300 flex items-center justify-center gap-2 relative overflow-hidden group"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -303,7 +303,7 @@ const FinalCTA = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-4 rounded-2xl font-bold border-2 bg-white/80 backdrop-blur-sm transition-all duration-300 flex items-center justify-center gap-2"
+                className="px-6 py-4 rounded-3xl font-bold border-2 bg-white/80 backdrop-blur-sm transition-all duration-300 flex items-center justify-center gap-2"
                 style={{
                   borderColor: mainColor,
                   color: mainColor,
@@ -331,7 +331,7 @@ const FinalCTA = () => {
                   {/* Header */}
                   <div className="space-y-4">
                     <div
-                      className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+                      className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
                       style={{ backgroundColor: mainColor }}
                     >
                       <Trophy className="w-10 h-10 text-white" />
@@ -356,7 +356,7 @@ const FinalCTA = () => {
                         className="text-center space-y-3"
                       >
                         <div
-                          className="w-12 h-12 mx-auto rounded-xl flex items-center justify-center"
+                          className="w-12 h-12 mx-auto rounded-3xl flex items-center justify-center"
                           style={{ backgroundColor: `${achievement.color}15` }}
                         >
                           <div style={{ color: achievement.color }}>
@@ -383,7 +383,7 @@ const FinalCTA = () => {
 
                   {/* Success Rate */}
                   <div
-                    className="p-6 rounded-2xl relative overflow-hidden"
+                    className="p-6 rounded-3xl relative overflow-hidden"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}10, ${secondaryColor}10)`,
                     }}
@@ -415,7 +415,7 @@ const FinalCTA = () => {
             <motion.div
               animate={{ y: [-10, 10, -10] }}
               transition={{ duration: 4, repeat: Infinity }}
-              className="absolute -top-4 -right-4 w-16 h-16 rounded-2xl shadow-lg flex items-center justify-center"
+              className="absolute -top-4 -right-4 w-16 h-16 rounded-3xl shadow-lg flex items-center justify-center"
               style={{ backgroundColor: secondaryColor }}
             >
               <Sparkles className="w-8 h-8 text-white" />
@@ -424,7 +424,7 @@ const FinalCTA = () => {
             <motion.div
               animate={{ y: [10, -10, 10] }}
               transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -bottom-4 -left-4 w-12 h-12 rounded-xl shadow-lg flex items-center justify-center bg-white border-2"
+              className="absolute -bottom-4 -left-4 w-12 h-12 rounded-3xl shadow-lg flex items-center justify-center bg-white border-2"
               style={{ borderColor: mainColor }}
             >
               <div

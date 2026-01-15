@@ -77,7 +77,7 @@ export default function PlanDetailPage() {
               >
                 <TabsList
                   className={cn(
-                    'grid w-full h-full grid-cols-5 mb-6 bg-white/70 backdrop-blur-sm border border-blue-200/50 rounded-xl p-1',
+                    'grid w-full h-full grid-cols-5 mb-6 bg-white/70 backdrop-blur-sm border border-blue-200/50 rounded-3xl p-1',
                     !tabCourseAvailable &&
                       !tabFeatureAvailable &&
                       'grid-cols-3',

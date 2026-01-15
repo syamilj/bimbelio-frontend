@@ -53,7 +53,7 @@ const PricingEnhanced = () => {
       features: [
         '2.000 Chat dengan AI',
         '200 Notes AI',
-        '50 Quiz Generator', 
+        '50 Quiz Generator',
         '100 Vision AI',
         'Unlimited Try Out',
         'Semua Materi Premium',
@@ -126,7 +126,7 @@ const PricingEnhanced = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -202,7 +202,7 @@ const PricingEnhanced = () => {
                   <div className="relative z-10 py-8">
                     {/* Icon */}
                     <div
-                      className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center ${
+                      className={`w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center ${
                         plan.popular ? 'bg-white/20' : `bg-${mainColor}/10`
                       }`}
                     >
@@ -291,13 +291,13 @@ const PricingEnhanced = () => {
                   {/* CTA Button */}
                   {session ? (
                     <Link
-                      href={`${website_sub_category_id}/user/dashboard`}
+                      href={`${website_sub_category_id}/user/bimboard`}
                       className="block"
                     >
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 ${
+                        className={`w-full py-4 rounded-3xl font-bold text-lg shadow-lg transition-all duration-300 ${
                           plan.popular
                             ? 'text-white shadow-xl'
                             : 'text-white'
@@ -315,7 +315,7 @@ const PricingEnhanced = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className={`w-full py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 ${
+                      className={`w-full py-4 rounded-3xl font-bold text-lg shadow-lg transition-all duration-300 ${
                         plan.popular
                           ? 'text-white shadow-xl'
                           : 'text-white'
@@ -364,7 +364,7 @@ const PricingEnhanced = () => {
           <h3 className="text-2xl md:text-3xl font-bold mb-8 text-gray-900">
             Mengapa Memilih Bimbelio?
           </h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {features.map((feature, index) => (
               <motion.div
@@ -376,7 +376,7 @@ const PricingEnhanced = () => {
                 className="text-center space-y-4"
               >
                 <div
-                  className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+                  className="w-14 h-14 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <div style={{ color: mainColor }}>

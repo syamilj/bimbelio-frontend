@@ -216,7 +216,7 @@ export default function AccountSetting() {
           <div className="relative z-10 flex items-center justify-between">
             <div>
               <h1 className="text-xl md:text-3xl font-black mb-2 flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
+                <div className="w-12 h-12 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center border-2 border-white/30">
                   <Settings className="w-6 h-6" />
                 </div>
                 Pengaturan Profil
@@ -227,7 +227,7 @@ export default function AccountSetting() {
             </div>
             <Button
               onClick={() => setPage(undefined)}
-              className="rounded-2xl bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 shadow-sm hover:shadow-md"
+              className="rounded-3xl bg-white/20 hover:bg-white/30 text-white border-2 border-white/30 shadow-sm hover:shadow-md"
             >
               <X className="w-5 h-5" />
             </Button>

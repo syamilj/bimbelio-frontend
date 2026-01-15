@@ -235,7 +235,7 @@ const TutorCard: React.FC<{
         )}
 
         {/* Description Section */}
-        <div className="space-y-2 bg-yellow-50 p-3 rounded-xl border border-yellow-200">
+        <div className="space-y-2 bg-yellow-50 p-3 rounded-3xl border border-yellow-200">
           <h4 className="font-semibold text-yellow-800 text-xs flex items-center gap-2">
             <Target className="w-4 h-4 text-yellow-600" />
             Tentang Tutor
@@ -249,7 +249,7 @@ const TutorCard: React.FC<{
         <div className="grid grid-cols-2 gap-3">
           {/* Last Education */}
           <div
-            className="p-3 rounded-xl border transition-all duration-200 hover:shadow-md"
+            className="p-3 rounded-3xl border transition-all duration-200 hover:shadow-md"
             style={{
               backgroundColor: `${mainColor}10`,
               borderColor: `${mainColor}30`,
@@ -267,7 +267,7 @@ const TutorCard: React.FC<{
 
           {/* Live Classes */}
           <div
-            className="p-3 rounded-xl border transition-all duration-200 hover:shadow-md"
+            className="p-3 rounded-3xl border transition-all duration-200 hover:shadow-md"
             style={{
               backgroundColor: `${mainColor}10`,
               borderColor: `${mainColor}30`,
@@ -286,7 +286,7 @@ const TutorCard: React.FC<{
         {/* Certificate Section */}
         {tutor.certificate && (
           <div
-            className="p-3 rounded-xl border flex items-start justify-between gap-3 transition-all duration-200 hover:shadow-md"
+            className="p-3 rounded-3xl border flex items-start justify-between gap-3 transition-all duration-200 hover:shadow-md"
             style={{
               backgroundColor: `${mainColor}10`,
               borderColor: `${mainColor}30`,

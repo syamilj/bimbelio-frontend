@@ -163,7 +163,7 @@ export default function ProviderWebsiteCategory({
                 if (pathParts.length > 0) {
                   window.location.pathname = `/${item.id}/${pathParts.slice(1).join('/')}`;
                 } else {
-                  window.location.pathname = `/${item.id}/user/dashboard`;
+                  window.location.pathname = `/${item.id}/user/bimboard`;
                 }
               }}
             />
