@@ -1,10 +1,9 @@
 import uploadFileImg from '@/_assets/icon/uploadDokumen.png';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
-import { supabase } from '@/supabaseClient';
-
-import { useSession } from '@/components/provider/provider-session-auth';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { storage } from '@/supabaseClient';
 import Image from 'next/image';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { Spinner } from '../../ui/spinner';
@@ -65,9 +64,7 @@ const ReportBug = ({
       createBugReport({ category, detail, image: null });
       return;
     }
-    const upload = await supabase.storage
-      .from('img')
-      .upload(`${filename}`, image);
+    const upload = await storage.from('img').upload(`${filename}`, image);
     if (upload.data) {
       createBugReport({
         category,
@@ -201,7 +198,7 @@ const UploadImage = ({ file, setFile, inputId }: any) => {
         }}
         className="absolute right-0 top-0 h-0 w-0"
       />
-      <div className="relative flex flex-col gap-4 rounded-2xl border-2 border-dashed border-main-gray-input p-4">
+      <div className="relative flex flex-col gap-4 rounded-3xl border-2 border-dashed border-main-gray-input p-4">
         {!previewImage ? (
           <>
             <div className="flex flex-col items-center gap-[.5rem] text-center">

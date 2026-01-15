@@ -86,7 +86,7 @@ export function DialogWebCategory({
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Cari kategori..."
-              className="pl-10 h-10 bg-muted/30 border-0 rounded-xl focus-visible:ring-1 focus-visible:ring-offset-0"
+              className="pl-10 h-10 bg-muted/30 border-0 rounded-3xl focus-visible:ring-1 focus-visible:ring-offset-0"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -131,7 +131,7 @@ export function DialogWebCategory({
                             }
                           }}
                           className={cn(
-                            'group relative overflow-hidden rounded-xl p-4 text-left transition-all duration-300 hover:shadow-md border',
+                            'group relative overflow-hidden rounded-3xl p-4 text-left transition-all duration-300 hover:shadow-md border',
                             isSelected
                               ? 'border-transparent shadow-lg scale-[1.02]'
                               : 'border-gray-200 hover:border-gray-300 dark:hover:border-gray-700',

@@ -29,7 +29,7 @@ export const DialogJoinDiscord = ({
       onOpenChange={setOpen}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="rounded-2xl shadow-2xl border-0 mb:max-w-md overflow-hidden">
+      <DialogContent className="rounded-3xl shadow-2xl border-0 mb:max-w-md overflow-hidden">
         {/* Discord-themed gradient header */}
         <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-br from-[#5865F2] via-[#4752C4] to-[#3c45a5]" />
 
@@ -50,7 +50,7 @@ export const DialogJoinDiscord = ({
         </DialogHeader>
 
         <div className="relative z-10 pt-6 pb-2 space-y-4">
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-3xl p-4">
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                 <svg
@@ -75,7 +75,7 @@ export const DialogJoinDiscord = ({
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-3xl p-4">
             <p className="text-sm text-gray-700 leading-relaxed">
               Bergabunglah dengan komunitas WhatsApp kami untuk:
             </p>
@@ -103,7 +103,7 @@ export const DialogJoinDiscord = ({
             rel="noopener noreferrer"
             className="w-full"
           >
-            <Button className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold rounded-xl h-11 shadow-lg shadow-[#5865F2]/25 transition-all hover:shadow-xl hover:shadow-[#5865F2]/30">
+            <Button className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold rounded-3xl h-11 shadow-lg shadow-[#5865F2]/25 transition-all hover:shadow-xl hover:shadow-[#5865F2]/30">
               <svg
                 width="20"
                 height="20"
@@ -119,7 +119,7 @@ export const DialogJoinDiscord = ({
 
           <Button
             variant="outline"
-            className="w-full border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 rounded-xl h-11 font-medium transition-all"
+            className="w-full border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 rounded-3xl h-11 font-medium transition-all"
             onClick={() => {
               if (inviteLink) {
                 navigator.clipboard.writeText(inviteLink);

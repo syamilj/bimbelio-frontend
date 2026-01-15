@@ -66,7 +66,7 @@ const LearningMaterials = () => {
       <div className="gap-6">
         <div
           className={cn(
-            'relative flex h-[450px] w-full flex-col overflow-hidden rounded-xl p-6 md:h-[500px]',
+            'relative flex h-[450px] w-full flex-col overflow-hidden rounded-3xl p-6 md:h-[500px]',
           )}
         >
           <AnimatedList>
@@ -74,7 +74,7 @@ const LearningMaterials = () => {
               <figure
                 key={i}
                 className={cn(
-                  'relative mx-auto min-h-fit w-full max-w-[400px] cursor-pointer overflow-hidden rounded-2xl p-4',
+                  'relative mx-auto min-h-fit w-full max-w-[400px] cursor-pointer overflow-hidden rounded-3xl p-4',
                   'transition-all duration-200 ease-in-out hover:scale-[103%]',
                   'bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]',
                   'transform-gpu',
@@ -82,7 +82,7 @@ const LearningMaterials = () => {
               >
                 <div className="flex flex-row items-center gap-3">
                   <div
-                    className="flex size-10 items-center justify-center rounded-2xl"
+                    className="flex size-10 items-center justify-center rounded-3xl"
                     style={{
                       backgroundColor: 'transparent',
                     }}

@@ -8,7 +8,7 @@ import { CustomTooltip } from '@/components/ui/tooltip';
 import { env } from '@/env.mjs';
 import { base64ToFile, copyTextToClipboard } from '@/lib/utils';
 import { IconMagicWand } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import {
   BookOpenCheck,
   ClipboardCopy,
@@ -134,12 +134,12 @@ const TextSelectionPopover = ({
         return;
       } else if (data && data.status) {
         const file = base64ToFile(content.image, `${crypto.randomUUID()}`);
-        const { data, error } = await supabase.storage
+        const { data, error } = await storage
           .from('img')
           .upload(`chat-ai/${file.name}`, file);
         if (data && sendMessage) {
           sendMessage(
-            `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/img/chat-ai/${file.name}=${content.image}`,
+            `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/chat-ai/${file.name}=${content.image}`,
           );
         }
         if (error) {
@@ -247,7 +247,7 @@ const TextSelectionPopover = ({
   const OPTIONS = getOptions();
 
   return (
-    <div className="relative rounded-xl bg-black">
+    <div className="relative rounded-3xl bg-black">
       <div className="absolute -bottom-[10px] left-[50%] h-0 w-0 -translate-x-[50%] border-l-10 border-r-10 border-t-10 border-solid border-black border-l-transparent border-r-transparent" />
 
       <div
@@ -414,7 +414,7 @@ export const CommentForm = ({ onSubmit, placeHolder }: CommentFormProps) => {
 //   ];
 
 //   return (
-//     <div className="relative rounded-xl bg-black">
+//     <div className="relative rounded-3xl bg-black">
 //       <div className="absolute -bottom-[10px] left-[50%] h-0 w-0 -translate-x-[50%] border-l-10 border-r-10 border-t-10 border-solid border-black border-l-transparent border-r-transparent " />
 
 //       <div className="flex divide-x divide-gray-800">

@@ -212,7 +212,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               >
                 <Button
                   variant="ghost"
-                  className="flex w-full items-center space-x-2 hover:shadow-md rounded-xl transition-all duration-300 border-2 border-gray-100 hover:border-opacity-50"
+                  className="flex w-full items-center space-x-2 hover:shadow-md rounded-3xl transition-all duration-300 border-2 border-gray-100 hover:border-opacity-50"
                   onClick={() => router.push('/blog')}
                   style={
                     {
@@ -275,7 +275,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                         >
                           <Link href={`/blog/${post.slug}`}>
                             <div
-                              className="group flex items-start gap-2.5 p-3 rounded-2xl hover:shadow-md transition-all duration-300 border-2 border-transparent hover:border-opacity-40"
+                              className="group flex items-start gap-2.5 p-3 rounded-3xl hover:shadow-md transition-all duration-300 border-2 border-transparent hover:border-opacity-40"
                               style={
                                 {
                                   '--hover-border': `${mainColor}30`,
@@ -400,7 +400,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     >
                       <Button
                         size="sm"
-                        className="rounded-xl border-0 shadow-md font-bold hover:shadow-lg transition-all duration-300 text-white px-4 py-2"
+                        className="rounded-3xl border-0 shadow-md font-bold hover:shadow-lg transition-all duration-300 text-white px-4 py-2"
                         onClick={handleShare}
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
@@ -418,7 +418,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
-                      className="p-4 rounded-2xl border-2 flex flex-col items-center justify-center text-center"
+                      className="p-4 rounded-3xl border-2 flex flex-col items-center justify-center text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                         borderColor: 'rgb(191 219 254)',
@@ -436,7 +436,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.7 }}
-                      className="p-4 rounded-2xl border-2 flex flex-col items-center justify-center text-center"
+                      className="p-4 rounded-3xl border-2 flex flex-col items-center justify-center text-center"
                       style={{
                         background: `linear-gradient(to bottom right, rgb(254 249 195), rgb(254 240 138))`,
                         borderColor: 'rgb(253 224 71)',
@@ -469,7 +469,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                     whileTap={{ scale: 0.95 }}
                   >
                     <Badge
-                      className="px-4 py-2 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 font-bold text-base border-2 cursor-pointer"
+                      className="px-4 py-2 rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 font-bold text-base border-2 cursor-pointer"
                       style={{
                         backgroundColor: `${mainColor}15`,
                         color: mainColor,
@@ -487,7 +487,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
                 whileHover={{ scale: 1.01 }}
-                className={cn('w-full rounded-2xl overflow-hidden shadow-2xl')}
+                className={cn('w-full rounded-3xl overflow-hidden shadow-2xl')}
               >
                 <Image
                   className="w-full transition-transform duration-700 hover:scale-105"
@@ -508,7 +508,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
               className="flex items-center gap-3 px-4"
             >
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center"
                 style={{ backgroundColor: mainColor }}
               >
                 <BookOpen className="w-5 h-5 text-white" />
@@ -551,7 +551,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="bg-white rounded-2xl shadow-lg border-2 overflow-hidden"
+                className="bg-white rounded-3xl shadow-lg border-2 overflow-hidden"
                 style={{ borderColor: `${mainColor}20` }}
               >
                 {/* Top Accent Bar */}

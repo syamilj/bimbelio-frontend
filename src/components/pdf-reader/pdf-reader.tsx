@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 import { env } from '@/env.mjs';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { HighlightTypeEnum } from '@/types/database';
-import Cookies from 'js-cookie';
 import { Loader2 } from 'lucide-react';
 import {
   GhostHighlight,
@@ -146,13 +145,13 @@ function PdfReader({
   const [pdfUrl, setPdfUrl] = useState<string>('');
   const fetchPdf = useDebouncedCallback(async () => {
     const response = await fetch(
-      `${env.NEXT_PUBLIC_API_URL}/document/pdf?title=${docUrl}`,
+      `${env.NEXT_PUBLIC_SUPABASE_PDF_URL}/document/${docUrl}`,
       {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-          'Content-Type': 'application/json',
-        },
+        method: 'GET',
+        // headers: {
+        //   Authorization: `Bearer ${Cookies.get('token')}`,
+        //   'Content-Type': 'application/json',
+        // },
       },
     );
     if (response.ok) {
@@ -167,6 +166,8 @@ function PdfReader({
   useEffect(() => {
     fetchPdf();
   }, []);
+
+  console.log('PDF URL:', pdfUrl);
 
   if (pdfUrl.length === 0) {
     return (

@@ -72,7 +72,7 @@ const ComparisonSection: React.FC = () => {
             Liveclass vs Livestream
           </h3>
 
-          <div className="overflow-x-auto rounded-2xl border border-gray-200">
+          <div className="overflow-x-auto rounded-3xl border border-gray-200">
             <table className="w-full bg-white text-sm">
               <thead>
                 <tr style={{ backgroundColor: mainColor }}>
@@ -117,7 +117,7 @@ const ComparisonSection: React.FC = () => {
             Bimbelio vs Alternatif Lain
           </h3>
 
-          <div className="overflow-x-auto rounded-2xl border border-gray-200">
+          <div className="overflow-x-auto rounded-3xl border border-gray-200">
             <table className="w-full bg-white text-sm">
               <thead>
                 <tr style={{ backgroundColor: mainColor }}>

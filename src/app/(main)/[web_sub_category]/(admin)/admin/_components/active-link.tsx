@@ -38,7 +38,7 @@ const ActiveLink = ({
     <Link
       href={href}
       className={cn(
-        'group relative flex items-center gap-3 rounded-2xl transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5',
+        'group relative flex items-center gap-3 rounded-3xl transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5',
         minimized ? 'justify-center p-3 mx-1' : 'p-4 mx-3',
         isActive
           ? 'text-white shadow-lg scale-105'
@@ -53,7 +53,7 @@ const ActiveLink = ({
       {/* Icon Container */}
       <div
         className={cn(
-          'flex items-center justify-center rounded-xl transition-all duration-300',
+          'flex items-center justify-center rounded-3xl transition-all duration-300',
           minimized ? 'w-8 h-8' : 'w-10 h-10',
           isActive
             ? 'bg-white/20 shadow-inner'
@@ -95,14 +95,14 @@ const ActiveLink = ({
       {/* Hover Effect */}
       <div
         className={cn(
-          'absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none',
+          'absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none',
           !isActive && 'bg-gray-900',
         )}
       />
 
       {/* Shimmer Effect for Active State */}
       {isActive && (
-        <div className="absolute inset-0 rounded-2xl overflow-hidden">
+        <div className="absolute inset-0 rounded-3xl overflow-hidden">
           <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -skew-x-12 group-hover:animate-shimmer" />
         </div>
       )}
@@ -117,7 +117,7 @@ const ActiveLink = ({
           <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
           <TooltipContent
             side="right"
-            className="bg-white shadow-lg border border-gray-200 rounded-xl p-3"
+            className="bg-white shadow-lg border border-gray-200 rounded-3xl p-3"
           >
             <div className="space-y-1">
               <div className="font-semibold text-sm text-gray-900">{label}</div>

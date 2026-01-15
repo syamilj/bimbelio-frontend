@@ -35,7 +35,7 @@ const Blog = () => {
               key={blog.id}
               className="group"
             >
-              <article className="shadow-m transform overflow-hidden rounded-xl bg-white transition-transform duration-300 ease-in-out hover:-translate-y-1">
+              <article className="shadow-m transform overflow-hidden rounded-3xl bg-white transition-transform duration-300 ease-in-out hover:-translate-y-1">
                 <div className="relative h-48">
                   <Image
                     src={blog.thumbnail}

@@ -2,7 +2,7 @@
 
 import CardTryOut, {
   CardTryoutProps,
-} from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+} from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -113,7 +113,7 @@ const TryoutSection: React.FC = () => {
                     {[1, 2, 3].map((i) => (
                       <div
                         key={i}
-                        className="h-20 bg-gray-100 rounded-2xl"
+                        className="h-20 bg-gray-100 rounded-3xl"
                       />
                     ))}
                   </div>
@@ -121,11 +121,11 @@ const TryoutSection: React.FC = () => {
                     {[1, 2].map((i) => (
                       <div
                         key={i}
-                        className="h-16 bg-gray-100 rounded-2xl"
+                        className="h-16 bg-gray-100 rounded-3xl"
                       />
                     ))}
                   </div>
-                  <div className="h-12 bg-gray-100 rounded-xl" />
+                  <div className="h-12 bg-gray-100 rounded-3xl" />
                 </div>
               </div>
             ))

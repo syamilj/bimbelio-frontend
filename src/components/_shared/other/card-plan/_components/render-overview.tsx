@@ -261,7 +261,7 @@ export const RenderOverviewTab = () => {
                 {platfroms.map((platform) => (
                   <div
                     key={platform}
-                    className="inline-block px-2 py-1 bg-white border border-indigo-300 rounded-2xl text-xs font-medium text-indigo-700"
+                    className="inline-block px-2 py-1 bg-white border border-indigo-300 rounded-3xl text-xs font-medium text-indigo-700"
                   >
                     {platform}
                   </div>

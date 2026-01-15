@@ -149,7 +149,7 @@ const IndividualQuizReport = ({
                   </h2>
 
                   <div
-                    className={`mb-4 rounded-xl p-4 ${StyleYourResponseStream()} font-medium`}
+                    className={`mb-4 rounded-3xl p-4 ${StyleYourResponseStream()} font-medium`}
                   >
                     {userResponse.includes(answer) ? (
                       <div className="mb-2 flex items-center gap-[.5rem]">
@@ -177,7 +177,7 @@ const IndividualQuizReport = ({
 
                   <div className="flex flex-col gap-4">
                     <div
-                      className={`rounded-xl ${userResponse.includes(answer) ? 'bg-[#E1F7EB]' : 'bg-[#E1F7EB]'} p-4`}
+                      className={`rounded-3xl ${userResponse.includes(answer) ? 'bg-[#E1F7EB]' : 'bg-[#E1F7EB]'} p-4`}
                     >
                       <h4
                         className={
@@ -217,7 +217,7 @@ const IndividualQuizReport = ({
               <AccordionTrigger className="px-2 text-lg font-semibold text-main-gray-text">
                 Answer
               </AccordionTrigger>
-              <AccordionContent className="rounded-xl bg-[#E1F2FF] p-4 text-black">
+              <AccordionContent className="rounded-3xl bg-[#E1F2FF] p-4 text-black">
                 {answer}
               </AccordionContent>
             </AccordionItem>

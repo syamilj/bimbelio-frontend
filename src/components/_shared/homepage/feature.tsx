@@ -98,7 +98,7 @@ const Feature = () => {
                   <div className="relative mb-8">
                     {/* Background Circle */}
                     <div
-                      className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300"
+                      className="w-20 h-20 rounded-3xl flex items-center justify-center mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300"
                       style={{
                         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                       }}
@@ -173,7 +173,7 @@ const Feature = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300"
+            className="px-8 py-4 rounded-3xl font-bold text-white shadow-lg transition-all duration-300"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}

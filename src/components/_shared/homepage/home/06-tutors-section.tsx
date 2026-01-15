@@ -287,7 +287,7 @@ export default function TutorsSection() {
             {tutors.map((tutor, index) => (
               <div
                 key={index}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100"
+                className="group relative bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-full flex flex-col border border-gray-100"
               >
                 {/* Top Section - Image with Overlay */}
                 <div
@@ -420,7 +420,7 @@ export default function TutorsSection() {
             {mentorFeatures.map((feature, index) => (
               <div
                 key={index}
-                className="group relative bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="group relative bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 {/* Top Colored Bar */}
                 <div
@@ -433,7 +433,7 @@ export default function TutorsSection() {
                   <div className="flex items-start gap-4 mb-5">
                     {/* Icon Container */}
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white shadow-md flex-shrink-0 group-hover:shadow-lg transition-shadow"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center text-white shadow-md flex-shrink-0 group-hover:shadow-lg transition-shadow"
                       style={{ backgroundColor: feature.color }}
                     >
                       {feature.icon}
@@ -569,7 +569,7 @@ export default function TutorsSection() {
                 {/* User Message */}
                 <div className="flex justify-end">
                   <div
-                    className="max-w-xs px-4 py-3 rounded-2xl text-sm font-medium"
+                    className="max-w-xs px-4 py-3 rounded-3xl text-sm font-medium"
                     style={{
                       backgroundColor: '#9C27B0',
                       color: 'white',
@@ -582,7 +582,7 @@ export default function TutorsSection() {
                 {/* AI Thinking */}
                 <div className="flex justify-start">
                   <div
-                    className="px-4 py-3 rounded-2xl"
+                    className="px-4 py-3 rounded-3xl"
                     style={{
                       backgroundColor: '#9C27B008',
                       border: '1px solid #9C27B020',
@@ -620,7 +620,7 @@ export default function TutorsSection() {
                 {/* AI Response */}
                 <div className="flex justify-start">
                   <div
-                    className="max-w-xs px-4 py-3 rounded-2xl text-sm leading-relaxed"
+                    className="max-w-xs px-4 py-3 rounded-3xl text-sm leading-relaxed"
                     style={{
                       backgroundColor: '#9C27B010',
                       border: '1px solid #9C27B020',
@@ -637,7 +637,7 @@ export default function TutorsSection() {
                 {/* User Message 2 */}
                 <div className="flex justify-end">
                   <div
-                    className="max-w-xs px-4 py-3 rounded-2xl text-sm font-medium"
+                    className="max-w-xs px-4 py-3 rounded-3xl text-sm font-medium"
                     style={{
                       backgroundColor: '#9C27B0',
                       color: 'white',
@@ -650,7 +650,7 @@ export default function TutorsSection() {
                 {/* AI Response 2 */}
                 <div className="flex justify-start">
                   <div
-                    className="max-w-xs px-4 py-3 rounded-2xl text-sm"
+                    className="max-w-xs px-4 py-3 rounded-3xl text-sm"
                     style={{
                       backgroundColor: '#9C27B010',
                       border: '1px solid #9C27B020',
@@ -710,7 +710,7 @@ export default function TutorsSection() {
                 >
                   {/* Icon Container */}
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md"
+                    className="w-12 h-12 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-md"
                     style={{ backgroundColor: feature.color + '15' }}
                   >
                     <div style={{ color: feature.color }}>{feature.icon}</div>
@@ -754,7 +754,7 @@ export default function TutorsSection() {
             <div className="relative z-10">
               <div className="mb-6 flex items-center justify-center gap-3">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-xl shadow-md"
+                  className="flex h-12 w-12 items-center justify-center rounded-3xl shadow-md"
                   style={{ backgroundColor: mainColor }}
                 >
                   <CheckCircle2 className="h-6 w-6 text-white" />

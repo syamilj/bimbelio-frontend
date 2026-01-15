@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useAdminWebCategory } from '../provider';
@@ -46,7 +46,7 @@ export function DialogDelete({
   const [isLoading, setIsLoading] = useState(false);
   const handleConfirm = async () => {
     if (name) {
-      await supabase.storage
+      await storage
         .from('img')
         .remove([`website-sub-category/${sanitizeFileName(name)}`]);
     }

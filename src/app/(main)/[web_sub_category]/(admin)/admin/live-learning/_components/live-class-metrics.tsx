@@ -142,7 +142,7 @@ export function LiveClassMetrics() {
                 {metric.title}
               </CardTitle>
               <div
-                className={`w-10 h-10 rounded-xl ${metric.bgColor} flex items-center justify-center`}
+                className={`w-10 h-10 rounded-3xl ${metric.bgColor} flex items-center justify-center`}
               >
                 <Icon className={`w-5 h-5 ${metric.color}`} />
               </div>

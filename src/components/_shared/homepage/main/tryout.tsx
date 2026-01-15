@@ -1,6 +1,6 @@
 'use client';
 
-import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -243,8 +243,8 @@ const FeaturedTryoutSection = () => {
         >
           {session ? (
             <Link
-              href={`${website_sub_category_id}/user/try-out`}
-              className="group inline-flex items-center gap-3 px-6 py-3 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-xl text-white"
+              href={`${website_sub_category_id}/user/bimarena/try-out`}
+              className="group inline-flex items-center gap-3 px-6 py-3 rounded-3xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-xl text-white"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -256,13 +256,13 @@ const FeaturedTryoutSection = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-3 px-6 py-3 rounded-xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-xl text-white"
+              className="group inline-flex items-center gap-3 px-6 py-3 rounded-3xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-xl text-white"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
               onClick={() => {
                 setShowAuth({
-                  redirect: `/${website_sub_category_id ? website_sub_category_id : 'chosee'}/user/try-out`,
+                  redirect: `/${website_sub_category_id ? website_sub_category_id : 'chosee'}/user/bimarena/try-out`,
                   open: true,
                 });
               }}
@@ -297,7 +297,7 @@ const EnhancedTryOutCard = ({
     if (!tryOut || !tryoutId || !session) return;
     if (tryoutId === tryOut.id) {
       router.push(
-        `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryoutId}`,
+        `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryoutId}`,
       );
     }
   }, [tryOut, tryoutId, session]);
@@ -379,7 +379,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Hero Image Section */}
         <div className="relative mt-12 mb-4">
-          <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
+          <div className="relative w-full h-52 rounded-3xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-xl transition-all duration-500">
             <Image
               src={
                 `${env.NEXT_PUBLIC_SUPABASE_IMG_URL || '/placeholder.svg'}/tryout/${tryOut.image}` ||
@@ -484,7 +484,7 @@ const EnhancedTryOutCard = ({
 
       <div className="px-6 pb-6">
         {/* Enhanced Stats Section - Plan Card Style */}
-        <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
+        <div className="mb-6 p-4 rounded-3xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-700">
@@ -499,7 +499,7 @@ const EnhancedTryOutCard = ({
             {/* Enhanced Stats Grid */}
             <div className="grid grid-cols-2 gap-3">
               <div
-                className="text-center p-3 rounded-xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-3xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <Clock
@@ -515,7 +515,7 @@ const EnhancedTryOutCard = ({
                 </div>
               </div>
               <div
-                className="text-center p-3 rounded-xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-3xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <BookOpen
@@ -531,7 +531,7 @@ const EnhancedTryOutCard = ({
                 </div>
               </div>
               {/* <div
-                className="text-center p-3 rounded-xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-3xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <Users
@@ -552,7 +552,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Date Info */}
         <div className="mb-6 grid grid-cols-2 gap-3">
-          <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-gray-50 border border-gray-200">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Calendar className="w-4 h-4 text-blue-600" />
               <span className="text-sm font-medium text-gray-700">
@@ -572,7 +572,7 @@ const EnhancedTryOutCard = ({
               })}
             </div>
           </div>
-          <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-gray-50 border border-gray-200">
             <div className="flex items-center justify-center gap-2 mb-2">
               <BookOpen className="w-4 h-4 text-purple-600" />
               <span className="text-sm font-medium text-gray-700">
@@ -592,7 +592,7 @@ const EnhancedTryOutCard = ({
         {/* Plan Card Style CTA Section */}
         <div className="space-y-3">
           {/* Compact Features Section */}
-          <div className="bg-gray-50 rounded-xl p-3 space-y-3">
+          <div className="bg-gray-50 rounded-3xl p-3 space-y-3">
             {/* Feature Chips - 2 rows */}
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
@@ -649,7 +649,7 @@ const EnhancedTryOutCard = ({
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group rounded-xl"
+            className="w-full h-14 text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-white border-0 relative overflow-hidden group rounded-3xl"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -670,7 +670,7 @@ const EnhancedTryOutCard = ({
                 return;
               }
               router.push(
-                `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryOut.id}`,
+                `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryOut.id}`,
               );
             }}
           >

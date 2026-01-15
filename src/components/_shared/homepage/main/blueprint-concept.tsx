@@ -213,7 +213,7 @@ const BlueprintConcept: React.FC = () => {
             ].map((stat, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
+                className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100"
               >
                 <div
                   className="text-3xl mb-2 flex justify-center"
@@ -322,7 +322,7 @@ const BlueprintConcept: React.FC = () => {
 
                     {/* Icon */}
                     <div className="relative z-10 text-center">
-                      <div className="w-24 h-24 mx-auto mb-6 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                      <div className="w-24 h-24 mx-auto mb-6 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center">
                         {step.icon}
                       </div>
 
@@ -369,7 +369,7 @@ const BlueprintConcept: React.FC = () => {
               <h3 className="text-3xl md:text-5xl font-black text-white mb-6">
                 Siap Jadi yang{' '}
                 <span
-                  className="bg-white px-2 py-1 rounded-xl font-black"
+                  className="bg-white px-2 py-1 rounded-3xl font-black"
                   style={{
                     color: mainColor,
                   }}
@@ -385,7 +385,7 @@ const BlueprintConcept: React.FC = () => {
                 tercepat & terukur.
                 <br />
                 <span
-                  className="font-bold px-2 py-1 rounded-xl"
+                  className="font-bold px-2 py-1 rounded-3xl"
                   style={{ background: 'white', color: mainColor }}
                 >
                   Kapan giliran kamu?
@@ -394,7 +394,7 @@ const BlueprintConcept: React.FC = () => {
 
               <Button
                 size="lg"
-                className="text-xl font-bold px-12 py-6 rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300"
+                className="text-xl font-bold px-12 py-6 rounded-3xl shadow-2xl hover:scale-105 transition-all duration-300"
                 style={{
                   backgroundColor: mainColor,
                   color: 'white',

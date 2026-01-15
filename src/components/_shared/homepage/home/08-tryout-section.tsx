@@ -1,6 +1,6 @@
 'use client';
 
-import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -201,7 +201,7 @@ const TryoutSection: React.FC = () => {
                     }}
                   />
                   <div className="p-6 space-y-4">
-                    <div className="h-48 bg-gray-200 rounded-2xl" />
+                    <div className="h-48 bg-gray-200 rounded-3xl" />
                     <div className="h-6 bg-gray-200 rounded w-3/4" />
                     <div className="h-4 bg-gray-200 rounded w-1/2" />
                     <div className="space-y-2">
@@ -234,7 +234,7 @@ const TryoutSection: React.FC = () => {
             {/* Icon Header */}
             <div className="mb-4 flex items-center justify-center gap-3">
               <div
-                className="h-12 w-12 rounded-2xl flex items-center justify-center shadow-lg"
+                className="h-12 w-12 rounded-3xl flex items-center justify-center shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -254,8 +254,8 @@ const TryoutSection: React.FC = () => {
             {/* CTA Button */}
             {session ? (
               <Link
-                href={`${website_sub_category_id}/user/try-out`}
-                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
+                href={`${website_sub_category_id}/user/bimarena/try-out`}
+                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-3xl font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -266,13 +266,13 @@ const TryoutSection: React.FC = () => {
               </Link>
             ) : (
               <button
-                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
+                className="group inline-flex items-center justify-center gap-3 w-full px-8 py-6 rounded-3xl cursor-pointer font-bold text-lg shadow-lg transition-all duration-300 hover:shadow-md text-white"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
                 onClick={() => {
                   router.push(
-                    `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
+                    `${window.location.pathname}?href=/${website_sub_category_id}/user/bimarena/try-out`,
                   );
                   setShowAuth((prev) => ({ ...prev, open: true }));
                 }}
@@ -329,7 +329,7 @@ const EnhancedTryOutCard = ({
     if (!tryOut || !tryoutId || !session) return;
     if (tryoutId === tryOut.id) {
       router.push(
-        `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryoutId}`,
+        `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryoutId}`,
       );
     }
   }, [tryOut, tryoutId, session]);
@@ -406,7 +406,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Hero Image Section */}
         <div className="relative mt-12 mb-4">
-          <div className="relative w-full h-52 rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-md transition-all duration-500">
+          <div className="relative w-full h-52 rounded-3xl overflow-hidden border border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 group-hover:shadow-md transition-all duration-500">
             <Image
               src={
                 `${env.NEXT_PUBLIC_SUPABASE_IMG_URL || '/placeholder.svg'}/tryout/${tryOut.image}` ||
@@ -472,7 +472,7 @@ const EnhancedTryOutCard = ({
 
             {/* Enhanced Title Overlay */}
             <div className="absolute bottom-4 left-4 right-4 text-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-              <h3 className="text-lg text-center font-bold text-white leading-tight backdrop-blur-sm bg-black/20 rounded-2xl p-2">
+              <h3 className="text-lg text-center font-bold text-white leading-tight backdrop-blur-sm bg-black/20 rounded-3xl p-2">
                 {tryOut.title}
               </h3>
             </div>
@@ -511,7 +511,7 @@ const EnhancedTryOutCard = ({
 
       <div className="px-6 pb-6">
         {/* Enhanced Stats Section - Plan Card Style */}
-        <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
+        <div className="mb-6 p-4 rounded-3xl border-2 border-dashed border-gray-200 bg-gradient-to-br from-green-50 to-emerald-50">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-700">
@@ -526,7 +526,7 @@ const EnhancedTryOutCard = ({
             {/* Enhanced Stats Grid */}
             <div className="grid grid-cols-2 gap-3">
               <div
-                className="text-center p-3 rounded-2xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-3xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <Clock
@@ -542,7 +542,7 @@ const EnhancedTryOutCard = ({
                 </div>
               </div>
               <div
-                className="text-center p-3 rounded-2xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-3xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <BookOpen
@@ -558,7 +558,7 @@ const EnhancedTryOutCard = ({
                 </div>
               </div>
               {/* <div
-                className="text-center p-3 rounded-2xl border border-gray-200 bg-white"
+                className="text-center p-3 rounded-3xl border border-gray-200 bg-white"
                 style={{ borderColor: `${mainColor}30` }}
               >
                 <Users
@@ -579,7 +579,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Date Info */}
         <div className="mb-6 grid grid-cols-2 gap-3">
-          <div className="text-center p-4 rounded-2xl bg-white border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-white border border-gray-200">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Calendar className="w-4 h-4 text-blue-600" />
               <span className="text-sm font-medium text-gray-700">
@@ -599,7 +599,7 @@ const EnhancedTryOutCard = ({
               })}
             </div>
           </div>
-          <div className="text-center p-4 rounded-2xl bg-white border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-white border border-gray-200">
             <div className="flex items-center justify-center gap-2 mb-2">
               <BookOpen className="w-4 h-4 text-purple-600" />
               <span className="text-sm font-medium text-gray-700">
@@ -619,7 +619,7 @@ const EnhancedTryOutCard = ({
         {/* Enhanced Features Section */}
         <div className="space-y-3">
           {/* Features with checkmarks */}
-          <div className="bg-white rounded-2xl p-4 space-y-2">
+          <div className="bg-white rounded-3xl p-4 space-y-2">
             <div className="flex items-start gap-2">
               <CheckCircle2
                 className="w-4 h-4 flex-shrink-0 mt-0.5"
@@ -660,7 +660,7 @@ const EnhancedTryOutCard = ({
 
           {/* Community Badge */}
           <div
-            className="flex items-center justify-center gap-2 rounded-2xl p-3 shadow-sm"
+            className="flex items-center justify-center gap-2 rounded-3xl p-3 shadow-sm"
             style={{
               backgroundColor: `${mainColor}08`,
               border: `1.5px solid ${mainColor}20`,
@@ -695,7 +695,7 @@ const EnhancedTryOutCard = ({
 
           {/* Primary CTA */}
           <button
-            className="w-full h-14 text-lg font-bold shadow-md hover:shadow-sm transition-all duration-300 text-white border-0 relative overflow-hidden group rounded-2xl"
+            className="w-full h-14 text-lg font-bold shadow-md hover:shadow-sm transition-all duration-300 text-white border-0 relative overflow-hidden group rounded-3xl"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -716,7 +716,7 @@ const EnhancedTryOutCard = ({
                 return;
               }
               router.push(
-                `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryOut.id}`,
+                `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryOut.id}`,
               );
             }}
           >

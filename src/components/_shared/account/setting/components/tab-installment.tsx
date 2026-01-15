@@ -136,7 +136,7 @@ export const TabInstallment = ({
                   </p>
                 </div>
                 <Badge
-                  className="font-bold text-xs rounded-xl"
+                  className="font-bold text-xs rounded-3xl"
                   style={{
                     backgroundColor: `${mainColor}20`,
                     color: mainColor,
@@ -164,7 +164,7 @@ export const TabInstallment = ({
                     return (
                       <Card
                         key={instIndex}
-                        className="border-2 border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                        className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                         style={{
                           borderLeft: `4px solid ${mainColor}`,
                         }}
@@ -174,7 +174,7 @@ export const TabInstallment = ({
                             {/* Top Section */}
                             <div className="flex items-start gap-3 md:gap-4 w-full">
                               <div
-                                className="p-3 rounded-2xl flex-shrink-0 mt-1"
+                                className="p-3 rounded-3xl flex-shrink-0 mt-1"
                                 style={{
                                   backgroundColor: `${mainColor}20`,
                                 }}
@@ -395,7 +395,7 @@ export const TabInstallment = ({
                             <div className="flex justify-end gap-2 w-full">
                               {!installmentItem.isPaid && (
                                 <button
-                                  className="flex-1 md:flex-none px-4 py-2 rounded-xl font-bold text-xs text-white flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg hover:shadow-xl cursor-pointer whitespace-nowrap"
+                                  className="flex-1 md:flex-none px-4 py-2 rounded-3xl font-bold text-xs text-white flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-transform shadow-lg hover:shadow-xl cursor-pointer whitespace-nowrap"
                                   style={{
                                     backgroundColor: mainColor,
                                   }}
@@ -417,7 +417,7 @@ export const TabInstallment = ({
 
                               {installmentItem.isPaid && (
                                 <div
-                                  className="px-4 py-2 rounded-xl font-bold text-xs text-white flex items-center justify-center gap-2 text-center"
+                                  className="px-4 py-2 rounded-3xl font-bold text-xs text-white flex items-center justify-center gap-2 text-center"
                                   style={{
                                     backgroundColor: '#10b981',
                                   }}
@@ -536,7 +536,7 @@ const DialogInstallmentPayment = ({
       onOpenChange={onOpenChange}
     >
       <DialogContent
-        className="sm:max-w-md rounded-2xl"
+        className="sm:max-w-md rounded-3xl"
         classOverlay="z-[1001]"
       >
         <DialogHeader>
@@ -549,7 +549,7 @@ const DialogInstallmentPayment = ({
           <div className="space-y-4">
             {/* Installment Info */}
             <div
-              className="p-4 rounded-xl"
+              className="p-4 rounded-3xl"
               style={{
                 backgroundColor: `${mainColor}10`,
                 borderLeft: `4px solid ${mainColor}`,
@@ -596,7 +596,7 @@ const DialogInstallmentPayment = ({
                   value={phoneNumber}
                   onChange={handlePhoneChange}
                   disabled={isLoading}
-                  className={`pl-10 rounded-xl border-2 ${
+                  className={`pl-10 rounded-3xl border-2 ${
                     phoneError
                       ? 'border-red-500 focus:border-red-500'
                       : 'border-gray-200 focus:border-blue-400'
@@ -619,7 +619,7 @@ const DialogInstallmentPayment = ({
               <Button
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                className="flex-1 rounded-xl font-semibold"
+                className="flex-1 rounded-3xl font-semibold"
                 disabled={isLoading}
               >
                 Batal
@@ -627,7 +627,7 @@ const DialogInstallmentPayment = ({
               <Button
                 onClick={handleConfirmPayment}
                 disabled={isLoading || !phoneNumber}
-                className="flex-1 rounded-xl font-semibold text-white"
+                className="flex-1 rounded-3xl font-semibold text-white"
                 style={{
                   backgroundColor:
                     isLoading || !phoneNumber ? '#ccc' : mainColor,

@@ -34,7 +34,7 @@ import {
 } from '@/lib/mock-data/live-class';
 import { cn } from '@/lib/utils';
 import { sanitizeFileName } from '@/lib/utils/storage';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Category, Instructor, LiveClass } from '@/types/database';
 import {
   AccessibilityIcon,
@@ -98,7 +98,7 @@ export function LiveClassTable({
     useMutation<{ title: string }>('/liveClass/deleteLiveClass', 'delete', {
       async onSuccess({ data }) {
         if (data?.title) {
-          supabase.storage
+          storage
             .from('img')
             .remove([`live-learning/${sanitizeFileName(data.title)}`]);
         }
@@ -178,7 +178,7 @@ export function LiveClassTable({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded-xl border border-gray-200 overflow-hidden">
+          <div className="rounded-3xl border border-gray-200 overflow-hidden">
             <Table className="border-b">
               <TableHeader>
                 <TableRow className="bg-gray-50">

@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select';
 import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import 'katex/dist/katex.min.css';
 import {
   AlertCircle,
@@ -61,8 +61,8 @@ const SubChapterQuestion = ({
     }
     if (EditSubChapter.Questions[questionIndex].image) {
       const title = EditSubChapter.Questions[questionIndex].image;
-      const deleteImage = await supabase?.storage
-        .from('to_question')
+      const deleteImage = await storage
+        .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {
         setSubChapter((prev) =>
@@ -142,8 +142,8 @@ const SubChapterQuestion = ({
       EditSubChapter.Questions[questionIndex].image
     ) {
       const title = EditSubChapter.Questions[questionIndex].image;
-      const deleteImage = await supabase?.storage
-        .from('to_question')
+      const deleteImage = await storage
+        .from('to-question')
         .remove([`${title}`]);
       if (deleteImage?.data) {
         setSubChapter((prev) =>
@@ -290,15 +290,15 @@ const SubChapterQuestion = ({
       EditSubChapter.Questions[index].image
     ) {
       const filename = `${EditSubChapter.Questions[index].image}`;
-      const upload = await supabase?.storage
-        .from('to_question')
+      const upload = await storage
+        .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
-            .from('to_question')
+          const update = await storage
+            .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
           }
@@ -330,15 +330,15 @@ const SubChapterQuestion = ({
     }
     if (image) {
       const filename = `${crypto.randomUUID()}-${index + 1}`;
-      const upload = await supabase?.storage
-        .from('to_question')
+      const upload = await storage
+        .from('to-question')
         .upload(`${filename}`, image);
       if (upload?.data) {
       }
       if (upload?.error) {
         if (upload.error.message === 'The resource already exists') {
-          const update = await supabase?.storage
-            .from('to_question')
+          const update = await storage
+            .from('to-question')
             .update(`${filename}`, image);
           if (update?.data) {
           }
@@ -537,7 +537,7 @@ const SubChapterQuestion = ({
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-500 text-white rounded-xl flex items-center justify-center font-bold">
+              <div className="w-10 h-10 bg-blue-500 text-white rounded-3xl flex items-center justify-center font-bold">
                 {currentQuestion.number}
               </div>
               <span>Soal {currentQuestion.number}</span>
@@ -638,7 +638,20 @@ const SubChapterQuestion = ({
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image} "")`;
+                        // const image = `![Image](${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image} "")`;
+                        const image = `
+                        <div class="bn-block-outer" data-node-type="blockOuter" data-id="aed85167-c23d-4804-8abd-b774b8adfb50">
+                          <div class="bn-block" data-node-type="blockContainer" data-id="aed85167-c23d-4804-8abd-b774b8adfb50">
+                            <div class="bn-block-content ProseMirror-selectednode" data-content-type="image" data-url="${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image}" data-file-block="" contenteditable="false" draggable="true">
+                              <div class="bn-file-block-content-wrapper" style="width: fit-content;">
+                                <div class="bn-visual-media-wrapper">
+                                  <img class="bn-visual-media" src="${env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL}/${currentQuestion.image}" alt="BlockNote image" contenteditable="false" draggable="false">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        `;
                         addImageToQuestion(image, questionIndex);
                       }}
                       className="gap-2"

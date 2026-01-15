@@ -146,7 +146,7 @@ const InteractiveTimeline = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -220,7 +220,7 @@ const InteractiveTimeline = () => {
                     <CardContent className="p-6 md:p-8">
                       {/* Phase Badge */}
                       <div
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white mb-4 shadow-lg"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-3xl text-sm font-bold text-white mb-4 shadow-lg"
                         style={{ backgroundColor: item.color }}
                       >
                         <Clock className="w-4 h-4" />
@@ -326,7 +326,7 @@ const InteractiveTimeline = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <button
-                    className="px-8 py-4 rounded-2xl font-bold text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2 mx-auto"
+                    className="px-8 py-4 rounded-3xl font-bold text-white shadow-lg transition-all duration-300 flex items-center justify-center gap-2 mx-auto"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}

@@ -184,7 +184,7 @@ export default function LinkPagesPage() {
         <Separator className="my-6" />
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="rounded-2xl border-none bg-secondary/40">
+          <Card className="rounded-3xl border-none bg-secondary/40">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs uppercase tracking-widest text-muted-foreground">
                 Total Pages
@@ -195,7 +195,7 @@ export default function LinkPagesPage() {
               <p className="text-xs text-muted-foreground">Aktif & terarsip</p>
             </CardContent>
           </Card>
-          <Card className="rounded-2xl border-none bg-secondary/40">
+          <Card className="rounded-3xl border-none bg-secondary/40">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs uppercase tracking-widest text-muted-foreground">
                 Total Views
@@ -206,7 +206,7 @@ export default function LinkPagesPage() {
               <p className="text-xs text-muted-foreground">Sejak awal pencatatan</p>
             </CardContent>
           </Card>
-          <Card className="rounded-2xl border-none bg-secondary/40">
+          <Card className="rounded-3xl border-none bg-secondary/40">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs uppercase tracking-widest text-muted-foreground">
                 Total Clicks
@@ -217,7 +217,7 @@ export default function LinkPagesPage() {
               <p className="text-xs text-muted-foreground">Semua tombol</p>
             </CardContent>
           </Card>
-          <Card className="rounded-2xl border-none bg-secondary/40">
+          <Card className="rounded-3xl border-none bg-secondary/40">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs uppercase tracking-widest text-muted-foreground">
                 Conversion Rate
@@ -283,11 +283,11 @@ export default function LinkPagesPage() {
                 {loading ? (
                   <div className="space-y-2">
                     {Array.from({ length: 6 }).map((_, index) => (
-                      <Skeleton key={`s-${index}`} className="h-16 w-full rounded-2xl" />
+                      <Skeleton key={`s-${index}`} className="h-16 w-full rounded-3xl" />
                     ))}
                   </div>
                 ) : filteredPages.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-muted-foreground/30 px-6 py-12 text-center text-muted-foreground">
+                  <div className="rounded-3xl border border-dashed border-muted-foreground/30 px-6 py-12 text-center text-muted-foreground">
                     <p className="text-base font-semibold">Belum ada data sesuai filter.</p>
                     <p className="mt-1 text-sm">Coba ubah pencarian atau tambahkan link page baru.</p>
                   </div>
@@ -400,7 +400,7 @@ export default function LinkPagesPage() {
                     ))}
                   </div>
                 ) : filteredPages.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-muted-foreground/30 px-6 py-12 text-center text-muted-foreground">
+                  <div className="rounded-3xl border border-dashed border-muted-foreground/30 px-6 py-12 text-center text-muted-foreground">
                     <p className="text-base font-semibold">Belum ada data sesuai filter.</p>
                   </div>
                 ) : (
@@ -463,7 +463,7 @@ export default function LinkPagesPage() {
             <CardDescription>Update terakhir & tautan populer</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="rounded-2xl border border-dashed border-muted-foreground/30 p-4">
+            <div className="rounded-3xl border border-dashed border-muted-foreground/30 p-4">
               <p className="text-sm font-semibold">Tingkat konversi total</p>
               <p className="text-4xl font-bold tracking-tight">{overviewData.ctr}%</p>
               <p className="text-xs text-muted-foreground">Perbandingan klik terhadap total kunjungan.</p>
@@ -473,7 +473,7 @@ export default function LinkPagesPage() {
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Link terbaru</p>
               <div className="mt-3 space-y-3">
                 {recentPages.map((page) => (
-                  <div key={page.id} className="rounded-2xl border bg-background p-3">
+                  <div key={page.id} className="rounded-3xl border bg-background p-3">
                     <div className="flex items-center justify-between text-sm font-semibold">
                       <span>{page.title}</span>
                       <Badge variant="outline" className="rounded-full text-[10px] uppercase tracking-wide">
@@ -494,7 +494,7 @@ export default function LinkPagesPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border bg-background p-4">
+            <div className="rounded-3xl border bg-background p-4">
               <div className="flex items-center gap-3">
                 <Lock className="h-10 w-10 rounded-full bg-muted/50 p-2" />
                 <div>

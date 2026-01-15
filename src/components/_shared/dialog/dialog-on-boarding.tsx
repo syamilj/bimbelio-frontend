@@ -66,7 +66,7 @@ export const DialogOnBoarding = ({
             {categories.map((cat) => (
               <div
                 key={cat.id}
-                className="p-4 rounded-xl flex items-start justify-between transition-all duration-300 hover:shadow-md"
+                className="p-4 rounded-3xl flex items-start justify-between transition-all duration-300 hover:shadow-md"
                 style={{
                   backgroundColor: cat.mainColor + '15',
                   borderLeft: `4px solid ${cat.mainColor}`,
@@ -112,7 +112,7 @@ export const DialogOnBoarding = ({
       content: (
         <div className="space-y-4">
           <div
-            className="bg-gradient-to-r p-4 rounded-xl text-white"
+            className="bg-gradient-to-r p-4 rounded-3xl text-white"
             style={{
               backgroundImage: `linear-gradient(135deg, ${secondaryColor}, ${mainColor})`,
             }}

@@ -148,7 +148,7 @@ export default function EditShortUrlPage() {
         </Button>
         <div className="flex items-center gap-3">
           <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center"
+            className="w-12 h-12 rounded-3xl flex items-center justify-center"
             style={{ backgroundColor: `${mainColor}20` }}
           >
             <Link2 className="w-6 h-6" style={{ color: mainColor }} />

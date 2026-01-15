@@ -180,8 +180,8 @@ const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
               className="cursor-pointer p-0 mb-2"
             >
               <Link
-                href={`/${website_sub_category_id}/user/dashboard`}
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
+                href={`/${website_sub_category_id}/user/bimboard`}
+                className="flex items-center gap-3 rounded-3xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
                 style={
                   {
                     backgroundColor: 'transparent',
@@ -197,7 +197,7 @@ const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
                 }}
               >
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 group-hover:scale-110"
+                  className="w-10 h-10 rounded-3xl flex items-center justify-center transition-all duration-200 group-hover:scale-110"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <LayoutDashboard
@@ -244,7 +244,7 @@ const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
               >
                 <Link
                   href={`/${website_sub_category_id}/admin`}
-                  className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
+                  className="flex items-center gap-3 rounded-3xl px-4 py-3 transition-all duration-200 hover:shadow-md group"
                   style={
                     {
                       backgroundColor: 'transparent',
@@ -260,7 +260,7 @@ const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
                   }}
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 group-hover:scale-110"
+                    className="w-10 h-10 rounded-3xl flex items-center justify-center transition-all duration-200 group-hover:scale-110"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <LayoutDashboard
@@ -310,8 +310,8 @@ const UserAccountNav = ({ user, compact = false }: UserAccountNavProps) => {
                 signOut({ callbackUrl: '/' });
               }}
             >
-              <div className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-200 hover:bg-red-50 hover:shadow-md group">
-                <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center transition-all duration-200 group-hover:scale-110">
+              <div className="flex w-full items-center gap-3 rounded-3xl px-4 py-3 transition-all duration-200 hover:bg-red-50 hover:shadow-md group">
+                <div className="w-10 h-10 rounded-3xl bg-red-100 flex items-center justify-center transition-all duration-200 group-hover:scale-110">
                   <LogOut className="h-5 w-5 text-red-600" />
                 </div>
                 <div className="flex-1">

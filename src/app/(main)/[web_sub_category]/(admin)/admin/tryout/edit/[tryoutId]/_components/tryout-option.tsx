@@ -20,7 +20,7 @@ import {
   IconMinimizeScreen,
   IconUp,
 } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ModalDeleteTryout from './modal-delete-tryout';
@@ -189,7 +189,7 @@ const TryoutOption = () => {
                 const imageNow = tryout?.image;
                 if (!image) return;
                 const filename = `tryout-${crypto.randomUUID()}`;
-                const upload = await supabase?.storage
+                const upload = await storage
                   .from('img')
                   .upload(`tryout/${filename}`, image);
 
@@ -199,7 +199,7 @@ const TryoutOption = () => {
                 }
                 if (upload?.error) {
                   if (upload.error.message === 'The resource already exists') {
-                    const update = await supabase?.storage
+                    const update = await storage
                       .from('img')
                       .update(`tryout/${filename}`, image);
                     if (update?.data) {
@@ -210,9 +210,7 @@ const TryoutOption = () => {
                 }
 
                 if (imageNow) {
-                  await supabase.storage
-                    .from('img')
-                    .remove([`tryout/${imageNow}`]);
+                  await storage.from('img').remove([`tryout/${imageNow}`]);
                 }
 
                 setTryout((prev) => ({ ...prev, image: filename }));
@@ -405,7 +403,7 @@ const TryoutOption = () => {
             <div className="flex w-full items-center justify-between rounded-[.8rem] bg-white px-4 py-[.8rem]">
               {item.categoryId !== '' ? (
                 <div className="flex items-center">
-                  <div className="rounded-2xl bg-main px-[.5rem] py-[.2rem] text-[.8rem] text-white">
+                  <div className="rounded-3xl bg-main px-[.5rem] py-[.2rem] text-[.8rem] text-white">
                     <p>
                       {item.category === 'Tes Potensi Skolastik (TPS)' && 'TPS'}
                       {item.category === 'Tes Literasi Bahasa' && 'Literasi'}
@@ -413,7 +411,7 @@ const TryoutOption = () => {
                         'Matematika'}
                     </p>
                   </div>
-                  <div className="rounded-2xl bg-main-gray-input2 px-[.5rem] py-[.2rem] text-[.8rem] text-black ml-2">
+                  <div className="rounded-3xl bg-main-gray-input2 px-[.5rem] py-[.2rem] text-[.8rem] text-black ml-2">
                     <p>{item.subCategory}</p>
                   </div>
                 </div>
@@ -583,7 +581,7 @@ export default TryoutOption;
 //         />
 //         <div className="absolute top-0 left-0 w-full h-full bg-workspace" />
 //       </div>
-//       <div className="border-2 border-main-gray-input border-dashed rounded-2xl overflow-hidden p-4 flex flex-col gap-4 relative">
+//       <div className="border-2 border-main-gray-input border-dashed rounded-3xl overflow-hidden p-4 flex flex-col gap-4 relative">
 //         {!previewImage ? (
 //           <>
 //             <div className={`relative ${previewHover ? 'z-4' : 'z-6'}`}>

@@ -229,7 +229,7 @@ export default function AddOnPremiumSection() {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-3xl bg-white/20 backdrop-blur-sm">
                       <pkg.icon
                         className="h-6 w-6 text-white"
                         strokeWidth={2}
@@ -255,7 +255,7 @@ export default function AddOnPremiumSection() {
 
                   {/* Price Box */}
                   <div
-                    className="mb-6 rounded-2xl p-4"
+                    className="mb-6 rounded-3xl p-4"
                     style={{
                       backgroundColor: pkg.isPremium ? '#1E293B' : pkg.color,
                     }}
@@ -297,7 +297,7 @@ export default function AddOnPremiumSection() {
 
                   {/* Note */}
                   <div
-                    className="rounded-2xl p-4"
+                    className="rounded-3xl p-4"
                     style={{
                       backgroundColor: pkg.isPremium
                         ? '#1E293B10'

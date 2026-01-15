@@ -133,7 +133,7 @@ const TimelineSection: React.FC = () => {
                 />
 
                 {/* Program Card */}
-                <div className="md:ml-16 bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-gray-300 transition-colors">
+                <div className="md:ml-16 bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-gray-300 transition-colors">
                   {/* Highlight Bar */}
                   {program.highlight && (
                     <div
@@ -151,7 +151,7 @@ const TimelineSection: React.FC = () => {
                       <div className="flex-shrink-0">
                         {program.logos.length === 1 ? (
                           <div
-                            className="w-16 h-16 rounded-2xl overflow-hidden border-2"
+                            className="w-16 h-16 rounded-3xl overflow-hidden border-2"
                             style={{
                               backgroundColor: `${mainColor}08`,
                               borderColor: `${mainColor}20`,
@@ -171,7 +171,7 @@ const TimelineSection: React.FC = () => {
                             {program.logos.map((logo, idx) => (
                               <div
                                 key={idx}
-                                className="absolute w-12 h-12 rounded-xl overflow-hidden bg-white border-2"
+                                className="absolute w-12 h-12 rounded-3xl overflow-hidden bg-white border-2"
                                 style={{
                                   left: `${idx * 18}px`,
                                   top: `${idx * 2}px`,
@@ -238,7 +238,7 @@ const TimelineSection: React.FC = () => {
                           {program.features.map((feature, idx) => (
                             <div
                               key={idx}
-                              className="flex items-start gap-2.5 p-2.5 rounded-xl bg-gray-50"
+                              className="flex items-start gap-2.5 p-2.5 rounded-3xl bg-gray-50"
                             >
                               <CheckCircle2
                                 className="w-5 h-5 flex-shrink-0"

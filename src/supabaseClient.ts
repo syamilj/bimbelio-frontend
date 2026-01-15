@@ -1,7 +1,329 @@
-import { env } from '@/env.mjs';
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from "@supabase/supabase-js";
+// import {
+//   NEXT_PUBLIC_SUPABASE_SECRET_KEY,
+//   NEXT_PUBLIC_SUPABASE_URL,
+// } from "../env";
 
-const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = env.NEXT_PUBLIC_SUPABASE_SECRET_KEY;
+import axios from 'axios';
+import { env } from './env.mjs';
+import { responseError } from './lib/response';
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// const supabaseUrl = NEXT_PUBLIC_SUPABASE_URL || "";
+// const supabaseKey = NEXT_PUBLIC_SUPABASE_SECRET_KEY || "";
+
+// export const supabase = createClient(supabaseUrl, supabaseKey);
+
+const STORAGE_URL = 'https://storage.bimbelio.com';
+const STORAGE_UPLOAD_URL = 'https://storage-upload.bimbelio.com';
+const PRIVATE_KEY = env.NEXT_PUBLIC_SUPABASE_SECRET_KEY;
+const PUBLIC_KEY = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+type BucketList =
+  | 'dump-images'
+  | 'img'
+  | 'to-question'
+  | 'pdf'
+  | 'video'
+  | 'dump-embedding';
+
+export const storage = {
+  from: (bucket: BucketList, showToast?: boolean) => {
+    return {
+      upload: async (filePath: string, file: File | Buffer<ArrayBuffer>) => {
+        try {
+          console.log(`Uploading file to bucket: ${bucket}`);
+          const formData = new FormData();
+          let fileToAppend: File | Blob;
+          if (file instanceof Buffer) {
+            fileToAppend = new Blob([file], {
+              type: mimeTypesForBlob[bucket] || 'application/octet-stream',
+            });
+          } else if (file instanceof File) {
+            fileToAppend = file;
+          } else {
+            // Fallback for other Blob-like objects
+            fileToAppend = new Blob([file], {
+              type: mimeTypesForBlob[bucket] || 'application/octet-stream',
+            });
+          }
+          formData.append('file', fileToAppend);
+          formData.append('path', filePath);
+          const res = await axios.post(
+            `${STORAGE_UPLOAD_URL}/storage/buckets/${bucket}/files`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${PUBLIC_KEY}`,
+              },
+              timeout: 6000000, // 100 menit dalam milliseconds
+            },
+          );
+
+          console.log('Upload response:', res.data);
+          return { data: res.data, error: null };
+        } catch (error) {
+          responseError(error, showToast === true ? true : false);
+          const errorData = {
+            message:
+              (error as any)?.response?.data?.message || 'Storage Server Error',
+          };
+          console.log({ errorData });
+          return {
+            data: null,
+            error: errorData,
+          };
+        }
+      },
+      update: async (filePath: string, file: File | Buffer<ArrayBuffer>) => {
+        try {
+          console.log(`Updating file to bucket: ${bucket}`);
+          const formData = new FormData();
+          let fileToAppend: File | Blob;
+          if (file instanceof Buffer) {
+            fileToAppend = new Blob([file], {
+              type: 'application/octet-stream',
+            });
+          } else if (file instanceof File) {
+            fileToAppend = file;
+          } else {
+            // Fallback for other Blob-like objects
+            fileToAppend = new Blob([file], {
+              type: 'application/octet-stream',
+            });
+          }
+          formData.append('file', fileToAppend);
+          formData.append('path', filePath);
+          const res = await axios.put(
+            `${STORAGE_UPLOAD_URL}/storage/buckets/${bucket}/files`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${PUBLIC_KEY}`,
+              },
+              timeout: 6000000, // 100 menit dalam milliseconds
+            },
+          );
+
+          console.log('Update response:', res.data);
+          return { data: res.data, error: null };
+        } catch (error) {
+          responseError(error, showToast === true ? true : false);
+          const errorData = {
+            message:
+              (error as any)?.response?.data?.message || 'Storage Server Error',
+          };
+          console.log({ errorData });
+          return {
+            data: null,
+            error: errorData,
+          };
+        }
+      },
+      move: async (oldPath: string, newPath: string) => {
+        try {
+          console.log(`Moving file to bucket: ${bucket}`);
+          const res = await axios.put(
+            `${STORAGE_UPLOAD_URL}/storage/buckets/${bucket}/move`,
+            {
+              oldPath,
+              newPath,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${PUBLIC_KEY}`,
+              },
+              timeout: 6000000, // 100 menit dalam milliseconds
+            },
+          );
+
+          console.log('Move response:', res.data);
+          return { data: res.data, error: null };
+        } catch (error) {
+          responseError(error, showToast === true ? true : false);
+          const errorData = {
+            message:
+              (error as any)?.response?.data?.message || 'Storage Server Error',
+          };
+          console.log({ errorData });
+          return {
+            data: null,
+            error: errorData,
+          };
+        }
+      },
+      remove: async (filePathArray: string[]) => {
+        try {
+          console.log(`Removing files from bucket: ${bucket}`);
+          console.log({ filePathArray });
+          const res = await axios.delete(
+            `${STORAGE_URL}/storage/buckets/${bucket}/files`,
+            {
+              data: { pathArray: filePathArray },
+              headers: {
+                Authorization: `Bearer ${PUBLIC_KEY}`,
+              },
+            },
+          );
+
+          console.log('Upload response:', res.data);
+          return { data: res.data, error: null };
+        } catch (error) {
+          responseError(error, showToast === true ? true : false);
+          const errorData = {
+            message:
+              (error as any)?.response?.data?.message || 'Storage Server Error',
+          };
+          console.log({ errorData });
+          return {
+            data: null,
+            error: errorData,
+          };
+        }
+      },
+      download: async (filePath: string) => {
+        try {
+          console.log(`Uploading file to bucket: ${bucket}`);
+          const res = await axios.post(
+            `${STORAGE_URL}/storage/buckets/${bucket}/files/download`,
+            {
+              filepath: filePath,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${PUBLIC_KEY}`,
+              },
+              responseType: 'blob',
+            },
+          );
+          // Extract filename dari Content-Disposition header atau dari filePath
+          const contentDisposition = res.headers['content-disposition'];
+          let filename = 'download';
+
+          if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="(.+?)"/);
+            if (filenameMatch) {
+              filename = filenameMatch[1];
+            }
+          } else {
+            // Fallback: ambil dari filePath
+            filename = filePath.split('/').pop() || 'download';
+          }
+
+          // Create blob URL dan trigger download otomatis
+          const url = window.URL.createObjectURL(res.data);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode?.removeChild(link);
+          window.URL.revokeObjectURL(url);
+
+          console.log('Download completed:', filename);
+
+          console.log('Download response:', res.data);
+          return { data: res.data, error: null };
+        } catch (error) {
+          responseError(error, showToast === true ? true : false);
+          const errorData = {
+            message:
+              (error as any)?.response?.data?.message || 'Storage Server Error',
+          };
+          console.log({ errorData });
+          return {
+            data: null,
+            error: errorData,
+          };
+        }
+      },
+      listFiles: async (
+        { page, take }: { page: number; take: number },
+        folderId?: number,
+        folderLevel?: number,
+      ) => {
+        try {
+
+          const res = await axios.get(
+            `${STORAGE_URL}/storage/buckets/${bucket}/files`,
+            {
+              params: {
+                folderId,
+                folderLevel,
+                page,
+                take,
+              },
+              headers: {
+                Authorization: `Bearer ${PUBLIC_KEY}`,
+              },
+            },
+          );
+
+          console.log('list files response:', res.data);
+
+          return {
+            data: {
+              files: res.data.data.files as ListDataType[],
+              folders: res.data.data.folders as {
+                name: string;
+                id: number;
+                level: number;
+              }[],
+              page: res.data.page as number,
+              take: res.data.take as number,
+              totalPages: res.data.total_pages as number,
+              totalData: res.data.total_data as number,
+            },
+            error: null,
+          };
+        } catch (error) {
+          responseError(error, showToast === true ? true : false);
+          const errorData = {
+            message:
+              (error as any)?.response?.data?.message || 'Storage Server Error',
+          };
+          console.log({ errorData });
+          return {
+            data: null,
+            error: errorData,
+          };
+        }
+      },
+    };
+  },
+};
+
+export type ListDataType = {
+  id: number;
+  folderId: number | null;
+  bucketId: number;
+  userId: number;
+  filename: string;
+  originalName: string;
+  size: number;
+  mimeType: string;
+  path: string;
+  publicUrl: string;
+  createdAt: string;
+};
+export type BucketDataType = {
+  id: number;
+  userId: number;
+  name: string;
+  public: boolean;
+  createdAt: string;
+};
+
+export type BucketFolderType = {
+  id: number;
+  name: string;
+  level: number;
+};
+
+const mimeTypesForBlob: Record<BucketList, string> = {
+  "dump-images": 'image/png',
+  "img": 'image/png',
+  "to-question": 'image/png',
+  "pdf": 'application/pdf',
+  "video": 'video/mp4',
+  "dump-embedding": 'application/msword',
+};

@@ -21,12 +21,13 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn, getDateForInputDateTime } from '@/lib/utils';
 import { sanitizeFileName } from '@/lib/utils/storage';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import {
   Category,
   CourseChapter,
@@ -270,18 +271,26 @@ export default function UpdateLiveClassForm() {
       if (image && title) {
         const pathFile = `live-learning/${sanitizeFileName(title)}`;
         if (LiveClass.title === title && imagePreview) {
-          await supabase.storage.from('img').update(pathFile, image);
+          await storage.from('img').update(pathFile, image);
         } else if (LiveClass.title !== title && imagePreview) {
-          await supabase.storage.from('img').remove([pathFile]);
-          await supabase.storage.from('img').update(pathFile, image);
+          await storage.from('img').remove([pathFile]);
+          await storage.from('img').update(pathFile, image);
         } else {
-          await supabase.storage.from('img').upload(pathFile, image);
+          await storage.from('img').upload(pathFile, image);
         }
-        const { data } = supabase.storage.from('img').getPublicUrl(pathFile);
-        if (data.publicUrl) {
-          imageUrl = data.publicUrl;
-        }
+        imageUrl = `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${pathFile}`;
       }
+
+      // console.log({
+      //   is: LiveClass.title === title,
+      //   image,
+      // });
+
+      // if (LiveClass.title === title && !image) {
+      //   await storage
+      //     .from('img')
+      //     .move(`live-learning/${LiveClass.title}`, `live-learning/${title}`);
+      // }
 
       const payload = {
         planIds: accessType === 'PREMIUM' ? selectedPlanIds : [],

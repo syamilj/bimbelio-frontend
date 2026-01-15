@@ -230,8 +230,8 @@ const IndividualQuizQuestion = ({
                     <AccordionTrigger className="px-2 font-semibold">
                       {index + 1}
                     </AccordionTrigger>
-                    <AccordionContent className="rounded-xl bg-gray-50 p-4">
-                      <div className="mb-4 rounded-xl bg-[#F7F5FB] p-4">
+                    <AccordionContent className="rounded-3xl bg-gray-50 p-4">
+                      <div className="mb-4 rounded-3xl bg-[#F7F5FB] p-4">
                         <h4 className="mb-2 flex items-center text-sm font-semibold text-[#5937AB]">
                           Your Response
                         </h4>
@@ -259,7 +259,7 @@ const IndividualQuizQuestion = ({
               </h2>
 
               <div
-                className={`mb-4 rounded-xl p-4 ${StyleYourResponse()} font-medium`}
+                className={`mb-4 rounded-3xl p-4 ${StyleYourResponse()} font-medium`}
               >
                 {answer.includes(attempts[0].userResponse) ? (
                   <div className="mb-2 flex items-center gap-[.5rem]">
@@ -285,7 +285,7 @@ const IndividualQuizQuestion = ({
 
               <div className="flex flex-col gap-4">
                 <div
-                  className={`rounded-xl ${attempts[0].userResponse.includes(answer) ? 'bg-[#E1F7EB]' : 'bg-[#E1F7EB]'} p-4`}
+                  className={`rounded-3xl ${attempts[0].userResponse.includes(answer) ? 'bg-[#E1F7EB]' : 'bg-[#E1F7EB]'} p-4`}
                 >
                   <h4
                     className={

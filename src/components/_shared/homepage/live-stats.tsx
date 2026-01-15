@@ -214,7 +214,7 @@ const LiveStats = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
@@ -270,7 +270,7 @@ const LiveStats = () => {
                       <div className="relative z-10">
                         {/* Icon */}
                         <div
-                          className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
+                          className="w-12 h-12 rounded-3xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
                           style={{ backgroundColor: `${stat.color}15` }}
                         >
                           <div style={{ color: stat.color }}>{stat.icon}</div>
@@ -321,7 +321,7 @@ const LiveStats = () => {
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-6">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Zap
@@ -344,7 +344,7 @@ const LiveStats = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                        className="flex items-start gap-3 p-3 rounded-3xl bg-gray-50 hover:bg-gray-100 transition-colors"
                       >
                         <div
                           className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"

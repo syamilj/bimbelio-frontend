@@ -400,7 +400,7 @@ export function Payment() {
                   className="relative z-20"
                 >
                   <Card
-                    className="mb-8 border-2 shadow-lg bg-white rounded-2xl overflow-visible"
+                    className="mb-8 border-2 shadow-lg bg-white rounded-3xl overflow-visible"
                     style={{ borderColor: `${mainColor}20` }}
                   >
                     <div
@@ -413,7 +413,7 @@ export function Payment() {
                     <CardContent className="p-6">
                       <div className="flex items-center gap-3 mb-4">
                         <div
-                          className="p-3 rounded-2xl"
+                          className="p-3 rounded-3xl"
                           style={{ backgroundColor: `${mainColor}15` }}
                         >
                           <TrendingUp
@@ -452,7 +452,7 @@ export function Payment() {
                             placeholder="Cari berdasarkan nama atau deskripsi..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full rounded-xl border-2"
+                            className="w-full rounded-3xl border-2"
                             style={{ borderColor: `${mainColor}20` }}
                           />
                         </div>
@@ -463,7 +463,7 @@ export function Payment() {
                         >
                           <Button
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
-                            className="w-full sm:w-auto flex items-center justify-center gap-2 text-white whitespace-nowrap rounded-xl font-bold shadow-md hover:shadow-lg transition-all"
+                            className="w-full sm:w-auto flex items-center justify-center gap-2 text-white whitespace-nowrap rounded-3xl font-bold shadow-md hover:shadow-lg transition-all"
                             style={{
                               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                             }}
@@ -482,7 +482,7 @@ export function Payment() {
 
                           {isFilterOpen && (
                             <div
-                              className="absolute left-0 right-0 sm:left-auto sm:right-0 top-full mt-2 w-auto sm:w-[420px] bg-white rounded-2xl shadow-2xl border-2 overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-2 duration-200 max-h-[calc(100vh-10rem)] overflow-y-auto"
+                              className="absolute left-0 right-0 sm:left-auto sm:right-0 top-full mt-2 w-auto sm:w-[420px] bg-white rounded-3xl shadow-2xl border-2 overflow-hidden z-[9999] animate-in fade-in slide-in-from-top-2 duration-200 max-h-[calc(100vh-10rem)] overflow-y-auto"
                               style={{ borderColor: `${mainColor}20` }}
                             >
                               <div
@@ -588,7 +588,7 @@ export function Payment() {
                                           onClick={() =>
                                             togglePlanType(type.id)
                                           }
-                                          className="w-full justify-start font-bold rounded-xl h-auto py-2.5"
+                                          className="w-full justify-start font-bold rounded-3xl h-auto py-2.5"
                                           style={
                                             selectedPlanTypes.includes(type.id)
                                               ? {
@@ -662,7 +662,7 @@ export function Payment() {
                                             onClick={() =>
                                               toggleCategory(category.id)
                                             }
-                                            className="justify-start font-bold rounded-xl"
+                                            className="justify-start font-bold rounded-3xl"
                                             style={
                                               selectedCategories.includes(
                                                 category.id,
@@ -720,7 +720,7 @@ export function Payment() {
                                     </Label>
 
                                     <div
-                                      className="flex items-center justify-between p-3 rounded-xl border-2"
+                                      className="flex items-center justify-between p-3 rounded-3xl border-2"
                                       style={{
                                         backgroundColor: `${mainColor}08`,
                                         borderColor: `${mainColor}20`,
@@ -818,7 +818,7 @@ export function Payment() {
                                                 ],
                                               )
                                             }
-                                            className="text-xs font-bold rounded-xl"
+                                            className="text-xs font-bold rounded-3xl"
                                             style={{
                                               borderColor: `${mainColor}20`,
                                             }}
@@ -888,7 +888,7 @@ export function Payment() {
                                           onClick={() =>
                                             toggleDuration(duration.id)
                                           }
-                                          className="justify-start font-bold rounded-xl h-auto py-2.5"
+                                          className="justify-start font-bold rounded-3xl h-auto py-2.5"
                                           style={
                                             selectedDurations.includes(
                                               duration.id,
@@ -985,7 +985,7 @@ export function Payment() {
                                             onClick={() =>
                                               toggleFeature(feature.id)
                                             }
-                                            className="w-full justify-start font-bold rounded-xl h-auto py-2.5"
+                                            className="w-full justify-start font-bold rounded-3xl h-auto py-2.5"
                                             style={
                                               selectedFeatures.includes(
                                                 feature.id,
@@ -1059,7 +1059,7 @@ export function Payment() {
                                         }
                                         size="sm"
                                         onClick={() => setSortBy(option)}
-                                        className="text-xs font-bold rounded-xl"
+                                        className="text-xs font-bold rounded-3xl"
                                         style={
                                           sortBy === option
                                             ? {
@@ -1083,7 +1083,7 @@ export function Payment() {
                                     variant="outline"
                                     size="sm"
                                     onClick={resetAllFilters}
-                                    className="w-full rounded-xl font-bold"
+                                    className="w-full rounded-3xl font-bold"
                                     style={{
                                       borderColor: `${mainColor}20`,
                                       color: mainColor,

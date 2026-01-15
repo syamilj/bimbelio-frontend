@@ -433,7 +433,7 @@ export type TryoutSessionResult = {
   theta: number | null;
 };
 
-export type TypeCourseEnum = 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI';
+export type TypeCourseEnum = 'VIDEO' | 'DOCUMENT' | 'TRYOUT' | 'MATERI' | 'PROGRESS_TEST';
 
 export type BlogPost = {
   website_sub_category_id: string;

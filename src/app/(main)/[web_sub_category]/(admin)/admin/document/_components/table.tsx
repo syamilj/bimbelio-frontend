@@ -3,7 +3,7 @@ import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { IconTailedArrowNext, IconTailedArrowPrev } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Category, Document, Subcategory, Video } from '@/types/database';
 import { Download, Link } from 'lucide-react';
 import { useState } from 'react';
@@ -41,19 +41,19 @@ export default function Table() {
 
   const fileDownload = async (fileName: string) => {
     try {
-      const { data } = await supabase.storage
+      const { data } = await storage
         .from('pdf')
         .download(`document/${fileName}`);
 
-      if (data) {
-        const blob = new Blob([data], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
+      // if (data) {
+      //   const blob = new Blob([data], { type: 'application/pdf' });
+      //   const url = window.URL.createObjectURL(blob);
+      //   const a = document.createElement('a');
+      //   a.href = url;
+      //   a.download = fileName;
+      //   a.click();
+      //   window.URL.revokeObjectURL(url);
+      // }
     } catch (error) {
       error;
     }
@@ -71,14 +71,10 @@ export default function Table() {
       async onSuccess() {
         fetchDocument();
         setDeleteData({ id: '', title: '', videoTitle: '' });
-        await supabase.storage
-          .from('pdf')
-          .remove([`document/${deleteData.title}`]);
-        await supabase.storage
-          .from('img')
-          .remove([`document/${deleteData.title}`]);
+        await storage.from('pdf').remove([`document/${deleteData.title}`]);
+        await storage.from('img').remove([`document/${deleteData.title}`]);
         if (deleteData.videoTitle.length > 0) {
-          await supabase.storage
+          await storage
             .from('video')
             .remove([`document/${deleteData.videoTitle}`]);
         }
@@ -199,11 +195,11 @@ export default function Table() {
                   <td className="bg-white p-[.5rem]">
                     <div className="flex w-full items-center justify-center">
                       {item.premium ? (
-                        <div className="flex w-[100px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
+                        <div className="flex w-[100px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
                           Premium
                         </div>
                       ) : (
-                        <div className="flex w-[100px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
+                        <div className="flex w-[100px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
                           Free
                         </div>
                       )}
@@ -211,14 +207,14 @@ export default function Table() {
                   </td>
                   <td className="bg-white p-[.5rem]">
                     <div className="flex w-full items-center justify-center">
-                      <div className="flex w-[76px] items-center justify-center rounded-2xl bg-main py-[.2rem] text-white">
+                      <div className="flex w-[76px] items-center justify-center rounded-3xl bg-main py-[.2rem] text-white">
                         {item.category.name}
                       </div>
                     </div>
                   </td>
                   <td className="bg-white p-[.5rem]">
                     <div className="flex w-full items-center justify-center">
-                      <div className="flex w-[76px] items-center justify-center rounded-2xl bg-bg-workspace py-[.2rem] font-medium text-black">
+                      <div className="flex w-[76px] items-center justify-center rounded-3xl bg-bg-workspace py-[.2rem] font-medium text-black">
                         {item.subCategory.name}
                       </div>
                     </div>
@@ -290,17 +286,17 @@ export default function Table() {
                   </td>
                   <td className="bg-transparent p-[.5rem]">1000</td>
                   <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
+                    <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
                       awdawd
                     </div>
                   </td>
                   <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
+                    <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] text-transparent">
                       awdawd
                     </div>
                   </td>
                   <td className="bg-transparent p-[.5rem]">
-                    <div className="w-fit rounded-2xl bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
+                    <div className="w-fit rounded-3xl bg-transparent px-[.7rem] py-[.2rem] font-medium text-transparent">
                       awdwadaw
                     </div>
                   </td>
@@ -371,7 +367,7 @@ export default function Table() {
 
       {deleteConfirmation && (
         <div className="fixed left-0 top-0 z-100 flex h-full w-full items-center justify-center bg-[#ffffff7a]">
-          <div className="flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-lg">
+          <div className="flex flex-col gap-4 rounded-3xl bg-white p-4 shadow-lg">
             <p className="text-center">
               Apakah kamu yakin ingin menghapus dokumen <br /> &quot;
               {deleteData.title}&quot; ?

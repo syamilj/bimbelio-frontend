@@ -247,7 +247,7 @@ export const SolutionSection: React.FC = () => {
             {printsPillars.map((pillar, idx) => (
               <div
                 key={idx}
-                className="group relative bg-white rounded-2xl border-2 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col"
+                className="group relative bg-white rounded-3xl border-2 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col"
                 style={{
                   borderColor: `${pillar.color}20`,
                 }}
@@ -265,7 +265,7 @@ export const SolutionSection: React.FC = () => {
                   <div className="flex flex-col items-center gap-3 mb-4">
                     {/* Icon */}
                     <div
-                      className="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg"
+                      className="flex-shrink-0 w-14 h-14 rounded-3xl flex items-center justify-center text-white shadow-lg"
                       style={{
                         backgroundColor: pillar.color,
                       }}

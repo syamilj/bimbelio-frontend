@@ -22,7 +22,7 @@ import {
   IconTabsQuiz,
   IconWarning,
 } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Loader2 } from 'lucide-react';
 import { useMedia } from 'use-media';
 import ChatContent from './_components/chat-content';
@@ -141,9 +141,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
     try {
       const res = await getNameImage();
       if (res.length > 0) {
-        const { data, error } = await supabase.storage
-          .from('img')
-          .remove([...res]);
+        const { data, error } = await storage.from('img').remove([...res]);
 
         if (data) {
           await resetChat();
@@ -274,7 +272,7 @@ export function RightComponent({ docId: initialDocId }: { docId: string }) {
         className="max-h-screen max-w-full overflow-hidden"
       >
         <div className="relative z-8 flex h-[60px] items-center justify-between border-b border-main-gray-input bg-bg-workspace px-4">
-          <TabsList className="h-full rounded-xl bg-transparent">
+          <TabsList className="h-full rounded-3xl bg-transparent">
             {TABS.map((item) => (
               <div
                 className="relative"

@@ -28,7 +28,7 @@ export default function Navbar() {
       <div className="flex items-center gap-3">
         {/* Admin Badge */}
         <div
-          className="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl text-white text-sm font-semibold shadow-sm"
+          className="hidden md:flex items-center gap-2 px-3 py-2 rounded-3xl text-white text-sm font-semibold shadow-sm"
           style={{ backgroundColor: mainColor }}
         >
           <Shield className="w-4 h-4" />
@@ -45,14 +45,14 @@ export default function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            className="w-9 h-9 rounded-xl hover:bg-gray-100"
+            className="w-9 h-9 rounded-3xl hover:bg-gray-100"
           >
             <Bell className="w-4 h-4 text-gray-600" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="w-9 h-9 rounded-xl hover:bg-gray-100"
+            className="w-9 h-9 rounded-3xl hover:bg-gray-100"
           >
             <Settings className="w-4 h-4 text-gray-600" />
           </Button>

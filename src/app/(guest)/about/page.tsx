@@ -243,7 +243,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap justify-center gap-4">
               {session?.user ? (
                 <Link
-                  href={`/${website_sub_category_id ? website_sub_category_id : 'choose'}/user/course`}
+                  href={`/${website_sub_category_id ? website_sub_category_id : 'choose'}/user/bimcourse`}
                 >
                   <motion.div
                     whileHover={{ scale: 1.05 }}
@@ -260,7 +260,7 @@ export default function AboutPage() {
                 <motion.div
                   onClick={() => {
                     setShowAuth({
-                      redirect: `/${website_sub_category_id ? website_sub_category_id : 'choose'}/user/course`,
+                      redirect: `/${website_sub_category_id ? website_sub_category_id : 'choose'}/user/bimcourse`,
                       open: true,
                     });
                   }}
@@ -410,7 +410,7 @@ export default function AboutPage() {
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
                       style={{ background: colorPalette.blue }}
                     >
                       <Zap className="w-7 h-7" />
@@ -427,7 +427,7 @@ export default function AboutPage() {
 
                   <div className="flex gap-4">
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
                       style={{ background: colorPalette.yellow }}
                     >
                       <Users className="w-7 h-7" />
@@ -444,7 +444,7 @@ export default function AboutPage() {
 
                   <div className="flex gap-4">
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
                       style={{
                         background: `linear-gradient(135deg, ${colorPalette.blueSecondary}, ${colorPalette.blueDark})`,
                       }}
@@ -562,11 +562,11 @@ export default function AboutPage() {
                   {/* Icon with background circle */}
                   <div className="relative mb-5">
                     <div
-                      className="absolute inset-0 rounded-2xl blur-xl opacity-30"
+                      className="absolute inset-0 rounded-3xl blur-xl opacity-30"
                       style={{ background: colors.main }}
                     />
                     <div
-                      className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
+                      className="relative w-16 h-16 rounded-3xl flex items-center justify-center shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
                       style={{ background: colors.gradient }}
                     >
                       <Icon className="w-8 h-8 text-white" />
@@ -701,7 +701,7 @@ export default function AboutPage() {
                   <div className="flex items-center gap-4 mb-6">
                     {/* Logo/Image Box */}
                     <div
-                      className="w-20 h-20 flex-shrink-0 rounded-2xl border-2 overflow-hidden bg-white shadow-md"
+                      className="w-20 h-20 flex-shrink-0 rounded-3xl border-2 overflow-hidden bg-white shadow-md"
                       style={{
                         borderColor: exam.imageUrl
                           ? 'transparent'
@@ -740,7 +740,7 @@ export default function AboutPage() {
                     {/* Passing Rate Badge */}
                     <div className="flex-shrink-0">
                       <div
-                        className="px-4 py-2 rounded-2xl shadow-md"
+                        className="px-4 py-2 rounded-3xl shadow-md"
                         style={{
                           backgroundColor: colors.badgeBg,
                         }}
@@ -756,7 +756,7 @@ export default function AboutPage() {
                   <div className="grid grid-cols-2 gap-4">
                     {/* Stat 1 */}
                     <div
-                      className="p-4 rounded-2xl border-2 bg-gradient-to-br from-gray-50 to-white transition-all duration-300 group-hover:shadow-md"
+                      className="p-4 rounded-3xl border-2 bg-gradient-to-br from-gray-50 to-white transition-all duration-300 group-hover:shadow-md"
                       style={{
                         borderColor: `${colors.main}15`,
                       }}
@@ -780,7 +780,7 @@ export default function AboutPage() {
 
                     {/* Stat 2 */}
                     <div
-                      className="p-4 rounded-2xl border-2 bg-gradient-to-br from-gray-50 to-white transition-all duration-300 group-hover:shadow-md"
+                      className="p-4 rounded-3xl border-2 bg-gradient-to-br from-gray-50 to-white transition-all duration-300 group-hover:shadow-md"
                       style={{
                         borderColor: `${colors.main}15`,
                       }}
@@ -904,11 +904,11 @@ export default function AboutPage() {
                   {/* Icon with glow effect */}
                   <div className="relative flex-shrink-0">
                     <div
-                      className="absolute inset-0 rounded-2xl blur-xl opacity-30"
+                      className="absolute inset-0 rounded-3xl blur-xl opacity-30"
                       style={{ background: colors.main }}
                     />
                     <div
-                      className="relative w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
+                      className="relative w-20 h-20 rounded-3xl flex items-center justify-center text-white shadow-xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
                       style={{ background: colors.gradient }}
                     >
                       <Icon className="w-10 h-10" />

@@ -11,7 +11,7 @@ export function LoadingRetro({
   return (
     <div
       className={cn(
-        'relative flex h-full max-h-screen w-full flex-col items-center justify-center overflow-hidden rounded-xl bg-transparent',
+        'relative flex h-full max-h-screen w-full flex-col items-center justify-center overflow-hidden rounded-3xl bg-transparent',
         className,
       )}
     >

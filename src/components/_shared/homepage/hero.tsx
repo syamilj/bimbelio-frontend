@@ -340,7 +340,7 @@ const LogoSection: React.FC<{
       </div>
 
       {/*  logo slider */}
-      <div className="relative overflow-hidden py-4 rounded-2xl">
+      <div className="relative overflow-hidden py-4 rounded-3xl">
         <div className="animate-smooth-marquee flex">
           {doubled.map((logo, i) => (
             <div
@@ -538,7 +538,7 @@ const DesktopVideo: React.FC = () => {
   }, [isInView, isLoaded]);
 
   return (
-    <div className="relative w-full h-full rounded-xl shadow-2xl overflow-hidden bg-white">
+    <div className="relative w-full h-full rounded-3xl shadow-2xl overflow-hidden bg-white">
       <div className="flex flex-col w-full h-full">
         {/*  browser bar */}
         <div className="flex items-center bg-gray-50 px-4 py-3 border-b">

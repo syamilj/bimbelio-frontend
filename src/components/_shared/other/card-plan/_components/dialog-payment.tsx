@@ -469,7 +469,7 @@ const PaymentMethodSelection = ({
         {/* Option 1: Full Payment */}
         <button
           onClick={() => setPaymentMethod('FULL_PAYMENT')}
-          className="group relative p-6 rounded-xl border-2 border-gray-200 hover:border-blue-400 bg-white hover:bg-blue-50 transition-all duration-300 text-left"
+          className="group relative p-6 rounded-3xl border-2 border-gray-200 hover:border-blue-400 bg-white hover:bg-blue-50 transition-all duration-300 text-left"
         >
           <div className="flex items-start gap-4">
             <div
@@ -510,7 +510,7 @@ const PaymentMethodSelection = ({
         {/* Option 2: Installment Payment */}
         <button
           onClick={() => setPaymentMethod('INSTALLMENT')}
-          className="group relative p-6 rounded-xl border-2 border-gray-200 hover:border-green-400 bg-white hover:bg-green-50 transition-all duration-300 text-left"
+          className="group relative p-6 rounded-3xl border-2 border-gray-200 hover:border-green-400 bg-white hover:bg-green-50 transition-all duration-300 text-left"
         >
           <div className="flex items-start gap-4">
             <div className="p-3 rounded-lg bg-green-100">
@@ -696,7 +696,7 @@ const CardPreview = ({
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   return (
     <div className="lg:col-span-2 order-2 lg:order-1">
-      <div className="bg-gray-50 rounded-xl border p-4">
+      <div className="bg-gray-50 rounded-3xl border p-4">
         <h3 className="font-semibold text-gray-800 text-sm mb-3 flex items-center gap-2">
           <Star
             size={14}
@@ -727,7 +727,7 @@ const FormUserInformation = ({
   // Get dynamic colors from the selected category
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   return (
-    <div className="bg-white rounded-xl border">
+    <div className="bg-white rounded-3xl border">
       <div
         className="p-3 border-b"
         style={{ backgroundColor: `${mainColor}05` }}
@@ -834,7 +834,7 @@ const FormVoucher = ({
     plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0].amount || null;
 
   return (
-    <div className="bg-white rounded-xl border">
+    <div className="bg-white rounded-3xl border">
       <div
         className="p-3 border-b"
         style={{ backgroundColor: `${secondaryColor}05` }}
@@ -957,7 +957,7 @@ const FormCheckoutSummary = ({
     plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0].amount || 0;
 
   return (
-    <div className="bg-white rounded-xl border">
+    <div className="bg-white rounded-3xl border">
       <div
         className="p-3 border-b"
         style={{

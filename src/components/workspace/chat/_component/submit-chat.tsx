@@ -212,7 +212,7 @@ const SubmitChat = () => {
               maxLength={1000}
               placeholder="Ketik pesan Kamu di sini..."
               className={cn(
-                'w-full resize-none rounded-2xl border-2 py-3 px-4 pr-14 text-sm font-normal outline-none transition-all duration-200',
+                'w-full resize-none rounded-3xl border-2 py-3 px-4 pr-14 text-sm font-normal outline-none transition-all duration-200',
                 'placeholder:text-gray-400',
                 'bg-gray-50 border-gray-200',
                 'focus:bg-white',
@@ -267,7 +267,7 @@ const SubmitChat = () => {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="w-8 h-8 rounded-xl bg-gray-200 p-0"
+                    className="w-8 h-8 rounded-3xl bg-gray-200 p-0"
                     onMouseEnter={() => setShowUpgrade(true)}
                     onMouseLeave={() => setShowUpgrade(false)}
                     disabled
@@ -279,7 +279,7 @@ const SubmitChat = () => {
                   </Button>
 
                   {showUpgrade && (
-                    <div className="absolute bottom-full right-0 mb-2 w-56 p-3 bg-gray-900 text-white rounded-xl shadow-xl z-50">
+                    <div className="absolute bottom-full right-0 mb-2 w-56 p-3 bg-gray-900 text-white rounded-3xl shadow-xl z-50">
                       <div className="space-y-2">
                         <h4 className="font-semibold text-xs">
                           Limit Chat Tercapai
@@ -299,7 +299,7 @@ const SubmitChat = () => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="w-8 h-8 rounded-xl bg-red-100 hover:bg-red-200 text-red-600 p-0"
+                      className="w-8 h-8 rounded-3xl bg-red-100 hover:bg-red-200 text-red-600 p-0"
                       onClick={() => {
                         // Add stop functionality here if available
                       }}
@@ -312,7 +312,7 @@ const SubmitChat = () => {
                       size="sm"
                       disabled={!send || isLimitReached}
                       className={cn(
-                        'w-8 h-8 rounded-xl shadow-lg transition-all duration-200 border-0 p-0',
+                        'w-8 h-8 rounded-3xl shadow-lg transition-all duration-200 border-0 p-0',
                         send && !isLimitReached
                           ? 'hover:shadow-xl hover:scale-105'
                           : 'opacity-50 cursor-not-allowed',

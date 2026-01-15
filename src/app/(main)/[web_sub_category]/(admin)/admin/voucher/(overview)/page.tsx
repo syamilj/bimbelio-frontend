@@ -145,14 +145,14 @@ export default function VoucherPage() {
                   placeholder="Cari judul voucher atau code..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 rounded-xl border-gray-200 focus:border-blue-500"
+                  className="pl-10 rounded-3xl border-gray-200 focus:border-blue-500"
                 />
               </div>
               <Select
                 value={type}
                 onValueChange={(value: any) => setType(value)}
               >
-                <SelectTrigger className="rounded-xl border-gray-200">
+                <SelectTrigger className="rounded-3xl border-gray-200">
                   <SelectValue placeholder="Pilih status" />
                 </SelectTrigger>
                 <SelectContent>

@@ -1,6 +1,6 @@
 'use client';
 
-import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/try-out/_components/ui/card-tryout';
+import { CardTryoutProps } from '@/app/(main)/[web_sub_category]/(user)/user/bimarena/try-out/_components/ui/card-tryout';
 import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
@@ -114,7 +114,7 @@ const FeaturedTryoutSection = () => {
             className="mb-6"
           >
             <span
-              className="inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default"
+              className="inline-flex items-center gap-2 rounded-3xl px-6 py-3 text-sm font-bold text-white shadow-lg bg-gradient-default"
               // style={{
               //   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               // }}
@@ -216,8 +216,8 @@ const FeaturedTryoutSection = () => {
         >
           {session ? (
             <Link
-              href={`${website_sub_category_id}/user/try-out`}
-              className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl bg-gradient-default"
+              href={`${website_sub_category_id}/user/bimarena/try-out`}
+              className="group inline-flex items-center gap-3 px-8 py-4 rounded-3xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl bg-gradient-default"
             >
               Lihat Semua Try Out
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -226,10 +226,10 @@ const FeaturedTryoutSection = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl bg-gradient-default"
+              className="group inline-flex items-center gap-3 px-8 py-4 rounded-3xl text-white font-bold text-lg shadow-xl transition-all duration-300 hover:shadow-2xl bg-gradient-default"
               onClick={() => {
                 router.push(
-                  `${window.location.pathname}?href=/${website_sub_category_id}/user/try-out`,
+                  `${window.location.pathname}?href=/${website_sub_category_id}/user/bimarena/try-out`,
                 );
                 setShowAuth((prev) => ({ ...prev, open: true }));
               }}
@@ -264,7 +264,7 @@ const EnhancedTryOutCard = ({
     if (!tryOut || !tryoutId || !session) return;
     if (tryoutId === tryOut.id) {
       router.push(
-        `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryoutId}`,
+        `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryoutId}`,
       );
     }
   }, [tryOut, tryoutId, session]);
@@ -294,7 +294,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Badges */}
         <div className="absolute top-4 left-4 z-10">
-          <span className="inline-flex items-center gap-2 rounded-2xl bg-white/95 backdrop-blur-sm px-4 py-2 text-sm font-bold shadow-lg border-2 border-white/50">
+          <span className="inline-flex items-center gap-2 rounded-3xl bg-white/95 backdrop-blur-sm px-4 py-2 text-sm font-bold shadow-lg border-2 border-white/50">
             <Award className="w-4 h-4 text-yellow-500" />
             <span style={{ color: mainColor }}>GRATIS!</span>
           </span>
@@ -302,7 +302,7 @@ const EnhancedTryOutCard = ({
 
         <div className="absolute top-4 right-4 z-10">
           <span
-            className="inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-bold text-white shadow-lg"
+            className="inline-flex items-center gap-2 rounded-3xl px-4 py-2 text-sm font-bold text-white shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${secondaryColor}, ${mainColor})`,
             }}
@@ -324,7 +324,7 @@ const EnhancedTryOutCard = ({
         {/* Enhanced Stats Grid */}
         <div className="grid grid-cols-3 gap-3">
           <div
-            className="text-center p-3 rounded-2xl"
+            className="text-center p-3 rounded-3xl"
             style={{ backgroundColor: `${mainColor}10` }}
           >
             <Clock
@@ -344,7 +344,7 @@ const EnhancedTryOutCard = ({
             </div>
           </div>
           <div
-            className="text-center p-3 rounded-2xl"
+            className="text-center p-3 rounded-3xl"
             style={{ backgroundColor: `${mainColor}10` }}
           >
             <BookOpen
@@ -363,7 +363,7 @@ const EnhancedTryOutCard = ({
             </div>
           </div>
           <div
-            className="text-center p-3 rounded-2xl"
+            className="text-center p-3 rounded-3xl"
             style={{ backgroundColor: `${mainColor}10` }}
           >
             <Users
@@ -382,7 +382,7 @@ const EnhancedTryOutCard = ({
 
         {/* Enhanced Date Info */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="text-center p-4 rounded-2xl bg-gray-50 border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-gray-50 border border-gray-200">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Calendar className="w-4 h-4 text-green-600" />
               <span className="text-sm font-medium text-gray-700">Mulai</span>
@@ -391,7 +391,7 @@ const EnhancedTryOutCard = ({
               {getDateString(tryOut.startDate)}
             </div>
           </div>
-          <div className="text-center p-4 rounded-2xl bg-gray-50 border border-gray-200">
+          <div className="text-center p-4 rounded-3xl bg-gray-50 border border-gray-200">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Calendar className="w-4 h-4 text-red-600" />
               <span className="text-sm font-medium text-gray-700">Selesai</span>
@@ -413,10 +413,10 @@ const EnhancedTryOutCard = ({
               return;
             }
             router.push(
-              `${tryOut.WebsiteSubCategory.id}/user/try-out?id=${tryOut.id}`,
+              `${tryOut.WebsiteSubCategory.id}/user/bimarena/try-out?id=${tryOut.id}`,
             );
           }}
-          className="w-full group flex items-center justify-center gap-3 px-6 py-4 rounded-2xl text-white font-bold shadow-lg transition-all duration-300 hover:shadow-xl"
+          className="w-full group flex items-center justify-center gap-3 px-6 py-4 rounded-3xl text-white font-bold shadow-lg transition-all duration-300 hover:shadow-xl"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}

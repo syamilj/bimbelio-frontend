@@ -7,8 +7,9 @@ import LoadingPage from '@/components/ui/Loading-Page';
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import { toaster } from '@/components/ui/toaster';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { responseError } from '@/lib/response';
 import { getDateForInput, getHours } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import type { Category, Subcategory } from '@/types/database';
 import { UploadIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -97,7 +98,7 @@ export default function TambahDokumen() {
         setToken('');
         setDateTo('');
         setDateToUnlock('');
-        await supabase.storage
+        await storage
           .from('dump-embedding')
           .remove([`${fileName || docxFile?.name}`]);
         setDocxFile(undefined);
@@ -105,13 +106,9 @@ export default function TambahDokumen() {
       async onError() {
         if (file && thumbnail && option === 'doc') {
           const documentFileName = fileName || file.name;
-          await supabase.storage
-            .from('pdf')
-            .remove([`document/${documentFileName}`]);
-          await supabase.storage
-            .from('img')
-            .remove([`document/${documentFileName}`]);
-          await supabase.storage
+          await storage.from('pdf').remove([`document/${documentFileName}`]);
+          await storage.from('img').remove([`document/${documentFileName}`]);
+          await storage
             .from('dump-embedding')
             .remove([`${fileName || docxFile?.name}`]);
         }
@@ -164,13 +161,9 @@ export default function TambahDokumen() {
       async onError() {
         if (file && thumbnail && video && option === 'video') {
           const documentFileName = fileName || file.name;
-          await supabase.storage
-            .from('pdf')
-            .remove([`document/${documentFileName}`]);
-          await supabase.storage
-            .from('img')
-            .remove([`document/${documentFileName}`]);
-          await supabase.storage
+          await storage.from('pdf').remove([`document/${documentFileName}`]);
+          await storage.from('img').remove([`document/${documentFileName}`]);
+          await storage
             .from('video')
             .remove([`document/${videoName || video.name}`]);
           setLoading(false);
@@ -344,16 +337,16 @@ export default function TambahDokumen() {
       if (file && thumbnail && option === 'doc') {
         const documentFileName = fileName || file.name;
 
-        const { data: pdf, error: pdfError } = await supabase.storage
+        const { data: pdf, error: pdfError } = await storage
           .from('pdf')
           .upload(`document/${documentFileName}`, file);
 
-        const { data: img, error: imgError } = await supabase.storage
+        const { data: img, error: imgError } = await storage
           .from('img')
           .upload(`document/${documentFileName}`, thumbnail);
 
         if (docxFile) {
-          const { error: mdError } = await supabase.storage
+          const { error: mdError } = await storage
             .from('dump-embedding')
             .upload(`${fileName || docxFile.name}`, docxFile);
 
@@ -408,21 +401,20 @@ export default function TambahDokumen() {
       if (file && thumbnail && video && option === 'video') {
         const documentFileName = fileName || file.name;
 
-        const { data: pdf, error: pdfError } = await supabase.storage
+        const { data: pdf, error: pdfError } = await storage
           .from('pdf')
           .upload(`document/${documentFileName}`, file);
 
-        const { data: img, error: imgError } = await supabase.storage
+        const { data: img, error: imgError } = await storage
           .from('img')
           .upload(`document/${documentFileName}`, thumbnail);
 
-        const { data: videoSave, error: videoSaveError } =
-          await supabase.storage
-            .from('video')
-            .upload(`document/${videoName || video.name}`, video);
+        const { data: videoSave, error: videoSaveError } = await storage
+          .from('video')
+          .upload(`document/${videoName || video.name}`, video);
 
         if (docxFile) {
-          const { error: mdError } = await supabase.storage
+          const { error: mdError } = await storage
             .from('dump-embedding')
             .upload(`${fileName || docxFile.name}`, docxFile);
 
@@ -487,6 +479,8 @@ export default function TambahDokumen() {
 
       return;
     } catch (error) {
+      console.log({ error });
+      responseError(error, true);
       setLoading(false);
       return;
     }
@@ -891,7 +885,7 @@ export const UploadFile = ({
       />
 
       <div
-        className={`relative flex flex-col gap-4 rounded-2xl border-2 border-dashed p-4 transition-all duration-200 ${
+        className={`relative flex flex-col gap-4 rounded-3xl border-2 border-dashed p-4 transition-all duration-200 ${
           isDragOver
             ? 'border-main bg-main/10 scale-[1.02]'
             : 'border-main-gray-input hover:border-main/50'
@@ -902,7 +896,7 @@ export const UploadFile = ({
       >
         {/* Drag overlay indicator */}
         {isDragOver && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-main/20 backdrop-blur-sm">
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-main/20 backdrop-blur-sm">
             <div className="flex flex-col items-center gap-2 text-main">
               <div className="text-3xl">📁</div>
               <p className="font-semibold">Lepaskan file di sini</p>

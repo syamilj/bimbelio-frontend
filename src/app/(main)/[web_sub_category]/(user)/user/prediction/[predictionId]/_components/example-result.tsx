@@ -183,7 +183,7 @@ export default function ExampleResult() {
               <AccordionTrigger
                 className={cn(
                   'border-l-4 border-main px-4 bg-main/10 text-base font-semibold',
-                  open === '' && 'rounded-xl',
+                  open === '' && 'rounded-3xl',
                   open === 'item-1' && ' rounded-t-xl',
                 )}
               >
@@ -213,8 +213,8 @@ export default function ExampleResult() {
                       <span>Visualisasi SIMAK</span>
                       {/* {TryoutData && (
                         <Link
-                          href={`/${website_sub_category_id_params}/user/try-out/${TryoutData.id}`}
-                          className="ml-2 text-xs bg-main hover:scale-105 cursor-pointer duration-300 py-1 px-2 rounded-2xl text-white font-normal"
+                          href={`/${website_sub_category_id_params}/user/bimarena/try-out/${TryoutData.id}`}
+                          className="ml-2 text-xs bg-main hover:scale-105 cursor-pointer duration-300 py-1 px-2 rounded-3xl text-white font-normal"
                         >
                           {TryoutData.title}
                         </Link>

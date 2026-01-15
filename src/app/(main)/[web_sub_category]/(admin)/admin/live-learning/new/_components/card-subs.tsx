@@ -37,7 +37,7 @@ export const CardSubs = ({
     <Card
       key={data.name}
       className={cn(
-        `flex w-full max-w-[340px] min-w-[300px] flex-col rounded-2xl overflow-hidden shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer`,
+        `flex w-full max-w-[340px] min-w-[300px] flex-col rounded-3xl overflow-hidden shadow-lg transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer`,
         data.popular && 'shadow-xl ring-2 ring-[#0066ff]',
         isSelected && 'border-main border-2',
       )}
@@ -71,7 +71,7 @@ export const CardSubs = ({
       <CardContent className="flex-1 pt-6">
         {data.coins && (
           <div
-            className="mb-6 p-5 rounded-xl relative overflow-hidden"
+            className="mb-6 p-5 rounded-3xl relative overflow-hidden"
             style={{
               background: `linear-gradient(to right, ${websiteSubCategory?.main_color}08, ${websiteSubCategory?.main_color}15)`,
               boxShadow: `0 4px 12px ${websiteSubCategory?.main_color}10`,

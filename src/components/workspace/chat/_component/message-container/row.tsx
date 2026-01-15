@@ -208,7 +208,7 @@ export default function Row({
             {/* Message Bubble */}
             <div
               className={cn(
-                'relative rounded-2xl px-4 py-3 shadow-sm border transition-all duration-200',
+                'relative rounded-3xl px-4 py-3 shadow-sm border transition-all duration-200',
                 isUser
                   ? 'bg-white border-gray-200'
                   : 'border-transparent shadow-md',

@@ -13,7 +13,7 @@ import { BotMessageSquare, Loader2, Plus, SendIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Dispatch, useEffect, useState } from 'react';
 
-const blacklistPaths = ['/user/try-out', '/user/course', '/user/workspace'];
+const blacklistPaths = ['/user/bimarena/try-out', '/user/bimcourse', '/user/workspace'];
 
 export const DialogBimbotAI = () => {
   const pathname = usePathname();
@@ -58,7 +58,7 @@ export const DialogBimbotAI = () => {
           </span>
         </motion.div>
       </DialogTrigger>
-      <DialogContent className="overflow-hidden fixed md:left-[unset] md:right-[1rem] md:bottom-[1rem] md:top-[unset] px-2 py-4 md:px-6 md:py-6 md:translate-x-0 md:translate-y-0 flex flex-col rounded-2xl md:max-w-2xl h-[85vh]">
+      <DialogContent className="overflow-hidden fixed md:left-[unset] md:right-[1rem] md:bottom-[1rem] md:top-[unset] px-2 py-4 md:px-6 md:py-6 md:translate-x-0 md:translate-y-0 flex flex-col rounded-3xl md:max-w-2xl h-[85vh]">
         <ChatContent />
       </DialogContent>
     </Dialog>

@@ -5,7 +5,6 @@ import { useAppContext } from '@/components/provider/provider-app';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { response, responseError } from '@/lib/response';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
 import { TryoutSubCategory } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { useEffect, useState } from 'react';
@@ -143,7 +142,6 @@ const NewTryOut = () => {
   const { minimizeSidebar } = useAppContext();
 
   const resetTryout = async () => {
-    await supabase.storage.from('img').remove([`tryout/${tryout?.image}`]);
     setTryout(null);
     setSessions([]);
     setAssesmentType('');

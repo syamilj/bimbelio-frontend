@@ -125,7 +125,7 @@ export const UploadFile = ({
       />
 
       <div
-        className={`relative flex flex-col gap-4 rounded-2xl border-2 border-dashed p-4 transition-all duration-200 ${
+        className={`relative flex flex-col gap-4 rounded-3xl border-2 border-dashed p-4 transition-all duration-200 ${
           isDragOver
             ? 'border-main bg-main/10 scale-[1.02]'
             : 'border-main-gray-input hover:border-main/50'
@@ -136,7 +136,7 @@ export const UploadFile = ({
       >
         {/* Drag overlay indicator */}
         {isDragOver && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-main/20 backdrop-blur-sm">
+          <div className="absolute inset-0 z-10 flex items-center justify-center rounded-3xl bg-main/20 backdrop-blur-sm">
             <div className="flex flex-col items-center gap-2 text-main">
               <div className="text-3xl">📁</div>
               <p className="font-semibold">Lepaskan file di sini</p>

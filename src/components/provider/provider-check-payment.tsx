@@ -85,7 +85,7 @@ export default function ProviderCheckPayment({
   if (isLoading) {
     return (
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 border border-gray-100">
+        <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full mx-4 border border-gray-100">
           <div className="flex flex-col items-center justify-center space-y-6">
             {/* Icon and spinner container */}
             <div className="relative">
