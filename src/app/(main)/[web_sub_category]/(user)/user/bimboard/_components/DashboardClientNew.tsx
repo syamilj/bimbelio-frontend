@@ -253,8 +253,17 @@ export default function DashboardClientNew() {
       // Tryout history
       const tryoutHistory = report?.tryoutHistory?.history || [];
 
-      // Calculate study time this week (mock for now)
-      const studyHoursThisWeek = Math.floor((report?.studyHabits?.totalHoursStudied || 0) * 0.3);
+      // Calculate study time this week from recent tryout sessions
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      const tryoutsThisWeek = tryoutHistory.filter((t: any) =>
+        new Date(t.startTryout) > oneWeekAgo
+      );
+      const studyHoursThisWeek = Math.round(tryoutsThisWeek.reduce((sum: number, t: any) => {
+        const durationStr = t.duration || "0:0";
+        const [mins, secs] = durationStr.split(":").map(Number);
+        return sum + (mins / 60);
+      }, 0) * 10) / 10; // Round to 1 decimal place
 
       // Build learning progress
       const courseProgress = courses.slice(0, 5).map((course: any) => {
@@ -276,15 +285,17 @@ export default function DashboardClientNew() {
         };
       });
 
+// Combine upcoming and done tryouts (backend already sorted)
       const tryoutProgress = [...upcomingTryouts, ...doneTryouts].slice(0, 5).map((tryout: any) => {
-        const userSession = tryout.UserTryOutSession?.[0];
-
-        // Determine status based on user session
+        // Get user session from TryoutSessionParticipant (through TryoutSession)
+        const userSession = tryout.TryoutSession?.[0]?.TryoutSessionParticipant?.[0];
+        // Get result from TryoutResult
+        const result = tryout.TryoutResult?.[0];
         let status: "completed" | "in-progress" | "not-started" = "not-started";
         if (userSession) {
-          if (userSession.isFinish) {
+          if (userSession.isDone) {
             status = "completed";
-          } else if (userSession.answeredQuestions > 0) {
+          } else {
             status = "in-progress";
           }
         }
@@ -292,9 +303,9 @@ export default function DashboardClientNew() {
         return {
           id: tryout.id,
           title: tryout.title,
-          score: userSession?.score || userSession?.totalScore || null,
-          totalQuestions: tryout.totalQuestion || 0,
-          answeredQuestions: userSession?.answeredQuestions || 0,
+          score: result?.totalScore || null,
+          totalQuestions: tryout.TryoutSession?.reduce((sum: number, session: any) => sum + (session._count?.TryoutQuestion || 0), 0) || 0,
+          answeredQuestions: result?.answeredQuestions || 0,
           status,
           thumbnail: getImageUrl(tryout.image, "tryout") || null,
           deadline: tryout.endDate,
@@ -374,6 +385,12 @@ export default function DashboardClientNew() {
         });
 
       console.log('Score History:', scoreHistory); // Debug log
+
+      // Filter valid tryouts (same filter as scoreHistory for consistency)
+      const validTryouts = tryoutHistoryData.filter((item: any) => {
+        const hasScore = (item.totalScore != null && item.totalScore > 0);
+        return item.show && hasScore;
+      });
 
       // Build recommendations
       const recommendedCourses = courses.slice(0, 4).map((course: any) => {
@@ -455,12 +472,13 @@ export default function DashboardClientNew() {
         },
       ];
 
-      // Get last tryout (most recent) for ranking
-      const lastTryout = tryoutHistory.length > 0 ? tryoutHistory[tryoutHistory.length - 1] : null;
-      const previousTryout = tryoutHistory.length > 1 ? tryoutHistory[tryoutHistory.length - 2] : null;
+      // Get last tryout (most recent) for ranking - use validTryouts for consistency
+      const lastTryout = validTryouts.length > 0 ? validTryouts[validTryouts.length - 1] : null;
+      const previousTryout = validTryouts.length > 1 ? validTryouts[validTryouts.length - 2] : null;
 
-      console.log('Last Tryout:', lastTryout); // Debug
-      console.log('Previous Tryout:', previousTryout); // Debug
+      console.log('Valid Tryouts:', validTryouts.length); // Debug
+      console.log('Last Valid Tryout:', lastTryout); // Debug
+      console.log('Previous Valid Tryout:', previousTryout); // Debug
       console.log('Rank from last TO:', lastTryout?.rank);
       console.log('Total Participants:', lastTryout?.totalParticipants);
       console.log('Rank Change:', previousTryout ? (previousTryout.rank - (lastTryout?.rank || 0)) : 0);
@@ -478,14 +496,23 @@ export default function DashboardClientNew() {
           studyHours: report?.studyHabits?.totalHoursStudied || 0,
           studyHoursThisWeek,
           totalScore: report?.learningReport?.totalScore || 0,
-          averageScore: tryoutHistory.length > 0
-            ? Math.round(tryoutHistory.reduce((sum: number, t: any) => sum + (t.score || 0), 0) / tryoutHistory.length)
+          averageScore: validTryouts.length > 0
+            ? Math.round(validTryouts.reduce((sum: number, t: any) => {
+                // For SNBT, use average of subtests; for others, use totalScore
+                let score = t.totalScore || 0;
+                if (isSNBT && t.TryoutSessionResult && t.TryoutSessionResult.length > 0) {
+                  const subtestScores = t.TryoutSessionResult.map((session: any) => session.totalScore || 0);
+                  const totalSubtestScore = subtestScores.reduce((s: number, val: number) => s + val, 0);
+                  score = Math.round(totalSubtestScore / subtestScores.length);
+                }
+                return sum + score;
+              }, 0) / validTryouts.length)
             : 0,
           rank: lastTryout?.rank || 0,
           rankFrom: lastTryout?.totalParticipants || 0,
           previousRank: previousTryout?.rank || 0,
           rankChange: previousTryout ? (previousTryout.rank - (lastTryout?.rank || 0)) : 0,
-          tryoutsCompleted: tryoutHistory.length,
+          tryoutsCompleted: validTryouts.length,
           coursesCompleted: courses.filter((c: any) => {
             const totalChapters = c.CourseChapter?.length || 0;
             const completedChapters = c.CourseChapter?.filter((ch: any) =>
@@ -495,13 +522,15 @@ export default function DashboardClientNew() {
           }).length,
           coursesInProgress: courses.filter((c: any) => {
             const totalChapters = c.CourseChapter?.length || 0;
+            if (totalChapters === 0) return false; // Skip courses without chapters
             const completedChapters = c.CourseChapter?.filter((ch: any) =>
               ch.CourseSubChapter?.every((sub: any) => sub.isCompleted)
             ).length || 0;
-            return completedChapters > 0 && completedChapters < totalChapters;
+            // Count as in-progress if has chapters and not fully completed
+            return totalChapters > 0 && completedChapters < totalChapters;
           }).length,
-          documentsRead: 0, // TODO: track document reads
-          liveClassesAttended: 0, // TODO: track live class attendance
+          documentsRead: documents.length, // Count of available documents
+          liveClassesAttended: liveClasses.length, // Count of available live classes (user can join)
         },
         learningProgress: {
           courses: courseProgress,
@@ -569,7 +598,7 @@ export default function DashboardClientNew() {
   }
 
   return (
-    <div className="w-full min-w-0 overflow-hidden pb-6">
+    <div className="w-full min-w-0 overflow-hidden pb-6 px-4 md:px-0">
       <div className="flex flex-col gap-4 lg:gap-6 min-w-0">
         {/* Hero Welcome Section */}
         <BimHeroWelcome

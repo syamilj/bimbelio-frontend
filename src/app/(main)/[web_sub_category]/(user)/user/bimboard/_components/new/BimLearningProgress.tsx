@@ -106,41 +106,41 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
   return (
     <div className="w-full bg-white rounded-3xl border-2 border-slate-100 p-6 shadow-sm">
       {/* Header with Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col gap-4 mb-6">
         <h2 className="text-lg font-black text-slate-800">Progress Belajar</h2>
 
-        <div className="flex gap-2 bg-slate-100 p-1 rounded-full">
+        <div className="flex gap-2 bg-slate-100 p-1 rounded-full overflow-x-auto scrollbar-hide">
           <button
             onClick={() => setActiveTab("live")}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === "live"
                 ? "bg-white text-slate-800 shadow-sm"
                 : "text-slate-500 hover:text-slate-700"
             }`}
           >
-            <MonitorPlay className="w-4 h-4 inline mr-1.5" />
+            <MonitorPlay className="w-4 h-4" />
             BimLive
           </button>
           <button
             onClick={() => setActiveTab("courses")}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === "courses"
                 ? "bg-white text-slate-800 shadow-sm"
                 : "text-slate-500 hover:text-slate-700"
             }`}
           >
-            <BookOpen className="w-4 h-4 inline mr-1.5" />
+            <BookOpen className="w-4 h-4" />
             BimCourse
           </button>
           <button
             onClick={() => setActiveTab("tryouts")}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === "tryouts"
                 ? "bg-white text-slate-800 shadow-sm"
                 : "text-slate-500 hover:text-slate-700"
             }`}
           >
-            <Target className="w-4 h-4 inline mr-1.5" />
+            <Target className="w-4 h-4" />
             BimArena
           </button>
         </div>
@@ -192,15 +192,15 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
         </div>
       </div>
 
-      {/* Content - Grid View */}
+      {/* Content - Horizontal Scroll for Mobile, Grid for Desktop */}
       <div className="max-h-[500px] overflow-y-auto scrollbar-hide">
         {activeTab === "live" ? (
           liveClasses && liveClasses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {liveClasses.map((liveClass) => (
                 <div
                   key={liveClass.id}
-                  className="group relative rounded-2xl border-2 border-slate-100 overflow-hidden bg-white hover:border-slate-200 transition-all hover:shadow-lg"
+                  className="group relative rounded-2xl border-2 border-slate-100 overflow-hidden bg-white hover:border-slate-200 transition-all hover:shadow-lg flex-shrink-0 w-[280px] md:w-auto"
                 >
                   {/* Thumbnail */}
                   <div className="relative h-96 bg-gradient-to-br from-slate-200 to-slate-300 overflow-hidden">
@@ -270,7 +270,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
           )
         ) : activeTab === "courses" ? (
           filteredCourses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {filteredCourses.map((course) => {
                 const getStatusBadge = () => {
                   if (course.progress === 0) {
@@ -301,7 +301,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                   <Link
                     key={course.id}
                     href={`/${website_sub_category_id}/user/bimcourse/${course.id}`}
-                    className="group relative bg-white rounded-2xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden"
+                    className="group relative bg-white rounded-2xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
                   >
                     {/* Progress Ring - Top Right */}
                     <div className="absolute -top-2 -right-2 z-10">
@@ -417,7 +417,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
           )
         ) : (
           filteredTryouts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {filteredTryouts.map((tryout) => {
                 const getStatusBadge = () => {
                   switch (tryout.status) {
@@ -449,7 +449,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                   <Link
                     key={tryout.id}
                     href={`/${website_sub_category_id}/user/bimarena/try-out/${tryout.id}`}
-                    className="group relative bg-white rounded-2xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden"
+                    className="group relative bg-white rounded-2xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
                   >
                     {/* Score Badge - Top Right (if completed) */}
                     {tryout.score && tryout.score > 0 && (
