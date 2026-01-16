@@ -302,7 +302,7 @@ export const BadgeSubsInfo = () => {
                             )}
                             <Button
                               asChild
-                              className="w-full mt-2 h-7 text-xs border border-gray-200 bg-white hover:bg-gray-50"
+                              className="w-full mt-2 h-7 text-xs text-black border border-gray-200 bg-white hover:bg-gray-50"
                             >
                               <Link href={`/price/${sub.planSlug}`}>
                                 Lihat Detail
@@ -494,7 +494,7 @@ export const BadgeSubsInfo = () => {
                     href={`/${website_sub_category_id_params}/user/subscription`}
                   >
                     <Settings className="w-3 h-3 lg:w-4 lg:h-4" />
-                    <span>Kelola Subscription</span>
+                    <span className='text-white'>Kelola Subscription</span>
                   </Link>
                 </Button>
 
