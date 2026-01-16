@@ -81,7 +81,7 @@ export default function TutorsSection() {
     },
     {
       layer: 'LAYER 3',
-      title: 'Bimbot AI',
+      title: 'BimBot AI',
       description: 'Support instant 24/7',
       icon: <Sparkles className="w-8 h-8" />,
       color: '#9C27B0',
@@ -193,7 +193,7 @@ export default function TutorsSection() {
       icon: <Zap className="w-8 h-8" />,
       title: 'Instant Help 24/7',
       description:
-        'Stuck jam 2 pagi? Bimbot siap jawab instant. Nggak perlu tunggu tutor online besok.',
+        'Stuck jam 2 pagi? BimBot siap jawab instant. Nggak perlu tunggu tutor online besok.',
       color: '#FFA500',
     },
     {
@@ -247,7 +247,7 @@ export default function TutorsSection() {
               beneran relate sama struggle-nya calon mahasiswa.
             </span>
             <span className="block mt-3 font-semibold text-gray-700">
-              3 layer support: Tutor yang ngajar, Mentor yang guide, Bimbot AI
+              3 layer support: Tutor yang ngajar, Mentor yang guide, BimBot AI
               yang siap 24/7.
             </span>
           </p>
@@ -502,12 +502,12 @@ export default function TutorsSection() {
                 className="block"
                 style={{ color: '#9C27B0' }}
               >
-                Bimbot AI Ready 24/7
+                BimBot AI Ready 24/7
               </span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Tutor & Mentor perlu istirahat, tapi{' '}
-              <span className="font-bold">Bimbot AI nggak pernah tidur.</span>{' '}
+              <span className="font-bold">BimBot AI nggak pernah tidur.</span>{' '}
               Instant jawab pertanyaan, analisis error pattern, recommend soal
               yang tepat sesuai kelemahan kamu.
             </p>
@@ -769,7 +769,7 @@ export default function TutorsSection() {
                   Experts di TOP + support yang lengkap.
                 </span>
                 Dari Tutor yang proven sukses di PTN, Mentor yang guide strategi
-                & mindset, sampai Bimbot AI yang available 24/7.
+                & mindset, sampai BimBot AI yang available 24/7.
                 <span className="block mt-3 font-semibold text-gray-900">
                   Kamu nggak sendirian di perjalanan ini.
                 </span>
@@ -810,7 +810,7 @@ export default function TutorsSection() {
                   }}
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Bimbot AI 24/7</span>
+                  <span>BimBot AI 24/7</span>
                 </div>
               </div>
             </div>

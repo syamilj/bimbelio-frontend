@@ -186,7 +186,7 @@ export default function Row({
                 )}
               >
                 <span className="font-semibold text-sm">
-                  {isUser ? session?.user?.name || 'You' : 'Bimbot AI'}
+                  {isUser ? session?.user?.name || 'You' : 'BimBot AI'}
                 </span>
                 {!isUser && (
                   <div

@@ -31,7 +31,7 @@ const FeaturesSection: React.FC = () => {
     {
       id: 1,
       badge: 'AI-Powered',
-      title: 'Chat AI 24/7 (Bimbot)',
+      title: 'Chat AI 24/7 (BimBot)',
       description:
         'Tanya soal kapan aja, jawaban instant dengan penjelasan detail step-by-step. Nggak perlu tunggu tutor online besok pagi.',
       features: [

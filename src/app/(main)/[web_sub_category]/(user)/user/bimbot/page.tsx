@@ -198,7 +198,7 @@ export default function AIChatPage() {
                     className="text-3xl md:text-4xl font-black"
                     style={{ color: mainColor }}
                   >
-                    Bimbot AI Assistant
+                    BimBot AI Assistant
                   </h1>
                 </div>
                 <div

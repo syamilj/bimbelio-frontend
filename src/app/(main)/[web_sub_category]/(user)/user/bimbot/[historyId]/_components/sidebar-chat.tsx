@@ -134,7 +134,7 @@ export default function SidebarChat() {
                   className="font-black text-lg leading-tight"
                   style={{ color: mainColor }}
                 >
-                  Bimbot AI
+                  BimBot AI
                 </h2>
                 <p className="text-xs text-gray-500 font-medium">
                   Smart Assistant
@@ -316,7 +316,7 @@ export default function SidebarChat() {
         {/* Footer */}
         <div className="p-4 border-t-2 border-gray-100 bg-white">
           <p className="text-xs text-gray-500 text-center font-medium">
-            💬 Tanya apapun kepada Bimbot AI
+            💬 Tanya apapun kepada BimBot AI
           </p>
         </div>
       </div>
@@ -341,7 +341,7 @@ export default function SidebarChat() {
                         className="font-black text-lg leading-tight"
                         style={{ color: mainColor }}
                       >
-                        Bimbot AI
+                        BimBot AI
                       </h2>
                       <p className="text-xs text-gray-500 font-medium">
                         Smart Assistant
@@ -537,7 +537,7 @@ export default function SidebarChat() {
             {/* Footer */}
             <div className="p-4 border-t-2 border-gray-100 bg-white">
               <p className="text-xs text-gray-500 text-center font-medium">
-                💬 Tanya apapun kepada Bimbot AI
+                💬 Tanya apapun kepada BimBot AI
               </p>
             </div>
           </div>

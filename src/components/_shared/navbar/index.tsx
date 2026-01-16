@@ -138,7 +138,7 @@ const navItems: NavItem[] = [
           },
           {
             href: '#3-layer',
-            label: 'Bimbot AI',
+            label: 'BimBot AI',
             description: '24/7 AI yang membantu belajar',
             icon: 'BotMessageSquare',
             badge: { text: 'AI', variant: 'premium' },
