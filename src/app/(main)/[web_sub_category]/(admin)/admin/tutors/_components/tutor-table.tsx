@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/table';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import {
   BookOpen,
   Edit,

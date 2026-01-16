@@ -14,7 +14,7 @@ import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category } from '@/types/database';
 import { Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';

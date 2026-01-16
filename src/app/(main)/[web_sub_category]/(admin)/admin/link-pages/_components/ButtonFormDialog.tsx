@@ -48,7 +48,7 @@ import {
   updateLinkButton,
   UpdateLinkButtonPayload,
 } from '@/lib/api/link-pages';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { LinkButton } from '@/types/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronsUpDown, Trash2 } from 'lucide-react';

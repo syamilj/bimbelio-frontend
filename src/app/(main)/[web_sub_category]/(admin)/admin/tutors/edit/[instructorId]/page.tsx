@@ -16,7 +16,7 @@ import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { responseError } from '@/lib/response';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category } from '@/types/database';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -265,7 +265,7 @@ export default function UpdateTutorForm() {
                       required
                     />
                   </div>
-                  {/* 
+                  {/*
                   <div className="space-y-2">
                     <Label htmlFor="certificate">Sertifikat</Label>
                     <Input

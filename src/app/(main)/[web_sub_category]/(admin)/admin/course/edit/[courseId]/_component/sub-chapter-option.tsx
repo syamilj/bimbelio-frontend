@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Document } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { FileText, Plus, Video, X } from 'lucide-react';

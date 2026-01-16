@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useAdminWebCategory } from '../provider';

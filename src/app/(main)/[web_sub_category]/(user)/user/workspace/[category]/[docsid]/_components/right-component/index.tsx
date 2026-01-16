@@ -22,7 +22,7 @@ import {
   IconTabsQuiz,
   IconWarning,
 } from '@/styles/icon';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Loader2 } from 'lucide-react';
 import { useMedia } from 'use-media';
 import ChatContent from './_components/chat-content';

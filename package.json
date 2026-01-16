@@ -5,7 +5,8 @@
   "scripts": {
     "build": "next build",
     "check": "pnpm lint && pnpm typecheck",
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbo",
+    "dev:webpack": "next dev",
     "format": "prettier --write .",
     "lint": "eslint .",
     "start": "next start",
@@ -47,7 +48,6 @@
     "@radix-ui/react-tooltip": "^1.2.7",
     "@radix-ui/react-visually-hidden": "^1.2.3",
     "@react-oauth/google": "^0.12.2",
-    "@supabase/supabase-js": "^2.53.0",
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tailwindcss/typography": "^0.5.16",
     "ai": "4.3.19",

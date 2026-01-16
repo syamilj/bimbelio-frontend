@@ -9,7 +9,7 @@ import axiosInstance from '@/lib/axios/axiosInstance';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { response, responseError } from '@/lib/response';
 import { cn, imageProfile } from '@/lib/utils';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import {
   Subscription,
   SubscriptionInstallment,

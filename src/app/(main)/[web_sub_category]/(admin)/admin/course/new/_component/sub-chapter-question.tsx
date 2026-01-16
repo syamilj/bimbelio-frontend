@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select';
 import { env } from '@/env.mjs';
 import { cn } from '@/lib/utils';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import 'katex/dist/katex.min.css';
 import {
   AlertCircle,

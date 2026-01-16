@@ -7,7 +7,7 @@ import {
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { ParseMarkdownToHTML } from '@/lib/utils/editor';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { useCreateBlockNote } from '@blocknote/react';
 import { Loader2 } from 'lucide-react';
 import Papa from 'papaparse';

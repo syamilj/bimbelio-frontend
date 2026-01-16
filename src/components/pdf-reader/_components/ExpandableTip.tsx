@@ -8,7 +8,7 @@ import { CustomTooltip } from '@/components/ui/tooltip';
 import { env } from '@/env.mjs';
 import { base64ToFile, copyTextToClipboard } from '@/lib/utils';
 import { IconMagicWand } from '@/styles/icon';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import {
   BookOpenCheck,
   ClipboardCopy,

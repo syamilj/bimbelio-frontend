@@ -11,7 +11,7 @@ import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { responseError, throwError } from '@/lib/response';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { BlockNoteEditor } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { Loader2 } from 'lucide-react';

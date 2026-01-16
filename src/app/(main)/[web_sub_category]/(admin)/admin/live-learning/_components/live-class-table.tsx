@@ -34,7 +34,7 @@ import {
 } from '@/lib/mock-data/live-class';
 import { cn } from '@/lib/utils';
 import { sanitizeFileName } from '@/lib/utils/storage';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category, Instructor, LiveClass } from '@/types/database';
 import {
   AccessibilityIcon,

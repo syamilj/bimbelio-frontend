@@ -15,7 +15,7 @@ import {
   IconMinimizeScreen,
   IconUp,
 } from '@/styles/icon';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Loader2 } from 'lucide-react';
 import React, { SetStateAction, useState } from 'react';
 import { SessionProps, TryoutProps } from '../page';

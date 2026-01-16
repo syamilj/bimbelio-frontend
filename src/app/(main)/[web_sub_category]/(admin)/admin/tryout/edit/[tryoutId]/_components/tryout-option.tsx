@@ -20,7 +20,7 @@ import {
   IconMinimizeScreen,
   IconUp,
 } from '@/styles/icon';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ModalDeleteTryout from './modal-delete-tryout';

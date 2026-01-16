@@ -26,7 +26,7 @@ import { BlockNoteImageHtml } from '@/components/ui/blocknote-editor/latex';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category, CourseChapter, CourseSubChapter } from '@/types/database';
 import { SessionProps } from '../page';
 

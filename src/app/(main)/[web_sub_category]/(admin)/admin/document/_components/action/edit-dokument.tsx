@@ -8,7 +8,7 @@ import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
 import { getDateForInput, getHours } from '@/lib/utils';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category, Subcategory } from '@/types/database';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Document } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { FileText, Plus, Video } from 'lucide-react';

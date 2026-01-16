@@ -43,7 +43,7 @@ import {
   parseCurrency,
 } from '@/lib/utils';
 import { getSlug } from '@/lib/utils/slug';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import {
   Category,
   Instructor,

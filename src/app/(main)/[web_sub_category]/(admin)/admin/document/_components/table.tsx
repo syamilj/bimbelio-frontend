@@ -3,7 +3,7 @@ import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { IconTailedArrowNext, IconTailedArrowPrev } from '@/styles/icon';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category, Document, Subcategory, Video } from '@/types/database';
 import { Download, Link } from 'lucide-react';
 import { useState } from 'react';

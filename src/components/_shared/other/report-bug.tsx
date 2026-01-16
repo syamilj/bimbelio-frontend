@@ -3,7 +3,7 @@ import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import Image from 'next/image';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { Spinner } from '../../ui/spinner';

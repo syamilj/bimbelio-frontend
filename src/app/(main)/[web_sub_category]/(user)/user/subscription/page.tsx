@@ -62,30 +62,35 @@ export default function SubscriptionPage() {
     <div className="space-y-4 px-4 md:px-0">
       {/* Hero Section with User Tier */}
       {userTier && userTier !== 'USER' && (
-        <div className="relative overflow-hidden rounded-3xl p-6 shadow-xl bg-gradient-to-br from-amber-500 via-orange-500 to-red-600">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-3xl -ml-12 -mb-12"></div>
-
-          <div className="relative z-10 flex items-center gap-4">
-            <div className="p-3 bg-white/20 backdrop-blur-sm rounded-3xl">
-              <Crown className="w-8 h-8 text-white" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <Star className="w-4 h-4 text-yellow-300" />
-                <span className="text-xs font-semibold text-white/90 uppercase tracking-wider">
-                  Status Member
-                </span>
+        <Card className="border-2 shadow-lg overflow-hidden" style={{ borderColor: `${mainColor}30` }}>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-4">
+              <div
+                className="w-16 h-16 rounded-3xl flex items-center justify-center"
+                style={{ backgroundColor: `${mainColor}15` }}
+              >
+                <Crown className="w-8 h-8" style={{ color: mainColor }} />
               </div>
-              <h2 className="text-2xl font-bold text-white">
-                {userTier} Member
-              </h2>
-              <p className="text-white/80 text-sm mt-1">
-                Akses unlimited ke semua fitur premium
-              </p>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Badge
+                    className="text-white font-semibold text-xs px-2.5 py-0.5"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    <Star className="w-3 h-3 mr-1" />
+                    Status Member
+                  </Badge>
+                </div>
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-1">
+                  {userTier} Member
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Akses unlimited ke semua fitur premium
+                </p>
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       )}
 
       <div className="space-y-4">

@@ -8,7 +8,7 @@ import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { ArrowLeft, Check, Save } from 'lucide-react';

@@ -1131,17 +1131,35 @@ const HeaderUser = () => {
                   <div className="px-3 py-2 space-y-2">
                     <Link
                       href={`/${website_sub_category_id_params}/user/subscription`}
-                      className="md:hidden "
+                      className="md:hidden block"
                     >
                       <div
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] mb-4"
+                        className="flex items-center gap-2.5 h-12 px-3 rounded-3xl border-2 transition-all duration-200"
                         style={{
-                          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                          borderColor: `${mainColor}30`,
+                          backgroundColor: `${mainColor}05`
                         }}
                       >
-                        <Crown className="w-4 h-4" />
-                        <span>Premium</span>
-                        {/* <ChevronDown className="w-3.5 h-3.5 opacity-70" /> */}
+                        <div
+                          className="w-9 h-9 rounded-3xl flex items-center justify-center"
+                          style={{ backgroundColor: `${mainColor}20` }}
+                        >
+                          <Crown
+                            className="w-4.5 h-4.5"
+                            style={{ color: mainColor }}
+                          />
+                        </div>
+                        <div className="flex flex-col items-start flex-1">
+                          <span className="text-[10px] font-semibold text-gray-600 leading-none uppercase tracking-wide">
+                            Status
+                          </span>
+                          <span className="text-sm font-bold leading-tight" style={{ color: mainColor }}>
+                            {userSession?.user.subsList && userSession.user.subsList.length > 0
+                              ? `${userSession.user.subsList.length} Active`
+                              : userTier || 'Free'}
+                          </span>
+                        </div>
+                        <ChevronDown className="w-4 h-4" style={{ color: mainColor }} />
                       </div>
                     </Link>
                     <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">

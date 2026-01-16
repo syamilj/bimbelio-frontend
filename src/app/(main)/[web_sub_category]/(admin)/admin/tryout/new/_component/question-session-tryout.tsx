@@ -14,7 +14,7 @@ import {
 import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { cn } from '@/lib/utils';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category, CourseChapter, CourseSubChapter } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import {

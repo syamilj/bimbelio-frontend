@@ -25,7 +25,7 @@ import {
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import {
   WebsiteCategory,
   WebsiteSubCategory,

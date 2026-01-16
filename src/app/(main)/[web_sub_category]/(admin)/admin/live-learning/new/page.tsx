@@ -25,7 +25,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
 import { sanitizeFileName } from '@/lib/utils/storage';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import {
   Category,
   CourseChapter,

@@ -20,7 +20,7 @@ import {
   IconWarning,
   IconX2,
 } from '@/styles/icon';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { motion } from 'framer-motion';
 import { BotMessageSquare, Loader2 } from 'lucide-react';
 import { useMedia } from 'use-media';

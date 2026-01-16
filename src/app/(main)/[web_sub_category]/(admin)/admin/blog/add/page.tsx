@@ -30,7 +30,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
 import { IconPlus } from '@/styles/icon';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { BlogStatusEnum, BlogTags } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Check, ChevronsUpDown } from 'lucide-react';

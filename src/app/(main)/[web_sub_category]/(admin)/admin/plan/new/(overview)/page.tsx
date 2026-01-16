@@ -36,7 +36,7 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { responseError, throwError } from '@/lib/response';
 import { cn, formatCurrency, parseCurrency } from '@/lib/utils';
 import { getSlug } from '@/lib/utils/slug';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Category, Instructor, LiveClass } from '@/types/database';
 import {
   // ...existing imports...

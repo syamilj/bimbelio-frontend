@@ -13,7 +13,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { getDateForInputDateTime } from '@/lib/utils';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import { Crown, FileText, Play, Video } from 'lucide-react';
 import React, { SetStateAction } from 'react';
 import { SubChapterProps } from '../page';

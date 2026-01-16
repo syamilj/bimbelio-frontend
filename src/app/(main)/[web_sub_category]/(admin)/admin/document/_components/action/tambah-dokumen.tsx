@@ -9,7 +9,7 @@ import { toaster } from '@/components/ui/toaster';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { responseError } from '@/lib/response';
 import { getDateForInput, getHours } from '@/lib/utils';
-import { storage } from '@/supabaseClient';
+import { storage } from '@/storageClient';
 import type { Category, Subcategory } from '@/types/database';
 import { UploadIcon } from 'lucide-react';
 import Image from 'next/image';

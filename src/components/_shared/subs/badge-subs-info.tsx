@@ -40,28 +40,52 @@ export const BadgeSubsInfo = () => {
       userTier === 'SUPER_ADMIN' ||
       userTier === 'PREMIUM' ? (
         <div
-          className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
-          style={{
-            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-          }}
+          className="hidden md:flex items-center gap-2 h-10 px-3 rounded-3xl hover:bg-gray-50 border border-gray-200 transition-all duration-200 cursor-pointer hover:shadow-md hover:border-gray-300"
         >
-          <Crown className="w-4 h-4" />
-          <span>Premium</span>
-          <ChevronDown className="w-3.5 h-3.5 opacity-70" />
+          <div
+            className="w-8 h-8 rounded-3xl flex items-center justify-center transition-transform duration-200"
+            style={{ backgroundColor: `${mainColor}15` }}
+          >
+            <Crown
+              className="w-4 h-4 transition-transform duration-200"
+              style={{ color: mainColor }}
+            />
+          </div>
+          <div className="flex flex-col items-start">
+            <span className="text-[10px] font-medium text-gray-500 leading-none">
+              Status
+            </span>
+            <span className="text-sm font-bold text-gray-900 leading-tight">
+              Premium
+            </span>
+          </div>
+          <ChevronDown className="w-4 h-4 text-gray-400" />
         </div>
       ) : (
         <>
           <Tooltip delayDuration={100}>
             <TooltipTrigger className="cursor-pointer">
               <div
-                className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
-                style={{
-                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                }}
+                className="hidden md:flex items-center gap-2 h-10 px-3 rounded-3xl hover:bg-gray-50 border border-gray-200 transition-all duration-200 hover:shadow-md hover:border-gray-300"
               >
-                <Crown className="w-4 h-4" />
-                <span>{userTier || 'Free Tier'}</span>
-                <ChevronDown className="w-3.5 h-3.5 opacity-70" />
+                <div
+                  className="w-8 h-8 rounded-3xl flex items-center justify-center transition-transform duration-200"
+                  style={{ backgroundColor: `${mainColor}15` }}
+                >
+                  <Crown
+                    className="w-4 h-4 transition-transform duration-200"
+                    style={{ color: mainColor }}
+                  />
+                </div>
+                <div className="flex flex-col items-start">
+                  <span className="text-[10px] font-medium text-gray-500 leading-none">
+                    Status
+                  </span>
+                  <span className="text-sm font-bold text-gray-900 leading-tight">
+                    {userTier || 'Free'}
+                  </span>
+                </div>
+                <ChevronDown className="w-4 h-4 text-gray-400" />
               </div>
             </TooltipTrigger>
             <TooltipContent
@@ -78,7 +102,7 @@ export const BadgeSubsInfo = () => {
                   {userSession?.user.subsList &&
                   userSession.user.subsList.length > 0 ? (
                     <div className="space-y-2">
-                      {userSession.user.subsList.map((sub, index) => {
+                      {userSession.user.subsList.map((sub: any, index: number) => {
                         const isInstallment = sub.paymentType === 'INSTALLMENT';
                         let currentInstallment:
                           | (typeof sub.SubscriptionInstallment)[0]
@@ -87,7 +111,7 @@ export const BadgeSubsInfo = () => {
                             sub.SubscriptionInstallment.length - 1
                           ] || null;
 
-                        sub.SubscriptionInstallment.forEach((inst) => {
+                        sub.SubscriptionInstallment.forEach((inst: any) => {
                           if (
                             currentInstallment &&
                             inst.isPaid === false &&
@@ -126,7 +150,7 @@ export const BadgeSubsInfo = () => {
                                   </p>
                                   <div className="flex flex-wrap gap-1">
                                     {sub.SubscriptionFeature.map(
-                                      (feature, featureIndex) => (
+                                      (feature: any, featureIndex: number) => (
                                         <span
                                           key={feature.id}
                                           className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-700 font-medium"
@@ -164,18 +188,18 @@ export const BadgeSubsInfo = () => {
                                         </span>
                                       </div>
                                       {currentInstallment.isPaid ? (
-                                        <Badge className="bg-green-100 text-green-700 text-[9px] px-1.5 py-0">
+                                        <span className="bg-green-100 text-green-700 text-[9px] px-1.5 py-0 rounded-md inline-block">
                                           ✓ Lunas
-                                        </Badge>
+                                        </span>
                                       ) : new Date(currentInstallment.dueDate) <
                                         new Date() ? (
-                                        <Badge className="bg-red-100 text-red-700 text-[9px] px-1.5 py-0">
+                                        <span className="bg-red-100 text-red-700 text-[9px] px-1.5 py-0 rounded-md inline-block">
                                           ⚠ Tertunda
-                                        </Badge>
+                                        </span>
                                       ) : (
-                                        <Badge className="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0">
+                                        <span className="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0 rounded-md inline-block">
                                           Menunggu Pembayaran
-                                        </Badge>
+                                        </span>
                                       )}
                                     </div>
 
@@ -236,8 +260,7 @@ export const BadgeSubsInfo = () => {
                                         </div>
                                       )}
                                     <Button
-                                      className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-lg bg-green-50 border-green-400"
-                                      variant={'outline'}
+                                      className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-lg bg-green-50 border border-green-400"
                                       onClick={() =>
                                         setPagesSetting('installment')
                                       }
@@ -279,9 +302,7 @@ export const BadgeSubsInfo = () => {
                             )}
                             <Button
                               asChild
-                              variant="outline"
-                              size="sm"
-                              className="w-full mt-2 h-7 text-xs"
+                              className="w-full mt-2 h-7 text-xs border border-gray-200 bg-white hover:bg-gray-50"
                             >
                               <Link href={`/price/${sub.planSlug}`}>
                                 Lihat Detail
@@ -298,9 +319,9 @@ export const BadgeSubsInfo = () => {
                   )}
                   {userSession?.user.role !== 'USER' && (
                     <div className="flex justify-center w-full">
-                      <Badge className="bg-amber-400 text-white">
+                      <span className="bg-amber-400 text-white px-2 py-1 rounded-md inline-block text-xs font-medium">
                         {userTier}
-                      </Badge>
+                      </span>
                     </div>
                   )}
                 </div>
@@ -314,7 +335,7 @@ export const BadgeSubsInfo = () => {
                       </p>
                       <div className="space-y-2">
                         {userSession.user.subsPendingList.map(
-                          (subPending, index) => (
+                          (subPending: any, index: number) => (
                             <div
                               key={subPending.id}
                               className="p-2 rounded-lg bg-orange-50 border border-orange-200"
@@ -353,7 +374,7 @@ export const BadgeSubsInfo = () => {
                                     </p>
                                     <div className="space-y-1">
                                       {subPending.SubscriptionPendingFeature.map(
-                                        (feature, featureIndex) => (
+                                        (feature: any, featureIndex: number) => (
                                           <div
                                             key={feature.id}
                                             className="p-1.5 rounded-md bg-yellow-50 border border-yellow-200"
@@ -463,7 +484,6 @@ export const BadgeSubsInfo = () => {
                 {/* Button Lihat Detail Subscription */}
                 <Button
                   asChild
-                  variant="outline"
                   className="w-full items-center gap-2 rounded-xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
                   style={{
                     borderColor: mainColor,
