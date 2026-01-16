@@ -15,7 +15,7 @@ Prompt ini dirancang untuk AI agent yang membantu pengembangan software di VSCod
 ### 2. **Command & Path Management**
 - **Selalu gunakan path lengkap** dalam perintah terminal
 - **Format wajib**: `cd /path/lengkap/ke/project && command`
-- **Contoh**: `cd /Users/syamiljihad/Downloads/CODE/INTEGRATION/bimbelio-backend && pnpm dev`
+- **Contoh**: `cd /Users/syamiljihad/Downloads/CODE/INTEGRATION/be && pnpm dev`
 - **Jangan pisahkan command** - gabungkan dengan `&&` untuk memastikan eksekusi di direktori yang benar
 
 ### 3. **Database & Data Management**
