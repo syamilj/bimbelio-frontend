@@ -20,7 +20,7 @@ import {
   IconMinimizeScreen,
   IconUp,
 } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import ModalDeleteTryout from './modal-delete-tryout';
@@ -189,7 +189,7 @@ const TryoutOption = () => {
                 const imageNow = tryout?.image;
                 if (!image) return;
                 const filename = `tryout-${crypto.randomUUID()}`;
-                const upload = await supabase?.storage
+                const upload = await storage
                   .from('img')
                   .upload(`tryout/${filename}`, image);
 
@@ -199,7 +199,7 @@ const TryoutOption = () => {
                 }
                 if (upload?.error) {
                   if (upload.error.message === 'The resource already exists') {
-                    const update = await supabase?.storage
+                    const update = await storage
                       .from('img')
                       .update(`tryout/${filename}`, image);
                     if (update?.data) {
@@ -210,9 +210,7 @@ const TryoutOption = () => {
                 }
 
                 if (imageNow) {
-                  await supabase.storage
-                    .from('img')
-                    .remove([`tryout/${imageNow}`]);
+                  await storage.from('img').remove([`tryout/${imageNow}`]);
                 }
 
                 setTryout((prev) => ({ ...prev, image: filename }));

@@ -1,20 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LinkButton } from "@/types/link";
-import { createLinkButton, CreateLinkButtonPayload, updateLinkButton, UpdateLinkButtonPayload } from "@/lib/api/link-pages";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toaster } from "@/components/ui/toaster";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { UploadFile } from '@/components/_shared/other/upload-file-with-drag-drop';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -22,64 +9,105 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { UploadFile } from "@/components/_shared/other/upload-file-with-drag-drop";
-import { supabase } from "@/supabaseClient";
-import { Trash2 } from "lucide-react";
+} from '@/components/ui/command';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
+import {
+  createLinkButton,
+  CreateLinkButtonPayload,
+  updateLinkButton,
+  UpdateLinkButtonPayload,
+} from '@/lib/api/link-pages';
+import { storage } from '@/supabaseClient';
+import { LinkButton } from '@/types/link';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ChevronsUpDown, Trash2 } from 'lucide-react';
+import { useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-const optionalUrl = z
-  .string()
-  .url("Invalid URL")
-  .optional()
-  .or(z.literal(""));
+const optionalUrl = z.string().url('Invalid URL').optional().or(z.literal(''));
 
 const buttonSchema = z.object({
-  title: z.string().min(2, "Title is required"),
-  subtitle: z.string().optional().default(""),
-  sectionLabel: z.string().optional().default(""),
-  url: z.string().url("Valid URL required"),
-  icon: z.string().optional().default(""),
-  iconType: z.string().optional().default(""),
-  type: z.enum(["PRIMARY", "SECONDARY", "OUTLINE", "TEXT", "THUMBNAIL"]).default("PRIMARY"),
-  color: z.string().optional().default("#111111"),
-  textColor: z.string().optional().default("#ffffff"),
-  borderRadius: z.string().optional().default("rounded-lg"),
-  thumbnail: optionalUrl.default(""),
-  price: z.string().optional().default(""),
+  title: z.string().min(2, 'Title is required'),
+  subtitle: z.string().optional().default(''),
+  sectionLabel: z.string().optional().default(''),
+  url: z.string().url('Valid URL required'),
+  icon: z.string().optional().default(''),
+  iconType: z.string().optional().default(''),
+  type: z
+    .enum(['PRIMARY', 'SECONDARY', 'OUTLINE', 'TEXT', 'THUMBNAIL'])
+    .default('PRIMARY'),
+  color: z.string().optional().default('#111111'),
+  textColor: z.string().optional().default('#ffffff'),
+  borderRadius: z.string().optional().default('rounded-lg'),
+  thumbnail: optionalUrl.default(''),
+  price: z.string().optional().default(''),
   showOnMobile: z.boolean().default(true),
   showOnDesktop: z.boolean().default(true),
-  allowedCountries: z.string().optional().default(""),
-  blockedCountries: z.string().optional().default(""),
-  scheduleStart: z.string().optional().default(""),
-  scheduleEnd: z.string().optional().default(""),
-  abVariant: z.string().optional().default(""),
+  allowedCountries: z.string().optional().default(''),
+  blockedCountries: z.string().optional().default(''),
+  scheduleStart: z.string().optional().default(''),
+  scheduleEnd: z.string().optional().default(''),
+  abVariant: z.string().optional().default(''),
   isActive: z.boolean().default(true),
 });
 
 export type LinkButtonFormValues = z.infer<typeof buttonSchema>;
 
 const BORDER_RADIUS_OPTIONS = [
-  { label: "None", value: "rounded-none" },
-  { label: "Small", value: "rounded-sm" },
-  { label: "Default", value: "rounded" },
-  { label: "Medium", value: "rounded-md" },
-  { label: "Large", value: "rounded-lg" },
-  { label: "X-Large", value: "rounded-3xl" },
-  { label: "2X-Large", value: "rounded-3xl" },
-  { label: "3X-Large", value: "rounded-3xl" },
-  { label: "Full", value: "rounded-full" },
+  { label: 'None', value: 'rounded-none' },
+  { label: 'Small', value: 'rounded-sm' },
+  { label: 'Default', value: 'rounded' },
+  { label: 'Medium', value: 'rounded-md' },
+  { label: 'Large', value: 'rounded-lg' },
+  { label: 'X-Large', value: 'rounded-3xl' },
+  { label: '2X-Large', value: 'rounded-3xl' },
+  { label: '3X-Large', value: 'rounded-3xl' },
+  { label: 'Full', value: 'rounded-full' },
 ];
 
-const SECTION_DATALIST_ID = "section-label-suggestions";
+const SECTION_DATALIST_ID = 'section-label-suggestions';
 
-const getOrigin = () => (typeof window !== "undefined" ? window.location.origin : "https://bimbelio.com");
+const getOrigin = () =>
+  typeof window !== 'undefined'
+    ? window.location.origin
+    : 'https://bimbelio.com';
 
 interface ButtonFormDialogProps {
   open: boolean;
   onClose: () => void;
-  mode: "create" | "edit";
+  mode: 'create' | 'edit';
   linkPageId: string;
   nextOrder: number;
   button?: LinkButton | null;
@@ -103,29 +131,39 @@ const dateInputToIso = (value?: string) => {
   return date.toISOString();
 };
 
-export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, button, onSuccess, sectionOptions = [], shortUrls = [] }: ButtonFormDialogProps) {
+export function ButtonFormDialog({
+  open,
+  onClose,
+  mode,
+  linkPageId,
+  nextOrder,
+  button,
+  onSuccess,
+  sectionOptions = [],
+  shortUrls = [],
+}: ButtonFormDialogProps) {
   const form = useForm<LinkButtonFormValues>({
     resolver: zodResolver(buttonSchema) as any,
     defaultValues: {
-      title: "",
-      subtitle: "",
-      sectionLabel: "",
-      url: "https://",
-      icon: "",
-      iconType: "",
-      type: "PRIMARY",
-      color: "#111111",
-      textColor: "#ffffff",
-      borderRadius: "8px",
-      thumbnail: "",
-      price: "",
+      title: '',
+      subtitle: '',
+      sectionLabel: '',
+      url: 'https://',
+      icon: '',
+      iconType: '',
+      type: 'PRIMARY',
+      color: '#111111',
+      textColor: '#ffffff',
+      borderRadius: '8px',
+      thumbnail: '',
+      price: '',
       showOnMobile: true,
       showOnDesktop: true,
-      allowedCountries: "",
-      blockedCountries: "",
-      scheduleStart: "",
-      scheduleEnd: "",
-      abVariant: "",
+      allowedCountries: '',
+      blockedCountries: '',
+      scheduleStart: '',
+      scheduleEnd: '',
+      abVariant: '',
       isActive: true,
     },
   });
@@ -137,31 +175,33 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
         ...item,
         url: `${origin}/${item.code}`,
       })),
-    [origin, shortUrls]
+    [origin, shortUrls],
   );
 
   useEffect(() => {
     if (button && open) {
       form.reset({
         title: button.title,
-        subtitle: button.subtitle || "",
-        sectionLabel: button.sectionLabel || "",
+        subtitle: button.subtitle || '',
+        sectionLabel: button.sectionLabel || '',
         url: button.url,
-        icon: button.icon || "",
-        iconType: button.iconType || "",
-        type: (button.type as LinkButtonFormValues["type"]) || "PRIMARY",
-        color: button.color || "#111111",
-        textColor: button.textColor || "#ffffff",
-        borderRadius: button.borderRadius || "8px",
-        thumbnail: button.thumbnail || "",
-        price: button.price || "",
+        icon: button.icon || '',
+        iconType: button.iconType || '',
+        type: (button.type as LinkButtonFormValues['type']) || 'PRIMARY',
+        color: button.color || '#111111',
+        textColor: button.textColor || '#ffffff',
+        borderRadius: button.borderRadius || '8px',
+        thumbnail: button.thumbnail || '',
+        price: button.price || '',
         showOnMobile: button.showOnMobile,
         showOnDesktop: button.showOnDesktop,
-        allowedCountries: button.allowedCountries?.join(", ") || "",
-        blockedCountries: button.blockedCountries?.join(", ") || "",
-        scheduleStart: button.scheduleStart ? button.scheduleStart.slice(0, 16) : "",
-        scheduleEnd: button.scheduleEnd ? button.scheduleEnd.slice(0, 16) : "",
-        abVariant: button.abVariant || "",
+        allowedCountries: button.allowedCountries?.join(', ') || '',
+        blockedCountries: button.blockedCountries?.join(', ') || '',
+        scheduleStart: button.scheduleStart
+          ? button.scheduleStart.slice(0, 16)
+          : '',
+        scheduleEnd: button.scheduleEnd ? button.scheduleEnd.slice(0, 16) : '',
+        abVariant: button.abVariant || '',
         isActive: button.isActive,
       });
     } else if (!button && open) {
@@ -176,7 +216,7 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
     const scheduleEnd = dateInputToIso(values.scheduleEnd);
 
     try {
-      if (mode === "create") {
+      if (mode === 'create') {
         const payload: CreateLinkButtonPayload = {
           linkPageId,
           title: values.title,
@@ -201,13 +241,19 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
         const advancedPayload: UpdateLinkButtonPayload = {};
         if (values.thumbnail) advancedPayload.thumbnail = values.thumbnail;
         if (values.price) advancedPayload.price = values.price;
-        if (scheduleStart !== undefined) advancedPayload.scheduleStart = scheduleStart;
-        if (scheduleEnd !== undefined) advancedPayload.scheduleEnd = scheduleEnd;
-        if (blockedCountries !== undefined) advancedPayload.blockedCountries = blockedCountries;
-        if (allowedCountries !== undefined) advancedPayload.allowedCountries = allowedCountries;
+        if (scheduleStart !== undefined)
+          advancedPayload.scheduleStart = scheduleStart;
+        if (scheduleEnd !== undefined)
+          advancedPayload.scheduleEnd = scheduleEnd;
+        if (blockedCountries !== undefined)
+          advancedPayload.blockedCountries = blockedCountries;
+        if (allowedCountries !== undefined)
+          advancedPayload.allowedCountries = allowedCountries;
         if (values.abVariant) advancedPayload.abVariant = values.abVariant;
-        if (!values.showOnDesktop) advancedPayload.showOnDesktop = values.showOnDesktop;
-        if (!values.showOnMobile) advancedPayload.showOnMobile = values.showOnMobile;
+        if (!values.showOnDesktop)
+          advancedPayload.showOnDesktop = values.showOnDesktop;
+        if (!values.showOnMobile)
+          advancedPayload.showOnMobile = values.showOnMobile;
 
         if (Object.keys(advancedPayload).length > 0) {
           await updateLinkButton(createdButton.id, advancedPayload);
@@ -239,16 +285,17 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
       }
 
       toaster({
-        title: "Success",
-        description: `Button ${mode === "create" ? "created" : "updated"}.`,
-        condition: "success",
+        title: 'Success',
+        description: `Button ${mode === 'create' ? 'created' : 'updated'}.`,
+        condition: 'success',
       });
       onSuccess();
     } catch (error: any) {
       toaster({
-        title: "Error",
-        description: error.response?.data?.message || `Failed to ${mode} button`,
-        condition: "warning",
+        title: 'Error',
+        description:
+          error.response?.data?.message || `Failed to ${mode} button`,
+        condition: 'warning',
       });
     }
   };
@@ -257,22 +304,29 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random()}.${fileExt}`;
     const filePath = `${fileName}`;
-    const { error } = await supabase.storage.from('img').upload(filePath, file);
+    const { error } = await storage.from('img').upload(filePath, file);
     if (error) throw error;
-    const { data } = supabase.storage.from('img').getPublicUrl(filePath);
-    return data.publicUrl;
+    return `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${filePath}`;
   };
 
   return (
-    <Dialog open={open} onOpenChange={(next) => {
-      if (!next) onClose();
-    }}>
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        if (!next) onClose();
+      }}
+    >
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{mode === "create" ? "Create Button" : "Edit Button"}</DialogTitle>
+          <DialogTitle>
+            {mode === 'create' ? 'Create Button' : 'Edit Button'}
+          </DialogTitle>
         </DialogHeader>
         <Form {...(form as any)}>
-          <form onSubmit={form.handleSubmit(handleSubmit as any)} className="space-y-6 py-2">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit as any)}
+            className="space-y-6 py-2"
+          >
             <div className="grid gap-4 md:grid-cols-2">
               <FormField
                 control={form.control as any}
@@ -281,7 +335,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="Visit Website" {...field} />
+                      <Input
+                        placeholder="Visit Website"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -294,7 +351,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Subtitle</FormLabel>
                     <FormControl>
-                      <Input placeholder="Optional helper text" {...field} />
+                      <Input
+                        placeholder="Optional helper text"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -308,7 +368,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                     <FormLabel>Section Label</FormLabel>
                     <div className="flex gap-2">
                       <FormControl>
-                        <Input placeholder="e.g. Socials, Products" {...field} />
+                        <Input
+                          placeholder="e.g. Socials, Products"
+                          {...field}
+                        />
                       </FormControl>
                       {sectionOptions.length > 0 && (
                         <Select onValueChange={field.onChange}>
@@ -317,7 +380,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                           </SelectTrigger>
                           <SelectContent>
                             {sectionOptions.map((opt) => (
-                              <SelectItem key={opt} value={opt}>
+                              <SelectItem
+                                key={opt}
+                                value={opt}
+                              >
                                 {opt}
                               </SelectItem>
                             ))}
@@ -325,7 +391,9 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                         </Select>
                       )}
                     </div>
-                    <FormDescription>Group buttons under a header.</FormDescription>
+                    <FormDescription>
+                      Group buttons under a header.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -338,16 +406,25 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                     <FormLabel>Destination URL</FormLabel>
                     <div className="flex gap-2">
                       <FormControl>
-                        <Input placeholder="https://" {...field} />
+                        <Input
+                          placeholder="https://"
+                          {...field}
+                        />
                       </FormControl>
                       {shortLinkChoices.length ? (
                         <Popover>
                           <PopoverTrigger asChild>
-                            <Button type="button" variant="outline">
+                            <Button
+                              type="button"
+                              variant="outline"
+                            >
                               Short Link
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-64 p-0" align="start">
+                          <PopoverContent
+                            className="w-64 p-0"
+                            align="start"
+                          >
                             <Command>
                               <CommandInput placeholder="Search short links" />
                               <CommandList>
@@ -360,8 +437,12 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                                       onSelect={() => field.onChange(item.url)}
                                     >
                                       <div>
-                                        <p className="text-sm font-medium">/{item.code}</p>
-                                        <p className="text-xs text-muted-foreground">{item.clickCount} clicks</p>
+                                        <p className="text-sm font-medium">
+                                          /{item.code}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                          {item.clickCount} clicks
+                                        </p>
                                       </div>
                                     </CommandItem>
                                   ))}
@@ -382,7 +463,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Button Style</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a style" />
@@ -393,7 +477,9 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                         <SelectItem value="SECONDARY">Secondary</SelectItem>
                         <SelectItem value="OUTLINE">Outline</SelectItem>
                         <SelectItem value="TEXT">Text</SelectItem>
-                        <SelectItem value="THUMBNAIL">Thumbnail Card</SelectItem>
+                        <SelectItem value="THUMBNAIL">
+                          Thumbnail Card
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -404,19 +490,21 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                 control={form.control as any}
                 name="borderRadius"
                 render={({ field }) => {
-                  const isPreset = BORDER_RADIUS_OPTIONS.some((option) => option.value === field.value);
+                  const isPreset = BORDER_RADIUS_OPTIONS.some(
+                    (option) => option.value === field.value,
+                  );
                   return (
                     <FormItem>
                       <FormLabel>Border Radius</FormLabel>
                       <Select
                         onValueChange={(next) => {
-                          if (next === "custom") {
-                            field.onChange("");
+                          if (next === 'custom') {
+                            field.onChange('');
                             return;
                           }
                           field.onChange(next);
                         }}
-                        value={isPreset ? field.value : "custom"}
+                        value={isPreset ? field.value : 'custom'}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -425,7 +513,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                         </FormControl>
                         <SelectContent>
                           {BORDER_RADIUS_OPTIONS.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
+                            <SelectItem
+                              key={option.value}
+                              value={option.value}
+                            >
                               {option.label}
                             </SelectItem>
                           ))}
@@ -437,7 +528,9 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                           className="mt-2"
                           placeholder="e.g. 6px"
                           value={field.value}
-                          onChange={(event) => field.onChange(event.target.value)}
+                          onChange={(event) =>
+                            field.onChange(event.target.value)
+                          }
                         />
                       ) : null}
                       <FormMessage />
@@ -453,9 +546,18 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                     <FormLabel>Background Color</FormLabel>
                     <div className="flex gap-2">
                       <FormControl>
-                        <Input type="color" className="w-16" value={field.value || "#111111"} onChange={field.onChange} />
+                        <Input
+                          type="color"
+                          className="w-16"
+                          value={field.value || '#111111'}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
-                      <Input value={field.value || ""} onChange={field.onChange} placeholder="#111111" />
+                      <Input
+                        value={field.value || ''}
+                        onChange={field.onChange}
+                        placeholder="#111111"
+                      />
                     </div>
                     <FormMessage />
                   </FormItem>
@@ -469,9 +571,18 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                     <FormLabel>Text Color</FormLabel>
                     <div className="flex gap-2">
                       <FormControl>
-                        <Input type="color" className="w-16" value={field.value || "#ffffff"} onChange={field.onChange} />
+                        <Input
+                          type="color"
+                          className="w-16"
+                          value={field.value || '#ffffff'}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
-                      <Input value={field.value || ""} onChange={field.onChange} placeholder="#ffffff" />
+                      <Input
+                        value={field.value || ''}
+                        onChange={field.onChange}
+                        placeholder="#ffffff"
+                      />
                     </div>
                     <FormMessage />
                   </FormItem>
@@ -484,7 +595,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Icon</FormLabel>
                     <FormControl>
-                      <Input placeholder="emoji or image URL" {...field} />
+                      <Input
+                        placeholder="emoji or image URL"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -497,7 +611,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Icon Type</FormLabel>
                     <FormControl>
-                      <Input placeholder="EMOJI / IMAGE / ICON" {...field} />
+                      <Input
+                        placeholder="EMOJI / IMAGE / ICON"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -516,13 +633,17 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                       <div className="space-y-4">
                         {field.value && (
                           <div className="relative h-32 w-32 overflow-hidden rounded-lg border">
-                            <img src={field.value} alt="Thumbnail" className="h-full w-full object-cover" />
+                            <img
+                              src={field.value}
+                              alt="Thumbnail"
+                              className="h-full w-full object-cover"
+                            />
                             <Button
                               type="button"
                               variant="destructive"
                               size="icon"
                               className="absolute right-2 top-2 h-6 w-6"
-                              onClick={() => field.onChange("")}
+                              onClick={() => field.onChange('')}
                             >
                               <Trash2 className="h-3 w-3" />
                             </Button>
@@ -535,9 +656,16 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                               try {
                                 const url = await uploadImage(file);
                                 field.onChange(url);
-                                toaster({ title: "Thumbnail uploaded", condition: "success" });
+                                toaster({
+                                  title: 'Thumbnail uploaded',
+                                  condition: 'success',
+                                });
                               } catch (e: any) {
-                                toaster({ title: "Upload failed", description: e.message, condition: "warning" });
+                                toaster({
+                                  title: 'Upload failed',
+                                  description: e.message,
+                                  condition: 'warning',
+                                });
                               }
                             }
                           }}
@@ -558,7 +686,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Price / Label</FormLabel>
                     <FormControl>
-                      <Input placeholder="Rp 99.000" {...field} />
+                      <Input
+                        placeholder="Rp 99.000"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -574,7 +705,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Schedule Start</FormLabel>
                     <FormControl>
-                      <Input type="datetime-local" {...field} />
+                      <Input
+                        type="datetime-local"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -587,7 +721,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Schedule End</FormLabel>
                     <FormControl>
-                      <Input type="datetime-local" {...field} />
+                      <Input
+                        type="datetime-local"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -603,7 +740,11 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Allowed Countries</FormLabel>
                     <FormControl>
-                      <Textarea rows={2} placeholder="ID, MY, SG" {...field} />
+                      <Textarea
+                        rows={2}
+                        placeholder="ID, MY, SG"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -616,7 +757,11 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem>
                     <FormLabel>Blocked Countries</FormLabel>
                     <FormControl>
-                      <Textarea rows={2} placeholder="US, AU" {...field} />
+                      <Textarea
+                        rows={2}
+                        placeholder="US, AU"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -632,10 +777,15 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem className="flex items-center justify-between rounded-lg border p-3">
                     <div>
                       <FormLabel>Mobile</FormLabel>
-                      <p className="text-xs text-muted-foreground">Display on mobile devices</p>
+                      <p className="text-xs text-muted-foreground">
+                        Display on mobile devices
+                      </p>
                     </div>
                     <FormControl>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -647,10 +797,15 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem className="flex items-center justify-between rounded-lg border p-3">
                     <div>
                       <FormLabel>Desktop</FormLabel>
-                      <p className="text-xs text-muted-foreground">Display on desktop devices</p>
+                      <p className="text-xs text-muted-foreground">
+                        Display on desktop devices
+                      </p>
                     </div>
                     <FormControl>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -662,10 +817,15 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                   <FormItem className="flex items-center justify-between rounded-lg border p-3">
                     <div>
                       <FormLabel>Status</FormLabel>
-                      <p className="text-xs text-muted-foreground">Active buttons appear immediately</p>
+                      <p className="text-xs text-muted-foreground">
+                        Active buttons appear immediately
+                      </p>
                     </div>
                     <FormControl>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -679,7 +839,10 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
                 <FormItem>
                   <FormLabel>A/B Variant</FormLabel>
                   <FormControl>
-                    <Input placeholder="A, B, control" {...field} />
+                    <Input
+                      placeholder="A, B, control"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -687,11 +850,24 @@ export function ButtonFormDialog({ open, onClose, mode, linkPageId, nextOrder, b
             />
 
             <div className="flex justify-end gap-2 pt-2">
-              <Button type="button" variant="outline" onClick={onClose}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onClose}
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? (mode === "create" ? "Creating..." : "Saving...") : mode === "create" ? "Create Button" : "Save Changes"}
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting
+                  ? mode === 'create'
+                    ? 'Creating...'
+                    : 'Saving...'
+                  : mode === 'create'
+                    ? 'Create Button'
+                    : 'Save Changes'}
               </Button>
             </div>
           </form>

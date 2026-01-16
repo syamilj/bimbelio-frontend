@@ -3,7 +3,14 @@
 'use client';
 
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import { ReactNode, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ReactNode,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import useMedia from 'use-media';
 
 import Sidebar from '@/app/(main)/[web_sub_category]/(user)/user/_components/sidebar';
@@ -25,15 +32,14 @@ import {
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { signOut } from '@/lib/auth-helper';
 import axiosInstance from '@/lib/axios/axiosInstance';
+import { useGet } from '@/lib/fetch-helper/useGet';
 import { response } from '@/lib/response';
 import { cn } from '@/lib/utils';
-import { formatIDR } from '@/lib/utils/currency';
-import { formatDateRange } from '@/lib/utils/date';
+import { TypeCourseEnum } from '@/types/database';
 import {
   BookOpenIcon,
   Brain,
   ChevronDown,
-  Clock,
   Coins,
   Crown,
   Eye,
@@ -52,6 +58,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { Notification } from '../_shared/notification';
+import { BadgeSubsInfo } from '../_shared/subs/badge-subs-info';
 import ProviderCheckLimitation from '../provider/provider-check-limitation';
 import ProviderCheckSubscriptionInstallment from '../provider/provider-check-subscription-installment';
 import ProviderCheckSubscriptionPending from '../provider/provider-check-subscription-pending';
@@ -59,9 +66,6 @@ import { useUserLimitation } from '../provider/provider-limitation';
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { SidebarInset, SidebarProvider } from '../ui/sidebar';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
-import { TypeCourseEnum } from '@/types/database';
-import { useGet } from '@/lib/fetch-helper/useGet';
 
 interface LayoutUserClientProps {
   children: ReactNode;
@@ -142,12 +146,14 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
   useEffect(() => {
     if (website_sub_category_id_params) {
-      axiosInstance.get('/category/getAllCategories', {
-        params: { website_sub_category_id: website_sub_category_id_params }
-      }).then((res) => {
-        const resData = response(res);
-        setCategory(resData.data);
-      });
+      axiosInstance
+        .get('/category/getAllCategories', {
+          params: { website_sub_category_id: website_sub_category_id_params },
+        })
+        .then((res) => {
+          const resData = response(res);
+          setCategory(resData.data);
+        });
     }
   }, [website_sub_category_id_params]);
 
@@ -179,7 +185,10 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
     const isWorkspaceRoute =
       pathname?.includes('workspace') && params?.category && params?.docsid;
     // Only treat as workspace (immersive) if it's the study/player page
-    const isCourseRoute = pathname?.includes('course') && params?.categoryId && pathname?.includes('/study');
+    const isCourseRoute =
+      pathname?.includes('course') &&
+      params?.categoryId &&
+      pathname?.includes('/study');
 
     if (isWorkspaceRoute || isCourseRoute) {
       setComponentName('DocViewerPage');
@@ -242,13 +251,15 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
                 {/* MAIN CONTENT */}
                 <SidebarInset className="flex flex-col h-screen overflow-hidden">
                   {!inWorkspace && <HeaderUser />}
-                  <div className={cn(
-                    "flex-1 overflow-y-auto overflow-x-hidden",
-                    !inWorkspace && "pt-[80px]" // Space for fixed header
-                  )}>
+                  <div
+                    className={cn(
+                      'flex-1 overflow-y-auto overflow-x-hidden',
+                      !inWorkspace && 'pt-[80px]', // Space for fixed header
+                    )}
+                  >
                     <main
                       className={cn(
-                        'relative mt-0 pr-0 pt-0 duration-300 w-full ',
+                        'relative mt-0 pr-0 pt-0 duration-300 md:pl-22 w-full ',
                         // docViewer => full fixed
                         componentName === 'DocViewerPage' &&
                           'fixed left-0 top-0 h-full w-full',
@@ -305,9 +316,9 @@ const HeaderUser = () => {
   // Flatten all sub chapters for search
   const allSubChapters = useMemo<SubChapterSearchResult[]>(() => {
     if (!CourseData) return [];
-    return CourseData.flatMap(category =>
-      category.CourseChapter.flatMap(chapter =>
-        chapter.CourseSubChapter.map(subChapter => ({
+    return CourseData.flatMap((category) =>
+      category.CourseChapter.flatMap((chapter) =>
+        chapter.CourseSubChapter.map((subChapter) => ({
           id: subChapter.id,
           title: subChapter.title,
           description: subChapter.description,
@@ -330,18 +341,22 @@ const HeaderUser = () => {
   const searchResults = useMemo(() => {
     if (!searchQuery.trim() || searchQuery.length < 2) return [];
     const query = searchQuery.toLowerCase().trim();
-    return allSubChapters.filter(item =>
-      item.title.toLowerCase().includes(query) ||
-      item.description.toLowerCase().includes(query) ||
-      item.categoryName.toLowerCase().includes(query) ||
-      item.chapterTitle.toLowerCase().includes(query)
+    return allSubChapters.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.categoryName.toLowerCase().includes(query) ||
+        item.chapterTitle.toLowerCase().includes(query),
     );
   }, [searchQuery, allSubChapters]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setIsSearchOpen(false);
       }
     }
@@ -361,10 +376,12 @@ const HeaderUser = () => {
       if (!isSearchOpen || searchResults.length === 0) return;
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setSelectedIndex(prev => prev < searchResults.length - 1 ? prev + 1 : prev);
+        setSelectedIndex((prev) =>
+          prev < searchResults.length - 1 ? prev + 1 : prev,
+        );
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        setSelectedIndex(prev => prev > 0 ? prev - 1 : 0);
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
       } else if (e.key === 'Enter') {
         e.preventDefault();
         if (searchResults[selectedIndex]) {
@@ -380,28 +397,40 @@ const HeaderUser = () => {
   }, [isSearchOpen, searchResults, selectedIndex]);
 
   const handleResultClick = (result: SubChapterSearchResult) => {
-    router.push(`/${website_sub_category_id_params}/user/bimcourse/${result.categoryId}/study?sub=${result.id}&tab=chat`);
+    router.push(
+      `/${website_sub_category_id_params}/user/bimcourse/${result.categoryId}/study?sub=${result.id}&tab=chat`,
+    );
     setSearchQuery('');
     setIsSearchOpen(false);
   };
 
   const getTypeIcon = (type: TypeCourseEnum) => {
     switch (type) {
-      case 'VIDEO': return <PlayCircleIcon className="w-4 h-4" />;
-      case 'DOCUMENT': return <FileText className="w-4 h-4" />;
-      case 'MATERI': return <BookOpenIcon className="w-4 h-4" />;
-      case 'TRYOUT': return <FileQuestionIcon className="w-4 h-4" />;
-      default: return <BookOpenIcon className="w-4 h-4" />;
+      case 'VIDEO':
+        return <PlayCircleIcon className="w-4 h-4" />;
+      case 'DOCUMENT':
+        return <FileText className="w-4 h-4" />;
+      case 'MATERI':
+        return <BookOpenIcon className="w-4 h-4" />;
+      case 'TRYOUT':
+        return <FileQuestionIcon className="w-4 h-4" />;
+      default:
+        return <BookOpenIcon className="w-4 h-4" />;
     }
   };
 
   const getTypeColor = (type: TypeCourseEnum) => {
     switch (type) {
-      case 'VIDEO': return 'bg-red-50 text-red-700 border-red-200';
-      case 'DOCUMENT': return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'MATERI': return 'bg-purple-50 text-purple-700 border-purple-200';
-      case 'TRYOUT': return 'bg-green-50 text-green-700 border-green-200';
-      default: return 'bg-gray-50 text-gray-700 border-gray-200';
+      case 'VIDEO':
+        return 'bg-red-50 text-red-700 border-red-200';
+      case 'DOCUMENT':
+        return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'MATERI':
+        return 'bg-purple-50 text-purple-700 border-purple-200';
+      case 'TRYOUT':
+        return 'bg-green-50 text-green-700 border-green-200';
+      default:
+        return 'bg-gray-50 text-gray-700 border-gray-200';
     }
   };
 
@@ -412,12 +441,15 @@ const HeaderUser = () => {
       <>
         {parts.map((part, i) =>
           part.toLowerCase() === searchQuery.toLowerCase() ? (
-            <mark key={i} className="bg-yellow-200 text-gray-900 rounded px-0.5">
+            <mark
+              key={i}
+              className="bg-yellow-200 text-gray-900 rounded px-0.5"
+            >
               {part}
             </mark>
           ) : (
             <span key={i}>{part}</span>
-          )
+          ),
         )}
       </>
     );
@@ -589,7 +621,10 @@ const HeaderUser = () => {
             <span className="text-base">👋</span>
             <div className="min-w-0">
               <p className="text-xs font-semibold text-gray-900 truncate">
-                Halo, <span style={{ color: mainColor }}>{userSession?.user.name?.split(' ')[0]}</span>
+                Halo,{' '}
+                <span style={{ color: mainColor }}>
+                  {userSession?.user.name?.split(' ')[0]}
+                </span>
               </p>
             </div>
           </div>
@@ -617,9 +652,14 @@ const HeaderUser = () => {
                   variant="ghost"
                   className="flex items-center gap-1.5 h-9 px-2 rounded-3xl hover:bg-gray-100 border border-gray-200"
                 >
-                  <Coins className="w-4 h-4" style={{ color: mainColor }} />
+                  <Coins
+                    className="w-4 h-4"
+                    style={{ color: mainColor }}
+                  />
                   <span className="text-xs font-bold text-gray-700">
-                    {userTier === 'ADMIN' ? '∞' : limitations[0]?.remaining || 0}
+                    {userTier === 'ADMIN'
+                      ? '∞'
+                      : limitations[0]?.remaining || 0}
                   </span>
                 </Button>
               </DropdownMenuTrigger>
@@ -627,99 +667,125 @@ const HeaderUser = () => {
                 align="end"
                 className="w-72 mt-2"
               >
-              <div className="px-3 py-2.5 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
-                <p className="text-sm font-bold text-center text-gray-900">
-                  💎 Sisa Penggunaan
-                </p>
-                {!userTier && (
-                  <p className="text-xs text-center text-gray-500 mt-0.5">
-                    Upgrade untuk unlimited akses
+                <div className="px-3 py-2.5 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+                  <p className="text-sm font-bold text-center text-gray-900">
+                    💎 Sisa Penggunaan
                   </p>
-                )}
-              </div>
-              <div className="px-3 py-3 space-y-2 max-h-[60vh] overflow-y-auto">
-                {limitations.map((limitation, index) => {
-                  const Icon = limitation.icon;
-                  const isLow = limitation.remaining <= 3 && limitation.remaining > 0;
-                  const isEmpty = limitation.remaining === 0;
-                  const percentage = userTier === 'ADMIN' ? 100 : limitation.total > 0 ? ((limitation.total - limitation.remaining) / limitation.total) * 100 : 0;
+                  {!userTier && (
+                    <p className="text-xs text-center text-gray-500 mt-0.5">
+                      Upgrade untuk unlimited akses
+                    </p>
+                  )}
+                </div>
+                <div className="px-3 py-3 space-y-2 max-h-[60vh] overflow-y-auto">
+                  {limitations.map((limitation, index) => {
+                    const Icon = limitation.icon;
+                    const isLow =
+                      limitation.remaining <= 3 && limitation.remaining > 0;
+                    const isEmpty = limitation.remaining === 0;
+                    const percentage =
+                      userTier === 'ADMIN'
+                        ? 100
+                        : limitation.total > 0
+                          ? ((limitation.total - limitation.remaining) /
+                              limitation.total) *
+                            100
+                          : 0;
 
-                  return (
-                    <div
-                      key={index}
-                      className={cn(
-                        'p-2.5 rounded-3xl border-2 transition-all duration-200',
-                        isEmpty
-                          ? 'bg-red-50 border-red-200'
-                          : isLow
-                            ? 'bg-orange-50 border-orange-200'
-                            : 'bg-white border-gray-100 hover:border-gray-200',
-                      )}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <div
-                            className="w-8 h-8 rounded-lg flex items-center justify-center"
-                            style={{ backgroundColor: `${limitation.color}15` }}
-                          >
-                            <Icon className="w-4 h-4" style={{ color: limitation.color }} />
+                    return (
+                      <div
+                        key={index}
+                        className={cn(
+                          'p-2.5 rounded-3xl border-2 transition-all duration-200',
+                          isEmpty
+                            ? 'bg-red-50 border-red-200'
+                            : isLow
+                              ? 'bg-orange-50 border-orange-200'
+                              : 'bg-white border-gray-100 hover:border-gray-200',
+                        )}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-8 h-8 rounded-lg flex items-center justify-center"
+                              style={{
+                                backgroundColor: `${limitation.color}15`,
+                              }}
+                            >
+                              <Icon
+                                className="w-4 h-4"
+                                style={{ color: limitation.color }}
+                              />
+                            </div>
+                            <span className="text-sm font-semibold text-gray-900">
+                              {limitation.label}
+                            </span>
                           </div>
-                          <span className="text-sm font-semibold text-gray-900">
-                            {limitation.label}
-                          </span>
+                          {userTier === 'ADMIN' ? (
+                            <span className="text-lg font-bold text-green-600">
+                              ∞
+                            </span>
+                          ) : (
+                            <span
+                              className={cn(
+                                'text-sm font-bold',
+                                isEmpty
+                                  ? 'text-red-600'
+                                  : isLow
+                                    ? 'text-orange-600'
+                                    : 'text-gray-900',
+                              )}
+                            >
+                              {limitation.remaining}/{limitation.total}
+                            </span>
+                          )}
                         </div>
-                        {userTier === 'ADMIN' ? (
-                          <span className="text-lg font-bold text-green-600">∞</span>
-                        ) : (
-                          <span
-                            className={cn(
-                              'text-sm font-bold',
-                              isEmpty ? 'text-red-600' : isLow ? 'text-orange-600' : 'text-gray-900',
-                            )}
-                          >
-                            {limitation.remaining}/{limitation.total}
-                          </span>
+                        {userTier !== 'ADMIN' && (
+                          <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                            <div
+                              className={cn(
+                                'h-full rounded-full transition-all duration-300',
+                                isEmpty
+                                  ? 'bg-red-500'
+                                  : isLow
+                                    ? 'bg-orange-500'
+                                    : 'bg-green-500',
+                              )}
+                              style={{ width: `${100 - percentage}%` }}
+                            />
+                          </div>
                         )}
                       </div>
-                      {userTier !== 'ADMIN' && (
-                        <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
-                          <div
-                            className={cn(
-                              'h-full rounded-full transition-all duration-300',
-                              isEmpty ? 'bg-red-500' : isLow ? 'bg-orange-500' : 'bg-green-500',
-                            )}
-                            style={{ width: `${100 - percentage}%` }}
-                          />
-                        </div>
-                      )}
+                    );
+                  })}
+                </div>
+                {!userTier && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <div className="px-3 py-3">
+                      <Button
+                        className="w-full text-white shadow-lg hover:shadow-xl transition-all"
+                        style={{ backgroundColor: mainColor }}
+                        onClick={() => {
+                          setTransactionPopUp(true);
+                        }}
+                      >
+                        <Crown className="w-4 h-4 mr-2" />
+                        Upgrade ke Premium
+                      </Button>
                     </div>
-                  );
-                })}
-              </div>
-              {!userTier && (
-                <>
-                  <DropdownMenuSeparator />
-                  <div className="px-3 py-3">
-                    <Button
-                      className="w-full text-white shadow-lg hover:shadow-xl transition-all"
-                      style={{ backgroundColor: mainColor }}
-                      onClick={() => {
-                        setTransactionPopUp(true);
-                      }}
-                    >
-                      <Crown className="w-4 h-4 mr-2" />
-                      Upgrade ke Premium
-                    </Button>
-                  </div>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
 
           {/* Desktop Search - Interactive Input */}
           {!isMobile && (
-            <div ref={searchRef} className="hidden md:block relative">
+            <div
+              ref={searchRef}
+              className="hidden md:block relative"
+            >
               <div className="relative">
                 <div
                   className="absolute left-3 top-1/2 -translate-y-1/2 transition-colors z-10"
@@ -735,7 +801,9 @@ const HeaderUser = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10 pr-10 h-10 w-64 rounded-3xl border-2 border-gray-200 focus:border-transparent text-sm font-medium transition-all"
                   style={{
-                    boxShadow: isSearchOpen ? `0 0 0 3px ${mainColor}20` : undefined,
+                    boxShadow: isSearchOpen
+                      ? `0 0 0 3px ${mainColor}20`
+                      : undefined,
                   }}
                 />
                 {searchQuery && (
@@ -764,7 +832,10 @@ const HeaderUser = () => {
                       style={{ backgroundColor: `${mainColor}08` }}
                     >
                       <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4" style={{ color: mainColor }} />
+                        <Sparkles
+                          className="w-4 h-4"
+                          style={{ color: mainColor }}
+                        />
                         <span className="text-sm font-bold text-gray-700">
                           {searchResults.length} hasil
                         </span>
@@ -793,15 +864,25 @@ const HeaderUser = () => {
                                 : 'hover:bg-gray-50'
                             }`}
                             style={{
-                              backgroundColor: index === selectedIndex ? `${mainColor}08` : undefined,
-                              ...(index === selectedIndex ? { '--tw-ring-color': mainColor } as React.CSSProperties : {}),
+                              backgroundColor:
+                                index === selectedIndex
+                                  ? `${mainColor}08`
+                                  : undefined,
+                              ...(index === selectedIndex
+                                ? ({
+                                    '--tw-ring-color': mainColor,
+                                  } as React.CSSProperties)
+                                : {}),
                             }}
                           >
                             <div className="flex items-start gap-3">
                               {/* Icon */}
                               <div
                                 className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                                style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
+                                style={{
+                                  backgroundColor: `${mainColor}15`,
+                                  color: mainColor,
+                                }}
                               >
                                 {getTypeIcon(result.type)}
                               </div>
@@ -812,7 +893,9 @@ const HeaderUser = () => {
                                   <h4 className="text-sm font-semibold text-gray-900 line-clamp-1">
                                     {highlightMatch(result.title)}
                                   </h4>
-                                  <Badge className={`text-[10px] px-1.5 py-0.5 shrink-0 ${getTypeColor(result.type)}`}>
+                                  <Badge
+                                    className={`text-[10px] px-1.5 py-0.5 shrink-0 ${getTypeColor(result.type)}`}
+                                  >
                                     {result.type}
                                   </Badge>
                                 </div>
@@ -820,13 +903,17 @@ const HeaderUser = () => {
                                   {highlightMatch(result.description)}
                                 </p>
                                 <div className="flex items-center gap-2 text-xs text-gray-500">
-                                  <span className="font-medium">{result.categoryName}</span>
+                                  <span className="font-medium">
+                                    {result.categoryName}
+                                  </span>
                                   <span>•</span>
                                   <span>{result.chapterTitle}</span>
                                   {result.isCompleted && (
                                     <>
                                       <span>•</span>
-                                      <span className="text-green-600 font-medium">✓ Selesai</span>
+                                      <span className="text-green-600 font-medium">
+                                        ✓ Selesai
+                                      </span>
                                     </>
                                   )}
                                 </div>
@@ -855,14 +942,19 @@ const HeaderUser = () => {
                       className="w-8 h-8 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
-                      <Coins className="w-4 h-4" style={{ color: mainColor }} />
+                      <Coins
+                        className="w-4 h-4"
+                        style={{ color: mainColor }}
+                      />
                     </div>
                     <div className="flex flex-col items-start">
                       <span className="text-[10px] font-medium text-gray-500 leading-none">
                         Sisa Coin
                       </span>
                       <span className="text-sm font-bold text-gray-900 leading-tight">
-                        {userTier === 'ADMIN' ? '∞' : `${limitations[0]?.remaining || 0}`}
+                        {userTier === 'ADMIN'
+                          ? '∞'
+                          : `${limitations[0]?.remaining || 0}`}
                       </span>
                     </div>
                   </div>
@@ -891,9 +983,17 @@ const HeaderUser = () => {
                 <div className="p-3 space-y-2 max-h-[70vh] overflow-y-auto">
                   {limitations.map((limitation, index) => {
                     const Icon = limitation.icon;
-                    const isLow = limitation.remaining <= 3 && limitation.remaining > 0;
+                    const isLow =
+                      limitation.remaining <= 3 && limitation.remaining > 0;
                     const isEmpty = limitation.remaining === 0;
-                    const percentage = userTier === 'ADMIN' ? 100 : limitation.total > 0 ? ((limitation.total - limitation.remaining) / limitation.total) * 100 : 0;
+                    const percentage =
+                      userTier === 'ADMIN'
+                        ? 100
+                        : limitation.total > 0
+                          ? ((limitation.total - limitation.remaining) /
+                              limitation.total) *
+                            100
+                          : 0;
 
                     return (
                       <div
@@ -904,21 +1004,32 @@ const HeaderUser = () => {
                           <div className="flex items-center gap-2">
                             <div
                               className="w-8 h-8 rounded-lg flex items-center justify-center"
-                              style={{ backgroundColor: `${limitation.color}15` }}
+                              style={{
+                                backgroundColor: `${limitation.color}15`,
+                              }}
                             >
-                              <Icon className="w-4 h-4" style={{ color: limitation.color }} />
+                              <Icon
+                                className="w-4 h-4"
+                                style={{ color: limitation.color }}
+                              />
                             </div>
                             <span className="text-sm font-medium text-gray-900">
                               {limitation.label}
                             </span>
                           </div>
                           {userTier === 'ADMIN' ? (
-                            <span className="text-lg font-bold text-green-600">∞</span>
+                            <span className="text-lg font-bold text-green-600">
+                              ∞
+                            </span>
                           ) : (
                             <span
                               className={cn(
                                 'text-base font-bold',
-                                isEmpty ? 'text-red-600' : isLow ? 'text-orange-600' : 'text-gray-900',
+                                isEmpty
+                                  ? 'text-red-600'
+                                  : isLow
+                                    ? 'text-orange-600'
+                                    : 'text-gray-900',
                               )}
                             >
                               {limitation.remaining}
@@ -931,7 +1042,11 @@ const HeaderUser = () => {
                               <div
                                 className={cn(
                                   'h-full rounded-full transition-all duration-300',
-                                  isEmpty ? 'bg-red-500' : isLow ? 'bg-orange-500' : 'bg-green-500',
+                                  isEmpty
+                                    ? 'bg-red-500'
+                                    : isLow
+                                      ? 'bg-orange-500'
+                                      : 'bg-green-500',
                                 )}
                                 style={{ width: `${100 - percentage}%` }}
                               />
@@ -964,18 +1079,8 @@ const HeaderUser = () => {
             </DropdownMenu>
           )}
 
-          {/* Status Badge - Simplified */}
-          {(userTier === 'ADMIN' || userTier === 'SUPER_ADMIN' || userTier === 'PREMIUM') && (
-            <div
-              className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-3xl text-white text-sm font-bold shadow-md transition-all duration-200 hover:shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              <Crown className="w-4 h-4" />
-              <span>{userTier === 'SUPER_ADMIN' ? 'Admin' : userTier === 'ADMIN' ? 'Admin' : 'Premium'}</span>
-            </div>
-          )}
+          {/* Status Badge - Premium Design */}
+          <BadgeSubsInfo />
 
           {/* Notification Icon */}
           <Notification />
@@ -1024,6 +1129,21 @@ const HeaderUser = () => {
               {isMobile && (
                 <>
                   <div className="px-3 py-2 space-y-2">
+                    <Link
+                      href={`/${website_sub_category_id_params}/user/subscription`}
+                      className="md:hidden "
+                    >
+                      <div
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02] mb-4"
+                        style={{
+                          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                        }}
+                      >
+                        <Crown className="w-4 h-4" />
+                        <span>Premium</span>
+                        {/* <ChevronDown className="w-3.5 h-3.5 opacity-70" /> */}
+                      </div>
+                    </Link>
                     <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                       Sisa Penggunaan
                     </p>
@@ -1098,7 +1218,10 @@ const HeaderUser = () => {
       {/* Mobile Search - Interactive */}
       {isMobile && showMobileSearch && (
         <div className="border-t border-gray-200 p-3 bg-white">
-          <div ref={searchRef} className="relative">
+          <div
+            ref={searchRef}
+            className="relative"
+          >
             <div className="relative">
               <div
                 className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors z-10"
@@ -1115,7 +1238,9 @@ const HeaderUser = () => {
                 autoFocus
                 className="pl-12 pr-12 h-12 rounded-3xl border-2 border-gray-200 focus:border-transparent text-sm font-medium transition-all"
                 style={{
-                  boxShadow: isSearchOpen ? `0 0 0 3px ${mainColor}20` : undefined,
+                  boxShadow: isSearchOpen
+                    ? `0 0 0 3px ${mainColor}20`
+                    : undefined,
                 }}
               />
               {searchQuery && (
@@ -1144,7 +1269,10 @@ const HeaderUser = () => {
                     style={{ backgroundColor: `${mainColor}08` }}
                   >
                     <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4" style={{ color: mainColor }} />
+                      <Sparkles
+                        className="w-4 h-4"
+                        style={{ color: mainColor }}
+                      />
                       <span className="text-sm font-bold text-gray-700">
                         {searchResults.length} hasil
                       </span>
@@ -1172,15 +1300,25 @@ const HeaderUser = () => {
                               : 'active:bg-gray-100'
                           }`}
                           style={{
-                            backgroundColor: index === selectedIndex ? `${mainColor}08` : undefined,
-                            ...(index === selectedIndex ? { '--tw-ring-color': mainColor } as React.CSSProperties : {}),
+                            backgroundColor:
+                              index === selectedIndex
+                                ? `${mainColor}08`
+                                : undefined,
+                            ...(index === selectedIndex
+                              ? ({
+                                  '--tw-ring-color': mainColor,
+                                } as React.CSSProperties)
+                              : {}),
                           }}
                         >
                           <div className="flex items-start gap-3">
                             {/* Icon */}
                             <div
                               className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                              style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
+                              style={{
+                                backgroundColor: `${mainColor}15`,
+                                color: mainColor,
+                              }}
                             >
                               {getTypeIcon(result.type)}
                             </div>
@@ -1191,7 +1329,9 @@ const HeaderUser = () => {
                                 <h4 className="text-sm font-semibold text-gray-900 line-clamp-2">
                                   {highlightMatch(result.title)}
                                 </h4>
-                                <Badge className={`text-[10px] px-1.5 py-0.5 shrink-0 ${getTypeColor(result.type)}`}>
+                                <Badge
+                                  className={`text-[10px] px-1.5 py-0.5 shrink-0 ${getTypeColor(result.type)}`}
+                                >
                                   {result.type}
                                 </Badge>
                               </div>
@@ -1199,13 +1339,19 @@ const HeaderUser = () => {
                                 {highlightMatch(result.description)}
                               </p>
                               <div className="flex items-center gap-1.5 text-xs text-gray-500 flex-wrap">
-                                <span className="font-medium">{result.categoryName}</span>
+                                <span className="font-medium">
+                                  {result.categoryName}
+                                </span>
                                 <span>•</span>
-                                <span className="line-clamp-1">{result.chapterTitle}</span>
+                                <span className="line-clamp-1">
+                                  {result.chapterTitle}
+                                </span>
                                 {result.isCompleted && (
                                   <>
                                     <span>•</span>
-                                    <span className="text-green-600 font-medium">✓ Selesai</span>
+                                    <span className="text-green-600 font-medium">
+                                      ✓ Selesai
+                                    </span>
                                   </>
                                 )}
                               </div>

@@ -9,7 +9,7 @@ import axiosInstance from '@/lib/axios/axiosInstance';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { response, responseError } from '@/lib/response';
 import { cn, imageProfile } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import {
   Subscription,
   SubscriptionInstallment,
@@ -129,7 +129,7 @@ export default function AccountSetting() {
         const fileName = `${
           env.NEXT_PUBLIC_SUPABASE_URL
         }/storage/v1/object/public/img/${session?.user.id}-${new Date()}`;
-        const { data, error } = await supabase.storage
+        const { data, error } = await storage
           .from('img')
           .upload(`${session?.user.id}-${new Date()}`, profile);
         if (data) {

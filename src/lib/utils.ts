@@ -178,17 +178,15 @@ export const getDate = (date: any) => {
   const day = Dates.getDate();
   const month = Dates.getMonth() + 1;
   const year = Dates.getFullYear();
-  return `${day < 10 ? `0${day}` : day}/${
-    month < 10 ? `0${month}` : month
-  }/${year}`;
+  return `${day < 10 ? `0${day}` : day}/${month < 10 ? `0${month}` : month
+    }/${year}`;
 };
 export const getHours = (date: any) => {
   const Dates = new Date(date);
   const hours = Dates.getHours();
   const minute = Dates.getMinutes();
-  return `${hours < 10 ? `0${hours}` : hours}:${
-    minute < 10 ? `0${minute}` : minute
-  }`;
+  return `${hours < 10 ? `0${hours}` : hours}:${minute < 10 ? `0${minute}` : minute
+    }`;
 };
 export const getHoursDetail = (date: any) => {
   if (!date) return '-';
@@ -197,9 +195,8 @@ export const getHoursDetail = (date: any) => {
   const hours = Dates.getHours();
   const minute = Dates.getMinutes();
   const second = Dates.getSeconds();
-  return `${hours < 10 ? `0${hours}` : hours}:${
-    minute < 10 ? `0${minute}` : minute
-  }:${second < 10 ? `0${second}` : second}`;
+  return `${hours < 10 ? `0${hours}` : hours}:${minute < 10 ? `0${minute}` : minute
+    }:${second < 10 ? `0${second}` : second}`;
 };
 export const getDateHourStr = (date: any) => {
   const dateData = new Date(date);
@@ -261,6 +258,7 @@ export const getDateStringShort = (date: any) => {
 };
 
 import { Dispatch, SetStateAction } from 'react';
+import { env } from '@/env.mjs';
 
 // export const getError = (error: any) => {
 //   // if (error instanceof TRPCError) {
@@ -465,19 +463,36 @@ export const hideVideoLink = async ({
   link: string;
   setUrl: Dispatch<SetStateAction<string>>;
 }) => {
-  try {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', link);
-    xhr.responseType = 'arraybuffer';
-    xhr.onload = () => {
-      const blob = new Blob([xhr.response]);
-      const url = URL.createObjectURL(blob);
+  // try {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.open('GET', link);
+  //   xhr.responseType = 'arraybuffer';
+  //   xhr.onload = () => {
+  //     const blob = new Blob([xhr.response]);
+  //     const url = URL.createObjectURL(blob);
 
-      setUrl(url);
-    };
-    xhr.send();
-  } catch (error) {
-    error;
+  //     setUrl(url);
+  //   };
+  //   xhr.send();
+  // } catch (error) {
+  //   error;
+  // }
+  const response = await fetch(
+    `${link}`,
+    {
+      method: 'GET',
+      // headers: {
+      //   Authorization: `Bearer ${Cookies.get('token')}`,
+      //   'Content-Type': 'application/json',
+      // },
+    },
+  );
+  if (response.ok) {
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    setUrl(url);
+  } else {
+    console.error('Error fetching PDF');
   }
 };
 

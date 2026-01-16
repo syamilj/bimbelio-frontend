@@ -3,7 +3,7 @@ import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { deleteGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { IconTailedArrowNext, IconTailedArrowPrev } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Category, Document, Subcategory, Video } from '@/types/database';
 import { Download, Link } from 'lucide-react';
 import { useState } from 'react';
@@ -41,19 +41,19 @@ export default function Table() {
 
   const fileDownload = async (fileName: string) => {
     try {
-      const { data } = await supabase.storage
+      const { data } = await storage
         .from('pdf')
         .download(`document/${fileName}`);
 
-      if (data) {
-        const blob = new Blob([data], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
+      // if (data) {
+      //   const blob = new Blob([data], { type: 'application/pdf' });
+      //   const url = window.URL.createObjectURL(blob);
+      //   const a = document.createElement('a');
+      //   a.href = url;
+      //   a.download = fileName;
+      //   a.click();
+      //   window.URL.revokeObjectURL(url);
+      // }
     } catch (error) {
       error;
     }
@@ -71,14 +71,10 @@ export default function Table() {
       async onSuccess() {
         fetchDocument();
         setDeleteData({ id: '', title: '', videoTitle: '' });
-        await supabase.storage
-          .from('pdf')
-          .remove([`document/${deleteData.title}`]);
-        await supabase.storage
-          .from('img')
-          .remove([`document/${deleteData.title}`]);
+        await storage.from('pdf').remove([`document/${deleteData.title}`]);
+        await storage.from('img').remove([`document/${deleteData.title}`]);
         if (deleteData.videoTitle.length > 0) {
-          await supabase.storage
+          await storage
             .from('video')
             .remove([`document/${deleteData.videoTitle}`]);
         }

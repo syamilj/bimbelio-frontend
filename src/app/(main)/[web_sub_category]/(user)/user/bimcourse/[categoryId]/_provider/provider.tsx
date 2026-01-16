@@ -93,13 +93,15 @@ export default function Provider({ children }: Props) {
     },
   );
 
+  console.log({ CourseProgress });
+
   const { data: CourseAnalytics, isLoading: AnalyticsLoading } = useGet(
     '/course/getCourseAnalytics',
     {
       params: { categoryId },
       enabled: !!categoryId,
       useEffectDependencies: [categoryId],
-    }
+    },
   );
 
   useEffect(() => {
@@ -177,10 +179,7 @@ export default function Provider({ children }: Props) {
         }
       } else {
         // Only auto-navigate if not showing start course
-        if (
-          Course.length > 0 &&
-          Course[0].CourseSubChapter.length > 0
-        ) {
+        if (Course.length > 0 && Course[0].CourseSubChapter.length > 0) {
           setCourseData({
             id: Course[0].CourseSubChapter[0].id,
             number: Course[0].CourseSubChapter[0].number,

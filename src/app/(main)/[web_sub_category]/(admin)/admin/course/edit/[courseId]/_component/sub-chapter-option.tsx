@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Document } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { FileText, Plus, Video, X } from 'lucide-react';
@@ -155,7 +155,7 @@ const SubChapterOption = ({
 
       // Remove old video if exists
       if (EditSubChapter?.video && EditSubChapter.video.length > 0) {
-        const { data, error } = await supabase.storage
+        const { data, error } = await storage
           .from('video')
           .remove([`course/${EditSubChapter.video}`]);
         if (error) {
@@ -181,7 +181,7 @@ const SubChapterOption = ({
       }
 
       // Upload new video
-      const { error } = await supabase.storage
+      const { error } = await storage
         .from('video')
         .upload(`course/${nameFile}`, file);
 
@@ -456,7 +456,6 @@ const VideoEditor = ({
                 <a
                   href={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${EditSubChapter.video}`}
                   target="_blank"
-                  rel="noopener noreferrer"
                   className="inline-block text-blue-600 hover:text-blue-800 text-sm"
                 >
                   Lihat Video

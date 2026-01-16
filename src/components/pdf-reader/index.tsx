@@ -4,10 +4,9 @@ import HeaderPdf from '@/components/pdf-reader/_components/header-pdf';
 import PdfReader from '@/components/pdf-reader/pdf-reader';
 import { useAppContext } from '@/components/provider/provider-app';
 import { toaster } from '@/components/ui/toaster';
-import { env } from '@/env.mjs';
-import { hideVideoLink } from '@/lib/utils';
 import { IconDislike, IconLike } from '@/styles/icon';
 
+import { env } from '@/env.mjs';
 import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
@@ -296,19 +295,19 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (doc.video?.url) {
-      hideVideoLink({
-        link:
-          `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}` ||
-          '',
-        setUrl: setVideoUrl,
-      });
-    }
-    if (!doc.video) {
-      setHideVideo(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (doc.video?.url) {
+  //     hideVideoLink({
+  //       link:
+  //         `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}` ||
+  //         '',
+  //       setUrl: setVideoUrl,
+  //     });
+  //   }
+  //   if (!doc.video) {
+  //     setHideVideo(true);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (window && window.PdfViewer) {
@@ -343,15 +342,16 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
             <div
               className={`flex h-full w-full flex-col p-4 pb-0 ${hideVideo && 'mt-[-100%]'} duration-300 ease-in-out`}
             >
-              {doc.video && videoUrl !== '' && (
-                <div className="relative rounded-3xl overflow-hidden shadow-xl bg-black">
+              {doc.video?.url?.length > 0 && (
+                <div className="relative rounded-2xl overflow-hidden shadow-xl bg-black">
                   <video
                     controls
                     controlsList="nodownload"
                     className="h-fit w-full rounded-3xl bg-black"
                   >
                     <source
-                      src={videoUrl}
+                      // src={videoUrl}
+                      src={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}`}
                       type="video/mp4"
                     />
                     Your browser does not support the video tag.

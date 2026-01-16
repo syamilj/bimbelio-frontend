@@ -426,7 +426,7 @@ export default function HeaderCourse({
                 </p>
                 <p className="text-[#a8a8a8] font-normal">
                   {CourseProgress?.finishedSubChapter}/
-                  {CourseProgress?.totalSubChapter} chapters
+                  {CourseProgress?.totalSubChapter} sub chapters
                 </p>
               </div>
               <ChartProgress

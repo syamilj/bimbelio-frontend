@@ -8,9 +8,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { responseError, throwError } from '@/lib/response';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { BlockNoteEditor } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { Loader2 } from 'lucide-react';
@@ -120,23 +121,16 @@ const ModalImportCSV = ({
                   const fileName = `${crypto.randomUUID()}.${ext}`;
                   const buffer = Buffer.from(base64, 'base64');
 
-                  const { error } = await supabase.storage
+                  const { error } = await storage
                     .from('dump-images')
-                    .upload(fileName, buffer, {
-                      contentType: mime,
-                      upsert: true,
-                    });
+                    .upload(fileName, buffer);
 
                   if (error) {
                     console.error('Upload error:', error);
                     continue;
                   }
 
-                  const { data: publicUrlData } = supabase.storage
-                    .from('dump-images')
-                    .getPublicUrl(fileName);
-
-                  const publicUrl = publicUrlData?.publicUrl || '';
+                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/object/1/dump-images/${fileName}`;
 
                   questionValue = questionValue.replace(
                     fullMatch,
@@ -271,23 +265,16 @@ const ModalImportCSV = ({
                   const fileName = `${crypto.randomUUID()}.${ext}`;
                   const buffer = Buffer.from(base64, 'base64');
 
-                  const { error } = await supabase.storage
+                  const { error } = await storage
                     .from('dump-images')
-                    .upload(fileName, buffer, {
-                      contentType: mime,
-                      upsert: true,
-                    });
+                    .upload(fileName, buffer);
 
                   if (error) {
                     console.error('Upload error:', error);
                     continue;
                   }
 
-                  const { data: publicUrlData } = supabase.storage
-                    .from('dump-images')
-                    .getPublicUrl(fileName);
-
-                  const publicUrl = publicUrlData?.publicUrl || '';
+                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/object/1/dump-images/${fileName}`;
 
                   questionValue = questionValue.replace(
                     fullMatch,

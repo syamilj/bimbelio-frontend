@@ -1,10 +1,9 @@
 import uploadFileImg from '@/_assets/icon/uploadDokumen.png';
+import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
-import { supabase } from '@/supabaseClient';
-
-import { useSession } from '@/components/provider/provider-session-auth';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { storage } from '@/supabaseClient';
 import Image from 'next/image';
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { Spinner } from '../../ui/spinner';
@@ -65,9 +64,7 @@ const ReportBug = ({
       createBugReport({ category, detail, image: null });
       return;
     }
-    const upload = await supabase.storage
-      .from('img')
-      .upload(`${filename}`, image);
+    const upload = await storage.from('img').upload(`${filename}`, image);
     if (upload.data) {
       createBugReport({
         category,

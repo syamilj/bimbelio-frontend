@@ -15,7 +15,7 @@ import {
   IconMinimizeScreen,
   IconUp,
 } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Loader2 } from 'lucide-react';
 import React, { SetStateAction, useState } from 'react';
 import { SessionProps, TryoutProps } from '../page';
@@ -204,7 +204,7 @@ const TryoutOption = ({
                 const imageNow = tryout?.image;
                 if (!image) return;
                 const filename = `tryout-${crypto.randomUUID()}`;
-                const upload = await supabase?.storage
+                const upload = await storage
                   .from('img')
                   .upload(`tryout/${filename}`, image);
 
@@ -214,7 +214,7 @@ const TryoutOption = ({
                 }
                 if (upload?.error) {
                   if (upload.error.message === 'The resource already exists') {
-                    const update = await supabase?.storage
+                    const update = await storage
                       .from('img')
                       .update(`tryout/${filename}`, image);
                     if (update?.data) {
@@ -225,9 +225,7 @@ const TryoutOption = ({
                 }
 
                 if (imageNow) {
-                  await supabase.storage
-                    .from('img')
-                    .remove([`tryout/${imageNow}`]);
+                  await storage.from('img').remove([`tryout/${imageNow}`]);
                 }
 
                 setTryout((prev) => ({ ...prev, image: filename }));
@@ -472,8 +470,9 @@ const TryoutOption = ({
       <div className="grid w-full grid-cols-2 gap-4">
         <div
           className="flex w-full shrink-0 cursor-pointer items-center justify-center rounded-[.8rem] bg-red-100 py-[.8rem] font-medium text-red-700 duration-300 md:hover:bg-red-200 md:active:bg-red-100"
-          onClick={() => {
-            resetTryout();
+          onClick={async () => {
+            await resetTryout();
+            await storage.from('img').remove([`tryout/${tryout?.image}`]);
           }}
         >
           Hapus

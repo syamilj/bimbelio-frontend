@@ -31,6 +31,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { useGet } from '@/lib/fetch-helper/useGet';
@@ -42,7 +43,7 @@ import {
   parseCurrency,
 } from '@/lib/utils';
 import { getSlug } from '@/lib/utils/slug';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import {
   Category,
   Instructor,
@@ -479,18 +480,13 @@ export default function UpdatePlanForm() {
       let imageUrl = previewImage;
       if (image) {
         const filePath = `plan/${sanitizeFileName(name)}-${crypto.randomUUID().slice(0, 4)}`;
-        const { data, error } = await supabase.storage
+        const { data, error } = await storage
           .from('img')
           .upload(filePath, image);
         if (error) {
           throw throwError(400, 'Gagal mengupload image');
         }
-        if (data) {
-          const { data: publicUrlData } = supabase.storage
-            .from('img')
-            .getPublicUrl(filePath);
-          imageUrl = publicUrlData.publicUrl;
-        }
+        imageUrl = `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${filePath}`;
       }
 
       const payload = {

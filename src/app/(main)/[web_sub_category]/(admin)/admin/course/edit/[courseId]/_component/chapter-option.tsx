@@ -14,7 +14,7 @@ import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Category } from '@/types/database';
 import { Eye, EyeOff, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -110,10 +110,10 @@ const ChapterOption = ({
     });
 
     if (fileDocument.length > 0) {
-      await supabase.storage.from('pdf').remove(fileDocument);
+      await storage.from('pdf').remove(fileDocument);
     }
     if (fileVideo.length > 0) {
-      await supabase.storage.from('video').remove(fileVideo);
+      await storage.from('video').remove(fileVideo);
     }
 
     router.push(`/${website_sub_category_id}/admin/course`);

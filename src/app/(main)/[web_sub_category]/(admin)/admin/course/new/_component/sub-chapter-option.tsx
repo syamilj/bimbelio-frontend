@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
 import { useGet } from '@/lib/fetch-helper/useGet';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { Document } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { FileText, Plus, Video } from 'lucide-react';
@@ -151,14 +151,10 @@ const SubChapterOption = ({
 
       // Clean up old files when changing type
       if (EditSubChapter?.type === 'DOCUMENT' && EditSubChapter.document) {
-        await supabase.storage
-          .from('pdf')
-          .remove([`course/${EditSubChapter.document}`]);
+        await storage.from('pdf').remove([`course/${EditSubChapter.document}`]);
       }
       if (EditSubChapter?.type === 'VIDEO' && EditSubChapter.video) {
-        await supabase.storage
-          .from('video')
-          .remove([`course/${EditSubChapter.video}`]);
+        await storage.from('video').remove([`course/${EditSubChapter.video}`]);
       }
     }
   };
@@ -186,7 +182,7 @@ const SubChapterOption = ({
 
       // Remove old video if exists
       if (EditSubChapter?.video && EditSubChapter.video.length > 0) {
-        const { data, error } = await supabase.storage
+        const { data, error } = await storage
           .from('video')
           .remove([`course/${EditSubChapter.video}`]);
         if (error) {
@@ -202,7 +198,7 @@ const SubChapterOption = ({
       }
 
       // Upload new video
-      const { error } = await supabase.storage
+      const { error } = await storage
         .from('video')
         .upload(`course/${nameFile}`, file);
 

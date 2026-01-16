@@ -1,6 +1,7 @@
 'use client';
 
 import uploadFile from '@/_assets/icon/uploadDokumen.png';
+import BlogEditor from '@/components/ui/blog-editor';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -29,14 +30,13 @@ import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn, getDateForInput } from '@/lib/utils';
 import { IconPlus } from '@/styles/icon';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import { BlogPost, BlogStatusEnum, BlogTags } from '@/types/database';
 import 'katex/dist/katex.min.css';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import BlogEditor from '@/components/ui/blog-editor';
 
 const EditBlogAdmin = () => {
   const params = useParams();
@@ -177,7 +177,7 @@ const EditBlogAdmin = () => {
 
       // Delete old image
       if (imageName) {
-        const deleteOldImage = await supabase.storage
+        const deleteOldImage = await storage
           .from('img')
           .remove([`blog/${imageName}`]);
 
@@ -188,7 +188,7 @@ const EditBlogAdmin = () => {
       }
 
       // Upload new image
-      const { error } = await supabase.storage
+      const { error } = await storage
         .from('img')
         .upload(`blog/${fileName}`, thumbnail);
 

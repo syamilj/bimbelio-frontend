@@ -19,12 +19,13 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
+import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { useMutation } from '@/lib/fetch-helper/useMutation';
 import { cn } from '@/lib/utils';
 import { sanitizeFileName } from '@/lib/utils/storage';
-import { supabase } from '@/supabaseClient';
+import { storage } from '@/supabaseClient';
 import {
   Category,
   CourseChapter,
@@ -191,17 +192,11 @@ export default function CreateLiveClassForm() {
       if (image && title) {
         const pathFile = `live-learning/${sanitizeFileName(title)}`;
 
-        const upload = await supabase.storage
-          .from('img')
-          .upload(pathFile, image);
+        const upload = await storage.from('img').upload(pathFile, image);
 
         console.log({ upload });
 
-        const { data } = supabase.storage.from('img').getPublicUrl(pathFile);
-
-        if (data.publicUrl) {
-          imageUrl = data.publicUrl;
-        }
+        imageUrl = `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/${pathFile}`;
       }
 
       const payload = {

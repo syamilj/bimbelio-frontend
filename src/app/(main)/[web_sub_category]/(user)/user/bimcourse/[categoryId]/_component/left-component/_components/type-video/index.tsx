@@ -1,6 +1,5 @@
 import ReactMarkdownBlog from '@/components/ui/react-markdown-blog';
 import { env } from '@/env.mjs';
-import { hideVideoLink } from '@/lib/utils';
 import { IconCheckList } from '@/styles/icon';
 import 'katex/dist/katex.min.css';
 import { ClockIcon, Loader } from 'lucide-react';
@@ -33,12 +32,12 @@ const VideoType = () => {
     };
   }, []);
 
-  useEffect(() => {
-    hideVideoLink({
-      link: `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${CourseData?.video}`,
-      setUrl: setVideoUrl,
-    });
-  }, []);
+  // useEffect(() => {
+  //   hideVideoLink({
+  //     link: `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${CourseData?.video}`,
+  //     setUrl: setVideoUrl,
+  //   });
+  // }, []);
 
   const isDone =
     CourseData && CourseData.CourseProgress.length > 0 ? true : false;
@@ -90,7 +89,7 @@ const VideoType = () => {
           <SubmitCourse />
         </div>
       )}
-      {videoUrl.length > 0 && (
+      {CourseData?.video && CourseData?.video?.length > 0 && (
         <div
           className={`flex h-fit w-full flex-col p-0 pb-0 duration-300 ease-in-out`}
         >
@@ -100,7 +99,7 @@ const VideoType = () => {
             className="h-fit w-full rounded-[.8rem] bg-black"
           >
             <source
-              src={videoUrl}
+              src={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${CourseData?.video}`}
               type="video/mp4"
             />
             Your browser does not support the video tag.
