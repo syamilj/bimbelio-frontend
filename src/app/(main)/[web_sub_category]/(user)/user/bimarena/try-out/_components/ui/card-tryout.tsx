@@ -34,6 +34,7 @@ import {
   Star,
   Tag,
   Trophy,
+  InfoIcon,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -127,6 +128,7 @@ export default function CardTryOut({
   refresh,
   reloadHref,
 }: card) {
+  const [showBimPartnerInfo, setShowBimPartnerInfo] = useState(false);
   const pathname = usePathname();
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -367,9 +369,20 @@ export default function CardTryOut({
               {/* Free Badge */}
               <div className="absolute top-4 left-4 z-20">
                 {item.isCouponOnly ? (
-                  <Badge className="bg-purple-50 text-purple-700 border-purple-200 font-bold flex items-center gap-1">
+                  <Badge className="bg-purple-50 text-purple-700 border-purple-200 font-bold flex items-center gap-1.5">
                     <Gift className="w-3 h-3" />
-                    <span className="text-xs">COUPON ONLY</span>
+                    <span className="text-xs">BimPartner</span>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowBimPartnerInfo(true);
+                      }}
+                      className="hover:bg-purple-100 rounded-full p-0.5 transition-colors ml-0.5"
+                      title="Info BimPartner"
+                    >
+                      <InfoIcon className="w-3 h-3" />
+                    </button>
                   </Badge>
                 ) : (
                   <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 font-bold flex items-center gap-1">
@@ -652,6 +665,45 @@ export default function CardTryOut({
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* BimPartner Info Dialog */}
+      {showBimPartnerInfo && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowBimPartnerInfo(false)}
+        >
+          <div 
+            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start gap-3 mb-4">
+              <div className="p-2 rounded-xl bg-purple-100">
+                <InfoIcon className="w-6 h-6 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg mb-1">Apa itu BimPartner?</h3>
+                <p className="text-sm text-slate-600">
+                  BimPartner adalah program tryout eksklusif dari mitra resmi Bimbelio.
+                </p>
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="flex gap-2 text-sm">
+                <span className="text-purple-600 font-bold">•</span>
+                <p className="text-slate-700">
+                  Tryout ini <strong>hanya bisa diakses dengan kupon khusus</strong> yang diberikan oleh mitra Bimbelio
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowBimPartnerInfo(false)}
+              className="w-full px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-colors"
+            >
+              Mengerti
+            </button>
           </div>
         </div>
       )}

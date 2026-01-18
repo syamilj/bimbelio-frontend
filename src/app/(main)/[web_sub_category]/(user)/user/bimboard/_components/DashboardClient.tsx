@@ -289,8 +289,11 @@ export default function DashboardClient() {
       const tryoutProgress = [...upcomingTryouts, ...doneTryouts].slice(0, 5).map((tryout: any) => {
         // Get user session from TryoutSessionParticipant (through TryoutSession)
         const userSession = tryout.TryoutSession?.[0]?.TryoutSessionParticipant?.[0];
-        // Get result from TryoutResult
-        const result = tryout.TryoutResult?.[0];
+        // Backend already calculates and returns totalScore (averaged for SNBT)
+        // Use top-level totalScore, not nested TryoutResult[0].totalScore
+        const totalScore = tryout.totalScore ?? null;
+        const isCouponOnly = tryout.isCouponOnly ?? false;
+
         let status: "completed" | "in-progress" | "not-started" = "not-started";
         if (userSession) {
           if (userSession.isDone) {
@@ -303,12 +306,13 @@ export default function DashboardClient() {
         return {
           id: tryout.id,
           title: tryout.title,
-          score: result?.totalScore || null,
+          score: totalScore,
           totalQuestions: tryout.TryoutSession?.reduce((sum: number, session: any) => sum + (session._count?.TryoutQuestion || 0), 0) || 0,
-          answeredQuestions: result?.answeredQuestions || 0,
+          answeredQuestions: 0, // Field not available in backend
           status,
           thumbnail: getImageUrl(tryout.image, "tryout") || null,
           deadline: tryout.endDate,
+          isCouponOnly,
         };
       });
 
