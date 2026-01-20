@@ -17,6 +17,7 @@ import BimPerformanceChart from "./BimPerformanceChart";
 import BimRecommendedContent from "./RecommendedContent";
 import BimAchievementBadges from "./AchievementBadges";
 import BimQuickAccessMenu from "./BimQuickAccessMenu";
+// import BimCalendar from "./BimCalendar";
 
 // Types
 export interface DashboardData {
@@ -616,6 +617,11 @@ export default function DashboardClient() {
 
         {/* Stats Overview Grid */}
         <BimQuickStatsOverview stats={data.stats} />
+
+        {/* Calendar Section */}
+        {/* {websiteSubCategory && (
+          <BimCalendar websiteSubCategoryId={websiteSubCategory.id} />
+        )} */}
 
         {/* Main Content - 2 Columns on Desktop */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
