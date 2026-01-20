@@ -96,7 +96,7 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
   }, {} as Record<string, CalendarEvent[]>);
 
   const sortedDates = Object.keys(groupedEvents).sort();
-  const upcomingEvents = sortedDates.slice(0, 10).flatMap(date => 
+  const upcomingEvents = sortedDates.slice(0, 10).flatMap(date =>
     groupedEvents[date].map(event => ({ ...event, dateKey: date }))
   );
 
@@ -195,7 +195,7 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
           const isAllDay = !event.start.includes("T");
           const dateLabel = getDateLabel(event.start);
           const timeLabel = isAllDay ? "Sepanjang hari" : getTimeLabel(event.start);
-          
+
           return (
             <div
               key={event.id}
@@ -203,7 +203,7 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
               onClick={() => event.htmlLink && window.open(event.htmlLink, "_blank")}
             >
               {/* Date Badge */}
-              <div 
+              <div
                 className="flex flex-col items-center justify-center h-14 w-14 rounded-lg text-white font-semibold flex-shrink-0"
                 style={{ backgroundColor: websiteSubCategory?.main_color || "#3b82f6" }}
               >
@@ -225,7 +225,7 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
                     <ExternalLink className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                   )}
                 </div>
-                
+
                 <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Clock className="h-3 w-3" />
