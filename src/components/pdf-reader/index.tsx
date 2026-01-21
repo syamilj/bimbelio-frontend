@@ -7,6 +7,7 @@ import { toaster } from '@/components/ui/toaster';
 import { IconDislike, IconLike } from '@/styles/icon';
 
 import { env } from '@/env.mjs';
+import { useVideoHLS } from '@/hooks/use-hls-video';
 import { deleteGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { HighlightTypeEnum, Message, Video } from '@/types/database';
 import { insertOrUpdateBlock } from '@blocknote/core';
@@ -309,6 +310,10 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
   //   }
   // }, []);
 
+  const { videoRef } = useVideoHLS(
+    `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video?.url}`,
+  );
+
   useEffect(() => {
     if (window && window.PdfViewer) {
       setZoomValue(`${window.PdfViewer.viewer._currentScale}`);
@@ -345,16 +350,17 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
               {doc.video?.url?.length > 0 && (
                 <div className="relative rounded-2xl overflow-hidden shadow-xl bg-black">
                   <video
+                    ref={videoRef}
                     controls
                     controlsList="nodownload"
                     className="h-fit w-full rounded-3xl bg-black"
                   >
-                    <source
+                    {/* <source
                       // src={videoUrl}
                       src={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/document/${doc.video.url}`}
                       type="video/mp4"
                     />
-                    Your browser does not support the video tag.
+                    Your browser does not support the video tag. */}
                   </video>
                   {/* Video overlay for modern look */}
                   <div className="absolute inset-0 bg-linear-to-t from-black/10 to-transparent pointer-events-none" />

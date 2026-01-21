@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { LoadingPopUp } from '@/components/ui/spinner';
+import { LoadingPageStorage } from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toaster } from '@/components/ui/toaster';
@@ -185,16 +185,16 @@ const SubChapterOption = ({
         const { data, error } = await storage
           .from('video')
           .remove([`course/${EditSubChapter.video}`]);
-        if (error) {
-          toaster({
-            title: 'Error',
-            condition: 'warning',
-            description: 'Gagal mengupload file, silahkan coba lagi',
-            duration: 3000,
-          });
-          setLoading(false);
-          return;
-        }
+        // if (error) {
+        //   toaster({
+        //     title: 'Error',
+        //     condition: 'warning',
+        //     description: 'Gagal mengupload file, silahkan coba lagi',
+        //     duration: 3000,
+        //   });
+        //   setLoading(false);
+        //   return;
+        // }
       }
 
       // Upload new video
@@ -234,7 +234,12 @@ const SubChapterOption = ({
 
   return (
     <Card>
-      {loading && <LoadingPopUp title="Mengupload..." />}
+      {/* {loading && <LoadingPopUp title="Mengupload..." />} */}
+
+      <LoadingPageStorage
+        loading={loading}
+        heading="Mengupload Video..."
+      />
 
       <CardHeader>
         <CardTitle>Edit Sub Chapter {currentIndexEdit + 1}</CardTitle>

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { LoadingPopUp } from '@/components/ui/spinner';
+import { LoadingPageStorage } from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toaster } from '@/components/ui/toaster';
 import { env } from '@/env.mjs';
@@ -158,26 +158,26 @@ const SubChapterOption = ({
         const { data, error } = await storage
           .from('video')
           .remove([`course/${EditSubChapter.video}`]);
-        if (error) {
-          toaster({
-            title: 'Error',
-            condition: 'warning',
-            description: 'Gagal mengupload file, silahkan coba lagi',
-            duration: 3000,
-          });
-          setLoading(false);
-          return;
-        }
-        if (data.length === 0) {
-          toaster({
-            title: 'Error',
-            condition: 'warning',
-            description: 'Gagal mengupload file, silahkan coba lagi',
-            duration: 3000,
-          });
-          setLoading(false);
-          return;
-        }
+        // if (error) {
+        //   toaster({
+        //     title: 'Error',
+        //     condition: 'warning',
+        //     description: 'Gagal mengupload file, silahkan coba lagi',
+        //     duration: 3000,
+        //   });
+        //   setLoading(false);
+        //   return;
+        // }
+        // if (data.length === 0) {
+        //   toaster({
+        //     title: 'Error',
+        //     condition: 'warning',
+        //     description: 'Gagal mengupload file, silahkan coba lagi',
+        //     duration: 3000,
+        //   });
+        //   setLoading(false);
+        //   return;
+        // }
       }
 
       // Upload new video
@@ -253,7 +253,12 @@ const SubChapterOption = ({
 
   return (
     <Card>
-      {loading && <LoadingPopUp title="Mengupload..." />}
+      {/* {loading && <LoadingPopUp title="Mengupload..." />} */}
+
+      <LoadingPageStorage
+        loading={loading}
+        heading="Mengupload Video..."
+      />
 
       <CardHeader>
         <CardTitle>Edit Sub Chapter {currentIndexEdit + 1}</CardTitle>

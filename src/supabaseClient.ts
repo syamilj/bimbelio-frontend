@@ -7,14 +7,17 @@
 import axios from 'axios';
 import { env } from './env.mjs';
 import { responseError } from './lib/response';
+import { io, Socket } from 'socket.io-client';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSession } from './components/provider/provider-session-auth';
 
 // const supabaseUrl = NEXT_PUBLIC_SUPABASE_URL || "";
 // const supabaseKey = NEXT_PUBLIC_SUPABASE_SECRET_KEY || "";
 
 // export const supabase = createClient(supabaseUrl, supabaseKey);
 
-const STORAGE_URL = 'https://storage.bimbelio.com';
-const STORAGE_UPLOAD_URL = 'https://storage-upload.bimbelio.com';
+const STORAGE_URL = env.NEXT_PUBLIC_SUPABASE_URL;
+const STORAGE_UPLOAD_URL = env.NEXT_PUBLIC_SUPABASE_UPLOAD_URL;
 const PRIVATE_KEY = env.NEXT_PUBLIC_SUPABASE_SECRET_KEY;
 const PUBLIC_KEY = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -30,7 +33,12 @@ export const storage = {
   from: (bucket: BucketList, showToast?: boolean) => {
     return {
       upload: async (filePath: string, file: File | Buffer<ArrayBuffer>) => {
+        const loadingId = crypto.randomUUID().slice(0, 6)
         try {
+          if (socket) {
+            console.log("✅ Emitting join:loading event", { loadingId });
+            socket.emit(`join:loading`, { loadingId })
+          }
           console.log(`Uploading file to bucket: ${bucket}`);
           const formData = new FormData();
           let fileToAppend: File | Blob;
@@ -52,6 +60,7 @@ export const storage = {
             `${STORAGE_UPLOAD_URL}/storage/buckets/${bucket}/files`,
             formData,
             {
+              params: { loadingId },
               headers: {
                 Authorization: `Bearer ${PUBLIC_KEY}`,
               },
@@ -60,6 +69,9 @@ export const storage = {
           );
 
           console.log('Upload response:', res.data);
+          if (socket) {
+            socket.emit(`leave:loading`, { loadingId })
+          }
           return { data: res.data, error: null };
         } catch (error) {
           responseError(error, showToast === true ? true : false);
@@ -68,6 +80,9 @@ export const storage = {
               (error as any)?.response?.data?.message || 'Storage Server Error',
           };
           console.log({ errorData });
+          if (socket) {
+            socket.emit(`leave:loading`, { loadingId })
+          }
           return {
             data: null,
             error: errorData,
@@ -326,4 +341,135 @@ const mimeTypesForBlob: Record<BucketList, string> = {
   "pdf": 'application/pdf',
   "video": 'video/mp4',
   "dump-embedding": 'application/msword',
+};
+
+
+// ======================================================
+
+
+let socket: Socket | null = null;
+
+const serverUrl = STORAGE_UPLOAD_URL;
+
+const connectSocket = () => {
+  if (!socket) {
+    socket = io(serverUrl, {
+      transports: ['websocket'],
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: 5,
+    });
+
+
+    socket.on('connect', () => {
+      console.log('Connected to socket server:', socket?.id);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from socket server');
+    });
+  }
+
+  return socket;
+};
+
+const getSocket = () => socket;
+
+const disconnectSocket = () => {
+  if (socket) {
+    socket.disconnect();
+    socket = null;
+  }
+}
+
+
+export const useStorageSocket = (serverUrl?: string) => {
+  const { data: session } = useSession();
+  const [isConnected, setIsConnected] = useState(false);
+  const [socketId, setSocketId] = useState<string | null>(null);
+  const listenersRef = useRef<Map<string, (data: any) => void>>(new Map());
+
+  useEffect(() => {
+    // ✅ Hanya connect jika session ada
+    if (!session?.user?.id) {
+      disconnectSocket();
+      setIsConnected(false);
+      setSocketId(null);
+      return;
+    }
+
+    const socket = connectSocket();
+
+    socket.on('connect', () => {
+      setIsConnected(true);
+      setSocketId(socket.id || null);
+    });
+
+    socket.on('disconnect', () => {
+      setIsConnected(false);
+      setSocketId(null);
+    });
+
+    // // ✅ Auto authenticate saat connect
+    // socket.emit('user:auth', { userId: session.user.id });
+    // console.log('[AUTH] Authenticated as:', session.user.id);
+
+    // Re-attach listeners yang sudah terdaftar
+    listenersRef.current.forEach((callback, eventName) => {
+      socket.on(eventName, callback);
+    });
+
+    return () => {
+      // Cleanup: remove listeners saat unmount
+      listenersRef.current.forEach((callback, eventName) => {
+        socket.off(eventName, callback);
+      });
+    };
+  }, [session?.user?.id, serverUrl]);
+
+  const on = useCallback((eventName: string, callback: (data: any) => void) => {
+    const socket = getSocket();
+    if (socket) {
+      listenersRef.current.set(eventName, callback);
+      socket.on(eventName, callback);
+    }
+  }, []);
+
+  const off = useCallback((eventName: string) => {
+    const socket = getSocket();
+    const callback = listenersRef.current.get(eventName);
+    if (socket && callback) {
+      socket.off(eventName, callback);
+      listenersRef.current.delete(eventName);
+    }
+  }, []);
+
+  const emit = useCallback(
+    (eventName: string, data?: any) => {
+      const socket = getSocket();
+      if (socket && isConnected) {
+        socket.emit(eventName, data);
+      }
+    },
+    [isConnected],
+  );
+
+  const disconnect = useCallback(() => {
+    disconnectSocket();
+    listenersRef.current.clear();
+  }, []);
+
+  if (isConnected) {
+    console.log('useStorageSocket:', { isConnected, socketId });
+  }
+
+  return {
+    isConnected,
+    socketId,
+    on,
+    off,
+    emit,
+    disconnect,
+  };
 };

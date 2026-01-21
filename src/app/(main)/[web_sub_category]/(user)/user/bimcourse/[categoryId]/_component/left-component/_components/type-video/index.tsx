@@ -1,5 +1,6 @@
 import ReactMarkdownBlog from '@/components/ui/react-markdown-blog';
 import { env } from '@/env.mjs';
+import { useVideoHLS } from '@/hooks/use-hls-video';
 import { IconCheckList } from '@/styles/icon';
 import 'katex/dist/katex.min.css';
 import { ClockIcon, Loader } from 'lucide-react';
@@ -41,6 +42,10 @@ const VideoType = () => {
 
   const isDone =
     CourseData && CourseData.CourseProgress.length > 0 ? true : false;
+
+  const { videoRef } = useVideoHLS(
+    `${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${CourseData?.video}`,
+  );
 
   // const remarkMathOptions = {
   //   singleDollarTextMath: false,
@@ -94,15 +99,16 @@ const VideoType = () => {
           className={`flex h-fit w-full flex-col p-0 pb-0 duration-300 ease-in-out`}
         >
           <video
+            ref={videoRef}
             controls
             controlsList="nodownload"
-            className="h-fit w-full rounded-[.8rem] bg-black"
+            className="h-fit w-full rounded-[.8rem] bg-black 234"
           >
-            <source
+            {/* <source
               src={`${env.NEXT_PUBLIC_SUPABASE_VIDEO_URL}/course/${CourseData?.video}`}
               type="video/mp4"
             />
-            Your browser does not support the video tag.
+            Your browser does not support the video tag. */}
           </video>
         </div>
       )}
