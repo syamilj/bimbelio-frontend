@@ -12,6 +12,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SOCKET_URL: z.string(),
     NEXT_PUBLIC_ENV: z.enum(['development', 'test', 'production']).optional(),
     NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+    NEXT_PUBLIC_SUPABASE_UPLOAD_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_IMG_URL: z.string(),
     NEXT_PUBLIC_SUPABASE_IMG_TO_URL: z.string(),
     NEXT_PUBLIC_SUPABASE_PDF_URL: z.string(),
@@ -31,6 +32,8 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_UPLOAD_URL:
+      process.env.NEXT_PUBLIC_SUPABASE_UPLOAD_URL,
     NEXT_PUBLIC_SUPABASE_IMG_URL: process.env.NEXT_PUBLIC_SUPABASE_IMG_URL,
     NEXT_PUBLIC_SUPABASE_IMG_TO_URL:
       process.env.NEXT_PUBLIC_SUPABASE_IMG_TO_URL,
