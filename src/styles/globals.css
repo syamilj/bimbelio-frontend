@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
 @plugin "@tailwindcss/typography";
-
 @custom-variant dark (&:is(.dark *));
+
+/* BimBrand Font Styling */
+.font-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-playfair-italic {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
 
 :root {
   --background: oklch(1 0 0);

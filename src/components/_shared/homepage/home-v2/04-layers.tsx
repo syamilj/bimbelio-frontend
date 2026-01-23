@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { BimBot } from '@/components/ui/bim-brand';
 import {
   Brain,
   CheckCircle2,
@@ -99,6 +100,7 @@ const LayersSection: React.FC = () => {
       id: 2,
       layer: 'LAYER 3',
       title: 'BIMBOT AI',
+      titleElement: <><BimBot className="uppercase" /> AI</>,
       icon: <Sparkles className="w-6 h-6" />,
       description: 'Support instant 24/7 tanpa batas waktu',
       features: [
@@ -209,7 +211,7 @@ const LayersSection: React.FC = () => {
                     {layer.layer}
                   </span>
                   <h3 className="text-base font-bold text-gray-900">
-                    {layer.title}
+                    {layer.titleElement || layer.title}
                   </h3>
                 </div>
                 <div

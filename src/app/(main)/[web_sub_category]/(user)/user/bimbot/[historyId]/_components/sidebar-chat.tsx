@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { BimBot } from '@/components/ui/bim-brand';
 
 export default function SidebarChat() {
   const { data: session } = useSession();
@@ -134,7 +135,7 @@ export default function SidebarChat() {
                   className="font-black text-lg leading-tight"
                   style={{ color: mainColor }}
                 >
-                  BimBot AI
+                  <BimBot /> AI
                 </h2>
                 <p className="text-xs text-gray-500 font-medium">
                   Smart Assistant
@@ -316,7 +317,7 @@ export default function SidebarChat() {
         {/* Footer */}
         <div className="p-4 border-t-2 border-gray-100 bg-white">
           <p className="text-xs text-gray-500 text-center font-medium">
-            💬 Tanya apapun kepada BimBot AI
+            💬 Tanya apapun kepada <BimBot /> AI
           </p>
         </div>
       </div>
@@ -341,7 +342,7 @@ export default function SidebarChat() {
                         className="font-black text-lg leading-tight"
                         style={{ color: mainColor }}
                       >
-                        BimBot AI
+                        <BimBot /> AI
                       </h2>
                       <p className="text-xs text-gray-500 font-medium">
                         Smart Assistant
@@ -537,7 +538,7 @@ export default function SidebarChat() {
             {/* Footer */}
             <div className="p-4 border-t-2 border-gray-100 bg-white">
               <p className="text-xs text-gray-500 text-center font-medium">
-                💬 Tanya apapun kepada BimBot AI
+                💬 Tanya apapun kepada <BimBot /> AI
               </p>
             </div>
           </div>

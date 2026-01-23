@@ -5,6 +5,7 @@ import type React from 'react';
 import { useSession } from '@/components/provider/provider-session-auth';
 import LoadingPage from '@/components/ui/Loading-Page';
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
+import { LoadingPageStorage } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { responseError } from '@/lib/response';
@@ -45,6 +46,8 @@ export default function TambahDokumen() {
   const [subCategoryData, setSubCategoryData] = useState<
     (Subcategory & { category: Category })[]
   >([]);
+
+  const [loadingTitle, setLoadingTitle] = useState<string>('');
 
   const fetchSubCategories = async (categoryId: string) => {
     await getGeneral(
@@ -401,19 +404,23 @@ export default function TambahDokumen() {
       if (file && thumbnail && video && option === 'video') {
         const documentFileName = fileName || file.name;
 
+        setLoadingTitle('[1/5] Mengupload PDF...');
         const { data: pdf, error: pdfError } = await storage
           .from('pdf')
           .upload(`document/${documentFileName}`, file);
 
+        setLoadingTitle('[2/5] Mengupload Thumbnail...');
         const { data: img, error: imgError } = await storage
           .from('img')
           .upload(`document/${documentFileName}`, thumbnail);
 
+        setLoadingTitle('[3/5] Mengupload Video...');
         const { data: videoSave, error: videoSaveError } = await storage
           .from('video')
           .upload(`document/${videoName || video.name}`, video);
 
         if (docxFile) {
+          setLoadingTitle('[4/5] Mengupload Docx...');
           const { error: mdError } = await storage
             .from('dump-embedding')
             .upload(`${fileName || docxFile.name}`, docxFile);
@@ -424,12 +431,15 @@ export default function TambahDokumen() {
               description: `${mdError?.message}`,
               condition: 'warning',
             });
+
+            setLoadingTitle('');
             setLoading(false);
             return;
           }
         }
 
         if (pdf && img && videoSave) {
+          setLoadingTitle('[5/5] Menyimpan Data...');
           await addDocumentWithVideo({
             titleDocs: fileName !== '' ? fileName : file.name,
             categoryId: category,
@@ -453,6 +463,7 @@ export default function TambahDokumen() {
             description: `${pdfError?.message}`,
             condition: 'warning',
           });
+          setLoadingTitle('');
           setLoading(false);
         }
 
@@ -462,6 +473,7 @@ export default function TambahDokumen() {
             description: `${imgError?.message}`,
             condition: 'warning',
           });
+          setLoadingTitle('');
           setLoading(false);
         }
 
@@ -471,9 +483,11 @@ export default function TambahDokumen() {
             description: `${videoSaveError?.message}`,
             condition: 'warning',
           });
+          setLoadingTitle('');
           setLoading(false);
         }
 
+        setLoadingTitle('');
         setLoading(false);
       }
 
@@ -481,6 +495,7 @@ export default function TambahDokumen() {
     } catch (error) {
       console.log({ error });
       responseError(error, true);
+      setLoadingTitle('');
       setLoading(false);
       return;
     }
@@ -500,7 +515,15 @@ export default function TambahDokumen() {
         id="tambah-dokumen"
         className={`fixed top-0 z-50 h-full w-[400px] border border-main-gray-input bg-white duration-300 ${showAddDocument ? 'right-0' : 'right-[-420px]'} overflow-y-auto`}
       >
-        {loading && <LoadingPage />}
+        {loading && option === 'doc' && <LoadingPage />}
+        {loading && option === 'video' && (
+          <LoadingPageStorage
+            loading={loading}
+            heading={
+              loadingTitle.length > 0 ? loadingTitle : 'Menyimpan Data...'
+            }
+          />
+        )}
 
         <div className="flex flex-col gap-4 p-8">
           <h1 className="text-[1.2rem] font-semibold">Tambah Material</h1>

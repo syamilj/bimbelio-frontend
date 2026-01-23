@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { BimArena } from "@/components/ui/bim-brand";
 import { TrendingUp, TrendingDown, Search, Trophy, Target } from "lucide-react";
 import { EmptyStateIllustrations } from "./EmptyStateIllustrations";
 import { Input } from "@/components/ui/input";
@@ -86,7 +87,7 @@ export default function BimPerformanceChart({ scoreHistory, studyTimeHistory }: 
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl font-black text-slate-800">Performa BimArena</CardTitle>
+            <CardTitle className="text-xl font-black text-slate-800">Performa <BimArena /></CardTitle>
             <CardDescription>Grafik perkembangan skor tryout kamu</CardDescription>
           </div>
           {filteredScores.length > 0 && (
@@ -286,7 +287,7 @@ export default function BimPerformanceChart({ scoreHistory, studyTimeHistory }: 
               {searchQuery ? "Tidak ada hasil" : "Belum Ada Data Performa"}
             </h3>
             <p className="text-sm text-slate-500 mb-4">
-              {searchQuery ? "Coba kata kunci lain" : "Selesaikan BimArena untuk melihat grafik performa"}
+              {searchQuery ? "Coba kata kunci lain" : <>Selesaikan <BimArena /> untuk melihat grafik performa</>}
             </p>
           </div>
         )}

@@ -1,6 +1,12 @@
+'use client';
+
 import { cn } from '@/lib/utils';
+import { useStorageSocket } from '@/storageClient';
 import { Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Button } from './button';
 import { Dialog, DialogContent } from './dialog';
+import { Progress } from './progress';
 
 export function Spinner({ width }: { width?: string }) {
   return (
@@ -112,5 +118,79 @@ export function LoadingComponentWithText({ heading }: { heading?: string }) {
         </p>
       </div>
     </div>
+  );
+}
+
+export function LoadingPageStorage({
+  heading,
+  loading,
+}: {
+  heading?: string;
+  loading: boolean;
+}) {
+  const [percentage, setPercentage] = useState<number | undefined>(undefined);
+
+  const { socketId, on, off, emit } = useStorageSocket();
+  console.log({ storage: socketId });
+  console.log({ percentage });
+
+  useEffect(() => {
+    console.log('Setting Loading Storage');
+    // Listen ke notification:reminder
+    on('loading', (data: { percentage: number }) => {
+      console.log('loading diterima:', data);
+      // setNotification(data);
+      setPercentage(data.percentage);
+      if (data.percentage === 100) {
+        setPercentage(undefined);
+      }
+    });
+    return () => {
+      console.log('Cleaning up notification listener for userId:');
+      off(`loading`);
+      setPercentage(undefined);
+    };
+  }, []);
+
+  return (
+    <>
+      <Button
+        className="fixed top-0 left-0 z-[99999]"
+        onClick={() => {
+          emit('join:loading', { loadingId: '123' });
+        }}
+      >
+        Test Socket
+      </Button>
+      {loading && (
+        <div className="fixed left-0 top-0 z-[9999] flex h-full w-full select-none items-center justify-center bg-[#ffffff52] backdrop-blur-[6px]">
+          <div className="flex flex-col items-center gap-[.5rem] text-center">
+            <Loader2 className="h-16 w-16 animate-spin text-[#464646]" />
+            {percentage !== undefined && (
+              <div className="w-64 mt-4">
+                <Progress
+                  value={percentage}
+                  className="h-2 bg-gray-300"
+                  classNameThumb="bg-gray-600"
+                />
+                {heading && (
+                  <p className="text-[1.3rem] text-[#464646] mt-2">
+                    {heading} {percentage.toFixed(1)}%
+                  </p>
+                )}
+                {!heading && (
+                  <p className="text-[1.3rem] text-[#464646] mt-2">
+                    {percentage.toFixed(1)}%
+                  </p>
+                )}
+              </div>
+            )}
+            {percentage === undefined && heading && (
+              <p className="text-[1.3rem] text-[#464646] mt-2">{heading}</p>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

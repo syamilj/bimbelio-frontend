@@ -3,6 +3,7 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Button } from '@/components/ui/button';
+import { BimBot } from '@/components/ui/bim-brand';
 import {
   Dialog,
   DialogContent,
@@ -198,7 +199,7 @@ export default function AIChatPage() {
                     className="text-3xl md:text-4xl font-black"
                     style={{ color: mainColor }}
                   >
-                    BimBot AI Assistant
+                    <BimBot /> AI Assistant
                   </h1>
                 </div>
                 <div

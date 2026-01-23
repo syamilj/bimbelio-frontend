@@ -3,6 +3,7 @@
 import { useAppContext } from '@/components/provider/provider-app';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
+import { BimBrand } from '@/components/ui/bim-brand';
 import {
   Tooltip,
   TooltipContent,
@@ -35,6 +36,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { useMedia } from 'use-media';
+
+// Helper to render Bim* branded titles
+const renderBimTitle = (title: string) => {
+  // Check if it's a Bim* branded name (BimBoard, BimArena, BimCourse, etc.)
+  const bimMatch = title.match(/^Bim([A-Z][a-zA-Z]*)$/);
+  if (bimMatch) {
+    return <BimBrand suffix={bimMatch[1]} />;
+  }
+  return title;
+};
 
 // Types
 interface NavItem {
@@ -471,7 +482,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                             </div>
                           </TooltipTrigger>
                           <TooltipContent side="right" className="bg-white text-slate-700 border border-slate-200 shadow-md">
-                            <p className="text-xs font-medium">{item.title}</p>
+                            <p className="text-xs font-medium">{renderBimTitle(item.title)}</p>
                           </TooltipContent>
                         </Tooltip>
                       </Link>
@@ -538,7 +549,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                           className={cn("w-4 h-4 transition-colors", isActive ? "opacity-100" : "opacity-70 group-hover:opacity-100")}
                           style={{ color: isActive ? mainColor : undefined }}
                         />
-                        <span>{item.title}</span>
+                        <span>{renderBimTitle(item.title)}</span>
                       </div>
 
                       <div className="flex items-center gap-2">

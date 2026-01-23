@@ -5,6 +5,7 @@ import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/typ
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
+import { Bimbelio } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -392,7 +393,7 @@ export default function PricingPlans() {
         >
           Pilih paket yang sesuai dengan kebutuhanmu dan mulai perjalanan
           belajar bersama{' '}
-          <span className="font-bold text-gray-900">Bimbelio</span>
+          <Bimbelio className="text-gray-900" />
         </motion.p>
       </motion.div>
       <div className="max-w-7xl mx-auto">

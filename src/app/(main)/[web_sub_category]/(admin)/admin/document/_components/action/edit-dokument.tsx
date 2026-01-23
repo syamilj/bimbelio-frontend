@@ -7,6 +7,7 @@ import { env } from '@/env.mjs';
 import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 
 import { MultiSelectVisibleAt } from '@/components/ui/multi-select-visibleAt';
+import { LoadingPageStorage } from '@/components/ui/spinner';
 import { getDateForInput, getHours } from '@/lib/utils';
 import { storage } from '@/storageClient';
 import { Category, Subcategory } from '@/types/database';
@@ -49,6 +50,8 @@ export default function EditDocument() {
   const [subCategoryData, setSubCategoryData] = useState<
     (Subcategory & { category: Category })[]
   >([]);
+
+  const [loadingTitle, setLoadingTitle] = useState<string>('');
 
   const fetchSubCategories = async (categoryId: string) => {
     await getGeneral(
@@ -155,6 +158,7 @@ export default function EditDocument() {
         return;
       }
 
+      setLoadingTitle('[1/5] Mengupload PDF...');
       if (file) {
         await storage.from('pdf').remove([`document/${editData?.title}`]);
         await storage.from('pdf').upload(`document/${fileName}`, file);
@@ -163,6 +167,7 @@ export default function EditDocument() {
           .from('pdf')
           .move(`document/${editData?.title}`, `document/${fileName}`);
       }
+      setLoadingTitle('[2/5] Mengupload Thumbnail...');
       if (thumbnail) {
         await storage.from('img').remove([`document/${editData?.title}`]);
         await storage.from('img').upload(`document/${fileName}`, thumbnail);
@@ -172,6 +177,7 @@ export default function EditDocument() {
           .move(`document/${editData?.title}`, `document/${fileName}`);
       }
 
+      setLoadingTitle('[3/5] Mengupload Video...');
       if (video && option === 'video') {
         console.log(editData?.video?.title, ' | ', videoName);
         const deleted = await storage
@@ -188,12 +194,14 @@ export default function EditDocument() {
           .move(`document/${editData?.video?.title}`, `document/${videoName}`);
       }
 
+      setLoadingTitle('[4/5] Mengupload Docx...');
       if (option === 'doc' && editData?.video) {
         await storage
           .from('video')
           .remove([`document/${editData?.video?.title}`]);
       }
 
+      setLoadingTitle('[5/5] Menyimpan Data...');
       await editDocument({
         id: editData?.id,
         title: fileName,
@@ -221,8 +229,10 @@ export default function EditDocument() {
         visibleAtWebSubIds:
           visibleAtWebSubIds.length > 0 ? visibleAtWebSubIds : undefined,
       });
+      setLoadingTitle('');
     } catch (error) {
       setLoading(false);
+      setLoadingTitle('');
       return;
     }
   };
@@ -242,7 +252,15 @@ export default function EditDocument() {
         id="tambah-dokumen"
         className={`fixed top-0 z-50 h-full w-[400px] border border-main-gray-input bg-white duration-300 ${showEditDocument ? 'right-0' : 'right-[-420px]'} overflow-y-auto`}
       >
-        {loading && <LoadingPage />}
+        {loading && option === 'doc' && <LoadingPage />}
+        {loading && option === 'video' && (
+          <LoadingPageStorage
+            loading={loading}
+            heading={
+              loadingTitle.length > 0 ? loadingTitle : 'Menyimpan Data...'
+            }
+          />
+        )}
         <div className="flex flex-col gap-4 p-8">
           <h1 className="text-[1.2rem] font-semibold">Edit Material</h1>
           <div className="flex flex-col gap-4 text-[.9rem] font-medium">
