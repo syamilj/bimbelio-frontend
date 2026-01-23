@@ -3,6 +3,7 @@
 import ConsultationDialog from '@/components/_shared/contact/consultation-dialog';
 import Navbar from '@/components/_shared/navbar';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Bimbelio } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { motion } from 'framer-motion';
@@ -68,7 +69,7 @@ export default function CalendarPage() {
             </div>
 
             <h1 className="mb-4 text-4xl md:text-5xl font-black text-gray-900">
-              Jadwal Event <span style={{ color: mainColor }}>Bimbelio</span>
+              Jadwal Event <Bimbelio className="inline" style={{ color: mainColor }} />
             </h1>
 
             <p className="mx-auto max-w-2xl text-lg text-gray-600">

@@ -1,4 +1,5 @@
 'use client';
+import { Bimbelio } from '@/components/ui/bim-brand';
 import {
   ArrowRight,
   CheckCircle,
@@ -253,7 +254,7 @@ export default function ProviderMaintenance({
                     </div>
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900">Discord</div>
-                      <div className="text-sm text-gray-600">Bimbelio</div>
+                      <div className="text-sm text-gray-600"><Bimbelio /></div>
                     </div>
                     <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
                   </a>

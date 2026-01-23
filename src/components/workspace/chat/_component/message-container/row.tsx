@@ -1,6 +1,7 @@
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { BimBot } from '@/components/ui/bim-brand';
 import ReactMarkdownChatAI from '@/components/ui/react-markdown-chat-ai';
 import { env } from '@/env.mjs';
 import { cn, getDate, getHours } from '@/lib/utils';
@@ -186,7 +187,7 @@ export default function Row({
                 )}
               >
                 <span className="font-semibold text-sm">
-                  {isUser ? session?.user?.name || 'You' : 'Bimbot AI'}
+                  {isUser ? session?.user?.name || 'You' : <><BimBot /> AI</>}
                 </span>
                 {!isUser && (
                   <div

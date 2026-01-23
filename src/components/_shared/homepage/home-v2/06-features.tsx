@@ -1,6 +1,7 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { BimBot } from '@/components/ui/bim-brand';
 import {
   BarChart3,
   BookOpen,
@@ -17,6 +18,7 @@ interface Feature {
   id: number;
   badge: string;
   title: string;
+  titleElement?: React.ReactNode;
   description: string;
   features: string[];
   icon: React.ElementType;
@@ -31,7 +33,8 @@ const FeaturesSection: React.FC = () => {
     {
       id: 1,
       badge: 'AI-Powered',
-      title: 'Chat AI 24/7 (Bimbot)',
+      title: 'Chat AI 24/7',
+      titleElement: <>Chat AI 24/7 (<BimBot />)</>,
       description:
         'Tanya soal kapan aja, jawaban instant dengan penjelasan detail step-by-step. Nggak perlu tunggu tutor online besok pagi.',
       features: [
@@ -198,7 +201,7 @@ const FeaturesSection: React.FC = () => {
                     </div>
 
                     <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-                      {feature.title}
+                      {feature.titleElement ?? feature.title}
                     </h3>
                     <p className="text-gray-600">{feature.description}</p>
                   </div>

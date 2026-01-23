@@ -50,7 +50,7 @@ const HeroSection: React.FC = () => {
           {/* Hero Heading Image - priority LCP */}
           <div className="w-full max-w-5xl mb-6 md:mb-10">
             <Image
-              src="/hero/hero-heading-web.webp"
+              src="/hero/hero-heading.webp"
               alt="Bimbel AI untuk SNBT, Ujian Mandiri, KEDINASAN"
               width={672}
               height={443}
