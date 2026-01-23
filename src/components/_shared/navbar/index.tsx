@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useMedia } from 'use-media';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { BimBot } from '@/components/ui/bim-brand';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
@@ -50,6 +51,15 @@ import { hexToRgba } from '@/styles/main-styles';
 import type { LucideIcon } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { PlanDataType } from '../other/card-plan/_provider/types';
+
+// Helper to render labels with BimBrand styling
+const renderLabel = (label: string): React.ReactNode => {
+  // Check for "Bimbot" patterns
+  if (label === 'Bimbot AI') {
+    return <><BimBot /> AI</>;
+  }
+  return label;
+};
 
 // Enhanced types untuk multi-column submenu
 interface SubmenuItem {
@@ -708,7 +718,7 @@ const MobileNav: React.FC<{
                                         <div className="flex-1 text-left min-w-0">
                                           <div className="flex items-center gap-2 mb-1">
                                             <span className="font-bold text-sm text-gray-900">
-                                              {subItem.label}
+                                              {renderLabel(subItem.label)}
                                             </span>
                                             {/* Submenu badge */}
                                             {subItem.badge &&
@@ -1112,7 +1122,7 @@ const DesktopNav: React.FC<{
                                                     <div className="flex-1 min-w-0">
                                                       <div className="flex items-center gap-2 mb-0.5">
                                                         <span className="font-bold text-sm">
-                                                          {subItem.label}
+                                                          {renderLabel(subItem.label)}
                                                         </span>
                                                         {/* Badge */}
                                                         {subItem.badge &&
@@ -1202,7 +1212,7 @@ const DesktopNav: React.FC<{
                                           href={item.href}
                                         ></Link>
                                         <div className="font-bold flex items-center justify-between">
-                                          <span>{subItem.label}</span>
+                                          <span>{renderLabel(subItem.label)}</span>
                                           <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                                         </div>
                                         {subItem.description && (

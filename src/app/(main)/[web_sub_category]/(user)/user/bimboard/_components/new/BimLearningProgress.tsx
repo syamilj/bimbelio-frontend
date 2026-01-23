@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { BimArena, BimCourse, BimLive, BimBrand } from "@/components/ui/bim-brand";
 import {
   BookOpen,
   Target,
@@ -119,7 +120,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
             }`}
           >
             <MonitorPlay className="w-4 h-4" />
-            BimLive
+            <BimLive />
           </button>
           <button
             onClick={() => setActiveTab("courses")}
@@ -130,7 +131,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            BimCourse
+            <BimCourse />
           </button>
           <button
             onClick={() => setActiveTab("tryouts")}
@@ -141,7 +142,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
             }`}
           >
             <Target className="w-4 h-4" />
-            BimArena
+            <BimArena />
           </button>
         </div>
       </div>
@@ -399,10 +400,10 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                 <EmptyStateIllustrations.NoCourses />
               </div>
               <h3 className="text-lg font-black text-slate-800 mb-2">
-                {searchQuery ? "Tidak ada hasil" : "Belum Ada BimCourse"}
+                {searchQuery ? "Tidak ada hasil" : <>Belum Ada <BimCourse /></>}
               </h3>
               <p className="text-sm text-slate-500 mb-4">
-                {searchQuery ? "Coba kata kunci lain" : "Jelajahi BimCourse yang tersedia dan mulai belajar"}
+                {searchQuery ? "Coba kata kunci lain" : <>Jelajahi <BimCourse /> yang tersedia dan mulai belajar</>}
               </p>
               {!searchQuery && (
                 <Link
@@ -410,7 +411,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
                   style={{ backgroundColor: mainColor }}
                 >
-                  Jelajahi BimCourse
+                  Jelajahi <BimCourse />
                 </Link>
               )}
             </div>
@@ -549,7 +550,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                 {searchQuery ? "Tidak ada hasil" : "Belum Ada Try Out"}
               </h3>
               <p className="text-sm text-slate-500 mb-4">
-                {searchQuery ? "Coba kata kunci lain" : "Mulai BimArena untuk meningkatkan kemampuanmu"}
+                {searchQuery ? "Coba kata kunci lain" : <>Mulai <BimArena /> untuk meningkatkan kemampuanmu</>}
               </p>
               {!searchQuery && (
                 <Link
@@ -557,7 +558,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white shadow-md hover:shadow-lg transition-all hover:scale-105"
                   style={{ backgroundColor: mainColor }}
                 >
-                  Mulai BimArena
+                  Mulai <BimArena />
                 </Link>
               )}
             </div>
@@ -574,7 +575,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
             className="flex items-center justify-center gap-2 text-sm font-bold hover:gap-3 transition-all"
             style={{ color: mainColor }}
           >
-            Lihat Semua {activeTab === "courses" ? "BimCourse" : "BimArena"}
+            Lihat Semua {activeTab === "courses" ? <BimCourse /> : <BimArena />}
             <Target className="w-4 h-4" />
           </Link>
         </div>

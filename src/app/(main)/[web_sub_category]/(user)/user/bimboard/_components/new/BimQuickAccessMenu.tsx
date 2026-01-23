@@ -1,6 +1,7 @@
 "use client";
 
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { BimBrand } from "@/components/ui/bim-brand";
 import {
   Trophy,
   Medal,
@@ -17,31 +18,33 @@ export default function BimQuickAccessMenu() {
 
   const quickActions = [
     {
-      title: "BimCourse",
+      suffix: "Course",
       icon: BookOpen,
       href: `/${website_sub_category_id}/user/bimcourse`,
       gradient: "from-emerald-500 to-emerald-600",
     },
     {
-      title: "BimLive",
+      suffix: "Live",
       icon: MonitorPlay,
       href: `/${website_sub_category_id}/user/bimlive`,
       gradient: "from-purple-500 to-purple-600",
     },
     {
-      title: "BimArena - Try Out",
+      suffix: "Arena",
+      label: "Try Out",
       icon: Medal,
       href: `/${website_sub_category_id}/user/bimarena/try-out`,
       gradient: "from-blue-500 to-blue-600",
     },
     {
-      title: "BimArena - Peringkat",
+      suffix: "Arena",
+      label: "Peringkat",
       icon: Trophy,
       href: `/${website_sub_category_id}/user/bimarena/leaderboard`,
       gradient: "from-yellow-500 to-amber-600",
     },
     {
-      title: "BimBot",
+      suffix: "Bot",
       icon: Bot,
       href: `/${website_sub_category_id}/user/bimbot`,
       gradient: "from-violet-500 to-violet-600",
@@ -54,11 +57,11 @@ export default function BimQuickAccessMenu() {
 
       {/* Desktop: Flex Wrap */}
       <div className="hidden md:flex flex-wrap gap-2">
-        {quickActions.map((action) => {
+        {quickActions.map((action, idx) => {
           const Icon = action.icon;
           return (
             <Link
-              key={action.title}
+              key={idx}
               href={action.href}
               className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white border-2 border-slate-100 hover:border-slate-300 shadow-sm hover:shadow-md transition-all hover:scale-105"
             >
@@ -71,7 +74,7 @@ export default function BimQuickAccessMenu() {
 
               {/* Title */}
               <span className="font-bold text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
-                {action.title}
+                <BimBrand suffix={action.suffix} />{action.label ? ` - ${action.label}` : ''}
               </span>
             </Link>
           );
@@ -80,11 +83,11 @@ export default function BimQuickAccessMenu() {
 
       {/* Mobile: Horizontal Scroll */}
       <div className="md:hidden flex gap-2 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide">
-        {quickActions.map((action) => {
+        {quickActions.map((action, idx) => {
           const Icon = action.icon;
           return (
             <Link
-              key={action.title}
+              key={idx}
               href={action.href}
               className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white border-2 border-slate-100 shadow-sm flex-shrink-0 snap-start"
             >
@@ -94,7 +97,7 @@ export default function BimQuickAccessMenu() {
                 <Icon className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-sm text-slate-700 whitespace-nowrap">
-                {action.title}
+                <BimBrand suffix={action.suffix} />{action.label ? ` - ${action.label}` : ''}
               </span>
             </Link>
           );

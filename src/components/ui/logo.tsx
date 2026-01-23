@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import LogoSvg from '@/styles/logo-svg';
 import Link from 'next/link';
+import { Bimbelio } from './bim-brand';
 
 export default function Logo({
   href,
@@ -24,7 +25,7 @@ export default function Logo({
           style={style} // <-- Add this!
         >
           <LogoSvg w={imageWidth ? imageWidth : 30} />
-          <span className="font-semibold text-xl sm:text-3xl">Bimbelio</span>
+          <Bimbelio className="text-xl sm:text-3xl" />
         </div>
       </div>
     );
@@ -36,7 +37,7 @@ export default function Logo({
         style={style} // <-- Add this!
       >
         <LogoSvg w={imageWidth ? imageWidth : 30} />
-        <span className="font-semibold text-3xl md:text-2xl">Bimbelio</span>
+        <Bimbelio className="text-3xl md:text-2xl" />
       </div>
     </Link>
   );
