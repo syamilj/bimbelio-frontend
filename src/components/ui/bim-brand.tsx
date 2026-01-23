@@ -30,14 +30,14 @@ interface BimBrandProps {
  */
 export function BimBrand({ suffix, className, style }: BimBrandProps) {
   const isBimbelio = suffix.toLowerCase() === 'belio';
-  
+
   return (
-    <span 
+    <span
       className={cn(
         'font-semibold',
         !isBimbelio && 'font-playfair',
         className
-      )} 
+      )}
       style={style}
     >
       Bim{suffix}
