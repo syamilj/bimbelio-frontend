@@ -349,6 +349,15 @@ export default function CardTryOut({
           const badgeData = getBadgeValue(item);
           const buttonData = getButtonValue(item);
 
+          const endDate = new Date(item.endDate).getTime();
+          const nowDate = new Date().getTime();
+
+          const isFinished =
+            item.id === 'cmkqjyg2w01iykuctdm6v3awh' &&
+            nowDate > endDate &&
+            !item.isRegistered &&
+            !item.isJoin
+
           return (
             <Card
               key={i}
@@ -556,10 +565,16 @@ export default function CardTryOut({
                             setShowDetail(item);
                           }
                         }}
+                        disabled={isFinished}
                       >
                         <div className="flex items-center gap-2">
                           {buttonData.icon}
-                          <span>{buttonData.title}</span>
+                          {isFinished ? (
+                            <span>Try out telah selesai</span>
+                          ) : (
+                            <span>{buttonData.title}</span>
+                          )}
+
                           <IconTailedArrowUp45
                             w={16}
                             className="group-hover:translate-x-1 transition-transform"

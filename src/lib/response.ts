@@ -11,6 +11,7 @@ export const responseError = (
   const jsError =
     typeof error?.message === 'string' ? error?.message : undefined;
 
+  console.log({ error });
   if (showToast) {
     toaster({
       title: toastTitle || 'Gagal',
@@ -23,7 +24,6 @@ export const responseError = (
       duration: duration || 2500,
     });
   }
-  console.log({ error });
   return {
     error,
     message:

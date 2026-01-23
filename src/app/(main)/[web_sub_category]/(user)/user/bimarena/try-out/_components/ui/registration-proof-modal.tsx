@@ -385,6 +385,12 @@ export default function RegistrationProofModal({
     );
   };
 
+  const endDate = new Date(showDetail.endDate).getTime();
+  const nowDate = new Date().getTime();
+
+  const isFinished =
+    showDetail.id === 'cmkqjyg2w01iykuctdm6v3awh' && nowDate > endDate;
+
   if (step === 1) {
     return (
       <div className="space-y-6">
@@ -470,7 +476,7 @@ export default function RegistrationProofModal({
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
-          disabled={isLoading}
+          disabled={isLoading || isFinished}
           onClick={async () => {
             // 🔥 PENTING: Jika tryout coupon-only, WAJIB ke Step 2 untuk input kupon
             if (showDetail?.isCouponOnly) {
@@ -510,7 +516,12 @@ export default function RegistrationProofModal({
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <span>Daftar Try Out</span>
+              {isFinished ? (
+                <span>Try Out telah selesai</span>
+              ) : (
+                <span>Daftar Try Out</span>
+              )}
+
               <IconTailedArrowUp45 w={16} />
             </div>
           )}
@@ -575,7 +586,8 @@ export default function RegistrationProofModal({
                 <div className="flex items-center gap-3">
                   <Gift className="w-5 h-5 text-purple-600" />
                   <p className="text-sm text-purple-800 font-medium">
-                    Try out ini hanya bisa diakses menggunakan kupon. Silakan masukkan kode kupon yang valid.
+                    Try out ini hanya bisa diakses menggunakan kupon. Silakan
+                    masukkan kode kupon yang valid.
                   </p>
                 </div>
               </CardContent>
@@ -584,82 +596,82 @@ export default function RegistrationProofModal({
 
           {/* Premium Option */}
           {!showDetail?.isCouponOnly && (
-          <Card
-            onClick={() => setSelectTypeRegistration('premium')}
-            className={cn(
-              'cursor-pointer transition-all duration-300 hover:shadow-lg border-2 relative overflow-hidden',
-              selectTypeRegistration === 'premium'
-                ? 'shadow-lg scale-[1.02]'
-                : 'hover:scale-[1.01]',
-            )}
-            style={{
-              borderColor:
-                selectTypeRegistration === 'premium' ? mainColor : '#e5e7eb',
-              backgroundColor:
+            <Card
+              onClick={() => setSelectTypeRegistration('premium')}
+              className={cn(
+                'cursor-pointer transition-all duration-300 hover:shadow-lg border-2 relative overflow-hidden',
                 selectTypeRegistration === 'premium'
-                  ? `${mainColor}05`
-                  : 'white',
-            }}
-          >
-            {/* Premium Badge */}
-            <div className="absolute top-4 right-4">
-              <Badge className="bg-linear-to-r from-yellow-400 to-orange-500 text-white border-0">
-                <Crown className="w-3 h-3 mr-1" />
-                Premium
-              </Badge>
-            </div>
+                  ? 'shadow-lg scale-[1.02]'
+                  : 'hover:scale-[1.01]',
+              )}
+              style={{
+                borderColor:
+                  selectTypeRegistration === 'premium' ? mainColor : '#e5e7eb',
+                backgroundColor:
+                  selectTypeRegistration === 'premium'
+                    ? `${mainColor}05`
+                    : 'white',
+              }}
+            >
+              {/* Premium Badge */}
+              <div className="absolute top-4 right-4">
+                <Badge className="bg-linear-to-r from-yellow-400 to-orange-500 text-white border-0">
+                  <Crown className="w-3 h-3 mr-1" />
+                  Premium
+                </Badge>
+              </div>
 
-            <CardHeader className="pb-3">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-3xl bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-3xl bg-linear-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">Premium</CardTitle>
+                    <CardDescription>
+                      Daftar cepat dengan fitur eksklusif
+                    </CardDescription>
+                  </div>
                 </div>
-                <div>
-                  <CardTitle className="text-lg">Premium</CardTitle>
-                  <CardDescription>
-                    Daftar cepat dengan fitur eksklusif
-                  </CardDescription>
+                <div className="mt-2">
+                  {pricingIsLoading || !pricing ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span className="text-sm text-gray-500">
+                        Loading harga...
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl font-bold text-gray-900">
+                        Rp {pricing.price.toLocaleString('id-ID')}
+                      </span>
+                      <Badge className="bg-red-100 text-red-700 border-red-200">
+                        Sekali bayar
+                      </Badge>
+                    </div>
+                  )}
                 </div>
-              </div>
-              <div className="mt-2">
-                {pricingIsLoading || !pricing ? (
-                  <div className="flex items-center gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span className="text-sm text-gray-500">
-                      Loading harga...
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-gray-900">
-                      Rp {pricing.price.toLocaleString('id-ID')}
-                    </span>
-                    <Badge className="bg-red-100 text-red-700 border-red-200">
-                      Sekali bayar
-                    </Badge>
-                  </div>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-2">
-                {[
-                  'Semua fitur Gratis',
-                  'Akses prioritas saat Try Out berlangsung',
-                  'Analisis detail performa dan rekomendasi',
-                  'Konsultasi dengan tutor',
-                ].map((feature, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-2 text-sm"
-                  >
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-2">
+                  {[
+                    'Semua fitur Gratis',
+                    'Akses prioritas saat Try Out berlangsung',
+                    'Analisis detail performa dan rekomendasi',
+                    'Konsultasi dengan tutor',
+                  ].map((feature, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2 text-sm"
+                    >
+                      <Check className="w-4 h-4 text-green-500" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           )}
           {/* Free Option */}
           {!showDetail?.isDone && !showDetail?.isCouponOnly && (
@@ -735,7 +747,9 @@ export default function RegistrationProofModal({
             )}
             style={{
               borderColor:
-                selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly ? mainColor : '#e5e7eb',
+                selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly
+                  ? mainColor
+                  : '#e5e7eb',
               backgroundColor:
                 selectTypeRegistration === 'coupon' || showDetail?.isCouponOnly
                   ? `${mainColor}05`
