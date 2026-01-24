@@ -356,7 +356,7 @@ export default function CardTryOut({
             item.id === 'cmkqjyg2w01iykuctdm6v3awh' &&
             nowDate > endDate &&
             !item.isRegistered &&
-            !item.isJoin
+            !item.isJoin;
 
           return (
             <Card
@@ -553,14 +553,23 @@ export default function CardTryOut({
                             return;
                           }
 
+                          console.log({ reloadHref, item });
+
                           if (reloadHref && item.WebsiteSubCategory) {
                             localStorage.setItem(
                               'website_sub_category_id',
                               item.WebsiteSubCategory.id,
                             );
-                            router.push(
-                              `${window.location.origin}/${item.WebsiteSubCategory.id}/user/bimarena/try-out?id=${item.id}`,
-                            );
+                            const Link = document.getElementById(
+                              item.id,
+                            ) as HTMLAnchorElement;
+                            if (Link) {
+                              Link.click();
+                            }
+
+                            // router.push(
+                            //   `${window.location.origin}/${item.WebsiteSubCategory.id}/user/bimarena/try-out?id=${item.id}`,
+                            // );
                           } else {
                             setShowDetail(item);
                           }
@@ -579,6 +588,13 @@ export default function CardTryOut({
                             w={16}
                             className="group-hover:translate-x-1 transition-transform"
                           />
+                          {item.WebsiteSubCategory && (
+                            <Link
+                              href={`/${item.WebsiteSubCategory.id}/user/bimarena/try-out?id=${item.id}`}
+                              id={item.id}
+                              hidden
+                            />
+                          )}
                         </div>
                       </Button>
                     </TooltipTrigger>
