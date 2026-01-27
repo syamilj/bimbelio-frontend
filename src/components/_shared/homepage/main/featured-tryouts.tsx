@@ -155,7 +155,7 @@ export default function FeaturedTryouts() {
           className="text-center mt-12"
         >
           <button
-            className="px-8 py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            className="px-8 py-3 rounded-3xl font-semibold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
             style={{
               backgroundColor: mainColor,
               boxShadow: `0 4px 14px 0 ${mainColor}40`,

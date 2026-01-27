@@ -290,35 +290,6 @@ export default function AboutPage() {
               </SupportDialog>
             </div>
 
-            {/* Trust Indicator */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500"
-            >
-              <div className="flex items-center gap-2">
-                <Users
-                  className="w-4 h-4"
-                  style={{ color: colorPalette.blue }}
-                />
-                <span className="font-semibold">10,000+ Siswa Aktif</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Target
-                  className="w-4 h-4"
-                  style={{ color: colorPalette.yellow }}
-                />
-                <span className="font-semibold">85% Passing Rate</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Heart
-                  className="w-4 h-4"
-                  style={{ color: colorPalette.blueSecondary }}
-                />
-                <span className="font-semibold">4.9/5 Rating</span>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -1042,55 +1013,6 @@ export default function AboutPage() {
                 </motion.div>
               </SupportDialog>
             </div>
-
-            {/* Trust indicators */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-wrap items-center justify-center gap-8 text-sm"
-            >
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg"
-                  style={{ background: colorPalette.blue }}
-                >
-                  <Users className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <div className="font-black text-gray-900">10,000+</div>
-                  <div className="text-xs text-gray-500">Siswa Aktif</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg"
-                  style={{ background: colorPalette.yellow }}
-                >
-                  <Target className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <div className="font-black text-gray-900">85%</div>
-                  <div className="text-xs text-gray-500">Passing Rate</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg"
-                  style={{
-                    background: `linear-gradient(135deg, ${colorPalette.blueSecondary}, ${colorPalette.blueDark})`,
-                  }}
-                >
-                  <Heart className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <div className="font-black text-gray-900">4.9/5</div>
-                  <div className="text-xs text-gray-500">Rating Siswa</div>
-                </div>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
       </section>

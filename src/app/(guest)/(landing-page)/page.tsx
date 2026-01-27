@@ -27,6 +27,18 @@ const TimelineSection = dynamic(
   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
 );
 
+// TIER 3: SSR = false (Ecosystem - New Section)
+const EcosystemSection = dynamic(
+  () => import('@/components/_shared/homepage/home-v2/04-ecosystem'),
+  { ssr: false, loading: () => <div className="min-h-[400px]" /> },
+);
+
+// TIER 3: SSR = false (Product Carousel - New Section)
+// const ProductCarouselSection = dynamic(
+//   () => import('@/components/_shared/homepage/home-v2/05b-product-carousel'),
+//   { ssr: false, loading: () => <div className="min-h-[400px]" /> },
+// );
+
 // TIER 3: SSR = false (Features - below fold)
 const FeaturesSection = dynamic(
   () => import('@/components/_shared/homepage/home-v2/06-features'),
@@ -85,6 +97,12 @@ export default function LandingPage() {
 
           {/* 05 Timeline - Roadmap Perjalanan */}
           <TimelineSection />
+
+          {/* 05b - Ecosystem - Integrasi Platform */}
+          <EcosystemSection />
+
+          {/* 05c - Product Carousel - Program Jualan */}
+          {/* <ProductCarouselSection /> */}
 
           {/* 06 Features - Fitur Platform */}
           <FeaturesSection />

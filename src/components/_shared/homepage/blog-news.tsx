@@ -223,7 +223,7 @@ const BlogNews = () => {
                     <div className="space-y-4">
                       <div className="flex items-center gap-4 text-sm text-gray-500">
                         <span
-                          className="px-2 py-1 rounded-lg font-medium"
+                          className="px-2 py-1 rounded-3xl font-medium"
                           style={{
                             backgroundColor: `${mainColor}15`,
                             color: mainColor,
@@ -297,7 +297,7 @@ const BlogNews = () => {
                       />
                       <div className="absolute top-3 left-3">
                         <span
-                          className="px-2 py-1 rounded-lg text-xs font-bold text-white shadow-lg"
+                          className="px-2 py-1 rounded-3xl text-xs font-bold text-white shadow-lg"
                           style={{ backgroundColor: `${mainColor}dd` }}
                         >
                           {article.category}
@@ -362,7 +362,7 @@ const BlogNews = () => {
               <CardContent className="p-6">
                 <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <div
-                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    className="w-6 h-6 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <BookOpen
@@ -385,7 +385,7 @@ const BlogNews = () => {
                         </span>
                       </div>
                       <span
-                        className="px-2 py-1 rounded-lg text-xs font-bold"
+                        className="px-2 py-1 rounded-3xl text-xs font-bold"
                         style={{
                           backgroundColor: `${mainColor}15`,
                           color: mainColor,

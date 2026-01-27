@@ -359,7 +359,7 @@ export default function FAQSection() {
                 >
                   <div className="flex items-center gap-4 text-left flex-1">
                     <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center text-white flex-shrink-0"
                       style={{
                         background: `linear-gradient(135deg, ${faq.color}, ${faq.color}dd)`,
                       }}

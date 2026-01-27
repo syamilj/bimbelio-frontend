@@ -464,7 +464,7 @@ export default function TutorsSection() {
                     {feature.bullets.map((bullet, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-3 p-3 rounded-lg transition-colors duration-200"
+                        className="flex items-start gap-3 p-3 rounded-3xl transition-colors duration-200"
                         style={{
                           backgroundColor: feature.color + '08',
                         }}
