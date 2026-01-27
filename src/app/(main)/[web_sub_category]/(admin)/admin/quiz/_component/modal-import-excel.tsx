@@ -34,7 +34,7 @@ const ModalImportCSV = ({
   assessmentType,
   setQuestionIndex,
 }: {
-  setSessions: React.Dispatch<SetStateAction<SessionProps[]>>;
+  setSessions: React.Dispatch<SetStateAction<SessionProps>>;
   currentIndexEdit: number | null;
   assessmentType: string;
   setQuestionIndex: React.Dispatch<SetStateAction<number>>;
@@ -84,114 +84,12 @@ const ModalImportCSV = ({
           let isValid = true;
 
           if (assessmentType === 'IRT') {
-            const Questions = handleGenerateIRT(data, ChapterOptions || []);
-            Questions.forEach((item) => {
-              const isCorrect =
-                item.Answers.find((item2) => item2.value === 5) || null;
-              if (!isCorrect) {
-                isAssesmentTypeValid = {
-                  value: false,
-                  number: item.number,
-                };
-              }
+            toaster({
+              title: 'Error',
+              condition: 'warning',
+              description: 'Import untuk tipe IRT tidak tersedia pada quiz',
+              duration: 5000,
             });
-            let Error = '';
-            const ParseQuestions = await Promise.all(
-              Questions.map(async (item) => {
-                let questionValue = item.question;
-
-                const matches = [
-                  ...item.question.matchAll(
-                    /!\[.*?\]\((data:image\/.*?;base64,.*?)\)/g,
-                  ),
-                ];
-
-                for (const match of matches) {
-                  const fullMatch = match[0];
-                  const base64Data = match[1];
-
-                  const parsed = base64Data.match(
-                    /^data:(image\/\w+);base64,(.+)$/,
-                  );
-                  if (!parsed) continue;
-
-                  const mime = parsed[1];
-                  const ext = mime.split('/')[1];
-                  const base64 = parsed[2];
-
-                  const fileName = `${crypto.randomUUID()}.${ext}`;
-                  const buffer = Buffer.from(base64, 'base64');
-
-                  const { error } = await storage
-                    .from('dump-images')
-                    .upload(fileName, buffer);
-
-                  if (error) {
-                    console.error('Upload error:', error);
-                    Error = error.message;
-                    break;
-                  }
-
-                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_DUMP_IMAGES_URL}/${fileName}`;
-
-                  questionValue = questionValue.replace(
-                    fullMatch,
-                    `![Gambar](${publicUrl})`,
-                  );
-                }
-
-                return {
-                  ...item,
-                  question: await ParseMarkdownToHTML(questionValue, editor),
-                  Answers: await Promise.all(
-                    item.Answers.map(async (aItem) => {
-                      return {
-                        ...aItem,
-                        answer: await ParseMarkdownToHTML(aItem.answer, editor),
-                      };
-                    }),
-                  ),
-                  explanation: await ParseMarkdownToHTML(
-                    item.explanation || '',
-                    editor,
-                  ),
-                };
-              }),
-            );
-
-            if (Error.length > 0) {
-              toaster({
-                title: 'Error',
-                condition: 'warning',
-                description: Error,
-                duration: 3000,
-              });
-              setOpen(false);
-              setIsLoading(false);
-              return;
-            }
-
-            if (!isAssesmentTypeValid.value) {
-              toaster({
-                title: `Number ${isAssesmentTypeValid.number}`,
-                condition: 'warning',
-                description: 'Jawaban benar tidak ditemukan',
-                duration: 3000,
-              });
-              return;
-            }
-            setQuestionIndex(0);
-            setSessions((prev) =>
-              prev.map((session, sessionId) => {
-                if (sessionId === currentIndexEdit) {
-                  return {
-                    ...session,
-                    Questions: ParseQuestions,
-                  };
-                }
-                return { ...session };
-              }),
-            );
             setOpen(false);
             setIsLoading(false);
             return;
@@ -316,6 +214,7 @@ const ModalImportCSV = ({
                 };
               }),
             );
+
             if (Error.length > 0) {
               toaster({
                 title: 'Error',
@@ -340,17 +239,10 @@ const ModalImportCSV = ({
 
             console.log('[Import CSV] : ', { ParseQuestions });
             setQuestionIndex(0);
-            setSessions((prev) =>
-              prev.map((session, sessionId) => {
-                if (sessionId === currentIndexEdit) {
-                  return {
-                    ...session,
-                    Questions: ParseQuestions,
-                  };
-                }
-                return { ...session };
-              }),
-            );
+            setSessions((prev) => ({
+              ...prev,
+              Questions: ParseQuestions,
+            }));
             setOpen(false);
             setIsLoading(false);
             return;
@@ -450,17 +342,10 @@ const ModalImportCSV = ({
 
           console.log('[Import CSV] : ', { fixData });
 
-          setSessions((prev) =>
-            prev.map((session, sessionId) => {
-              if (sessionId === currentIndexEdit) {
-                return {
-                  ...session,
-                  Questions: fixData,
-                };
-              }
-              return { ...session };
-            }),
-          );
+          setSessions((prev) => ({
+            ...prev,
+            Questions: fixData,
+          }));
           setIsLoading(false);
           setOpen(false);
         },
@@ -569,60 +454,6 @@ const ModalImportCSV = ({
 };
 
 export default ModalImportCSV;
-
-const handleGenerateIRT = (data: any[], ChapterOptions: ChapterOptionsType) => {
-  try {
-    const fixData: QuestionProps[] = data.map((quest: any) => {
-      const Correct = (quest.Correct as string).toLowerCase();
-      const getAnswers = [
-        { answer: quest.A as string, value: 0, type: 'a' },
-        { answer: quest.B as string, value: 0, type: 'b' },
-        { answer: quest.C as string, value: 0, type: 'c' },
-        { answer: quest.D as string, value: 0, type: 'd' },
-        { answer: quest.E as string, value: 0, type: 'e' },
-      ];
-
-      const Answers: QuestionProps['Answers'] = getAnswers.map((item) => {
-        const isCorrect = item.type === Correct;
-        return {
-          answer: item.answer,
-          value: isCorrect ? 5 : 0,
-        };
-      });
-
-      let CourseData = null;
-
-      if (quest?.Chapter) {
-        const CategoryName = quest?.Category || null;
-        const CourseChapterNamesArray = ((quest?.Chapter || '') as string)
-          .split('|')
-          .map((name: string) => name.trim().toLowerCase());
-
-        CourseData = getCourseChapterIds(
-          CategoryName,
-          CourseChapterNamesArray,
-          ChapterOptions || [],
-          parseInt(quest.Number),
-        );
-      }
-
-      return {
-        Answers,
-        number: parseInt(quest.Number),
-        question: quest.Question,
-        subCategory: quest.SubCategory,
-        subSubCategory: quest.SubSubCategory,
-        explanation: quest.Explanation,
-        categoryId: CourseData?.categoryId || undefined,
-        courseChapterIds: CourseData?.courseChapterIds || [],
-      };
-    });
-    return fixData;
-  } catch (error) {
-    responseError(error, true, undefined, undefined, 10000000);
-    return [];
-  }
-};
 
 const handleGenerateQuestion = (
   data: any[],

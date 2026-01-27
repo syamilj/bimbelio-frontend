@@ -22,6 +22,7 @@ import {
   Users,
   XCircle,
 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { ResultDataProps } from '..';
 import ButtonUpgradeTryout from '../../../../_components/ui/button-upgrade-tryout';
 
@@ -31,6 +32,10 @@ interface RingkasanTabProps {
 }
 
 export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
+  const pathname = usePathname();
+  const mode = pathname.toLocaleLowerCase().includes('try-out')
+    ? 'try out'
+    : 'quiz';
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
@@ -108,7 +113,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
           Ringkasan Hasil
         </h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Berikut adalah ringkasan lengkap dari performa Kamu dalam try out ini
+          Berikut adalah ringkasan lengkap dari performa Kamu dalam {mode} ini
         </p>
       </motion.div>
 

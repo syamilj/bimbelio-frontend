@@ -158,6 +158,20 @@ const SidebarRoute: FC = () => {
       category: 'Education',
     },
     {
+      icon: Trophy,
+      href: `/${website_sub_category_id}/admin/quiz-volume`,
+      label: 'Quiz Volume',
+      description: 'Kelola quiz volume',
+      category: 'Education',
+    },
+    {
+      icon: Trophy,
+      href: `/${website_sub_category_id}/admin/quiz`,
+      label: 'Quiz',
+      description: 'Kelola quiz',
+      category: 'Education',
+    },
+    {
       icon: BookOpen,
       href: `/${website_sub_category_id}/admin/course`,
       label: 'Courses',

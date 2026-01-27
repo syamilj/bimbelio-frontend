@@ -1,3 +1,27 @@
+export type TryoutResult = {
+  id: string;
+  website_sub_category_id: string;
+  userId: string;
+  tryoutId: string;
+  totalScore: number;
+  startTryout: Date;
+  endTryout: Date;
+}
+
+export type QuizVolume = {
+  number: number;
+  website_sub_category_id: string;
+  id: string;
+  title: string | null;
+  startDate: string;
+  endDate: string;
+  status: QuizVolumeStatusEnum;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type QuizVolumeStatusEnum = "PUBLIC" | "PRIVATE" | "DRAFT"
+
 export type TryoutCoupon = {
   code: string;
   id: string;

@@ -23,6 +23,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { TryoutDataType } from '../page';
 
@@ -41,6 +42,11 @@ const StartTryout = ({
 }: Props) => {
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
+
+  const pathname = usePathname();
+  const mode = pathname.toLocaleLowerCase().includes('try-out')
+    ? 'try out'
+    : 'quiz';
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -269,7 +275,7 @@ const StartTryout = ({
                   {/* Description */}
                   <div className="text-center">
                     <p className="text-gray-600 leading-relaxed">
-                      Siap memulai try out? Pastikan Kamu sudah memahami semua
+                      Siap memulai {mode}? Pastikan Kamu sudah memahami semua
                       aturan dan memiliki koneksi internet yang stabil. Semoga
                       berhasil!
                     </p>
@@ -347,8 +353,8 @@ const StartTryout = ({
                         className="text-sm text-gray-700 leading-relaxed cursor-pointer"
                       >
                         Aku telah membaca dan memahami semua aturan dan
-                        ketentuan try out ini. Aku setuju untuk mematuhi semua
-                        aturan yang berlaku dan siap memulai try out dengan
+                        ketentuan {mode} ini. Aku setuju untuk mematuhi semua
+                        aturan yang berlaku dan siap memulai {mode} dengan
                         sportif.
                       </label>
                     </div>
@@ -379,7 +385,7 @@ const StartTryout = ({
                     className="text-lg font-bold"
                     style={{ color: mainColor }}
                   >
-                    Ringkasan Try Out
+                    Ringkasan {mode}
                   </h3>
                 </CardHeader>
 
@@ -460,7 +466,7 @@ const StartTryout = ({
                       </h3>
                       <p className="text-sm text-gray-600">
                         {agreedToRules
-                          ? 'Klik tombol di bawah untuk memulai try out'
+                          ? `Klik tombol di bawah untuk memulai ${mode}`
                           : 'Centang kotak persetujuan untuk melanjutkan'}
                       </p>
                     </div>
@@ -495,7 +501,7 @@ const StartTryout = ({
                         ) : (
                           <>
                             <Zap className="w-5 h-5 mr-3" />
-                            Mulai Try Out
+                            Mulai {mode}
                           </>
                         )}
                       </Button>

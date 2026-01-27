@@ -35,7 +35,7 @@ interface TryoutData extends Tryout {
   irt: boolean;
 }
 
-export default function Page() {
+export default function QuizAdminPage() {
   // const [isLoading, setIsLoading] = useState<boolean>(false);
   // const [tryout, setTryout] = useState<TryoutData[] | undefined>();
 
@@ -52,7 +52,7 @@ export default function Page() {
     refetch,
   } = useGet<TryoutData[]>('/tryout/getTryout', {
     params: {
-      type: 'TRYOUT',
+      type: 'QUIZ',
     },
   });
 
@@ -135,7 +135,7 @@ export default function Page() {
               Export CSV
             </div>
             <Link
-              href={`/${website_sub_category_id}/admin/tryout/new`}
+              href={`/${website_sub_category_id}/admin/quiz/new`}
               className="flex cursor-pointer items-center justify-center rounded-[.8rem] bg-main px-4 py-[.6rem] text-white duration-300 hover:bg-main/85"
             >
               Tambah try out
@@ -246,7 +246,7 @@ export default function Page() {
                       <td className="border-t bg-white px-[.5rem] py-4 text-start text-[.9rem] text-main-gray-text">
                         <div className="flex w-full justify-center gap-4">
                           <Link
-                            href={`/${website_sub_category_id}/admin/tryout/edit/${item.id}`}
+                            href={`/${website_sub_category_id}/admin/quiz/edit/${item.id}`}
                           >
                             Edit
                           </Link>

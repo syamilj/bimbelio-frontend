@@ -21,7 +21,11 @@ export interface TryoutPageProps {
 
 const TryoutPage = ({ params }: TryoutPageProps) => {
   const pathname = usePathname();
+  const mode = pathname.toLocaleLowerCase().includes('try-out')
+    ? 'try-out'
+    : 'quiz';
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
+
   const { data: sessionUser } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -217,7 +221,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     );
   }
 
-  if (!isRegistered && isTryoutStarted) {
+  if (!isRegistered && isTryoutStarted && mode === 'try-out') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <motion.div
