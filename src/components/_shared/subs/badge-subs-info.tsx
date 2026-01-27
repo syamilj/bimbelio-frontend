@@ -124,7 +124,7 @@ export const BadgeSubsInfo = () => {
                         return (
                           <div
                             key={sub.id}
-                            className="p-2 rounded-lg bg-green-50 border border-green-200"
+                            className="p-2 rounded-3xl bg-green-50 border border-green-200"
                           >
                             <div className="flex flex-col items-start justify-center mb-1 gap-1">
                               <span
@@ -153,7 +153,7 @@ export const BadgeSubsInfo = () => {
                                       (feature: any, featureIndex: number) => (
                                         <span
                                           key={feature.id}
-                                          className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-700 font-medium"
+                                          className="text-[10px] px-1.5 py-0.5 rounded-3xl bg-blue-100 text-blue-700 font-medium"
                                         >
                                           {feature.type === 'DOCUMENT' &&
                                             '📄 Document'}
@@ -171,7 +171,7 @@ export const BadgeSubsInfo = () => {
                             {isInstallment &&
                               currentInstallment &&
                               currentInstallment.isPaid === false && (
-                                <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
+                                <div className="p-2.5 rounded-3xl bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
                                   <p className="text-[11px] font-semibold text-amber-900 mb-2 flex items-center gap-1">
                                     <Clock className="w-3 h-3" />
                                     Cicilan
@@ -188,16 +188,16 @@ export const BadgeSubsInfo = () => {
                                         </span>
                                       </div>
                                       {currentInstallment.isPaid ? (
-                                        <span className="bg-green-100 text-green-700 text-[9px] px-1.5 py-0 rounded-md inline-block">
+                                        <span className="bg-green-100 text-green-700 text-[9px] px-1.5 py-0 rounded-3xl inline-block">
                                           ✓ Lunas
                                         </span>
                                       ) : new Date(currentInstallment.dueDate) <
                                         new Date() ? (
-                                        <span className="bg-red-100 text-red-700 text-[9px] px-1.5 py-0 rounded-md inline-block">
+                                        <span className="bg-red-100 text-red-700 text-[9px] px-1.5 py-0 rounded-3xl inline-block">
                                           ⚠ Tertunda
                                         </span>
                                       ) : (
-                                        <span className="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0 rounded-md inline-block">
+                                        <span className="bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0 rounded-3xl inline-block">
                                           Menunggu Pembayaran
                                         </span>
                                       )}
@@ -260,7 +260,7 @@ export const BadgeSubsInfo = () => {
                                         </div>
                                       )}
                                     <Button
-                                      className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-lg bg-green-50 border border-green-400"
+                                      className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-3xl bg-green-50 border border-green-400"
                                       onClick={() =>
                                         setPagesSetting('installment')
                                       }
@@ -273,7 +273,7 @@ export const BadgeSubsInfo = () => {
                             {isInstallment &&
                               currentInstallment &&
                               currentInstallment.isPaid && (
-                                <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
+                                <div className="p-2.5 rounded-3xl bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
                                   <div>
                                     <p className="text-amber-700 font-medium text-[9px]">
                                       Akses Berakhir
@@ -319,7 +319,7 @@ export const BadgeSubsInfo = () => {
                   )}
                   {userSession?.user.role !== 'USER' && (
                     <div className="flex justify-center w-full">
-                      <span className="bg-amber-400 text-white px-2 py-1 rounded-md inline-block text-xs font-medium">
+                      <span className="bg-amber-400 text-white px-2 py-1 rounded-3xl inline-block text-xs font-medium">
                         {userTier}
                       </span>
                     </div>
@@ -338,7 +338,7 @@ export const BadgeSubsInfo = () => {
                           (subPending: any, index: number) => (
                             <div
                               key={subPending.id}
-                              className="p-2 rounded-lg bg-orange-50 border border-orange-200"
+                              className="p-2 rounded-3xl bg-orange-50 border border-orange-200"
                             >
                               <div className="flex flex-col items-start justify-center mb-1 gap-1">
                                 <div className="flex items-center gap-2">
@@ -352,7 +352,7 @@ export const BadgeSubsInfo = () => {
                                       ? 'Koin'
                                       : subPending.planTier}
                                   </span>
-                                  <span className="text-[8px] px-1.5 py-0.5 rounded-md bg-orange-100 text-orange-700 font-medium">
+                                  <span className="text-[8px] px-1.5 py-0.5 rounded-3xl bg-orange-100 text-orange-700 font-medium">
                                     PENDING
                                   </span>
                                 </div>
@@ -377,10 +377,10 @@ export const BadgeSubsInfo = () => {
                                         (feature: any, featureIndex: number) => (
                                           <div
                                             key={feature.id}
-                                            className="p-1.5 rounded-md bg-yellow-50 border border-yellow-200"
+                                            className="p-1.5 rounded-3xl bg-yellow-50 border border-yellow-200"
                                           >
                                             <div className="flex items-center justify-between mb-1">
-                                              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-yellow-200 text-yellow-800 font-medium">
+                                              <span className="text-[10px] px-1.5 py-0.5 rounded-3xl bg-yellow-200 text-yellow-800 font-medium">
                                                 {feature.type === 'DOCUMENT' &&
                                                   '📄 Document'}
                                                 {feature.type === 'COURSE' &&
@@ -410,7 +410,7 @@ export const BadgeSubsInfo = () => {
                                   <p className="text-xs font-medium text-gray-700 mb-1">
                                     Coin :
                                   </p>
-                                  <div className="p-1.5 rounded-md bg-yellow-50 border border-yellow-200">
+                                  <div className="p-1.5 rounded-3xl bg-yellow-50 border border-yellow-200">
                                     <div className="grid grid-cols-2 gap-1 mb-1">
                                       <div className="text-[10px] text-yellow-800">
                                         <span className="font-medium">
@@ -484,7 +484,7 @@ export const BadgeSubsInfo = () => {
                 {/* Button Lihat Detail Subscription */}
                 <Button
                   asChild
-                  className="w-full items-center gap-2 rounded-xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
+                  className="w-full items-center gap-2 rounded-3xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
                   style={{
                     borderColor: mainColor,
                     color: mainColor,
@@ -500,7 +500,7 @@ export const BadgeSubsInfo = () => {
 
                 {/* Button Beli Subscription */}
                 <Button
-                  className="w-full items-center gap-1 lg:gap-2 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
+                  className="w-full items-center gap-1 lg:gap-2 rounded-3xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
                   style={{ backgroundColor: mainColor }}
                   onClick={() => setTransactionPopUp(true)}
                 >

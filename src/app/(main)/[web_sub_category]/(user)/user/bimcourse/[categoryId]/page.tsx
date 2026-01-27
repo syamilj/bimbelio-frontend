@@ -224,7 +224,7 @@ export default function CourseOverviewPage() {
                                         </div>
                                         <div className="text-[10px] text-slate-500 font-medium">Riwayat skor Tryout & Quiz</div>
                                     </div>
-                                    <div className="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+                                    <div className="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-3xl">
                                         Max: {Math.max(...scoreData.map(d => d.score))}
                                     </div>
                                 </div>
@@ -272,13 +272,13 @@ export default function CourseOverviewPage() {
                  <div className="mt-8 flex flex-col gap-5">
                     {/* Stats Row Details - Above Button */}
                     <div className="flex flex-wrap items-center gap-3">
-                         <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-lg text-xs font-bold uppercase tracking-wider border border-indigo-100">
+                         <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-700 rounded-3xl text-xs font-bold uppercase tracking-wider border border-indigo-100">
                            <PlayCircle className="w-4 h-4" /> {videoCount} Video
                          </div>
-                         <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-bold uppercase tracking-wider border border-emerald-100">
+                         <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-3xl text-xs font-bold uppercase tracking-wider border border-emerald-100">
                            <Trophy className="w-4 h-4" /> {quizCount} Quiz
                          </div>
-                         <div className="flex items-center gap-2 px-3 py-1.5 bg-orange-50 text-orange-700 rounded-lg text-xs font-bold uppercase tracking-wider border border-orange-100">
+                         <div className="flex items-center gap-2 px-3 py-1.5 bg-orange-50 text-orange-700 rounded-3xl text-xs font-bold uppercase tracking-wider border border-orange-100">
                            <BookOpen className="w-4 h-4" /> {totalSubChapters} Materi
                          </div>
                     </div>
@@ -380,7 +380,7 @@ export default function CourseOverviewPage() {
                             </h3>
                             <div className="mt-auto flex items-center justify-between text-xs text-slate-500 font-medium">
                                <span className={cn(
-                                   "flex items-center gap-1.5 px-2 py-1 rounded-md",
+                                   "flex items-center gap-1.5 px-2 py-1 rounded-3xl",
                                    sub.type === 'VIDEO' ? "bg-indigo-50 text-indigo-600" :
                                    sub.type === 'TRYOUT' ? "bg-emerald-50 text-emerald-600" : "bg-orange-50 text-orange-600"
                                )}>
@@ -419,7 +419,7 @@ export default function CourseOverviewPage() {
                  <div>
                     <div className="flex justify-between items-end mb-2">
                        <span className="text-sm font-bold text-slate-700">Video Progress</span>
-                       <span className="text-xs font-bold bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md">{videoCompleted}/{videoCount} Files</span>
+                       <span className="text-xs font-bold bg-indigo-50 text-indigo-600 px-2 py-1 rounded-3xl">{videoCompleted}/{videoCount} Files</span>
                     </div>
                     <Progress value={videoCount > 0 ? (videoCompleted / videoCount) * 100 : 0} className="h-3 bg-slate-100 rounded-full" classNameThumb="bg-indigo-500" />
                  </div>
@@ -430,7 +430,7 @@ export default function CourseOverviewPage() {
                  <div>
                     <div className="flex justify-between items-end mb-2">
                        <span className="text-sm font-bold text-slate-700">Quiz Progress</span>
-                       <span className="text-xs font-bold bg-emerald-50 text-emerald-600 px-2 py-1 rounded-md">{quizCompleted}/{quizCount} Sesi</span>
+                       <span className="text-xs font-bold bg-emerald-50 text-emerald-600 px-2 py-1 rounded-3xl">{quizCompleted}/{quizCount} Sesi</span>
                     </div>
                     <Progress value={quizCount > 0 ? (quizCompleted / quizCount) * 100 : 0} className="h-3 bg-slate-100 rounded-full" classNameThumb="bg-emerald-500" />
                  </div>
@@ -456,7 +456,7 @@ export default function CourseOverviewPage() {
                  <div>
                     <div className="flex justify-between items-end mb-2">
                        <span className="text-sm font-bold text-slate-700">Materi Progress</span>
-                       <span className="text-xs font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded-md">{completedCount}/{totalSubChapters} Chapter</span>
+                       <span className="text-xs font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded-3xl">{completedCount}/{totalSubChapters} Chapter</span>
                     </div>
                     <Progress value={(completedCount / totalSubChapters) * 100} className="h-3 bg-slate-100 rounded-full" classNameThumb="bg-orange-500" />
                  </div>

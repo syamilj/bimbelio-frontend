@@ -340,7 +340,7 @@ export default function LinkPageButtons() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {buttons.length === 0 ? (
-                  <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
+                  <div className="rounded-3xl border border-dashed p-8 text-center text-muted-foreground">
                     No buttons yet. Create your first CTA to start driving clicks.
                   </div>
                 ) : (
@@ -404,7 +404,7 @@ export default function LinkPageButtons() {
           </aside>
         </div>
       ) : (
-        <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
+        <div className="rounded-3xl border border-dashed p-8 text-center text-muted-foreground">
           Link page not found.
         </div>
       )}

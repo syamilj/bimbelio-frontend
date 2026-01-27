@@ -487,7 +487,7 @@ export default function LiveLearningDashboard({
                       onClick={() =>
                         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
                       }
-                      className="p-2 h-9 border rounded-md hover:bg-gray-50 transition-colors"
+                      className="p-2 h-9 border rounded-3xl hover:bg-gray-50 transition-colors"
                       title={`Urutan: ${sortOrder === 'asc' ? 'Naik' : 'Turun'}`}
                     >
                       {sortOrder === 'asc' ? '↑' : '↓'}
@@ -633,7 +633,7 @@ export default function LiveLearningDashboard({
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="border rounded-lg p-4 animate-pulse"
+                    className="border rounded-3xl p-4 animate-pulse"
                   >
                     <div className="h-6 bg-gray-200 rounded w-48 mb-2"></div>
                     <div className="h-4 bg-gray-200 rounded w-full mb-4"></div>
@@ -1598,7 +1598,7 @@ function LiveClassCard({
                 </div>
                 {/* {liveClass.ratingStats &&
                   liveClass.ratingStats.totalRatings > 0 && (
-                    <div className="flex items-center gap-2 bg-yellow-50 px-3 py-2 rounded-lg">
+                    <div className="flex items-center gap-2 bg-yellow-50 px-3 py-2 rounded-3xl">
                       <div className="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center">
                         <Star className="h-3 w-3 text-yellow-600 fill-yellow-400" />
                       </div>

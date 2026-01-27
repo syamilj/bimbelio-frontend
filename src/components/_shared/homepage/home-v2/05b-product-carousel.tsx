@@ -19,7 +19,7 @@ const ProductCarouselSection: React.FC = () => {
     ];
 
     return (
-        <section className="py-20 bg-gray-50 overflow-hidden relative">
+        <section className="py-20 bg-white overflow-hidden relative">
             <style jsx>{`
                 @keyframes scroll {
                     0% { transform: translateX(0); }

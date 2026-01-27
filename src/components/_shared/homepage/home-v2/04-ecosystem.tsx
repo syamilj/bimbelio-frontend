@@ -86,7 +86,7 @@ const EcosystemSection: React.FC = () => {
   ];
 
   return (
-    <section id="ecosystem" className="py-16 md:py-24 px-5 bg-gray-50 relative overflow-hidden">
+    <section id="ecosystem" className="py-16 md:py-24 px-5 bg-white relative overflow-hidden">
       {/* Background Decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div

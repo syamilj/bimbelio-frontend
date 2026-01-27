@@ -73,7 +73,7 @@ export const RenderOverviewTab = () => {
       </div>
 
       <div className="space-y-3">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-linear-to-r from-blue-50 to-purple-50 rounded-lg">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 bg-linear-to-r from-blue-50 to-purple-50 rounded-3xl">
           {/* Limitation Stats (jika ada) */}
           {plan.PlanLimitation && (
             <div className="text-center">
@@ -136,7 +136,7 @@ export const RenderOverviewTab = () => {
 
         {/* Global Access Info */}
         {(isCourse || isDocument || isPrivate) && (
-          <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+          <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-3xl border border-emerald-200">
             <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
               <Star
                 size={14}
@@ -168,7 +168,7 @@ export const RenderOverviewTab = () => {
         )}
 
         {(isCourse || isDocument || isPrivate) && (
-          <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-lg border border-emerald-200">
+          <div className="p-3 bg-linear-to-r from-emerald-50 to-teal-50 rounded-3xl border border-emerald-200">
             <h4 className="text-sm font-semibold text-emerald-800 mb-2 flex items-center gap-2">
               <Calendar
                 size={16}
@@ -193,7 +193,7 @@ export const RenderOverviewTab = () => {
         )}
 
         {plan.PlanLimitation && (
-          <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+          <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-3xl border border-indigo-200">
             {plan.PlanSubscription?.expireDays &&
               !plan.PlanLimitation.isTimebound && (
                 <div className="flex items-center gap-2">
@@ -237,7 +237,7 @@ export const RenderOverviewTab = () => {
 
       {/* Platform/WebSubCategory Info (jika subscription) */}
       {plan.PlanSubscription && (
-        <div className="p-3 bg-linear-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
+        <div className="p-3 bg-linear-to-r from-indigo-50 to-purple-50 rounded-3xl border border-indigo-200">
           <div className="text-center">
             <div className="text-sm font-semibold text-indigo-700 flex items-center justify-center gap-2 mb-2">
               <MapPin size={14} />
@@ -347,7 +347,7 @@ export const RenderOverviewTab = () => {
             return (
               <div
                 key={benefit.id}
-                className={`flex items-start gap-3 p-3 rounded-lg border-l-4 ${bgClass} ${borderClass}`}
+                className={`flex items-start gap-3 p-3 rounded-3xl border-l-4 ${bgClass} ${borderClass}`}
               >
                 <div className="shrink-0 mt-1">
                   {IconComp && (

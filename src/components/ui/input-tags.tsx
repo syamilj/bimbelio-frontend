@@ -51,7 +51,7 @@ export const InputTags = forwardRef<HTMLInputElement, InputTagsProps>(
             Add
           </Button>
         </div>
-        <div className="border rounded-md min-h-[2.5rem] overflow-y-auto p-2 flex gap-2 flex-wrap items-center">
+        <div className="border rounded-3xl min-h-[2.5rem] overflow-y-auto p-2 flex gap-2 flex-wrap items-center">
           {value.length === 0 && (
             <span className="text-muted-foreground text-xs flex w-full justify-center">
               {emptyText}

@@ -232,7 +232,7 @@ const SubmitTryout = ({
                           {unAnswered.slice(0, 10).map((item, i) => (
                             <span
                               key={i}
-                              className="inline-flex items-center px-2 py-1 rounded-md bg-red-100 text-red-700 text-xs font-medium"
+                              className="inline-flex items-center px-2 py-1 rounded-3xl bg-red-100 text-red-700 text-xs font-medium"
                             >
                               {item.number}
                             </span>
@@ -260,7 +260,7 @@ const SubmitTryout = ({
                           {notSure.slice(0, 10).map((item, i) => (
                             <span
                               key={i}
-                              className="inline-flex items-center px-2 py-1 rounded-md bg-yellow-100 text-yellow-700 text-xs font-medium"
+                              className="inline-flex items-center px-2 py-1 rounded-3xl bg-yellow-100 text-yellow-700 text-xs font-medium"
                             >
                               {item.number}
                             </span>

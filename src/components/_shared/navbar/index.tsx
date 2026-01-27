@@ -587,7 +587,7 @@ const MobileNav: React.FC<{
                               <div className="flex items-center gap-3">
                                 {/* Number badge */}
                                 <div
-                                  className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white shadow-sm"
+                                  className="w-8 h-8 rounded-3xl flex items-center justify-center text-sm font-bold text-white shadow-sm"
                                   style={{
                                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                                   }}
@@ -699,7 +699,7 @@ const MobileNav: React.FC<{
                                         {/* Icon */}
                                         {IconComponent && (
                                           <div
-                                            className="mt-0.5 p-2 rounded-lg shrink-0"
+                                            className="mt-0.5 p-2 rounded-3xl shrink-0"
                                             style={{
                                               backgroundColor: hexToRgba(
                                                 mainColor,
@@ -943,7 +943,7 @@ const DesktopNav: React.FC<{
                         <>
                           <NavigationMenuTrigger
                             className={cn(
-                              'px-4 py-2 text-sm font-semibold text-gray-700 rounded-lg transition-all duration-300',
+                              'px-4 py-2 text-sm font-semibold text-gray-700 rounded-3xl transition-all duration-300',
                               item.isLink
                                 ? 'hover:text-gray-900 hover:bg-gray-50 cursor-pointer'
                                 : 'cursor-default',
@@ -1100,7 +1100,7 @@ const DesktopNav: React.FC<{
                                                     {/* Icon */}
                                                     {IconComponent && (
                                                       <div
-                                                        className="mt-0.5 p-1.5 rounded-lg transition-all duration-200 group-hover:scale-110"
+                                                        className="mt-0.5 p-1.5 rounded-3xl transition-all duration-200 group-hover:scale-110"
                                                         style={{
                                                           backgroundColor:
                                                             hexToRgba(
@@ -1183,7 +1183,7 @@ const DesktopNav: React.FC<{
                                             subItem.isLink,
                                           );
                                         }}
-                                        className="group w-full text-left px-4 py-3 text-sm rounded-lg transition-all duration-200"
+                                        className="group w-full text-left px-4 py-3 text-sm rounded-3xl transition-all duration-200"
                                         style={{
                                           color: mainColor,
                                         }}
@@ -1231,7 +1231,7 @@ const DesktopNav: React.FC<{
                       ) : (
                         <NavigationMenuLink
                           asChild
-                          className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900 rounded-lg transition-all duration-300 hover:bg-gray-50"
+                          className="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900 rounded-3xl transition-all duration-300 hover:bg-gray-50"
                         >
                           <Link
                             href={item.href}

@@ -124,9 +124,9 @@ const TimelineSection: React.FC = () => {
 
                 {/* Card */}
                 <div
-                  className={`md:ml-12 bg-white rounded-3xl border overflow-hidden transition-all hover:shadow-md ${
+                  className={`md:ml-12 bg-white rounded-3xl border-2 overflow-hidden transition-all hover:shadow-md shadow-sm ${
                     program.isHighlight
-                      ? 'border-2 shadow-sm'
+                      ? ''
                       : 'border-gray-100'
                   }`}
                   style={program.isHighlight ? { borderColor: mainColor } : {}}

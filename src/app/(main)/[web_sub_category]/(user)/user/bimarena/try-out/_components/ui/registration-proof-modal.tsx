@@ -413,7 +413,7 @@ export default function RegistrationProofModal({
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="flex items-center gap-2">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <Trophy
@@ -430,7 +430,7 @@ export default function RegistrationProofModal({
                 </div>
                 <div className="flex items-center gap-2">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <Clock
@@ -1020,7 +1020,7 @@ export default function RegistrationProofModal({
                 <input
                   type="text"
                   placeholder="Masukkan kode kupon Anda"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value.trim())}
                   disabled={isLoading}

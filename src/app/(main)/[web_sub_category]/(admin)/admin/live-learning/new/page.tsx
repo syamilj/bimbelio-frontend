@@ -503,7 +503,7 @@ export default function CreateLiveClassForm() {
                 {Instructors?.map((tutor) => (
                   <div
                     key={tutor.id}
-                    className={`p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
+                    className={`p-4 border rounded-3xl cursor-pointer transition-all hover:shadow-md ${
                       instructorId === tutor.id
                         ? 'border-blue-500 bg-blue-50'
                         : 'border-gray-200 hover:border-gray-300'
@@ -628,7 +628,7 @@ export default function CreateLiveClassForm() {
               />
             </div>
 
-            <div className="flex items-center justify-between p-4 border rounded-lg">
+            <div className="flex items-center justify-between p-4 border rounded-3xl">
               <div className="space-y-1">
                 <h4 className="font-medium">Rekam Sesi</h4>
                 <p className="text-sm text-gray-500">
@@ -678,7 +678,7 @@ export default function CreateLiveClassForm() {
                 {agendas.map((agenda, index) => (
                   <div
                     key={index}
-                    className="p-4 border rounded-lg bg-gray-50 space-y-3"
+                    className="p-4 border rounded-3xl bg-gray-50 space-y-3"
                   >
                     <div className="flex items-center justify-between">
                       <Label className="text-sm font-medium">
@@ -786,7 +786,7 @@ export default function CreateLiveClassForm() {
                   return (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 border rounded-lg bg-blue-50"
+                      className="flex items-center justify-between p-3 border rounded-3xl bg-blue-50"
                     >
                       <div className="flex items-start gap-3 flex-1">
                         <div className="mt-1">
@@ -854,7 +854,7 @@ export default function CreateLiveClassForm() {
                     return (
                       <div
                         key={index}
-                        className="flex items-center justify-between p-3 border rounded-lg bg-blue-50"
+                        className="flex items-center justify-between p-3 border rounded-3xl bg-blue-50"
                       >
                         <div className="flex items-start gap-3 flex-1">
                           <div className="mt-1">
@@ -904,7 +904,7 @@ export default function CreateLiveClassForm() {
                   return (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 border rounded-lg bg-blue-50"
+                      className="flex items-center justify-between p-3 border rounded-3xl bg-blue-50"
                     >
                       <div className="flex items-start gap-3 flex-1">
                         <div className="mt-1">
@@ -963,7 +963,7 @@ export default function CreateLiveClassForm() {
               defaultValue="course"
               className="w-full"
             >
-              <TabsList className="grid grid-cols-2 bg-gray-100 p-1 rounded-lg">
+              <TabsList className="grid grid-cols-2 bg-gray-100 p-1 rounded-3xl">
                 <TabsTrigger
                   value="course"
                   className="text-sm py-2 px-3 data-[state=active]:shadow-sm"
@@ -1002,7 +1002,7 @@ export default function CreateLiveClassForm() {
                           {CourseOptions?.map((chapter) => (
                             <div
                               key={chapter.id}
-                              className="border rounded-lg p-4"
+                              className="border rounded-3xl p-4"
                             >
                               <h4 className="font-medium text-gray-900 mb-3">
                                 {chapter.title}
@@ -1040,7 +1040,7 @@ export default function CreateLiveClassForm() {
                                         <div
                                           key={subchapter.id}
                                           className={cn(
-                                            'flex items-center justify-between p-3 border rounded-lg bg-gray-50',
+                                            'flex items-center justify-between p-3 border rounded-3xl bg-gray-50',
                                             isSelected &&
                                               'border-main bg-main/10',
                                           )}

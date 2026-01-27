@@ -205,7 +205,7 @@ const ChatAI = () => {
       content: (
         <div className="space-y-4">
           <div className="flex items-start gap-3 p-4 rounded-3xl bg-blue-50 border border-blue-200">
-            <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-8 h-8 rounded-3xl bg-blue-500 flex items-center justify-center text-white font-bold text-sm">
               1
             </div>
             <div>
@@ -219,7 +219,7 @@ const ChatAI = () => {
             </div>
           </div>
           <div className="flex items-start gap-3 p-4 rounded-3xl bg-green-50 border border-green-200">
-            <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-8 h-8 rounded-3xl bg-green-500 flex items-center justify-center text-white font-bold text-sm">
               2
             </div>
             <div>
@@ -232,7 +232,7 @@ const ChatAI = () => {
             </div>
           </div>
           <div className="flex items-start gap-3 p-4 rounded-3xl bg-purple-50 border border-purple-200">
-            <div className="w-8 h-8 rounded-lg bg-purple-500 flex items-center justify-center text-white font-bold text-sm">
+            <div className="w-8 h-8 rounded-3xl bg-purple-500 flex items-center justify-center text-white font-bold text-sm">
               3
             </div>
             <div>

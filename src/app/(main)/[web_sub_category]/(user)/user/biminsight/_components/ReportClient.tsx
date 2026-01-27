@@ -894,7 +894,7 @@ export const TryoutHistoryCard: React.FC<{
                       </div>
                       {tryout.show && (
                         <div
-                          className="px-2 py-1 rounded-lg text-white text-xs font-bold"
+                          className="px-2 py-1 rounded-3xl text-white text-xs font-bold"
                           style={{
                             backgroundColor: rankBadge.bg,
                             color: rankBadge.text,
@@ -912,7 +912,7 @@ export const TryoutHistoryCard: React.FC<{
                           Nilai Total
                         </span>
                         <div
-                          className={`${scoreBadge.bg} ${scoreBadge.text} px-2 py-1 rounded-lg text-xs font-bold`}
+                          className={`${scoreBadge.bg} ${scoreBadge.text} px-2 py-1 rounded-3xl text-xs font-bold`}
                         >
                           {tryout.show
                             ? `${tryout.totalScore} poin`
@@ -929,7 +929,7 @@ export const TryoutHistoryCard: React.FC<{
                           return (
                             <div
                               key={idx}
-                              className="p-2 bg-gray-50 rounded-lg"
+                              className="p-2 bg-gray-50 rounded-3xl"
                             >
                               <span className="text-gray-600">
                                 {category.name}
@@ -954,7 +954,7 @@ export const TryoutHistoryCard: React.FC<{
                     <Button
                       asChild
                       size="sm"
-                      className="w-full mt-3 rounded-lg text-white"
+                      className="w-full mt-3 rounded-3xl text-white"
                       style={{ backgroundColor: mainColor }}
                     >
                       <Link
@@ -1108,7 +1108,7 @@ export const QuizHistoryCard: React.FC<{
                         </p>
                       </div>
                       <div
-                        className={`${badge.bg} ${badge.text} px-2 py-1 rounded-lg text-xs font-bold`}
+                        className={`${badge.bg} ${badge.text} px-2 py-1 rounded-3xl text-xs font-bold`}
                       >
                         {quiz.accuracy?.toFixed(1)}%
                       </div>
@@ -1259,7 +1259,7 @@ export const QuizHistoryCard: React.FC<{
 //               <TabsTrigger
 //                 key={index}
 //                 value={category.name}
-//                 className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+//                 className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
 //                 style={
 //                   {
 //                     '--tw-bg-opacity': '1',
@@ -1764,7 +1764,7 @@ export const LearningConsistencyCard: React.FC<{ data: LearningDataType }> = ({
         {data.dailyStreak.map((day, index) => (
           <div
             key={index}
-            className={`aspect-square w-full rounded-sm ${
+            className={`aspect-square w-full rounded-3xl ${
               day.completed ? 'bg-green-500' : 'bg-gray-200'
             }`}
             title={`${day.date}: ${
@@ -1878,7 +1878,7 @@ export const WeeklyProgressCard: React.FC<{
                   <div className="flex justify-between text-xs text-gray-600 mb-1">
                     <span className="font-medium">{total}</span>
                   </div>
-                  <div className="h-16 relative bg-gray-100 rounded-lg p-1 flex flex-col justify-end">
+                  <div className="h-16 relative bg-gray-100 rounded-3xl p-1 flex flex-col justify-end">
                     <div
                       className="w-full rounded transition-all"
                       style={{
@@ -1899,7 +1899,7 @@ export const WeeklyProgressCard: React.FC<{
         </div>
 
         {/* Legend */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-3 rounded-lg bg-gray-50">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-3 rounded-3xl bg-gray-50">
           {[
             { label: 'Dokumen', color: colors[0] },
             { label: 'Catatan', color: colors[1] },
@@ -2259,7 +2259,7 @@ export const CalendarComponent: React.FC<{
               <TabsTrigger
                 key={value}
                 value={value}
-                className="rounded-lg font-semibold transition-all duration-200 text-gray-700 data-[state=active]:text-white data-[state=active]:shadow-md"
+                className="rounded-3xl font-semibold transition-all duration-200 text-gray-700 data-[state=active]:text-white data-[state=active]:shadow-md"
                 style={{
                   backgroundColor: 'transparent',
                 }}

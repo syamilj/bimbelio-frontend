@@ -271,7 +271,7 @@ const AiPopover = () => {
                 />
                 <button
                   type="submit"
-                  className="absolute bg-main text-white right-2 hover:bg-main/80 duration-300 rounded-lg p-1"
+                  className="absolute bg-main text-white right-2 hover:bg-main/80 duration-300 rounded-3xl p-1"
                 >
                   <ArrowRight className="text-white w-4 h-4" />
                 </button>

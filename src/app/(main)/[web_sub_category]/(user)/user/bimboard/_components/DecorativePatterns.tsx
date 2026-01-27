@@ -149,7 +149,7 @@ export const DecorativePatterns = {
             }}
           >
             <div
-              className="rounded-sm rotate-45 animate-confetti-spin"
+              className="rounded-3xl rotate-45 animate-confetti-spin"
               style={{
                 width: `${size}px`,
                 height: `${size}px`,

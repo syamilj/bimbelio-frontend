@@ -352,7 +352,7 @@ export default function Footer() {
           {/* Copyright */}
           <div className="text-sm text-gray-600 text-center md:text-left">
             <p>
-              © 2025{' '}
+              © 2026{' '}
               <span
                 className="font-black"
                 style={{ color: mainColor }}

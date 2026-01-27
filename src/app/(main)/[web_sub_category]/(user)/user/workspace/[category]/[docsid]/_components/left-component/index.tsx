@@ -26,7 +26,7 @@ export default function LeftComponent({ doc }: Props) {
         <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-200 shrink-0">
           <button
             onClick={() => setSidebarMobile(true)}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-3xl transition-colors"
           >
             <svg
               className="w-5 h-5 text-gray-600"
@@ -45,7 +45,7 @@ export default function LeftComponent({ doc }: Props) {
           <h1 className="font-medium text-gray-900 truncate flex-1 px-4">
             {doc.title.length > 25 ? `${doc.title.slice(0, 25)}...` : doc.title}
           </h1>
-          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <button className="p-2 hover:bg-gray-100 rounded-3xl transition-colors">
             <svg
               className="w-5 h-5 text-gray-600"
               fill="none"

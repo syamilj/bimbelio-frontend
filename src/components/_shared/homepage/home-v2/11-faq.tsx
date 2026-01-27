@@ -89,7 +89,7 @@ const FAQSection: React.FC = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden"
+              className="bg-gray-50 rounded-3xl border-2 border-gray-100 shadow-sm overflow-hidden"
             >
               <button
                 onClick={() => toggleFAQ(index)}

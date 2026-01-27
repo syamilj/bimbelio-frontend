@@ -348,7 +348,7 @@ const MainContent = ({ canEdit, doc, userId, isCourseDone }: Props) => {
               className={`flex h-full w-full flex-col p-4 pb-0 ${hideVideo && 'mt-[-100%]'} duration-300 ease-in-out`}
             >
               {doc.video?.url?.length > 0 && (
-                <div className="relative rounded-2xl overflow-hidden shadow-xl bg-black">
+                <div className="relative rounded-3xl overflow-hidden shadow-xl bg-black">
                   <video
                     ref={videoRef}
                     controls

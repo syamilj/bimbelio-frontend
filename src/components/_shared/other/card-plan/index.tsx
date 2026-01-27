@@ -362,10 +362,10 @@ const HeaderSection = () => {
           {/* Quick Stats Overlay */}
           {/* <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-all duration-500">
                 <div className="flex gap-2">
-                  <div className="px-2 py-1 rounded-lg text-xs font-medium backdrop-blur-sm bg-white/90 text-gray-800">
+                  <div className="px-2 py-1 rounded-3xl text-xs font-medium backdrop-blur-sm bg-white/90 text-gray-800">
                     ⭐ {marketplaceData.rating}
                   </div>
-                  <div className="px-2 py-1 rounded-lg text-xs font-medium backdrop-blur-sm bg-white/90 text-gray-800">
+                  <div className="px-2 py-1 rounded-3xl text-xs font-medium backdrop-blur-sm bg-white/90 text-gray-800">
                     👥 {marketplaceData.studentCount.toLocaleString()}
                   </div>
                 </div>
@@ -652,7 +652,7 @@ const MaxUsersInfo = () => {
   return (
     <div className="mb-4 p-3 rounded-3xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
       <div className="flex items-center gap-3">
-        <div className="p-2 bg-amber-100 rounded-lg">
+        <div className="p-2 bg-amber-100 rounded-3xl">
           <Users className="w-4 h-4 text-amber-600" />
         </div>
         <div className="flex-1">
@@ -678,7 +678,7 @@ const InstallmentInfo = () => {
   return (
     <div className="mb-4 p-3 rounded-3xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200">
       <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 bg-blue-100 rounded-lg">
+        <div className="p-2 bg-blue-100 rounded-3xl">
           <Coins className="w-4 h-4 text-blue-600" />
         </div>
         <div className="flex-1">
@@ -756,7 +756,7 @@ const TabsSection = () => {
       >
         <TabsTrigger
           value="overview"
-          className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+          className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
           style={
             {
               '--tw-ring-color': `${mainColor}20`,
@@ -772,7 +772,7 @@ const TabsSection = () => {
         {plan.PlanSubscription && (
           <TabsTrigger
             value="features"
-            className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+            className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
           >
             <Sparkles
               size={14}
@@ -784,7 +784,7 @@ const TabsSection = () => {
         {plan.PlanLimitation && (
           <TabsTrigger
             value="limitations"
-            className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+            className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
           >
             <Coins
               size={14}
@@ -796,7 +796,7 @@ const TabsSection = () => {
         {plan.PlanBenefit.length > 0 && (
           <TabsTrigger
             value="benefits"
-            className="text-xs font-medium rounded-lg data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
+            className="text-xs font-medium rounded-3xl data-[state=active]:shadow-md transition-all data-[state=active]:bg-white"
           >
             <Gift
               size={14}

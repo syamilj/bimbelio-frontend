@@ -96,7 +96,7 @@ export function RankingStats() {
                 {!RankingTryoutIsLoading ? (
                   <TabsTrigger
                     value={tab.value}
-                    className="flex items-center gap-2 rounded-lg px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
+                    className="flex items-center gap-2 rounded-3xl px-3 md:px-4 py-2 text-xs md:text-sm font-medium transition-all duration-200 text-gray-600 data-[state=active]:text-white data-[state=active]:shadow-sm"
                     style={
                       {
                         '--tw-bg-opacity': '1',
@@ -110,7 +110,7 @@ export function RankingStats() {
                     </span>
                   </TabsTrigger>
                 ) : (
-                  <Skeleton className="h-9 md:h-10 w-full rounded-lg" />
+                  <Skeleton className="h-9 md:h-10 w-full rounded-3xl" />
                 )}
               </React.Fragment>
             ))}
@@ -215,7 +215,7 @@ const Summary = () => {
                 </CardTitle>
                 <div
                   className={cn(
-                    'w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center bg-linear-to-br text-white shadow-sm',
+                    'w-8 h-8 md:w-10 md:h-10 rounded-3xl flex items-center justify-center bg-linear-to-br text-white shadow-sm',
                     card.gradient,
                   )}
                 >
@@ -275,7 +275,7 @@ const Statistics = () => {
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-bold flex items-center gap-3">
                 <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <BarChart2
@@ -387,7 +387,7 @@ const Statistics = () => {
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-bold flex items-center gap-3">
                 <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <BarChart2
@@ -432,7 +432,7 @@ const Statistics = () => {
                       />
                       <ChartTooltip
                         content={
-                          <ChartTooltipContent className="bg-white shadow-lg border border-gray-200 rounded-lg" />
+                          <ChartTooltipContent className="bg-white shadow-lg border border-gray-200 rounded-3xl" />
                         }
                       />
                       <Bar
@@ -494,7 +494,7 @@ const AnalysisSubject = () => {
           <CardHeader className="pb-4">
             <CardTitle className="text-xl font-bold flex items-center gap-3">
               <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 rounded-3xl flex items-center justify-center"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <BookOpen
@@ -542,7 +542,7 @@ const AnalysisSubject = () => {
                     />
                     <ChartTooltip
                       content={
-                        <ChartTooltipContent className="bg-white shadow-lg border border-gray-200 rounded-lg" />
+                        <ChartTooltipContent className="bg-white shadow-lg border border-gray-200 rounded-3xl" />
                       }
                     />
                     <Line

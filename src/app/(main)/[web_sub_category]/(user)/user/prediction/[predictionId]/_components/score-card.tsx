@@ -19,7 +19,7 @@ export default function ScoreCard({
   };
 
   return (
-    <div className={cn('p-4 rounded-lg border-2', colorClasses[color])}>
+    <div className={cn('p-4 rounded-3xl border-2', colorClasses[color])}>
       <div className="text-xs font-semibold opacity-75 mb-1">{title}</div>
       <div className="text-xl font-bold">{value}</div>
       {subtitle && (

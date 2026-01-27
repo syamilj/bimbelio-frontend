@@ -441,7 +441,7 @@ const SubChapterOption = ({
                     />
                   </>
                 ) : (
-                  <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
+                  <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-3xl">
                     <p>Belum ada soal</p>
                     <Button
                       onClick={addQuestion}
@@ -609,7 +609,7 @@ const VideoEditor = ({
   ) => void;
 }) => (
   <div className="space-y-4">
-    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+    <div className="border-2 border-dashed border-gray-300 rounded-3xl p-8 text-center">
       <Video className="h-12 w-12 text-gray-400 mx-auto mb-4" />
       {EditSubChapter.video ? (
         <div>
@@ -670,7 +670,7 @@ const DocumentSelector = ({
     return (
       <div
         key={selectedDoc?.id}
-        className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+        className="p-3 border rounded-3xl cursor-pointer hover:bg-gray-50"
       >
         <div className="flex items-center gap-3">
           <FileText className="h-5 w-5 text-gray-400" />
@@ -691,7 +691,7 @@ const DocumentSelector = ({
         {documents?.map((doc) => (
           <div
             key={doc.id}
-            className="p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+            className="p-3 border rounded-3xl cursor-pointer hover:bg-gray-50"
             onClick={() => {
               setSubChapter((prev) =>
                 prev.map((sChapter, sIndex) => {

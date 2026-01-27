@@ -54,7 +54,7 @@ const StatisticsSection: React.FC = () => {
   ];
 
   return (
-    <section id="statistics" className="py-16 md:py-24 px-5 bg-gray-50">
+    <section id="statistics" className="py-16 md:py-24 px-5 bg-white">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-10 md:mb-14">

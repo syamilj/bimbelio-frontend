@@ -182,7 +182,7 @@ function PlanTable({
   return (
     <div className="mb-10">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
-      <div className="rounded-md border">
+      <div className="rounded-3xl border">
         <Table>
           <TableHeader>
             <TableRow>
@@ -405,7 +405,7 @@ function PlanTable({
 
 //       <Card>
 //         <CardContent className="pt-6">
-//           <div className="rounded-md border">
+//           <div className="rounded-3xl border">
 //             <Table>
 //               <TableHeader>
 //                 <TableRow>

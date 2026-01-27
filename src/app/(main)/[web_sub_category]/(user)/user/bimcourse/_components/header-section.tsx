@@ -174,7 +174,7 @@ export default function HeaderSection() {
           <div className="group bg-white hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 border-2 border-blue-200 rounded-3xl md:rounded-3xl p-4 md:p-6 text-center relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex-shrink-0 w-40 md:w-auto">
             <div className="absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-blue-400/10 to-blue-600/10 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
             <div className="relative z-10">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-lg md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-blue-200 transition-colors">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-3xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-blue-200 transition-colors">
                 <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
               </div>
               <div className="text-2xl md:text-3xl font-black text-blue-700 mb-1">
@@ -198,7 +198,7 @@ export default function HeaderSection() {
           <div className="group bg-white hover:bg-gradient-to-br hover:from-purple-50 hover:to-purple-100 border-2 border-purple-200 rounded-3xl md:rounded-3xl p-4 md:p-6 text-center relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex-shrink-0 w-40 md:w-auto">
             <div className="absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-purple-400/10 to-purple-600/10 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
             <div className="relative z-10">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-100 rounded-lg md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-purple-200 transition-colors">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-100 rounded-3xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-purple-200 transition-colors">
                 <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
               </div>
               <div className="flex items-baseline justify-center gap-1.5 md:gap-2 mb-1">
@@ -206,7 +206,7 @@ export default function HeaderSection() {
                   {headingData.tryoutResults?.score || '-'}
                 </div>
                 {headingData.gapFromTarget !== null && headingData.targetValue && (
-                  <div className={`text-xs md:text-lg font-bold px-1.5 md:px-2 py-0.5 rounded-lg ${
+                  <div className={`text-xs md:text-lg font-bold px-1.5 md:px-2 py-0.5 rounded-3xl ${
                     headingData.gapFromTarget >= 0
                       ? 'bg-emerald-100 text-emerald-700'
                       : 'bg-red-100 text-red-700'
@@ -230,7 +230,7 @@ export default function HeaderSection() {
           <div className="group bg-white hover:bg-gradient-to-br hover:from-amber-50 hover:to-amber-100 border-2 border-amber-200 rounded-3xl md:rounded-3xl p-4 md:p-6 text-center relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex-shrink-0 w-40 md:w-auto">
             <div className="absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-amber-400/10 to-amber-600/10 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
             <div className="relative z-10">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-amber-100 rounded-lg md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-amber-200 transition-colors">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-amber-100 rounded-3xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-amber-200 transition-colors">
                 <Award className="w-5 h-5 md:w-6 md:h-6 text-amber-600" />
               </div>
               <div className="text-2xl md:text-3xl font-black text-amber-700 mb-1">
@@ -258,7 +258,7 @@ export default function HeaderSection() {
           <div className="group bg-white hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100 border-2 border-orange-200 rounded-3xl md:rounded-3xl p-4 md:p-6 text-center relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex-shrink-0 w-40 md:w-auto">
             <div className="absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-orange-400/10 to-orange-600/10 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
             <div className="relative z-10">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-orange-100 rounded-lg md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-orange-200 transition-colors">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-orange-100 rounded-3xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-orange-200 transition-colors">
                 <Flame className="w-5 h-5 md:w-6 md:h-6 text-orange-600" />
               </div>
               <div className="text-2xl md:text-3xl font-black text-orange-700 mb-1">
@@ -277,7 +277,7 @@ export default function HeaderSection() {
           <div className="group bg-white hover:bg-gradient-to-br hover:from-green-50 hover:to-green-100 border-2 border-green-200 rounded-3xl md:rounded-3xl p-4 md:p-6 text-center relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex-shrink-0 w-40 md:w-auto">
             <div className="absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-green-400/10 to-green-600/10 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
             <div className="relative z-10">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-lg md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-green-200 transition-colors">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-green-100 rounded-3xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 md:mb-3 group-hover:bg-green-200 transition-colors">
                 <Clock className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
               </div>
               <div className="text-2xl md:text-3xl font-black text-green-700 mb-1">

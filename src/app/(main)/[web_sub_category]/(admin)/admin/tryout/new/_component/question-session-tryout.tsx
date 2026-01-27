@@ -780,7 +780,7 @@ const QuestionSessionTryout = ({
                   {CourseOptions?.map((chapter) => (
                     <div
                       key={chapter.id}
-                      className="border rounded-lg p-4"
+                      className="border rounded-3xl p-4"
                     >
                       <h4 className="font-medium text-gray-900 mb-3">
                         {chapter.title}
@@ -805,7 +805,7 @@ const QuestionSessionTryout = ({
                                 <div
                                   key={subchapter.id}
                                   className={cn(
-                                    'flex items-center justify-between p-3 border rounded-lg bg-gray-50',
+                                    'flex items-center justify-between p-3 border rounded-3xl bg-gray-50',
                                     isSelected && 'border-main bg-main/10',
                                   )}
                                 >
@@ -1007,7 +1007,7 @@ const SelectedCourseChapter = ({
                   <div
                     key={chapter.id}
                     className={cn(
-                      'flex items-center justify-between p-3 border rounded-lg bg-gray-50',
+                      'flex items-center justify-between p-3 border rounded-3xl bg-gray-50',
                       isSelected && 'border-main bg-main/10',
                     )}
                   >

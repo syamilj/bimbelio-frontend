@@ -707,7 +707,7 @@ const HeaderUser = () => {
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <div
-                              className="w-8 h-8 rounded-lg flex items-center justify-center"
+                              className="w-8 h-8 rounded-3xl flex items-center justify-center"
                               style={{
                                 backgroundColor: `${limitation.color}15`,
                               }}
@@ -878,7 +878,7 @@ const HeaderUser = () => {
                             <div className="flex items-start gap-3">
                               {/* Icon */}
                               <div
-                                className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                                className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                                 style={{
                                   backgroundColor: `${mainColor}15`,
                                   color: mainColor,
@@ -998,12 +998,12 @@ const HeaderUser = () => {
                     return (
                       <div
                         key={index}
-                        className="p-3 rounded-lg border bg-white hover:bg-gray-50 transition-colors"
+                        className="p-3 rounded-3xl border bg-white hover:bg-gray-50 transition-colors"
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <div
-                              className="w-8 h-8 rounded-lg flex items-center justify-center"
+                              className="w-8 h-8 rounded-3xl flex items-center justify-center"
                               style={{
                                 backgroundColor: `${limitation.color}15`,
                               }}
@@ -1332,7 +1332,7 @@ const HeaderUser = () => {
                           <div className="flex items-start gap-3">
                             {/* Icon */}
                             <div
-                              className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                              className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                               style={{
                                 backgroundColor: `${mainColor}15`,
                                 color: mainColor,

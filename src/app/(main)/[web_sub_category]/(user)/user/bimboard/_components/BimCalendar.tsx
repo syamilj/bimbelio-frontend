@@ -106,7 +106,7 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-primary/10">
+              <div className="p-2 rounded-3xl bg-primary/10">
                 <Calendar className="h-4 w-4 text-primary" />
               </div>
               <CardTitle className="text-lg font-semibold">Jadwal Kegiatan</CardTitle>
@@ -115,8 +115,8 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
         </CardHeader>
         <CardContent className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="flex gap-3 p-3 rounded-lg border animate-pulse">
-              <div className="h-14 w-14 bg-muted rounded-lg" />
+            <div key={i} className="flex gap-3 p-3 rounded-3xl border animate-pulse">
+              <div className="h-14 w-14 bg-muted rounded-3xl" />
               <div className="flex-1 space-y-2">
                 <div className="h-4 bg-muted rounded w-3/4" />
                 <div className="h-3 bg-muted rounded w-1/2" />
@@ -134,7 +134,7 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-primary/10">
+              <div className="p-2 rounded-3xl bg-primary/10">
                 <Calendar className="h-4 w-4 text-primary" />
               </div>
               <CardTitle className="text-lg font-semibold">Jadwal Kegiatan</CardTitle>
@@ -159,7 +159,7 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-primary/10">
+              <div className="p-2 rounded-3xl bg-primary/10">
                 <Calendar className="h-4 w-4 text-primary" />
               </div>
               <CardTitle className="text-lg font-semibold">Jadwal Kegiatan</CardTitle>
@@ -180,7 +180,7 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-primary/10">
+            <div className="p-2 rounded-3xl bg-primary/10">
               <Calendar className="h-4 w-4 text-primary" />
             </div>
             <CardTitle className="text-lg font-semibold">Jadwal Kegiatan</CardTitle>
@@ -199,12 +199,12 @@ export default function BimCalendar({ websiteSubCategoryId }: BimCalendarProps) 
           return (
             <div
               key={event.id}
-              className="group flex gap-3 p-3 rounded-lg border hover:border-primary/50 hover:bg-accent/50 transition-all cursor-pointer"
+              className="group flex gap-3 p-3 rounded-3xl border hover:border-primary/50 hover:bg-accent/50 transition-all cursor-pointer"
               onClick={() => event.htmlLink && window.open(event.htmlLink, "_blank")}
             >
               {/* Date Badge */}
               <div
-                className="flex flex-col items-center justify-center h-14 w-14 rounded-lg text-white font-semibold flex-shrink-0"
+                className="flex flex-col items-center justify-center h-14 w-14 rounded-3xl text-white font-semibold flex-shrink-0"
                 style={{ backgroundColor: websiteSubCategory?.main_color || "#3b82f6" }}
               >
                 <span className="text-xs opacity-90">

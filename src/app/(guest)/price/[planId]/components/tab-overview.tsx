@@ -249,7 +249,7 @@ export default function TabOverview({
                                 className="flex items-center gap-3 p-2 rounded-3xl bg-white/60 hover:bg-white/80 transition-all duration-200"
                               >
                                 <div
-                                  className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold"
+                                  className="w-6 h-6 rounded-3xl text-white text-xs flex items-center justify-center font-bold"
                                   style={{
                                     backgroundColor: mainColor,
                                   }}
@@ -266,7 +266,7 @@ export default function TabOverview({
                         {feature.type === 'DOCUMENT' && (
                           <div className="flex gap-3 p-2 rounded-3xl bg-white/60">
                             <div
-                              className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
+                              className="w-6 h-6 rounded-3xl text-white text-xs flex items-center justify-center font-bold shrink-0"
                               style={{ backgroundColor: mainColor }}
                             >
                               <LockOpen className="w-3 h-3" />
@@ -280,7 +280,7 @@ export default function TabOverview({
                           feature.liveClassesPerWeek && (
                             <div className="flex gap-3 p-2 rounded-3xl bg-white/60">
                               <div
-                                className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
+                                className="w-6 h-6 rounded-3xl text-white text-xs flex items-center justify-center font-bold shrink-0"
                                 style={{
                                   backgroundColor: mainColor,
                                 }}
@@ -400,7 +400,7 @@ export default function TabOverview({
                             {pivot.LiveClass.title}
                           </h4>
                           <div className="flex flex-wrap items-center gap-3 text-sm">
-                            <div className="flex items-center gap-1 px-2 py-1 bg-white/60 rounded-lg">
+                            <div className="flex items-center gap-1 px-2 py-1 bg-white/60 rounded-3xl">
                               <Clock
                                 className="w-4 h-4"
                                 style={{ color: mainColor }}
@@ -409,7 +409,7 @@ export default function TabOverview({
                                 {pivot.LiveClass.duration}m
                               </span>
                             </div>
-                            <div className="flex items-center gap-1 px-2 py-1 bg-white/60 rounded-lg">
+                            <div className="flex items-center gap-1 px-2 py-1 bg-white/60 rounded-3xl">
                               <Users
                                 className="w-4 h-4"
                                 style={{ color: mainColor }}

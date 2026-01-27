@@ -143,7 +143,7 @@ const LayersSection: React.FC = () => {
           {layers.map((layer) => (
             <div
               key={layer.id}
-              className="bg-gray-50 rounded-3xl p-6 border border-gray-200"
+              className="bg-gray-50 rounded-3xl p-6 border-2 border-gray-100 shadow-sm"
             >
               <div className="flex flex-col items-center text-center mb-5">
                 <div
@@ -189,7 +189,7 @@ const LayersSection: React.FC = () => {
           {layers.map((layer) => (
             <div
               key={layer.id}
-              className="bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden"
+              className="bg-gray-50 rounded-3xl border-2 border-gray-100 shadow-sm overflow-hidden"
             >
               <button
                 onClick={() =>

@@ -676,11 +676,11 @@ export default function CardTryOut({
           onClick={() => setShowBimPartnerInfo(false)}
         >
           <div
-            className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
+            className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 rounded-xl bg-purple-100">
+              <div className="p-2 rounded-3xl bg-purple-100">
                 <InfoIcon className="w-6 h-6 text-purple-600" />
               </div>
               <div>
@@ -700,7 +700,7 @@ export default function CardTryOut({
             </div>
             <button
               onClick={() => setShowBimPartnerInfo(false)}
-              className="w-full px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-colors"
+              className="w-full px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-3xl transition-colors"
             >
               Mengerti
             </button>

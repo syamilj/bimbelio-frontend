@@ -473,7 +473,7 @@ const PaymentMethodSelection = ({
         >
           <div className="flex items-start gap-4">
             <div
-              className="p-3 rounded-lg"
+              className="p-3 rounded-3xl"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <CreditCard
@@ -513,7 +513,7 @@ const PaymentMethodSelection = ({
           className="group relative p-6 rounded-3xl border-2 border-gray-200 hover:border-green-400 bg-white hover:bg-green-50 transition-all duration-300 text-left"
         >
           <div className="flex items-start gap-4">
-            <div className="p-3 rounded-lg bg-green-100">
+            <div className="p-3 rounded-3xl bg-green-100">
               <Coins
                 size={24}
                 className="text-green-600"
@@ -614,7 +614,7 @@ const PaymentMethodSelection = ({
 
       {/* Info section */}
       <div className="mt-6">
-        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="p-4 bg-blue-50 border border-blue-200 rounded-3xl">
           <p className="text-sm text-blue-700">
             <span className="font-semibold">💡 Tips:</span> Pilih cicilan jika
             ingin membagi pembayaran, atau pilih bayar penuh untuk transaksi
@@ -643,7 +643,7 @@ const HeaderSection = () => {
       <DialogHeader className="text-center">
         <div className="flex items-center justify-center gap-2 mb-1">
           <div
-            className="p-1.5 rounded-lg"
+            className="p-1.5 rounded-3xl"
             style={{ backgroundColor: `${mainColor}15` }}
           >
             <ShoppingBag
@@ -767,7 +767,7 @@ const FormUserInformation = ({
               placeholder="+62851 1234 5678"
               value={telp}
               onChange={handlePhoneChange}
-              className="h-12 text-sm border border-gray-200 focus:border-blue-500 rounded-lg pl-10 pr-4 transition-all duration-200"
+              className="h-12 text-sm border border-gray-200 focus:border-blue-500 rounded-3xl pl-10 pr-4 transition-all duration-200"
               required
             />
             <Phone
@@ -785,7 +785,7 @@ const FormUserInformation = ({
               </div>
             )}
           </div>
-          <div className="flex items-start gap-2 p-3 bg-blue-50 rounded-lg text-xs text-blue-700">
+          <div className="flex items-start gap-2 p-3 bg-blue-50 rounded-3xl text-xs text-blue-700">
             <Shield
               size={12}
               className="text-blue-600 mt-0.5 flex-shrink-0"
@@ -860,7 +860,7 @@ const FormVoucher = ({
                 value={voucherCode}
                 disabled={!!discountPrice}
                 onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
-                className="h-10 text-sm border border-gray-200 focus:border-green-500 rounded-lg pl-8"
+                className="h-10 text-sm border border-gray-200 focus:border-green-500 rounded-3xl pl-8"
               />
               <Tag
                 size={14}
@@ -872,7 +872,7 @@ const FormVoucher = ({
               variant="outline"
               size="sm"
               className={cn(
-                'h-10 px-4 border rounded-lg text-sm font-medium',
+                'h-10 px-4 border rounded-3xl text-sm font-medium',
                 discountPrice
                   ? 'border-red-200 text-red-600 hover:bg-red-50'
                   : 'border-green-200 text-green-600 hover:bg-green-50',
@@ -897,7 +897,7 @@ const FormVoucher = ({
             </Button>
           </div>
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+            <div className="p-3 bg-red-50 border border-red-200 rounded-3xl">
               <p className="text-sm text-red-600 font-medium">
                 ⚠️ {error.message}
               </p>
@@ -907,7 +907,7 @@ const FormVoucher = ({
 
         {/* Voucher Success State - Compact */}
         {discountPrice && (
-          <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-3xl">
             <div className="flex items-center gap-2">
               <CheckCircle2
                 size={16}
@@ -1043,7 +1043,7 @@ const FormCheckoutSummary = ({
         </div>
 
         {/* Compact Benefits */}
-        <div className="p-3 bg-gray-50 rounded-lg text-center">
+        <div className="p-3 bg-gray-50 rounded-3xl text-center">
           <Clock
             size={16}
             className="mx-auto mb-1 text-blue-500"

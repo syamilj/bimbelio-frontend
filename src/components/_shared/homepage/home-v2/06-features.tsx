@@ -116,7 +116,7 @@ const FeaturesSection: React.FC = () => {
             return (
               <div
                 key={feature.id}
-                className="group bg-white rounded-3xl border border-gray-100 overflow-hidden hover:border-gray-200 hover:shadow-lg transition-all"
+                className="group bg-white rounded-3xl border-2 border-gray-100 overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all shadow-sm"
               >
                 {/* Image */}
                 <div className="relative aspect-[16/9] bg-gray-100 overflow-hidden">
