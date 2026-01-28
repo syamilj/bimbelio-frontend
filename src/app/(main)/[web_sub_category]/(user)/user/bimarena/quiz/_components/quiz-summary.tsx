@@ -25,22 +25,23 @@ import {
 import { useEffect, useState } from 'react';
 import { useQuizProvider } from '../_provider/_provider';
 import { DecorativePatterns } from './DecorativePatterns';
-import {
-  COUNTDOWN_INTERVAL_MS,
-  DEFAULT_COUNTDOWN,
-  formatCurrency,
-  formatNumber,
-  TOTAL_PRIZE_POOL,
-} from './quiz-dummy';
+import { COUNTDOWN_INTERVAL_MS, formatNumber } from './quiz-dummy';
 import { TargetUniversity, UserStats } from './quiz-types';
 
 interface QuizHeroProps {
   userStats: UserStats;
   targetUniversity?: TargetUniversity;
 }
+const DEFAULT_COUNTDOWN = {
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+};
 
 // Internal countdown hook
-function useCountdown(endTime: Date) {
+function useCountdown(endTime: Date | undefined) {
+  if (!endTime) return DEFAULT_COUNTDOWN;
   const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN);
 
   useEffect(() => {
@@ -105,6 +106,8 @@ export function QuizSummary() {
       selectedVolumeId,
       QuizVolumeList,
       SingleQuizVolume,
+      isVolumeEnded,
+      isVolumeStarted,
     },
     useUserStatistic: { UserStatistic },
   } = useQuizProvider();
@@ -119,13 +122,20 @@ export function QuizSummary() {
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
-  const countdown = useCountdown(
-    (SingleQuizVolume?.endDate && new Date(SingleQuizVolume.endDate)) ||
-      new Date(),
-  );
+
+  console.log({ isVolumeStarted, SingleQuizVolume });
+
+  const countdown = isVolumeStarted
+    ? useCountdown(
+        (SingleQuizVolume?.endDate && new Date(SingleQuizVolume.endDate)) ||
+          undefined,
+      )
+    : useCountdown(
+        (SingleQuizVolume?.startDate && new Date(SingleQuizVolume.startDate)) ||
+          undefined,
+      );
 
   const rankChange = 0;
-  const gapToTop10 = Math.max(0, (userStats?.rank || 0) - 10);
 
   return (
     <div
@@ -315,26 +325,22 @@ export function QuizSummary() {
               >
                 <style>{`.hero-pills::-webkit-scrollbar { display: none; }`}</style>
                 <div className="hero-pills flex gap-2 min-w-max">
-                  <div
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border flex-shrink-0"
-                    style={{
-                      backgroundColor: `${mainColor}10`,
-                      borderColor: `${mainColor}20`,
-                      color: mainColor,
-                    }}
-                  >
-                    <Users className="w-3.5 h-3.5" />
-                    <span>
-                      {/* {selectedVolume.totalParticipants.toLocaleString()}{' '} */}
-                      Peserta Terdaftar
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 text-xs font-bold border border-amber-200 flex-shrink-0">
-                    <Trophy className="w-3.5 h-3.5" />
-                    <span>
-                      Total Hadiah: {formatCurrency(TOTAL_PRIZE_POOL)}
-                    </span>
-                  </div>
+                  {SingleQuizVolume?.totalUserSubscribed && (
+                    <div
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border flex-shrink-0"
+                      style={{
+                        backgroundColor: `${mainColor}10`,
+                        borderColor: `${mainColor}20`,
+                        color: mainColor,
+                      }}
+                    >
+                      <Users className="w-3.5 h-3.5" />
+                      <span>
+                        {SingleQuizVolume?.totalUserSubscribed.toLocaleString()}{' '}
+                        Peserta Terdaftar
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
               {/* Scroll fade indicator */}
@@ -445,7 +451,12 @@ export function QuizSummary() {
               style={{ borderColor: `${mainColor}15` }}
             >
               <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-3 flex items-center gap-1.5">
-                <Timer className="w-3 h-3" /> Kompetisi Berakhir Dalam
+                <Timer className="w-3 h-3" />{' '}
+                {isVolumeEnded
+                  ? 'Kompetisi Sudah Berakhir'
+                  : isVolumeStarted
+                    ? 'Kompetisi Berakhir Dalam'
+                    : 'Kompetisi Dimulai Dalam'}
               </p>
               <div className="flex gap-2">
                 {[

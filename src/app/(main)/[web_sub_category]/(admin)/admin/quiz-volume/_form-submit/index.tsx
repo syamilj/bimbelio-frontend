@@ -17,6 +17,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from '@/components/ui/select';
 import LoadingPageWithText, {
   LoadingComponentWithText,
 } from '@/components/ui/spinner';
@@ -40,7 +46,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 const STATUS_OPTIONS = [
   {
@@ -107,14 +113,10 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     setSelectedTryouts((prev) => {
       const isExsist = prev.find((item) => item.id === tryout.id);
       if (isExsist) {
-        return prev;
+        return handleSortTryouts(prev);
       }
-      return [...prev, tryout];
+      return handleSortTryouts([...prev, tryout]);
     });
-  };
-
-  const handleRemoveTryout = (tryoutId: string) => {
-    setSelectedTryouts((prev) => prev.filter((item) => item.id !== tryoutId));
   };
 
   const validateForm = () => {
@@ -138,14 +140,48 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleSortTryouts = (tryoutData: TryoutListType[]) => {
+    if (SubCategory && SubCategory.length > 0) {
+      let sortedTryouts: TryoutListType[] = [];
+      for (const sub of SubCategory) {
+        const filteredTryouts = tryoutData
+          .filter((tryout) => tryout.TryoutSubCategory.id === sub.id)
+          .sort((a, b) => (a.quizOrder || 10000) - (b.quizOrder || 10000))
+          .map((tryout, index) => ({
+            ...tryout,
+            quizOrder: index + 1,
+          }));
+
+        sortedTryouts = [...sortedTryouts, ...filteredTryouts];
+        console.log({ tryoutData, filteredTryouts, sortedTryouts });
+      }
+      return sortedTryouts;
+    }
+    return tryoutData;
+  };
+
+  console.log({ selectedTryouts });
+
+  const { data: SubCategory, isLoading: SubCategoryIsLoading } = useGet<
+    TryoutSubCategory[]
+  >('/tryoutCategory/getSubCategory');
+
+  console.log({
+    SubCategoryIsLoading,
+    enabled:
+      mode === 'edit' && !!id && !!SubCategory && SubCategory?.length > 0,
+  });
+
   const { isLoading: isLoadingGetData, refetch } = useGet<
     QuizVolume & {
       Tryout: TryoutListType[];
     }
   >('/quizTryout/getSingleQuizVolume', {
     params: { id },
-    enabled: mode === 'edit' && !!id,
+    enabled:
+      mode === 'edit' && !!id && !!SubCategory && SubCategory?.length > 0,
     onSuccess: ({ data }) => {
+      console.log({ data });
       if (data) {
         setFormData({
           name: data.title || '',
@@ -154,10 +190,11 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           startDate: getDateForInputDateTime(data.startDate),
           endDate: getDateForInputDateTime(data.endDate),
         });
-        setSelectedTryouts(data.Tryout || []);
+        const sortedTryouts = handleSortTryouts(data.Tryout);
+        setSelectedTryouts(sortedTryouts);
       }
     },
-    useEffectDependencies: [id],
+    useEffectDependencies: [id, SubCategory],
   });
 
   const [searchTryout, setSearchTryout] = useState<string>('');
@@ -173,10 +210,6 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
       enabled: searchTryout.length >= 3 || searchTryout.length === 0,
       useEffectDependencies: [searchTryout],
     },
-  );
-
-  const { data: SubCategory } = useGet<TryoutSubCategory[]>(
-    '/tryoutCategory/getSubCategory',
   );
 
   const { isLoading: isLoadingCreate, mutate: createQuizVolume } = useMutation(
@@ -203,7 +236,10 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     // Here you would typically send the data to your API
     const submitData = {
       ...formData,
-      tryoutIds: selectedTryouts.map((tryout) => tryout.id),
+      tryoutIds: selectedTryouts.map((tryout) => ({
+        id: tryout.id,
+        quizOrder: tryout.quizOrder,
+      })),
     };
     console.log('Submitting:', submitData);
     if (mode === 'create') {
@@ -446,7 +482,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                       // aria-expanded={tryout.open}
                       className="min-w-[200px] justify-between"
                     >
-                      {'Select Tryout'}
+                      {'Pilih Tryout'}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -506,71 +542,15 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
                 <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">
                   Tryout Terpilih
                 </p>
-                {SubCategory?.map((item, index) => {
-                  const tryouts = selectedTryouts.filter(
-                    (tryout) => tryout.TryoutSubCategory.id === item.id,
-                  );
-
-                  return (
-                    <div
-                      key={index}
-                      className="space-y-2"
-                    >
-                      <p className="text-base font-bold text-slate-700 px-1">
-                        {item.name}
-                      </p>
-                      <div className="grid grid-cols-4 gap-3">
-                        {tryouts.map((tryout) => (
-                          <div
-                            key={tryout.id}
-                            className="flex justify-between p-3 rounded-lg w-full"
-                            style={{
-                              background: `${mainColor}10`,
-                              borderLeft: `4px solid ${mainColor}`,
-                            }}
-                          >
-                            <div className="flex-1">
-                              <p className="font-bold text-slate-900 text-sm line-clamp-2">
-                                {tryout.title}
-                              </p>
-                              <p className="text-xs text-slate-500 mt-1">
-                                {tryout.TryoutCategory.name} -{' '}
-                                {tryout.TryoutSubCategory.name}
-                              </p>
-                              <p className="text-xs text-slate-500 mt-1">
-                                Duration: {tryout.TryoutSession.duration} mins
-                              </p>
-                            </div>
-                            <Button
-                              type="button"
-                              onClick={() => handleRemoveTryout(tryout.id)}
-                              variant="ghost"
-                              size="sm"
-                              className="self-end mt-2"
-                            >
-                              <X className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        ))}
-                        {tryouts.length === 0 && (
-                          <div
-                            className="flex justify-between p-3 rounded-lg w-full bg-gray-100 border-l-4 border-gray-600"
-                            // style={{
-                            //   background: `${mainColor}10`,
-                            //   borderLeft: `4px solid ${mainColor}`,
-                            // }}
-                          >
-                            <div className="flex-1">
-                              <p className="text-xs text-slate-500 mt-1">
-                                Belum ada tryout terpilih
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                {SubCategory?.map((item, index) => (
+                  <TryoutItem
+                    key={item.id}
+                    selectedTryouts={selectedTryouts}
+                    setSelectedTryouts={setSelectedTryouts}
+                    sub={item}
+                    handleSortTryouts={handleSortTryouts}
+                  />
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -601,3 +581,133 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
     </div>
   );
 }
+
+const TryoutItem = ({
+  selectedTryouts,
+  setSelectedTryouts,
+  sub,
+  handleSortTryouts,
+}: {
+  sub: TryoutSubCategory;
+  selectedTryouts: TryoutListType[];
+  setSelectedTryouts: Dispatch<SetStateAction<TryoutListType[]>>;
+  handleSortTryouts: (data: TryoutListType[]) => TryoutListType[];
+}) => {
+  const { websiteSubCategory } = useWebsiteSubCategory();
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const tryouts = selectedTryouts
+    .filter((tryout) => tryout.TryoutSubCategory.id === sub.id)
+    .sort((a, b) => (a.quizOrder || 10000) - (b.quizOrder || 10000));
+
+  console.log({ tryouts });
+
+  return (
+    <div className="space-y-2">
+      <p className="text-base font-bold text-slate-700 px-1">{sub.name}</p>
+      <div className="grid grid-cols-4 gap-3">
+        {tryouts.map((tryout, index) => (
+          <div
+            key={tryout.id}
+            className="flex justify-between p-3 rounded-lg w-full"
+            style={{
+              background: `${mainColor}10`,
+              borderLeft: `4px solid ${mainColor}`,
+            }}
+          >
+            <div className="flex-1">
+              <div className="flex gap-2 items-center">
+                <Select
+                  value={tryout.quizOrder?.toString() || ''}
+                  onValueChange={(value) => {
+                    const checkIfThereOrderExist = tryouts.find(
+                      (t) => t.quizOrder === Number(value),
+                    );
+                    console.log({ checkIfThereOrderExist });
+                    setSelectedTryouts((prev) =>
+                      prev.map((t) => {
+                        if (t.id === tryout.id) {
+                          return {
+                            ...t,
+                            quizOrder: Number(value),
+                          };
+                        }
+                        if (
+                          checkIfThereOrderExist &&
+                          t.id === checkIfThereOrderExist.id
+                        ) {
+                          return {
+                            ...t,
+                            quizOrder: index + 1,
+                          };
+                        }
+                        return t;
+                      }),
+                    );
+                  }}
+                >
+                  <SelectTrigger className="py-1 pr-0 pl-2 h-fit w-fit">
+                    {tryout.quizOrder}
+                  </SelectTrigger>
+                  <SelectContent>
+                    {tryouts.map((_, idx) => {
+                      const order = idx + 1;
+                      return (
+                        <SelectItem
+                          key={idx}
+                          value={order.toString()}
+                        >
+                          {order}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+                <p className="font-bold text-slate-900 text-sm line-clamp-2">
+                  {tryout.title}
+                </p>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                {tryout.TryoutCategory.name} - {tryout.TryoutSubCategory.name}
+              </p>
+              <p className="text-xs text-slate-500 mt-1">
+                Duration: {tryout.TryoutSession.duration} mins
+              </p>
+            </div>
+            <div className="flex flex-col">
+              <Button
+                type="button"
+                onClick={() =>
+                  setSelectedTryouts((prev) =>
+                    handleSortTryouts(
+                      prev.filter((item) => item.id !== tryout.id),
+                    ),
+                  )
+                }
+                variant="ghost"
+                size="sm"
+                className="self-end"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        ))}
+        {tryouts.length === 0 && (
+          <div
+            className="flex justify-between p-3 rounded-lg w-full bg-gray-100 border-l-4 border-gray-600"
+            // style={{
+            //   background: `${mainColor}10`,
+            //   borderLeft: `4px solid ${mainColor}`,
+            // }}
+          >
+            <div className="flex-1">
+              <p className="text-xs text-slate-500 mt-1">
+                Belum ada tryout terpilih
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

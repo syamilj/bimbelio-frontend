@@ -1,6 +1,6 @@
 import { METADATA_USER } from '@/config/metadata';
 import { Metadata } from 'next';
-import Provider from '../../try-out/provider';
+import Provider from '../../../try-out/provider';
 
 export const metadata: Metadata = {
   ...METADATA_USER.tryOut,

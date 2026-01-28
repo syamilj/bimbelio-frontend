@@ -7,7 +7,9 @@ import { response, responseError } from '@/lib/response';
 import { cn } from '@/lib/utils';
 import { TryoutSubCategory } from '@/types/database';
 import 'katex/dist/katex.min.css';
+import LZString from 'lz-string';
 import { useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import SessionOption from './_component/session-option';
 import TryoutOption from './_component/tryout-option';
 
@@ -164,7 +166,7 @@ const NewTryOut = () => {
       description: '',
       duration: 0,
       thresholdValue: 0,
-      assessmentType: '+1/0',
+      assessmentType: '0-100',
       Questions: [],
     });
     setAssesmentType('');
@@ -214,7 +216,9 @@ const NewTryOut = () => {
   }, [assessmentType]);
 
   useEffect(() => {
-    const saveDataString = localStorage.getItem('temporary-add-quiz');
+    const saveDataString = LZString.decompress(
+      localStorage.getItem('temporary-add-quiz') || '',
+    );
     if (saveDataString) {
       const saveData = JSON.parse(saveDataString);
       setTryout({ ...saveData.tryout });
@@ -232,13 +236,23 @@ const NewTryOut = () => {
     // document.body.style.overflow = 'hidden';
   }, []);
 
+  const handleSetLocalData = useDebouncedCallback((saveData: any) => {
+    // const notCompressed = JSON.stringify(saveData);
+    try {
+      const compressed = LZString.compress(JSON.stringify(saveData));
+      localStorage.setItem(`temporary-add-quiz`, compressed);
+    } catch (error) {
+      console.log('Failed to save temporary data:', error);
+    }
+  }, 1000);
+
   useEffect(() => {
     const saveData = {
       tryout,
       sessions,
     };
     if (tryout) {
-      localStorage.setItem('temporary-add-quiz', JSON.stringify(saveData));
+      handleSetLocalData(saveData);
     }
     if (selectedQuizVolume) {
       localStorage.setItem(

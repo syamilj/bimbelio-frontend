@@ -1,19 +1,18 @@
 'use client';
 
+import { RegistrationUserTryout } from '@/components/_shared/account/registration-user-tryout';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { toaster } from '@/components/ui/toaster';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
-import { UserTryout } from '@/types/database';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Done from './_components/done';
 import Terbaru from './_components/terbaru';
 import DialogRecomendation from './_components/ui/dialog-recomendation';
 import OnBoarding from './_components/ui/onboarding';
-import RegistrationTryOut from './_components/ui/registration-try-out';
 import SummaryTryout from './_components/ui/summary-tryout';
 import Upcoming from './_components/upcoming';
 import UpcomingOtherWeb from './_components/upcoming-other-web';
@@ -70,7 +69,6 @@ const Content = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tryoutAccount, setTryoutAccount] = useState<{
     userTryOutId: string;
-    UserTryout: UserTryout;
   }>();
 
   const [isHideGeneralSection, setIsHideGeneralSection] =
@@ -138,8 +136,12 @@ const Content = () => {
   if (isLoading) return null;
 
   return (
-    <div className="relative">
-      {tryoutAccount?.userTryOutId ? (
+    <RegistrationUserTryout
+      getUserTryout={({ userTryOutId }) => {
+        setTryoutAccount({ userTryOutId });
+      }}
+    >
+      <div className="relative">
         <div className="min-h-screen">
           <div className="container mx-auto max-w-7xl px-4 py-8">
             <DialogRecomendation
@@ -153,48 +155,17 @@ const Content = () => {
 
             {/* Sections with consistent mb-12 spacing */}
             <SummaryTryout />
-            <Terbaru id={tryoutAccount.userTryOutId} />
-            <Upcoming id={tryoutAccount.userTryOutId} />
-            <Done id={tryoutAccount.userTryOutId} />
-            <UpcomingOtherWeb id={tryoutAccount.userTryOutId} />
+            {tryoutAccount?.userTryOutId && (
+              <>
+                <Terbaru id={tryoutAccount!.userTryOutId} />
+                <Upcoming id={tryoutAccount!.userTryOutId} />
+                <Done id={tryoutAccount!.userTryOutId} />
+                <UpcomingOtherWeb id={tryoutAccount!.userTryOutId} />
+              </>
+            )}
           </div>
         </div>
-      ) : (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          {step === 1 ? (
-            <div className="flex w-[calc(100%-2rem)] max-w-[380px] flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg md:w-full">
-              <div className="flex flex-col gap-4">
-                <p className="font-semibold">Akun Belum Terverifikasi</p>
-                <p className="font-regular text-main-gray-text">
-                  Untuk menggunakan fitur try out, harap verifikasi akunmu
-                  terlebih dahulu
-                </p>
-              </div>
-              <div className="mt-4 flex gap-4">
-                <button
-                  className="w-[156px] rounded-[.8rem] py-[.8rem] text-[.85rem] font-medium text-main-gray-text duration-200 md:hover:text-main-gray-text2"
-                  onClick={() => Router.back()}
-                >
-                  Kembali
-                </button>
-                <button
-                  className="font-regular w-[156px] rounded-[.8rem] bg-main py-[.8rem] text-[.85rem] text-white duration-200 hover:bg-main/85"
-                  onClick={() => setStep(2)}
-                >
-                  Verifikasi Akun
-                </button>
-              </div>
-            </div>
-          ) : (
-            <RegistrationTryOut
-              getUserTryout={getUserTryout}
-              isHideGeneralSection={isHideGeneralSection}
-              isHideTargetValue={isHideTargetValue}
-              univOption={univOption}
-            />
-          )}
-        </div>
-      )}
-    </div>
+      </div>
+    </RegistrationUserTryout>
   );
 };

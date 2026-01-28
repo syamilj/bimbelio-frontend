@@ -21,8 +21,6 @@ import {
   REWARDS,
   TARGET_UNIVERSITIES,
   calculateUserStats,
-  generateLeaderboard,
-  generatePerformanceHistory,
   generateQuizzes,
   generateSubjectPerformance,
 } from '../_components/quiz-types';
@@ -30,9 +28,12 @@ import { QuizProvider, useQuizProvider } from '../_provider/_provider';
 
 function BimArenaQuizPageMain() {
   const { websiteSubCategory } = useWebsiteSubCategory();
+
   const {
     useVolume: { selectedVolumeId },
+    useUserStatistic: { UserStatistic },
   } = useQuizProvider();
+  const userTarget = UserStatistic?.userTarget;
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
@@ -43,20 +44,8 @@ function BimArenaQuizPageMain() {
 
   // Generate mock data
   const quizzes = useMemo(() => generateQuizzes(), []);
-  const performanceHistory = useMemo(() => generatePerformanceHistory(), []);
   const subjectPerformance = useMemo(() => generateSubjectPerformance(), []);
-  const leaderboard = useMemo(() => generateLeaderboard(50), []);
   const userStats = useMemo(() => calculateUserStats(quizzes), [quizzes]);
-
-  // Calculate totals
-  const totalQuizzes = quizzes.reduce(
-    (acc, cat) => acc + cat.quizzes.length,
-    0,
-  );
-  const completedQuizzes = quizzes.reduce(
-    (acc, cat) => acc + cat.quizzes.filter((q) => q.isDone).length,
-    0,
-  );
 
   const tabItems = [
     { id: 'library', label: 'Library', icon: BookOpen },
@@ -75,7 +64,7 @@ function BimArenaQuizPageMain() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-6">
         {/* Target University Banner */}
-        {selectedVolumeId && (
+        {userTarget && (
           <div
             className="relative overflow-hidden rounded-3xl md:rounded-3xl p-3 md:p-4 border-2 cursor-pointer hover:shadow-lg transition-all"
             style={{
@@ -99,10 +88,10 @@ function BimArenaQuizPageMain() {
                     Target Kamu
                   </p>
                   <h3 className="font-black text-slate-800 text-sm md:text-base truncate">
-                    {userTargetUniversity.name}
+                    {userTarget.univChoiceOne}
                   </h3>
                   <p className="text-xs md:text-sm text-slate-500 font-medium truncate">
-                    {userTargetUniversity.major}
+                    {userTarget.univStudyChoiceOne}
                   </p>
                 </div>
               </div>
@@ -115,36 +104,15 @@ function BimArenaQuizPageMain() {
                   <div className="flex items-center gap-3 md:gap-5 min-w-max">
                     <div className="text-center flex-shrink-0">
                       <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase">
-                        Passing
+                        Target Nilai
                       </p>
                       <p
                         className="text-lg md:text-xl font-black"
                         style={{ color: mainColor }}
                       >
-                        {userTargetUniversity.passingScore}
+                        {userTarget.targetValue}
                       </p>
                     </div>
-                    <div className="w-px h-8 bg-slate-200 flex-shrink-0" />
-                    <div className="text-center flex-shrink-0">
-                      <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase">
-                        Peluang
-                      </p>
-                      <p className="text-lg md:text-xl font-black text-emerald-600">
-                        {userTargetUniversity.passingProbability}%
-                      </p>
-                    </div>
-                    <div className="w-px h-8 bg-slate-200 flex-shrink-0" />
-                    <div className="text-center flex-shrink-0">
-                      <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase">
-                        Rasio
-                      </p>
-                      <p className="text-lg md:text-xl font-black text-slate-700">
-                        1:{userTargetUniversity.competitionRatio}
-                      </p>
-                    </div>
-                    <button className="px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-bold rounded-3xl md:rounded-3xl border border-slate-200 hover:bg-slate-50 transition-all flex-shrink-0 whitespace-nowrap">
-                      Ubah Target
-                    </button>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppContext } from '@/components/provider/provider-app';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import {
   Clock,
   Flame,
   HelpCircle,
-  RotateCcw,
+  LockIcon,
   Search,
   Swords,
   Trophy,
@@ -19,13 +20,10 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { useQuizProvider } from '../_provider/_provider';
-import {
-  POINTS_PER_QUIZ,
-  getDeterministicValue,
-  isQuizHot,
-} from './quiz-dummy';
+import { getDeterministicValue, isQuizHot } from './quiz-dummy';
 
 export function QuizCardList() {
+  const { setTransactionPopUp } = useAppContext();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const {
@@ -34,7 +32,13 @@ export function QuizCardList() {
       selectedSubCategoryId,
       setSelectedSubCategoryId,
     },
-    useVolume: { SingleQuizVolume },
+    useVolume: {
+      SingleQuizVolume,
+      selectedVolumeId,
+      isVolumeStarted,
+      isVolumeEnded,
+    },
+    isLocked,
   } = useQuizProvider();
 
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -185,164 +189,200 @@ export function QuizCardList() {
               >
                 <style>{`.quiz-cards::-webkit-scrollbar { display: none; }`}</style>
                 <div className="quiz-cards flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4 min-w-max md:min-w-0">
-                  {sub.quizzes.map((quiz) => (
-                    <div
-                      key={quiz.id}
-                      className={cn(
-                        'group relative overflow-hidden rounded-3xl md:rounded-3xl border transition-all duration-200 cursor-pointer shadow-sm flex-shrink-0 w-[200px] md:w-auto',
-                        quiz.isDone
-                          ? 'border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-white hover:border-emerald-300 hover:shadow-lg'
-                          : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-lg',
-                      )}
-                    >
-                      {/* Top Accent Bar */}
+                  {sub.quizzes.map((quiz) => {
+                    return (
                       <div
-                        className="h-1 md:h-1.5 w-full"
-                        style={{
-                          backgroundColor: quiz.isDone ? '#10b981' : mainColor,
-                        }}
-                      />
+                        key={quiz.id}
+                        className={cn(
+                          'group relative overflow-hidden rounded-3xl md:rounded-3xl border transition-all duration-200 cursor-pointer shadow-sm flex-shrink-0 w-[200px] md:w-auto',
+                          quiz.isDone
+                            ? 'border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-white hover:border-emerald-300 hover:shadow-lg'
+                            : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-lg',
+                        )}
+                      >
+                        {/* Top Accent Bar */}
+                        <div
+                          className="h-1 md:h-1.5 w-full"
+                          style={{
+                            backgroundColor: quiz.isDone
+                              ? '#10b981'
+                              : mainColor,
+                          }}
+                        />
 
-                      {/* Hot/Trending Badge */}
-                      {!quiz.isDone && isQuizHot(quiz.id) && (
-                        <div className="absolute top-3 right-2 md:top-4 md:right-3 z-10">
-                          <div className="px-2 py-0.5 md:px-2.5 md:py-1 rounded-full bg-gradient-to-r from-red-500 to-orange-500 text-white text-[8px] md:text-[9px] font-bold flex items-center gap-0.5 md:gap-1 shadow-lg animate-pulse">
-                            <Flame className="w-2.5 h-2.5 md:w-3 md:h-3" /> HOT
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="p-3 md:p-5 space-y-2 md:space-y-3">
-                        {/* Header with Battle Stats */}
-                        <div className="flex justify-between items-center">
-                          <span
-                            className="text-[9px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded-3xl md:rounded-3xl"
-                            style={{
-                              backgroundColor: `${mainColor}15`,
-                              color: mainColor,
-                            }}
-                          >
-                            {sub.code}
-                          </span>
-                          <div className="flex items-center gap-1.5">
-                            {!quiz.isDone && (
-                              <div className="flex items-center gap-0.5 md:gap-1 px-1.5 md:px-2 py-0.5 md:py-1 rounded-3xl md:rounded-3xl bg-amber-50 border border-amber-200">
-                                <Users className="w-2.5 h-2.5 md:w-3 md:h-3 text-amber-600" />
-                                <span className="text-[9px] md:text-[10px] font-bold text-amber-700">
-                                  {getDeterministicValue(quiz.id, 5, 25)}
-                                </span>
-                              </div>
-                            )}
-                            {quiz.isDone && (
-                              <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
-                                <CheckCircle2 className="w-3 h-3 md:w-3.5 md:h-3.5 text-white" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Quiz Name */}
-                        <div>
-                          <h4 className="font-bold text-sm md:text-base text-slate-800 group-hover:text-slate-900 transition-colors line-clamp-2">
-                            {quiz.title}
-                          </h4>
-                          <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs text-slate-400 mt-1.5 md:mt-2 font-semibold">
-                            <span className="flex items-center gap-0.5 md:gap-1">
-                              <HelpCircle className="w-3 h-3 md:w-3.5 md:h-3.5" />{' '}
-                              {quiz.TryoutQuestionCount || '-'} Soal
-                            </span>
-                            <span className="flex items-center gap-0.5 md:gap-1">
-                              <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" />{' '}
-                              {quiz.TryoutSession.duration} Menit
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Score or Start Button */}
-                        {quiz.isDone ? (
-                          <div className="pt-2 md:pt-3 border-t border-slate-100 space-y-2 md:space-y-3">
-                            <div className="flex justify-between items-center">
-                              <div>
-                                <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                                  Skor
-                                </p>
-                                <div className="flex items-baseline gap-1">
-                                  <p className="text-xl md:text-2xl font-black text-slate-800">
-                                    {quiz.TryoutResult?.totalScore || '-'}
-                                  </p>
-                                  <div className="flex items-center gap-0.5 text-amber-600">
-                                    <Trophy className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                                    <span className="text-[10px] md:text-xs font-bold">
-                                      #{getDeterministicValue(quiz.id, 1, 50)}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="text-right">
-                                <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                                  B/S
-                                </p>
-                                <p className="text-sm md:text-base font-bold">
-                                  <span className="text-emerald-600">
-                                    {quiz.TryoutSession.CorrectAnswersCount ||
-                                      '-'}
-                                  </span>
-                                  <span className="text-slate-300 mx-0.5">
-                                    /
-                                  </span>
-                                  <span className="text-red-500">
-                                    {quiz.TryoutSession.WrongAnswersCount ||
-                                      '-'}
-                                  </span>
-                                </p>
-                              </div>
-                            </div>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="w-full rounded-3xl md:rounded-3xl text-[10px] md:text-xs font-bold h-8 md:h-10 gap-1 md:gap-1.5 hover:bg-slate-50 border-slate-200"
-                            >
-                              <RotateCcw className="w-3 h-3 md:w-4 md:h-4" />{' '}
-                              Ulangi
-                            </Button>
-                            <Link href={`./quiz/${quiz.id}`}>
-                              <Button
-                                size="sm"
-                                className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90"
-                                style={{
-                                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                                }}
-                              >
-                                <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
-                                Lihat Hasil
-                              </Button>
-                            </Link>
-                          </div>
-                        ) : (
-                          <div className="space-y-2 md:space-y-3">
-                            <Link href={`./quiz/${quiz.id}`}>
-                              <Button
-                                size="sm"
-                                className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90"
-                                style={{
-                                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                                }}
-                              >
-                                <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
-                                Battle
-                              </Button>
-                            </Link>
-                            <div className="flex items-center justify-center gap-2 text-[10px] md:text-xs text-slate-400">
-                              <span className="flex items-center gap-0.5 md:gap-1">
-                                <Trophy className="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-400" />{' '}
-                                +{POINTS_PER_QUIZ} Poin
-                              </span>
+                        {/* Hot/Trending Badge */}
+                        {!quiz.isDone && isQuizHot(quiz.id) && (
+                          <div className="absolute top-3 right-2 md:top-4 md:right-3 z-10">
+                            <div className="px-2 py-0.5 md:px-2.5 md:py-1 rounded-full bg-gradient-to-r from-red-500 to-orange-500 text-white text-[8px] md:text-[9px] font-bold flex items-center gap-0.5 md:gap-1 shadow-lg animate-pulse">
+                              <Flame className="w-2.5 h-2.5 md:w-3 md:h-3" />{' '}
+                              HOT
                             </div>
                           </div>
                         )}
+
+                        <div className="p-3 md:p-5 space-y-2 md:space-y-3">
+                          {/* Header with Battle Stats */}
+                          <div className="flex justify-between items-center">
+                            <span
+                              className="text-[9px] md:text-[10px] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded-3xl md:rounded-3xl"
+                              style={{
+                                backgroundColor: `${mainColor}15`,
+                                color: mainColor,
+                              }}
+                            >
+                              {sub.code}
+                            </span>
+                            <div className="flex items-center gap-1.5">
+                              <div className="flex items-center gap-0.5 md:gap-1 px-1.5 md:px-2 py-0.5 md:py-1 rounded-3xl md:rounded-3xl bg-amber-50 border border-amber-200">
+                                <Users className="w-2.5 h-2.5 md:w-3 md:h-3 text-amber-600" />
+                                <span className="text-[9px] md:text-[10px] font-bold text-amber-700">
+                                  {quiz.totalParticipant || 0}
+                                </span>
+                              </div>
+                              {quiz.isDone && (
+                                <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
+                                  <CheckCircle2 className="w-3 h-3 md:w-3.5 md:h-3.5 text-white" />
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Quiz Name */}
+                          <div>
+                            <h4 className="font-bold text-sm md:text-base text-slate-800 group-hover:text-slate-900 transition-colors line-clamp-2">
+                              {quiz.title}
+                            </h4>
+                            <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs text-slate-400 mt-1.5 md:mt-2 font-semibold">
+                              <span className="flex items-center gap-0.5 md:gap-1">
+                                <HelpCircle className="w-3 h-3 md:w-3.5 md:h-3.5" />{' '}
+                                {quiz.TryoutQuestionCount || '-'} Soal
+                              </span>
+                              <span className="flex items-center gap-0.5 md:gap-1">
+                                <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" />{' '}
+                                {quiz.TryoutSession.duration} Menit
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Score or Start Button */}
+                          {quiz.isDone ? (
+                            <div className="pt-2 md:pt-3 border-t border-slate-100 space-y-2 md:space-y-3">
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                                    Skor
+                                  </p>
+                                  <div className="flex items-baseline gap-1">
+                                    <p className="text-xl md:text-2xl font-black text-slate-800">
+                                      {quiz.TryoutResult?.totalScore || '-'}
+                                    </p>
+                                    <div className="flex items-center gap-0.5 text-amber-600">
+                                      <Trophy className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                                      <span className="text-[10px] md:text-xs font-bold">
+                                        #{getDeterministicValue(quiz.id, 1, 50)}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                                    B/S
+                                  </p>
+                                  <p className="text-sm md:text-base font-bold">
+                                    <span className="text-emerald-600">
+                                      {quiz.TryoutSession.CorrectAnswersCount ||
+                                        '-'}
+                                    </span>
+                                    <span className="text-slate-300 mx-0.5">
+                                      /
+                                    </span>
+                                    <span className="text-red-500">
+                                      {quiz.TryoutSession.WrongAnswersCount ||
+                                        '-'}
+                                    </span>
+                                  </p>
+                                </div>
+                              </div>
+                              <Link
+                                href={`./quiz/${selectedVolumeId}/${quiz.id}`}
+                              >
+                                <Button
+                                  size="sm"
+                                  className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90 bg-[#10b981]"
+                                >
+                                  <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
+                                  Lihat Hasil
+                                </Button>
+                              </Link>
+                            </div>
+                          ) : (
+                            <div className="space-y-2 md:space-y-3">
+                              {isVolumeEnded ? (
+                                <Button
+                                  size="sm"
+                                  className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90"
+                                  style={{
+                                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                                  }}
+                                  disabled
+                                >
+                                  <LockIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
+                                  Telah Berakhir
+                                </Button>
+                              ) : isVolumeStarted ? (
+                                <>
+                                  {isLocked && quiz.quizOrder !== 1 ? (
+                                    <Button
+                                      size="sm"
+                                      className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white"
+                                      onClick={() => setTransactionPopUp(true)}
+                                    >
+                                      <LockIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
+                                      Terkunci
+                                    </Button>
+                                  ) : (
+                                    <Link
+                                      href={`./quiz/${selectedVolumeId}/${quiz.id}`}
+                                    >
+                                      <Button
+                                        size="sm"
+                                        className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90"
+                                        style={{
+                                          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                                        }}
+                                      >
+                                        <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
+                                        Battle
+                                      </Button>
+                                    </Link>
+                                  )}
+                                </>
+                              ) : !isVolumeStarted ? (
+                                <Button
+                                  size="sm"
+                                  className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90"
+                                  style={{
+                                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                                  }}
+                                  disabled
+                                >
+                                  <LockIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
+                                  Belum Dimulai
+                                </Button>
+                              ) : null}
+
+                              {/* <div className="flex items-center justify-center gap-2 text-[10px] md:text-xs text-slate-400">
+                                <span className="flex items-center gap-0.5 md:gap-1">
+                                  <Trophy className="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-400" />{' '}
+                                  +{POINTS_PER_QUIZ} Poin
+                                </span>
+                              </div> */}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
               {/* Scroll fade indicator */}

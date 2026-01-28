@@ -12,8 +12,11 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import {
+  ArrowDown,
+  ArrowUp,
   CheckCircle2,
   Clock,
+  Crown,
   FileQuestion,
   Filter,
   Medal,
@@ -56,6 +59,7 @@ export function QuizProgress() {
   const progress = UserProgress?.progress;
   const answerAnalysis = UserProgress?.answerAnalysis;
   const SubCategory = UserProgress?.chart.subCategories || [];
+  const compareToTop = UserStatistic?.compareToTop;
 
   const progressPercentage = progress?.percentage || 0;
 
@@ -466,7 +470,7 @@ export function QuizProgress() {
               </h3>
               <div className="text-center mb-4 md:mb-6">
                 <div className="text-4xl md:text-6xl font-black tracking-tight mb-1 md:mb-2">
-                  {userStats?.averageScore || '-'}
+                  {userStats?.averageScore.toFixed(1) || '-'}
                 </div>
                 <div className="text-white/80 font-bold text-xs md:text-sm bg-white/20 px-3 md:px-4 py-1 md:py-1.5 rounded-full inline-flex items-center gap-1 md:gap-1.5">
                   <TrendingUp className="w-3 h-3 md:w-3.5 md:h-3.5" /> Akurasi{' '}
@@ -475,8 +479,10 @@ export function QuizProgress() {
               </div>
               <p className="text-white/70 text-xs md:text-sm text-center leading-relaxed mb-4 md:mb-6">
                 Kamu berada di{' '}
-                <span className="text-white font-bold">Top 15%</span> peserta
-                Volume
+                <span className="text-white font-bold">
+                  Top {userStats?.topPercentage.toFixed(1) || 0}%
+                </span>{' '}
+                peserta Volume
               </p>
               <div className="pt-4 md:pt-6 border-t border-white/20 grid grid-cols-2 gap-3 md:gap-4">
                 <div className="text-center">
@@ -624,174 +630,265 @@ export function QuizProgress() {
       </div>
 
       {/* Top 10 Comparison */}
-      {/* <div className="relative overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl md:rounded-3xl p-4 md:p-6 border border-amber-200 shadow-sm">
-        <div className="absolute top-0 right-0 w-24 md:w-40 h-24 md:h-40 bg-amber-300/20 rounded-full blur-3xl" />
+      {compareToTop && (
+        <div className="relative overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl md:rounded-3xl p-4 md:p-6 border border-amber-200 shadow-sm">
+          <div className="absolute top-0 right-0 w-24 md:w-40 h-24 md:h-40 bg-amber-300/20 rounded-full blur-3xl" />
 
-        <div className="relative">
-          <div className="flex items-center justify-between gap-2 mb-4 md:mb-5">
-            <h3 className="text-sm md:text-lg font-black text-slate-800 flex items-center gap-1.5 md:gap-2">
-              <Crown className="w-4 h-4 md:w-5 md:h-5 text-amber-500" />
-              vs Top 10
-            </h3>
-            <Badge className="bg-amber-100 text-amber-700 font-bold px-2 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs">
-              Gap:{' '}
-              {top10Comparison.totalGap > 0
-                ? `+${top10Comparison.totalGap}`
-                : top10Comparison.totalGap}
-            </Badge>
-          </div>
+          <div className="relative">
+            <div className="flex items-center justify-between gap-2 mb-4 md:mb-5">
+              <h3 className="text-sm md:text-lg font-black text-slate-800 flex items-center gap-1.5 md:gap-2">
+                <Crown className="w-4 h-4 md:w-5 md:h-5 text-amber-500" />
+                vs Top {compareToTop.topNumber}
+              </h3>
+            </div>
 
-          <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
-            <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-5 min-w-max md:min-w-0">
-              <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
-                <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
-                  Rata-rata
-                </p>
-                <div className="flex items-end justify-between">
-                  <div>
-                    <p className="text-[10px] md:text-xs text-slate-500">
-                      Kamu
-                    </p>
-                    <p className="text-lg md:text-2xl font-black text-slate-800">
-                      {userStats.avgScore}
-                    </p>
-                  </div>
-                  <div className="text-center px-1 md:px-3">
-                    {userStats.avgScore >= top10Comparison.avgScore ? (
-                      <ArrowUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-500 mx-auto" />
-                    ) : (
-                      <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-red-500 mx-auto" />
-                    )}
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] md:text-xs text-amber-600">
-                      Top 10
-                    </p>
-                    <p className="text-lg md:text-2xl font-black text-amber-600">
-                      {top10Comparison.avgScore}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
-                <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
-                  Terbaik
-                </p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-base md:text-xl font-black text-slate-800">
-                      {userStats.bestSubject}
-                    </p>
-                    <p className="text-[10px] md:text-xs text-slate-500">
-                      Kamu: {top10Comparison.userBestScore}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
-                <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
-                  Akurasi
-                </p>
-                <div className="flex items-end justify-between">
-                  <div>
-                    <p className="text-[10px] md:text-xs text-slate-500">
-                      Kamu
-                    </p>
-                    <p className="text-lg md:text-2xl font-black text-slate-800">
-                      {userStats.accuracy.toFixed(0)}%
-                    </p>
-                  </div>
-                  <div className="text-center px-1 md:px-3">
-                    {userStats.accuracy >= top10Comparison.accuracy ? (
-                      <span className="text-[10px] md:text-xs font-bold text-emerald-500">
-                        👍
-                      </span>
-                    ) : (
-                      <span className="text-[10px] md:text-xs font-bold text-red-500">
-                        👎
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] md:text-xs text-amber-600">
-                      Top 10
-                    </p>
-                    <p className="text-lg md:text-2xl font-black text-amber-600">
-                      {top10Comparison.accuracy}%
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
-                <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
-                  Jarak Top 10
-                </p>
-                <div className="text-center">
-                  <p
-                    className="text-xl md:text-3xl font-black"
-                    style={{ color: mainColor }}
-                  >
-                    {userStats.currentRank <= 10
-                      ? '🏆'
-                      : `${userStats.currentRank - 10}`}
+            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2 md:pb-0">
+              <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-5 min-w-max md:min-w-0">
+                <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
+                  <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
+                    Rata-rata
                   </p>
-                  <p className="text-[10px] md:text-xs text-slate-500 mt-0.5 md:mt-1">
-                    {userStats.currentRank <= 10 ? 'Top 10!' : 'peringkat'}
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <p className="text-[10px] md:text-xs text-slate-500">
+                        Kamu
+                      </p>
+                      <p className="text-lg md:text-2xl font-black text-slate-800">
+                        {compareToTop.averageScore.user.toFixed(1)}
+                      </p>
+                    </div>
+                    <div className="text-center px-1 md:px-3">
+                      {compareToTop.averageScore.user >=
+                      compareToTop.averageScore.top ? (
+                        <ArrowUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-500 mx-auto" />
+                      ) : (
+                        <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-red-500 mx-auto" />
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] md:text-xs text-amber-600">
+                        Top {compareToTop.topNumber}
+                      </p>
+                      <p className="text-lg md:text-2xl font-black text-amber-600">
+                        {compareToTop.averageScore.top.toFixed(1)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
+                  <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
+                    Total Skor
                   </p>
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <p className="text-[10px] md:text-xs text-slate-500">
+                        Kamu
+                      </p>
+                      <p className="text-lg md:text-2xl font-black text-slate-800">
+                        {compareToTop.totalScore.user}
+                      </p>
+                    </div>
+                    <div className="text-center px-1 md:px-3">
+                      {compareToTop.totalScore.user >=
+                      compareToTop.totalScore.top ? (
+                        <ArrowUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-500 mx-auto" />
+                      ) : (
+                        <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-red-500 mx-auto" />
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] md:text-xs text-amber-600">
+                        Top {compareToTop.topNumber}
+                      </p>
+                      <p className="text-lg md:text-2xl font-black text-amber-600">
+                        {compareToTop.totalScore.top}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
+                  <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
+                    Akurasi
+                  </p>
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <p className="text-[10px] md:text-xs text-slate-500">
+                        Kamu
+                      </p>
+                      <p className="text-lg md:text-2xl font-black text-slate-800">
+                        {compareToTop.accuracy.user.toFixed(0)}%
+                      </p>
+                    </div>
+                    <div className="text-center px-1 md:px-3">
+                      {compareToTop.accuracy.user >=
+                      compareToTop.accuracy.top ? (
+                        <ArrowUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-500 mx-auto" />
+                      ) : (
+                        <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-red-500 mx-auto" />
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] md:text-xs text-amber-600">
+                        Top {compareToTop.topNumber}
+                      </p>
+                      <p className="text-lg md:text-2xl font-black text-amber-600">
+                        {compareToTop.accuracy.top.toFixed(0)}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
+                  <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
+                    Jarak Top {compareToTop.topNumber}
+                  </p>
+                  <div className="text-center">
+                    <p
+                      className="text-xl md:text-3xl font-black"
+                      style={{ color: mainColor }}
+                    >
+                      {compareToTop.differenceRank}
+                    </p>
+                    <p className="text-[10px] md:text-xs text-slate-500 mt-0.5 md:mt-1">
+                      Peringkat
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm">
+              <p className="text-[10px] md:text-xs font-bold text-slate-600 mb-3 md:mb-4">
+                Gap per Subtes
+              </p>
 
-          <div className="bg-white rounded-3xl md:rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm">
-            <p className="text-[10px] md:text-xs font-bold text-slate-600 mb-3 md:mb-4">
-              Gap per Subtes
-            </p>
-            <div className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0">
-              <div className="flex md:grid md:grid-cols-7 gap-2 md:gap-3 min-w-max md:min-w-0">
-                {top10Comparison.perSubject.map((item) => {
-                  const gap = item.userScore - item.top10Score;
-                  const isPositive = gap >= 0;
-                  return (
-                    <div
-                      key={item.code}
-                      className="text-center flex-shrink-0 w-[50px] md:w-auto"
-                    >
-                      <div
-                        className="w-full h-1.5 md:h-2 rounded-full mb-1.5 md:mb-2"
-                        style={{ backgroundColor: `${item.color}30` }}
-                      >
-                        <div
-                          className="h-full rounded-full transition-all"
-                          style={{
-                            width: `${Math.min(100, (item.userScore / item.top10Score) * 100)}%`,
-                            backgroundColor: item.color,
-                          }}
-                        />
+              <div className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0 pb-2 md:pb-0">
+                <div className="space-y-4 md:space-y-6 min-w-max md:min-w-0">
+                  {compareToTop.subTesGap.map((item) => {
+                    const accuracyGap =
+                      item.gap.accuracy.user - item.gap.accuracy.top;
+                    const avgGap =
+                      item.gap.averageScore.user - item.gap.averageScore.top;
+                    const totalGap =
+                      item.gap.totalScore.user - item.gap.totalScore.top;
+
+                    return (
+                      <div key={item.code}>
+                        {/* Subtest Header */}
+                        <p className="text-[10px] md:text-xs font-bold text-slate-700 mb-2 md:mb-3">
+                          {item.code} - {item.name}
+                        </p>
+
+                        {/* Three Cards Row - Flex Layout */}
+                        <div className="flex md:grid md:grid-cols-3 gap-2 md:gap-3">
+                          {/* Total Score Card */}
+                          <div className="bg-white rounded-3xl p-3 md:p-5 border border-blue-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
+                            <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
+                              Total Skor
+                            </p>
+                            <div className="flex items-end justify-between">
+                              <div>
+                                <p className="text-[10px] md:text-xs text-slate-500">
+                                  Kamu
+                                </p>
+                                <p className="text-lg md:text-2xl font-black text-slate-800">
+                                  {item.gap.totalScore.user.toFixed(0)}
+                                </p>
+                              </div>
+                              <div className="text-center px-1 md:px-3">
+                                {item.gap.totalScore.user >=
+                                item.gap.totalScore.top ? (
+                                  <ArrowUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-500 mx-auto" />
+                                ) : (
+                                  <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-red-500 mx-auto" />
+                                )}
+                              </div>
+                              <div className="text-right">
+                                <p className="text-[10px] md:text-xs text-blue-600">
+                                  Top {compareToTop.topNumber}
+                                </p>
+                                <p className="text-lg md:text-2xl font-black text-blue-600">
+                                  {item.gap.totalScore.top.toFixed(0)}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Average Score Card */}
+                          <div className="bg-white rounded-3xl p-3 md:p-5 border border-purple-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
+                            <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
+                              Rata-rata
+                            </p>
+                            <div className="flex items-end justify-between">
+                              <div>
+                                <p className="text-[10px] md:text-xs text-slate-500">
+                                  Kamu
+                                </p>
+                                <p className="text-lg md:text-2xl font-black text-slate-800">
+                                  {item.gap.averageScore.user.toFixed(1)}
+                                </p>
+                              </div>
+                              <div className="text-center px-1 md:px-3">
+                                {item.gap.averageScore.user >=
+                                item.gap.averageScore.top ? (
+                                  <ArrowUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-500 mx-auto" />
+                                ) : (
+                                  <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-red-500 mx-auto" />
+                                )}
+                              </div>
+                              <div className="text-right">
+                                <p className="text-[10px] md:text-xs text-purple-600">
+                                  Top {compareToTop.topNumber}
+                                </p>
+                                <p className="text-lg md:text-2xl font-black text-purple-600">
+                                  {item.gap.averageScore.top.toFixed(1)}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Accuracy Card */}
+                          <div className="bg-white rounded-3xl p-3 md:p-5 border border-amber-100 shadow-sm flex-shrink-0 w-[140px] md:w-auto">
+                            <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase mb-2 md:mb-3">
+                              Akurasi
+                            </p>
+                            <div className="flex items-end justify-between">
+                              <div>
+                                <p className="text-[10px] md:text-xs text-slate-500">
+                                  Kamu
+                                </p>
+                                <p className="text-lg md:text-2xl font-black text-slate-800">
+                                  {item.gap.accuracy.user.toFixed(0)}%
+                                </p>
+                              </div>
+                              <div className="text-center px-1 md:px-3">
+                                {item.gap.accuracy.user >=
+                                item.gap.accuracy.top ? (
+                                  <ArrowUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-500 mx-auto" />
+                                ) : (
+                                  <ArrowDown className="w-4 h-4 md:w-5 md:h-5 text-red-500 mx-auto" />
+                                )}
+                              </div>
+                              <div className="text-right">
+                                <p className="text-[10px] md:text-xs text-amber-600">
+                                  Top {compareToTop.topNumber}
+                                </p>
+                                <p className="text-lg md:text-2xl font-black text-amber-600">
+                                  {item.gap.accuracy.top.toFixed(0)}%
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <p className="text-[10px] md:text-xs font-bold text-slate-700">
-                        {item.code}
-                      </p>
-                      <p
-                        className={cn(
-                          'text-[9px] md:text-[10px] font-bold',
-                          isPositive ? 'text-emerald-600' : 'text-red-500',
-                        )}
-                      >
-                        {isPositive ? '+' : ''}
-                        {gap}
-                      </p>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div> */}
+      )}
 
       {/* Per Category Progress */}
       <div

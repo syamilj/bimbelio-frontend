@@ -36,6 +36,41 @@ export const initiateUserStatistic = ({
       rank: number;
       maxScore: number;
     }[];
+    compareToTop: {
+      topNumber: number;
+      averageScore: {
+        user: number;
+        top: number;
+      };
+      totalScore: {
+        user: number;
+        top: number;
+      };
+      accuracy: {
+        user: number;
+        top: number;
+      };
+      differenceRank: number;
+      subTesGap: {
+        id: string;
+        name: string;
+        code: string;
+        gap: {
+          averageScore: {
+            user: number;
+            top: number;
+          };
+          totalScore: {
+            user: number;
+            top: number;
+          };
+          accuracy: {
+            user: number;
+            top: number;
+          };
+        };
+      }[];
+    };
   }>('/quizTryout/getUserStatistics', {
     params: { id: volumeId },
     enabled: !!volumeId,

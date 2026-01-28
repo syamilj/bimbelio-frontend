@@ -434,6 +434,7 @@ export function QuizLeaderboard() {
                   '--tw-ring-color': mainColor,
                 }}
               >
+                <option value={'all'}>Semua Provinsi</option>
                 {Provinces.map((province) => (
                   <option
                     key={province.province}
@@ -568,6 +569,13 @@ export function QuizLeaderboard() {
                       Target PTN
                     </div>
                   </th>
+                  {/* Target PTN */}
+                  <th className="px-3 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    <div className="flex items-center gap-1">
+                      <GraduationCap className="w-3 h-3" />
+                      Target Jurusan
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -634,8 +642,7 @@ export function QuizLeaderboard() {
                         {/* Skor */}
                         <td className="px-3 py-3 text-right">
                           <span className="font-black text-slate-900 text-sm">
-                            {entry.totalScore.toLocaleString()} /{' '}
-                            {entry.maxScore.toLocaleString()}
+                            {entry.totalScore.toLocaleString()}
                           </span>
                         </td>
                         {/* Quiz */}
@@ -692,13 +699,18 @@ export function QuizLeaderboard() {
                         <td className="px-3 py-3">
                           <div className="flex flex-col">
                             <span
-                              className="text-sm font-semibold text-slate-700 truncate max-w-[120px]"
+                              className="text-sm text-slate-700 truncate max-w-[120px]"
                               title={entry.User.univChoice}
                             >
                               {entry.User.univChoice}
                             </span>
+                          </div>
+                        </td>
+                        {/* Target PTN */}
+                        <td className="px-3 py-3">
+                          <div className="flex flex-col">
                             <span
-                              className="text-[10px] text-slate-500 truncate max-w-[140px]"
+                              className="text-sm text-slate-700 truncate max-w-[120px]"
                               title={entry.User.majorChoice}
                             >
                               {entry.User.majorChoice}

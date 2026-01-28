@@ -19,6 +19,11 @@ export const initiateVolume = () => {
         take: 50,
         page: 1,
       },
+      onSuccess({ data }) {
+        if (selectedVolumeId === null && data && data[0]) {
+          setSelectedVolumeId(data[0]?.id || null);
+        }
+      },
     },
   );
 
@@ -39,6 +44,7 @@ export const initiateVolume = () => {
         TryoutResult: TryoutResult | null;
         isDone: boolean;
       })[];
+      totalUserSubscribed: number;
     }
   >('/quizTryout/getSingleQuizVolume', {
     params: { id: selectedVolumeId },
@@ -48,6 +54,24 @@ export const initiateVolume = () => {
 
   console.log({ SingleQuizVolume, selectedVolumeId });
 
+  const isVolumeStarted = (() => {
+    if (SingleQuizVolume?.startDate) {
+      const startDate = new Date(SingleQuizVolume.startDate);
+      const currentDate = new Date();
+      return currentDate > startDate;
+    }
+    return false;
+  })();
+
+  const isVolumeEnded = (() => {
+    if (SingleQuizVolume?.endDate) {
+      const endDate = new Date(SingleQuizVolume.endDate);
+      const currentDate = new Date();
+      return currentDate > endDate;
+    }
+    return false;
+  })();
+
   return {
     selectedVolumeId,
     setSelectedVolumeId,
@@ -55,5 +79,7 @@ export const initiateVolume = () => {
     SingleQuizVolume,
     SingleQuizVolumeIsLoading,
     SingleQuizVolumeRefetch,
+    isVolumeStarted,
+    isVolumeEnded,
   };
 };

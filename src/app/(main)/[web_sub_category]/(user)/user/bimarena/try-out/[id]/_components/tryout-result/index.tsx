@@ -25,7 +25,12 @@ import {
   Trophy,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { TryoutDataType } from '../../page';
 import CountdownResult from '../countdown-result';
@@ -134,6 +139,7 @@ export default function TryoutResult({
   sessionOptions,
   resultDate,
 }: Props) {
+  const { volumeId } = useParams<{ volumeId: string }>();
   const pathname = usePathname();
 
   const mode = pathname.toLocaleLowerCase().includes('try-out')
@@ -188,17 +194,22 @@ export default function TryoutResult({
     useState<boolean>(false);
 
   useEffect(() => {
-    getGeneral(
-      `/tryout/getTryoutUnlockByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}`,
-      {
-        setData: setUnlockTryoutDbs,
-        setLoading: setUnlockTryoutIsLoading,
-        onError() {
-          setUnlockTryoutIsError(true);
+    if (mode === 'try-out') {
+      getGeneral(
+        `/tryout/getTryoutUnlockByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}`,
+        {
+          setData: setUnlockTryoutDbs,
+          setLoading: setUnlockTryoutIsLoading,
+          onError() {
+            setUnlockTryoutIsError(true);
+          },
         },
-      },
-    );
-  }, [session, tryoutId]);
+      );
+    } else {
+      setUnlockTryoutDbs(true);
+      setUnlockTryoutIsLoading(false);
+    }
+  }, [session, tryoutId, mode]);
 
   const unlockTryout =
     session && session.user.role !== 'USER' ? true : unlockTryoutDbs || false;
@@ -239,10 +250,14 @@ export default function TryoutResult({
     );
   }, [session, tryoutId]);
 
+  console.log({ ResultData });
+
   useEffect(() => {
     if (!isTesting) {
       router.push(
-        `/${website_sub_category_id}/user/bimarena/${mode}/${tryoutId}?tab=${tabs}`,
+        mode === 'try-out'
+          ? `/${website_sub_category_id}/user/bimarena/try-out/${tryoutId}?tab=${tabs}`
+          : `/${website_sub_category_id}/user/bimarena/quiz/${volumeId}/${tryoutId}?tab=${tabs}`,
       );
     } else {
       router.push(
