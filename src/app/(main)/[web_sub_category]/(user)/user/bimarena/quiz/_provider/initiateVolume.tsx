@@ -43,6 +43,7 @@ export const initiateVolume = () => {
         TryoutQuestionCount: number;
         TryoutResult: TryoutResult | null;
         isDone: boolean;
+        totalParticipant: number;
       })[];
       totalUserSubscribed: number;
     }
