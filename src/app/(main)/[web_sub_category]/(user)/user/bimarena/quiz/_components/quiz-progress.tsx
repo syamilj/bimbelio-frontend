@@ -295,8 +295,6 @@ export function QuizProgress() {
                   </button>
                 </div>
               </div>
-              {/* Scroll fade indicator */}
-              <div className="absolute right-0 top-0 bottom-2 w-6 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
             </div>
 
             <ChartContainer
@@ -326,7 +324,6 @@ export function QuizProgress() {
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
 
-                {/* 7 Subtest Lines - filtered */}
                 {SubCategory.filter((sub) =>
                   selectedSubtests.includes(sub.code),
                 ).map((sub, index) => (
@@ -342,7 +339,6 @@ export function QuizProgress() {
                   />
                 ))}
 
-                {/* User Average Line (bold black) */}
                 {showUserAvg && (
                   <Line
                     type="monotone"
@@ -355,7 +351,6 @@ export function QuizProgress() {
                   />
                 )}
 
-                {/* All Students Average Line (dashed gray) */}
                 {showAllStudentsAvg && (
                   <Line
                     type="monotone"
@@ -575,7 +570,6 @@ export function QuizProgress() {
                   domain={[0, 100]}
                   tick={{ fontSize: 9, fill: '#94a3b8' }}
                 />
-                {/* All Students Average - rendered first (background) */}
                 <Radar
                   name="Semua Siswa"
                   dataKey="avgScore"
@@ -585,7 +579,6 @@ export function QuizProgress() {
                   strokeWidth={2}
                   strokeDasharray="4 4"
                 />
-                {/* User Score - rendered on top */}
                 <Radar
                   name="Kamu"
                   dataKey="userScore"

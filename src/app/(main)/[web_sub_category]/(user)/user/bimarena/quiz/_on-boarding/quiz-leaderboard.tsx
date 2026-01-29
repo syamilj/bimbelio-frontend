@@ -28,8 +28,11 @@ import {
   Zap,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { useQuizProvider } from '../_provider/_provider';
-import { BASE_ONLINE_PARTICIPANTS, formatNumber } from './quiz-dummy';
+import {
+  BASE_ONLINE_PARTICIPANTS,
+  formatNumber,
+} from '../_components/quiz-dummy';
+import { useQuizProvider } from './dummy-data/useQuizProvider';
 
 type SortField = 'rank' | 'totalScore' | 'accuracy' | 'avgTime' | 'quizDone';
 type SortOrder = 'asc' | 'desc';
@@ -153,7 +156,10 @@ export function QuizLeaderboard() {
   }, [filteredAndSortedData, currentPage]);
 
   return (
-    <div className="p-3 md:p-6 space-y-4 md:space-y-6">
+    <div
+      id="quiz-leaderboard"
+      className="p-3 md:p-6 space-y-4 md:space-y-6"
+    >
       {/* Live Competition Banner */}
       <div
         className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 rounded-3xl md:rounded-3xl px-3 md:px-5 py-2.5 md:py-3.5 border shadow-sm"

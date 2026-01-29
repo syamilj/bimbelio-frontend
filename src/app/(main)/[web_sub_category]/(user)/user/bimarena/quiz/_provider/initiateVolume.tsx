@@ -39,6 +39,7 @@ export const initiateVolume = () => {
         TryoutSession: TryoutSession & {
           CorrectAnswersCount: number;
           WrongAnswersCount: number;
+          NotAnswersCount: number;
         };
         TryoutQuestionCount: number;
         TryoutResult: TryoutResult | null;

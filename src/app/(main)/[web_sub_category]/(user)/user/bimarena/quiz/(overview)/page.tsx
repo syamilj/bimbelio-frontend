@@ -4,29 +4,20 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { BarChart3, BookOpen, GraduationCap, Trophy } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 // Components
 import { QuizCardList } from '../_components/quiz-card-list';
 import { QuizLeaderboard } from '../_components/quiz-leaderboard';
-import { QuizPrediction } from '../_components/quiz-prediction';
 import { QuizProgress } from '../_components/quiz-progress';
-import { QuizRewards } from '../_components/quiz-rewards';
 import { QuizStats } from '../_components/quiz-stats';
 
 // Types and mock data
 import { QuizSummary } from '../_components/quiz-summary';
-import {
-  ACHIEVEMENTS,
-  REWARDS,
-  TARGET_UNIVERSITIES,
-  calculateUserStats,
-  generateQuizzes,
-  generateSubjectPerformance,
-} from '../_components/quiz-types';
+import OnBoardingQuizPage from '../_on-boarding';
 import { QuizProvider, useQuizProvider } from '../_provider/_provider';
 
-function BimArenaQuizPageMain() {
+export function BimArenaQuizPageMain() {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const {
@@ -38,14 +29,6 @@ function BimArenaQuizPageMain() {
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [activeTab, setActiveTab] = useState('library');
-
-  // User's target university (would come from user profile in real implementation)
-  const userTargetUniversity = TARGET_UNIVERSITIES[1]; // ITB Teknik Informatika
-
-  // Generate mock data
-  const quizzes = useMemo(() => generateQuizzes(), []);
-  const subjectPerformance = useMemo(() => generateSubjectPerformance(), []);
-  const userStats = useMemo(() => calculateUserStats(quizzes), [quizzes]);
 
   const tabItems = [
     { id: 'library', label: 'Library', icon: BookOpen },
@@ -172,21 +155,21 @@ function BimArenaQuizPageMain() {
 
             {activeTab === 'leaderboard' && <QuizLeaderboard />}
 
-            {activeTab === 'prediction' && false && (
+            {/* {activeTab === 'prediction' && false && (
               <QuizPrediction
                 userStats={userStats}
                 targetUniversities={TARGET_UNIVERSITIES}
                 subjectPerformance={subjectPerformance}
               />
-            )}
+            )} */}
 
-            {activeTab === 'rewards' && false && (
+            {/* {activeTab === 'rewards' && false && (
               <QuizRewards
                 userStats={userStats}
                 rewards={REWARDS}
                 achievements={ACHIEVEMENTS}
               />
-            )}
+            )} */}
           </div>
         )}
       </div>
@@ -197,6 +180,7 @@ function BimArenaQuizPageMain() {
 export default function BimArenaQuizPage() {
   return (
     <QuizProvider>
+      <OnBoardingQuizPage />
       <BimArenaQuizPageMain />
     </QuizProvider>
   );

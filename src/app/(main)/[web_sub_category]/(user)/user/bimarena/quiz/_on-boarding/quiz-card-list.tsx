@@ -16,10 +16,10 @@ import {
   Swords,
   Users,
 } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
-import { useQuizProvider } from '../_provider/_provider';
-import { isQuizHot } from './quiz-dummy';
+
+import { isQuizHot } from '../_components/quiz-dummy';
+import { useQuizProvider } from './dummy-data/useQuizProvider';
 
 export function QuizCardList() {
   const { setTransactionPopUp } = useAppContext();
@@ -76,7 +76,10 @@ export function QuizCardList() {
     });
 
   return (
-    <div className="p-4 md:p-6 space-y-6">
+    <div
+      id="quiz-list"
+      className="p-4 md:p-6 space-y-6"
+    >
       {/* Search & Filter */}
       <div className="flex flex-col gap-4">
         <div className="relative">
@@ -303,23 +306,18 @@ export function QuizCardList() {
                                       /
                                     </span>
                                     <span className="text-gray-500">
-                                      {quiz.TryoutSession.NotAnswersCount ||
-                                        0}
+                                      {quiz.TryoutSession.NotAnswersCount || 0}
                                     </span>
                                   </p>
                                 </div>
                               </div>
-                              <Link
-                                href={`./quiz/${selectedVolumeId}/${quiz.id}`}
+                              <Button
+                                size="sm"
+                                className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90 bg-[#10b981] hover:bg-[#10b981]"
                               >
-                                <Button
-                                  size="sm"
-                                  className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90 bg-[#10b981] hover:bg-[#10b981]"
-                                >
-                                  <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
-                                  Lihat Hasil
-                                </Button>
-                              </Link>
+                                <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
+                                Lihat Hasil
+                              </Button>
                             </div>
                           ) : (
                             <div className="space-y-2 md:space-y-3">
@@ -347,20 +345,16 @@ export function QuizCardList() {
                                       Terkunci
                                     </Button>
                                   ) : (
-                                    <Link
-                                      href={`./quiz/${selectedVolumeId}/${quiz.id}`}
+                                    <Button
+                                      size="sm"
+                                      className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90"
+                                      style={{
+                                        background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                                      }}
                                     >
-                                      <Button
-                                        size="sm"
-                                        className="w-full rounded-3xl md:rounded-3xl text-xs md:text-sm font-bold h-9 md:h-11 gap-1.5 md:gap-2 shadow-md transition-all hover:opacity-90"
-                                        style={{
-                                          background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                                        }}
-                                      >
-                                        <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
-                                        Battle
-                                      </Button>
-                                    </Link>
+                                      <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />{' '}
+                                      Battle
+                                    </Button>
                                   )}
                                 </>
                               ) : !isVolumeStarted ? (

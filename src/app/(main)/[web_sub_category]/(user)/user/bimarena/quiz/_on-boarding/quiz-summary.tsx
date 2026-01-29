@@ -23,15 +23,10 @@ import {
   Zap,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useQuizProvider } from '../_provider/_provider';
-import { DecorativePatterns } from './DecorativePatterns';
-import { COUNTDOWN_INTERVAL_MS, formatNumber } from './quiz-dummy';
-import { TargetUniversity, UserStats } from './quiz-types';
+import { DecorativePatterns } from '../_components/DecorativePatterns';
+import { COUNTDOWN_INTERVAL_MS, formatNumber } from '../_components/quiz-dummy';
+import { useQuizProvider } from './dummy-data/useQuizProvider';
 
-interface QuizHeroProps {
-  userStats: UserStats;
-  targetUniversity?: TargetUniversity;
-}
 const DEFAULT_COUNTDOWN = {
   days: 0,
   hours: 0,
