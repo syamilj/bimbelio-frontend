@@ -9,7 +9,6 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { InputImage } from '@/components/ui/input-image';
 import {
   Popover,
   PopoverContent,
@@ -22,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import axiosInstance from '@/lib/axios/axiosInstance';
 import { useGet } from '@/lib/fetch-helper/useGet';
@@ -34,7 +32,6 @@ import {
   IconMinimizeScreen,
   IconUp,
 } from '@/styles/icon';
-import { storage } from '@/supabaseClient';
 import { QuizVolume } from '@/types/database';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -142,7 +139,7 @@ const TryoutOption = () => {
       />
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-4">
-          <h1 className="text-[1.2rem] font-medium">Detail Try out</h1>
+          <h1 className="text-[1.2rem] font-medium">Detail Quiz</h1>
           {currentIndexEdit !== null ? (
             <div
               className="font-regular relative mr-[.5rem] cursor-pointer rounded-[.7rem] border border-main-gray-input2 bg-transparent px-[.5rem] py-[.5rem] text-[.95rem] capitalize text-main-gray-text duration-200 hover:bg-main-gray-input2"
@@ -195,7 +192,7 @@ const TryoutOption = () => {
         className="flex flex-col gap-4"
       >
         <div className="flex flex-col gap-[.5rem]">
-          <p className="font-medium">Judul tryout</p>
+          <p className="font-medium">Judul Quiz</p>
           <input
             type="text"
             placeholder="Judul try out"
@@ -207,147 +204,87 @@ const TryoutOption = () => {
             }}
           />
         </div>
-
-        <div className="flex gap-8">
-          <div className="flex flex-col gap-[.5rem]">
-            <p className="font-medium">Thumbnail</p>
-            <InputImage
-              preview={
-                tryout?.image && tryout.image !== ''
-                  ? `${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${tryout?.image}`
-                  : undefined
-              }
-              onChange={async (image) => {
-                const imageNow = tryout?.image;
-                if (!image) return;
-                const filename = `tryout-${crypto.randomUUID()}`;
-                const upload = await storage
-                  .from('img')
-                  .upload(`tryout/${filename}`, image);
-
-                // .upload(`tryout/${filename}`, image);
-
-                if (upload?.data) {
-                }
-                if (upload?.error) {
-                  if (upload.error.message === 'The resource already exists') {
-                    const update = await storage
-                      .from('img')
-                      .update(`tryout/${filename}`, image);
-                    if (update?.data) {
-                    }
-                    if (update?.error) {
-                    }
-                  }
-                }
-
-                if (imageNow) {
-                  await storage.from('img').remove([`tryout/${imageNow}`]);
-                }
-
-                setTryout((prev) => ({ ...prev, image: filename }));
-              }}
-            />
-          </div>
-          <div className="flex flex-col gap-4 w-full">
-            <div className="flex flex-col gap-[.5rem]">
-              <p className="font-medium">
-                Postingan Instagram{' '}
-                <span className="text-gray-500">(optional)</span>
-              </p>
-              <input
-                type="text"
-                placeholder="Link postingan instagram"
-                className="w-full rounded-[.8rem] border border-transparent px-4 py-[.8rem] outline-none duration-300 focus:shadow-default md:hover:shadow-default2"
-                value={tryout?.instagram ? tryout?.instagram : ''}
-                onChange={(e) => {
-                  setTryout((prev) => ({ ...prev, instagram: e.target.value }));
-                }}
-              />
-            </div>
-            <div className="flex flex-col gap-[.5rem]">
-              <p className="font-medium">
-                Pilih Quiz Volume
-                <span className="text-gray-500">(optional)</span>
-              </p>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className="min-w-[200px] w-fit justify-between"
-                  >
-                    {selectedQuizVolume?.name || 'Pilih Quiz Volume....'}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="min-w-[200px] w-fit p-0">
-                  <Command>
-                    <CommandInput
-                      placeholder="Search Tags..."
-                      value={searchQuizVolume}
-                      onValueChange={(value) => setSearchQuizVolume(value)}
-                    />
-                    <CommandList>
-                      <CommandEmpty>No tryout found.</CommandEmpty>
-                      <CommandGroup>
-                        {(QuizVolumeList || []).map((volume) => {
-                          const isExsist = selectedQuizVolume?.id === volume.id;
-                          return (
-                            <CommandItem
-                              key={volume.title}
-                              value={volume.id}
-                              onSelect={(currentValue) => {
-                                if (isExsist) {
-                                  localStorage.removeItem(
-                                    `temporary-selectedQuizVolume-${tryout?.id}`,
-                                  );
-                                  setSelectedQuizVolume(null);
-                                  return;
-                                }
-                                setSelectedQuizVolume({
-                                  id: volume.id,
-                                  name: volume.title || '',
-                                });
-                                const startDateSplit = getDateForInputDateTime(
-                                  volume.startDate,
-                                ).split('T');
-                                const endDateSplit = getDateForInputDateTime(
-                                  volume.endDate,
-                                ).split('T');
-                                setStartDate(startDateSplit[0]);
-                                setStartDateTime(startDateSplit[1]);
-                                setEndDate(endDateSplit[0]);
-                                setEndDateTime(endDateSplit[1]);
-                                setResultDate(startDateSplit[0]);
-                                setResultDateTime(startDateSplit[1]);
-                              }}
-                              className={
-                                cn()
-                                // isExsist && 'opacity-50  pointer-events-none',
-                              }
-                            >
-                              <Check
-                                className={cn(
-                                  'mr-2 h-4 w-4',
-                                  isExsist ? 'opacity-100' : 'opacity-0',
-                                )}
-                              />
-                              {volume.title}
-                            </CommandItem>
-                          );
-                        })}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
+        <div className="flex flex-col gap-[.5rem]">
+          <p className="font-medium">
+            Pilih Quiz Volume
+            <span className="text-gray-500">(optional)</span>
+          </p>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="min-w-[200px] w-fit justify-between"
+              >
+                {selectedQuizVolume?.name || 'Pilih Quiz Volume....'}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="min-w-[200px] w-fit p-0">
+              <Command>
+                <CommandInput
+                  placeholder="Search Tags..."
+                  value={searchQuizVolume}
+                  onValueChange={(value) => setSearchQuizVolume(value)}
+                />
+                <CommandList>
+                  <CommandEmpty>No quiz found.</CommandEmpty>
+                  <CommandGroup>
+                    {(QuizVolumeList || []).map((volume) => {
+                      const isExsist = selectedQuizVolume?.id === volume.id;
+                      return (
+                        <CommandItem
+                          key={volume.title}
+                          value={volume.id}
+                          onSelect={(currentValue) => {
+                            if (isExsist) {
+                              localStorage.removeItem(
+                                `temporary-selectedQuizVolume-${tryout?.id}`,
+                              );
+                              setSelectedQuizVolume(null);
+                              return;
+                            }
+                            setSelectedQuizVolume({
+                              id: volume.id,
+                              name: volume.title || '',
+                            });
+                            const startDateSplit = getDateForInputDateTime(
+                              volume.startDate,
+                            ).split('T');
+                            const endDateSplit = getDateForInputDateTime(
+                              volume.endDate,
+                            ).split('T');
+                            setStartDate(startDateSplit[0]);
+                            setStartDateTime(startDateSplit[1]);
+                            setEndDate(endDateSplit[0]);
+                            setEndDateTime(endDateSplit[1]);
+                            setResultDate(startDateSplit[0]);
+                            setResultDateTime(startDateSplit[1]);
+                          }}
+                          className={
+                            cn()
+                            // isExsist && 'opacity-50  pointer-events-none',
+                          }
+                        >
+                          <Check
+                            className={cn(
+                              'mr-2 h-4 w-4',
+                              isExsist ? 'opacity-100' : 'opacity-0',
+                            )}
+                          />
+                          {volume.title}
+                        </CommandItem>
+                      );
+                    })}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
         <div className="flex flex-col gap-[.5rem]">
           <p className="font-medium">
-            Waktu mulai tryout <br />
+            Waktu mulai quiz <br />
             {selectedQuizVolume !== null && (
               <span className="text-sm text-gray-500 font-normal">
                 ( Otomatis disesuaikan dengan timeline quiz volume )
@@ -414,7 +351,7 @@ const TryoutOption = () => {
         </div>
         <div className="flex flex-col gap-[.5rem]">
           <p className="font-medium">
-            Waktu pembagian hasil tryout <br />
+            Waktu pembagian hasil quiz <br />
             {selectedQuizVolume !== null && (
               <span className="text-sm text-gray-500 font-normal">
                 ( Otomatis disesuaikan dengan timeline quiz volume )
