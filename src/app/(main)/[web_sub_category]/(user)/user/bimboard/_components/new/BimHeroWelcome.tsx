@@ -2,6 +2,7 @@
 
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BimArena, BimCourse } from "@/components/ui/bim-brand";
 import { Crown, Zap, TrendingUp, Flame } from "lucide-react";
 import Link from "next/link";
 import { website_sub_category_id } from "@/hooks/use-web-sub-category-id";
@@ -144,13 +145,13 @@ export default function BimHeroWelcome({ user, stats, subscription }: BimHeroWel
               href={`/${website_sub_category_id}/user/bimarena/try-out`}
               className="px-4 py-2 rounded-full text-xs font-bold border-2 border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-all hover:scale-105 shadow-sm"
             >
-              BimArena
+              <BimArena />
             </Link>
             <Link
               href={`/${website_sub_category_id}/user/bimcourse`}
               className="px-4 py-2 rounded-full text-xs font-bold border-2 border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-all hover:scale-105 shadow-sm"
             >
-              BimCourse
+              <BimCourse />
             </Link>
           </div>
         </div>

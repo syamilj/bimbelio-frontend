@@ -5,6 +5,7 @@ import { useGuest } from '@/components/layout/layoutGuest';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Badge } from '@/components/ui/badge';
+import { BimBot } from '@/components/ui/bim-brand';
 import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
@@ -616,7 +617,7 @@ const EnhancedTryOutCard = ({
                   size={12}
                   className="text-purple-600 flex-shrink-0"
                 />
-                <span className="font-medium text-gray-800">Bimbot AI</span>
+                <span className="font-medium text-gray-800"><BimBot /> AI</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
                 <TrendingUp

@@ -25,6 +25,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
+import ExcelJS from 'exceljs'; // Tambahkan import ini
 import { ArrowUpDown, Search, Trophy } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import ButtonUpgradeTryout from '../../try-out/_components/ui/button-upgrade-tryout';
@@ -47,6 +48,8 @@ export function RankingTable() {
   const { RankingTryout, RankingTryoutIsLoading } = useLeaderboardContext();
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
+
+  console.log({ RankingTryout });
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -265,14 +268,17 @@ export function RankingTable() {
   return (
     <Card className="bg-white shadow-sm border-2 border-gray-100 rounded-3xl overflow-hidden">
       <CardHeader className="pb-4 border-b-2 border-gray-100">
-        <CardTitle className="text-xl font-black text-gray-900 flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: mainColor }}
-          >
-            <Trophy className="w-5 h-5 text-white" />
+        <CardTitle className="text-xl font-black text-gray-900 flex items-center gap-3 justify-between">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
+              style={{ backgroundColor: mainColor }}
+            >
+              <Trophy className="w-5 h-5 text-white" />
+            </div>
+            Tabel Peringkat
           </div>
-          Tabel Peringkat
+          <ExportButton />
         </CardTitle>
       </CardHeader>
 
@@ -628,3 +634,83 @@ export function RankingTable() {
 }
 
 export default RankingTable;
+
+const ExportButton = () => {
+  const { RankingTryout } = useLeaderboardContext();
+  const { data: session } = useSession();
+
+  const exportData = RankingTryout?.rankingData || [];
+
+  const handleExport = async () => {
+    if (!exportData.length) return;
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Leaderboard');
+
+    // Define headers
+    const headers = [
+      'Rank',
+      'Name',
+      'Email',
+      'Sekolah',
+      'Univ Pilihan',
+      'Jurusan Pilihan',
+      'Total Skor',
+      'Rata-rata Skor',
+    ];
+
+    if (exportData[0]?.sessionResult) {
+      exportData[0].sessionResult.forEach((session) => {
+        headers.push(`${session.subCategory} (Score/Max)`);
+      });
+    }
+
+    worksheet.addRow(headers);
+
+    // Add data rows
+    exportData.forEach((participant) => {
+      const row = [
+        participant.rank,
+        participant.name,
+        (participant as any).email,
+        participant.school || '',
+        participant.univChoice || '',
+        participant.univStudyChoice || '',
+        `${participant.totalScore.toFixed(2)} / ${participant.maxScore.toFixed(2)}`,
+        `${participant.averageScore.toFixed(2)} / ${participant.sessionResult.length > 0 ? participant.sessionResult[0].maxScore.toFixed(2) : '-'}`,
+        ...participant.sessionResult.map(
+          (s) => `${s.totalScore.toFixed(2)} / ${s.maxScore}`,
+        ),
+      ];
+      worksheet.addRow(row);
+    });
+
+    // Export to CSV
+    const buffer = await workbook.csv.writeBuffer();
+    const blob = new Blob([buffer], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'leaderboard.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (session?.user.role !== 'ADMIN' && session?.user?.role !== 'SUPER_ADMIN') {
+    return null;
+  }
+
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleExport}
+      disabled={
+        !RankingTryout ||
+        (RankingTryout && RankingTryout.rankingData.length === 0)
+      }
+    >
+      Export CSV
+    </Button>
+  );
+};

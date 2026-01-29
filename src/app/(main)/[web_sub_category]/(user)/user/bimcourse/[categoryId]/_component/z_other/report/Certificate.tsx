@@ -1,3 +1,4 @@
+import { Bimbelio } from '@/components/ui/bim-brand';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircleIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -80,7 +81,7 @@ export default function Certificate({
                   />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-800">Bimbelio</p>
+                  <Bimbelio className="text-gray-800 text-base" />
                   <p className="text-xs text-gray-500">{currentDate}</p>
                 </div>
               </div>

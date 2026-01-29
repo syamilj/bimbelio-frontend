@@ -20,14 +20,14 @@ import { TryoutDataType } from '../page';
 
 interface Props {
   sessionData: NonNullable<TryoutDataType>['TryoutSession'];
-  tryoutName: string;
+  tryoutData: NonNullable<TryoutDataType>;
   restTime: number;
   currentIndexSession: number;
 }
 
 const RestTime = ({
   currentIndexSession,
-  tryoutName,
+  tryoutData,
   sessionData,
   restTime,
 }: Props) => {
@@ -38,7 +38,7 @@ const RestTime = ({
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  const [timeLeft, setTimeLeft] = useState(restTime * 60); // Convert minutes to seconds
+  const [timeLeft, setTimeLeft] = useState(restTime); // Convert minutes to seconds
   const [loading, setLoading] = useState(false);
 
   const createTryoutSessionParticipant = async (payload: {
@@ -104,6 +104,41 @@ const RestTime = ({
       .toString()
       .padStart(2, '0')}`;
   };
+
+  const FinishTryOutLate = async (answer: any[]) => {
+    await mutateGeneral(`/tryoutSession/finishSessionLate`, {
+      payload: {
+        sessionId: sessionData[currentIndexSession].id,
+        userId: session?.user.id || '',
+        answer,
+      },
+      type: 'post',
+      onSuccess() {
+        localStorage.removeItem(
+          `sessionAnswer-${sessionData[currentIndexSession].id}`,
+        );
+        window.location.reload();
+      },
+    });
+  };
+
+  const FinishDebounced = useDebouncedCallback(() => {
+    const sessionAnswer = JSON.parse(
+      localStorage.getItem(
+        `sessionAnswer-${sessionData[currentIndexSession].id}`,
+      ) || '[]',
+    );
+    FinishTryOutLate(sessionAnswer);
+  }, 500);
+
+  useEffect(() => {
+    const endDate = new Date(tryoutData.endDate).getTime();
+    const currentDate = new Date().getTime();
+
+    if (currentDate >= endDate) {
+      FinishDebounced();
+    }
+  }, [tryoutData, currentIndexSession, sessionData]);
 
   const nextSession = sessionData[currentIndexSession];
   const completedSessions = sessionData.slice(0, currentIndexSession);

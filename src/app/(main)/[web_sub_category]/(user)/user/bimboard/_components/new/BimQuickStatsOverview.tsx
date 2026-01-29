@@ -1,6 +1,7 @@
 "use client";
 
 import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { BimArena, BimCourse } from "@/components/ui/bim-brand";
 import {
   BookOpen,
   Target,
@@ -64,7 +65,7 @@ export default function BimQuickStatsOverview({ stats }: BimQuickStatsOverviewPr
       iconBg: "bg-blue-500",
     },
     {
-      title: "BimArena Selesai",
+      title: <><BimArena /> Selesai</>,
       value: safeStats.tryoutsCompleted,
       unit: "tryout",
       subtitle: safeStats.rank > 0 ? `Peringkat #${safeStats.rank}` : "Yuk mulai!",
@@ -84,7 +85,7 @@ export default function BimQuickStatsOverview({ stats }: BimQuickStatsOverviewPr
       iconBg: "bg-purple-500",
     },
     {
-      title: "BimCourse Aktif",
+      title: <><BimCourse /> Aktif</>,
       value: safeStats.coursesInProgress,
       unit: "kursus",
       subtitle: `${safeStats.coursesCompleted} selesai`,

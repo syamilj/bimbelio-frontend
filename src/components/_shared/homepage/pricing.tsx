@@ -1,6 +1,7 @@
 import LOGO from '@/_assets/logomark.png';
 import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
+import { Bimbelio } from '@/components/ui/bim-brand';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 
 import Image from 'next/image';
@@ -53,7 +54,7 @@ const Pricing = () => {
                 src={LOGO}
                 width={30}
               />
-              <span className="font-semibold">Bimbelio</span>
+              <Bimbelio />
             </div>
           </div>
           <div className="flex flex-col items-center gap-4 text-center">

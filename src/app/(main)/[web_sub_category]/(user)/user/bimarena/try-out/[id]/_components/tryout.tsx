@@ -31,6 +31,7 @@ interface Props {
   sessionData: NonNullable<TryoutDataType>['TryoutSession'][0];
   isSessionDone: boolean;
   numberSession: number;
+  tryoutData: NonNullable<TryoutDataType>;
 }
 
 const Tryout: React.FC<Props> = ({
@@ -39,6 +40,7 @@ const Tryout: React.FC<Props> = ({
   sessionData,
   isSessionDone,
   numberSession,
+  tryoutData,
 }) => {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -100,11 +102,29 @@ const Tryout: React.FC<Props> = ({
 
   const getDuration = () => {
     if (!sessionData.TryoutSessionParticipant?.startSession) return 0;
-    const durationInSeconds = sessionData.duration * 60;
+
+    let durationInSeconds = sessionData.duration * 60;
     const dateNow = new Date().getTime();
     const dateStart = new Date(
       sessionData.TryoutSessionParticipant?.startSession,
     ).getTime();
+    const endDateTryout = new Date(tryoutData.endDate).getTime();
+
+    const endDateSession = new Date(
+      sessionData.TryoutSessionParticipant?.startSession,
+    );
+    endDateSession.setMinutes(
+      endDateSession.getMinutes() + sessionData.duration,
+    );
+
+    if (tryoutData.id === 'cmkqjyg2w01iykuctdm6v3awh') {
+      if (endDateSession.getTime() > endDateTryout) {
+        console.log('Tryout ended before session end, adjusting duration');
+
+        const diffInMilliseconds = endDateTryout - dateStart;
+        durationInSeconds = Math.floor(diffInMilliseconds / 1000);
+      }
+    }
 
     const diffInMilliseconds = dateNow - dateStart;
     const diffInSeconds = Math.floor(diffInMilliseconds / 1000);

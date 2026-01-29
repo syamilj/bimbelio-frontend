@@ -388,6 +388,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
             sessionData={sessionData[currentIndexSession]}
             isSessionDone={isSessionDone}
             numberSession={currentIndexSession + 1}
+            tryoutData={tryoutData}
           />
         </div>
       );
@@ -447,12 +448,34 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
       </div>
     );
   } else {
+    const getRestTime = () => {
+      const prevSession =
+        currentIndexSession > 0 ? sessionData[currentIndexSession - 1] : null;
+      const restTimeInSecond = tryoutData.restTime * 60;
+
+      if (prevSession) {
+        const endSessionDate = prevSession.TryoutSessionParticipant?.endSession;
+        if (endSessionDate) {
+          const endSession = new Date(endSessionDate).getTime();
+          const currentDate = new Date().getTime();
+          const diffInSeconds = Math.floor((currentDate - endSession) / 1000);
+
+          const diffRestTime = restTimeInSecond - diffInSeconds;
+
+          return diffRestTime > 0 ? diffRestTime : 0;
+        } else {
+          return restTimeInSecond;
+        }
+      }
+      return restTimeInSecond;
+    };
+
     return (
       <RestTime
-        tryoutName={tryoutData?.title}
+        tryoutData={tryoutData}
         sessionData={sessionData}
         currentIndexSession={currentIndexSession}
-        restTime={tryoutData?.restTime}
+        restTime={getRestTime()}
       />
     );
   }
