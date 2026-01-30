@@ -322,7 +322,7 @@ const HeadingSection: React.FC<{
         <div className="flex justify-center items-center px-4 mt-4 md:mt-6">
           <span
             className={cn(
-              'text-white text-center px-3 py-2 rounded-lg text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg transition-all duration-300',
+              'text-white text-center px-3 py-2 rounded-3xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight shadow-lg transition-all duration-300',
               !colorsLoaded && 'bg-blue-500',
             )}
             style={
@@ -830,7 +830,7 @@ const DesktopVideo: React.FC = () => {
                 <RotateCw className="w-4 h-4" />
               </Suspense>
             </div>
-            <div className="flex-1 flex items-center bg-white rounded-lg px-3 py-2 text-sm border">
+            <div className="flex-1 flex items-center bg-white rounded-3xl px-3 py-2 text-sm border">
               <Suspense
                 fallback={<div className="w-4 h-4 bg-gray-200 rounded mr-2" />}
               >

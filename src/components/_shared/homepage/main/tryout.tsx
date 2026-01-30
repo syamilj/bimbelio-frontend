@@ -446,7 +446,7 @@ const EnhancedTryOutCard = ({
 
             {/* Enhanced Title Overlay */}
             <div className="absolute bottom-4 left-4 right-4 text-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-              <h3 className="text-lg text-center font-bold text-white leading-tight backdrop-blur-sm bg-black/20 rounded-lg p-2">
+              <h3 className="text-lg text-center font-bold text-white leading-tight backdrop-blur-sm bg-black/20 rounded-3xl p-2">
                 {tryOut.title}
               </h3>
             </div>
@@ -596,7 +596,7 @@ const EnhancedTryOutCard = ({
           <div className="bg-gray-50 rounded-3xl p-3 space-y-3">
             {/* Feature Chips - 2 rows */}
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
+              <div className="flex items-center gap-1.5 bg-white rounded-3xl p-2">
                 <Trophy
                   size={12}
                   className="text-blue-600 flex-shrink-0"
@@ -605,21 +605,21 @@ const EnhancedTryOutCard = ({
                   Peringkat Nasional
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
+              <div className="flex items-center gap-1.5 bg-white rounded-3xl p-2">
                 <FileText
                   size={12}
                   className="text-green-600 flex-shrink-0"
                 />
                 <span className="font-medium text-gray-800">Format Resmi</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
+              <div className="flex items-center gap-1.5 bg-white rounded-3xl p-2">
                 <Bot
                   size={12}
                   className="text-purple-600 flex-shrink-0"
                 />
                 <span className="font-medium text-gray-800"><BimBot /> AI</span>
               </div>
-              <div className="flex items-center gap-1.5 bg-white rounded-lg p-2">
+              <div className="flex items-center gap-1.5 bg-white rounded-3xl p-2">
                 <TrendingUp
                   size={12}
                   className="text-orange-600 flex-shrink-0"
@@ -629,7 +629,7 @@ const EnhancedTryOutCard = ({
             </div>
 
             {/* Grup Belajar - Compact */}
-            <div className="flex items-center justify-center gap-2 bg-white rounded-lg p-2">
+            <div className="flex items-center justify-center gap-2 bg-white rounded-3xl p-2">
               <MessageCircle
                 size={12}
                 className="text-blue-600"

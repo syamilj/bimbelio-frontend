@@ -428,7 +428,7 @@ const FinalCTA = () => {
               style={{ borderColor: mainColor }}
             >
               <div
-                className="w-6 h-6 rounded-lg"
+                className="w-6 h-6 rounded-3xl"
                 style={{ backgroundColor: mainColor }}
               />
             </motion.div>

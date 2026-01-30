@@ -126,12 +126,12 @@ const HeroSection: React.FC = () => {
                       Core → Intensif → Super → Mandiri → Kedinasan
                     </p>
                   </div>
-                  <div className="bg-yellow-400 text-slate-900 rounded-lg px-4 py-3 font-black text-center">
+                  <div className="bg-yellow-400 text-slate-900 rounded-3xl px-4 py-3 font-black text-center">
                     November 2025 - Agustus 2026
                   </div>
                 </div>
 
-                <div className="bg-blue-700/40 border-2 border-blue-400/50 rounded-lg px-4 py-3 text-center">
+                <div className="bg-blue-700/40 border-2 border-blue-400/50 rounded-3xl px-4 py-3 text-center">
                   <p className="text-sm md:text-base text-white font-bold">
                     <span className="text-white font-black">
                       3-Layer Support:

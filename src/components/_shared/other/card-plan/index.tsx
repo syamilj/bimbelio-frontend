@@ -185,7 +185,7 @@ export function CardPlan({
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
         className={cn(
-          'w-full max-w-md group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl border-0 transition-all duration-500',
+          'w-full max-w-md group relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl border-0 transition-all duration-500 touch-pan-y',
           isRecommended && 'ring-2 ring-offset-4',
         )}
         style={{
@@ -193,6 +193,7 @@ export function CardPlan({
           boxShadow: isPopular
             ? `0 8px 32px ${mainColor}30`
             : `0 4px 24px ${mainColor}15`,
+          touchAction: 'pan-y',
         }}
       >
         {/* Header Section - Homepage Style */}
@@ -942,46 +943,11 @@ const ButtonSection = () => {
             }}
           >
             <Eye className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-            <span>Lihat Detail Lengkap</span>
+            <span>Detail</span>
           </Button>
         </Link>
       )}
 
-      {/* Trust Indicators - Marketplace Style */}
-      <div className="bg-gray-50 rounded-3xl p-4 space-y-3">
-        <div className="grid grid-cols-3 gap-4 text-center">
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mb-1">
-              <Shield
-                size={14}
-                className="text-green-600"
-              />
-            </div>
-            <span className="text-xs font-medium text-gray-700">Aman</span>
-            <span className="text-xs text-gray-500">SSL Secure</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mb-1">
-              <Users
-                size={14}
-                className="text-blue-600"
-              />
-            </div>
-            <span className="text-xs font-medium text-gray-700">Support</span>
-            <span className="text-xs text-gray-500">24/7 Help</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mb-1">
-              <Star
-                size={14}
-                className="text-purple-600"
-              />
-            </div>
-            <span className="text-xs font-medium text-gray-700">Kualitas</span>
-            <span className="text-xs text-gray-500">Premium</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

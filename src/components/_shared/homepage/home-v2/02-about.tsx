@@ -124,7 +124,7 @@ const AboutSection: React.FC = () => {
 
           {/* Key Differentiators */}
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4 border-2 border-gray-100 shadow-sm">
               <div
                 className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
@@ -139,7 +139,7 @@ const AboutSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4 border-2 border-gray-100 shadow-sm">
               <div
                 className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
@@ -154,7 +154,7 @@ const AboutSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4 border-2 border-gray-100 shadow-sm">
               <div
                 className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}
@@ -169,7 +169,7 @@ const AboutSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4">
+            <div className="flex items-start gap-3 bg-gray-50 rounded-3xl p-4 border-2 border-gray-100 shadow-sm">
               <div
                 className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}15` }}

@@ -16,7 +16,7 @@ import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
-import { cn, getDateString } from '@/lib/utils';
+import { cn, getDateString, getDateStringShort } from '@/lib/utils';
 import { IconTailedArrowUp45 } from '@/styles/icon';
 import type {
   TryoutRegistration,
@@ -361,7 +361,7 @@ export default function CardTryOut({
           return (
             <Card
               key={i}
-              className="group relative overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] bg-white rounded-3xl"
+              className="group relative overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] bg-white rounded-3xl min-w-[85%] sm:min-w-[350px] md:min-w-[320px] snap-center"
             >
               {/* Status Badge */}
               <div className="absolute top-4 right-4 z-20">
@@ -389,14 +389,15 @@ export default function CardTryOut({
               </div>
 
               <CardContent className="p-0">
-                {/* Hero Image Section */}
-                <div className="relative h-48 lg:h-56 overflow-hidden">
+                {/* Hero Image Section - 4:5 Aspect Ratio & No Text Overlay */}
+                <div className="relative w-full aspect-[4/5] h-auto overflow-hidden cursor-pointer" onClick={() => setShowDetail(item)}>
                   {item.image ? (
                     <Image
                       src={`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${item.image}`}
                       alt={item.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      width={500}
+                      height={625}
+                      className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
@@ -409,116 +410,67 @@ export default function CardTryOut({
                       <Trophy className="w-12 h-12 text-white opacity-50" />
                     </div>
                   )}
-
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
-
-                  {/* Title Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                    <h3 className="text-lg lg:text-xl font-bold leading-tight">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs lg:text-sm text-white/80 mt-1">
-                      {item.WebsiteSubCategory?.name}
-                    </p>
-                  </div>
                 </div>
 
                 {/* Content Section */}
                 <div className="p-4 lg:p-6 space-y-4">
-                  {/* Stats Grid - Match Course Gradient Style */}
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* Durasi - Blue */}
-                    <div
-                      className="p-3 rounded-3xl border-2 text-center"
-                      style={{
-                        background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
-                        borderColor: 'rgb(191 219 254)',
-                      }}
-                    >
-                      <Clock className="w-4 h-4 text-blue-600 mx-auto mb-1" />
-                      <div className="text-sm font-bold text-blue-700">
+                  {/* Title Section (Moved here) */}
+                  <div>
+                    <h3 className="font-bold leading-tight text-gray-900 line-clamp-2" title={item.title}>
+                      {item.title}
+                    </h3>
+                    <p className="text-xs lg:text-sm text-gray-500 mt-1">
+                      {item.WebsiteSubCategory?.name}
+                    </p>
+                  </div>
+
+                  {/* Stats Grid - Single Row Compact Design */}
+                  <div className="grid grid-cols-4 gap-2">
+                    {/* Durasi */}
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-blue-50/50 border-blue-100 h-full">
+                      <Clock className="w-3.5 h-3.5 text-blue-600 mb-1" />
+                      <div className="text-xs font-bold text-blue-700 leading-none">
                         {item.TryoutSession.reduce(
                           (acc, s) => acc + s.duration,
                           0,
                         )}
                       </div>
-                      <div className="text-xs text-blue-600 font-medium">
-                        Menit
+                      <div className="text-[10px] text-blue-600 font-medium mt-0.5">
+                        Mnt
                       </div>
                     </div>
 
-                    {/* Soal - Green */}
-                    <div
-                      className="p-3 rounded-3xl border-2 text-center"
-                      style={{
-                        background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
-                        borderColor: 'rgb(187 247 208)',
-                      }}
-                    >
-                      <BookOpen className="w-4 h-4 text-green-600 mx-auto mb-1" />
-                      <div className="text-sm font-bold text-green-700">
+                    {/* Soal */}
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-green-50/50 border-green-100 h-full">
+                      <BookOpen className="w-3.5 h-3.5 text-green-600 mb-1" />
+                      <div className="text-xs font-bold text-green-700 leading-none">
                         {item.TryoutSession.reduce(
                           (acc, s) => acc + s._count.TryoutQuestion,
                           0,
                         )}
                       </div>
-                      <div className="text-xs text-green-600 font-medium">
+                      <div className="text-[10px] text-green-600 font-medium mt-0.5">
                         Soal
                       </div>
                     </div>
 
-                    {/* Peserta - Purple */}
-                    {/* <div
-                      className="p-3 rounded-3xl border-2 text-center"
-                      style={{
-                        background: `linear-gradient(to bottom right, rgb(250 245 255), rgb(243 232 255))`,
-                        borderColor: 'rgb(233 213 255)',
-                      }}
-                     >
-                      <Users className="w-4 h-4 text-purple-600 mx-auto mb-1" />
-                      <div className="text-sm font-bold text-purple-700">
-                        {item._count.TryoutRegistration}
-                      </div>
-                      <div className="text-xs text-purple-600 font-medium">
-                        Peserta
-                      </div>
-                    </div> */}
-                  </div>
-
-                  {/* Dates Section - Match Course Style */}
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* Tanggal Mulai - Orange */}
-                    <div
-                      className="p-3 rounded-3xl border-2 text-center"
-                      style={{
-                        background: `linear-gradient(to bottom right, rgb(255 247 237), rgb(254 237 213))`,
-                        borderColor: 'rgb(254 215 170)',
-                      }}
-                    >
-                      <Calendar className="w-4 h-4 text-orange-600 mx-auto mb-1" />
-                      <div className="text-xs text-orange-600 font-medium mb-1">
+                    {/* Tanggal Mulai */}
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-orange-50/50 border-orange-100 h-full">
+                      <div className="text-[10px] text-orange-600 font-medium mb-1">
                         Mulai
                       </div>
-                      <div className="text-sm font-bold text-orange-700">
-                        {getDateString(item.startDate)}
+                      <div className="text-xs font-bold text-orange-700 text-center leading-tight whitespace-nowrap">
+                        {getDateStringShort(item.startDate).split(' ').slice(0, 2).join(' ')}
                       </div>
                     </div>
 
-                    {/* Tanggal Selesai - Pink */}
-                    <div
-                      className="p-3 rounded-3xl border-2 text-center"
-                      style={{
-                        background: `linear-gradient(to bottom right, rgb(253 242 248), rgb(252 231 243))`,
-                        borderColor: 'rgb(251 207 232)',
-                      }}
-                    >
-                      <Calendar className="w-4 h-4 text-pink-600 mx-auto mb-1" />
-                      <div className="text-xs text-pink-600 font-medium mb-1">
-                        Pembahasan
+                    {/* Tanggal Selesai */}
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-pink-50/50 border-pink-100 h-full">
+                      <div className="text-[10px] text-pink-600 font-medium mb-1">
+                        Bahas
                       </div>
-                      <div className="text-sm font-bold text-pink-700">
-                        {getDateString(item.endDate)}
+                      <div className="text-xs font-bold text-pink-700 text-center leading-tight whitespace-nowrap">
+                        {getDateStringShort(item.endDate).split(' ').slice(0, 2).join(' ')}
                       </div>
                     </div>
                   </div>

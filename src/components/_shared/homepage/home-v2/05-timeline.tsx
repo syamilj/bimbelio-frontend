@@ -1,20 +1,20 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { ArrowDown, Calendar, CheckCircle2, Clock, Sparkles } from 'lucide-react';
+import { Calendar, CheckCircle2, ChevronRight, Sparkles } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 interface Program {
   id: number;
-  title: string;
-  subtitle: string;
+  period: string;
+  phase: string;
   badge: string;
-  duration: string;
-  monthRange: string;
+  description: string;
   features: string[];
   logos: string[];
-  highlight?: string;
+  isHighlight?: boolean;
 }
 
 const TimelineSection: React.FC = () => {
@@ -29,98 +29,88 @@ const TimelineSection: React.FC = () => {
   const programs: Program[] = [
     {
       id: 1,
-      title: 'JAN - MAR',
-      subtitle: 'Fase Intensif',
-      badge: '4x Seminggu Live Class',
-      duration: 'Fokus',
-      monthRange: 'Bedah konsep dasar & tipe soal SNBT biar fondasi kuat',
+      period: 'Jan - Mar',
+      phase: 'Fase Intensif',
+      badge: '4x/minggu',
+      description: 'Bedah konsep dasar & tipe soal SNBT untuk fondasi yang kuat.',
       features: [
-        'Bedah konsep dasar & tipe soal SNBT',
-        'Fondasi kuat untuk semua materi',
-        'Live class interaktif 4x seminggu',
+        'Bedah konsep dasar',
+        'Live class 4x seminggu',
+        'Fondasi materi kuat',
       ],
       logos: ['/hero/LOGO_SNBT.webp'],
     },
     {
       id: 2,
-      title: 'APR - MEI',
-      subtitle: 'Fase Super Intensif',
-      badge: '6x Seminggu (Hampir Tiap Hari)',
-      duration: 'Fokus',
-      monthRange: 'Full Simulasi TO & Bahas Soal buat persiapan final',
-      highlight: 'Sprint Final!',
+      period: 'Apr - Mei',
+      phase: 'Fase Super Intensif',
+      badge: '6x/minggu',
+      description: 'Full simulasi TO & bahas soal untuk persiapan final.',
       features: [
-        'Full Simulasi TO & Bahas Soal',
-        'Persiapan final menjelang ujian',
-        'Drill intensif hampir setiap hari',
+        'Full Simulasi TO',
+        'Drill hampir tiap hari',
+        'Sprint menuju ujian',
       ],
       logos: ['/hero/LOGO_SNBT.webp'],
+      isHighlight: true,
     },
     {
       id: 3,
-      title: 'JUN - JUL',
-      subtitle: 'Fase Ujian Mandiri',
-      badge: '6x Seminggu Live Class',
-      duration: 'Fokus',
-      monthRange: 'Sikat soal level tinggi (HOTS) buat SIMAK UI &UTUL UGM',
+      period: 'Jun - Jul',
+      phase: 'Fase Ujian Mandiri',
+      badge: '6x/minggu',
+      description: 'Sikat soal HOTS untuk SIMAK UI & UTUL UGM.',
       features: [
-        'Sikat soal level tinggi (HOTS)',
-        'Strategi khusus SIMAK UI &UTUL UGM',
-        'Persiapan ujian mandiri PTN top',
+        'Soal level HOTS',
+        'Strategi UI & UGM',
+        'Persiapan mandiri',
       ],
-      logos: [
-        '/hero/LOGO_PTN_UI.webp',
-        '/hero/LOGO_PTN_UGM.webp',
-      ],
+      logos: ['/hero/LOGO_PTN_UI.webp', '/hero/LOGO_PTN_UGM.webp'],
     },
     {
       id: 4,
-      title: 'JUL - AGU',
-      subtitle: 'Fase Kedinasan',
-      badge: '4x Seminggu Live Class',
-      duration: 'Fokus',
-      monthRange: 'Khusus bahas SKD (TIU, TWK, TKP) buat masuk STAN/STIS',
+      period: 'Jul - Agu',
+      phase: 'Fase Kedinasan',
+      badge: '4x/minggu',
+      description: 'Khusus SKD (TIU, TWK, TKP) untuk STAN & STIS.',
       features: [
-        'Khusus bahas SKD (TIU, TWK, TKP)',
-        'Persiapan masuk STAN/STIS',
-        'Strategi lolos seleksi kedinasan',
+        'Bedah SKD lengkap',
+        'Strategi STAN/STIS',
+        'Simulasi kedinasan',
       ],
-      logos: [
-        '/hero/LOGO_KEDINASAN_STAN.webp',
-        '/hero/LOGO_KEDINASAN_STIS.webp',
-      ],
+      logos: ['/hero/LOGO_KEDINASAN_STAN.webp', '/hero/LOGO_KEDINASAN_STIS.webp'],
     },
   ];
 
   return (
-    <section id="timeline" className="py-16 md:py-20 px-4 bg-gray-50">
+    <section id="timeline" className="py-16 md:py-24 px-5 bg-white">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
+        {/* Section Header */}
+        <div className="text-center mb-10 md:mb-14">
           <span
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white mb-4"
-            style={{ backgroundColor: mainColor }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-wide mb-4"
+            style={{ backgroundColor: `${mainColor}10`, color: mainColor }}
           >
-            <Calendar className="w-4 h-4" />
-            Jadwal Kita Padat
+            <Calendar className="w-3.5 h-3.5" />
+            ROADMAP BELAJAR
           </span>
 
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Tapi Tetap <span style={{ color: mainColor }}>Teratur</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            Jadwal Terstruktur{' '}
+            <span className="text-gray-400">Sampai Lolos</span>
           </h2>
 
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Kita atur ritmemya. Kapan lari maraton, kapan harus sprint.<br />
-            <span className="font-semibold" style={{ color: mainColor }}>Kamu tinggal ikutin peta</span>
+          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
+            Kamu tinggal ikutin peta. Kami yang atur kapan harus maraton, kapan harus sprint.
           </p>
         </div>
 
-        {/* Timeline - Vertical */}
+        {/* Timeline - Mobile First Vertical */}
         <div className="relative">
-          {/* Vertical Line */}
+          {/* Vertical Line - Desktop Only */}
           <div
-            className="absolute left-6 md:left-8 top-0 bottom-0 w-0.5 hidden md:block"
-            style={{ backgroundColor: `${mainColor}20` }}
+            className="absolute left-4 md:left-6 top-4 bottom-4 w-0.5 hidden md:block"
+            style={{ backgroundColor: `${mainColor}15` }}
           />
 
           <div className="space-y-4">
@@ -128,125 +118,91 @@ const TimelineSection: React.FC = () => {
               <div key={program.id} className="relative">
                 {/* Timeline Dot - Desktop */}
                 <div
-                  className="absolute left-6 md:left-8 top-8 w-3 h-3 rounded-full border-4 border-white z-10 hidden md:block -translate-x-1/2"
-                  style={{ backgroundColor: mainColor }}
+                  className="absolute left-4 md:left-6 top-6 w-3 h-3 rounded-full border-4 border-white z-10 hidden md:block -translate-x-1/2 shadow-sm"
+                  style={{ backgroundColor: program.isHighlight ? mainColor : '#9CA3AF' }}
                 />
 
-                {/* Program Card */}
-                <div className="md:ml-16 bg-white rounded-3xl overflow-hidden border border-gray-200 hover:border-gray-300 transition-colors">
-                  {/* Highlight Bar */}
-                  {program.highlight && (
+                {/* Card */}
+                <div
+                  className={`md:ml-12 bg-white rounded-3xl border-2 overflow-hidden transition-all hover:shadow-md shadow-sm ${
+                    program.isHighlight
+                      ? ''
+                      : 'border-gray-100'
+                  }`}
+                  style={program.isHighlight ? { borderColor: mainColor } : {}}
+                >
+                  {/* Highlight Badge */}
+                  {program.isHighlight && (
                     <div
-                      className="px-5 py-2 flex items-center gap-2 text-sm font-semibold text-white"
+                      className="px-4 py-2 flex items-center gap-2 text-xs font-bold text-white"
                       style={{ backgroundColor: mainColor }}
                     >
-                      <Sparkles className="w-4 h-4" />
-                      {program.highlight}
+                      <Sparkles className="w-3.5 h-3.5" />
+                      SPRINT FINAL!
                     </div>
                   )}
 
-                  <div className="p-5 md:p-6">
-                    <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
-                      {/* Logo Section */}
+                  <div className="p-4 md:p-5">
+                    <div className="flex items-start gap-4">
+                      {/* Logos */}
                       <div className="flex-shrink-0">
-                        {program.logos.length === 1 ? (
-                          <div
-                            className="w-16 h-16 rounded-3xl overflow-hidden border-2"
-                            style={{
-                              backgroundColor: `${mainColor}08`,
-                              borderColor: `${mainColor}20`,
-                            }}
-                          >
-                            <Image
-                              src={program.logos[0]}
-                              alt={program.title}
-                              width={64}
-                              height={64}
-                              loading="lazy"
-                              className="w-full h-full object-contain p-2"
-                            />
-                          </div>
-                        ) : (
-                          <div className="relative w-24 h-16">
-                            {program.logos.map((logo, idx) => (
-                              <div
-                                key={idx}
-                                className="absolute w-12 h-12 rounded-3xl overflow-hidden bg-white border-2"
-                                style={{
-                                  left: `${idx * 18}px`,
-                                  top: `${idx * 2}px`,
-                                  zIndex: program.logos.length - idx,
-                                  borderColor: `${mainColor}20`,
-                                }}
-                              >
-                                <Image
-                                  src={logo}
-                                  alt={`${program.title} ${idx + 1}`}
-                                  width={48}
-                                  height={48}
-                                  loading="lazy"
-                                  className="w-full h-full object-contain p-1.5"
-                                />
-                              </div>
-                            ))}
+                        <div className="flex -space-x-2">
+                          {program.logos.map((logo, idx) => (
                             <div
-                              className="absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white z-30"
-                              style={{ backgroundColor: mainColor }}
+                              key={idx}
+                              className="w-10 h-10 md:w-12 md:h-12 rounded-3xl bg-gray-50 border border-gray-100 flex items-center justify-center p-1.5 relative"
+                              style={{ zIndex: program.logos.length - idx }}
                             >
-                              {program.logos.length}
+                              <Image
+                                src={logo}
+                                alt=""
+                                width={32}
+                                height={32}
+                                className="object-contain"
+                                loading="lazy"
+                              />
                             </div>
-                          </div>
-                        )}
+                          ))}
+                        </div>
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
-                        {/* Header */}
-                        <div className="mb-4">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <h3 className="text-lg font-bold text-gray-900">
+                            {program.period}
+                          </h3>
                           <span
-                            className="inline-block px-3 py-1 rounded-lg text-xs font-bold text-white mb-2"
+                            className="px-2 py-0.5 rounded-full text-[10px] font-bold text-white"
                             style={{ backgroundColor: mainColor }}
                           >
                             {program.badge}
                           </span>
-                          <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1">
-                            {program.title}
-                          </h3>
-                          <p className="text-sm font-semibold" style={{ color: mainColor }}>
-                            {program.subtitle}
-                          </p>
                         </div>
 
-                        {/* Duration Info */}
-                        <div className="mb-4">
-                          <div
-                            className="inline-block px-3 py-1.5 rounded-lg text-xs font-bold mb-2"
-                            style={{
-                              backgroundColor: '#FFD700',
-                              color: '#000',
-                            }}
-                          >
-                            {program.duration}
-                          </div>
-                          <p className="text-sm text-gray-700 font-medium">
-                            {program.monthRange}
-                          </p>
-                        </div>
+                        <p
+                          className="text-xs font-bold uppercase tracking-wider mb-2"
+                          style={{ color: mainColor }}
+                        >
+                          {program.phase}
+                        </p>
 
-                        {/* Features Grid */}
-                        <div className="grid grid-cols-1 gap-2">
+                        <p className="text-sm text-gray-600 mb-3">
+                          {program.description}
+                        </p>
+
+                        {/* Features - Horizontal on mobile */}
+                        <div className="flex flex-wrap gap-2">
                           {program.features.map((feature, idx) => (
                             <div
                               key={idx}
-                              className="flex items-start gap-2.5 p-2.5 rounded-3xl bg-gray-50"
+                              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-50 text-xs text-gray-700"
                             >
                               <CheckCircle2
-                                className="w-5 h-5 flex-shrink-0"
+                                className="w-3 h-3 flex-shrink-0"
                                 style={{ color: mainColor }}
                               />
-                              <span className="text-sm text-gray-700 font-medium">
-                                {feature}
-                              </span>
+                              {feature}
                             </div>
                           ))}
                         </div>
@@ -255,20 +211,30 @@ const TimelineSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Arrow Connector */}
+                {/* Connector Arrow - Mobile */}
                 {index < programs.length - 1 && (
-                  <div className="flex justify-center py-3 md:ml-16">
+                  <div className="flex justify-center py-2 md:hidden">
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-white shadow-md"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <ArrowDown className="w-4 h-4" />
-                    </div>
+                      className="w-0.5 h-6"
+                      style={{ backgroundColor: `${mainColor}20` }}
+                    />
                   </div>
                 )}
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mt-10 text-center">
+          <Link
+            href="/price"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all hover:opacity-90"
+            style={{ backgroundColor: mainColor }}
+          >
+            Mulai Perjalanan
+            <ChevronRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </section>
