@@ -161,6 +161,7 @@ export const BadgeSubsInfo = () => {
                                             '📚 Course'}
                                           {feature.type === 'LIVECLASS' &&
                                             '🎥 Live Class'}
+                                          {feature.type === 'QUIZ' && '💯 Quiz'}
                                         </span>
                                       ),
                                     )}
@@ -387,6 +388,8 @@ export const BadgeSubsInfo = () => {
                                                   '📚 Course'}
                                                 {feature.type === 'LIVECLASS' &&
                                                   '🎥 Live Class'}
+                                                {feature.type === 'QUIZ' &&
+                                                  '💯 Quiz'}
                                               </span>
                                             </div>
                                             {/* Timeline untuk pending feature */}

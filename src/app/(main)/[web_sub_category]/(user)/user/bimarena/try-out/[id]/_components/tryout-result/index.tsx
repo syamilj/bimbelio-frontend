@@ -25,7 +25,12 @@ import {
   Trophy,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { TryoutDataType } from '../../page';
 import CountdownResult from '../countdown-result';
@@ -134,7 +139,13 @@ export default function TryoutResult({
   sessionOptions,
   resultDate,
 }: Props) {
+  const { volumeId } = useParams<{ volumeId: string }>();
   const pathname = usePathname();
+
+  const mode = pathname.toLocaleLowerCase().includes('try-out')
+    ? 'try-out'
+    : 'quiz';
+
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
   const { data: session } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
@@ -183,17 +194,22 @@ export default function TryoutResult({
     useState<boolean>(false);
 
   useEffect(() => {
-    getGeneral(
-      `/tryout/getTryoutUnlockByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}`,
-      {
-        setData: setUnlockTryoutDbs,
-        setLoading: setUnlockTryoutIsLoading,
-        onError() {
-          setUnlockTryoutIsError(true);
+    if (mode === 'try-out') {
+      getGeneral(
+        `/tryout/getTryoutUnlockByTryoutId?userId=${session?.user.id}&tryoutId=${tryoutId}`,
+        {
+          setData: setUnlockTryoutDbs,
+          setLoading: setUnlockTryoutIsLoading,
+          onError() {
+            setUnlockTryoutIsError(true);
+          },
         },
-      },
-    );
-  }, [session, tryoutId]);
+      );
+    } else {
+      setUnlockTryoutDbs(true);
+      setUnlockTryoutIsLoading(false);
+    }
+  }, [session, tryoutId, mode]);
 
   const unlockTryout =
     session && session.user.role !== 'USER' ? true : unlockTryoutDbs || false;
@@ -234,10 +250,14 @@ export default function TryoutResult({
     );
   }, [session, tryoutId]);
 
+  console.log({ ResultData });
+
   useEffect(() => {
     if (!isTesting) {
       router.push(
-        `/${website_sub_category_id}/user/bimarena/try-out/${tryoutId}?tab=${tabs}`,
+        mode === 'try-out'
+          ? `/${website_sub_category_id}/user/bimarena/try-out/${tryoutId}?tab=${tabs}`
+          : `/${website_sub_category_id}/user/bimarena/quiz/${volumeId}/${tryoutId}?tab=${tabs}`,
       );
     } else {
       router.push(
@@ -293,7 +313,7 @@ export default function TryoutResult({
               Gagal Memuat Hasil
             </h2>
             <p className="text-gray-600">
-              Terjadi kesalahan saat memuat hasil try out
+              Terjadi kesalahan saat memuat hasil {mode}
             </p>
           </div>
         </motion.div>
@@ -319,7 +339,7 @@ export default function TryoutResult({
           <LoaderEyeAnimation />
           <div className="text-center">
             <h3 className="text-xl font-bold text-gray-900 mb-2">
-              Memproses Hasil Try Out
+              Memproses Hasil {mode === 'quiz' ? 'Quiz' : 'Try Out'}
             </h3>
             <p className="text-gray-600">
               Mohon tunggu sebentar, kami sedang menyiapkan hasil Kamu...
@@ -358,7 +378,7 @@ export default function TryoutResult({
               </div>
               <div>
                 <h1 className="text-lg md:text-xl font-bold text-gray-900">
-                  Hasil Try Out
+                  Hasil {mode === 'quiz' ? 'Quiz' : 'Try Out'}
                 </h1>
                 <p className="text-sm text-gray-600">
                   Review dan analisis performa Kamu
@@ -492,30 +512,32 @@ export default function TryoutResult({
                       </div>
                     </motion.button>
 
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full p-4 rounded-3xl text-left transition-all duration-200 border-2 ${
-                        tabs === 'analisis'
-                          ? 'border-transparent text-white shadow-lg'
-                          : 'border-gray-200 hover:border-gray-300 text-gray-600'
-                      }`}
-                      style={{
-                        backgroundColor:
-                          tabs === 'analisis' ? mainColor : 'white',
-                      }}
-                      onClick={() => setTabs('analisis')}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Sparkles className="w-5 h-5" />
-                        <div>
-                          <div className="font-semibold">Analisis</div>
-                          <div className="text-xs opacity-80">
-                            Analisis mendalam
+                    {false && (
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`w-full p-4 rounded-3xl text-left transition-all duration-200 border-2 ${
+                          tabs === 'analisis'
+                            ? 'border-transparent text-white shadow-lg'
+                            : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                        }`}
+                        style={{
+                          backgroundColor:
+                            tabs === 'analisis' ? mainColor : 'white',
+                        }}
+                        onClick={() => setTabs('analisis')}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Sparkles className="w-5 h-5" />
+                          <div>
+                            <div className="font-semibold">Analisis</div>
+                            <div className="text-xs opacity-80">
+                              Analisis mendalam
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </motion.button>
+                      </motion.button>
+                    )}
                   </div>
                 </CardContent>
               </Card>

@@ -90,6 +90,7 @@ const ModalImportExcel = ({
               }
             });
 
+            let Error = '';
             const ParseQuestions = await Promise.all(
               QuestionsData.map(async (item) => {
                 let questionValue = item.question;
@@ -122,10 +123,11 @@ const ModalImportExcel = ({
 
                   if (error) {
                     console.error('Upload error:', error);
-                    continue;
+                    Error = error.message;
+                    break;
                   }
 
-                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/object/1/${fileName}`;
+                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_DUMP_IMAGES_URL}/${fileName}`;
 
                   questionValue = questionValue.replace(
                     fullMatch,
@@ -151,6 +153,17 @@ const ModalImportExcel = ({
                 };
               }),
             );
+            if (Error.length > 0) {
+              toaster({
+                title: 'Error',
+                condition: 'warning',
+                description: Error,
+                duration: 3000,
+              });
+              setOpen(false);
+              setIsLoading(false);
+              return;
+            }
             if (!isAssesmentTypeValid.value) {
               toaster({
                 title: `Number ${isAssesmentTypeValid.number}`,

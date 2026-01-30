@@ -28,7 +28,7 @@ type LimitRowType = {
 }[];
 
 type BenefitRowType = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   order: number;
@@ -37,12 +37,14 @@ type BenefitRowType = {
 type FormDataType = {
   roleDiscord: string | undefined;
   image: File | undefined;
+  previewImage: string;
   name: string;
   tier: string;
   description: string;
   price: string;
   originalPrice: string;
   course: boolean;
+  quiz: boolean;
   materiPremium: boolean;
   liveClass: boolean;
   liveClassesPerWeek: string;
@@ -79,6 +81,7 @@ interface InstallmentSchedule {
 }
 
 interface PlanInstallmentConfig {
+  id?: string;
   totalInstallments: string;
   totalAmount: string;
   gracePeriodDays: string;
@@ -104,9 +107,13 @@ export default function Provider({ children }: Props) {
   const [liveClassIds, setLiveClassIds] = useState<
     { label: string; value: string }[]
   >([]);
+  const [quizVolumeIds, setQuizVolumeIds] = useState<
+    { label: string; value: string; webSubId: string }[]
+  >([]);
   const [isCourseActive, setIsCourseActive] = useState<boolean>(false);
   const [isDocumentActive, setIsDocumentActive] = useState<boolean>(false);
   const [isLiveClassActive, setIsLiveClassActive] = useState<boolean>(false);
+  const [isQuizActive, setIsQuizActive] = useState<boolean>(false);
 
   const [expireType, setExpireType] = useState<'days' | 'month' | 'year'>(
     'days',
@@ -117,7 +124,7 @@ export default function Provider({ children }: Props) {
   >('days');
 
   const [benefitRows, setBenefitRows] = useState<BenefitRowType>([
-    { id: 1, title: '', description: '', order: 1 },
+    { id: `new-${crypto.randomUUID()}`, title: '', description: '', order: 1 },
   ]);
 
   const [validityType, setValidityType] = useState<ValidityType>('duration');
@@ -155,6 +162,7 @@ export default function Provider({ children }: Props) {
       price: '',
       originalPrice: '',
       course: false,
+      quiz: false,
       materiPremium: false,
       privateTalk: false,
       liveClass: false,
@@ -162,6 +170,7 @@ export default function Provider({ children }: Props) {
       duration: '',
       durationLimit: '',
       status: '',
+      previewImage: '',
       maxUsers: undefined,
     },
   });
@@ -173,6 +182,7 @@ export default function Provider({ children }: Props) {
   const price = formData.watch('price');
   const originalPrice = formData.watch('originalPrice');
   const course = formData.watch('course');
+  const quiz = formData.watch('quiz');
   const materiPremium = formData.watch('materiPremium');
   const privateTalk = formData.watch('privateTalk');
   const liveClass = formData.watch('liveClass');
@@ -186,6 +196,7 @@ export default function Provider({ children }: Props) {
   const maxUsers = formData.watch('maxUsers');
   const status = formData.watch('status');
   const image = formData.watch('image');
+  const previewImage = formData.watch('previewImage');
 
   const {
     alertInstallmentLimitation,
@@ -203,6 +214,7 @@ export default function Provider({ children }: Props) {
     price,
     originalPrice,
     course,
+    quiz,
     materiPremium,
     privateTalk,
     liveClass,
@@ -215,6 +227,7 @@ export default function Provider({ children }: Props) {
     durationLimit,
     timelineLimitStart,
     timelineLimitEnd,
+    previewImage,
     maxUsers,
   };
 
@@ -265,6 +278,10 @@ export default function Provider({ children }: Props) {
       setValidityType,
       selectedWebSubCategoryIds,
       setSelectedWebSubCategoryIds,
+      quizVolumeIds,
+      setQuizVolumeIds,
+      isQuizActive,
+      setIsQuizActive,
     },
     useForm: {
       formData,
@@ -356,6 +373,22 @@ type ProviderType = {
     setValidityType: Dispatch<SetStateAction<ValidityType>>;
     selectedWebSubCategoryIds: string[];
     setSelectedWebSubCategoryIds: Dispatch<SetStateAction<string[]>>;
+    quizVolumeIds: {
+      label: string;
+      value: string;
+      webSubId: string;
+    }[];
+    setQuizVolumeIds: Dispatch<
+      SetStateAction<
+        {
+          label: string;
+          value: string;
+          webSubId: string;
+        }[]
+      >
+    >;
+    isQuizActive: boolean;
+    setIsQuizActive: Dispatch<SetStateAction<boolean>>;
   };
   useForm: {
     formData: UseFormReturn<FormDataType, any, FormDataType>;
@@ -367,6 +400,7 @@ type ProviderType = {
       price: string;
       originalPrice: string;
       course: boolean;
+      quiz: boolean;
       materiPremium: boolean;
       privateTalk: boolean;
       liveClass: boolean;
@@ -380,6 +414,7 @@ type ProviderType = {
       timelineLimitStart?: string;
       timelineLimitEnd?: string;
       maxUsers: string | undefined;
+      previewImage: string;
     };
   };
 };

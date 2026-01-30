@@ -95,6 +95,7 @@ const ModalImportCSV = ({
                 };
               }
             });
+            let Error = '';
             const ParseQuestions = await Promise.all(
               Questions.map(async (item) => {
                 let questionValue = item.question;
@@ -127,10 +128,11 @@ const ModalImportCSV = ({
 
                   if (error) {
                     console.error('Upload error:', error);
-                    continue;
+                    Error = error.message;
+                    break;
                   }
 
-                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/object/1/dump-images/${fileName}`;
+                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_DUMP_IMAGES_URL}/${fileName}`;
 
                   questionValue = questionValue.replace(
                     fullMatch,
@@ -156,6 +158,18 @@ const ModalImportCSV = ({
                 };
               }),
             );
+
+            if (Error.length > 0) {
+              toaster({
+                title: 'Error',
+                condition: 'warning',
+                description: Error,
+                duration: 3000,
+              });
+              setOpen(false);
+              setIsLoading(false);
+              return;
+            }
 
             if (!isAssesmentTypeValid.value) {
               toaster({
@@ -239,6 +253,7 @@ const ModalImportCSV = ({
                 };
               }
             });
+            let Error = '';
             const ParseQuestions = await Promise.all(
               Questions.map(async (item) => {
                 let questionValue = item.question;
@@ -271,10 +286,11 @@ const ModalImportCSV = ({
 
                   if (error) {
                     console.error('Upload error:', error);
-                    continue;
+                    Error = error.message;
+                    break;
                   }
 
-                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/object/1/dump-images/${fileName}`;
+                  const publicUrl = `${env.NEXT_PUBLIC_SUPABASE_DUMP_IMAGES_URL}/${fileName}`;
 
                   questionValue = questionValue.replace(
                     fullMatch,
@@ -300,6 +316,17 @@ const ModalImportCSV = ({
                 };
               }),
             );
+            if (Error.length > 0) {
+              toaster({
+                title: 'Error',
+                condition: 'warning',
+                description: Error,
+                duration: 3000,
+              });
+              setOpen(false);
+              setIsLoading(false);
+              return;
+            }
 
             if (!isAssesmentTypeValid.value) {
               toaster({

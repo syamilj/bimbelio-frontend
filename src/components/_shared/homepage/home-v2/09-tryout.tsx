@@ -50,6 +50,8 @@ const TryoutSection: React.FC = () => {
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
 
+  console.log('Tryout Section Rendered');
+
   autoScroll('tryout');
 
   return (
@@ -134,7 +136,7 @@ const TryoutSection: React.FC = () => {
               data={cards}
               userTryOutId={session?.user.id || ''}
               refresh={getData}
-              reloadHref={false}
+              reloadHref={true}
             />
           )}
         </div>

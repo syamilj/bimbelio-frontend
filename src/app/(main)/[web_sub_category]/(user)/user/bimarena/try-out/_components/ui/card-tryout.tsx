@@ -351,6 +351,15 @@ export default function CardTryOut({
           const badgeData = getBadgeValue(item);
           const buttonData = getButtonValue(item);
 
+          const endDate = new Date(item.endDate).getTime();
+          const nowDate = new Date().getTime();
+
+          const isFinished =
+            item.id === 'cmkqjyg2w01iykuctdm6v3awh' &&
+            nowDate > endDate &&
+            !item.isRegistered &&
+            !item.isJoin;
+
           return (
             <Card
               key={i}
@@ -557,26 +566,48 @@ export default function CardTryOut({
                             return;
                           }
 
+                          console.log({ reloadHref, item });
+
                           if (reloadHref && item.WebsiteSubCategory) {
                             localStorage.setItem(
                               'website_sub_category_id',
                               item.WebsiteSubCategory.id,
                             );
-                            router.push(
-                              `${window.location.origin}/${item.WebsiteSubCategory.id}/user/bimarena/try-out?id=${item.id}`,
-                            );
+                            const Link = document.getElementById(
+                              item.id,
+                            ) as HTMLAnchorElement;
+                            if (Link) {
+                              Link.click();
+                            }
+
+                            // router.push(
+                            //   `${window.location.origin}/${item.WebsiteSubCategory.id}/user/bimarena/try-out?id=${item.id}`,
+                            // );
                           } else {
                             setShowDetail(item);
                           }
                         }}
+                        disabled={isFinished}
                       >
                         <div className="flex items-center gap-2">
                           {buttonData.icon}
-                          <span>{buttonData.title}</span>
+                          {isFinished ? (
+                            <span>Try out telah selesai</span>
+                          ) : (
+                            <span>{buttonData.title}</span>
+                          )}
+
                           <IconTailedArrowUp45
                             w={16}
                             className="group-hover:translate-x-1 transition-transform"
                           />
+                          {item.WebsiteSubCategory && (
+                            <Link
+                              href={`/${item.WebsiteSubCategory.id}/user/bimarena/try-out?id=${item.id}`}
+                              id={item.id}
+                              hidden
+                            />
+                          )}
                         </div>
                       </Button>
                     </TooltipTrigger>

@@ -26,7 +26,7 @@ import { useState } from 'react';
 import ModalDeleteTryout from './modal-delete-tryout';
 // import Image from 'next/image';
 // import { env } from '@/env.mjs';
-// import { supabase } from '@/servers/supabase/supabaseClient';
+// import { supabase } from '@/servers/supabase/storageClient';
 
 const TryoutOption = () => {
   const {

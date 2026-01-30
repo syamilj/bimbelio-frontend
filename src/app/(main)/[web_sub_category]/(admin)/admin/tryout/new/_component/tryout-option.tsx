@@ -21,7 +21,7 @@ import React, { SetStateAction, useState } from 'react';
 import { SessionProps, TryoutProps } from '../page';
 // import Image from 'next/image';
 // import { env } from '@/env.mjs';
-// import { supabase } from '@/servers/supabase/supabaseClient';
+// import { supabase } from '@/servers/supabase/storageClient';
 
 interface Props {
   tryout: TryoutProps | null;

@@ -1,5 +1,6 @@
 // src/app/(user)/layout.tsx (SERVER layout)
 import LayoutUserClient from '@/components/layout/layoutUser';
+import ProviderOnBoarding from '@/components/provider/provider-on-boarding';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
@@ -18,10 +19,12 @@ export const metadata: Metadata = {
 export default function LayoutUser({ children }: { children: ReactNode }) {
   return (
     <div className={cn('min-h-screen bg-background font-sans antialiased')}>
-      <TooltipProvider>
-        <LayoutUserClient>{children}</LayoutUserClient>
-        <DialogBimbotAI />
-      </TooltipProvider>
+      <ProviderOnBoarding>
+        <TooltipProvider>
+          <LayoutUserClient>{children}</LayoutUserClient>
+          <DialogBimbotAI />
+        </TooltipProvider>
+      </ProviderOnBoarding>
     </div>
   );
 }
