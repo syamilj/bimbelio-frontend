@@ -80,10 +80,10 @@ export const RenderLimitationTab = () => {
     return (
       <div
         key={type}
-        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+        className="flex items-center justify-between p-3 bg-gray-50 rounded-3xl border border-gray-200"
       >
         <div className="flex items-center gap-3">
-          <div className="p-1.5 bg-blue-100 rounded-lg">
+          <div className="p-1.5 bg-blue-100 rounded-3xl">
             <Icon
               size={16}
               className="text-blue-600"
@@ -137,7 +137,7 @@ export const RenderLimitationTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="text-center p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-lg">
+      <div className="text-center p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-3xl">
         <TrendingUp
           size={24}
           className="mx-auto mb-2 text-blue-600"
@@ -155,7 +155,7 @@ export const RenderLimitationTab = () => {
       </div>
 
       {!limitations.isTimebound && limitations.expireDays && (
-        <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+        <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-3xl border border-indigo-200">
           <div className="flex items-center gap-2">
             <Calendar
               size={16}
@@ -175,7 +175,7 @@ export const RenderLimitationTab = () => {
       {limitations.isTimebound &&
         limitations.validFrom &&
         limitations.validUntil && (
-          <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-lg border border-indigo-200">
+          <div className="p-3 bg-linear-to-r from-indigo-50 to-blue-50 rounded-3xl border border-indigo-200">
             <div className="flex items-start gap-2">
               <Calendar
                 size={16}
@@ -198,7 +198,7 @@ export const RenderLimitationTab = () => {
         )}
 
       {hasUnlimited && (
-        <div className="p-3 bg-linear-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+        <div className="p-3 bg-linear-to-r from-green-50 to-emerald-50 rounded-3xl border border-green-200">
           <div className="flex items-center gap-2">
             <Infinity
               size={16}

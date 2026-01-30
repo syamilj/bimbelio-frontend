@@ -910,7 +910,7 @@ const SelectedCourseChapter = ({
                   <div
                     key={chapter.id}
                     className={cn(
-                      'flex items-center justify-between p-3 border rounded-lg bg-gray-50',
+                      'flex items-center justify-between p-3 border rounded-3xl bg-gray-50',
                       isSelected && 'border-main bg-main/10',
                     )}
                   >

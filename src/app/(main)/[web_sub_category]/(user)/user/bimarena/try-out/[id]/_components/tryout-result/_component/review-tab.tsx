@@ -256,7 +256,7 @@ export function ReviewTab({
                 variant={activeView === 'question' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setActiveView('question')}
-                className="rounded-lg px-3 py-2 h-8"
+                className="rounded-3xl px-3 py-2 h-8"
                 style={{
                   backgroundColor:
                     activeView === 'question' ? mainColor : 'transparent',
@@ -270,7 +270,7 @@ export function ReviewTab({
                 variant={activeView === 'grid' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setActiveView('grid')}
-                className="rounded-lg px-3 py-2 h-8"
+                className="rounded-3xl px-3 py-2 h-8"
                 style={{
                   backgroundColor:
                     activeView === 'grid' ? mainColor : 'transparent',
@@ -492,7 +492,7 @@ const QuestionView = ({
                   {/* Your Answer */}
                   <div className="space-y-3">
                     <h3 className="text-base font-semibold flex items-center gap-2">
-                      <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <div className="w-6 h-6 bg-blue-100 rounded-3xl flex items-center justify-center">
                         <User className="w-4 h-4 text-blue-600" />
                       </div>
                       Jawaban Kamu
@@ -526,7 +526,7 @@ const QuestionView = ({
                   {/* Correct Answer */}
                   <div className="space-y-3">
                     <h3 className="text-base font-semibold flex items-center gap-2">
-                      <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center">
+                      <div className="w-6 h-6 bg-green-100 rounded-3xl flex items-center justify-center">
                         <CheckCircle2 className="w-4 h-4 text-green-600" />
                       </div>
                       Jawaban Benar
@@ -544,7 +544,7 @@ const QuestionView = ({
                 <div className="space-y-3">
                   <h3 className="text-base font-semibold flex items-center gap-2">
                     <div
-                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      className="w-6 h-6 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Lightbulb
@@ -723,19 +723,19 @@ const GridView = ({
         {/* Grid Legend */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           <div className="flex items-center justify-center gap-2">
-            <div className="w-6 h-6 bg-green-100 border-2 border-green-200 rounded-lg flex items-center justify-center">
+            <div className="w-6 h-6 bg-green-100 border-2 border-green-200 rounded-3xl flex items-center justify-center">
               <CheckCircle2 className="w-4 h-4 text-green-600" />
             </div>
             <span className="text-sm text-gray-600">Benar</span>
           </div>
           <div className="flex items-center justify-center gap-2">
-            <div className="w-6 h-6 bg-red-100 border-2 border-red-200 rounded-lg flex items-center justify-center">
+            <div className="w-6 h-6 bg-red-100 border-2 border-red-200 rounded-3xl flex items-center justify-center">
               <XCircle className="w-4 h-4 text-red-600" />
             </div>
             <span className="text-sm text-gray-600">Salah</span>
           </div>
           <div className="flex items-center justify-center gap-2">
-            <div className="w-6 h-6 bg-gray-100 border-2 border-gray-200 rounded-lg flex items-center justify-center">
+            <div className="w-6 h-6 bg-gray-100 border-2 border-gray-200 rounded-3xl flex items-center justify-center">
               <span className="text-gray-400 text-xs">?</span>
             </div>
             <span className="text-sm text-gray-600">Kosong</span>
@@ -854,7 +854,7 @@ const CompactNavigation = ({
                 size="sm"
                 onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
                 disabled={currentPage === 0}
-                className="h-8 px-3 rounded-lg"
+                className="h-8 px-3 rounded-3xl"
               >
                 <ChevronLeft className="w-3 h-3" />
               </Button>
@@ -877,7 +877,7 @@ const CompactNavigation = ({
                   setCurrentPage(Math.min(totalPages - 1, currentPage + 1))
                 }
                 disabled={currentPage === totalPages - 1}
-                className="h-8 px-3 rounded-lg"
+                className="h-8 px-3 rounded-3xl"
               >
                 <ChevronRight className="w-3 h-3" />
               </Button>
@@ -894,7 +894,7 @@ const CompactNavigation = ({
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={cn(
-                    'aspect-square rounded-lg font-bold text-xs transition-all duration-200 border flex items-center justify-center relative',
+                    'aspect-square rounded-3xl font-bold text-xs transition-all duration-200 border flex items-center justify-center relative',
                     userAnswerIndex === index
                       ? 'border-transparent text-white shadow-lg'
                       : 'border-gray-200 hover:border-gray-300 text-gray-600',
@@ -1043,7 +1043,7 @@ const CompactNavigation = ({
         <CardContent className="pt-0 space-y-3">
           <div className="flex items-center gap-3">
             <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              className="w-6 h-6 rounded-3xl flex items-center justify-center text-white text-xs font-bold"
               style={{ backgroundColor: mainColor }}
             >
               5
@@ -1051,21 +1051,21 @@ const CompactNavigation = ({
             <span className="text-sm text-gray-600">Soal Dipilih</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-green-100 border border-green-200 rounded-lg flex items-center justify-center relative">
+            <div className="w-6 h-6 bg-green-100 border border-green-200 rounded-3xl flex items-center justify-center relative">
               <span className="text-green-700 text-xs font-bold">1</span>
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-white" />
             </div>
             <span className="text-sm text-gray-600">Jawaban Benar</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center relative">
+            <div className="w-6 h-6 bg-red-100 border border-red-200 rounded-3xl flex items-center justify-center relative">
               <span className="text-red-700 text-xs font-bold">2</span>
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border border-white" />
             </div>
             <span className="text-sm text-gray-600">Jawaban Salah</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-6 h-6 bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center relative">
+            <div className="w-6 h-6 bg-gray-100 border border-gray-200 rounded-3xl flex items-center justify-center relative">
               <span className="text-gray-500 text-xs font-bold">3</span>
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-gray-400 rounded-full border border-white" />
             </div>

@@ -161,7 +161,7 @@ export const DialogOnBoarding = ({
       content: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Gambar */}
-          <div className="w-full rounded-lg overflow-hidden border border-amber-200 bg-gray-100 flex justify-center p-1">
+          <div className="w-full rounded-3xl overflow-hidden border border-amber-200 bg-gray-100 flex justify-center p-1">
             <img
               src={ImgChangeCategory.src}
               alt="Cara Menukar Website Category"
@@ -169,7 +169,7 @@ export const DialogOnBoarding = ({
             />
           </div>
           <div className="space-y-4">
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
+            <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-amber-200 text-amber-900 flex items-center justify-center font-bold flex-shrink-0">
                   1
@@ -235,7 +235,7 @@ export const DialogOnBoarding = ({
       content: (
         <div className="space-y-4">
           {/* Gambar */}
-          <div className="w-full rounded-lg overflow-hidden border border-green-200 bg-gray-100 flex justify-center">
+          <div className="w-full rounded-3xl overflow-hidden border border-green-200 bg-gray-100 flex justify-center">
             <img
               src={ImgSubscription.src}
               alt="Cara Kelola Subscription Aktif"
@@ -243,7 +243,7 @@ export const DialogOnBoarding = ({
             />
           </div>
 
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 space-y-3">
+          <div className="bg-green-50 border border-green-200 rounded-3xl p-4 space-y-3">
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-full bg-green-200 text-green-900 flex items-center justify-center font-bold flex-shrink-0">
                 1

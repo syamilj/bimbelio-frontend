@@ -139,7 +139,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                       <div className="space-y-3">
                         <div className="flex items-center gap-2 mb-4">
                           <div
-                            className="w-6 h-6 rounded-lg flex items-center justify-center"
+                            className="w-6 h-6 rounded-3xl flex items-center justify-center"
                             style={{ backgroundColor: mainColor }}
                           >
                             <Play className="w-3 h-3 text-white" />
@@ -153,7 +153,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                         <div className="space-y-3 bg-white/60 p-4 rounded-3xl border border-white/50">
                           <div className="flex items-center gap-3 p-3 rounded-3xl bg-white/80 hover:bg-white transition-all duration-200">
                             <div
-                              className="w-8 h-8 rounded-lg text-white text-xs flex items-center justify-center font-bold"
+                              className="w-8 h-8 rounded-3xl text-white text-xs flex items-center justify-center font-bold"
                               style={{
                                 backgroundColor: mainColor,
                               }}
@@ -172,7 +172,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                           </div>
 
                           <div className="pl-6 space-y-2">
-                            <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50/80">
+                            <div className="flex items-center gap-3 p-2 rounded-3xl bg-gray-50/80">
                               <div className="w-6 h-6 rounded-full bg-gray-300 text-gray-600 text-xs flex items-center justify-center font-bold">
                                 1.1
                               </div>
@@ -184,7 +184,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                                 15 menit
                               </div>
                             </div>
-                            <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50/80">
+                            <div className="flex items-center gap-3 p-2 rounded-3xl bg-gray-50/80">
                               <div className="w-6 h-6 rounded-full bg-gray-300 text-gray-600 text-xs flex items-center justify-center font-bold">
                                 1.2
                               </div>
@@ -196,7 +196,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                                 25 menit
                               </div>
                             </div>
-                            <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50/80">
+                            <div className="flex items-center gap-3 p-2 rounded-3xl bg-gray-50/80">
                               <div className="w-6 h-6 rounded-full bg-gray-300 text-gray-600 text-xs flex items-center justify-center font-bold">
                                 1.3
                               </div>
@@ -212,7 +212,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
 
                           <div className="flex items-center gap-3 p-3 rounded-3xl bg-white/80 hover:bg-white transition-all duration-200">
                             <div
-                              className="w-8 h-8 rounded-lg text-white text-xs flex items-center justify-center font-bold"
+                              className="w-8 h-8 rounded-3xl text-white text-xs flex items-center justify-center font-bold"
                               style={{
                                 backgroundColor: mainColor,
                               }}
@@ -240,7 +240,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                         {/* Category Features */}
                         <div className="grid grid-cols-2 gap-3 mt-4">
                           <div className="flex items-center gap-2 p-3 rounded-3xl bg-green-50 border border-green-200">
-                            <div className="w-6 h-6 rounded-lg bg-green-500 flex items-center justify-center">
+                            <div className="w-6 h-6 rounded-3xl bg-green-500 flex items-center justify-center">
                               <Video className="w-3 h-3 text-white" />
                             </div>
                             <span className="text-green-700 text-xs font-semibold">
@@ -248,7 +248,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                             </span>
                           </div>
                           <div className="flex items-center gap-2 p-3 rounded-3xl bg-purple-50 border border-purple-200">
-                            <div className="w-6 h-6 rounded-lg bg-purple-500 flex items-center justify-center">
+                            <div className="w-6 h-6 rounded-3xl bg-purple-500 flex items-center justify-center">
                               <FileText className="w-3 h-3 text-white" />
                             </div>
                             <span className="text-purple-700 text-xs font-semibold">
@@ -256,7 +256,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                             </span>
                           </div>
                           <div className="flex items-center gap-2 p-3 rounded-3xl bg-orange-50 border border-orange-200">
-                            <div className="w-6 h-6 rounded-lg bg-orange-500 flex items-center justify-center">
+                            <div className="w-6 h-6 rounded-3xl bg-orange-500 flex items-center justify-center">
                               <Target className="w-3 h-3 text-white" />
                             </div>
                             <span className="text-orange-700 text-xs font-semibold">
@@ -264,7 +264,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                             </span>
                           </div>
                           <div className="flex items-center gap-2 p-3 rounded-3xl bg-blue-50 border border-blue-200">
-                            <div className="w-6 h-6 rounded-lg bg-blue-500 flex items-center justify-center">
+                            <div className="w-6 h-6 rounded-3xl bg-blue-500 flex items-center justify-center">
                               <CheckCircle className="w-3 h-3 text-white" />
                             </div>
                             <span className="text-blue-700 text-xs font-semibold">

@@ -213,7 +213,7 @@ export const NotificationPopUp = () => {
           <div className="flex gap-3 mb-3">
             <div
               className={cn(
-                'flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center border-2 shadow-sm',
+                'flex-shrink-0 w-12 h-12 rounded-3xl flex items-center justify-center border-2 shadow-sm',
                 getPriorityColor(notificationPopUp.priority),
               )}
             >
@@ -269,7 +269,7 @@ export const NotificationPopUp = () => {
               handleClose();
               handleMarkAsRead(notificationPopUp.id);
             }}
-            className="rounded-lg font-medium hover:bg-gray-100 transition-colors"
+            className="rounded-3xl font-medium hover:bg-gray-100 transition-colors"
           >
             Tandai Telah Dibaca
           </Button>
@@ -285,7 +285,7 @@ export const NotificationPopUp = () => {
                     handleClose();
                     handleMarkAsRead(notificationPopUp.id);
                   }}
-                  className="rounded-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
+                  className="rounded-3xl font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
                 >
                   Lihat Selengkapnya
                 </Button>
@@ -305,7 +305,7 @@ export const NotificationPopUp = () => {
                     handleClose();
                     handleMarkAsRead(notificationPopUp.id);
                   }}
-                  className="rounded-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
+                  className="rounded-3xl font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
                 >
                   Lihat Selengkapnya
                 </Button>
@@ -365,7 +365,7 @@ const getLiveClassMetadata = () => {
               {/* Info Grid */}
               <div className="space-y-2">
                 {/* Start Time */}
-                <div className="flex items-center gap-2.5 text-xs bg-white/60 backdrop-blur rounded-lg px-3 py-2 border border-blue-200">
+                <div className="flex items-center gap-2.5 text-xs bg-white/60 backdrop-blur rounded-3xl px-3 py-2 border border-blue-200">
                   <Clock className="w-4 h-4 text-blue-600 flex-shrink-0" />
                   <span className="text-gray-700 font-medium">
                     {new Date(metadata.startDate).toLocaleDateString('id-ID', {
@@ -381,7 +381,7 @@ const getLiveClassMetadata = () => {
                 {/* Duration & Participants */}
                 <div className="grid grid-cols-2 gap-2">
                   {metadata.duration && (
-                    <div className="flex items-center gap-2 text-xs bg-orange-50 border border-orange-200 rounded-lg px-2.5 py-2">
+                    <div className="flex items-center gap-2 text-xs bg-orange-50 border border-orange-200 rounded-3xl px-2.5 py-2">
                       <Clock className="w-3.5 h-3.5 text-orange-600 flex-shrink-0" />
                       <span className="text-gray-700 font-medium">
                         {metadata.duration} min
@@ -389,7 +389,7 @@ const getLiveClassMetadata = () => {
                     </div>
                   )}
                   {metadata.maxParticipant && (
-                    <div className="flex items-center gap-2 text-xs bg-purple-50 border border-purple-200 rounded-lg px-2.5 py-2">
+                    <div className="flex items-center gap-2 text-xs bg-purple-50 border border-purple-200 rounded-3xl px-2.5 py-2">
                       <Users className="w-3.5 h-3.5 text-purple-600 flex-shrink-0" />
                       <span className="text-gray-700 font-medium">
                         {metadata.maxParticipant}
@@ -399,7 +399,7 @@ const getLiveClassMetadata = () => {
                 </div>
 
                 {/* Type Badge */}
-                <div className="inline-flex items-center gap-2 text-xs bg-gradient-to-r from-blue-100 to-purple-100 text-gray-800 px-3 py-2 rounded-lg font-bold border border-blue-200">
+                <div className="inline-flex items-center gap-2 text-xs bg-gradient-to-r from-blue-100 to-purple-100 text-gray-800 px-3 py-2 rounded-3xl font-bold border border-blue-200">
                   {metadata.type === 'LIVECLASS' ? (
                     <GraduationCap className="w-3.5 h-3.5" />
                   ) : metadata.type === 'LIVESTREAM' ? (
@@ -449,7 +449,7 @@ const getTryoutMetadata = () => {
               {/* Info Grid */}
               <div className="space-y-2">
                 {/* Start Date */}
-                <div className="flex items-center gap-2.5 text-xs bg-white/60 backdrop-blur rounded-lg px-3 py-2 border border-yellow-100">
+                <div className="flex items-center gap-2.5 text-xs bg-white/60 backdrop-blur rounded-3xl px-3 py-2 border border-yellow-100">
                   <Clock className="w-4 h-4 text-yellow-600 flex-shrink-0" />
                   <span className="text-gray-700 font-medium">
                     Mulai:{' '}
@@ -463,7 +463,7 @@ const getTryoutMetadata = () => {
 
                 {/* End Date & Result Date */}
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="flex items-center gap-2 text-xs bg-orange-50 border border-orange-200 rounded-lg px-2.5 py-2">
+                  <div className="flex items-center gap-2 text-xs bg-orange-50 border border-orange-200 rounded-3xl px-2.5 py-2">
                     <Clock className="w-3.5 h-3.5 text-orange-600 flex-shrink-0" />
                     <div className="flex flex-col">
                       <span className="text-[10px] text-orange-700 font-semibold">
@@ -480,7 +480,7 @@ const getTryoutMetadata = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-xs bg-purple-50 border border-purple-200 rounded-lg px-2.5 py-2">
+                  <div className="flex items-center gap-2 text-xs bg-purple-50 border border-purple-200 rounded-3xl px-2.5 py-2">
                     <Trophy className="w-3.5 h-3.5 text-purple-600 flex-shrink-0" />
                     <div className="flex flex-col">
                       <span className="text-[10px] text-purple-700 font-semibold">
@@ -501,7 +501,7 @@ const getTryoutMetadata = () => {
 
                 {/* Rest Time */}
                 {metadata.restTime && (
-                  <div className="flex items-center gap-2.5 text-xs bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+                  <div className="flex items-center gap-2.5 text-xs bg-blue-50 border border-blue-200 rounded-3xl px-3 py-2">
                     <Clock className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
                     <span className="text-gray-700 font-medium">
                       Waktu istirahat: {metadata.restTime} hari
@@ -517,7 +517,7 @@ const getTryoutMetadata = () => {
                         href={metadata.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 px-2.5 py-1.5 rounded-lg font-medium hover:from-pink-200 hover:to-purple-200 transition-colors border border-pink-200"
+                        className="inline-flex items-center gap-1.5 text-xs bg-gradient-to-r from-pink-100 to-purple-100 text-pink-700 px-2.5 py-1.5 rounded-3xl font-medium hover:from-pink-200 hover:to-purple-200 transition-colors border border-pink-200"
                       >
                         <Camera className="w-3.5 h-3.5" />
                         Instagram
@@ -528,7 +528,7 @@ const getTryoutMetadata = () => {
                         href={metadata.tiktok}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs bg-gradient-to-r from-black/10 to-gray-100 text-gray-800 px-2.5 py-1.5 rounded-lg font-medium hover:from-black/20 hover:to-gray-200 transition-colors border border-gray-300"
+                        className="inline-flex items-center gap-1.5 text-xs bg-gradient-to-r from-black/10 to-gray-100 text-gray-800 px-2.5 py-1.5 rounded-3xl font-medium hover:from-black/20 hover:to-gray-200 transition-colors border border-gray-300"
                       >
                         <Music className="w-3.5 h-3.5" />
                         TikTok

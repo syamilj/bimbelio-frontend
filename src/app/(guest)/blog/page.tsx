@@ -307,8 +307,8 @@ export default function BlogClient() {
 
                           {/* Title Skeleton */}
                           <div className="space-y-2">
-                            <div className="h-6 bg-gray-200 rounded-lg animate-pulse" />
-                            <div className="h-6 bg-gray-200 rounded-lg w-3/4 animate-pulse" />
+                            <div className="h-6 bg-gray-200 rounded-3xl animate-pulse" />
+                            <div className="h-6 bg-gray-200 rounded-3xl w-3/4 animate-pulse" />
                           </div>
 
                           {/* Description Skeleton */}

@@ -116,35 +116,37 @@ const EcosystemSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Ecosystem Grid - Mobile First */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-10">
+        {/* Ecosystem Grid - Horizontal Scroll on Mobile */}
+        <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 mb-10 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 px-4 -mx-4 md:px-0 md:mx-0">
           {ecosystem.map((item) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.id}
-                className="group relative bg-white rounded-3xl p-5 border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300"
+                className="group relative bg-gradient-to-br from-white to-gray-50/50 rounded-3xl p-6 border-2 border-gray-100 hover:shadow-xl transition-all duration-300 min-w-[85%] sm:min-w-[340px] md:min-w-0 snap-center overflow-hidden"
               >
-                {/* Colored accent bar */}
+                {/* Background decoration */}
                 <div
-                  className="absolute left-0 top-4 bottom-4 w-1 rounded-r-full opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-[0.07] group-hover:opacity-[0.12] transition-opacity"
                   style={{ backgroundColor: item.color }}
                 />
 
-                <div className="flex items-start gap-4">
+                <div className="relative z-10">
+                  {/* Icon */}
                   <div
-                    className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 text-white"
+                    className="w-14 h-14 rounded-3xl flex items-center justify-center text-white mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300"
                     style={{ backgroundColor: item.color }}
                   >
-                    <Icon className="w-6 h-6" />
+                    <Icon className="w-7 h-7" />
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-bold text-gray-900 mb-0.5">
+                  {/* Content */}
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
                       {item.name}
                     </h3>
                     <p
-                      className="text-[10px] font-bold uppercase tracking-wider mb-2"
+                      className="text-[11px] font-bold uppercase tracking-wider mb-3"
                       style={{ color: item.color }}
                     >
                       {item.tagline}

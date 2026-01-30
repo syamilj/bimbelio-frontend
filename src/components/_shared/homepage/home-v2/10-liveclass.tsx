@@ -140,7 +140,7 @@ const LiveClassSection: React.FC = () => {
                     id={linkId}
                     href={href}
                   />
-                  <Card className="overflow-hidden rounded-3xl border-2 border-gray-100 hover:border-gray-300 transition-colors bg-white h-full shadow-sm">
+                  <Card className="overflow-hidden rounded-3xl border-2 border-gray-100 hover:border-gray-200 transition-all bg-white h-full shadow-sm">
                     <CardContent className="p-0">
                       {/* Header with status */}
                       <div

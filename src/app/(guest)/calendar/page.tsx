@@ -108,7 +108,7 @@ export default function CalendarPage() {
                     rel="noopener noreferrer"
                   >
                     <Button
-                      className="rounded-lg gap-2"
+                      className="rounded-3xl gap-2"
                       style={{ backgroundColor: mainColor, color: 'white' }}
                     >
                       <ExternalLink className="w-4 h-4" />

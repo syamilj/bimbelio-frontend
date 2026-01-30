@@ -204,7 +204,7 @@ export const TabInstallment = ({
                                     Cicilan #{installmentItem.installmentNumber}
                                   </p>
                                   <Badge
-                                    className="font-bold text-xs rounded-lg"
+                                    className="font-bold text-xs rounded-3xl"
                                     style={{
                                       backgroundColor: statusColor.bg,
                                       color: statusColor.text,
@@ -222,7 +222,7 @@ export const TabInstallment = ({
                                       Nominal
                                     </span>
                                     <div
-                                      className="px-2 py-1 rounded-lg flex-1"
+                                      className="px-2 py-1 rounded-3xl flex-1"
                                       style={{
                                         backgroundColor: `${mainColor}15`,
                                       }}
@@ -238,7 +238,7 @@ export const TabInstallment = ({
                                       Jatuh Tempo
                                     </span>
                                     <div
-                                      className="px-2 py-1 rounded-lg flex-1"
+                                      className="px-2 py-1 rounded-3xl flex-1"
                                       style={{
                                         backgroundColor: installmentItem.isPaid
                                           ? '#10b98115'
@@ -274,7 +274,7 @@ export const TabInstallment = ({
                                       <span className="font-semibold text-gray-400 uppercase flex-shrink-0">
                                         Tenggang
                                       </span>
-                                      <div className="px-2 py-1 rounded-lg flex-1 bg-green-50">
+                                      <div className="px-2 py-1 rounded-3xl flex-1 bg-green-50">
                                         <p className="font-bold text-green-700 text-xs">
                                           Hingga{' '}
                                           {getDateString(
@@ -295,7 +295,7 @@ export const TabInstallment = ({
                                           : 'Akses Berakhir'}
                                       </span>
                                       <div
-                                        className="px-2 py-1 rounded-lg flex-1"
+                                        className="px-2 py-1 rounded-3xl flex-1"
                                         style={{
                                           backgroundColor:
                                             new Date(
@@ -334,7 +334,7 @@ export const TabInstallment = ({
 
                                 {/* Late Fee Info */}
                                 {hasLateFee && (
-                                  <div className="flex items-start gap-2 p-2 bg-orange-50 rounded-lg mb-3">
+                                  <div className="flex items-start gap-2 p-2 bg-orange-50 rounded-3xl mb-3">
                                     <AlertTriangle
                                       size={14}
                                       className="text-orange-600 mt-0.5 flex-shrink-0"
@@ -374,7 +374,7 @@ export const TabInstallment = ({
                                         <Badge
                                           key={key}
                                           variant="outline"
-                                          className="text-xs rounded-lg"
+                                          className="text-xs rounded-3xl"
                                           style={{
                                             borderColor: `${mainColor}40`,
                                             color: mainColor,

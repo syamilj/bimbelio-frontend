@@ -73,9 +73,9 @@ export default function RecentActivity({ activities }: RecentActivityProps) {
             return (
               <div
                 key={activity.id}
-                className="flex items-start gap-3 p-3 rounded-2xl hover:bg-slate-50 transition-colors"
+                className="flex items-start gap-3 p-3 rounded-3xl hover:bg-slate-50 transition-colors"
               >
-                <div className={`w-10 h-10 rounded-2xl ${colorClass} flex items-center justify-center flex-shrink-0`}>
+                <div className={`w-10 h-10 rounded-3xl ${colorClass} flex items-center justify-center flex-shrink-0`}>
                   <Icon className="w-5 h-5" />
                 </div>
 

@@ -427,7 +427,7 @@ export default function CardTryOut({
                   {/* Stats Grid - Single Row Compact Design */}
                   <div className="grid grid-cols-4 gap-2">
                     {/* Durasi */}
-                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-blue-50/50 border-blue-100 h-full">
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-3xl border bg-blue-50/50 border-blue-100 h-full">
                       <Clock className="w-3.5 h-3.5 text-blue-600 mb-1" />
                       <div className="text-xs font-bold text-blue-700 leading-none">
                         {item.TryoutSession.reduce(
@@ -441,7 +441,7 @@ export default function CardTryOut({
                     </div>
 
                     {/* Soal */}
-                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-green-50/50 border-green-100 h-full">
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-3xl border bg-green-50/50 border-green-100 h-full">
                       <BookOpen className="w-3.5 h-3.5 text-green-600 mb-1" />
                       <div className="text-xs font-bold text-green-700 leading-none">
                         {item.TryoutSession.reduce(
@@ -455,7 +455,7 @@ export default function CardTryOut({
                     </div>
 
                     {/* Tanggal Mulai */}
-                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-orange-50/50 border-orange-100 h-full">
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-3xl border bg-orange-50/50 border-orange-100 h-full">
                       <div className="text-[10px] text-orange-600 font-medium mb-1">
                         Mulai
                       </div>
@@ -465,7 +465,7 @@ export default function CardTryOut({
                     </div>
 
                     {/* Tanggal Selesai */}
-                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-2xl border bg-pink-50/50 border-pink-100 h-full">
+                    <div className="flex flex-col items-center justify-center py-2 px-1 rounded-3xl border bg-pink-50/50 border-pink-100 h-full">
                       <div className="text-[10px] text-pink-600 font-medium mb-1">
                         Bahas
                       </div>

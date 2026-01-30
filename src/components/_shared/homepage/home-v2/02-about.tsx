@@ -32,7 +32,7 @@ const AboutSection: React.FC = () => {
         </div>
 
         {/* Team Photo */}
-        <div className="relative w-full md:w-3/5 md:mx-auto rounded-3xl overflow-hidden mb-10 border border-gray-200">
+        <div className="relative w-full md:w-3/5 md:mx-auto rounded-3xl overflow-hidden mb-10 border-2 border-gray-100 shadow-sm">
           <img
             src="/hero/about.webp"
             alt="Tim Bimbelio"
@@ -102,7 +102,7 @@ const AboutSection: React.FC = () => {
 
         {/* What Makes Us Different */}
         <div
-          className="bg-white rounded-3xl p-6 md:p-8 border border-gray-200"
+          className="bg-white rounded-3xl p-6 md:p-8 border-2 border-gray-100 shadow-sm hover:border-gray-200 transition-colors"
         >
           <div className="flex items-start gap-4 mb-6">
             <div

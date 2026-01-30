@@ -206,7 +206,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                     >
                       <div className="flex items-start gap-3">
                         <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                          className="w-8 h-8 rounded-3xl flex items-center justify-center shrink-0"
                           style={{
                             backgroundColor: secondaryColor,
                           }}

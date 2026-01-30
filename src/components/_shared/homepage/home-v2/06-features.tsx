@@ -109,14 +109,14 @@ const FeaturesSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Features Grid - Mobile Optimized */}
-        <div className="grid md:grid-cols-2 gap-4 md:gap-6 mb-10">
+        {/* Features Grid - Horizontal Scroll on Mobile */}
+        <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-2 gap-4 md:gap-6 mb-10 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 px-4 -mx-4 md:px-0 md:mx-0">
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
               <div
                 key={feature.id}
-                className="group bg-white rounded-3xl border-2 border-gray-100 overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all shadow-sm"
+                className="group bg-white rounded-3xl border-2 border-gray-100 overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all shadow-sm min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
               >
                 {/* Image */}
                 <div className="relative aspect-[16/9] bg-gray-100 overflow-hidden">

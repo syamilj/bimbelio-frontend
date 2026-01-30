@@ -503,7 +503,7 @@ const DetailInstallment = ({
             Cicilan #{installment.installmentNumber}
           </div>
 
-          <div className="p-4 border rounded-lg space-y-3 bg-gray-50">
+          <div className="p-4 border rounded-3xl space-y-3 bg-gray-50">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600">Status</span>
               <Badge

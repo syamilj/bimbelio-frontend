@@ -158,7 +158,7 @@ export default function Hero({
               {plan.maxUsers && (
                 <div className="w-fit mb-4 p-3 rounded-3xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-amber-100 rounded-lg">
+                    <div className="p-2 bg-amber-100 rounded-3xl">
                       <Users className="w-4 h-4 text-amber-600" />
                     </div>
                     <div className="flex-1">

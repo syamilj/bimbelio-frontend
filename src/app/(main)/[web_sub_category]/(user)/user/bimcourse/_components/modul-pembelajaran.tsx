@@ -288,7 +288,7 @@ export default function ModulPembelajaranSection() {
               variant="ghost"
               size="sm"
               onClick={() => handleViewChange('grid')}
-              className={`px-3 py-2 rounded-lg transition-all ${
+              className={`px-3 py-2 rounded-3xl transition-all ${
                 viewMode === 'grid'
                   ? 'text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
@@ -304,7 +304,7 @@ export default function ModulPembelajaranSection() {
               variant="ghost"
               size="sm"
               onClick={() => handleViewChange('list')}
-              className={`px-3 py-2 rounded-lg transition-all ${
+              className={`px-3 py-2 rounded-3xl transition-all ${
                 viewMode === 'list'
                   ? 'text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
@@ -1451,7 +1451,7 @@ const DetailContent = ({
         {/* Content Type Stats */}
         <div className="grid grid-cols-4 gap-2 mb-3">
           {videoCount > 0 && (
-            <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-red-50 border border-red-200">
+            <div className="flex items-center gap-1 px-2 py-1.5 rounded-3xl bg-red-50 border border-red-200">
               <PlayIcon className="w-3 h-3 text-red-600" />
               <span className="text-xs font-semibold text-red-700">
                 {videoCount}
@@ -1459,7 +1459,7 @@ const DetailContent = ({
             </div>
           )}
           {materiCount > 0 && (
-            <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-purple-50 border border-purple-200">
+            <div className="flex items-center gap-1 px-2 py-1.5 rounded-3xl bg-purple-50 border border-purple-200">
               <BookOpenIcon className="w-3 h-3 text-purple-600" />
               <span className="text-xs font-semibold text-purple-700">
                 {materiCount}
@@ -1467,7 +1467,7 @@ const DetailContent = ({
             </div>
           )}
           {quizCount > 0 && (
-            <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-green-50 border border-green-200">
+            <div className="flex items-center gap-1 px-2 py-1.5 rounded-3xl bg-green-50 border border-green-200">
               <FileQuestionIcon className="w-3 h-3 text-green-600" />
               <span className="text-xs font-semibold text-green-700">
                 {quizCount}
@@ -1475,7 +1475,7 @@ const DetailContent = ({
             </div>
           )}
           {totalTime > 0 && (
-            <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-blue-50 border border-blue-200">
+            <div className="flex items-center gap-1 px-2 py-1.5 rounded-3xl bg-blue-50 border border-blue-200">
               <ClockIcon className="w-3 h-3 text-blue-600" />
               <span className="text-xs font-semibold text-blue-700">
                 {totalTime}m
@@ -1504,7 +1504,7 @@ const DetailContent = ({
           {chapter.CourseSubChapter.map((subChapter) => (
             <div
               key={subChapter.id}
-              className="p-3 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
+              className="p-3 rounded-3xl border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
               onClick={() => {
                 router.push(
                   `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study?sub=${subChapter.id}&tab=chat`,
@@ -1583,7 +1583,7 @@ const DetailContent = ({
   //     {/* Content Type Stats */}
   //     <div className="grid grid-cols-4 gap-2 mb-3">
   //       {videoCount > 0 && (
-  //         <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-red-50 border border-red-200">
+  //         <div className="flex items-center gap-1 px-2 py-1.5 rounded-3xl bg-red-50 border border-red-200">
   //           <PlayIcon className="w-3 h-3 text-red-600" />
   //           <span className="text-xs font-semibold text-red-700">
   //             {videoCount}
@@ -1591,7 +1591,7 @@ const DetailContent = ({
   //         </div>
   //       )}
   //       {materiCount > 0 && (
-  //         <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-purple-50 border border-purple-200">
+  //         <div className="flex items-center gap-1 px-2 py-1.5 rounded-3xl bg-purple-50 border border-purple-200">
   //           <BookOpenIcon className="w-3 h-3 text-purple-600" />
   //           <span className="text-xs font-semibold text-purple-700">
   //             {materiCount}
@@ -1599,7 +1599,7 @@ const DetailContent = ({
   //         </div>
   //       )}
   //       {quizCount > 0 && (
-  //         <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-green-50 border border-green-200">
+  //         <div className="flex items-center gap-1 px-2 py-1.5 rounded-3xl bg-green-50 border border-green-200">
   //           <FileQuestionIcon className="w-3 h-3 text-green-600" />
   //           <span className="text-xs font-semibold text-green-700">
   //             {quizCount}
@@ -1607,7 +1607,7 @@ const DetailContent = ({
   //         </div>
   //       )}
   //       {totalTime > 0 && (
-  //         <div className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-blue-50 border border-blue-200">
+  //         <div className="flex items-center gap-1 px-2 py-1.5 rounded-3xl bg-blue-50 border border-blue-200">
   //           <ClockIcon className="w-3 h-3 text-blue-600" />
   //           <span className="text-xs font-semibold text-blue-700">
   //             {totalTime}m

@@ -221,7 +221,7 @@ export default function Row({
             >
               {/* Message Content */}
               {isBase64Image && currentMessage ? (
-                <div className="rounded-lg overflow-hidden">
+                <div className="rounded-3xl overflow-hidden">
                   <Image
                     src={
                       currentMessage.content.includes('data:image/png;base64')

@@ -558,7 +558,7 @@ export default function PricingFeatures() {
                     </span>
                   </div>
                   <span
-                    className="font-bold text-sm px-3 py-2 rounded-lg text-white shadow-sm"
+                    className="font-bold text-sm px-3 py-2 rounded-3xl text-white shadow-sm"
                     style={{ backgroundColor: mainColor }}
                   >
                     {example.cost}

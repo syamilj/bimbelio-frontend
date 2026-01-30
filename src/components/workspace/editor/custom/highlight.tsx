@@ -16,27 +16,27 @@ export const HighlighBlock = createReactBlockSpec(
   {
     render: (props) => {
       return (
-        <div className="flex min-h-[40px] w-full max-w-full items-center gap-2 rounded-sm p-2 bg-yellow-50 border-l-4 border-yellow-400 my-2">
+        <div className="flex min-h-[40px] w-full max-w-full items-center gap-2 rounded-3xl p-2 bg-yellow-50 border-l-4 border-yellow-400 my-2">
           <div
             onClick={() => {
               if (!props?.block?.props?.highlightId) return;
 
               const highlightId = props.block.props.highlightId;
-              
+
               // Multiple scroll strategies for better reliability
               const scrollToHighlight = () => {
                 // Strategy 1: Use URL hash (works with PDF provider)
                 const currentHash = window.location.hash;
                 window.location.hash = highlightId;
-                
+
                 // Strategy 2: Direct DOM scroll after small delay
                 setTimeout(() => {
                   const visionOnElement = document.querySelector('#VisionOn') as HTMLElement;
                   const vision = visionOnElement?.style.display !== 'none';
                   const containerId = vision ? 'VisionOn' : 'VisionOff';
-                  
+
                   const pdfContainer = document.querySelector(`#${containerId} .PdfHighlighter`);
-                  
+
                   if (pdfContainer) {
                     // Try multiple selectors for the highlight
                     const selectors = [
@@ -60,7 +60,7 @@ export const HighlighBlock = createReactBlockSpec(
                       const containerRect = pdfContainer.getBoundingClientRect();
                       const highlightRect = highlightElement.getBoundingClientRect();
                       const scrollTop = pdfContainer.scrollTop + (highlightRect.top - containerRect.top) - 100;
-                      
+
                       pdfContainer.scrollTo({
                         top: Math.max(0, scrollTop),
                         behavior: 'smooth'
@@ -73,7 +73,7 @@ export const HighlighBlock = createReactBlockSpec(
                       }, 1500);
                     }
                   }
-                  
+
                   // Reset hash
                   setTimeout(() => {
                     window.location.hash = currentHash;
