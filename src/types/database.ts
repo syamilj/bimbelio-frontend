@@ -863,7 +863,7 @@ export type Plan = {
   updatedAt: Date;
 };
 
-export type PlanStatusEnum = 'PUBLIC' | 'DRAFT' | 'COMING_SOON';
+export type PlanStatusEnum = 'PUBLIC' | 'DRAFT' | 'COMING_SOON' | 'INACTIVE';
 
 export type PlanLimitation = {
   chat: number;

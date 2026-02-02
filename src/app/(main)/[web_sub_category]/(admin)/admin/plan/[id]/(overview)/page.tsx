@@ -1593,7 +1593,7 @@ const SectionFeature = () => {
                 <div className="flex items-center gap-2">
                   {liveClassIds.map((liveClass, index) => (
                     <div
-                      key={liveClass.value}
+                      key={`${liveClass.value}-${index}`}
                       className="relative group"
                     >
                       <div
