@@ -177,7 +177,7 @@ export default function QuizOnboarding() {
       <DialogHeader hidden>
         <DialogTitle>Welcome to BimArena Quiz!</DialogTitle>
       </DialogHeader>
-      <DialogContent 
+      <DialogContent
         className="max-w-sm md:max-w-md p-0 overflow-hidden rounded-2xl border-0 gap-0"
         hideClose
       >
