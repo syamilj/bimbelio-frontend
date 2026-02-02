@@ -194,7 +194,7 @@ const SubmitChatEdit = () => {
         />
 
         {/* Character counter */}
-        <div className="absolute bottom-2 right-3 text-xs text-gray-500 bg-background/80 px-2 py-1 rounded-md">
+        <div className="absolute bottom-2 right-3 text-xs text-gray-500 bg-background/80 px-2 py-1 rounded-3xl">
           <span>{charCount}/1000</span>
         </div>
       </div>

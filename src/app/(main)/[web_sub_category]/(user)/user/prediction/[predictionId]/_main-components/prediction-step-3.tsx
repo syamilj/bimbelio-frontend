@@ -241,7 +241,7 @@ export default function PredictionStep3() {
                           </div>
                         </div>
                         {!validateSubtest(item.value, item.total_question) && (
-                          <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-lg">
+                          <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-3xl">
                             <AlertCircle className="h-4 w-4" />
                             <span>
                               Total:{' '}
@@ -342,7 +342,7 @@ export default function PredictionStep3() {
                         </div>
                       </div>
                       {!validateSubtest(item.value, item.total_question) && (
-                        <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-lg">
+                        <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-3xl">
                           <AlertCircle className="h-4 w-4" />
                           <span>
                             Total:{' '}
@@ -442,7 +442,7 @@ export default function PredictionStep3() {
                         </div>
                       </div>
                       {!validateSubtest(item.value, item.total_question) && (
-                        <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-lg">
+                        <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-3xl">
                           <AlertCircle className="h-4 w-4" />
                           <span>
                             Total:{' '}

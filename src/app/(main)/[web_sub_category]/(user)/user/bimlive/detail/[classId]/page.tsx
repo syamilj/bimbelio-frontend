@@ -630,7 +630,7 @@ export default function LiveClassStudentDetail() {
 
                 {/* Email Reminder for joining */}
                 {/* {(liveClass.canJoin || liveClass.link) && (
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-3xl">
                     <div className="flex items-start gap-2">
                       <Mail className="h-4 w-4 text-blue-600 mt-0.5 shrink-0" />
                       <div className="text-sm">

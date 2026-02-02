@@ -367,7 +367,7 @@ export const Notification = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs text-main hover:bg-transparent rounded-lg gap-2 cursor-default"
+                className="text-xs text-main hover:bg-transparent rounded-3xl gap-2 cursor-default"
               >
                 <Loader2 className="animate-spin w-4 h-4" /> Memuat...
               </Button>
@@ -396,7 +396,7 @@ export const Notification = () => {
                     {/* Icon */}
                     <div
                       className={cn(
-                        'flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center',
+                        'flex-shrink-0 w-10 h-10 rounded-3xl flex items-center justify-center',
                         getPriorityColor(notif.priority),
                       )}
                     >
@@ -424,7 +424,7 @@ export const Notification = () => {
                               <div className="w-full flex justify-start">
                                 <Link href={notif.actionUrl}>
                                   <Button
-                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-md"
+                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-3xl"
                                     variant={'outline'}
                                   >
                                     Lihat Detail
@@ -442,7 +442,7 @@ export const Notification = () => {
                                   rel="noopener noreferrer"
                                 >
                                   <Button
-                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-md"
+                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-3xl"
                                     variant={'outline'}
                                   >
                                     Lihat Detail
@@ -529,7 +529,7 @@ export const Notification = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs text-blue-600 hover:bg-blue-50 rounded-lg"
+                    className="text-xs text-blue-600 hover:bg-blue-50 rounded-3xl"
                     onClick={() => {
                       setIsViewMore(true);
                     }}
@@ -543,7 +543,7 @@ export const Notification = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-xs text-main hover:bg-transparent rounded-lg gap-2 cursor-default"
+                    className="text-xs text-main hover:bg-transparent rounded-3xl gap-2 cursor-default"
                     onClick={() => setIsViewMore(true)}
                   >
                     <Loader2 className="animate-spin w-4 h-4" /> Memuat...
@@ -561,7 +561,7 @@ export const Notification = () => {
             <div className="sticky bottom-0 px-4 py-3 bg-gray-50 rounded-b-xl z-10 border-t border-gray-200">
               <Button
                 variant="ghost"
-                className="w-full text-sm text-blue-600 hover:bg-blue-50 rounded-lg font-medium"
+                className="w-full text-sm text-blue-600 hover:bg-blue-50 rounded-3xl font-medium"
               >
                 Lihat semua notifikasi
                 <ChevronRight className="w-4 h-4 ml-1" />

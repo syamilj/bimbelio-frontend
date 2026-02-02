@@ -12,7 +12,7 @@ export const RenderBenefitTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="text-center p-4 bg-linear-to-r from-pink-50 to-rose-50 rounded-lg">
+      <div className="text-center p-4 bg-linear-to-r from-pink-50 to-rose-50 rounded-3xl">
         <Gift
           size={24}
           className="mx-auto mb-2 text-pink-600"
@@ -29,7 +29,7 @@ export const RenderBenefitTab = () => {
         {plan.PlanBenefit.map((benefit, index) => (
           <div
             key={benefit.id}
-            className={`p-4 rounded-lg border-l-4 ${
+            className={`p-4 rounded-3xl border-l-4 ${
               index % 3 === 0
                 ? 'bg-linear-to-r from-yellow-50 to-orange-50 border-yellow-500'
                 : index % 3 === 1

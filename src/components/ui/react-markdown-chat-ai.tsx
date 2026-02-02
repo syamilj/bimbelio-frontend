@@ -262,7 +262,7 @@ export default function ReactMarkdownChatAI({
       return (
         <code
           {...props}
-          className="block bg-gray-100 p-3 rounded-lg overflow-x-auto text-sm font-mono mb-4"
+          className="block bg-gray-100 p-3 rounded-3xl overflow-x-auto text-sm font-mono mb-4"
         >
           {children}
         </code>

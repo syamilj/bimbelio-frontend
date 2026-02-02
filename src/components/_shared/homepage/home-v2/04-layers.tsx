@@ -143,7 +143,7 @@ const LayersSection: React.FC = () => {
           {layers.map((layer) => (
             <div
               key={layer.id}
-              className="bg-gray-50 rounded-3xl p-6 border border-gray-200"
+              className="bg-gray-50 rounded-3xl p-6 border-2 border-gray-100 shadow-sm"
             >
               <div className="flex flex-col items-center text-center mb-5">
                 <div
@@ -189,7 +189,7 @@ const LayersSection: React.FC = () => {
           {layers.map((layer) => (
             <div
               key={layer.id}
-              className="bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden"
+              className="bg-gray-50 rounded-3xl border-2 border-gray-100 shadow-sm overflow-hidden"
             >
               <button
                 onClick={() =>
@@ -271,11 +271,11 @@ const LayersSection: React.FC = () => {
             {tutors.map((tutor, index) => (
               <div
                 key={index}
-                className="bg-white rounded-3xl overflow-hidden border border-gray-200"
+                className="bg-white rounded-3xl overflow-hidden border-2 border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300 flex flex-col"
                 style={{ width: 'calc(20% - 13px)' }}
               >
                 <div
-                  className="relative h-72 overflow-hidden"
+                  className="relative flex-1 overflow-hidden min-h-[320px]"
                   style={{ backgroundColor: `${mainColor}10` }}
                 >
                   {tutor.image ? (
@@ -284,7 +284,7 @@ const LayersSection: React.FC = () => {
                       alt={tutor.name}
                       fill
                       loading="lazy"
-                      quality={50}
+                      quality={60}
                       className="object-cover object-top"
                     />
                   ) : (
@@ -293,7 +293,7 @@ const LayersSection: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold bg-white"
+                    className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-bold bg-white shadow-sm"
                     style={{ color: mainColor }}
                   >
                     {tutor.badge}
@@ -324,16 +324,15 @@ const LayersSection: React.FC = () => {
             ))}
           </div>
 
-          {/* Mobile: Grid 2-2-1 centered layout with equal size */}
-          <div className="md:hidden flex flex-wrap justify-center gap-3">
+          {/* Mobile: Horizontal Scroll */}
+          <div className="md:hidden flex overflow-x-auto touch-pan-y gap-3 snap-x snap-mandatory scrollbar-hide pb-4 px-4 -mx-4">
             {tutors.map((tutor, index) => (
               <div
                 key={index}
-                className="bg-white rounded-3xl overflow-hidden border border-gray-200"
-                style={{ width: 'calc(50% - 6px)' }}
+                className="bg-white rounded-3xl overflow-hidden border-2 border-gray-100 hover:border-gray-200 min-w-[45%] sm:min-w-[280px] snap-center flex-shrink-0 flex flex-col h-[400px]"
               >
                 <div
-                  className="relative h-64 overflow-hidden"
+                  className="relative flex-1 overflow-hidden"
                   style={{ backgroundColor: `${mainColor}10` }}
                 >
                   {tutor.image ? (
@@ -342,7 +341,7 @@ const LayersSection: React.FC = () => {
                       alt={tutor.name}
                       fill
                       loading="lazy"
-                      quality={50}
+                      quality={60}
                       className="object-cover object-top"
                     />
                   ) : (
@@ -351,14 +350,14 @@ const LayersSection: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold bg-white"
+                    className="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold bg-white shadow-sm"
                     style={{ color: mainColor }}
                   >
                     {tutor.badge}
                   </div>
                 </div>
 
-                <div className="p-3">
+                <div className="p-3 flex-shrink-0">
                   <h4 className="text-sm font-bold text-gray-900 mb-1">
                     {tutor.name}
                   </h4>

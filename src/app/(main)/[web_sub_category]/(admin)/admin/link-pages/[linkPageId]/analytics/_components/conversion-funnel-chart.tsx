@@ -100,19 +100,19 @@ export function ConversionFunnelChart({
         <CardTitle>Conversion Funnel</CardTitle>
         {data && (
           <div className="grid grid-cols-3 gap-4 mt-4 text-sm">
-            <div className="bg-blue-50 p-3 rounded-lg">
+            <div className="bg-blue-50 p-3 rounded-3xl">
               <p className="text-gray-600">Completion Rate</p>
               <p className="text-xl font-bold text-blue-600">
                 {(data.completionRate * 100).toFixed(2)}%
               </p>
             </div>
-            <div className="bg-green-50 p-3 rounded-lg">
+            <div className="bg-green-50 p-3 rounded-3xl">
               <p className="text-gray-600">Avg Time to Convert</p>
               <p className="text-xl font-bold text-green-600">
                 {data.avgTimeToConversion.toFixed(1)}s
               </p>
             </div>
-            <div className="bg-purple-50 p-3 rounded-lg">
+            <div className="bg-purple-50 p-3 rounded-3xl">
               <p className="text-gray-600">Total Revenue</p>
               <p className="text-xl font-bold text-purple-600">
                 Rp {data.totalRevenue.toLocaleString('id-ID')}

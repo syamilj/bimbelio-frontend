@@ -196,7 +196,7 @@ export default function TutorsSection() {
       icon: <Zap className="w-8 h-8" />,
       title: 'Instant Help 24/7',
       description:
-        'Stuck jam 2 pagi? Bimbot siap jawab instant. Nggak perlu tunggu tutor online besok.',
+        'Stuck jam 2 pagi? BimBot siap jawab instant. Nggak perlu tunggu tutor online besok.',
       color: '#FFA500',
     },
     {
@@ -464,7 +464,7 @@ export default function TutorsSection() {
                     {feature.bullets.map((bullet, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-3 p-3 rounded-lg transition-colors duration-200"
+                        className="flex items-start gap-3 p-3 rounded-3xl transition-colors duration-200"
                         style={{
                           backgroundColor: feature.color + '08',
                         }}

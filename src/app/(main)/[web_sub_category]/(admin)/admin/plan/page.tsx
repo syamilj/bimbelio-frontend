@@ -1,17 +1,9 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import {
@@ -21,19 +13,10 @@ import {
   PlanLimitation,
   PlanSubscription,
 } from '@/types/database';
-import { Edit, Plus, Search, Trash2, User } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { DialogDelete } from './_components/dialog-delete-plan';
-
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-};
+import { useEffect, useMemo, useState } from 'react';
+import { PlanDataTable } from './_components/plan-data-table';
 
 export default function PlanList() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,6 +27,9 @@ export default function PlanList() {
       };
       PlanLimitation?: PlanLimitation;
       PlanBenefit: PlanBenefit[];
+      _count?: {
+        Subscription: number;
+      };
     })[]
   >([]);
 
@@ -53,54 +39,28 @@ export default function PlanList() {
     });
   };
 
-  console.log({ plans });
-
   useEffect(() => {
     getData();
   }, []);
 
-  const filteredPlans = plans.filter((plan) => {
-    const matchesSearch =
-      plan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      plan.slug.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesSearch;
-  });
-
-  const coinPlans = filteredPlans.filter(
-    (plan) =>
-      (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
-      !!plan.PlanLimitation,
-  );
-
-  const subscriptionPlans = filteredPlans.filter(
-    (plan) =>
-      (plan.PlanSubscription?.PlanFeature?.length ?? 0) > 0 &&
-      !plan.PlanLimitation,
-  );
-
-  const bundlePlans = filteredPlans.filter(
-    (plan) =>
-      (plan.PlanSubscription?.PlanFeature?.length ?? 0) > 0 &&
-      !!plan.PlanLimitation,
-  );
-  const benefitOnly = filteredPlans.filter(
-    (plan) =>
-      !plan.PlanLimitation &&
-      (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
-      plan.PlanBenefit.length > 0,
-  );
-
-  const other = filteredPlans.filter(
-    (plan) =>
-      !plan.PlanLimitation &&
-      (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
-      plan.PlanBenefit.length === 0,
-  );
+  const filteredPlans = useMemo(() => {
+    return plans.filter((plan) => {
+      const matchesSearch =
+        plan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        plan.slug.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesSearch;
+    });
+  }, [plans, searchTerm]);
 
   return (
-    <div className="mx-auto p-6 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Plan Management</h1>
+    <div className="mx-auto p-6 min-h-screen space-y-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Plan Management</h1>
+          <p className="text-muted-foreground mt-1">
+            Manage your subscription bundles, coins, and benefits here.
+          </p>
+        </div>
         <Link href={`/${website_sub_category_id}/admin/plan/new`}>
           <Button className="bg-main hover:bg-main/80 flex items-center gap-2">
             <Plus className="h-4 w-4" />
@@ -109,445 +69,195 @@ export default function PlanList() {
         </Link>
       </div>
 
-      <Card className="mb-6">
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row gap-4 justify-between">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                placeholder="Search plans..."
-                className="pl-10"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="relative w-full md:w-96">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            placeholder="Search plans by name or slug..."
+            className="pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
 
-      <Card>
-        <CardContent className="pt-6">
-          <PlanTable
-            title="📦 Bundle Plans"
-            plans={bundlePlans}
+      <Tabs defaultValue="active" className="w-full">
+        <TabsList className="mb-4 flex flex-wrap h-auto gap-2 bg-transparent justify-start p-0">
+          <TabsTrigger
+            value="active"
+            className="data-[state=active]:bg-emerald-600 data-[state=active]:text-white border bg-white"
+          >
+            Active Plans
+          </TabsTrigger>
+          <TabsTrigger
+            value="inactive"
+            className="data-[state=active]:bg-gray-600 data-[state=active]:text-white border bg-white"
+          >
+            Drafts & Inactive
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active" className="mt-0">
+          <PlanTabs
+            plans={filteredPlans.filter((p) => p.status === 'PUBLIC')}
             getData={getData}
-            type="bundle"
           />
-          <PlanTable
-            title="📃 Subscription Plans"
-            plans={subscriptionPlans}
+        </TabsContent>
+
+        <TabsContent value="inactive" className="mt-0">
+          <PlanTabs
+            plans={filteredPlans.filter((p) => p.status !== 'PUBLIC')}
             getData={getData}
-            type="subscription"
           />
-          <PlanTable
-            title="📀 Coin Plans"
-            plans={coinPlans}
-            getData={getData}
-            type="coin"
-          />
-          <PlanTable
-            title="📀 Benefit Only"
-            plans={benefitOnly}
-            getData={getData}
-            type="subscription"
-          />
-          <PlanTable
-            title="📀 Lainnya"
-            plans={other}
-            getData={getData}
-            type="subscription"
-          />
-        </CardContent>
-      </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
 
-function PlanTable({
-  title,
+const PlanTabs = ({
   plans,
   getData,
-  type,
 }: {
-  title: string;
-  plans: (Plan & {
-    PlanSubscription?: PlanSubscription & {
-      PlanFeature: PlanFeature[];
-    };
-    PlanLimitation?: PlanLimitation;
-  })[];
-  getData: () => any;
-  type: 'coin' | 'bundle' | 'subscription';
-}) {
+  plans: any[];
+  getData: () => Promise<void>;
+}) => {
+  const { bundlePlans, subscriptionPlans, coinPlans, benefitOnly, other } =
+    useMemo(() => {
+      return {
+        bundlePlans: plans.filter(
+          (plan) =>
+            (plan.PlanSubscription?.PlanFeature?.length ?? 0) > 0 &&
+            !!plan.PlanLimitation
+        ),
+        subscriptionPlans: plans.filter(
+          (plan) =>
+            (plan.PlanSubscription?.PlanFeature?.length ?? 0) > 0 &&
+            !plan.PlanLimitation
+        ),
+        coinPlans: plans.filter(
+          (plan) =>
+            (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
+            !!plan.PlanLimitation
+        ),
+        benefitOnly: plans.filter(
+          (plan) =>
+            !plan.PlanLimitation &&
+            (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
+            plan.PlanBenefit.length > 0
+        ),
+        other: plans.filter(
+          (plan) =>
+            !plan.PlanLimitation &&
+            (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
+            plan.PlanBenefit.length === 0
+        ),
+      };
+    }, [plans]);
+
   return (
-    <div className="mb-10">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Slug</TableHead>
-              {type !== 'coin' && <TableHead>Subscription</TableHead>}
-              {type !== 'subscription' && <TableHead>Coin</TableHead>}
-              <TableHead>Price</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {plans.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="text-center py-10 text-gray-500"
-                >
-                  No {title.toLowerCase()} found.
-                </TableCell>
-              </TableRow>
-            ) : (
-              plans.map((plan) => (
-                <TableRow key={plan.id}>
-                  <TableCell className="font-medium">{plan.name}</TableCell>
-                  <TableCell>{plan.slug}</TableCell>
-                  {type !== 'coin' && (
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {plan.PlanSubscription?.PlanFeature.map((feat) => (
-                          <Badge
-                            key={feat.id}
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            {feat.type}
-                          </Badge>
-                        )) || '-'}
-                      </div>
-                    </TableCell>
-                  )}
-                  {type !== 'subscription' && (
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {plan.PlanLimitation
-                          ? Object.keys({
-                              chat: plan.PlanLimitation.chat,
-                              notes: plan.PlanLimitation.notes,
-                              vision: plan.PlanLimitation.vision,
-                              quiz: plan.PlanLimitation.quiz,
-                              tryout: plan.PlanLimitation.tryout,
-                            })
-                              .filter((item) => item !== null)
-                              .map((limit, index) => (
-                                <Badge
-                                  key={index}
-                                  variant="outline"
-                                  className="text-xs"
-                                >
-                                  {limit}: {(plan.PlanLimitation as any)[limit]}
-                                </Badge>
-                              ))
-                          : '-'}
-                      </div>
-                    </TableCell>
-                  )}
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span className="font-medium">
-                        {formatCurrency(plan.price)}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center gap-2">
-                      {type !== 'coin' && (
-                        <Link
-                          href={`/${website_sub_category_id}/admin/plan/user/${plan.id}`}
-                        >
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex items-center gap-1"
-                          >
-                            <User className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                      )}
-                      <Link
-                        href={`/${website_sub_category_id}/admin/plan/${plan.id}`}
-                      >
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center gap-1"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                      <DialogDelete
-                        getData={getData}
-                        id={plan.id}
-                        title="Delete Plan"
-                        description="Are you sure you want to delete this plan? This action cannot be undone."
-                      >
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          className="flex items-center gap-1"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </DialogDelete>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+    <Tabs defaultValue="all" className="w-full">
+      <TabsList className="mb-4 flex flex-wrap h-auto gap-2 bg-transparent justify-start p-0">
+        <TabsTrigger
+          value="all"
+          className="data-[state=active]:bg-gray-200 data-[state=active]:text-gray-900 border bg-white text-xs h-7"
+        >
+          All ({plans.length})
+        </TabsTrigger>
+        <TabsTrigger
+          value="bundle"
+          className="data-[state=active]:bg-gray-200 data-[state=active]:text-gray-900 border bg-white text-xs h-7"
+        >
+          Bundles ({bundlePlans.length})
+        </TabsTrigger>
+        <TabsTrigger
+          value="subscription"
+          className="data-[state=active]:bg-gray-200 data-[state=active]:text-gray-900 border bg-white text-xs h-7"
+        >
+          Subscriptions ({subscriptionPlans.length})
+        </TabsTrigger>
+        <TabsTrigger
+          value="coin"
+          className="data-[state=active]:bg-gray-200 data-[state=active]:text-gray-900 border bg-white text-xs h-7"
+        >
+          Coins ({coinPlans.length})
+        </TabsTrigger>
+        <TabsTrigger
+          value="benefit"
+          className="data-[state=active]:bg-gray-200 data-[state=active]:text-gray-900 border bg-white text-xs h-7"
+        >
+          Benefit Only ({benefitOnly.length})
+        </TabsTrigger>
+        <TabsTrigger
+          value="other"
+          className="data-[state=active]:bg-gray-200 data-[state=active]:text-gray-900 border bg-white text-xs h-7"
+        >
+          Other ({other.length})
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="all" className="mt-0">
+        <Card>
+          <CardContent className="pt-6">
+            <PlanDataTable plans={plans} getData={getData} type="other" />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="bundle" className="mt-0">
+        <Card>
+          <CardContent className="pt-6">
+            <PlanDataTable
+              plans={bundlePlans}
+              getData={getData}
+              type="bundle"
+            />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="subscription" className="mt-0">
+        <Card>
+          <CardContent className="pt-6">
+            <PlanDataTable
+              plans={subscriptionPlans}
+              getData={getData}
+              type="subscription"
+            />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="coin" className="mt-0">
+        <Card>
+          <CardContent className="pt-6">
+            <PlanDataTable plans={coinPlans} getData={getData} type="coin" />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="benefit" className="mt-0">
+        <Card>
+          <CardContent className="pt-6">
+            <PlanDataTable
+              plans={benefitOnly}
+              getData={getData}
+              type="benefit"
+            />
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      <TabsContent value="other" className="mt-0">
+        <Card>
+          <CardContent className="pt-6">
+            <PlanDataTable plans={other} getData={getData} type="other" />
+          </CardContent>
+        </Card>
+      </TabsContent>
+    </Tabs>
   );
-}
+};
 
-// 'use client';
 
-// import { Badge } from '@/components/ui/badge';
-// import { Button } from '@/components/ui/button';
-// import { Card, CardContent } from '@/components/ui/card';
-// import { Input } from '@/components/ui/input';
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from '@/components/ui/table';
-// import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
-// import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
-// import {
-//   Plan,
-//   PlanFeature,
-//   PlanLimitation,
-//   PlanSubscription,
-// } from '@/types/database';
-// import { Edit, Plus, Search, Trash2 } from 'lucide-react';
-// import Link from 'next/link';
-// import { useEffect, useState } from 'react';
-// import { DialogDelete } from './_components/dialog-delete-plan';
 
-// // Format currency
-// const formatCurrency = (amount: number) => {
-//   return new Intl.NumberFormat('id-ID', {
-//     style: 'currency',
-//     currency: 'IDR',
-//     minimumFractionDigits: 0,
-//     maximumFractionDigits: 0,
-//   }).format(amount);
-// };
-
-// export default function PlanList() {
-//   const [searchTerm, setSearchTerm] = useState('');
-//   // const [categoryFilter, setCategoryFilter] = useState('');
-//   const [plans, setPlans] = useState<
-//     (Plan & {
-//       PlanSubscription?: PlanSubscription & {
-//         PlanFeature: PlanFeature[];
-//       };
-//       PlanLimitation?: PlanLimitation;
-//     })[]
-//   >([]);
-
-//   const getData = async () => {
-//     await getGeneral('/plan/getAllPlan', {
-//       setData: setPlans,
-//     });
-//   };
-
-//   useEffect(() => {
-//     getData();
-//   }, []);
-
-//   // Filter plans based on search term and category
-//   const filteredPlans = plans.filter((plan) => {
-//     const matchesSearch =
-//       plan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//       plan.slug.toLowerCase().includes(searchTerm.toLowerCase());
-//     return matchesSearch;
-//   });
-
-//   return (
-//     <div className="mx-auto p-6 min-h-screen">
-//       <div className="flex justify-between items-center mb-6">
-//         <h1 className="text-2xl font-bold">Plan Management</h1>
-//         <Link href={`/${website_sub_category_id}/admin/plan/new`}>
-//           <Button className="bg-main hover:bg-main/80 flex items-center gap-2">
-//             <Plus className="h-4 w-4" />
-//             Create New Plan
-//           </Button>
-//         </Link>
-//       </div>
-
-//       <Card className="mb-6">
-//         <CardContent className="pt-6">
-//           <div className="flex flex-col md:flex-row gap-4 justify-between">
-//             <div className="relative flex-1">
-//               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-//               <Input
-//                 placeholder="Search plans..."
-//                 className="pl-10"
-//                 value={searchTerm}
-//                 onChange={(e) => setSearchTerm(e.target.value)}
-//               />
-//             </div>
-//           </div>
-//         </CardContent>
-//       </Card>
-
-//       <Card>
-//         <CardContent className="pt-6">
-//           <div className="rounded-md border">
-//             <Table>
-//               <TableHeader>
-//                 <TableRow>
-//                   <TableHead>Name</TableHead>
-//                   <TableHead>Slug</TableHead>
-//                   <TableHead>Subscription</TableHead>
-//                   <TableHead>Limits</TableHead>
-//                   <TableHead>Price</TableHead>
-//                   <TableHead>Labels</TableHead>
-//                   <TableHead className="text-right">Actions</TableHead>
-//                 </TableRow>
-//               </TableHeader>
-//               <TableBody>
-//                 {filteredPlans.length === 0 ? (
-//                   <TableRow>
-//                     <TableCell
-//                       colSpan={7}
-//                       className="text-center py-10 text-gray-500"
-//                     >
-//                       No plans found. Create a new plan to get started.
-//                     </TableCell>
-//                   </TableRow>
-//                 ) : (
-//                   filteredPlans.map((plan) => (
-//                     <TableRow key={plan.id}>
-//                       <TableCell className="font-medium">{plan.name}</TableCell>
-//                       <TableCell>{plan.slug}</TableCell>
-//                       <TableCell>
-//                         <div className="flex flex-wrap gap-1">
-//                           {plan.PlanSubscription?.PlanFeature.map((feat) => (
-//                             <Badge
-//                               key={feat.id}
-//                               variant="outline"
-//                               className="text-xs"
-//                             >
-//                               {feat.type}
-//                             </Badge>
-//                           )) || '-'}
-//                         </div>
-//                       </TableCell>
-//                       <TableCell>
-//                         <div className="flex flex-wrap gap-1">
-//                           {plan.PlanLimitation
-//                             ? Object.keys({
-//                                 chat: plan.PlanLimitation.chat,
-//                                 notes: plan.PlanLimitation.notes,
-//                                 vision: plan.PlanLimitation.vision,
-//                                 quiz: plan.PlanLimitation.quiz,
-//                                 tryout: plan.PlanLimitation.tryout,
-//                               })
-//                                 .filter((item) => item !== null)
-//                                 .map((limit, index) => {
-//                                   return (
-//                                     <Badge
-//                                       key={index}
-//                                       variant="outline"
-//                                       className="text-xs"
-//                                     >
-//                                       {limit}:{' '}
-//                                       {(plan.PlanLimitation as any)[limit]}
-//                                     </Badge>
-//                                   );
-//                                 })
-//                             : '-'}
-//                         </div>
-//                       </TableCell>
-//                       <TableCell>
-//                         <div className="flex flex-col">
-//                           <span className="font-medium">
-//                             {formatCurrency(plan.price)}
-//                           </span>
-//                           {/* {plan.price.discount > 0 && (
-//                             <span className="text-xs text-gray-500 line-through">
-//                               {formatCurrency(plan.price.total)}
-//                             </span>
-//                           )} */}
-//                         </div>
-//                       </TableCell>
-//                       <TableCell>
-//                         {/* <div className="flex flex-wrap gap-1">
-//                           {plan.labels.highlight && (
-//                             <Badge
-//                               style={{
-//                                 backgroundColor: plan.labels.highlight.bgColor,
-//                                 color: plan.labels.highlight.textColor,
-//                               }}
-//                               className="text-xs"
-//                             >
-//                               {plan.labels.highlight.text}
-//                             </Badge>
-//                           )}
-//                           {plan.labels.promo && (
-//                             <Badge
-//                               style={{
-//                                 backgroundColor: plan.labels.promo.bgColor,
-//                                 color: plan.labels.promo.textColor,
-//                               }}
-//                               className="text-xs"
-//                             >
-//                               {plan.labels.promo.text}
-//                             </Badge>
-//                           )}
-//                         </div> */}
-//                       </TableCell>
-//                       <TableCell className="text-right">
-//                         <div className="flex items-center gap-2">
-//                           <Link
-//                             href={`/${website_sub_category_id}/admin/plan/${plan.id}`}
-//                           >
-//                             <Button
-//                               variant="outline"
-//                               size="sm"
-//                               className="flex items-center gap-1"
-//                             >
-//                               <Edit className="h-4 w-4" />
-//                             </Button>
-//                           </Link>
-
-//                           <DialogDelete
-//                             getData={getData}
-//                             id={plan.id}
-//                             title="Delete Plan"
-//                             description="Are you sure you want to delete this plan? This action cannot be undone."
-//                           >
-//                             <Button
-//                               variant="destructive"
-//                               size="sm"
-//                               className="flex items-center gap-1"
-//                             >
-//                               <Trash2 className="h-4 w-4" />
-//                             </Button>
-//                           </DialogDelete>
-//                         </div>
-//                       </TableCell>
-//                     </TableRow>
-//                   ))
-//                 )}
-//               </TableBody>
-//             </Table>
-//           </div>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   );
-// }

@@ -134,7 +134,7 @@ export function TryOutSelector() {
                     </div>
                     <div
                       className={cn(
-                        'flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg',
+                        'flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-3xl',
                         selectedTryOut === tryOut.id
                           ? 'bg-white/20 text-white'
                           : 'bg-gray-50 text-gray-700 border border-gray-200',
@@ -154,9 +154,9 @@ export function TryOutSelector() {
                   key={index}
                   className="p-4 rounded-3xl border-2 border-gray-100 bg-white"
                 >
-                  <Skeleton className="h-4 w-3/4 mb-3 rounded-lg" />
+                  <Skeleton className="h-4 w-3/4 mb-3 rounded-3xl" />
                   <div className="flex justify-between items-center">
-                    <Skeleton className="h-3 w-20 rounded-lg" />
+                    <Skeleton className="h-3 w-20 rounded-3xl" />
                     <Skeleton className="h-6 w-12 rounded-3xl" />
                   </div>
                 </div>

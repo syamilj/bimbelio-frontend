@@ -52,7 +52,7 @@ export const AlertBlock = createReactBlockSpec(
   {
     render: (props) => (
       <div
-        className="flex flex-1 items-center gap-2 break-words rounded-sm p-1"
+        className="flex flex-1 items-center gap-2 break-words rounded-3xl p-1"
         style={{
           backgroundColor: alertTypes[props.block.props.type].backgroundColor,
         }}

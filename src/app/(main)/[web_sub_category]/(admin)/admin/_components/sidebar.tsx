@@ -75,7 +75,7 @@ const Sidebar = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setMinimizeSidebar(false)}
-                className="w-8 h-8 rounded-lg hover:bg-white/50 transition-all duration-200"
+                className="w-8 h-8 rounded-3xl hover:bg-white/50 transition-all duration-200"
               >
                 <ChevronRight className="w-4 h-4 text-gray-600" />
               </Button>
@@ -198,7 +198,7 @@ const Sidebar = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="w-8 h-8 rounded-lg hover:bg-gray-100"
+              className="w-8 h-8 rounded-3xl hover:bg-gray-100"
             >
               <Settings className="w-4 h-4 text-gray-600" />
             </Button>
@@ -206,7 +206,7 @@ const Sidebar = () => {
               variant="ghost"
               size="icon"
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="w-8 h-8 rounded-lg hover:bg-red-50 text-red-600"
+              className="w-8 h-8 rounded-3xl hover:bg-red-50 text-red-600"
             >
               <LogOut className="w-4 h-4" />
             </Button>

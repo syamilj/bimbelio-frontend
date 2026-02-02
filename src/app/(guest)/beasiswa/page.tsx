@@ -159,7 +159,7 @@ export default function BeasiswaPage() {
 
                 <div className="bg-main-default/5 border border-main-default/20 rounded-3xl p-8 max-w-xl mx-auto">
                   <div className="flex gap-4 items-start mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-main-default flex items-center justify-center flex-shrink-0 text-white">
+                    <div className="w-10 h-10 rounded-3xl bg-main-default flex items-center justify-center flex-shrink-0 text-white">
                       <BookOpen className="w-5 h-5" />
                     </div>
                     <div className="text-left">
@@ -174,7 +174,7 @@ export default function BeasiswaPage() {
                   </div>
 
                   <div className="flex gap-4 items-start mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-main-default flex items-center justify-center flex-shrink-0 text-white">
+                    <div className="w-10 h-10 rounded-3xl bg-main-default flex items-center justify-center flex-shrink-0 text-white">
                       <Users className="w-5 h-5" />
                     </div>
                     <div className="text-left">
@@ -189,7 +189,7 @@ export default function BeasiswaPage() {
                   </div>
 
                   <div className="flex gap-4 items-start">
-                    <div className="w-10 h-10 rounded-lg bg-main-default flex items-center justify-center flex-shrink-0 text-white">
+                    <div className="w-10 h-10 rounded-3xl bg-main-default flex items-center justify-center flex-shrink-0 text-white">
                       <Award className="w-5 h-5" />
                     </div>
                     <div className="text-left">

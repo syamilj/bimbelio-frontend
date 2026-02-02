@@ -185,7 +185,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
             <CardTitle className="text-sm font-semibold text-blue-900">
               Skor Total
             </CardTitle>
-            <div className="p-2 bg-blue-500 rounded-lg">
+            <div className="p-2 bg-blue-500 rounded-3xl">
               <BarChart className="h-5 w-5 text-white" />
             </div>
           </CardHeader>
@@ -209,7 +209,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
             <CardTitle className="text-sm font-semibold text-green-900">
               Akurasi
             </CardTitle>
-            <div className="p-2 bg-green-500 rounded-lg">
+            <div className="p-2 bg-green-500 rounded-3xl">
               <Target className="h-5 w-5 text-white" />
             </div>
           </CardHeader>
@@ -237,7 +237,7 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
             <CardTitle className="text-sm font-semibold text-purple-900">
               Total Soal
             </CardTitle>
-            <div className="p-2 bg-purple-500 rounded-lg">
+            <div className="p-2 bg-purple-500 rounded-3xl">
               <Book className="h-5 w-5 text-white" />
             </div>
           </CardHeader>
@@ -246,13 +246,13 @@ export default function ReviewTabTypeTryout({ sessionResult }: Props) {
               {TotalQuestion}
             </div>
             <div className="flex gap-2 mt-3">
-              <div className="flex-1 bg-green-100 rounded-lg p-2 text-center">
+              <div className="flex-1 bg-green-100 rounded-3xl p-2 text-center">
                 <p className="text-xs text-green-700 font-medium">Benar</p>
                 <p className="text-lg font-bold text-green-600">
                   {correctAnswer()}
                 </p>
               </div>
-              <div className="flex-1 bg-red-100 rounded-lg p-2 text-center">
+              <div className="flex-1 bg-red-100 rounded-3xl p-2 text-center">
                 <p className="text-xs text-red-700 font-medium">Salah</p>
                 <p className="text-lg font-bold text-red-600">
                   {TotalQuestion - correctAnswer()}
@@ -543,14 +543,14 @@ const Navigation = ({
 
         {/* Statistics */}
         <div className="grid grid-cols-2 gap-3 mb-6 p-4 bg-gradient-to-br from-gray-50 to-blue-50 rounded-3xl border">
-          <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+          <div className="text-center p-3 bg-white rounded-3xl shadow-sm">
             <div className="flex items-center justify-center gap-1 mb-1">
               <div className="w-3 h-3 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full"></div>
               <p className="text-xs font-semibold text-gray-600">Benar</p>
             </div>
             <p className="text-2xl font-bold text-green-600">{correctCount}</p>
           </div>
-          <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+          <div className="text-center p-3 bg-white rounded-3xl shadow-sm">
             <div className="flex items-center justify-center gap-1 mb-1">
               <div className="w-3 h-3 bg-gradient-to-br from-red-400 to-pink-500 rounded-full"></div>
               <p className="text-xs font-semibold text-gray-600">Salah</p>

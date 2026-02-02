@@ -88,7 +88,7 @@ export default function PlanDetailPage() {
                 >
                   <TabsTrigger
                     value="overview"
-                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
+                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
                     style={{
                       backgroundColor:
                         activeTab === 'overview' ? mainColor : 'transparent',
@@ -99,7 +99,7 @@ export default function PlanDetailPage() {
                   {tabCourseAvailable && (
                     <TabsTrigger
                       value="course"
-                      className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
+                      className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
                       style={{
                         backgroundColor:
                           activeTab === 'course' ? mainColor : 'transparent',
@@ -111,7 +111,7 @@ export default function PlanDetailPage() {
                   {tabFeatureAvailable && (
                     <TabsTrigger
                       value="features"
-                      className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
+                      className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
                       style={{
                         backgroundColor:
                           activeTab === 'features' ? mainColor : 'transparent',
@@ -123,7 +123,7 @@ export default function PlanDetailPage() {
 
                   <TabsTrigger
                     value="classes"
-                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
+                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
                     style={{
                       backgroundColor:
                         activeTab === 'classes' ? mainColor : 'transparent',
@@ -133,7 +133,7 @@ export default function PlanDetailPage() {
                   </TabsTrigger>
                   <TabsTrigger
                     value="limits"
-                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-lg transition-all duration-300 text-sm py-2"
+                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
                     style={{
                       backgroundColor:
                         activeTab === 'limits' ? mainColor : 'transparent',

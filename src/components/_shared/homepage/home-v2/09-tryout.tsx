@@ -8,7 +8,8 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn } from '@/lib/utils';
 import { WebsiteSubCategory } from '@/types/database';
-import { Target } from 'lucide-react';
+import { ArrowRight, Target } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { autoScroll } from '../autoscroll';
@@ -29,7 +30,7 @@ const TryoutSection: React.FC = () => {
 
   const getData = async () => {
     await getGeneral(
-      `/tryout/getTryOutCardUpcoming2?userId=${session?.user.id}`,
+      `/tryout/getTryOutCardUpcoming2?userId=${session?.user.id}&take=5`,
       {
         setData: setCards,
         setLoading: setIsLoading,
@@ -94,20 +95,20 @@ const TryoutSection: React.FC = () => {
         {/* Cards Grid */}
         <div
           className={cn(
-            'grid gap-5 mb-8',
+            'flex overflow-x-auto touch-pan-y gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0',
             cards.length === 1 && !isLoading
-              ? 'grid-cols-1 max-w-md mx-auto'
+              ? 'justify-center md:max-w-md md:mx-auto'
               : cards.length === 2 && !isLoading
-                ? 'grid-cols-1 md:grid-cols-2 max-w-2xl mx-auto'
-                : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3',
+                ? 'justify-center md:max-w-2xl md:mx-auto'
+                : '',
           )}
         >
           {/* Loading State */}
           {isLoading ? (
-            Array.from({ length: 3 }).map((_, index) => (
+            Array.from({ length: 5 }).map((_, index) => (
               <div
                 key={index}
-                className="bg-white rounded-3xl border-2 border-gray-100 animate-pulse overflow-hidden"
+                className="bg-white rounded-3xl border-2 border-gray-100 animate-pulse overflow-hidden min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
               >
                 <div className="h-48 lg:h-56 bg-gray-100" />
                 <div className="p-4 lg:p-6 space-y-4">
@@ -139,6 +140,18 @@ const TryoutSection: React.FC = () => {
               reloadHref={true}
             />
           )}
+        </div>
+
+        {/* View All Button */}
+        <div className="flex justify-center">
+          <Link
+            href={`/${websiteSubCategory?.id || 'utbk'}/user/bimarena/try-out`}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white transition-transform active:scale-95 shadow-md hover:shadow-lg"
+            style={{ backgroundColor: mainColor }}
+          >
+            Lihat Semua Try Out
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </section>

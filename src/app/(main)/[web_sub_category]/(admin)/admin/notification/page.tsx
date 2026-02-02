@@ -157,7 +157,7 @@ export default function NotificationQueuePage() {
                         colSpan={11}
                         className="h-[48.5px]"
                       >
-                        <Skeleton className="w-full h-full rounded-md" />
+                        <Skeleton className="w-full h-full rounded-3xl" />
                       </TableCell>
                     </TableRow>
                   ))

@@ -76,32 +76,51 @@ const HeroSection: React.FC = () => {
             </Link>
 
             {/* Secondary CTAs - simplified for mobile */}
-            <div className="flex flex-wrap justify-center gap-2 md:gap-3 mt-1 md:mt-2">
+            <div className="flex flex-wrap justify-center gap-3 mt-2">
               <a
                 href="https://www.bimbelio.com/link/komunitas"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
+                className="relative inline-flex items-center px-5 py-2.5 rounded-full text-xs md:text-sm font-semibold text-white group hover:brightness-110 transition-all shadow-md"
                 style={{ backgroundColor: mainColor }}
               >
-                Grup Belajar
+                Komunitas
+                <div className="absolute -top-3 -right-3">
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                  </span>
+                  <span className="absolute top-0 right-0 transform rotate-12 bg-yellow-400 text-black text-[10px] font-extrabold px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap z-10 border border-yellow-500">
+                    Gratis
+                  </span>
+                </div>
               </a>
 
               <a
                 href="#tryout"
                 onClick={(e) => scrollToElement(e, 'tryout')}
-                className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
+                className="relative inline-flex items-center px-5 py-2.5 rounded-full text-xs md:text-sm font-semibold text-white group hover:brightness-110 transition-all shadow-md"
                 style={{ backgroundColor: mainColor }}
               >
-                Tryout Gratis
+                Try Out
+                <div className="absolute -top-3 -right-3">
+                  <span className="absolute top-0 right-0 transform rotate-12 bg-yellow-400 text-black text-[10px] font-extrabold px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap z-10 border border-yellow-500">
+                    Gratis
+                  </span>
+                </div>
               </a>
+
               <a
                 href="#live-learning"
                 onClick={(e) => scrollToElement(e, 'live-learning')}
-                className="px-4 py-2 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold text-white"
+                className="relative inline-flex items-center px-5 py-2.5 rounded-full text-xs md:text-sm font-semibold text-white group hover:brightness-110 transition-all shadow-md"
                 style={{ backgroundColor: mainColor }}
               >
-                Liveclass Gratis
+                BimLive
+                <div className="absolute -top-3 -right-3">
+                  <span className="absolute top-0 right-0 transform rotate-12 bg-yellow-400 text-black text-[10px] font-extrabold px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap z-10 border border-yellow-500">
+                    Gratis
+                  </span>
+                </div>
               </a>
             </div>
           </div>

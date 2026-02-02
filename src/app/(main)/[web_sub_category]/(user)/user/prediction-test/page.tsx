@@ -295,7 +295,7 @@ const ScoreCard = ({
   };
 
   return (
-    <div className={cn('p-4 rounded-lg border-2', colorClasses[color])}>
+    <div className={cn('p-4 rounded-3xl border-2', colorClasses[color])}>
       <div className="text-xs font-semibold opacity-75 mb-1">{title}</div>
       <div className="text-xl font-bold">{value}</div>
       {subtitle && (
@@ -890,7 +890,7 @@ export default function UTBKSIMAKPredictor() {
                                   {sp.customPassingGrades.map((pg, pgIndex) => (
                                     <div
                                       key={pgIndex}
-                                      className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"
+                                      className="flex justify-between items-center p-3 bg-gray-50 rounded-3xl"
                                     >
                                       <div>
                                         <p className="text-sm font-medium">
@@ -920,7 +920,7 @@ export default function UTBKSIMAKPredictor() {
                                   {sp.customPassingGrades.map((pg, pgIndex) => (
                                     <div
                                       key={pgIndex}
-                                      className="space-y-3 p-4 border rounded-lg"
+                                      className="space-y-3 p-4 border rounded-3xl"
                                     >
                                       <div className="grid grid-cols-2 gap-3">
                                         <div>
@@ -1268,7 +1268,7 @@ export default function UTBKSIMAKPredictor() {
                                       subtest as keyof typeof SUBTEST_QUESTIONS
                                     ],
                                   ) && (
-                                    <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-lg">
+                                    <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-3xl">
                                       <AlertCircle className="h-4 w-4" />
                                       <span>
                                         Total:{' '}
@@ -1399,7 +1399,7 @@ export default function UTBKSIMAKPredictor() {
                                       subtest as keyof typeof SUBTEST_QUESTIONS
                                     ],
                                   ) && (
-                                    <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-lg">
+                                    <div className="flex items-center gap-2 text-amber-600 text-xs bg-amber-50 p-3 rounded-3xl">
                                       <AlertCircle className="h-4 w-4" />
                                       <span>
                                         Total:{' '}

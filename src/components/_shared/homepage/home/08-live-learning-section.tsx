@@ -844,7 +844,7 @@ const EnhancedLiveLearningCard = ({
                 </div>
                 {/* {liveClass.ratingStats &&
                   liveClass.ratingStats.totalRatings > 0 && (
-                    <div className="flex items-center gap-2 bg-yellow-50 px-3 py-2 rounded-lg">
+                    <div className="flex items-center gap-2 bg-yellow-50 px-3 py-2 rounded-3xl">
                       <div className="w-6 h-6 rounded-full bg-yellow-100 flex items-center justify-center">
                         <Star className="h-3 w-3 text-yellow-600 fill-yellow-400" />
                       </div>

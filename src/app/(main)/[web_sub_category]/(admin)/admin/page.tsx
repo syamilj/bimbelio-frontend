@@ -968,7 +968,7 @@ const DialogDetailSubscription = ({
 
           {/* Empty State */}
           {subData.length === 0 ? (
-            <div className="rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 py-12 text-center">
+            <div className="rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 py-12 text-center">
               <Crown className="mx-auto mb-3 h-8 w-8 text-gray-300" />
               <p className="text-sm font-medium text-gray-500">
                 No active subscriptions
@@ -1027,7 +1027,7 @@ const DialogDetailSubscription = ({
                     {/* Details Grid */}
                     <div className="grid grid-cols-2 gap-3 pt-2">
                       {/* Price */}
-                      <div className="rounded-lg bg-white/60 p-2.5">
+                      <div className="rounded-3xl bg-white/60 p-2.5">
                         <p className="text-xs font-medium text-gray-500 mb-1">
                           Price
                         </p>
@@ -1037,7 +1037,7 @@ const DialogDetailSubscription = ({
                       </div>
 
                       {/* Duration */}
-                      <div className="rounded-lg bg-white/60 p-2.5">
+                      <div className="rounded-3xl bg-white/60 p-2.5">
                         <p className="text-xs font-medium text-gray-500 mb-1">
                           Expire At
                         </p>
@@ -1056,7 +1056,7 @@ const DialogDetailSubscription = ({
                       </div>
 
                       {/* Start Date */}
-                      <div className="rounded-lg bg-white/60 p-2.5">
+                      <div className="rounded-3xl bg-white/60 p-2.5">
                         <p className="text-xs font-medium text-gray-500 mb-1">
                           Created
                         </p>
@@ -1075,7 +1075,7 @@ const DialogDetailSubscription = ({
                       </div>
 
                       {/* Discord Status */}
-                      <div className="rounded-lg bg-white/60 p-2.5">
+                      <div className="rounded-3xl bg-white/60 p-2.5">
                         <p className="text-xs font-medium text-gray-500 mb-1">
                           Discord
                         </p>

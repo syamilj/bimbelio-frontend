@@ -242,7 +242,7 @@ const Invitation = () => {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <div
                     key={star}
-                    className="w-4 h-4 rounded-sm flex items-center justify-center"
+                    className="w-4 h-4 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: '#FFD700' }}
                   >
                     <span className="text-white text-xs">★</span>
@@ -363,7 +363,7 @@ const Invitation = () => {
                 className="absolute -bottom-4 -left-4 w-12 h-12 rounded-3xl shadow-lg flex items-center justify-center bg-white"
               >
                 <div
-                  className="w-6 h-6 rounded-lg"
+                  className="w-6 h-6 rounded-3xl"
                   style={{ backgroundColor: mainColor }}
                 />
               </motion.div>

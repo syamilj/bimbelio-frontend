@@ -217,7 +217,7 @@ export default function ParticipantsPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
+              <div className="p-2 bg-blue-100 rounded-3xl">
                 <Users className="h-5 w-5 text-blue-600" />
               </div>
               <div>
@@ -231,7 +231,7 @@ export default function ParticipantsPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-yellow-100 rounded-lg">
+              <div className="p-2 bg-yellow-100 rounded-3xl">
                 <Clock className="h-5 w-5 text-yellow-600" />
               </div>
               <div>
@@ -245,7 +245,7 @@ export default function ParticipantsPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
+              <div className="p-2 bg-green-100 rounded-3xl">
                 <CheckCircle className="h-5 w-5 text-green-600" />
               </div>
               <div>
@@ -259,7 +259,7 @@ export default function ParticipantsPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-red-100 rounded-lg">
+              <div className="p-2 bg-red-100 rounded-3xl">
                 <XCircle className="h-5 w-5 text-red-600" />
               </div>
               <div>

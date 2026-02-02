@@ -142,7 +142,7 @@ export default function Detail() {
                         colSpan={8}
                         className="h-[48.5px]"
                       >
-                        <Skeleton className="w-full h-full rounded-md" />
+                        <Skeleton className="w-full h-full rounded-3xl" />
                       </TableCell>
                     </TableRow>
                   ))

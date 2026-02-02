@@ -64,7 +64,7 @@ export const HistoryPaymentTab = ({
                             Dibuat
                           </span>
                           <div
-                            className="px-2 py-1 rounded-lg"
+                            className="px-2 py-1 rounded-3xl"
                             style={{ backgroundColor: `${mainColor}15` }}
                           >
                             <p className="font-bold text-gray-700">
@@ -80,7 +80,7 @@ export const HistoryPaymentTab = ({
                             Expire
                           </span>
                           <div
-                            className="px-2 py-1 rounded-lg"
+                            className="px-2 py-1 rounded-3xl"
                             style={{ backgroundColor: '#fee2e215' }}
                           >
                             <p className="font-bold text-gray-700">

@@ -45,7 +45,7 @@ export const TryoutAI = ({
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent className="w-full sm:w-[600px]">
-        <SheetClose className="z-[99999] absolute top-2 right-2 bg-white border p-1 rounded-lg cursor-pointer duration-200 hover:scale-105">
+        <SheetClose className="z-[99999] absolute top-2 right-2 bg-white border p-1 rounded-3xl cursor-pointer duration-200 hover:scale-105">
           <X className="w-4 h-4 text-gray-500" />
         </SheetClose>
         <Chat

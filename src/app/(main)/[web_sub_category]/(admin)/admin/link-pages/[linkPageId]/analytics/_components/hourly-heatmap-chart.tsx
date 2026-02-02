@@ -77,7 +77,7 @@ export function HourlyHeatmapChart({
         ) : (
           <div className="space-y-4">
             {/* Legend */}
-            <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+            <div className="bg-gray-50 p-3 rounded-3xl border border-gray-200">
               <h4 className="text-sm font-semibold mb-2 text-gray-700">
                 Cara Membaca:
               </h4>
@@ -114,7 +114,7 @@ export function HourlyHeatmapChart({
             </div>
 
             {/* Heatmap Grid */}
-            <div className="w-full overflow-x-auto border border-gray-200 rounded-lg p-2 bg-white">
+            <div className="w-full overflow-x-auto border border-gray-200 rounded-3xl p-2 bg-white">
               <div className="inline-block min-w-full">
                 {/* Hour labels */}
                 <div className="flex gap-1">
