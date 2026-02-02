@@ -8,7 +8,7 @@ import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { QuestionTypeEnum, TryoutStatusEnum } from '@/types/database';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Clock, Shield } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
 import RestTime from './_components/rest-time';
 import StartTryout from './_components/start-tryout';
@@ -20,12 +20,26 @@ export interface TryoutPageProps {
 }
 
 const TryoutPage = ({ params }: TryoutPageProps) => {
+  const { volumeId } = useParams<{ volumeId: string }>();
   const pathname = usePathname();
+  const mode = pathname.toLocaleLowerCase().includes('try-out')
+    ? 'try-out'
+    : 'quiz';
+
   const isTesting = pathname?.toLowerCase().includes('testing') || false;
+
   const { data: sessionUser } = useSession();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
   const { id: tryoutId } = use(params);
+
+  const { data: session } = useSession();
+
+  const featureQuiz = session?.user?.feature.quiz;
+
+  const isQuizLocked =
+    featureQuiz !== 'ALLOW' &&
+    !(!!featureQuiz && featureQuiz.includes(volumeId || ''));
 
   // Get dynamic colors
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
@@ -49,6 +63,8 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   useEffect(() => {
     getTryoutById();
   }, [sessionUser, tryoutId]);
+
+  console.log({ tryoutData });
 
   // const FinishTryOutLate = async (payload: {
   //   userId: string;
@@ -98,6 +114,15 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
   const sessionLength = tryoutData?.TryoutSession.length || 0;
   const isTryoutStarted = getIsTryoutStarted() || false;
   const isRegistered = getIsRegistered() || false;
+
+  const isTryoutEnded = (() => {
+    if (tryoutData) {
+      const endDate = new Date(tryoutData.endDate);
+      const currentDate = new Date();
+      return currentDate > endDate;
+    }
+    return true;
+  })();
 
   const [currentIndexSession, setCurrentIndexSession] = useState<number>(0);
 
@@ -203,10 +228,11 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
               />
             </div>
             <h2 className="text-xl font-bold text-gray-900 mb-2">
-              Try Out Belum Dimulai
+              {mode === 'try-out' ? 'Try Out' : 'Quiz'} Belum Dimulai
             </h2>
             <p className="text-gray-600 mb-4">
-              Try out akan dimulai sesuai jadwal yang telah ditentukan
+              {mode === 'try-out' ? 'Try Out' : 'Quiz'} akan dimulai sesuai
+              jadwal yang telah ditentukan
             </p>
             <div className="text-sm text-gray-500">
               Mulai: {new Date(tryoutData.startDate).toLocaleString('id-ID')}
@@ -217,7 +243,7 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
     );
   }
 
-  if (!isRegistered && isTryoutStarted) {
+  if (!isRegistered && isTryoutStarted && mode === 'try-out') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <motion.div
@@ -241,6 +267,85 @@ const TryoutPage = ({ params }: TryoutPageProps) => {
             <p className="text-gray-600">
               Kamu tidak terdaftar untuk mengikuti try out ini
             </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  const isResult = currentIndexSession >= sessionLength;
+
+  console.log({
+    mode,
+    isQuizLocked,
+    isTryoutStarted,
+    isResult,
+    volumeId,
+  });
+
+  if (
+    mode === 'quiz' &&
+    isQuizLocked &&
+    isTryoutStarted &&
+    !isResult &&
+    tryoutData.quizOrder !== 1
+  ) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-4"
+        >
+          <div className="text-center">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <Shield
+                className="w-8 h-8"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Akses Ditolak
+            </h2>
+            <p className="text-gray-600">
+              Kamu tidak terdaftar untuk mengikuti quiz ini
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (mode === 'quiz' && isTryoutEnded && !isResult) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-4"
+        >
+          <div className="text-center">
+            <div
+              className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: `${mainColor}15` }}
+            >
+              <Clock
+                className="w-8 h-8"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              Quiz ini Telah Berakhir
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Quiz ini telah berakhir sesuai jadwal yang telah ditentukan
+            </p>
+            <div className="text-sm text-gray-500">
+              Berakhir: {new Date(tryoutData.endDate).toLocaleString('id-ID')}
+            </div>
           </div>
         </motion.div>
       </div>
@@ -452,6 +557,7 @@ export type TryoutDataType =
       createAt: Date;
       updateAt: Date;
       title: string;
+      quizOrder: number | null;
       restTime: number;
       status: TryoutStatusEnum;
       startDate: Date;

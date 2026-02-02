@@ -2,10 +2,19 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ComboboxSelect2 } from '@/components/ui/combobox-select-2';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
 import { InputImage } from '@/components/ui/input-image';
 import { Label } from '@/components/ui/label';
@@ -17,6 +26,11 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from '@/components/ui/multi-select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -37,11 +51,14 @@ import { responseError, throwError } from '@/lib/response';
 import { cn, formatCurrency, parseCurrency } from '@/lib/utils';
 import { getSlug } from '@/lib/utils/slug';
 import { storage } from '@/supabaseClient';
-import { Category, Instructor, LiveClass } from '@/types/database';
+import { Category, Instructor, LiveClass, QuizVolume } from '@/types/database';
 import {
+  AlertCircle,
   // ...existing imports...
   AlertCircleIcon,
+  Check,
   CheckCircleIcon,
+  ChevronsUpDown,
   ClipboardListIcon,
   EyeIcon,
   FileTextIcon,
@@ -53,6 +70,7 @@ import {
   StickyNoteIcon,
   TargetIcon,
   Trash2,
+  X,
   XCircleIcon,
 } from 'lucide-react';
 import React, { useState } from 'react';
@@ -78,6 +96,7 @@ export default function CreatePlanForm() {
       liveClassIds,
       validityType,
       selectedWebSubCategoryIds,
+      quizVolumeIds,
     },
     useLimitation: { limitRows, expireTypeLimit, validityTypeLimit },
     useForm: {
@@ -86,6 +105,7 @@ export default function CreatePlanForm() {
         roleDiscord,
         name,
         course,
+        quiz,
         description,
         duration,
         timelineStart,
@@ -174,7 +194,8 @@ export default function CreatePlanForm() {
       !course &&
       !materiPremium &&
       !liveClass &&
-      !privateTalk
+      !privateTalk &&
+      !quiz
     ) {
       toaster({
         title: 'Error',
@@ -292,6 +313,10 @@ export default function CreatePlanForm() {
                     .filter((id) => id.length > 0),
                 },
                 { type: privateTalk ? 'PRIVATE' : null },
+                {
+                  type: quiz ? 'QUIZ' : null,
+                  quizVolumeIds: quizVolumeIds.map((item) => item.value),
+                },
               ].filter((item) => item.type),
             }
           : undefined,
@@ -964,6 +989,10 @@ const SectionFeature = () => {
     useFeature: {
       categoryIds,
       setCategoryIds,
+      quizVolumeIds,
+      setQuizVolumeIds,
+      setIsQuizActive,
+      isQuizActive,
       isCourseActive,
       isLiveClassActive,
       setIsCourseActive,
@@ -983,7 +1012,9 @@ const SectionFeature = () => {
     },
   } = useProvider();
 
-  const { webCategoryData } = useWebsiteSubCategory();
+  const { webCategoryData, websiteSubCategory } = useWebsiteSubCategory();
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const { data: Categories } = useGet<
     { categoryName: string; data: Category[] }[]
@@ -1017,6 +1048,26 @@ const SectionFeature = () => {
     },
     useEffectDependencies: [searchTerm],
   });
+
+  console.log({ selectedWebSubCategoryIds });
+
+  const [searchQuizVolume, setSearchQuizVolume] = useState<string>('');
+
+  const { data: QuizVolumeList, error: QuizVolumeListError } = useGet<
+    QuizVolume[]
+  >('/quizTryout/getQuizVolumeList', {
+    params: {
+      search: searchQuizVolume,
+      take: 10,
+      page: 1,
+      showWebCategoryIds: selectedWebSubCategoryIds.join('~'),
+    },
+    debounceTime: 1000,
+    enabled: searchQuizVolume.length >= 3 || searchQuizVolume.length === 0,
+    useEffectDependencies: [searchQuizVolume, selectedWebSubCategoryIds],
+  });
+
+  console.log({ quizVolumeIds });
 
   return (
     <div className="rounded-3xl shadow-cardSoft2 p-4">
@@ -1114,6 +1165,22 @@ const SectionFeature = () => {
             </div>
             <div className="flex items-center">
               <Checkbox
+                id="quiz"
+                name="quiz"
+                onCheckedChange={(value) => {
+                  setValue('quiz', value as boolean);
+                  setIsQuizActive(value as boolean);
+                }}
+              />
+              <Label
+                htmlFor="quiz"
+                className="ml-2"
+              >
+                Quiz
+              </Label>
+            </div>
+            <div className="flex items-center">
+              <Checkbox
                 name="materiPremium"
                 onCheckedChange={(value) => {
                   setValue('materiPremium', value as boolean);
@@ -1156,6 +1223,7 @@ const SectionFeature = () => {
               {isLiveClassActive && (
                 <TabsTrigger value="liveclass">Live Class</TabsTrigger>
               )}
+              {isQuizActive && <TabsTrigger value="quiz">Quiz</TabsTrigger>}
             </TabsList>
             <TabsContent
               value="umum"
@@ -1457,6 +1525,166 @@ const SectionFeature = () => {
                   {/* Selection Summary */}
                 </div>
               ))}
+            </TabsContent>
+            <TabsContent
+              value="quiz"
+              className="flex flex-col gap-4 ml-8"
+            >
+              <div className="relative">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      // aria-expanded={tryout.open}
+                      className="min-w-[300px] justify-between"
+                    >
+                      {'Pilih Quiz Volume'}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[300px] p-0">
+                    <Command shouldFilter={false}>
+                      <CommandInput
+                        placeholder="Search Tags..."
+                        value={searchQuizVolume}
+                        onValueChange={(value) => setSearchQuizVolume(value)}
+                      />
+                      <CommandList>
+                        {QuizVolumeList && QuizVolumeList.length === 0 ? (
+                          <CommandEmpty>No tryout found.</CommandEmpty>
+                        ) : null}
+                        <CommandGroup>
+                          {QuizVolumeList?.map((volume) => {
+                            const isExsist = quizVolumeIds.find(
+                              (item) => item.value === volume.id,
+                            );
+                            return (
+                              <CommandItem
+                                key={volume.id}
+                                value={volume.id}
+                                onSelect={() => {
+                                  if (isExsist) return;
+                                  setQuizVolumeIds((prev) => {
+                                    const isExsist = prev.find(
+                                      (item) => item.value === volume.id,
+                                    );
+                                    if (isExsist) {
+                                      return prev;
+                                    }
+                                    return [
+                                      ...prev,
+                                      {
+                                        label: volume.title || '',
+                                        value: volume.id,
+                                        webSubId:
+                                          volume.website_sub_category_id,
+                                      },
+                                    ];
+                                  });
+                                }}
+                                className={cn(
+                                  // 'flex-col items-start',
+                                  isExsist && 'opacity-50  pointer-events-none',
+                                )}
+                              >
+                                <div className="flex flex-wrap">
+                                  <Check
+                                    className={cn(
+                                      'mr-2 h-4 w-4',
+                                      isExsist ? 'opacity-100' : 'opacity-0',
+                                    )}
+                                  />
+                                  {volume.title}
+                                  <Badge className="text-sm py-0 px-1 text-[.6rem] ml-2 h-[unset]">
+                                    {volume.website_sub_category_id}
+                                  </Badge>
+                                </div>
+                              </CommandItem>
+                            );
+                          })}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+              {QuizVolumeListError?.message && (
+                <div className="flex items-center gap-2 text-red-600 text-sm">
+                  <AlertCircle className="w-4 h-4" />
+                  {QuizVolumeListError.message}
+                </div>
+              )}
+
+              <div className="space-y-4 pt-4 border-t">
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">
+                  Volume Terpilih
+                </p>
+                {selectedWebSubCategoryIds?.map((webSub, index) => {
+                  const volumes = quizVolumeIds.filter(
+                    (quiz) => quiz.webSubId === webSub,
+                  );
+
+                  return (
+                    <div
+                      key={index}
+                      className="space-y-2"
+                    >
+                      <p className="text-base font-bold text-slate-700 px-1">
+                        {webSub.toUpperCase()}
+                      </p>
+                      <div className="grid grid-cols-4 gap-3">
+                        {volumes.map((volume) => (
+                          <div
+                            key={volume.value}
+                            className="flex justify-between p-3 rounded-lg w-full"
+                            style={{
+                              background: `${mainColor}10`,
+                              borderLeft: `4px solid ${mainColor}`,
+                            }}
+                          >
+                            <div className="flex-1">
+                              <p className="font-bold text-slate-900 text-sm line-clamp-2">
+                                {volume.label}
+                              </p>
+                            </div>
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                setQuizVolumeIds((prev) =>
+                                  prev.filter(
+                                    (item) => item.value !== volume.value,
+                                  ),
+                                );
+                              }}
+                              variant="ghost"
+                              size="sm"
+                              className="self-end mt-2 h-fit"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        {quizVolumeIds.length === 0 && (
+                          <div
+                            className="flex justify-between p-3 rounded-lg w-full bg-gray-100 border-l-4 border-gray-600"
+                            // style={{
+                            //   background: `${mainColor}10`,
+                            //   borderLeft: `4px solid ${mainColor}`,
+                            // }}
+                          >
+                            <div className="flex-1">
+                              <p className="text-xs text-slate-500 mt-1">
+                                Belum ada tryout terpilih
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </TabsContent>
           </Tabs>
         </div>

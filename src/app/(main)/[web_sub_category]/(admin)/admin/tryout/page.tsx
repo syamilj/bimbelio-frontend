@@ -50,7 +50,11 @@ export default function Page() {
     data: tryout,
     isLoading,
     refetch,
-  } = useGet<TryoutData[]>('/tryout/getTryout');
+  } = useGet<TryoutData[]>('/tryout/getTryout', {
+    params: {
+      type: 'TRYOUT',
+    },
+  });
 
   const { data: tryoutInfo } = useGet<{ title: string; total: number }[]>(
     '/tryout/getTryoutInfo',

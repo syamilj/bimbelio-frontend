@@ -11,6 +11,7 @@ import { cn, getDateString, getHours } from '@/lib/utils';
 import { formatIDR } from '@/lib/utils/currency';
 import { formatDateRange } from '@/lib/utils/date';
 import {
+  BookCheck,
   Calendar,
   Check,
   Clock,
@@ -45,6 +46,8 @@ export default function SubscriptionPage() {
         return <GraduationCap className="w-3 h-3" />;
       case 'LIVECLASS':
         return <Video className="w-3 h-3" />;
+      case 'QUIZ':
+        return <BookCheck className="w-3 h-3" />;
       default:
         return <Check className="w-3 h-3" />;
     }
@@ -175,6 +178,7 @@ export default function SubscriptionPage() {
                                     {feature.type === 'COURSE' && 'Course'}
                                     {feature.type === 'LIVECLASS' &&
                                       'Live Class'}
+                                    {feature.type === 'QUIZ' && 'Quiz'}
                                   </span>
                                 </div>
                               ))}

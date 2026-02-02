@@ -23,6 +23,7 @@ import {
   Search,
   Target, // Added for BimArena/TryOut
   Medal,  // Added for Leaderboard
+  FileQuestion, // Added for BimArena/Quiz
   Users, // Added for BimLive
   Radio, // Added for BimLive
   MonitorPlay, // Added for BimLive
@@ -408,6 +409,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                 {[
                                   { name: 'Peringkat', href: `/${webSubCategoryId}/user/bimarena/leaderboard`, icon: Trophy },
                                   { name: 'Try Out', href: `/${webSubCategoryId}/user/bimarena/try-out`, icon: Medal },
+                                  { name: 'Quiz', href: `/${webSubCategoryId}/user/bimarena/quiz`, icon: FileQuestion },
                                 ].map((sub) => {
                                   const isSubActive = pathname?.includes(sub.href);
                                   return (
@@ -661,6 +663,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                         {[
                            { name: 'Peringkat', href: `/${webSubCategoryId}/user/bimarena/leaderboard`, icon: Trophy },
                            { name: 'Try Out', href: `/${webSubCategoryId}/user/bimarena/try-out`, icon: Medal },
+                           { name: 'Quiz', href: `/${webSubCategoryId}/user/bimarena/quiz`, icon: FileQuestion },
                         ].map((sub) => {
                            const isSubActive = pathname?.includes(sub.href);
                            return (

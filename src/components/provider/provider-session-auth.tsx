@@ -180,6 +180,7 @@ type SessionProviderType = {
           feature: {
             document: boolean;
             course: string[] | 'ALLOW';
+            quiz: string[] | 'ALLOW';
             liveClass: boolean;
           };
           subsList: (Subscription & {

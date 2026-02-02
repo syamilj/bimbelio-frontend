@@ -202,7 +202,10 @@ export default function LayoutUserClient({ children }: LayoutUserClientProps) {
 
   // 2) Jika route 'try-out/[id]' => hideLayout = true
   useEffect(() => {
-    if (pathname?.includes('try-out') && params?.id) {
+    if (
+      (pathname?.includes('try-out') || pathname?.includes('quiz')) &&
+      params?.id
+    ) {
       setHideLayout(true);
     } else {
       setHideLayout(false);

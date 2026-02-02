@@ -19,7 +19,7 @@ import {
   Save,
   X,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { SetStateAction } from 'react';
 
 interface ExitTryoutProps {
@@ -39,6 +39,10 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
   answeredQuestions = 0,
   totalQuestions = 0,
 }) => {
+  const pathname = usePathname();
+  const mode = pathname.toLocaleLowerCase().includes('try-out')
+    ? 'try out'
+    : 'quiz';
   const router = useRouter();
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -50,7 +54,9 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
     totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
 
   const handleExit = () => {
-    router.push(`/${website_sub_category_id}/user/bimarena/try-out`);
+    router.push(
+      `/${website_sub_category_id}/user/bimarena/${mode === 'try out' ? 'try-out' : 'quiz'}`,
+    );
   };
 
   const handleCancel = () => {
@@ -87,12 +93,14 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
 
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold text-gray-900 mb-2">
-                {done ? 'Keluar Try Out' : 'Yakin Ingin Keluar?'}
+                {done
+                  ? `Keluar ${mode === 'try out' ? 'Try Out' : 'Quiz'}`
+                  : 'Yakin Ingin Keluar?'}
               </DialogTitle>
               <DialogDescription className="text-gray-600 text-base leading-relaxed">
                 {done
-                  ? 'Try out sudah selesai. Kamu bisa keluar sekarang.'
-                  : 'Try out belum selesai. Pastikan progress kamu sudah tersimpan.'}
+                  ? `${mode === 'try out' ? 'Try Out' : 'Quiz'} sudah selesai. Kamu bisa keluar sekarang.`
+                  : `${mode === 'try out' ? 'Try Out' : 'Quiz'} belum selesai. Pastikan progress kamu sudah tersimpan.`}
               </DialogDescription>
             </DialogHeader>
           </div>
@@ -222,7 +230,9 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
               }}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              {done ? 'Keluar' : 'Keluar Try Out'}
+              {done
+                ? 'Keluar'
+                : `Keluar ${mode === 'try out' ? 'Try Out' : 'Quiz'}`}
             </Button>
           </motion.div>
 
@@ -234,7 +244,7 @@ const ExitTryout: React.FC<ExitTryoutProps> = ({
               className="mt-6 text-center"
             >
               <p className="text-xs text-gray-500">
-                💡 Tip: Kamu bisa melanjutkan try out kapan saja sebelum waktu
+                💡 Tip: Kamu bisa melanjutkan {mode} kapan saja sebelum waktu
                 habis
               </p>
             </motion.div>

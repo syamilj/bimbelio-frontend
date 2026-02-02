@@ -26,11 +26,11 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import { toaster } from '@/components/ui/toaster';
-import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { getGeneral, mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { cn, Provinces } from '@/lib/utils';
 import { Check, ChevronsUpDown, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useProvider } from '../../provider';
 
 const RegistrationTryOut = ({
   getUserTryout,
@@ -43,8 +43,17 @@ const RegistrationTryOut = ({
   isHideTargetValue: boolean;
   univOption: string | undefined;
 }) => {
+  const Router = useRouter();
   const { data: session } = useSession();
-  const { UniversityOptions } = useProvider();
+
+  const [UniversityOptions, setUniversityOptions] =
+    useState<UniversityOptionsType>([]);
+
+  useEffect(() => {
+    getGeneral('/universitas', {
+      setData: setUniversityOptions,
+    });
+  }, []);
 
   const currentYear = new Date().getFullYear() + 1 + 4;
 
@@ -185,7 +194,8 @@ const RegistrationTryOut = ({
           if (isHideGeneralSection) {
             setStep(3);
           } else {
-            setStep(2);
+            // setStep(2);
+            Router.back();
           }
         }}
       >
@@ -580,6 +590,18 @@ const RegistrationTryOut = ({
     </div>
   );
 };
+
+type UniversityOptionsType = {
+  university: string;
+  initials: string;
+  averageScore: number;
+  referensi: string | null;
+  studyProgramList: {
+    study: string;
+    averageScore: number | null;
+    passingGrade?: number;
+  }[];
+}[];
 
 export default RegistrationTryOut;
 
