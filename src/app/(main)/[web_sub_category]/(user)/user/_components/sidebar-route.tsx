@@ -23,7 +23,6 @@ import {
   Search,
   Target, // Added for BimArena/TryOut
   Medal,  // Added for Leaderboard
-  FileQuestion, // Added for BimArena/Quiz
   Users, // Added for BimLive
   Radio, // Added for BimLive
   MonitorPlay, // Added for BimLive
@@ -350,7 +349,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                   href={`/${webSubCategoryId}/user/bimcourse`}
                                   onClick={handleLinkClick}
                                   className={cn(
-                                    "flex items-center gap-2 px-2 py-2 text-xs rounded-lg transition-colors",
+                                    "flex items-center gap-2 px-2 py-2 text-xs rounded-3xl transition-colors",
                                     pathname === `/${webSubCategoryId}/user/bimcourse`
                                       ? "text-slate-900 font-semibold bg-slate-100"
                                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
@@ -380,7 +379,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                                     href={catHref}
                                                     onClick={handleLinkClick}
                                                     className={cn(
-                                                      "flex items-center gap-2 px-2 py-1.5 text-xs rounded-lg transition-colors",
+                                                      "flex items-center gap-2 px-2 py-1.5 text-xs rounded-3xl transition-colors",
                                                       isCatActive
                                                         ? "text-slate-900 font-semibold bg-slate-50"
                                                         : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
@@ -409,7 +408,6 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                 {[
                                   { name: 'Peringkat', href: `/${webSubCategoryId}/user/bimarena/leaderboard`, icon: Trophy },
                                   { name: 'Try Out', href: `/${webSubCategoryId}/user/bimarena/try-out`, icon: Medal },
-                                  { name: 'Quiz', href: `/${webSubCategoryId}/user/bimarena/quiz`, icon: FileQuestion },
                                 ].map((sub) => {
                                   const isSubActive = pathname?.includes(sub.href);
                                   return (
@@ -418,7 +416,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                       href={sub.href}
                                       onClick={handleLinkClick}
                                       className={cn(
-                                        "flex items-center gap-2 px-2 py-1.5 text-xs rounded-lg transition-colors",
+                                        "flex items-center gap-2 px-2 py-1.5 text-xs rounded-3xl transition-colors",
                                         isSubActive
                                           ? "text-slate-900 font-medium bg-slate-50"
                                           : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
@@ -587,7 +585,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                     href={`/${webSubCategoryId}/user/bimcourse`}
                                     onClick={handleLinkClick}
                                     className={cn(
-                                        "flex items-center gap-2 px-3 py-1.5 text-xs rounded-md transition-colors",
+                                        "flex items-center gap-2 px-3 py-1.5 text-xs rounded-3xl transition-colors",
                                         pathname === `/${webSubCategoryId}/user/bimcourse`
                                         ? "text-slate-900 font-bold bg-slate-100"
                                         : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
@@ -602,7 +600,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                     href={`/${webSubCategoryId}/user/explore`}
                                     onClick={handleLinkClick}
                                     className={cn(
-                                        "flex items-center gap-2 px-3 py-1.5 text-xs rounded-md transition-colors",
+                                        "flex items-center gap-2 px-3 py-1.5 text-xs rounded-3xl transition-colors",
                                         pathname?.includes('/user/explore')
                                         ? "text-slate-900 font-bold bg-slate-100"
                                         : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
@@ -636,7 +634,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                                   href={catHref}
                                                   onClick={handleLinkClick}
                                                   className={cn(
-                                                      "flex items-center gap-2 px-3 py-1.5 text-xs rounded-md transition-colors",
+                                                      "flex items-center gap-2 px-3 py-1.5 text-xs rounded-3xl transition-colors",
                                                       isCatActive
                                                         ? "text-slate-900 font-semibold bg-slate-50"
                                                         : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
@@ -663,7 +661,6 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                         {[
                            { name: 'Peringkat', href: `/${webSubCategoryId}/user/bimarena/leaderboard`, icon: Trophy },
                            { name: 'Try Out', href: `/${webSubCategoryId}/user/bimarena/try-out`, icon: Medal },
-                           { name: 'Quiz', href: `/${webSubCategoryId}/user/bimarena/quiz`, icon: FileQuestion },
                         ].map((sub) => {
                            const isSubActive = pathname?.includes(sub.href);
                            return (
@@ -672,7 +669,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                  href={sub.href}
                                  onClick={handleLinkClick}
                                  className={cn(
-                                    "flex items-center gap-2 px-3 py-1.5 text-xs rounded-md transition-colors",
+                                    "flex items-center gap-2 px-3 py-1.5 text-xs rounded-3xl transition-colors",
                                     isSubActive
                                       ? "text-slate-900 font-medium bg-slate-50"
                                       : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"

@@ -208,7 +208,7 @@ export default function Index() {
             Array.from({ length: 4 }).map((_, i) => (
               <Skeleton
                 key={i}
-                className="h-32 w-full rounded-lg"
+                className="h-32 w-full rounded-3xl"
               />
             ))
           ) : filteredCourses?.length === 0 ? (
@@ -246,7 +246,7 @@ export default function Index() {
                       {/* Course Info */}
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-3xl bg-blue-100 flex items-center justify-center">
                             <span className="text-blue-600 font-bold text-sm">
                               {course.number}
                             </span>
@@ -350,11 +350,11 @@ export default function Index() {
                           {course.CourseSubChapter.map((subChapter, index) => (
                             <div
                               key={subChapter.id}
-                              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                              className="flex items-center justify-between p-4 bg-gray-50 rounded-3xl hover:bg-gray-100 transition-colors"
                             >
                               <div className="flex items-center gap-4 flex-1">
                                 {/* Sub Chapter Number */}
-                                <div className="w-6 h-6 rounded-md bg-white flex items-center justify-center text-xs font-medium text-gray-600 shadow-sm">
+                                <div className="w-6 h-6 rounded-3xl bg-white flex items-center justify-center text-xs font-medium text-gray-600 shadow-sm">
                                   {index + 1}
                                 </div>
 

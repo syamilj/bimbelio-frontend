@@ -380,7 +380,7 @@ const SidebarUser = ({
             {websiteSubCategory && (
             <div className="px-3 py-4">
               <button
-                 className="w-full flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-left group shadow-sm"
+                 className="w-full flex items-center justify-between p-2 rounded-3xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-left group shadow-sm"
                  onClick={() => {
                    setIsWebCategoryDialogOpen(true);
                    setIsMobileSidebarOpen(false);
@@ -388,7 +388,7 @@ const SidebarUser = ({
               >
                  <div className="flex items-center gap-3 w-full overflow-hidden">
                     <div
-                       className="w-8 h-8 rounded-md flex items-center justify-center shrink-0"
+                       className="w-8 h-8 rounded-3xl flex items-center justify-center shrink-0"
                        style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Stars className="w-4 h-4" style={{ color: mainColor }} />

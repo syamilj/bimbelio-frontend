@@ -706,14 +706,14 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //         {/* Header */}
 //         <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gray-50/50">
 //           <div className="flex items-center gap-2">
-//             <div className="p-1.5 rounded-md bg-blue-100">
+//             <div className="p-1.5 rounded-3xl bg-blue-100">
 //               <List className="w-4 h-4 text-blue-600" />
 //             </div>
 //             <h3 className="font-semibold text-gray-900 text-sm">Daftar Isi</h3>
 //           </div>
 //           <motion.button
 //             onClick={() => setShowList(false)}
-//             className="p-1.5 rounded-md hover:bg-gray-200 transition-colors"
+//             className="p-1.5 rounded-3xl hover:bg-gray-200 transition-colors"
 //             whileHover={{ scale: 1.1 }}
 //             whileTap={{ scale: 0.9 }}
 //           >
@@ -738,9 +738,9 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                   value="item-1"
 //                   className="border-none"
 //                 >
-//                   <AccordionTrigger className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-start text-sm font-semibold duration-200 hover:bg-blue-50 data-[state=open]:bg-blue-50 data-[state=open]:text-blue-700 [&>svg]:w-4 [&>svg]:h-4">
+//                   <AccordionTrigger className="flex cursor-pointer items-center gap-3 rounded-3xl px-3 py-2.5 text-start text-sm font-semibold duration-200 hover:bg-blue-50 data-[state=open]:bg-blue-50 data-[state=open]:text-blue-700 [&>svg]:w-4 [&>svg]:h-4">
 //                     <div className="flex items-center gap-3 flex-1 min-w-0">
-//                       <div className="w-6 h-6 rounded-lg bg-blue-100 flex items-center justify-center shrink-0">
+//                       <div className="w-6 h-6 rounded-3xl bg-blue-100 flex items-center justify-center shrink-0">
 //                         <span className="text-xs font-bold text-blue-600">
 //                           {cIndex + 1}
 //                         </span>
@@ -760,7 +760,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //                           <Link
 //                             href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}?sub=${sChapter.id}`}
 //                             className={cn(
-//                               'flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 duration-200 hover:bg-gray-50 relative w-full group text-sm',
+//                               'flex cursor-pointer items-center gap-3 rounded-3xl px-3 py-2 duration-200 hover:bg-gray-50 relative w-full group text-sm',
 //                               sChapter.id === sub &&
 //                                 'bg-blue-50 text-blue-700 shadow-sm border border-blue-200',
 //                             )}
@@ -836,10 +836,10 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //             {/* Report Link */}
 //             <Link
 //               href={`/${website_sub_category_id_params}/user/bimcourse/${categoryId}?sub=report`}
-//               className="flex cursor-pointer items-center gap-3 text-blue-600 rounded-lg px-3 py-2.5 text-sm font-semibold duration-200 hover:bg-blue-50 mt-3 border-t border-gray-100 pt-4"
+//               className="flex cursor-pointer items-center gap-3 text-blue-600 rounded-3xl px-3 py-2.5 text-sm font-semibold duration-200 hover:bg-blue-50 mt-3 border-t border-gray-100 pt-4"
 //               onClick={() => setShowList(false)}
 //             >
-//               <div className="w-5 h-5 rounded-lg bg-blue-100 flex items-center justify-center">
+//               <div className="w-5 h-5 rounded-3xl bg-blue-100 flex items-center justify-center">
 //                 <GaugeIcon className="w-3 h-3 text-blue-600" />
 //               </div>
 //               <span className="text-sm">Laporan Progress</span>
@@ -977,7 +977,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //             {/* Center: Course Information */}
 //             <div className="flex items-center gap-4 flex-1 mx-6">
 //               <div className="flex items-center gap-3">
-//                 <div className="p-2 rounded-lg bg-blue-50">
+//                 <div className="p-2 rounded-3xl bg-blue-50">
 //                   <BookAIcon className="w-5 h-5 text-blue-600" />
 //                 </div>
 //                 <div className="text-left min-w-0 flex-1">
@@ -1074,7 +1074,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 //             <div className="flex items-center gap-3 overflow-x-auto">
 //               {/* Chat Limit */}
 //               <div className="flex items-center gap-1.5 shrink-0">
-//                 <div className="p-1.5 rounded-lg bg-blue-50">
+//                 <div className="p-1.5 rounded-3xl bg-blue-50">
 //                   <IconChat
 //                     w={14}
 //                     className="text-blue-600"
@@ -1091,7 +1091,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 
 //               {/* Notes Limit */}
 //               <div className="flex items-center gap-1.5 shrink-0">
-//                 <div className="p-1.5 rounded-lg bg-green-50">
+//                 <div className="p-1.5 rounded-3xl bg-green-50">
 //                   <IconPen
 //                     w={14}
 //                     className="text-green-600"
@@ -1108,7 +1108,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 
 //               {/* Quiz Limit */}
 //               <div className="flex items-center gap-1.5 shrink-0">
-//                 <div className="p-1.5 rounded-lg bg-purple-50">
+//                 <div className="p-1.5 rounded-3xl bg-purple-50">
 //                   <IconTabsQuiz
 //                     w={14}
 //                     className="text-purple-600"
@@ -1125,7 +1125,7 @@ const ChartProgress = ({ percentage }: { percentage: number }) => {
 
 //               {/* Vision Limit */}
 //               <div className="flex items-center gap-1.5 shrink-0">
-//                 <div className="p-1.5 rounded-lg bg-orange-50">
+//                 <div className="p-1.5 rounded-3xl bg-orange-50">
 //                   <IconVision
 //                     w={14}
 //                     className="text-orange-600"
