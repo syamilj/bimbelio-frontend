@@ -11,6 +11,8 @@ import {
   ArrowUp,
   ArrowUpDown,
   Award,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Crown,
   Filter,
@@ -718,14 +720,13 @@ export function QuizLeaderboard() {
             </table>
           </div>
 
-          <div className="p-4 border-t border-slate-100">
-            <div className="flex items-center justify-between">
-              <div className="text-xs md:text-sm text-slate-600 font-medium">
-                Halaman {currentPage} dari {totalPages} • Menampilkan{' '}
-                {paginatedData.length} dari {filteredAndSortedData.length}{' '}
-                peserta
+          <div className="p-3 md:p-4 border-t border-slate-100">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-[10px] md:text-sm text-slate-600 font-medium text-center sm:text-left">
+                <span className="hidden sm:inline">Halaman {currentPage} dari {totalPages} • </span>
+                <span>Menampilkan {paginatedData.length} dari {filteredAndSortedData.length} peserta</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 md:gap-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -733,11 +734,12 @@ export function QuizLeaderboard() {
                     setCurrentPage((prev) => Math.max(1, prev - 1))
                   }
                   disabled={currentPage === 1}
-                  className="rounded-full font-bold text-xs"
+                  className="rounded-full font-bold text-[10px] md:text-xs h-7 md:h-8 px-2 md:px-3"
                 >
-                  ← Sebelumnya
+                  <ChevronLeft className="w-3 h-3 md:mr-1" />
+                  <span className="hidden md:inline">Sebelumnya</span>
                 </Button>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5 md:gap-1">
                   {Array.from({ length: totalPages }, (_, i) => i + 1)
                     .filter((page) => {
                       const distance = Math.abs(page - currentPage);
@@ -751,14 +753,14 @@ export function QuizLeaderboard() {
                     .map((page, idx, arr) => (
                       <div key={page}>
                         {idx > 0 && arr[idx - 1] !== page - 1 && (
-                          <span className="px-2 py-1 text-slate-400">...</span>
+                          <span className="px-1 text-slate-400 text-xs">...</span>
                         )}
                         <Button
                           variant={currentPage === page ? 'default' : 'outline'}
                           size="sm"
                           onClick={() => setCurrentPage(page)}
                           className={cn(
-                            'rounded-full font-bold text-xs w-8 h-8 p-0',
+                            'rounded-full font-bold text-[10px] md:text-xs w-6 h-6 md:w-8 md:h-8 p-0',
                             currentPage === page && 'text-white',
                           )}
                           style={
@@ -779,9 +781,10 @@ export function QuizLeaderboard() {
                     setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                   }
                   disabled={currentPage === totalPages}
-                  className="rounded-full font-bold text-xs"
+                  className="rounded-full font-bold text-[10px] md:text-xs h-7 md:h-8 px-2 md:px-3"
                 >
-                  Selanjutnya →
+                  <span className="hidden md:inline">Selanjutnya</span>
+                  <ChevronRight className="w-3 h-3 md:ml-1" />
                 </Button>
               </div>
             </div>

@@ -424,7 +424,7 @@ export const Notification = () => {
                               <div className="w-full flex justify-start">
                                 <Link href={notif.actionUrl}>
                                   <Button
-                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-md"
+                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-3xl"
                                     variant={'outline'}
                                   >
                                     Lihat Detail
@@ -442,7 +442,7 @@ export const Notification = () => {
                                   rel="noopener noreferrer"
                                 >
                                   <Button
-                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-md"
+                                    className="py-1 px-3 h-[unset] text-xs mt-2 rounded-3xl"
                                     variant={'outline'}
                                   >
                                     Lihat Detail

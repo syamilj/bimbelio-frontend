@@ -201,7 +201,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
               {liveClasses.map((liveClass) => (
                 <div
                   key={liveClass.id}
-                  className="group relative rounded-2xl border-2 border-slate-100 overflow-hidden bg-white hover:border-slate-200 transition-all hover:shadow-lg flex-shrink-0 w-[280px] md:w-auto"
+                  className="group relative rounded-3xl border-2 border-slate-100 overflow-hidden bg-white hover:border-slate-200 transition-all hover:shadow-lg flex-shrink-0 w-[280px] md:w-auto"
                 >
                   {/* Thumbnail */}
                   <div className="relative h-96 bg-gradient-to-br from-slate-200 to-slate-300 overflow-hidden">
@@ -302,7 +302,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                   <Link
                     key={course.id}
                     href={`/${website_sub_category_id}/user/bimcourse/${course.id}`}
-                    className="group relative bg-white rounded-2xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
+                    className="group relative bg-white rounded-3xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
                   >
                     {/* Progress Ring - Top Right */}
                     <div className="absolute -top-2 -right-2 z-10">
@@ -450,7 +450,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                   <Link
                     key={tryout.id}
                     href={`/${website_sub_category_id}/user/bimarena/try-out/${tryout.id}`}
-                    className="group relative bg-white rounded-2xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
+                    className="group relative bg-white rounded-3xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
                   >
                     {/* Score Badge - Top Right (if completed) */}
                     {tryout.score && tryout.score > 0 && (

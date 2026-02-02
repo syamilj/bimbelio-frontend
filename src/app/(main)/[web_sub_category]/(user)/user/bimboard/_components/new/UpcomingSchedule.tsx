@@ -79,7 +79,7 @@ export default function UpcomingSchedule({ tryouts, liveClasses }: UpcomingSched
                 key={tryout.id}
                 href={`/${website_sub_category_id}/user/bimarena/try-out/${tryout.id}`}
               >
-                <div className="group p-3 rounded-2xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all cursor-pointer">
+                <div className="group p-3 rounded-3xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all cursor-pointer">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <h3 className="font-bold text-sm text-slate-800 line-clamp-2 flex-1">
                       {tryout.title}
@@ -118,7 +118,7 @@ export default function UpcomingSchedule({ tryouts, liveClasses }: UpcomingSched
                 key={liveClass.id}
                 href={`/${website_sub_category_id}/user/bimlive/${liveClass.id}`}
               >
-                <div className="group p-3 rounded-2xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all cursor-pointer">
+                <div className="group p-3 rounded-3xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all cursor-pointer">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <h3 className="font-bold text-sm text-slate-800 line-clamp-2 flex-1">
                       {liveClass.title}

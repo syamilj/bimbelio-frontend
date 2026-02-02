@@ -168,8 +168,6 @@ export function QuizStats() {
           })}
         </div>
       </div>
-      {/* Scroll fade indicator - mobile only */}
-      <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none md:hidden" />
     </div>
   );
 }

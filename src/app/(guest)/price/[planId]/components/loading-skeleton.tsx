@@ -86,7 +86,7 @@ export function LoadingSkeleton() {
                 {[1, 2, 3, 4].map((i) => (
                   <Skeleton
                     key={i}
-                    className="h-10 rounded-md"
+                    className="h-10 rounded-3xl"
                   />
                 ))}
               </div>

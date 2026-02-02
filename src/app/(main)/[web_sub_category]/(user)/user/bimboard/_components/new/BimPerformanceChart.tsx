@@ -123,18 +123,18 @@ export default function BimPerformanceChart({ scoreHistory, studyTimeHistory }: 
           <div className="space-y-6">
             {/* Stats Summary */}
             <div className="grid grid-cols-3 gap-3">
-              <div className="p-4 rounded-2xl border-2 border-emerald-100 bg-emerald-50">
+              <div className="p-4 rounded-3xl border-2 border-emerald-100 bg-emerald-50">
                 <div className="text-xs font-bold text-emerald-600 uppercase tracking-wide mb-1">Rata-rata</div>
                 <div className="text-2xl font-black text-emerald-700">{stats.avg}</div>
               </div>
-              <div className="p-4 rounded-2xl border-2 border-blue-100 bg-blue-50">
+              <div className="p-4 rounded-3xl border-2 border-blue-100 bg-blue-50">
                 <div className="text-xs font-bold text-blue-600 uppercase tracking-wide mb-1">Tertinggi</div>
                 <div className="text-2xl font-black text-blue-700 flex items-center gap-1">
                   <Trophy className="w-5 h-5" />
                   {stats.highest}
                 </div>
               </div>
-              <div className="p-4 rounded-2xl border-2 border-slate-100 bg-slate-50">
+              <div className="p-4 rounded-3xl border-2 border-slate-100 bg-slate-50">
                 <div className="text-xs font-bold text-slate-600 uppercase tracking-wide mb-1">Terendah</div>
                 <div className="text-2xl font-black text-slate-700">{stats.lowest}</div>
               </div>

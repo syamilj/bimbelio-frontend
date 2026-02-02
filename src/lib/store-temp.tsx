@@ -28,7 +28,7 @@ export const HighlighBlock = createReactBlockSpec(
   },
   {
     render: (props) => (
-      <div className="flex h-full max-w-full flex-1 items-center gap-2 rounded-sm p-1">
+      <div className="flex h-full max-w-full flex-1 items-center gap-2 rounded-3xl p-1">
         <div
           onClick={() => {
             if (!props?.block?.props?.highlightId) return;
@@ -88,7 +88,7 @@ export const AlertBlock = createReactBlockSpec(
   {
     render: (props) => (
       <div
-        className="flex flex-1 items-center gap-2 break-words rounded-sm p-1"
+        className="flex flex-1 items-center gap-2 break-words rounded-3xl p-1"
         style={{
           backgroundColor: alertTypes[props.block.props.type].backgroundColor,
         }}

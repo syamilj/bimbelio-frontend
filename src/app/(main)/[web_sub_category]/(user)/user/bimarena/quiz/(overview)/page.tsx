@@ -3,7 +3,7 @@
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { BarChart3, BookOpen, GraduationCap, Trophy } from 'lucide-react';
+import { BarChart3, BookOpen, Trophy } from 'lucide-react';
 import { useState } from 'react';
 
 // Components
@@ -11,10 +11,10 @@ import { QuizCardList } from '../_components/quiz-card-list';
 import { QuizLeaderboard } from '../_components/quiz-leaderboard';
 import { QuizProgress } from '../_components/quiz-progress';
 import { QuizStats } from '../_components/quiz-stats';
-
-// Types and mock data
 import { QuizSummary } from '../_components/quiz-summary';
-import OnBoardingQuizPage from '../_on-boarding';
+import { QuizTopLeaderboard } from '../_components/quiz-top-leaderboard';
+import { TargetUniversityBanner } from '../_components/target-university-banner';
+import QuizOnboarding from '../_components/onboarding/quiz-onboarding';
 import { QuizProvider, useQuizProvider } from '../_provider/_provider';
 
 export function BimArenaQuizPageMain() {
@@ -26,7 +26,6 @@ export function BimArenaQuizPageMain() {
   } = useQuizProvider();
   const userTarget = UserStatistic?.userTarget;
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
-  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const [activeTab, setActiveTab] = useState('library');
 
@@ -34,8 +33,6 @@ export function BimArenaQuizPageMain() {
     { id: 'library', label: 'Library', icon: BookOpen },
     { id: 'progress', label: 'Progress', icon: BarChart3 },
     { id: 'leaderboard', label: 'Peringkat', icon: Trophy },
-    // { id: 'prediction', label: 'Prediksi', icon: Target },
-    // { id: 'rewards', label: 'Hadiah', icon: Gift },
   ];
 
   return (
@@ -47,129 +44,67 @@ export function BimArenaQuizPageMain() {
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 space-y-6">
         {/* Target University Banner */}
-        {userTarget && (
-          <div
-            className="relative overflow-hidden rounded-3xl md:rounded-3xl p-3 md:p-4 border-2 cursor-pointer hover:shadow-lg transition-all"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}08 0%, ${secondaryColor}05 100%)`,
-              borderColor: `${mainColor}20`,
-            }}
-          >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4">
-              {/* Left: University Info */}
-              <div className="flex items-center gap-3 md:gap-4">
-                <div
-                  className="w-11 h-11 md:w-14 md:h-14 rounded-3xl md:rounded-3xl flex items-center justify-center text-white shadow-lg flex-shrink-0"
-                  style={{
-                    background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                  }}
-                >
-                  <GraduationCap className="w-5 h-5 md:w-7 md:h-7" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    Target Kamu
-                  </p>
-                  <h3 className="font-black text-slate-800 text-sm md:text-base truncate">
-                    {userTarget.univChoiceOne}
-                  </h3>
-                  <p className="text-xs md:text-sm text-slate-500 font-medium truncate">
-                    {userTarget.univStudyChoiceOne}
-                  </p>
-                </div>
-              </div>
-              {/* Right: Stats - Horizontal scroll on mobile */}
-              <div className="relative">
-                <div
-                  className="overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                  <div className="flex items-center gap-3 md:gap-5 min-w-max">
-                    <div className="text-center flex-shrink-0">
-                      <p className="text-[8px] md:text-[10px] font-bold text-slate-400 uppercase">
-                        Target Nilai
-                      </p>
-                      <p
-                        className="text-lg md:text-xl font-black"
-                        style={{ color: mainColor }}
-                      >
-                        {userTarget.targetValue}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {userTarget && <TargetUniversityBanner userTarget={userTarget} />}
+
+        {/* Top Leaderboard */}
+        <QuizTopLeaderboard />
 
         {selectedVolumeId && <QuizStats />}
 
+        {/* Tab Card: pills + content in one card */}
         {selectedVolumeId && (
-          <div className="bg-white rounded-3xl border border-slate-200 p-1.5 md:p-2">
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              <TabsList
-                className="w-full h-auto flex justify-start gap-1 bg-transparent p-0 overflow-x-auto"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          <div className="bg-white rounded-3xl border-2 border-slate-100 shadow-sm overflow-hidden">
+            {/* Tab Pills */}
+            <div className="p-2 md:p-3 border-b border-slate-100">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
               >
-                {tabItems.map((tab) => {
-                  const Icon = tab.icon;
-                  const isActive = activeTab === tab.id;
-                  return (
-                    <TabsTrigger
-                      key={tab.id}
-                      value={tab.id}
-                      className={cn(
-                        'flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 md:py-2.5 rounded-3xl font-bold text-[11px] md:text-sm transition-all whitespace-nowrap',
-                        isActive
-                          ? 'text-white shadow-md'
-                          : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50',
-                      )}
-                      style={
-                        isActive
-                          ? {
-                              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                            }
-                          : {}
-                      }
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span>{tab.label}</span>
-                    </TabsTrigger>
-                  );
-                })}
-              </TabsList>
-            </Tabs>
-          </div>
-        )}
+                <TabsList
+                  className="inline-flex h-auto gap-1 md:gap-1.5 bg-slate-100/80 p-1 rounded-full overflow-x-auto"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  {tabItems.map((tab) => {
+                    const Icon = tab.icon;
+                    const isActive = activeTab === tab.id;
+                    return (
+                      <TabsTrigger
+                        key={tab.id}
+                        value={tab.id}
+                        className={cn(
+                          'flex items-center gap-1.5 px-3 md:px-4 py-1.5 md:py-2 rounded-full font-bold text-xs md:text-sm transition-all whitespace-nowrap flex-shrink-0',
+                          isActive
+                            ? 'text-white shadow-md'
+                            : 'text-slate-500 hover:text-slate-700 hover:bg-white/50',
+                        )}
+                        style={
+                          isActive
+                            ? { backgroundColor: mainColor }
+                            : {}
+                        }
+                      >
+                        <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                        <span>{tab.label}</span>
+                      </TabsTrigger>
+                    );
+                  })}
+                </TabsList>
+              </Tabs>
+            </div>
 
-        {selectedVolumeId && (
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-            {activeTab === 'library' && <QuizCardList />}
-
-            {activeTab === 'progress' && <QuizProgress />}
-
-            {activeTab === 'leaderboard' && <QuizLeaderboard />}
-
-            {/* {activeTab === 'prediction' && false && (
-              <QuizPrediction
-                userStats={userStats}
-                targetUniversities={TARGET_UNIVERSITIES}
-                subjectPerformance={subjectPerformance}
-              />
-            )} */}
-
-            {/* {activeTab === 'rewards' && false && (
-              <QuizRewards
-                userStats={userStats}
-                rewards={REWARDS}
-                achievements={ACHIEVEMENTS}
-              />
-            )} */}
+            {/* Tab Content - Keep all mounted, hide with CSS */}
+            <div className="relative">
+              <div className={cn(activeTab !== 'library' && 'hidden')}>
+                <QuizCardList />
+              </div>
+              <div className={cn(activeTab !== 'progress' && 'hidden')}>
+                <QuizProgress />
+              </div>
+              <div className={cn(activeTab !== 'leaderboard' && 'hidden')}>
+                <QuizLeaderboard />
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -180,7 +115,7 @@ export function BimArenaQuizPageMain() {
 export default function BimArenaQuizPage() {
   return (
     <QuizProvider>
-      <OnBoardingQuizPage />
+      <QuizOnboarding />
       <BimArenaQuizPageMain />
     </QuizProvider>
   );

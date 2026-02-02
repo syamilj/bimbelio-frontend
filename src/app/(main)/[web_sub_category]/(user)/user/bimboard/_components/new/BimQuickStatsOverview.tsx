@@ -139,7 +139,7 @@ export default function BimQuickStatsOverview({ stats }: BimQuickStatsOverviewPr
               />
 
               {/* Icon */}
-              <div className={`relative z-10 w-10 h-10 rounded-2xl ${typeof stat.iconBg === 'string' && stat.iconBg.startsWith('bg-') ? stat.iconBg : ''} flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform`}
+              <div className={`relative z-10 w-10 h-10 rounded-3xl ${typeof stat.iconBg === 'string' && stat.iconBg.startsWith('bg-') ? stat.iconBg : ''} flex items-center justify-center mb-3 shadow-sm group-hover:scale-110 transition-transform`}
                 style={typeof stat.iconBg === 'string' && !stat.iconBg.startsWith('bg-') ? { backgroundColor: stat.iconBg } : {}}
               >
                 <Icon className="w-5 h-5 text-white" />
@@ -179,7 +179,7 @@ export default function BimQuickStatsOverview({ stats }: BimQuickStatsOverviewPr
               className={`relative overflow-hidden rounded-3xl p-4 bg-gradient-to-br ${stat.bg} border border-white/50 shadow-sm flex-shrink-0 w-40 snap-start`}
             >
               {/* Icon */}
-              <div className={`w-10 h-10 rounded-2xl ${stat.iconBg} flex items-center justify-center mb-3 shadow-sm`}>
+              <div className={`w-10 h-10 rounded-3xl ${stat.iconBg} flex items-center justify-center mb-3 shadow-sm`}>
                 <Icon className="w-5 h-5 text-white" />
               </div>
 

@@ -129,7 +129,7 @@ export const BadgeSubsInfo = () => {
                                       (feature, featureIndex) => (
                                         <span
                                           key={feature.id}
-                                          className="text-[10px] px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-700 font-medium"
+                                          className="text-[10px] px-1.5 py-0.5 rounded-3xl bg-blue-100 text-blue-700 font-medium"
                                         >
                                           {feature.type === 'DOCUMENT' &&
                                             '📄 Document'}
@@ -332,7 +332,7 @@ export const BadgeSubsInfo = () => {
                                       ? 'Koin'
                                       : subPending.planTier}
                                   </span>
-                                  <span className="text-[8px] px-1.5 py-0.5 rounded-md bg-orange-100 text-orange-700 font-medium">
+                                  <span className="text-[8px] px-1.5 py-0.5 rounded-3xl bg-orange-100 text-orange-700 font-medium">
                                     PENDING
                                   </span>
                                 </div>
@@ -357,10 +357,10 @@ export const BadgeSubsInfo = () => {
                                         (feature, featureIndex) => (
                                           <div
                                             key={feature.id}
-                                            className="p-1.5 rounded-md bg-yellow-50 border border-yellow-200"
+                                            className="p-1.5 rounded-3xl bg-yellow-50 border border-yellow-200"
                                           >
                                             <div className="flex items-center justify-between mb-1">
-                                              <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-yellow-200 text-yellow-800 font-medium">
+                                              <span className="text-[10px] px-1.5 py-0.5 rounded-3xl bg-yellow-200 text-yellow-800 font-medium">
                                                 {feature.type === 'DOCUMENT' &&
                                                   '📄 Document'}
                                                 {feature.type === 'COURSE' &&
@@ -392,7 +392,7 @@ export const BadgeSubsInfo = () => {
                                   <p className="text-xs font-medium text-gray-700 mb-1">
                                     Coin :
                                   </p>
-                                  <div className="p-1.5 rounded-md bg-yellow-50 border border-yellow-200">
+                                  <div className="p-1.5 rounded-3xl bg-yellow-50 border border-yellow-200">
                                     <div className="grid grid-cols-2 gap-1 mb-1">
                                       <div className="text-[10px] text-yellow-800">
                                         <span className="font-medium">

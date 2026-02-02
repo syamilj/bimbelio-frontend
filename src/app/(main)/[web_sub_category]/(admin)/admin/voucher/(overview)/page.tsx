@@ -186,7 +186,7 @@ export default function VoucherPage() {
                         colSpan={10}
                         className="h-[48.5px]"
                       >
-                        <Skeleton className="w-full h-full rounded-md" />
+                        <Skeleton className="w-full h-full rounded-3xl" />
                       </TableCell>
                     </TableRow>
                   ))

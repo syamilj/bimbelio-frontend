@@ -123,7 +123,7 @@ export default function AchievementBadges({ achievements }: AchievementBadgesPro
                 {/* Icon */}
                 <div className={`relative flex-shrink-0`}>
                   <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                    className={`w-12 h-12 rounded-3xl flex items-center justify-center ${
                       achievement.isUnlocked
                         ? `bg-gradient-to-br ${colors.bg} shadow-lg`
                         : "bg-slate-100"
@@ -187,7 +187,7 @@ export default function AchievementBadges({ achievements }: AchievementBadgesPro
 
       {/* Summary */}
       {unlockedCount > 0 && (
-        <div className="mt-4 p-3 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
+        <div className="mt-4 p-3 rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
           <p className="text-xs text-center font-bold text-slate-700">
             🎉 Kamu sudah membuka {unlockedCount} pencapaian!
           </p>
