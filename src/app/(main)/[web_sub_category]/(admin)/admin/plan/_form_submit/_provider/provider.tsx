@@ -55,7 +55,7 @@ type FormDataType = {
   durationLimit?: string;
   timelineLimitStart?: string;
   timelineLimitEnd?: string;
-  status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
+  status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON' | 'INACTIVE';
   maxUsers?: string;
 };
 type ValidityType = 'duration' | 'timeline';
@@ -409,7 +409,7 @@ type ProviderType = {
       timelineStart?: string;
       timelineEnd?: string;
       image: File | undefined;
-      status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON';
+      status: '' | 'DRAFT' | 'PUBLIC' | 'COMING_SOON' | 'INACTIVE';
       durationLimit?: string;
       timelineLimitStart?: string;
       timelineLimitEnd?: string;
