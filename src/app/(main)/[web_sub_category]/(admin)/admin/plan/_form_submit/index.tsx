@@ -671,7 +671,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
                 validUntil:
                   timelineLimitEnd && new Date(timelineLimitEnd).toISOString(),
               }
-            : undefined,
+            : null,
           planSubscription: activeTab.feature
             ? {
                 tier,
@@ -755,8 +755,11 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
                     };
                   }),
               }
-            : undefined,
+            : null,
         };
+
+        console.log("DEBUG_FRONTEND: Payload before mutate:", payload);
+        console.log("DEBUG_FRONTEND: activeTab:", activeTab);
 
         await mutateGeneral('/plan/editPlan', {
           payload,
