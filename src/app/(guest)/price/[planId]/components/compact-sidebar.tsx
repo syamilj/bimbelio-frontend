@@ -56,14 +56,9 @@ export default function CompactSidebar({
   };
   return (
     <div className="space-y-4">
-      {/* Compact Purchase Card */}
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm overflow-hidden">
+      {/* Clean Purchase Card - BimArena Style */}
+      <div>
+        <Card className="border border-slate-200 shadow-sm bg-white rounded-3xl overflow-hidden">
           <div
             className="p-4 text-white relative overflow-hidden"
             style={{
@@ -71,7 +66,7 @@ export default function CompactSidebar({
             }}
           >
             <div className="relative">
-              <Badge className="px-3 py-1 bg-white/20 text-white border-none text-xs font-bold mb-3 flex items-center gap-1 w-fit">
+              <Badge className="px-3 py-1 bg-white/20 text-white border-none text-xs font-bold mb-3 flex items-center gap-1 w-fit rounded-3xl">
                 <Crown className="w-3 h-3" />
                 Blueprint Plan
               </Badge>
@@ -92,7 +87,7 @@ export default function CompactSidebar({
                   )}
                 </div>
                 {discountPercentage > 0 && (
-                  <Badge className="bg-red-500 text-white border-0 animate-pulse text-xs">
+                  <Badge className="bg-red-500 text-white border-0 text-xs rounded-3xl">
                     <TrendingUp className="w-3 h-3 mr-1" />
                     Hemat {discountPercentage}%
                   </Badge>
@@ -150,7 +145,7 @@ export default function CompactSidebar({
             <div className="space-y-2">
               {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
                 <Button
-                  className="w-full py-3 text-sm font-bold rounded-3xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-not-allowed"
+                  className="w-full py-3 text-sm font-bold rounded-3xl text-white shadow-sm cursor-not-allowed"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}
@@ -161,7 +156,7 @@ export default function CompactSidebar({
               ) : (
                 <DialogPayment plan={plan}>
                   <Button
-                    className="w-full py-3 text-sm font-bold rounded-3xl text-white shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                    className="w-full py-3 text-sm font-bold rounded-3xl text-white shadow-sm hover:shadow-md transition-shadow"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -175,7 +170,7 @@ export default function CompactSidebar({
               <Button
                 onClick={handleConsultationClick}
                 variant="outline"
-                className="w-full py-3 text-sm font-semibold rounded-3xl border hover:scale-[1.02] transition-all duration-300"
+                className="w-full py-3 text-sm font-semibold rounded-3xl border"
                 style={{
                   borderColor: mainColor,
                   color: mainColor,
@@ -187,7 +182,7 @@ export default function CompactSidebar({
             </div>
 
             {/* Compact Trust Indicators */}
-            <div className="pt-3 border-t border-gray-100">
+            <div className="pt-3 border-t border-slate-100">
               <div className="grid grid-cols-3 gap-2 text-center">
                 <div>
                   <div
@@ -196,7 +191,7 @@ export default function CompactSidebar({
                   >
                     97%
                   </div>
-                  <div className="text-xs text-gray-600">Success</div>
+                  <div className="text-xs text-slate-600">Success</div>
                 </div>
                 <div>
                   <div
@@ -205,7 +200,7 @@ export default function CompactSidebar({
                   >
                     +200
                   </div>
-                  <div className="text-xs text-gray-600">Score</div>
+                  <div className="text-xs text-slate-600">Score</div>
                 </div>
                 <div>
                   <div
@@ -214,13 +209,13 @@ export default function CompactSidebar({
                   >
                     24/7
                   </div>
-                  <div className="text-xs text-gray-600">Support</div>
+                  <div className="text-xs text-slate-600">Support</div>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
-      </motion.div>
+      </div>
     </div>
   );
 }

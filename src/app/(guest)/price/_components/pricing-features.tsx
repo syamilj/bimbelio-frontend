@@ -102,286 +102,191 @@ export default function PricingFeatures() {
   ];
 
   return (
-    <div className="mt-20 relative">
-      {/* Enhanced Background decoration */}
-      <div className="absolute inset-0 -z-10 opacity-30 pointer-events-none">
+    <div className="mt-16 relative">
+      {/* Subtle Background decoration */}
+      <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
         <div
-          className="absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl opacity-10"
+          className="absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl opacity-[0.03]"
           style={{ backgroundColor: mainColor }}
-        />
-        <div
-          className="absolute bottom-20 left-10 w-64 h-64 rounded-full blur-3xl opacity-8"
-          style={{ backgroundColor: secondaryColor }}
         />
       </div>
 
-      {/* Enhanced Header - Homepage style */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="text-center mb-16"
-      >
-        {/* Gradient Badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div
-            className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold text-white border-none mb-8 shadow-lg"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          >
-            <Sparkles size={16} />
-            Sistem Coin Interaktif
-          </div>
-        </motion.div>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-black leading-tight text-gray-900 mb-2"
-        >
-          5 Jenis Coin untuk
-        </motion.h2>
-
-        <motion.h3
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-black mb-8 bg-clip-text text-transparent"
+      {/* Clean Header - BimArena Style */}
+      <div className="text-center mb-12">
+        {/* Simple Badge */}
+        <div
+          className="inline-flex items-center gap-2 rounded-3xl px-4 py-1.5 text-xs font-bold text-white border-none mb-4 shadow-sm"
           style={{
-            backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
         >
-          Fitur Berbeda
-        </motion.h3>
+          <Sparkles size={14} />
+          Sistem Coin Interaktif
+        </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          viewport={{ once: true }}
-          className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-        >
+        <h2 className="text-3xl md:text-4xl font-black leading-tight text-slate-800 mb-4">
+          5 Jenis Coin untuk{' '}
+          <span style={{ color: mainColor }}>Fitur Berbeda</span>
+        </h2>
+
+        <p className="text-base text-slate-600 max-w-3xl mx-auto leading-relaxed">
           Sistem coin yang smart untuk mengakses fitur-fitur AI yang akan{' '}
-          <span className="font-bold text-gray-900">
+          <span className="font-bold text-slate-900">
             maksimalkan persiapan ujianmu
           </span>
-        </motion.p>
-      </motion.div>
+        </p>
+      </div>
 
-      {/* Enhanced Coin Grid with Top Accent Bars */}
-      <div className="max-w-7xl mx-auto mb-20">
+      {/* Clean Coin Grid - BimArena Style */}
+      <div className="max-w-7xl mx-auto mb-16">
         {/* First row - 3 main coins */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           {features.slice(0, 3).map((feature, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 40, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, delay: index * 0.15 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.03, y: -8 }}
-              className="group relative bg-white rounded-3xl overflow-hidden border-2 shadow-lg"
-              style={{ borderColor: `${mainColor}20` }}
+              className="group relative bg-white rounded-3xl overflow-hidden border-2 border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200"
             >
-              {/* Top Accent Bar */}
+              {/* Top Accent Bar - Thicker */}
               <div
-                className="h-2 w-full"
+                className="h-1 w-full"
                 style={{
                   background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
                 }}
               />
 
-              <div className="p-8 flex flex-col">
-                {/* Icon with enhanced styling */}
-                <div className="flex items-center mb-6">
+              <div className="p-5 flex flex-col">
+                {/* Icon at top left corner */}
+                <div className="mb-4">
                   <div
-                    className="p-3 rounded-3xl flex items-center justify-center mr-4 shadow-md group-hover:scale-110 transition-transform duration-300"
+                    className="p-3 rounded-2xl inline-flex items-center justify-center shadow-sm"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     {feature.icon}
                   </div>
-                  <div>
-                    <h3 className="text-xl font-black text-gray-900 group-hover:text-gray-700 transition-colors">
-                      {feature.title}
-                    </h3>
-                  </div>
                 </div>
 
-                <p className="text-gray-600 mb-8 leading-relaxed flex-grow">
+                {/* Title */}
+                <h3 className="text-lg font-black text-slate-900 mb-3">
+                  {feature.title}
+                </h3>
+
+                <p className="text-sm text-slate-600 mb-6 leading-relaxed flex-grow">
                   {feature.description}
                 </p>
 
-                {/* Usage info with enhanced styling */}
+                {/* Usage info with clean styling */}
                 <div className="mt-auto">
                   <div
-                    className="flex items-center justify-between p-4 rounded-3xl border-2 shadow-sm"
-                    style={{
-                      backgroundColor: `${mainColor}08`,
-                      borderColor: `${mainColor}20`,
-                    }}
+                    className="flex items-center justify-between p-3 rounded-2xl bg-slate-50"
                   >
-                    <span className="text-sm font-bold text-gray-700">
+                    <span className="text-xs font-semibold text-slate-700">
                       Biaya penggunaan
                     </span>
                     <span
-                      className="text-sm font-black px-4 py-2 rounded-3xl bg-white shadow-sm"
-                      style={{ color: mainColor }}
+                      className="text-xs font-bold px-3 py-1.5 rounded-full text-white"
+                      style={{ backgroundColor: mainColor }}
                     >
                       {feature.usage}
                     </span>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Second row - 2 remaining coins centered */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
           {features.slice(3).map((feature, index) => (
-            <motion.div
+            <div
               key={index + 3}
-              initial={{ opacity: 0, y: 40, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.7, delay: (index + 3) * 0.15 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.03, y: -8 }}
-              className="group relative bg-white rounded-3xl overflow-hidden border-2 shadow-lg"
-              style={{ borderColor: `${secondaryColor}20` }}
+              className="group relative bg-white rounded-3xl overflow-hidden border-2 border-slate-200 shadow-sm hover:shadow-lg transition-all duration-200"
             >
-              {/* Top Accent Bar */}
+              {/* Top Accent Bar - Thicker */}
               <div
-                className="h-2 w-full"
+                className="h-1 w-full"
                 style={{ backgroundColor: secondaryColor }}
               />
 
-              <div className="p-8 flex flex-col">
-                {/* Icon with enhanced styling */}
-                <div className="flex items-center mb-6">
+              <div className="p-5 flex flex-col">
+                {/* Icon at top left corner */}
+                <div className="mb-4">
                   <div
-                    className="p-3 rounded-3xl flex items-center justify-center mr-4 shadow-md group-hover:scale-110 transition-transform duration-300"
+                    className="p-3 rounded-2xl inline-flex items-center justify-center shadow-sm"
                     style={{ backgroundColor: `${secondaryColor}15` }}
                   >
                     {feature.icon}
                   </div>
-                  <div>
-                    <h3 className="text-xl font-black text-gray-900 group-hover:text-gray-700 transition-colors">
-                      {feature.title}
-                    </h3>
-                  </div>
                 </div>
 
-                <p className="text-gray-600 mb-8 leading-relaxed flex-grow">
+                {/* Title */}
+                <h3 className="text-lg font-black text-slate-900 mb-3">
+                  {feature.title}
+                </h3>
+
+                <p className="text-sm text-slate-600 mb-6 leading-relaxed flex-grow">
                   {feature.description}
                 </p>
 
-                {/* Usage info with enhanced styling */}
+                {/* Usage info with clean styling */}
                 <div className="mt-auto">
                   <div
-                    className="flex items-center justify-between p-4 rounded-3xl border-2 shadow-sm"
-                    style={{
-                      backgroundColor: `${secondaryColor}08`,
-                      borderColor: `${secondaryColor}20`,
-                    }}
+                    className="flex items-center justify-between p-3 rounded-2xl bg-slate-50"
                   >
-                    <span className="text-sm font-bold text-gray-700">
+                    <span className="text-xs font-semibold text-slate-700">
                       Biaya penggunaan
                     </span>
                     <span
-                      className="text-sm font-black px-4 py-2 rounded-3xl bg-white shadow-sm"
-                      style={{ color: secondaryColor }}
+                      className="text-xs font-bold px-3 py-1.5 rounded-full text-white"
+                      style={{ backgroundColor: secondaryColor }}
                     >
                       {feature.usage}
                     </span>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Enhanced How It Works Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="relative bg-white/90 backdrop-blur-xl rounded-3xl p-8 md:p-12 overflow-hidden border border-white/20 max-w-7xl mx-auto"
-        style={{
-          boxShadow: `0 20px 60px ${mainColor}10, 0 8px 40px ${mainColor}08`,
-        }}
+      {/* Clean How It Works Section - BimArena Style */}
+      <div
+        className="relative bg-white rounded-3xl p-6 md:p-8 overflow-hidden border-2 border-slate-200 max-w-7xl mx-auto shadow-sm"
       >
-        {/* Background decorations */}
-        <div
-          className="absolute top-0 right-0 w-96 h-96 opacity-5 pointer-events-none"
-          style={{
-            background: `radial-gradient(circle, ${mainColor} 0%, transparent 70%)`,
-            transform: 'translate(30%, -30%)',
-          }}
-        />
-
         {/* Header */}
-        <div className="text-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white border-none mb-6 shadow-lg"
+        <div className="text-center mb-8">
+          <div
+            className="inline-flex items-center gap-2 rounded-3xl px-4 py-1.5 text-xs font-bold text-white border-none mb-4 shadow-sm"
             style={{
               background: `linear-gradient(135deg, ${secondaryColor}, ${mainColor})`,
             }}
           >
-            <Zap
-              size={16}
-              className="animate-pulse"
-            />
+            <Zap size={14} />
             Cara Kerja Smart
-          </motion.div>
+          </div>
 
-          <h3 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">
+          <h3 className="text-2xl md:text-3xl font-black text-slate-800 mb-2">
             Sistem Coin yang{' '}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
+            <span style={{ color: mainColor }}>
               Efisien & Fleksibel
             </span>
           </h3>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-8">
           {/* How to Use Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="flex items-center mb-6">
+          <div>
+            <div className="flex items-center mb-4">
               <div
-                className="w-12 h-12 rounded-3xl flex items-center justify-center mr-4 shadow-lg"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center mr-3 shadow-sm"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${mainColor}dd)`,
                 }}
               >
                 <svg
-                  width="24"
-                  height="24"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   className="text-white"
@@ -402,12 +307,12 @@ export default function PricingFeatures() {
                   />
                 </svg>
               </div>
-              <h4 className="text-2xl font-black text-gray-900">
+              <h4 className="text-lg font-black text-slate-800">
                 Cara Penggunaan
               </h4>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               {[
                 {
                   title: 'Pilih Fitur',
@@ -426,22 +331,19 @@ export default function PricingFeatures() {
                   desc: 'Coin tambahan dapat dibeli kapan saja sesuai kebutuhan',
                 },
               ].map((item, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                   className="flex items-start group"
                 >
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center mr-4 mt-1 shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300"
+                    className="w-8 h-8 rounded-full flex items-center justify-center mr-3 mt-0.5 shrink-0 shadow-sm"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
                   >
                     <svg
-                      width="16"
-                      height="16"
+                      width="14"
+                      height="14"
                       viewBox="0 0 24 24"
                       fill="none"
                       className="text-white"
@@ -456,32 +358,28 @@ export default function PricingFeatures() {
                     </svg>
                   </div>
                   <div>
-                    <h5 className="font-bold text-gray-900 mb-1">
+                    <h5 className="font-bold text-sm text-slate-800 mb-0.5">
                       {item.title}
                     </h5>
-                    <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Usage Examples */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <div className="flex items-center mb-6">
+          <div>
+            <div className="flex items-center mb-4">
               <div
-                className="w-12 h-12 rounded-3xl flex items-center justify-center mr-4 shadow-lg"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center mr-3 shadow-sm"
                 style={{
                   background: `linear-gradient(135deg, ${secondaryColor}, ${secondaryColor}dd)`,
                 }}
               >
                 <svg
-                  width="24"
-                  height="24"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   className="text-white"
@@ -504,12 +402,12 @@ export default function PricingFeatures() {
                   />
                 </svg>
               </div>
-              <h4 className="text-2xl font-black text-gray-900">
+              <h4 className="text-lg font-black text-slate-800">
                 Contoh Penggunaan
               </h4>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {[
                 {
                   icon: MessageSquare,
@@ -533,42 +431,39 @@ export default function PricingFeatures() {
                   cost: '1 vision coin',
                 },
               ].map((example, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                  className="flex items-center justify-between p-4 rounded-3xl border border-gray-100 group hover:shadow-lg transition-all duration-300"
+                  className="flex items-center justify-between p-3 rounded-3xl border border-slate-200 hover:shadow-sm transition-all duration-200"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}02, ${mainColor}05)`,
                   }}
                 >
                   <div className="flex items-center">
                     <div
-                      className="w-10 h-10 rounded-3xl flex items-center justify-center mr-3 group-hover:scale-110 transition-transform duration-300"
+                      className="w-8 h-8 rounded-3xl flex items-center justify-center mr-2.5"
                       style={{
                         color: mainColor,
                         backgroundColor: `${mainColor}15`,
                       }}
                     >
-                      <example.icon size={20} />
+                      <example.icon size={16} />
                     </div>
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-semibold text-sm text-slate-800">
                       {example.label}
                     </span>
                   </div>
                   <span
-                    className="font-bold text-sm px-3 py-2 rounded-3xl text-white shadow-sm"
+                    className="font-bold text-xs px-2.5 py-1 rounded-3xl text-white shadow-sm"
                     style={{ backgroundColor: mainColor }}
                   >
                     {example.cost}
                   </span>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

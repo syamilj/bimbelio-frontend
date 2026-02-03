@@ -157,6 +157,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
         liveClassesPerWeek,
         image,
         status,
+        recommended,
         durationLimit,
         timelineLimitEnd,
         timelineLimitStart,
@@ -183,6 +184,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
           setValue('name', planData.name);
           setValue('description', planData.description);
           setValue('price', planData.price.toString());
+          setValue('recommended', planData.recommended || false);
           if (planData.roleDiscord) {
             setValue('roleDiscord', planData.roleDiscord);
           }
@@ -517,6 +519,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
           originalPrice:
             originalPrice.length > 0 ? parseFloat(originalPrice) : 0,
           status,
+          recommended,
           image: imageUrl,
           roleDiscord,
           planLimitation: activeTab.limit
@@ -647,6 +650,7 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
           originalPrice:
             originalPrice.length > 0 ? parseFloat(originalPrice) : 0,
           status,
+          recommended,
           image: imageUrl,
           planLimitation: activeTab.limit
             ? {
@@ -891,6 +895,24 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
                   <SelectItem value="COMING_SOON">Coming Soon</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50/50">
+              <div className="flex-1">
+                <Label
+                  htmlFor="recommended"
+                  className="font-medium text-slate-900"
+                >
+                  Recommended
+                </Label>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Plan ini akan ditampilkan lebih prioritas di halaman pricing
+                </p>
+              </div>
+              <Switch
+                id="recommended"
+                checked={recommended}
+                onCheckedChange={(value) => setValue('recommended', value)}
+              />
             </div>
           </div>
         </div>

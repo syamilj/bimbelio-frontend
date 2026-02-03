@@ -337,101 +337,56 @@ export default function PricingPlans() {
   }, [isFilterOpen]);
 
   return (
-    <div className="space-y-20">
-      {/* Enhanced Header Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-16"
-        id="price-plan"
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Badge
-            className="px-6 py-2 text-sm font-bold text-white border-none mb-6"
-            style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            }}
-          >
-            <Sparkles className="w-4 h-4 mr-2 inline" />
-            Pilih Paket Terbaik
-          </Badge>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mb-2"
-        >
-          Sudah Siap Mulai Belajar?
-        </motion.h1>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="text-4xl md:text-5xl font-black mb-6 bg-clip-text text-transparent"
+    <div className="space-y-8">
+      {/* Clean Header Section - BimArena Style */}
+      <div className="text-center mb-10">
+        <Badge
+          className="px-4 py-1.5 text-xs font-bold text-white border-none mb-4 rounded-3xl"
           style={{
-            backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
         >
-          Wujudkan Impian PTN-mu
-        </motion.h2>
+          <Sparkles className="w-3 h-3 mr-1.5 inline" />
+          Pilih Paket Terbaik
+        </Badge>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
+        <h1 className="text-3xl md:text-4xl font-black text-slate-800 tracking-tight mb-2">
+          Sudah Siap Mulai Belajar?
+        </h1>
+
+        <h2
+          className="text-3xl md:text-4xl font-black mb-4"
+          style={{ color: mainColor }}
         >
+          Wujudkan Impian PTN-mu
+        </h2>
+
+        <p className="text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
           Pilih paket yang sesuai dengan kebutuhanmu dan mulai perjalanan
           belajar bersama{' '}
-          <Bimbelio className="text-gray-900" />
-        </motion.p>
-      </motion.div>
+          <Bimbelio className="text-slate-900" />
+        </p>
+      </div>
       <div className="max-w-7xl mx-auto">
-        {/* Enhanced Search dan Filter Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="relative z-20"
-        >
-          <Card
-            className="mb-8 border-2 shadow-lg bg-white rounded-3xl overflow-visible"
-            style={{ borderColor: `${mainColor}20` }}
-          >
-            {/* Top Accent Bar */}
-            <div
-              className="h-2 w-full"
-              style={{
-                background: `linear-gradient(90deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            />
-
-            <CardContent className="p-6">
+        {/* Clean Search dan Filter Section - BimArena Style */}
+        <div className="relative z-20">
+          <Card className="mb-6 border shadow-sm bg-white rounded-3xl overflow-visible border-slate-200">
+            <CardContent className="p-4 md:p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div
-                  className="p-3 rounded-3xl"
-                  style={{ backgroundColor: `${mainColor}15` }}
+                  className="p-2 rounded-3xl"
+                  style={{ backgroundColor: `${mainColor}10` }}
                 >
                   <TrendingUp
-                    className="w-6 h-6"
+                    className="w-4 h-4"
                     style={{ color: mainColor }}
                   />
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-black text-gray-900">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-bold text-slate-800">
                     Cari & Filter Paket
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-xs text-slate-600">
                     Hasil:{' '}
                     <span
                       className="font-bold"
@@ -445,22 +400,21 @@ export default function PricingPlans() {
               </div>
 
               {/* Search Input dan Filter Button */}
-              <div className="flex gap-3 items-end flex-wrap sm:flex-nowrap">
+              <div className="flex gap-2 items-end flex-wrap sm:flex-nowrap">
                 <div className="flex-1 w-full sm:w-auto min-w-0">
                   <Label
                     htmlFor="search-paket"
-                    className="mb-2 block font-bold text-gray-900"
+                    className="mb-1.5 block text-xs font-bold text-slate-700"
                   >
                     Cari Paket
                   </Label>
                   <Input
                     id="search-paket"
                     type="text"
-                    placeholder="Cari berdasarkan nama atau deskripsi..."
+                    placeholder="Cari berdasarkan nama..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full rounded-3xl border-2"
-                    style={{ borderColor: `${mainColor}20` }}
+                    className="w-full rounded-3xl border border-slate-200 text-sm focus:border-slate-300"
                   />
                 </div>
 
@@ -471,17 +425,17 @@ export default function PricingPlans() {
                 >
                   <Button
                     onClick={() => setIsFilterOpen(!isFilterOpen)}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 text-white whitespace-nowrap rounded-3xl font-bold shadow-md hover:shadow-lg transition-all"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 text-white whitespace-nowrap rounded-3xl font-bold shadow-sm hover:shadow-md transition-all text-sm px-4 h-10"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
                   >
-                    <Filter size={18} />
-                    Filter Lanjutan
+                    <Filter size={16} />
+                    Filter
                     {activeFiltersCount > 0 && (
                       <Badge
                         variant="secondary"
-                        className="ml-2 bg-white text-gray-900 font-black"
+                        className="ml-1 bg-white text-slate-900 font-bold text-xs px-1.5 py-0 rounded-3xl"
                       >
                         {activeFiltersCount}
                       </Badge>
@@ -1058,7 +1012,7 @@ export default function PricingPlans() {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
         {filteredAndSortedPlans.length === 0 ? (
           <EmptyPlan
@@ -1066,15 +1020,84 @@ export default function PricingPlans() {
             categoryName={'awda'}
           />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {filteredAndSortedPlans.map((bundle, i) => (
-              <CardPlan
-                key={i}
-                plan={bundle}
-                discount={bundle.discount}
-              />
-            ))}
-          </div>
+          <>
+            {/* Recommended Plans Section */}
+            {filteredAndSortedPlans.some((plan) => plan.recommended) && (
+              <div className="mb-12">
+                <div className="text-center mb-8">
+                  <div
+                    className="inline-flex items-center gap-2 rounded-3xl px-4 py-1.5 text-xs font-bold text-white border-none mb-4 shadow-sm"
+                    style={{
+                      background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                    }}
+                  >
+                    <Star size={14} />
+                    Rekomendasi Terbaik
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black text-slate-800">
+                    Paket <span style={{ color: mainColor }}>Pilihan Kami</span>
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
+                    Paket yang paling populer dan direkomendasikan untuk memaksimalkan persiapanmu
+                  </p>
+                </div>
+                <div className="flex flex-wrap justify-center gap-6 max-w-7xl mx-auto">
+                  {filteredAndSortedPlans
+                    .filter((plan) => plan.recommended)
+                    .map((bundle, i) => (
+                      <div key={`recommended-${i}`} className="w-full max-w-md">
+                        <CardPlan
+                          plan={bundle}
+                          discount={bundle.discount}
+                        />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* Other Plans Section */}
+            {filteredAndSortedPlans.some((plan) => !plan.recommended) && (
+              <div>
+                {filteredAndSortedPlans.some((plan) => plan.recommended) && (
+                  <div className="text-center mb-8">
+                    <h3 className="text-2xl md:text-3xl font-black text-slate-800">
+                      Paket <span style={{ color: mainColor }}>Lainnya</span>
+                    </h3>
+                    <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
+                      Pilihan paket lainnya yang bisa kamu sesuaikan dengan kebutuhanmu
+                    </p>
+                  </div>
+                )}
+                {/* Mobile: Horizontal scroll, Desktop: Grid */}
+                <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4">
+                  <div className="flex gap-4" style={{ width: 'max-content' }}>
+                    {filteredAndSortedPlans
+                      .filter((plan) => !plan.recommended)
+                      .map((bundle, i) => (
+                        <div key={`other-mobile-${i}`} className="w-[300px] flex-shrink-0">
+                          <CardPlan
+                            plan={bundle}
+                            discount={bundle.discount}
+                          />
+                        </div>
+                      ))}
+                  </div>
+                </div>
+                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                  {filteredAndSortedPlans
+                    .filter((plan) => !plan.recommended)
+                    .map((bundle, i) => (
+                      <CardPlan
+                        key={`other-${i}`}
+                        plan={bundle}
+                        discount={bundle.discount}
+                      />
+                    ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
       {/* Enhanced Coin Topping Section */}

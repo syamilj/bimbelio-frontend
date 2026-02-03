@@ -106,7 +106,14 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
             <TableRow key={plan.id}>
               <TableCell>
                 <div className="flex flex-col gap-1">
-                  <span className="font-semibold">{plan.name}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold">{plan.name}</span>
+                    {plan.recommended && (
+                      <Badge className="bg-blue-500 text-white text-[10px] px-1.5 py-0">
+                        Recommended
+                      </Badge>
+                    )}
+                  </div>
                   <code className="text-xs text-muted-foreground bg-gray-100 px-1 py-0.5 rounded w-fit">
                     {plan.slug}
                   </code>

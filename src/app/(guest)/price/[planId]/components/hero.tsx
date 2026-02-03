@@ -56,48 +56,33 @@ export default function Hero({
     setIsConsultationDialogOpen(true);
   };
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="relative"
-    >
-      {/* Compact Hero Card */}
-      <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden">
-        <CardContent className="p-6 lg:p-8">
+    <div className="relative">
+      {/* Clean Hero Card - BimArena Style */}
+      <Card className="border border-slate-200 shadow-sm bg-white rounded-3xl overflow-hidden">
+        <CardContent className="p-4 lg:p-6">
           <div className="grid lg:grid-cols-3 gap-8 items-center">
             {/* Content - 2/3 width */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Compact badges */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex items-center gap-2 flex-wrap"
-              >
+              {/* Clean badges - BimArena Style */}
+              <div className="flex items-center gap-2 flex-wrap">
                 <Badge
-                  className="px-3 py-1 text-xs font-bold text-white border-none flex items-center gap-1"
+                  className="px-3 py-1 text-xs font-bold text-white border-none flex items-center gap-1 rounded-3xl"
                   style={{ backgroundColor: mainColor }}
                 >
                   <Crown className="w-3 h-3" />
                   Blueprint Plan
                 </Badge>
                 {discountPercentage > 0 && (
-                  <Badge className="bg-red-500 text-white px-2 py-1 text-xs animate-pulse">
+                  <Badge className="bg-red-500 text-white px-2 py-1 text-xs rounded-3xl">
                     <TrendingUp className="w-3 h-3 mr-1" />
                     {discountPercentage}% OFF
                   </Badge>
                 )}
-              </motion.div>
+              </div>
 
-              {/* Compact title */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="space-y-3"
-              >
-                <h1 className="text-2xl lg:text-3xl font-black leading-tight text-gray-900">
+              {/* Clean title - BimArena Style */}
+              <div className="space-y-2">
+                <h1 className="text-2xl lg:text-3xl font-black leading-tight text-slate-800">
                   <SparklesText sparklesCount={4}>
                     <span
                       className="bg-clip-text text-transparent"
@@ -120,26 +105,21 @@ export default function Hero({
                   </span>{' '}
                   Blueprint personal untuk naik 200+ poin dalam waktu terukur.
                 </p>
-              </motion.div>
+              </div>
 
-              {/* Compact pricing and CTA */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex items-center gap-4 flex-wrap"
-              >
+              {/* Clean pricing */}
+              <div className="flex items-center gap-4 flex-wrap">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-2xl lg:text-3xl font-black text-gray-900">
+                  <span className="text-2xl lg:text-3xl font-black text-slate-900">
                     {formatPrice(plan.price)}
                   </span>
                   {plan.originalPrice && (
-                    <span className="text-sm text-gray-400 line-through">
+                    <span className="text-sm text-slate-400 line-through">
                       {formatPrice(plan.originalPrice)}
                     </span>
                   )}
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-slate-500">
                   {plan.PlanSubscription?.expireDays
                     ? `${plan.PlanSubscription?.expireDays} hari akses`
                     : plan.PlanSubscription &&
@@ -153,7 +133,7 @@ export default function Hero({
                           plan.PlanLimitation.validUntil,
                         )}
                 </div>
-              </motion.div>
+              </div>
 
               {plan.maxUsers && (
                 <div className="w-fit mb-4 p-3 rounded-3xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
@@ -169,23 +149,18 @@ export default function Hero({
                         {plan.totalUsers || 0} / {plan.maxUsers} pengguna aktif
                       </p>
                     </div>
-                    <Badge className="bg-amber-500 text-white text-xs font-bold px-2 py-1 ml-8">
+                    <Badge className="bg-amber-500 text-white text-xs font-bold px-2 py-1 ml-8 rounded-3xl">
                       LIMITED
                     </Badge>
                   </div>
                 </div>
               )}
 
-              {/* Compact CTA buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-3"
-              >
+              {/* Clean CTA buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
                 {plan.maxUsers && plan.totalUsers >= plan.maxUsers ? (
                   <Button
-                    className="px-6 py-2 rounded-3xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm cursor-not-allowed"
+                    className="px-6 py-2 rounded-3xl font-bold text-white text-sm cursor-not-allowed shadow-sm"
                     style={{
                       background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                     }}
@@ -196,7 +171,7 @@ export default function Hero({
                 ) : (
                   <DialogPayment plan={plan}>
                     <Button
-                      className="px-6 py-2 rounded-3xl font-bold text-white hover:scale-105 transition-all duration-300 text-sm"
+                      className="px-6 py-2 rounded-3xl font-bold text-white text-sm shadow-sm hover:shadow-md transition-shadow"
                       style={{
                         background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                       }}
@@ -209,7 +184,7 @@ export default function Hero({
                 <Button
                   variant="outline"
                   onClick={handleConsultationClick}
-                  className="px-6 py-2 rounded-3xl font-semibold text-sm hover:scale-105 transition-all duration-300"
+                  className="px-6 py-2 rounded-3xl font-semibold text-sm border-slate-300"
                   style={{
                     borderColor: mainColor,
                     color: mainColor,
@@ -218,17 +193,12 @@ export default function Hero({
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Konsultasi
                 </Button>
-              </motion.div>
+              </div>
             </div>
 
-            {/* Compact image - 1/3 width */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="relative"
-            >
-              <div className="relative rounded-3xl overflow-hidden shadow-lg bg-white/20 backdrop-blur-sm">
+            {/* Clean image */}
+            <div className="relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-sm bg-white/20 backdrop-blur-sm">
                 {plan.image && (
                   <Image
                     src={plan.image || '/placeholder.svg'}
@@ -242,19 +212,16 @@ export default function Hero({
               </div>
 
               {/* Small floating badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.6 }}
-                className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-white shadow-md"
+              <div
+                className="absolute -top-2 -right-2 w-10 h-10 rounded-full flex items-center justify-center text-white shadow-sm"
                 style={{ backgroundColor: mainColor }}
               >
                 <Star className="w-5 h-5" />
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }

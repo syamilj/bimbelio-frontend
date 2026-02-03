@@ -55,9 +55,9 @@ export default function PlanDetailPage() {
 
   return (
     <>
-      <div className="min-h-screen pt-[50px]">
-        {/* Hero Section - Compact SNBT Style */}
-        <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <div className="min-h-screen pt-[50px] bg-slate-50/50">
+        {/* Hero Section - Compact BimArena Style */}
+        <div className="max-w-6xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <Hero
             plan={plan}
             setIsConsultationDialogOpen={setIsConsultationDialogOpen}
@@ -65,8 +65,8 @@ export default function PlanDetailPage() {
         </div>
 
         {/* Main Content - Adjusted spacing */}
-        <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-8">
+        <div className="max-w-6xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-3 gap-6">
             {/* Main Content Area */}
             <div className="lg:col-span-2">
               {/* Compact Navigation Tabs */}
@@ -77,7 +77,7 @@ export default function PlanDetailPage() {
               >
                 <TabsList
                   className={cn(
-                    'grid w-full h-full grid-cols-5 mb-6 bg-white/70 backdrop-blur-sm border border-blue-200/50 rounded-3xl p-1',
+                    'grid w-full h-full grid-cols-5 mb-6 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-3xl p-1 shadow-sm',
                     !tabCourseAvailable &&
                       !tabFeatureAvailable &&
                       'grid-cols-3',
@@ -88,7 +88,7 @@ export default function PlanDetailPage() {
                 >
                   <TabsTrigger
                     value="overview"
-                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
+                    className="data-[state=active]:text-white data-[state=active]:shadow-sm rounded-3xl transition-all duration-200 text-xs py-2"
                     style={{
                       backgroundColor:
                         activeTab === 'overview' ? mainColor : 'transparent',
@@ -99,7 +99,7 @@ export default function PlanDetailPage() {
                   {tabCourseAvailable && (
                     <TabsTrigger
                       value="course"
-                      className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
+                      className="data-[state=active]:text-white data-[state=active]:shadow-sm rounded-3xl transition-all duration-200 text-xs py-2"
                       style={{
                         backgroundColor:
                           activeTab === 'course' ? mainColor : 'transparent',
@@ -111,7 +111,7 @@ export default function PlanDetailPage() {
                   {tabFeatureAvailable && (
                     <TabsTrigger
                       value="features"
-                      className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
+                      className="data-[state=active]:text-white data-[state=active]:shadow-sm rounded-3xl transition-all duration-200 text-xs py-2"
                       style={{
                         backgroundColor:
                           activeTab === 'features' ? mainColor : 'transparent',
@@ -123,7 +123,7 @@ export default function PlanDetailPage() {
 
                   <TabsTrigger
                     value="classes"
-                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
+                    className="data-[state=active]:text-white data-[state=active]:shadow-sm rounded-3xl transition-all duration-200 text-xs py-2"
                     style={{
                       backgroundColor:
                         activeTab === 'classes' ? mainColor : 'transparent',
@@ -133,7 +133,7 @@ export default function PlanDetailPage() {
                   </TabsTrigger>
                   <TabsTrigger
                     value="limits"
-                    className="data-[state=active]:text-white data-[state=active]:shadow-md rounded-3xl transition-all duration-300 text-sm py-2"
+                    className="data-[state=active]:text-white data-[state=active]:shadow-sm rounded-3xl transition-all duration-200 text-xs py-2"
                     style={{
                       backgroundColor:
                         activeTab === 'limits' ? mainColor : 'transparent',
@@ -146,7 +146,7 @@ export default function PlanDetailPage() {
                 {/* Overview Tab */}
                 <TabsContent
                   value="overview"
-                  className="space-y-8"
+                  className="space-y-6"
                 >
                   <TabOverview
                     plan={plan}
@@ -157,20 +157,20 @@ export default function PlanDetailPage() {
                 {/* Course Tab - Chapter & SubChapter */}
                 <TabsContent
                   value="course"
-                  className="space-y-8"
+                  className="space-y-6"
                 >
                   <TabCourse plan={plan} />
                 </TabsContent>
 
-                {/* Features Tab - SNBT Style */}
+                {/* Features Tab - BimArena Style */}
                 <TabsContent
                   value="features"
-                  className="space-y-8"
+                  className="space-y-6"
                 >
                   <TabFeatures plan={plan} />
                 </TabsContent>
 
-                {/* Live Classes Tab - SNBT Style */}
+                {/* Live Classes Tab - BimArena Style */}
                 <TabsContent
                   value="classes"
                   className="space-y-6"
@@ -178,14 +178,14 @@ export default function PlanDetailPage() {
                   <TabClasses plan={plan} />
                 </TabsContent>
 
-                {/* Limits Tab - SNBT Style */}
+                {/* Limits Tab - BimArena Style */}
                 <TabsContent value="limits">
                   <TabLimits plan={plan} />
                 </TabsContent>
               </Tabs>
             </div>
 
-            {/* Compact Sidebar - SNBT Style */}
+            {/* Compact Sidebar - BimArena Style */}
             <CompactSidebar
               plan={plan}
               setIsConsultationDialogOpen={setIsConsultationDialogOpen}

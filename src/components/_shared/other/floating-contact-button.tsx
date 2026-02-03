@@ -89,7 +89,7 @@ const FloatingContactButton = () => {
             <span
               className="text-sm font-black leading-tight"
               style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -124,7 +124,7 @@ const FloatingContactButton = () => {
           <span
             className="text-xs font-black"
             style={{
-              background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+              backgroundImage: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',

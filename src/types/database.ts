@@ -888,6 +888,7 @@ export type Plan = {
   originalPrice: number | null;
   price: number;
   status: PlanStatusEnum;
+  recommended: boolean;
   maxUsers: number | null;
   createdAt: Date;
   updatedAt: Date;

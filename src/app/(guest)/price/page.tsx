@@ -12,35 +12,19 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <div className="relative bg-gradient-to-b from-gray-50 to-white min-h-screen pt-16">
-      {/* Enhanced Background decorative shapes */}
+    <div className="relative bg-slate-50/50 min-h-screen pt-16">
+      {/* Simplified Background decorative shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-        {/* Large blue circle - top right */}
+        {/* Single subtle gradient circle */}
         <div
-          className="absolute -top-16 -right-16 w-96 h-96 rounded-full opacity-10 blur-3xl"
-          style={{ backgroundColor: '#0091FF' }}
-        />
-
-        {/* Pink rotated square - top left */}
-        <div
-          className="absolute top-32 left-20 w-40 h-40 rounded-3xl opacity-8 blur-2xl"
-          style={{
-            backgroundColor: '#5aa4dd',
-            transform: 'rotate(15deg)',
-          }}
-        />
-
-        {/* Small circle - bottom center */}
-        <div
-          className="absolute bottom-20 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full opacity-5 blur-3xl"
+          className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full opacity-[0.03] blur-3xl"
           style={{ backgroundColor: '#0091FF' }}
         />
       </div>
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-4 py-20 md:py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 py-12 md:py-16">
         <PricingPlans />
         <PricingFeatures />
-        {/* <PricingFaq /> */}
       </div>
     </div>
   );
