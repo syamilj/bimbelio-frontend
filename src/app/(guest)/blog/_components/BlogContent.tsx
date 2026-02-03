@@ -250,7 +250,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                   <CardHeader className="pb-4">
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        className="w-8 h-8 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: mainColor }}
                       >
                         <BookOpen className="w-4 h-4 text-white" />
@@ -284,7 +284,7 @@ export default function BlogClient({ blog }: { blog: BlogPost }) {
                             >
                               {/* Ranking Badge */}
                               <span
-                                className="text-xs font-black px-2.5 py-1.5 rounded-lg text-white shadow-sm flex-shrink-0"
+                                className="text-xs font-black px-2.5 py-1.5 rounded-3xl text-white shadow-sm flex-shrink-0"
                                 style={{ backgroundColor: mainColor }}
                               >
                                 {index + 1}

@@ -265,7 +265,7 @@ export default function ProviderMaintenance({
                     className="group flex items-center gap-4 p-4 bg-white rounded-3xl border border-gray-200 hover:border-pink-300 hover:shadow-lg transition-all duration-300"
                   >
                     <div className="w-12 h-12 bg-linear-to-br from-pink-100 to-purple-100 rounded-3xl flex items-center justify-center group-hover:from-pink-200 group-hover:to-purple-200 transition-all">
-                      <div className="w-6 h-6 bg-linear-to-br from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
+                      <div className="w-6 h-6 bg-linear-to-br from-pink-500 to-purple-600 rounded-3xl flex items-center justify-center">
                         <span className="text-white text-xs font-bold">IG</span>
                       </div>
                     </div>

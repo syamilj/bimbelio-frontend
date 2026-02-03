@@ -502,7 +502,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                       <div className="grid grid-cols-2 gap-2">
                         {/* Questions */}
                         <div
-                          className="p-2 rounded-xl border text-center"
+                          className="p-2 rounded-3xl border text-center"
                           style={{
                             background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                             borderColor: 'rgb(191 219 254)',
@@ -519,7 +519,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
 
                         {/* Deadline or Progress */}
                         <div
-                          className="p-2 rounded-xl border text-center"
+                          className="p-2 rounded-3xl border text-center"
                           style={{
                             background: tryout.deadline
                               ? `linear-gradient(to bottom right, rgb(255 247 237), rgb(254 237 213))`

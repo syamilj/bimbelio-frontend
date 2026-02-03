@@ -250,14 +250,14 @@ const HeadingSection: React.FC<{
         {/* Baris 1: LOLOS PTN & */}
         <div className="flex justify-center items-center gap-3 flex-wrap">
           <span className="text-gray-900">LOLOS</span>
-          <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
+          <span className="text-white bg-clip-padding px-1 rounded-3xl bg-main-default">
             PTN
           </span>
           <span className="text-gray-900">&</span>
         </div>
         {/* Baris 2: .Pasti. Kedinasan */}
         <div className="flex justify-center items-center gap-3 mt-4 flex-wrap">
-          <span className="text-white bg-clip-padding px-1 rounded-lg bg-main-default">
+          <span className="text-white bg-clip-padding px-1 rounded-3xl bg-main-default">
             Kedinasan.
           </span>
           <span className="text-gray-900"> Pasti.</span>
@@ -552,7 +552,7 @@ const DesktopVideo: React.FC = () => {
             <ChevronRight className="w-4 h-4" />
             <RotateCw className="w-4 h-4" />
           </div>
-          <div className="flex-1 flex items-center bg-white rounded-lg px-3 py-2 text-sm border">
+          <div className="flex-1 flex items-center bg-white rounded-3xl px-3 py-2 text-sm border">
             <Search className="w-4 h-4 mr-2 text-gray-400" />
             <span className="text-gray-600">bimbelio.com</span>
           </div>

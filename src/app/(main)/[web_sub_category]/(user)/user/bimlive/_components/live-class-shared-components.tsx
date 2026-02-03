@@ -265,14 +265,14 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
       {/* References Preview - Responsive Design */}
       {liveClass.LiveClassReference &&
         liveClass.LiveClassReference.length > 0 && (
-          <div className="bg-white rounded-lg p-3 sm:p-4 border border-blue-100 shadow-sm">
+          <div className="bg-white rounded-3xl p-3 sm:p-4 border border-blue-100 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <BookOpen className="w-4 h-4 text-green-600 shrink-0" />
               <span className="font-medium text-gray-800 text-sm">
                 Materi & Referensi
               </span>
             </div>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 p-3 sm:p-4 bg-linear-to-r from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-3 p-3 sm:p-4 bg-linear-to-r from-gray-50 to-gray-100 rounded-3xl border-2 border-dashed border-gray-200">
               <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mx-auto sm:mx-0 shrink-0" />
               <div className="text-center sm:text-left">
                 <p className="font-medium text-gray-700 text-xs sm:text-sm">
@@ -287,7 +287,7 @@ export function PreviewContent({ liveClass }: PreviewContentProps) {
         )}
 
       {/* Call to Action - Responsive */}
-      <div className="bg-linear-to-r from-orange-100 to-red-100 rounded-lg p-3 sm:p-4 border border-orange-200">
+      <div className="bg-linear-to-r from-orange-100 to-red-100 rounded-3xl p-3 sm:p-4 border border-orange-200">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-linear-to-br from-orange-400 to-red-500 flex items-center justify-center mx-auto sm:mx-0 shrink-0">
             <Crown className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
@@ -365,7 +365,7 @@ export function LoadingSkeleton({
         </CardHeader>
       </Card>
       {/* Tabs Skeleton */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-3xl shadow-sm p-6">
         <div className="flex space-x-1 mb-6">
           {[1, 2, 3, 4].map((i) => (
             <div
@@ -379,7 +379,7 @@ export function LoadingSkeleton({
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="border rounded-lg p-4"
+              className="border rounded-3xl p-4"
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="h-6 bg-gray-200 rounded animate-pulse w-48"></div>
@@ -401,7 +401,7 @@ export function LoadingSkeleton({
 
 export function ErrorState() {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+    <div className="bg-white rounded-3xl shadow-sm p-12 text-center">
       <div className="text-red-500 mb-4">
         <svg
           className="h-16 w-16 mx-auto"

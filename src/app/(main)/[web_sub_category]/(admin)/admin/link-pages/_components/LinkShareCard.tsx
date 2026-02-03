@@ -78,7 +78,7 @@ export function LinkShareCard({ linkPage, sendingTest = false, onSendTest }: Lin
                 {shortUrls.map((short) => {
                   const shortUrl = `${origin}/${short.code}`;
                   return (
-                    <div key={short.id} className="flex flex-wrap items-center gap-2 rounded-lg border p-3">
+                    <div key={short.id} className="flex flex-wrap items-center gap-2 rounded-3xl border p-3">
                       <div className="flex flex-col">
                         <span className="text-sm font-medium">{shortUrl}</span>
                         <span className="text-xs text-muted-foreground">{short.clickCount} clicks</span>
@@ -97,7 +97,7 @@ export function LinkShareCard({ linkPage, sendingTest = false, onSendTest }: Lin
           <Separator />
 
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2 rounded-lg border p-3">
+            <div className="space-y-2 rounded-3xl border p-3">
               <p className="text-sm font-medium">Referral Tracking</p>
               {linkPage?.enableReferralTracking ? (
                 <div className="space-y-1">
@@ -108,7 +108,7 @@ export function LinkShareCard({ linkPage, sendingTest = false, onSendTest }: Lin
                 <p className="text-sm text-muted-foreground">Referral tracking disabled.</p>
               )}
             </div>
-            <div className="space-y-2 rounded-lg border p-3">
+            <div className="space-y-2 rounded-3xl border p-3">
               <p className="text-sm font-medium">Pixel Status</p>
               <div className="flex flex-wrap gap-2">
                 <Badge variant={linkPage?.enableMetaCAPI ? "default" : "secondary"}>Meta CAPI</Badge>
@@ -131,7 +131,7 @@ export function LinkShareCard({ linkPage, sendingTest = false, onSendTest }: Lin
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-4 rounded-lg border bg-muted/40 p-4">
+        <div className="flex flex-col items-center justify-center gap-4 rounded-3xl border bg-muted/40 p-4">
           <QRCode value={publicUrl || "https://bimbelio.com"} bgColor="transparent" fgColor="#111" size={160} />
           <p className="text-center text-sm text-muted-foreground">
             Scan to preview this Link-in-Bio page instantly.

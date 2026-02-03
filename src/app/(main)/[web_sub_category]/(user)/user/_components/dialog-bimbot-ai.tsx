@@ -217,7 +217,7 @@ const HeaderChat = ({
           <button
             key={history.id}
             onClick={() => setHistoryId(history.id)}
-            className="relative px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap shrink-0 group cursor-pointer"
+            className="relative px-4 py-2 rounded-3xl text-sm font-medium whitespace-nowrap shrink-0 group cursor-pointer"
             style={{
               backgroundColor:
                 historyId === history.id ? `${mainColor}10` : 'transparent',
@@ -253,7 +253,7 @@ const HeaderChat = ({
         onMouseLeave={() => setShowNewChatInput(false)}
       >
         <button
-          className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-all duration-300 shrink-0 group hover:scale-110"
+          className="p-2 rounded-3xl text-gray-600 hover:bg-gray-100 transition-all duration-300 shrink-0 group hover:scale-110"
           title="Chat baru"
         >
           <Plus className="w-4 h-4" />

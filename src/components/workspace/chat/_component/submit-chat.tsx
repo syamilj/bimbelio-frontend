@@ -146,7 +146,7 @@ const SubmitChat = () => {
       <div className="max-w-4xl mx-auto px-4 py-3">
         {/* Compact Limitation Warnings */}
         {isLimitReached && (
-          <div className="mb-3 flex items-center gap-3 p-3 rounded-lg bg-red-50 border border-red-200">
+          <div className="mb-3 flex items-center gap-3 p-3 rounded-3xl bg-red-50 border border-red-200">
             <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
             <span className="text-sm text-red-700 flex-1">
               Limit chat tercapai
@@ -163,7 +163,7 @@ const SubmitChat = () => {
         )}
 
         {hasLimitWarning && (
-          <div className="mb-3 flex items-center gap-3 p-3 rounded-lg bg-orange-50 border border-orange-200">
+          <div className="mb-3 flex items-center gap-3 p-3 rounded-3xl bg-orange-50 border border-orange-200">
             <Zap
               className="w-4 h-4 shrink-0"
               style={{ color: mainColor }}
@@ -188,7 +188,7 @@ const SubmitChat = () => {
 
         {(session?.user.role === 'ADMIN' ||
           session?.user.role === 'SUPER_ADMIN') && (
-          <div className="mb-3 flex items-center gap-2 p-2 rounded-lg bg-green-50 border border-green-200">
+          <div className="mb-3 flex items-center gap-2 p-2 rounded-3xl bg-green-50 border border-green-200">
             <div className="flex items-center gap-1 text-green-700 text-sm">
               <IconUnlimited w={14} />
               <span>/</span>

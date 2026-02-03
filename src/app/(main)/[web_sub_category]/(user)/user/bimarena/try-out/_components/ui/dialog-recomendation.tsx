@@ -233,7 +233,7 @@ export default function DialogRecomendation({
                 style={{ backgroundColor: `${item.color}05` }}
               >
                 <div
-                  className="w-8 h-8 mx-auto rounded-lg flex items-center justify-center mb-2"
+                  className="w-8 h-8 mx-auto rounded-3xl flex items-center justify-center mb-2"
                   style={{ backgroundColor: `${item.color}15` }}
                 >
                   <item.icon
@@ -293,8 +293,8 @@ export default function DialogRecomendation({
             <div className="space-y-6">
               {/* Section Header Skeleton */}
               <div className="text-center space-y-2">
-                <Skeleton className="h-8 w-64 mx-auto rounded-lg" />
-                <Skeleton className="h-4 w-48 mx-auto rounded-lg" />
+                <Skeleton className="h-8 w-64 mx-auto rounded-3xl" />
+                <Skeleton className="h-4 w-48 mx-auto rounded-3xl" />
               </div>
 
               {/* Cards Grid Skeleton */}

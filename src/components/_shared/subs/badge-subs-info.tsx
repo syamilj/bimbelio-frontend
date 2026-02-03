@@ -40,7 +40,7 @@ export const BadgeSubsInfo = () => {
       userTier === 'SUPER_ADMIN' ||
       userTier === 'PREMIUM' ? (
         <div
-          className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+          className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-3xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
           style={{
             background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
           }}
@@ -54,7 +54,7 @@ export const BadgeSubsInfo = () => {
           <Tooltip delayDuration={100}>
             <TooltipTrigger className="cursor-pointer">
               <div
-                className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
+                className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-3xl text-white text-sm font-bold shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -100,7 +100,7 @@ export const BadgeSubsInfo = () => {
                         return (
                           <div
                             key={sub.id}
-                            className="p-2 rounded-lg bg-green-50 border border-green-200"
+                            className="p-2 rounded-3xl bg-green-50 border border-green-200"
                           >
                             <div className="flex flex-col items-start justify-center mb-1 gap-1">
                               <span
@@ -148,7 +148,7 @@ export const BadgeSubsInfo = () => {
                             {isInstallment &&
                               currentInstallment &&
                               currentInstallment.isPaid === false && (
-                                <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
+                                <div className="p-2.5 rounded-3xl bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
                                   <p className="text-[11px] font-semibold text-amber-900 mb-2 flex items-center gap-1">
                                     <Clock className="w-3 h-3" />
                                     Cicilan
@@ -237,7 +237,7 @@ export const BadgeSubsInfo = () => {
                                         </div>
                                       )}
                                     <Button
-                                      className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-lg bg-green-50 border-green-400"
+                                      className="w-full pt-1 pb-1.5 px-2 text-xs h-auto font-semibold rounded-3xl bg-green-50 border-green-400"
                                       variant={'outline'}
                                       onClick={() =>
                                         setPagesSetting('installment')
@@ -251,7 +251,7 @@ export const BadgeSubsInfo = () => {
                             {isInstallment &&
                               currentInstallment &&
                               currentInstallment.isPaid && (
-                                <div className="p-2.5 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
+                                <div className="p-2.5 rounded-3xl bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 mb-3">
                                   <div>
                                     <p className="text-amber-700 font-medium text-[9px]">
                                       Akses Berakhir
@@ -318,7 +318,7 @@ export const BadgeSubsInfo = () => {
                           (subPending, index) => (
                             <div
                               key={subPending.id}
-                              className="p-2 rounded-lg bg-orange-50 border border-orange-200"
+                              className="p-2 rounded-3xl bg-orange-50 border border-orange-200"
                             >
                               <div className="flex flex-col items-start justify-center mb-1 gap-1">
                                 <div className="flex items-center gap-2">
@@ -467,7 +467,7 @@ export const BadgeSubsInfo = () => {
                 <Button
                   asChild
                   variant="outline"
-                  className="w-full items-center gap-2 rounded-xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
+                  className="w-full items-center gap-2 rounded-3xl border-2 hover:bg-gray-50 transition-all duration-200 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
                   style={{
                     borderColor: mainColor,
                     color: mainColor,
@@ -483,7 +483,7 @@ export const BadgeSubsInfo = () => {
 
                 {/* Button Beli Subscription */}
                 <Button
-                  className="w-full items-center gap-1 lg:gap-2 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
+                  className="w-full items-center gap-1 lg:gap-2 rounded-3xl text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 text-xs lg:text-sm px-2 lg:px-3 py-1 lg:py-2 h-8 lg:h-auto"
                   style={{ backgroundColor: mainColor }}
                   onClick={() => setTransactionPopUp(true)}
                 >

@@ -162,7 +162,7 @@ const ChapterOption = ({
           </div>
 
           {subChapter.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-lg">
+            <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-200 rounded-3xl">
               <p className="text-sm">Belum ada sub chapter</p>
               <Button
                 onClick={addSubChapter}
@@ -180,7 +180,7 @@ const ChapterOption = ({
                 <div
                   key={index}
                   className={cn(
-                    'p-3 border rounded-lg cursor-pointer transition-all hover:shadow-sm',
+                    'p-3 border rounded-3xl cursor-pointer transition-all hover:shadow-sm',
                     currentIndexEdit === index
                       ? 'border-blue-500 bg-blue-50'
                       : 'border-gray-200',
@@ -229,7 +229,7 @@ const ChapterOption = ({
 
       {/* Helper Text */}
       {!chapter?.categoryId && (
-        <div className="text-sm text-gray-500 bg-blue-50 p-3 rounded-lg">
+        <div className="text-sm text-gray-500 bg-blue-50 p-3 rounded-3xl">
           💡 Pilih kategori terlebih dahulu untuk menambahkan sub chapter
         </div>
       )}

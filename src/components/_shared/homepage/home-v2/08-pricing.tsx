@@ -4,6 +4,7 @@ import { CardPlan } from '@/components/_shared/other/card-plan';
 import { PlanDataType } from '@/components/_shared/other/card-plan/_provider/types';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { useGet } from '@/lib/fetch-helper/useGet';
+import { cn } from '@/lib/utils';
 import { Crown, MessageCircle } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -114,16 +115,19 @@ const PricingSection: React.FC = () => {
         </div>
 
         {/* Top 3 Plans */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 mb-8 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
           {topPlans.length === 0 ? (
-            <div className="col-span-3 text-center py-10">
+            <div className="col-span-3 text-center py-10 w-full">
               <p className="text-gray-500">Belum ada paket tersedia</p>
             </div>
           ) : (
             topPlans.map((plan, index) => (
               <div
                 key={plan.id}
-                className={index === 1 ? 'md:scale-105 md:z-10 relative' : ''}
+                className={cn(
+                  'min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center',
+                  index === 1 ? 'md:scale-105 md:z-10 relative' : ''
+                )}
               >
                 <CardPlan plan={plan} />
               </div>

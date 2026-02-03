@@ -14,7 +14,7 @@ import {
   LiveClassAgenda,
   LiveClassReference,
 } from '@/types/database';
-import { Calendar, Clock, PlayCircle, Video } from 'lucide-react';
+import { Calendar, Clock, PlayCircle, Video, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -44,7 +44,7 @@ const LiveClassSection: React.FC = () => {
 
   const { data: liveClasses, isLoading } = useGet<LiveLearningDataType[]>(
     '/liveClass/getAllLiveClassForLandingPage',
-    { params: { take: 3, page: 1 } },
+    { params: { take: 6, page: 1 } },
   );
 
   const mainColor = websiteSubCategory?.main_color ?? '#0091FF';
@@ -96,11 +96,11 @@ const LiveClassSection: React.FC = () => {
 
         {/* Live Class Cards */}
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[1, 2, 3].map((i) => (
+          <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card
                 key={i}
-                className="overflow-hidden rounded-3xl"
+                className="overflow-hidden rounded-3xl min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
               >
                 <CardContent className="p-0">
                   <div className="h-32 bg-gray-200 animate-pulse" />
@@ -113,8 +113,8 @@ const LiveClassSection: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {liveClasses?.slice(0, 3).map((liveClass) => {
+          <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-3 gap-5 px-4 -mx-4 md:px-0 md:mx-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0">
+            {liveClasses?.slice(0, 6).map((liveClass) => {
               const status = getStatusLabel(liveClass.status);
               const href = `/${liveClass.websiteSubCategoryId}/user/bimlive/detail/${liveClass.id}?liveLearningId=${liveClass.id}`;
               const linkId = `live-class-link-${liveClass.id}`;
@@ -122,7 +122,7 @@ const LiveClassSection: React.FC = () => {
               return (
                 <div
                   key={liveClass.id}
-                  className="group cursor-pointer"
+                  className="group cursor-pointer min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
                   onClick={() => {
                     if (!session) {
                       setShowAuth({
@@ -140,7 +140,7 @@ const LiveClassSection: React.FC = () => {
                     id={linkId}
                     href={href}
                   />
-                  <Card className="overflow-hidden rounded-3xl border border-gray-200 hover:border-gray-300 transition-colors bg-white h-full">
+                  <Card className="overflow-hidden rounded-3xl border-2 border-gray-100 hover:border-gray-200 transition-all bg-white h-full shadow-sm">
                     <CardContent className="p-0">
                       {/* Header with status */}
                       <div
@@ -255,14 +255,15 @@ const LiveClassSection: React.FC = () => {
           </div>
         )}
 
-        {/* CTA */}
-        <div className="text-center mt-8">
+        {/* View All Button */}
+        <div className="flex justify-center mt-8">
           <Link
-            href="/snbt/user/bimlive"
-            className="inline-flex items-center px-6 py-3 rounded-3xl font-semibold text-white transition-all duration-200 hover:opacity-90"
+            href={`/${websiteSubCategory?.id || 'utbk'}/user/bimlive`}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white transition-transform active:scale-95 shadow-md hover:shadow-lg"
             style={{ backgroundColor: mainColor }}
           >
-            Lihat Semua Live Class →
+            Lihat Semua Live Class
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>

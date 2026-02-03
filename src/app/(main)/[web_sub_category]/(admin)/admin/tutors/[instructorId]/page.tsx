@@ -230,7 +230,7 @@ export default function TutorDetail() {
                   {/* {tutorClasses.slice(0, 5).map((liveClass) => (
                     <div
                       key={liveClass.id}
-                      className="flex items-center justify-between p-4 border rounded-lg"
+                      className="flex items-center justify-between p-4 border rounded-3xl"
                     >
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-900">

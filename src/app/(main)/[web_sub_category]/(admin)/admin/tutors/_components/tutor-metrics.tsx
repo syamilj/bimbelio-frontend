@@ -127,7 +127,7 @@ export function TutorMetrics({ instructor }: Props) {
             <CardTitle className="text-sm font-medium text-gray-600">
               {metric.title}
             </CardTitle>
-            <div className={`p-2 rounded-lg ${metric.bgColor}`}>
+            <div className={`p-2 rounded-3xl ${metric.bgColor}`}>
               <metric.icon className={`h-4 w-4 ${metric.color}`} />
             </div>
           </CardHeader>

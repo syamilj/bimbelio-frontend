@@ -95,7 +95,7 @@ export default function Start({ isLoading, onClick }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-2xl">
           <div className="text-center p-4 rounded-3xl bg-white shadow-sm border border-gray-200">
             <div
-              className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 mx-auto mb-2 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Sparkles
@@ -109,7 +109,7 @@ export default function Start({ isLoading, onClick }: Props) {
 
           <div className="text-center p-4 rounded-3xl bg-white shadow-sm border border-gray-200">
             <div
-              className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 mx-auto mb-2 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <BookOpen
@@ -123,7 +123,7 @@ export default function Start({ isLoading, onClick }: Props) {
 
           <div className="text-center p-4 rounded-3xl bg-white shadow-sm border border-gray-200">
             <div
-              className="w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 mx-auto mb-2 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Play

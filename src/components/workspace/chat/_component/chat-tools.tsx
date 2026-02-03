@@ -183,7 +183,7 @@ const ChatTools = ({ messageIndex }: Props) => {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="h-8 w-8 rounded-3xl p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
             onClick={handleCopy}
           >
             <Copy className="w-3.5 h-3.5" />
@@ -192,7 +192,7 @@ const ChatTools = ({ messageIndex }: Props) => {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="h-8 w-8 rounded-3xl p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
             onClick={handleEditMessage}
           >
             <Edit3 className="w-3.5 h-3.5" />
@@ -204,7 +204,7 @@ const ChatTools = ({ messageIndex }: Props) => {
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="h-8 w-8 rounded-3xl p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
             onClick={handleCopy}
           >
             <Copy className="w-3.5 h-3.5" />
@@ -213,7 +213,7 @@ const ChatTools = ({ messageIndex }: Props) => {
             variant="ghost"
             size="sm"
             className={cn(
-              'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+              'h-8 w-8 rounded-3xl p-0 transition-all duration-200',
               data?.like
                 ? 'text-white shadow-sm hover:shadow-md'
                 : 'text-gray-500 hover:text-green-600 hover:bg-green-50',
@@ -235,7 +235,7 @@ const ChatTools = ({ messageIndex }: Props) => {
             variant="ghost"
             size="sm"
             className={cn(
-              'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+              'h-8 w-8 rounded-3xl p-0 transition-all duration-200',
               data?.dislike
                 ? 'bg-red-500 text-white shadow-sm hover:shadow-md hover:bg-red-600'
                 : 'text-gray-500 hover:text-red-600 hover:bg-red-50',
@@ -254,7 +254,7 @@ const ChatTools = ({ messageIndex }: Props) => {
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:bg-gray-100 transition-colors"
+              className="h-8 w-8 rounded-3xl p-0 text-gray-500 hover:bg-gray-100 transition-colors"
               style={{
                 color: mainColor,
               }}
@@ -282,7 +282,7 @@ const ChatTools = ({ messageIndex }: Props) => {
   //           <Button
   //             variant="ghost"
   //             size="sm"
-  //             className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+  //             className="h-8 w-8 rounded-3xl p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
   //             onClick={handleCopy}
   //           >
   //             <Copy className="w-3.5 h-3.5" />
@@ -293,7 +293,7 @@ const ChatTools = ({ messageIndex }: Props) => {
   //           <Button
   //             variant="ghost"
   //             size="sm"
-  //             className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+  //             className="h-8 w-8 rounded-3xl p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
   //             onClick={handleEditMessage}
   //           >
   //             <Edit3 className="w-3.5 h-3.5" />
@@ -307,7 +307,7 @@ const ChatTools = ({ messageIndex }: Props) => {
   //           <Button
   //             variant="ghost"
   //             size="sm"
-  //             className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+  //             className="h-8 w-8 rounded-3xl p-0 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
   //             onClick={handleCopy}
   //           >
   //             <Copy className="w-3.5 h-3.5" />
@@ -319,7 +319,7 @@ const ChatTools = ({ messageIndex }: Props) => {
   //             variant="ghost"
   //             size="sm"
   //             className={cn(
-  //               'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+  //               'h-8 w-8 rounded-3xl p-0 transition-all duration-200',
   //               data?.like
   //                 ? 'text-white shadow-sm hover:shadow-md'
   //                 : 'text-gray-500 hover:text-green-600 hover:bg-green-50',
@@ -343,7 +343,7 @@ const ChatTools = ({ messageIndex }: Props) => {
   //             variant="ghost"
   //             size="sm"
   //             className={cn(
-  //               'h-8 w-8 rounded-lg p-0 transition-all duration-200',
+  //               'h-8 w-8 rounded-3xl p-0 transition-all duration-200',
   //               data?.dislike
   //                 ? 'bg-red-500 text-white shadow-sm hover:shadow-md hover:bg-red-600'
   //                 : 'text-gray-500 hover:text-red-600 hover:bg-red-50',
@@ -364,7 +364,7 @@ const ChatTools = ({ messageIndex }: Props) => {
   //             <Button
   //               variant="ghost"
   //               size="sm"
-  //               className="h-8 w-8 rounded-lg p-0 text-gray-500 hover:bg-gray-100 transition-colors"
+  //               className="h-8 w-8 rounded-3xl p-0 text-gray-500 hover:bg-gray-100 transition-colors"
   //               style={{
   //                 color: mainColor,
   //               }}

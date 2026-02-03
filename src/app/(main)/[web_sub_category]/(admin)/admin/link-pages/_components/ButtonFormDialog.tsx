@@ -70,7 +70,7 @@ const buttonSchema = z.object({
     .default('PRIMARY'),
   color: z.string().optional().default('#111111'),
   textColor: z.string().optional().default('#ffffff'),
-  borderRadius: z.string().optional().default('rounded-lg'),
+  borderRadius: z.string().optional().default('rounded-3xl'),
   thumbnail: optionalUrl.default(''),
   price: z.string().optional().default(''),
   showOnMobile: z.boolean().default(true),
@@ -87,10 +87,10 @@ export type LinkButtonFormValues = z.infer<typeof buttonSchema>;
 
 const BORDER_RADIUS_OPTIONS = [
   { label: 'None', value: 'rounded-none' },
-  { label: 'Small', value: 'rounded-sm' },
+  { label: 'Small', value: 'rounded-3xl' },
   { label: 'Default', value: 'rounded' },
-  { label: 'Medium', value: 'rounded-md' },
-  { label: 'Large', value: 'rounded-lg' },
+  { label: 'Medium', value: 'rounded-3xl' },
+  { label: 'Large', value: 'rounded-3xl' },
   { label: 'X-Large', value: 'rounded-3xl' },
   { label: '2X-Large', value: 'rounded-3xl' },
   { label: '3X-Large', value: 'rounded-3xl' },
@@ -632,7 +632,7 @@ export function ButtonFormDialog({
                     <FormControl>
                       <div className="space-y-4">
                         {field.value && (
-                          <div className="relative h-32 w-32 overflow-hidden rounded-lg border">
+                          <div className="relative h-32 w-32 overflow-hidden rounded-3xl border">
                             <img
                               src={field.value}
                               alt="Thumbnail"
@@ -774,7 +774,7 @@ export function ButtonFormDialog({
                 control={form.control as any}
                 name="showOnMobile"
                 render={({ field }) => (
-                  <FormItem className="flex items-center justify-between rounded-lg border p-3">
+                  <FormItem className="flex items-center justify-between rounded-3xl border p-3">
                     <div>
                       <FormLabel>Mobile</FormLabel>
                       <p className="text-xs text-muted-foreground">
@@ -794,7 +794,7 @@ export function ButtonFormDialog({
                 control={form.control as any}
                 name="showOnDesktop"
                 render={({ field }) => (
-                  <FormItem className="flex items-center justify-between rounded-lg border p-3">
+                  <FormItem className="flex items-center justify-between rounded-3xl border p-3">
                     <div>
                       <FormLabel>Desktop</FormLabel>
                       <p className="text-xs text-muted-foreground">
@@ -814,7 +814,7 @@ export function ButtonFormDialog({
                 control={form.control as any}
                 name="isActive"
                 render={({ field }) => (
-                  <FormItem className="flex items-center justify-between rounded-lg border p-3">
+                  <FormItem className="flex items-center justify-between rounded-3xl border p-3">
                     <div>
                       <FormLabel>Status</FormLabel>
                       <p className="text-xs text-muted-foreground">

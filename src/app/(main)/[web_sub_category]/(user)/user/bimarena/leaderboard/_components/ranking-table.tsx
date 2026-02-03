@@ -424,7 +424,7 @@ export function RankingTable() {
                           <TableCell className="py-3 md:py-4 sticky left-0 z-10 bg-white">
                             <div
                               className={cn(
-                                'w-6 h-6 md:w-8 md:h-8 rounded-lg flex items-center justify-center font-bold text-xs md:text-sm shadow-sm',
+                                'w-6 h-6 md:w-8 md:h-8 rounded-3xl flex items-center justify-center font-bold text-xs md:text-sm shadow-sm',
                                 getRankBadge(participant.rank),
                               )}
                             >
@@ -576,7 +576,7 @@ export function RankingTable() {
                       : () => setCurrentPage((prev) => Math.max(prev - 1, 1))
                   }
                   className={cn(
-                    'rounded-lg transition-colors text-xs md:text-sm px-2 md:px-3',
+                    'rounded-3xl transition-colors text-xs md:text-sm px-2 md:px-3',
                     currentPage === 1
                       ? 'pointer-events-none opacity-50'
                       : 'hover:shadow-sm',
@@ -597,7 +597,7 @@ export function RankingTable() {
                           )
                   }
                   className={cn(
-                    'rounded-lg transition-colors text-xs md:text-sm px-2 md:px-3',
+                    'rounded-3xl transition-colors text-xs md:text-sm px-2 md:px-3',
                     currentPage === totalPages
                       ? 'pointer-events-none opacity-50'
                       : 'hover:shadow-sm',

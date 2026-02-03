@@ -563,7 +563,7 @@ export default function CaraBelajarSection1() {
                         </div>
                       </div>
                       <div className="absolute bottom-4 left-4 right-4">
-                        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-3">
                           <div className="text-sm font-medium text-gray-900 mb-1">
                             Preview: {learningSteps[activeStep].title}
                           </div>

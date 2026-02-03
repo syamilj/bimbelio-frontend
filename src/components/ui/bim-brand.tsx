@@ -76,6 +76,10 @@ export function BimInsight({ className, style }: { className?: string; style?: R
   return <BimBrand suffix="Insight" className={className} style={style} />;
 }
 
+export function BimCircle({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return <BimBrand suffix="Circle" className={className} style={style} />;
+}
+
 export function Bimbelio({ className, style }: { className?: string; style?: React.CSSProperties }) {
   return <BimBrand suffix="belio" className={className} style={style} />;
 }

@@ -1,15 +1,13 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { BimBot } from '@/components/ui/bim-brand';
+import { BimArena, BimBot, BimInsight, BimLive } from '@/components/ui/bim-brand';
 import {
   BarChart3,
-  BookOpen,
   CheckCircle2,
   MessageCircle,
   Sparkles,
   Target,
-  Users,
   Video,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -22,7 +20,7 @@ interface Feature {
   description: string;
   features: string[];
   icon: React.ElementType;
-  imagePlaceholder: string;
+  image: string;
 }
 
 const FeaturesSection: React.FC = () => {
@@ -33,188 +31,133 @@ const FeaturesSection: React.FC = () => {
     {
       id: 1,
       badge: 'AI-Powered',
-      title: 'Chat AI 24/7',
-      titleElement: <>Chat AI 24/7 (<BimBot />)</>,
-      description:
-        'Tanya soal kapan aja, jawaban instant dengan penjelasan detail step-by-step. Nggak perlu tunggu tutor online besok pagi.',
+      title: 'BimBot',
+      titleElement: <BimBot />,
+      description: 'Tanya soal kapan aja, jawaban instant dengan penjelasan detail step-by-step.',
       features: [
         'Instant response dalam hitungan detik',
-        'Step-by-step explanation lengkap',
-        'Available 24/7 tanpa batas waktu',
-        'Multi-subject support (semua mapel)',
+        'Penjelasan step-by-step lengkap',
+        'Available 24/7 tanpa batas',
       ],
       icon: MessageCircle,
-      imagePlaceholder: '/hero/fitur_bimbelio_1.webp',
+      image: '/hero/fitur_bimbelio_1.webp',
     },
     {
       id: 2,
-      badge: 'Smart Learning',
-      title: 'Note AI',
-      description:
-        'Bikin catatan pintar dengan AI highlighting otomatis. Sistem deteksi konsep penting dan kasih saran materi terkait.',
-      features: [
-        'AI highlights konsep penting',
-        'Auto-linking ke materi terkait',
-        'Search note super cepat',
-        'Sync across devices',
-      ],
-      icon: BookOpen,
-      imagePlaceholder: '/hero/fitur_bimbelio-2.webp',
-    },
-    {
-      id: 3,
       badge: 'Adaptive Testing',
-      title: 'Try Out IRT-based',
-      description:
-        'Try out adaptif yang akurat prediksi skor real UTBK. Soal disesuaikan level kamu — makin pintar, makin sulit.',
+      title: 'BimArena',
+      titleElement: <BimArena />,
+      description: 'Try out adaptif yang akurat prediksi skor real UTBK dengan sistem IRT.',
       features: [
         'IRT-based scoring akurat',
         'Adaptive difficulty real-time',
-        'Analytics detail per topik',
         'Prediksi skor SNBT real',
       ],
       icon: Target,
-      imagePlaceholder: '/hero/fitur_bimbelio-3.webp',
+      image: '/hero/fitur_bimbelio-3.webp',
     },
     {
-      id: 4,
+      id: 3,
       badge: 'Interactive',
-      title: 'Live Class',
-      description:
-        '198+ sesi live class interaktif bareng tutor alumni PTN. Tanya langsung, diskusi real-time, nggak cuma nonton video.',
+      title: 'BimLive',
+      titleElement: <BimLive />,
+      description: '198+ sesi live class interaktif bareng tutor alumni PTN top.',
       features: [
         'Live interaction dengan tutor',
         'Q&A session setiap kelas',
         'Rekaman lengkap tersimpan',
-        'Small batch eksklusif',
       ],
       icon: Video,
-      imagePlaceholder: '/hero/fitur_bimbelio-4.webp',
+      image: '/hero/fitur_bimbelio-4.webp',
     },
     {
-      id: 5,
+      id: 4,
       badge: 'Data-Driven',
-      title: 'Progress Tracking',
-      description:
-        'Dashboard lengkap yang track progress kamu real-time. Tahu persis mana yang udah kuat, mana yang masih lemah.',
+      title: 'BimInsight',
+      titleElement: <BimInsight />,
+      description: 'Dashboard lengkap yang track progress kamu real-time.',
       features: [
         'Real-time analytics dashboard',
-        'Topik-by-topik breakdown',
         'Weekly progress report',
         'Target tracking otomatis',
       ],
       icon: BarChart3,
-      imagePlaceholder: '/hero/fitur_bimbelio-5.webp',
-    },
-    {
-      id: 6,
-      badge: 'Personalized',
-      title: 'Mentorship',
-      description:
-        'Konseling personal sama mentor buat bahas strategi, mindset, dan roadmap PTN kamu. Nggak sendirian, ada yang guide.',
-      features: [
-        'Strategic planning session',
-        'Weekly check-in available',
-        'Mindset & mental coaching',
-        'Career path guidance',
-      ],
-      icon: Users,
-      imagePlaceholder: '/hero/fitur_bimbelio_1.webp',
+      image: '/hero/fitur_bimbelio-5.webp',
     },
   ];
 
   return (
-    <section
-      id="ecosystem"
-      className="py-16 md:py-20 px-4 bg-white"
-    >
+    <section id="features" className="py-16 md:py-24 px-5 bg-white">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
+        {/* Section Header */}
+        <div className="text-center mb-10 md:mb-14">
           <span
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white mb-4"
-            style={{ backgroundColor: mainColor }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold tracking-wide mb-4"
+            style={{ backgroundColor: `${mainColor}10`, color: mainColor }}
           >
-            <Sparkles className="w-4 h-4" />
-            Satu Platform untuk Semua
+            <Sparkles className="w-3.5 h-3.5" />
+            FITUR UNGGULAN
           </span>
 
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Apa Aja yang <span style={{ color: mainColor }}>Kamu Dapet?</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            Tools yang Kamu{' '}
+            <span style={{ color: mainColor }}>Butuhkan</span>
           </h2>
 
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Live class untuk SNBT, Mandiri, & Kedinasan. Plus chat AI, try out
-            IRT, dan progress tracking — semua di satu tempat.
+          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
+            Semua fitur yang kamu perlukan untuk persiapan PTN — dalam satu platform terintegrasi.
           </p>
         </div>
 
-        {/* Features Alternating Layout */}
-        <div className="space-y-12 md:space-y-16">
-          {features.map((feature, index) => {
+        {/* Features Grid - Horizontal Scroll on Mobile */}
+        <div className="flex overflow-x-auto touch-pan-y md:grid md:grid-cols-2 gap-4 md:gap-6 mb-10 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 px-4 -mx-4 md:px-0 md:mx-0">
+          {features.map((feature) => {
             const Icon = feature.icon;
             return (
               <div
                 key={feature.id}
-                className={`grid md:grid-cols-2 gap-6 md:gap-10 items-center ${
-                  index % 2 === 1 ? 'md:[direction:rtl]' : ''
-                }`}
+                className="group bg-white rounded-3xl border-2 border-gray-100 overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all shadow-sm min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
               >
-                {/* Screenshot Placeholder */}
-                <div
-                  className={`relative rounded-3xl overflow-hidden border border-gray-200 ${
-                    index % 2 === 1 ? 'md:[direction:ltr]' : ''
-                  }`}
-                >
+                {/* Image */}
+                <div className="relative aspect-[16/9] bg-gray-100 overflow-hidden">
                   <img
-                    src={feature.imagePlaceholder}
+                    src={feature.image}
                     alt={feature.title}
-                    className="w-full h-auto object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
-
                   {/* Badge */}
                   <div
-                    className="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white"
+                    className="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider"
                     style={{ backgroundColor: mainColor }}
                   >
                     {feature.badge}
                   </div>
                 </div>
 
-                {/* Description */}
-                <div className={index % 2 === 1 ? 'md:[direction:ltr]' : ''}>
-                  <div className="mb-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div
-                        className="w-12 h-12 rounded-3xl flex items-center justify-center text-white"
-                        style={{ backgroundColor: mainColor }}
-                      >
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <span
-                        className="text-xs font-semibold uppercase tracking-wide"
-                        style={{ color: mainColor }}
-                      >
-                        {feature.badge}
-                      </span>
+                {/* Content */}
+                <div className="p-5">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div
+                      className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0 text-white"
+                      style={{ backgroundColor: mainColor }}
+                    >
+                      <Icon className="w-5 h-5" />
                     </div>
-
-                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-                      {feature.titleElement ?? feature.title}
-                    </h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">
+                        {feature.titleElement ?? feature.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">{feature.description}</p>
+                    </div>
                   </div>
 
-                  {/* Feature bullets */}
-                  <div className="space-y-2">
+                  {/* Features List */}
+                  <div className="space-y-2 pl-13">
                     {feature.features.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-2.5"
-                      >
+                      <div key={idx} className="flex items-start gap-2">
                         <CheckCircle2
-                          className="w-5 h-5 flex-shrink-0 mt-0.5"
+                          className="w-4 h-4 flex-shrink-0 mt-0.5"
                           style={{ color: mainColor }}
                         />
                         <span className="text-sm text-gray-700">{item}</span>
@@ -228,19 +171,13 @@ const FeaturesSection: React.FC = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-16 bg-gray-50 rounded-3xl p-6 md:p-8 text-center border border-gray-200">
-          <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-            Siap Explore Semua Fitur?
-          </h3>
-          <p className="text-gray-600 mb-5">
-            Daftar sekarang dan langsung akses ke semua fitur premium platform
-          </p>
+        <div className="text-center">
           <Link
             href="/price"
-            className="inline-block px-8 py-3 rounded-3xl font-semibold text-white"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all hover:opacity-90"
             style={{ backgroundColor: mainColor }}
           >
-            Lihat Semua Paket →
+            Akses Semua Fitur
           </Link>
         </div>
       </div>

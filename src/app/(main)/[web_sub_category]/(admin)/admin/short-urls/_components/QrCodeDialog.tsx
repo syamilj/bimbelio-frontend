@@ -116,7 +116,7 @@ export function QrCodeDialog({ open, onClose, shortUrlId, code }: QrCodeDialogPr
           {/* QR Code Preview */}
           {qrData && (
             <div className="space-y-4">
-              <div className="flex justify-center p-4 bg-gray-50 rounded-lg border">
+              <div className="flex justify-center p-4 bg-gray-50 rounded-3xl border">
                 <Image
                   src={qrData.qrCodeDataUrl}
                   alt="QR Code"
@@ -127,7 +127,7 @@ export function QrCodeDialog({ open, onClose, shortUrlId, code }: QrCodeDialogPr
               </div>
 
               {/* URL Display */}
-              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg border">
+              <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-3xl border">
                 <Link2 className="w-4 h-4 text-gray-500 flex-shrink-0" />
                 <code className="text-sm flex-1 truncate">{qrData.qrCodeUrl}</code>
                 <Button

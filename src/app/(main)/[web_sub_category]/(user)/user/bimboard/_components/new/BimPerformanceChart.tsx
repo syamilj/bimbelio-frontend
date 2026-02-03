@@ -198,7 +198,7 @@ export default function BimPerformanceChart({ scoreHistory, studyTimeHistory }: 
                   return (
                     <div
                       key={index}
-                      className="flex-shrink-0 w-[320px] p-2.5 rounded-xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all"
+                      className="flex-shrink-0 w-[320px] p-2.5 rounded-3xl bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all"
                     >
                       {/* Header: Title and Date */}
                       <div className="flex items-start justify-between mb-2">

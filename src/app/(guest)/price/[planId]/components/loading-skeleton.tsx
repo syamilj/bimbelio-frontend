@@ -82,7 +82,7 @@ export function LoadingSkeleton() {
           <div className="lg:col-span-2">
             {/* Navigation Tabs Skeleton */}
             <div className="w-full mb-8">
-              <div className="grid w-full grid-cols-4 gap-2 bg-white/50 backdrop-blur-sm border border-[#B3D9FF]/50 rounded-lg p-1">
+              <div className="grid w-full grid-cols-4 gap-2 bg-white/50 backdrop-blur-sm border border-[#B3D9FF]/50 rounded-3xl p-1">
                 {[1, 2, 3, 4].map((i) => (
                   <Skeleton
                     key={i}
@@ -182,7 +182,7 @@ export function LoadingSkeleton() {
                         className="p-4 rounded-3xl bg-[#E6F3FF] border border-[#B3D9FF]/50"
                       >
                         <div className="flex items-start gap-3">
-                          <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
+                          <Skeleton className="w-10 h-10 rounded-3xl shrink-0" />
                           <div className="flex-1 space-y-2">
                             <Skeleton className="h-5 w-full" />
                             <div className="flex items-center gap-4">
