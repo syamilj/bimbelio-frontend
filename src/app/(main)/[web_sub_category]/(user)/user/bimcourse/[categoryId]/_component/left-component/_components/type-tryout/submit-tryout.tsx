@@ -196,7 +196,7 @@ const SubmitTryout = ({
 
                 {/* Unanswered Questions Warning */}
                 {unAnswered?.length > 0 && (
-                  <div className="p-4 bg-orange-50 border-l-4 border-orange-500 rounded-lg">
+                  <div className="p-4 bg-orange-50 border-l-4 border-orange-500 rounded-3xl">
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
                         <span className="text-white text-xs font-bold">!</span>
@@ -209,7 +209,7 @@ const SubmitTryout = ({
                           {unAnswered?.map((item: any, i: number) => (
                             <span
                               key={i}
-                              className="inline-flex items-center px-2.5 py-1 rounded-md bg-white border border-orange-300 text-orange-700 text-sm font-medium"
+                              className="inline-flex items-center px-2.5 py-1 rounded-3xl bg-white border border-orange-300 text-orange-700 text-sm font-medium"
                             >
                               #{item?.number}
                             </span>
@@ -278,7 +278,7 @@ const SubmitTryout = ({
               {/* Content */}
               <div className="p-6 space-y-4">
                 {notSure?.length > 0 && (
-                  <div className="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg">
+                  <div className="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-3xl">
                     <p className="text-center text-gray-700 mb-4">
                       Kamu belum yakin dengan jawaban berikut. Apakah tetap
                       ingin melanjutkan?
@@ -287,7 +287,7 @@ const SubmitTryout = ({
                       {notSure?.map((item: any, i: number) => (
                         <span
                           key={i}
-                          className="inline-flex items-center px-3 py-1.5 rounded-lg bg-yellow-200 border border-yellow-400 text-yellow-800 text-sm font-semibold"
+                          className="inline-flex items-center px-3 py-1.5 rounded-3xl bg-yellow-200 border border-yellow-400 text-yellow-800 text-sm font-semibold"
                         >
                           #{item?.number}
                         </span>

@@ -251,9 +251,9 @@ export function QuizProgress() {
               >
                 <style>{`.filter-chips::-webkit-scrollbar { display: none; }`}</style>
                 <div className="filter-chips flex gap-1.5 md:gap-2 mb-3 md:mb-4 min-w-max md:min-w-0 md:flex-wrap">
-                  {SubCategory.map((sub) => (
+                  {SubCategory.map((sub, index) => (
                     <button
-                      key={sub.code}
+                      key={`${sub.id}-${index}`}
                       onClick={() => toggleSubtest(sub.code)}
                       className={cn(
                         'px-2 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold transition-all border flex-shrink-0',

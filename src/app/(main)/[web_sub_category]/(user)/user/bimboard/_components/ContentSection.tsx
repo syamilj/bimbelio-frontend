@@ -91,39 +91,47 @@ function ContentRow({
       </div>
 
       {/* Cards - Horizontal Scroll */}
-      <div style={{ maxWidth: '100%', overflow: 'hidden' }}>
-        <div className="overflow-x-auto scrollbar-hidden" style={{ maxWidth: '100%' }}>
-          <div className="flex gap-3 pb-2">
+      <div className="w-full relative">
+        <div
+          className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-4 snap-x snap-mandatory"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          <style>{`.content-scroll::-webkit-scrollbar { display: none; }`}</style>
+
+          <div className="content-scroll flex gap-4 min-w-max md:min-w-0">
           {items.map((item) => (
-            <Link key={item.id} href={href} className="flex-shrink-0 group">
-              <div className={`${cardWidth} bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all`}>
+            <Link key={item.id} href={href} className="flex-shrink-0 group snap-start">
+              <div className={`${cardWidth} bg-white rounded-[1.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all hover:-translate-y-1`}>
                 {/* Image Container - Fixed height */}
-                <div className={`relative bg-gray-100 ${imageHeight}`}>
+                <div className={`relative bg-gray-50 ${imageHeight} overflow-hidden`}>
                   {isValidImageUrl(item.src) ? (
                     <Image
                       src={item.src}
                       alt={item.title}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
                     <div
-                      className="w-full h-full flex items-center justify-center"
-                      style={{ backgroundColor: `${mainColor}10` }}
+                      className="w-full h-full flex items-center justify-center opacity-10"
+                      style={{ backgroundColor: mainColor }}
                     >
                       <Icon
-                        className="w-8 h-8 opacity-30"
+                        className="w-8 h-8 opacity-50"
                         style={{ color: mainColor }}
                       />
                     </div>
                   )}
+
+                  {/* Gradient Overlay for Text Readability if needed */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   {/* Video play icon */}
                   {(showPlayIcon || item.hasVideo) && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                         <PlayCircle
-                          className="w-6 h-6"
+                          className="w-5 h-5 ml-0.5"
                           style={{ color: mainColor }}
                         />
                       </div>
@@ -131,9 +139,9 @@ function ContentRow({
                   )}
                 </div>
 
-                {/* Title - Outside image, fixed 2 lines height */}
-                <div className="p-2">
-                  <h4 className="font-medium text-gray-900 text-xs leading-tight line-clamp-2 h-8">
+                {/* Title */}
+                <div className="p-3">
+                  <h4 className="font-bold text-slate-800 text-xs leading-5 line-clamp-2 h-10 group-hover:text-primary transition-colors">
                     {item.title}
                   </h4>
                 </div>

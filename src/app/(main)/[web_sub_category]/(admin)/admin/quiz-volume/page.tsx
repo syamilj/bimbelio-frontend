@@ -104,7 +104,7 @@ export default function QuizVolumePage() {
           <div>
             <div className="flex items-center gap-3">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center text-white shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -123,7 +123,7 @@ export default function QuizVolumePage() {
           </div>
           <Link
             href="./quiz-volume/new"
-            className="flex items-center justify-center gap-2 px-4 md:px-6 py-3 md:py-3.5 text-white font-bold text-sm md:text-base rounded-2xl shadow-lg hover:shadow-xl transition-all whitespace-nowrap"
+            className="flex items-center justify-center gap-2 px-4 md:px-6 py-3 md:py-3.5 text-white font-bold text-sm md:text-base rounded-3xl shadow-lg hover:shadow-xl transition-all whitespace-nowrap"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -136,7 +136,7 @@ export default function QuizVolumePage() {
         {/* Stats Cards */}
         <div className="grid grid-cols-3 md:grid-cols-3 gap-3 md:gap-4">
           <div
-            className="rounded-2xl border-2 p-4 md:p-5"
+            className="rounded-3xl border-2 p-4 md:p-5"
             style={{
               background: `${mainColor}08`,
               borderColor: `${mainColor}20`,
@@ -153,7 +153,7 @@ export default function QuizVolumePage() {
             </p>
           </div>
           <div
-            className="rounded-2xl border-2 p-4 md:p-5"
+            className="rounded-3xl border-2 p-4 md:p-5"
             style={{
               background: `${mainColor}08`,
               borderColor: `${mainColor}20`,
@@ -167,7 +167,7 @@ export default function QuizVolumePage() {
             </p>
           </div>
           <div
-            className="rounded-2xl border-2 p-4 md:p-5"
+            className="rounded-3xl border-2 p-4 md:p-5"
             style={{
               background: `${mainColor}08`,
               borderColor: `${mainColor}20`,
@@ -185,7 +185,7 @@ export default function QuizVolumePage() {
 
       {/* Table Section */}
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
@@ -226,7 +226,7 @@ export default function QuizVolumePage() {
                       <TableCell className="text-center">
                         <button
                           onClick={() => toggleExpanded(volume.id)}
-                          className="inline-flex items-center justify-center p-1 rounded-md hover:bg-slate-200 transition-colors"
+                          className="inline-flex items-center justify-center p-1 rounded-3xl hover:bg-slate-200 transition-colors"
                         >
                           {expandedVolumes.has(volume.id) ? (
                             <ChevronUp className="w-4 h-4" />

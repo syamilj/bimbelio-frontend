@@ -31,65 +31,70 @@ export default function QuickActions({
       label: "Try Out",
       badge: upcomingTryoutCount > 0 ? upcomingTryoutCount : null,
       href: `/${webSubId}/user/bimarena/try-out`,
+      colors: { bg: "bg-purple-50", border: "border-purple-200", text: "text-purple-700", icon: "text-purple-500", hover: "hover:bg-purple-100" }
     },
     {
       icon: PlayCircle,
       label: "Live Class",
       badge: upcomingLiveClassCount > 0 ? upcomingLiveClassCount : null,
       href: `/${webSubId}/user/bimlive`,
+       colors: { bg: "bg-rose-50", border: "border-rose-200", text: "text-rose-700", icon: "text-rose-500", hover: "hover:bg-rose-100" }
     },
     {
       icon: BookOpen,
       label: "Materi",
       badge: null,
       href: `/${webSubId}/user/bimcourse`,
+       colors: { bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-700", icon: "text-blue-500", hover: "hover:bg-blue-100" }
     },
     {
       icon: MessageSquare,
       label: "AI Tutor",
       badge: null,
       href: `/${webSubId}/user/bimbot`,
+       colors: { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", icon: "text-emerald-500", hover: "hover:bg-emerald-100" }
     },
     {
       icon: Trophy,
       label: "Leaderboard",
       badge: null,
       href: `/${webSubId}/user/bimarena/leaderboard`,
+       colors: { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", icon: "text-amber-500", hover: "hover:bg-amber-100" }
     },
   ];
 
   return (
-    <div style={{ maxWidth: '100%', overflow: 'hidden' }}>
-      <div className="overflow-x-auto scrollbar-hidden" style={{ maxWidth: '100%' }}>
-        <div className="flex gap-2 pb-1">
-        {actions.map((action) => (
-          <Link key={action.label} href={action.href} className="flex-shrink-0">
-            <div
-              className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 rounded-full border border-gray-200 bg-white hover:shadow-sm transition-all"
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = mainColor;
-                e.currentTarget.style.backgroundColor = `${mainColor}08`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#e5e7eb";
-                e.currentTarget.style.backgroundColor = "white";
-              }}
-            >
-              <action.icon className="w-4 h-4 text-gray-500" />
-              <span className="text-xs md:text-sm font-medium text-gray-700 whitespace-nowrap">
-                {action.label}
-              </span>
-              {action.badge && (
-                <span
-                  className="text-[10px] px-1.5 py-0.5 rounded-full text-white font-medium"
-                  style={{ backgroundColor: mainColor }}
-                >
-                  {action.badge}
+    <div style={{ maxWidth: '100%' }}>
+      {/* Scrollable Container with Negative Margins */}
+      <div
+        className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        <style>{`.quick-actions-scroll::-webkit-scrollbar { display: none; }`}</style>
+
+        <div className="quick-actions-scroll flex gap-2.5 min-w-max">
+          {actions.map((action) => (
+            <Link key={action.label} href={action.href} className="flex-shrink-0">
+              <div
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-3xl border ${action.colors.bg} ${action.colors.border} ${action.colors.hover} transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5`}
+              >
+                <div className={`p-1 rounded-full bg-white/50`}>
+                   <action.icon className={`w-3.5 h-3.5 ${action.colors.icon}`} />
+                </div>
+                <span className={`text-xs font-bold ${action.colors.text} whitespace-nowrap`}>
+                  {action.label}
                 </span>
-              )}
-            </div>
-          </Link>
-        ))}
+                {action.badge && (
+                  <span
+                    className="flex items-center justify-center min-w-[18px] h-[18px] text-[10px] px-1.5 rounded-full text-white font-bold shadow-sm"
+                    style={{ backgroundColor: mainColor }}
+                  >
+                    {action.badge}
+                  </span>
+                )}
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

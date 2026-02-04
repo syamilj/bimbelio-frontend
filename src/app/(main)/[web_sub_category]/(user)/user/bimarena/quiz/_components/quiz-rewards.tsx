@@ -207,7 +207,7 @@ export function QuizRewards({ userStats, rewards, achievements }: QuizRewardsPro
               </div>
             </div>
             {/* Scroll fade indicator */}
-            <div className="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
+
           </div>
         </div>
       </div>

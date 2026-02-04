@@ -110,7 +110,7 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
       <div className="flex flex-col gap-4 mb-6">
         <h2 className="text-lg font-black text-slate-800">Progress Belajar</h2>
 
-        <div className="flex gap-2 bg-slate-100 p-1 rounded-full overflow-x-auto scrollbar-hide">
+        <div className="flex gap-2 w-fit bg-slate-100 p-1 rounded-full overflow-x-auto scrollbar-hide">
           <button
             onClick={() => setActiveTab("live")}
             className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
@@ -199,67 +199,80 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
           liveClasses && liveClasses.length > 0 ? (
             <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto md:overflow-x-visible pb-4 md:pb-0 scrollbar-hide">
               {liveClasses.map((liveClass) => (
-                <div
+                <Link
                   key={liveClass.id}
-                  className="group relative rounded-3xl border-2 border-slate-100 overflow-hidden bg-white hover:border-slate-200 transition-all hover:shadow-lg flex-shrink-0 w-[280px] md:w-auto"
+                  href={`/${website_sub_category_id}/user/bimlive/${liveClass.id}`}
+                  className="group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
                 >
-                  {/* Thumbnail */}
-                  <div className="relative h-96 bg-gradient-to-br from-slate-200 to-slate-300 overflow-hidden">
+                  {/* Full Background Image */}
                     {liveClass.thumbnail ? (
                       <Image
                         src={liveClass.thumbnail}
                         alt={liveClass.title}
                         fill
-                        className="object-cover h-full group-hover:scale-105 transition-transform"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <MonitorPlay className="w-12 h-12 text-slate-400" />
+                      <div
+                        className="w-full h-full flex items-center justify-center opacity-20"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                       <MonitorPlay className="w-16 h-16 text-white" />
                       </div>
                     )}
 
-                    {/* Premium Badge */}
-                    {liveClass.isPremium && (
-                      <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-yellow-500 text-white text-xs font-bold">
-                        Premium
-                      </div>
-                    )}
+                    {/* Dark Gradient Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
-                    {/* Status Badge */}
-                    <div className="absolute bottom-2 left-2 px-2 py-1 rounded-full bg-slate-900/80 text-white text-xs font-bold">
-                      {liveClass.isRegistered ? 'Terdaftar' : 'Daftar'}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-4">
-                    <h3 className="font-bold text-sm text-slate-800 line-clamp-2 mb-2">{liveClass.title}</h3>
-
-                    {/* Instructor */}
-                    <div className="flex items-center gap-2 mb-3">
-                      {liveClass.instructorAvatar ? (
-                        <Image
-                          src={liveClass.instructorAvatar}
-                          alt={liveClass.instructorName}
-                          width={28}
-                          height={28}
-                          className="w-7 h-7 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
-                          {liveClass.instructorName.charAt(0)}
+                    {/* Top Badges */}
+                    <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 items-end">
+                      {liveClass.isPremium && (
+                        <div className="px-2 py-0.5 rounded-md bg-amber-400 text-white text-[10px] font-bold shadow-sm">
+                          PRO
                         </div>
                       )}
-                      <span className="text-xs text-slate-600 font-medium">{liveClass.instructorName}</span>
                     </div>
 
+                    <div className="absolute top-3 left-3 z-10">
+                       <div className="bg-rose-500 text-white text-[10px] px-2 py-0.5 font-bold rounded-md animate-pulse shadow-sm">
+                          LIVE
+                       </div>
+                    </div>
+
+
+                  {/* Content Overlay at Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
+                    {/* Instructor Info */}
+                     <div className="flex items-center gap-2 mb-2">
+                        {liveClass.instructorAvatar ? (
+                           <Image
+                              src={liveClass.instructorAvatar}
+                              alt={liveClass.instructorName}
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 rounded-full object-cover border border-white/30"
+                           />
+                        ) : (
+                           <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+                              <span className="text-[10px] font-bold text-white uppercase">{liveClass.instructorName.charAt(0)}</span>
+                           </div>
+                        )}
+                        <span className="text-xs font-bold text-white shadow-black drop-shadow-md truncate">{liveClass.instructorName}</span>
+                     </div>
+
+                    <h3 className="font-extrabold text-white text-lg line-clamp-2 leading-tight mb-2 drop-shadow-md group-hover:text-blue-200 transition-colors">
+                      {liveClass.title}
+                    </h3>
+
                     {/* Schedule & Duration */}
-                    <div className="space-y-1 text-xs text-slate-500">
-                      <p>Jadwal: {new Date(liveClass.scheduleTime).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
-                      <p>Durasi: {liveClass.duration} menit</p>
+                    <div className="flex items-center gap-3 text-xs text-white/80 font-medium">
+                      <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
+                         <Clock className="w-3 h-3" />
+                         <span>{new Date(liveClass.scheduleTime).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
@@ -450,12 +463,38 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                   <Link
                     key={tryout.id}
                     href={`/${website_sub_category_id}/user/bimarena/try-out/${tryout.id}`}
-                    className="group relative bg-white rounded-3xl border-2 border-slate-100 hover:border-slate-200 hover:shadow-lg transition-all overflow-hidden flex-shrink-0 w-[280px] md:w-auto"
+                    className="group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 bg-slate-900 border border-slate-100 flex-shrink-0 w-[280px] md:w-auto aspect-[4/5]"
                   >
+                    {/* Full Background Image */}
+                    {tryout.thumbnail ? (
+                      <Image
+                        src={tryout.thumbnail}
+                        alt={tryout.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center opacity-20"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                       <Target className="w-16 h-16 text-white" />
+                      </div>
+                    )}
+
+                    {/* Dark Gradient Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+                    {/* Top Badges */}
+                     <div className="absolute top-3 left-3 flex gap-2 z-10">
+                        {getStatusBadge()}
+                     </div>
+
                     {/* Score Badge - Top Right (if completed) */}
                     {tryout.score && tryout.score > 0 && (
-                      <div className="absolute -top-2 -right-2 z-10">
-                        <div className="bg-white rounded-full shadow-md px-3 py-2 flex items-center gap-1 border-2" style={{ borderColor: mainColor }}>
+                      <div className="absolute top-3 right-3 z-10">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-full shadow-sm px-2.5 py-1 flex items-center gap-1 border border-white/50">
                           <Target className="w-3.5 h-3.5" style={{ color: mainColor }} />
                           <span className="text-xs font-black" style={{ color: mainColor }}>
                             {tryout.score}
@@ -464,78 +503,17 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                       </div>
                     )}
 
-                    {/* Thumbnail */}
-                    <div className="relative h-36 overflow-hidden bg-slate-100">
-                      {tryout.thumbnail ? (
-                        <Image
-                          src={tryout.thumbnail}
-                          alt={tryout.title}
-                          fill
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      ) : (
-                        <div
-                          className="w-full h-full flex items-center justify-center"
-                          style={{
-                            background: `linear-gradient(135deg, ${mainColor}, ${mainColor}80)`,
-                          }}
-                        >
-                          <Target className="w-12 h-12 text-white opacity-50" />
-                        </div>
-                      )}
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4 space-y-3">
-                      {/* Status Badge */}
-                      <div>{getStatusBadge()}</div>
-
+                    {/* Content Overlay at Bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
                       {/* Title */}
-                      <h3 className="font-bold text-sm text-slate-800 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                      <h3 className="font-extrabold text-white text-lg line-clamp-3 leading-tight mb-3 drop-shadow-md group-hover:text-blue-200 transition-colors">
                         {tryout.title}
                       </h3>
 
-                      {/* Stats Grid */}
-                      <div className="grid grid-cols-2 gap-2">
-                        {/* Questions */}
-                        <div
-                          className="p-2 rounded-3xl border text-center"
-                          style={{
-                            background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
-                            borderColor: 'rgb(191 219 254)',
-                          }}
-                        >
-                          <BookOpen className="w-3.5 h-3.5 text-blue-600 mx-auto mb-0.5" />
-                          <div className="text-xs font-bold text-blue-700">
-                            {tryout.totalQuestions}
-                          </div>
-                          <div className="text-[10px] text-blue-600 font-medium">
-                            Soal
-                          </div>
-                        </div>
-
-                        {/* Deadline or Progress */}
-                        <div
-                          className="p-2 rounded-3xl border text-center"
-                          style={{
-                            background: tryout.deadline
-                              ? `linear-gradient(to bottom right, rgb(255 247 237), rgb(254 237 213))`
-                              : `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
-                            borderColor: tryout.deadline ? 'rgb(254 215 170)' : 'rgb(187 247 208)',
-                          }}
-                        >
-                          <Clock className={`w-3.5 h-3.5 mx-auto mb-0.5 ${tryout.deadline ? 'text-orange-600' : 'text-green-600'}`} />
-                          <div className={`text-xs font-bold ${tryout.deadline ? 'text-orange-700' : 'text-green-700'}`}>
-                            {tryout.answeredQuestions}
-                          </div>
-                          <div className={`text-[10px] font-medium ${tryout.deadline ? 'text-orange-600' : 'text-green-600'}`}>
-                            Terjawab
-                          </div>
-                        </div>
-                      </div>
+                      {/* Subtitle/Hint */}
+                      <p className="text-white/80 text-xs font-medium line-clamp-1 mb-1">
+                        {tryout.totalQuestions} Soal • {tryout.status === "completed" ? "Selesai" : tryout.status === "in-progress" ? "Lanjutkan" : "Belum Mulai"}
+                      </p>
                     </div>
                   </Link>
                 );
