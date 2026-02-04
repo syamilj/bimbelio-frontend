@@ -135,7 +135,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
 
                 {/* Stats */}
                 <div className="flex flex-wrap gap-2">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-50">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-3xl bg-slate-50">
                     <Calendar
                       className="w-3.5 h-3.5"
                       style={{ color: mainColor }}
@@ -144,7 +144,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                       {formatDate(pivot.LiveClass.startDate)}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-50">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-3xl bg-slate-50">
                     <Clock
                       className="w-3.5 h-3.5"
                       style={{ color: secondaryColor }}
@@ -154,7 +154,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
                     </span>
                   </div>
                   {pivot.LiveClass.maxParticipant && (
-                    <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-50">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-3xl bg-slate-50">
                       <Users
                         className="w-3.5 h-3.5"
                         style={{ color: mainColor }}

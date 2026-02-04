@@ -227,14 +227,14 @@ export default function BimLearningProgress({ courses, tryouts, liveClasses }: B
                     {/* Top Badges */}
                     <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 items-end">
                       {liveClass.isPremium && (
-                        <div className="px-2 py-0.5 rounded-md bg-amber-400 text-white text-[10px] font-bold shadow-sm">
+                        <div className="px-2 py-0.5 rounded-3xl bg-amber-400 text-white text-[10px] font-bold shadow-sm">
                           PRO
                         </div>
                       )}
                     </div>
 
                     <div className="absolute top-3 left-3 z-10">
-                       <div className="bg-rose-500 text-white text-[10px] px-2 py-0.5 font-bold rounded-md animate-pulse shadow-sm">
+                       <div className="bg-rose-500 text-white text-[10px] px-2 py-0.5 font-bold rounded-3xl animate-pulse shadow-sm">
                           LIVE
                        </div>
                     </div>

@@ -7,14 +7,14 @@ export function WelcomeIllustration({ color }: { color: string }) {
   return (
     <div className="w-[200px]">
       <div
-        className="rounded-xl p-3 border shadow-sm"
+        className="rounded-3xl p-3 border shadow-sm"
         style={{ backgroundColor: 'white', borderColor: `${color}20` }}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5">
             <div
-              className="w-5 h-5 rounded-md flex items-center justify-center"
+              className="w-5 h-5 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: `${color}15` }}
             >
               <Swords className="w-3 h-3" style={{ color }} />
@@ -48,7 +48,7 @@ export function WelcomeIllustration({ color }: { color: string }) {
         </div>
         {/* Start button */}
         <div
-          className="flex items-center justify-center gap-1 py-1.5 rounded-lg text-[9px] font-bold text-white"
+          className="flex items-center justify-center gap-1 py-1.5 rounded-3xl text-[9px] font-bold text-white"
           style={{ backgroundColor: color }}
         >
           <Play className="w-2.5 h-2.5" />
@@ -65,7 +65,7 @@ export function LibraryIllustration({ color }: { color: string }) {
     <div className="w-[200px]">
       {/* Search bar */}
       <div
-        className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg border mb-2"
+        className="flex items-center gap-2 px-2.5 py-1.5 rounded-3xl border mb-2"
         style={{ backgroundColor: 'white', borderColor: `${color}20` }}
       >
         <div className="w-3 h-3 rounded-full border-2 border-slate-300" />
@@ -76,7 +76,7 @@ export function LibraryIllustration({ color }: { color: string }) {
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="rounded-lg p-2 border"
+            className="rounded-3xl p-2 border"
             style={{
               backgroundColor: i === 1 ? `${color}08` : 'white',
               borderColor: i === 1 ? `${color}30` : '#e2e8f0',
@@ -111,7 +111,7 @@ export function ProgressIllustration({ color }: { color: string }) {
   return (
     <div className="w-[200px]">
       <div
-        className="rounded-xl p-3 border"
+        className="rounded-3xl p-3 border"
         style={{ backgroundColor: 'white', borderColor: `${color}20` }}
       >
         {/* Header */}
@@ -171,7 +171,7 @@ export function LeaderboardIllustration({ color }: { color: string }) {
   return (
     <div className="w-[200px]">
       <div
-        className="rounded-xl p-3 border"
+        className="rounded-3xl p-3 border"
         style={{ backgroundColor: 'white', borderColor: `${color}20` }}
       >
         {/* Header */}
@@ -184,7 +184,7 @@ export function LeaderboardIllustration({ color }: { color: string }) {
           {ranks.map((r) => (
             <div
               key={r.rank}
-              className="flex items-center gap-2 p-1.5 rounded-lg"
+              className="flex items-center gap-2 p-1.5 rounded-3xl"
               style={{ backgroundColor: r.bg }}
             >
               <div

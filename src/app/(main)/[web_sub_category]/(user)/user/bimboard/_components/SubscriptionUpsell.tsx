@@ -99,7 +99,7 @@ export default function SubscriptionUpsell({
           <Button
             variant="ghost"
             size="sm"
-            className="w-full bg-white text-primary text-xs font-bold h-10 rounded-xl shadow-md hover:bg-slate-50 hover:scale-[1.02] transition-all"
+            className="w-full bg-white text-primary text-xs font-bold h-10 rounded-3xl shadow-md hover:bg-slate-50 hover:scale-[1.02] transition-all"
             style={{ color: mainColor }}
           >
             Lihat Detail Langganan <ChevronRight className="w-3.5 h-3.5 ml-1" />

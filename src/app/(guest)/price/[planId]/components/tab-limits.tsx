@@ -69,7 +69,7 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center"
+                        className="w-12 h-12 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <div style={{ color: mainColor }}>
@@ -141,7 +141,7 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
                   </div>
 
                   {/* Feature highlight */}
-                  <div className="mt-4 p-3 rounded-xl bg-white border border-slate-100">
+                  <div className="mt-4 p-3 rounded-3xl bg-white border border-slate-100">
                     <div className="flex items-center gap-2 text-sm">
                       <CheckCircle2
                         className="w-4 h-4 shrink-0"
@@ -162,7 +162,7 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
             <div className="p-5 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50">
               <div className="text-center">
                 <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-3"
+                  className="w-14 h-14 rounded-3xl flex items-center justify-center mx-auto mb-3"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <TrendingUp className="w-7 h-7" style={{ color: mainColor }} />

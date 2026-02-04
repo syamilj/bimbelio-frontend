@@ -82,14 +82,14 @@ export function PlanDataTable({ plans, getData, type }: PlanDataTableProps) {
   const router = useRouter();
   if (plans.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 text-center border rounded-lg bg-gray-50/50 dashed border-gray-200">
+      <div className="flex flex-col items-center justify-center p-8 text-center border rounded-3xl bg-gray-50/50 dashed border-gray-200">
         <p className="text-muted-foreground">No plans found in this category.</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-3xl border">
       <Table>
         <TableHeader>
           <TableRow>

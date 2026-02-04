@@ -163,7 +163,7 @@ export function QuizSummary() {
               {/* Quick Stats - Mobile horizontal scroll */}
               <div className="flex gap-3 md:gap-4 overflow-x-auto pb-1 -mx-4 px-4 md:mx-0 md:px-0" style={{ scrollbarWidth: 'none' }}>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white/20 flex items-center justify-center">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-3xl bg-white/20 flex items-center justify-center">
                     <Trophy className="w-4 h-4 md:w-5 md:h-5 text-white" />
                   </div>
                   <div>
@@ -180,7 +180,7 @@ export function QuizSummary() {
                 </div>
                 <div className="w-px h-8 bg-white/20 flex-shrink-0 self-center" />
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white/20 flex items-center justify-center">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-3xl bg-white/20 flex items-center justify-center">
                     <Zap className="w-4 h-4 md:w-5 md:h-5 text-amber-300" />
                   </div>
                   <div>
@@ -192,7 +192,7 @@ export function QuizSummary() {
                 </div>
                 <div className="w-px h-8 bg-white/20 flex-shrink-0 self-center" />
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white/20 flex items-center justify-center">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-3xl bg-white/20 flex items-center justify-center">
                     <Target className="w-4 h-4 md:w-5 md:h-5 text-white" />
                   </div>
                   <div>
@@ -217,13 +217,13 @@ export function QuizSummary() {
                       <Swords className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
                     </div>
                     <div className="flex gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-3xl bg-white/15 flex items-center justify-center">
                         <Trophy className="w-4 h-4 text-amber-300" />
                       </div>
-                      <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-3xl bg-white/15 flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-white" />
                       </div>
-                      <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-3xl bg-white/15 flex items-center justify-center">
                         <GraduationCap className="w-4 h-4 text-white" />
                       </div>
                     </div>
@@ -247,7 +247,7 @@ export function QuizSummary() {
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 rounded-3xl flex items-center justify-center"
                 style={{ backgroundColor: `${mainColor}15` }}
               >
                 <Calendar className="w-5 h-5" style={{ color: mainColor }} />
@@ -300,7 +300,7 @@ export function QuizSummary() {
           <div className="flex items-center gap-3 mb-3">
             <div
               className={cn(
-                'w-10 h-10 rounded-xl flex items-center justify-center',
+                'w-10 h-10 rounded-3xl flex items-center justify-center',
                 isVolumeEnded ? 'bg-slate-100' : ''
               )}
               style={{ backgroundColor: isVolumeEnded ? undefined : `${mainColor}15` }}
@@ -334,7 +334,7 @@ export function QuizSummary() {
               <div key={item.label} className="flex-1 text-center">
                 <div
                   className={cn(
-                    'rounded-xl py-2 px-1',
+                    'rounded-3xl py-2 px-1',
                     isVolumeEnded ? 'bg-slate-100' : ''
                   )}
                   style={{

@@ -284,14 +284,14 @@ export default function QuizOnboarding() {
                 return (
                   <div
                     key={i}
-                    className="rounded-xl p-2.5 text-center border"
+                    className="rounded-3xl p-2.5 text-center border"
                     style={{
                       backgroundColor: `${mainColor}05`,
                       borderColor: `${mainColor}10`,
                     }}
                   >
                     <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-1"
+                      className="w-8 h-8 rounded-3xl flex items-center justify-center mx-auto mb-1"
                       style={{ backgroundColor: `${mainColor}12` }}
                     >
                       <Icon className="w-4 h-4" style={{ color: mainColor }} />
@@ -313,7 +313,7 @@ export default function QuizOnboarding() {
             {isLastStep ? (
               <Button
                 onClick={handleNext}
-                className="w-full h-10 rounded-xl text-sm font-bold gap-2 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                className="w-full h-10 rounded-3xl text-sm font-bold gap-2 transition-all hover:scale-[1.01] active:scale-[0.99]"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}
@@ -328,13 +328,13 @@ export default function QuizOnboarding() {
                   size="icon"
                   onClick={handlePrev}
                   disabled={currentStep === 0}
-                  className="w-9 h-9 rounded-lg text-slate-400 hover:text-slate-600 disabled:opacity-30"
+                  className="w-9 h-9 rounded-3xl text-slate-400 hover:text-slate-600 disabled:opacity-30"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </Button>
                 <Button
                   onClick={handleNext}
-                  className="flex-1 h-10 rounded-xl text-sm font-bold gap-1 transition-all hover:opacity-90 active:scale-[0.99]"
+                  className="flex-1 h-10 rounded-3xl text-sm font-bold gap-1 transition-all hover:opacity-90 active:scale-[0.99]"
                   style={{
                     background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                   }}

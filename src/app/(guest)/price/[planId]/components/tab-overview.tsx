@@ -74,7 +74,7 @@ export default function TabOverview({
                   >
                     <div className="flex items-start gap-4">
                       <div
-                        className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center"
+                        className="shrink-0 w-11 h-11 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <Check className="w-5 h-5" style={{ color: mainColor }} />
@@ -148,7 +148,7 @@ export default function TabOverview({
                   >
                     <div className="flex items-center gap-3 mb-4">
                       <div
-                        className="w-11 h-11 rounded-xl flex items-center justify-center"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <div style={{ color: mainColor }}>
@@ -175,10 +175,10 @@ export default function TabOverview({
                           (pivot) => (
                             <div
                               key={pivot.id}
-                              className="flex items-center gap-3 p-2 rounded-xl bg-white border border-slate-100"
+                              className="flex items-center gap-3 p-2 rounded-3xl bg-white border border-slate-100"
                             >
                               <div
-                                className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold"
+                                className="w-6 h-6 rounded-3xl text-white text-xs flex items-center justify-center font-bold"
                                 style={{ backgroundColor: mainColor }}
                               >
                                 {pivot.Category.nomor}
@@ -191,9 +191,9 @@ export default function TabOverview({
                           ),
                         )}
                       {feature.type === 'DOCUMENT' && (
-                        <div className="flex gap-3 p-2 rounded-xl bg-white border border-slate-100">
+                        <div className="flex gap-3 p-2 rounded-3xl bg-white border border-slate-100">
                           <div
-                            className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
+                            className="w-6 h-6 rounded-3xl text-white text-xs flex items-center justify-center font-bold shrink-0"
                             style={{ backgroundColor: mainColor }}
                           >
                             <LockOpen className="w-3 h-3" />
@@ -205,9 +205,9 @@ export default function TabOverview({
                       )}
                       {feature.type === 'LIVECLASS' &&
                         feature.liveClassesPerWeek && (
-                          <div className="flex gap-3 p-2 rounded-xl bg-white border border-slate-100">
+                          <div className="flex gap-3 p-2 rounded-3xl bg-white border border-slate-100">
                             <div
-                              className="w-6 h-6 rounded-lg text-white text-xs flex items-center justify-center font-bold shrink-0"
+                              className="w-6 h-6 rounded-3xl text-white text-xs flex items-center justify-center font-bold shrink-0"
                               style={{ backgroundColor: mainColor }}
                             >
                               <Play className="w-3 h-3" />
@@ -271,7 +271,7 @@ export default function TabOverview({
                 >
                   <div className="flex items-start gap-4 mb-4">
                     <div
-                      className="w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold text-base shrink-0"
+                      className="w-11 h-11 rounded-3xl flex items-center justify-center text-white font-bold text-base shrink-0"
                       style={{ backgroundColor: mainColor }}
                     >
                       {index + 1}
@@ -281,7 +281,7 @@ export default function TabOverview({
                         {pivot.LiveClass.title}
                       </h4>
                       <div className="flex flex-wrap items-center gap-2 text-sm">
-                        <div className="flex items-center gap-1 px-2 py-1 bg-white rounded-lg border border-slate-100">
+                        <div className="flex items-center gap-1 px-2 py-1 bg-white rounded-3xl border border-slate-100">
                           <Clock
                             className="w-4 h-4"
                             style={{ color: mainColor }}
@@ -290,7 +290,7 @@ export default function TabOverview({
                             {pivot.LiveClass.duration}m
                           </span>
                         </div>
-                        <div className="flex items-center gap-1 px-2 py-1 bg-white rounded-lg border border-slate-100">
+                        <div className="flex items-center gap-1 px-2 py-1 bg-white rounded-3xl border border-slate-100">
                           <Users
                             className="w-4 h-4"
                             style={{ color: mainColor }}
@@ -313,7 +313,7 @@ export default function TabOverview({
                   {pivot.LiveClass.Instructor && (
                     <div className="flex items-center gap-2 pt-3 border-t border-slate-100">
                       <div
-                        className="w-6 h-6 rounded-lg flex items-center justify-center"
+                        className="w-6 h-6 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <Users className="w-3 h-3" style={{ color: mainColor }} />
@@ -411,7 +411,7 @@ export default function TabOverview({
                     className="group p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center hover:shadow-md transition-all duration-300 relative"
                   >
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-3"
+                      className="w-14 h-14 rounded-3xl flex items-center justify-center mx-auto mb-3"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <div style={{ color: mainColor }}>
@@ -477,7 +477,7 @@ export default function TabOverview({
             <div className="mt-6 p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div className="flex items-start gap-4">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                  className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <Infinity className="w-5 h-5" style={{ color: mainColor }} />

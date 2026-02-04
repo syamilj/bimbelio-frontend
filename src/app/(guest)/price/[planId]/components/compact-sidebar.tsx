@@ -110,7 +110,7 @@ export default function CompactSidebar({
               <div className="flex items-center justify-between py-2.5 px-3 bg-slate-50 rounded-2xl border border-slate-100">
                 <span className="text-slate-700 flex items-center gap-2 text-sm font-medium">
                   <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    className="w-7 h-7 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <Clock className="w-3.5 h-3.5" style={{ color: mainColor }} />
@@ -132,7 +132,7 @@ export default function CompactSidebar({
             <div className="flex items-center justify-between py-2.5 px-3 bg-slate-50 rounded-2xl border border-slate-100">
               <span className="text-slate-700 flex items-center gap-2 text-sm font-medium">
                 <div
-                  className="w-7 h-7 rounded-lg flex items-center justify-center"
+                  className="w-7 h-7 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <Video className="w-3.5 h-3.5" style={{ color: mainColor }} />
@@ -187,7 +187,7 @@ export default function CompactSidebar({
           {/* Compact Trust Indicators */}
           <div className="pt-3 border-t border-slate-100">
             <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="p-2 rounded-xl bg-slate-50">
+              <div className="p-2 rounded-3xl bg-slate-50">
                 <div
                   className="text-lg font-black"
                   style={{ color: mainColor }}
@@ -196,7 +196,7 @@ export default function CompactSidebar({
                 </div>
                 <div className="text-xs text-slate-600 font-medium">Success</div>
               </div>
-              <div className="p-2 rounded-xl bg-slate-50">
+              <div className="p-2 rounded-3xl bg-slate-50">
                 <div
                   className="text-lg font-black"
                   style={{ color: mainColor }}
@@ -205,7 +205,7 @@ export default function CompactSidebar({
                 </div>
                 <div className="text-xs text-slate-600 font-medium">Score</div>
               </div>
-              <div className="p-2 rounded-xl bg-slate-50">
+              <div className="p-2 rounded-3xl bg-slate-50">
                 <div
                   className="text-lg font-black"
                   style={{ color: mainColor }}

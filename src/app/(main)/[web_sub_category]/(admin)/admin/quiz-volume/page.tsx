@@ -268,7 +268,7 @@ export default function QuizVolumePage() {
                         <div className="flex items-center justify-center gap-2">
                           <Link
                             href={`./quiz-volume/${volume.id}`}
-                            className="p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                            className="p-2 rounded-3xl hover:bg-blue-50 transition-colors"
                             style={{ color: mainColor }}
                           >
                             <Edit className="w-4 h-4" />
@@ -282,7 +282,7 @@ export default function QuizVolumePage() {
                             description={`Are you sure you want to delete Volume ${volume.number} - "${volume.title}"? This action cannot be undone.`}
                             type="delete"
                           >
-                            <button className="p-2 rounded-lg hover:bg-red-50 text-red-500 transition-colors">
+                            <button className="p-2 rounded-3xl hover:bg-red-50 text-red-500 transition-colors">
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </ModalVerification>
@@ -303,7 +303,7 @@ export default function QuizVolumePage() {
                                 volume.TryoutCategory.map((category) => (
                                   <div
                                     key={category.id}
-                                    className="border border-slate-200 rounded-lg p-4 bg-white"
+                                    className="border border-slate-200 rounded-3xl p-4 bg-white"
                                   >
                                     <h4 className="font-bold text-slate-900 mb-3">
                                       {category.name}
@@ -411,7 +411,7 @@ export default function QuizVolumePage() {
               </p>
               <Link
                 href="./quiz-volume/new"
-                className="flex items-center gap-2 px-4 py-2 text-white font-bold text-sm rounded-lg hover:opacity-90 transition-all"
+                className="flex items-center gap-2 px-4 py-2 text-white font-bold text-sm rounded-3xl hover:opacity-90 transition-all"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}

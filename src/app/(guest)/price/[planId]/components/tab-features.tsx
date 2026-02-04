@@ -31,7 +31,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
             >
               <CardTitle className="flex items-center gap-4 text-xl">
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                  className="w-11 h-11 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}
                 >
                   {getFeatureIcon(feature.type)}
@@ -65,7 +65,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                     >
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-9 h-9 rounded-lg text-white text-sm flex items-center justify-center font-bold shrink-0"
+                          className="w-9 h-9 rounded-3xl text-white text-sm flex items-center justify-center font-bold shrink-0"
                           style={{ backgroundColor: mainColor }}
                         >
                           {pivot.Category.nomor}
@@ -87,7 +87,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                   <div className="group/item col-span-3 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-4">
                       <div
-                        className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center shrink-0"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <BookOpen className="w-5 h-5" style={{ color: mainColor }} />
@@ -113,7 +113,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                   <div className="group/item col-span-3 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-4">
                       <div
-                        className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                        className="w-11 h-11 rounded-3xl flex items-center justify-center shrink-0"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <Play className="w-5 h-5" style={{ color: mainColor }} />
@@ -140,7 +140,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
               <div className="mt-5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
                 <div className="flex items-start gap-3">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                    className="w-8 h-8 rounded-3xl flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${secondaryColor}15` }}
                   >
                     <CheckCircle2 className="w-4 h-4" style={{ color: secondaryColor }} />

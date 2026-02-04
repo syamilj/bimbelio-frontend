@@ -101,7 +101,7 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div
-                      className="w-5 h-5 rounded-lg flex items-center justify-center"
+                      className="w-5 h-5 rounded-3xl flex items-center justify-center"
                       style={{ backgroundColor: `${mainColor}15` }}
                     >
                       <Play
@@ -119,10 +119,10 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
                     {[1, 2, 3].map((num) => (
                       <div
                         key={num}
-                        className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-50 group-hover:bg-slate-100 transition-colors"
+                        className="flex items-center gap-2.5 p-2 rounded-3xl bg-slate-50 group-hover:bg-slate-100 transition-colors"
                       >
                         <div
-                          className="w-6 h-6 rounded-lg text-white text-[10px] flex items-center justify-center font-bold flex-shrink-0"
+                          className="w-6 h-6 rounded-3xl text-white text-[10px] flex items-center justify-center font-bold flex-shrink-0"
                           style={{ backgroundColor: mainColor }}
                         >
                           {num}
@@ -145,13 +145,13 @@ export default function TabCourse({ plan }: { plan: PlanDataType }) {
 
                 {/* Features */}
                 <div className="flex gap-2 pt-2 border-t border-slate-100">
-                  <div className="flex-1 flex items-center gap-1.5 p-2 rounded-xl bg-emerald-50">
+                  <div className="flex-1 flex items-center gap-1.5 p-2 rounded-3xl bg-emerald-50">
                     <Layers className="w-3.5 h-3.5 text-emerald-600" />
                     <span className="text-[10px] font-medium text-emerald-700">
                       Video
                     </span>
                   </div>
-                  <div className="flex-1 flex items-center gap-1.5 p-2 rounded-xl bg-purple-50">
+                  <div className="flex-1 flex items-center gap-1.5 p-2 rounded-3xl bg-purple-50">
                     <BookOpen className="w-3.5 h-3.5 text-purple-600" />
                     <span className="text-[10px] font-medium text-purple-700">
                       Materi

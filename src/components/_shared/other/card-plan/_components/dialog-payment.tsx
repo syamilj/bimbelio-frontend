@@ -454,7 +454,7 @@ const PaymentMethodSelection = ({
           className="group w-full p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 bg-white transition-all text-left flex items-center gap-4 cursor-pointer active:scale-[0.98]"
         >
           <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+            className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
             style={{ backgroundColor: `${mainColor}15` }}
           >
             <CreditCard size={22} style={{ color: mainColor }} />
@@ -482,7 +482,7 @@ const PaymentMethodSelection = ({
           className="group w-full p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/50 bg-white transition-all text-left cursor-pointer active:scale-[0.98]"
         >
           <div className="flex items-center gap-4 mb-3">
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-emerald-100 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 bg-emerald-100 group-hover:scale-110 transition-transform">
               <Coins size={22} className="text-emerald-600" />
             </div>
             <div className="flex-1 min-w-0">
@@ -508,7 +508,7 @@ const PaymentMethodSelection = ({
           </div>
 
           {/* Installment breakdown with due dates */}
-          <div className="space-y-2 p-3 bg-slate-50 rounded-xl">
+          <div className="space-y-2 p-3 bg-slate-50 rounded-3xl">
             {plan.PlanInstallmentConfig?.PlanInstallmentSchedule.map(
               (schedule) => (
                 <div key={schedule.id} className="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
@@ -537,7 +537,7 @@ const PaymentMethodSelection = ({
       </div>
 
       {/* Tips */}
-      <div className="mt-4 p-2.5 bg-amber-50 border border-amber-200 rounded-xl">
+      <div className="mt-4 p-2.5 bg-amber-50 border border-amber-200 rounded-3xl">
         <p className="text-[10px] text-amber-700">
           <span className="font-semibold">💡 Tips:</span> Cicilan tanpa bunga, bisa diangsur sesuai jadwal!
         </p>
@@ -564,7 +564,7 @@ const HeaderSection = () => {
         <DialogHeader>
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+              className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <ShoppingBag size={18} style={{ color: mainColor }} />
@@ -617,7 +617,7 @@ const FormUserInformation = ({
           value={telp}
           onChange={handlePhoneChange}
           className={cn(
-            "h-10 text-sm rounded-xl pl-9 pr-10 border-2",
+            "h-10 text-sm rounded-3xl pl-9 pr-10 border-2",
             isValid ? "border-emerald-300 bg-emerald-50/50" : "border-slate-200 bg-white"
           )}
           required
@@ -674,7 +674,7 @@ const FormVoucher = ({
             value={voucherCode}
             disabled={!!discountPrice}
             onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
-            className="h-9 text-sm border border-slate-200 rounded-xl pl-8 bg-white"
+            className="h-9 text-sm border border-slate-200 rounded-3xl pl-8 bg-white"
           />
           <Tag size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
         </div>
@@ -683,7 +683,7 @@ const FormVoucher = ({
           variant="outline"
           size="sm"
           className={cn(
-            'h-9 px-3 rounded-xl text-xs font-semibold',
+            'h-9 px-3 rounded-3xl text-xs font-semibold',
             discountPrice
               ? 'border-red-200 text-red-600 hover:bg-red-50'
               : 'border-emerald-200 text-emerald-600 hover:bg-emerald-50',
@@ -707,7 +707,7 @@ const FormVoucher = ({
       )}
 
       {discountPrice && (
-        <div className="flex items-center gap-2 mt-2 p-2 bg-emerald-100 rounded-lg">
+        <div className="flex items-center gap-2 mt-2 p-2 bg-emerald-100 rounded-3xl">
           <CheckCircle2 size={14} className="text-emerald-600" />
           <span className="text-xs font-medium text-emerald-700">
             Hemat {paymentMethod === 'INSTALLMENT' && firstInstallmentPrice

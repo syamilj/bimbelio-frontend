@@ -143,7 +143,7 @@ export default function PlanDetailPage() {
                     )}
                     {plan.recommended && (
                       <div
-                        className="absolute top-2 right-2 w-8 h-8 rounded-xl flex items-center justify-center text-white"
+                        className="absolute top-2 right-2 w-8 h-8 rounded-3xl flex items-center justify-center text-white"
                         style={{
                           background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                         }}
@@ -209,7 +209,7 @@ export default function PlanDetailPage() {
                     plan.PlanInstallmentConfig.PlanInstallmentSchedule.length >
                       0 && (
                       <div
-                        className="p-3 rounded-xl border"
+                        className="p-3 rounded-3xl border"
                         style={{
                           backgroundColor: `${mainColor}08`,
                           borderColor: `${mainColor}30`,
@@ -217,7 +217,7 @@ export default function PlanDetailPage() {
                       >
                         <div className="flex items-center gap-2 mb-2">
                           <div
-                            className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-[10px] font-bold"
+                            className="w-6 h-6 rounded-3xl flex items-center justify-center text-white text-[10px] font-bold"
                             style={{ backgroundColor: mainColor }}
                           >
                             {
@@ -241,7 +241,7 @@ export default function PlanDetailPage() {
                           ).map((schedule) => (
                             <div
                               key={schedule.id}
-                              className="flex-shrink-0 px-2.5 py-1.5 rounded-lg bg-white border border-slate-200"
+                              className="flex-shrink-0 px-2.5 py-1.5 rounded-3xl bg-white border border-slate-200"
                             >
                               <p className="text-[10px] text-slate-500">
                                 Cicilan ke-{schedule.installmentNumber}
@@ -260,7 +260,7 @@ export default function PlanDetailPage() {
 
                   {/* Kuota */}
                   {plan.maxUsers && (
-                    <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50 border border-amber-200">
+                    <div className="flex items-center gap-2 p-2 rounded-3xl bg-amber-50 border border-amber-200">
                       <Users className="w-4 h-4 text-amber-600" />
                       <span className="text-xs font-medium text-amber-800">
                         {plan.totalUsers || 0}/{plan.maxUsers} kuota terisi
@@ -310,7 +310,7 @@ export default function PlanDetailPage() {
             <section className="rounded-3xl border-2 border-slate-200 bg-white p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center"
+                  className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <Star className="w-4 h-4" style={{ color: mainColor }} />
@@ -328,7 +328,7 @@ export default function PlanDetailPage() {
                       className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-100"
                     >
                       <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                        className="w-7 h-7 rounded-3xl flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <Check
@@ -363,7 +363,7 @@ export default function PlanDetailPage() {
               <section className="rounded-3xl border-2 border-slate-200 bg-white p-4 sm:p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center"
+                    className="w-8 h-8 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     <BookOpen
@@ -385,7 +385,7 @@ export default function PlanDetailPage() {
                       >
                         <div className="flex items-center gap-2 mb-2">
                           <div
-                            className="w-7 h-7 rounded-lg flex items-center justify-center"
+                            className="w-7 h-7 rounded-3xl flex items-center justify-center"
                             style={{ backgroundColor: `${mainColor}15` }}
                           >
                             <div style={{ color: mainColor }}>
@@ -424,7 +424,7 @@ export default function PlanDetailPage() {
             <section className="rounded-3xl border-2 border-slate-200 bg-white p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center"
+                  className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <Layers className="w-4 h-4" style={{ color: mainColor }} />
@@ -451,7 +451,7 @@ export default function PlanDetailPage() {
                         }}
                       >
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center font-bold text-sm">
+                          <div className="w-8 h-8 rounded-3xl bg-white/20 flex items-center justify-center font-bold text-sm">
                             {pivot.Category.nomor}
                           </div>
                           <div className="min-w-0">
@@ -468,7 +468,7 @@ export default function PlanDetailPage() {
                         {[1, 2, 3].map((num) => (
                           <div
                             key={num}
-                            className="flex items-center gap-2 p-1.5 rounded-lg bg-slate-50"
+                            className="flex items-center gap-2 p-1.5 rounded-3xl bg-slate-50"
                           >
                             <div
                               className="w-5 h-5 rounded text-white text-[10px] flex items-center justify-center font-bold"
@@ -498,7 +498,7 @@ export default function PlanDetailPage() {
             <section className="rounded-3xl border-2 border-slate-200 bg-white p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center"
+                  className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <Video className="w-4 h-4" style={{ color: mainColor }} />
@@ -557,11 +557,11 @@ export default function PlanDetailPage() {
                           {pivot.LiveClass.title}
                         </h3>
                         <div className="flex flex-wrap gap-1.5">
-                          <span className="flex items-center gap-1 text-[10px] text-slate-500 px-2 py-1 bg-slate-50 rounded-lg">
+                          <span className="flex items-center gap-1 text-[10px] text-slate-500 px-2 py-1 bg-slate-50 rounded-3xl">
                             <Calendar className="w-3 h-3" />
                             {formatDate(pivot.LiveClass.startDate)}
                           </span>
-                          <span className="flex items-center gap-1 text-[10px] text-slate-500 px-2 py-1 bg-slate-50 rounded-lg">
+                          <span className="flex items-center gap-1 text-[10px] text-slate-500 px-2 py-1 bg-slate-50 rounded-3xl">
                             <Clock className="w-3 h-3" />
                             {pivot.LiveClass.duration}m
                           </span>
@@ -592,7 +592,7 @@ export default function PlanDetailPage() {
             <section className="rounded-3xl border-2 border-slate-200 bg-white p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div
-                  className="w-8 h-8 rounded-xl flex items-center justify-center"
+                  className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
                   <Coins className="w-4 h-4" style={{ color: mainColor }} />
@@ -610,7 +610,7 @@ export default function PlanDetailPage() {
                       className="flex-shrink-0 w-[140px] sm:w-auto p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center"
                     >
                       <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2"
+                        className="w-10 h-10 rounded-3xl flex items-center justify-center mx-auto mb-2"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
                         <div style={{ color: mainColor }}>
