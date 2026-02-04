@@ -92,7 +92,7 @@ const Card: React.FC<CardProps> = ({
             {status && (
               <div
                 className={cn(
-                  'px-2 py-1 rounded-lg border text-xs font-medium',
+                  'px-2 py-1 rounded-3xl border text-xs font-medium',
                   getStatusBadge(),
                 )}
               >
@@ -247,7 +247,7 @@ const Card: React.FC<CardProps> = ({
         {/* Keyboard Shortcut Hint */}
         {!disabled && (
           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="bg-black/70 text-white text-xs px-2 py-1 rounded-md">
+            <div className="bg-black/70 text-white text-xs px-2 py-1 rounded-3xl">
               {shortcut}
             </div>
           </div>

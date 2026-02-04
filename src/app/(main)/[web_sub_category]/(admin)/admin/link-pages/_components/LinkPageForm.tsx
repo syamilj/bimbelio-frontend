@@ -499,7 +499,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                           </p>
 
                           {shortUrls.length > 0 && (
-                            <div className="mt-4 rounded-md border p-4">
+                            <div className="mt-4 rounded-3xl border p-4">
                               <h4 className="mb-2 text-sm font-medium">
                                 Connected Short Links
                               </h4>
@@ -549,7 +549,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                           control={form.control as any}
                           name="isActive"
                           render={({ field }) => (
-                            <FormItem className="flex flex-col space-y-2 rounded-lg border p-4">
+                            <FormItem className="flex flex-col space-y-2 rounded-3xl border p-4">
                               <div className="flex items-center justify-between gap-4">
                                 <div>
                                   <FormLabel>Active</FormLabel>
@@ -572,7 +572,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                           control={form.control as any}
                           name="isPublic"
                           render={({ field }) => (
-                            <FormItem className="flex flex-col space-y-2 rounded-lg border p-4">
+                            <FormItem className="flex flex-col space-y-2 rounded-3xl border p-4">
                               <div className="flex items-center justify-between gap-4">
                                 <div>
                                   <FormLabel>Indexable</FormLabel>
@@ -800,7 +800,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                               <FormControl>
                                 <div className="space-y-4">
                                   {field.value && (
-                                    <div className="relative h-48 w-full overflow-hidden rounded-lg border">
+                                    <div className="relative h-48 w-full overflow-hidden rounded-3xl border">
                                       {watchBackgroundType === 'VIDEO' ? (
                                         <video
                                           src={field.value}
@@ -948,7 +948,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                         )}
                       />
 
-                      <div className="rounded-lg border bg-white p-4 shadow-sm">
+                      <div className="rounded-3xl border bg-white p-4 shadow-sm">
                         <p className="text-xs uppercase text-muted-foreground">
                           Google Preview
                         </p>
@@ -1013,7 +1013,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                         control={form.control as any}
                         name="enableReferralTracking"
                         render={({ field }) => (
-                          <FormItem className="flex flex-col space-y-2 rounded-lg border p-4">
+                          <FormItem className="flex flex-col space-y-2 rounded-3xl border p-4">
                             <div className="flex items-center justify-between">
                               <div>
                                 <FormLabel>Enable Referral Tracking</FormLabel>
@@ -1070,7 +1070,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                         control={form.control as any}
                         name="isABTest"
                         render={({ field }) => (
-                          <FormItem className="flex flex-col space-y-2 rounded-lg border p-4">
+                          <FormItem className="flex flex-col space-y-2 rounded-3xl border p-4">
                             <div className="flex items-center justify-between">
                               <div>
                                 <FormLabel>Enable A/B Testing</FormLabel>
@@ -1129,7 +1129,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                         control={form.control as any}
                         name="enableMetaCAPI"
                         render={({ field }) => (
-                          <FormItem className="space-y-3 rounded-lg border bg-white p-4">
+                          <FormItem className="space-y-3 rounded-3xl border bg-white p-4">
                             <div className="flex items-center justify-between gap-4">
                               <div>
                                 <FormLabel>Meta Conversion API</FormLabel>
@@ -1170,7 +1170,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                         control={form.control as any}
                         name="enableTikTokEvents"
                         render={({ field }) => (
-                          <FormItem className="space-y-3 rounded-lg border bg-white p-4">
+                          <FormItem className="space-y-3 rounded-3xl border bg-white p-4">
                             <div className="flex items-center justify-between gap-4">
                               <div>
                                 <FormLabel>TikTok Events API</FormLabel>
@@ -1209,7 +1209,7 @@ export default function LinkPageForm({ mode, linkPageId }: LinkPageFormProps) {
                       />
 
                       {(metaEnabled || tiktokEnabled) && (
-                        <div className="rounded-lg border border-blue-200 bg-blue-100 p-4 text-sm text-blue-900">
+                        <div className="rounded-3xl border border-blue-200 bg-blue-100 p-4 text-sm text-blue-900">
                           <p className="font-semibold">
                             ✨ Pixel tracking enabled
                           </p>

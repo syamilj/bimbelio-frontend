@@ -8,30 +8,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 import {
-  Award,
+  Calendar,
+  ChevronRight,
   Clock,
-  Crown,
   GraduationCap,
-  Medal,
-  Star,
+  Play,
+  Sparkles,
   Swords,
+  Target,
   Timer,
   TrendingUp,
   Trophy,
   Users,
   Zap,
 } from 'lucide-react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useQuizProvider } from '../_provider/_provider';
-import { DecorativePatterns } from './DecorativePatterns';
-import { COUNTDOWN_INTERVAL_MS, formatNumber } from './quiz-dummy';
-import { TargetUniversity, UserStats } from './quiz-types';
+import { COUNTDOWN_INTERVAL_MS } from './quiz-dummy';
 
-interface QuizHeroProps {
-  userStats: UserStats;
-  targetUniversity?: TargetUniversity;
-}
 const DEFAULT_COUNTDOWN = {
   days: 0,
   hours: 0,
@@ -68,35 +65,6 @@ function useCountdown(endTime: Date | undefined) {
 
   return countdown;
 }
-// Get icon component based on type
-const getPlayerIcon = (iconType: string) => {
-  switch (iconType) {
-    case 'Crown':
-      return Crown;
-    case 'Medal':
-      return Medal;
-    case 'Award':
-      return Award;
-    case 'Star':
-    default:
-      return Star;
-  }
-};
-
-// Get icon color based on rank
-const getPlayerColor = (iconType: string) => {
-  switch (iconType) {
-    case 'Crown':
-      return 'text-amber-500';
-    case 'Medal':
-      return 'text-slate-400';
-    case 'Award':
-      return 'text-orange-500';
-    default:
-      return 'text-slate-400';
-  }
-};
-
 export function QuizSummary() {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -136,355 +104,258 @@ export function QuizSummary() {
   const rankChange = 0;
 
   return (
-    <div
-      className="relative overflow-hidden rounded-3xl"
-      style={{
-        background: `linear-gradient(135deg, ${mainColor}15 0%, ${secondaryColor}10 100%)`,
-      }}
-    >
-      {/* Decorative Background */}
-      <DecorativePatterns.GradientMesh colors={[mainColor, secondaryColor]} />
-      <DecorativePatterns.DotPattern id="quiz-hero-dots" />
-
-      {/* Live Competition Banner */}
+    <div className="space-y-4">
+      {/* Hero Card with Illustration */}
       <div
-        className="relative border-b"
+        className="relative overflow-hidden rounded-3xl md:rounded-3xl"
         style={{
-          backgroundColor: `${mainColor}15`,
-          borderColor: `${mainColor}20`,
+          background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
         }}
       >
-        <div className="flex items-center justify-between px-4 md:px-6 py-2.5">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-              </span>
-              <span className="text-xs font-bold text-slate-700">
-                LIVE COMPETITION
-              </span>
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-20 -right-20 w-40 h-40 md:w-64 md:h-64 rounded-full bg-white/10 blur-2xl" />
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 md:w-48 md:h-48 rounded-full bg-white/5 blur-xl" />
+          <div className="absolute top-1/2 right-0 w-20 h-20 md:w-32 md:h-32 rounded-full bg-white/5" />
+        </div>
+
+        <div className="relative z-10 p-4 md:p-6 lg:p-8">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+            {/* Left: Content */}
+            <div className="flex-1 space-y-3 md:space-y-4">
+              {/* Badge */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-sm">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                  </span>
+                  <span className="text-[10px] md:text-xs font-bold text-white/90">
+                    LIVE
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm">
+                  <Swords className="w-3 h-3 text-white/80" />
+                  <span className="text-[10px] md:text-xs font-bold text-white/90">
+                    Battle Mode
+                  </span>
+                </div>
+                {SingleQuizVolume && SingleQuizVolume?.totalUserSubscribed > 0 && (
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm">
+                    <Users className="w-3 h-3 text-white/80" />
+                    <span className="text-[10px] md:text-xs font-bold text-white/90">
+                      {SingleQuizVolume.totalUserSubscribed.toLocaleString()} Peserta
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Title */}
+              <div>
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-black text-white mb-1">
+                  BimArena Quiz
+                </h1>
+                <p className="text-xs md:text-sm text-white/70 font-medium">
+                  Bertarung untuk menjadi yang terbaik! 🔥
+                </p>
+              </div>
+
+              {/* Quick Stats - Mobile horizontal scroll */}
+              <div className="flex gap-3 md:gap-4 overflow-x-auto pb-1 -mx-4 px-4 md:mx-0 md:px-0" style={{ scrollbarWidth: 'none' }}>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white/20 flex items-center justify-center">
+                    <Trophy className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/60 font-medium">Rank</p>
+                    <p className="text-sm md:text-base font-black text-white flex items-center gap-1">
+                      #{userStats?.rank || '-'}
+                      {rankChange > 0 && (
+                        <span className="text-[10px] text-emerald-300 flex items-center">
+                          <TrendingUp className="w-2.5 h-2.5" />+{rankChange}
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+                <div className="w-px h-8 bg-white/20 flex-shrink-0 self-center" />
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white/20 flex items-center justify-center">
+                    <Zap className="w-4 h-4 md:w-5 md:h-5 text-amber-300" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/60 font-medium">Skor</p>
+                    <p className="text-sm md:text-base font-black text-white">
+                      {userStats?.totalScore?.toLocaleString() || '-'}
+                    </p>
+                  </div>
+                </div>
+                <div className="w-px h-8 bg-white/20 flex-shrink-0 self-center" />
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-white/20 flex items-center justify-center">
+                    <Target className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-white/60 font-medium">Target</p>
+                    <p className="text-sm md:text-base font-black text-white line-clamp-1 max-w-[100px] md:max-w-[140px]">
+                      {targetUniversity?.name || 'Pilih PTN'}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            {/* <div className="hidden md:flex items-center gap-1.5 text-xs text-slate-500">
-              <Users className="w-3 h-3" />
-              <span className="font-mono font-bold text-slate-700">
-                {liveOnline.toLocaleString()}
-              </span>
-              <span>peserta aktif</span>
-            </div> */}
-          </div>
-          <div className="flex items-center gap-3">
-            <div
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs text-white font-bold"
-              style={{ backgroundColor: mainColor }}
-            >
-              <Swords className="w-3 h-3" />
-              <span>Battle Mode</span>
+
+            {/* Right: Illustration Placeholder */}
+            <div className="hidden md:flex items-center justify-center">
+              <div className="relative w-[180px] h-[180px] lg:w-[220px] lg:h-[220px]">
+                {/* Placeholder with gradient */}
+                <div className="absolute inset-0 rounded-3xl bg-white/10 backdrop-blur-sm flex items-center justify-center overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
+                  {/* Decorative illustration elements */}
+                  <div className="relative z-10 flex flex-col items-center gap-2">
+                    <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-3xl bg-white/20 flex items-center justify-center">
+                      <Swords className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+                        <Trophy className="w-4 h-4 text-amber-300" />
+                      </div>
+                      <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+                        <Sparkles className="w-4 h-4 text-white" />
+                      </div>
+                      <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center">
+                        <GraduationCap className="w-4 h-4 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Glow effect */}
+                <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl -z-10" />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="relative z-10 p-6 md:p-8">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-          {/* Left: Title & Competition Stats */}
-          <div className="flex-1">
-            <div className="flex items-center gap-4 mb-5">
+      {/* Volume & Countdown Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+        {/* Volume Selector Card */}
+        <div
+          className="rounded-3xl p-4 border bg-white"
+          style={{ borderColor: `${mainColor}20` }}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
               <div
-                className="w-14 h-14 rounded-3xl flex items-center justify-center shadow-lg"
-                style={{ backgroundColor: mainColor }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: `${mainColor}15` }}
               >
-                <Swords className="w-7 h-7 text-white" />
+                <Calendar className="w-5 h-5" style={{ color: mainColor }} />
               </div>
               <div>
-                <h1 className="text-2xl md:text-3xl font-black text-slate-800">
-                  BimArena Quiz
-                </h1>
-                <p className="text-sm text-slate-500 font-medium">
-                  Bertarung untuk menjadi yang terbaik! 🔥
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  Volume Aktif
                 </p>
-              </div>
-            </div>
-
-            {/* Your Battle Stats - Horizontal scroll on mobile */}
-            <div className="relative mt-4">
-              <div
-                className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                <style>{`.hero-stats::-webkit-scrollbar { display: none; }`}</style>
-                <div className="hero-stats flex md:grid md:grid-cols-4 gap-2 md:gap-3 min-w-max md:min-w-0">
-                  <div
-                    className="flex-shrink-0 w-[130px] md:w-auto rounded-3xl md:rounded-3xl p-3 md:p-4 border"
-                    style={{
-                      backgroundColor: `${mainColor}08`,
-                      borderColor: `${mainColor}15`,
-                    }}
+                <Select
+                  value={selectedVolumeId || undefined}
+                  onValueChange={(value) => setSelectedVolumeId(value)}
+                >
+                  <SelectTrigger
+                    className="p-0 h-auto border-none shadow-none font-bold text-base bg-transparent focus:ring-0"
+                    style={{ color: mainColor }}
                   >
-                    <div className="flex items-center gap-1.5 md:gap-2 mb-1">
-                      <Trophy
-                        className="w-3.5 h-3.5 md:w-4 md:h-4"
-                        style={{ color: mainColor }}
-                      />
-                      <span className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase">
-                        Peringkat
-                      </span>
-                    </div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-xl md:text-2xl font-black text-slate-800">
-                        #{userStats?.rank || '-'}
-                      </span>
-                      {rankChange > 0 && (
-                        <span className="text-[10px] md:text-xs text-emerald-600 font-bold flex items-center">
-                          <TrendingUp className="w-2.5 h-2.5 md:w-3 md:h-3" />+
-                          {rankChange}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div
-                    className="flex-shrink-0 w-[130px] md:w-auto rounded-3xl md:rounded-3xl p-3 md:p-4 border"
-                    style={{
-                      backgroundColor: `${mainColor}08`,
-                      borderColor: `${mainColor}15`,
-                    }}
-                  >
-                    <div className="flex items-center gap-1.5 md:gap-2 mb-1">
-                      <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-500" />
-                      <span className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase">
-                        Total Skor
-                      </span>
-                    </div>
-                    <span className="text-xl md:text-2xl font-black text-slate-800">
-                      {userStats?.totalScore || '-'}
-                    </span>
-                  </div>
-
-                  <div
-                    className="flex-shrink-0 w-[130px] md:w-auto rounded-3xl md:rounded-3xl p-3 md:p-4 border"
-                    style={{
-                      backgroundColor: `${mainColor}08`,
-                      borderColor: `${mainColor}15`,
-                    }}
-                  >
-                    <div className="flex items-center gap-1.5 md:gap-2 mb-1">
-                      <GraduationCap className="w-3.5 h-3.5 md:w-4 md:h-4 text-blue-500" />
-                      <span className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase">
-                        Target PTN
-                      </span>
-                    </div>
-                    <p
-                      className="text-sm md:text-base font-black text-slate-800 line-clamp-1"
-                      title={targetUniversity?.name}
-                    >
-                      {targetUniversity?.name || 'Pilih PTN'}
-                    </p>
-                    {targetUniversity?.major && (
-                      <p className="text-[9px] md:text-[10px] text-slate-500 line-clamp-1">
-                        {targetUniversity.major}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* <div
-                    className="flex-shrink-0 w-[130px] md:w-auto rounded-3xl md:rounded-3xl p-3 md:p-4 border"
-                    style={{
-                      backgroundColor: `${mainColor}08`,
-                      borderColor: `${mainColor}15`,
-                    }}
-                  >
-                    <div className="flex items-center gap-1.5 md:gap-2 mb-1">
-                      <Flame className="w-3.5 h-3.5 md:w-4 md:h-4 text-orange-500" />
-                      <span className="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase">
-                        Streak
-                      </span>
-                    </div>
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-xl md:text-2xl font-black text-slate-800">
-                        -
-                      </span>
-                      <span className="text-xs md:text-sm font-bold text-slate-600">
-                        hari 🔥
-                      </span>
-                    </div>
-                  </div> */}
-                </div>
-              </div>
-            </div>
-
-            {/* Competition Pills - Horizontal scroll on mobile */}
-            <div className="relative mt-4 md:mt-5">
-              <div
-                className="overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                <style>{`.hero-pills::-webkit-scrollbar { display: none; }`}</style>
-                <div className="hero-pills flex gap-2 min-w-max">
-                  {SingleQuizVolume &&
-                    SingleQuizVolume?.totalUserSubscribed > 0 && (
-                      <div
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border flex-shrink-0"
-                        style={{
-                          backgroundColor: `${mainColor}10`,
-                          borderColor: `${mainColor}20`,
-                          color: mainColor,
-                        }}
+                    <SelectValue placeholder="Pilih Volume" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {QuizVolumeList?.map((vol) => (
+                      <SelectItem
+                        key={vol.id}
+                        value={vol.id}
+                        disabled={vol.status === 'DRAFT'}
                       >
-                        <Users className="w-3.5 h-3.5" />
-                        <span>
-                          {SingleQuizVolume?.totalUserSubscribed.toLocaleString()}{' '}
-                          Peserta Terdaftar
-                        </span>
-                      </div>
-                    )}
-                </div>
+                        <div className="flex items-center justify-between w-full gap-2">
+                          <span>{vol.title}</span>
+                          {vol.status === 'DRAFT' && (
+                            <Clock className="w-3 h-3 text-amber-500" />
+                          )}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
+            <ChevronRight className="w-5 h-5 text-slate-300" />
+          </div>
+        </div>
 
-            {/* Mini Live Leaderboard */}
-            <div className="mt-5 bg-white rounded-3xl p-4 border border-slate-200 shadow-sm">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <Crown className="w-4 h-4 text-amber-500" /> Top 5 Saat Ini
-                </p>
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        {/* Countdown Card */}
+        <div
+          className={cn(
+            'rounded-3xl p-4 border',
+            isVolumeEnded ? 'bg-slate-50' : 'bg-white'
+          )}
+          style={{ borderColor: isVolumeEnded ? '#e2e8f0' : `${mainColor}20` }}
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div
+              className={cn(
+                'w-10 h-10 rounded-xl flex items-center justify-center',
+                isVolumeEnded ? 'bg-slate-100' : ''
+              )}
+              style={{ backgroundColor: isVolumeEnded ? undefined : `${mainColor}15` }}
+            >
+              {isVolumeEnded ? (
+                <Clock className="w-5 h-5 text-slate-400" />
+              ) : isVolumeStarted ? (
+                <Play className="w-5 h-5" style={{ color: mainColor }} />
+              ) : (
+                <Timer className="w-5 h-5" style={{ color: mainColor }} />
+              )}
+            </div>
+            <p className={cn(
+              'text-xs font-bold uppercase tracking-wider',
+              isVolumeEnded ? 'text-slate-400' : 'text-slate-500'
+            )}>
+              {isVolumeEnded
+                ? 'Kompetisi Berakhir'
+                : isVolumeStarted
+                  ? 'Berakhir Dalam'
+                  : 'Dimulai Dalam'}
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {[
+              { value: countdown.days, label: 'Hari' },
+              { value: countdown.hours, label: 'Jam' },
+              { value: countdown.minutes, label: 'Menit' },
+              { value: countdown.seconds, label: 'Detik' },
+            ].map((item, i) => (
+              <div key={item.label} className="flex-1 text-center">
+                <div
+                  className={cn(
+                    'rounded-xl py-2 px-1',
+                    isVolumeEnded ? 'bg-slate-100' : ''
+                  )}
+                  style={{
+                    backgroundColor: isVolumeEnded ? undefined : `${mainColor}10`,
+                  }}
+                >
+                  <span
+                    className={cn(
+                      'text-lg md:text-xl font-black font-mono',
+                      isVolumeEnded ? 'text-slate-400' : ''
+                    )}
+                    style={{ color: isVolumeEnded ? undefined : mainColor }}
+                  >
+                    {String(item.value).padStart(2, '0')}
+                  </span>
+                </div>
+                <span className="text-[9px] font-bold text-slate-400 uppercase mt-1 block">
+                  {item.label}
                 </span>
               </div>
-              <div className="space-y-2">
-                {UserStatistic?.topFive?.map((player) => {
-                  const type =
-                    player.rank === 1
-                      ? 'Crown'
-                      : player.rank === 2
-                        ? 'Medal'
-                        : player.rank === 3
-                          ? 'Award'
-                          : 'Star';
-                  const PlayerIcon = getPlayerIcon(type);
-                  const playerColor = getPlayerColor(type);
-                  return (
-                    <div
-                      key={player.rank}
-                      className="flex items-center gap-3 p-2 rounded-3xl"
-                      style={{
-                        backgroundColor:
-                          player.rank <= 3 ? `${mainColor}05` : 'transparent',
-                      }}
-                    >
-                      <div
-                        className="w-6 h-6 rounded-3xl flex items-center justify-center"
-                        style={{
-                          backgroundColor:
-                            player.rank <= 3
-                              ? `${mainColor}15`
-                              : `${mainColor}08`,
-                        }}
-                      >
-                        <PlayerIcon className={`w-3.5 h-3.5 ${playerColor}`} />
-                      </div>
-                      <span className="text-xs font-bold text-slate-700 flex-1 truncate">
-                        {player.name}
-                      </span>
-                      <span className="text-xs font-mono text-slate-500">
-                        {formatNumber(player.totalScore)}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Volume Selector & Countdown */}
-          <div className="flex flex-col gap-4 lg:items-end">
-            {/* Volume Selector */}
-            <div
-              className="flex items-center gap-3 p-1.5 rounded-3xl border"
-              style={{
-                backgroundColor: `${mainColor}08`,
-                borderColor: `${mainColor}15`,
-              }}
-            >
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider pl-3">
-                Volume:
-              </span>
-              <Select
-                value={selectedVolumeId || undefined}
-                onValueChange={(value) => setSelectedVolumeId(value)}
-              >
-                <SelectTrigger
-                  className="w-[160px] border-none shadow-none font-bold bg-transparent focus:ring-0"
-                  style={{ color: mainColor }}
-                >
-                  <SelectValue placeholder="Pilih Volume" />
-                </SelectTrigger>
-                <SelectContent>
-                  {QuizVolumeList?.map((vol) => (
-                    <SelectItem
-                      key={vol.id}
-                      value={vol.id}
-                      disabled={vol.status === 'DRAFT'}
-                    >
-                      <div className="flex items-center justify-between w-full gap-2">
-                        <span>{vol.title}</span>
-                        {vol.status === 'DRAFT' && (
-                          <Clock className="w-3 h-3 text-amber-500" />
-                        )}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Countdown */}
-            <div
-              className="rounded-3xl p-4 border bg-white shadow-sm"
-              style={{ borderColor: `${mainColor}15` }}
-            >
-              <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider mb-3 flex items-center gap-1.5">
-                <Timer className="w-3 h-3" />{' '}
-                {isVolumeEnded
-                  ? 'Kompetisi Sudah Berakhir'
-                  : isVolumeStarted
-                    ? 'Kompetisi Berakhir Dalam'
-                    : 'Kompetisi Dimulai Dalam'}
-              </p>
-              <div className="flex gap-2">
-                {[
-                  { value: countdown.days, label: 'Hari' },
-                  { value: countdown.hours, label: 'Jam' },
-                  { value: countdown.minutes, label: 'Menit' },
-                  { value: countdown.seconds, label: 'Detik' },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="text-center"
-                  >
-                    <div
-                      className="rounded-3xl px-3 py-2 min-w-[48px] border"
-                      style={{
-                        backgroundColor: `${mainColor}10`,
-                        borderColor: `${mainColor}20`,
-                      }}
-                    >
-                      <span
-                        className="text-xl font-black font-mono"
-                        style={{ color: mainColor }}
-                      >
-                        {String(item.value).padStart(2, '0')}
-                      </span>
-                    </div>
-                    <span className="text-[9px] font-bold text-slate-400 uppercase mt-1 block">
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

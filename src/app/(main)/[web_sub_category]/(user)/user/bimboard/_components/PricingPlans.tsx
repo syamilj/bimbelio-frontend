@@ -133,8 +133,8 @@ export default function PricingPlans({
             style={{ color: mainColor }}
           />
           <h2 className="font-bold text-sm text-gray-900">Upgrade Premium</h2>
-          <Badge className="bg-amber-100 text-amber-700 border-0 text-[10px]">
-            <Sparkles className="w-3 h-3 mr-0.5" />
+          <Badge className="bg-amber-100 text-amber-700 border-0 text-[10px] px-2 py-0.5 rounded-full shadow-sm">
+            <Sparkles className="w-3 h-3 mr-0.5 fill-amber-500 text-amber-500" />
             Promo
           </Badge>
         </div>
@@ -142,7 +142,7 @@ export default function PricingPlans({
           <Button
             variant="ghost"
             size="sm"
-            className="text-xs h-6 px-2"
+            className="text-xs h-6 px-2 hover:bg-slate-50 transition-colors rounded-full"
             style={{ color: mainColor }}
           >
             Semua <ChevronRight className="w-3 h-3 ml-0.5" />
@@ -152,8 +152,8 @@ export default function PricingPlans({
 
       {/* Plans Cards - Horizontal Scroll */}
       {!loading && plans.length > 0 ? (
-        <div className="w-full overflow-x-auto scrollbar-hidden -mx-1 px-1">
-          <div className="flex gap-2 md:gap-3 pb-2">
+        <div className="w-full overflow-x-auto scrollbar-hidden -mx-4 px-4 md:-mx-1 md:px-1">
+          <div className="flex gap-4 md:gap-3 pb-4">
             {plans.map((plan, idx) => (
               <Link
                 key={plan.id}
@@ -161,41 +161,55 @@ export default function PricingPlans({
                 className="flex-shrink-0 group"
               >
                 <div
-                  className={`w-52 md:w-60 bg-white rounded-3xl overflow-hidden border-2 hover:shadow-lg transition-all cursor-pointer ${
-                    plan.isPopular ? 'shadow-md' : 'border-gray-100'
+                  className={`w-64 md:w-60 bg-white rounded-[1.5rem] overflow-hidden border-2 transition-all cursor-pointer hover:-translate-y-1 ${
+                    plan.isPopular
+                      ? 'shadow-lg ring-4 ring-offset-0'
+                      : 'border-gray-50 hover:border-gray-100 shadow-sm hover:shadow-md'
                   }`}
                   style={{
                     borderColor: plan.isPopular ? mainColor : undefined,
+                    boxShadow: plan.isPopular ? `0 10px 30px -10px ${mainColor}50` : undefined,
+                    // ringColor: plan.isPopular ? `${mainColor}20` : undefined, // Tailwind ring util handles opacity well, can hardcode class if needed
                   }}
                 >
                   {/* Plan Header */}
                   <div
-                    className="relative px-4 py-4"
+                    className="relative px-5 py-5"
                     style={{
                       background: plan.isPopular
-                        ? `linear-gradient(135deg, ${mainColor}, ${mainColor}cc)`
-                        : `linear-gradient(135deg, ${mainColor}15, ${mainColor}05)`,
+                        ? `linear-gradient(135deg, ${mainColor}, ${mainColor}dd)`
+                        : `linear-gradient(135deg, ${mainColor}08, ${mainColor}02)`,
                     }}
                   >
+                    {/* Decorative Blobs for Popular */}
                     {plan.isPopular && (
-                      <div className="absolute top-2 right-2">
-                        <Badge className="bg-white/20 text-white text-[10px] font-bold border-0">
+                       <>
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-10 -mt-10 blur-xl"></div>
+                        <div className="absolute bottom-0 left-0 w-20 h-20 bg-black opacity-5 rounded-full -ml-10 -mb-10 blur-xl"></div>
+                       </>
+                    )}
+
+                    {plan.isPopular && (
+                      <div className="absolute top-3 right-3">
+                        <Badge className="bg-white/20 backdrop-blur-md text-white text-[10px] font-bold border-0 px-2 py-0.5 shadow-sm">
                           <Star className="w-3 h-3 mr-0.5 fill-yellow-300 text-yellow-300" />
                           Populer
                         </Badge>
                       </div>
                     )}
 
-                    <div className="flex items-center gap-2 mb-2">
-                      <Crown
-                        className={`w-5 h-5 ${plan.isPopular ? 'text-white' : ''}`}
-                        style={{
-                          color: plan.isPopular ? undefined : mainColor,
-                        }}
-                      />
+                    <div className="flex items-center gap-2 mb-3 relative z-10">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${plan.isPopular ? 'bg-white/20' : 'bg-white shadow-sm'}`}>
+                         <Crown
+                          className={`w-4 h-4 ${plan.isPopular ? 'text-white' : ''}`}
+                          style={{
+                            color: plan.isPopular ? undefined : mainColor,
+                          }}
+                        />
+                      </div>
                       <span
-                        className={`text-xs font-medium ${
-                          plan.isPopular ? 'text-white/80' : 'text-gray-500'
+                        className={`text-xs font-bold uppercase tracking-wider ${
+                          plan.isPopular ? 'text-white/90' : 'text-gray-500'
                         }`}
                       >
                         {plan.tier || `Paket ${idx + 1}`}
@@ -203,16 +217,16 @@ export default function PricingPlans({
                     </div>
 
                     <h3
-                      className={`font-bold text-sm leading-tight line-clamp-2 ${
+                      className={`font-black text-lg leading-tight line-clamp-2 relative z-10 mb-2 ${
                         plan.isPopular ? 'text-white' : 'text-gray-900'
                       }`}
                     >
                       {plan.name}
                     </h3>
 
-                    <div className="flex items-baseline gap-1 mt-2">
+                    <div className="flex items-baseline gap-1 relative z-10">
                       <span
-                        className={`text-xl font-black ${plan.isPopular ? 'text-white' : ''}`}
+                        className={`text-2xl font-black ${plan.isPopular ? 'text-white' : ''}`}
                         style={{
                           color: plan.isPopular ? undefined : mainColor,
                         }}
@@ -223,31 +237,33 @@ export default function PricingPlans({
                   </div>
 
                   {/* Plan Body */}
-                  <div className="p-4">
-                    <div className="space-y-2 mb-4">
+                  <div className="p-5">
+                    <div className="space-y-3 mb-5">
                       {plan.features.slice(0, 4).map((f) => (
                         <div
                           key={f}
-                          className="flex items-center gap-2 text-xs text-gray-600"
+                          className="flex items-start gap-2 text-xs text-gray-600"
                         >
-                          <Check
-                            className="w-3.5 h-3.5 flex-shrink-0"
-                            style={{ color: mainColor }}
-                          />
-                          <span className="line-clamp-1">{f}</span>
+                          <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${plan.isPopular ? 'bg-white shadow-sm border border-gray-100' : 'bg-slate-50'}`}>
+                              <Check
+                                className="w-2.5 h-2.5"
+                                style={{ color: mainColor }}
+                              />
+                          </div>
+                          <span className="line-clamp-2 font-medium leading-relaxed">{f}</span>
                         </div>
                       ))}
                     </div>
 
                     <Button
                       size="sm"
-                      className={`w-full text-xs h-9 font-semibold ${
+                      className={`w-full rounded-2xl text-xs h-10 font-bold shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 ${
                         plan.isPopular ? 'text-white' : ''
                       }`}
                       style={{
                         backgroundColor: plan.isPopular
                           ? mainColor
-                          : `${mainColor}15`,
+                          : `${mainColor}10`,
                         color: plan.isPopular ? 'white' : mainColor,
                       }}
                     >
@@ -261,22 +277,22 @@ export default function PricingPlans({
           </div>
         </div>
       ) : loading ? (
-        <div className="flex justify-center py-8">
+        <div className="flex justify-center py-12">
           <div
-            className="animate-spin rounded-full h-8 w-8 border-2 border-gray-200"
+            className="animate-spin rounded-full h-10 w-10 border-2 border-gray-100"
             style={{ borderTopColor: mainColor }}
           />
         </div>
       ) : null}
 
       {/* Social Proof */}
-      <div className="flex items-center justify-center gap-4 mt-3 text-xs text-gray-500">
-        <div className="flex items-center gap-1">
-          <Users className="w-3 h-3" />
+      <div className="flex flex-wrap items-center justify-center gap-4 mt-2 text-xs text-gray-400 font-medium">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 rounded-full">
+          <Users className="w-3.5 h-3.5" />
           <span>5,000+ siswa</span>
         </div>
-        <div className="flex items-center gap-1">
-          <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 rounded-full">
+          <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
           <span>4.9 rating</span>
         </div>
       </div>

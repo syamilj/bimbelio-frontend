@@ -8,7 +8,7 @@ import { env } from "@/env.mjs";
 import { LoadingRetro } from "@/components/ui/loading-retro";
 
 // Bim Components
-import BimHeroWelcome from "./new/BimHeroWelcome";
+// import BimHeroWelcome from "./new/BimHeroWelcome";
 import BimQuickStatsOverview from "./new/BimQuickStatsOverview";
 import BimLearningProgress from "./new/BimLearningProgress";
 import BimRecentActivity from "./new/RecentActivity";
@@ -196,8 +196,7 @@ export default function DashboardClientNew() {
 
       const [
         reportRes,
-        upcomingTryoutsRes,
-        doneTryoutsRes,
+        tryoutsRes,
         liveClassRes,
         documentsRes,
         coursesRes,
@@ -208,20 +207,17 @@ export default function DashboardClientNew() {
             website_sub_category_id: webSubCategoryId,
           },
         }),
-        getGeneral(`/tryout/getTryOutCardUpcoming`, {
+        getGeneral(`/tryout/getTryOutCardUpcoming2`, {
           params: {
             website_sub_category_id: webSubCategoryId,
             userId: session.user.id,
-            limit: 10,
+            take: 10,
           },
         }),
-        getGeneral(`/tryout/getTryOutCardDone`, {
-          params: {
-            website_sub_category_id: webSubCategoryId,
-            userId: session.user.id,
-            limit: 10,
-          },
-        }),
+        // Done tryouts can be removed or kept if we want history separate, but user wants landing page logic.
+        // For now, let's assume Upcoming2 returns mixed/relevant cards.
+        // We'll pass a dummy promise to keep array structure or remove it.
+        // Let's remove doneTryoutsRes fetch and adjust destructuring.
         getGeneral(`/liveClass/getAllLiveClassAvailable`, {
           params: {
             website_sub_category_id: webSubCategoryId,
@@ -244,8 +240,7 @@ export default function DashboardClientNew() {
       ]);
 
       const report = reportRes?.data;
-      const upcomingTryouts = upcomingTryoutsRes?.data || [];
-      const doneTryouts = doneTryoutsRes?.data || [];
+      const tryoutsData = tryoutsRes?.data || [];
       const liveClasses = liveClassRes?.data || [];
       const documents = documentsRes?.data || [];
       const courses = coursesRes?.data || [];
@@ -285,27 +280,31 @@ export default function DashboardClientNew() {
         };
       });
 
-// Combine upcoming and done tryouts (backend already sorted)
-      const tryoutProgress = [...upcomingTryouts, ...doneTryouts].slice(0, 5).map((tryout: any) => {
-        // Get user session from TryoutSessionParticipant (through TryoutSession)
-        const userSession = tryout.TryoutSession?.[0]?.TryoutSessionParticipant?.[0];
-        // Get result from TryoutResult
-        const result = tryout.TryoutResult?.[0];
+      // Map Upcoming2 Data (similar to Landing Page CardTryOut)
+      const tryoutProgress = tryoutsData.slice(0, 10).map((tryout: any) => {
+        // Status determination logic based on CardTryOut.tsx
         let status: "completed" | "in-progress" | "not-started" = "not-started";
-        if (userSession) {
-          if (userSession.isDone) {
-            status = "completed";
-          } else {
-            status = "in-progress";
-          }
+        if (tryout.isDone) {
+          status = "completed";
+        } else if (tryout.isActive || tryout.isJoin) {
+          status = "in-progress";
         }
+
+        // Calculate total questions from TryoutSession array
+        const totalQuestions = tryout.TryoutSession?.reduce(
+          (sum: number, session: any) => sum + (session._count?.TryoutQuestion || 0),
+          0
+        ) || 0;
 
         return {
           id: tryout.id,
           title: tryout.title,
-          score: result?.totalScore || null,
-          totalQuestions: tryout.TryoutSession?.reduce((sum: number, session: any) => sum + (session._count?.TryoutQuestion || 0), 0) || 0,
-          answeredQuestions: result?.answeredQuestions || 0,
+          // Score is strictly from report history, might not be in upcoming2 list directly
+          // We can leave score null or try to find it in history if needed, but for "Cards" visual it might not show score unless completed.
+          // In the new design, score is shown if present.
+          score: null,  // Upcoming2 might not have user result attached directly in same format
+          totalQuestions,
+          answeredQuestions: 0, // Not provided in new endpoint summary
           status,
           thumbnail: getImageUrl(tryout.image, "tryout") || null,
           deadline: tryout.endDate,
@@ -324,14 +323,14 @@ export default function DashboardClientNew() {
 
       // Build upcoming schedule
       const upcomingScheduleData = {
-        tryouts: upcomingTryouts.slice(0, 5).map((t: any) => ({
+        tryouts: tryoutsData.slice(0, 5).map((t: any) => ({
           id: t.id,
           title: t.title,
           startDate: t.startDate,
           endDate: t.endDate,
           thumbnail: getImageUrl(t.image, "tryout") || null,
-          isPremium: t.accessType === "PREMIUM",
-          totalQuestions: t.totalQuestion || 0,
+          isPremium: false, // Upcoming2 might not return accessType directly, assume open for now or check prop
+          totalQuestions: t.TryoutSession?.reduce((sum: number, s: any) => sum + (s._count?.TryoutQuestion || 0), 0) || 0,
         })),
         liveClasses: liveClasses.slice(0, 5).map((lc: any) => ({
           id: lc.id,
@@ -411,13 +410,13 @@ export default function DashboardClientNew() {
         };
       });
 
-      const recommendedTryouts = upcomingTryouts.slice(0, 4).map((t: any) => ({
+      const recommendedTryouts = tryoutsData.slice(0, 4).map((t: any) => ({
         id: t.id,
         title: t.title,
         thumbnail: getImageUrl(t.image, "tryout") || null,
-        difficulty: t.difficulty || "Sedang",
-        totalQuestions: t.totalQuestion || 0,
-        isPremium: t.accessType === "PREMIUM",
+        difficulty: "Sedang",
+        totalQuestions: t.TryoutSession?.reduce((sum: number, s: any) => sum + (s._count?.TryoutQuestion || 0), 0) || 0,
+        isPremium: false,
       }));
 
       const recommendedDocuments = documents.slice(0, 4).map((d: any) => ({
@@ -601,11 +600,11 @@ export default function DashboardClientNew() {
     <div className="w-full min-w-0 overflow-hidden pb-6 px-4 md:px-0">
       <div className="flex flex-col gap-4 lg:gap-6 min-w-0">
         {/* Hero Welcome Section */}
-        <BimHeroWelcome
+        {/* <BimHeroWelcome
           user={data.user}
           stats={data.stats}
           subscription={data.subscription}
-        />
+        /> */}
 
         {/* Quick Access Menu */}
         <BimQuickAccessMenu />

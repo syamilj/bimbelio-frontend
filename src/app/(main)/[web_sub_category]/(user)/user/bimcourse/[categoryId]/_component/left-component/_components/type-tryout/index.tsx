@@ -152,15 +152,15 @@ const TryoutType = () => {
               </div>
 
               <div className="flex flex-wrap gap-4 text-white/90 text-sm">
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5">
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-3xl px-3 py-1.5">
                   <FileText className="w-4 h-4" />
                   <span>{userAnswers?.length || 0} Soal</span>
                 </div>
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5">
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-3xl px-3 py-1.5">
                   <CheckCircle2 className="w-4 h-4" />
                   <span>{answered()} Terjawab</span>
                 </div>
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-1.5">
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-3xl px-3 py-1.5">
                   <Clock className="w-4 h-4" />
                   <span>
                     {userAnswers ? userAnswers.length - answered() : 0} Tersisa
@@ -245,15 +245,15 @@ const TryoutType = () => {
                     {/* Legend */}
                     <div className="flex flex-wrap justify-center gap-4 mt-6 pt-4 border-t">
                       <div className="flex items-center gap-2 text-xs">
-                        <div className="w-6 h-6 rounded-md bg-gradient-to-br from-green-400 to-emerald-500 border border-green-400"></div>
+                        <div className="w-6 h-6 rounded-3xl bg-gradient-to-br from-green-400 to-emerald-500 border border-green-400"></div>
                         <span className="text-gray-600">Terjawab</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs">
-                        <div className="w-6 h-6 rounded-md bg-white border-2 border-gray-200"></div>
+                        <div className="w-6 h-6 rounded-3xl bg-white border-2 border-gray-200"></div>
                         <span className="text-gray-600">Belum Dijawab</span>
                       </div>
                       <div className="flex items-center gap-2 text-xs">
-                        <div className="w-6 h-6 rounded-md bg-blue-50 border-2 border-blue-500"></div>
+                        <div className="w-6 h-6 rounded-3xl bg-blue-50 border-2 border-blue-500"></div>
                         <span className="text-gray-600">Soal Aktif</span>
                       </div>
                     </div>

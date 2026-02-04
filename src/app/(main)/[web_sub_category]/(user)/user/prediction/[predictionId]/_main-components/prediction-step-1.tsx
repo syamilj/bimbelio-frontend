@@ -52,7 +52,7 @@ export default function PredictionStep1() {
           Program Studi Dipilih
         </h3>
         {!selectedPrograms ? (
-          <div className="text-center py-16 border border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+          <div className="text-center py-16 border border-dashed border-gray-200 rounded-3xl bg-gray-50/50">
             <School className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-500 font-medium">
               Belum ada program studi yang dipilih
@@ -96,7 +96,7 @@ export default function PredictionStep1() {
                     {selectedPrograms.passingGrade?.map((pg, pgIndex) => (
                       <div
                         key={pgIndex}
-                        className="flex justify-between items-center p-3 bg-gray-50 rounded-md"
+                        className="flex justify-between items-center p-3 bg-gray-50 rounded-3xl"
                       >
                         <div>
                           <p className="text-sm font-medium">

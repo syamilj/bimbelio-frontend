@@ -299,7 +299,7 @@ export default function FormSubmit({ mode }: { mode: 'edit' | 'create' }) {
           <div>
             <div className="flex items-center gap-3">
               <div
-                className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg"
+                className="w-12 h-12 rounded-3xl flex items-center justify-center text-white shadow-lg"
                 style={{
                   background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
                 }}

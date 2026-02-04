@@ -11,6 +11,8 @@ import {
   ArrowUp,
   ArrowUpDown,
   Award,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Crown,
   Filter,
@@ -180,98 +182,6 @@ export function QuizLeaderboard() {
             {formatNumber(BASE_ONLINE_PARTICIPANTS)}
           </span>
           <span>sedang battle</span>
-        </div>
-      </div>
-
-      {/* Your Battle Card */}
-      <div
-        className="relative overflow-hidden rounded-3xl md:rounded-3xl border-2 shadow-lg"
-        style={{
-          background: `linear-gradient(135deg, ${mainColor} 0%, ${secondaryColor} 100%)`,
-          borderColor: `${mainColor}`,
-        }}
-      >
-        {/* Animated background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-32 md:w-64 h-32 md:h-64 rounded-full bg-white/20 blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-24 md:w-48 h-24 md:h-48 rounded-full bg-white/10 blur-2xl" />
-        </div>
-
-        <div className="relative p-4 md:p-6">
-          {/* Header with Rank */}
-          <div className="flex items-center gap-3 md:gap-4 mb-4">
-            <div className="relative">
-              <div className="w-14 h-14 md:w-20 md:h-20 rounded-3xl md:rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-xl md:text-3xl font-black text-white shadow-xl border-2 border-white/30">
-                #{userStats?.rank || '-'}
-              </div>
-              {rankChange > 0 && (
-                <div className="absolute -top-1.5 -right-1.5 md:-top-2 md:-right-2 bg-emerald-500 text-white px-1.5 md:px-2 py-0.5 rounded-full text-[9px] md:text-xs font-bold flex items-center gap-0.5 shadow-lg">
-                  <TrendingUp className="w-2.5 h-2.5 md:w-3 md:h-3" />+
-                  {rankChange}
-                </div>
-              )}
-            </div>
-            <div className="text-white flex-1">
-              <p className="text-[9px] md:text-xs font-bold text-white/60 uppercase tracking-wider mb-0.5 md:mb-1">
-                🎮 Posisi Battle Kamu
-              </p>
-              <p className="text-lg md:text-3xl font-black">
-                Peringkat #{userStats?.rank || '-'}
-              </p>
-              <p className="text-xs md:text-sm text-white/80 font-medium">
-                dari {formatNumber(userStats?.totalParticipant || 0)} pejuang
-              </p>
-            </div>
-          </div>
-
-          {/* Stats - Horizontal scroll on mobile */}
-          <div className="relative">
-            <div
-              className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 pb-2"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              <style>{`.lb-stats::-webkit-scrollbar { display: none; }`}</style>
-              <div className="lb-stats flex gap-2 md:gap-3 min-w-max md:min-w-0">
-                <div className="bg-white/10 backdrop-blur-sm rounded-3xl md:rounded-3xl p-3 md:p-4 border border-white/20 text-center flex-shrink-0 w-[100px] md:w-auto md:min-w-[100px]">
-                  <div className="flex items-center gap-1 md:gap-1.5 justify-center mb-0.5 md:mb-1">
-                    <Zap className="w-3 h-3 md:w-4 md:h-4 text-yellow-300" />
-                    <p className="text-[8px] md:text-[10px] font-bold text-white/60 uppercase">
-                      Skor
-                    </p>
-                  </div>
-                  <p className="text-lg md:text-2xl font-black text-white">
-                    {(userStats?.totalScore || '-').toLocaleString()}
-                  </p>
-                </div>
-
-                <div className="bg-white/10 backdrop-blur-sm rounded-3xl md:rounded-3xl p-3 md:p-4 border border-white/20 text-center flex-shrink-0 w-[120px] md:w-auto md:min-w-[140px] md:max-w-[180px]">
-                  <div className="flex items-center gap-1 md:gap-1.5 justify-center mb-0.5 md:mb-1">
-                    <GraduationCap className="w-3 h-3 md:w-4 md:h-4 text-blue-300" />
-                    <p className="text-[8px] md:text-[10px] font-bold text-white/60 uppercase">
-                      Target
-                    </p>
-                  </div>
-                  <p
-                    className="text-xs md:text-sm font-black text-white line-clamp-1"
-                    title={targetUniversity?.name}
-                  >
-                    {targetUniversity?.name || 'Pilih PTN'}
-                  </p>
-                  <p className="text-[9px] md:text-[10px] text-white/60 line-clamp-1">
-                    {targetUniversity?.major || '-'}
-                  </p>
-                </div>
-
-                <button
-                  className="px-4 md:px-5 py-2.5 md:py-3 rounded-3xl font-bold text-xs md:text-sm transition-all shadow-lg flex items-center gap-1.5 md:gap-2 bg-white hover:bg-white/90 whitespace-nowrap flex-shrink-0"
-                  style={{ color: mainColor }}
-                >
-                  <Swords className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                  Battle
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -718,14 +628,13 @@ export function QuizLeaderboard() {
             </table>
           </div>
 
-          <div className="p-4 border-t border-slate-100">
-            <div className="flex items-center justify-between">
-              <div className="text-xs md:text-sm text-slate-600 font-medium">
-                Halaman {currentPage} dari {totalPages} • Menampilkan{' '}
-                {paginatedData.length} dari {filteredAndSortedData.length}{' '}
-                peserta
+          <div className="p-3 md:p-4 border-t border-slate-100">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-[10px] md:text-sm text-slate-600 font-medium text-center sm:text-left">
+                <span className="hidden sm:inline">Halaman {currentPage} dari {totalPages} • </span>
+                <span>Menampilkan {paginatedData.length} dari {filteredAndSortedData.length} peserta</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 md:gap-2">
                 <Button
                   variant="outline"
                   size="sm"
@@ -733,11 +642,12 @@ export function QuizLeaderboard() {
                     setCurrentPage((prev) => Math.max(1, prev - 1))
                   }
                   disabled={currentPage === 1}
-                  className="rounded-full font-bold text-xs"
+                  className="rounded-full font-bold text-[10px] md:text-xs h-7 md:h-8 px-2 md:px-3"
                 >
-                  ← Sebelumnya
+                  <ChevronLeft className="w-3 h-3 md:mr-1" />
+                  <span className="hidden md:inline">Sebelumnya</span>
                 </Button>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5 md:gap-1">
                   {Array.from({ length: totalPages }, (_, i) => i + 1)
                     .filter((page) => {
                       const distance = Math.abs(page - currentPage);
@@ -751,14 +661,14 @@ export function QuizLeaderboard() {
                     .map((page, idx, arr) => (
                       <div key={page}>
                         {idx > 0 && arr[idx - 1] !== page - 1 && (
-                          <span className="px-2 py-1 text-slate-400">...</span>
+                          <span className="px-1 text-slate-400 text-xs">...</span>
                         )}
                         <Button
                           variant={currentPage === page ? 'default' : 'outline'}
                           size="sm"
                           onClick={() => setCurrentPage(page)}
                           className={cn(
-                            'rounded-full font-bold text-xs w-8 h-8 p-0',
+                            'rounded-full font-bold text-[10px] md:text-xs w-6 h-6 md:w-8 md:h-8 p-0',
                             currentPage === page && 'text-white',
                           )}
                           style={
@@ -779,9 +689,10 @@ export function QuizLeaderboard() {
                     setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                   }
                   disabled={currentPage === totalPages}
-                  className="rounded-full font-bold text-xs"
+                  className="rounded-full font-bold text-[10px] md:text-xs h-7 md:h-8 px-2 md:px-3"
                 >
-                  Selanjutnya →
+                  <span className="hidden md:inline">Selanjutnya</span>
+                  <ChevronRight className="w-3 h-3 md:ml-1" />
                 </Button>
               </div>
             </div>
