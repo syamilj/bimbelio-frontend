@@ -127,28 +127,28 @@ export default function Row({
       style={{
         ...style,
         overflow: 'hidden',
-        paddingLeft: '1rem',
-        paddingRight: '1rem',
-        paddingBottom: '1rem',
+        paddingLeft: '0.75rem',
+        paddingRight: '0.75rem',
+        paddingBottom: '0.75rem',
         paddingTop: '0.5rem',
       }}
     >
       <div
         ref={rowRef}
         className={cn(
-          'flex w-full max-w-5xl mx-auto',
+          'flex w-full max-w-4xl mx-auto',
           isUser ? 'justify-end' : 'justify-start',
         )}
       >
         <div
           className={cn(
-            'flex gap-3 max-w-[85%] md:max-w-[75%]',
+            'flex gap-2.5 max-w-[92%] sm:max-w-[85%]',
             isUser ? 'flex-row-reverse' : 'flex-row',
           )}
         >
           {/* Avatar */}
-          <div className="shrink-0">
-            <Avatar className="w-8 h-8 border border-gray-200">
+          <div className="shrink-0 mt-1">
+            <Avatar className="w-7 h-7 sm:w-8 sm:h-8 border border-gray-200/80 shadow-sm">
               <AvatarFallback
                 className={cn(
                   'text-white font-semibold',
@@ -163,9 +163,9 @@ export default function Row({
                 }}
               >
                 {isUser ? (
-                  <User className="w-4 h-4" />
+                  <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 ) : (
-                  <Bot className="w-4 h-4" />
+                  <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 )}
               </AvatarFallback>
             </Avatar>
@@ -176,22 +176,22 @@ export default function Row({
             {/* Message Header */}
             <div
               className={cn(
-                'flex items-center gap-2 mb-2',
+                'flex items-center gap-1.5 mb-1.5',
                 isUser ? 'flex-row-reverse' : 'flex-row',
               )}
             >
               <div
                 className={cn(
-                  'flex items-center gap-2',
+                  'flex items-center gap-1.5',
                   isUser ? 'flex-row-reverse' : 'flex-row',
                 )}
               >
-                <span className="font-semibold text-sm">
+                <span className="font-semibold text-xs sm:text-sm text-slate-800">
                   {isUser ? session?.user?.name || 'You' : <><BimBot /> AI</>}
                 </span>
                 {!isUser && (
                   <div
-                    className="px-2 py-0.5 rounded-full text-xs font-bold text-white shadow-sm"
+                    className="px-1.5 py-0.5 rounded-full text-[10px] font-bold text-white"
                     style={{ backgroundColor: mainColor }}
                   >
                     AI
@@ -199,9 +199,8 @@ export default function Row({
                 )}
               </div>
               {currentMessage.createdAt && (
-                <span className="text-xs text-gray-500">
-                  {getHours(currentMessage.createdAt)} •{' '}
-                  {getDate(currentMessage.createdAt)}
+                <span className="text-[10px] sm:text-xs text-gray-400">
+                  {getHours(currentMessage.createdAt)} • {getDate(currentMessage.createdAt)}
                 </span>
               )}
             </div>
@@ -209,9 +208,9 @@ export default function Row({
             {/* Message Bubble */}
             <div
               className={cn(
-                'relative rounded-3xl px-4 py-3 shadow-sm border transition-all duration-200',
+                'relative rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 shadow-sm border transition-all duration-200',
                 isUser
-                  ? 'bg-white border-gray-200'
+                  ? 'bg-white border-gray-200/80'
                   : 'border-transparent shadow-md',
               )}
               style={{

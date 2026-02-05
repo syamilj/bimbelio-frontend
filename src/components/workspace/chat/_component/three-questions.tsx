@@ -97,84 +97,68 @@ export default function ThreeQuestions() {
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center bg-gray-50">
-      <div className="flex h-full w-full max-w-4xl flex-col items-center justify-center gap-8 px-6">
-        {/* Header Section */}
-        <div className="text-center space-y-4">
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full max-w-lg flex-col items-center justify-center gap-6 px-4">
+        {/* Header Section - Modern & Clean */}
+        <div className="text-center space-y-3">
           <div
-            className="w-16 h-16 mx-auto rounded-3xl flex items-center justify-center shadow-lg mb-4"
+            className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
           >
-            <Bot className="w-8 h-8 text-white" />
+            <Bot className="w-7 h-7 text-white" />
           </div>
 
-          <div className="space-y-2">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Halo,{' '}
-              <span style={{ color: mainColor }}>{session?.user.name}</span>
+          <div className="space-y-1">
+            <h1 className="text-xl font-black text-slate-900">
+              Halo, <span style={{ color: mainColor }}>{session?.user.name}</span>
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-slate-500 text-sm font-medium">
               Bagaimana kami dapat membantu Kamu hari ini?
             </p>
           </div>
         </div>
 
-        {/* Question Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
+        {/* Question Cards - Vertical Stack */}
+        <div className="flex flex-col gap-3 w-full">
           {ThirdQuestion.map((item, index) => {
             const IconComponent = item.icon;
             return (
               <button
                 key={index}
-                className="group relative overflow-hidden rounded-3xl bg-white p-6 text-left shadow-lg border border-gray-200 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:-translate-y-1"
+                className="group relative overflow-hidden rounded-2xl bg-white p-4 text-left shadow-sm border border-slate-200 transition-all duration-200 hover:shadow-md hover:border-slate-300 active:scale-[0.98]"
                 onClick={() => handleThreeQuestions(item.question)}
-                style={{
-                  borderColor: `${mainColor}20`,
-                }}
               >
-                {/* Background Pattern */}
-                <div
-                  className="absolute inset-0 opacity-5 transition-opacity group-hover:opacity-10"
-                  style={{ backgroundColor: mainColor }}
-                />
-
                 {/* Content */}
-                <div className="relative z-10 space-y-4">
+                <div className="flex items-start gap-3">
                   <div
-                    className="w-10 h-10 rounded-3xl flex items-center justify-center shadow-sm"
-                    style={{ backgroundColor: `${mainColor}15` }}
+                    className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: `${mainColor}12` }}
                   >
                     <IconComponent
-                      className="w-5 h-5"
+                      className="w-4 h-4"
                       style={{ color: mainColor }}
                     />
                   </div>
 
-                  <p className="text-gray-800 font-medium leading-relaxed group-hover:text-gray-900 transition-colors">
+                  <p className="text-slate-700 text-sm font-medium leading-relaxed flex-1 pt-1.5">
                     {item.question}
                   </p>
                 </div>
-
-                {/* Hover Effect */}
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"
-                  style={{ backgroundColor: mainColor }}
-                />
               </button>
             );
           })}
         </div>
 
-        {/* Footer Text */}
-        <div className="text-center space-y-3">
-          <p className="text-gray-600">
+        {/* Footer Text - Compact */}
+        <div className="text-center space-y-2">
+          <p className="text-slate-500 text-xs font-medium">
             Atau ajukan pertanyaan khusus di kolom chat di bawah
           </p>
-          <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-            <Sparkles className="w-4 h-4" />
-            <span>Didukung oleh AI terdepan</span>
+          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400">
+            <Sparkles className="w-3 h-3" />
+            <span>Powered by BimBot AI</span>
           </div>
         </div>
       </div>

@@ -599,7 +599,7 @@ export function AnalisisTab({
 
                       return (
                         <Card
-                          key={choice.univ}
+                          key={`${choice.univ}-${choice.major}-${index}`}
                           className="border-2 border-gray-100 rounded-3xl shadow-lg overflow-hidden"
                         >
                           <CardHeader
