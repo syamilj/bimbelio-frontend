@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 import { DialogBimbotAI } from './_components/dialog-bimbot-ai';
+import { BimbotController } from './_components/bimbot-controller';
 
 export const metadata: Metadata = {
   title: 'Belajar',
@@ -22,7 +23,9 @@ export default function LayoutUser({ children }: { children: ReactNode }) {
       <ProviderOnBoarding>
         <TooltipProvider>
           <LayoutUserClient>{children}</LayoutUserClient>
-          <DialogBimbotAI />
+          <BimbotController>
+            <DialogBimbotAI />
+          </BimbotController>
         </TooltipProvider>
       </ProviderOnBoarding>
     </div>
