@@ -112,7 +112,7 @@ const SummaryTryout = () => {
           <div className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-3xl p-5 text-center">
             <Target className="w-5 h-5 text-purple-600 mx-auto mb-2" />
             <div className="text-2xl font-bold text-purple-700">
-              {Summary?.AverageScore || 0}
+              {Summary?.AverageScore.toFixed(2) || 0}
             </div>
             <p className="text-xs text-purple-600 font-medium mt-1">
               Rata-rata Skor

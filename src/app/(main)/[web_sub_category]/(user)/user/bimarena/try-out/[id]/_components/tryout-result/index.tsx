@@ -512,7 +512,7 @@ export default function TryoutResult({
                       </div>
                     </motion.button>
 
-                    {false && (
+                    {mode === 'try-out' && (
                       <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}

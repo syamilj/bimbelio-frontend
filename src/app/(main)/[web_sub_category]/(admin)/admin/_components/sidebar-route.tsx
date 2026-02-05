@@ -138,6 +138,13 @@ const SidebarRoute: FC = () => {
     },
     {
       icon: Brain,
+      href: `/${website_sub_category_id}/admin/learning-analytics`,
+      label: 'Learning Analytics',
+      description: 'Learning analytics dashboard',
+      category: 'Education',
+    },
+    {
+      icon: Brain,
       href: `/${website_sub_category_id}/admin/category-tryout`,
       label: 'Tryout Categories',
       description: 'Kategori try out',
