@@ -33,36 +33,6 @@ const DEFAULT_COUNTDOWN = {
   seconds: 0,
 };
 
-// Internal countdown hook
-function useCountdown(endTime: Date | undefined) {
-  const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN);
-
-  useEffect(() => {
-    if (!endTime) return;
-
-    const interval = setInterval(() => {
-      const now = new Date();
-      const diff = endTime.getTime() - now.getTime();
-
-      if (diff <= 0) {
-        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-      );
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      setCountdown({ days, hours, minutes, seconds });
-    }, COUNTDOWN_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [endTime]);
-
-  return countdown;
-}
 export function QuizSummary() {
   const { websiteSubCategory } = useWebsiteSubCategory();
 
@@ -94,7 +64,36 @@ export function QuizSummary() {
     ? (SingleQuizVolume?.endDate ? new Date(SingleQuizVolume.endDate) : undefined)
     : (SingleQuizVolume?.startDate ? new Date(SingleQuizVolume.startDate) : undefined);
 
-  const countdown = useCountdown(countdownTarget);
+  // Countdown state - moved inline to fix hooks order issue
+  const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN);
+
+  useEffect(() => {
+    if (!countdownTarget) {
+      setCountdown(DEFAULT_COUNTDOWN);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = countdownTarget.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      );
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      setCountdown({ days, hours, minutes, seconds });
+    }, COUNTDOWN_INTERVAL_MS);
+
+    return () => clearInterval(interval);
+  }, [countdownTarget]);
 
   const rankChange = 0;
 
