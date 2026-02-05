@@ -17,14 +17,23 @@ const NextBreadcrumb = () => {
 
   const pathNames = paths?.split('/').filter((path) => path);
 
+  // Limit breadcrumb items on mobile
+  const displayPaths = pathNames?.slice(-3) || []; // Show max 3 items on mobile
+
   return (
-    <Breadcrumb className="hidden md:flex">
-      <BreadcrumbList>
-        {pathNames?.map((path, index) => {
-          let href = `/${pathNames.slice(0, index + 1).join('/')}`;
+    <Breadcrumb className="hidden sm:flex">
+      <BreadcrumbList className="flex-wrap">
+        {displayPaths?.map((path, index) => {
+          const fullIndex = pathNames!.length - displayPaths.length + index;
+          let href = `/${pathNames!.slice(0, fullIndex + 1).join('/')}`;
           if (path === 'dashboard') {
             href = '/user/bimboard';
           }
+
+          // Truncate long path names
+          const displayPath = path.length > 20
+            ? path.slice(0, 20) + '...'
+            : path;
 
           return (
             <div
@@ -32,22 +41,22 @@ const NextBreadcrumb = () => {
               className="flex items-center gap-2"
             >
               <BreadcrumbItem>
-                {index === pathNames.length - 1 ? (
-                  <BreadcrumbPage className="capitalize">
-                    {path.slice(0, 30).replace(/-/g, ' ')}
+                {index === displayPaths.length - 1 ? (
+                  <BreadcrumbPage className="capitalize max-w-[150px] md:max-w-none truncate">
+                    {displayPath.replace(/-/g, ' ')}
                   </BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild>
                     <Link
                       href={href}
-                      className="capitalize"
+                      className="capitalize max-w-[100px] md:max-w-none truncate"
                     >
-                      {path.slice(0, 30).replace(/-/g, ' ')}
+                      {displayPath.replace(/-/g, ' ')}
                     </Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
-              {pathNames.length !== index + 1 && <BreadcrumbSeparator />}
+              {displayPaths.length !== index + 1 && <BreadcrumbSeparator />}
             </div>
           );
         })}

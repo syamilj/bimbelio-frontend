@@ -7,6 +7,7 @@ import { useParams, usePathname } from 'next/navigation';
 import { ReactNode, Suspense, useEffect, useState } from 'react';
 import Navbar from '@/app/(main)/[web_sub_category]/(admin)/admin/_components/navbar';
 import Sidebar from '@/app/(main)/[web_sub_category]/(admin)/admin/_components/sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 interface LayoutAdminProps {
   children: ReactNode;
@@ -15,7 +16,8 @@ interface LayoutAdminProps {
 export default function LayoutAdmin({ children }: LayoutAdminProps) {
   const params = useParams();
   const pathname = usePathname();
-  const { minimizeSidebar, setMinimizeSidebar } = useAppContext();
+  const { minimizeSidebar, setMinimizeSidebar, sidebarMobile, setSidebarMobile } =
+    useAppContext();
 
   const [hideLayout, setHideLayout] = useState<boolean>(false);
 
@@ -34,40 +36,24 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
   return (
     <Suspense>
       <CheckSubscription>
-        <div className="h-full min-h-screen bg-gray-50">
-          {/* Enhanced Navbar */}
-          <div
-            className={cn(
-              'fixed inset-x-0 top-0 z-40 h-16 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm transition-all duration-300',
-              !minimizeSidebar ? 'md:pl-72' : 'md:pl-20',
-            )}
-          >
+        <SidebarProvider
+          open={!minimizeSidebar}
+          onOpenChange={(open) => setMinimizeSidebar(!open)}
+        >
+          <Sidebar
+            isMobileSidebarOpen={sidebarMobile}
+            setIsMobileSidebarOpen={setSidebarMobile}
+          />
+          <SidebarInset>
+            {/* Fixed Navbar */}
             <Navbar />
-          </div>
 
-          {/* Enhanced Sidebar */}
-          <div
-            className={cn(
-              'fixed inset-y-0 left-0 z-50 transition-all duration-300',
-              !minimizeSidebar ? 'w-72' : 'w-20',
-            )}
-            onMouseEnter={() => setMinimizeSidebar(false)}
-            onMouseLeave={() => setMinimizeSidebar(true)}
-          >
-            <Sidebar />
-          </div>
-
-          {/* Main Content */}
-          <main
-            className={cn(
-              'py-24 min-h-screen transition-all duration-300',
-              !minimizeSidebar ? 'md:pl-84' : 'md:pl-32',
-              'pr-12',
-            )}
-          >
-            {children}
-          </main>
-        </div>
+            {/* Main Content */}
+            <main className="pt-[72px] md:pt-[80px] p-4 md:p-6">
+              <div className="mx-auto max-w-screen-2xl">{children}</div>
+            </main>
+          </SidebarInset>
+        </SidebarProvider>
       </CheckSubscription>
     </Suspense>
   );
