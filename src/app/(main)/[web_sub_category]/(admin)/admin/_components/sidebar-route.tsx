@@ -4,7 +4,6 @@ import { useAppContext } from '@/components/provider/provider-app';
 import { useSession } from '@/components/provider/provider-session-auth';
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import ChooseWebCategory from '@/components/ui/choose-web-category';
-import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 import ActiveLink from './active-link';
@@ -33,7 +32,7 @@ const SidebarRoute: FC<SidebarRouteProps> = ({ minimizeSidebar: propMinimizeSide
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   // Get and filter routes
-  const allRoutes = getAdminRoutes(website_sub_category_id);
+  const allRoutes = getAdminRoutes(websiteSubCategory?.id || '');
   const routes = filterRoutesByRole(allRoutes, session?.user.role, isCore);
 
   // Group routes by category
