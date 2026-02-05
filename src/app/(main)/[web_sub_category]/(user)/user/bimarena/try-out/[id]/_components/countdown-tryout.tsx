@@ -126,7 +126,7 @@ const CountDownTryout = ({
       style={{
         backgroundColor: getTimerBg(),
         color: getTimerColor(),
-        border: `2px solid ${getTimerColor()}20`,
+        border: `1px solid ${getTimerColor()}20`,
       }}
     >
       {/* Icon */}

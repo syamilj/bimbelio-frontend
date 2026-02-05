@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import {
   AlertTriangle,
   ChevronLeft,
@@ -73,11 +72,11 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
 
   if (questions.length === 0) {
     return (
-      <Card className="rounded-3xl border-2 border-gray-100 shadow-lg">
+      <Card className="rounded-3xl border border-slate-200 shadow-sm">
         <CardContent className="p-8">
           <div className="flex justify-center items-center h-32">
             <div
-              className="animate-spin rounded-full h-8 w-8 border-b-2"
+              className="animate-spin rounded-full h-8 w-8 border"
               style={{ borderColor: mainColor }}
             />
           </div>
@@ -92,53 +91,48 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
   );
 
   return (
-    <motion.div
-      key={currentQuestionIndex}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-    >
-      <Card className="rounded-3xl border-2 border-gray-100 shadow-lg overflow-hidden">
-        <CardHeader className="border-b bg-gray-50/50 p-6">
+    <div className="w-full">
+      <Card className="rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <CardHeader className="border-b bg-gradient-to-r from-slate-50 to-white p-4 md:p-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <div
-                className="w-12 h-12 rounded-3xl flex items-center justify-center text-white font-bold text-lg shadow-sm"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-3xl flex items-center justify-center text-white font-black text-base md:text-lg shadow-sm"
                 style={{ backgroundColor: mainColor }}
               >
                 {safeCurrentQuestionIndex + 1}
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-lg md:text-xl font-black text-slate-900">
                   Soal {safeCurrentQuestionIndex + 1}
                 </h2>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs md:text-sm text-slate-600 font-medium">
                   dari {questions.length} soal
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <FileText className="w-5 h-5 text-gray-400" />
-              <span className="text-sm font-medium text-gray-600">
+            <div className="hidden md:flex items-center gap-2">
+              <FileText className="w-4 h-4 text-slate-400" />
+              <span className="text-sm font-medium text-slate-600">
                 {currentQuestionData?.type || 'Pilihan Ganda'}
               </span>
             </div>
           </div>
         </CardHeader>
 
-        <CardContent className="p-8">
-          <div className="space-y-8">
+        <CardContent className="p-4 md:p-6">
+          <div className="space-y-5 md:space-y-6">
             {/* Question */}
             <QuestionBubble question={currentQuestionData?.question} />
 
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200" />
+                <div className="w-full border-t border-slate-200" />
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-4 text-gray-500 font-medium">
+              <div className="relative flex justify-center text-xs md:text-sm">
+                <span className="bg-white px-3 md:px-4 text-slate-500 font-medium">
                   Pilih jawaban yang tepat
                 </span>
               </div>
@@ -160,12 +154,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
             />
 
             {/* Not Sure Checkbox */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center space-x-3 p-4 bg-yellow-50 rounded-3xl border border-yellow-200"
-            >
+            <div className="flex items-center space-x-3 p-3 md:p-4 bg-yellow-50 rounded-3xl border border-yellow-200">
               <Checkbox
                 id="notSure"
                 checked={
@@ -184,22 +173,22 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
               />
               <label
                 htmlFor="notSure"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center space-x-2 cursor-pointer"
+                className="text-xs md:text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center space-x-2 cursor-pointer"
               >
                 <AlertTriangle className="w-4 h-4 text-yellow-600" />
                 <span className="text-yellow-800">
                   Tandai jawaban belum yakin
                 </span>
               </label>
-            </motion.div>
+            </div>
           </div>
         </CardContent>
 
-        <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t bg-gray-50/50 p-6">
+        <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-3 border-t bg-gradient-to-r from-slate-50 to-white p-4 md:p-5">
           <Button
             variant="outline"
             className={cn(
-              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-3xl border-2',
+              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-3xl border shadow-sm text-sm font-medium',
               safeCurrentQuestionIndex === 0 && 'opacity-50 cursor-not-allowed',
             )}
             onClick={() => {
@@ -212,17 +201,17 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
             <span>Sebelumnya</span>
           </Button>
 
-          <div className="text-sm text-gray-600 text-center">
-            <span className="font-medium">
+          <div className="text-xs md:text-sm text-slate-600 text-center">
+            <span className="font-black">
               {sessionAnswer?.filter((item: any) => item.answer !== '')
                 .length || 0}
             </span>{' '}
-            dari {questions.length} soal terjawab
+            dari {questions.length} terjawab
           </div>
 
           <Button
             className={cn(
-              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-3xl',
+              'w-full sm:w-auto flex items-center justify-center space-x-2 rounded-3xl text-sm font-bold shadow-sm',
               safeCurrentQuestionIndex + 1 === questions.length &&
                 'opacity-50 cursor-not-allowed',
             )}
@@ -238,7 +227,7 @@ const SessionQuestion: React.FC<SessionQuestionProps> = ({
           </Button>
         </CardFooter>
       </Card>
-    </motion.div>
+    </div>
   );
 };
 

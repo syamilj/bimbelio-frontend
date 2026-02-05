@@ -2,16 +2,20 @@
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 import { TryoutAnswer, TryoutQuestion } from '@/types/database';
-import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpen,
-  ChevronDown,
-  ChevronUp,
   FileText,
+  LayoutGrid,
   Target,
   Trophy,
 } from 'lucide-react';
@@ -182,13 +186,9 @@ const Tryout: React.FC<Props> = ({
               </div>
               <button
                 onClick={() => setShowSidebar(!showSidebar)}
-                className="lg:hidden p-2 rounded-3xl bg-gray-100 hover:bg-gray-200 transition-colors"
+                className="lg:hidden p-2.5 rounded-3xl bg-white hover:bg-slate-50 transition-colors shadow-sm border border-slate-200"
               >
-                {showSidebar ? (
-                  <ChevronUp className="w-5 h-5" />
-                ) : (
-                  <ChevronDown className="w-5 h-5" />
-                )}
+                <LayoutGrid className="w-5 h-5 text-slate-700" />
               </button>
             </div>
           </div>
@@ -233,154 +233,289 @@ const Tryout: React.FC<Props> = ({
             />
           </div>
 
-          {/* Enhanced Sidebar */}
-          <div className="lg:col-span-1">
-            <AnimatePresence>
-              {(showSidebar || window.innerWidth >= 1024) && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="sticky top-32 space-y-6"
+          {/* Desktop Sidebar - Hidden on mobile */}
+          <div className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-32 space-y-6">
+              {/* Session Stats */}
+              <Card
+                className="border rounded-3xl overflow-hidden shadow-sm"
+                style={{ borderColor: `${mainColor}20` }}
+              >
+                <CardContent className="p-6">
+                  <h3 className="font-black text-lg mb-4 flex items-center gap-2">
+                    <BookOpen
+                      className="w-5 h-5"
+                      style={{ color: mainColor }}
+                    />
+                    Statistik Sesi
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="text-center">
+                      <div
+                        className="text-2xl font-black"
+                        style={{ color: mainColor }}
+                      >
+                        {answeredCount}
+                      </div>
+                      <div className="text-xs text-slate-600 font-medium">Terjawab</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-black text-yellow-600">
+                        {notSureCount}
+                      </div>
+                      <div className="text-xs text-slate-600 font-medium">Ragu-ragu</div>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-black text-slate-400">
+                      {questions.length - answeredCount}
+                    </div>
+                    <div className="text-xs text-slate-600 font-medium">
+                      Belum dijawab
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Question Navigation */}
+              <Card
+                className="border rounded-3xl overflow-hidden shadow-sm"
+                style={{ borderColor: `${secondaryColor}20` }}
+              >
+                <CardContent className="p-6">
+                  <h3 className="font-black text-lg mb-4 flex items-center gap-2">
+                    <Target
+                      className="w-5 h-5"
+                      style={{ color: secondaryColor }}
+                    />
+                    Navigasi Soal
+                  </h3>
+                  <div className="grid grid-cols-5 gap-2 max-h-64 overflow-y-auto no-scrollbar">
+                    {questions?.map((_, i) => (
+                      <button
+                        key={i}
+                        className={cn(
+                          'h-10 w-10 rounded-3xl font-black text-sm transition-all duration-200 border shadow-sm',
+                          currentQuestionIndex === i
+                            ? 'border-transparent text-white'
+                            : 'border-slate-200 text-slate-600 hover:border-slate-300 bg-white',
+                          isAnswered(i) && currentQuestionIndex !== i
+                            ? 'text-white border-transparent bg-emerald-500'
+                            : '',
+                          sessionAnswer[i].notSure &&
+                            currentQuestionIndex !== i
+                            ? 'bg-yellow-400 text-yellow-900 border-yellow-300'
+                            : '',
+                        )}
+                        style={{
+                          backgroundColor:
+                            currentQuestionIndex === i
+                              ? mainColor
+                              : isAnswered(i) && currentQuestionIndex !== i
+                                ? '#10B981'
+                                : sessionAnswer[i].notSure &&
+                                    currentQuestionIndex !== i
+                                  ? ''
+                                  : undefined,
+                        }}
+                        onClick={() => {
+                          if (!isSessionDone) {
+                            setCurrentQuestionIndex(i);
+                          }
+                        }}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Submit Section */}
+              {!isSessionDone && (
+                <Card
+                  className="border rounded-3xl overflow-hidden shadow-sm"
+                  style={{ borderColor: `${mainColor}20` }}
                 >
-                  {/* Session Stats */}
-                  <Card
-                    className="border-2 rounded-3xl overflow-hidden shadow-lg"
-                    style={{ borderColor: `${mainColor}20` }}
-                  >
-                    <CardContent className="p-6">
-                      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                        <BookOpen
-                          className="w-5 h-5"
-                          style={{ color: mainColor }}
+                  <CardContent className="p-6">
+                    <h3 className="font-black text-lg mb-4 flex items-center gap-2">
+                      <FileText
+                        className="w-5 h-5"
+                        style={{ color: mainColor }}
+                      />
+                      Selesaikan Sesi
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="text-sm text-slate-600">
+                        <div className="flex justify-between mb-2">
+                          <span className="font-medium">Progress:</span>
+                          <span className="font-black">
+                            {Math.round(progressPercentage)}%
+                          </span>
+                        </div>
+                        <Progress
+                          value={progressPercentage}
+                          className="h-2"
                         />
-                        Statistik Sesi
-                      </h3>
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="text-center">
-                          <div
-                            className="text-2xl font-bold"
-                            style={{ color: mainColor }}
-                          >
-                            {answeredCount}
-                          </div>
-                          <div className="text-xs text-gray-600">Terjawab</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-2xl font-bold text-yellow-600">
-                            {notSureCount}
-                          </div>
-                          <div className="text-xs text-gray-600">Ragu-ragu</div>
-                        </div>
                       </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-gray-400">
-                          {questions.length - answeredCount}
-                        </div>
-                        <div className="text-xs text-gray-600">
-                          Belum dijawab
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Question Navigation */}
-                  <Card
-                    className="border-2 rounded-3xl overflow-hidden shadow-lg"
-                    style={{ borderColor: `${secondaryColor}20` }}
-                  >
-                    <CardContent className="p-6">
-                      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                        <Target
-                          className="w-5 h-5"
-                          style={{ color: secondaryColor }}
-                        />
-                        Navigasi Soal
-                      </h3>
-                      <div className="grid grid-cols-5 gap-2 max-h-64 overflow-y-auto">
-                        {questions?.map((_, i) => (
-                          <motion.button
-                            key={i}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className={cn(
-                              'h-10 w-10 rounded-3xl font-bold text-sm transition-all duration-200 border-2',
-                              currentQuestionIndex === i
-                                ? 'border-transparent text-white shadow-lg'
-                                : 'border-gray-200 text-gray-600 hover:border-gray-300',
-                              isAnswered(i) && currentQuestionIndex !== i
-                                ? 'text-white border-transparent'
-                                : '',
-                              sessionAnswer[i].notSure &&
-                                currentQuestionIndex !== i
-                                ? 'bg-yellow-400 text-yellow-900 border-yellow-300'
-                                : '',
-                            )}
-                            style={{
-                              backgroundColor:
-                                currentQuestionIndex === i
-                                  ? mainColor
-                                  : isAnswered(i) && currentQuestionIndex !== i
-                                    ? '#10B981'
-                                    : sessionAnswer[i].notSure &&
-                                        currentQuestionIndex !== i
-                                      ? ''
-                                      : 'white',
-                            }}
-                            onClick={() => {
-                              if (!isSessionDone) {
-                                setCurrentQuestionIndex(i);
-                              }
-                            }}
-                          >
-                            {i + 1}
-                          </motion.button>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Submit Section */}
-                  {!isSessionDone && (
-                    <Card
-                      className="border-2 rounded-3xl overflow-hidden shadow-lg"
-                      style={{ borderColor: `${mainColor}20` }}
-                    >
-                      <CardContent className="p-6">
-                        <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                          <FileText
-                            className="w-5 h-5"
-                            style={{ color: mainColor }}
-                          />
-                          Selesaikan Sesi
-                        </h3>
-                        <div className="space-y-4">
-                          <div className="text-sm text-gray-600">
-                            <div className="flex justify-between mb-2">
-                              <span>Progress:</span>
-                              <span className="font-bold">
-                                {Math.round(progressPercentage)}%
-                              </span>
-                            </div>
-                            <Progress
-                              value={progressPercentage}
-                              className="h-2"
-                            />
-                          </div>
-                          <SubmitTryout
-                            sessionAnswer={sessionAnswer}
-                            sessionId={sessionId}
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </motion.div>
+                      <SubmitTryout
+                        sessionAnswer={sessionAnswer}
+                        sessionId={sessionId}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
               )}
-            </AnimatePresence>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Mobile Dialog */}
+      <Dialog open={showSidebar} onOpenChange={setShowSidebar}>
+        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto no-scrollbar">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl font-black">
+              <Trophy className="w-5 h-5" style={{ color: mainColor }} />
+              Sesi {numberSession}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 pt-4">
+            {/* Session Stats */}
+            <Card
+              className="border rounded-3xl overflow-hidden"
+              style={{ borderColor: `${mainColor}20` }}
+            >
+              <CardContent className="p-4">
+                <h3 className="font-black text-base mb-3 flex items-center gap-2">
+                  <BookOpen
+                    className="w-4 h-4"
+                    style={{ color: mainColor }}
+                  />
+                  Statistik Sesi
+                </h3>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="text-center">
+                    <div
+                      className="text-xl font-black"
+                      style={{ color: mainColor }}
+                    >
+                      {answeredCount}
+                    </div>
+                    <div className="text-[10px] text-slate-600 font-medium">Terjawab</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-black text-yellow-600">
+                      {notSureCount}
+                    </div>
+                    <div className="text-[10px] text-slate-600 font-medium">Ragu-ragu</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-black text-slate-400">
+                      {questions.length - answeredCount}
+                    </div>
+                    <div className="text-[10px] text-slate-600 font-medium">
+                      Belum dijawab
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Question Navigation */}
+            <Card
+              className="border rounded-3xl overflow-hidden"
+              style={{ borderColor: `${secondaryColor}20` }}
+            >
+              <CardContent className="p-4">
+                <h3 className="font-black text-base mb-3 flex items-center gap-2">
+                  <Target
+                    className="w-4 h-4"
+                    style={{ color: secondaryColor }}
+                  />
+                  Navigasi Soal
+                </h3>
+                <div className="grid grid-cols-6 gap-2">
+                  {questions?.map((_, i) => (
+                    <button
+                      key={i}
+                      className={cn(
+                        'h-10 w-10 rounded-3xl font-black text-sm transition-all duration-200 border shadow-sm',
+                        currentQuestionIndex === i
+                          ? 'border-transparent text-white'
+                          : 'border-slate-200 text-slate-600 hover:border-slate-300 bg-white',
+                        isAnswered(i) && currentQuestionIndex !== i
+                          ? 'text-white border-transparent bg-emerald-500'
+                          : '',
+                        sessionAnswer[i].notSure &&
+                          currentQuestionIndex !== i
+                          ? 'bg-yellow-400 text-yellow-900 border-yellow-300'
+                          : '',
+                      )}
+                      style={{
+                        backgroundColor:
+                          currentQuestionIndex === i
+                            ? mainColor
+                            : isAnswered(i) && currentQuestionIndex !== i
+                              ? '#10B981'
+                              : sessionAnswer[i].notSure &&
+                                  currentQuestionIndex !== i
+                                ? ''
+                                : undefined,
+                      }}
+                      onClick={() => {
+                        if (!isSessionDone) {
+                          setCurrentQuestionIndex(i);
+                          setShowSidebar(false);
+                        }
+                      }}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Submit Section */}
+            {!isSessionDone && (
+              <Card
+                className="border rounded-3xl overflow-hidden"
+                style={{ borderColor: `${mainColor}20` }}
+              >
+                <CardContent className="p-4">
+                  <h3 className="font-black text-base mb-3 flex items-center gap-2">
+                    <FileText
+                      className="w-4 h-4"
+                      style={{ color: mainColor }}
+                    />
+                    Selesaikan Sesi
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="text-sm text-slate-600">
+                      <div className="flex justify-between mb-2">
+                        <span className="font-medium">Progress:</span>
+                        <span className="font-black">
+                          {Math.round(progressPercentage)}%
+                        </span>
+                      </div>
+                      <Progress
+                        value={progressPercentage}
+                        className="h-2"
+                      />
+                    </div>
+                    <SubmitTryout
+                      sessionAnswer={sessionAnswer}
+                      sessionId={sessionId}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

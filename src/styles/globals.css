@@ -3,6 +3,21 @@
 @plugin "@tailwindcss/typography";
 @custom-variant dark (&:is(.dark *));
 
+/* Font Configuration */
+@theme {
+  --font-family-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Hide Scrollbar - BimArena Style */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* BimBrand Font Styling */
 .font-playfair {
   font-family: 'Playfair Display', serif;
