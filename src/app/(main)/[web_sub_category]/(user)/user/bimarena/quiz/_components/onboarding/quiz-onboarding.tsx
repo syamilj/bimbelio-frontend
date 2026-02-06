@@ -43,7 +43,8 @@ interface StepConfig {
 const steps: StepConfig[] = [
   {
     title: 'Selamat Datang!',
-    description: 'Arena kompetisi quiz untuk mengasah kemampuanmu dan bersaing dengan ribuan peserta lainnya.',
+    description:
+      'Arena kompetisi quiz untuk mengasah kemampuanmu dan bersaing dengan ribuan peserta lainnya.',
     emoji: '🎮',
     Illustration: WelcomeIllustration,
     features: [
@@ -54,7 +55,8 @@ const steps: StepConfig[] = [
   },
   {
     title: 'Pilih Quiz',
-    description: 'Jelajahi berbagai quiz dari 7 subtes UTBK. Filter sesuai kebutuhanmu dan mulai battle!',
+    description:
+      'Jelajahi berbagai quiz dari 7 subtes UTBK. Filter sesuai kebutuhanmu dan mulai battle!',
     emoji: '📚',
     Illustration: LibraryIllustration,
     features: [
@@ -65,7 +67,8 @@ const steps: StepConfig[] = [
   },
   {
     title: 'Lihat Progress',
-    description: 'Analisis performa dengan grafik trend, akurasi per subtes, dan perbandingan dengan siswa lain.',
+    description:
+      'Analisis performa dengan grafik trend, akurasi per subtes, dan perbandingan dengan siswa lain.',
     emoji: '📊',
     Illustration: ProgressIllustration,
     features: [
@@ -76,7 +79,8 @@ const steps: StepConfig[] = [
   },
   {
     title: 'Jadi Juara!',
-    description: 'Rebut posisi teratas di leaderboard nasional. Target PTN-mu ada di sini!',
+    description:
+      'Rebut posisi teratas di leaderboard nasional. Target PTN-mu ada di sini!',
     emoji: '🏆',
     Illustration: LeaderboardIllustration,
     features: [
@@ -228,8 +232,12 @@ export default function QuizOnboarding() {
             <div
               className={cn(
                 'flex justify-center transition-all duration-300',
-                isAnimating && direction === 'right' && 'translate-x-3 opacity-0',
-                isAnimating && direction === 'left' && '-translate-x-3 opacity-0',
+                isAnimating &&
+                  direction === 'right' &&
+                  'translate-x-3 opacity-0',
+                isAnimating &&
+                  direction === 'left' &&
+                  '-translate-x-3 opacity-0',
               )}
             >
               <StepIllustration color={mainColor} />
@@ -240,13 +248,18 @@ export default function QuizOnboarding() {
               {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
                 <button
                   key={i}
-                  onClick={() => goToStep(i, i > currentStep ? 'right' : 'left')}
+                  onClick={() =>
+                    goToStep(i, i > currentStep ? 'right' : 'left')
+                  }
                   className={cn(
                     'rounded-full transition-all duration-300',
-                    i === currentStep ? 'w-4 h-1.5' : 'w-1.5 h-1.5 hover:scale-125',
+                    i === currentStep
+                      ? 'w-4 h-1.5'
+                      : 'w-1.5 h-1.5 hover:scale-125',
                   )}
                   style={{
-                    backgroundColor: i === currentStep ? mainColor : `${mainColor}30`,
+                    backgroundColor:
+                      i === currentStep ? mainColor : `${mainColor}30`,
                   }}
                 />
               ))}
@@ -294,7 +307,10 @@ export default function QuizOnboarding() {
                       className="w-8 h-8 rounded-3xl flex items-center justify-center mx-auto mb-1"
                       style={{ backgroundColor: `${mainColor}12` }}
                     >
-                      <Icon className="w-4 h-4" style={{ color: mainColor }} />
+                      <Icon
+                        className="w-4 h-4"
+                        style={{ color: mainColor }}
+                      />
                     </div>
                     <p className="text-[11px] font-bold text-slate-700">
                       {feature.label}

@@ -24,8 +24,6 @@ import {
   School,
   Search,
   Shield,
-  Swords,
-  TrendingUp,
   Trophy,
   Zap,
 } from 'lucide-react';
@@ -631,8 +629,13 @@ export function QuizLeaderboard() {
           <div className="p-3 md:p-4 border-t border-slate-100">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-[10px] md:text-sm text-slate-600 font-medium text-center sm:text-left">
-                <span className="hidden sm:inline">Halaman {currentPage} dari {totalPages} • </span>
-                <span>Menampilkan {paginatedData.length} dari {filteredAndSortedData.length} peserta</span>
+                <span className="hidden sm:inline">
+                  Halaman {currentPage} dari {totalPages} •{' '}
+                </span>
+                <span>
+                  Menampilkan {paginatedData.length} dari{' '}
+                  {filteredAndSortedData.length} peserta
+                </span>
               </div>
               <div className="flex items-center gap-1.5 md:gap-2">
                 <Button
@@ -661,7 +664,9 @@ export function QuizLeaderboard() {
                     .map((page, idx, arr) => (
                       <div key={page}>
                         {idx > 0 && arr[idx - 1] !== page - 1 && (
-                          <span className="px-1 text-slate-400 text-xs">...</span>
+                          <span className="px-1 text-slate-400 text-xs">
+                            ...
+                          </span>
                         )}
                         <Button
                           variant={currentPage === page ? 'default' : 'outline'}

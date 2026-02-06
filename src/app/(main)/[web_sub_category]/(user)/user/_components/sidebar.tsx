@@ -35,14 +35,13 @@ import {
   Coins,
   Crown,
   History,
-  LayoutDashboardIcon,
+  LayoutDashboardIcon, // Added ShoppingBag
+  Loader2,
   LogOut,
   Settings,
+  ShoppingBag,
   Stars,
   User,
-  Zap,
-  ShoppingBag, // Added ShoppingBag
-  Loader2, // Added loader
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -161,23 +160,28 @@ const SidebarUser = ({
                 onClick={() => setIsWebCategoryDialogOpen(true)}
               >
                 <div className="flex items-center gap-3 w-full overflow-hidden">
-                   <div
-                      className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0 border border-slate-100"
-                      style={{ backgroundColor: `${mainColor}10` }}
-                   >
-                     <Stars className="w-5 h-5" style={{ color: mainColor }} />
-                   </div>
-                   <div className="flex-1 min-w-0">
-                      <p className="text-sm font-black text-slate-800 truncate mb-0.5">
-                        {websiteSubCategory?.name || 'Pilih Kategori'}
-                      </p>
-                      <p className="text-[10px] font-semibold text-slate-500 truncate">
-                        {websiteSubCategory ? 'Platform Belajar' : 'Pilih tujuan belajar'}
-                      </p>
-                   </div>
-                   <div className="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-100 transition-colors">
-                     <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
-                   </div>
+                  <div
+                    className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0 border border-slate-100"
+                    style={{ backgroundColor: `${mainColor}10` }}
+                  >
+                    <Stars
+                      className="w-5 h-5"
+                      style={{ color: mainColor }}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-black text-slate-800 truncate mb-0.5">
+                      {websiteSubCategory?.name || 'Pilih Kategori'}
+                    </p>
+                    <p className="text-[10px] font-semibold text-slate-500 truncate">
+                      {websiteSubCategory
+                        ? 'Platform Belajar'
+                        : 'Pilih tujuan belajar'}
+                    </p>
+                  </div>
+                  <div className="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-slate-100 transition-colors">
+                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
+                  </div>
                 </div>
               </button>
             </div>
@@ -200,8 +204,8 @@ const SidebarUser = ({
             <div className="flex justify-center mb-3 px-2">
               <button
                 onClick={() => {
-                   setIsUpgrading(true);
-                   router.push('/price');
+                  setIsUpgrading(true);
+                  router.push('/price');
                 }}
                 disabled={isUpgrading}
                 style={{ backgroundColor: `${mainColor}15` }}
@@ -209,9 +213,15 @@ const SidebarUser = ({
                 title="Upgrade Plan"
               >
                 {isUpgrading ? (
-                   <Loader2 className="w-5 h-5 animate-spin" style={{ color: mainColor }} />
+                  <Loader2
+                    className="w-5 h-5 animate-spin"
+                    style={{ color: mainColor }}
+                  />
                 ) : (
-                   <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" style={{ color: mainColor }} />
+                  <ShoppingBag
+                    className="w-5 h-5 group-hover:scale-110 transition-transform"
+                    style={{ color: mainColor }}
+                  />
                 )}
               </button>
             </div>
@@ -220,32 +230,34 @@ const SidebarUser = ({
           {/* Upgrade Button (Expanded & Mobile) - Replaces Card */}
           {!session?.user.tier && !minimizeSidebar && (
             <div className="px-5 mb-3">
-               <button
-                  onClick={() => {
-                    if (!isUpgrading) {
-                      setIsUpgrading(true);
-                      router.push('/price');
-                    }
-                  }}
-                  disabled={isUpgrading}
-                  style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
-                  className="w-full flex items-center gap-3 px-3 py-2 rounded-3xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
-               >
-                  {isUpgrading ? (
-                     <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                     <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  )}
-                  <span>Upgrade Plan</span>
-               </button>
+              <button
+                onClick={() => {
+                  if (!isUpgrading) {
+                    setIsUpgrading(true);
+                    router.push('/price');
+                  }
+                }}
+                disabled={isUpgrading}
+                style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-3xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
+              >
+                {isUpgrading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                )}
+                <span>Upgrade Plan</span>
+              </button>
             </div>
           )}
 
           {/* User Profile */}
-          <div className={cn(
-            "flex items-center gap-3 p-3 rounded-3xl hover:bg-slate-100 transition-colors",
-            minimizeSidebar && "justify-center"
-          )}>
+          <div
+            className={cn(
+              'flex items-center gap-3 p-3 rounded-3xl hover:bg-slate-100 transition-colors',
+              minimizeSidebar && 'justify-center',
+            )}
+          >
             <Avatar
               className="h-10 w-10 border-2"
               style={{ borderColor: mainColor }}
@@ -284,66 +296,66 @@ const SidebarUser = ({
                       <Settings className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-56 border-2 border-gray-100 rounded-3xl shadow-sm"
-                >
-                  {(session?.user.role === 'ADMIN' ||
-                    session?.user.role === 'SUPER_ADMIN' ||
-                    session?.user.role === 'FINANCE') && (
-                    <Link href={`/${website_sub_category_id_params}/admin`}>
-                      <DropdownMenuItem>
-                        <LayoutDashboardIcon className="w-4 h-4 mr-2" />
-                        Admin Panel
-                      </DropdownMenuItem>
-                    </Link>
-                  )}
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setPagesSetting('account');
-                    }}
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-56 border-2 border-gray-100 rounded-3xl shadow-sm"
                   >
-                    <User className="w-4 h-4 mr-2" />
-                    Profil
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setPagesSetting('installment');
-                    }}
-                  >
-                    <Coins className="w-4 h-4 mr-2" />
-                    Cicilan
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setPagesSetting('history');
-                    }}
-                  >
-                    <History className="w-4 h-4 mr-2" />
-                    Riwayat Pembelian
-                  </DropdownMenuItem>
-                  {!session?.user.tier && (
-                    <>
-                      <DropdownMenuSeparator className="bg-gray-100" />
-                      <DropdownMenuItem
-                        onClick={() => setTransactionPopUp(true)}
-                        className="font-bold"
-                      >
-                        <Crown className="w-4 h-4 mr-2" />
-                        Upgrade
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                  <DropdownMenuSeparator className="bg-gray-100" />
-                  <DropdownMenuItem
-                    className="text-red-600"
-                    onClick={() => signOut({ callbackUrl: '/' })}
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Keluar
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                    {(session?.user.role === 'ADMIN' ||
+                      session?.user.role === 'SUPER_ADMIN' ||
+                      session?.user.role === 'FINANCE') && (
+                      <Link href={`/${website_sub_category_id_params}/admin`}>
+                        <DropdownMenuItem>
+                          <LayoutDashboardIcon className="w-4 h-4 mr-2" />
+                          Admin Panel
+                        </DropdownMenuItem>
+                      </Link>
+                    )}
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setPagesSetting('account');
+                      }}
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Profil
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setPagesSetting('installment');
+                      }}
+                    >
+                      <Coins className="w-4 h-4 mr-2" />
+                      Cicilan
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setPagesSetting('history');
+                      }}
+                    >
+                      <History className="w-4 h-4 mr-2" />
+                      Riwayat Pembelian
+                    </DropdownMenuItem>
+                    {!session?.user.tier && (
+                      <>
+                        <DropdownMenuSeparator className="bg-gray-100" />
+                        <DropdownMenuItem
+                          onClick={() => setTransactionPopUp(true)}
+                          className="font-bold"
+                        >
+                          <Crown className="w-4 h-4 mr-2" />
+                          Upgrade
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                    <DropdownMenuSeparator className="bg-gray-100" />
+                    <DropdownMenuItem
+                      className="text-red-600"
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Keluar
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </>
             )}
           </div>
@@ -378,33 +390,38 @@ const SidebarUser = ({
 
             {/* Mobile Category Selection */}
             {websiteSubCategory && (
-            <div className="px-3 py-4">
-              <button
-                 className="w-full flex items-center justify-between p-2 rounded-3xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-left group shadow-sm"
-                 onClick={() => {
-                   setIsWebCategoryDialogOpen(true);
-                   setIsMobileSidebarOpen(false);
-                 }}
-              >
-                 <div className="flex items-center gap-3 w-full overflow-hidden">
+              <div className="px-3 py-4">
+                <button
+                  className="w-full flex items-center justify-between p-2 rounded-3xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all text-left group shadow-sm"
+                  onClick={() => {
+                    setIsWebCategoryDialogOpen(true);
+                    setIsMobileSidebarOpen(false);
+                  }}
+                >
+                  <div className="flex items-center gap-3 w-full overflow-hidden">
                     <div
-                       className="w-8 h-8 rounded-3xl flex items-center justify-center shrink-0"
-                       style={{ backgroundColor: `${mainColor}15` }}
+                      className="w-8 h-8 rounded-3xl flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: `${mainColor}15` }}
                     >
-                      <Stars className="w-4 h-4" style={{ color: mainColor }} />
+                      <Stars
+                        className="w-4 h-4"
+                        style={{ color: mainColor }}
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
-                       <p className="text-sm font-bold text-slate-800 truncate">
-                         {websiteSubCategory?.name || 'Pilih Kategori'}
-                       </p>
-                       <p className="text-[10px] text-slate-500 truncate">
-                         {websiteSubCategory ? 'Platform Belajar' : 'Pilih tujuan belajar'}
-                       </p>
+                      <p className="text-sm font-bold text-slate-800 truncate">
+                        {websiteSubCategory?.name || 'Pilih Kategori'}
+                      </p>
+                      <p className="text-[10px] text-slate-500 truncate">
+                        {websiteSubCategory
+                          ? 'Platform Belajar'
+                          : 'Pilih tujuan belajar'}
+                      </p>
                     </div>
                     <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
-                 </div>
-              </button>
-           </div>
+                  </div>
+                </button>
+              </div>
             )}
 
             {/* Mobile Navigation Routes */}
@@ -419,25 +436,28 @@ const SidebarUser = ({
 
             {/* Mobile Premium Card */}
             {!session?.user.tier && (
-               <div className="px-5 mb-4">
-                  <button
-                     onClick={() => {
-                       setIsUpgrading(true);
-                       router.push('/price');
-                       setIsMobileSidebarOpen(false);
-                     }}
-                     disabled={isUpgrading}
-                     style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
-                     className="w-full flex items-center gap-3 px-3 py-2 rounded-3xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
-                  >
-                     {isUpgrading ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                     ) : (
-                        <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                     )}
-                     <span>Upgrade Plan</span>
-                  </button>
-               </div>
+              <div className="px-5 mb-4">
+                <button
+                  onClick={() => {
+                    setIsUpgrading(true);
+                    router.push('/price');
+                    setIsMobileSidebarOpen(false);
+                  }}
+                  disabled={isUpgrading}
+                  style={{
+                    backgroundColor: `${mainColor}15`,
+                    color: mainColor,
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2 rounded-3xl text-sm font-bold hover:opacity-80 transition-all group disabled:opacity-70 disabled:cursor-not-allowed text-left"
+                >
+                  {isUpgrading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <ShoppingBag className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  )}
+                  <span>Upgrade Plan</span>
+                </button>
+              </div>
             )}
 
             {/* Mobile User Profile */}

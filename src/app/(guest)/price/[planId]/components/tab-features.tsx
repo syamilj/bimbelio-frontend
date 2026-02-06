@@ -90,14 +90,20 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                         className="w-11 h-11 rounded-3xl flex items-center justify-center shrink-0"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
-                        <BookOpen className="w-5 h-5" style={{ color: mainColor }} />
+                        <BookOpen
+                          className="w-5 h-5"
+                          style={{ color: mainColor }}
+                        />
                       </div>
                       <div className="flex-1">
                         <span className="font-semibold text-slate-900 text-base">
                           Akses ke Semua Dokumen
                         </span>
                         <div className="text-slate-600 text-sm mt-1">
-                          <span className="font-semibold" style={{ color: mainColor }}>
+                          <span
+                            className="font-semibold"
+                            style={{ color: mainColor }}
+                          >
                             Gak ada yang terkunci!
                           </span>{' '}
                           Semua materi, e-book, dan dokumen pendukung bisa
@@ -116,14 +122,20 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                         className="w-11 h-11 rounded-3xl flex items-center justify-center shrink-0"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
-                        <Play className="w-5 h-5" style={{ color: mainColor }} />
+                        <Play
+                          className="w-5 h-5"
+                          style={{ color: mainColor }}
+                        />
                       </div>
                       <div className="flex-1">
                         <span className="font-semibold text-slate-900 text-base">
                           {feature.liveClassesPerWeek} BimLive Per Minggu
                         </span>
                         <div className="text-slate-600 text-sm mt-1">
-                          <span className="font-semibold" style={{ color: mainColor }}>
+                          <span
+                            className="font-semibold"
+                            style={{ color: mainColor }}
+                          >
                             Interaksi langsung
                           </span>{' '}
                           dengan instruktur terbaik. Tanya jawab real-time &
@@ -143,14 +155,20 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                     className="w-8 h-8 rounded-3xl flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${secondaryColor}15` }}
                   >
-                    <CheckCircle2 className="w-4 h-4" style={{ color: secondaryColor }} />
+                    <CheckCircle2
+                      className="w-4 h-4"
+                      style={{ color: secondaryColor }}
+                    />
                   </div>
                   <div>
                     <h4 className="font-semibold text-slate-900 text-sm mb-1">
                       Goal kita jelas: Kamu sukses!
                     </h4>
                     <p className="text-slate-600 text-sm leading-relaxed">
-                      <span className="font-semibold" style={{ color: mainColor }}>
+                      <span
+                        className="font-semibold"
+                        style={{ color: mainColor }}
+                      >
                         Semua fitur ini
                       </span>{' '}
                       dirancang khusus buat memastikan kamu bisa meraih target

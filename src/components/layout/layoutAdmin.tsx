@@ -1,13 +1,12 @@
 'use client';
 
-import { useAppContext } from '@/components/provider/provider-app';
-import CheckSubscription from '@/components/provider/provider-check-subscription';
-import { cn } from '@/lib/utils';
-import { useParams, usePathname } from 'next/navigation';
-import { ReactNode, Suspense, useEffect, useState } from 'react';
 import Navbar from '@/app/(main)/[web_sub_category]/(admin)/admin/_components/navbar';
 import Sidebar from '@/app/(main)/[web_sub_category]/(admin)/admin/_components/sidebar';
+import { useAppContext } from '@/components/provider/provider-app';
+import CheckSubscription from '@/components/provider/provider-check-subscription';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { useParams, usePathname } from 'next/navigation';
+import { ReactNode, Suspense, useEffect, useState } from 'react';
 
 interface LayoutAdminProps {
   children: ReactNode;
@@ -16,8 +15,12 @@ interface LayoutAdminProps {
 export default function LayoutAdmin({ children }: LayoutAdminProps) {
   const params = useParams();
   const pathname = usePathname();
-  const { minimizeSidebar, setMinimizeSidebar, sidebarMobile, setSidebarMobile } =
-    useAppContext();
+  const {
+    minimizeSidebar,
+    setMinimizeSidebar,
+    sidebarMobile,
+    setSidebarMobile,
+  } = useAppContext();
 
   const [hideLayout, setHideLayout] = useState<boolean>(false);
 

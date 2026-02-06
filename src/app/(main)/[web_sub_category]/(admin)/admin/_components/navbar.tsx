@@ -24,7 +24,7 @@ export default function Navbar() {
     <nav
       className={cn(
         'fixed left-2 md:left-0 right-2 md:right-2 top-2 z-40 h-14 md:h-16 bg-white/95 backdrop-blur-lg border rounded-3xl border-gray-200 shadow-sm transition-all duration-300',
-        !minimizeSidebar ? 'md:left-[18rem]' : 'md:left-[6rem]'
+        !minimizeSidebar ? 'md:left-[18rem]' : 'md:left-[6rem]',
       )}
     >
       <div className="flex h-full items-center justify-between px-4 md:px-6">
@@ -46,16 +46,24 @@ export default function Navbar() {
               className="flex items-center justify-center w-9 h-9 rounded-2xl"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Shield className="w-4 h-4" style={{ color: mainColor }} />
+              <Shield
+                className="w-4 h-4"
+                style={{ color: mainColor }}
+              />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs font-medium text-slate-600">Admin Panel</span>
+              <span className="text-xs font-medium text-slate-600">
+                Admin Panel
+              </span>
             </div>
           </div>
 
           {/* Breadcrumb - Hidden on mobile */}
           <div className="hidden lg:flex items-center gap-2 flex-1 min-w-0">
-            <Separator orientation="vertical" className="h-5" />
+            <Separator
+              orientation="vertical"
+              className="h-5"
+            />
             <NextBreadcrumb />
           </div>
         </div>
@@ -80,13 +88,19 @@ export default function Navbar() {
             </Button>
           </div>
 
-          <Separator orientation="vertical" className="hidden md:block h-5" />
+          <Separator
+            orientation="vertical"
+            className="hidden md:block h-5"
+          />
 
           {/* User Account */}
           {session?.user ? (
             <UserAccountNav user={session.user} />
           ) : (
-            <Button asChild size="sm">
+            <Button
+              asChild
+              size="sm"
+            >
               <Link href="/auth/login">Masuk</Link>
             </Button>
           )}

@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { formatDistanceToNow } from 'date-fns';
+import { id } from 'date-fns/locale';
 import {
-  Target,
   BookOpen,
-  FileText,
-  Video,
+  CheckCircle,
   Clock,
-  CheckCircle
-} from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { id } from "date-fns/locale";
-import { EmptyStateIllustrations } from "./EmptyStateIllustrations";
+  FileText,
+  Target,
+  Video,
+} from 'lucide-react';
+import { EmptyStateIllustrations } from './EmptyStateIllustrations';
 
 interface RecentActivityProps {
   activities: Array<{
     id: string;
-    type: "tryout" | "course" | "document" | "liveclass";
+    type: 'tryout' | 'course' | 'document' | 'liveclass';
     title: string;
     description: string;
     timestamp: string;
@@ -26,17 +26,17 @@ interface RecentActivityProps {
 
 export default function RecentActivity({ activities }: RecentActivityProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   const getIcon = (type: string) => {
     switch (type) {
-      case "tryout":
+      case 'tryout':
         return Target;
-      case "course":
+      case 'course':
         return BookOpen;
-      case "document":
+      case 'document':
         return FileText;
-      case "liveclass":
+      case 'liveclass':
         return Video;
       default:
         return CheckCircle;
@@ -45,23 +45,25 @@ export default function RecentActivity({ activities }: RecentActivityProps) {
 
   const getColor = (type: string) => {
     switch (type) {
-      case "tryout":
-        return "bg-purple-100 text-purple-600";
-      case "course":
-        return "bg-blue-100 text-blue-600";
-      case "document":
-        return "bg-amber-100 text-amber-600";
-      case "liveclass":
-        return "bg-rose-100 text-rose-600";
+      case 'tryout':
+        return 'bg-purple-100 text-purple-600';
+      case 'course':
+        return 'bg-blue-100 text-blue-600';
+      case 'document':
+        return 'bg-amber-100 text-amber-600';
+      case 'liveclass':
+        return 'bg-rose-100 text-rose-600';
       default:
-        return "bg-slate-100 text-slate-600";
+        return 'bg-slate-100 text-slate-600';
     }
   };
 
   return (
     <div className="w-full bg-white rounded-3xl border-2 border-slate-100 p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-black text-slate-800">🕒 Aktivitas Terakhir</h2>
+        <h2 className="text-lg font-black text-slate-800">
+          🕒 Aktivitas Terakhir
+        </h2>
       </div>
 
       <div className="space-y-3 max-h-[400px] overflow-y-auto scrollbar-hide">
@@ -75,7 +77,9 @@ export default function RecentActivity({ activities }: RecentActivityProps) {
                 key={activity.id}
                 className="flex items-start gap-3 p-3 rounded-3xl hover:bg-slate-50 transition-colors"
               >
-                <div className={`w-10 h-10 rounded-3xl ${colorClass} flex items-center justify-center flex-shrink-0`}>
+                <div
+                  className={`w-10 h-10 rounded-3xl ${colorClass} flex items-center justify-center flex-shrink-0`}
+                >
                   <Icon className="w-5 h-5" />
                 </div>
 
@@ -93,14 +97,14 @@ export default function RecentActivity({ activities }: RecentActivityProps) {
                         try {
                           const date = new Date(activity.timestamp);
                           if (isNaN(date.getTime())) {
-                            return "Baru saja";
+                            return 'Baru saja';
                           }
                           return formatDistanceToNow(date, {
                             addSuffix: true,
                             locale: id,
                           });
                         } catch {
-                          return "Baru saja";
+                          return 'Baru saja';
                         }
                       })()}
                     </span>
@@ -114,8 +118,12 @@ export default function RecentActivity({ activities }: RecentActivityProps) {
             <div className="w-32 h-32 mx-auto mb-3">
               <EmptyStateIllustrations.NoActivity />
             </div>
-            <p className="text-sm font-bold text-slate-700 mb-1">Belum Ada Aktivitas</p>
-            <p className="text-xs text-slate-500">Mulai belajar untuk melihat riwayat aktivitasmu</p>
+            <p className="text-sm font-bold text-slate-700 mb-1">
+              Belum Ada Aktivitas
+            </p>
+            <p className="text-xs text-slate-500">
+              Mulai belajar untuk melihat riwayat aktivitasmu
+            </p>
           </div>
         )}
       </div>

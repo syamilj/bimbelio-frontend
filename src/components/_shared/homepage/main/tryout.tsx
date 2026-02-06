@@ -617,7 +617,9 @@ const EnhancedTryOutCard = ({
                   size={12}
                   className="text-purple-600 flex-shrink-0"
                 />
-                <span className="font-medium text-gray-800"><BimBot /> AI</span>
+                <span className="font-medium text-gray-800">
+                  <BimBot /> AI
+                </span>
               </div>
               <div className="flex items-center gap-1.5 bg-white rounded-3xl p-2">
                 <TrendingUp

@@ -1,27 +1,24 @@
+import type { LucideIcon } from 'lucide-react';
 import {
   Bell,
   BookOpen,
   Brain,
-  CreditCard,
+  ClipboardList,
+  DollarSign,
   FileText,
   FolderOpen,
   Globe,
+  GraduationCap,
+  LayoutDashboard,
   Link2,
   Receipt,
+  Ticket,
   Trophy,
   Users,
   Video,
-  Zap,
-  ClipboardList,
   Wallet,
-  Ticket,
-  Calendar,
-  DollarSign,
-  GraduationCap,
-  UserCog,
-  LayoutDashboard,
+  Zap,
 } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 
 export interface RouteItem {
   icon: LucideIcon;
@@ -60,7 +57,10 @@ export const CATEGORY_COLORS = {
  * @param path - Route path without leading slash
  * @param website_sub_category_id - Current website subcategory ID
  */
-export const buildRouteHref = (path: string, website_sub_category_id: string) => {
+export const buildRouteHref = (
+  path: string,
+  website_sub_category_id: string,
+) => {
   return `/${website_sub_category_id}/admin/${path}`;
 };
 
@@ -68,7 +68,9 @@ export const buildRouteHref = (path: string, website_sub_category_id: string) =>
  * Get all admin routes with website_sub_category_id
  * @param website_sub_category_id - Current website subcategory ID
  */
-export const getAdminRoutes = (website_sub_category_id: string): RouteItem[] => [
+export const getAdminRoutes = (
+  website_sub_category_id: string,
+): RouteItem[] => [
   // DASHBOARD
   {
     icon: LayoutDashboard,
@@ -102,7 +104,7 @@ export const getAdminRoutes = (website_sub_category_id: string): RouteItem[] => 
     description: 'Kelola dokumen',
     category: ROUTE_CATEGORIES.BIMCOURSE,
   },
-{
+  {
     icon: BookOpen,
     href: buildRouteHref('course', website_sub_category_id),
     label: 'Courses',
@@ -126,7 +128,7 @@ export const getAdminRoutes = (website_sub_category_id: string): RouteItem[] => 
     category: ROUTE_CATEGORIES.BIMLIVE,
   },
 
-// BIMARENA
+  // BIMARENA
   {
     icon: Brain,
     href: buildRouteHref('category-tryout', website_sub_category_id),
@@ -186,9 +188,7 @@ export const getAdminRoutes = (website_sub_category_id: string): RouteItem[] => 
     category: ROUTE_CATEGORIES.MARKETING,
   },
 
-
-
-// PAYMENTS & BILLING
+  // PAYMENTS & BILLING
   {
     icon: DollarSign,
     href: buildRouteHref('pricing', website_sub_category_id),

@@ -1,4 +1,3 @@
-import { METADATA_USER } from '@/config/metadata';
 import { Metadata } from 'next';
 import ReportClient from './_components/ReportClient';
 

@@ -8,9 +8,9 @@ import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 import ActiveLink from './active-link';
 import {
-  getAdminRoutes,
-  filterRoutesByRole,
   CATEGORY_COLORS,
+  filterRoutesByRole,
+  getAdminRoutes,
   type RouteItem,
 } from './sidebar-routes-config';
 
@@ -18,11 +18,16 @@ interface SidebarRouteProps {
   minimizeSidebar?: boolean;
 }
 
-const SidebarRoute: FC<SidebarRouteProps> = ({ minimizeSidebar: propMinimizeSidebar }) => {
+const SidebarRoute: FC<SidebarRouteProps> = ({
+  minimizeSidebar: propMinimizeSidebar,
+}) => {
   const { data: session } = useSession();
   const pathname = usePathname();
   const { minimizeSidebar: contextMinimizeSidebar } = useAppContext();
-  const minimizeSidebar = propMinimizeSidebar !== undefined ? propMinimizeSidebar : contextMinimizeSidebar;
+  const minimizeSidebar =
+    propMinimizeSidebar !== undefined
+      ? propMinimizeSidebar
+      : contextMinimizeSidebar;
   const {
     websiteSubCategory,
     type: { isCore },
@@ -59,7 +64,10 @@ const SidebarRoute: FC<SidebarRouteProps> = ({ minimizeSidebar: propMinimizeSide
       {/* Navigation Groups */}
       <div className="space-y-4">
         {Object.entries(groupedRoutes).map(([category, categoryRoutes]) => (
-          <div key={category} className="space-y-1">
+          <div
+            key={category}
+            className="space-y-1"
+          >
             {/* Category Header - Only show when expanded */}
             {!minimizeSidebar && (
               <div className="px-2 mb-2">
@@ -68,7 +76,9 @@ const SidebarRoute: FC<SidebarRouteProps> = ({ minimizeSidebar: propMinimizeSide
                     className="w-1.5 h-1.5 rounded-full"
                     style={{
                       backgroundColor:
-                        CATEGORY_COLORS[category as keyof typeof CATEGORY_COLORS] || mainColor,
+                        CATEGORY_COLORS[
+                          category as keyof typeof CATEGORY_COLORS
+                        ] || mainColor,
                     }}
                   />
                   <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">

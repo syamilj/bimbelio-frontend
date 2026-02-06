@@ -457,14 +457,24 @@ const PaymentMethodSelection = ({
             className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
             style={{ backgroundColor: `${mainColor}15` }}
           >
-            <CreditCard size={22} style={{ color: mainColor }} />
+            <CreditCard
+              size={22}
+              style={{ color: mainColor }}
+            />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">Bayar Penuh</h3>
-            <p className="text-xs text-slate-500">Sekali bayar, langsung akses</p>
+            <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+              Bayar Penuh
+            </h3>
+            <p className="text-xs text-slate-500">
+              Sekali bayar, langsung akses
+            </p>
           </div>
           <div className="text-right flex-shrink-0">
-            <span className="text-base font-bold" style={{ color: mainColor }}>
+            <span
+              className="text-base font-bold"
+              style={{ color: mainColor }}
+            >
               {formatPrice(discountPrice || plan.price)}
             </span>
             {plan.originalPrice && plan.originalPrice > plan.price && (
@@ -473,7 +483,10 @@ const PaymentMethodSelection = ({
               </p>
             )}
           </div>
-          <ArrowRight size={18} className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+          <ArrowRight
+            size={18}
+            className="text-slate-300 group-hover:text-blue-500 group-hover:translate-x-1 transition-all"
+          />
         </button>
 
         {/* Option 2: Installment Payment */}
@@ -483,7 +496,10 @@ const PaymentMethodSelection = ({
         >
           <div className="flex items-center gap-4 mb-3">
             <div className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 bg-emerald-100 group-hover:scale-110 transition-transform">
-              <Coins size={22} className="text-emerald-600" />
+              <Coins
+                size={22}
+                className="text-emerald-600"
+              />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
@@ -496,7 +512,9 @@ const PaymentMethodSelection = ({
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-500">Tanpa bunga, bayar bertahap</p>
+              <p className="text-xs text-slate-500">
+                Tanpa bunga, bayar bertahap
+              </p>
             </div>
             <div className="text-right flex-shrink-0">
               <span className="text-base font-bold text-emerald-600">
@@ -504,20 +522,30 @@ const PaymentMethodSelection = ({
               </span>
               <p className="text-[10px] text-slate-500">/cicilan pertama</p>
             </div>
-            <ArrowRight size={18} className="text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />
+            <ArrowRight
+              size={18}
+              className="text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all"
+            />
           </div>
 
           {/* Installment breakdown with due dates */}
           <div className="space-y-2 p-3 bg-slate-50 rounded-3xl">
             {plan.PlanInstallmentConfig?.PlanInstallmentSchedule.map(
               (schedule) => (
-                <div key={schedule.id} className="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
+                <div
+                  key={schedule.id}
+                  className="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0"
+                >
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
-                      <span className="text-[10px] font-bold text-emerald-600">{schedule.installmentNumber}</span>
+                      <span className="text-[10px] font-bold text-emerald-600">
+                        {schedule.installmentNumber}
+                      </span>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-slate-700">Cicilan {schedule.installmentNumber}</p>
+                      <p className="text-xs font-medium text-slate-700">
+                        Cicilan {schedule.installmentNumber}
+                      </p>
                       <p className="text-[10px] text-slate-400 flex items-center gap-1">
                         <Clock size={8} />
                         {schedule.installmentNumber === 1
@@ -539,7 +567,8 @@ const PaymentMethodSelection = ({
       {/* Tips */}
       <div className="mt-4 p-2.5 bg-amber-50 border border-amber-200 rounded-3xl">
         <p className="text-[10px] text-amber-700">
-          <span className="font-semibold">💡 Tips:</span> Cicilan tanpa bunga, bisa diangsur sesuai jadwal!
+          <span className="font-semibold">💡 Tips:</span> Cicilan tanpa bunga,
+          bisa diangsur sesuai jadwal!
         </p>
       </div>
     </div>
@@ -567,7 +596,10 @@ const HeaderSection = () => {
               className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <ShoppingBag size={18} style={{ color: mainColor }} />
+              <ShoppingBag
+                size={18}
+                style={{ color: mainColor }}
+              />
             </div>
             <div className="flex-1 min-w-0">
               <DialogTitle className="text-base font-bold text-slate-900">
@@ -579,11 +611,17 @@ const HeaderSection = () => {
             </div>
             <div className="hidden sm:flex items-center gap-2">
               <div className="flex items-center gap-1 text-[10px] text-slate-500 bg-slate-50 px-2 py-1 rounded-full">
-                <CheckCircle2 size={10} className="text-emerald-500" />
+                <CheckCircle2
+                  size={10}
+                  className="text-emerald-500"
+                />
                 <span>Aman</span>
               </div>
               <div className="flex items-center gap-1 text-[10px] text-slate-500 bg-slate-50 px-2 py-1 rounded-full">
-                <Zap size={10} style={{ color: mainColor }} />
+                <Zap
+                  size={10}
+                  style={{ color: mainColor }}
+                />
                 <span>Instan</span>
               </div>
             </div>
@@ -606,9 +644,14 @@ const FormUserInformation = ({
   return (
     <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
       <Label className="text-xs font-semibold text-slate-700 flex items-center gap-2 mb-2">
-        <Phone size={12} className="text-slate-500" />
+        <Phone
+          size={12}
+          className="text-slate-500"
+        />
         Nomor WhatsApp
-        <span className="text-[10px] px-1.5 py-0.5 bg-red-500 text-white rounded-full">Wajib</span>
+        <span className="text-[10px] px-1.5 py-0.5 bg-red-500 text-white rounded-full">
+          Wajib
+        </span>
       </Label>
       <div className="relative">
         <Input
@@ -617,16 +660,24 @@ const FormUserInformation = ({
           value={telp}
           onChange={handlePhoneChange}
           className={cn(
-            "h-10 text-sm rounded-3xl pl-9 pr-10 border-2",
-            isValid ? "border-emerald-300 bg-emerald-50/50" : "border-slate-200 bg-white"
+            'h-10 text-sm rounded-3xl pl-9 pr-10 border-2',
+            isValid
+              ? 'border-emerald-300 bg-emerald-50/50'
+              : 'border-slate-200 bg-white',
           )}
           required
         />
-        <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Phone
+          size={14}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+        />
         {telp && (
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
             {isValid ? (
-              <CheckCircle2 size={16} className="text-emerald-500" />
+              <CheckCircle2
+                size={16}
+                className="text-emerald-500"
+              />
             ) : (
               <div className="w-2 h-2 bg-amber-400 rounded-full" />
             )}
@@ -676,7 +727,10 @@ const FormVoucher = ({
             onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
             className="h-9 text-sm border border-slate-200 rounded-3xl pl-8 bg-white"
           />
-          <Tag size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Tag
+            size={12}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400"
+          />
         </div>
         <Button
           type="button"
@@ -698,7 +752,13 @@ const FormVoucher = ({
           }}
           disabled={isLoading || (!voucherCode.trim() && !discountPrice)}
         >
-          {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : discountPrice ? 'Hapus' : 'Cek'}
+          {isLoading ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : discountPrice ? (
+            'Hapus'
+          ) : (
+            'Cek'
+          )}
         </Button>
       </div>
 
@@ -708,9 +768,13 @@ const FormVoucher = ({
 
       {discountPrice && (
         <div className="flex items-center gap-2 mt-2 p-2 bg-emerald-100 rounded-3xl">
-          <CheckCircle2 size={14} className="text-emerald-600" />
+          <CheckCircle2
+            size={14}
+            className="text-emerald-600"
+          />
           <span className="text-xs font-medium text-emerald-700">
-            Hemat {paymentMethod === 'INSTALLMENT' && firstInstallmentPrice
+            Hemat{' '}
+            {paymentMethod === 'INSTALLMENT' && firstInstallmentPrice
               ? formatPrice(firstInstallmentPrice - discountPrice)
               : formatPrice(plan.price - discountPrice)}
           </span>
@@ -743,9 +807,10 @@ const FormCheckoutSummary = ({
     plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0].amount || 0;
 
   const isValid = telp.startsWith('+62') && telp.length >= 12;
-  const finalPrice = paymentMethod === 'FULL_PAYMENT'
-    ? (discountPrice || plan.price)
-    : (discountPrice || installmentPrice);
+  const finalPrice =
+    paymentMethod === 'FULL_PAYMENT'
+      ? discountPrice || plan.price
+      : discountPrice || installmentPrice;
 
   return (
     <div className="space-y-3">
@@ -753,24 +818,35 @@ const FormCheckoutSummary = ({
       <div className="p-4 bg-white rounded-2xl border-2 border-slate-200">
         <div className="flex justify-between items-center mb-2">
           <span className="text-xs text-slate-500">
-            {paymentMethod === 'INSTALLMENT' ? 'Cicilan pertama' : 'Total bayar'}
+            {paymentMethod === 'INSTALLMENT'
+              ? 'Cicilan pertama'
+              : 'Total bayar'}
           </span>
-          {(discountPrice || (plan.originalPrice && plan.originalPrice > plan.price)) && (
+          {(discountPrice ||
+            (plan.originalPrice && plan.originalPrice > plan.price)) && (
             <span className="text-[10px] text-slate-400 line-through">
-              {formatPrice(paymentMethod === 'FULL_PAYMENT' ? (plan.originalPrice || plan.price) : installmentPrice)}
+              {formatPrice(
+                paymentMethod === 'FULL_PAYMENT'
+                  ? plan.originalPrice || plan.price
+                  : installmentPrice,
+              )}
             </span>
           )}
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold" style={{ color: mainColor }}>
+          <span
+            className="text-2xl font-bold"
+            style={{ color: mainColor }}
+          >
             {formatPrice(finalPrice)}
           </span>
           {discountPrice && (
             <span className="text-xs font-medium text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
-              Hemat {formatPrice(
+              Hemat{' '}
+              {formatPrice(
                 paymentMethod === 'FULL_PAYMENT'
                   ? plan.price - discountPrice
-                  : installmentPrice - discountPrice
+                  : installmentPrice - discountPrice,
               )}
             </span>
           )}
@@ -783,9 +859,10 @@ const FormCheckoutSummary = ({
         className="w-full h-12 text-sm font-bold text-white border-0 rounded-2xl shadow-lg"
         disabled={loading || !isValid}
         style={{
-          background: (loading || !isValid)
-            ? '#cbd5e1'
-            : `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+          background:
+            loading || !isValid
+              ? '#cbd5e1'
+              : `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
         }}
       >
         {loading ? (

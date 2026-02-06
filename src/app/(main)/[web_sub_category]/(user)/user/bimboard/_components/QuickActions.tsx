@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
 import {
-  FileText,
-  PlayCircle,
   BookOpen,
+  FileText,
   MessageSquare,
+  PlayCircle,
   Trophy,
-} from "lucide-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+} from 'lucide-react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 interface QuickActionsProps {
   upcomingTryoutCount: number;
@@ -22,44 +22,74 @@ export default function QuickActions({
 }: QuickActionsProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const params = useParams();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
-  const webSubId = (params?.web_sub_category as string) || "snbt";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const webSubId = (params?.web_sub_category as string) || 'snbt';
 
   const actions = [
     {
       icon: FileText,
-      label: "Try Out",
+      label: 'Try Out',
       badge: upcomingTryoutCount > 0 ? upcomingTryoutCount : null,
       href: `/${webSubId}/user/bimarena/try-out`,
-      colors: { bg: "bg-purple-50", border: "border-purple-200", text: "text-purple-700", icon: "text-purple-500", hover: "hover:bg-purple-100" }
+      colors: {
+        bg: 'bg-purple-50',
+        border: 'border-purple-200',
+        text: 'text-purple-700',
+        icon: 'text-purple-500',
+        hover: 'hover:bg-purple-100',
+      },
     },
     {
       icon: PlayCircle,
-      label: "Live Class",
+      label: 'Live Class',
       badge: upcomingLiveClassCount > 0 ? upcomingLiveClassCount : null,
       href: `/${webSubId}/user/bimlive`,
-       colors: { bg: "bg-rose-50", border: "border-rose-200", text: "text-rose-700", icon: "text-rose-500", hover: "hover:bg-rose-100" }
+      colors: {
+        bg: 'bg-rose-50',
+        border: 'border-rose-200',
+        text: 'text-rose-700',
+        icon: 'text-rose-500',
+        hover: 'hover:bg-rose-100',
+      },
     },
     {
       icon: BookOpen,
-      label: "Materi",
+      label: 'Materi',
       badge: null,
       href: `/${webSubId}/user/bimcourse`,
-       colors: { bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-700", icon: "text-blue-500", hover: "hover:bg-blue-100" }
+      colors: {
+        bg: 'bg-blue-50',
+        border: 'border-blue-200',
+        text: 'text-blue-700',
+        icon: 'text-blue-500',
+        hover: 'hover:bg-blue-100',
+      },
     },
     {
       icon: MessageSquare,
-      label: "AI Tutor",
+      label: 'AI Tutor',
       badge: null,
       href: `/${webSubId}/user/bimbot`,
-       colors: { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", icon: "text-emerald-500", hover: "hover:bg-emerald-100" }
+      colors: {
+        bg: 'bg-emerald-50',
+        border: 'border-emerald-200',
+        text: 'text-emerald-700',
+        icon: 'text-emerald-500',
+        hover: 'hover:bg-emerald-100',
+      },
     },
     {
       icon: Trophy,
-      label: "Leaderboard",
+      label: 'Leaderboard',
       badge: null,
       href: `/${webSubId}/user/bimarena/leaderboard`,
-       colors: { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", icon: "text-amber-500", hover: "hover:bg-amber-100" }
+      colors: {
+        bg: 'bg-amber-50',
+        border: 'border-amber-200',
+        text: 'text-amber-700',
+        icon: 'text-amber-500',
+        hover: 'hover:bg-amber-100',
+      },
     },
   ];
 
@@ -74,14 +104,22 @@ export default function QuickActions({
 
         <div className="quick-actions-scroll flex gap-2.5 min-w-max">
           {actions.map((action) => (
-            <Link key={action.label} href={action.href} className="flex-shrink-0">
+            <Link
+              key={action.label}
+              href={action.href}
+              className="flex-shrink-0"
+            >
               <div
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-3xl border ${action.colors.bg} ${action.colors.border} ${action.colors.hover} transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5`}
               >
                 <div className={`p-1 rounded-full bg-white/50`}>
-                   <action.icon className={`w-3.5 h-3.5 ${action.colors.icon}`} />
+                  <action.icon
+                    className={`w-3.5 h-3.5 ${action.colors.icon}`}
+                  />
                 </div>
-                <span className={`text-xs font-bold ${action.colors.text} whitespace-nowrap`}>
+                <span
+                  className={`text-xs font-bold ${action.colors.text} whitespace-nowrap`}
+                >
                   {action.label}
                 </span>
                 {action.badge && (

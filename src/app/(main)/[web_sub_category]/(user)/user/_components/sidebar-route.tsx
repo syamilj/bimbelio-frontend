@@ -766,11 +766,11 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                             href: `/${webSubCategoryId}/user/bimarena/try-out`,
                             icon: Medal,
                           },
-                           {
-                                      name: 'Quiz',
-                                      href: `/${webSubCategoryId}/user/bimarena/quiz`,
-                                      icon: FileQuestion,
-                                    },
+                          {
+                            name: 'Quiz',
+                            href: `/${webSubCategoryId}/user/bimarena/quiz`,
+                            icon: FileQuestion,
+                          },
                         ].map((sub) => {
                           const isSubActive = pathname?.includes(sub.href);
                           return (

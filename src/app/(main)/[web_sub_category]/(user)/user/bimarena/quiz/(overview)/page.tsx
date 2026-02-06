@@ -7,6 +7,7 @@ import { BarChart3, BookOpen, Trophy } from 'lucide-react';
 import { useState } from 'react';
 
 // Components
+import QuizOnboarding from '../_components/onboarding/quiz-onboarding';
 import { QuizCardList } from '../_components/quiz-card-list';
 import { QuizLeaderboard } from '../_components/quiz-leaderboard';
 import { QuizProgress } from '../_components/quiz-progress';
@@ -14,7 +15,6 @@ import { QuizStats } from '../_components/quiz-stats';
 import { QuizSummary } from '../_components/quiz-summary';
 import { QuizTopLeaderboard } from '../_components/quiz-top-leaderboard';
 import { TargetUniversityBanner } from '../_components/target-university-banner';
-import QuizOnboarding from '../_components/onboarding/quiz-onboarding';
 import { QuizProvider, useQuizProvider } from '../_provider/_provider';
 
 export function BimArenaQuizPageMain() {
@@ -78,11 +78,7 @@ export function BimArenaQuizPageMain() {
                             ? 'text-white shadow-md'
                             : 'text-slate-500 hover:text-slate-700 hover:bg-white/50',
                         )}
-                        style={
-                          isActive
-                            ? { backgroundColor: mainColor }
-                            : {}
-                        }
+                        style={isActive ? { backgroundColor: mainColor } : {}}
                       >
                         <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
                         <span>{tab.label}</span>

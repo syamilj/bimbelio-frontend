@@ -13,10 +13,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import {
   Coins,
-  Crown,
   Eye,
   Gift,
   Heart,
@@ -24,10 +22,7 @@ import {
   Info,
   Shield,
   ShoppingCart,
-  SparkleIcon,
   Sparkles,
-  Star,
-  TrendingUp,
   Users,
   Zap,
 } from 'lucide-react';
@@ -189,7 +184,7 @@ export function CardPlan({
         )}
         style={{
           borderColor: isRecommended ? mainColor : '#e2e8f0',
-          ...(isRecommended && { '--tw-ring-color': mainColor } as any),
+          ...(isRecommended && ({ '--tw-ring-color': mainColor } as any)),
         }}
       >
         {/* Image Section - 4:5 Ratio, No Overlay */}
@@ -209,7 +204,6 @@ export function CardPlan({
           {/* CTA Buttons */}
           <ButtonSection />
         </div>
-
       </div>
     </ProviderContext.Provider>
   );
@@ -367,19 +361,20 @@ const ProductHeader = () => {
     <div className="mb-3">
       {/* Category Tags */}
       <div className="flex items-center gap-1.5 mb-2">
-        {platfroms.length === 0 && plan.PlanSubscription?.WebsiteSubCategory && (
-          <Badge
-            variant="outline"
-            className="text-[10px] font-medium border px-1.5 py-0"
-            style={{
-              borderColor: `${mainColor}40`,
-              color: mainColor,
-              backgroundColor: `${mainColor}05`,
-            }}
-          >
-            {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Paket'}
-          </Badge>
-        )}
+        {platfroms.length === 0 &&
+          plan.PlanSubscription?.WebsiteSubCategory && (
+            <Badge
+              variant="outline"
+              className="text-[10px] font-medium border px-1.5 py-0"
+              style={{
+                borderColor: `${mainColor}40`,
+                color: mainColor,
+                backgroundColor: `${mainColor}05`,
+              }}
+            >
+              {plan.PlanSubscription?.WebsiteSubCategory?.name || 'Paket'}
+            </Badge>
+          )}
         {platfroms.length > 0 &&
           platfroms.slice(0, 2).map((platform) => (
             <Badge
@@ -451,14 +446,18 @@ const PricingSection = () => {
 
   // Check if plan has installment
   const hasInstallment = !!plan.PlanInstallmentConfig;
-  const firstInstallmentPrice = plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0]?.amount || 0;
+  const firstInstallmentPrice =
+    plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0]?.amount || 0;
   const fullPrice = discount || plan.price;
 
   // Calculate total installment price from all schedules
-  const totalInstallmentPrice = plan.PlanInstallmentConfig?.PlanInstallmentSchedule.reduce(
-    (sum, schedule) => sum + schedule.amount,
-    0
-  ) || plan.PlanInstallmentConfig?.totalAmount || 0;
+  const totalInstallmentPrice =
+    plan.PlanInstallmentConfig?.PlanInstallmentSchedule.reduce(
+      (sum, schedule) => sum + schedule.amount,
+      0,
+    ) ||
+    plan.PlanInstallmentConfig?.totalAmount ||
+    0;
 
   return (
     <div className="mb-3">
@@ -485,13 +484,22 @@ const PricingSection = () => {
                       type="button"
                       className="ml-1 p-1 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
                     >
-                      <Info size={14} className="text-gray-400 hover:text-gray-600" />
+                      <Info
+                        size={14}
+                        className="text-gray-400 hover:text-gray-600"
+                      />
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-72 p-4 rounded-3xl" align="start">
+                  <PopoverContent
+                    className="w-72 p-4 rounded-3xl"
+                    align="start"
+                  >
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 pb-2 border-b">
-                        <Coins className="w-4 h-4" style={{ color: mainColor }} />
+                        <Coins
+                          className="w-4 h-4"
+                          style={{ color: mainColor }}
+                        />
                         <h4 className="font-bold text-sm">Detail Cicilan</h4>
                       </div>
                       <div className="space-y-2">
@@ -514,15 +522,20 @@ const PricingSection = () => {
                       </div>
                       <div className="pt-2 border-t flex justify-between items-center">
                         <span className="text-sm font-bold">Total</span>
-                        <span className="text-base font-black" style={{ color: mainColor }}>
+                        <span
+                          className="text-base font-black"
+                          style={{ color: mainColor }}
+                        >
                           {formatPrice(totalInstallmentPrice)}
                         </span>
                       </div>
-                      {plan.PlanInstallmentConfig?.gracePeriodDays && plan.PlanInstallmentConfig.gracePeriodDays > 0 && (
-                        <div className="text-[10px] text-gray-500 pt-2 border-t">
-                          Masa tenggang: {plan.PlanInstallmentConfig.gracePeriodDays} hari
-                        </div>
-                      )}
+                      {plan.PlanInstallmentConfig?.gracePeriodDays &&
+                        plan.PlanInstallmentConfig.gracePeriodDays > 0 && (
+                          <div className="text-[10px] text-gray-500 pt-2 border-t">
+                            Masa tenggang:{' '}
+                            {plan.PlanInstallmentConfig.gracePeriodDays} hari
+                          </div>
+                        )}
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -548,7 +561,8 @@ const PricingSection = () => {
                   {formatPrice(fullPrice)}
                 </span>
                 {/* Original Price if there's discount */}
-                {((plan.originalPrice && plan.originalPrice > plan.price) || discount) && (
+                {((plan.originalPrice && plan.originalPrice > plan.price) ||
+                  discount) && (
                   <span className="text-sm text-gray-500 line-through font-medium">
                     {formatPrice(plan.originalPrice || plan.price)}
                   </span>
@@ -578,7 +592,10 @@ const PricingSection = () => {
         {/* Max Users Warning */}
         {plan.maxUsers && (
           <div className="flex items-center gap-1 px-2 py-0.5 rounded-3xl bg-amber-50 border border-amber-200">
-            <Users size={10} className="text-amber-600" />
+            <Users
+              size={10}
+              className="text-amber-600"
+            />
             <span className="text-[10px] font-medium text-amber-700">
               {plan.totalUsers || 0}/{plan.maxUsers} slot
             </span>
@@ -588,7 +605,10 @@ const PricingSection = () => {
         {/* Installment Available */}
         {plan.PlanInstallmentConfig && (
           <div className="flex items-center gap-1 px-2 py-0.5 rounded-3xl bg-blue-50 border border-blue-200">
-            <Coins size={10} className="text-blue-600" />
+            <Coins
+              size={10}
+              className="text-blue-600"
+            />
             <span className="text-[10px] font-medium text-blue-700">
               Cicilan {plan.PlanInstallmentConfig.totalInstallments}x
             </span>
@@ -598,7 +618,10 @@ const PricingSection = () => {
         {/* Limited Time */}
         {isLimitedTime && (
           <div className="flex items-center gap-1 px-2 py-0.5 rounded-3xl bg-red-50 border border-red-200">
-            <Zap size={10} className="text-red-600" />
+            <Zap
+              size={10}
+              className="text-red-600"
+            />
             <span className="text-[10px] font-medium text-red-700">
               Promo Terbatas
             </span>
@@ -608,7 +631,10 @@ const PricingSection = () => {
         {/* Timeline/Duration */}
         {plan.timeline && (
           <div className="flex items-center gap-1 px-2 py-0.5 rounded-3xl bg-green-50 border border-green-200">
-            <Shield size={10} className="text-green-600" />
+            <Shield
+              size={10}
+              className="text-green-600"
+            />
             <span className="text-[10px] font-medium text-green-700">
               {plan.timeline}
             </span>
@@ -913,11 +939,17 @@ const ButtonSection = () => {
                 background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
               }}
             >
-              <Users size={16} className="mr-2" />
+              <Users
+                size={16}
+                className="mr-2"
+              />
               <span>Kuota Penuh</span>
             </Button>
           ) : (
-            <DialogPayment plan={plan} classOverlay={classOverlay}>
+            <DialogPayment
+              plan={plan}
+              classOverlay={classOverlay}
+            >
               <Button
                 ref={buttonRef}
                 className="w-full h-11 text-sm font-bold shadow-md hover:shadow-lg transition-all duration-300 text-white border-0 rounded-3xl"
@@ -933,7 +965,10 @@ const ButtonSection = () => {
                   }
                 }}
               >
-                <ShoppingCart size={16} className="mr-2" />
+                <ShoppingCart
+                  size={16}
+                  className="mr-2"
+                />
                 <span>Beli Sekarang</span>
               </Button>
             </DialogPayment>

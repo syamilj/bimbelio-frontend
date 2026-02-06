@@ -1,26 +1,14 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { fetchAllLinkPages, deleteLinkPage } from '@/lib/api/link-pages';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,24 +17,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
-  Plus,
-  Search,
-  MoreVertical,
-  Edit,
-  Trash2,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toaster } from '@/components/ui/toaster';
+import { deleteLinkPage, fetchAllLinkPages } from '@/lib/api/link-pages';
+import {
+  Activity,
   BarChart3,
   Copy,
+  Edit,
   ExternalLink,
-  Rows3,
-  Sparkles,
-  Activity,
   Lock,
+  MoreVertical,
+  Plus,
+  Rows3,
+  Search,
+  Sparkles,
+  Trash2,
 } from 'lucide-react';
-import { toaster } from '@/components/ui/toaster';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 
 interface LinkPage {
   id: string;
@@ -73,7 +73,9 @@ export default function LinkPagesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
+  const [statusFilter, setStatusFilter] = useState<
+    'all' | 'active' | 'inactive'
+  >('all');
 
   useEffect(() => {
     fetchLinkPages();
@@ -94,7 +96,8 @@ export default function LinkPagesPage() {
     } catch (error: any) {
       toaster({
         title: 'Error',
-        description: error.response?.data?.message || 'Failed to fetch link pages',
+        description:
+          error.response?.data?.message || 'Failed to fetch link pages',
         condition: 'warning',
       });
     } finally {
@@ -111,18 +114,25 @@ export default function LinkPagesPage() {
   const overviewData = useMemo(() => {
     const views = linkPages.reduce((sum, p) => sum + p.totalViews, 0);
     const clicks = linkPages.reduce((sum, p) => sum + p.totalClicks, 0);
-    const conversions = linkPages.reduce((sum, p) => sum + p.conversionCount, 0);
+    const conversions = linkPages.reduce(
+      (sum, p) => sum + p.conversionCount,
+      0,
+    );
     const ctr = views > 0 ? ((clicks / views) * 100).toFixed(1) : '0.0';
     return { views, clicks, conversions, ctr };
   }, [linkPages]);
 
   const recentPages = useMemo(() => {
     return [...linkPages]
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      )
       .slice(0, 3);
   }, [linkPages]);
 
-  const formatNumber = (value: number) => new Intl.NumberFormat('id-ID').format(value);
+  const formatNumber = (value: number) =>
+    new Intl.NumberFormat('id-ID').format(value);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this link page?')) return;
@@ -138,7 +148,8 @@ export default function LinkPagesPage() {
     } catch (error: any) {
       toaster({
         title: 'Error',
-        description: error.response?.data?.message || 'Failed to delete link page',
+        description:
+          error.response?.data?.message || 'Failed to delete link page',
         condition: 'warning',
       });
     }
@@ -163,18 +174,33 @@ export default function LinkPagesPage() {
       <section className="rounded-3xl border border-border bg-card px-6 py-8 shadow-sm">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-sm font-medium text-muted-foreground">Link-in-bio workspace</p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight">Kelola & optimalkan semua Link Page</h1>
+            <p className="text-sm font-medium text-muted-foreground">
+              Link-in-bio workspace
+            </p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">
+              Kelola & optimalkan semua Link Page
+            </h1>
             <p className="mt-3 max-w-2xl text-base text-muted-foreground">
-              Monitor performa, aktifkan pixel, dan atur tombol hanya dalam beberapa klik. Tampilan baru ini dirancang agar tim bisa bergerak lebih cepat.
+              Monitor performa, aktifkan pixel, dan atur tombol hanya dalam
+              beberapa klik. Tampilan baru ini dirancang agar tim bisa bergerak
+              lebih cepat.
             </p>
           </div>
           <div className="flex flex-col gap-3 md:flex-row">
-            <Button variant="outline" className="gap-2" onClick={() => router.push(`/${webSubCategory}/admin/short-urls`)}>
+            <Button
+              variant="outline"
+              className="gap-2"
+              onClick={() => router.push(`/${webSubCategory}/admin/short-urls`)}
+            >
               <Sparkles className="h-4 w-4" />
               Otomatiskan Short URL
             </Button>
-            <Button className="gap-2" onClick={() => router.push(`/${webSubCategory}/admin/link-pages/create`)}>
+            <Button
+              className="gap-2"
+              onClick={() =>
+                router.push(`/${webSubCategory}/admin/link-pages/create`)
+              }
+            >
               <Plus className="h-4 w-4" />
               Link Page Baru
             </Button>
@@ -202,8 +228,12 @@ export default function LinkPagesPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-semibold">{formatNumber(overviewData.views)}</p>
-              <p className="text-xs text-muted-foreground">Sejak awal pencatatan</p>
+              <p className="text-3xl font-semibold">
+                {formatNumber(overviewData.views)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Sejak awal pencatatan
+              </p>
             </CardContent>
           </Card>
           <Card className="rounded-3xl border-none bg-secondary/40">
@@ -213,7 +243,9 @@ export default function LinkPagesPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-semibold">{formatNumber(overviewData.clicks)}</p>
+              <p className="text-3xl font-semibold">
+                {formatNumber(overviewData.clicks)}
+              </p>
               <p className="text-xs text-muted-foreground">Semua tombol</p>
             </CardContent>
           </Card>
@@ -237,7 +269,9 @@ export default function LinkPagesPage() {
             <div className="flex flex-col gap-3 md:flex-row md:justify-between">
               <div>
                 <CardTitle>Daftar Link Page</CardTitle>
-                <CardDescription>Filter berdasarkan status dan lakukan aksi cepat</CardDescription>
+                <CardDescription>
+                  Filter berdasarkan status dan lakukan aksi cepat
+                </CardDescription>
               </div>
               <div className="flex items-center gap-2 rounded-full border bg-muted/30 px-3 py-1 text-xs font-medium">
                 <Activity className="h-4 w-4" />
@@ -265,31 +299,50 @@ export default function LinkPagesPage() {
                     size="sm"
                     variant={statusFilter === filter ? 'default' : 'ghost'}
                     className="rounded-full px-4"
-                    onClick={() => setStatusFilter(filter as typeof statusFilter)}
+                    onClick={() =>
+                      setStatusFilter(filter as typeof statusFilter)
+                    }
                   >
-                    {filter === 'all' ? 'Semua' : filter === 'active' ? 'Aktif' : 'Nonaktif'}
+                    {filter === 'all'
+                      ? 'Semua'
+                      : filter === 'active'
+                        ? 'Aktif'
+                        : 'Nonaktif'}
                   </Button>
                 ))}
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="table" className="w-full">
+            <Tabs
+              defaultValue="table"
+              className="w-full"
+            >
               <TabsList className="grid w-full max-w-sm grid-cols-2">
                 <TabsTrigger value="table">Tampilan tabel</TabsTrigger>
                 <TabsTrigger value="grid">Ringkasan kartu</TabsTrigger>
               </TabsList>
-              <TabsContent value="table" className="mt-6">
+              <TabsContent
+                value="table"
+                className="mt-6"
+              >
                 {loading ? (
                   <div className="space-y-2">
                     {Array.from({ length: 6 }).map((_, index) => (
-                      <Skeleton key={`s-${index}`} className="h-16 w-full rounded-3xl" />
+                      <Skeleton
+                        key={`s-${index}`}
+                        className="h-16 w-full rounded-3xl"
+                      />
                     ))}
                   </div>
                 ) : filteredPages.length === 0 ? (
                   <div className="rounded-3xl border border-dashed border-muted-foreground/30 px-6 py-12 text-center text-muted-foreground">
-                    <p className="text-base font-semibold">Belum ada data sesuai filter.</p>
-                    <p className="mt-1 text-sm">Coba ubah pencarian atau tambahkan link page baru.</p>
+                    <p className="text-base font-semibold">
+                      Belum ada data sesuai filter.
+                    </p>
+                    <p className="mt-1 text-sm">
+                      Coba ubah pencarian atau tambahkan link page baru.
+                    </p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
@@ -312,58 +365,108 @@ export default function LinkPagesPage() {
                               <div className="flex flex-col">
                                 <span>{page.title}</span>
                                 {page.description && (
-                                  <span className="text-xs text-muted-foreground line-clamp-1">{page.description}</span>
+                                  <span className="text-xs text-muted-foreground line-clamp-1">
+                                    {page.description}
+                                  </span>
                                 )}
                               </div>
                             </TableCell>
                             <TableCell>
                               <div className="flex items-center gap-2">
-                                <code className="rounded bg-muted px-2 py-1 text-xs">{page.slug}</code>
-                                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => copyLinkUrl(page.slug)}>
+                                <code className="rounded bg-muted px-2 py-1 text-xs">
+                                  {page.slug}
+                                </code>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-7 w-7"
+                                  onClick={() => copyLinkUrl(page.slug)}
+                                >
                                   <Copy className="h-3.5 w-3.5" />
                                 </Button>
                               </div>
                             </TableCell>
                             <TableCell>
-                              <Badge variant={page.isActive ? 'default' : 'secondary'} className="rounded-full">
+                              <Badge
+                                variant={
+                                  page.isActive ? 'default' : 'secondary'
+                                }
+                                className="rounded-full"
+                              >
                                 {page.isActive ? 'Aktif' : 'Nonaktif'}
                               </Badge>
                             </TableCell>
-                            <TableCell>{formatNumber(page.totalViews)}</TableCell>
-                            <TableCell>{formatNumber(page.totalClicks)}</TableCell>
-                            <TableCell>{formatNumber(page.conversionCount)}</TableCell>
+                            <TableCell>
+                              {formatNumber(page.totalViews)}
+                            </TableCell>
+                            <TableCell>
+                              {formatNumber(page.totalClicks)}
+                            </TableCell>
+                            <TableCell>
+                              {formatNumber(page.conversionCount)}
+                            </TableCell>
                             <TableCell className="text-right">
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon">
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                  >
                                     <MoreVertical className="h-4 w-4" />
                                   </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                  <DropdownMenuLabel>Aksi singkat</DropdownMenuLabel>
+                                  <DropdownMenuLabel>
+                                    Aksi singkat
+                                  </DropdownMenuLabel>
                                   <DropdownMenuSeparator />
-                                  <DropdownMenuItem onClick={() => openLink(page.slug)}>
+                                  <DropdownMenuItem
+                                    onClick={() => openLink(page.slug)}
+                                  >
                                     <ExternalLink className="mr-2 h-4 w-4" />
                                     Lihat halaman
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => copyLinkUrl(page.slug)}>
+                                  <DropdownMenuItem
+                                    onClick={() => copyLinkUrl(page.slug)}
+                                  >
                                     <Copy className="mr-2 h-4 w-4" />
                                     Salin tautan
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => router.push(`/${webSubCategory}/admin/link-pages/${page.id}/analytics`)}>
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      router.push(
+                                        `/${webSubCategory}/admin/link-pages/${page.id}/analytics`,
+                                      )
+                                    }
+                                  >
                                     <BarChart3 className="mr-2 h-4 w-4" />
                                     Lihat analitik
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => router.push(`/${webSubCategory}/admin/link-pages/${page.id}/buttons`)}>
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      router.push(
+                                        `/${webSubCategory}/admin/link-pages/${page.id}/buttons`,
+                                      )
+                                    }
+                                  >
                                     <Rows3 className="mr-2 h-4 w-4" />
                                     Atur tombol
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => router.push(`/${webSubCategory}/admin/link-pages/edit/${page.id}`)}>
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      router.push(
+                                        `/${webSubCategory}/admin/link-pages/edit/${page.id}`,
+                                      )
+                                    }
+                                  >
                                     <Edit className="mr-2 h-4 w-4" />
                                     Ubah
                                   </DropdownMenuItem>
                                   <DropdownMenuSeparator />
-                                  <DropdownMenuItem onClick={() => handleDelete(page.id)} className="text-destructive">
+                                  <DropdownMenuItem
+                                    onClick={() => handleDelete(page.id)}
+                                    className="text-destructive"
+                                  >
                                     <Trash2 className="mr-2 h-4 w-4" />
                                     Hapus
                                   </DropdownMenuItem>
@@ -379,72 +482,131 @@ export default function LinkPagesPage() {
 
                 {totalPages > 1 && (
                   <div className="mt-6 flex justify-center gap-3">
-                    <Button variant="outline" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+                    <Button
+                      variant="outline"
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={page === 1}
+                    >
                       Sebelumnya
                     </Button>
                     <span className="flex items-center text-sm text-muted-foreground">
                       Halaman {page} dari {totalPages}
                     </span>
-                    <Button variant="outline" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
+                      disabled={page === totalPages}
+                    >
                       Selanjutnya
                     </Button>
                   </div>
                 )}
               </TabsContent>
 
-              <TabsContent value="grid" className="mt-6">
+              <TabsContent
+                value="grid"
+                className="mt-6"
+              >
                 {loading ? (
                   <div className="grid gap-4 md:grid-cols-2">
                     {Array.from({ length: 4 }).map((_, index) => (
-                      <Skeleton key={`g-${index}`} className="h-48 w-full rounded-3xl" />
+                      <Skeleton
+                        key={`g-${index}`}
+                        className="h-48 w-full rounded-3xl"
+                      />
                     ))}
                   </div>
                 ) : filteredPages.length === 0 ? (
                   <div className="rounded-3xl border border-dashed border-muted-foreground/30 px-6 py-12 text-center text-muted-foreground">
-                    <p className="text-base font-semibold">Belum ada data sesuai filter.</p>
+                    <p className="text-base font-semibold">
+                      Belum ada data sesuai filter.
+                    </p>
                   </div>
                 ) : (
                   <div className="grid gap-4 md:grid-cols-2">
                     {filteredPages.map((page) => (
-                      <div key={page.id} className="rounded-3xl border bg-muted/20 p-5">
+                      <div
+                        key={page.id}
+                        className="rounded-3xl border bg-muted/20 p-5"
+                      >
                         <div className="flex items-center justify-between gap-3">
                           <div>
-                            <p className="text-lg font-semibold">{page.title}</p>
-                            <p className="text-xs text-muted-foreground">/{page.slug}</p>
+                            <p className="text-lg font-semibold">
+                              {page.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              /{page.slug}
+                            </p>
                           </div>
-                          <Badge variant={page.isActive ? 'default' : 'secondary'} className="rounded-full">
+                          <Badge
+                            variant={page.isActive ? 'default' : 'secondary'}
+                            className="rounded-full"
+                          >
                             {page.isActive ? 'Aktif' : 'Nonaktif'}
                           </Badge>
                         </div>
                         <div className="mt-4 grid grid-cols-3 gap-3 text-center text-xs">
                           <div>
-                            <p className="font-semibold">{formatNumber(page.totalViews)}</p>
+                            <p className="font-semibold">
+                              {formatNumber(page.totalViews)}
+                            </p>
                             <p className="text-muted-foreground">Views</p>
                           </div>
                           <div>
-                            <p className="font-semibold">{formatNumber(page.totalClicks)}</p>
+                            <p className="font-semibold">
+                              {formatNumber(page.totalClicks)}
+                            </p>
                             <p className="text-muted-foreground">Clicks</p>
                           </div>
                           <div>
-                            <p className="font-semibold">{formatNumber(page.conversionCount)}</p>
+                            <p className="font-semibold">
+                              {formatNumber(page.conversionCount)}
+                            </p>
                             <p className="text-muted-foreground">Convs</p>
                           </div>
                         </div>
                         <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                          {page.enableMetaCAPI && <Badge variant="outline">Meta Pixel</Badge>}
-                          {page.enableTikTokEvents && <Badge variant="outline">TikTok Pixel</Badge>}
+                          {page.enableMetaCAPI && (
+                            <Badge variant="outline">Meta Pixel</Badge>
+                          )}
+                          {page.enableTikTokEvents && (
+                            <Badge variant="outline">TikTok Pixel</Badge>
+                          )}
                           {!page.enableMetaCAPI && !page.enableTikTokEvents && (
-                            <span className="text-muted-foreground">Tidak ada pixel</span>
+                            <span className="text-muted-foreground">
+                              Tidak ada pixel
+                            </span>
                           )}
                         </div>
                         <div className="mt-5 flex flex-wrap gap-2">
-                          <Button size="sm" variant="outline" onClick={() => router.push(`/${webSubCategory}/admin/link-pages/${page.id}/analytics`)}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() =>
+                              router.push(
+                                `/${webSubCategory}/admin/link-pages/${page.id}/analytics`,
+                              )
+                            }
+                          >
                             Analitik
                           </Button>
-                          <Button size="sm" variant="outline" onClick={() => router.push(`/${webSubCategory}/admin/link-pages/edit/${page.id}`)}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() =>
+                              router.push(
+                                `/${webSubCategory}/admin/link-pages/edit/${page.id}`,
+                              )
+                            }
+                          >
                             Edit
                           </Button>
-                          <Button size="sm" onClick={() => openLink(page.slug)}>
+                          <Button
+                            size="sm"
+                            onClick={() => openLink(page.slug)}
+                          >
                             Lihat publik
                           </Button>
                         </div>
@@ -465,22 +627,36 @@ export default function LinkPagesPage() {
           <CardContent className="space-y-6">
             <div className="rounded-3xl border border-dashed border-muted-foreground/30 p-4">
               <p className="text-sm font-semibold">Tingkat konversi total</p>
-              <p className="text-4xl font-bold tracking-tight">{overviewData.ctr}%</p>
-              <p className="text-xs text-muted-foreground">Perbandingan klik terhadap total kunjungan.</p>
+              <p className="text-4xl font-bold tracking-tight">
+                {overviewData.ctr}%
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Perbandingan klik terhadap total kunjungan.
+              </p>
             </div>
 
             <div>
-              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Link terbaru</p>
+              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                Link terbaru
+              </p>
               <div className="mt-3 space-y-3">
                 {recentPages.map((page) => (
-                  <div key={page.id} className="rounded-3xl border bg-background p-3">
+                  <div
+                    key={page.id}
+                    className="rounded-3xl border bg-background p-3"
+                  >
                     <div className="flex items-center justify-between text-sm font-semibold">
                       <span>{page.title}</span>
-                      <Badge variant="outline" className="rounded-full text-[10px] uppercase tracking-wide">
+                      <Badge
+                        variant="outline"
+                        className="rounded-full text-[10px] uppercase tracking-wide"
+                      >
                         {page.isActive ? 'Aktif' : 'Nonaktif'}
                       </Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground">/{page.slug}</p>
+                    <p className="text-xs text-muted-foreground">
+                      /{page.slug}
+                    </p>
                     <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
                       <span>{formatNumber(page.totalViews)} views</span>
                       <span>•</span>
@@ -489,7 +665,9 @@ export default function LinkPagesPage() {
                   </div>
                 ))}
                 {recentPages.length === 0 && (
-                  <p className="text-sm text-muted-foreground">Belum ada data terbaru.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Belum ada data terbaru.
+                  </p>
                 )}
               </div>
             </div>
@@ -499,14 +677,28 @@ export default function LinkPagesPage() {
                 <Lock className="h-10 w-10 rounded-full bg-muted/50 p-2" />
                 <div>
                   <p className="font-semibold">Proteksi & pixel</p>
-                  <p className="text-sm text-muted-foreground">Aktifkan Meta / TikTok pixel untuk setiap halaman.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Aktifkan Meta / TikTok pixel untuk setiap halaman.
+                  </p>
                 </div>
               </div>
               <div className="mt-4 grid gap-2 text-xs text-muted-foreground">
-                <p>Meta active: {linkPages.filter((p) => p.enableMetaCAPI).length}</p>
-                <p>TikTok active: {linkPages.filter((p) => p.enableTikTokEvents).length}</p>
+                <p>
+                  Meta active:{' '}
+                  {linkPages.filter((p) => p.enableMetaCAPI).length}
+                </p>
+                <p>
+                  TikTok active:{' '}
+                  {linkPages.filter((p) => p.enableTikTokEvents).length}
+                </p>
               </div>
-              <Button variant="secondary" className="mt-4 w-full" onClick={() => router.push(`/${webSubCategory}/admin/link-pages/create`)}>
+              <Button
+                variant="secondary"
+                className="mt-4 w-full"
+                onClick={() =>
+                  router.push(`/${webSubCategory}/admin/link-pages/create`)
+                }
+              >
                 Buat halaman dengan template baru
               </Button>
             </div>

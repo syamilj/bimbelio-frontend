@@ -168,7 +168,9 @@ export default function PricingPlans({
                   }`}
                   style={{
                     borderColor: plan.isPopular ? mainColor : undefined,
-                    boxShadow: plan.isPopular ? `0 10px 30px -10px ${mainColor}50` : undefined,
+                    boxShadow: plan.isPopular
+                      ? `0 10px 30px -10px ${mainColor}50`
+                      : undefined,
                     // ringColor: plan.isPopular ? `${mainColor}20` : undefined, // Tailwind ring util handles opacity well, can hardcode class if needed
                   }}
                 >
@@ -183,10 +185,10 @@ export default function PricingPlans({
                   >
                     {/* Decorative Blobs for Popular */}
                     {plan.isPopular && (
-                       <>
+                      <>
                         <div className="absolute top-0 right-0 w-24 h-24 bg-white opacity-10 rounded-full -mr-10 -mt-10 blur-xl"></div>
                         <div className="absolute bottom-0 left-0 w-20 h-20 bg-black opacity-5 rounded-full -ml-10 -mb-10 blur-xl"></div>
-                       </>
+                      </>
                     )}
 
                     {plan.isPopular && (
@@ -199,8 +201,10 @@ export default function PricingPlans({
                     )}
 
                     <div className="flex items-center gap-2 mb-3 relative z-10">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${plan.isPopular ? 'bg-white/20' : 'bg-white shadow-sm'}`}>
-                         <Crown
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${plan.isPopular ? 'bg-white/20' : 'bg-white shadow-sm'}`}
+                      >
+                        <Crown
                           className={`w-4 h-4 ${plan.isPopular ? 'text-white' : ''}`}
                           style={{
                             color: plan.isPopular ? undefined : mainColor,
@@ -244,13 +248,17 @@ export default function PricingPlans({
                           key={f}
                           className="flex items-start gap-2 text-xs text-gray-600"
                         >
-                          <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${plan.isPopular ? 'bg-white shadow-sm border border-gray-100' : 'bg-slate-50'}`}>
-                              <Check
-                                className="w-2.5 h-2.5"
-                                style={{ color: mainColor }}
-                              />
+                          <div
+                            className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${plan.isPopular ? 'bg-white shadow-sm border border-gray-100' : 'bg-slate-50'}`}
+                          >
+                            <Check
+                              className="w-2.5 h-2.5"
+                              style={{ color: mainColor }}
+                            />
                           </div>
-                          <span className="line-clamp-2 font-medium leading-relaxed">{f}</span>
+                          <span className="line-clamp-2 font-medium leading-relaxed">
+                            {f}
+                          </span>
                         </div>
                       ))}
                     </div>

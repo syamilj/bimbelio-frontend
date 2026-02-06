@@ -4,14 +4,7 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatDate } from '@/lib/utils';
-import {
-  ArrowRight,
-  Calendar,
-  Clock,
-  Play,
-  Users,
-  Video,
-} from 'lucide-react';
+import { ArrowRight, Calendar, Clock, Play, Users, Video } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlanDataType } from './_helper';

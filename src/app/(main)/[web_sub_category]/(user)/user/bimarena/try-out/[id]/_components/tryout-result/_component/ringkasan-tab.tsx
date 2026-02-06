@@ -65,7 +65,10 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
     {
       title: 'Ranking Universitas',
       value: unlockTryout ? ResultData?.choiceAnalisis.rankingUniv : '...',
-      description: unlockTryout && univTotal > 0 ? `Dari ${univTotal} peserta` : 'Estimasi universitas target',
+      description:
+        unlockTryout && univTotal > 0
+          ? `Dari ${univTotal} peserta`
+          : 'Estimasi universitas target',
       icon: Award,
       gradient: 'linear-gradient(135deg, #F59E0B, #D97706)',
       bgColor: '#F59E0B10',
@@ -75,7 +78,10 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
     {
       title: 'Ranking Jurusan',
       value: unlockTryout ? ResultData?.choiceAnalisis.rankingMajor : '...',
-      description: unlockTryout && majorTotal > 0 ? `Dari ${majorTotal} peserta` : 'Estimasi jurusan target',
+      description:
+        unlockTryout && majorTotal > 0
+          ? `Dari ${majorTotal} peserta`
+          : 'Estimasi jurusan target',
       icon: Target,
       gradient: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
       bgColor: '#8B5CF610',
@@ -89,58 +95,62 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
       {/* Summary Cards - Horizontal Scroll on Mobile - More Compact */}
       <div className="overflow-x-auto no-scrollbar pb-3">
         <div className="flex lg:grid lg:grid-cols-4 gap-3 lg:gap-4 min-w-max lg:min-w-0">
+          {summaryCards.map((card, index) => {
+            const IconComponent = card.icon;
 
-        {summaryCards.map((card, index) => {
-          const IconComponent = card.icon;
+            return (
+              <Card
+                key={index}
+                className="relative border rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 min-w-[200px] lg:min-w-0 flex-shrink-0"
+                style={{
+                  backgroundColor: card.bgColor,
+                  borderColor: card.borderColor,
+                }}
+              >
+                {card.locked && <UpgradeLayer />}
 
-          return (
-            <Card
-              key={index}
-              className="relative border rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 min-w-[200px] lg:min-w-0 flex-shrink-0"
-              style={{
-                backgroundColor: card.bgColor,
-                borderColor: card.borderColor,
-              }}
-            >
-              {card.locked && <UpgradeLayer />}
-
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-[11px] font-black text-slate-700 leading-tight">
-                    {card.title}
-                  </CardTitle>
-                  <div
-                    className="w-8 h-8 rounded-3xl flex items-center justify-center text-white shadow-sm flex-shrink-0"
-                    style={{ background: card.gradient }}
-                  >
-                    <IconComponent className="w-4 h-4" />
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-[11px] font-black text-slate-700 leading-tight">
+                      {card.title}
+                    </CardTitle>
+                    <div
+                      className="w-8 h-8 rounded-3xl flex items-center justify-center text-white shadow-sm flex-shrink-0"
+                      style={{ background: card.gradient }}
+                    >
+                      <IconComponent className="w-4 h-4" />
+                    </div>
                   </div>
-                </div>
-              </CardHeader>
+                </CardHeader>
 
-              <CardContent className="pt-0 pb-3">
-                <div className="text-2xl font-black text-slate-900 mb-1 leading-none">
-                  {card.value}
-                  {card.percentage && (
-                    <span className="text-sm text-green-600 ml-1.5">
-                      (Top {card.percentage}%)
-                    </span>
-                  )}
-                </div>
-                <p className="text-[10px] text-slate-600 font-medium leading-tight">{card.description}</p>
-              </CardContent>
-            </Card>
-          );
-        })}
+                <CardContent className="pt-0 pb-3">
+                  <div className="text-2xl font-black text-slate-900 mb-1 leading-none">
+                    {card.value}
+                    {card.percentage && (
+                      <span className="text-sm text-green-600 ml-1.5">
+                        (Top {card.percentage}%)
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-slate-600 font-medium leading-tight">
+                    {card.description}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
 
-     {/* Additional Detailed Stats Card */}
+      {/* Additional Detailed Stats Card */}
       {unlockTryout && (
         <Card className="border rounded-3xl shadow-sm">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5" style={{ color: mainColor }} />
+              <TrendingUp
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
               <CardTitle className="text-lg font-black text-slate-900">
                 Statistik Lengkap
               </CardTitle>
@@ -154,7 +164,10 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
                   {ResultData?.summaryTryout?.Result?.reduce(
                     (total, cat) =>
                       total +
-                      cat.data.reduce((sum, subj) => sum + subj.totalQuestions, 0),
+                      cat.data.reduce(
+                        (sum, subj) => sum + subj.totalQuestions,
+                        0,
+                      ),
                     0,
                   ) || 0}
                 </div>
@@ -187,7 +200,10 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
                   {ResultData?.summaryTryout?.Result?.reduce(
                     (total, cat) =>
                       total +
-                      cat.data.reduce((sum, subj) => sum + subj.wrongAnswers, 0),
+                      cat.data.reduce(
+                        (sum, subj) => sum + subj.wrongAnswers,
+                        0,
+                      ),
                     0,
                   ) || 0}
                 </div>
@@ -197,8 +213,14 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
               </div>
 
               {/* Accuracy */}
-              <div className="text-center p-3 rounded-2xl" style={{ backgroundColor: `${mainColor}10` }}>
-                <div className="text-xl md:text-2xl font-black" style={{ color: mainColor }}>
+              <div
+                className="text-center p-3 rounded-2xl"
+                style={{ backgroundColor: `${mainColor}10` }}
+              >
+                <div
+                  className="text-xl md:text-2xl font-black"
+                  style={{ color: mainColor }}
+                >
                   {(() => {
                     const totalCorrect =
                       ResultData?.summaryTryout?.Result?.reduce(
@@ -224,7 +246,10 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
                   })()}
                   %
                 </div>
-                <div className="text-[10px] md:text-xs font-medium mt-1" style={{ color: mainColor }}>
+                <div
+                  className="text-[10px] md:text-xs font-medium mt-1"
+                  style={{ color: mainColor }}
+                >
                   Akurasi
                 </div>
               </div>

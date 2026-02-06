@@ -5,8 +5,8 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
-import { DialogBimbotAI } from './_components/dialog-bimbot-ai';
 import { BimbotController } from './_components/bimbot-controller';
+import { DialogBimbotAI } from './_components/dialog-bimbot-ai';
 
 export const metadata: Metadata = {
   title: 'Belajar',

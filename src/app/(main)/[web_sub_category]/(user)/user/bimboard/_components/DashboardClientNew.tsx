@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { useSession } from "@/components/provider/provider-session-auth";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { getGeneral } from "@/lib/fetch-helper/fetch-helper";
-import { env } from "@/env.mjs";
-import { LoadingRetro } from "@/components/ui/loading-retro";
+import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { LoadingRetro } from '@/components/ui/loading-retro';
+import { env } from '@/env.mjs';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useCallback, useEffect, useState } from 'react';
 
 // Bim Components
 // import BimHeroWelcome from "./new/BimHeroWelcome";
-import BimQuickStatsOverview from "./new/BimQuickStatsOverview";
-import BimLearningProgress from "./new/BimLearningProgress";
-import BimRecentActivity from "./new/RecentActivity";
-import BimUpcomingSchedule from "./new/UpcomingSchedule";
-import BimPerformanceChart from "./new/BimPerformanceChart";
-import BimRecommendedContent from "./new/RecommendedContent";
-import BimAchievementBadges from "./new/AchievementBadges";
-import BimQuickAccessMenu from "./new/BimQuickAccessMenu";
+import BimAchievementBadges from './new/AchievementBadges';
+import BimLearningProgress from './new/BimLearningProgress';
+import BimPerformanceChart from './new/BimPerformanceChart';
+import BimQuickAccessMenu from './new/BimQuickAccessMenu';
+import BimQuickStatsOverview from './new/BimQuickStatsOverview';
+import BimRecentActivity from './new/RecentActivity';
+import BimRecommendedContent from './new/RecommendedContent';
+import BimUpcomingSchedule from './new/UpcomingSchedule';
 
 // Types
 export interface DashboardData {
@@ -60,14 +60,14 @@ export interface DashboardData {
       score: number | null;
       totalQuestions: number;
       answeredQuestions: number;
-      status: "completed" | "in-progress" | "not-started";
+      status: 'completed' | 'in-progress' | 'not-started';
       thumbnail: string | null;
       deadline: string | null;
     }>;
   };
   recentActivity: Array<{
     id: string;
-    type: "tryout" | "course" | "document" | "liveclass";
+    type: 'tryout' | 'course' | 'document' | 'liveclass';
     title: string;
     description: string;
     timestamp: string;
@@ -156,25 +156,25 @@ export interface DashboardData {
 
 function getImageUrl(
   imageId: string | null | undefined,
-  type: "tryout" | "liveclass" | "course" | "document" = "tryout"
+  type: 'tryout' | 'liveclass' | 'course' | 'document' = 'tryout',
 ): string | undefined {
-  if (!imageId || imageId.trim() === "") return undefined;
+  if (!imageId || imageId.trim() === '') return undefined;
   if (
-    imageId.startsWith("http://") ||
-    imageId.startsWith("https://") ||
-    imageId.startsWith("/")
+    imageId.startsWith('http://') ||
+    imageId.startsWith('https://') ||
+    imageId.startsWith('/')
   ) {
     return imageId;
   }
   const baseUrl = env.NEXT_PUBLIC_SUPABASE_IMG_URL;
   switch (type) {
-    case "tryout":
+    case 'tryout':
       return `${baseUrl}/tryout/${imageId}`;
-    case "liveclass":
+    case 'liveclass':
       return `${baseUrl}/${imageId}`;
-    case "document":
+    case 'document':
       return `${baseUrl}/document/${imageId}`;
-    case "course":
+    case 'course':
       return `${baseUrl}/${imageId}`;
     default:
       return `${baseUrl}/${imageId}`;
@@ -194,50 +194,45 @@ export default function DashboardClientNew() {
     try {
       setLoading(true);
 
-      const [
-        reportRes,
-        tryoutsRes,
-        liveClassRes,
-        documentsRes,
-        coursesRes,
-      ] = await Promise.all([
-        getGeneral(`/report/getReportData`, {
-          params: {
-            userId: session.user.id,
-            website_sub_category_id: webSubCategoryId,
-          },
-        }),
-        getGeneral(`/tryout/getTryOutCardUpcoming2`, {
-          params: {
-            website_sub_category_id: webSubCategoryId,
-            userId: session.user.id,
-            take: 10,
-          },
-        }),
-        // Done tryouts can be removed or kept if we want history separate, but user wants landing page logic.
-        // For now, let's assume Upcoming2 returns mixed/relevant cards.
-        // We'll pass a dummy promise to keep array structure or remove it.
-        // Let's remove doneTryoutsRes fetch and adjust destructuring.
-        getGeneral(`/liveClass/getAllLiveClassAvailable`, {
-          params: {
-            website_sub_category_id: webSubCategoryId,
-            userId: session.user.id,
-            limit: 10,
-          },
-        }),
-        getGeneral(`/document/getDocumentTerbaru`, {
-          params: {
-            website_sub_category_id: webSubCategoryId,
-            limit: 10,
-          },
-        }),
-        getGeneral(`/course/getCategoryForCard`, {
-          params: {
-            website_sub_category_id: webSubCategoryId,
-            userId: session.user.id,
-          },
-        }),
-      ]);
+      const [reportRes, tryoutsRes, liveClassRes, documentsRes, coursesRes] =
+        await Promise.all([
+          getGeneral(`/report/getReportData`, {
+            params: {
+              userId: session.user.id,
+              website_sub_category_id: webSubCategoryId,
+            },
+          }),
+          getGeneral(`/tryout/getTryOutCardUpcoming2`, {
+            params: {
+              website_sub_category_id: webSubCategoryId,
+              userId: session.user.id,
+              take: 10,
+            },
+          }),
+          // Done tryouts can be removed or kept if we want history separate, but user wants landing page logic.
+          // For now, let's assume Upcoming2 returns mixed/relevant cards.
+          // We'll pass a dummy promise to keep array structure or remove it.
+          // Let's remove doneTryoutsRes fetch and adjust destructuring.
+          getGeneral(`/liveClass/getAllLiveClassAvailable`, {
+            params: {
+              website_sub_category_id: webSubCategoryId,
+              userId: session.user.id,
+              limit: 10,
+            },
+          }),
+          getGeneral(`/document/getDocumentTerbaru`, {
+            params: {
+              website_sub_category_id: webSubCategoryId,
+              limit: 10,
+            },
+          }),
+          getGeneral(`/course/getCategoryForCard`, {
+            params: {
+              website_sub_category_id: webSubCategoryId,
+              userId: session.user.id,
+            },
+          }),
+        ]);
 
       const report = reportRes?.data;
       const tryoutsData = tryoutsRes?.data || [];
@@ -251,31 +246,37 @@ export default function DashboardClientNew() {
       // Calculate study time this week from recent tryout sessions
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-      const tryoutsThisWeek = tryoutHistory.filter((t: any) =>
-        new Date(t.startTryout) > oneWeekAgo
+      const tryoutsThisWeek = tryoutHistory.filter(
+        (t: any) => new Date(t.startTryout) > oneWeekAgo,
       );
-      const studyHoursThisWeek = Math.round(tryoutsThisWeek.reduce((sum: number, t: any) => {
-        const durationStr = t.duration || "0:0";
-        const [mins, secs] = durationStr.split(":").map(Number);
-        return sum + (mins / 60);
-      }, 0) * 10) / 10; // Round to 1 decimal place
+      const studyHoursThisWeek =
+        Math.round(
+          tryoutsThisWeek.reduce((sum: number, t: any) => {
+            const durationStr = t.duration || '0:0';
+            const [mins, secs] = durationStr.split(':').map(Number);
+            return sum + mins / 60;
+          }, 0) * 10,
+        ) / 10; // Round to 1 decimal place
 
       // Build learning progress
       const courseProgress = courses.slice(0, 5).map((course: any) => {
         const totalChapters = course.CourseChapter?.length || 0;
-        const completedChapters = course.CourseChapter?.filter((ch: any) =>
-          ch.CourseSubChapter?.every((sub: any) => sub.isCompleted)
-        ).length || 0;
-        const progress = totalChapters > 0 ? (completedChapters / totalChapters) * 100 : 0;
+        const completedChapters =
+          course.CourseChapter?.filter((ch: any) =>
+            ch.CourseSubChapter?.every((sub: any) => sub.isCompleted),
+          ).length || 0;
+        const progress =
+          totalChapters > 0 ? (completedChapters / totalChapters) * 100 : 0;
 
         return {
           id: course.id,
           name: course.name,
-          category: course.Category?.name || "Umum",
+          category: course.Category?.name || 'Umum',
           progress: Math.round(progress),
           totalChapters,
           completedChapters,
-          thumbnail: getImageUrl(course.thumbnail || course.image, "course") || null,
+          thumbnail:
+            getImageUrl(course.thumbnail || course.image, 'course') || null,
           lastAccessed: course.updatedAt || course.createdAt,
         };
       });
@@ -283,18 +284,20 @@ export default function DashboardClientNew() {
       // Map Upcoming2 Data (similar to Landing Page CardTryOut)
       const tryoutProgress = tryoutsData.slice(0, 10).map((tryout: any) => {
         // Status determination logic based on CardTryOut.tsx
-        let status: "completed" | "in-progress" | "not-started" = "not-started";
+        let status: 'completed' | 'in-progress' | 'not-started' = 'not-started';
         if (tryout.isDone) {
-          status = "completed";
+          status = 'completed';
         } else if (tryout.isActive || tryout.isJoin) {
-          status = "in-progress";
+          status = 'in-progress';
         }
 
         // Calculate total questions from TryoutSession array
-        const totalQuestions = tryout.TryoutSession?.reduce(
-          (sum: number, session: any) => sum + (session._count?.TryoutQuestion || 0),
-          0
-        ) || 0;
+        const totalQuestions =
+          tryout.TryoutSession?.reduce(
+            (sum: number, session: any) =>
+              sum + (session._count?.TryoutQuestion || 0),
+            0,
+          ) || 0;
 
         return {
           id: tryout.id,
@@ -302,11 +305,11 @@ export default function DashboardClientNew() {
           // Score is strictly from report history, might not be in upcoming2 list directly
           // We can leave score null or try to find it in history if needed, but for "Cards" visual it might not show score unless completed.
           // In the new design, score is shown if present.
-          score: null,  // Upcoming2 might not have user result attached directly in same format
+          score: null, // Upcoming2 might not have user result attached directly in same format
           totalQuestions,
           answeredQuestions: 0, // Not provided in new endpoint summary
           status,
-          thumbnail: getImageUrl(tryout.image, "tryout") || null,
+          thumbnail: getImageUrl(tryout.image, 'tryout') || null,
           deadline: tryout.endDate,
         };
       });
@@ -314,11 +317,12 @@ export default function DashboardClientNew() {
       // Build recent activity from tryout history
       const recentActivity = tryoutHistory.slice(0, 10).map((item: any) => ({
         id: item.id,
-        type: "tryout" as const,
+        type: 'tryout' as const,
         title: item.title,
         description: `Skor: ${item.score} • Peringkat: #${item.rank}/${item.totalParticipants}`,
-        timestamp: item.finishedAt || item.createdAt || new Date().toISOString(),
-        icon: "target",
+        timestamp:
+          item.finishedAt || item.createdAt || new Date().toISOString(),
+        icon: 'target',
       }));
 
       // Build upcoming schedule
@@ -328,19 +332,23 @@ export default function DashboardClientNew() {
           title: t.title,
           startDate: t.startDate,
           endDate: t.endDate,
-          thumbnail: getImageUrl(t.image, "tryout") || null,
+          thumbnail: getImageUrl(t.image, 'tryout') || null,
           isPremium: false, // Upcoming2 might not return accessType directly, assume open for now or check prop
-          totalQuestions: t.TryoutSession?.reduce((sum: number, s: any) => sum + (s._count?.TryoutQuestion || 0), 0) || 0,
+          totalQuestions:
+            t.TryoutSession?.reduce(
+              (sum: number, s: any) => sum + (s._count?.TryoutQuestion || 0),
+              0,
+            ) || 0,
         })),
         liveClasses: liveClasses.slice(0, 5).map((lc: any) => ({
           id: lc.id,
           title: lc.title,
           scheduleTime: lc.scheduleTime || lc.startDate,
           duration: lc.duration || 60,
-          thumbnail: getImageUrl(lc.thumbnail || lc.image, "liveclass") || null,
-          instructorName: lc.Instructor?.name || "Tutor",
+          thumbnail: getImageUrl(lc.thumbnail || lc.image, 'liveclass') || null,
+          instructorName: lc.Instructor?.name || 'Tutor',
           instructorAvatar: lc.Instructor?.image || null,
-          isPremium: lc.accessType === "PREMIUM",
+          isPremium: lc.accessType === 'PREMIUM',
           isRegistered: false, // TODO: check registration status
         })),
       };
@@ -348,13 +356,27 @@ export default function DashboardClientNew() {
       // Build performance data - use tryout history from report
       const tryoutHistoryData = report?.tryoutHistory?.history || [];
       const isSNBT = websiteSubCategory?.name?.toUpperCase().includes('SNBT');
-      console.log('Tryout History Data:', tryoutHistoryData, 'Is SNBT:', isSNBT); // Debug log
+      console.log(
+        'Tryout History Data:',
+        tryoutHistoryData,
+        'Is SNBT:',
+        isSNBT,
+      ); // Debug log
 
       const scoreHistory = tryoutHistoryData
         .filter((item: any) => {
           // Filter: must have show flag true and have a score
-          const hasScore = (item.totalScore != null && item.totalScore > 0);
-          console.log('Item:', item.Tryout?.title, 'Show:', item.show, 'Score:', item.totalScore, 'Pass:', hasScore);
+          const hasScore = item.totalScore != null && item.totalScore > 0;
+          console.log(
+            'Item:',
+            item.Tryout?.title,
+            'Show:',
+            item.show,
+            'Score:',
+            item.totalScore,
+            'Pass:',
+            hasScore,
+          );
           return item.show && hasScore;
         })
         .slice(-10) // Get last 10 tryouts
@@ -362,11 +384,22 @@ export default function DashboardClientNew() {
           // Calculate score: For SNBT, use average of subtests. For others, use totalScore
           let calculatedScore = item.totalScore || 0;
 
-          if (isSNBT && item.TryoutSessionResult && item.TryoutSessionResult.length > 0) {
+          if (
+            isSNBT &&
+            item.TryoutSessionResult &&
+            item.TryoutSessionResult.length > 0
+          ) {
             // SNBT: Calculate average from subtests
-            const subtestScores = item.TryoutSessionResult.map((session: any) => session.totalScore || 0);
-            const totalSubtestScore = subtestScores.reduce((sum: number, score: number) => sum + score, 0);
-            calculatedScore = Math.round(totalSubtestScore / subtestScores.length);
+            const subtestScores = item.TryoutSessionResult.map(
+              (session: any) => session.totalScore || 0,
+            );
+            const totalSubtestScore = subtestScores.reduce(
+              (sum: number, score: number) => sum + score,
+              0,
+            );
+            calculatedScore = Math.round(
+              totalSubtestScore / subtestScores.length,
+            );
           }
 
           // Calculate rank change
@@ -387,107 +420,121 @@ export default function DashboardClientNew() {
 
       // Filter valid tryouts (same filter as scoreHistory for consistency)
       const validTryouts = tryoutHistoryData.filter((item: any) => {
-        const hasScore = (item.totalScore != null && item.totalScore > 0);
+        const hasScore = item.totalScore != null && item.totalScore > 0;
         return item.show && hasScore;
       });
 
       // Build recommendations
       const recommendedCourses = courses.slice(0, 4).map((course: any) => {
         const totalChapters = course.CourseChapter?.length || 0;
-        const completedChapters = course.CourseChapter?.filter((ch: any) =>
-          ch.CourseSubChapter?.every((sub: any) => sub.isCompleted)
-        ).length || 0;
-        const progress = totalChapters > 0 ? (completedChapters / totalChapters) * 100 : 0;
+        const completedChapters =
+          course.CourseChapter?.filter((ch: any) =>
+            ch.CourseSubChapter?.every((sub: any) => sub.isCompleted),
+          ).length || 0;
+        const progress =
+          totalChapters > 0 ? (completedChapters / totalChapters) * 100 : 0;
 
         return {
           id: course.id,
           name: course.name,
-          category: course.Category?.name || "Umum",
-          thumbnail: getImageUrl(course.thumbnail || course.image, "course") || null,
+          category: course.Category?.name || 'Umum',
+          thumbnail:
+            getImageUrl(course.thumbnail || course.image, 'course') || null,
           progress: Math.round(progress),
           isLocked: false, // TODO: check lock status
-          isPremium: course.accessType === "PREMIUM",
+          isPremium: course.accessType === 'PREMIUM',
         };
       });
 
       const recommendedTryouts = tryoutsData.slice(0, 4).map((t: any) => ({
         id: t.id,
         title: t.title,
-        thumbnail: getImageUrl(t.image, "tryout") || null,
-        difficulty: "Sedang",
-        totalQuestions: t.TryoutSession?.reduce((sum: number, s: any) => sum + (s._count?.TryoutQuestion || 0), 0) || 0,
+        thumbnail: getImageUrl(t.image, 'tryout') || null,
+        difficulty: 'Sedang',
+        totalQuestions:
+          t.TryoutSession?.reduce(
+            (sum: number, s: any) => sum + (s._count?.TryoutQuestion || 0),
+            0,
+          ) || 0,
         isPremium: false,
       }));
 
       const recommendedDocuments = documents.slice(0, 4).map((d: any) => ({
         id: d.id,
         title: d.title || d.name,
-        category: d.Category?.name || "Materi",
-        thumbnail: getImageUrl(d.img, "document") || null,
-        type: d.type || "PDF",
+        category: d.Category?.name || 'Materi',
+        thumbnail: getImageUrl(d.img, 'document') || null,
+        type: d.type || 'PDF',
       }));
 
       // Build achievements (mock data for now)
       const achievements = [
         {
-          id: "1",
-          title: "Pemula Sejati",
-          description: "Selesaikan tryout pertama kamu",
-          icon: "star",
+          id: '1',
+          title: 'Pemula Sejati',
+          description: 'Selesaikan tryout pertama kamu',
+          icon: 'star',
           isUnlocked: tryoutHistory.length > 0,
           unlockedAt: tryoutHistory[0]?.finishedAt || null,
           progress: Math.min(tryoutHistory.length, 1),
           target: 1,
         },
         {
-          id: "2",
-          title: "Konsisten",
-          description: "Belajar selama 7 hari berturut-turut",
-          icon: "flame",
+          id: '2',
+          title: 'Konsisten',
+          description: 'Belajar selama 7 hari berturut-turut',
+          icon: 'flame',
           isUnlocked: false,
           unlockedAt: null,
           progress: 3,
           target: 7,
         },
         {
-          id: "3",
-          title: "Juara Kelas",
-          description: "Raih peringkat 1 dalam tryout",
-          icon: "trophy",
+          id: '3',
+          title: 'Juara Kelas',
+          description: 'Raih peringkat 1 dalam tryout',
+          icon: 'trophy',
           isUnlocked: tryoutHistory.some((t: any) => t.rank === 1),
-          unlockedAt: tryoutHistory.find((t: any) => t.rank === 1)?.finishedAt || null,
+          unlockedAt:
+            tryoutHistory.find((t: any) => t.rank === 1)?.finishedAt || null,
           progress: tryoutHistory.some((t: any) => t.rank === 1) ? 1 : 0,
           target: 1,
         },
         {
-          id: "4",
-          title: "Pembelajar Aktif",
-          description: "Selesaikan 10 tryout",
-          icon: "target",
+          id: '4',
+          title: 'Pembelajar Aktif',
+          description: 'Selesaikan 10 tryout',
+          icon: 'target',
           isUnlocked: tryoutHistory.length >= 10,
-          unlockedAt: tryoutHistory.length >= 10 ? tryoutHistory[9]?.finishedAt : null,
+          unlockedAt:
+            tryoutHistory.length >= 10 ? tryoutHistory[9]?.finishedAt : null,
           progress: Math.min(tryoutHistory.length, 10),
           target: 10,
         },
       ];
 
       // Get last tryout (most recent) for ranking - use validTryouts for consistency
-      const lastTryout = validTryouts.length > 0 ? validTryouts[validTryouts.length - 1] : null;
-      const previousTryout = validTryouts.length > 1 ? validTryouts[validTryouts.length - 2] : null;
+      const lastTryout =
+        validTryouts.length > 0 ? validTryouts[validTryouts.length - 1] : null;
+      const previousTryout =
+        validTryouts.length > 1 ? validTryouts[validTryouts.length - 2] : null;
 
       console.log('Valid Tryouts:', validTryouts.length); // Debug
       console.log('Last Valid Tryout:', lastTryout); // Debug
       console.log('Previous Valid Tryout:', previousTryout); // Debug
       console.log('Rank from last TO:', lastTryout?.rank);
       console.log('Total Participants:', lastTryout?.totalParticipants);
-      console.log('Rank Change:', previousTryout ? (previousTryout.rank - (lastTryout?.rank || 0)) : 0);
+      console.log(
+        'Rank Change:',
+        previousTryout ? previousTryout.rank - (lastTryout?.rank || 0) : 0,
+      );
 
       const dashboardData: DashboardData = {
         user: {
-          name: session.user.name || "User",
-          email: session.user.email || "",
+          name: session.user.name || 'User',
+          email: session.user.email || '',
           avatarUrl: session.user.image || null,
-          tier: report?.userHeader?.status || "FREE",
+          tier: report?.userHeader?.status || 'FREE',
           joinedDate: new Date().toISOString(),
           streak: 0, // TODO: calculate streak
         },
@@ -495,36 +542,54 @@ export default function DashboardClientNew() {
           studyHours: report?.studyHabits?.totalHoursStudied || 0,
           studyHoursThisWeek,
           totalScore: report?.learningReport?.totalScore || 0,
-          averageScore: validTryouts.length > 0
-            ? Math.round(validTryouts.reduce((sum: number, t: any) => {
-                // For SNBT, use average of subtests; for others, use totalScore
-                let score = t.totalScore || 0;
-                if (isSNBT && t.TryoutSessionResult && t.TryoutSessionResult.length > 0) {
-                  const subtestScores = t.TryoutSessionResult.map((session: any) => session.totalScore || 0);
-                  const totalSubtestScore = subtestScores.reduce((s: number, val: number) => s + val, 0);
-                  score = Math.round(totalSubtestScore / subtestScores.length);
-                }
-                return sum + score;
-              }, 0) / validTryouts.length)
-            : 0,
+          averageScore:
+            validTryouts.length > 0
+              ? Math.round(
+                  validTryouts.reduce((sum: number, t: any) => {
+                    // For SNBT, use average of subtests; for others, use totalScore
+                    let score = t.totalScore || 0;
+                    if (
+                      isSNBT &&
+                      t.TryoutSessionResult &&
+                      t.TryoutSessionResult.length > 0
+                    ) {
+                      const subtestScores = t.TryoutSessionResult.map(
+                        (session: any) => session.totalScore || 0,
+                      );
+                      const totalSubtestScore = subtestScores.reduce(
+                        (s: number, val: number) => s + val,
+                        0,
+                      );
+                      score = Math.round(
+                        totalSubtestScore / subtestScores.length,
+                      );
+                    }
+                    return sum + score;
+                  }, 0) / validTryouts.length,
+                )
+              : 0,
           rank: lastTryout?.rank || 0,
           rankFrom: lastTryout?.totalParticipants || 0,
           previousRank: previousTryout?.rank || 0,
-          rankChange: previousTryout ? (previousTryout.rank - (lastTryout?.rank || 0)) : 0,
+          rankChange: previousTryout
+            ? previousTryout.rank - (lastTryout?.rank || 0)
+            : 0,
           tryoutsCompleted: validTryouts.length,
           coursesCompleted: courses.filter((c: any) => {
             const totalChapters = c.CourseChapter?.length || 0;
-            const completedChapters = c.CourseChapter?.filter((ch: any) =>
-              ch.CourseSubChapter?.every((sub: any) => sub.isCompleted)
-            ).length || 0;
+            const completedChapters =
+              c.CourseChapter?.filter((ch: any) =>
+                ch.CourseSubChapter?.every((sub: any) => sub.isCompleted),
+              ).length || 0;
             return totalChapters > 0 && totalChapters === completedChapters;
           }).length,
           coursesInProgress: courses.filter((c: any) => {
             const totalChapters = c.CourseChapter?.length || 0;
             if (totalChapters === 0) return false; // Skip courses without chapters
-            const completedChapters = c.CourseChapter?.filter((ch: any) =>
-              ch.CourseSubChapter?.every((sub: any) => sub.isCompleted)
-            ).length || 0;
+            const completedChapters =
+              c.CourseChapter?.filter((ch: any) =>
+                ch.CourseSubChapter?.every((sub: any) => sub.isCompleted),
+              ).length || 0;
             // Count as in-progress if has chapters and not fully completed
             return totalChapters > 0 && completedChapters < totalChapters;
           }).length,
@@ -548,21 +613,32 @@ export default function DashboardClientNew() {
         },
         achievements,
         subscription: {
-          isPremium: report?.userHeader?.status === "SUBSCRIBER" || report?.userHeader?.status === "ADMIN",
-          planName: report?.userHeader?.status === "SUBSCRIBER" ? "Premium" : "Free",
+          isPremium:
+            report?.userHeader?.status === 'SUBSCRIBER' ||
+            report?.userHeader?.status === 'ADMIN',
+          planName:
+            report?.userHeader?.status === 'SUBSCRIBER' ? 'Premium' : 'Free',
           planExpiresAt: report?.userHeader?.daysLeft
-            ? new Date(Date.now() + report.userHeader.daysLeft * 24 * 60 * 60 * 1000).toISOString()
+            ? new Date(
+                Date.now() + report.userHeader.daysLeft * 24 * 60 * 60 * 1000,
+              ).toISOString()
             : null,
           daysLeft: report?.userHeader?.daysLeft || null,
-          features: report?.userHeader?.status === "SUBSCRIBER"
-            ? ["Akses semua tryout", "Akses semua course", "AI Chat unlimited", "Live class premium"]
-            : ["Tryout terbatas", "Course terbatas", "Fitur dasar"],
+          features:
+            report?.userHeader?.status === 'SUBSCRIBER'
+              ? [
+                  'Akses semua tryout',
+                  'Akses semua course',
+                  'AI Chat unlimited',
+                  'Live class premium',
+                ]
+              : ['Tryout terbatas', 'Course terbatas', 'Fitur dasar'],
         },
       };
 
       setData(dashboardData);
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
+      console.error('Error fetching dashboard data:', error);
     } finally {
       setLoading(false);
     }

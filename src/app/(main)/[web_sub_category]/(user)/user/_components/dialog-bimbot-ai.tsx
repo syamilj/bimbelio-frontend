@@ -13,7 +13,11 @@ import { BotMessageSquare, Loader2, Plus, SendIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Dispatch, useEffect, useState } from 'react';
 
-const blacklistPaths = ['/user/bimarena/try-out', '/user/bimcourse', '/user/workspace'];
+const blacklistPaths = [
+  '/user/bimarena/try-out',
+  '/user/bimcourse',
+  '/user/workspace',
+];
 
 export const DialogBimbotAI = () => {
   const pathname = usePathname();

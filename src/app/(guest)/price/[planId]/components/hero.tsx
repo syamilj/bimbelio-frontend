@@ -38,10 +38,7 @@ export default function Hero({
     if (plan.PlanSubscription?.expireDays) {
       return `${plan.PlanSubscription.expireDays} hari akses`;
     }
-    if (
-      plan.PlanSubscription &&
-      plan.PlanSubscription.PlanFeature.length > 0
-    ) {
+    if (plan.PlanSubscription && plan.PlanSubscription.PlanFeature.length > 0) {
       return formatDateRange(
         plan.PlanSubscription.PlanFeature[0].validFrom,
         plan.PlanSubscription.PlanFeature[0].validUntil,
@@ -171,7 +168,10 @@ export default function Hero({
                   {plan.name}
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  <span className="font-bold" style={{ color: mainColor }}>
+                  <span
+                    className="font-bold"
+                    style={{ color: mainColor }}
+                  >
                     Goal kita jelas:
                   </span>{' '}
                   Nilai untuk naik{' '}

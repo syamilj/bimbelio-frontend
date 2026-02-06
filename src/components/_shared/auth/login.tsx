@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import LoadingPage from '@/components/ui/Loading-Page';
 import Logo from '@/components/ui/logo';
 import { env } from '@/env.mjs';
-import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { responseError } from '@/lib/response';
+import { trackUnifiedEvent } from '@/lib/tracking/track';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -43,7 +43,9 @@ export const Login = () => {
         const [firstName, ...restNameParts] = fullName
           .split(' ')
           .filter(Boolean);
-        const lastName = restNameParts.length ? restNameParts.join(' ') : undefined;
+        const lastName = restNameParts.length
+          ? restNameParts.join(' ')
+          : undefined;
 
         trackUnifiedEvent({
           eventName: 'CompleteRegistration',

@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { generateQrCode } from "@/lib/api/short-url";
-import { Download, Link2, Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
-import Image from "next/image";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { generateQrCode } from '@/lib/api/short-url';
+import { Download, Link2, Loader2 } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface QrCodeDialogProps {
   open: boolean;
@@ -23,7 +23,12 @@ interface QrCodeDialogProps {
   code: string;
 }
 
-export function QrCodeDialog({ open, onClose, shortUrlId, code }: QrCodeDialogProps) {
+export function QrCodeDialog({
+  open,
+  onClose,
+  shortUrlId,
+  code,
+}: QrCodeDialogProps) {
   const [loading, setLoading] = useState(false);
   const [qrData, setQrData] = useState<{
     qrCodeDataUrl: string;
@@ -38,8 +43,10 @@ export function QrCodeDialog({ open, onClose, shortUrlId, code }: QrCodeDialogPr
       const data = await generateQrCode(shortUrlId, size);
       setQrData({ ...data, code });
     } catch (error: any) {
-      console.error("Failed to generate QR code:", error);
-      toast.error(error?.response?.data?.message || "Failed to generate QR code");
+      console.error('Failed to generate QR code:', error);
+      toast.error(
+        error?.response?.data?.message || 'Failed to generate QR code',
+      );
     } finally {
       setLoading(false);
     }
@@ -48,19 +55,19 @@ export function QrCodeDialog({ open, onClose, shortUrlId, code }: QrCodeDialogPr
   const handleDownload = () => {
     if (!qrData) return;
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = qrData.qrCodeDataUrl;
     link.download = `qr-code-${code}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    toast.success("QR Code downloaded!");
+    toast.success('QR Code downloaded!');
   };
 
   const handleCopyUrl = () => {
     if (!qrData) return;
     navigator.clipboard.writeText(qrData.qrCodeUrl);
-    toast.success("URL copied to clipboard!");
+    toast.success('URL copied to clipboard!');
   };
 
   // Generate on open
@@ -71,7 +78,10 @@ export function QrCodeDialog({ open, onClose, shortUrlId, code }: QrCodeDialogPr
   });
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog
+      open={open}
+      onOpenChange={onClose}
+    >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>QR Code Generator</DialogTitle>
@@ -108,7 +118,7 @@ export function QrCodeDialog({ open, onClose, shortUrlId, code }: QrCodeDialogPr
                   Generating...
                 </>
               ) : (
-                "Generate QR Code"
+                'Generate QR Code'
               )}
             </Button>
           )}
@@ -129,7 +139,9 @@ export function QrCodeDialog({ open, onClose, shortUrlId, code }: QrCodeDialogPr
               {/* URL Display */}
               <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-3xl border">
                 <Link2 className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                <code className="text-sm flex-1 truncate">{qrData.qrCodeUrl}</code>
+                <code className="text-sm flex-1 truncate">
+                  {qrData.qrCodeUrl}
+                </code>
                 <Button
                   size="sm"
                   variant="ghost"

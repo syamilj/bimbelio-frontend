@@ -133,7 +133,9 @@ const Challenge = ({
       <div
         className={cn(
           'p-3 md:p-4 rounded-3xl border transition-all duration-200',
-          showHint ? 'bg-blue-50/50 border-blue-200' : 'bg-slate-50 border-slate-200',
+          showHint
+            ? 'bg-blue-50/50 border-blue-200'
+            : 'bg-slate-50 border-slate-200',
         )}
       >
         <button
@@ -156,12 +158,8 @@ const Challenge = ({
             {type === 'TRUE_FALSE' && (
               <>
                 <li>• Perhatikan kata kunci dalam pernyataan</li>
-                <li>
-                  • Hati-hati dengan kata "selalu", "tidak pernah"
-                </li>
-                <li>
-                  • Pastikan pernyataan 100% benar untuk pilih "Benar"
-                </li>
+                <li>• Hati-hati dengan kata "selalu", "tidak pernah"</li>
+                <li>• Pastikan pernyataan 100% benar untuk pilih "Benar"</li>
               </>
             )}
             {type === 'SHORT_ANSWER' && (

@@ -5,22 +5,19 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
-import { cn, getDateString } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import {
   AlertCircle,
   BookOpen,
-  Calendar,
   CheckCircle2,
   Clock,
-  FileText,
   Flame,
   Save,
   Shield,
   Swords,
   Trophy,
   Users,
-  Zap,
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -232,13 +229,18 @@ const StartTryout = ({
               className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Flame className="w-5 h-5" style={{ color: mainColor }} />
+              <Flame
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
             </div>
             <div className="flex-1">
               <p className="text-sm md:text-base text-slate-700 font-medium leading-relaxed">
                 <span className="font-black text-slate-900">Siap battle?</span>{' '}
                 Pastikan kamu sudah memahami aturan dan koneksi internet stabil.{' '}
-                <span className="text-emerald-600 font-bold">Semoga berhasil! 🔥</span>
+                <span className="text-emerald-600 font-bold">
+                  Semoga berhasil! 🔥
+                </span>
               </p>
             </div>
           </div>
@@ -260,7 +262,10 @@ const StartTryout = ({
             }}
           >
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-5 h-5" style={{ color: mainColor }} />
+              <AlertCircle
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
               <h3 className="text-base md:text-lg font-black text-slate-800">
                 Aturan dan Ketentuan
               </h3>
@@ -286,7 +291,10 @@ const StartTryout = ({
                     className="w-9 h-9 md:w-10 md:h-10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm"
                     style={{ backgroundColor: `${rule.color}15` }}
                   >
-                    <Icon className="w-4 h-4 md:w-5 md:h-5" style={{ color: rule.color }} />
+                    <Icon
+                      className="w-4 h-4 md:w-5 md:h-5"
+                      style={{ color: rule.color }}
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -441,7 +449,10 @@ const StartTryout = ({
                 className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}20` }}
               >
-                <Trophy className="w-5 h-5" style={{ color: mainColor }} />
+                <Trophy
+                  className="w-5 h-5"
+                  style={{ color: mainColor }}
+                />
               </div>
               <div className="flex-1">
                 <h4 className="text-sm md:text-base font-black text-slate-900 mb-2">

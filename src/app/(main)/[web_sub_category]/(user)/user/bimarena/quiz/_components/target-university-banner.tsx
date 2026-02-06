@@ -11,7 +11,9 @@ interface TargetUniversityBannerProps {
   };
 }
 
-export function TargetUniversityBanner({ userTarget }: TargetUniversityBannerProps) {
+export function TargetUniversityBanner({
+  userTarget,
+}: TargetUniversityBannerProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
@@ -23,7 +25,10 @@ export function TargetUniversityBanner({ userTarget }: TargetUniversityBannerPro
     >
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
-        <Target className="w-4 h-4" style={{ color: mainColor }} />
+        <Target
+          className="w-4 h-4"
+          style={{ color: mainColor }}
+        />
         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
           Target Kamu
         </span>
@@ -56,8 +61,13 @@ export function TargetUniversityBanner({ userTarget }: TargetUniversityBannerPro
           className="flex-shrink-0 px-4 py-2 rounded-2xl text-center"
           style={{ backgroundColor: `${mainColor}10` }}
         >
-          <p className="text-[9px] font-bold text-slate-400 uppercase">Nilai Target</p>
-          <p className="text-xl font-black" style={{ color: mainColor }}>
+          <p className="text-[9px] font-bold text-slate-400 uppercase">
+            Nilai Target
+          </p>
+          <p
+            className="text-xl font-black"
+            style={{ color: mainColor }}
+          >
             {userTarget.targetValue}
           </p>
         </div>

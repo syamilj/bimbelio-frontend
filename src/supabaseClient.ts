@@ -5,11 +5,11 @@
 // } from "../env";
 
 import axios from 'axios';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { io, Socket } from 'socket.io-client';
+import { useSession } from './components/provider/provider-session-auth';
 import { env } from './env.mjs';
 import { responseError } from './lib/response';
-import { io, Socket } from 'socket.io-client';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSession } from './components/provider/provider-session-auth';
 
 // const supabaseUrl = NEXT_PUBLIC_SUPABASE_URL || "";
 // const supabaseKey = NEXT_PUBLIC_SUPABASE_SECRET_KEY || "";
@@ -33,11 +33,11 @@ export const storage = {
   from: (bucket: BucketList, showToast?: boolean) => {
     return {
       upload: async (filePath: string, file: File | Buffer<ArrayBuffer>) => {
-        const loadingId = crypto.randomUUID().slice(0, 6)
+        const loadingId = crypto.randomUUID().slice(0, 6);
         try {
           if (socket) {
-            console.log("✅ Emitting join:loading event", { loadingId });
-            socket.emit(`join:loading`, { loadingId })
+            console.log('✅ Emitting join:loading event', { loadingId });
+            socket.emit(`join:loading`, { loadingId });
           }
           console.log(`Uploading file to bucket: ${bucket}`);
           const formData = new FormData();
@@ -70,7 +70,7 @@ export const storage = {
 
           console.log('Upload response:', res.data);
           if (socket) {
-            socket.emit(`leave:loading`, { loadingId })
+            socket.emit(`leave:loading`, { loadingId });
           }
           return { data: res.data, error: null };
         } catch (error) {
@@ -81,7 +81,7 @@ export const storage = {
           };
           console.log({ errorData });
           if (socket) {
-            socket.emit(`leave:loading`, { loadingId })
+            socket.emit(`leave:loading`, { loadingId });
           }
           return {
             data: null,
@@ -257,7 +257,6 @@ export const storage = {
         folderLevel?: number,
       ) => {
         try {
-
           const res = await axios.get(
             `${STORAGE_URL}/storage/buckets/${bucket}/files`,
             {
@@ -335,17 +334,15 @@ export type BucketFolderType = {
 };
 
 const mimeTypesForBlob: Record<BucketList, string> = {
-  "dump-images": 'image/png',
-  "img": 'image/png',
-  "to-question": 'image/png',
-  "pdf": 'application/pdf',
-  "video": 'video/mp4',
-  "dump-embedding": 'application/msword',
+  'dump-images': 'image/png',
+  img: 'image/png',
+  'to-question': 'image/png',
+  pdf: 'application/pdf',
+  video: 'video/mp4',
+  'dump-embedding': 'application/msword',
 };
 
-
 // ======================================================
-
 
 let socket: Socket | null = null;
 
@@ -360,7 +357,6 @@ const connectSocket = () => {
       reconnectionDelayMax: 5000,
       reconnectionAttempts: 5,
     });
-
 
     socket.on('connect', () => {
       console.log('Connected to socket server:', socket?.id);
@@ -381,8 +377,7 @@ const disconnectSocket = () => {
     socket.disconnect();
     socket = null;
   }
-}
-
+};
 
 export const useStorageSocket = (serverUrl?: string) => {
   const { data: session } = useSession();

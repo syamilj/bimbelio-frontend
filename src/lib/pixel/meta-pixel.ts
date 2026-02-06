@@ -1,8 +1,8 @@
 'use client';
 
-import { MetaPixelCustomDataType, MetaPixelEventType } from './types';
 import { createEventId } from '@/lib/tracking/event-id';
 import { trackServerEvent } from '@/lib/tracking/server-events';
+import { MetaPixelCustomDataType, MetaPixelEventType } from './types';
 
 let isMetaPixelInitialized = false;
 

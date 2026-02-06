@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin "@tailwindcss/typography";
 @custom-variant dark (&:is(.dark *));
@@ -144,22 +144,22 @@
 
   /* Custom Colors - Project Specific */
   --color-main-gray-input: #dadde7;
-  --color-main-gray-input2: #E8EBF4;
+  --color-main-gray-input2: #e8ebf4;
   --color-main-gray-text: #5a5d66;
-  --color-main-gray-text2: #6E717B;
-  --color-main-gray-disabled: #B6B9C3;
+  --color-main-gray-text2: #6e717b;
+  --color-main-gray-disabled: #b6b9c3;
   --color-main-gray-disabled-hover: #a4a7af;
-  --color-main-yellow: #FCB930;
-  --color-main-default: #0091FF;
+  --color-main-yellow: #fcb930;
+  --color-main-default: #0091ff;
   --color-secondary-default: #5aa4dd;
-  --color-main-hover: #0091FF9a;
+  --color-main-hover: #0091ff9a;
   --color-main-border: #dadde7;
   --color-main-red: #da2850;
-  --color-main-red-hover: #FEE4E9;
+  --color-main-red-hover: #fee4e9;
   --color-bg-layout: #f4f8fb;
-  --color-bg-workspace: #F4F8FB;
-  --color-surface-primary-light: #E1F2FF;
-  --color-workspace: #F4F8FB;
+  --color-bg-workspace: #f4f8fb;
+  --color-surface-primary-light: #e1f2ff;
+  --color-workspace: #f4f8fb;
 
   /* Responsive Breakpoints */
   --breakpoint-mi: 401px;
@@ -176,7 +176,7 @@
   /* Animation Variables */
   --duration: 2s;
   --bg-size: 200%;
-  --pulse-color: #0091FF;
+  --pulse-color: #0091ff;
 }
 
 @layer base {
@@ -192,39 +192,70 @@
 @layer utilities {
   /* Custom Keyframes & Animations */
   @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--radix-accordion-content-height); }
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
   }
 
   @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height); }
-    to { height: 0; }
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
   }
 
   @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 var(--pulse-color); }
-    50% { box-shadow: 0 0 0 8px var(--pulse-color); }
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 var(--pulse-color);
+    }
+    50% {
+      box-shadow: 0 0 0 8px var(--pulse-color);
+    }
   }
 
   @keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
   @keyframes gradient2 {
-    to { background-position: var(--bg-size) 0; }
+    to {
+      background-position: var(--bg-size) 0;
+    }
   }
 
   @keyframes grid {
-    0% { transform: translateY(-50%); }
-    100% { transform: translateY(0); }
+    0% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(0);
+    }
   }
 
   @keyframes moveBackground {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 200% 50%; }
-    100% { background-position: 400% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 200% 50%;
+    }
+    100% {
+      background-position: 400% 50%;
+    }
   }
 
   /* Custom Animation Classes */
@@ -258,35 +289,35 @@
 
   /* Custom Background Images */
   .bg-yellow-upgrade {
-    background-image: linear-gradient(145deg, #FFE680, #FFC04C);
+    background-image: linear-gradient(145deg, #ffe680, #ffc04c);
   }
 
   .bg-yellow-upgrade-hover {
-    background-image: linear-gradient(145deg, #FFE680e0, #FFC04Ce0);
+    background-image: linear-gradient(145deg, #ffe680e0, #ffc04ce0);
   }
 
   .bg-green-upgrade {
-    background-image: linear-gradient(145deg, #8bcdff, #0091FF);
+    background-image: linear-gradient(145deg, #8bcdff, #0091ff);
   }
 
   .bg-green-upgrade-hover {
-    background-image: linear-gradient(145deg, #8bcdffe0, #0091FFe0);
+    background-image: linear-gradient(145deg, #8bcdffe0, #0091ffe0);
   }
 
   .bg-gradient-green {
-    background-image: linear-gradient(145deg, #0091FF, #8bcdff);
+    background-image: linear-gradient(145deg, #0091ff, #8bcdff);
   }
 
   .bg-gradient-green-hover {
-    background-image: linear-gradient(145deg, #0091FFe0, #8bcdffe0);
+    background-image: linear-gradient(145deg, #0091ffe0, #8bcdffe0);
   }
 
   .bg-gradient-default {
-    background-image: linear-gradient(145deg, #0091FF, #5aa4dd);
+    background-image: linear-gradient(145deg, #0091ff, #5aa4dd);
   }
 
   .bg-gradient-main {
-    background-image: linear-gradient(to right, #8bcdff, #0091FF);
+    background-image: linear-gradient(to right, #8bcdff, #0091ff);
   }
 
   .bg-fade-materi {
@@ -294,7 +325,7 @@
   }
 
   .bg-flashcard-result {
-    background-image: linear-gradient(to bottom, #FFFFFF, #F4F8FB);
+    background-image: linear-gradient(to bottom, #ffffff, #f4f8fb);
   }
 
   .bg-loading {
@@ -338,7 +369,10 @@
   }
 
   .shadow-card-soft {
-    box-shadow: 0 0 0 1px rgba(0,0,0,.03), 0 2px 4px rgba(0,0,0,.05), 0 12px 24px rgba(0,0,0,.05);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.03),
+      0 2px 4px rgba(0, 0, 0, 0.05),
+      0 12px 24px rgba(0, 0, 0, 0.05);
   }
 
   .shadow-card-soft2 {
@@ -469,10 +503,18 @@
 }
 
 /* Chat AI Typography */
-#chatAI h1 { font-size: 24px; }
-#chatAI h2 { font-size: 20px; }
-#chatAI h3 { font-size: 18px; }
-#chatAI h4 { font-size: 16px; }
+#chatAI h1 {
+  font-size: 24px;
+}
+#chatAI h2 {
+  font-size: 20px;
+}
+#chatAI h3 {
+  font-size: 18px;
+}
+#chatAI h4 {
+  font-size: 16px;
+}
 
 /* PDF Highlighter Styles */
 #DocumentViewPdf .PdfHighlighter {
@@ -513,9 +555,15 @@
 }
 
 /* Vision Z-Index */
-#VisionOff .PdfHighlighter { z-index: 39; }
-#VisionOn .PdfHighlighter { z-index: 38; }
-#VisionOn .PdfHighlighter.up { z-index: 40; }
+#VisionOff .PdfHighlighter {
+  z-index: 39;
+}
+#VisionOn .PdfHighlighter {
+  z-index: 38;
+}
+#VisionOn .PdfHighlighter.up {
+  z-index: 40;
+}
 
 /* Note Styles */
 .ring-offset-background.flex-1.bg-bg-workspace.px-0.overflow-auto.w-full {
@@ -539,8 +587,12 @@
 }
 
 /* Utility Classes */
-#border { border: 1px solid #f0f0f0; }
-#test { background: linear-gradient(to right, #3ecf8e, #00b85e); }
+#border {
+  border: 1px solid #f0f0f0;
+}
+#test {
+  background: linear-gradient(to right, #3ecf8e, #00b85e);
+}
 
 /* Video Controls */
 video::-internal-media-controls-download-button {
@@ -729,8 +781,8 @@ video::-webkit-media-controls-panel {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 @layer base {
@@ -744,7 +796,8 @@ video::-webkit-media-controls-panel {
 
 /* Custom Animations for Dashboard */
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -753,7 +806,8 @@ video::-webkit-media-controls-panel {
 }
 
 @keyframes twinkle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
   }
   50% {
@@ -779,7 +833,8 @@ video::-webkit-media-controls-panel {
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(0, 145, 255, 0.3);
   }
   50% {

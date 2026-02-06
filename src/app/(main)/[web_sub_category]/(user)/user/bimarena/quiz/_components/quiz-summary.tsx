@@ -21,7 +21,6 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useQuizProvider } from '../_provider/_provider';
 import { COUNTDOWN_INTERVAL_MS } from './quiz-dummy';
@@ -61,8 +60,12 @@ export function QuizSummary() {
 
   // Determine which date to countdown to
   const countdownTarget = isVolumeStarted
-    ? (SingleQuizVolume?.endDate ? new Date(SingleQuizVolume.endDate) : undefined)
-    : (SingleQuizVolume?.startDate ? new Date(SingleQuizVolume.startDate) : undefined);
+    ? SingleQuizVolume?.endDate
+      ? new Date(SingleQuizVolume.endDate)
+      : undefined
+    : SingleQuizVolume?.startDate
+      ? new Date(SingleQuizVolume.startDate)
+      : undefined;
 
   // Countdown state - moved inline to fix hooks order issue
   const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN);
@@ -123,20 +126,26 @@ export function QuizSummary() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
                   </span>
-                  <span className="text-[10px] md:text-xs font-bold text-white/90">LIVE</span>
+                  <span className="text-[10px] md:text-xs font-bold text-white/90">
+                    LIVE
+                  </span>
                 </div>
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm">
                   <Swords className="w-3 h-3 text-white/80" />
-                  <span className="text-[10px] md:text-xs font-bold text-white/90">Battle Mode</span>
+                  <span className="text-[10px] md:text-xs font-bold text-white/90">
+                    Battle Mode
+                  </span>
                 </div>
-                {SingleQuizVolume && SingleQuizVolume?.totalUserSubscribed > 0 && (
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm">
-                    <Users className="w-3 h-3 text-white/80" />
-                    <span className="text-[10px] md:text-xs font-bold text-white/90">
-                      {SingleQuizVolume.totalUserSubscribed.toLocaleString()} Peserta
-                    </span>
-                  </div>
-                )}
+                {SingleQuizVolume &&
+                  SingleQuizVolume?.totalUserSubscribed > 0 && (
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm">
+                      <Users className="w-3 h-3 text-white/80" />
+                      <span className="text-[10px] md:text-xs font-bold text-white/90">
+                        {SingleQuizVolume.totalUserSubscribed.toLocaleString()}{' '}
+                        Peserta
+                      </span>
+                    </div>
+                  )}
               </div>
 
               {/* Title */}
@@ -145,7 +154,9 @@ export function QuizSummary() {
                   BimArena Quiz
                 </h1>
                 <p className="text-xs md:text-sm text-white/70 font-medium">
-                  {SingleQuizVolume?.title || 'Bertarung untuk menjadi yang terbaik!'} 🔥
+                  {SingleQuizVolume?.title ||
+                    'Bertarung untuk menjadi yang terbaik!'}{' '}
+                  🔥
                 </p>
               </div>
             </div>
@@ -165,7 +176,9 @@ export function QuizSummary() {
                 <Trophy className="w-4 h-4 text-amber-300" />
               </div>
               <div>
-                <p className="text-[10px] text-white/60 font-medium">Peringkat</p>
+                <p className="text-[10px] text-white/60 font-medium">
+                  Peringkat
+                </p>
                 <p className="text-base font-black text-white flex items-center gap-1">
                   #{userStats?.rank || '-'}
                   {rankChange > 0 && (
@@ -184,7 +197,9 @@ export function QuizSummary() {
                 <Zap className="w-4 h-4 text-amber-300" />
               </div>
               <div>
-                <p className="text-[10px] text-white/60 font-medium">Skor Total</p>
+                <p className="text-[10px] text-white/60 font-medium">
+                  Skor Total
+                </p>
                 <p className="text-base font-black text-white">
                   {userStats?.totalScore?.toLocaleString() || '0'}
                 </p>
@@ -198,7 +213,9 @@ export function QuizSummary() {
                 <Target className="w-4 h-4 text-white" />
               </div>
               <div>
-                <p className="text-[10px] text-white/60 font-medium">Target PTN</p>
+                <p className="text-[10px] text-white/60 font-medium">
+                  Target PTN
+                </p>
                 <p className="text-base font-black text-white line-clamp-1 max-w-[160px]">
                   {targetUniversity?.name || 'Belum dipilih'}
                 </p>
@@ -220,7 +237,10 @@ export function QuizSummary() {
               className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: `${mainColor}15` }}
             >
-              <Swords className="w-5 h-5" style={{ color: mainColor }} />
+              <Swords
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
@@ -230,7 +250,9 @@ export function QuizSummary() {
                 {SingleQuizVolume?.status === 'PUBLIC' && (
                   <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-100">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[9px] font-bold text-emerald-600">Aktif</span>
+                    <span className="text-[9px] font-bold text-emerald-600">
+                      Aktif
+                    </span>
                   </span>
                 )}
               </div>
@@ -255,10 +277,14 @@ export function QuizSummary() {
                       <div className="flex items-center justify-between w-full gap-2">
                         <span>{vol.title}</span>
                         {vol.status === 'DRAFT' && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-600 font-medium">Segera</span>
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-600 font-medium">
+                            Segera
+                          </span>
                         )}
                         {vol.status === 'PUBLIC' && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-600 font-medium">Aktif</span>
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-600 font-medium">
+                            Aktif
+                          </span>
                         )}
                       </div>
                     </SelectItem>
@@ -273,7 +299,7 @@ export function QuizSummary() {
         <div
           className={cn(
             'rounded-3xl p-4 border',
-            isVolumeEnded ? 'bg-slate-50' : 'bg-white'
+            isVolumeEnded ? 'bg-slate-50' : 'bg-white',
           )}
           style={{ borderColor: isVolumeEnded ? '#e2e8f0' : `${mainColor}20` }}
         >
@@ -281,22 +307,32 @@ export function QuizSummary() {
             <div
               className={cn(
                 'w-10 h-10 rounded-3xl flex items-center justify-center',
-                isVolumeEnded ? 'bg-slate-100' : ''
+                isVolumeEnded ? 'bg-slate-100' : '',
               )}
-              style={{ backgroundColor: isVolumeEnded ? undefined : `${mainColor}15` }}
+              style={{
+                backgroundColor: isVolumeEnded ? undefined : `${mainColor}15`,
+              }}
             >
               {isVolumeEnded ? (
                 <Clock className="w-5 h-5 text-slate-400" />
               ) : isVolumeStarted ? (
-                <Play className="w-5 h-5" style={{ color: mainColor }} />
+                <Play
+                  className="w-5 h-5"
+                  style={{ color: mainColor }}
+                />
               ) : (
-                <Timer className="w-5 h-5" style={{ color: mainColor }} />
+                <Timer
+                  className="w-5 h-5"
+                  style={{ color: mainColor }}
+                />
               )}
             </div>
-            <p className={cn(
-              'text-xs font-bold uppercase tracking-wider',
-              isVolumeEnded ? 'text-slate-400' : 'text-slate-500'
-            )}>
+            <p
+              className={cn(
+                'text-xs font-bold uppercase tracking-wider',
+                isVolumeEnded ? 'text-slate-400' : 'text-slate-500',
+              )}
+            >
               {isVolumeEnded
                 ? 'Kompetisi Berakhir'
                 : isVolumeStarted
@@ -311,20 +347,25 @@ export function QuizSummary() {
               { value: countdown.minutes, label: 'Menit' },
               { value: countdown.seconds, label: 'Detik' },
             ].map((item, i) => (
-              <div key={item.label} className="flex-1 text-center">
+              <div
+                key={item.label}
+                className="flex-1 text-center"
+              >
                 <div
                   className={cn(
                     'rounded-3xl py-2 px-1',
-                    isVolumeEnded ? 'bg-slate-100' : ''
+                    isVolumeEnded ? 'bg-slate-100' : '',
                   )}
                   style={{
-                    backgroundColor: isVolumeEnded ? undefined : `${mainColor}10`,
+                    backgroundColor: isVolumeEnded
+                      ? undefined
+                      : `${mainColor}10`,
                   }}
                 >
                   <span
                     className={cn(
                       'text-lg md:text-xl font-black font-mono',
-                      isVolumeEnded ? 'text-slate-400' : ''
+                      isVolumeEnded ? 'text-slate-400' : '',
                     )}
                     style={{ color: isVolumeEnded ? undefined : mainColor }}
                   >

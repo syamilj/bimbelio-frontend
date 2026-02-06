@@ -1,4 +1,4 @@
-import axiosInstanceWithToken from "@/lib/axios/axiosInstanceWithToken";
+import axiosInstanceWithToken from '@/lib/axios/axiosInstanceWithToken';
 
 // ============================================
 // TYPE DEFINITIONS
@@ -7,7 +7,7 @@ import axiosInstanceWithToken from "@/lib/axios/axiosInstanceWithToken";
 export interface ShortUrl {
   id: string;
   code: string;
-  destinationType: "DIRECT" | "LINK_PAGE" | "SMART_REDIRECT";
+  destinationType: 'DIRECT' | 'LINK_PAGE' | 'SMART_REDIRECT';
   destinationUrl?: string;
   linkPageId?: string;
   title?: string;
@@ -80,7 +80,7 @@ export interface ShortUrlAnalytics {
 
 export interface CreateShortUrlPayload {
   code?: string;
-  destinationType: "DIRECT" | "LINK_PAGE" | "SMART_REDIRECT";
+  destinationType: 'DIRECT' | 'LINK_PAGE' | 'SMART_REDIRECT';
   destinationUrl?: string;
   linkPageId?: string;
   title?: string;
@@ -98,7 +98,7 @@ export interface CreateShortUrlPayload {
 export interface UpdateShortUrlPayload {
   id: string;
   code?: string;
-  destinationType?: "DIRECT" | "LINK_PAGE" | "SMART_REDIRECT";
+  destinationType?: 'DIRECT' | 'LINK_PAGE' | 'SMART_REDIRECT';
   title?: string;
   description?: string;
   destinationUrl?: string;
@@ -119,57 +119,77 @@ export const fetchAllShortUrls = async (params?: {
   take?: number;
   search?: string;
 }) => {
-  const response = await axiosInstanceWithToken.get("/l/admin/getAllShortUrls", {
-    params,
-  });
+  const response = await axiosInstanceWithToken.get(
+    '/l/admin/getAllShortUrls',
+    {
+      params,
+    },
+  );
   return response.data;
 };
 
 export const createShortUrl = async (payload: CreateShortUrlPayload) => {
-  const response = await axiosInstanceWithToken.post("/l/admin/createShortUrl", payload);
+  const response = await axiosInstanceWithToken.post(
+    '/l/admin/createShortUrl',
+    payload,
+  );
   return response.data.data as ShortUrl;
 };
 
 export const updateShortUrl = async (payload: UpdateShortUrlPayload) => {
-  const response = await axiosInstanceWithToken.put("/l/admin/updateShortUrl", payload);
+  const response = await axiosInstanceWithToken.put(
+    '/l/admin/updateShortUrl',
+    payload,
+  );
   return response.data.data as ShortUrl;
 };
 
 export const deleteShortUrl = async (id: string) => {
-  const response = await axiosInstanceWithToken.delete("/l/admin/deleteShortUrl", {
-    params: { id },
-  });
+  const response = await axiosInstanceWithToken.delete(
+    '/l/admin/deleteShortUrl',
+    {
+      params: { id },
+    },
+  );
   return response.data;
 };
 
 export const fetchShortUrlAnalytics = async (
   shortUrlId: string,
-  params?: { startDate?: string; endDate?: string }
+  params?: { startDate?: string; endDate?: string },
 ) => {
-  const response = await axiosInstanceWithToken.get("/l/admin/getAnalytics", {
+  const response = await axiosInstanceWithToken.get('/l/admin/getAnalytics', {
     params: { shortUrlId, ...params },
   });
   return response.data.data as ShortUrlAnalytics;
 };
 
 export const generateQrCode = async (shortUrlId: string, size?: number) => {
-  const response = await axiosInstanceWithToken.post("/l/admin/generateQrCode", {
-    shortUrlId,
-    size: size || 300,
-  });
+  const response = await axiosInstanceWithToken.post(
+    '/l/admin/generateQrCode',
+    {
+      shortUrlId,
+      size: size || 300,
+    },
+  );
   return response.data.data as { qrCodeUrl: string; qrCodeDataUrl: string };
 };
 
 export const exportShortUrlAnalytics = async (shortUrlId: string) => {
-  const response = await axiosInstanceWithToken.get("/l/admin/exportAnalytics", {
-    params: { shortUrlId },
-    responseType: "blob",
-  });
+  const response = await axiosInstanceWithToken.get(
+    '/l/admin/exportAnalytics',
+    {
+      params: { shortUrlId },
+      responseType: 'blob',
+    },
+  );
   return response.data;
 };
 
 // Public function (no auth) - for tracking
 export const trackShortUrlClick = async (code: string) => {
-  const response = await axiosInstanceWithToken.post("/l/track/click", { code });
+  const response = await axiosInstanceWithToken.post('/l/track/click', {
+    code,
+  });
   return response.data;
 };

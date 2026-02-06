@@ -187,7 +187,13 @@ export default function Row({
                 )}
               >
                 <span className="font-semibold text-xs sm:text-sm text-slate-800">
-                  {isUser ? session?.user?.name || 'You' : <><BimBot /> AI</>}
+                  {isUser ? (
+                    session?.user?.name || 'You'
+                  ) : (
+                    <>
+                      <BimBot /> AI
+                    </>
+                  )}
                 </span>
                 {!isUser && (
                   <div
@@ -200,7 +206,8 @@ export default function Row({
               </div>
               {currentMessage.createdAt && (
                 <span className="text-[10px] sm:text-xs text-gray-400">
-                  {getHours(currentMessage.createdAt)} • {getDate(currentMessage.createdAt)}
+                  {getHours(currentMessage.createdAt)} •{' '}
+                  {getDate(currentMessage.createdAt)}
                 </span>
               )}
             </div>

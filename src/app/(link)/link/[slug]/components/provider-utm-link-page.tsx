@@ -54,7 +54,8 @@ export default function ProviderUtmLinkPage({
       utmParams,
     });
 
-    const pagePath = typeof window !== 'undefined' ? window.location.pathname : '';
+    const pagePath =
+      typeof window !== 'undefined' ? window.location.pathname : '';
 
     // Meta PageView (browser + server dedup via event_id)
     trackUnifiedEvent({

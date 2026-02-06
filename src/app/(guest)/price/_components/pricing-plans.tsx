@@ -14,7 +14,6 @@ import { Slider } from '@/components/ui/slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
-import { motion } from 'framer-motion';
 import {
   BookOpen,
   Calendar,
@@ -363,8 +362,7 @@ export default function PricingPlans() {
 
         <p className="text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
           Pilih paket yang sesuai dengan kebutuhanmu dan mulai perjalanan
-          belajar bersama{' '}
-          <Bimbelio className="text-slate-900" />
+          belajar bersama <Bimbelio className="text-slate-900" />
         </p>
       </div>
       <div className="max-w-7xl mx-auto">
@@ -1038,14 +1036,18 @@ export default function PricingPlans() {
                     Paket <span style={{ color: mainColor }}>Pilihan Kami</span>
                   </h3>
                   <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
-                    Paket yang paling populer dan direkomendasikan untuk memaksimalkan persiapanmu
+                    Paket yang paling populer dan direkomendasikan untuk
+                    memaksimalkan persiapanmu
                   </p>
                 </div>
                 <div className="flex flex-wrap justify-center gap-6 max-w-7xl mx-auto">
                   {filteredAndSortedPlans
                     .filter((plan) => plan.recommended)
                     .map((bundle, i) => (
-                      <div key={`recommended-${i}`} className="w-full max-w-md">
+                      <div
+                        key={`recommended-${i}`}
+                        className="w-full max-w-md"
+                      >
                         <CardPlan
                           plan={bundle}
                           discount={bundle.discount}
@@ -1065,17 +1067,24 @@ export default function PricingPlans() {
                       Paket <span style={{ color: mainColor }}>Lainnya</span>
                     </h3>
                     <p className="text-sm text-slate-600 mt-2 max-w-xl mx-auto">
-                      Pilihan paket lainnya yang bisa kamu sesuaikan dengan kebutuhanmu
+                      Pilihan paket lainnya yang bisa kamu sesuaikan dengan
+                      kebutuhanmu
                     </p>
                   </div>
                 )}
                 {/* Mobile: Horizontal scroll, Desktop: Grid */}
                 <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4">
-                  <div className="flex gap-4" style={{ width: 'max-content' }}>
+                  <div
+                    className="flex gap-4"
+                    style={{ width: 'max-content' }}
+                  >
                     {filteredAndSortedPlans
                       .filter((plan) => !plan.recommended)
                       .map((bundle, i) => (
-                        <div key={`other-mobile-${i}`} className="w-[300px] flex-shrink-0">
+                        <div
+                          key={`other-mobile-${i}`}
+                          className="w-[300px] flex-shrink-0"
+                        >
                           <CardPlan
                             plan={bundle}
                             discount={bundle.discount}

@@ -5,7 +5,6 @@ import BlocknoteEditor from '@/components/ui/blocknote-editor';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { QuestionTypeEnum } from '@/types/database';
-import { motion } from 'framer-motion';
 import 'katex/dist/katex.min.css';
 import { Check, Edit3, Keyboard } from 'lucide-react';
 
@@ -111,7 +110,9 @@ const Card: React.FC<CardProps> = ({
                 disabled
                   ? 'bg-slate-100 text-slate-500 cursor-not-allowed'
                   : 'bg-white hover:border-slate-300 focus:border-2',
-                inputValue ? 'border-green-300 bg-green-50' : 'border-slate-200',
+                inputValue
+                  ? 'border-green-300 bg-green-50'
+                  : 'border-slate-200',
               )}
               style={{
                 borderColor: inputValue && !disabled ? mainColor : undefined,

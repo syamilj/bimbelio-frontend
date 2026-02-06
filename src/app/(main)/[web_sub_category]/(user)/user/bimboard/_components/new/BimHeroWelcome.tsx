@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BimArena, BimCourse } from "@/components/ui/bim-brand";
-import { Crown, Zap, TrendingUp, Flame } from "lucide-react";
-import Link from "next/link";
-import { website_sub_category_id } from "@/hooks/use-web-sub-category-id";
-import { DecorativePatterns } from "./DecorativePatterns";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { BimArena, BimCourse } from '@/components/ui/bim-brand';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import { Crown, Flame, TrendingUp, Zap } from 'lucide-react';
+import Link from 'next/link';
+import { DecorativePatterns } from './DecorativePatterns';
 
 interface BimHeroWelcomeProps {
   user: {
@@ -29,17 +29,21 @@ interface BimHeroWelcomeProps {
   };
 }
 
-export default function BimHeroWelcome({ user, stats, subscription }: BimHeroWelcomeProps) {
+export default function BimHeroWelcome({
+  user,
+  stats,
+  subscription,
+}: BimHeroWelcomeProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
-  const secondaryColor = websiteSubCategory?.secondary_color || "#5aa4dd";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return "Selamat Pagi";
-    if (hour < 15) return "Selamat Siang";
-    if (hour < 18) return "Selamat Sore";
-    return "Selamat Malam";
+    if (hour < 12) return 'Selamat Pagi';
+    if (hour < 15) return 'Selamat Siang';
+    if (hour < 18) return 'Selamat Sore';
+    return 'Selamat Malam';
   };
 
   return (
@@ -59,7 +63,10 @@ export default function BimHeroWelcome({ user, stats, subscription }: BimHeroWel
         <div className="flex items-start gap-4">
           <div className="relative">
             <Avatar className="h-16 w-16 md:h-20 md:w-20 border-4 border-white shadow-lg">
-              <AvatarImage src={user.avatarUrl || undefined} alt={user.name} />
+              <AvatarImage
+                src={user.avatarUrl || undefined}
+                alt={user.name}
+              />
               <AvatarFallback
                 className="text-2xl font-black text-white"
                 style={{ backgroundColor: mainColor }}
@@ -89,7 +96,7 @@ export default function BimHeroWelcome({ user, stats, subscription }: BimHeroWel
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <h1 className="text-2xl md:text-3xl font-black text-slate-800">
-                {getGreeting()}, {user.name.split(" ")[0]}!
+                {getGreeting()}, {user.name.split(' ')[0]}!
               </h1>
             </div>
             <p className="text-sm md:text-base text-slate-600 font-medium">
@@ -106,7 +113,9 @@ export default function BimHeroWelcome({ user, stats, subscription }: BimHeroWel
                   <Crown className="w-3.5 h-3.5" />
                   <span>{subscription.planName}</span>
                   {subscription.daysLeft && subscription.daysLeft < 30 && (
-                    <span className="opacity-90">{subscription.daysLeft} hari</span>
+                    <span className="opacity-90">
+                      {subscription.daysLeft} hari
+                    </span>
                   )}
                 </div>
               )}
@@ -114,14 +123,18 @@ export default function BimHeroWelcome({ user, stats, subscription }: BimHeroWel
               {stats.rank > 0 && (
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-xs font-bold shadow-sm border border-slate-200">
                   <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
-                  <span className="text-slate-700">Peringkat #{stats.rank}</span>
+                  <span className="text-slate-700">
+                    Peringkat #{stats.rank}
+                  </span>
                 </div>
               )}
 
               {stats.studyHoursThisWeek > 0 && (
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-xs font-bold shadow-sm border border-slate-200">
                   <Zap className="w-3.5 h-3.5 text-amber-500" />
-                  <span className="text-slate-700">{stats.studyHoursThisWeek}j minggu ini</span>
+                  <span className="text-slate-700">
+                    {stats.studyHoursThisWeek}j minggu ini
+                  </span>
                 </div>
               )}
             </div>

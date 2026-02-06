@@ -7,5 +7,10 @@ export default function EditLinkPagePage() {
   const params = useParams();
   const linkPageId = params.id as string;
 
-  return <LinkPageForm mode="edit" linkPageId={linkPageId} />;
+  return (
+    <LinkPageForm
+      mode="edit"
+      linkPageId={linkPageId}
+    />
+  );
 }

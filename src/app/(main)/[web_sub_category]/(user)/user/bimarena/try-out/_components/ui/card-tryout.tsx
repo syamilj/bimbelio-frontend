@@ -16,7 +16,7 @@ import { env } from '@/env.mjs';
 import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
 import { mutateGeneral } from '@/lib/fetch-helper/fetch-helper';
 import { trackUnifiedEvent } from '@/lib/tracking/track';
-import { cn, getDateString, getDateStringShort } from '@/lib/utils';
+import { cn, getDateStringShort } from '@/lib/utils';
 import { IconTailedArrowUp45 } from '@/styles/icon';
 import type {
   TryoutRegistration,
@@ -25,7 +25,6 @@ import type {
 import {
   Award,
   BookOpen,
-  Calendar,
   CheckCircle,
   Clock,
   Eye,
@@ -390,7 +389,10 @@ export default function CardTryOut({
 
               <CardContent className="p-0">
                 {/* Hero Image Section - 4:5 Aspect Ratio & No Text Overlay */}
-                <div className="relative w-full aspect-[4/5] h-auto overflow-hidden cursor-pointer" onClick={() => setShowDetail(item)}>
+                <div
+                  className="relative w-full aspect-[4/5] h-auto overflow-hidden cursor-pointer"
+                  onClick={() => setShowDetail(item)}
+                >
                   {item.image ? (
                     <Image
                       src={`${env.NEXT_PUBLIC_SUPABASE_IMG_URL}/tryout/${item.image}`}
@@ -416,7 +418,10 @@ export default function CardTryOut({
                 <div className="p-4 lg:p-6 space-y-4">
                   {/* Title Section (Moved here) */}
                   <div>
-                    <h3 className="font-bold leading-tight text-gray-900 line-clamp-2" title={item.title}>
+                    <h3
+                      className="font-bold leading-tight text-gray-900 line-clamp-2"
+                      title={item.title}
+                    >
                       {item.title}
                     </h3>
                     <p className="text-xs lg:text-sm text-gray-500 mt-1">
@@ -460,7 +465,10 @@ export default function CardTryOut({
                         Mulai
                       </div>
                       <div className="text-xs font-bold text-orange-700 text-center leading-tight whitespace-nowrap">
-                        {getDateStringShort(item.startDate).split(' ').slice(0, 2).join(' ')}
+                        {getDateStringShort(item.startDate)
+                          .split(' ')
+                          .slice(0, 2)
+                          .join(' ')}
                       </div>
                     </div>
 
@@ -470,7 +478,10 @@ export default function CardTryOut({
                         Bahas
                       </div>
                       <div className="text-xs font-bold text-pink-700 text-center leading-tight whitespace-nowrap">
-                        {getDateStringShort(item.endDate).split(' ').slice(0, 2).join(' ')}
+                        {getDateStringShort(item.endDate)
+                          .split(' ')
+                          .slice(0, 2)
+                          .join(' ')}
                       </div>
                     </div>
                   </div>

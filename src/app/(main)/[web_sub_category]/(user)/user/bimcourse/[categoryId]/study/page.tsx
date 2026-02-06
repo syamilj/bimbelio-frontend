@@ -69,7 +69,7 @@ export type Data = {
 
 const WorkspaceCourse = () => {
   const {
-    useData: { CourseData, CourseLoading, Course,  },
+    useData: { CourseData, CourseLoading, Course },
     useDoc: { docId },
   } = useProvider();
   const { data: session } = useSession();
@@ -161,19 +161,19 @@ const WorkspaceCourse = () => {
   return (
     <Fragment>
       <HeaderCourse className="hidden md:flex" />
-        <ResizablePanelGroup
-          autoSaveId="window-layout"
-          direction={isMobile ? 'vertical' : 'horizontal'}
-          onLayout={() => {}}
-          className="flex-col h-full bg-bg-workspace"
-        >
-          <LeftComponent />
-          <ResizableHandleComponent />
-          <RightComponent />
-          <div className="fixed md:hidden items-center justify-center flex w-full bottom-6 md:left-2 z-100">
-            <NavigationButtons />
-          </div>
-        </ResizablePanelGroup>
+      <ResizablePanelGroup
+        autoSaveId="window-layout"
+        direction={isMobile ? 'vertical' : 'horizontal'}
+        onLayout={() => {}}
+        className="flex-col h-full bg-bg-workspace"
+      >
+        <LeftComponent />
+        <ResizableHandleComponent />
+        <RightComponent />
+        <div className="fixed md:hidden items-center justify-center flex w-full bottom-6 md:left-2 z-100">
+          <NavigationButtons />
+        </div>
+      </ResizablePanelGroup>
     </Fragment>
   );
 };

@@ -1,5 +1,5 @@
-import { useCallback, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useCallback, useRef, useState } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { VariableSizeList as List } from 'react-window';
 import { useProvider } from '../../provider';

@@ -25,7 +25,9 @@ const COMMERCE_ALIASES = new Set<string>([
   'purchase',
 ]);
 
-export function normalizeTikTokContentType(input: unknown): TikTokContentType | undefined {
+export function normalizeTikTokContentType(
+  input: unknown,
+): TikTokContentType | undefined {
   if (typeof input !== 'string') return undefined;
 
   const value = input.trim().toLowerCase();

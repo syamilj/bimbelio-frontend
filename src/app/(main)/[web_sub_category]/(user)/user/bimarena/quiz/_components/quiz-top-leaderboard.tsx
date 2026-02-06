@@ -79,9 +79,7 @@ export function QuizTopLeaderboard() {
                 className="w-6 h-6 rounded-3xl flex items-center justify-center"
                 style={{
                   backgroundColor:
-                    player.rank <= 3
-                      ? `${mainColor}15`
-                      : `${mainColor}08`,
+                    player.rank <= 3 ? `${mainColor}15` : `${mainColor}08`,
                 }}
               >
                 <PlayerIcon className={`w-3.5 h-3.5 ${playerColor}`} />

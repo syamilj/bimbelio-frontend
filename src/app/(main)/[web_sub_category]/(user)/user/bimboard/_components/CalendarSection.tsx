@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Button } from "@/components/ui/button";
-import { Calendar, ExternalLink } from "lucide-react";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Button } from '@/components/ui/button';
+import { Calendar, ExternalLink } from 'lucide-react';
 
-const GOOGLE_CALENDAR_ID = "bimbelio.marketing@gmail.com";
+const GOOGLE_CALENDAR_ID = 'bimbelio.marketing@gmail.com';
 const GOOGLE_CALENDAR_EMBED_URL = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(GOOGLE_CALENDAR_ID)}&ctz=Asia%2FJakarta&mode=AGENDA&showTitle=0&showNav=0&showPrint=0&showTabs=0&showCalendars=0`;
 
 export default function CalendarSection() {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   return (
     <div className="w-full">
@@ -17,10 +17,15 @@ export default function CalendarSection() {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
           <div className="flex items-center gap-2">
-             <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
-                <Calendar className="w-4 h-4" style={{ color: mainColor }} />
-             </div>
-            <span className="font-bold text-sm text-slate-800">Jadwal Event</span>
+            <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
+              <Calendar
+                className="w-4 h-4"
+                style={{ color: mainColor }}
+              />
+            </div>
+            <span className="font-bold text-sm text-slate-800">
+              Jadwal Event
+            </span>
           </div>
           <a
             href={`https://calendar.google.com/calendar/u/0?cid=${GOOGLE_CALENDAR_ID}`}

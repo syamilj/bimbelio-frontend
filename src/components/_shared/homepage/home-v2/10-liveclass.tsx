@@ -14,7 +14,7 @@ import {
   LiveClassAgenda,
   LiveClassReference,
 } from '@/types/database';
-import { Calendar, Clock, PlayCircle, Video, ArrowRight } from 'lucide-react';
+import { ArrowRight, Calendar, Clock, PlayCircle, Video } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 

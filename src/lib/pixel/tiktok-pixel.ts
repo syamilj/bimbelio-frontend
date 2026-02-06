@@ -1,9 +1,9 @@
 'use client';
 
-import { TiktokPixelCustomDataType, TiktokPixelEventType } from './types';
 import { createEventId } from '@/lib/tracking/event-id';
-import { trackServerEvent } from '@/lib/tracking/server-events';
 import { normalizeTikTokCustomData } from '@/lib/tracking/normalize-tiktok';
+import { trackServerEvent } from '@/lib/tracking/server-events';
+import { TiktokPixelCustomDataType, TiktokPixelEventType } from './types';
 
 let isTikTokPixelInitialized = false;
 
@@ -53,7 +53,9 @@ export const trackTikTokEvent = (
 
   const eventId = createEventId(`tt_${event}`);
 
-  const normalizedData = normalizeTikTokCustomData((data || {}) as Record<string, any>);
+  const normalizedData = normalizeTikTokCustomData(
+    (data || {}) as Record<string, any>,
+  );
 
   // Track event (with event_id for dedup)
   (window as any).ttq.track(event, { ...normalizedData, event_id: eventId });

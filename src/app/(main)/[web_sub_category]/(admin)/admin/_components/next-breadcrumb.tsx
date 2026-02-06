@@ -31,9 +31,8 @@ const NextBreadcrumb = () => {
           }
 
           // Truncate long path names
-          const displayPath = path.length > 20
-            ? path.slice(0, 20) + '...'
-            : path;
+          const displayPath =
+            path.length > 20 ? path.slice(0, 20) + '...' : path;
 
           return (
             <div

@@ -52,16 +52,18 @@ export default function TabOverview({
               Keunggulan
             </Badge>
             <CardTitle className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
-              Sistem yang{' '}
-              <span style={{ color: mainColor }}>terukur</span>{' '}
+              Sistem yang <span style={{ color: mainColor }}>terukur</span>{' '}
               untuk hasil maksimal
             </CardTitle>
             <CardDescription className="text-lg text-slate-600 leading-relaxed">
-              <span className="font-semibold" style={{ color: mainColor }}>
+              <span
+                className="font-semibold"
+                style={{ color: mainColor }}
+              >
                 Goal kita jelas:
               </span>{' '}
-              setiap fitur dirancang khusus untuk bantu kamu naik minimal
-              200+ poin.
+              setiap fitur dirancang khusus untuk bantu kamu naik minimal 200+
+              poin.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -77,7 +79,10 @@ export default function TabOverview({
                         className="shrink-0 w-11 h-11 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
-                        <Check className="w-5 h-5" style={{ color: mainColor }} />
+                        <Check
+                          className="w-5 h-5"
+                          style={{ color: mainColor }}
+                        />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-slate-900 text-base mb-1">
@@ -115,17 +120,22 @@ export default function TabOverview({
                 Fitur
               </Badge>
               <CardTitle className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
-                Akses{' '}
-                <span style={{ color: mainColor }}>unlimited</span>{' '}
-                ke semua kategori
+                Akses <span style={{ color: mainColor }}>unlimited</span> ke
+                semua kategori
               </CardTitle>
               <CardDescription className="text-lg text-slate-600 leading-relaxed">
-                <span className="font-semibold" style={{ color: mainColor }}>
+                <span
+                  className="font-semibold"
+                  style={{ color: mainColor }}
+                >
                   Semua fitur premium
                 </span>{' '}
-                yang kamu butuhkan untuk persiapan UTBK maksimal. Bukan
-                sekadar akses biasa, tapi{' '}
-                <span className="font-semibold" style={{ color: secondaryColor }}>
+                yang kamu butuhkan untuk persiapan UTBK maksimal. Bukan sekadar
+                akses biasa, tapi{' '}
+                <span
+                  className="font-semibold"
+                  style={{ color: secondaryColor }}
+                >
                   sistem pembelajaran terintegrasi
                 </span>
                 !
@@ -171,25 +181,23 @@ export default function TabOverview({
                     </div>
                     <div className="space-y-2">
                       {feature.type === 'COURSE' &&
-                        feature.Pivot_Plan_Category.slice(0, 3).map(
-                          (pivot) => (
+                        feature.Pivot_Plan_Category.slice(0, 3).map((pivot) => (
+                          <div
+                            key={pivot.id}
+                            className="flex items-center gap-3 p-2 rounded-3xl bg-white border border-slate-100"
+                          >
                             <div
-                              key={pivot.id}
-                              className="flex items-center gap-3 p-2 rounded-3xl bg-white border border-slate-100"
+                              className="w-6 h-6 rounded-3xl text-white text-xs flex items-center justify-center font-bold"
+                              style={{ backgroundColor: mainColor }}
                             >
-                              <div
-                                className="w-6 h-6 rounded-3xl text-white text-xs flex items-center justify-center font-bold"
-                                style={{ backgroundColor: mainColor }}
-                              >
-                                {pivot.Category.nomor}
-                              </div>
-                              <span className="text-slate-700 font-medium text-sm">
-                                {pivot.Category.name}
-                              </span>
-                              <ArrowRight className="w-4 h-4 text-slate-400 ml-auto" />
+                              {pivot.Category.nomor}
                             </div>
-                          ),
-                        )}
+                            <span className="text-slate-700 font-medium text-sm">
+                              {pivot.Category.name}
+                            </span>
+                            <ArrowRight className="w-4 h-4 text-slate-400 ml-auto" />
+                          </div>
+                        ))}
                       {feature.type === 'DOCUMENT' && (
                         <div className="flex gap-3 p-2 rounded-3xl bg-white border border-slate-100">
                           <div
@@ -213,8 +221,7 @@ export default function TabOverview({
                               <Play className="w-3 h-3" />
                             </div>
                             <span className="text-slate-700 font-medium text-sm">
-                              {feature.liveClassesPerWeek} BimLive per
-                              Minggu
+                              {feature.liveClassesPerWeek} BimLive per Minggu
                             </span>
                           </div>
                         )}
@@ -252,11 +259,17 @@ export default function TabOverview({
               <span style={{ color: mainColor }}>mentor terbaik</span>
             </CardTitle>
             <CardDescription className="text-lg text-slate-600 leading-relaxed">
-              <span className="font-semibold" style={{ color: mainColor }}>
+              <span
+                className="font-semibold"
+                style={{ color: mainColor }}
+              >
                 {plan.Pivot_LiveClass_Plan.length} BimLive terjadwal
               </span>{' '}
               dengan instruktur berpengalaman. Interaksi langsung,{' '}
-              <span className="font-semibold" style={{ color: secondaryColor }}>
+              <span
+                className="font-semibold"
+                style={{ color: secondaryColor }}
+              >
                 hasil maksimal
               </span>
               !
@@ -316,7 +329,10 @@ export default function TabOverview({
                         className="w-6 h-6 rounded-3xl flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
-                        <Users className="w-3 h-3" style={{ color: mainColor }} />
+                        <Users
+                          className="w-3 h-3"
+                          style={{ color: mainColor }}
+                        />
                       </div>
                       <span className="text-sm font-medium text-slate-700">
                         Instructor Premium
@@ -368,16 +384,20 @@ export default function TabOverview({
             </Badge>
             <CardTitle className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
               Sistem koin yang{' '}
-              <span style={{ color: mainColor }}>unlimited</span>{' '}
-              untuk belajar
+              <span style={{ color: mainColor }}>unlimited</span> untuk belajar
             </CardTitle>
             <CardDescription className="text-lg text-slate-600 leading-relaxed">
-              <span className="font-semibold" style={{ color: mainColor }}>
+              <span
+                className="font-semibold"
+                style={{ color: mainColor }}
+              >
                 Gak perlu khawatir
               </span>{' '}
-              soal limit! Paket ini dirancang untuk pembelajaran maksimal
-              dengan{' '}
-              <span className="font-semibold" style={{ color: secondaryColor }}>
+              soal limit! Paket ini dirancang untuk pembelajaran maksimal dengan{' '}
+              <span
+                className="font-semibold"
+                style={{ color: secondaryColor }}
+              >
                 koin yang berlimpah
               </span>
               .
@@ -480,14 +500,20 @@ export default function TabOverview({
                   className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <Infinity className="w-5 h-5" style={{ color: mainColor }} />
+                  <Infinity
+                    className="w-5 h-5"
+                    style={{ color: mainColor }}
+                  />
                 </div>
                 <div>
                   <h4 className="font-semibold text-slate-900 mb-1">
                     Sistem Koin BimBot yang Berbeda
                   </h4>
                   <p className="text-slate-600 text-sm leading-relaxed">
-                    <span className="font-semibold" style={{ color: mainColor }}>
+                    <span
+                      className="font-semibold"
+                      style={{ color: mainColor }}
+                    >
                       Gak kayak platform lain
                     </span>{' '}
                     yang perhitungan koinnya pelit. Di sini kamu bisa belajar

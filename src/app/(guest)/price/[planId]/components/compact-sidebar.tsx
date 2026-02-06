@@ -113,7 +113,10 @@ export default function CompactSidebar({
                     className="w-7 h-7 rounded-3xl flex items-center justify-center"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
-                    <Clock className="w-3.5 h-3.5" style={{ color: mainColor }} />
+                    <Clock
+                      className="w-3.5 h-3.5"
+                      style={{ color: mainColor }}
+                    />
                   </div>
                   Durasi
                 </span>
@@ -135,7 +138,10 @@ export default function CompactSidebar({
                   className="w-7 h-7 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <Video className="w-3.5 h-3.5" style={{ color: mainColor }} />
+                  <Video
+                    className="w-3.5 h-3.5"
+                    style={{ color: mainColor }}
+                  />
                 </div>
                 BimLivees
               </span>
@@ -194,7 +200,9 @@ export default function CompactSidebar({
                 >
                   97%
                 </div>
-                <div className="text-xs text-slate-600 font-medium">Success</div>
+                <div className="text-xs text-slate-600 font-medium">
+                  Success
+                </div>
               </div>
               <div className="p-2 rounded-3xl bg-slate-50">
                 <div
@@ -212,7 +220,9 @@ export default function CompactSidebar({
                 >
                   24/7
                 </div>
-                <div className="text-xs text-slate-600 font-medium">Support</div>
+                <div className="text-xs text-slate-600 font-medium">
+                  Support
+                </div>
               </div>
             </div>
           </div>

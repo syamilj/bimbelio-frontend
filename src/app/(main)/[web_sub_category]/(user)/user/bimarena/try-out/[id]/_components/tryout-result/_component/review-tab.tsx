@@ -299,7 +299,9 @@ export function ReviewTab({
                       key={subtest.id}
                       value={`${index}`}
                     >
-                      {subtest.TryoutSubCategory || subtest.name || 'Subkategori'}
+                      {subtest.TryoutSubCategory ||
+                        subtest.name ||
+                        'Subkategori'}
                     </SelectItem>
                   ))
                 ) : (
@@ -320,25 +322,33 @@ export function ReviewTab({
               >
                 {getTotalScore().toFixed(0)}
               </div>
-              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">Skor Total</div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Skor Total
+              </div>
             </div>
             <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
               <div className="text-xl md:text-2xl font-black text-green-600 leading-none">
                 {accuracy.toFixed(1)}%
               </div>
-              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">Akurasi</div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Akurasi
+              </div>
             </div>
             <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
               <div className="text-xl md:text-2xl font-black text-blue-600 leading-none">
                 {correctAnswer()}
               </div>
-              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">Benar</div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Benar
+              </div>
             </div>
             <div className="text-center min-w-[100px] md:min-w-[120px] lg:min-w-0">
               <div className="text-xl md:text-2xl font-black text-red-600 leading-none">
                 {TotalQuestion - correctAnswer()}
               </div>
-              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">Salah</div>
+              <div className="text-[10px] md:text-xs text-slate-600 font-medium mt-1">
+                Salah
+              </div>
             </div>
           </div>
         </div>
@@ -736,19 +746,25 @@ const GridView = ({
             <div className="w-5 h-5 md:w-6 md:h-6 bg-green-100 border border-green-200 rounded-3xl flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-green-600" />
             </div>
-            <span className="text-xs md:text-sm text-slate-600 font-medium">Benar</span>
+            <span className="text-xs md:text-sm text-slate-600 font-medium">
+              Benar
+            </span>
           </div>
           <div className="flex items-center justify-center gap-1.5 md:gap-2">
             <div className="w-5 h-5 md:w-6 md:h-6 bg-red-100 border border-red-200 rounded-3xl flex items-center justify-center flex-shrink-0">
               <XCircle className="w-3 h-3 md:w-4 md:h-4 text-red-600" />
             </div>
-            <span className="text-xs md:text-sm text-slate-600 font-medium">Salah</span>
+            <span className="text-xs md:text-sm text-slate-600 font-medium">
+              Salah
+            </span>
           </div>
           <div className="flex items-center justify-center gap-1.5 md:gap-2">
             <div className="w-5 h-5 md:w-6 md:h-6 bg-slate-100 border border-slate-200 rounded-3xl flex items-center justify-center flex-shrink-0">
               <span className="text-slate-400 text-xs">?</span>
             </div>
-            <span className="text-xs md:text-sm text-slate-600 font-medium">Kosong</span>
+            <span className="text-xs md:text-sm text-slate-600 font-medium">
+              Kosong
+            </span>
           </div>
         </div>
       </CardContent>
@@ -839,19 +855,25 @@ const CompactNavigation = ({
               <div className="text-base font-black text-green-600 leading-none">
                 {stats.correct}
               </div>
-              <div className="text-[10px] text-slate-600 font-medium mt-0.5">Benar</div>
+              <div className="text-[10px] text-slate-600 font-medium mt-0.5">
+                Benar
+              </div>
             </div>
             <div className="text-center">
               <div className="text-base font-black text-red-600 leading-none">
                 {stats.wrong}
               </div>
-              <div className="text-[10px] text-slate-600 font-medium mt-0.5">Salah</div>
+              <div className="text-[10px] text-slate-600 font-medium mt-0.5">
+                Salah
+              </div>
             </div>
             <div className="text-center">
               <div className="text-base font-black text-slate-600 leading-none">
                 {stats.unanswered}
               </div>
-              <div className="text-[10px] text-slate-600 font-medium mt-0.5">Kosong</div>
+              <div className="text-[10px] text-slate-600 font-medium mt-0.5">
+                Kosong
+              </div>
             </div>
           </div>
         </CardHeader>

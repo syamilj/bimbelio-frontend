@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ChevronRight, Crown, Check } from "lucide-react";
-import Link from "next/link";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Check, ChevronRight, Crown } from 'lucide-react';
+import Link from 'next/link';
 
 interface SubscriptionUpsellProps {
   isPremium: boolean;
@@ -29,7 +29,7 @@ export default function SubscriptionUpsell({
   webSubCategory,
 }: SubscriptionUpsellProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
 
   if (!isPremium) return null;
 
@@ -53,7 +53,9 @@ export default function SubscriptionUpsell({
             <div>
               <h3 className="font-black text-lg leading-tight">{planName}</h3>
               {planExpiresAt && (
-                <p className="text-xs text-white/90 font-medium mt-0.5">Berlaku hingga {planExpiresAt}</p>
+                <p className="text-xs text-white/90 font-medium mt-0.5">
+                  Berlaku hingga {planExpiresAt}
+                </p>
               )}
             </div>
           </div>
@@ -64,38 +66,47 @@ export default function SubscriptionUpsell({
 
         <div className="relative z-10 grid grid-cols-3 gap-3">
           <div className="bg-black/10 backdrop-blur-sm rounded-2xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
-             <div className="w-8 h-8 rounded-full bg-white/10 mx-auto flex items-center justify-center mb-1">
-                 <span className="text-xs font-bold">TO</span>
-             </div>
+            <div className="w-8 h-8 rounded-full bg-white/10 mx-auto flex items-center justify-center mb-1">
+              <span className="text-xs font-bold">TO</span>
+            </div>
             <div className="text-lg font-black">
               {usageStats.tryoutsUsed}/
-              {usageStats.tryoutsLimit === -1 ? "∞" : usageStats.tryoutsLimit}
+              {usageStats.tryoutsLimit === -1 ? '∞' : usageStats.tryoutsLimit}
             </div>
-            <p className="text-[10px] text-white/80 font-medium uppercase tracking-wide">TryOut</p>
+            <p className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
+              TryOut
+            </p>
           </div>
           <div className="bg-black/10 backdrop-blur-sm rounded-2xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
             <div className="w-8 h-8 rounded-full bg-white/10 mx-auto flex items-center justify-center mb-1">
-                 <span className="text-xs font-bold">CS</span>
-             </div>
+              <span className="text-xs font-bold">CS</span>
+            </div>
             <div className="text-lg font-black">
               {usageStats.coursesUsed}/
-              {usageStats.coursesLimit === -1 ? "∞" : usageStats.coursesLimit}
+              {usageStats.coursesLimit === -1 ? '∞' : usageStats.coursesLimit}
             </div>
-            <p className="text-[10px] text-white/80 font-medium uppercase tracking-wide">Course</p>
+            <p className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
+              Course
+            </p>
           </div>
           <div className="bg-black/10 backdrop-blur-sm rounded-2xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
-             <div className="w-8 h-8 rounded-full bg-white/10 mx-auto flex items-center justify-center mb-1">
-                 <span className="text-xs font-bold">AI</span>
-             </div>
+            <div className="w-8 h-8 rounded-full bg-white/10 mx-auto flex items-center justify-center mb-1">
+              <span className="text-xs font-bold">AI</span>
+            </div>
             <div className="text-lg font-black">
               {usageStats.aiChatsUsed}/
-              {usageStats.aiChatsLimit === -1 ? "∞" : usageStats.aiChatsLimit}
+              {usageStats.aiChatsLimit === -1 ? '∞' : usageStats.aiChatsLimit}
             </div>
-            <p className="text-[10px] text-white/80 font-medium uppercase tracking-wide">AI Chat</p>
+            <p className="text-[10px] text-white/80 font-medium uppercase tracking-wide">
+              AI Chat
+            </p>
           </div>
         </div>
 
-        <Link href={`/${webSubCategory}/user/subscription`} className="relative z-10 block mt-5">
+        <Link
+          href={`/${webSubCategory}/user/subscription`}
+          className="relative z-10 block mt-5"
+        >
           <Button
             variant="ghost"
             size="sm"

@@ -62,19 +62,14 @@ export default function PlanDetailPage() {
   }
 
   const discountPercentage = plan.originalPrice
-    ? Math.round(
-        ((plan.originalPrice - plan.price) / plan.originalPrice) * 100,
-      )
+    ? Math.round(((plan.originalPrice - plan.price) / plan.originalPrice) * 100)
     : 0;
 
   const getAccessDuration = () => {
     if (plan.PlanSubscription?.expireDays) {
       return `${plan.PlanSubscription.expireDays} hari akses`;
     }
-    if (
-      plan.PlanSubscription &&
-      plan.PlanSubscription.PlanFeature.length > 0
-    ) {
+    if (plan.PlanSubscription && plan.PlanSubscription.PlanFeature.length > 0) {
       return formatDateRange(
         plan.PlanSubscription.PlanFeature[0].validFrom,
         plan.PlanSubscription.PlanFeature[0].validUntil,
@@ -175,8 +170,8 @@ export default function PlanDetailPage() {
                     </Badge>
                     {discountPercentage > 0 && (
                       <Badge className="px-2.5 py-1 text-[10px] font-bold bg-red-500 text-white border-none rounded-full">
-                        <TrendingUp className="w-3 h-3 mr-1" />
-                        -{discountPercentage}%
+                        <TrendingUp className="w-3 h-3 mr-1" />-
+                        {discountPercentage}%
                       </Badge>
                     )}
                   </div>
@@ -313,7 +308,10 @@ export default function PlanDetailPage() {
                   className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <Star className="w-4 h-4" style={{ color: mainColor }} />
+                  <Star
+                    className="w-4 h-4"
+                    style={{ color: mainColor }}
+                  />
                 </div>
                 <h2 className="text-base font-semibold text-slate-900">
                   Keunggulan
@@ -427,7 +425,10 @@ export default function PlanDetailPage() {
                   className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <Layers className="w-4 h-4" style={{ color: mainColor }} />
+                  <Layers
+                    className="w-4 h-4"
+                    style={{ color: mainColor }}
+                  />
                 </div>
                 <h2 className="text-base font-semibold text-slate-900">
                   BimCourse
@@ -501,7 +502,10 @@ export default function PlanDetailPage() {
                   className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <Video className="w-4 h-4" style={{ color: mainColor }} />
+                  <Video
+                    className="w-4 h-4"
+                    style={{ color: mainColor }}
+                  />
                 </div>
                 <h2 className="text-base font-semibold text-slate-900">
                   BimLive
@@ -595,7 +599,10 @@ export default function PlanDetailPage() {
                   className="w-8 h-8 rounded-3xl flex items-center justify-center"
                   style={{ backgroundColor: `${mainColor}15` }}
                 >
-                  <Coins className="w-4 h-4" style={{ color: mainColor }} />
+                  <Coins
+                    className="w-4 h-4"
+                    style={{ color: mainColor }}
+                  />
                 </div>
                 <h2 className="text-base font-semibold text-slate-900">
                   Koin BimBot

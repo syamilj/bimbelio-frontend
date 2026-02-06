@@ -55,7 +55,9 @@ export const TryoutAI = ({
           <div className="flex items-center justify-center gap-2 pr-6">
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center"
-              style={{ background: `linear-gradient(135deg, ${mainColor}, ${mainColor}cc)` }}
+              style={{
+                background: `linear-gradient(135deg, ${mainColor}, ${mainColor}cc)`,
+              }}
             >
               <Bot className="w-4 h-4 text-white" />
             </div>

@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useState } from "react";
-import { useSession } from "@/components/provider/provider-session-auth";
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { getGeneral } from "@/lib/fetch-helper/fetch-helper";
-import { env } from "@/env.mjs";
-import { LoadingRetro } from "@/components/ui/loading-retro";
+import { useSession } from '@/components/provider/provider-session-auth';
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { LoadingRetro } from '@/components/ui/loading-retro';
+import { env } from '@/env.mjs';
+import { getGeneral } from '@/lib/fetch-helper/fetch-helper';
+import { useCallback, useEffect, useState } from 'react';
 
 // import WelcomeSection from "./WelcomeSection";
-import StatsCards from "./StatsCards";
-import QuickActions from "./QuickActions";
-import LiveClassSection from "./LiveClassSection";
-import ContentSection from "./ContentSection";
-import CalendarSection from "./CalendarSection";
-import PricingPlans from "./PricingPlans";
-import SubscriptionUpsell from "./SubscriptionUpsell";
+import CalendarSection from './CalendarSection';
+import ContentSection from './ContentSection';
+import LiveClassSection from './LiveClassSection';
+import PricingPlans from './PricingPlans';
+import QuickActions from './QuickActions';
+import StatsCards from './StatsCards';
+import SubscriptionUpsell from './SubscriptionUpsell';
 
 // Types
 interface DashboardData {
@@ -77,25 +77,25 @@ interface DashboardData {
 
 function getImageUrl(
   imageId: string | null | undefined,
-  type: "tryout" | "liveclass" | "course" | "document" = "tryout"
+  type: 'tryout' | 'liveclass' | 'course' | 'document' = 'tryout',
 ): string | undefined {
-  if (!imageId || imageId.trim() === "") return undefined;
+  if (!imageId || imageId.trim() === '') return undefined;
   if (
-    imageId.startsWith("http://") ||
-    imageId.startsWith("https://") ||
-    imageId.startsWith("/")
+    imageId.startsWith('http://') ||
+    imageId.startsWith('https://') ||
+    imageId.startsWith('/')
   ) {
     return imageId;
   }
   const baseUrl = env.NEXT_PUBLIC_SUPABASE_IMG_URL;
   switch (type) {
-    case "tryout":
+    case 'tryout':
       return `${baseUrl}/tryout/${imageId}`;
-    case "liveclass":
+    case 'liveclass':
       return `${baseUrl}/${imageId}`;
-    case "document":
+    case 'document':
       return `${baseUrl}/document/${imageId}`;
-    case "course":
+    case 'course':
       return `${baseUrl}/${imageId}`;
     default:
       return `${baseUrl}/${imageId}`;
@@ -115,47 +115,53 @@ export default function DashboardClient() {
     try {
       setLoading(true);
 
-      const [reportRes, upcomingTryoutsRes, liveClassRes, doneTryoutsRes, documentsRes, coursesRes] =
-        await Promise.all([
-          getGeneral(`/report/getReportData`, {
-            params: {
-              userId: session.user.id,
-              website_sub_category_id: webSubCategoryId,
-            },
-          }),
-          getGeneral(`/tryout/getTryOutCardUpcoming`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              userId: session.user.id,
-              limit: 5,
-            },
-          }),
-          getGeneral(`/liveClass/getAllLiveClassAvailable`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              userId: session.user.id,
-              limit: 5,
-            },
-          }),
-          getGeneral(`/tryout/getTryOutCardDone`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              userId: session.user.id,
-              limit: 5,
-            },
-          }),
-          getGeneral(`/document/getDocumentTerbaru`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-            },
-          }),
-          getGeneral(`/course/getCategoryForCard`, {
-            params: {
-              website_sub_category_id: webSubCategoryId,
-              userId: session.user.id,
-            },
-          }),
-        ]);
+      const [
+        reportRes,
+        upcomingTryoutsRes,
+        liveClassRes,
+        doneTryoutsRes,
+        documentsRes,
+        coursesRes,
+      ] = await Promise.all([
+        getGeneral(`/report/getReportData`, {
+          params: {
+            userId: session.user.id,
+            website_sub_category_id: webSubCategoryId,
+          },
+        }),
+        getGeneral(`/tryout/getTryOutCardUpcoming`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            userId: session.user.id,
+            limit: 5,
+          },
+        }),
+        getGeneral(`/liveClass/getAllLiveClassAvailable`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            userId: session.user.id,
+            limit: 5,
+          },
+        }),
+        getGeneral(`/tryout/getTryOutCardDone`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            userId: session.user.id,
+            limit: 5,
+          },
+        }),
+        getGeneral(`/document/getDocumentTerbaru`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+          },
+        }),
+        getGeneral(`/course/getCategoryForCard`, {
+          params: {
+            website_sub_category_id: webSubCategoryId,
+            userId: session.user.id,
+          },
+        }),
+      ]);
 
       const report = reportRes?.data;
       const upcomingTryouts = upcomingTryoutsRes?.data || [];
@@ -174,7 +180,7 @@ export default function DashboardClient() {
         .slice(0, 10)
         .map((t: any) => ({
           id: t.id,
-          src: getImageUrl(t.image, "tryout") || "",
+          src: getImageUrl(t.image, 'tryout') || '',
           title: t.title,
         }));
 
@@ -184,29 +190,36 @@ export default function DashboardClient() {
         .slice(0, 10)
         .map((d: any) => ({
           id: d.id,
-          src: getImageUrl(d.img, "document") || "",
-          title: d.title || d.name || "Materi",
+          src: getImageUrl(d.img, 'document') || '',
+          title: d.title || d.name || 'Materi',
         }));
 
       // Helper to get YouTube thumbnail from video ID or URL
       const getYouTubeThumbnail = (video: string): string => {
-        if (!video) return "";
+        if (!video) return '';
         // If already a full URL, extract video ID
-        const youtubeMatch = video.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+        const youtubeMatch = video.match(
+          /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
+        );
         const videoId = youtubeMatch ? youtubeMatch[1] : video;
         return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       };
 
       // Extract video recordings from courses
-      const recordingImages: { id: string; src: string; title: string; hasVideo: boolean }[] = [];
+      const recordingImages: {
+        id: string;
+        src: string;
+        title: string;
+        hasVideo: boolean;
+      }[] = [];
       courses.forEach((course: any) => {
         course.CourseChapter?.forEach((chapter: any) => {
           chapter.CourseSubChapter?.forEach((subChapter: any) => {
-            if (subChapter.type === "VIDEO" && subChapter.video) {
+            if (subChapter.type === 'VIDEO' && subChapter.video) {
               recordingImages.push({
                 id: subChapter.id,
                 src: getYouTubeThumbnail(subChapter.video),
-                title: subChapter.title || "Video",
+                title: subChapter.title || 'Video',
                 hasVideo: true,
               });
             }
@@ -218,7 +231,7 @@ export default function DashboardClient() {
 
       const dashboardData: DashboardData = {
         user: {
-          name: report?.userHeader?.name || session.user.name || "User",
+          name: report?.userHeader?.name || session.user.name || 'User',
           avatarUrl: report?.userHeader?.avatarUrl || session.user.image,
         },
         stats: {
@@ -235,17 +248,17 @@ export default function DashboardClient() {
         },
         subscription: {
           isPremium:
-            report?.userHeader?.status === "SUBSCRIBER" ||
-            report?.userHeader?.status === "ADMIN",
+            report?.userHeader?.status === 'SUBSCRIBER' ||
+            report?.userHeader?.status === 'ADMIN',
           planName:
-            report?.userHeader?.status === "SUBSCRIBER" ? "Premium" : "Free",
+            report?.userHeader?.status === 'SUBSCRIBER' ? 'Premium' : 'Free',
           planExpiresAt: report?.userHeader?.daysLeft
             ? new Date(
-                Date.now() + report.userHeader.daysLeft * 24 * 60 * 60 * 1000
-              ).toLocaleDateString("id-ID", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
+                Date.now() + report.userHeader.daysLeft * 24 * 60 * 60 * 1000,
+              ).toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
               })
             : undefined,
           usageStats: {
@@ -261,9 +274,9 @@ export default function DashboardClient() {
           id: lc.id,
           title: lc.title,
           scheduleTime: lc.scheduleTime || lc.startDate,
-          thumbnail: getImageUrl(lc.thumbnail || lc.image, "liveclass") || null,
-          instructorName: lc.Instructor?.name || "Tutor",
-          isPremium: lc.accessType === "PREMIUM",
+          thumbnail: getImageUrl(lc.thumbnail || lc.image, 'liveclass') || null,
+          instructorName: lc.Instructor?.name || 'Tutor',
+          isPremium: lc.accessType === 'PREMIUM',
         })),
         content: {
           tryouts: tryoutImages,
@@ -274,7 +287,7 @@ export default function DashboardClient() {
 
       setData(dashboardData);
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
+      console.error('Error fetching dashboard data:', error);
     } finally {
       setLoading(false);
     }
@@ -298,7 +311,10 @@ export default function DashboardClient() {
     return (
       <div className="flex h-[60vh] flex-col items-center justify-center gap-4">
         <p className="text-muted-foreground">Gagal memuat data dashboard</p>
-        <button onClick={fetchDashboardData} className="text-primary underline">
+        <button
+          onClick={fetchDashboardData}
+          className="text-primary underline"
+        >
           Coba lagi
         </button>
       </div>
@@ -308,7 +324,6 @@ export default function DashboardClient() {
   return (
     <div className="w-full min-w-0 overflow-hidden px-4 pt-4 md:px-0 md:pt-0">
       <div className="flex flex-col gap-4 min-w-0">
-
         <StatsCards
           studyHours={data.stats.studyHours}
           totalScore={data.stats.totalScore}
@@ -335,7 +350,7 @@ export default function DashboardClient() {
 
         {!data.subscription.isPremium && (
           <PricingPlans
-            webSubCategory={websiteSubCategory?.id || ""}
+            webSubCategory={websiteSubCategory?.id || ''}
             isPremium={data.subscription.isPremium}
           />
         )}
@@ -346,7 +361,7 @@ export default function DashboardClient() {
             planName={data.subscription.planName}
             planExpiresAt={data.subscription.planExpiresAt}
             usageStats={data.subscription.usageStats}
-            webSubCategory={websiteSubCategory?.id || ""}
+            webSubCategory={websiteSubCategory?.id || ''}
           />
         )}
       </div>

@@ -17,9 +17,14 @@ export function WelcomeIllustration({ color }: { color: string }) {
               className="w-5 h-5 rounded-3xl flex items-center justify-center"
               style={{ backgroundColor: `${color}15` }}
             >
-              <Swords className="w-3 h-3" style={{ color }} />
+              <Swords
+                className="w-3 h-3"
+                style={{ color }}
+              />
             </div>
-            <span className="text-[10px] font-bold text-slate-600">Battle Arena</span>
+            <span className="text-[10px] font-bold text-slate-600">
+              Battle Arena
+            </span>
           </div>
           <div className="flex items-center gap-1 text-[8px] text-slate-400">
             <Users className="w-2.5 h-2.5" />
@@ -117,8 +122,13 @@ export function ProgressIllustration({ color }: { color: string }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5">
-            <BarChart3 className="w-3.5 h-3.5" style={{ color }} />
-            <span className="text-[9px] font-bold text-slate-600">Progress</span>
+            <BarChart3
+              className="w-3.5 h-3.5"
+              style={{ color }}
+            />
+            <span className="text-[9px] font-bold text-slate-600">
+              Progress
+            </span>
           </div>
           <div
             className="px-1.5 py-0.5 rounded text-[7px] font-bold"
@@ -148,7 +158,12 @@ export function ProgressIllustration({ color }: { color: string }) {
               className="text-center py-1 rounded"
               style={{ backgroundColor: `${color}08` }}
             >
-              <p className="text-[10px] font-black" style={{ color }}>{val}</p>
+              <p
+                className="text-[10px] font-black"
+                style={{ color }}
+              >
+                {val}
+              </p>
               <p className="text-[6px] text-slate-400">
                 {['Akurasi', 'Quiz', 'Rank'][i]}
               </p>
@@ -177,7 +192,9 @@ export function LeaderboardIllustration({ color }: { color: string }) {
         {/* Header */}
         <div className="flex items-center gap-1.5 mb-2">
           <Trophy className="w-3.5 h-3.5 text-amber-500" />
-          <span className="text-[9px] font-bold text-slate-600">Leaderboard</span>
+          <span className="text-[9px] font-bold text-slate-600">
+            Leaderboard
+          </span>
         </div>
         {/* Leaderboard rows */}
         <div className="space-y-1.5">
@@ -196,11 +213,17 @@ export function LeaderboardIllustration({ color }: { color: string }) {
               <div className="flex-1">
                 <div
                   className="h-1.5 rounded mb-1"
-                  style={{ width: `${90 - r.rank * 15}%`, backgroundColor: r.color + '60' }}
+                  style={{
+                    width: `${90 - r.rank * 15}%`,
+                    backgroundColor: r.color + '60',
+                  }}
                 />
                 <div className="h-1 w-12 rounded bg-slate-200" />
               </div>
-              <span className="text-[8px] font-bold" style={{ color: r.color }}>
+              <span
+                className="text-[8px] font-bold"
+                style={{ color: r.color }}
+              >
                 {(3000 - r.rank * 200).toLocaleString()}
               </span>
             </div>

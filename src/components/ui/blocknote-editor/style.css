@@ -101,7 +101,8 @@
 }
 
 /* Force content in highlight blocks to be visible */
-.bn-block-content[data-content-type='highlight'] [data-node-view-content-react] {
+.bn-block-content[data-content-type='highlight']
+  [data-node-view-content-react] {
   color: #1f2937 !important;
   opacity: 1 !important;
   visibility: visible !important;
@@ -119,8 +120,9 @@
 }
 
 /* If content is there but invisible, make it visible */
-.bn-block-content[data-content-type='highlight'] .bn-inline-content:empty::after {
-  content: "No content rendered - check text insertion";
+.bn-block-content[data-content-type='highlight']
+  .bn-inline-content:empty::after {
+  content: 'No content rendered - check text insertion';
   color: red !important;
   font-style: italic;
 }

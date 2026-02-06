@@ -32,7 +32,8 @@ const TimelineSection: React.FC = () => {
       period: 'Jan - Mar',
       phase: 'Fase Intensif',
       badge: '4x/minggu',
-      description: 'Bedah konsep dasar & tipe soal SNBT untuk fondasi yang kuat.',
+      description:
+        'Bedah konsep dasar & tipe soal SNBT untuk fondasi yang kuat.',
       features: [
         'Bedah konsep dasar',
         'Live class 4x seminggu',
@@ -60,11 +61,7 @@ const TimelineSection: React.FC = () => {
       phase: 'Fase Ujian Mandiri',
       badge: '6x/minggu',
       description: 'Sikat soal HOTS untuk SIMAK UI & UTUL UGM.',
-      features: [
-        'Soal level HOTS',
-        'Strategi UI & UGM',
-        'Persiapan mandiri',
-      ],
+      features: ['Soal level HOTS', 'Strategi UI & UGM', 'Persiapan mandiri'],
       logos: ['/hero/LOGO_PTN_UI.webp', '/hero/LOGO_PTN_UGM.webp'],
     },
     {
@@ -78,12 +75,18 @@ const TimelineSection: React.FC = () => {
         'Strategi STAN/STIS',
         'Simulasi kedinasan',
       ],
-      logos: ['/hero/LOGO_KEDINASAN_STAN.webp', '/hero/LOGO_KEDINASAN_STIS.webp'],
+      logos: [
+        '/hero/LOGO_KEDINASAN_STAN.webp',
+        '/hero/LOGO_KEDINASAN_STIS.webp',
+      ],
     },
   ];
 
   return (
-    <section id="timeline" className="py-16 md:py-24 px-5 bg-white">
+    <section
+      id="timeline"
+      className="py-16 md:py-24 px-5 bg-white"
+    >
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-10 md:mb-14">
@@ -101,7 +104,8 @@ const TimelineSection: React.FC = () => {
           </h2>
 
           <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-            Kamu tinggal ikutin peta. Kami yang atur kapan harus maraton, kapan harus sprint.
+            Kamu tinggal ikutin peta. Kami yang atur kapan harus maraton, kapan
+            harus sprint.
           </p>
         </div>
 
@@ -115,11 +119,18 @@ const TimelineSection: React.FC = () => {
 
           <div className="flex overflow-x-auto touch-pan-y md:block md:space-y-4 gap-4 md:gap-0 snap-x snap-mandatory scrollbar-hide pb-4 md:pb-0 px-4 -mx-4 md:px-0 md:mx-0">
             {programs.map((program, index) => (
-              <div key={program.id} className="relative min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center">
+              <div
+                key={program.id}
+                className="relative min-w-[85%] sm:min-w-[350px] md:min-w-0 snap-center"
+              >
                 {/* Timeline Dot - Desktop */}
                 <div
                   className="absolute left-4 md:left-6 top-6 w-3 h-3 rounded-full border-4 border-white z-10 hidden md:block -translate-x-1/2 shadow-sm"
-                  style={{ backgroundColor: program.isHighlight ? mainColor : '#9CA3AF' }}
+                  style={{
+                    backgroundColor: program.isHighlight
+                      ? mainColor
+                      : '#9CA3AF',
+                  }}
                 />
 
                 {/* Card */}

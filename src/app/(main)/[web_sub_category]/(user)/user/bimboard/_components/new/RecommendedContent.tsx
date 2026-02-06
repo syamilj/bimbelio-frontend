@@ -1,12 +1,19 @@
-"use client";
+'use client';
 
-import { useWebsiteSubCategory } from "@/components/provider/provider-website-category";
-import { BookOpen, Target, FileText, Crown, Lock, ChevronRight, Sparkles } from "lucide-react";
-import Link from "next/link";
-import { website_sub_category_id } from "@/hooks/use-web-sub-category-id";
-import Image from "next/image";
-import { useState } from "react";
-import { EmptyStateIllustrations } from "./EmptyStateIllustrations";
+import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
+import { website_sub_category_id } from '@/hooks/use-web-sub-category-id';
+import {
+  BookOpen,
+  Crown,
+  FileText,
+  Lock,
+  Sparkles,
+  Target,
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import { EmptyStateIllustrations } from './EmptyStateIllustrations';
 
 interface RecommendedContentProps {
   courses: Array<{
@@ -35,48 +42,59 @@ interface RecommendedContentProps {
   }>;
 }
 
-export default function RecommendedContent({ courses, tryouts, documents }: RecommendedContentProps) {
+export default function RecommendedContent({
+  courses,
+  tryouts,
+  documents,
+}: RecommendedContentProps) {
   const { websiteSubCategory } = useWebsiteSubCategory();
-  const mainColor = websiteSubCategory?.main_color || "#0091FF";
-  const [activeTab, setActiveTab] = useState<"courses" | "tryouts" | "documents">("courses");
+  const mainColor = websiteSubCategory?.main_color || '#0091FF';
+  const [activeTab, setActiveTab] = useState<
+    'courses' | 'tryouts' | 'documents'
+  >('courses');
 
   return (
     <div className="w-full bg-white rounded-3xl border-2 border-slate-100 p-5 md:p-6 shadow-sm">
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5" style={{ color: mainColor }} />
-          <h2 className="text-xl font-black text-slate-800">Rekomendasi untuk Kamu</h2>
+          <Sparkles
+            className="w-5 h-5"
+            style={{ color: mainColor }}
+          />
+          <h2 className="text-xl font-black text-slate-800">
+            Rekomendasi untuk Kamu
+          </h2>
         </div>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-2 p-1 bg-slate-100 rounded-3xl mb-5">
         <button
-          onClick={() => setActiveTab("courses")}
+          onClick={() => setActiveTab('courses')}
           className={`flex-1 px-3 py-2 rounded-3xl text-sm font-bold transition-all ${
-            activeTab === "courses"
-              ? "bg-white text-slate-800 shadow-sm"
-              : "text-slate-500 hover:text-slate-700"
+            activeTab === 'courses'
+              ? 'bg-white text-slate-800 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           Kursus
         </button>
         <button
-          onClick={() => setActiveTab("tryouts")}
+          onClick={() => setActiveTab('tryouts')}
           className={`flex-1 px-3 py-2 rounded-3xl text-sm font-bold transition-all ${
-            activeTab === "tryouts"
-              ? "bg-white text-slate-800 shadow-sm"
-              : "text-slate-500 hover:text-slate-700"
+            activeTab === 'tryouts'
+              ? 'bg-white text-slate-800 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           Try Out
         </button>
         <button
-          onClick={() => setActiveTab("documents")}
+          onClick={() => setActiveTab('documents')}
           className={`flex-1 px-3 py-2 rounded-3xl text-sm font-bold transition-all ${
-            activeTab === "documents"
-              ? "bg-white text-slate-800 shadow-sm"
-              : "text-slate-500 hover:text-slate-700"
+            activeTab === 'documents'
+              ? 'bg-white text-slate-800 shadow-sm'
+              : 'text-slate-500 hover:text-slate-700'
           }`}
         >
           Materi
@@ -85,8 +103,8 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
 
       {/* Content Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {activeTab === "courses" && (
-          courses.length > 0 ? (
+        {activeTab === 'courses' &&
+          (courses.length > 0 ? (
             courses.map((course) => (
               <Link
                 key={course.id}
@@ -107,7 +125,10 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
                         className="w-full h-full flex items-center justify-center"
                         style={{ backgroundColor: `${mainColor}15` }}
                       >
-                        <BookOpen className="w-8 h-8" style={{ color: mainColor }} />
+                        <BookOpen
+                          className="w-8 h-8"
+                          style={{ color: mainColor }}
+                        />
                       </div>
                     )}
 
@@ -129,7 +150,9 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
 
                   {/* Info */}
                   <div className="p-3">
-                    <p className="text-xs text-slate-500 font-medium mb-1">{course.category}</p>
+                    <p className="text-xs text-slate-500 font-medium mb-1">
+                      {course.category}
+                    </p>
                     <h3 className="font-bold text-sm text-slate-800 line-clamp-2 mb-2 min-h-[40px]">
                       {course.name}
                     </h3>
@@ -146,7 +169,9 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
                             }}
                           />
                         </div>
-                        <p className="text-xs text-slate-500 font-medium">{course.progress}% selesai</p>
+                        <p className="text-xs text-slate-500 font-medium">
+                          {course.progress}% selesai
+                        </p>
                       </div>
                     )}
                   </div>
@@ -158,13 +183,14 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
               <div className="w-40 h-40 mx-auto mb-3">
                 <EmptyStateIllustrations.NoCourses />
               </div>
-              <p className="text-sm font-bold text-slate-700">Belum ada rekomendasi kursus</p>
+              <p className="text-sm font-bold text-slate-700">
+                Belum ada rekomendasi kursus
+              </p>
             </div>
-          )
-        )}
+          ))}
 
-        {activeTab === "tryouts" && (
-          tryouts.length > 0 ? (
+        {activeTab === 'tryouts' &&
+          (tryouts.length > 0 ? (
             tryouts.map((tryout) => (
               <Link
                 key={tryout.id}
@@ -200,7 +226,9 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
                       <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold">
                         {tryout.difficulty}
                       </span>
-                      <span className="text-xs text-slate-500 font-medium">{tryout.totalQuestions} soal</span>
+                      <span className="text-xs text-slate-500 font-medium">
+                        {tryout.totalQuestions} soal
+                      </span>
                     </div>
                     <h3 className="font-bold text-sm text-slate-800 line-clamp-2 min-h-[40px]">
                       {tryout.title}
@@ -214,13 +242,14 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
               <div className="w-40 h-40 mx-auto mb-3">
                 <EmptyStateIllustrations.NoTryouts />
               </div>
-              <p className="text-sm font-bold text-slate-700">Belum ada rekomendasi tryout</p>
+              <p className="text-sm font-bold text-slate-700">
+                Belum ada rekomendasi tryout
+              </p>
             </div>
-          )
-        )}
+          ))}
 
-        {activeTab === "documents" && (
-          documents.length > 0 ? (
+        {activeTab === 'documents' &&
+          (documents.length > 0 ? (
             documents.map((doc) => (
               <Link
                 key={doc.id}
@@ -249,7 +278,9 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
                       <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold">
                         {doc.type}
                       </span>
-                      <span className="text-xs text-slate-500 font-medium">{doc.category}</span>
+                      <span className="text-xs text-slate-500 font-medium">
+                        {doc.category}
+                      </span>
                     </div>
                     <h3 className="font-bold text-sm text-slate-800 line-clamp-2 min-h-[40px]">
                       {doc.title}
@@ -263,10 +294,11 @@ export default function RecommendedContent({ courses, tryouts, documents }: Reco
               <div className="w-40 h-40 mx-auto mb-3">
                 <EmptyStateIllustrations.NoDocuments />
               </div>
-              <p className="text-sm font-bold text-slate-700">Belum ada rekomendasi materi</p>
+              <p className="text-sm font-bold text-slate-700">
+                Belum ada rekomendasi materi
+              </p>
             </div>
-          )
-        )}
+          ))}
       </div>
     </div>
   );

@@ -33,11 +33,7 @@ export function BimBrand({ suffix, className, style }: BimBrandProps) {
 
   return (
     <span
-      className={cn(
-        'font-semibold',
-        !isBimbelio && 'font-playfair',
-        className
-      )}
+      className={cn('font-semibold', !isBimbelio && 'font-playfair', className)}
       style={style}
     >
       Bim{suffix}
@@ -48,40 +44,148 @@ export function BimBrand({ suffix, className, style }: BimBrandProps) {
 /**
  * Pre-configured branded components for convenience
  */
-export function BimArena({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="Arena" className={className} style={style} />;
+export function BimArena({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Arena"
+      className={className}
+      style={style}
+    />
+  );
 }
 
-export function BimBoard({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="Board" className={className} style={style} />;
+export function BimBoard({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Board"
+      className={className}
+      style={style}
+    />
+  );
 }
 
-export function BimCourse({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="Course" className={className} style={style} />;
+export function BimCourse({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Course"
+      className={className}
+      style={style}
+    />
+  );
 }
 
-export function BimLive({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="Live" className={className} style={style} />;
+export function BimLive({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Live"
+      className={className}
+      style={style}
+    />
+  );
 }
 
-export function BimBot({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="Bot" className={className} style={style} />;
+export function BimBot({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Bot"
+      className={className}
+      style={style}
+    />
+  );
 }
 
-export function BimPrediction({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="Prediction" className={className} style={style} />;
+export function BimPrediction({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Prediction"
+      className={className}
+      style={style}
+    />
+  );
 }
 
-export function BimInsight({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="Insight" className={className} style={style} />;
+export function BimInsight({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Insight"
+      className={className}
+      style={style}
+    />
+  );
 }
 
-export function BimCircle({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="Circle" className={className} style={style} />;
+export function BimCircle({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="Circle"
+      className={className}
+      style={style}
+    />
+  );
 }
 
-export function Bimbelio({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <BimBrand suffix="belio" className={className} style={style} />;
+export function Bimbelio({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <BimBrand
+      suffix="belio"
+      className={className}
+      style={style}
+    />
+  );
 }
 
 export default BimBrand;

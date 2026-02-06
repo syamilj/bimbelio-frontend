@@ -112,7 +112,8 @@ export default function ThreeQuestions() {
 
           <div className="space-y-1">
             <h1 className="text-xl font-black text-slate-900">
-              Halo, <span style={{ color: mainColor }}>{session?.user.name}</span>
+              Halo,{' '}
+              <span style={{ color: mainColor }}>{session?.user.name}</span>
             </h1>
             <p className="text-slate-500 text-sm font-medium">
               Bagaimana kami dapat membantu Kamu hari ini?

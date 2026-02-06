@@ -411,7 +411,9 @@ export default function TryoutResult({
                     href={`/${website_sub_category_id_params}/user/prediction/step?tryoutId=${tryoutId}&step=new`}
                   >
                     <Calculator className="w-4 h-4 mr-1 md:mr-2" />
-                    <span className="hidden sm:inline">Prediksi Tryout ini</span>
+                    <span className="hidden sm:inline">
+                      Prediksi Tryout ini
+                    </span>
                     <span className="sm:hidden">Prediksi</span>
                   </Link>
                 </Button>
@@ -445,7 +447,10 @@ export default function TryoutResult({
           <div className="mb-4 md:mb-6">
             <div className="flex items-center justify-between flex-wrap gap-3 mb-3 md:mb-4">
               <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5" style={{ color: mainColor }} />
+                <Trophy
+                  className="w-5 h-5"
+                  style={{ color: mainColor }}
+                />
                 <h2 className="text-lg md:text-xl font-black text-slate-900">
                   Hasil {mode === 'quiz' ? 'Quiz' : 'Try Out'}
                 </h2>
@@ -493,7 +498,8 @@ export default function TryoutResult({
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
                 style={{
-                  backgroundColor: tabs === 'ringkasan' ? mainColor : 'transparent',
+                  backgroundColor:
+                    tabs === 'ringkasan' ? mainColor : 'transparent',
                 }}
                 role="tab"
                 aria-selected={tabs === 'ringkasan'}
@@ -512,7 +518,8 @@ export default function TryoutResult({
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
                 style={{
-                  backgroundColor: tabs === 'review' ? mainColor : 'transparent',
+                  backgroundColor:
+                    tabs === 'review' ? mainColor : 'transparent',
                 }}
                 role="tab"
                 aria-selected={tabs === 'review'}
@@ -532,7 +539,8 @@ export default function TryoutResult({
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   style={{
-                    backgroundColor: tabs === 'analisis' ? mainColor : 'transparent',
+                    backgroundColor:
+                      tabs === 'analisis' ? mainColor : 'transparent',
                   }}
                   role="tab"
                   aria-selected={tabs === 'analisis'}
@@ -547,7 +555,11 @@ export default function TryoutResult({
           </div>
 
           {/* Tab Contents - Using forceMount to prevent re-mounting */}
-          <TabsContent value="ringkasan" className="mt-0" forceMount>
+          <TabsContent
+            value="ringkasan"
+            className="mt-0"
+            forceMount
+          >
             <div className={tabs === 'ringkasan' ? 'block' : 'hidden'}>
               <RingkasanTab
                 ResultData={ResultData}
@@ -555,7 +567,11 @@ export default function TryoutResult({
               />
             </div>
           </TabsContent>
-          <TabsContent value="review" className="mt-0" forceMount>
+          <TabsContent
+            value="review"
+            className="mt-0"
+            forceMount
+          >
             <div className={tabs === 'review' ? 'block' : 'hidden'}>
               <ReviewTab
                 participantId={
@@ -568,7 +584,11 @@ export default function TryoutResult({
               />
             </div>
           </TabsContent>
-          <TabsContent value="analisis" className="mt-0" forceMount>
+          <TabsContent
+            value="analisis"
+            className="mt-0"
+            forceMount
+          >
             <div className={tabs === 'analisis' ? 'block' : 'hidden'}>
               <AnalisisTab
                 tryoutId={tryoutId}

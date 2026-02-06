@@ -12,13 +12,7 @@ import { Progress } from '@/components/ui/progress';
 import { SpinnerPageCentered } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 import { TryoutAnswer, TryoutQuestion } from '@/types/database';
-import {
-  BookOpen,
-  FileText,
-  LayoutGrid,
-  Target,
-  Trophy,
-} from 'lucide-react';
+import { BookOpen, FileText, LayoutGrid, Target, Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { TryoutDataType } from '../page';
 import CountDownTryout from './countdown-tryout';
@@ -257,13 +251,17 @@ const Tryout: React.FC<Props> = ({
                       >
                         {answeredCount}
                       </div>
-                      <div className="text-xs text-slate-600 font-medium">Terjawab</div>
+                      <div className="text-xs text-slate-600 font-medium">
+                        Terjawab
+                      </div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-black text-yellow-600">
                         {notSureCount}
                       </div>
-                      <div className="text-xs text-slate-600 font-medium">Ragu-ragu</div>
+                      <div className="text-xs text-slate-600 font-medium">
+                        Ragu-ragu
+                      </div>
                     </div>
                   </div>
                   <div className="text-center">
@@ -302,8 +300,7 @@ const Tryout: React.FC<Props> = ({
                           isAnswered(i) && currentQuestionIndex !== i
                             ? 'text-white border-transparent bg-emerald-500'
                             : '',
-                          sessionAnswer[i].notSure &&
-                            currentQuestionIndex !== i
+                          sessionAnswer[i].notSure && currentQuestionIndex !== i
                             ? 'bg-yellow-400 text-yellow-900 border-yellow-300'
                             : '',
                         )}
@@ -372,11 +369,17 @@ const Tryout: React.FC<Props> = ({
       </div>
 
       {/* Mobile Dialog */}
-      <Dialog open={showSidebar} onOpenChange={setShowSidebar}>
+      <Dialog
+        open={showSidebar}
+        onOpenChange={setShowSidebar}
+      >
         <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto no-scrollbar">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl font-black">
-              <Trophy className="w-5 h-5" style={{ color: mainColor }} />
+              <Trophy
+                className="w-5 h-5"
+                style={{ color: mainColor }}
+              />
               Sesi {numberSession}
             </DialogTitle>
           </DialogHeader>
@@ -403,13 +406,17 @@ const Tryout: React.FC<Props> = ({
                     >
                       {answeredCount}
                     </div>
-                    <div className="text-[10px] text-slate-600 font-medium">Terjawab</div>
+                    <div className="text-[10px] text-slate-600 font-medium">
+                      Terjawab
+                    </div>
                   </div>
                   <div className="text-center">
                     <div className="text-xl font-black text-yellow-600">
                       {notSureCount}
                     </div>
-                    <div className="text-[10px] text-slate-600 font-medium">Ragu-ragu</div>
+                    <div className="text-[10px] text-slate-600 font-medium">
+                      Ragu-ragu
+                    </div>
                   </div>
                   <div className="text-center">
                     <div className="text-xl font-black text-slate-400">
@@ -448,8 +455,7 @@ const Tryout: React.FC<Props> = ({
                         isAnswered(i) && currentQuestionIndex !== i
                           ? 'text-white border-transparent bg-emerald-500'
                           : '',
-                        sessionAnswer[i].notSure &&
-                          currentQuestionIndex !== i
+                        sessionAnswer[i].notSure && currentQuestionIndex !== i
                           ? 'bg-yellow-400 text-yellow-900 border-yellow-300'
                           : '',
                       )}

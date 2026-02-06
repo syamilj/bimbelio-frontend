@@ -54,7 +54,10 @@ const StatisticsSection: React.FC = () => {
   ];
 
   return (
-    <section id="statistics" className="py-16 md:py-24 px-5 bg-white">
+    <section
+      id="statistics"
+      className="py-16 md:py-24 px-5 bg-white"
+    >
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-10 md:mb-14">
@@ -64,13 +67,12 @@ const StatisticsSection: React.FC = () => {
           </span>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Persaingan{' '}
-            <span className="text-red-500">Makin Ketat</span>
+            Persaingan <span className="text-red-500">Makin Ketat</span>
           </h2>
 
           <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-            Ratusan ribu siswa bersaing untuk kursi yang sangat terbatas.
-            Tanpa persiapan yang tepat, peluang kamu makin kecil.
+            Ratusan ribu siswa bersaing untuk kursi yang sangat terbatas. Tanpa
+            persiapan yang tepat, peluang kamu makin kecil.
           </p>
         </div>
 
@@ -101,14 +103,19 @@ const StatisticsSection: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-gray-900">{item.name}</p>
-                  <p className="text-xs text-gray-500">{item.applicants} pendaftar</p>
+                  <p className="text-xs text-gray-500">
+                    {item.applicants} pendaftar
+                  </p>
                 </div>
               </div>
 
               {/* Ratio Display */}
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="text-3xl md:text-4xl font-bold" style={{ color: item.color }}>
+                  <p
+                    className="text-3xl md:text-4xl font-bold"
+                    style={{ color: item.color }}
+                  >
                     {item.ratio}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">diterima</p>
@@ -116,7 +123,10 @@ const StatisticsSection: React.FC = () => {
 
                 {/* Visual Bar */}
                 <div className="w-12 h-12 md:w-14 md:h-14 relative">
-                  <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                  <svg
+                    className="w-full h-full -rotate-90"
+                    viewBox="0 0 36 36"
+                  >
                     <circle
                       cx="18"
                       cy="18"
@@ -160,8 +170,14 @@ const StatisticsSection: React.FC = () => {
                 Tapi kabar baiknya...
               </h3>
               <p className="text-sm text-gray-600">
-                Dengan persiapan yang tepat dan support yang lengkap, kamu bisa jadi bagian dari yang lolos.
-                Yang penting: <span className="font-semibold" style={{ color: mainColor }}>mulai dari sekarang, dengan cara yang benar.</span>
+                Dengan persiapan yang tepat dan support yang lengkap, kamu bisa
+                jadi bagian dari yang lolos. Yang penting:{' '}
+                <span
+                  className="font-semibold"
+                  style={{ color: mainColor }}
+                >
+                  mulai dari sekarang, dengan cara yang benar.
+                </span>
               </p>
             </div>
 

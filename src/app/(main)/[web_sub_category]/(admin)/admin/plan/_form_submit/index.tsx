@@ -762,8 +762,8 @@ export default function FormSubmitPlan({ mode }: { mode: 'edit' | 'create' }) {
             : null,
         };
 
-        console.log("DEBUG_FRONTEND: Payload before mutate:", payload);
-        console.log("DEBUG_FRONTEND: activeTab:", activeTab);
+        console.log('DEBUG_FRONTEND: Payload before mutate:', payload);
+        console.log('DEBUG_FRONTEND: activeTab:', activeTab);
 
         await mutateGeneral('/plan/editPlan', {
           payload,

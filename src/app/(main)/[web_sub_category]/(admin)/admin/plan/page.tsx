@@ -81,7 +81,10 @@ export default function PlanList() {
         </div>
       </div>
 
-      <Tabs defaultValue="active" className="w-full">
+      <Tabs
+        defaultValue="active"
+        className="w-full"
+      >
         <TabsList className="mb-4 flex flex-wrap h-auto gap-2 bg-transparent justify-start p-0">
           <TabsTrigger
             value="active"
@@ -97,14 +100,20 @@ export default function PlanList() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="active" className="mt-0">
+        <TabsContent
+          value="active"
+          className="mt-0"
+        >
           <PlanTabs
             plans={filteredPlans.filter((p) => p.status === 'PUBLIC')}
             getData={getData}
           />
         </TabsContent>
 
-        <TabsContent value="inactive" className="mt-0">
+        <TabsContent
+          value="inactive"
+          className="mt-0"
+        >
           <PlanTabs
             plans={filteredPlans.filter((p) => p.status !== 'PUBLIC')}
             getData={getData}
@@ -128,35 +137,38 @@ const PlanTabs = ({
         bundlePlans: plans.filter(
           (plan) =>
             (plan.PlanSubscription?.PlanFeature?.length ?? 0) > 0 &&
-            !!plan.PlanLimitation
+            !!plan.PlanLimitation,
         ),
         subscriptionPlans: plans.filter(
           (plan) =>
             (plan.PlanSubscription?.PlanFeature?.length ?? 0) > 0 &&
-            !plan.PlanLimitation
+            !plan.PlanLimitation,
         ),
         coinPlans: plans.filter(
           (plan) =>
             (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
-            !!plan.PlanLimitation
+            !!plan.PlanLimitation,
         ),
         benefitOnly: plans.filter(
           (plan) =>
             !plan.PlanLimitation &&
             (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
-            plan.PlanBenefit.length > 0
+            plan.PlanBenefit.length > 0,
         ),
         other: plans.filter(
           (plan) =>
             !plan.PlanLimitation &&
             (plan.PlanSubscription?.PlanFeature?.length ?? 0) === 0 &&
-            plan.PlanBenefit.length === 0
+            plan.PlanBenefit.length === 0,
         ),
       };
     }, [plans]);
 
   return (
-    <Tabs defaultValue="all" className="w-full">
+    <Tabs
+      defaultValue="all"
+      className="w-full"
+    >
       <TabsList className="mb-4 flex flex-wrap h-auto gap-2 bg-transparent justify-start p-0">
         <TabsTrigger
           value="all"
@@ -196,15 +208,25 @@ const PlanTabs = ({
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="all" className="mt-0">
+      <TabsContent
+        value="all"
+        className="mt-0"
+      >
         <Card>
           <CardContent className="pt-6">
-            <PlanDataTable plans={plans} getData={getData} type="other" />
+            <PlanDataTable
+              plans={plans}
+              getData={getData}
+              type="other"
+            />
           </CardContent>
         </Card>
       </TabsContent>
 
-      <TabsContent value="bundle" className="mt-0">
+      <TabsContent
+        value="bundle"
+        className="mt-0"
+      >
         <Card>
           <CardContent className="pt-6">
             <PlanDataTable
@@ -216,7 +238,10 @@ const PlanTabs = ({
         </Card>
       </TabsContent>
 
-      <TabsContent value="subscription" className="mt-0">
+      <TabsContent
+        value="subscription"
+        className="mt-0"
+      >
         <Card>
           <CardContent className="pt-6">
             <PlanDataTable
@@ -228,15 +253,25 @@ const PlanTabs = ({
         </Card>
       </TabsContent>
 
-      <TabsContent value="coin" className="mt-0">
+      <TabsContent
+        value="coin"
+        className="mt-0"
+      >
         <Card>
           <CardContent className="pt-6">
-            <PlanDataTable plans={coinPlans} getData={getData} type="coin" />
+            <PlanDataTable
+              plans={coinPlans}
+              getData={getData}
+              type="coin"
+            />
           </CardContent>
         </Card>
       </TabsContent>
 
-      <TabsContent value="benefit" className="mt-0">
+      <TabsContent
+        value="benefit"
+        className="mt-0"
+      >
         <Card>
           <CardContent className="pt-6">
             <PlanDataTable
@@ -248,16 +283,20 @@ const PlanTabs = ({
         </Card>
       </TabsContent>
 
-      <TabsContent value="other" className="mt-0">
+      <TabsContent
+        value="other"
+        className="mt-0"
+      >
         <Card>
           <CardContent className="pt-6">
-            <PlanDataTable plans={other} getData={getData} type="other" />
+            <PlanDataTable
+              plans={other}
+              getData={getData}
+              type="other"
+            />
           </CardContent>
         </Card>
       </TabsContent>
     </Tabs>
   );
 };
-
-
-

@@ -20,6 +20,7 @@ import { website_sub_category_id_params } from '@/hooks/use-web-sub-category-id'
 import { useGet } from '@/lib/fetch-helper/useGet';
 import { TypeCourseEnum } from '@/types/database';
 
+import { Input } from '@/components/ui/input';
 import {
   ArrowRightIcon,
   BookOpenIcon,
@@ -31,7 +32,6 @@ import {
   FileQuestionIcon,
   FileTextIcon,
   ForwardIcon,
-  Grid3x3Icon,
   LayoutGridIcon,
   ListIcon,
   Loader2,
@@ -46,7 +46,6 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Input } from '@/components/ui/input';
 
 type SubChapterSearchResult = {
   id: string;
@@ -136,9 +135,9 @@ export default function ModulPembelajaranSection() {
   // Flatten all sub chapters for search
   const allSubChapters = useMemo<SubChapterSearchResult[]>(() => {
     if (!CategoryCard) return [];
-    return CategoryCard.flatMap(category =>
-      category.CourseChapter.flatMap(chapter =>
-        chapter.CourseSubChapter.map(subChapter => ({
+    return CategoryCard.flatMap((category) =>
+      category.CourseChapter.flatMap((chapter) =>
+        chapter.CourseSubChapter.map((subChapter) => ({
           id: subChapter.id,
           title: subChapter.title,
           description: subChapter.description,
@@ -161,18 +160,22 @@ export default function ModulPembelajaranSection() {
   const searchResults = useMemo(() => {
     if (!searchQuery.trim() || searchQuery.length < 2) return [];
     const query = searchQuery.toLowerCase().trim();
-    return allSubChapters.filter(item =>
-      item.title.toLowerCase().includes(query) ||
-      item.description.toLowerCase().includes(query) ||
-      item.categoryName.toLowerCase().includes(query) ||
-      item.chapterTitle.toLowerCase().includes(query)
+    return allSubChapters.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.categoryName.toLowerCase().includes(query) ||
+        item.chapterTitle.toLowerCase().includes(query),
     );
   }, [searchQuery, allSubChapters]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setIsSearchOpen(false);
       }
     }
@@ -192,10 +195,12 @@ export default function ModulPembelajaranSection() {
       if (!isSearchOpen || searchResults.length === 0) return;
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setSelectedIndex(prev => prev < searchResults.length - 1 ? prev + 1 : prev);
+        setSelectedIndex((prev) =>
+          prev < searchResults.length - 1 ? prev + 1 : prev,
+        );
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        setSelectedIndex(prev => prev > 0 ? prev - 1 : 0);
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : 0));
       } else if (e.key === 'Enter') {
         e.preventDefault();
         if (searchResults[selectedIndex]) {
@@ -211,28 +216,40 @@ export default function ModulPembelajaranSection() {
   }, [isSearchOpen, searchResults, selectedIndex]);
 
   const handleResultClick = (result: SubChapterSearchResult) => {
-    router.push(`/${website_sub_category_id_params}/user/bimcourse/${result.categoryId}/study?sub=${result.id}&tab=chat`);
+    router.push(
+      `/${website_sub_category_id_params}/user/bimcourse/${result.categoryId}/study?sub=${result.id}&tab=chat`,
+    );
     setSearchQuery('');
     setIsSearchOpen(false);
   };
 
   const getTypeIcon = (type: TypeCourseEnum) => {
     switch (type) {
-      case 'VIDEO': return <PlayCircleIcon className="w-4 h-4" />;
-      case 'DOCUMENT': return <FileTextIcon className="w-4 h-4" />;
-      case 'MATERI': return <BookOpenIcon className="w-4 h-4" />;
-      case 'TRYOUT': return <FileQuestionIcon className="w-4 h-4" />;
-      default: return <BookOpenIcon className="w-4 h-4" />;
+      case 'VIDEO':
+        return <PlayCircleIcon className="w-4 h-4" />;
+      case 'DOCUMENT':
+        return <FileTextIcon className="w-4 h-4" />;
+      case 'MATERI':
+        return <BookOpenIcon className="w-4 h-4" />;
+      case 'TRYOUT':
+        return <FileQuestionIcon className="w-4 h-4" />;
+      default:
+        return <BookOpenIcon className="w-4 h-4" />;
     }
   };
 
   const getTypeColor = (type: TypeCourseEnum) => {
     switch (type) {
-      case 'VIDEO': return 'bg-red-50 text-red-700 border-red-200';
-      case 'DOCUMENT': return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'MATERI': return 'bg-purple-50 text-purple-700 border-purple-200';
-      case 'TRYOUT': return 'bg-green-50 text-green-700 border-green-200';
-      default: return 'bg-gray-50 text-gray-700 border-gray-200';
+      case 'VIDEO':
+        return 'bg-red-50 text-red-700 border-red-200';
+      case 'DOCUMENT':
+        return 'bg-blue-50 text-blue-700 border-blue-200';
+      case 'MATERI':
+        return 'bg-purple-50 text-purple-700 border-purple-200';
+      case 'TRYOUT':
+        return 'bg-green-50 text-green-700 border-green-200';
+      default:
+        return 'bg-gray-50 text-gray-700 border-gray-200';
     }
   };
 
@@ -250,12 +267,15 @@ export default function ModulPembelajaranSection() {
       <>
         {parts.map((part, i) =>
           part.toLowerCase() === searchQuery.toLowerCase() ? (
-            <mark key={i} className="bg-yellow-200 text-gray-900 rounded px-0.5">
+            <mark
+              key={i}
+              className="bg-yellow-200 text-gray-900 rounded px-0.5"
+            >
               {part}
             </mark>
           ) : (
             <span key={i}>{part}</span>
-          )
+          ),
         )}
       </>
     );
@@ -294,7 +314,8 @@ export default function ModulPembelajaranSection() {
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
               }`}
               style={{
-                backgroundColor: viewMode === 'grid' ? mainColor : 'transparent',
+                backgroundColor:
+                  viewMode === 'grid' ? mainColor : 'transparent',
               }}
             >
               <LayoutGridIcon className="w-4 h-4" />
@@ -310,11 +331,14 @@ export default function ModulPembelajaranSection() {
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
               }`}
               style={{
-                backgroundColor: viewMode === 'list' ? mainColor : 'transparent',
+                backgroundColor:
+                  viewMode === 'list' ? mainColor : 'transparent',
               }}
             >
               <Rows3Icon className="w-4 h-4" />
-              <span className="ml-2 hidden sm:inline font-semibold">Detail</span>
+              <span className="ml-2 hidden sm:inline font-semibold">
+                Detail
+              </span>
             </Button>
           </div>
         </div>
@@ -322,7 +346,10 @@ export default function ModulPembelajaranSection() {
 
       {/* Advanced Search Bar */}
       {!isLoading && (
-        <div ref={searchRef} className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8 mb-8 relative">
+        <div
+          ref={searchRef}
+          className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8 mb-8 relative"
+        >
           <div className="relative max-w-3xl mx-auto">
             <div
               className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors z-10"
@@ -338,7 +365,9 @@ export default function ModulPembelajaranSection() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-12 pr-12 h-16 rounded-3xl border-2 border-gray-200 focus:border-transparent text-base font-medium transition-all shadow-sm hover:shadow-md"
               style={{
-                boxShadow: isSearchOpen ? `0 0 0 3px ${mainColor}20` : undefined,
+                boxShadow: isSearchOpen
+                  ? `0 0 0 3px ${mainColor}20`
+                  : undefined,
               }}
             />
             {searchQuery && (
@@ -367,7 +396,10 @@ export default function ModulPembelajaranSection() {
                   style={{ backgroundColor: `${mainColor}08` }}
                 >
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" style={{ color: mainColor }} />
+                    <Sparkles
+                      className="w-4 h-4"
+                      style={{ color: mainColor }}
+                    />
                     <span className="text-sm font-bold text-gray-700">
                       {searchResults.length} hasil ditemukan
                     </span>
@@ -395,8 +427,15 @@ export default function ModulPembelajaranSection() {
                               : 'hover:bg-gray-50'
                           }`}
                           style={{
-                            backgroundColor: index === selectedIndex ? `${mainColor}08` : undefined,
-                            ...(index === selectedIndex ? { '--tw-ring-color': mainColor } as React.CSSProperties : {}),
+                            backgroundColor:
+                              index === selectedIndex
+                                ? `${mainColor}08`
+                                : undefined,
+                            ...(index === selectedIndex
+                              ? ({
+                                  '--tw-ring-color': mainColor,
+                                } as React.CSSProperties)
+                              : {}),
                           }}
                         >
                           <div className="flex items-start gap-4">
@@ -409,18 +448,22 @@ export default function ModulPembelajaranSection() {
                                     alt={result.title}
                                     className="w-full h-full object-cover"
                                     onError={(e) => {
-                                      const target = e.target as HTMLImageElement;
+                                      const target =
+                                        e.target as HTMLImageElement;
                                       const parent = target.parentElement;
                                       if (parent) {
                                         target.style.display = 'none';
                                         // Create fallback icon container
-                                        const fallbackDiv = document.createElement('div');
-                                        fallbackDiv.className = 'w-full h-full flex items-center justify-center absolute inset-0';
+                                        const fallbackDiv =
+                                          document.createElement('div');
+                                        fallbackDiv.className =
+                                          'w-full h-full flex items-center justify-center absolute inset-0';
                                         fallbackDiv.style.backgroundColor = `${mainColor}15`;
                                         fallbackDiv.style.color = mainColor;
 
                                         // Create icon element
-                                        const iconWrapper = document.createElement('div');
+                                        const iconWrapper =
+                                          document.createElement('div');
                                         iconWrapper.className = 'scale-150';
                                         fallbackDiv.appendChild(iconWrapper);
                                         parent.appendChild(fallbackDiv);
@@ -431,7 +474,10 @@ export default function ModulPembelajaranSection() {
                               ) : (
                                 <div
                                   className="w-full h-full flex items-center justify-center"
-                                  style={{ backgroundColor: `${mainColor}15`, color: mainColor }}
+                                  style={{
+                                    backgroundColor: `${mainColor}15`,
+                                    color: mainColor,
+                                  }}
                                 >
                                   <div className="scale-150">
                                     {getTypeIcon(result.type)}
@@ -440,7 +486,9 @@ export default function ModulPembelajaranSection() {
                               )}
                               {/* Type Badge Overlay */}
                               <div className="absolute bottom-1 right-1">
-                                <Badge className={`text-[10px] px-1.5 py-0.5 ${getTypeColor(result.type)}`}>
+                                <Badge
+                                  className={`text-[10px] px-1.5 py-0.5 ${getTypeColor(result.type)}`}
+                                >
                                   {result.type}
                                 </Badge>
                               </div>
@@ -459,7 +507,9 @@ export default function ModulPembelajaranSection() {
                                 </span>
                                 {result.isCompleted && (
                                   <>
-                                    <span className="text-xs text-gray-400">•</span>
+                                    <span className="text-xs text-gray-400">
+                                      •
+                                    </span>
                                     <Badge className="text-[10px] px-2 py-0 bg-green-50 text-green-700 border-green-200">
                                       ✓ Selesai
                                     </Badge>
@@ -505,7 +555,11 @@ export default function ModulPembelajaranSection() {
                 {/* Footer */}
                 <div className="px-4 py-2 border-t bg-gray-50 text-center">
                   <p className="text-xs text-gray-500">
-                    Tip: Gunakan <kbd className="px-1.5 py-0.5 text-[10px] font-semibold bg-white border border-gray-200 rounded">Enter</kbd> untuk membuka
+                    Tip: Gunakan{' '}
+                    <kbd className="px-1.5 py-0.5 text-[10px] font-semibold bg-white border border-gray-200 rounded">
+                      Enter
+                    </kbd>{' '}
+                    untuk membuka
                   </p>
                 </div>
               </div>
@@ -520,862 +574,945 @@ export default function ModulPembelajaranSection() {
           <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {CategoryCard?.map((category) => {
-            const getActionButton = () => {
-              if (category.completedChapters === 0) {
-                return (
-                  <Button
-                    size="sm"
-                    onClick={() => handleStartCourse(category.id)}
-                    disabled={loadingCourseId === category.id}
-                    className="w-full rounded-3xl text-white border-0 font-semibold transition-all"
-                    style={{ backgroundColor: mainColor }}
-                  >
-                    {loadingCourseId === category.id ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Memuat...
-                      </>
-                    ) : (
-                      <>
-                        <PlayIcon className="w-4 h-4 mr-2" />
-                        Mulai Belajar
-                      </>
-                    )}
-                  </Button>
-                );
-              } else if (
-                category.completedChapters === category.totalChapters
-              ) {
-                return (
-                  <Link
-                    href={`/${website_sub_category_id_params}/user/bimcourse/${category.id}`}
-                    className="block w-full"
-                  >
-                    <Button
-                      size="sm"
-                      className="w-full rounded-3xl bg-green-600 hover:bg-green-700 text-white border-0 font-semibold"
-                    >
-                      <CheckIcon className="w-4 h-4 mr-2" />
-                      Selesai
-                    </Button>
-                  </Link>
-                );
-              } else {
-                return (
-                  <Link
-                    href={`/${website_sub_category_id_params}/user/bimcourse/${category.id}`}
-                    className="block w-full"
-                  >
-                    <Button
-                      size="sm"
-                      className="w-full rounded-3xl bg-orange-600 hover:bg-orange-700 text-white border-0 font-semibold"
-                    >
-                      <ForwardIcon className="w-4 h-4 mr-2" />
-                      Lanjutkan
-                    </Button>
-                  </Link>
-                );
-              }
-            };
-
-            const getStatusBadge = () => {
-              if (category.completedChapters === 0) {
-                return (
-                  <Badge className="bg-blue-50 text-blue-700 border-blue-200 font-medium">
-                    <PlayIcon className="w-3 h-3 mr-1" />
-                    Belum Dimulai
-                  </Badge>
-                );
-              } else if (
-                category.completedChapters === category.totalChapters
-              ) {
-                return (
-                  <Badge className="bg-green-50 text-green-700 border-green-200 font-medium">
-                    <CheckCircleIcon className="w-3 h-3 mr-1" />
-                    Selesai
-                  </Badge>
-                );
-              } else {
-                return (
-                  <Badge className="bg-orange-50 text-orange-700 border-orange-200 font-medium">
-                    <TrendingUpIcon className="w-3 h-3 mr-1" />
-                    Berlangsung
-                  </Badge>
-                );
-              }
-            };
-
-            // GRID VIEW (Default)
-            if (viewMode === 'grid') {
-              return (
-                <Card
-                  key={category.id}
-                  className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 relative overflow-visible"
-                >
-                  {/* Enhanced Progress Ring - Pojok Kanan Atas */}
-                <div className="absolute -top-3 -right-3 z-10">
-                  <div className="relative w-16 h-16">
-                    {/* Background circle with shadow */}
-                    <div className="absolute inset-0 bg-white rounded-full shadow-lg" />
-
-                    {/* SVG Progress Ring */}
-                    <svg
-                      className="w-16 h-16 transform -rotate-90 relative z-10"
-                      viewBox="0 0 36 36"
-                    >
-                      {/* Background track */}
-                      <path
-                        className="text-gray-200"
-                        stroke="currentColor"
-                        strokeWidth="3.5"
-                        fill="transparent"
-                        strokeDasharray="100, 100"
-                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                      />
-                      {/* Progress arc */}
-                      <path
-                        stroke={mainColor}
-                        strokeWidth="3.5"
-                        fill="transparent"
-                        strokeDasharray={`${Math.min(100, Math.round(category.percentageProgress || 0))}, 100`}
-                        strokeLinecap="round"
-                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                        style={{
-                          filter: `drop-shadow(0 2px 4px ${mainColor}40)`,
-                        }}
-                      />
-                    </svg>
-
-                    {/* Percentage Text */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <span
-                          className="text-xs font-black leading-none"
-                          style={{ color: mainColor }}
-                        >
-                          {Math.min(100, Math.round(category.percentageProgress || 0))}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <CardHeader className="pb-4">
-                  <div className="flex items-start gap-4 pr-16">
-                    <div
-                      className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      <BookOpenIcon className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      {getStatusBadge()}
-                      <CardTitle className="text-lg font-bold text-gray-900 mt-2 mb-1">
-                        {category.name}
-                      </CardTitle>
-                      <p className="text-sm text-gray-600 line-clamp-2">
-                        Tingkatkan kemampuan berpikir logis dan analitis untuk
-                        menghadapi tantangan SNBT
-                      </p>
-                    </div>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="p-6 pt-0 space-y-4">
-                  {/* Progress Bar */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="font-medium text-gray-700">
-                        Progress
-                      </span>
-                      <span className="font-bold text-gray-900">
-                        {category.completedChapters}/{category.totalChapters}{' '}
-                        Sub Chapter
-                      </span>
-                    </div>
-                    <Progress
-                      value={category.percentageProgress}
-                      className="h-2"
-                      style={{
-                        backgroundColor: `${mainColor}20`,
-                      }}
-                    />
-                  </div>
-
-                  {/* Stats Grid - Gradient Style */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div
-                      className="p-4 rounded-3xl border-2"
-                      style={{
-                        background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
-                        borderColor: 'rgb(191 219 254)',
-                      }}
-                    >
-                      <div className="flex items-center gap-2 mb-1">
-                        <ClockIcon className="w-4 h-4 text-blue-600" />
-                        <span className="text-xs font-medium text-blue-600">
-                          Waktu
-                        </span>
-                      </div>
-                      <div className="text-sm font-bold text-blue-700">
-                        {category.totalSpendTime / 60 < 1
-                          ? `${category.totalSpendTime} Min`
-                          : `${(category.totalSpendTime / 60).toFixed(1)} Jam`}
-                      </div>
-                    </div>
-
-                    <div
-                      className="p-4 rounded-3xl border-2"
-                      style={{
-                        background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
-                        borderColor: 'rgb(187 247 208)',
-                      }}
-                    >
-                      <div className="flex items-center gap-2 mb-1">
-                        <FileQuestionIcon className="w-4 h-4 text-green-600" />
-                        <span className="text-xs font-medium text-green-600">
-                          Quiz
-                        </span>
-                      </div>
-                      <div className="text-sm font-bold text-green-700">
-                        {category.totalTryout} Soal
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2 pt-2">
-                    {/* Detail Dialog Button */}
-                    <Dialog>
-                      <DialogTrigger asChild>
+                const getActionButton = () => {
+                  if (category.completedChapters === 0) {
+                    return (
+                      <Button
+                        size="sm"
+                        onClick={() => handleStartCourse(category.id)}
+                        disabled={loadingCourseId === category.id}
+                        className="w-full rounded-3xl text-white border-0 font-semibold transition-all"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                        {loadingCourseId === category.id ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Memuat...
+                          </>
+                        ) : (
+                          <>
+                            <PlayIcon className="w-4 h-4 mr-2" />
+                            Mulai Belajar
+                          </>
+                        )}
+                      </Button>
+                    );
+                  } else if (
+                    category.completedChapters === category.totalChapters
+                  ) {
+                    return (
+                      <Link
+                        href={`/${website_sub_category_id_params}/user/bimcourse/${category.id}`}
+                        className="block w-full"
+                      >
                         <Button
-                          variant="outline"
                           size="sm"
-                          className="flex-1 rounded-3xl border-2 border-gray-200 hover:border-gray-300"
+                          className="w-full rounded-3xl bg-green-600 hover:bg-green-700 text-white border-0 font-semibold"
                         >
-                          <ListIcon className="w-4 h-4 mr-2" />
-                          Detail
+                          <CheckIcon className="w-4 h-4 mr-2" />
+                          Selesai
                         </Button>
-                      </DialogTrigger>
+                      </Link>
+                    );
+                  } else {
+                    return (
+                      <Link
+                        href={`/${website_sub_category_id_params}/user/bimcourse/${category.id}`}
+                        className="block w-full"
+                      >
+                        <Button
+                          size="sm"
+                          className="w-full rounded-3xl bg-orange-600 hover:bg-orange-700 text-white border-0 font-semibold"
+                        >
+                          <ForwardIcon className="w-4 h-4 mr-2" />
+                          Lanjutkan
+                        </Button>
+                      </Link>
+                    );
+                  }
+                };
 
-                      <DialogContent className="md:max-w-[700px] max-h-[85vh]">
-                        <DialogHeader>
-                          <div className="flex items-center gap-4">
-                            <div
-                              className="w-14 h-14 rounded-3xl flex items-center justify-center shadow-lg"
-                              style={{ backgroundColor: mainColor }}
-                            >
-                              <BookOpenIcon className="w-7 h-7 text-white" />
-                            </div>
-                            <div className="flex-1">
-                              <DialogTitle className="text-2xl font-black text-gray-900">
-                                {category.name}
-                              </DialogTitle>
-                              <DialogDescription className="text-sm">
-                                Daftar lengkap materi pembelajaran
-                              </DialogDescription>
+                const getStatusBadge = () => {
+                  if (category.completedChapters === 0) {
+                    return (
+                      <Badge className="bg-blue-50 text-blue-700 border-blue-200 font-medium">
+                        <PlayIcon className="w-3 h-3 mr-1" />
+                        Belum Dimulai
+                      </Badge>
+                    );
+                  } else if (
+                    category.completedChapters === category.totalChapters
+                  ) {
+                    return (
+                      <Badge className="bg-green-50 text-green-700 border-green-200 font-medium">
+                        <CheckCircleIcon className="w-3 h-3 mr-1" />
+                        Selesai
+                      </Badge>
+                    );
+                  } else {
+                    return (
+                      <Badge className="bg-orange-50 text-orange-700 border-orange-200 font-medium">
+                        <TrendingUpIcon className="w-3 h-3 mr-1" />
+                        Berlangsung
+                      </Badge>
+                    );
+                  }
+                };
+
+                // GRID VIEW (Default)
+                if (viewMode === 'grid') {
+                  return (
+                    <Card
+                      key={category.id}
+                      className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 relative overflow-visible"
+                    >
+                      {/* Enhanced Progress Ring - Pojok Kanan Atas */}
+                      <div className="absolute -top-3 -right-3 z-10">
+                        <div className="relative w-16 h-16">
+                          {/* Background circle with shadow */}
+                          <div className="absolute inset-0 bg-white rounded-full shadow-lg" />
+
+                          {/* SVG Progress Ring */}
+                          <svg
+                            className="w-16 h-16 transform -rotate-90 relative z-10"
+                            viewBox="0 0 36 36"
+                          >
+                            {/* Background track */}
+                            <path
+                              className="text-gray-200"
+                              stroke="currentColor"
+                              strokeWidth="3.5"
+                              fill="transparent"
+                              strokeDasharray="100, 100"
+                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            />
+                            {/* Progress arc */}
+                            <path
+                              stroke={mainColor}
+                              strokeWidth="3.5"
+                              fill="transparent"
+                              strokeDasharray={`${Math.min(100, Math.round(category.percentageProgress || 0))}, 100`}
+                              strokeLinecap="round"
+                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              style={{
+                                filter: `drop-shadow(0 2px 4px ${mainColor}40)`,
+                              }}
+                            />
+                          </svg>
+
+                          {/* Percentage Text */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="text-center">
+                              <span
+                                className="text-xs font-black leading-none"
+                                style={{ color: mainColor }}
+                              >
+                                {Math.min(
+                                  100,
+                                  Math.round(category.percentageProgress || 0),
+                                )}
+                                %
+                              </span>
                             </div>
                           </div>
-                        </DialogHeader>
+                        </div>
+                      </div>
 
-                        {/* Enhanced Stats Overview */}
-                        <div className="grid grid-cols-3 gap-3 pb-4 border-b">
+                      <CardHeader className="pb-4">
+                        <div className="flex items-start gap-4 pr-16">
                           <div
-                            className="p-4 rounded-3xl border-2 text-center"
+                            className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0"
+                            style={{ backgroundColor: mainColor }}
+                          >
+                            <BookOpenIcon className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            {getStatusBadge()}
+                            <CardTitle className="text-lg font-bold text-gray-900 mt-2 mb-1">
+                              {category.name}
+                            </CardTitle>
+                            <p className="text-sm text-gray-600 line-clamp-2">
+                              Tingkatkan kemampuan berpikir logis dan analitis
+                              untuk menghadapi tantangan SNBT
+                            </p>
+                          </div>
+                        </div>
+                      </CardHeader>
+
+                      <CardContent className="p-6 pt-0 space-y-4">
+                        {/* Progress Bar */}
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="font-medium text-gray-700">
+                              Progress
+                            </span>
+                            <span className="font-bold text-gray-900">
+                              {category.completedChapters}/
+                              {category.totalChapters} Sub Chapter
+                            </span>
+                          </div>
+                          <Progress
+                            value={category.percentageProgress}
+                            className="h-2"
+                            style={{
+                              backgroundColor: `${mainColor}20`,
+                            }}
+                          />
+                        </div>
+
+                        {/* Stats Grid - Gradient Style */}
+                        <div className="grid grid-cols-2 gap-3">
+                          <div
+                            className="p-4 rounded-3xl border-2"
                             style={{
                               background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
                               borderColor: 'rgb(191 219 254)',
                             }}
                           >
-                            <div className="text-2xl font-black text-blue-700">
-                              {category.percentageProgress}%
+                            <div className="flex items-center gap-2 mb-1">
+                              <ClockIcon className="w-4 h-4 text-blue-600" />
+                              <span className="text-xs font-medium text-blue-600">
+                                Waktu
+                              </span>
                             </div>
-                            <div className="text-xs font-medium text-blue-600 mt-1">
-                              Progress
-                            </div>
-                          </div>
-
-                          <div
-                            className="p-4 rounded-3xl border-2 text-center"
-                            style={{
-                              background: `linear-gradient(to bottom right, rgb(254 249 195), rgb(254 240 138))`,
-                              borderColor: 'rgb(253 224 71)',
-                            }}
-                          >
-                            <div className="text-2xl font-black text-yellow-700">
-                              {category.totalChapters}
-                            </div>
-                            <div className="text-xs font-medium text-yellow-600 mt-1">
-                              Total Sub Chapter
+                            <div className="text-sm font-bold text-blue-700">
+                              {category.totalSpendTime / 60 < 1
+                                ? `${category.totalSpendTime} Min`
+                                : `${(category.totalSpendTime / 60).toFixed(1)} Jam`}
                             </div>
                           </div>
 
                           <div
-                            className="p-4 rounded-3xl border-2 text-center"
+                            className="p-4 rounded-3xl border-2"
                             style={{
                               background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
                               borderColor: 'rgb(187 247 208)',
                             }}
                           >
-                            <div className="text-2xl font-black text-green-700">
-                              {category.completedChapters}
+                            <div className="flex items-center gap-2 mb-1">
+                              <FileQuestionIcon className="w-4 h-4 text-green-600" />
+                              <span className="text-xs font-medium text-green-600">
+                                Quiz
+                              </span>
                             </div>
-                            <div className="text-xs font-medium text-green-600 mt-1">
-                              Selesai
+                            <div className="text-sm font-bold text-green-700">
+                              {category.totalTryout} Soal
                             </div>
                           </div>
                         </div>
 
-                        {/* Chapter List with Enhanced Info */}
-                        <ScrollArea className="h-[400px] pr-4">
-                          <div className="space-y-3">
-                            {category.CourseChapter.map((chapter, i) => (
-                              <DetailContent
-                                key={i}
-                                category={category}
-                                chapter={chapter}
-                                index={i}
-                              />
-                            ))}
-                          </div>
-                        </ScrollArea>
-
-                        <DialogFooter>
-                          <Button
-                            className="w-full rounded-3xl text-white"
-                            style={{ backgroundColor: mainColor }}
-                            onClick={() => {
-                              if (category.completedChapters === 0) {
-                                router.push(
-                                  `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study`,
-                                );
-                              } else {
-                                router.push(
-                                  `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study`,
-                                );
-                              }
-                            }}
-                          >
-                            {category.completedChapters === 0
-                              ? 'Mulai Belajar'
-                              : 'Lanjutkan Belajar'}
-                            <ArrowRightIcon className="w-4 h-4 ml-2" />
-                          </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-
-                    {/* Main Action Button */}
-                    <div className="flex-1">{getActionButton()}</div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          }
-
-          // LIST VIEW - Detail dengan Chapter & Sub-chapter
-          if (viewMode === 'list') {
-            return (
-              <div
-                key={category.id}
-                className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 bg-white overflow-hidden flex-shrink-0 w-[85vw] sm:w-[75vw] md:w-[500px] lg:w-[550px] snap-start"
-              >
-                {/* Header Section */}
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 border-b-2 border-gray-100">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-start gap-4 flex-1">
-                      <div
-                        className="w-16 h-16 rounded-3xl flex items-center justify-center flex-shrink-0 shadow-lg"
-                        style={{ backgroundColor: mainColor }}
-                      >
-                        <BookOpenIcon className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          {getStatusBadge()}
-                          <span
-                            className="text-2xl font-black"
-                            style={{ color: mainColor }}
-                          >
-                            {Math.min(100, Math.round(category.percentageProgress || 0))}%
-                          </span>
-                        </div>
-                        <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                          {category.name}
-                        </h3>
-                        <div className="flex flex-wrap gap-3 text-sm text-gray-600">
-                          <span className="flex items-center gap-1">
-                            <BookOpenIcon className="w-4 h-4" />
-                            {category.CourseChapter.length} Bab
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <FileTextIcon className="w-4 h-4" />
-                            {category.totalChapters} Sub-Bab
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <ClockIcon className="w-4 h-4" />
-                            {category.totalSpendTime / 60 < 1
-                              ? `${category.totalSpendTime} Min`
-                              : `${(category.totalSpendTime / 60).toFixed(1)} Jam`}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      {getActionButton()}
-                    </div>
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="mt-4">
-                    <div className="flex justify-between items-center text-xs mb-2">
-                      <span className="font-medium text-gray-700">Progress Keseluruhan</span>
-                      <span className="font-bold text-gray-900">
-                        {category.completedChapters}/{category.totalChapters} Sub-Bab Selesai
-                      </span>
-                    </div>
-                    <Progress
-                      value={category.percentageProgress}
-                      className="h-3 rounded-full"
-                      style={{ backgroundColor: `${mainColor}20` }}
-                    />
-                  </div>
-                </div>
-
-                {/* Chapters & Sub-chapters */}
-                <div className="p-6">
-                  <div className="space-y-6">
-                    {category.CourseChapter.map((chapter, chapterIndex) => {
-                      const chapterSubChapters = chapter.CourseSubChapter || [];
-                      const completedInChapter = chapterSubChapters.filter(
-                        (sub) => sub.CourseProgress && sub.CourseProgress.length > 0
-                      ).length;
-                      const chapterProgress = chapterSubChapters.length > 0
-                        ? Math.round((completedInChapter / chapterSubChapters.length) * 100)
-                        : 0;
-
-                      return (
-                        <div key={chapterIndex} className="border-2 border-gray-100 rounded-3xl overflow-hidden">
-                          {/* Chapter Header */}
-                          <div
-                            className="p-4"
-                            style={{ backgroundColor: `${mainColor}10` }}
-                          >
-                            <div className="flex items-start gap-3">
-                              <div
-                                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-3xl text-white font-bold text-lg shadow-md"
-                                style={{ backgroundColor: mainColor }}
+                        {/* Action Buttons */}
+                        <div className="flex gap-2 pt-2">
+                          {/* Detail Dialog Button */}
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="flex-1 rounded-3xl border-2 border-gray-200 hover:border-gray-300"
                               >
-                                {chapterIndex + 1}
-                              </div>
-                              <div className="flex-1">
-                                <h4 className="text-lg font-bold text-gray-900 mb-1">
-                                  {chapter.title}
-                                </h4>
-                                <div className="flex items-center gap-4 text-sm text-gray-600">
-                                  <span className="font-semibold">
-                                    {completedInChapter}/{chapterSubChapters.length} Sub-Bab Selesai
-                                  </span>
-                                  <span
-                                    className="font-bold"
-                                    style={{ color: mainColor }}
+                                <ListIcon className="w-4 h-4 mr-2" />
+                                Detail
+                              </Button>
+                            </DialogTrigger>
+
+                            <DialogContent className="md:max-w-[700px] max-h-[85vh]">
+                              <DialogHeader>
+                                <div className="flex items-center gap-4">
+                                  <div
+                                    className="w-14 h-14 rounded-3xl flex items-center justify-center shadow-lg"
+                                    style={{ backgroundColor: mainColor }}
                                   >
-                                    {chapterProgress}%
-                                  </span>
+                                    <BookOpenIcon className="w-7 h-7 text-white" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <DialogTitle className="text-2xl font-black text-gray-900">
+                                      {category.name}
+                                    </DialogTitle>
+                                    <DialogDescription className="text-sm">
+                                      Daftar lengkap materi pembelajaran
+                                    </DialogDescription>
+                                  </div>
+                                </div>
+                              </DialogHeader>
+
+                              {/* Enhanced Stats Overview */}
+                              <div className="grid grid-cols-3 gap-3 pb-4 border-b">
+                                <div
+                                  className="p-4 rounded-3xl border-2 text-center"
+                                  style={{
+                                    background: `linear-gradient(to bottom right, rgb(239 246 255), rgb(219 234 254))`,
+                                    borderColor: 'rgb(191 219 254)',
+                                  }}
+                                >
+                                  <div className="text-2xl font-black text-blue-700">
+                                    {category.percentageProgress}%
+                                  </div>
+                                  <div className="text-xs font-medium text-blue-600 mt-1">
+                                    Progress
+                                  </div>
+                                </div>
+
+                                <div
+                                  className="p-4 rounded-3xl border-2 text-center"
+                                  style={{
+                                    background: `linear-gradient(to bottom right, rgb(254 249 195), rgb(254 240 138))`,
+                                    borderColor: 'rgb(253 224 71)',
+                                  }}
+                                >
+                                  <div className="text-2xl font-black text-yellow-700">
+                                    {category.totalChapters}
+                                  </div>
+                                  <div className="text-xs font-medium text-yellow-600 mt-1">
+                                    Total Sub Chapter
+                                  </div>
+                                </div>
+
+                                <div
+                                  className="p-4 rounded-3xl border-2 text-center"
+                                  style={{
+                                    background: `linear-gradient(to bottom right, rgb(240 253 244), rgb(220 252 231))`,
+                                    borderColor: 'rgb(187 247 208)',
+                                  }}
+                                >
+                                  <div className="text-2xl font-black text-green-700">
+                                    {category.completedChapters}
+                                  </div>
+                                  <div className="text-xs font-medium text-green-600 mt-1">
+                                    Selesai
+                                  </div>
                                 </div>
                               </div>
+
+                              {/* Chapter List with Enhanced Info */}
+                              <ScrollArea className="h-[400px] pr-4">
+                                <div className="space-y-3">
+                                  {category.CourseChapter.map((chapter, i) => (
+                                    <DetailContent
+                                      key={i}
+                                      category={category}
+                                      chapter={chapter}
+                                      index={i}
+                                    />
+                                  ))}
+                                </div>
+                              </ScrollArea>
+
+                              <DialogFooter>
+                                <Button
+                                  className="w-full rounded-3xl text-white"
+                                  style={{ backgroundColor: mainColor }}
+                                  onClick={() => {
+                                    if (category.completedChapters === 0) {
+                                      router.push(
+                                        `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study`,
+                                      );
+                                    } else {
+                                      router.push(
+                                        `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study`,
+                                      );
+                                    }
+                                  }}
+                                >
+                                  {category.completedChapters === 0
+                                    ? 'Mulai Belajar'
+                                    : 'Lanjutkan Belajar'}
+                                  <ArrowRightIcon className="w-4 h-4 ml-2" />
+                                </Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+
+                          {/* Main Action Button */}
+                          <div className="flex-1">{getActionButton()}</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                }
+
+                // LIST VIEW - Detail dengan Chapter & Sub-chapter
+                if (viewMode === 'list') {
+                  return (
+                    <div
+                      key={category.id}
+                      className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 bg-white overflow-hidden flex-shrink-0 w-[85vw] sm:w-[75vw] md:w-[500px] lg:w-[550px] snap-start"
+                    >
+                      {/* Header Section */}
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 border-b-2 border-gray-100">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div
+                              className="w-16 h-16 rounded-3xl flex items-center justify-center flex-shrink-0 shadow-lg"
+                              style={{ backgroundColor: mainColor }}
+                            >
+                              <BookOpenIcon className="w-8 h-8 text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                {getStatusBadge()}
+                                <span
+                                  className="text-2xl font-black"
+                                  style={{ color: mainColor }}
+                                >
+                                  {Math.min(
+                                    100,
+                                    Math.round(
+                                      category.percentageProgress || 0,
+                                    ),
+                                  )}
+                                  %
+                                </span>
+                              </div>
+                              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                                {category.name}
+                              </h3>
+                              <div className="flex flex-wrap gap-3 text-sm text-gray-600">
+                                <span className="flex items-center gap-1">
+                                  <BookOpenIcon className="w-4 h-4" />
+                                  {category.CourseChapter.length} Bab
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <FileTextIcon className="w-4 h-4" />
+                                  {category.totalChapters} Sub-Bab
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <ClockIcon className="w-4 h-4" />
+                                  {category.totalSpendTime / 60 < 1
+                                    ? `${category.totalSpendTime} Min`
+                                    : `${(category.totalSpendTime / 60).toFixed(1)} Jam`}
+                                </span>
+                              </div>
                             </div>
                           </div>
-
-                          {/* Sub-chapters List */}
-                          <div className="divide-y divide-gray-100">
-                            {chapterSubChapters.map((subChapter, subIndex) => {
-                              const isCompleted = subChapter.CourseProgress && subChapter.CourseProgress.length > 0;
-                              const subChapterTypeIcon = {
-                                VIDEO: PlayCircleIcon,
-                                DOCUMENT: FileTextIcon,
-                                MATERI: BookOpenIcon,
-                                TRYOUT: FileQuestionIcon,
-                                PROGRESS_TEST: FileQuestionIcon,
-                              }[subChapter.type] || FileTextIcon;
-                              const SubChapterIcon = subChapterTypeIcon;
-
-                              return (
-                                <button
-                                  key={subChapter.id}
-                                  onClick={() =>
-                                    router.push(
-                                      `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study?sub=${subChapter.id}&tab=chat`
-                                    )
-                                  }
-                                  className="group w-full flex items-center gap-4 p-4 text-left transition-all hover:bg-gray-50"
-                                >
-                                  <div
-                                    className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-3xl ${
-                                      isCompleted
-                                        ? "bg-green-100"
-                                        : "bg-gray-100"
-                                    }`}
-                                  >
-                                    {isCompleted ? (
-                                      <CheckCircleIcon className="h-6 w-6 text-green-600" />
-                                    ) : (
-                                      <SubChapterIcon className="h-6 w-6 text-gray-600" />
-                                    )}
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className={`font-semibold text-base mb-1 ${
-                                      isCompleted ? "text-gray-600 line-through" : "text-gray-900 group-hover:text-blue-600"
-                                    }`}>
-                                      {subChapter.title}
-                                    </p>
-                                    <div className="flex items-center gap-3 text-sm text-gray-500">
-                                      <span className="capitalize font-medium">
-                                        {subChapter.type.toLowerCase()}
-                                      </span>
-                                      {subChapter.spendTime && (
-                                        <>
-                                          <span>•</span>
-                                          <span className="flex items-center gap-1">
-                                            <ClockIcon className="w-3 h-3" />
-                                            {subChapter.spendTime} menit
-                                          </span>
-                                        </>
-                                      )}
-                                      {isCompleted && (
-                                        <>
-                                          <span>•</span>
-                                          <span className="text-green-600 font-semibold flex items-center gap-1">
-                                            <CheckCircleIcon className="w-3 h-3" />
-                                            Selesai
-                                          </span>
-                                        </>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <ChevronRight className="h-5 w-5 flex-shrink-0 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600" />
-                                </button>
-                              );
-                            })}
+                          <div className="flex flex-col gap-2">
+                            {getActionButton()}
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            );
-          }
 
-          // Fallback (shouldn't reach here)
-          return null;
-        })}
+                        {/* Progress Bar */}
+                        <div className="mt-4">
+                          <div className="flex justify-between items-center text-xs mb-2">
+                            <span className="font-medium text-gray-700">
+                              Progress Keseluruhan
+                            </span>
+                            <span className="font-bold text-gray-900">
+                              {category.completedChapters}/
+                              {category.totalChapters} Sub-Bab Selesai
+                            </span>
+                          </div>
+                          <Progress
+                            value={category.percentageProgress}
+                            className="h-3 rounded-full"
+                            style={{ backgroundColor: `${mainColor}20` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Chapters & Sub-chapters */}
+                      <div className="p-6">
+                        <div className="space-y-6">
+                          {category.CourseChapter.map(
+                            (chapter, chapterIndex) => {
+                              const chapterSubChapters =
+                                chapter.CourseSubChapter || [];
+                              const completedInChapter =
+                                chapterSubChapters.filter(
+                                  (sub) =>
+                                    sub.CourseProgress &&
+                                    sub.CourseProgress.length > 0,
+                                ).length;
+                              const chapterProgress =
+                                chapterSubChapters.length > 0
+                                  ? Math.round(
+                                      (completedInChapter /
+                                        chapterSubChapters.length) *
+                                        100,
+                                    )
+                                  : 0;
+
+                              return (
+                                <div
+                                  key={chapterIndex}
+                                  className="border-2 border-gray-100 rounded-3xl overflow-hidden"
+                                >
+                                  {/* Chapter Header */}
+                                  <div
+                                    className="p-4"
+                                    style={{
+                                      backgroundColor: `${mainColor}10`,
+                                    }}
+                                  >
+                                    <div className="flex items-start gap-3">
+                                      <div
+                                        className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-3xl text-white font-bold text-lg shadow-md"
+                                        style={{ backgroundColor: mainColor }}
+                                      >
+                                        {chapterIndex + 1}
+                                      </div>
+                                      <div className="flex-1">
+                                        <h4 className="text-lg font-bold text-gray-900 mb-1">
+                                          {chapter.title}
+                                        </h4>
+                                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                                          <span className="font-semibold">
+                                            {completedInChapter}/
+                                            {chapterSubChapters.length} Sub-Bab
+                                            Selesai
+                                          </span>
+                                          <span
+                                            className="font-bold"
+                                            style={{ color: mainColor }}
+                                          >
+                                            {chapterProgress}%
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Sub-chapters List */}
+                                  <div className="divide-y divide-gray-100">
+                                    {chapterSubChapters.map(
+                                      (subChapter, subIndex) => {
+                                        const isCompleted =
+                                          subChapter.CourseProgress &&
+                                          subChapter.CourseProgress.length > 0;
+                                        const subChapterTypeIcon =
+                                          {
+                                            VIDEO: PlayCircleIcon,
+                                            DOCUMENT: FileTextIcon,
+                                            MATERI: BookOpenIcon,
+                                            TRYOUT: FileQuestionIcon,
+                                            PROGRESS_TEST: FileQuestionIcon,
+                                          }[subChapter.type] || FileTextIcon;
+                                        const SubChapterIcon =
+                                          subChapterTypeIcon;
+
+                                        return (
+                                          <button
+                                            key={subChapter.id}
+                                            onClick={() =>
+                                              router.push(
+                                                `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study?sub=${subChapter.id}&tab=chat`,
+                                              )
+                                            }
+                                            className="group w-full flex items-center gap-4 p-4 text-left transition-all hover:bg-gray-50"
+                                          >
+                                            <div
+                                              className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-3xl ${
+                                                isCompleted
+                                                  ? 'bg-green-100'
+                                                  : 'bg-gray-100'
+                                              }`}
+                                            >
+                                              {isCompleted ? (
+                                                <CheckCircleIcon className="h-6 w-6 text-green-600" />
+                                              ) : (
+                                                <SubChapterIcon className="h-6 w-6 text-gray-600" />
+                                              )}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                              <p
+                                                className={`font-semibold text-base mb-1 ${
+                                                  isCompleted
+                                                    ? 'text-gray-600 line-through'
+                                                    : 'text-gray-900 group-hover:text-blue-600'
+                                                }`}
+                                              >
+                                                {subChapter.title}
+                                              </p>
+                                              <div className="flex items-center gap-3 text-sm text-gray-500">
+                                                <span className="capitalize font-medium">
+                                                  {subChapter.type.toLowerCase()}
+                                                </span>
+                                                {subChapter.spendTime && (
+                                                  <>
+                                                    <span>•</span>
+                                                    <span className="flex items-center gap-1">
+                                                      <ClockIcon className="w-3 h-3" />
+                                                      {subChapter.spendTime}{' '}
+                                                      menit
+                                                    </span>
+                                                  </>
+                                                )}
+                                                {isCompleted && (
+                                                  <>
+                                                    <span>•</span>
+                                                    <span className="text-green-600 font-semibold flex items-center gap-1">
+                                                      <CheckCircleIcon className="w-3 h-3" />
+                                                      Selesai
+                                                    </span>
+                                                  </>
+                                                )}
+                                              </div>
+                                            </div>
+                                            <ChevronRight className="h-5 w-5 flex-shrink-0 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600" />
+                                          </button>
+                                        );
+                                      },
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            },
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Fallback (shouldn't reach here)
+                return null;
+              })}
             </div>
           </div>
         ) : (
           <div className="w-full overflow-x-auto pb-4">
-            <div className="flex gap-4 snap-x snap-mandatory scrollbar-hide" style={{ paddingLeft: 'max(1rem, calc((100vw - 1280px) / 2))', paddingRight: 'max(1rem, calc((100vw - 1280px) / 2))' }}>
-            {CategoryCard?.map((category) => {
-              const getActionButton = () => {
-                if (category.completedChapters === 0) {
-                  return (
-                    <Button
-                      size="sm"
-                      onClick={() => handleStartCourse(category.id)}
-                      disabled={loadingCourseId === category.id}
-                      className="w-full rounded-3xl text-white border-0 font-semibold transition-all"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      {loadingCourseId === category.id ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Memuat...
-                        </>
-                      ) : (
-                        <>
-                          <PlayIcon className="w-4 h-4 mr-2" />
-                          Mulai Belajar
-                        </>
-                      )}
-                    </Button>
-                  );
-                } else if (
-                  category.completedChapters === category.totalChapters
-                ) {
-                  return (
-                    <Button
-                      size="sm"
-                      onClick={() => handleStartCourse(category.id)}
-                      disabled={loadingCourseId === category.id}
-                      className="w-full rounded-3xl bg-green-600 hover:bg-green-700 text-white border-0 font-semibold"
-                    >
-                      {loadingCourseId === category.id ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Memuat...
-                        </>
-                      ) : (
-                        <>
-                          <CheckIcon className="w-4 h-4 mr-2" />
-                          Selesai
-                        </>
-                      )}
-                    </Button>
-                  );
-                } else {
-                  return (
-                    <Button
-                      size="sm"
-                      onClick={() => handleStartCourse(category.id)}
-                      disabled={loadingCourseId === category.id}
-                      className="w-full rounded-3xl text-white border-0 font-semibold"
-                      style={{ backgroundColor: mainColor }}
-                    >
-                      {loadingCourseId === category.id ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          Memuat...
-                        </>
-                      ) : (
-                        <>
-                          <ForwardIcon className="w-4 h-4 mr-2" />
-                          Lanjutkan
-                        </>
-                      )}
-                    </Button>
-                  );
-                }
-              };
+            <div
+              className="flex gap-4 snap-x snap-mandatory scrollbar-hide"
+              style={{
+                paddingLeft: 'max(1rem, calc((100vw - 1280px) / 2))',
+                paddingRight: 'max(1rem, calc((100vw - 1280px) / 2))',
+              }}
+            >
+              {CategoryCard?.map((category) => {
+                const getActionButton = () => {
+                  if (category.completedChapters === 0) {
+                    return (
+                      <Button
+                        size="sm"
+                        onClick={() => handleStartCourse(category.id)}
+                        disabled={loadingCourseId === category.id}
+                        className="w-full rounded-3xl text-white border-0 font-semibold transition-all"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                        {loadingCourseId === category.id ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Memuat...
+                          </>
+                        ) : (
+                          <>
+                            <PlayIcon className="w-4 h-4 mr-2" />
+                            Mulai Belajar
+                          </>
+                        )}
+                      </Button>
+                    );
+                  } else if (
+                    category.completedChapters === category.totalChapters
+                  ) {
+                    return (
+                      <Button
+                        size="sm"
+                        onClick={() => handleStartCourse(category.id)}
+                        disabled={loadingCourseId === category.id}
+                        className="w-full rounded-3xl bg-green-600 hover:bg-green-700 text-white border-0 font-semibold"
+                      >
+                        {loadingCourseId === category.id ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Memuat...
+                          </>
+                        ) : (
+                          <>
+                            <CheckIcon className="w-4 h-4 mr-2" />
+                            Selesai
+                          </>
+                        )}
+                      </Button>
+                    );
+                  } else {
+                    return (
+                      <Button
+                        size="sm"
+                        onClick={() => handleStartCourse(category.id)}
+                        disabled={loadingCourseId === category.id}
+                        className="w-full rounded-3xl text-white border-0 font-semibold"
+                        style={{ backgroundColor: mainColor }}
+                      >
+                        {loadingCourseId === category.id ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Memuat...
+                          </>
+                        ) : (
+                          <>
+                            <ForwardIcon className="w-4 h-4 mr-2" />
+                            Lanjutkan
+                          </>
+                        )}
+                      </Button>
+                    );
+                  }
+                };
 
-              const getStatusBadge = () => {
-                if (category.completedChapters === category.totalChapters) {
-                  return (
-                    <Badge className="bg-green-50 text-green-700 border-green-200 font-medium">
-                      <CheckCircleIcon className="w-3 h-3 mr-1" />
-                      Selesai
-                    </Badge>
-                  );
-                } else {
-                  return (
-                    <Badge className="bg-orange-50 text-orange-700 border-orange-200 font-medium">
-                      <TrendingUpIcon className="w-3 h-3 mr-1" />
-                      Berlangsung
-                    </Badge>
-                  );
-                }
-              };
+                const getStatusBadge = () => {
+                  if (category.completedChapters === category.totalChapters) {
+                    return (
+                      <Badge className="bg-green-50 text-green-700 border-green-200 font-medium">
+                        <CheckCircleIcon className="w-3 h-3 mr-1" />
+                        Selesai
+                      </Badge>
+                    );
+                  } else {
+                    return (
+                      <Badge className="bg-orange-50 text-orange-700 border-orange-200 font-medium">
+                        <TrendingUpIcon className="w-3 h-3 mr-1" />
+                        Berlangsung
+                      </Badge>
+                    );
+                  }
+                };
 
-              // LIST VIEW - Detail dengan Chapter & Sub-chapter
-              return (
-                <div
-                  key={category.id}
-                  className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 bg-white overflow-hidden flex-shrink-0 w-[85vw] md:w-[65vw] lg:w-[55vw] xl:w-[45vw] snap-start"
-                >
-                  {/* Header Section */}
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 border-b-2 border-gray-100">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-start gap-4 flex-1">
-                        <div
-                          className="w-16 h-16 rounded-3xl flex items-center justify-center flex-shrink-0 shadow-lg"
-                          style={{ backgroundColor: mainColor }}
-                        >
-                          <BookOpenIcon className="w-8 h-8 text-white" />
+                // LIST VIEW - Detail dengan Chapter & Sub-chapter
+                return (
+                  <div
+                    key={category.id}
+                    className="border-2 border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 bg-white overflow-hidden flex-shrink-0 w-[85vw] md:w-[65vw] lg:w-[55vw] xl:w-[45vw] snap-start"
+                  >
+                    {/* Header Section */}
+                    <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 border-b-2 border-gray-100">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-start gap-4 flex-1">
+                          <div
+                            className="w-16 h-16 rounded-3xl flex items-center justify-center flex-shrink-0 shadow-lg"
+                            style={{ backgroundColor: mainColor }}
+                          >
+                            <BookOpenIcon className="w-8 h-8 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-2">
+                              {getStatusBadge()}
+                              <span
+                                className="text-2xl font-black"
+                                style={{ color: mainColor }}
+                              >
+                                {Math.min(
+                                  100,
+                                  Math.round(category.percentageProgress || 0),
+                                )}
+                                %
+                              </span>
+                            </div>
+                            <h3 className="text-2xl font-bold text-gray-900 mb-2 truncate">
+                              {category.name}
+                            </h3>
+                            <div className="flex flex-wrap gap-3 text-sm text-gray-600">
+                              <span className="flex items-center gap-1">
+                                <BookOpenIcon className="w-4 h-4" />
+                                {category.CourseChapter.length} Bab
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <FileTextIcon className="w-4 h-4" />
+                                {category.totalChapters} Sub-Bab
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <ClockIcon className="w-4 h-4" />
+                                {category.totalSpendTime / 60 < 1
+                                  ? `${category.totalSpendTime} Min`
+                                  : `${(category.totalSpendTime / 60).toFixed(1)} Jam`}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            {getStatusBadge()}
-                            <span
-                              className="text-2xl font-black"
-                              style={{ color: mainColor }}
-                            >
-                              {Math.min(100, Math.round(category.percentageProgress || 0))}%
-                            </span>
-                          </div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-2 truncate">
-                            {category.name}
-                          </h3>
-                          <div className="flex flex-wrap gap-3 text-sm text-gray-600">
-                            <span className="flex items-center gap-1">
-                              <BookOpenIcon className="w-4 h-4" />
-                              {category.CourseChapter.length} Bab
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <FileTextIcon className="w-4 h-4" />
-                              {category.totalChapters} Sub-Bab
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <ClockIcon className="w-4 h-4" />
-                              {category.totalSpendTime / 60 < 1
-                                ? `${category.totalSpendTime} Min`
-                                : `${(category.totalSpendTime / 60).toFixed(1)} Jam`}
-                            </span>
-                          </div>
+                        <div className="flex flex-col gap-2 flex-shrink-0">
+                          {getActionButton()}
                         </div>
                       </div>
-                      <div className="flex flex-col gap-2 flex-shrink-0">
-                        {getActionButton()}
+
+                      {/* Progress Bar */}
+                      <div className="mt-4">
+                        <div className="flex justify-between items-center text-xs mb-2">
+                          <span className="font-medium text-gray-700">
+                            Progress Keseluruhan
+                          </span>
+                          <span className="font-bold text-gray-900">
+                            {category.completedChapters}/
+                            {category.totalChapters} Sub-Bab Selesai
+                          </span>
+                        </div>
+                        <Progress
+                          value={category.percentageProgress}
+                          className="h-3 rounded-full"
+                          style={{ backgroundColor: `${mainColor}20` }}
+                        />
                       </div>
                     </div>
 
-                    {/* Progress Bar */}
-                    <div className="mt-4">
-                      <div className="flex justify-between items-center text-xs mb-2">
-                        <span className="font-medium text-gray-700">Progress Keseluruhan</span>
-                        <span className="font-bold text-gray-900">
-                          {category.completedChapters}/{category.totalChapters} Sub-Bab Selesai
-                        </span>
-                      </div>
-                      <Progress
-                        value={category.percentageProgress}
-                        className="h-3 rounded-full"
-                        style={{ backgroundColor: `${mainColor}20` }}
-                      />
-                    </div>
-                  </div>
+                    {/* Chapters & Sub-chapters */}
+                    <div className="p-6 max-h-[60vh] overflow-y-auto scrollbar-hide">
+                      <div className="space-y-6">
+                        {category.CourseChapter.map((chapter, chapterIndex) => {
+                          const chapterSubChapters =
+                            chapter.CourseSubChapter || [];
+                          const completedInChapter = chapterSubChapters.filter(
+                            (sub) =>
+                              sub.CourseProgress &&
+                              sub.CourseProgress.length > 0,
+                          ).length;
+                          const chapterProgress =
+                            chapterSubChapters.length > 0
+                              ? Math.round(
+                                  (completedInChapter /
+                                    chapterSubChapters.length) *
+                                    100,
+                                )
+                              : 0;
 
-                  {/* Chapters & Sub-chapters */}
-                  <div className="p-6 max-h-[60vh] overflow-y-auto scrollbar-hide">
-                    <div className="space-y-6">
-                      {category.CourseChapter.map((chapter, chapterIndex) => {
-                        const chapterSubChapters = chapter.CourseSubChapter || [];
-                        const completedInChapter = chapterSubChapters.filter(
-                          (sub) => sub.CourseProgress && sub.CourseProgress.length > 0
-                        ).length;
-                        const chapterProgress = chapterSubChapters.length > 0
-                          ? Math.round((completedInChapter / chapterSubChapters.length) * 100)
-                          : 0;
-
-                        return (
-                          <div key={chapterIndex} className="border-2 border-gray-100 rounded-3xl overflow-hidden">
-                            {/* Chapter Header */}
+                          return (
                             <div
-                              className="p-4"
-                              style={{ backgroundColor: `${mainColor}10` }}
+                              key={chapterIndex}
+                              className="border-2 border-gray-100 rounded-3xl overflow-hidden"
                             >
-                              <div className="flex items-start gap-3">
-                                <div
-                                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-3xl text-white font-bold text-lg shadow-md"
-                                  style={{ backgroundColor: mainColor }}
-                                >
-                                  {chapterIndex + 1}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h4 className="text-lg font-bold text-gray-900 mb-1 truncate">
-                                    {chapter.title}
-                                  </h4>
-                                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                                    <span className="font-semibold">
-                                      {completedInChapter}/{chapterSubChapters.length} Sub-Bab Selesai
-                                    </span>
-                                    <span
-                                      className="font-bold"
-                                      style={{ color: mainColor }}
-                                    >
-                                      {chapterProgress}%
-                                    </span>
+                              {/* Chapter Header */}
+                              <div
+                                className="p-4"
+                                style={{ backgroundColor: `${mainColor}10` }}
+                              >
+                                <div className="flex items-start gap-3">
+                                  <div
+                                    className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-3xl text-white font-bold text-lg shadow-md"
+                                    style={{ backgroundColor: mainColor }}
+                                  >
+                                    {chapterIndex + 1}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="text-lg font-bold text-gray-900 mb-1 truncate">
+                                      {chapter.title}
+                                    </h4>
+                                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                                      <span className="font-semibold">
+                                        {completedInChapter}/
+                                        {chapterSubChapters.length} Sub-Bab
+                                        Selesai
+                                      </span>
+                                      <span
+                                        className="font-bold"
+                                        style={{ color: mainColor }}
+                                      >
+                                        {chapterProgress}%
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
 
-                            {/* Sub-chapters List */}
-                            <div className="divide-y divide-gray-100">
-                              {chapterSubChapters.map((subChapter, subIndex) => {
-                                const isCompleted = subChapter.CourseProgress && subChapter.CourseProgress.length > 0;
-                                const subChapterTypeIcon = {
-                                  VIDEO: PlayCircleIcon,
-                                  DOCUMENT: FileTextIcon,
-                                  MATERI: BookOpenIcon,
-                                  TRYOUT: FileQuestionIcon,
-                                  PROGRESS_TEST: FileQuestionIcon,
-                                }[subChapter.type] || FileTextIcon;
-                                const SubChapterIcon = subChapterTypeIcon;
+                              {/* Sub-chapters List */}
+                              <div className="divide-y divide-gray-100">
+                                {chapterSubChapters.map(
+                                  (subChapter, subIndex) => {
+                                    const isCompleted =
+                                      subChapter.CourseProgress &&
+                                      subChapter.CourseProgress.length > 0;
+                                    const subChapterTypeIcon =
+                                      {
+                                        VIDEO: PlayCircleIcon,
+                                        DOCUMENT: FileTextIcon,
+                                        MATERI: BookOpenIcon,
+                                        TRYOUT: FileQuestionIcon,
+                                        PROGRESS_TEST: FileQuestionIcon,
+                                      }[subChapter.type] || FileTextIcon;
+                                    const SubChapterIcon = subChapterTypeIcon;
 
-                                return (
-                                  <button
-                                    key={subChapter.id}
-                                    onClick={() =>
-                                      router.push(
-                                        `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study?sub=${subChapter.id}&tab=chat`
-                                      )
-                                    }
-                                    className="group w-full flex items-center gap-4 p-4 text-left transition-all hover:bg-gray-50"
-                                  >
-                                    <div
-                                      className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-3xl ${
-                                        isCompleted
-                                          ? "bg-green-100"
-                                          : "bg-gray-100"
-                                      }`}
-                                    >
-                                      {isCompleted ? (
-                                        <CheckCircleIcon className="h-6 w-6 text-green-600" />
-                                      ) : (
-                                        <SubChapterIcon className="h-6 w-6 text-gray-600" />
-                                      )}
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <p className={`font-semibold text-base mb-1 truncate ${
-                                        isCompleted ? "text-gray-600 line-through" : "text-gray-900 group-hover:text-blue-600"
-                                      }`}>
-                                        {subChapter.title}
-                                      </p>
-                                      <div className="flex items-center gap-3 text-sm text-gray-500">
-                                        <span className="capitalize font-medium">
-                                          {subChapter.type.toLowerCase()}
-                                        </span>
-                                        {subChapter.spendTime && (
-                                          <>
-                                            <span>•</span>
-                                            <span className="flex items-center gap-1">
-                                              <ClockIcon className="w-3 h-3" />
-                                              {subChapter.spendTime} menit
+                                    return (
+                                      <button
+                                        key={subChapter.id}
+                                        onClick={() =>
+                                          router.push(
+                                            `/${website_sub_category_id_params}/user/bimcourse/${category.id}/study?sub=${subChapter.id}&tab=chat`,
+                                          )
+                                        }
+                                        className="group w-full flex items-center gap-4 p-4 text-left transition-all hover:bg-gray-50"
+                                      >
+                                        <div
+                                          className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-3xl ${
+                                            isCompleted
+                                              ? 'bg-green-100'
+                                              : 'bg-gray-100'
+                                          }`}
+                                        >
+                                          {isCompleted ? (
+                                            <CheckCircleIcon className="h-6 w-6 text-green-600" />
+                                          ) : (
+                                            <SubChapterIcon className="h-6 w-6 text-gray-600" />
+                                          )}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <p
+                                            className={`font-semibold text-base mb-1 truncate ${
+                                              isCompleted
+                                                ? 'text-gray-600 line-through'
+                                                : 'text-gray-900 group-hover:text-blue-600'
+                                            }`}
+                                          >
+                                            {subChapter.title}
+                                          </p>
+                                          <div className="flex items-center gap-3 text-sm text-gray-500">
+                                            <span className="capitalize font-medium">
+                                              {subChapter.type.toLowerCase()}
                                             </span>
-                                          </>
-                                        )}
-                                        {isCompleted && (
-                                          <>
-                                            <span>•</span>
-                                            <span className="text-green-600 font-semibold flex items-center gap-1">
-                                              <CheckCircleIcon className="w-3 h-3" />
-                                              Selesai
-                                            </span>
-                                          </>
-                                        )}
-                                      </div>
-                                    </div>
-                                    <ChevronRight className="h-5 w-5 flex-shrink-0 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600" />
-                                  </button>
-                                );
-                              })}
+                                            {subChapter.spendTime && (
+                                              <>
+                                                <span>•</span>
+                                                <span className="flex items-center gap-1">
+                                                  <ClockIcon className="w-3 h-3" />
+                                                  {subChapter.spendTime} menit
+                                                </span>
+                                              </>
+                                            )}
+                                            {isCompleted && (
+                                              <>
+                                                <span>•</span>
+                                                <span className="text-green-600 font-semibold flex items-center gap-1">
+                                                  <CheckCircleIcon className="w-3 h-3" />
+                                                  Selesai
+                                                </span>
+                                              </>
+                                            )}
+                                          </div>
+                                        </div>
+                                        <ChevronRight className="h-5 w-5 flex-shrink-0 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-blue-600" />
+                                      </button>
+                                    );
+                                  },
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+          </div>
+        )
+      ) : (
+        <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+          <div
+            className={
+              viewMode === 'grid'
+                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                : 'space-y-4'
+            }
+          >
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton
+                key={i}
+                className={
+                  viewMode === 'list'
+                    ? 'h-[250px] rounded-3xl'
+                    : 'h-[400px] rounded-3xl'
+                }
+              />
+            ))}
           </div>
         </div>
-      )
-    ) : (
-      <div className="container mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-        <div className={
-          viewMode === 'grid'
-            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-            : 'space-y-4'
-        }>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton
-              key={i}
-              className={viewMode === 'list' ? 'h-[250px] rounded-3xl' : 'h-[400px] rounded-3xl'}
-            />
-          ))}
-        </div>
-      </div>
-    )}
+      )}
     </section>
   );
 }

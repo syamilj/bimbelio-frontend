@@ -6,7 +6,6 @@ import { useWebsiteSubCategory } from '@/components/provider/provider-website-ca
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/ui/logo';
-import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import {
   SidebarContent,
@@ -50,127 +49,136 @@ const Sidebar = ({
     <Fragment>
       {/* Desktop Sidebar */}
       <SidebarUI
-      variant="floating"
-      collapsible="icon"
-      className="hidden md:flex z-[50] rounded-3xl [&_[data-sidebar=sidebar]]:overflow-visible"
-      style={
-        {
-          '--sidebar-width': '18rem',
-          '--sidebar-width-icon': '4.5rem',
-        } as React.CSSProperties
-      }
-    >
-      {/* Header Section */}
-      <SidebarHeader className="h-16 flex items-center justify-center pt-2 rounded-3xl">
-        <div
-          className={cn(
-            'flex items-center justify-between gap-2 w-full px-2',
-            minimizeSidebar && 'justify-center',
-          )}
-        >
-          {!minimizeSidebar && (
-            <Logo href={`/${website_sub_category_id}/admin`} />
-          )}
-          <button
-            onClick={() => setMinimizeSidebar(!minimizeSidebar)}
-            className="flex items-center justify-center h-9 w-9 rounded-3xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-all active:scale-95"
-          >
-            {minimizeSidebar ? (
-              <ChevronsRight className="w-5 h-5" />
-            ) : (
-              <ChevronsLeft className="w-5 h-5" />
+        variant="floating"
+        collapsible="icon"
+        className="hidden md:flex z-[50] rounded-3xl [&_[data-sidebar=sidebar]]:overflow-visible"
+        style={
+          {
+            '--sidebar-width': '18rem',
+            '--sidebar-width-icon': '4.5rem',
+          } as React.CSSProperties
+        }
+      >
+        {/* Header Section */}
+        <SidebarHeader className="h-16 flex items-center justify-center pt-2 rounded-3xl">
+          <div
+            className={cn(
+              'flex items-center justify-between gap-2 w-full px-2',
+              minimizeSidebar && 'justify-center',
             )}
-          </button>
-        </div>
-      </SidebarHeader>
-
-      {/* Sidebar Content */}
-      <SidebarContent className="flex flex-col gap-0 overflow-x-visible">
-        {/* Admin Badge */}
-        {!minimizeSidebar && (
-          <div className="px-3 pt-2 pb-1">
-            <div
-              className="flex items-center gap-3 p-3 rounded-3xl shadow-sm border border-slate-100"
-              style={{
-                background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
-              }}
-            >
-              <div className="w-10 h-10 rounded-3xl bg-white/20 flex items-center justify-center">
-                <Shield className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-white font-bold text-sm">Admin Panel</div>
-                <div className="text-white/80 text-xs">Dashboard Kontrol</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Navigation Routes */}
-        <div className="flex-1 px-2 pt-1 pb-4">
-          <SidebarRoute minimizeSidebar={minimizeSidebar} />
-        </div>
-      </SidebarContent>
-
-      {/* User Section */}
-      <SidebarFooter className="pt-2 pb-4">
-        <div
-          className={cn(
-            'flex items-center gap-3 p-3 rounded-3xl hover:bg-slate-100 transition-colors',
-            minimizeSidebar && 'justify-center',
-          )}
-        >
-          <Avatar
-            className="h-10 w-10 border-2"
-            style={{ borderColor: mainColor }}
           >
-            <AvatarImage
-              src={session?.user?.image || '/placeholder.svg'}
-              alt={session?.user?.name || 'Admin'}
-            />
-            <AvatarFallback
-              className="text-white font-black"
-              style={{ backgroundColor: mainColor }}
+            {!minimizeSidebar && (
+              <Logo href={`/${website_sub_category_id}/admin`} />
+            )}
+            <button
+              onClick={() => setMinimizeSidebar(!minimizeSidebar)}
+              className="flex items-center justify-center h-9 w-9 rounded-3xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-all active:scale-95"
             >
-              {session?.user?.name ? session?.user.name[0].toUpperCase() : 'A'}
-            </AvatarFallback>
-          </Avatar>
+              {minimizeSidebar ? (
+                <ChevronsRight className="w-5 h-5" />
+              ) : (
+                <ChevronsLeft className="w-5 h-5" />
+              )}
+            </button>
+          </div>
+        </SidebarHeader>
+
+        {/* Sidebar Content */}
+        <SidebarContent className="flex flex-col gap-0 overflow-x-visible">
+          {/* Admin Badge */}
           {!minimizeSidebar && (
-            <>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-black text-gray-900 truncate">
-                  {session?.user?.name || 'Admin'}
-                </p>
-                <div className="flex items-center gap-1 text-xs">
-                  <Crown className="w-3 h-3 text-yellow-500" />
-                  <span className="text-gray-500 font-medium">Administrator</span>
+            <div className="px-3 pt-2 pb-1">
+              <div
+                className="flex items-center gap-3 p-3 rounded-3xl shadow-sm border border-slate-100"
+                style={{
+                  background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
+                }}
+              >
+                <div className="w-10 h-10 rounded-3xl bg-white/20 flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-white font-bold text-sm">
+                    Admin Panel
+                  </div>
+                  <div className="text-white/80 text-xs">Dashboard Kontrol</div>
                 </div>
               </div>
-              <div className="flex flex-col gap-1">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-3xl hover:bg-slate-200"
-                >
-                  <Settings className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                  className="h-8 w-8 rounded-3xl hover:bg-red-50 text-red-600"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
-              </div>
-            </>
+            </div>
           )}
-        </div>
-      </SidebarFooter>
-    </SidebarUI>
+
+          {/* Navigation Routes */}
+          <div className="flex-1 px-2 pt-1 pb-4">
+            <SidebarRoute minimizeSidebar={minimizeSidebar} />
+          </div>
+        </SidebarContent>
+
+        {/* User Section */}
+        <SidebarFooter className="pt-2 pb-4">
+          <div
+            className={cn(
+              'flex items-center gap-3 p-3 rounded-3xl hover:bg-slate-100 transition-colors',
+              minimizeSidebar && 'justify-center',
+            )}
+          >
+            <Avatar
+              className="h-10 w-10 border-2"
+              style={{ borderColor: mainColor }}
+            >
+              <AvatarImage
+                src={session?.user?.image || '/placeholder.svg'}
+                alt={session?.user?.name || 'Admin'}
+              />
+              <AvatarFallback
+                className="text-white font-black"
+                style={{ backgroundColor: mainColor }}
+              >
+                {session?.user?.name
+                  ? session?.user.name[0].toUpperCase()
+                  : 'A'}
+              </AvatarFallback>
+            </Avatar>
+            {!minimizeSidebar && (
+              <>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-black text-gray-900 truncate">
+                    {session?.user?.name || 'Admin'}
+                  </p>
+                  <div className="flex items-center gap-1 text-xs">
+                    <Crown className="w-3 h-3 text-yellow-500" />
+                    <span className="text-gray-500 font-medium">
+                      Administrator
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 rounded-3xl hover:bg-slate-200"
+                  >
+                    <Settings className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => signOut({ callbackUrl: '/' })}
+                    className="h-8 w-8 rounded-3xl hover:bg-red-50 text-red-600"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+        </SidebarFooter>
+      </SidebarUI>
 
       {/* Mobile Sidebar */}
-      <Sheet open={isMobileSidebarOpen} onOpenChange={setIsMobileSidebarOpen}>
+      <Sheet
+        open={isMobileSidebarOpen}
+        onOpenChange={setIsMobileSidebarOpen}
+      >
         <SheetContent
           side="left"
           className="w-[285px] p-0 border-r-2 border-slate-200/50"
@@ -202,7 +210,9 @@ const Sidebar = ({
                   <Shield className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-white font-bold text-sm">Admin Panel</div>
+                  <div className="text-white font-bold text-sm">
+                    Admin Panel
+                  </div>
                   <div className="text-white/80 text-xs">Dashboard Kontrol</div>
                 </div>
               </div>
@@ -228,7 +238,9 @@ const Sidebar = ({
                     className="text-white font-black"
                     style={{ backgroundColor: mainColor }}
                   >
-                    {session?.user?.name ? session?.user.name[0].toUpperCase() : 'A'}
+                    {session?.user?.name
+                      ? session?.user.name[0].toUpperCase()
+                      : 'A'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
@@ -237,7 +249,9 @@ const Sidebar = ({
                   </p>
                   <div className="flex items-center gap-1 text-xs">
                     <Crown className="w-3 h-3 text-yellow-500" />
-                    <span className="text-gray-500 font-medium">Administrator</span>
+                    <span className="text-gray-500 font-medium">
+                      Administrator
+                    </span>
                   </div>
                 </div>
               </div>

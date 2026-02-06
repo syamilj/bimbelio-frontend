@@ -1,7 +1,6 @@
 'use client';
 
 import { useWebsiteSubCategory } from '@/components/provider/provider-website-category';
-import { motion } from 'framer-motion';
 import {
   BookOpen,
   Eye,
@@ -176,9 +175,7 @@ export default function PricingFeatures() {
 
                 {/* Usage info with clean styling */}
                 <div className="mt-auto">
-                  <div
-                    className="flex items-center justify-between p-3 rounded-2xl bg-slate-50"
-                  >
+                  <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50">
                     <span className="text-xs font-semibold text-slate-700">
                       Biaya penggunaan
                     </span>
@@ -230,9 +227,7 @@ export default function PricingFeatures() {
 
                 {/* Usage info with clean styling */}
                 <div className="mt-auto">
-                  <div
-                    className="flex items-center justify-between p-3 rounded-2xl bg-slate-50"
-                  >
+                  <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50">
                     <span className="text-xs font-semibold text-slate-700">
                       Biaya penggunaan
                     </span>
@@ -251,9 +246,7 @@ export default function PricingFeatures() {
       </div>
 
       {/* Clean How It Works Section - BimArena Style */}
-      <div
-        className="relative bg-white rounded-3xl p-6 md:p-8 overflow-hidden border-2 border-slate-200 max-w-7xl mx-auto shadow-sm"
-      >
+      <div className="relative bg-white rounded-3xl p-6 md:p-8 overflow-hidden border-2 border-slate-200 max-w-7xl mx-auto shadow-sm">
         {/* Header */}
         <div className="text-center mb-8">
           <div
@@ -268,9 +261,7 @@ export default function PricingFeatures() {
 
           <h3 className="text-2xl md:text-3xl font-black text-slate-800 mb-2">
             Sistem Coin yang{' '}
-            <span style={{ color: mainColor }}>
-              Efisien & Fleksibel
-            </span>
+            <span style={{ color: mainColor }}>Efisien & Fleksibel</span>
           </h3>
         </div>
 
@@ -361,7 +352,9 @@ export default function PricingFeatures() {
                     <h5 className="font-bold text-sm text-slate-800 mb-0.5">
                       {item.title}
                     </h5>
-                    <p className="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
                 </div>
               ))}
