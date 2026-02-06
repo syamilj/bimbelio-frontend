@@ -19,6 +19,7 @@ import {
   Home, // Added for BimArena/TryOut
   Medal, // Added for BimLive
   MonitorPlay,
+  Swords,
   Target, // Added for Material
   TrendingUp,
   Trophy,
@@ -459,7 +460,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                                     {
                                       name: 'Quiz',
                                       href: `/${webSubCategoryId}/user/bimarena/quiz`,
-                                      icon: FileQuestion,
+                                      icon: Swords,
                                     },
                                   ].map((sub) => {
                                     const isSubActive = pathname?.includes(
@@ -769,7 +770,7 @@ const SidebarRoute: React.FC<SidebarRouteProps> = ({
                           {
                             name: 'Quiz',
                             href: `/${webSubCategoryId}/user/bimarena/quiz`,
-                            icon: FileQuestion,
+                            icon: Swords,
                           },
                         ].map((sub) => {
                           const isSubActive = pathname?.includes(sub.href);
