@@ -344,6 +344,20 @@ export function RankingTable() {
                       />
                     </TableHead>
 
+                    {/* Benar / Salah / Kosong columns */}
+                    <TableHead className="text-center font-bold text-emerald-700 text-xs md:text-sm min-w-[60px]">
+                      Benar
+                    </TableHead>
+                    <TableHead className="text-center font-bold text-red-600 text-xs md:text-sm min-w-[60px]">
+                      Salah
+                    </TableHead>
+                    <TableHead className="text-center font-bold text-gray-500 text-xs md:text-sm min-w-[60px]">
+                      Kosong
+                    </TableHead>
+                    <TableHead className="text-center font-bold text-violet-700 text-xs md:text-sm min-w-[70px]">
+                      Akurasi
+                    </TableHead>
+
                     {/* Session Score Columns - Always visible for scrolling desire */}
                     {(
                       RankingTryout?.rankingData?.[0]?.sessionResult ||
@@ -369,7 +383,7 @@ export function RankingTable() {
                     <TableRow>
                       <TableCell
                         colSpan={
-                          4 +
+                          8 +
                           (RankingTryout?.rankingData?.[0]?.sessionResult
                             ?.length || 0) +
                           (!isAdmin ? 3 : 0) // Add extra columns for non-premium
@@ -492,6 +506,30 @@ export function RankingTable() {
                                 />
                               </div>
                             </div>
+                          </TableCell>
+
+                          {/* Benar / Salah / Kosong cells */}
+                          <TableCell className="text-center py-3 md:py-4">
+                            <span className="inline-flex items-center justify-center w-8 h-6 md:w-10 md:h-7 rounded-full bg-emerald-50 text-emerald-700 font-bold text-xs md:text-sm">
+                              {participant.benar ?? '-'}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-center py-3 md:py-4">
+                            <span className="inline-flex items-center justify-center w-8 h-6 md:w-10 md:h-7 rounded-full bg-red-50 text-red-600 font-bold text-xs md:text-sm">
+                              {participant.salah ?? '-'}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-center py-3 md:py-4">
+                            <span className="inline-flex items-center justify-center w-8 h-6 md:w-10 md:h-7 rounded-full bg-gray-100 text-gray-500 font-bold text-xs md:text-sm">
+                              {participant.kosong ?? '-'}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-center py-3 md:py-4">
+                            <span className="inline-flex items-center justify-center px-2 h-6 md:h-7 rounded-full bg-violet-50 text-violet-700 font-bold text-xs md:text-sm">
+                              {participant.totalQuestions > 0
+                                ? `${Math.round((participant.benar / participant.totalQuestions) * 100)}%`
+                                : '-'}
+                            </span>
                           </TableCell>
 
                           {/* Session Score Columns - Enhanced with Premium Logic */}

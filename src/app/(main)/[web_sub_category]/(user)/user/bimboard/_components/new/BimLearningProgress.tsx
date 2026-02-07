@@ -137,17 +137,6 @@ export default function BimLearningProgress({
             <BimLive />
           </button>
           <button
-            onClick={() => setActiveTab('courses')}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-              activeTab === 'courses'
-                ? 'bg-white text-slate-800 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            <BookOpen className="w-4 h-4" />
-            <BimCourse />
-          </button>
-          <button
             onClick={() => setActiveTab('tryouts')}
             className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'tryouts'
@@ -158,6 +147,18 @@ export default function BimLearningProgress({
             <Target className="w-4 h-4" />
             <BimArena />
           </button>
+          <button
+            onClick={() => setActiveTab('courses')}
+            className={`px-4 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+              activeTab === 'courses'
+                ? 'bg-white text-slate-800 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            <BimCourse />
+          </button>
+
         </div>
       </div>
 

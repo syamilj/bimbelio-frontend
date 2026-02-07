@@ -35,7 +35,6 @@ import { useEffect, useState } from 'react';
 import { TryoutDataType } from '../../page';
 import CountdownResult from '../countdown-result';
 import { AnalisisTab } from './_component/analisis-tab';
-import ExitTryout from './_component/exit-tryout';
 import { ReviewTab } from './_component/review-tab';
 import { RingkasanTab } from './_component/ringkasan-tab';
 
@@ -280,8 +279,12 @@ export default function TryoutResult({
     getUserTryout();
   }, []);
 
-  // Add state for exit dialog
-  const [showExitDialog, setShowExitDialog] = useState(false);
+  // Direct navigation for back button (tryout is done, no confirmation needed)
+  const handleExit = () => {
+    router.push(
+      `/${website_sub_category_id}/user/bimarena/${mode === 'try-out' ? 'try-out' : 'quiz'}`,
+    );
+  };
 
   if (currentDate < resultDate && !isTesting) {
     return <CoundowntShowResult resultDate={resultDate} />;
@@ -356,7 +359,7 @@ export default function TryoutResult({
               {/* Exit Button */}
               <Button
                 variant="ghost"
-                onClick={() => setShowExitDialog(true)}
+                onClick={handleExit}
                 className="flex items-center gap-2 text-slate-600 hover:text-slate-900 p-2 rounded-3xl hover:bg-slate-100 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
@@ -424,13 +427,6 @@ export default function TryoutResult({
       </div>
 
       <div className="container mx-auto max-w-7xl px-4 py-4 md:py-6">
-        {/* Exit Dialog Component */}
-        <ExitTryout
-          open={showExitDialog}
-          setOpen={setShowExitDialog}
-          done={true}
-        />
-
         {website_sub_category_id_params === 'simak-ui' && <PopUpPrediction />}
         <LoadingPageWithText
           loading={TestAgainTryoutLoading}
@@ -613,8 +609,17 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
   const mainColor = websiteSubCategory?.main_color || '#0091FF';
   const secondaryColor = websiteSubCategory?.secondary_color || '#5aa4dd';
 
-  // Add state for exit dialog in countdown component too
-  const [showExitDialog, setShowExitDialog] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const mode = pathname.toLocaleLowerCase().includes('try-out')
+    ? 'try-out'
+    : 'quiz';
+
+  const handleExit = () => {
+    router.push(
+      `/${website_sub_category_id}/user/bimarena/${mode === 'try-out' ? 'try-out' : 'quiz'}`,
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -625,7 +630,7 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
             {/* Exit Button */}
             <Button
               variant="ghost"
-              onClick={() => setShowExitDialog(true)}
+              onClick={handleExit}
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900 p-2 rounded-3xl hover:bg-gray-100 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -654,13 +659,6 @@ const CoundowntShowResult = ({ resultDate }: CoundowntShowResultProps) => {
       </div>
 
       <div className="container mx-auto max-w-7xl px-4 py-6">
-        {/* Exit Dialog Component */}
-        <ExitTryout
-          open={showExitDialog}
-          setOpen={setShowExitDialog}
-          done={true}
-        />
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
