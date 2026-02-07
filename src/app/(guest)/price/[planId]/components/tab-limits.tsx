@@ -66,7 +66,7 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
               .map(([key, value]) => (
                 <div
                   key={key}
-                  className="group p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
+                  className="group p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
@@ -167,7 +167,7 @@ export default function TabLimits({ plan }: { plan: PlanDataType }) {
               ))}
 
             {/* Summary card */}
-            <div className="p-5 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50">
+            <div className="p-5 rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50">
               <div className="text-center">
                 <div
                   className="w-14 h-14 rounded-3xl flex items-center justify-center mx-auto mb-3"

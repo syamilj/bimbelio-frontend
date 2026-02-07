@@ -61,7 +61,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                   feature.Pivot_Plan_Category.map((pivot) => (
                     <div
                       key={pivot.id}
-                      className="group/item p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
+                      className="group/item p-4 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
                     >
                       <div className="flex items-center gap-3">
                         <div
@@ -84,7 +84,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                   ))}
 
                 {feature.type === 'DOCUMENT' && (
-                  <div className="group/item col-span-3 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300">
+                  <div className="group/item col-span-3 p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-4">
                       <div
                         className="w-11 h-11 rounded-3xl flex items-center justify-center shrink-0"
@@ -116,7 +116,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
                 )}
 
                 {feature.type === 'LIVECLASS' && feature.liveClassesPerWeek && (
-                  <div className="group/item col-span-3 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300">
+                  <div className="group/item col-span-3 p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300">
                     <div className="flex items-center gap-4">
                       <div
                         className="w-11 h-11 rounded-3xl flex items-center justify-center shrink-0"
@@ -149,7 +149,7 @@ export default function TabFeatures({ plan }: { plan: PlanDataType }) {
               </div>
 
               {/* Feature summary */}
-              <div className="mt-5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <div className="mt-5 p-4 rounded-3xl bg-slate-50 border border-slate-100">
                 <div className="flex items-start gap-3">
                   <div
                     className="w-8 h-8 rounded-3xl flex items-center justify-center shrink-0"

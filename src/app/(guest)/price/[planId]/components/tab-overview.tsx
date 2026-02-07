@@ -72,7 +72,7 @@ export default function TabOverview({
                 (benefit, index) => (
                   <div
                     key={benefit.id}
-                    className="group relative p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
+                    className="group relative p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
                   >
                     <div className="flex items-start gap-4">
                       <div
@@ -154,7 +154,7 @@ export default function TabOverview({
                 {plan.PlanSubscription.PlanFeature.map((feature, index) => (
                   <div
                     key={feature.id}
-                    className="group p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
+                    className="group p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300"
                   >
                     <div className="flex items-center gap-3 mb-4">
                       <div
@@ -280,7 +280,7 @@ export default function TabOverview({
               {plan.Pivot_LiveClass_Plan.slice(0, 4).map((pivot, index) => (
                 <div
                   key={pivot.id}
-                  className="group p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300 relative"
+                  className="group p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-300 relative"
                 >
                   <div className="flex items-start gap-4 mb-4">
                     <div
@@ -428,7 +428,7 @@ export default function TabOverview({
                 .map(([key, value], index) => (
                   <div
                     key={key}
-                    className="group p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center hover:shadow-md transition-all duration-300 relative"
+                    className="group p-5 rounded-3xl bg-slate-50 border border-slate-100 text-center hover:shadow-md transition-all duration-300 relative"
                   >
                     <div
                       className="w-14 h-14 rounded-3xl flex items-center justify-center mx-auto mb-3"
@@ -494,7 +494,7 @@ export default function TabOverview({
             </div>
 
             {/* Info banner */}
-            <div className="mt-6 p-5 rounded-2xl bg-slate-50 border border-slate-100">
+            <div className="mt-6 p-5 rounded-3xl bg-slate-50 border border-slate-100">
               <div className="flex items-start gap-4">
                 <div
                   className="w-10 h-10 rounded-3xl flex items-center justify-center shrink-0"

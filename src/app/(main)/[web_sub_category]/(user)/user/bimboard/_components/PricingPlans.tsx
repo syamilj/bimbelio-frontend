@@ -265,7 +265,7 @@ export default function PricingPlans({
 
                     <Button
                       size="sm"
-                      className={`w-full rounded-2xl text-xs h-10 font-bold shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 ${
+                      className={`w-full rounded-3xl text-xs h-10 font-bold shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 ${
                         plan.isPopular ? 'text-white' : ''
                       }`}
                       style={{

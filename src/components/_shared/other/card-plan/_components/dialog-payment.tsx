@@ -451,7 +451,7 @@ const PaymentMethodSelection = ({
         {/* Option 1: Full Payment */}
         <button
           onClick={() => setPaymentMethod('FULL_PAYMENT')}
-          className="group w-full p-4 rounded-2xl border-2 border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 bg-white transition-all text-left flex items-center gap-4 cursor-pointer active:scale-[0.98]"
+          className="group w-full p-4 rounded-3xl border-2 border-slate-200 hover:border-blue-400 hover:bg-blue-50/50 bg-white transition-all text-left flex items-center gap-4 cursor-pointer active:scale-[0.98]"
         >
           <div
             className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
@@ -492,7 +492,7 @@ const PaymentMethodSelection = ({
         {/* Option 2: Installment Payment */}
         <button
           onClick={() => setPaymentMethod('INSTALLMENT')}
-          className="group w-full p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/50 bg-white transition-all text-left cursor-pointer active:scale-[0.98]"
+          className="group w-full p-4 rounded-3xl border-2 border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/50 bg-white transition-all text-left cursor-pointer active:scale-[0.98]"
         >
           <div className="flex items-center gap-4 mb-3">
             <div className="w-12 h-12 rounded-3xl flex items-center justify-center flex-shrink-0 bg-emerald-100 group-hover:scale-110 transition-transform">
@@ -642,7 +642,7 @@ const FormUserInformation = ({
   const isValid = telp.startsWith('+62') && telp.length >= 12;
 
   return (
-    <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+    <div className="p-4 bg-slate-50 rounded-3xl border border-slate-200">
       <Label className="text-xs font-semibold text-slate-700 flex items-center gap-2 mb-2">
         <Phone
           size={12}
@@ -716,7 +716,7 @@ const FormVoucher = ({
     plan.PlanInstallmentConfig?.PlanInstallmentSchedule[0].amount || null;
 
   return (
-    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200">
+    <div className="p-3 bg-slate-50 rounded-3xl border border-slate-200">
       <div className="flex gap-2">
         <div className="relative flex-1">
           <Input
@@ -815,7 +815,7 @@ const FormCheckoutSummary = ({
   return (
     <div className="space-y-3">
       {/* Price Summary */}
-      <div className="p-4 bg-white rounded-2xl border-2 border-slate-200">
+      <div className="p-4 bg-white rounded-3xl border-2 border-slate-200">
         <div className="flex justify-between items-center mb-2">
           <span className="text-xs text-slate-500">
             {paymentMethod === 'INSTALLMENT'
@@ -856,7 +856,7 @@ const FormCheckoutSummary = ({
       {/* Payment Button */}
       <Button
         type="submit"
-        className="w-full h-12 text-sm font-bold text-white border-0 rounded-2xl shadow-lg"
+        className="w-full h-12 text-sm font-bold text-white border-0 rounded-3xl shadow-lg"
         disabled={loading || !isValid}
         style={{
           background:

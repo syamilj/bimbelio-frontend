@@ -117,7 +117,7 @@ export default function PlanDetailPage() {
               <div className="flex flex-col sm:flex-row gap-5">
                 {/* Image */}
                 <div className="w-full sm:w-1/3">
-                  <div className="relative rounded-2xl overflow-hidden border border-slate-200 aspect-[4/5]">
+                  <div className="relative rounded-3xl overflow-hidden border border-slate-200 aspect-[4/5]">
                     {plan.image ? (
                       <Image
                         src={plan.image}
@@ -323,7 +323,7 @@ export default function PlanDetailPage() {
                   (benefit, index) => (
                     <div
                       key={benefit.id}
-                      className="flex items-start gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-100"
+                      className="flex items-start gap-3 p-3 rounded-3xl bg-slate-50 border border-slate-100"
                     >
                       <div
                         className="w-7 h-7 rounded-3xl flex items-center justify-center flex-shrink-0"
@@ -379,7 +379,7 @@ export default function PlanDetailPage() {
                     {plan.PlanSubscription.PlanFeature.map((feature) => (
                       <div
                         key={feature.id}
-                        className="flex-shrink-0 w-[200px] sm:w-auto p-3 rounded-2xl bg-slate-50 border border-slate-100"
+                        className="flex-shrink-0 w-[200px] sm:w-auto p-3 rounded-3xl bg-slate-50 border border-slate-100"
                       >
                         <div className="flex items-center gap-2 mb-2">
                           <div
@@ -443,7 +443,7 @@ export default function PlanDetailPage() {
                   {courseFeature.Pivot_Plan_Category.map((pivot) => (
                     <div
                       key={pivot.id}
-                      className="flex-shrink-0 w-[220px] sm:w-auto rounded-2xl border border-slate-200 overflow-hidden"
+                      className="flex-shrink-0 w-[220px] sm:w-auto rounded-3xl border border-slate-200 overflow-hidden"
                     >
                       <div
                         className="p-3 text-white"
@@ -520,7 +520,7 @@ export default function PlanDetailPage() {
                   {liveClasses.map((pivot, index) => (
                     <div
                       key={pivot.id}
-                      className="flex-shrink-0 w-[200px] sm:w-auto rounded-2xl border border-slate-200 overflow-hidden"
+                      className="flex-shrink-0 w-[200px] sm:w-auto rounded-3xl border border-slate-200 overflow-hidden"
                     >
                       {/* Image */}
                       <div className="relative aspect-[4/5] bg-slate-100">
@@ -614,7 +614,7 @@ export default function PlanDetailPage() {
                   {limitations.map(([key, value]) => (
                     <div
                       key={key}
-                      className="flex-shrink-0 w-[140px] sm:w-auto p-3 rounded-2xl bg-slate-50 border border-slate-100 text-center"
+                      className="flex-shrink-0 w-[140px] sm:w-auto p-3 rounded-3xl bg-slate-50 border border-slate-100 text-center"
                     >
                       <div
                         className="w-10 h-10 rounded-3xl flex items-center justify-center mx-auto mb-2"

@@ -157,7 +157,7 @@ export default function PricingFeatures() {
                 {/* Icon at top left corner */}
                 <div className="mb-4">
                   <div
-                    className="p-3 rounded-2xl inline-flex items-center justify-center shadow-sm"
+                    className="p-3 rounded-3xl inline-flex items-center justify-center shadow-sm"
                     style={{ backgroundColor: `${mainColor}15` }}
                   >
                     {feature.icon}
@@ -175,7 +175,7 @@ export default function PricingFeatures() {
 
                 {/* Usage info with clean styling */}
                 <div className="mt-auto">
-                  <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50">
+                  <div className="flex items-center justify-between p-3 rounded-3xl bg-slate-50">
                     <span className="text-xs font-semibold text-slate-700">
                       Biaya penggunaan
                     </span>
@@ -209,7 +209,7 @@ export default function PricingFeatures() {
                 {/* Icon at top left corner */}
                 <div className="mb-4">
                   <div
-                    className="p-3 rounded-2xl inline-flex items-center justify-center shadow-sm"
+                    className="p-3 rounded-3xl inline-flex items-center justify-center shadow-sm"
                     style={{ backgroundColor: `${secondaryColor}15` }}
                   >
                     {feature.icon}
@@ -227,7 +227,7 @@ export default function PricingFeatures() {
 
                 {/* Usage info with clean styling */}
                 <div className="mt-auto">
-                  <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50">
+                  <div className="flex items-center justify-between p-3 rounded-3xl bg-slate-50">
                     <span className="text-xs font-semibold text-slate-700">
                       Biaya penggunaan
                     </span>

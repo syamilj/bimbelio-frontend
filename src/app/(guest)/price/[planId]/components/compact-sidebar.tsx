@@ -107,7 +107,7 @@ export default function CompactSidebar({
           {/* Compact Plan Details */}
           <div className="space-y-3">
             {plan.PlanSubscription && (
-              <div className="flex items-center justify-between py-2.5 px-3 bg-slate-50 rounded-2xl border border-slate-100">
+              <div className="flex items-center justify-between py-2.5 px-3 bg-slate-50 rounded-3xl border border-slate-100">
                 <span className="text-slate-700 flex items-center gap-2 text-sm font-medium">
                   <div
                     className="w-7 h-7 rounded-3xl flex items-center justify-center"
@@ -132,7 +132,7 @@ export default function CompactSidebar({
               </div>
             )}
 
-            <div className="flex items-center justify-between py-2.5 px-3 bg-slate-50 rounded-2xl border border-slate-100">
+            <div className="flex items-center justify-between py-2.5 px-3 bg-slate-50 rounded-3xl border border-slate-100">
               <span className="text-slate-700 flex items-center gap-2 text-sm font-medium">
                 <div
                   className="w-7 h-7 rounded-3xl flex items-center justify-center"

@@ -146,14 +146,14 @@ const SubmitChat = () => {
       <div className="max-w-2xl mx-auto px-3 py-2">
         {/* Compact Limitation Warnings */}
         {isLimitReached && (
-          <div className="mb-2 flex items-center gap-2 p-2 rounded-xl bg-red-50 border border-red-200">
+          <div className="mb-2 flex items-center gap-2 p-2 rounded-3xl bg-red-50 border border-red-200">
             <AlertCircle className="w-3.5 h-3.5 text-red-600 shrink-0" />
             <span className="text-xs text-red-700 flex-1">
               Limit chat tercapai
             </span>
             <Button
               size="sm"
-              className="h-6 px-2 text-[10px] bg-red-600 hover:bg-red-700 text-white rounded-lg"
+              className="h-6 px-2 text-[10px] bg-red-600 hover:bg-red-700 text-white rounded-3xl"
               onClick={() => setTransactionPopUp(true)}
             >
               <Crown className="w-3 h-3 mr-1" />
@@ -163,7 +163,7 @@ const SubmitChat = () => {
         )}
 
         {hasLimitWarning && (
-          <div className="mb-2 flex items-center gap-2 p-2 rounded-xl bg-orange-50 border border-orange-200">
+          <div className="mb-2 flex items-center gap-2 p-2 rounded-3xl bg-orange-50 border border-orange-200">
             <Zap
               className="w-3.5 h-3.5 shrink-0"
               style={{ color: mainColor }}
@@ -176,7 +176,7 @@ const SubmitChat = () => {
             </span>
             <Button
               size="sm"
-              className="h-6 px-2 text-[10px] text-white rounded-lg"
+              className="h-6 px-2 text-[10px] text-white rounded-3xl"
               style={{ backgroundColor: mainColor }}
               onClick={() => setTransactionPopUp(true)}
             >
@@ -188,7 +188,7 @@ const SubmitChat = () => {
 
         {(session?.user.role === 'ADMIN' ||
           session?.user.role === 'SUPER_ADMIN') && (
-          <div className="mb-2 flex items-center gap-1 p-1.5 rounded-xl bg-green-50 border border-green-200">
+          <div className="mb-2 flex items-center gap-1 p-1.5 rounded-3xl bg-green-50 border border-green-200">
             <div className="flex items-center gap-1 text-green-700 text-xs">
               <IconUnlimited w={12} />
               <span>/</span>
@@ -212,7 +212,7 @@ const SubmitChat = () => {
               maxLength={1000}
               placeholder="Ketik pesan Kamu di sini..."
               className={cn(
-                'w-full resize-none rounded-xl border py-2.5 px-3 pr-12 text-sm font-normal outline-none transition-all duration-200',
+                'w-full resize-none rounded-3xl border py-2.5 px-3 pr-12 text-sm font-normal outline-none transition-all duration-200',
                 'placeholder:text-slate-400',
                 'bg-slate-50 border-slate-200',
                 'focus:bg-white focus:border-slate-300',
@@ -267,7 +267,7 @@ const SubmitChat = () => {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="w-7 h-7 rounded-lg bg-slate-200 p-0"
+                    className="w-7 h-7 rounded-3xl bg-slate-200 p-0"
                     onMouseEnter={() => setShowUpgrade(true)}
                     onMouseLeave={() => setShowUpgrade(false)}
                     disabled
@@ -279,7 +279,7 @@ const SubmitChat = () => {
                   </Button>
 
                   {showUpgrade && (
-                    <div className="absolute bottom-full right-0 mb-2 w-48 p-2.5 bg-slate-900 text-white rounded-xl shadow-xl z-50">
+                    <div className="absolute bottom-full right-0 mb-2 w-48 p-2.5 bg-slate-900 text-white rounded-3xl shadow-xl z-50">
                       <div className="space-y-1.5">
                         <h4 className="font-semibold text-[11px]">
                           Limit Chat Tercapai
@@ -299,7 +299,7 @@ const SubmitChat = () => {
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="w-7 h-7 rounded-lg bg-red-100 hover:bg-red-200 text-red-600 p-0"
+                      className="w-7 h-7 rounded-3xl bg-red-100 hover:bg-red-200 text-red-600 p-0"
                       onClick={() => {
                         // Add stop functionality here if available
                       }}
@@ -312,7 +312,7 @@ const SubmitChat = () => {
                       size="sm"
                       disabled={!send || isLimitReached}
                       className={cn(
-                        'w-7 h-7 rounded-lg shadow-md transition-all duration-200 border-0 p-0',
+                        'w-7 h-7 rounded-3xl shadow-md transition-all duration-200 border-0 p-0',
                         send && !isLimitReached
                           ? 'hover:shadow-lg hover:scale-105'
                           : 'opacity-50 cursor-not-allowed',

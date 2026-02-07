@@ -159,7 +159,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
           <CardContent className="pt-0">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {/* Total Questions */}
-              <div className="text-center p-3 rounded-2xl bg-slate-50">
+              <div className="text-center p-3 rounded-3xl bg-slate-50">
                 <div className="text-xl md:text-2xl font-black text-slate-900">
                   {ResultData?.summaryTryout?.Result?.reduce(
                     (total, cat) =>
@@ -177,7 +177,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
               </div>
 
               {/* Correct Answers */}
-              <div className="text-center p-3 rounded-2xl bg-green-50">
+              <div className="text-center p-3 rounded-3xl bg-green-50">
                 <div className="text-xl md:text-2xl font-black text-green-600">
                   {ResultData?.summaryTryout?.Result?.reduce(
                     (total, cat) =>
@@ -195,7 +195,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
               </div>
 
               {/* Wrong Answers */}
-              <div className="text-center p-3 rounded-2xl bg-red-50">
+              <div className="text-center p-3 rounded-3xl bg-red-50">
                 <div className="text-xl md:text-2xl font-black text-red-600">
                   {ResultData?.summaryTryout?.Result?.reduce(
                     (total, cat) =>
@@ -214,7 +214,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
 
               {/* Accuracy */}
               <div
-                className="text-center p-3 rounded-2xl"
+                className="text-center p-3 rounded-3xl"
                 style={{ backgroundColor: `${mainColor}10` }}
               >
                 <div
@@ -352,7 +352,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
 
                   {/* Stats Grid - Inline for Mobile */}
                   <div className="flex gap-2 md:grid md:grid-cols-3 md:gap-3">
-                    <div className="flex-1 text-center p-2 bg-green-50 rounded-2xl">
+                    <div className="flex-1 text-center p-2 bg-green-50 rounded-3xl">
                       <CheckCircle2 className="w-4 h-4 mx-auto mb-0.5 text-green-600" />
                       <div className="text-base md:text-lg font-black text-green-700 leading-none">
                         {subject.correctAnswers}
@@ -361,7 +361,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
                         Benar
                       </div>
                     </div>
-                    <div className="flex-1 text-center p-2 bg-red-50 rounded-2xl">
+                    <div className="flex-1 text-center p-2 bg-red-50 rounded-3xl">
                       <XCircle className="w-4 h-4 mx-auto mb-0.5 text-red-600" />
                       <div className="text-base md:text-lg font-black text-red-700 leading-none">
                         {subject.wrongAnswers}
@@ -370,7 +370,7 @@ export function RingkasanTab({ ResultData, unlockTryout }: RingkasanTabProps) {
                         Salah
                       </div>
                     </div>
-                    <div className="flex-1 text-center p-2 bg-blue-50 rounded-2xl">
+                    <div className="flex-1 text-center p-2 bg-blue-50 rounded-3xl">
                       <Users className="w-4 h-4 mx-auto mb-0.5 text-blue-600" />
                       <div className="text-base md:text-lg font-black text-blue-700 leading-none">
                         {subject.totalQuestions}

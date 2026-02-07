@@ -611,7 +611,7 @@ const QuestionView = ({
                 number={userAnswerIndex + 1}
               >
                 <Button
-                  className="lg:hidden flex items-center gap-1.5 h-9 px-3 rounded-2xl shadow-md text-white text-xs font-semibold"
+                  className="lg:hidden flex items-center gap-1.5 h-9 px-3 rounded-3xl shadow-md text-white text-xs font-semibold"
                   style={{ backgroundColor: mainColor }}
                 >
                   <BotIcon className="w-4 h-4" />

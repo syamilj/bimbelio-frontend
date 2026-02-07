@@ -43,7 +43,7 @@ export default function Navbar() {
           {/* Desktop Admin Panel Info */}
           <div className="hidden md:flex items-center gap-2 flex-shrink-0">
             <div
-              className="flex items-center justify-center w-9 h-9 rounded-2xl"
+              className="flex items-center justify-center w-9 h-9 rounded-3xl"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Shield

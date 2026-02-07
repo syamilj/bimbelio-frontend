@@ -102,7 +102,7 @@ export default function ThreeQuestions() {
         {/* Header Section - Modern & Clean */}
         <div className="text-center space-y-3">
           <div
-            className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+            className="w-14 h-14 mx-auto rounded-3xl flex items-center justify-center shadow-lg"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -128,13 +128,13 @@ export default function ThreeQuestions() {
             return (
               <button
                 key={index}
-                className="group relative overflow-hidden rounded-2xl bg-white p-4 text-left shadow-sm border border-slate-200 transition-all duration-200 hover:shadow-md hover:border-slate-300 active:scale-[0.98]"
+                className="group relative overflow-hidden rounded-3xl bg-white p-4 text-left shadow-sm border border-slate-200 transition-all duration-200 hover:shadow-md hover:border-slate-300 active:scale-[0.98]"
                 onClick={() => handleThreeQuestions(item.question)}
               >
                 {/* Content */}
                 <div className="flex items-start gap-3">
                   <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    className="w-9 h-9 rounded-3xl flex items-center justify-center flex-shrink-0"
                     style={{ backgroundColor: `${mainColor}12` }}
                   >
                     <IconComponent

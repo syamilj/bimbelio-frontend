@@ -182,7 +182,7 @@ export default function QuizOnboarding() {
         <DialogTitle>Welcome to BimArena Quiz!</DialogTitle>
       </DialogHeader>
       <DialogContent
-        className="max-w-sm md:max-w-md p-0 overflow-hidden rounded-2xl border-0 gap-0"
+        className="max-w-sm md:max-w-md p-0 overflow-hidden rounded-3xl border-0 gap-0"
         hideClose
       >
         <div

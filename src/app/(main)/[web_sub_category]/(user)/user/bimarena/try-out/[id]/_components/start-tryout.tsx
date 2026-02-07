@@ -198,7 +198,7 @@ const StartTryout = ({
                       key={idx}
                       className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-2 rounded-3xl flex-shrink-0"
                     >
-                      <div className="w-8 h-8 rounded-2xl bg-white/25 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-3xl bg-white/25 flex items-center justify-center">
                         <Icon className="w-4 h-4 text-white" />
                       </div>
                       <div>
@@ -226,7 +226,7 @@ const StartTryout = ({
         >
           <div className="flex items-start gap-3">
             <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
+              className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Flame
@@ -288,7 +288,7 @@ const StartTryout = ({
                   className="flex items-start gap-3 p-3 md:p-4 rounded-3xl bg-slate-50 hover:bg-slate-100 transition-all group"
                 >
                   <div
-                    className="w-9 h-9 md:w-10 md:h-10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm"
+                    className="w-9 h-9 md:w-10 md:h-10 rounded-3xl flex items-center justify-center flex-shrink-0 shadow-sm"
                     style={{ backgroundColor: `${rule.color}15` }}
                   >
                     <Icon
@@ -446,7 +446,7 @@ const StartTryout = ({
           >
             <div className="flex items-start gap-3">
               <div
-                className="w-9 h-9 rounded-2xl flex items-center justify-center flex-shrink-0"
+                className="w-9 h-9 rounded-3xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${mainColor}20` }}
               >
                 <Trophy

@@ -54,7 +54,7 @@ export const TryoutAI = ({
         <SheetHeader className="relative px-4 py-3 border-b border-slate-100 bg-white">
           <div className="flex items-center justify-center gap-2 pr-6">
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center"
+              className="w-8 h-8 rounded-3xl flex items-center justify-center"
               style={{
                 background: `linear-gradient(135deg, ${mainColor}, ${mainColor}cc)`,
               }}

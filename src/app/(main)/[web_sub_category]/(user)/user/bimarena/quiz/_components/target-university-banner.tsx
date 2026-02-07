@@ -39,7 +39,7 @@ export function TargetUniversityBanner({
         {/* University Info */}
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center text-white flex-shrink-0"
+            className="w-12 h-12 rounded-3xl flex items-center justify-center text-white flex-shrink-0"
             style={{
               background: `linear-gradient(135deg, ${mainColor}, ${secondaryColor})`,
             }}
@@ -58,7 +58,7 @@ export function TargetUniversityBanner({
 
         {/* Target Score */}
         <div
-          className="flex-shrink-0 px-4 py-2 rounded-2xl text-center"
+          className="flex-shrink-0 px-4 py-2 rounded-3xl text-center"
           style={{ backgroundColor: `${mainColor}10` }}
         >
           <p className="text-[9px] font-bold text-slate-400 uppercase">

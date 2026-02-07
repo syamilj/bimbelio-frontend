@@ -192,7 +192,7 @@ const Sidebar = ({
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMobileSidebarOpen?.(false)}
-                className="h-8 w-8 rounded-xl hover:bg-slate-200"
+                className="h-8 w-8 rounded-3xl hover:bg-slate-200"
               >
                 <X className="h-4 w-4" />
               </Button>

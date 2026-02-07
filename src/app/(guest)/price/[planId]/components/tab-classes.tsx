@@ -199,7 +199,7 @@ export default function TabClasses({ plan }: { plan: PlanDataType }) {
       <div className="rounded-3xl p-4 bg-slate-50 border border-slate-200">
         <div className="flex items-start gap-3">
           <div
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
             style={{ backgroundColor: `${mainColor}15` }}
           >
             <Video

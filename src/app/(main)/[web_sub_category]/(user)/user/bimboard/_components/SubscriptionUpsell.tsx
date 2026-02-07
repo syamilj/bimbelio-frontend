@@ -47,7 +47,7 @@ export default function SubscriptionUpsell({
 
         <div className="relative z-10 flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-sm">
+            <div className="w-12 h-12 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-sm">
               <Crown className="w-6 h-6 text-yellow-300 fill-yellow-300" />
             </div>
             <div>
@@ -65,7 +65,7 @@ export default function SubscriptionUpsell({
         </div>
 
         <div className="relative z-10 grid grid-cols-3 gap-3">
-          <div className="bg-black/10 backdrop-blur-sm rounded-2xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
+          <div className="bg-black/10 backdrop-blur-sm rounded-3xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
             <div className="w-8 h-8 rounded-full bg-white/10 mx-auto flex items-center justify-center mb-1">
               <span className="text-xs font-bold">TO</span>
             </div>
@@ -77,7 +77,7 @@ export default function SubscriptionUpsell({
               TryOut
             </p>
           </div>
-          <div className="bg-black/10 backdrop-blur-sm rounded-2xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
+          <div className="bg-black/10 backdrop-blur-sm rounded-3xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
             <div className="w-8 h-8 rounded-full bg-white/10 mx-auto flex items-center justify-center mb-1">
               <span className="text-xs font-bold">CS</span>
             </div>
@@ -89,7 +89,7 @@ export default function SubscriptionUpsell({
               Course
             </p>
           </div>
-          <div className="bg-black/10 backdrop-blur-sm rounded-2xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
+          <div className="bg-black/10 backdrop-blur-sm rounded-3xl p-3 text-center border border-white/10 hover:bg-black/20 transition-colors">
             <div className="w-8 h-8 rounded-full bg-white/10 mx-auto flex items-center justify-center mb-1">
               <span className="text-xs font-bold">AI</span>
             </div>

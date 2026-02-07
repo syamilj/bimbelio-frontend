@@ -163,7 +163,7 @@ export function QuizSummary() {
 
             {/* Desktop Illustration */}
             <div className="hidden md:flex items-center justify-center flex-shrink-0">
-              <div className="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+              <div className="w-16 h-16 rounded-3xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
                 <Swords className="w-8 h-8 text-white" />
               </div>
             </div>
@@ -172,7 +172,7 @@ export function QuizSummary() {
           {/* Stats Row */}
           <div className="mt-4 flex gap-4 md:gap-6">
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-3xl bg-white/20 flex items-center justify-center">
                 <Trophy className="w-4 h-4 text-amber-300" />
               </div>
               <div>
@@ -193,7 +193,7 @@ export function QuizSummary() {
             <div className="w-px h-10 bg-white/20" />
 
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-3xl bg-white/20 flex items-center justify-center">
                 <Zap className="w-4 h-4 text-amber-300" />
               </div>
               <div>
@@ -209,7 +209,7 @@ export function QuizSummary() {
             <div className="w-px h-10 bg-white/20 hidden md:block" />
 
             <div className="hidden md:flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-3xl bg-white/20 flex items-center justify-center">
                 <Target className="w-4 h-4 text-white" />
               </div>
               <div>
@@ -234,7 +234,7 @@ export function QuizSummary() {
         >
           <div className="flex items-start gap-3">
             <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
+              className="w-10 h-10 rounded-3xl flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: `${mainColor}15` }}
             >
               <Swords

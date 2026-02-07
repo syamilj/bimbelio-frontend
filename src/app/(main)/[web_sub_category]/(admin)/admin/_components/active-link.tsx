@@ -94,7 +94,7 @@ const ActiveLink = ({
           <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
           <TooltipContent
             side="right"
-            className="bg-white shadow-lg border border-slate-200 rounded-2xl p-2.5"
+            className="bg-white shadow-lg border border-slate-200 rounded-3xl p-2.5"
           >
             <div className="space-y-0.5">
               <div className="font-bold text-xs text-slate-900">{label}</div>
